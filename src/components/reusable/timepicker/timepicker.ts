@@ -318,7 +318,9 @@ export class TimePicker extends FormMixin(LitElement) {
                   </span>
                 </kyn-button>
               `
-            : html`<span class="input-icon">${unsafeSVG(clockIcon)}</span>`}
+            : html`<span class="input-icon" ?disabled=${this.timepickerDisabled}
+                >${unsafeSVG(clockIcon)}</span
+              >`}
         </div>
         ${this.caption
           ? html`<div
