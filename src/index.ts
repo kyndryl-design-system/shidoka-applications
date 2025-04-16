@@ -83,7 +83,6 @@ export { Search } from './components/reusable/search';
 export { Loader, LoaderInline, Skeleton } from './components/reusable/loaders';
 export { NumberInput } from './components/reusable/numberInput';
 export { SliderInput } from './components/reusable/sliderInput';
-export { RangeInput } from './components/reusable/rangeInput';
 
 export {
   debounce,
@@ -114,4 +113,3 @@ export {
 export { FloatingContainer } from './components/reusable/floatingContainer';
 export { AISourcesFeedback } from './components/ai/sourcesFeedback';
 export { InlineConfirm } from './components/reusable/inlineConfirm';
-export { SliderInput1 } from './components/reusable/sliderInput1';
