@@ -6,6 +6,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 export default {
   title: 'Components/Text Area',
   component: 'kyn-text-area',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-420752&p=f&m=dev',
+    },
+  },
   argTypes: {
     minLength: {
       control: { type: 'number' },
@@ -75,11 +81,4 @@ AIConnected.args = {
   notResizeable: true,
   rows: 1,
   maxRowsVisible: 4,
-};
-
-TextArea.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-420752&p=f&m=dev',
-  },
 };

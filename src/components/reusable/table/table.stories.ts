@@ -41,7 +41,7 @@ const meta: Meta = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-370429&p=f&m=dev',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-382289&p=f&m=dev',
     },
   },
 };
@@ -473,7 +473,7 @@ export const ColumnSettings: Story = {
     },
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/P3l7EMKOWmohY4aqYfGh1e/Florence-Prototypes?type=design&node-id=0%3A1&mode=design&t=hWVdRJTz3EdL7ltN-1',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=3-414475&m=dev',
     },
   },
 };
@@ -515,7 +515,7 @@ export const Skeleton = {
     },
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546635&m=dev',
     },
     argTypes: {
       rows: {

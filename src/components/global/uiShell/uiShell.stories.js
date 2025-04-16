@@ -14,6 +14,12 @@ import sampleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/c
 export default {
   title: 'Global Components/UI Shell',
   component: 'kyn-ui-shell',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-371547&p=f&m=dev',
+    },
+  },
   decorators: [
     (story) =>
       html`
