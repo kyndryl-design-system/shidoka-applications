@@ -87,7 +87,7 @@ export class SliderInput extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  tooltipVisible = true;
+  tooltipVisible = false;
 
   /** Internal tooltipposition.
    * @internal
