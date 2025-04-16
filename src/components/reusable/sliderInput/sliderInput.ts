@@ -10,7 +10,6 @@ import '../button';
 import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
-import { getTokenThemeVal } from '@kyndryl-design-system/shidoka-foundation/common/helpers/color';
 
 const _defaultTextStrings = {
   error: 'Error',
@@ -108,14 +107,6 @@ export class SliderInput extends FormMixin(LitElement) {
    */
   @query('input[type="number"]')
   _inputEl!: HTMLInputElement;
-
-  /**
-   * Queries the _themeObserver element.
-   * @ignore
-   */
-  _themeObserver: any = new MutationObserver(() => {
-    this.showTickMarkOnSlider();
-  });
 
   override render() {
     // Calculate the number of ticks based on the step, min, and max values
@@ -399,14 +390,13 @@ export class SliderInput extends FormMixin(LitElement) {
 
       // Compare the tick's position with the thumb's position
       if (tickPercentage <= thumbPercentage) {
-        // Turn the tick white if the thumb has passed it
-        tick.style.backgroundColor = getTokenThemeVal(
-          '--kd-color-background-accent-subtle'
-        );
+        tick.classList.add('tick-filled');
+        tick.classList.remove('tick-unfilled');
+        tick.classList.remove('tick-OnKnob');
       } else {
-        tick.style.backgroundColor = getTokenThemeVal(
-          '--kd-color-background-accent-secondary'
-        );
+        tick.classList.add('tick-unfilled');
+        tick.classList.remove('tick-filled');
+        tick.classList.remove('tick-OnKnob');
       }
 
       const tickStepPosition = Math.round(tickPercentage); // Round to avoid floating point precision issues
@@ -416,9 +406,9 @@ export class SliderInput extends FormMixin(LitElement) {
         if (this.disabled) {
           tick.style.background = 'none';
         } else {
-          tick.style.backgroundColor = getTokenThemeVal(
-            '--kd-color-border-button-secondary-state-default'
-          );
+          tick.classList.add('tick-OnKnob');
+          tick.classList.remove('tick-filled');
+          tick.classList.remove('tick-unfilled');
         }
       }
     });
@@ -481,20 +471,6 @@ export class SliderInput extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-
-    this._themeObserver.observe(
-      document.querySelector('meta[name="color-scheme"]'),
-      { attributes: true }
-    );
-  }
-
-  override disconnectedCallback() {
-    this._themeObserver.disconnect();
-    super.disconnectedCallback();
   }
 }
 
