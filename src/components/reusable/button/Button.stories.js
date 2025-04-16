@@ -103,7 +103,7 @@ export const Button = {
 Button.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/5TqtPa7KWfhJbQv6ELnbqf/Foundation?node-id=72%3A18796&mode=dev',
+    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-364159&p=f&m=dev',
   },
 };
 

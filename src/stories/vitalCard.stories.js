@@ -8,7 +8,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?type=design&node-id=9941-18758&mode=design&t=N5Lw7kAKTAjoCa0x-0',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-297686&p=f&m=dev',
     },
   },
 };

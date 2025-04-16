@@ -18,7 +18,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/pQKkip0UrZqEbaGN2dQ3dY/Istanbul-Release?type=design&node-id=8-9731&mode=design&t=nd4DTcgjxZCAgnB6-0',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-420751&p=f&m=dev',
     },
   },
 };
@@ -80,5 +80,12 @@ export const Skeleton = {
         )}
       </kyn-tag-group>
     `;
+  },
+};
+
+Skeleton.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546635&m=dev',
   },
 };

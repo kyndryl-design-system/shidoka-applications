@@ -19,7 +19,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/5TqtPa7KWfhJbQv6ELnbqf/Foundation---Component-Library?node-id=5842%3A4589&mode=dev',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-371547&p=f&m=dev',
     },
   },
 };
