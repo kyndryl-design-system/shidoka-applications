@@ -156,90 +156,16 @@ export class SliderInput extends FormMixin(LitElement) {
 
         ${
           this.enableTicksOnSlider || this.enableScaleMarkers
-            ? html`
-                <div class="${classMap(markerStyles)}">
-                  ${Array.from({ length: tickCount + 1 }).map((_, index) => {
-                    const tickPosition =
-                      index === tickCount
-                        ? '100%'
-                        : (index * 100) / tickCount + '%';
-                    const midIndex = Math.floor(tickCount / 2);
-                    const maxOffset = 10; // Maximum offset in pixels
-
-                    const offset =
-                      index <= midIndex
-                        ? maxOffset - (index * maxOffset) / midIndex // Decrease offset proportionally until mid
-                        : -((index - midIndex) * maxOffset) / midIndex; //Decrease offset negatively
-
-                    const label = this.min + index * this.step;
-                    const isMin = index === 0;
-                    const isMax = index === tickCount;
-                    const isMid = index === midIndex;
-                    const displayLabel = isMin || isMid || isMax ? label : '';
-                    const labelStyle = isMin
-                      ? 'transform: translateX(30%);' // Push the min label slightly inside
-                      : isMax
-                      ? 'transform: translateX(-100%);' // Push the max label slightly inside
-                      : '';
-                    return html`
-                      ${this.enableScaleMarkers
-                        ? html` <div
-                            class="tick-label"
-                            style="left: calc(${tickPosition} + ${offset}px);"
-                          >
-                            <span style="${labelStyle}">${displayLabel}</span>
-                          </div>`
-                        : null}
-                      ${this.enableTicksOnSlider
-                        ? html` <span
-                            class="tick"
-                            style="left: calc(${tickPosition} + ${offset}px);"
-                          ></span>`
-                        : null}
-                    `;
-                  })}
-                </div>
-              `
+            ? this.renderScaleMarker(markerStyles, tickCount)
             : null
         }
                 ${
                   this.tooltipVisible && !this.editableInput
-                    ? html` <span
-                        role="tooltip"
-                        class="slider-tooltip"
-                        style="left: ${this._getTooltipPosition()}; visibility: ${this
-                          .tooltipVisible
-                          ? 'visible'
-                          : 'hidden'}"
-                      >
-                        ${this.value}
-                      </span>`
+                    ? this.renderTooltip()
                     : null
                 }
               </div>
-            ${
-              this.editableInput
-                ? html`
-                    <div class="number-input">
-                      <input
-                        type="number"
-                        value=${this.value.toString()}
-                        id="editableInput"
-                        name="editableInput"
-                        ?disabled=${this.disabled}
-                        aria-label="editable range input"
-                        ?invalid=${this._isInvalid}
-                        aria-invalid=${this._isInvalid}
-                        aria-describedby=${this._isInvalid ? 'error' : ''}
-                        min=${ifDefined(this.min)}
-                        max=${ifDefined(this.max)}
-                        step=${ifDefined(this.step)}
-                        @input=${(e: any) => this._handleNumberInput(e)}
-                      />
-                    </div>
-                  `
-                : null
-            }
+            ${this.editableInput ? this.renderEditableInput() : null}
 
         </div>
           </div>
@@ -268,6 +194,89 @@ export class SliderInput extends FormMixin(LitElement) {
               : null
           }
         </div>
+      </div>
+    `;
+  }
+
+  //render ScaleMarker Html
+  private renderScaleMarker(markerStyles: any, tickCount: any) {
+    return html`
+      <div class="${classMap(markerStyles)}">
+        ${Array.from({ length: tickCount + 1 }).map((_, index) => {
+          const tickPosition =
+            index === tickCount ? '100%' : (index * 100) / tickCount + '%';
+          const midIndex = Math.floor(tickCount / 2);
+          const maxOffset = 10; // Maximum offset in pixels
+
+          const offset =
+            index <= midIndex
+              ? maxOffset - (index * maxOffset) / midIndex // Decrease offset proportionally until mid
+              : -((index - midIndex) * maxOffset) / midIndex; //Decrease offset negatively
+
+          const label = this.min + index * this.step;
+          const isMin = index === 0;
+          const isMax = index === tickCount;
+          const isMid = index === midIndex;
+          const displayLabel = isMin || isMid || isMax ? label : '';
+          const labelStyle = isMin
+            ? 'transform: translateX(30%);' // Push the min label slightly inside
+            : isMax
+            ? 'transform: translateX(-100%);' // Push the max label slightly inside
+            : '';
+          return html`
+            ${this.enableScaleMarkers
+              ? html` <div
+                  class="tick-label"
+                  style="left: calc(${tickPosition} + ${offset}px);"
+                >
+                  <span style="${labelStyle}">${displayLabel}</span>
+                </div>`
+              : null}
+            ${this.enableTicksOnSlider
+              ? html` <span
+                  class="tick"
+                  style="left: calc(${tickPosition} + ${offset}px);"
+                ></span>`
+              : null}
+          `;
+        })}
+      </div>
+    `;
+  }
+
+  //render Tooltip Html
+  private renderTooltip() {
+    return html` <span
+      role="tooltip"
+      class="slider-tooltip"
+      style="left: ${this._getTooltipPosition()}; visibility: ${this
+        .tooltipVisible
+        ? 'visible'
+        : 'hidden'}"
+    >
+      ${this.value}
+    </span>`;
+  }
+
+  //render EditableInput Html
+  private renderEditableInput() {
+    return html`
+      <div class="number-input">
+        <input
+          type="number"
+          value=${this.value.toString()}
+          id="editableInput"
+          name="editableInput"
+          ?disabled=${this.disabled}
+          aria-label="editable range input"
+          ?invalid=${this._isInvalid}
+          aria-invalid=${this._isInvalid}
+          aria-describedby=${this._isInvalid ? 'error' : ''}
+          min=${ifDefined(this.min)}
+          max=${ifDefined(this.max)}
+          step=${ifDefined(this.step)}
+          @input=${(e: any) => this._handleNumberInput(e)}
+        />
       </div>
     `;
   }
