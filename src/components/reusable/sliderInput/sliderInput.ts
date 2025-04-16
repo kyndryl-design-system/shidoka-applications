@@ -102,11 +102,18 @@ export class SliderInput extends FormMixin(LitElement) {
   @query('input[type="range"]')
   _inputRangeEl!: HTMLInputElement;
 
+  /**
+   * Queries the <input> DOM element.
+   * @ignore
+   */
   @query('input[type="number"]')
   _inputEl!: HTMLInputElement;
 
+  /**
+   * Queries the _themeObserver element.
+   * @ignore
+   */
   _themeObserver: any = new MutationObserver(() => {
-    console.log('Theme changed');
     this.showTickMarkOnSlider();
   });
 
@@ -115,12 +122,6 @@ export class SliderInput extends FormMixin(LitElement) {
     const styles = {
       'slider-wrapper': true,
       'mb-20': this.enableScaleMarkers,
-    };
-
-    const markerStyles = {
-      'tick-wrapper': true,
-      'mt-30': this.enableScaleMarkers,
-      top: this.enableTicksOnSlider,
     };
 
     const tickCount = Math.floor((this.max - this.min) / this.step);
@@ -140,35 +141,33 @@ export class SliderInput extends FormMixin(LitElement) {
                 id=${this.name}
                 name=${this.name}
                 tabindex="0"
-                aria-label="slider range input"
                 value=${this.value.toString()}
                 ?disabled=${this.disabled}
                 step=${ifDefined(this.step)}
                 min=${ifDefined(this.min)}
                 max=${ifDefined(this.max)}
-                aria-valuemin=${this.value.toString()}
+                aria-label="slider range input"
+                aria-valuetext=${this.value.toString()}
+                aria-valuemin=${ifDefined(this.min)}
                 aria-valuemax=${ifDefined(this.max)}
-                aria-valuenow=${ifDefined(this.min)}
+                aria-valuenow=${this.value.toString()}
                 @input=${(e: any) => this._handleInput(e)}
-                @focus=${() => this.showTooltip()}
-                @blur=${() => this.hideTooltip()}
+                @mouseenter=${() => this._showTooltip()}
+                @mouseleave=${this._handleMouseLeave}
+                @focus=${() => this._showTooltip()}
+                @blur=${() => this._hideTooltip()}
               />
-
-        ${
-          this.enableTicksOnSlider || this.enableScaleMarkers
-            ? this.renderScaleMarker(markerStyles, tickCount)
-            : null
-        }
+        ${this.enableTicksOnSlider ? this._renderTickMarker(tickCount) : null}
+          ${this.enableScaleMarkers ? this._renderScaleMarker(tickCount) : null}
                 ${
                   this.tooltipVisible && !this.editableInput
-                    ? this.renderTooltip()
+                    ? this._renderTooltip()
                     : null
                 }
               </div>
-            ${this.editableInput ? this.renderEditableInput() : null}
+            ${this.editableInput ? this._renderEditableInput() : null}
 
         </div>
-          </div>
           ${
             this.caption !== ''
               ? html`
@@ -193,15 +192,45 @@ export class SliderInput extends FormMixin(LitElement) {
                 `
               : null
           }
+
+          </div>
         </div>
       </div>
     `;
   }
 
   //render ScaleMarker Html
-  private renderScaleMarker(markerStyles: any, tickCount: any) {
+  private _renderTickMarker(tickCount: any) {
     return html`
-      <div class="${classMap(markerStyles)}">
+      <div class="tick-wrapper top">
+        ${Array.from({ length: tickCount + 1 }).map((_, index) => {
+          const tickPosition =
+            index === tickCount ? '100%' : (index * 100) / tickCount + '%';
+          const midIndex = Math.floor(tickCount / 2);
+          const maxOffset = 10; // Maximum offset in pixels
+
+          const offset =
+            index <= midIndex
+              ? maxOffset - (index * maxOffset) / midIndex // Decrease offset proportionally until mid
+              : -((index - midIndex) * maxOffset) / midIndex; //Decrease offset negatively
+
+          return html`
+            ${this.enableTicksOnSlider
+              ? html` <span
+                  class="tick"
+                  style="left: calc(${tickPosition} + ${offset}px);"
+                ></span>`
+              : null}
+          `;
+        })}
+      </div>
+    `;
+  }
+
+  //render ScaleMarker Html
+  private _renderScaleMarker(tickCount: any) {
+    return html`
+      <div class="tick-wrapper mt-30">
         ${Array.from({ length: tickCount + 1 }).map((_, index) => {
           const tickPosition =
             index === tickCount ? '100%' : (index * 100) / tickCount + '%';
@@ -232,12 +261,6 @@ export class SliderInput extends FormMixin(LitElement) {
                   <span style="${labelStyle}">${displayLabel}</span>
                 </div>`
               : null}
-            ${this.enableTicksOnSlider
-              ? html` <span
-                  class="tick"
-                  style="left: calc(${tickPosition} + ${offset}px);"
-                ></span>`
-              : null}
           `;
         })}
       </div>
@@ -245,7 +268,7 @@ export class SliderInput extends FormMixin(LitElement) {
   }
 
   //render Tooltip Html
-  private renderTooltip() {
+  private _renderTooltip() {
     return html` <span
       role="tooltip"
       class="slider-tooltip"
@@ -259,7 +282,7 @@ export class SliderInput extends FormMixin(LitElement) {
   }
 
   //render EditableInput Html
-  private renderEditableInput() {
+  private _renderEditableInput() {
     return html`
       <div class="number-input">
         <input
@@ -282,15 +305,21 @@ export class SliderInput extends FormMixin(LitElement) {
   }
 
   // Handle show the tooltip
-  private showTooltip() {
+  private _showTooltip() {
     this.tooltipVisible = true;
   }
 
   // Handle hide the tooltip
-  private hideTooltip() {
+  private _hideTooltip() {
     setTimeout(() => {
       this.tooltipVisible = false;
     }, 100);
+  }
+
+  private _handleMouseLeave() {
+    setTimeout(() => {
+      this.tooltipVisible = false;
+    }, 500);
   }
 
   private _handleInput(e: any) {
@@ -350,10 +379,10 @@ export class SliderInput extends FormMixin(LitElement) {
     const max = this.max;
     const step = this.step;
 
-    const newVal = Number(((value - min) * 100) / (max - min));
-
-    const newPosition = 10 - newVal * 0.2;
-    this.tooltipPosition = `calc(${newVal}% + (${newPosition}px))`;
+    const pos = (value - this.min) / (this.max - this.min);
+    const knobPosition = 24 * (pos - 0.5) * -1; // knob width 24
+    const newVal = Math.floor(((value - min) * 100) / (max - min));
+    this.tooltipPosition = `calc(${newVal}% + (${knobPosition}px))`;
 
     // Ensure value is clamped within the valid range
     const clampedValue = Math.min(Math.max(value, min), max);
@@ -361,7 +390,9 @@ export class SliderInput extends FormMixin(LitElement) {
     ticks?.forEach((tick: any) => {
       // Get the tick's percentage position from its style
       const tickStyleLeft = tick.style.left;
-      const tickPercentage = parseFloat(tickStyleLeft.match(/(\d+)%/));
+      const tickPercentage = parseFloat(
+        tickStyleLeft.match(/([\d.]+)%/)?.[1] ?? '0'
+      );
 
       // Calculate the current thumb position as a percentage
       const thumbPercentage = ((clampedValue - min) / (max - min)) * 100;
@@ -371,19 +402,24 @@ export class SliderInput extends FormMixin(LitElement) {
         // Turn the tick white if the thumb has passed it
         tick.style.backgroundColor = getTokenThemeVal(
           '--kd-color-background-accent-subtle'
-        ); // White color
+        );
       } else {
-        // Reset the tick's color if the thumb hasn't passed it
         tick.style.backgroundColor = getTokenThemeVal(
           '--kd-color-background-accent-secondary'
-        ); // Default color
+        );
       }
 
       const tickStepPosition = Math.round(tickPercentage); // Round to avoid floating point precision issues
       const valueAtTick = (tickStepPosition * (max - min)) / 100 + min;
       if (Math.abs(value - valueAtTick) < step / 2) {
         // Thumb is exactly on a tick
-        tick.style.backgroundColor = 'inherit';
+        if (this.disabled) {
+          tick.style.background = 'none';
+        } else {
+          tick.style.backgroundColor = getTokenThemeVal(
+            '--kd-color-border-button-secondary-state-default'
+          );
+        }
       }
     });
   }
@@ -425,20 +461,12 @@ export class SliderInput extends FormMixin(LitElement) {
     );
     if (onlyInternalChanges) return;
     this._onUpdated(changedProps);
-
-    // if (this._isInvalid) {
-    //   this._inputRangeEl.style.pointerEvents = 'none';
-    // } else {
-    //   this._inputRangeEl.style.pointerEvents = '';
-    // }
-    // if (changedProps.has('disabled') || changedProps.has('showTicks')) {
-    //   // this.fillTrackSlider();
-    // }
     if (
       changedProps.has('value') ||
       changedProps.has('min') ||
       changedProps.has('max') ||
       changedProps.has('step') ||
+      changedProps.has('enableTicksOnSlider') ||
       changedProps.has('disabled')
     ) {
       this._inputRangeEl.value = this.value.toString();

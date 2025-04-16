@@ -17,11 +17,6 @@
   flex-grow: 1;
 }
 
-.slider-container {
-  padding-block-start: 0;
-  padding-block-end: 10px;
-}
-
 .tick-wrapper {
   position: absolute;
   min-width: 323px;
@@ -44,7 +39,7 @@
   position: absolute;
   height: 48px;
   min-width: 43px;
-  top: -2.75rem;
+  top: -2.9rem;
   left: 50%;
   padding: var(--kd-spacing-4) var(--kd-spacing-8);
   background: var(--kd-color-background-ui-default-dark);
@@ -80,6 +75,7 @@ input[type='range'] {
   min-width: 323px;
   overflow: visible;
   padding: calc(var(--thumb-height, 24px) / 2) 0;
+  outline: none;
 }
 
 input[type='range']:disabled {
@@ -91,11 +87,12 @@ input[type='range'] {
   color: var(--kd-color-border-container-selected);
   position: relative;
   margin: 0px;
-  --thumb-height: 20px;
-  --thumb-width: 20px;
-  --track-height: 4px;
+  --thumb-height: 24px;
+  --thumb-width: 24px;
+  --track-height: 5px;
   --track-color: var(--kd-color-border-level-tertiary);
   --clip-edges: 0.125em;
+  height: calc(var(--thumb-height) + 12px);
 }
 
 input[type='range'],
@@ -140,6 +137,14 @@ input[type='range']::-webkit-slider-thumb {
   transition: all 0.2s ease-in-out;
 }
 
+input[type='range']:focus::-webkit-slider-thumb {
+  box-shadow: inset 0 0 0 2px
+      var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 4px var(--kd-color-border-variants-inverse),
+    -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    2px 0 0 0 var(--kd-color-border-variants-inverse), var(--box-fill);
+}
+
 input[type='range']:hover::-webkit-slider-thumb {
   cursor: grab;
 }
@@ -152,7 +157,6 @@ input[type='range']::-webkit-slider-runnable-track {
   overflow: hidden;
   background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center /
     100% calc(var(--track-height) + 1px);
-  border-radius: 4px;
 }
 
 /* For webkit disabled thumb */
@@ -182,9 +186,9 @@ input[type='range']::-moz-range-progress {
 }
 
 input[type='range']::-moz-range-thumb {
-  height: 20px;
+  height: 24px;
   border: 0;
-  width: 20px;
+  width: 24px;
   border-radius: 50%;
   background-color: var(--kd-color-border-button-secondary-state-default);
   cursor: grab;
@@ -194,6 +198,14 @@ input[type='range']::-moz-range-thumb {
 
 input[type='range']:active::-moz-range-thumb {
   cursor: grabbing;
+}
+
+input[type='range']:focus::-moz-range-thumb {
+  box-shadow: inset 0 0 0 2px
+      var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 4px var(--kd-color-border-variants-inverse),
+    -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    2px 0 0 0 var(--kd-color-border-variants-inverse);
 }
 
 input[type='range']::-moz-range-track {
@@ -248,7 +260,7 @@ input[type='number'] {
   background: var(--kd-color-background-accent-secondary);
   height: 6px;
   transform: translateX(-50%);
-  top: calc(100% + 18.5px);
+  top: calc(100% + 16.5px);
 }
 
 .tick-label {

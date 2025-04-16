@@ -102,14 +102,14 @@ export const TicksMarker = {
     return html`
       <kyn-slider-input
         name="rangeInput"
-        value="0"
-        caption=""
-        ?disabled=${false}
+        value="4"
+        caption="asadasd"
         invalidText=""
         ?hideLabel=${false}
-        step="2"
+        step="1"
+        value="4"
         min="0"
-        max="8"
+        max="12"
         ?editableInput=${false}
         ?enableTicksOnSlider=${true}
         label="Label"
@@ -125,15 +125,50 @@ export const ScaleMarker = {
     return html`
       <kyn-slider-input
         name="rangeInput"
-        value="0"
-        caption=""
-        ?disabled=${false}
-        invalidText=""
-        ?hideLabel=${false}
-        step="2"
+        value="3"
         min="0"
-        max="8"
+        max="10"
+        caption="asadasd"
         ?editableInput=${false}
+        ?enableScaleMarkers=${true}
+        label="Label"
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-slider-input>
+    `;
+  },
+};
+
+export const ScaleAndTickMarker = {
+  render: () => {
+    return html`
+      <kyn-slider-input
+        name="rangeInput"
+        min="0"
+        max="10"
+        ?editableInput=${false}
+        ?enableTicksOnSlider=${true}
+        ?enableScaleMarkers=${true}
+        label="Label"
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-slider-input>
+    `;
+  },
+};
+
+export const Disabled = {
+  render: () => {
+    return html`
+      <kyn-slider-input
+        name="rangeInput"
+        step="1"
+        value="4"
+        min="0"
+        max="12"
+        ?disabled=${true}
+        ?editableInput=${true}
+        ?enableTicksOnSlider=${true}
         ?enableScaleMarkers=${true}
         label="Label"
         @on-input=${(e) => action(e.type)(e)}
