@@ -107,7 +107,7 @@ export const TicksMarker = {
         invalidText=""
         ?hideLabel=${false}
         step="1"
-        value="4"
+        value="0"
         min="0"
         max="12"
         ?editableInput=${false}
@@ -125,7 +125,7 @@ export const ScaleMarker = {
     return html`
       <kyn-slider-input
         name="rangeInput"
-        value="3"
+        value="0"
         min="0"
         max="10"
         caption="asadasd"
@@ -162,7 +162,6 @@ export const Disabled = {
     return html`
       <kyn-slider-input
         name="rangeInput"
-        step="1"
         value="4"
         min="0"
         max="12"
