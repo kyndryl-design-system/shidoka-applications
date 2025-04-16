@@ -25,7 +25,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/CQuDZEeLiuGiALvCWjAKlu/Applications---Component-Library?type=design&node-id=9370-44581&mode=design&t=LXc9LDk5mGkf8vnl-0',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-549977&p=f&m=dev',
     },
   },
 };
@@ -147,6 +147,10 @@ export const Toast = {
   parameters: {
     a11y: {
       disable: true,
+    },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-213406&p=f&m=dev',
     },
   },
   decorators: [
