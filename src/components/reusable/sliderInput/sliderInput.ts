@@ -21,7 +21,7 @@ const _defaultTextStrings = {
  * @fires on-input - Captures the input event and emits the selected value and original event details.
  * @prop {number} min - The minimum value.
  * @prop {number} max - The maximum value.
- * @prop {number} step - A value determining how much the value should increase/decrease by moving the thumb by mouse. If a value other than 1 is provided and the input is not hidden, the new step requirement should be added to a visible label. Values outside the step increment will be considered invalid..
+ * @prop {number} step - The step between values.
  * @slot tooltip - Slot for tooltip.
  *
  */
