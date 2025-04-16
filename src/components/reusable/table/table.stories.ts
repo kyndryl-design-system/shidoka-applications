@@ -473,7 +473,7 @@ export const ColumnSettings: Story = {
     },
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=3-414475&m=dev',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=3-414323&p=f&m=dev',
     },
   },
 };
