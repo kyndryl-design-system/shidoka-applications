@@ -16,6 +16,12 @@ export default {
   title: 'Components/Accordion',
   component: 'kyn-accordion',
   subcomponents: { 'kyn-accordion-item': 'kyn-accordion-item' },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-346870&p=f&m=dev',
+    },
+  },
 };
 
 const args = {
@@ -67,13 +73,6 @@ export const Accordion = {
         </kyn-accordion-item>
       </kyn-accordion>
     `;
-  },
-};
-
-Accordion.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/file/5TqtPa7KWfhJbQv6ELnbqf/Foundation?node-id=707%3A2396&mode=dev',
   },
 };
 

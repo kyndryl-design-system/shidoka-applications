@@ -84,7 +84,7 @@ export const TextInput = {
 TextInput.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=85%3A611&mode=dev',
+    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-421381&p=f&m=dev',
   },
 };
 

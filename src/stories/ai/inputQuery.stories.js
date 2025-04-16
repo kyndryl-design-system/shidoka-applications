@@ -5,18 +5,14 @@ import '../../components/reusable/button';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 import stopIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/control-stop-filled.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { User, Skeleton } from './response.stories.js';
 import '../../components/reusable/notification';
-import updateIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/update.svg';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 
 export default {
   title: 'AI/Patterns/Input Query',
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=26094-200279&t=ZNgmsCAVJz1EMzfR-0',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300057&p=f&m=dev',
     },
   },
 };

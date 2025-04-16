@@ -19,6 +19,6 @@ export const Avatar = {
 Avatar.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/file/6AovH7Iay9Y7BkpoL5975s/Component-Library-for-Dev?node-id=215%3A2099&mode=dev',
+    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-302033&m=dev',
   },
 };
