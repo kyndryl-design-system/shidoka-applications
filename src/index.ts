@@ -82,6 +82,7 @@ export {
 export { Search } from './components/reusable/search';
 export { Loader, LoaderInline, Skeleton } from './components/reusable/loaders';
 export { NumberInput } from './components/reusable/numberInput';
+export { SliderInput } from './components/reusable/sliderInput';
 
 export {
   debounce,
