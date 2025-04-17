@@ -47,8 +47,34 @@ const args = {
   },
 };
 
-export const Default = {
+export const Continuous = {
   args,
+  render: (args) => {
+    return html`
+      <kyn-slider-input
+        name=${args.name}
+        value=${args.value}
+        caption=${args.caption}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        step=${ifDefined(args.step)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
+        ?editableInput=${args.editableInput}
+        ?enableScaleMarker=${args.enableScaleMarker}
+        ?enableTickMarker=${args.enableTickMarker}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-slider-input>
+    `;
+  },
+};
+
+export const Discrete = {
+  args: { ...args, step: 10, min: 0, max: 100 },
   render: (args) => {
     return html`
       <kyn-slider-input

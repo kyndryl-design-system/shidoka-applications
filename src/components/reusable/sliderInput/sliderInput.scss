@@ -35,7 +35,7 @@
   padding: 12px;
   text-align: center;
   white-space: nowrap;
-  visibility: visible;
+  visibility: hidden;
   z-index: 2;
   transform-origin: center bottom;
   transition: visibility 150ms ease-out, transform 150ms ease-out;
@@ -49,18 +49,22 @@
     left: 50%;
     width: 0;
     height: 0;
+    display: block;
     transform: translateX(-50%);
     border-left: var(--kd-spacing-4) solid transparent; /* Left side of the arrow */
     border-right: var(--kd-spacing-4) solid transparent; /* Right side of the arrow */
     border-top: var(--kd-spacing-4) solid
       var(--kd-color-background-ui-default-dark); /* Bottom side of the arrow */
   }
+  &.open {
+    visibility: visible;
+  }
 }
 
 input[type='range'] {
   width: 100%;
-  min-width: 323px;
-  overflow: visible;
+  min-width: 301px;
+  overflow: hidden;
   padding: calc(var(--thumb-height, 24px) / 2) 0;
   outline: none;
 }
@@ -123,24 +127,30 @@ input[type='range']::-webkit-slider-thumb {
   );
 }
 
-input[type='range']:focus::-webkit-slider-thumb {
-  box-shadow: inset 0 0 0 2px
-      var(--kd-color-border-button-secondary-state-default),
-    inset 0 0 0 4px var(--kd-color-border-variants-inverse),
-    -2px 0 0 0 var(--kd-color-border-variants-inverse),
-    2px 0 0 0 var(--kd-color-border-variants-inverse), var(--box-fill);
-}
-
 input[type='range']:hover::-webkit-slider-thumb {
   cursor: grab;
 }
 
 input[type='range']:active::-webkit-slider-thumb {
   cursor: grabbing;
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    inset 0 0 0 var(--kd-spacing-2)
+      var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 var(--kd-spacing-4) var(--kd-color-border-variants-inverse),
+    var(--box-fill),
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
+}
+
+input[type='range']:focus::-webkit-slider-thumb {
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    inset 0 0 0 var(--kd-spacing-2)
+      var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 var(--kd-spacing-4) var(--kd-color-border-variants-inverse),
+    var(--box-fill),
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
 }
 
 input[type='range']::-webkit-slider-runnable-track {
-  overflow: hidden;
   background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center /
     100% calc(var(--track-height) + 1px);
 }
@@ -170,21 +180,27 @@ input[type='range']::-moz-range-thumb {
   width: var(--thumb-height);
   border-radius: var(--thumb-width, var(--thumb-height));
   background-color: var(--kd-color-border-button-secondary-state-default);
-  cursor: grab;
   box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
     var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
 }
 
+input[type='range']:hover::-moz-range-thumb {
+  cursor: grab;
+}
+
 input[type='range']:active::-moz-range-thumb {
   cursor: grabbing;
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    inset 0 0 0 2px var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 4px var(--kd-color-border-variants-inverse),
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
 }
 
 input[type='range']:focus::-moz-range-thumb {
-  box-shadow: inset 0 0 0 2px
-      var(--kd-color-border-button-secondary-state-default),
+  box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
+    inset 0 0 0 2px var(--kd-color-border-button-secondary-state-default),
     inset 0 0 0 4px var(--kd-color-border-variants-inverse),
-    -2px 0 0 0 var(--kd-color-border-variants-inverse),
-    2px 0 0 0 var(--kd-color-border-variants-inverse);
+    var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
 }
 
 input[type='range']::-moz-range-track,
@@ -198,7 +214,6 @@ input[type='range']::-moz-range-progress {
 input[type='range']::-moz-range-progress {
   appearance: none;
   background: var(--kd-color-border-container-selected);
-  transition-delay: 30ms;
 }
 
 /* For firefox disabled thumb */
@@ -233,7 +248,6 @@ input[type='number'] {
 
 .number-input {
   margin-inline-start: 15px;
-  padding-block-start: 0.2rem;
 }
 
 .tick-wrapper {

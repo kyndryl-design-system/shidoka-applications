@@ -278,6 +278,7 @@ export class NumberInput extends FormMixin(LitElement) {
   override updated(changedProps: any) {
     // preserve FormMixin updated function
     this._onUpdated(changedProps);
+
     if (changedProps.has('value')) {
       this._inputEl.value = this.value.toString();
     }

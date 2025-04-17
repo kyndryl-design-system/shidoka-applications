@@ -82,13 +82,13 @@ export class SliderInput extends FormMixin(LitElement) {
   @state()
   _textStrings = _defaultTextStrings;
 
-  /** Internal tooltipVisible state.
+  /**Tooltip open state.
    * @internal
    */
   @state()
   tooltipVisible = false;
 
-  /** Internal tooltipposition.
+  /**Tooltip position.
    * @internal
    */
   @state()
@@ -144,15 +144,14 @@ export class SliderInput extends FormMixin(LitElement) {
                 @input=${(e: any) => this._handleInput(e)}
                 @focus=${() => this._showTooltip()}
                 @blur=${() => this._hideTooltip()}
+                @mousedown=${() => this._showTooltip()}
+                @pointerdown=${() => this._showTooltip()}
+                @mouseup=${() => this._hideTooltip()}
               />
 
         ${this.enableTickMarker ? this._renderTickMarker(tickCount) : null}
           ${this.enableScaleMarker ? this._renderScaleMarker(tickCount) : null}
-                ${
-                  this.tooltipVisible && !this.editableInput
-                    ? this._renderTooltip()
-                    : null
-                }
+                ${!this.editableInput ? this._renderTooltip() : null}
               </div>
             ${this.editableInput ? this._renderEditableInput() : null}
 
@@ -234,16 +233,18 @@ export class SliderInput extends FormMixin(LitElement) {
 
   //render Tooltip Html
   private _renderTooltip() {
-    return html` <span
+    const classes = {
+      'slider-tooltip': true,
+      open: this.tooltipVisible,
+    };
+    return html` <div
       role="tooltip"
-      class="slider-tooltip"
-      style="left: ${this._getTooltipPosition()}; visibility: ${this
-        .tooltipVisible
-        ? 'visible'
-        : 'hidden'}"
+      class="${classMap(classes)}"
+      aria-hidden=${!this.tooltipVisible}
+      style="left: ${this._getTooltipPosition()}"
     >
       ${this.value}
-    </span>`;
+    </div>`;
   }
 
   //render EditableInput Html
