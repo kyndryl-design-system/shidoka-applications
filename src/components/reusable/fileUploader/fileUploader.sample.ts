@@ -189,7 +189,7 @@ export class SampleFileUploader extends LitElement {
   }
 
   // This function simulates the file upload process.
-  // In an actual implementation, you would replace this with your file upload logic and update the file state accordingly.
+  // In an actual implementation, you would replace this with your file upload logic and update the file status accordingly.
   async _uploadFiles() {
     let uploadedFilesCount = 0;
     const totalFiles = this._validFiles.length;
