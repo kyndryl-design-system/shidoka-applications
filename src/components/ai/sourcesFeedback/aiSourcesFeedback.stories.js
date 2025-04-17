@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import sourceIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/earth.svg';
 import './index';
 import '../../reusable/checkbox';
 import '../../reusable/card/card.sample';
@@ -10,33 +11,32 @@ import '../../reusable/textArea/textArea';
 export default {
   title: 'AI / Components / AI Sources Feedback',
   component: 'kyn-ai-sources-feedback',
-  parameters: {},
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300053&p=f&m=dev',
+    },
+  },
 };
 
 const sourcesData = [
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 1',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 2',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 3',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 4',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 5',
   },
   {
-    title: 'Source Title',
-    description: 'Placeholder for the Source Title',
+    description: 'Source Link 6',
   },
 ];
 
@@ -77,7 +77,7 @@ export const AISourcesFeedback = {
         closeText=${args.closeText}
         .textStrings=${args.textStrings}
         @on-toggle=${(e) => action(e.type)(e)}
-        @oon-feedback-deselected=${(e) => action(e.type)(e)}
+        @on-feedback-deselected=${(e) => action(e.type)(e)}
       >
         <kyn-button
           slot="copy"
@@ -114,32 +114,53 @@ const SourcesContent = () => html`
   ${sourcesData.map(
     (card) => html`
       <kyn-card
-        style="width:100%;height:100%;"
         slot="sources"
         aiConnected
-        type=${args.type}
-        href=${args.href}
-        target=${args.target}
-        rel=${args.rel}
+        type="clickable"
+        href="#"
+        rel="noopener"
+        target="_blank"
         ?hideBorder=${args.hideBorder}
+        role="link"
+        aria-label="Clickable card"
+        @on-card-click=${(e) => action(e.type)(e)}
       >
-        <h1 class="card-title">
-          <div>${card.title}</div>
-        </h1>
         <div class="card-description">
-          <kyn-link href="#" @click=${(e) => action(e.type)(e)}>
-            ${card.description}
-          </kyn-link>
+          <span slot="icon" class="source-icon">${unsafeSVG(sourceIcon)}</span>
+          <div class="separator" aria-hidden="true"></div>
+          <span class="card-description">${card.description}</span>
         </div>
       </kyn-card>
     `
   )}
   <style>
-    .card-title div {
-      @include typography.type-ui-01;
-      color: var(--kd-color-text-level-primary);
-      font-size: 16px;
-      font-weight: 500;
+    kyn-card::part(card-wrapper) {
+      padding: 8px 4px;
+    }
+    .card-description {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0px 8px;
+    }
+
+    .source-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .separator {
+      width: 1px;
+      height: 16px;
+      background-color: var(--color-border, #ccc);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+    .card-description {
+      /* to avoid text overflow for long textStrings */
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
   </style>
 `;
@@ -168,9 +189,8 @@ const feedbackFormContent = () => html`
     <kyn-text-area
       aiConnected
       class="input-text-area"
-      rows="8"
+      rows="3"
       placeholder="Provide additional feedback"
-      ?notResizeable=${true}
     ></kyn-text-area>
 
     <div class="footer">

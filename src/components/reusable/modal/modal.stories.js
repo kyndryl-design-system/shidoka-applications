@@ -17,7 +17,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/uwR7B1xbaRXA5spwPvzzFO/Florence-Release?type=design&node-id=2252%3A2&mode=design&t=E0KHOCJHSb38i6RZ-1',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546829&p=f&m=dev',
     },
   },
 };

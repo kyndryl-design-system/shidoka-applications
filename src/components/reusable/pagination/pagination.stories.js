@@ -5,6 +5,12 @@ import { action } from '@storybook/addon-actions';
 export default {
   title: 'Components/Pagination',
   component: 'kyn-pagination',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-383230&m=dev',
+    },
+  },
   argTypes: {
     pageSize: {
       options: [5, 10, 20, 30, 40, 50, 100],
@@ -56,13 +62,18 @@ export const Pagination = {
 
 export const Skeleton = {
   args,
-  render: (args) => {
-    return html`
-      <kyn-pagination-skeleton
-        ?hideItemsRange=${args.hideItemsRange}
-        ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
-        ?hideNavigationButtons=${args.hideNavigationButtons}
-      ></kyn-pagination-skeleton>
-    `;
+  render: (args) => html`
+    <kyn-pagination-skeleton
+      ?hideItemsRange=${args.hideItemsRange}
+      ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
+      ?hideNavigationButtons=${args.hideNavigationButtons}
+    ></kyn-pagination-skeleton>
+  `,
+};
+
+Skeleton.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546635&m=dev',
   },
 };
