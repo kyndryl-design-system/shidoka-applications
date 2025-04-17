@@ -8,6 +8,8 @@ import CardScss from './card.scss';
  * Card.
  * @fires on-card-click - Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event.
  * @slot unnamed - Slot for card contents.
+ * @part card-wrapper - The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)
+
  */
 
 @customElement('kyn-card')
