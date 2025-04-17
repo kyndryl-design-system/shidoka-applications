@@ -49,6 +49,7 @@ const _defaultTextStrings = {
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
+ * @method clear - Programmatically clears the date range picker value.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
@@ -760,29 +761,41 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
+  public async clear() {
+    return this._clearInput();
+  }
+
   private async _clearInput(
     options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
   ) {
-    this.value = [null, null];
-    this.defaultDate = null;
-    this.flatpickrInstance?.clear();
-    if (this._inputEl) {
-      this._inputEl.value = '';
-      this.updateFormValue();
-    }
+    this._isClearing = true;
 
-    emitValue(this, 'on-change', {
-      dates: this.value,
-      dateString: this._inputEl?.value,
-      source: 'clear',
-    });
+    try {
+      this.value = [null, null];
+      this.defaultDate = null;
+      this.flatpickrInstance?.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+        this.updateFormValue();
+      }
 
-    this._validate(true, false);
-    await this.updateComplete;
+      emitValue(this, 'on-change', {
+        dates: this.value,
+        dateString: this._inputEl?.value,
+        source: 'clear',
+      });
 
-    if (options.reinitFlatpickr) {
-      await this.initializeFlatpickr();
-      this.requestUpdate();
+      this._validate(true, false);
+      await this.updateComplete;
+
+      if (options.reinitFlatpickr) {
+        await this.initializeFlatpickr();
+        this.requestUpdate();
+      }
+    } catch (error) {
+      console.error('Error clearing date range picker:', error);
+    } finally {
+      this._isClearing = false;
     }
   }
 

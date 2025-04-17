@@ -45,6 +45,7 @@ const _defaultTextStrings = {
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
+ * @method clear - Programmatically clears the date picker value.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -581,10 +582,21 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  public async clear() {
+    this._isClearing = true;
+    try {
+      return await this._clearInput();
+    } catch (error) {
+      console.error('Error clearing date picker:', error);
+      throw error;
+    } finally {
+      this._isClearing = false;
+    }
+  }
 
+  private async _clearInput(
+    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
+  ) {
     if (!this.flatpickrInstance) {
       console.warn('Cannot clear: Flatpickr instance not available');
       return;
@@ -601,6 +613,10 @@ export class DatePicker extends FormMixin(LitElement) {
         this._inputEl.value = '';
       }
 
+      if (this.mode === 'multiple' && this.flatpickrInstance.selectedDates) {
+        this.flatpickrInstance.selectedDates.length = 0;
+      }
+
       emitValue(this, 'on-change', {
         dates: this.value,
         dateString: (this._inputEl as HTMLInputElement)?.value,
@@ -609,12 +625,26 @@ export class DatePicker extends FormMixin(LitElement) {
 
       this._validate(true, false);
       await this.updateComplete;
-      await this.initializeFlatpickr();
-      this.requestUpdate();
+
+      if (options.reinitFlatpickr) {
+        await this.initializeFlatpickr();
+        this.requestUpdate();
+      }
     } catch (error) {
       console.error('Error clearing datepicker:', error);
     } finally {
       this._isClearing = false;
+    }
+  }
+
+  private async _handleClear(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    try {
+      await this._clearInput();
+    } catch (error) {
+      console.error('Error handling clear:', error);
     }
   }
 

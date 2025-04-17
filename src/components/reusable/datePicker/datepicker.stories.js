@@ -256,6 +256,78 @@ export const InModal = {
   },
 };
 
+const TemplateWithClearButton = (args) => {
+  useEffect(() => {
+    setTimeout(() => {
+      const datePicker = document.querySelector('kyn-date-picker');
+      const clearButton = document.getElementById('programmatic-clear-btn');
+
+      if (clearButton && datePicker) {
+        clearButton.addEventListener('click', () => {
+          datePicker.clear();
+          action('programmatic-clear')('Date was cleared programmatically');
+        });
+      }
+    }, 0);
+
+    return () => {
+      const picker = document.querySelector('kyn-date-picker');
+      if (picker) {
+        picker.remove();
+      }
+    };
+  }, []);
+
+  return html`
+    <div>
+      <kyn-date-picker
+        .name=${args.name}
+        .locale=${args.locale}
+        .label=${args.label}
+        .dateFormat=${args.dateFormat}
+        .defaultDate=${args.defaultDate}
+        ?staticPosition=${args.staticPosition}
+        .defaultErrorMessage=${args.defaultErrorMessage}
+        ?required=${args.required}
+        .size=${args.size}
+        .warnText=${args.warnText}
+        .invalidText=${args.invalidText}
+        .disable=${args.disable}
+        .enable=${args.enable}
+        .mode=${args.mode}
+        .caption=${args.caption}
+        .errorAriaLabel=${args.errorAriaLabel}
+        .errorTitle=${args.errorTitle}
+        .warningAriaLabel=${args.warningAriaLabel}
+        .warningTitle=${args.warningTitle}
+        ?datePickerDisabled=${args.datePickerDisabled}
+        ?readonly=${args.readonly}
+        ?twentyFourHourFormat=${args.twentyFourHourFormat}
+        .minDate=${args.minDate}
+        .maxDate=${args.maxDate}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+      </kyn-date-picker>
+
+      <div style="margin-top: 16px;">
+        <kyn-button id="programmatic-clear-btn" kind="primary">
+          Clear Date Programmatically
+        </kyn-button>
+      </div>
+    </div>
+  `;
+};
+
+export const ProgrammaticClear = TemplateWithClearButton.bind({});
+ProgrammaticClear.args = {
+  ...DateTimeMultiple.args,
+  name: 'programmatic-clear-example',
+  caption:
+    'Example demonstrating programmatic clearing with the clear() method',
+  label: 'Programmatic Clear Example',
+};
+ProgrammaticClear.storyName = 'Programmatic Clear';
+
 export const InSideDrawer = {
   args: {
     ...DatePickerDefault.args,

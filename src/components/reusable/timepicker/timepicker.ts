@@ -46,6 +46,7 @@ const _defaultTextStrings = {
  * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
+ * @method clear - Programmatically clears the time picker value.
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
@@ -466,6 +467,22 @@ export class TimePicker extends FormMixin(LitElement) {
       if (this.flatpickrInstance) {
         this.flatpickrInstance.close();
       }
+    }
+  }
+
+  /**
+   * Programmatically clears the time picker value.
+   * @public
+   */
+  public async clear() {
+    this._isClearing = true;
+    try {
+      return await this._handleClear(new Event('programmatic-clear'));
+    } catch (error) {
+      console.error('Error clearing time picker:', error);
+      throw error;
+    } finally {
+      this._isClearing = false;
     }
   }
 
