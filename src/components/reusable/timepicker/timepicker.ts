@@ -470,10 +470,6 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  /**
-   * Programmatically clears the time picker value.
-   * @public
-   */
   public async clear() {
     this._isClearing = true;
     try {
