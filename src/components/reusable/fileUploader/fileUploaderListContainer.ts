@@ -86,7 +86,7 @@ export class FileUploaderListContainer extends LitElement {
           ${this.titleText}
           <slot name="action-button"></slot>
         </div>
-        <div class="file-uploader-list-container__items">
+        <div class="file-uploader-list-container__items" tabindex="0">
           <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
         <!-- footer would go here, if needed. -->
