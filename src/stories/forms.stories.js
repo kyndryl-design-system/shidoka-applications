@@ -12,6 +12,7 @@ import '../components/reusable/datePicker';
 import '../components/reusable/daterangepicker';
 import '../components/reusable/tooltip';
 import '../components/reusable/button';
+import '../components/reusable/sliderInput';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
@@ -349,6 +350,65 @@ export const Default = {
           </kyn-tooltip>
         </kyn-date-range-picker>
 
+        <br /><br />
+
+        <kyn-slider-input
+          name="slider range input"
+          value="0"
+          caption="Slider input example"
+          label="Slider Input"
+          step="10"
+          min="0"
+          max="100"
+          ?enableScaleMarker=${true}
+          ?enableTickMarker=${true}
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-slider-input>
+        <br /><br />
+
+        <kyn-slider-input
+          name="Slider with editable input"
+          value="0"
+          caption="Slider with editable input"
+          label="Slider With Editable Input"
+          step="10"
+          min="0"
+          max="100"
+          ?editableInput=${true}
+          ?enableScaleMarker=${true}
+          ?enableTickMarker=${true}
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-slider-input>
+        <br /><br />
+
+        <kyn-slider-input
+          name="Slider Input with Pre-selected value"
+          caption="Slider input with pre-selected value"
+          label="Slider Input with Pre-selected value"
+          step="10"
+          min="0"
+          max="100"
+          value="30"
+          ?editableInput=${true}
+          ?enableScaleMarker=${true}
+          ?enableTickMarker=${true}
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-slider-input>
         <br /><br />
 
         <kyn-button
