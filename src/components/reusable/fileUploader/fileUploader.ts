@@ -425,7 +425,7 @@ export class FileUploader extends FormMixin(LitElement) {
         validFiles.push({
           file,
           id: fileName,
-          state: 'new',
+          status: 'new',
         });
       } else if ((!isValidType || !isValidSize) && !fileAlreadyInvalid) {
         let errorMsg = '';
