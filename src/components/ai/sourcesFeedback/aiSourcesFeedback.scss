@@ -15,13 +15,23 @@
 }
 
 .card-container {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: 1fr;
   margin-top: 1rem;
-
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  slot[name='sources']::slotted(kyn-card) {
+    width: 100%;
+  }
+  .reveal-toggle {
+    align-self: flex-start;
+  }
   @media (min-width: 42rem) {
-    grid-template-columns: repeat(4, 1fr);
+    flex-direction: row;
+    flex-wrap: wrap;
+    slot[name='sources']::slotted(kyn-card) {
+      width: auto;
+      flex: 0 1 auto;
+    }
   }
 }
 
@@ -33,8 +43,7 @@
 .opened.kyn-feedback-body {
   display: block;
   position: relative;
-  background: var(--kd-color-background-container-secondary);
-  border: 1px solid var(--kd-color-border-variants-light);
+  background: var(--kd-color-background-container-ai-default);
   border-radius: 8px;
   padding: 16px;
   margin-top: 1rem;
@@ -56,13 +65,14 @@
 }
 
 .reveal-toggle {
-  margin-top: 1rem;
+  justify-self: start;
+  margin-top: 0.5rem;
 }
 
 .close-container,
 .close {
   background: inherit;
   position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
+  right: 8px;
+  top: 8px;
 }
