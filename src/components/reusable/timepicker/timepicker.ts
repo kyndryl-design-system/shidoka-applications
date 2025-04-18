@@ -617,7 +617,7 @@ export class TimePicker extends FormMixin(LitElement) {
     });
   }
 
-  setInitialDates(instance: flatpickr.Instance) {
+  public setInitialDates = (instance: flatpickr.Instance) => {
     try {
       if (this.value) {
         instance.setDate(this.value, false);
@@ -636,7 +636,7 @@ export class TimePicker extends FormMixin(LitElement) {
     } catch (error) {
       console.error('Error setting initial time:', error);
     }
-  }
+  };
 
   handleOpen() {
     if (this.readonly) {
