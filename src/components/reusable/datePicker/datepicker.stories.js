@@ -258,23 +258,16 @@ export const InModal = {
 
 const TemplateWithClearButton = (args) => {
   useEffect(() => {
-    setTimeout(() => {
-      const datePicker = document.querySelector('kyn-date-picker');
-      const clearButton = document.getElementById('programmatic-clear-btn');
-
-      if (clearButton && datePicker) {
-        clearButton.addEventListener('click', () => {
-          datePicker.clear();
-          action('programmatic-clear')('Date was cleared programmatically');
-        });
-      }
-    }, 0);
-
+    const picker = document.querySelector('kyn-date-picker');
+    const btn = document.getElementById('programmatic-clear-btn');
+    const onClick = async () => {
+      await picker.clear();
+      action('programmatic-clear')('Date was cleared programmatically');
+    };
+    btn?.addEventListener('click', onClick);
     return () => {
-      const picker = document.querySelector('kyn-date-picker');
-      if (picker) {
-        picker.remove();
-      }
+      btn?.removeEventListener('click', onClick);
+      picker.remove();
     };
   }, []);
 
@@ -310,9 +303,9 @@ const TemplateWithClearButton = (args) => {
       </kyn-date-picker>
 
       <div style="margin-top: 16px;">
-        <kyn-button id="programmatic-clear-btn" kind="primary">
-          Clear Date Programmatically
-        </kyn-button>
+        <kyn-button id="programmatic-clear-btn" kind="primary"
+          >Clear Date</kyn-button
+        >
       </div>
     </div>
   `;

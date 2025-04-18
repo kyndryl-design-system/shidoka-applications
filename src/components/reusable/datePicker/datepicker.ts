@@ -351,17 +351,12 @@ export class DatePicker extends FormMixin(LitElement) {
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
+                  <span slot="icon" style="display:flex;">
+                    ${unsafeSVG(clearIcon)}
+                  </span>
                 </kyn-button>
               `
-            : html`<span
-                class="input-icon ${this.datePickerDisabled
-                  ? 'is-disabled'
-                  : ''}"
-                >${unsafeSVG(calendarIcon)}</span
-              >`}
+            : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
         </div>
 
         ${this.caption
@@ -582,70 +577,28 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  public async clear() {
+  public async clear(): Promise<void> {
+    if (!this.flatpickrInstance) return;
     this._isClearing = true;
     try {
-      return await this._clearInput();
-    } catch (error) {
-      console.error('Error clearing date picker:', error);
-      throw error;
-    } finally {
-      this._isClearing = false;
-    }
-  }
-
-  private async _clearInput(
-    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
-  ) {
-    if (!this.flatpickrInstance) {
-      console.warn('Cannot clear: Flatpickr instance not available');
-      return;
-    }
-
-    this._isClearing = true;
-
-    try {
-      this.value = this.mode === 'multiple' ? [] : null;
-      this.defaultDate = null;
-
       this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
-
-      if (this.mode === 'multiple' && this.flatpickrInstance.selectedDates) {
-        this.flatpickrInstance.selectedDates.length = 0;
-      }
-
+      this.value = this.mode === 'multiple' ? [] : null;
+      if (this._inputEl) this._inputEl.value = '';
       emitValue(this, 'on-change', {
         dates: this.value,
-        dateString: (this._inputEl as HTMLInputElement)?.value,
+        dateString: '',
         source: 'clear',
       });
-
       this._validate(true, false);
-      await this.updateComplete;
-
-      if (options.reinitFlatpickr) {
-        await this.initializeFlatpickr();
-        this.requestUpdate();
-      }
-    } catch (error) {
-      console.error('Error clearing datepicker:', error);
     } finally {
       this._isClearing = false;
     }
   }
 
-  private async _handleClear(event: Event) {
+  private async _handleClear(event: Event): Promise<void> {
     event.preventDefault();
     event.stopPropagation();
-
-    try {
-      await this._clearInput();
-    } catch (error) {
-      console.error('Error handling clear:', error);
-    }
+    await this.clear();
   }
 
   async initializeFlatpickr() {

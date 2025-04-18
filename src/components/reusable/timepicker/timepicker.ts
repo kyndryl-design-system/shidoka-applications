@@ -475,43 +475,32 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  public async clear() {
-    this._isClearing = true;
-    try {
-      return await this._handleClear(new Event('programmatic-clear'));
-    } catch (error) {
-      console.error('Error clearing time picker:', error);
-      throw error;
-    } finally {
-      this._isClearing = false;
-    }
+  public async clear(): Promise<void> {
+    await this._doClear();
   }
 
-  private async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  private async _handleClear(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+    await this._doClear();
+  }
+
+  private async _doClear() {
     this._isClearing = true;
     this._userHasCleared = true;
-
     try {
       this.value = null;
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.clear();
-        if (this._inputEl) {
-          this._inputEl.value = '';
-          this._inputEl.setAttribute(
-            'aria-label',
-            this._textStrings.noTimeSelected
-          );
-          this.updateFormValue();
-        }
+      this.flatpickrInstance?.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+        this._inputEl.setAttribute(
+          'aria-label',
+          this._textStrings.noTimeSelected
+        );
+        this.updateFormValue();
       }
-      emitValue(this, 'on-change', {
-        time: this.value,
-        source: 'clear',
-      });
+      emitValue(this, 'on-change', { time: null, source: 'clear' });
       this._validate(true, false);
-      await this.updateComplete;
       await this.initializeFlatpickr();
       this.requestUpdate();
     } finally {

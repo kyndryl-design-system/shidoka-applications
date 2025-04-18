@@ -765,53 +765,31 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  public async clear() {
-    return this._clearInput();
-  }
-
-  private async _clearInput(
-    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
-  ) {
+  public async clear(): Promise<void> {
+    if (!this.flatpickrInstance) return;
     this._isClearing = true;
-
     try {
+      this.flatpickrInstance.clear();
       this.value = [null, null];
-      this.defaultDate = null;
-      this.flatpickrInstance?.clear();
       if (this._inputEl) {
         this._inputEl.value = '';
         this.updateFormValue();
       }
-
       emitValue(this, 'on-change', {
         dates: this.value,
-        dateString: this._inputEl?.value,
+        dateString: '',
         source: 'clear',
       });
-
       this._validate(true, false);
-      await this.updateComplete;
-
-      if (options.reinitFlatpickr) {
-        await this.initializeFlatpickr();
-        this.requestUpdate();
-      }
-    } catch (error) {
-      console.error('Error clearing date range picker:', error);
     } finally {
       this._isClearing = false;
     }
   }
 
-  private async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this._isClearing = true;
-    try {
-      await this._clearInput();
-    } finally {
-      this._isClearing = false;
-    }
+  private async _handleClear(e: Event): Promise<void> {
+    e.preventDefault();
+    e.stopPropagation();
+    await this.clear();
   }
 
   public async handleClose() {

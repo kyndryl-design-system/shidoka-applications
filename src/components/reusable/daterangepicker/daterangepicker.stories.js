@@ -250,25 +250,18 @@ export const InModal = {
 
 const TemplateWithClearButton = (args) => {
   useEffect(() => {
-    setTimeout(() => {
-      const dateRangePicker = document.querySelector('kyn-date-range-picker');
-      const clearButton = document.getElementById('programmatic-clear-btn');
+    const picker = document.querySelector('kyn-date-range-picker');
+    const btn = document.getElementById('programmatic-clear-btn');
+    if (!picker || !btn) return;
 
-      if (clearButton && dateRangePicker) {
-        clearButton.addEventListener('click', () => {
-          dateRangePicker.clear();
-          action('programmatic-clear')(
-            'Date range was cleared programmatically'
-          );
-        });
-      }
-    }, 0);
+    const handler = async () => {
+      await picker.clear();
+      action('programmatic-clear')('Date range was cleared programmatically');
+    };
 
+    btn.addEventListener('click', handler);
     return () => {
-      const picker = document.querySelector('kyn-date-range-picker');
-      if (picker) {
-        picker.remove();
-      }
+      btn.removeEventListener('click', handler);
     };
   }, []);
 
@@ -304,7 +297,7 @@ const TemplateWithClearButton = (args) => {
       >
       </kyn-date-range-picker>
 
-      <div style="margin-top: 16px;">
+      <div style="margin-top:16px;">
         <kyn-button id="programmatic-clear-btn" kind="primary">
           Clear Date Range Programmatically
         </kyn-button>
