@@ -326,7 +326,6 @@ ProgrammaticClear.args = {
     'Example demonstrating programmatic clearing with the clear() method',
   label: 'Programmatic Clear Example',
 };
-ProgrammaticClear.storyName = 'Programmatic Clear';
 
 export const InSideDrawer = {
   args: {
