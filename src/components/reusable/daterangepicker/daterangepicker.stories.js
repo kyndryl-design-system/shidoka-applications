@@ -248,6 +248,74 @@ export const InModal = {
   },
 };
 
+const TemplateWithClearButton = (args) => {
+  useEffect(() => {
+    const picker = document.querySelector('kyn-date-range-picker');
+    const btn = document.getElementById('programmatic-clear-btn');
+    if (!picker || !btn) return;
+
+    const handler = async () => {
+      await picker.clear();
+      action('programmatic-clear')('Date range was cleared programmatically');
+    };
+
+    btn.addEventListener('click', handler);
+    return () => {
+      btn.removeEventListener('click', handler);
+    };
+  }, []);
+
+  return html`
+    <div>
+      <kyn-date-range-picker
+        .name=${args.name}
+        .label=${args.label}
+        .locale=${args.locale}
+        .dateFormat=${args.dateFormat}
+        .defaultDate=${args.defaultDate}
+        .defaultErrorMessage=${args.defaultErrorMessage}
+        .warnText=${args.warnText}
+        .invalidText=${args.invalidText}
+        .disable=${args.disable}
+        .enable=${args.enable}
+        .caption=${args.caption}
+        ?required=${args.required}
+        ?staticPosition=${args.staticPosition}
+        .size=${args.size}
+        ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+        ?readonly=${args.readonly}
+        ?twentyFourHourFormat=${args.twentyFourHourFormat}
+        .minDate=${args.minDate}
+        .maxDate=${args.maxDate}
+        .errorAriaLabel=${args.errorAriaLabel}
+        .errorTitle=${args.errorTitle}
+        .warningAriaLabel=${args.warningAriaLabel}
+        .warningTitle=${args.warningTitle}
+        .startDateLabel=${args.startDateLabel}
+        .endDateLabel=${args.endDateLabel}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+      </kyn-date-range-picker>
+
+      <div style="margin-top:16px;">
+        <kyn-button id="programmatic-clear-btn" kind="primary">
+          Clear Date Range Programmatically
+        </kyn-button>
+      </div>
+    </div>
+  `;
+};
+
+export const ProgrammaticClear = TemplateWithClearButton.bind({});
+ProgrammaticClear.args = {
+  ...WithPreselectedRange.args,
+  name: 'programmatic-clear-example',
+  caption:
+    'Example demonstrating programmatic clearing with the clear() method',
+  label: 'Programmatic Clear Example',
+};
+ProgrammaticClear.storyName = 'Programmatic Clear';
+
 export const DateRangePickerInAccordionInModal = {
   args: {
     ...DateRangeDefault.args,

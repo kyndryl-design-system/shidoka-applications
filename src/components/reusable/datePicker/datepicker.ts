@@ -45,6 +45,7 @@ const _defaultTextStrings = {
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
+ * @method clear - Programmatically clears the date picker value.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -218,11 +219,6 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
-  /** Store submit event listener reference for cleanup
-   * @internal
-   */
-  private _submitListener: ((e: SubmitEvent) => void) | null = null;
-
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
@@ -355,17 +351,12 @@ export class DatePicker extends FormMixin(LitElement) {
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
+                  <span slot="icon" style="display:flex;">
+                    ${unsafeSVG(clearIcon)}
+                  </span>
                 </kyn-button>
               `
-            : html`<span
-                class="input-icon ${this.datePickerDisabled
-                  ? 'is-disabled'
-                  : ''}"
-                >${unsafeSVG(calendarIcon)}</span
-              >`}
+            : html`<span class="input-icon">${unsafeSVG(calendarIcon)}</span>`}
         </div>
 
         ${this.caption
@@ -586,41 +577,28 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (!this.flatpickrInstance) {
-      console.warn('Cannot clear: Flatpickr instance not available');
-      return;
-    }
-
+  public async clear(): Promise<void> {
+    if (!this.flatpickrInstance) return;
     this._isClearing = true;
-
     try {
-      this.value = this.mode === 'multiple' ? [] : null;
-      this.defaultDate = null;
-
       this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
-
+      this.value = this.mode === 'multiple' ? [] : null;
+      if (this._inputEl) this._inputEl.value = '';
       emitValue(this, 'on-change', {
         dates: this.value,
-        dateString: (this._inputEl as HTMLInputElement)?.value,
+        dateString: '',
         source: 'clear',
       });
-
       this._validate(true, false);
-      await this.updateComplete;
-      await this.initializeFlatpickr();
-      this.requestUpdate();
-    } catch (error) {
-      console.error('Error clearing datepicker:', error);
     } finally {
       this._isClearing = false;
     }
+  }
+
+  private async _handleClear(event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    await this.clear();
   }
 
   async initializeFlatpickr() {

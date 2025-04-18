@@ -46,6 +46,7 @@ const _defaultTextStrings = {
  * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
+ * @method clear - Programmatically clears the time picker value.
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
@@ -474,31 +475,32 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  public async clear(): Promise<void> {
+    await this._doClear();
+  }
+
+  private async _handleClear(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+    await this._doClear();
+  }
+
+  private async _doClear() {
     this._isClearing = true;
     this._userHasCleared = true;
-
     try {
       this.value = null;
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.clear();
-        if (this._inputEl) {
-          this._inputEl.value = '';
-          this._inputEl.setAttribute(
-            'aria-label',
-            this._textStrings.noTimeSelected
-          );
-          this.updateFormValue();
-        }
+      this.flatpickrInstance?.clear();
+      if (this._inputEl) {
+        this._inputEl.value = '';
+        this._inputEl.setAttribute(
+          'aria-label',
+          this._textStrings.noTimeSelected
+        );
+        this.updateFormValue();
       }
-      emitValue(this, 'on-change', {
-        time: this.value,
-        source: 'clear',
-      });
+      emitValue(this, 'on-change', { time: null, source: 'clear' });
       this._validate(true, false);
-      await this.updateComplete;
       await this.initializeFlatpickr();
       this.requestUpdate();
     } finally {
@@ -615,7 +617,7 @@ export class TimePicker extends FormMixin(LitElement) {
     });
   }
 
-  setInitialDates(instance: flatpickr.Instance) {
+  public setInitialDates = (instance: flatpickr.Instance) => {
     try {
       if (this.value) {
         instance.setDate(this.value, false);
@@ -634,7 +636,7 @@ export class TimePicker extends FormMixin(LitElement) {
     } catch (error) {
       console.error('Error setting initial time:', error);
     }
-  }
+  };
 
   handleOpen() {
     if (this.readonly) {

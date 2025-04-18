@@ -130,6 +130,72 @@ TimePickerPreSelected.args = {
 };
 TimePickerPreSelected.storyName = 'With Pre-selected Time';
 
+const TemplateWithClearButton = (args) => {
+  useEffect(() => {
+    setTimeout(() => {
+      const timePicker = document.querySelector('kyn-time-picker');
+      const clearButton = document.getElementById('programmatic-clear-btn');
+
+      if (clearButton && timePicker) {
+        clearButton.addEventListener('click', () => {
+          timePicker.clear();
+          action('programmatic-clear')('Time was cleared programmatically');
+        });
+      }
+    }, 0);
+
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
+  return html`
+    <div>
+      <kyn-time-picker
+        .name=${args.name}
+        .label=${args.label}
+        .locale=${args.locale}
+        ?required=${args.required}
+        ?staticPosition=${args.staticPosition}
+        .size=${args.size}
+        .warnText=${args.warnText}
+        .invalidText=${args.invalidText}
+        .caption=${args.caption}
+        .defaultHour=${args.defaultHour}
+        .defaultMinute=${args.defaultMinute}
+        .defaultErrorMessage=${args.defaultErrorMessage}
+        .minTime=${args.minTime}
+        .maxTime=${args.maxTime}
+        .errorAriaLabel=${args.errorAriaLabel}
+        .errorTitle=${args.errorTitle}
+        .warningAriaLabel=${args.warningAriaLabel}
+        .warningTitle=${args.warningTitle}
+        ?timepickerDisabled=${args.timepickerDisabled}
+        ?readonly=${args.readonly}
+        ?twentyFourHourFormat=${args.twentyFourHourFormat}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+      </kyn-time-picker>
+
+      <div style="margin-top: 16px;">
+        <kyn-button id="programmatic-clear-btn" kind="primary">
+          Clear Time Programmatically
+        </kyn-button>
+      </div>
+    </div>
+  `;
+};
+
+export const ProgrammaticClear = TemplateWithClearButton.bind({});
+ProgrammaticClear.args = {
+  ...TimePickerPreSelected.args,
+  name: 'programmatic-clear-example',
+  caption:
+    'Example demonstrating programmatic clearing with the clear() method',
+  label: 'Programmatic Clear Example',
+};
+ProgrammaticClear.storyName = 'Programmatic Clear';
+
 export const InModal = {
   args: {
     ...DefaultTimePicker.args,

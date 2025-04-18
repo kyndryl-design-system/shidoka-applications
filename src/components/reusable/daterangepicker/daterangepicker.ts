@@ -49,6 +49,7 @@ const _defaultTextStrings = {
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
+ * @method clear - Programmatically clears the date range picker value.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
@@ -764,41 +765,31 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
-  private async _clearInput(
-    options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
-  ) {
-    this.value = [null, null];
-    this.defaultDate = null;
-    this.flatpickrInstance?.clear();
-    if (this._inputEl) {
-      this._inputEl.value = '';
-      this.updateFormValue();
-    }
-
-    emitValue(this, 'on-change', {
-      dates: this.value,
-      dateString: this._inputEl?.value,
-      source: 'clear',
-    });
-
-    this._validate(true, false);
-    await this.updateComplete;
-
-    if (options.reinitFlatpickr) {
-      await this.initializeFlatpickr();
-      this.requestUpdate();
-    }
-  }
-
-  private async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  public async clear(): Promise<void> {
+    if (!this.flatpickrInstance) return;
     this._isClearing = true;
     try {
-      await this._clearInput();
+      this.flatpickrInstance.clear();
+      this.value = [null, null];
+      if (this._inputEl) {
+        this._inputEl.value = '';
+        this.updateFormValue();
+      }
+      emitValue(this, 'on-change', {
+        dates: this.value,
+        dateString: '',
+        source: 'clear',
+      });
+      this._validate(true, false);
     } finally {
       this._isClearing = false;
     }
+  }
+
+  private async _handleClear(e: Event): Promise<void> {
+    e.preventDefault();
+    e.stopPropagation();
+    await this.clear();
   }
 
   public async handleClose() {
