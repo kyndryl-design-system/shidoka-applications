@@ -357,10 +357,28 @@ export const Default = {
           value="0"
           caption="Slider input example"
           label="Slider Input"
+          min="0"
+          max="100"
+          ?enableTooltip=${true}
+          ?enableTickMarker=${false}
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-slider-input>
+        <br /><br />
+
+        <kyn-slider-input
+          name="slider input with discrete step"
+          value="0"
+          caption="Slider input with discrete step example"
+          label="Slider Input with discrete step example"
           step="10"
           min="0"
           max="100"
-          ?enableScaleMarker=${true}
+          ?enableTooltip=${true}
           ?enableTickMarker=${true}
           @on-input=${(e) => action(e.type)(e)}
         >
@@ -374,14 +392,53 @@ export const Default = {
         <kyn-slider-input
           name="Slider with editable input"
           value="0"
-          caption="Slider with editable input"
+          caption="Slider with editable input example"
           label="Slider With Editable Input"
+          min="0"
+          max="100"
+          ?editableInput=${true}
+          ?enableTooltip=${true}
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-slider-input>
+        <br /><br />
+
+        <kyn-slider-input
+          name="Slider input with discrete step"
+          value="0"
+          caption="Slider with editable input example"
+          label="Slider Input with discrete step"
           step="10"
           min="0"
           max="100"
           ?editableInput=${true}
-          ?enableScaleMarker=${true}
+          ?enableTooltip=${false}
           ?enableTickMarker=${true}
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-slider-input>
+        <br /><br />
+
+        <h3 class="kd-type--headline-08">
+          Pre-selected Slider Input with Editable Input
+        </h3>
+        <br />
+        <kyn-slider-input
+          name="Slider Input with Pre-selected value"
+          caption="Slider input example"
+          label="Slider Input"
+          min="0"
+          max="100"
+          value="30"
+          ?editableInput=${true}
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
@@ -393,14 +450,14 @@ export const Default = {
 
         <kyn-slider-input
           name="Slider Input with Pre-selected value"
-          caption="Slider input with pre-selected value"
-          label="Slider Input with Pre-selected value"
+          caption="Slider input example"
+          label="Slider Input"
           step="10"
           min="0"
           max="100"
           value="30"
           ?editableInput=${true}
-          ?enableScaleMarker=${true}
+          ?enableTooltip=${false}
           ?enableTickMarker=${true}
           @on-input=${(e) => action(e.type)(e)}
         >
