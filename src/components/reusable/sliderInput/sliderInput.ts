@@ -64,6 +64,10 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   enableTickMarker = false;
 
+  /** Set this to `true` for enable Scale Marker below slider */
+  @property({ type: Boolean })
+  enableScaleMarker = false;
+
   /** Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip. */
   @property({ type: Boolean })
   editableInput = false;
@@ -154,6 +158,7 @@ export class SliderInput extends FormMixin(LitElement) {
               />
 
         ${this.enableTickMarker ? this._renderTickMarker(tickCount) : null}
+        ${this.enableScaleMarker ? this._renderScaleMarker(tickCount) : null}
           ${this._renderCustomLabel()}
                 ${
                   this.enableTooltip && !this.editableInput

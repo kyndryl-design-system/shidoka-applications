@@ -98,7 +98,7 @@ export const Discrete = {
       >
       </kyn-slider-input>
 
-      <div class="heading kd-type--headline-06">With Tick Marks</div>
+      <div class="heading kd-type--headline-06">With Tick Mark</div>
       <kyn-slider-input
         name=${args.name}
         value=${args.value}
@@ -112,6 +112,25 @@ export const Discrete = {
         ?enableTooltip=${args.enableTooltip}
         ?editableInput=${args.editableInput}
         ?enableTickMarker=${true}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-slider-input>
+      <div class="heading kd-type--headline-06">With Scale Mark</div>
+      <kyn-slider-input
+        name=${args.name}
+        value=${args.value}
+        caption=${args.caption}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        step=${ifDefined(args.step)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
+        ?enableTooltip=${args.enableTooltip}
+        ?editableInput=${args.editableInput}
+        ?enableScaleMarker=${true}
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
