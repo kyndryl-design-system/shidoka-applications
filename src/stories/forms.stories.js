@@ -489,6 +489,10 @@ export const Default = {
         </kyn-slider-input>
         <br /><br />
         <!-- roughly added for testing -->
+        <h3 class="kd-type--headline-08">
+          File Uploader (Multiple File Upload)
+        </h3>
+        <br />
         <kyn-file-uploader
           name="file-uploader"
           .accept=${['image/jpeg', 'image/png']}
