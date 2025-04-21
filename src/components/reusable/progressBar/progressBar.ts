@@ -185,7 +185,7 @@ export class ProgressBar extends LitElement {
     }
 
     const hardcodedProgressReached =
-      currentValue != null && this.value != null && currentValue >= this.value;
+      currentValue != null && this.value != null && currentValue >= this.max;
 
     if (this.showInlineLoadStatus && !hardcodedProgressReached) {
       return html`<p>
