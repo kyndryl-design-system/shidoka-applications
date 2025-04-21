@@ -13,6 +13,7 @@ import '../components/reusable/daterangepicker';
 import '../components/reusable/tooltip';
 import '../components/reusable/button';
 import '../components/reusable/sliderInput';
+import '../components/reusable/fileUploader';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
@@ -38,6 +39,7 @@ export const Default = {
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
+          handleFileSubmit();
           const formData = new FormData(e.target);
           console.log(...formData);
 
@@ -486,6 +488,35 @@ export const Default = {
           </kyn-tooltip>
         </kyn-slider-input>
         <br /><br />
+        <!-- roughly added for testing -->
+        <kyn-file-uploader
+          name="file-uploader"
+          .accept=${['image/jpeg', 'image/png']}
+          .textStrings=${{
+            dragAndDropText: 'Drag files here to upload',
+            separatorText: 'or',
+            buttonText: 'Browse files',
+            maxFileSizeText: 'Max file size',
+            supportedFileTypeText: 'Supported file type: ',
+            fileTypeDisplyText: '.jpeg, .png',
+            invalidFileListLabel: 'Some files could not be added:',
+            validFileListLabel: 'Files added:',
+            clearListText: 'Clear list',
+            fileTypeErrorText: 'Invaild file type',
+            fileSizeErrorText: 'Max file size exceeded',
+            customFileErrorText: 'Custom file error',
+            inlineConfirmAnchorText: 'Delete',
+            inlineConfirmConfirmText: 'Confirm',
+            inlineConfirmCancelText: 'Cancel',
+            validationNotificationTitle: 'Multiple files not allowed',
+            validationNotificationMessage: 'Please select only one file.',
+          }}
+          .validFiles=${validFiles}
+          ?multiple=${true}
+          @selected-files=${(e) => {
+            validFiles = e.detail.validFiles;
+          }}
+        ></kyn-file-uploader>
 
         <kyn-button
           type="submit"
@@ -504,4 +535,17 @@ export const Default = {
       </form>
     `;
   },
+};
+
+let validFiles = [];
+
+const handleFileSubmit = () => {
+  const fileUploader = document.querySelector('kyn-file-uploader');
+
+  validFiles = validFiles.map((file) => ({
+    ...file,
+    status: 'uploaded',
+  }));
+
+  fileUploader.validFiles = validFiles;
 };
