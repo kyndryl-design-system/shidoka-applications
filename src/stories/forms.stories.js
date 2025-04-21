@@ -353,7 +353,6 @@ export const Default = {
 
         <br /><br />
 
-        <!-- roughly added for testing -->
         <kyn-file-uploader
           name="file-uploader"
           .accept=${['image/jpeg', 'image/png']}
