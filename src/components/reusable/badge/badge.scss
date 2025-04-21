@@ -1,0 +1,52 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: inline-block;
+}
+
+.badge {
+  @include typography.type-ui-03;
+  display: flex;
+  align-items: center;
+  // justify-content: space-around;
+  // gap: 4px;
+  border-radius: 16px;
+  padding: 4px;
+
+  background-color: aquamarine;
+}
+
+.badge-icon {
+  span {
+    display: flex;
+    margin-right: 4px;
+  }
+
+  ::slotted(span) {
+    display: flex;
+    margin-right: 4px;
+  }
+
+  &.icon-only {
+    span {
+      margin-right: 0px;
+    }
+
+    ::slotted(span) {
+      margin-right: 0px;
+    }
+  }
+}
+
+.badge-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 161px;
+
+  &.no-truncation {
+    max-width: none;
+  }
+}
