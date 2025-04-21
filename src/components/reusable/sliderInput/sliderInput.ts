@@ -60,21 +60,25 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   hideLabel = false;
 
-  /** Whether or not to show tick marks on slider */
+  /** Set this to `true` for enable Tick Marker on slider. */
   @property({ type: Boolean })
   enableTickMarker = false;
 
-  /** Whether or not to show scale marks below slider */
-  @property({ type: Boolean })
-  enableScaleMarker = false;
-
-  /** Set this to `true` for editable Input. */
+  /** Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip. */
   @property({ type: Boolean })
   editableInput = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
+
+  /** Custom Labels */
+  @property({ type: Array })
+  customLabels: string[] = [];
+
+  /** Set this to `true` for enable Tooltip. */
+  @property({ type: Boolean })
+  enableTooltip = false;
 
   /** Internal text strings.
    * @internal
@@ -112,7 +116,7 @@ export class SliderInput extends FormMixin(LitElement) {
     // Calculate the number of ticks based on the step, min, and max values
     const styles = {
       'slider-wrapper': true,
-      'mb-20': this.enableScaleMarker,
+      'mb-30': this.customLabels.length > 0,
     };
 
     const tickCount = Math.floor((this.max - this.min) / this.step);
@@ -150,8 +154,12 @@ export class SliderInput extends FormMixin(LitElement) {
               />
 
         ${this.enableTickMarker ? this._renderTickMarker(tickCount) : null}
-          ${this.enableScaleMarker ? this._renderScaleMarker(tickCount) : null}
-                ${!this.editableInput ? this._renderTooltip() : null}
+          ${this._renderCustomLabel()}
+                ${
+                  this.enableTooltip && !this.editableInput
+                    ? this._renderTooltip()
+                    : null
+                }
               </div>
             ${this.editableInput ? this._renderEditableInput() : null}
 
@@ -212,6 +220,17 @@ export class SliderInput extends FormMixin(LitElement) {
     `;
   }
 
+  //render CustomLabel Html
+  private _renderCustomLabel() {
+    return html`
+      <div class="scale-wrapper">
+        ${this.customLabels.map((label, _) => {
+          return html` <span class="scale-wrapper__ticks">${label}</span> `;
+        })}
+      </div>
+    `;
+  }
+
   //render ScaleMarker Html
   private _renderScaleMarker(tickCount: any) {
     return html`
@@ -233,6 +252,9 @@ export class SliderInput extends FormMixin(LitElement) {
 
   //render Tooltip Html
   private _renderTooltip() {
+    if (!this.enableTooltip) {
+      return null; // Do not render the tooltip if disabled
+    }
     const classes = {
       'slider-tooltip': true,
       open: this.tooltipVisible,
@@ -292,7 +314,7 @@ export class SliderInput extends FormMixin(LitElement) {
     if (!this.editableInput) {
       this._updateTooltipPosition();
     }
-    if (this.enableScaleMarker) {
+    if (this.enableTickMarker) {
       this.showTickMark();
     }
     this._emitValue(e);
