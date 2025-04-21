@@ -11,15 +11,12 @@ export default {
       options: ['sm', 'md'],
       control: { type: 'select' },
     },
+    type: {
+      options: ['heavy', 'medium', 'light'],
+      control: { type: 'select' },
+    },
     status: {
-      options: [
-        'success',
-        'error',
-        'warning',
-        'information',
-        'critical',
-        'others',
-      ],
+      options: ['success', 'error', 'warning', 'information', 'critical'],
       control: { type: 'select' },
     },
   },
@@ -34,9 +31,9 @@ export default {
 const args = {
   label: 'Badge example',
   size: 'md',
+  type: 'medium',
   status: 'success',
   noTruncation: false,
-  iconOnly: true,
 };
 
 export const Badge = {
@@ -46,6 +43,7 @@ export const Badge = {
       <kyn-badge
         label=${args.label}
         size=${args.size}
+        type=${args.type}
         status=${args.status}
         ?noTruncation=${args.noTruncation}
       ></kyn-badge>
@@ -53,15 +51,25 @@ export const Badge = {
   },
 };
 
-export const BadgeWithIcon = {
-  args,
+export const BadgeWithCustomIcon = {
+  args: {
+    ...args,
+    label: 'Badge with custom icon',
+    status: 'others',
+  },
+  argTypes: {
+    status: {
+      options: ['others'],
+      control: { type: 'select' },
+    },
+  },
   render: (args) => {
     return html`
       <kyn-badge
         label=${args.label}
         size=${args.size}
         status=${args.status}
-        icon=${args.icon}
+        type=${args.type}
         ?noTruncation=${args.noTruncation}
       >
         <span>${unsafeSVG(userIcon)}</span>
@@ -71,14 +79,22 @@ export const BadgeWithIcon = {
 };
 
 export const BadgeWithIconOnly = {
-  args,
+  args: {
+    ...args,
+    label: '',
+  },
+  argTypes: {
+    label: {
+      control: false,
+    },
+  },
   render: (args) => {
     return html`
       <kyn-badge
+        label=${args.label}
         size=${args.size}
+        type=${args.type}
         status=${args.status}
-        icon=${args.icon}
-        ?iconOnly=${args.iconOnly}
       >
         <span>${unsafeSVG(userIcon)}</span>
       </kyn-badge>

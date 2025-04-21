@@ -1,5 +1,5 @@
-import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { html, LitElement, PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import criticalIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/critical.svg';
@@ -32,7 +32,7 @@ export class Badge extends LitElement {
   type = 'medium';
 
   /**
-   * Badge status. `'success'` (default), `'critical'`, `'error'`, `'warning'`, `'information'`, `'others'`.
+   * Badge status, `'success'` (default), `'critical'`, `'error'`, `'warning'`, `'information'`, `'others'`.
    *
    */
   @property({ type: String })
@@ -45,10 +45,21 @@ export class Badge extends LitElement {
   noTruncation = false;
 
   /**
-   * Set to true if the badge is only an icon.
+   * Determine if Badge is icon only.
+   * @internal
    */
-  @property({ type: Boolean })
-  iconOnly = false;
+  @state()
+  _iconOnly = false;
+
+  override updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
+
+    if (this.label.length === 0) {
+      this._iconOnly = true;
+    } else {
+      this._iconOnly = false;
+    }
+  }
 
   override render() {
     const sizeClass = this.size === 'md' ? 'badge-medium' : 'badge-small';
@@ -56,11 +67,12 @@ export class Badge extends LitElement {
     const badgeClasses = {
       badge: true,
       [`${sizeClass}`]: true,
+      [`badge-${this.type}-${this.status}`]: true,
     };
 
     const badgeIconClasses = {
       'badge-icon': true,
-      'icon-only': this.iconOnly,
+      'icon-only': this._iconOnly,
     };
 
     const labelClasses = {
