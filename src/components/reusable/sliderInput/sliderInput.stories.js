@@ -151,7 +151,6 @@ export const CustomLabels = {
     return html`
       <kyn-slider-input
         name="rangeInput"
-        value="0"
         min="0"
         max="10"
         .customLabels=${['0', '5', '10']}

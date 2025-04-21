@@ -390,6 +390,25 @@ export const Default = {
         <br /><br />
 
         <kyn-slider-input
+          name="slider input with custom labels"
+          value="0"
+          caption="Slider input with custom labels example"
+          label="Slider Input with custom labels example"
+          step="10"
+          min="0"
+          max="100"
+          .customLabels=${['Low', 'Medium', 'High']}
+          ?enableTooltip=${true}
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-slider-input>
+        <br /><br />
+
+        <kyn-slider-input
           name="Slider with editable input"
           value="0"
           caption="Slider with editable input example"
