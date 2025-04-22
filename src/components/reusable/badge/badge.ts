@@ -76,21 +76,12 @@ export class Badge extends LitElement {
       [`badge-${this.type}-${this.status}`]: true,
     };
 
-    const badgeIconClasses = {
-      'badge-icon': true,
-      'icon-only': this._iconOnly,
-    };
-
     const labelClasses = {
       'badge-label': true,
       'no-truncation': this.noTruncation,
     };
-    return html`<div
-      class=${classMap(badgeClasses)}
-      title=${this.label}
-      tabindex="0"
-    >
-      <div title=${this.iconTitle} class=${classMap(badgeIconClasses)}>
+    return html`<div class=${classMap(badgeClasses)} title=${this.label}>
+      <div title=${this.iconTitle} class="badge-icon">
         ${this.status === 'others'
           ? html`<slot></slot>`
           : html`<span>${unsafeSVG(this._getStatusIcon())}</span>`}
