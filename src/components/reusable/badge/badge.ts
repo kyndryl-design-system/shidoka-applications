@@ -45,6 +45,12 @@ export class Badge extends LitElement {
   noTruncation = false;
 
   /**
+   * Icon title for screen readers.
+   */
+  @property({ type: String })
+  iconTitle = 'Icon title';
+
+  /**
    * Determine if Badge is icon only.
    * @internal
    */
@@ -84,12 +90,14 @@ export class Badge extends LitElement {
       title=${this.label}
       tabindex="0"
     >
-      <div class=${classMap(badgeIconClasses)}>
+      <div title=${this.iconTitle} class=${classMap(badgeIconClasses)}>
         ${this.status === 'others'
           ? html`<slot></slot>`
           : html`<span>${unsafeSVG(this._getStatusIcon())}</span>`}
       </div>
-      <span class=${classMap(labelClasses)}>${this.label}</span>
+      ${!this._iconOnly
+        ? html`<span class=${classMap(labelClasses)}>${this.label}</span>`
+        : ''}
     </div>`;
   }
 

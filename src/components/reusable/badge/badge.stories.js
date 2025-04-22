@@ -34,6 +34,7 @@ const args = {
   type: 'medium',
   status: 'success',
   noTruncation: false,
+  iconTitle: 'Icon title',
 };
 
 export const Badge = {
@@ -46,6 +47,7 @@ export const Badge = {
         type=${args.type}
         status=${args.status}
         ?noTruncation=${args.noTruncation}
+        iconTitle=${args.iconTitle}
       ></kyn-badge>
     `;
   },
@@ -56,6 +58,7 @@ export const BadgeWithCustomIcon = {
     ...args,
     label: 'Badge with custom icon',
     status: 'others',
+    iconTitle: 'User icon',
   },
   argTypes: {
     status: {
@@ -71,6 +74,7 @@ export const BadgeWithCustomIcon = {
         status=${args.status}
         type=${args.type}
         ?noTruncation=${args.noTruncation}
+        iconTitle=${args.iconTitle}
       >
         <span>${unsafeSVG(userIcon)}</span>
       </kyn-badge>
@@ -82,9 +86,13 @@ export const BadgeWithIconOnly = {
   args: {
     ...args,
     label: '',
+    iconTitle: 'Icon title',
   },
   argTypes: {
     label: {
+      control: false,
+    },
+    noTruncation: {
       control: false,
     },
   },
@@ -95,9 +103,46 @@ export const BadgeWithIconOnly = {
         size=${args.size}
         type=${args.type}
         status=${args.status}
+        iconTitle=${args.iconTitle}
       >
         <span>${unsafeSVG(userIcon)}</span>
       </kyn-badge>
     `;
   },
 };
+BadgeWithIconOnly.storyName = 'Badge with icon only - Preset';
+
+export const BadgeWithCustomIconOnly = {
+  args: {
+    ...args,
+    label: '',
+    status: 'others',
+    iconTitle: 'User icon',
+  },
+  argTypes: {
+    label: {
+      control: false,
+    },
+    noTruncation: {
+      control: false,
+    },
+    status: {
+      options: ['others'],
+      control: { type: 'select' },
+    },
+  },
+  render: (args) => {
+    return html`
+      <kyn-badge
+        label=${args.label}
+        size=${args.size}
+        type=${args.type}
+        status=${args.status}
+        iconTitle=${args.iconTitle}
+      >
+        <span>${unsafeSVG(userIcon)}</span>
+      </kyn-badge>
+    `;
+  },
+};
+BadgeWithCustomIconOnly.storyName = 'Badge with icon only - Custom';
