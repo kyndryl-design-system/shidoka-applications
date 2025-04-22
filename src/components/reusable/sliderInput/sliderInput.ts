@@ -120,7 +120,7 @@ export class SliderInput extends FormMixin(LitElement) {
     // Calculate the number of ticks based on the step, min, and max values
     const styles = {
       'slider-wrapper': true,
-      'mb-30': this.customLabels.length > 0,
+      'mb-30': this.customLabels.length > 0 || this.enableScaleMarker,
     };
 
     const tickCount = Math.floor((this.max - this.min) / this.step);
@@ -159,7 +159,7 @@ export class SliderInput extends FormMixin(LitElement) {
 
         ${this.enableTickMarker ? this._renderTickMarker(tickCount) : null}
         ${this.enableScaleMarker ? this._renderScaleMarker(tickCount) : null}
-          ${this._renderCustomLabel()}
+          ${this.customLabels.length > 0 ? this._renderCustomLabel() : null}
                 ${
                   this.enableTooltip && !this.editableInput
                     ? this._renderTooltip()
