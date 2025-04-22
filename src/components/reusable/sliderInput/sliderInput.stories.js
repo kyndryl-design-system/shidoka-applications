@@ -40,7 +40,6 @@ const args = {
   min: undefined,
   max: undefined,
   editableInput: false,
-  enableTickMarker: false,
   enableTooltip: true,
   customLabels: [],
   textStrings: {
@@ -64,7 +63,6 @@ export const Continuous = {
         max=${ifDefined(args.max)}
         ?enableTooltip=${args.enableTooltip}
         ?editableInput=${args.editableInput}
-        ?enableTickMarker=${args.enableTickMarker}
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
@@ -91,7 +89,6 @@ export const Discrete = {
         max=${ifDefined(args.max)}
         ?enableTooltip=${args.enableTooltip}
         ?editableInput=${args.editableInput}
-        ?enableTickMarker=${args.enableTickMarker}
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
