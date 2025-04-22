@@ -98,7 +98,7 @@ export const Discrete = {
       >
       </kyn-slider-input>
 
-      <div class="heading kd-type--headline-06">With Tick Mark</div>
+      <div class="heading kd-type--headline-06">With Tick Marker</div>
       <kyn-slider-input
         name=${args.name}
         value=${args.value}
@@ -117,7 +117,7 @@ export const Discrete = {
         @on-input=${(e) => action(e.type)(e)}
       >
       </kyn-slider-input>
-      <div class="heading kd-type--headline-06">With Scale Mark</div>
+      <div class="heading kd-type--headline-06">With Scale Marker</div>
       <kyn-slider-input
         name=${args.name}
         value=${args.value}
