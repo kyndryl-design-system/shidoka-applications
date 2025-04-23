@@ -1031,8 +1031,7 @@ export class Dropdown extends FormMixin(LitElement) {
           const option = AllOptions.find(
             (option: any) => option.value === this.value
           );
-
-          this.text = option.textContent;
+          this.text = option.textContent.trim();
         }
 
         // set search input value

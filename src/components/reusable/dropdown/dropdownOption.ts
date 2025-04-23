@@ -12,6 +12,7 @@ import DropdownOptionScss from './dropdownOption.scss';
  * Dropdown option.
  * @fires on-click - Emits the option details to the parent dropdown.
  * @slot unnamed - Slot for option text.
+ * @slot icon - Slot for option icon. Icon size should be 16px only.
  */
 @customElement('kyn-dropdown-option')
 export class DropdownOption extends LitElement {
@@ -69,6 +70,7 @@ export class DropdownOption extends LitElement {
         @click=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
+        <slot name="icon"></slot>
         <span>
           ${this.multiple
             ? html`
