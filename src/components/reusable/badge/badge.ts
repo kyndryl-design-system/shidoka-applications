@@ -20,7 +20,7 @@ export class Badge extends LitElement {
   label = '';
 
   /**
-   * Badge size, `'md'` (default) or `'sm'`. Icon size: 12px.
+   * Badge size, `'md'` (default) or `'sm'`. Icon size: 16px only.
    */
   @property({ type: String })
   size = 'md';
