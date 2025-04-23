@@ -58,7 +58,6 @@ export const BadgeWithCustomIcon = {
     ...args,
     label: 'Badge with custom icon',
     status: 'others',
-    iconTitle: 'User icon',
   },
   argTypes: {
     status: {
@@ -74,9 +73,13 @@ export const BadgeWithCustomIcon = {
         status=${args.status}
         type=${args.type}
         ?noTruncation=${args.noTruncation}
-        iconTitle=${args.iconTitle}
       >
-        <span>${unsafeSVG(userIcon)}</span>
+        <span
+          style="display: flex;"
+          aria-labelledby="User icon"
+          aria-hidden="true"
+          >${unsafeSVG(userIcon)}</span
+        >
       </kyn-badge>
     `;
   },
@@ -86,7 +89,6 @@ export const BadgeWithIconOnly = {
   args: {
     ...args,
     label: '',
-    iconTitle: 'Icon title',
   },
   argTypes: {
     label: {
@@ -105,7 +107,6 @@ export const BadgeWithIconOnly = {
         status=${args.status}
         iconTitle=${args.iconTitle}
       >
-        <span>${unsafeSVG(userIcon)}</span>
       </kyn-badge>
     `;
   },
@@ -117,7 +118,6 @@ export const BadgeWithCustomIconOnly = {
     ...args,
     label: '',
     status: 'others',
-    iconTitle: 'User icon',
   },
   argTypes: {
     label: {
@@ -138,9 +138,14 @@ export const BadgeWithCustomIconOnly = {
         size=${args.size}
         type=${args.type}
         status=${args.status}
-        iconTitle=${args.iconTitle}
       >
-        <span>${unsafeSVG(userIcon)}</span>
+        <span
+          style="display: flex;"
+          aria-labelledby="User icon"
+          aria-hidden="true"
+        >
+          ${unsafeSVG(userIcon)}
+        </span>
       </kyn-badge>
     `;
   },

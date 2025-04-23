@@ -78,11 +78,14 @@ export class Badge extends LitElement {
     };
 
     return html`<div class=${classMap(badgeClasses)} title=${this.label}>
-      <div title=${this.iconTitle} class="badge-icon">
-        ${this.status === 'others'
-          ? html`<slot></slot>`
-          : html`<span>${unsafeSVG(this._getStatusIcon())}</span>`}
-      </div>
+      ${this.status === 'others'
+        ? html`<slot></slot>`
+        : html`<span
+            class="badge-icon"
+            aria-labelledby=${this.iconTitle}
+            aria-hidden="true"
+            >${unsafeSVG(this._getStatusIcon())}</span
+          >`}
       ${!this._iconOnly
         ? html`<span class="badge-label">${this.label}</span>`
         : ''}
