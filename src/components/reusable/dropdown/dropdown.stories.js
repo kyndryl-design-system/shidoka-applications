@@ -74,9 +74,13 @@ export const Single = {
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
         </kyn-tooltip>
-        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+        <kyn-dropdown-option value="1">
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Option 1
+        </kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
           Disabled Option
         </kyn-dropdown-option>
         <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
@@ -117,7 +121,10 @@ export const SingleSearchable = {
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
         </kyn-tooltip>
-        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+        <kyn-dropdown-option value="1">
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Option 1
+        </kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
           Disabled Option
@@ -164,7 +171,10 @@ export const MultiSelect = {
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
         </kyn-tooltip>
-        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+        <kyn-dropdown-option value="1">
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Option 1
+        </kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
           Disabled Option
@@ -215,7 +225,10 @@ export const MultiSelectSearchable = {
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
         </kyn-tooltip>
-        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+        <kyn-dropdown-option value="1">
+          Option 1
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+        </kyn-dropdown-option>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
         <kyn-dropdown-option value="3" disabled>
           Disabled Option
@@ -255,7 +268,10 @@ export const Grouped = {
           tooltip
         </kyn-tooltip>
         <kyn-dropdown-category>Category 1</kyn-dropdown-category>
-        <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+        <kyn-dropdown-option value="1">
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Option 1
+        </kyn-dropdown-option>
 
         <kyn-dropdown-category>Category 2</kyn-dropdown-category>
         <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -332,6 +348,7 @@ export const DataDrivenOptions = {
         ${items.map((item) => {
           return html`
             <kyn-dropdown-option value=${item.value} ?disabled=${item.disabled}>
+              <span slot="icon">${unsafeSVG(infoIcon)}</span>
               ${item.text}
             </kyn-dropdown-option>
           `;
