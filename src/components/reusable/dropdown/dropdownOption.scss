@@ -9,11 +9,13 @@ li {
   cursor: default;
   padding: 16px;
   transition: background-color 150ms ease-out;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 
   &[selected] {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     background-color: var(--kd-color-background-accent-subtle);
   }
 
@@ -46,6 +48,10 @@ li {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  slot[name='icon']::slotted(span) {
+    display: flex;
+  }
 }
 
 kyn-checkbox {
@@ -56,4 +62,5 @@ kyn-checkbox {
 
 .check-icon {
   display: flex;
+  margin-left: auto;
 }
