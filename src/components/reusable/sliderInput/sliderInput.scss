@@ -74,13 +74,12 @@ input[type='range']:disabled {
 }
 
 input[type='range'] {
-  color: var(--kd-color-border-container-selected);
   position: relative;
   margin: 0px;
   --thumb-height: 24px;
   --thumb-width: 24px;
   --track-height: 4px;
-  --track-color: var(--kd-color-border-level-tertiary);
+  --track-color: var(--kd-color-border-level-secondary);
   --clip-edges: 0.125em;
   height: calc(var(--thumb-height) + 12px);
 }
@@ -105,7 +104,7 @@ input[type='range']::-webkit-slider-thumb {
   --clip-bottom: calc(var(--thumb-height) - var(--clip-top));
   --clip-further: calc(100% + 6px);
   --box-fill: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0
-    100vmax var(--kd-color-border-container-selected);
+    100vmax var(--kd-color-border-ui-pressed);
 
   width: var(--thumb-width, var(--thumb-height));
   background-color: var(--kd-color-border-button-secondary-state-default);
@@ -133,8 +132,7 @@ input[type='range']:hover::-webkit-slider-thumb {
 input[type='range']:not(:disabled)active::-webkit-slider-thumb {
   cursor: grabbing;
   box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
-    inset 0 0 0 var(--kd-spacing-2)
-      var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 var(--kd-spacing-2) var(--kd-color-border-variants-focus),
     inset 0 0 0 var(--kd-spacing-4) var(--kd-color-border-variants-inverse),
     var(--box-fill),
     var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
@@ -142,8 +140,7 @@ input[type='range']:not(:disabled)active::-webkit-slider-thumb {
 
 input[type='range']:not(:disabled):focus::-webkit-slider-thumb {
   box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
-    inset 0 0 0 var(--kd-spacing-2)
-      var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 var(--kd-spacing-2) var(--kd-color-border-variants-focus),
     inset 0 0 0 var(--kd-spacing-4) var(--kd-color-border-variants-inverse),
     var(--box-fill),
     var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
@@ -190,14 +187,14 @@ input[type='range']:hover::-moz-range-thumb {
 input[type='range']:not(:disabled):active::-moz-range-thumb {
   cursor: grabbing;
   box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
-    inset 0 0 0 2px var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 2px var(--kd-color-border-variants-focus),
     inset 0 0 0 4px var(--kd-color-border-variants-inverse),
     var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
 }
 
 input[type='range']:not(:disabled):focus::-moz-range-thumb {
   box-shadow: -2px 0 0 0 var(--kd-color-border-variants-inverse),
-    inset 0 0 0 2px var(--kd-color-border-button-secondary-state-default),
+    inset 0 0 0 2px var(--kd-color-border-variants-focus),
     inset 0 0 0 4px var(--kd-color-border-variants-inverse),
     var(--kd-spacing-2) 0 0 0 var(--kd-color-border-variants-inverse);
 }
@@ -211,7 +208,7 @@ input[type='range']::-moz-range-progress {
 
 input[type='range']::-moz-range-progress {
   appearance: none;
-  background: var(--kd-color-border-container-selected);
+  background: var(--kd-color-border-ui-pressed);
 }
 
 /* For firefox disabled thumb */
@@ -267,7 +264,7 @@ input[type='number'] {
 }
 
 .tick-unfilled {
-  background-color: var(--kd-color-background-accent-secondary);
+  background-color: var(--kd-color-border-forms-default);
 }
 
 .tick-OnKnob {
