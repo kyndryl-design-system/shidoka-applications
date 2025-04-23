@@ -1,10 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
-import {
-  customElement,
-  property,
-  queryAssignedElements,
-} from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import TagScss from './tag.scss';
@@ -13,6 +9,7 @@ import TagScss from './tag.scss';
  * Tag.
  * @fires on-close - Captures the close event and emits the Tag value. Works with filterable tags.
  * @fires on-click - Captures the click event and emits the Tag value. Works with clickable tags.
+ * slot unnamed - Slot for icon.
  */
 
 @customElement('kyn-tag')
@@ -64,32 +61,10 @@ export class Tag extends LitElement {
   tagColor = 'default';
 
   /**
-   * Icon title for screen readers.
-   */
-  @property({ type: String })
-  iconTitle = 'Icon title';
-
-  /**
    * Clear Tag Text to improve accessibility
    */
   @property({ type: String })
   clearTagText = 'Clear Tag';
-
-  /**
-   * Queries slotted icon.
-   * @ignore
-   */
-  @queryAssignedElements()
-  _iconEl!: Array<HTMLElement>;
-
-  override updated() {
-    const tagLabel = this.shadowRoot?.querySelector('.tag-label');
-    if (tagLabel && this._iconEl.length === 0) {
-      tagLabel.classList.add('align-label');
-    } else {
-      tagLabel?.classList.remove('align-label');
-    }
-  }
 
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
@@ -132,9 +107,7 @@ export class Tag extends LitElement {
         @click=${(e: any) => this.handleTagClick(e, this.label)}
         @keydown=${(e: any) => this.handleTagPress(e, this.label)}
       >
-        <div title=${this.iconTitle} class="tag-icon">
-          <slot></slot>
-        </div>
+        <slot></slot>
         <span class="${classMap(labelClasses)}" aria-disabled=${this.disabled}
           >${this.label}</span
         >
