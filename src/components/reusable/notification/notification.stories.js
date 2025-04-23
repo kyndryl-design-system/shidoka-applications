@@ -195,6 +195,7 @@ export const Toast = {
             <code>${args.timeout}</code> seconds.
           </div>
         </kyn-notification>
+
         <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveNotificationTypeText="Default toast"
@@ -207,12 +208,26 @@ export const Toast = {
         >
           <div>I will disappear after (default) <code>8</code> seconds.</div>
         </kyn-notification>
+
         <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveNotificationTypeText="Warning toast"
           notificationRole=${args.notificationRole}
           type="toast"
           tagStatus="warning"
+          ?hideCloseButton=${args.hideCloseButton}
+          @on-close=${(e) => action(e.type)(e)}
+          timeout=${12}
+        >
+          <div>I will disappear after <code>10</code> seconds.</div>
+        </kyn-notification>
+
+        <kyn-notification
+          notificationTitle=${args.notificationTitle}
+          assistiveNotificationTypeText="Success toast"
+          notificationRole=${args.notificationRole}
+          type="toast"
+          tagStatus="success"
           ?hideCloseButton=${args.hideCloseButton}
           @on-close=${(e) => action(e.type)(e)}
           timeout=${12}
