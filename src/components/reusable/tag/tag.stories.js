@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 export default {
   title: 'Components/Tag',
@@ -11,27 +13,7 @@ export default {
       control: { type: 'select' },
     },
     tagColor: {
-      options: [
-        'grey',
-        'spruce',
-        'interactive',
-        'cat01',
-        'cat02',
-        'cat03',
-        'cat04',
-        'cat05',
-        'cat06',
-        'blue',
-        'warning',
-        'error',
-        'success',
-        'criticalLight',
-        'informationDark',
-        'warningDark',
-        'errorDark',
-        'successDark',
-        'criticalDark',
-      ],
+      options: ['default', 'spruce', 'sea', 'lilac', 'ai'],
       control: { type: 'select' },
     },
     disabled: {
@@ -45,9 +27,7 @@ export default {
       },
     },
     clickable: {
-      control: {
-        type: 'boolean',
-      },
+      control: false,
     },
   },
   parameters: {
@@ -61,11 +41,11 @@ export default {
 const args = {
   label: 'Tag Example',
   tagSize: 'md',
-  tagColor: 'spruce',
-  disabled: false,
+  tagColor: 'default',
+  clickable: true,
   filter: false,
-  clickable: false,
   noTruncation: false,
+  disabled: false,
 };
 
 export const Tag = {
@@ -83,6 +63,27 @@ export const Tag = {
         @on-close=${(e) => action(e.type)(e)}
         @on-click=${(e) => action(e.type)(e)}
       /></kyn-tag>
+    `;
+  },
+};
+
+export const TagWithIcon = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-tag
+        label=${args.label}
+        tagSize=${args.tagSize}
+        tagColor=${args.tagColor}
+        ?disabled=${args.disabled}
+        ?filter=${args.filter}
+        ?clickable=${args.clickable}
+        ?noTruncation=${args.noTruncation}
+        @on-close=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)(e)}
+      />
+      <span>${unsafeSVG(userIcon)}</span>
+    </kyn-tag>
     `;
   },
 };

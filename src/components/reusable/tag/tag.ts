@@ -1,6 +1,10 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import TagScss from './tag.scss';
@@ -35,6 +39,7 @@ export class Tag extends LitElement {
 
   /**
    * Determine if Tag state is filter.
+   * `filter` overrides `clickable`.
    */
   @property({ type: Boolean })
   filter = false;
@@ -46,16 +51,23 @@ export class Tag extends LitElement {
   noTruncation = false;
 
   /**
-   * Determine if Tag is clickable.
+   * Tag should **always** be **clickable**.
+   * Default is `true`.
    */
   @property({ type: Boolean })
-  clickable = false;
+  clickable = true;
 
   /**
-   * Color variants. Default spruce
+   * Color variants. Default `'default'`.
    */
   @property({ type: String })
-  tagColor = 'spruce';
+  tagColor = 'default';
+
+  /**
+   * Icon title for screen readers.
+   */
+  @property({ type: String })
+  iconTitle = 'Icon title';
 
   /**
    * Clear Tag Text to improve accessibility
@@ -63,15 +75,32 @@ export class Tag extends LitElement {
   @property({ type: String })
   clearTagText = 'Clear Tag';
 
+  /**
+   * Queries slotted icon.
+   * @ignore
+   */
+  @queryAssignedElements()
+  _iconEl!: Array<HTMLElement>;
+
+  override updated() {
+    const tagLabel = this.shadowRoot?.querySelector('.tag-label');
+    if (tagLabel && this._iconEl.length === 0) {
+      tagLabel.classList.add('align-label');
+    } else {
+      tagLabel?.classList.remove('align-label');
+    }
+  }
+
   override render() {
     const baseColorClass = `tag-${this.tagColor}`;
     const sizeClass = this.tagSize === 'md' ? 'tag-medium' : 'tag-small';
 
     const tagClasses = {
       tags: true,
+      'no-truncation': this.noTruncation,
       'tag-disable': this.disabled,
-      'tag-clickable': this.clickable,
-      [`tag-clickable-${this.tagColor}`]: this.clickable,
+      'tag-clickable': this.clickable && !this.filter,
+      [`tag-clickable-${this.tagColor}`]: this.clickable && !this.filter,
       [`${baseColorClass}`]: true,
       [`${sizeClass}`]: true,
       [`${sizeClass}-filter`]: this.filter,
@@ -87,7 +116,6 @@ export class Tag extends LitElement {
 
     const labelClasses = {
       'tag-label': true,
-      'no-truncation': this.noTruncation,
       [`${sizeClass}-label`]: true,
       [`${sizeClass}-label-filter`]: this.filter,
     };
@@ -100,10 +128,13 @@ export class Tag extends LitElement {
         ?filter=${this.filter}
         tagColor=${this.tagColor}
         title="${this.label}"
-        tabindex="${this.clickable ? '0' : '-1'}"
+        tabindex="${this.clickable && !this.filter ? '0' : '-1'}"
         @click=${(e: any) => this.handleTagClick(e, this.label)}
         @keydown=${(e: any) => this.handleTagPress(e, this.label)}
       >
+        <div title=${this.iconTitle} class="tag-icon">
+          <slot></slot>
+        </div>
         <span class="${classMap(labelClasses)}" aria-disabled=${this.disabled}
           >${this.label}</span
         >
@@ -112,10 +143,8 @@ export class Tag extends LitElement {
               <button
                 class="${classMap(iconClasses)}"
                 ?disabled="${this.disabled}"
-                title="${this.clearTagText}
-                 ${this.label}"
-                aria-label="${this.clearTagText}
-                 ${this.label}"
+                title="${this.clearTagText} ${this.label}"
+                aria-label="${this.clearTagText} ${this.label}"
                 @click=${(e: any) => this.handleTagClear(e, this.label)}
                 @keydown=${(e: any) => this.handleTagClearPress(e, this.label)}
               >
@@ -155,7 +184,7 @@ export class Tag extends LitElement {
   }
 
   private handleTagClick(e: any, value: string) {
-    if (!this.disabled && this.clickable) {
+    if (!this.disabled && this.clickable && !this.filter) {
       const event = new CustomEvent('on-click', {
         detail: {
           value,
@@ -171,7 +200,8 @@ export class Tag extends LitElement {
     if (
       (e.keyCode === 32 || e.keyCode === 13) &&
       !this.disabled &&
-      this.clickable
+      this.clickable &&
+      !this.filter
     ) {
       const event = new CustomEvent('on-click', {
         detail: {
