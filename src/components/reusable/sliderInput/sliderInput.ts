@@ -311,7 +311,6 @@ export class SliderInput extends FormMixin(LitElement) {
 
   private _handleInput(e: any) {
     if (e.target.value === '') {
-      this.value = 0;
       this._inputRangeEl.value = '0';
     } else {
       this.value = Number(e.target.value);
@@ -334,6 +333,7 @@ export class SliderInput extends FormMixin(LitElement) {
 
   private _handleNumberInput(e: any) {
     if (e.target.value === '') {
+      this.value = 0;
       this._inputEl.value = '0';
     } else {
       this.value = Number(e.target.value);
