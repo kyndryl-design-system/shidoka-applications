@@ -108,7 +108,7 @@ export const TagWithIcon = {
         @on-close=${(e) => action(e.type)(e)}
         @on-click=${(e) => action(e.type)(e)}
       />
-      <span style="display: flex;" aria-label="User icon">
+      <span style="display: flex;" aria-label="User icon" aria-hidden="true">
         ${unsafeSVG(userIcon)}
       </span>
     </kyn-tag>
