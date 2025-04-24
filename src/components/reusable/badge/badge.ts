@@ -9,6 +9,10 @@ import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import BadgeScss from './badge.scss';
 
+/**
+ * Badge.
+ * @slot unnamed - Slot for custom icon.
+ */
 @customElement('kyn-badge')
 export class Badge extends LitElement {
   static override styles = BadgeScss;
