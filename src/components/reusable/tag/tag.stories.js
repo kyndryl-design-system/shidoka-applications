@@ -13,7 +13,31 @@ export default {
       control: { type: 'select' },
     },
     tagColor: {
-      options: ['default', 'spruce', 'sea', 'lilac', 'ai'],
+      options: [
+        'default',
+        'spruce',
+        'sea',
+        'lilac',
+        'ai',
+        'success',
+        'grey',
+        'interactive',
+        'blue',
+        'warning',
+        'error',
+        'cat01',
+        'cat02',
+        'cat03',
+        'cat04',
+        'cat05',
+        'cat06',
+        'criticalLight',
+        'informationDark',
+        'warningDark',
+        'errorDark',
+        'successDark',
+        'criticalDark',
+      ],
       control: { type: 'select' },
     },
     disabled: {
@@ -27,7 +51,9 @@ export default {
       },
     },
     clickable: {
-      control: false,
+      control: {
+        type: 'boolean',
+      },
     },
   },
   parameters: {
@@ -41,8 +67,8 @@ export default {
 const args = {
   label: 'Tag Example',
   tagSize: 'md',
-  tagColor: 'default',
-  clickable: true,
+  tagColor: 'spruce',
+  clickable: false,
   filter: false,
   noTruncation: false,
   disabled: false,
@@ -89,3 +115,4 @@ export const TagWithIcon = {
     `;
   },
 };
+TagWithIcon.storyName = 'Tag with icon - New tags only';

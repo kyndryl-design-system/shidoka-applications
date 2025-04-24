@@ -9,7 +9,7 @@ import TagScss from './tag.scss';
  * Tag.
  * @fires on-close - Captures the close event and emits the Tag value. Works with filterable tags.
  * @fires on-click - Captures the click event and emits the Tag value. Works with clickable tags.
- * slot unnamed - Slot for icon.
+ * @slot unnamed - Slot for icon.
  */
 
 @customElement('kyn-tag')
@@ -36,7 +36,6 @@ export class Tag extends LitElement {
 
   /**
    * Determine if Tag state is filter.
-   * `filter` overrides `clickable`.
    */
   @property({ type: Boolean })
   filter = false;
@@ -48,17 +47,17 @@ export class Tag extends LitElement {
   noTruncation = false;
 
   /**
-   * Tag should **always** be **clickable**.
-   * Default is `true`.
+   * Determine if Tag is clickable(applicable for old tags only).
+   * **NOTE**: New tags are **clickable** by **default**.
    */
   @property({ type: Boolean })
-  clickable = true;
+  clickable = false;
 
   /**
-   * Color variants. Default `'default'`.
+   * Color variants. Default `'spruce'`.
    */
   @property({ type: String })
-  tagColor = 'default';
+  tagColor = 'spruce';
 
   /**
    * Clear Tag Text to improve accessibility
@@ -67,15 +66,15 @@ export class Tag extends LitElement {
   clearTagText = 'Clear Tag';
 
   override render() {
+    /* --------------------- DEPRECATED --------------------- */
     const baseColorClass = `tag-${this.tagColor}`;
     const sizeClass = this.tagSize === 'md' ? 'tag-medium' : 'tag-small';
 
     const tagClasses = {
       tags: true,
-      'no-truncation': this.noTruncation,
       'tag-disable': this.disabled,
-      'tag-clickable': this.clickable && !this.filter,
-      [`tag-clickable-${this.tagColor}`]: this.clickable && !this.filter,
+      'tag-clickable': this.clickable,
+      [`tag-clickable-${this.tagColor}`]: this.clickable,
       [`${baseColorClass}`]: true,
       [`${sizeClass}`]: true,
       [`${sizeClass}-filter`]: this.filter,
@@ -91,30 +90,64 @@ export class Tag extends LitElement {
 
     const labelClasses = {
       'tag-label': true,
+      'no-truncation': this.noTruncation,
       [`${sizeClass}-label`]: true,
       [`${sizeClass}-label-filter`]: this.filter,
+    };
+    /* --------------------- DEPRECATED --------------------- */
+
+    const newBaseColorClass = `tag--new-${this.tagColor}`;
+    const newSizeClass =
+      this.tagSize === 'md' ? 'tag--new-medium' : 'tag--new-small';
+
+    const newTagClasses = {
+      'tags--new': true,
+      'no-truncation': this.noTruncation,
+      'tag--new-disable': this.disabled,
+      'tag--new-clickable': this._isTagClickable(),
+      [`tag--new-clickable-${this.tagColor}`]: this._isTagClickable(),
+      [`${newBaseColorClass}`]: true,
+      [`${newSizeClass}`]: true,
+    };
+
+    const newIconOutlineClasses = `${newBaseColorClass}-close-btn`;
+    const newIconOutlineOffsetClass = `tag-close-btn--new-${this.tagSize}`;
+    const newIconClasses = {
+      'tag-close-btn--new': true,
+      [`${newIconOutlineClasses}`]: true,
+      [`${newIconOutlineOffsetClass}`]: true,
+    };
+
+    const newLabelClasses = {
+      'tag-label--new': true,
     };
 
     return html`
       <div
-        class="${classMap(tagClasses)}"
+        class="${classMap(this._chechForNewTag() ? newTagClasses : tagClasses)}"
         tagSize="${this.tagSize}"
         ?disabled="${this.disabled}"
         ?filter=${this.filter}
         tagColor=${this.tagColor}
         title="${this.label}"
-        tabindex="${this.clickable && !this.filter ? '0' : '-1'}"
+        tabindex="${this._isTagClickable() ? '0' : '-1'}"
         @click=${(e: any) => this.handleTagClick(e, this.label)}
         @keydown=${(e: any) => this.handleTagPress(e, this.label)}
       >
-        <slot></slot>
-        <span class="${classMap(labelClasses)}" aria-disabled=${this.disabled}
+        ${this._chechForNewTag() ? html`<slot></slot>` : ''}
+        <span
+          class="${classMap(
+            this._chechForNewTag() ? newLabelClasses : labelClasses
+          )}"
+          aria-disabled=${this.disabled}
           >${this.label}</span
         >
         ${this.filter
           ? html`
               <button
-                class="${classMap(iconClasses)}"
+                class="${classMap(
+                  this._chechForNewTag() ? newIconClasses : iconClasses
+                )}"
                 ?disabled="${this.disabled}"
                 title="${this.clearTagText} ${this.label}"
                 aria-label="${this.clearTagText} ${this.label}"
@@ -127,6 +160,23 @@ export class Tag extends LitElement {
           : ''}
       </div>
     `;
+  }
+
+  private _chechForNewTag() {
+    const newTags = ['default', 'spruce', 'sea', 'lilac', 'ai'];
+    if (newTags.includes(this.tagColor)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private _isTagClickable() {
+    if (this._chechForNewTag()) {
+      return !this.filter;
+    } else {
+      return this.clickable;
+    }
   }
 
   private handleTagClear(e: any, value: string) {
@@ -157,7 +207,7 @@ export class Tag extends LitElement {
   }
 
   private handleTagClick(e: any, value: string) {
-    if (!this.disabled && this.clickable && !this.filter) {
+    if (!this.disabled && this._isTagClickable()) {
       const event = new CustomEvent('on-click', {
         detail: {
           value,
@@ -173,8 +223,7 @@ export class Tag extends LitElement {
     if (
       (e.keyCode === 32 || e.keyCode === 13) &&
       !this.disabled &&
-      this.clickable &&
-      !this.filter
+      this._isTagClickable()
     ) {
       const event = new CustomEvent('on-click', {
         detail: {
