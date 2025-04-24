@@ -13,33 +13,7 @@ export default {
       control: { type: 'select' },
     },
     tagColor: {
-      options: [
-        'default',
-        'spruce',
-        'sea',
-        'lilac',
-        'ai',
-        /* To be removed after testing */
-        'success',
-        'grey',
-        'interactive',
-        'blue',
-        'warning',
-        'error',
-        'cat01',
-        'cat02',
-        'cat03',
-        'cat04',
-        'cat05',
-        'cat06',
-        'criticalLight',
-        'informationDark',
-        'warningDark',
-        'errorDark',
-        'successDark',
-        'criticalDark',
-        /* To be removed after testing */
-      ],
+      options: ['default', 'spruce', 'sea', 'lilac', 'ai'],
       control: { type: 'select' },
     },
     disabled: {
@@ -117,4 +91,3 @@ export const TagWithIcon = {
     `;
   },
 };
-TagWithIcon.storyName = 'Tag with icon - New tags only';
