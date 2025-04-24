@@ -105,9 +105,9 @@ export const BadgeWithIconOnly = {
         size=${args.size}
         type=${args.type}
         status=${args.status}
+        ?noTruncation=${args.noTruncation}
         iconTitle=${args.iconTitle}
-      >
-      </kyn-badge>
+      ></kyn-badge>
     `;
   },
 };
