@@ -17994,6 +17994,12 @@
           "kind": "class",
           "description": "Tag.",
           "name": "Tag",
+          "slots": [
+            {
+              "description": "Slot for icon.",
+              "name": "unnamed"
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -18052,7 +18058,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determine if Tag is clickable.",
+              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
               "attribute": "clickable"
             },
             {
@@ -18062,7 +18068,7 @@
                 "text": "string"
               },
               "default": "'spruce'",
-              "description": "Color variants. Default spruce",
+              "description": "Color variants. Default `'spruce'`.",
               "attribute": "tagColor"
             },
             {
@@ -18074,6 +18080,16 @@
               "default": "'Clear Tag'",
               "description": "Clear Tag Text to improve accessibility",
               "attribute": "clearTagText"
+            },
+            {
+              "kind": "method",
+              "name": "_chechForNewTag",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_isTagClickable",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -18214,7 +18230,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determine if Tag is clickable.",
+              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
               "fieldName": "clickable"
             },
             {
@@ -18223,7 +18239,7 @@
                 "text": "string"
               },
               "default": "'spruce'",
-              "description": "Color variants. Default spruce",
+              "description": "Color variants. Default `'spruce'`.",
               "fieldName": "tagColor"
             },
             {
