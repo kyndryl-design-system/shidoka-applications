@@ -16,7 +16,14 @@ export default {
       control: { type: 'select' },
     },
     status: {
-      options: ['success', 'error', 'warning', 'information', 'critical'],
+      options: [
+        'success',
+        'error',
+        'warning',
+        'information',
+        'critical',
+        'others',
+      ],
       control: { type: 'select' },
     },
   },
@@ -48,39 +55,15 @@ export const Badge = {
         status=${args.status}
         ?noTruncation=${args.noTruncation}
         iconTitle=${args.iconTitle}
-      ></kyn-badge>
-    `;
-  },
-};
-
-export const BadgeWithCustomIcon = {
-  args: {
-    ...args,
-    label: 'Badge with custom icon',
-    status: 'others',
-  },
-  argTypes: {
-    status: {
-      options: ['others'],
-      control: { type: 'select' },
-    },
-  },
-  render: (args) => {
-    return html`
-      <kyn-badge
-        label=${args.label}
-        size=${args.size}
-        status=${args.status}
-        type=${args.type}
-        ?noTruncation=${args.noTruncation}
+        >${args.status === 'others'
+          ? html`<span
+              style="display: flex;"
+              aria-labelledby="User icon"
+              aria-hidden="true"
+              >${unsafeSVG(userIcon)}</span
+            >`
+          : null}</kyn-badge
       >
-        <span
-          style="display: flex;"
-          aria-labelledby="User icon"
-          aria-hidden="true"
-          >${unsafeSVG(userIcon)}</span
-        >
-      </kyn-badge>
     `;
   },
 };
@@ -107,47 +90,15 @@ export const BadgeWithIconOnly = {
         status=${args.status}
         ?noTruncation=${args.noTruncation}
         iconTitle=${args.iconTitle}
-      ></kyn-badge>
-    `;
-  },
-};
-BadgeWithIconOnly.storyName = 'Badge with icon only - Preset';
-
-export const BadgeWithCustomIconOnly = {
-  args: {
-    ...args,
-    label: '',
-    status: 'others',
-  },
-  argTypes: {
-    label: {
-      control: false,
-    },
-    noTruncation: {
-      control: false,
-    },
-    status: {
-      options: ['others'],
-      control: { type: 'select' },
-    },
-  },
-  render: (args) => {
-    return html`
-      <kyn-badge
-        label=${args.label}
-        size=${args.size}
-        type=${args.type}
-        status=${args.status}
+        >${args.status === 'others'
+          ? html`<span
+              style="display: flex;"
+              aria-labelledby="User icon"
+              aria-hidden="true"
+              >${unsafeSVG(userIcon)}</span
+            >`
+          : null}</kyn-badge
       >
-        <span
-          style="display: flex;"
-          aria-labelledby="User icon"
-          aria-hidden="true"
-        >
-          ${unsafeSVG(userIcon)}
-        </span>
-      </kyn-badge>
     `;
   },
 };
-BadgeWithCustomIconOnly.storyName = 'Badge with icon only - Custom';
