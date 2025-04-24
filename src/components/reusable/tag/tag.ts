@@ -48,6 +48,7 @@ export class Tag extends LitElement {
 
   /**
    * Determine if Tag is clickable(applicable for old tags only).
+   * <br>
    * **NOTE**: New tags are **clickable** by **default**.
    */
   @property({ type: Boolean })
@@ -64,6 +65,10 @@ export class Tag extends LitElement {
    */
   @property({ type: String })
   clearTagText = 'Clear Tag';
+
+  override updated() {
+    this.label = this.label.trim();
+  }
 
   override render() {
     /* --------------------- DEPRECATED --------------------- */

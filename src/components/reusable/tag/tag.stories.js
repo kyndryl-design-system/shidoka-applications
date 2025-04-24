@@ -19,6 +19,7 @@ export default {
         'sea',
         'lilac',
         'ai',
+        /* To be removed after testing */
         'success',
         'grey',
         'interactive',
@@ -37,6 +38,7 @@ export default {
         'errorDark',
         'successDark',
         'criticalDark',
+        /* To be removed after testing */
       ],
       control: { type: 'select' },
     },
