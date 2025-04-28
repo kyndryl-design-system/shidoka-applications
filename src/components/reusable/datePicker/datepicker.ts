@@ -218,11 +218,6 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
-  /** Store submit event listener reference for cleanup
-   * @internal
-   */
-  private _submitListener: ((e: SubmitEvent) => void) | null = null;
-
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number

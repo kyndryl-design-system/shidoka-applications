@@ -628,3 +628,345 @@ export function emitValue(
     })
   );
 }
+
+export async function clearFlatpickrInput(
+  flatpickrInstance: Instance | undefined,
+  inputEl: HTMLInputElement | undefined,
+  updateCallback?: () => void
+): Promise<void> {
+  if (flatpickrInstance) {
+    flatpickrInstance.clear();
+  }
+
+  if (inputEl) {
+    inputEl.value = '';
+  }
+
+  if (updateCallback) {
+    await updateCallback();
+  }
+}
+
+export async function setupFlatpickr(
+  component: HTMLElement,
+  inputEl: HTMLInputElement,
+  getOptionsCallback: () => Promise<Partial<BaseOptions>>,
+  attributesCallback?: (instance: Instance) => void,
+  initialDatesCallback?: (instance: Instance) => void
+): Promise<Instance | undefined> {
+  if (!inputEl || !inputEl.isConnected) {
+    console.warn(
+      'Cannot initialize Flatpickr: input element not available or not connected to DOM'
+    );
+    return undefined;
+  }
+
+  try {
+    const instance = await initializeSingleAnchorFlatpickr({
+      inputEl,
+      getFlatpickrOptions: getOptionsCallback,
+      setCalendarAttributes: (instance) => {
+        try {
+          if (!instance?.calendarContainer) {
+            throw new Error('Calendar container not available');
+          }
+          const container = getModalContainer(component);
+          setCalendarAttributes(instance, container !== document.body);
+
+          if (attributesCallback) {
+            attributesCallback(instance);
+          }
+        } catch (error) {
+          console.warn('Error setting calendar attributes:', error);
+        }
+      },
+      setInitialDates: initialDatesCallback,
+    });
+
+    if (!instance) {
+      throw new Error('Failed to initialize Flatpickr instance');
+    }
+
+    hideEmptyYear();
+    return instance;
+  } catch (error) {
+    console.error('Error initializing Flatpickr:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+    }
+    return undefined;
+  }
+}
+
+export function createFlatpickrDebounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait = 100
+): (...args: Parameters<T>) => void {
+  let timeout: number | null = null;
+
+  return (...args: Parameters<T>) => {
+    if (timeout !== null) {
+      window.clearTimeout(timeout);
+    }
+
+    timeout = window.setTimeout(() => {
+      func(...args);
+      timeout = null;
+    }, wait);
+  };
+}
+
+export function validateDateTimeInput(
+  inputEl: HTMLInputElement | undefined,
+  internals: ElementInternals,
+  options: {
+    disabled: boolean;
+    required: boolean;
+    hasValue: boolean;
+    hasInteracted: boolean;
+    invalidText?: string;
+    defaultErrorMessage?: string;
+  }
+): { isValid: boolean; validationMessage: string } {
+  if (!inputEl || !(inputEl instanceof HTMLInputElement)) {
+    return { isValid: true, validationMessage: '' };
+  }
+
+  if (options.disabled) {
+    internals.setValidity({}, '', inputEl);
+    return { isValid: true, validationMessage: '' };
+  }
+
+  const isEmpty = !options.hasValue;
+  const isRequired = options.required;
+
+  let validity = inputEl.validity;
+  let validationMessage = inputEl.validationMessage;
+
+  if (isRequired && isEmpty) {
+    validity = { ...validity, valueMissing: true };
+    validationMessage = options.defaultErrorMessage || 'This field is required';
+  }
+
+  if (options.invalidText) {
+    validity = { ...validity, customError: true };
+    validationMessage = options.invalidText;
+  }
+
+  const isValid = !validity.valueMissing && !validity.customError;
+
+  if (!isValid && !validationMessage) {
+    validationMessage = 'Please provide a valid value';
+  }
+
+  internals.setValidity(validity, validationMessage, inputEl);
+
+  return {
+    isValid: isValid,
+    validationMessage: validationMessage,
+  };
+}
+
+export enum DateRangeEditableMode {
+  BOTH = 'both',
+  START = 'start',
+  END = 'end',
+  NONE = 'none',
+}
+
+export function addLockedDateStyles(): void {
+  const styleId = 'kyn-date-range-picker-locked-dates-style';
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      .flatpickr-locked-date {
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+      }
+      .flatpickr-locked-date:hover {
+        background: none !important;
+        border-color: transparent !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+export function createDateRangeLockingDayCreateHandler(
+  editableMode: string,
+  currentValue: [Date | null, Date | null]
+): (dObj: Date, dStr: string, fp: Instance, dayElem: HTMLElement) => void {
+  return (dayElem: any) => {
+    const currentDate = dayElem.dateObj;
+
+    if (editableMode === 'end' && currentValue[0] !== null) {
+      if (currentDate.getTime() <= currentValue[0].getTime()) {
+        if (currentDate.getTime() === currentValue[0].getTime()) {
+          dayElem.classList.add('flatpickr-locked-date');
+          dayElem.setAttribute('title', 'Start date is locked');
+        } else {
+          dayElem.classList.add('flatpickr-disabled');
+        }
+      }
+    } else if (editableMode === 'start' && currentValue[1] !== null) {
+      if (currentDate.getTime() >= currentValue[1].getTime()) {
+        if (currentDate.getTime() === currentValue[1].getTime()) {
+          dayElem.classList.add('flatpickr-locked-date');
+          dayElem.setAttribute('title', 'End date is locked');
+        } else {
+          dayElem.classList.add('flatpickr-disabled');
+        }
+      }
+    } else if (
+      editableMode === 'none' &&
+      currentValue[0] !== null &&
+      currentValue[1] !== null
+    ) {
+      if (
+        currentDate.getTime() === currentValue[0].getTime() ||
+        currentDate.getTime() === currentValue[1].getTime()
+      ) {
+        dayElem.classList.add('flatpickr-locked-date');
+        dayElem.setAttribute('title', 'Date is locked');
+      }
+    }
+  };
+}
+
+export function createDateRangeEditingChangeHandler(
+  editableMode: string,
+  currentValue: [Date | null, Date | null],
+  originalOnChange: Hook | Hook[]
+): (selectedDates: Date[], dateStr: string, instance: Instance) => void {
+  return (selectedDates: Date[], dateStr: string, instance: Instance) => {
+    if (
+      editableMode === 'none' &&
+      currentValue[0] !== null &&
+      currentValue[1] !== null
+    ) {
+      instance.setDate([currentValue[0], currentValue[1]], false);
+      return;
+    }
+
+    if (currentValue[0] === null && currentValue[1] === null) {
+      callOriginalOnChange(originalOnChange, selectedDates, dateStr, instance);
+      return;
+    }
+
+    if (editableMode === 'end' && currentValue[0] !== null) {
+      let modified = false;
+      let newDates = [...selectedDates];
+
+      if (
+        selectedDates.length === 2 &&
+        selectedDates[0].getTime() !== currentValue[0].getTime()
+      ) {
+        newDates[0] = currentValue[0];
+        modified = true;
+      } else if (selectedDates.length === 1) {
+        if (selectedDates[0].getTime() <= currentValue[0].getTime()) {
+          newDates = [currentValue[0], selectedDates[0]];
+        } else {
+          newDates = [currentValue[0], selectedDates[0]];
+        }
+        modified = true;
+      }
+
+      if (modified) {
+        instance.setDate(newDates, false);
+        callOriginalOnChange(
+          originalOnChange,
+          newDates,
+          instance.input.value,
+          instance
+        );
+        return;
+      }
+    }
+
+    if (editableMode === 'start' && currentValue[1] !== null) {
+      let modified = false;
+      let newDates = [...selectedDates];
+
+      if (
+        selectedDates.length === 2 &&
+        selectedDates[1].getTime() !== currentValue[1].getTime()
+      ) {
+        newDates[1] = currentValue[1];
+        modified = true;
+      } else if (selectedDates.length === 1) {
+        if (selectedDates[0].getTime() >= currentValue[1].getTime()) {
+          newDates = [selectedDates[0], currentValue[1]];
+        } else {
+          newDates = [selectedDates[0], currentValue[1]];
+        }
+        modified = true;
+      }
+
+      if (modified) {
+        instance.setDate(newDates, false);
+        callOriginalOnChange(
+          originalOnChange,
+          newDates,
+          instance.input.value,
+          instance
+        );
+        return;
+      }
+    }
+
+    callOriginalOnChange(originalOnChange, selectedDates, dateStr, instance);
+  };
+}
+
+function callOriginalOnChange(
+  originalOnChange: Hook | Hook[],
+  selectedDates: Date[],
+  dateStr: string,
+  instance: Instance
+): void {
+  if (typeof originalOnChange === 'function') {
+    originalOnChange(selectedDates, dateStr, instance);
+  } else if (Array.isArray(originalOnChange)) {
+    originalOnChange.forEach((hook) => {
+      if (typeof hook === 'function') {
+        hook(selectedDates, dateStr, instance);
+      }
+    });
+  }
+}
+
+export function applyDateRangeEditingRestrictions(
+  options: Partial<BaseOptions>,
+  editableMode: string,
+  currentValue: [Date | null, Date | null]
+): Partial<BaseOptions> {
+  const newOptions = { ...options };
+
+  if (editableMode === 'both') {
+    return newOptions;
+  }
+
+  console.log(
+    `Applying date range restrictions: mode=${editableMode}, currentValue=`,
+    currentValue
+  );
+
+  addLockedDateStyles();
+
+  const originalOnChange = newOptions.onChange;
+
+  newOptions.onDayCreate = createDateRangeLockingDayCreateHandler(
+    editableMode,
+    currentValue
+  ) as any;
+
+  newOptions.onChange = createDateRangeEditingChangeHandler(
+    editableMode,
+    currentValue,
+    originalOnChange || (() => {})
+  );
+
+  return newOptions;
+}

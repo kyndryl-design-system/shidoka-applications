@@ -20,6 +20,10 @@ export default {
     locale: { control: { type: 'text' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },
     readonly: { control: { type: 'boolean' } },
+    editableDateParts: {
+      options: ['both', 'start', 'end', 'none'],
+      control: { type: 'select' },
+    },
     dateFormat: {
       options: [
         'Y-m-d',
@@ -79,6 +83,7 @@ const Template = (args) => {
       .size=${args.size}
       ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
       ?readonly=${args.readonly}
+      .editableDateParts=${args.editableDateParts}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
@@ -158,7 +163,6 @@ WithDisabledDates.args = {
     'Example showing disabled dates (weekends and specific dates are disabled)',
   label: 'Date Range Selection',
   disable: [
-    // disable weekends
     function (date) {
       return date.getDay() === 0 || date.getDay() === 6;
     },
@@ -167,6 +171,34 @@ WithDisabledDates.args = {
     '2024-03-25',
   ],
 };
+
+export const ProjectPlanning_FixedDeadline = Template.bind({});
+ProjectPlanning_FixedDeadline.args = {
+  ...DateRangeDefault.args,
+  name: 'fixed-deadline-date-picker',
+  dateFormat: 'Y-m-d',
+  defaultDate: ['2024-05-01', '2024-05-15'],
+  caption:
+    'Use case: Project with fixed deadline where only the start date can be adjusted',
+  label: 'Flexible Start - Fixed Deadline',
+  editableDateParts: 'start',
+};
+ProjectPlanning_FixedDeadline.storyName =
+  'Project Planning - Fixed Deadline Date';
+
+export const ScheduleLockdown_BothDatesFixed = Template.bind({});
+ScheduleLockdown_BothDatesFixed.args = {
+  ...DateRangeDefault.args,
+  name: 'both-dates-fixed-picker',
+  dateFormat: 'Y-m-d',
+  defaultDate: ['2024-01-01', '2024-01-07'],
+  caption:
+    'Use case: Schedule lockdown where both dates are fixed after initial selection',
+  label: 'Fixed Date Range (View Only)',
+  editableDateParts: 'none',
+};
+ScheduleLockdown_BothDatesFixed.storyName =
+  'Schedule Lockdown - Both Dates Fixed';
 
 export const InModal = {
   args: {

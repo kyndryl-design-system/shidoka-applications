@@ -18,6 +18,7 @@ import {
   updateEnableTime,
   hideEmptyYear,
   getModalContainer,
+  applyDateRangeEditingRestrictions,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -121,6 +122,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
   /** Sets entire date range picker form element to readonly. */
   @property({ type: Boolean })
   readonly = false;
+
+  /** Controls which parts of the date range are editable.
+   * Possible values:
+   * - "both" (default): Both start and end dates can be edited
+   * - "start": Only the start date can be edited, end date is locked once set
+   * - "end": Only the end date can be edited, start date is locked once set
+   * - "none": Neither date can be edited once set (similar to readonly)
+   */
+  @property({ type: String })
+  editableDateParts: 'both' | 'start' | 'end' | 'none' = 'both';
 
   /** Sets 24-hour formatting true/false.
    * Defaults to 12H for all `en-` locales and 24H for all other locales.
@@ -891,6 +902,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
       noCalendar: false,
       static: this.staticPosition,
     });
+
+    if (this.editableDateParts !== 'both') {
+      return applyDateRangeEditingRestrictions(
+        options,
+        this.editableDateParts,
+        this.value
+      );
+    }
+
     return options;
   }
 
