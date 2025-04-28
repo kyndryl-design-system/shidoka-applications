@@ -396,7 +396,6 @@ export class Dropdown extends FormMixin(LitElement) {
                         role="listitem"
                         label=${tag.text}
                         ?disabled=${this.disabled}
-                        clearTagText="Clear Tag ${tag.text}"
                         @on-close=${() => this.handleTagClear(tag.value)}
                       ></kyn-tag>
                     `;
@@ -1032,8 +1031,7 @@ export class Dropdown extends FormMixin(LitElement) {
           const option = AllOptions.find(
             (option: any) => option.value === this.value
           );
-
-          this.text = option.textContent;
+          this.text = option.textContent.trim();
         }
 
         // set search input value
