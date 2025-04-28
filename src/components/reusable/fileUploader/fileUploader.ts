@@ -222,7 +222,13 @@ export class FileUploader extends FormMixin(LitElement) {
           </div>
         </div>
         <!-- File list -->
-        <div class="file-info-container">
+        <div
+          class=${classMap({
+            'file-info-container': true,
+            'border-and-padding':
+              this._validFiles.length > 0 || this._invalidFiles.length > 0,
+          })}
+        >
           <!-- Invalid files -->
           ${this._invalidFiles.length > 0
             ? html`
