@@ -3,14 +3,17 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import '../checkbox';
+import '../button';
 
 import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/check.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 import DropdownOptionScss from './dropdownOption.scss';
 
 /**
  * Dropdown option.
  * @fires on-click - Emits the option details to the parent dropdown.
+ * @fires on-remove - Emits the option that is removed.
  * @slot unnamed - Slot for option text.
  * @slot icon - Slot for option icon. Icon size should be 16px only.
  */
@@ -95,9 +98,33 @@ export class DropdownOption extends LitElement {
 
         ${this.selected && !this.multiple
           ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
-          : null}
+          : html`<kyn-button
+              class="remove-option"
+              kind="ghost"
+              size="small"
+              tabindex="0"
+              ?disabled=${this.disabled}
+              @click=${(e: Event) => this.handleRemoveClick(e)}
+              @mousedown=${(e: Event) => e.stopPropagation()}
+              @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
+              @focus=${(e: KeyboardEvent) => e.stopPropagation()}
+            >
+              <span slot="icon">${unsafeSVG(clearIcon)}</span>
+            </kyn-button>`}
       </li>
     `;
+  }
+
+  private handleRemoveClick(e: Event) {
+    e.stopPropagation();
+    const event = new CustomEvent('on-remove', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        value: this.value,
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   private handleSlotChange(e: any) {
