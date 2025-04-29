@@ -55,10 +55,10 @@ export class Badge extends LitElement {
   iconTitle = 'Icon title';
 
   /**
-   * Show icon. Default is `false`.
+   * Hide icon. Default is `false`.
    */
   @property({ type: Boolean })
-  showIcon = false;
+  hideIcon = false;
 
   /**
    * Determine if Badge is icon only.
@@ -88,7 +88,7 @@ export class Badge extends LitElement {
     };
 
     return html`<div class=${classMap(badgeClasses)} title=${this.label}>
-      ${this.showIcon
+      ${!this.hideIcon
         ? html`<slot>
             <span
               class="badge-icon"

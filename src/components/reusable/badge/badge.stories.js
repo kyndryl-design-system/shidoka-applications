@@ -42,7 +42,7 @@ const args = {
   status: 'success',
   noTruncation: false,
   iconTitle: 'Icon title',
-  showIcon: true,
+  hideIcon: false,
 };
 
 export const Badge = {
@@ -56,7 +56,7 @@ export const Badge = {
         status=${args.status}
         ?noTruncation=${args.noTruncation}
         iconTitle=${args.iconTitle}
-        ?showIcon=${args.showIcon}
+        ?hideIcon=${args.hideIcon}
         >${args.status === 'others'
           ? html`<span
               style="display: flex;"
@@ -82,7 +82,7 @@ export const BadgeWithIconOnly = {
     noTruncation: {
       control: false,
     },
-    showIcon: {
+    hideIcon: {
       control: false,
     },
   },
@@ -95,7 +95,6 @@ export const BadgeWithIconOnly = {
         status=${args.status}
         ?noTruncation=${args.noTruncation}
         iconTitle=${args.iconTitle}
-        ?showIcon=${true}
         >${args.status === 'others'
           ? html`<span
               style="display: flex;"
