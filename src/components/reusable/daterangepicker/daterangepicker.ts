@@ -881,6 +881,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     const container = getModalContainer(this);
+
     const options = await getFlatpickrOptions({
       locale: this.locale || 'en',
       dateFormat: this.dateFormat,
