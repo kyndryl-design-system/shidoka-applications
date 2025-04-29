@@ -234,7 +234,7 @@ export class Notification extends LitElement {
                 <span id="statusLabel">${this.statusLabel}</span>
                 <kyn-badge
                   type=${'heavy'}
-                  .showIcon=${false}
+                  ?showIcon=${false}
                   label=${this.textStrings[this.tagStatus]}
                   status=${this._badgeColor[this.tagStatus]}
                 ></kyn-badge>

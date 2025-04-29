@@ -95,6 +95,7 @@ export const BadgeWithIconOnly = {
         status=${args.status}
         ?noTruncation=${args.noTruncation}
         iconTitle=${args.iconTitle}
+        ?showIcon=${true}
         >${args.status === 'others'
           ? html`<span
               style="display: flex;"
