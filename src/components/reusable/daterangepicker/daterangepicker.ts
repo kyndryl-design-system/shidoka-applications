@@ -995,10 +995,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.flatpickrInstance?.close();
       return;
     }
-    if (!this._shouldFlatpickrOpen) {
-      this.flatpickrInstance?.close();
-      this._shouldFlatpickrOpen = true;
-    }
+
+    this._shouldFlatpickrOpen = true;
 
     this._isInvalid = false;
     this.requestUpdate();
@@ -1090,15 +1088,53 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private handleInputClickEvent() {
-    handleInputClick(this.setShouldFlatpickrOpen.bind(this));
+    try {
+      this._shouldFlatpickrOpen = true;
+
+      handleInputClick(this.setShouldFlatpickrOpen.bind(this));
+
+      if (
+        this.flatpickrInstance &&
+        !this.flatpickrInstance.isOpen &&
+        !this.readonly &&
+        !this.dateRangePickerDisabled
+      ) {
+        setTimeout(() => {
+          if (this.flatpickrInstance && !this.flatpickrInstance.isOpen) {
+            this.flatpickrInstance.open();
+          }
+        }, 0);
+      }
+    } catch (e) {
+      console.warn('Error handling input click event:', e);
+    }
   }
 
   private handleInputFocusEvent() {
-    handleInputFocus(
-      this._shouldFlatpickrOpen,
-      this.closeFlatpickr.bind(this),
-      this.setShouldFlatpickrOpen.bind(this)
-    );
+    try {
+      this._shouldFlatpickrOpen = true;
+
+      handleInputFocus(
+        this._shouldFlatpickrOpen,
+        this.closeFlatpickr.bind(this),
+        this.setShouldFlatpickrOpen.bind(this)
+      );
+
+      if (
+        this.flatpickrInstance &&
+        !this.flatpickrInstance.isOpen &&
+        !this.readonly &&
+        !this.dateRangePickerDisabled
+      ) {
+        setTimeout(() => {
+          if (this.flatpickrInstance && !this.flatpickrInstance.isOpen) {
+            this.flatpickrInstance.open();
+          }
+        }, 0);
+      }
+    } catch (e) {
+      console.warn('Error handling input focus event:', e);
+    }
   }
 
   private _validate(interacted: boolean, report: boolean) {

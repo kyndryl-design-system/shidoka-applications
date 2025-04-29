@@ -798,38 +798,88 @@ export function createDateRangeLockingDayCreateHandler(
   currentValue: [Date | null, Date | null]
 ): (dObj: Date, dStr: string, fp: Instance, dayElem: HTMLElement) => void {
   return (dayElem: any) => {
+    if (!dayElem || !dayElem.dateObj) {
+      return;
+    }
+
     const currentDate = dayElem.dateObj;
 
     if (editableMode === 'end' && currentValue[0] !== null) {
-      if (currentDate.getTime() <= currentValue[0].getTime()) {
+      if (
+        currentDate &&
+        currentValue[0] &&
+        currentDate.getTime() <= currentValue[0].getTime()
+      ) {
         if (currentDate.getTime() === currentValue[0].getTime()) {
           dayElem.classList.add('flatpickr-locked-date');
           dayElem.setAttribute('title', 'Start date is locked');
+          dayElem.setAttribute('locked', 'start');
+          dayElem.setAttribute('aria-readonly', 'true');
         } else {
+          dayElem.classList.add('flatpickr-locked-date');
           dayElem.classList.add('flatpickr-disabled');
+          dayElem.setAttribute('title', 'Date is not available');
         }
       }
     } else if (editableMode === 'start' && currentValue[1] !== null) {
-      if (currentDate.getTime() >= currentValue[1].getTime()) {
+      if (
+        currentDate &&
+        currentValue[1] &&
+        currentDate.getTime() >= currentValue[1].getTime()
+      ) {
         if (currentDate.getTime() === currentValue[1].getTime()) {
           dayElem.classList.add('flatpickr-locked-date');
           dayElem.setAttribute('title', 'End date is locked');
+          dayElem.setAttribute('locked', 'end');
+          dayElem.setAttribute('aria-readonly', 'true');
         } else {
+          dayElem.classList.add('flatpickr-locked-date');
           dayElem.classList.add('flatpickr-disabled');
+          dayElem.setAttribute('title', 'Date is not available');
         }
       }
     } else if (
       editableMode === 'none' &&
       currentValue[0] !== null &&
-      currentValue[1] !== null
+      currentValue[1] !== null &&
+      currentDate
     ) {
       if (
-        currentDate.getTime() === currentValue[0].getTime() ||
+        currentValue[0] &&
+        currentDate.getTime() === currentValue[0].getTime()
+      ) {
+        dayElem.classList.add('flatpickr-locked-date');
+        dayElem.setAttribute('title', 'Date is locked');
+        dayElem.setAttribute('locked', 'start');
+        dayElem.setAttribute('aria-readonly', 'true');
+      } else if (
+        currentValue[1] &&
         currentDate.getTime() === currentValue[1].getTime()
       ) {
         dayElem.classList.add('flatpickr-locked-date');
         dayElem.setAttribute('title', 'Date is locked');
+        dayElem.setAttribute('locked', 'end');
+        dayElem.setAttribute('aria-readonly', 'true');
+      } else if (
+        currentValue[0] &&
+        currentValue[1] &&
+        currentDate.getTime() > currentValue[0].getTime() &&
+        currentDate.getTime() < currentValue[1].getTime()
+      ) {
+        dayElem.classList.add('flatpickr-locked-date');
+        dayElem.setAttribute('title', 'Date is in selected range');
+      } else {
+        dayElem.classList.add('flatpickr-locked-date');
+        dayElem.classList.add('flatpickr-disabled');
+        dayElem.setAttribute('title', 'Date is not available');
       }
+    }
+
+    if (
+      dayElem.classList.contains('flatpickr-disabled') &&
+      !dayElem.classList.contains('flatpickr-locked-date')
+    ) {
+      dayElem.classList.add('flatpickr-locked-date');
     }
   };
 }
@@ -926,14 +976,22 @@ function callOriginalOnChange(
   dateStr: string,
   instance: Instance
 ): void {
-  if (typeof originalOnChange === 'function') {
-    originalOnChange(selectedDates, dateStr, instance);
-  } else if (Array.isArray(originalOnChange)) {
-    originalOnChange.forEach((hook) => {
-      if (typeof hook === 'function') {
-        hook(selectedDates, dateStr, instance);
-      }
-    });
+  try {
+    if (typeof originalOnChange === 'function') {
+      originalOnChange(selectedDates, dateStr, instance);
+    } else if (Array.isArray(originalOnChange)) {
+      originalOnChange.forEach((hook) => {
+        if (typeof hook === 'function') {
+          try {
+            hook(selectedDates, dateStr, instance);
+          } catch (e) {
+            console.warn('Error in onChange hook:', e);
+          }
+        }
+      });
+    }
+  } catch (e) {
+    console.warn('Error calling original onChange handler:', e);
   }
 }
 
@@ -948,25 +1006,26 @@ export function applyDateRangeEditingRestrictions(
     return newOptions;
   }
 
-  console.log(
-    `Applying date range restrictions: mode=${editableMode}, currentValue=`,
-    currentValue
-  );
-
   addLockedDateStyles();
 
   const originalOnChange = newOptions.onChange;
 
-  newOptions.onDayCreate = createDateRangeLockingDayCreateHandler(
-    editableMode,
-    currentValue
-  ) as any;
+  newOptions.clickOpens = true;
 
-  newOptions.onChange = createDateRangeEditingChangeHandler(
-    editableMode,
-    currentValue,
-    originalOnChange || (() => {})
-  );
+  try {
+    newOptions.onDayCreate = createDateRangeLockingDayCreateHandler(
+      editableMode,
+      currentValue
+    ) as any;
+
+    newOptions.onChange = createDateRangeEditingChangeHandler(
+      editableMode,
+      currentValue,
+      originalOnChange || (() => {})
+    );
+  } catch (e) {
+    console.warn('Error setting up date range editing restrictions:', e);
+  }
 
   return newOptions;
 }
