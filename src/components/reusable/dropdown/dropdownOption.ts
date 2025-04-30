@@ -13,7 +13,7 @@ import DropdownOptionScss from './dropdownOption.scss';
 /**
  * Dropdown option.
  * @fires on-click - Emits the option details to the parent dropdown.
- * @fires on-remove - Emits the option that is removed.
+ * @fires on-remove-option - Emits the option that is removed.
  * @slot unnamed - Slot for option text.
  * @slot icon - Slot for option icon. Icon size should be 16px only.
  */
@@ -34,6 +34,10 @@ export class DropdownOption extends LitElement {
   /** Option disabled state. */
   @property({ type: Boolean })
   disabled = false;
+
+  /** Allow Add Option state, derived from parent. */
+  @property({ type: Boolean })
+  allowAddOption = false;
 
   /**
    * Option highlighted state for keyboard navigation, automatically derived.
@@ -98,7 +102,8 @@ export class DropdownOption extends LitElement {
 
         ${this.selected && !this.multiple
           ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
-          : html`<kyn-button
+          : this.allowAddOption
+          ? html`<kyn-button
               class="remove-option"
               kind="ghost"
               size="small"
@@ -110,14 +115,15 @@ export class DropdownOption extends LitElement {
               @focus=${(e: KeyboardEvent) => e.stopPropagation()}
             >
               <span slot="icon">${unsafeSVG(clearIcon)}</span>
-            </kyn-button>`}
+            </kyn-button>`
+          : null}
       </li>
     `;
   }
 
   private handleRemoveClick(e: Event) {
     e.stopPropagation();
-    const event = new CustomEvent('on-remove', {
+    const event = new CustomEvent('on-remove-option', {
       bubbles: true,
       composed: true,
       detail: {

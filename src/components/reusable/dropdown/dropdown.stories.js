@@ -1,3 +1,4 @@
+import { useArgs } from '@storybook/preview-api';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
@@ -50,7 +51,10 @@ const args = {
 };
 
 export const Single = {
-  args: args,
+  args: {
+    ...args,
+    allowAddOption: false,
+  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -68,6 +72,7 @@ export const Single = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
+        .allowAddOption=${args.allowAddOption}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -348,6 +353,90 @@ export const DataDrivenOptions = {
         ${items.map((item) => {
           return html`
             <kyn-dropdown-option value=${item.value} ?disabled=${item.disabled}>
+              <span slot="icon">${unsafeSVG(infoIcon)}</span>
+              ${item.text}
+            </kyn-dropdown-option>
+          `;
+        })}
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const AddNewOption = {
+  args: {
+    ...args,
+    value: initialSelectedValues,
+    allowAddOption: true,
+    items: items,
+    dropdownItems: items,
+  },
+  render: (args) => {
+    const [{ dropdownItems }, updateArgs] = useArgs();
+    let selectedValues = args.value || [];
+
+    const handleChange = (e) => {
+      selectedValues = e.detail.value;
+      action(e.type)(e);
+    };
+    const handleAddOption = (e, dropdownItems) => {
+      const newOption = {
+        value: e.detail.value,
+        text: e.detail.value,
+      };
+
+      updateArgs({
+        dropdownItems: [...dropdownItems, newOption], // Create a new array with the new option
+      });
+    };
+    const handleRemoveOption = (e, dropdownItems) => {
+      const removedOption = e.detail.value;
+      const newOption = dropdownItems.filter(
+        (item) => item.value !== removedOption
+      );
+      action(e.type)(e);
+
+      updateArgs({
+        dropdownItems: [...newOption], // Create a new array with the new option
+      });
+    };
+    return html`
+      <kyn-dropdown
+        label=${args.label}
+        multiple
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        ?hideTags=${args.hideTags}
+        name=${args.name}
+        ?open=${args.open}
+        ?hideLabel=${args.hideLabel}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        .value=${selectedValues}
+        .allowAddOption=${args.allowAddOption}
+        @on-change=${handleChange}
+        @on-add-option=${(e) => {
+          handleAddOption(e, dropdownItems);
+          action(e.type)(e);
+        }}
+      >
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
+
+        ${dropdownItems.map((item) => {
+          return html`
+            <kyn-dropdown-option
+              value=${item.value}
+              ?disabled=${item.disabled}
+              @on-remove-option=${(e) => handleRemoveOption(e, dropdownItems)}
+            >
               <span slot="icon">${unsafeSVG(infoIcon)}</span>
               ${item.text}
             </kyn-dropdown-option>

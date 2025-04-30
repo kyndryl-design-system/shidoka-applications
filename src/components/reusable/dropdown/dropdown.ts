@@ -36,7 +36,6 @@ const _defaultTextStrings = {
  * @fires on-search - Capture the search input event and emits the search text.
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
  * @fires on-add-option - Captures the add button click and emits the newly added option.
- * @fires on-remove-option - Captures the remove button click event and emits the value of the option that is removed.
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
  * @slot unnamed - Slot for dropdown options.
  * @slot tooltip - Slot for tooltip.
@@ -124,6 +123,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Text string customization. */
   @property({ type: Object })
   textStrings = _defaultTextStrings;
+
+  /** Enables the "Add New Option" feature. */
+  @property({ type: Boolean })
+  allowAddOption = false;
 
   /** Internal text strings.
    * @internal
@@ -350,25 +353,27 @@ export class Dropdown extends FormMixin(LitElement) {
               @blur=${(e: any) => this.handleListBlur(e)}
             >
               <!-- Add New Option -->
-              <li class="add-option">
-                <input
-                  class="add-option-input"
-                  type="text"
-                  placeholder=${this._textStrings.addItem}
-                  .value=${this.newOptionValue}
-                  @input=${(e: any) => this._handleInputNewOption(e)}
-                  @mousedown=${(e: Event) => e.stopPropagation()}
-                  @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
-                  @focus=${(e: KeyboardEvent) => e.stopPropagation()}
-                />
-                <kyn-button
-                  kind="secondary"
-                  size="small"
-                  @click=${() => this._handleAddOption()}
-                >
-                  ${this._textStrings.add}
-                </kyn-button>
-              </li>
+              ${this.allowAddOption
+                ? html` <li class="add-option">
+                    <input
+                      class="add-option-input"
+                      type="text"
+                      placeholder=${this._textStrings.addItem}
+                      .value=${this.newOptionValue}
+                      @input=${(e: any) => this._handleInputNewOption(e)}
+                      @mousedown=${(e: Event) => e.stopPropagation()}
+                      @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
+                      @focus=${(e: KeyboardEvent) => e.stopPropagation()}
+                    />
+                    <kyn-button
+                      kind="secondary"
+                      size="small"
+                      @click=${() => this._handleAddOption()}
+                    >
+                      ${this._textStrings.add}
+                    </kyn-button>
+                  </li>`
+                : null}
               ${this.multiple && this.selectAll
                 ? html`
                     <kyn-dropdown-option
@@ -490,7 +495,21 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSlotChange() {
+    this.updateChildOptions();
     this._updateOptions();
+  }
+
+  private updateChildOptions() {
+    // Get all slotted kyn-dropdown-option elements
+    const slot = this.shadowRoot?.querySelector('#children') as HTMLSlotElement;
+    const options = slot.assignedElements({ flatten: true }) as HTMLElement[];
+
+    // Pass allowAddOption to each kyn-dropdown-option
+    options.forEach((option) => {
+      if (option.tagName === 'KYN-DROPDOWN-OPTION') {
+        (option as any).allowAddOption = this.allowAddOption;
+      }
+    });
   }
 
   private handleClick() {
@@ -758,10 +777,10 @@ export class Dropdown extends FormMixin(LitElement) {
   private handleButtonBlur(e: any) {
     // don't blur if entering listbox or search input
     if (
-      e.relatedTarget.localName !== 'kyn-dropdown-option' &&
+      e.relatedTarget?.localName !== 'kyn-dropdown-option' &&
       !e.relatedTarget?.classList.contains('options') &&
       !e.relatedTarget?.classList.contains('search') &&
-      !e.relatedTarget.closest('.add-option')
+      !e.relatedTarget?.closest('.add-option')
     ) {
       this.open = false;
     }
@@ -772,10 +791,10 @@ export class Dropdown extends FormMixin(LitElement) {
     // don't blur if entering listbox of button
     if (
       !e.relatedTarget ||
-      (e.relatedTarget.localName !== 'kyn-dropdown-option' &&
+      (e.relatedTarget?.localName !== 'kyn-dropdown-option' &&
         !e.relatedTarget?.classList.contains('options') &&
         !e.relatedTarget?.classList.contains('select') &&
-        !e.relatedTarget.closest('.add-option'))
+        !e.relatedTarget?.closest('.add-option'))
     ) {
       this.open = false;
     }
@@ -908,7 +927,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     if (
       !relatedTarget ||
-      (relatedTarget.localName !== 'kyn-dropdown-option' &&
+      (relatedTarget?.localName !== 'kyn-dropdown-option' &&
         relatedTarget.localName !== 'kyn-dropdown')
     ) {
       this.open = false;
@@ -931,7 +950,9 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // capture child options click event
     this.addEventListener('on-click', (e: any) => this._handleClick(e));
-    this.addEventListener('on-remove', (e: any) => this._handleRemoveOption(e));
+    this.addEventListener('on-remove-option', (e: any) =>
+      this._handleRemoveOption(e)
+    );
 
     // capture child options blur event
     this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
@@ -943,7 +964,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     document.removeEventListener('click', (e) => this._handleClickOut(e));
     this.removeEventListener('on-click', (e: any) => this._handleClick(e));
-    this.removeEventListener('on-remove', (e: any) =>
+    this.removeEventListener('on-remove-option', (e: any) =>
       this._handleRemoveOption(e)
     );
     this.removeEventListener('on-blur', (e: any) => this._handleBlur(e));
@@ -1121,6 +1142,10 @@ export class Dropdown extends FormMixin(LitElement) {
     if (changedProps.has('searchText') && this.searchEl) {
       this.searchEl.value = this.searchText;
     }
+
+    if (changedProps.has('allowAddOption')) {
+      this.updateChildOptions();
+    }
   }
 
   // add selected options to Tags array
@@ -1176,18 +1201,14 @@ export class Dropdown extends FormMixin(LitElement) {
         detail: { value: this.newOptionValue },
       });
       this.dispatchEvent(event);
-      console.log('option added : ', this.newOptionValue);
+      console.log('Option added : ', this.newOptionValue);
       this.newOptionValue = '';
     }
     this.open = false;
   }
 
   private _handleRemoveOption(e: any) {
-    const event = new CustomEvent('on-remove-option', {
-      detail: { value: e.detail.value },
-    });
-    this.dispatchEvent(event);
-    console.log('option removed : ', e.detail.value);
+    console.log('Option removed : ', e.detail.value);
     this.open = false;
   }
 }
