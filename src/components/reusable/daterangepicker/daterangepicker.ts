@@ -363,6 +363,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
           @click=${this.preventFlatpickrOpen}
           aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
           id=${`label-${anchorId}`}
+          tabindex="0"
+          role="button"
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.preventFlatpickrOpen(e);
+            }
+          }}
         >
           ${this.required
             ? html`<abbr
@@ -415,6 +423,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
             : html`<span
                 class="input-icon
                 ${this.dateRangePickerDisabled ? 'is-disabled' : ''}"
+                tabindex="0"
+                role="button"
+                aria-label="Open calendar"
+                @keydown=${(e: KeyboardEvent) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.handleInputClickEvent();
+                  }
+                }}
+                @click=${this.handleInputClickEvent}
                 >${unsafeSVG(calendarIcon)}</span
               >`}
         </div>
@@ -426,6 +444,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
               aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
+              tabindex="0"
+              role="button"
+              @keydown=${(e: KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  this.preventFlatpickrOpen(e);
+                }
+              }}
             >
               ${this.caption}
             </div>`
@@ -452,6 +478,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
             class="error-icon"
             aria-label=${this.errorAriaLabel || 'Error message icon'}
             role="button"
+            tabindex="0"
+            @keydown=${(e: KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.preventFlatpickrOpen(e);
+              }
+            }}
           >
             ${unsafeSVG(errorIcon)}
           </span>

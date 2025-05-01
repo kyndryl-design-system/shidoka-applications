@@ -306,6 +306,14 @@ export class DatePicker extends FormMixin(LitElement) {
           @click=${this.preventFlatpickrOpen}
           ?disabled=${this.datePickerDisabled}
           id=${`label-${anchorId}`}
+          tabindex="0"
+          role="button"
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.preventFlatpickrOpen(e);
+            }
+          }}
         >
           ${this.required
             ? html`<abbr
@@ -359,6 +367,16 @@ export class DatePicker extends FormMixin(LitElement) {
                 class="input-icon ${this.datePickerDisabled
                   ? 'is-disabled'
                   : ''}"
+                tabindex="0"
+                role="button"
+                aria-label="Open calendar"
+                @keydown=${(e: KeyboardEvent) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.handleInputClickEvent();
+                  }
+                }}
+                @click=${this.handleInputClickEvent}
                 >${unsafeSVG(calendarIcon)}</span
               >`}
         </div>
@@ -370,6 +388,14 @@ export class DatePicker extends FormMixin(LitElement) {
               aria-disabled=${this.datePickerDisabled}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
+              tabindex="0"
+              role="button"
+              @keydown=${(e: KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  this.preventFlatpickrOpen(e);
+                }
+              }}
             >
               ${this.caption}
             </div>`
@@ -395,6 +421,13 @@ export class DatePicker extends FormMixin(LitElement) {
           class="error-icon"
           aria-label=${`${this.errorAriaLabel}` || 'Error message icon'}
           role="button"
+          tabindex="0"
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.preventFlatpickrOpen(e);
+            }
+          }}
           >${unsafeSVG(errorIcon)}</span
         >${this.invalidText ||
         this._internalValidationMsg ||
