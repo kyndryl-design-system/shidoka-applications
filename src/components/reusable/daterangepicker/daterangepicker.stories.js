@@ -20,7 +20,7 @@ export default {
     locale: { control: { type: 'text' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },
     readonly: { control: { type: 'boolean' } },
-    editableDateParts: {
+    rangeEditMode: {
       options: ['both', 'start', 'end', 'none'],
       control: { type: 'select' },
     },
@@ -83,7 +83,7 @@ const Template = (args) => {
       .size=${args.size}
       ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
       ?readonly=${args.readonly}
-      .editableDateParts=${args.editableDateParts}
+      .rangeEditMode=${args.rangeEditMode}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
@@ -181,7 +181,7 @@ ProjectPlanning_FixedDeadline.args = {
   caption:
     'Use case: Project with fixed deadline where only the start date can be adjusted',
   label: 'Flexible Start - Fixed Deadline',
-  editableDateParts: 'start',
+  rangeEditMode: 'start',
 };
 ProjectPlanning_FixedDeadline.storyName =
   'Project Planning - Fixed Deadline Date';
@@ -195,7 +195,7 @@ ScheduleLockdown_BothDatesFixed.args = {
   caption:
     'Use case: Schedule lockdown where both dates are fixed after initial selection',
   label: 'Fixed Date Range (View Only)',
-  editableDateParts: 'none',
+  rangeEditMode: 'none',
 };
 ScheduleLockdown_BothDatesFixed.storyName =
   'Schedule Lockdown - Both Dates Fixed';

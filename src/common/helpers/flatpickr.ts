@@ -793,84 +793,71 @@ export function addLockedDateStyles(): void {
   }
 }
 
-export function createDateRangeLockingDayCreateHandler(
-  editableMode: string,
+export function createDateRangeDayLockHandler(
+  editableMode: DateRangeEditableMode,
   currentValue: [Date | null, Date | null]
-): (dObj: Date, dStr: string, fp: Instance, dayElem: HTMLElement) => void {
-  return (dayElem: any) => {
-    if (!dayElem || !dayElem.dateObj) {
-      return;
-    }
-
+): (
+  dObj: Date,
+  dStr: string,
+  fp: Instance,
+  dayElem: HTMLElement & { dateObj: Date }
+) => void {
+  return (_dObj, _dStr, _fp, dayElem: HTMLElement & { dateObj: Date }) => {
     const currentDate = dayElem.dateObj;
 
-    if (editableMode === 'end' && currentValue[0] !== null) {
-      if (
-        currentDate &&
-        currentValue[0] &&
-        currentDate.getTime() <= currentValue[0].getTime()
-      ) {
+    if (
+      editableMode === DateRangeEditableMode.END &&
+      currentValue[0] !== null
+    ) {
+      if (currentDate.getTime() <= currentValue[0].getTime()) {
         if (currentDate.getTime() === currentValue[0].getTime()) {
           dayElem.classList.add('flatpickr-locked-date');
           dayElem.setAttribute('title', 'Start date is locked');
           dayElem.setAttribute('locked', 'start');
           dayElem.setAttribute('aria-readonly', 'true');
         } else {
-          dayElem.classList.add('flatpickr-locked-date');
-          dayElem.classList.add('flatpickr-disabled');
+          dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
           dayElem.setAttribute('title', 'Date is not available');
         }
       }
-    } else if (editableMode === 'start' && currentValue[1] !== null) {
-      if (
-        currentDate &&
-        currentValue[1] &&
-        currentDate.getTime() >= currentValue[1].getTime()
-      ) {
+    } else if (
+      editableMode === DateRangeEditableMode.START &&
+      currentValue[1] !== null
+    ) {
+      if (currentDate.getTime() >= currentValue[1].getTime()) {
         if (currentDate.getTime() === currentValue[1].getTime()) {
           dayElem.classList.add('flatpickr-locked-date');
           dayElem.setAttribute('title', 'End date is locked');
           dayElem.setAttribute('locked', 'end');
           dayElem.setAttribute('aria-readonly', 'true');
         } else {
-          dayElem.classList.add('flatpickr-locked-date');
-          dayElem.classList.add('flatpickr-disabled');
+          dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
           dayElem.setAttribute('title', 'Date is not available');
         }
       }
     } else if (
-      editableMode === 'none' &&
+      editableMode === DateRangeEditableMode.NONE &&
       currentValue[0] !== null &&
-      currentValue[1] !== null &&
-      currentDate
+      currentValue[1] !== null
     ) {
-      if (
-        currentValue[0] &&
-        currentDate.getTime() === currentValue[0].getTime()
-      ) {
+      if (currentDate.getTime() === currentValue[0].getTime()) {
         dayElem.classList.add('flatpickr-locked-date');
         dayElem.setAttribute('title', 'Date is locked');
         dayElem.setAttribute('locked', 'start');
         dayElem.setAttribute('aria-readonly', 'true');
-      } else if (
-        currentValue[1] &&
-        currentDate.getTime() === currentValue[1].getTime()
-      ) {
+      } else if (currentDate.getTime() === currentValue[1].getTime()) {
         dayElem.classList.add('flatpickr-locked-date');
         dayElem.setAttribute('title', 'Date is locked');
         dayElem.setAttribute('locked', 'end');
         dayElem.setAttribute('aria-readonly', 'true');
       } else if (
-        currentValue[0] &&
-        currentValue[1] &&
         currentDate.getTime() > currentValue[0].getTime() &&
         currentDate.getTime() < currentValue[1].getTime()
       ) {
         dayElem.classList.add('flatpickr-locked-date');
         dayElem.setAttribute('title', 'Date is in selected range');
       } else {
-        dayElem.classList.add('flatpickr-locked-date');
-        dayElem.classList.add('flatpickr-disabled');
+        dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
         dayElem.setAttribute('title', 'Date is not available');
       }
     }
@@ -884,14 +871,14 @@ export function createDateRangeLockingDayCreateHandler(
   };
 }
 
-export function createDateRangeEditingChangeHandler(
-  editableMode: string,
+export function createDateRangeChangeLockHandler(
+  editableMode: DateRangeEditableMode,
   currentValue: [Date | null, Date | null],
   originalOnChange: Hook | Hook[]
 ): (selectedDates: Date[], dateStr: string, instance: Instance) => void {
-  return (selectedDates: Date[], dateStr: string, instance: Instance) => {
+  return (selectedDates, dateStr, instance) => {
     if (
-      editableMode === 'none' &&
+      editableMode === DateRangeEditableMode.NONE &&
       currentValue[0] !== null &&
       currentValue[1] !== null
     ) {
@@ -904,9 +891,12 @@ export function createDateRangeEditingChangeHandler(
       return;
     }
 
-    if (editableMode === 'end' && currentValue[0] !== null) {
+    if (
+      editableMode === DateRangeEditableMode.END &&
+      currentValue[0] !== null
+    ) {
       let modified = false;
-      let newDates = [...selectedDates];
+      const newDates = [...selectedDates];
 
       if (
         selectedDates.length === 2 &&
@@ -915,11 +905,7 @@ export function createDateRangeEditingChangeHandler(
         newDates[0] = currentValue[0];
         modified = true;
       } else if (selectedDates.length === 1) {
-        if (selectedDates[0].getTime() <= currentValue[0].getTime()) {
-          newDates = [currentValue[0], selectedDates[0]];
-        } else {
-          newDates = [currentValue[0], selectedDates[0]];
-        }
+        newDates.splice(0, 0, currentValue[0]);
         modified = true;
       }
 
@@ -935,9 +921,12 @@ export function createDateRangeEditingChangeHandler(
       }
     }
 
-    if (editableMode === 'start' && currentValue[1] !== null) {
+    if (
+      editableMode === DateRangeEditableMode.START &&
+      currentValue[1] !== null
+    ) {
       let modified = false;
-      let newDates = [...selectedDates];
+      const newDates = [...selectedDates];
 
       if (
         selectedDates.length === 2 &&
@@ -946,11 +935,7 @@ export function createDateRangeEditingChangeHandler(
         newDates[1] = currentValue[1];
         modified = true;
       } else if (selectedDates.length === 1) {
-        if (selectedDates[0].getTime() >= currentValue[1].getTime()) {
-          newDates = [selectedDates[0], currentValue[1]];
-        } else {
-          newDates = [selectedDates[0], currentValue[1]];
-        }
+        newDates.push(currentValue[1]);
         modified = true;
       }
 
@@ -997,12 +982,12 @@ function callOriginalOnChange(
 
 export function applyDateRangeEditingRestrictions(
   options: Partial<BaseOptions>,
-  editableMode: string,
+  editableMode: DateRangeEditableMode,
   currentValue: [Date | null, Date | null]
 ): Partial<BaseOptions> {
   const newOptions = { ...options };
 
-  if (editableMode === 'both') {
+  if (editableMode === DateRangeEditableMode.BOTH) {
     return newOptions;
   }
 
@@ -1013,12 +998,12 @@ export function applyDateRangeEditingRestrictions(
   newOptions.clickOpens = true;
 
   try {
-    newOptions.onDayCreate = createDateRangeLockingDayCreateHandler(
+    newOptions.onDayCreate = createDateRangeDayLockHandler(
       editableMode,
       currentValue
     ) as any;
 
-    newOptions.onChange = createDateRangeEditingChangeHandler(
+    newOptions.onChange = createDateRangeChangeLockHandler(
       editableMode,
       currentValue,
       originalOnChange || (() => {})

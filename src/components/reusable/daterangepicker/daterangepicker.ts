@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { langsArray } from '../../../common/flatpickrLangs';
+import { DateRangeEditableMode } from '../../../common/helpers/flatpickr';
 import {
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
@@ -131,7 +132,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * - "none": Neither date can be edited once set (similar to readonly)
    */
   @property({ type: String })
-  editableDateParts: 'both' | 'start' | 'end' | 'none' = 'both';
+  rangeEditMode: DateRangeEditableMode = DateRangeEditableMode.BOTH;
 
   /** Sets 24-hour formatting true/false.
    * Defaults to 12H for all `en-` locales and 24H for all other locales.
@@ -929,10 +930,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       static: this.staticPosition,
     });
 
-    if (this.editableDateParts !== 'both') {
+    if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
       return applyDateRangeEditingRestrictions(
         options,
-        this.editableDateParts,
+        this.rangeEditMode,
         this.value
       );
     }
