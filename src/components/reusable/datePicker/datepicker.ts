@@ -306,14 +306,6 @@ export class DatePicker extends FormMixin(LitElement) {
           @click=${this.preventFlatpickrOpen}
           ?disabled=${this.datePickerDisabled}
           id=${`label-${anchorId}`}
-          tabindex="0"
-          role="button"
-          @keydown=${(e: KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              this.preventFlatpickrOpen(e);
-            }
-          }}
         >
           ${this.required
             ? html`<abbr

@@ -363,14 +363,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
           @click=${this.preventFlatpickrOpen}
           aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
           id=${`label-${anchorId}`}
-          tabindex="0"
-          role="button"
-          @keydown=${(e: KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              this.preventFlatpickrOpen(e);
-            }
-          }}
         >
           ${this.required
             ? html`<abbr
