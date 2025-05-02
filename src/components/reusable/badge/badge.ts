@@ -55,6 +55,12 @@ export class Badge extends LitElement {
   iconTitle = 'Icon title';
 
   /**
+   * Hide icon. Default is `false`.
+   */
+  @property({ type: Boolean })
+  hideIcon = false;
+
+  /**
    * Determine if Badge is icon only.
    * @internal
    */
@@ -82,15 +88,17 @@ export class Badge extends LitElement {
     };
 
     return html`<div class=${classMap(badgeClasses)} title=${this.label}>
-      <slot>
-        <span
-          class="badge-icon"
-          aria-labelledby=${this.iconTitle}
-          aria-hidden="true"
-        >
-          ${unsafeSVG(this._getStatusIcon())}
-        </span>
-      </slot>
+      ${!this.hideIcon
+        ? html`<slot>
+            <span
+              class="badge-icon"
+              aria-labelledby=${this.iconTitle}
+              aria-hidden="true"
+            >
+              ${unsafeSVG(this._getStatusIcon())}
+            </span>
+          </slot>`
+        : ''}
       ${!this._iconOnly
         ? html`<span class="badge-label">${this.label}</span>`
         : ''}
