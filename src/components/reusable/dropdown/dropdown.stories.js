@@ -57,6 +57,11 @@ export const Single = {
   },
   render: (args) => {
     return html`
+      <style>
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -383,6 +388,7 @@ export const AddNewOption = {
       const newOption = {
         value: e.detail.value,
         text: e.detail.value,
+        removable: true,
       };
 
       updateArgs({
@@ -401,6 +407,11 @@ export const AddNewOption = {
       });
     };
     return html`
+      <style>
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
       <kyn-dropdown
         label=${args.label}
         multiple
@@ -418,6 +429,8 @@ export const AddNewOption = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         .value=${selectedValues}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         .allowAddOption=${args.allowAddOption}
         @on-change=${handleChange}
         @on-add-option=${(e) => {
@@ -435,6 +448,7 @@ export const AddNewOption = {
             <kyn-dropdown-option
               value=${item.value}
               ?disabled=${item.disabled}
+              ?removable=${item.removable}
               @on-remove-option=${(e) => handleRemoveOption(e, dropdownItems)}
             >
               <span slot="icon">${unsafeSVG(infoIcon)}</span>

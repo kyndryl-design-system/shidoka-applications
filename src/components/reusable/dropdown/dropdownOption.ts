@@ -52,6 +52,10 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean })
   multiple = false;
 
+  /** Removable option. */
+  @property({ type: Boolean })
+  removable = false;
+
   /**
    * Option text, automatically derived.
    * @ignore
@@ -102,19 +106,22 @@ export class DropdownOption extends LitElement {
 
         ${this.selected && !this.multiple
           ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
-          : this.allowAddOption
+          : this.allowAddOption && this.removable
           ? html`<kyn-button
               class="remove-option"
               kind="ghost"
               size="small"
               tabindex="0"
+              aria-label="Remove  ${this.text}"
               ?disabled=${this.disabled}
               @click=${(e: Event) => this.handleRemoveClick(e)}
               @mousedown=${(e: Event) => e.stopPropagation()}
               @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
               @focus=${(e: KeyboardEvent) => e.stopPropagation()}
             >
-              <span slot="icon">${unsafeSVG(clearIcon)}</span>
+              <span slot="icon" class="clear-icon"
+                >${unsafeSVG(clearIcon)}</span
+              >
             </kyn-button>`
           : null}
       </li>

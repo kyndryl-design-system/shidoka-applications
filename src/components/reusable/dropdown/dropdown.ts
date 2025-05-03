@@ -572,9 +572,10 @@ export class Dropdown extends FormMixin(LitElement) {
     const ESCAPE_KEY_CODE = 27;
 
     // get highlighted element + index and selected element
-    const visibleOptions = this.options.filter(
-      (option: any) => option.style.display !== 'none'
-    );
+    const visibleOptions = [
+      ...Array.from(this.shadowRoot?.querySelectorAll('.select-all') || []),
+      ...this.options.filter((option: any) => option.style.display !== 'none'),
+    ];
     const highlightedEl = visibleOptions.find(
       (option: any) => option.highlighted
     );
@@ -627,25 +628,19 @@ export class Dropdown extends FormMixin(LitElement) {
           if (this.multiple) {
             visibleOptions[highlightedIndex].selected =
               !visibleOptions[highlightedIndex].selected;
-            if (visibleOptions[highlightedIndex].selected) {
-              this.assistiveText = `Selected ${visibleOptions[highlightedIndex].innerHTML}`;
-            } else {
-              this.assistiveText = `Deselected ${visibleOptions[highlightedIndex].innerHTML}`;
-            }
+            this._handleClick({
+              detail: {
+                value: visibleOptions[highlightedIndex].value,
+                selected: visibleOptions[highlightedIndex].selected,
+              },
+            });
           } else {
             visibleOptions.forEach((e) => (e.selected = false));
             visibleOptions[highlightedIndex].selected = true;
             this.open = false;
-            this.assistiveText = `Selected ${visibleOptions[highlightedIndex].innerHTML}`;
+            this.assistiveText = `Selected ${visibleOptions[highlightedIndex].value}`;
           }
         }
-        if (highlightedEl && isListboxElOpened)
-          this.updateValue(
-            visibleOptions[highlightedIndex].value,
-            visibleOptions[highlightedIndex].selected
-          );
-
-        this.emitValue();
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
@@ -908,7 +903,9 @@ export class Dropdown extends FormMixin(LitElement) {
       this._validate(true, false);
     } else {
       this.updateValue(e.detail.value, e.detail.selected);
-      this.assistiveText = 'Selected an item.';
+      this.assistiveText = e.detail.selected
+        ? `Selected ${e.detail.value}`
+        : `Deselected ${e.detail.value}`;
     }
 
     this._updateSelectedOptions();
