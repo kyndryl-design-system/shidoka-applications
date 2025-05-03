@@ -14,7 +14,7 @@ import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
 
-import '../tag';
+import '../badge';
 /**
  * Notification component.
  * @slot unnamed - Slot for notification message body.
@@ -48,7 +48,7 @@ export class Notification extends LitElement {
 
   /** Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`. */
   @property({ type: String })
-  tagStatus = 'default';
+  tagStatus = 'default'; // Need to change the name to badgeStatus, once old tags are removed.
 
   /** Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel */
   @property({ type: String })
@@ -59,7 +59,7 @@ export class Notification extends LitElement {
   textStrings: any = {
     success: 'Success',
     warning: 'Warning',
-    info: 'Info',
+    info: 'Information',
     error: 'Error',
   };
 
@@ -85,14 +85,14 @@ export class Notification extends LitElement {
   @property({ type: String })
   statusLabel = 'Status';
 
-  /** Set tagColor based on provided tagStatus.
+  /** Set badgeColor based on provided tagStatus.
    * @internal
    */
   @state()
-  _tagColor: any = {
+  _badgeColor: any = {
     success: 'success',
     warning: 'warning',
-    info: 'cat01',
+    info: 'information',
     error: 'error',
   };
 
@@ -230,11 +230,15 @@ export class Notification extends LitElement {
         <div class="status-tag">
           ${this.tagStatus !== 'default' &&
           (this.type === 'normal' || this.type === 'clickable')
-            ? html` <span id="statusLabel">${this.statusLabel}</span>
-                <kyn-tag
+            ? html`
+                <span id="statusLabel">${this.statusLabel}</span>
+                <kyn-badge
+                  type=${'heavy'}
+                  ?hideIcon=${true}
                   label=${this.textStrings[this.tagStatus]}
-                  tagColor=${this._tagColor[this.tagStatus]}
-                ></kyn-tag>`
+                  status=${this._badgeColor[this.tagStatus]}
+                ></kyn-badge>
+              `
             : null}
         </div>
         <div class="timestamp-wrapper">
