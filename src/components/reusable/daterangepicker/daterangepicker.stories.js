@@ -172,19 +172,26 @@ WithDisabledDates.args = {
   ],
 };
 
-export const ProjectPlanning_FixedDeadline = Template.bind({});
-ProjectPlanning_FixedDeadline.args = {
+export const FixedStartDate = Template.bind({});
+FixedStartDate.args = {
   ...DateRangeDefault.args,
   name: 'fixed-deadline-date-picker',
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-05-01', '2024-05-15'],
-  caption:
-    'Use case: Project with fixed deadline where only the start date can be adjusted',
+  label: 'Fixed Start - Flexible Deadline',
+  rangeEditMode: 'end',
+};
+
+export const FixedDeadline = Template.bind({});
+FixedDeadline.args = {
+  ...DateRangeDefault.args,
+  name: 'fixed-deadline-date-picker',
+  dateFormat: 'Y-m-d',
+  defaultDate: ['2024-05-01', '2024-05-15'],
   label: 'Flexible Start - Fixed Deadline',
   rangeEditMode: 'start',
 };
-ProjectPlanning_FixedDeadline.storyName =
-  'Project Planning - Fixed Deadline Date';
+FixedDeadline.storyName = 'Fixed Deadline Date';
 
 export const ScheduleLockdown_BothDatesFixed = Template.bind({});
 ScheduleLockdown_BothDatesFixed.args = {
@@ -197,8 +204,7 @@ ScheduleLockdown_BothDatesFixed.args = {
   label: 'Fixed Date Range (View Only)',
   rangeEditMode: 'none',
 };
-ScheduleLockdown_BothDatesFixed.storyName =
-  'Schedule Lockdown - Both Dates Fixed';
+ScheduleLockdown_BothDatesFixed.storyName = 'Both Dates Fixed';
 
 export const InModal = {
   args: {

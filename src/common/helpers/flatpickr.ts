@@ -780,13 +780,14 @@ export function addLockedDateStyles(): void {
     const style = document.createElement('style');
     style.id = styleId;
     style.textContent = `
-      .flatpickr-locked-date {
-        opacity: 0.5 !important;
+      .flatpickr-locked-date:not(.flatpickr-disabled) {
+        opacity: 0.8 !important;
+        background: var(--kd-color-date-and-time-picker-background-default) !important;
+        border-color: var(--kd-color-date-and-time-picker-border-focus) !important;
         cursor: not-allowed !important;
       }
-      .flatpickr-locked-date:hover {
-        background: none !important;
-        border-color: transparent !important;
+      .flatpickr-locked-date.inRange {
+        color: var(--kd-color-date-and-time-picker-text-secondary) !important;
       }
     `;
     document.head.appendChild(style);
