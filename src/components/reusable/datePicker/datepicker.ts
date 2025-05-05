@@ -494,17 +494,41 @@ export class DatePicker extends FormMixin(LitElement) {
     if (!defaultDate) return [];
 
     if (Array.isArray(defaultDate)) {
-      return defaultDate
+      const parsedDates = defaultDate
         .map((date) => {
           if (date instanceof Date) return date;
           if (typeof date === 'string') return this.parseDateString(date);
           return null;
         })
         .filter((date): date is Date => date !== null);
+
+      if (parsedDates.length > 0) {
+        const invalidDates = parsedDates.filter((date) => {
+          return isNaN(date.getTime());
+        });
+
+        if (invalidDates.length > 0) {
+          console.error('Invalid date(s) provided in defaultDate');
+          this.invalidText = 'Invalid date format provided';
+          return parsedDates.filter((date) => !isNaN(date.getTime()));
+        }
+      }
+
+      return parsedDates;
     } else if (typeof defaultDate === 'string') {
       const parsed = this.parseDateString(defaultDate);
-      return parsed ? [parsed] : [];
+      if (!parsed) {
+        console.error('Invalid date string provided in defaultDate');
+        this.invalidText = 'Invalid date format provided';
+        return [];
+      }
+      return [parsed];
     } else if (defaultDate instanceof Date) {
+      if (isNaN(defaultDate.getTime())) {
+        console.error('Invalid Date object provided in defaultDate');
+        this.invalidText = 'Invalid date provided';
+        return [];
+      }
       return [defaultDate];
     }
 
@@ -726,18 +750,39 @@ export class DatePicker extends FormMixin(LitElement) {
     const formats: { [key: string]: RegExp } = {
       'Y-m-d': /^\d{4}-\d{2}-\d{2}$/,
       'Y-m-d h:i K': /^\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2} [AP]M)?$/,
+      'm-d-Y': /^\d{2}-\d{2}-\d{4}$/,
+      'd-m-Y': /^\d{2}-\d{2}-\d{4}$/,
     };
 
-    const pattern = formats[this.dateFormat];
+    const pattern = formats[this.dateFormat] || formats['Y-m-d'];
     if (!pattern || !pattern.test(dateStr)) return null;
 
     const [datePart] = dateStr.split(' ');
-    const [year, month, day] = datePart.split('-').map(Number);
+    let year: number, month: number, day: number;
+
+    switch (this.dateFormat) {
+      case 'Y-m-d':
+      case 'Y-m-d h:i K':
+        [year, month, day] = datePart.split('-').map(Number);
+        break;
+      case 'm-d-Y':
+        [month, day, year] = datePart.split('-').map(Number);
+        break;
+      case 'd-m-Y':
+        [day, month, year] = datePart.split('-').map(Number);
+        break;
+      default:
+        [year, month, day] = datePart.split('-').map(Number);
+    }
 
     if (!year || !month || !day) return null;
 
     const date = new Date(year, month - 1, day);
-    return isNaN(date.getTime()) ? null : date;
+    if (isNaN(date.getTime())) {
+      console.warn('Invalid date created from parsed string:', dateStr);
+      return null;
+    }
+    return date;
   }
 
   setInitialDates() {
@@ -845,6 +890,16 @@ export class DatePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
 
     try {
+      const invalidDates = selectedDates.filter((date) =>
+        isNaN(date.getTime())
+      );
+      if (invalidDates.length > 0) {
+        console.error('Invalid date selected');
+        this.invalidText = 'Invalid date format';
+        this._validate(true, false);
+        return;
+      }
+
       if (this.mode === 'multiple') {
         this.value = selectedDates.length > 0 ? [...selectedDates] : [];
       } else {
@@ -867,11 +922,20 @@ export class DatePicker extends FormMixin(LitElement) {
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });
 
+      if (
+        this.invalidText === 'Invalid date format' ||
+        this.invalidText === 'Invalid date provided'
+      ) {
+        this.invalidText = '';
+      }
+
       this._validate(true, false);
       await this.updateComplete;
       this.requestUpdate();
     } catch (error) {
-      console.warn('Error handling date change:', error);
+      console.error('Error handling date change:', error);
+      this.invalidText = 'Error processing date selection';
+      this._validate(true, false);
     }
   }
 

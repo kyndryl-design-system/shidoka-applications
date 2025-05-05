@@ -878,13 +878,27 @@ export function createDateRangeChangeLockHandler(
   originalOnChange: Hook | Hook[]
 ): (selectedDates: Date[], dateStr: string, instance: Instance) => void {
   return (selectedDates, dateStr, instance) => {
+    let lockedStartDate: Date | null = null;
+    let lockedEndDate: Date | null = null;
+
     if (
-      editableMode === DateRangeEditableMode.NONE &&
-      currentValue[0] !== null &&
+      editableMode === DateRangeEditableMode.END &&
+      currentValue[0] !== null
+    ) {
+      lockedStartDate = currentValue[0];
+    }
+    if (
+      editableMode === DateRangeEditableMode.START &&
       currentValue[1] !== null
     ) {
-      instance.setDate([currentValue[0], currentValue[1]], false);
-      return;
+      lockedEndDate = currentValue[1];
+    }
+
+    if (editableMode === DateRangeEditableMode.NONE) {
+      if (currentValue[0] !== null && currentValue[1] !== null) {
+        instance.setDate([currentValue[0], currentValue[1]], false);
+        return;
+      }
     }
 
     if (currentValue[0] === null && currentValue[1] === null) {
@@ -894,19 +908,19 @@ export function createDateRangeChangeLockHandler(
 
     if (
       editableMode === DateRangeEditableMode.END &&
-      currentValue[0] !== null
+      lockedStartDate !== null
     ) {
       let modified = false;
       const newDates = [...selectedDates];
 
       if (
         selectedDates.length === 2 &&
-        selectedDates[0].getTime() !== currentValue[0].getTime()
+        selectedDates[0].getTime() !== lockedStartDate.getTime()
       ) {
-        newDates[0] = currentValue[0];
+        newDates[0] = lockedStartDate;
         modified = true;
       } else if (selectedDates.length === 1) {
-        newDates.splice(0, 0, currentValue[0]);
+        newDates.splice(0, 0, lockedStartDate);
         modified = true;
       }
 
@@ -924,19 +938,19 @@ export function createDateRangeChangeLockHandler(
 
     if (
       editableMode === DateRangeEditableMode.START &&
-      currentValue[1] !== null
+      lockedEndDate !== null
     ) {
       let modified = false;
       const newDates = [...selectedDates];
 
       if (
         selectedDates.length === 2 &&
-        selectedDates[1].getTime() !== currentValue[1].getTime()
+        selectedDates[1].getTime() !== lockedEndDate.getTime()
       ) {
-        newDates[1] = currentValue[1];
+        newDates[1] = lockedEndDate;
         modified = true;
       } else if (selectedDates.length === 1) {
-        newDates.push(currentValue[1]);
+        newDates.push(lockedEndDate);
         modified = true;
       }
 

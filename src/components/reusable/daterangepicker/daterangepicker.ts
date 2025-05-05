@@ -550,13 +550,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (!defaultDate) return [];
 
     if (Array.isArray(defaultDate)) {
-      return defaultDate
+      const parsedDates = defaultDate
         .map((date) => {
           if (date instanceof Date) return date;
           if (typeof date === 'string') return this.parseDateString(date);
           return null;
         })
         .filter((date): date is Date => date !== null);
+
+      if (parsedDates.length === 2 && parsedDates[1] < parsedDates[0]) {
+        console.error(
+          'Invalid date range: End date cannot be earlier than start date'
+        );
+        this.invalidText =
+          'Invalid date range: End date cannot be earlier than start date';
+        return [parsedDates[0]];
+      }
+
+      return parsedDates;
     } else if (typeof defaultDate === 'string') {
       const parsed = this.parseDateString(defaultDate);
       return parsed ? [parsed] : [];
@@ -765,18 +776,63 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     }
 
-    if (
-      changedProperties.has('defaultDate') &&
-      this.flatpickrInstance &&
-      !this._isClearing
-    ) {
+    if (changedProperties.has('defaultDate') && !this._isClearing) {
       if (Array.isArray(this.defaultDate) && this.defaultDate.length === 1) {
         this._hasInteracted = true;
       }
 
-      this.initializeFlatpickr();
+      if (this.defaultDate) {
+        const processedDates = this.processDefaultDates(this.defaultDate);
 
-      this._validate(true, false);
+        if (processedDates.length === 1) {
+          if (this.rangeEditMode === DateRangeEditableMode.START) {
+            this.value = [processedDates[0], this.value[1]];
+          } else if (this.rangeEditMode === DateRangeEditableMode.END) {
+            this.value = [this.value[0], processedDates[0]];
+          } else {
+            this.value = [processedDates[0], null];
+          }
+        } else if (processedDates.length >= 2) {
+          if (this.rangeEditMode === DateRangeEditableMode.START) {
+            this.value = [
+              processedDates[0],
+              this.value[1] || processedDates[1],
+            ];
+          } else if (this.rangeEditMode === DateRangeEditableMode.END) {
+            this.value = [
+              this.value[0] || processedDates[0],
+              processedDates[1],
+            ];
+          } else if (this.rangeEditMode === DateRangeEditableMode.NONE) {
+            this.value = [processedDates[0], processedDates[1]];
+          } else {
+            this.value = [processedDates[0], processedDates[1]];
+          }
+        }
+      }
+
+      if (this.flatpickrInstance) {
+        const wasOpen = this.flatpickrInstance.isOpen;
+        this.flatpickrInstance.destroy();
+        this.flatpickrInstance = undefined;
+
+        setTimeout(() => {
+          this.initializeFlatpickr().then(() => {
+            if (
+              wasOpen &&
+              this.flatpickrInstance &&
+              !this.readonly &&
+              !this.dateRangePickerDisabled
+            ) {
+              this.flatpickrInstance.open();
+            }
+          });
+          this._validate(true, false);
+        }, 0);
+      } else {
+        this.initializeFlatpickr();
+        this._validate(true, false);
+      }
     }
 
     if (changedProperties.has('disable')) {
@@ -1000,6 +1056,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
         this.dateFormat = 'Y-m-d';
       }
 
+      this.flatpickrInstance.clear();
+
+      if (this.flatpickrInstance.calendarContainer) {
+        const lockedDates =
+          this.flatpickrInstance.calendarContainer.querySelectorAll(
+            '.flatpickr-locked-date'
+          );
+        lockedDates.forEach((element) => {
+          element.classList.remove(
+            'flatpickr-locked-date',
+            'flatpickr-disabled'
+          );
+          element.removeAttribute('locked');
+          element.removeAttribute('aria-readonly');
+          element.removeAttribute('title');
+        });
+      }
+
       const hasValidValue =
         Array.isArray(this.value) &&
         this.value.length === 2 &&
@@ -1008,26 +1082,41 @@ export class DateRangePicker extends FormMixin(LitElement) {
       if (!hasValidValue && this.defaultDate) {
         const validDates = this.processDefaultDates(this.defaultDate);
 
-        if (validDates.length === 2) {
-          this.flatpickrInstance.setDate(validDates, true);
-          this.value = validDates as [Date, Date];
-          if (this._inputEl) {
-            this._inputEl.value = this.flatpickrInstance.input.value;
-            this.updateFormValue();
+        if (validDates.length === 2 && validDates[0] > validDates[1]) {
+          console.error('Error: Start date cannot be later than end date');
+          this.invalidText =
+            'Invalid date range: End date cannot be earlier than start date';
+          validDates.pop();
+        }
 
-            if (this.name) {
-              this._inputEl.setAttribute('name', this.name);
+        if (validDates.length === 2) {
+          setTimeout(() => {
+            if (this.flatpickrInstance) {
+              this.flatpickrInstance.setDate(validDates, true);
+              this.value = validDates as [Date, Date];
+              if (this._inputEl) {
+                this._inputEl.value = this.flatpickrInstance.input.value;
+                this.updateFormValue();
+
+                if (this.name) {
+                  this._inputEl.setAttribute('name', this.name);
+                }
+              }
             }
-          }
+          }, 0);
         } else if (validDates.length === 1) {
-          this.flatpickrInstance.setDate([validDates[0]], true);
-          this.value = [validDates[0], null];
-          this._hasInteracted = true;
-          if (this._inputEl) {
-            this._inputEl.value = this.flatpickrInstance.input.value;
-            this.updateFormValue();
-          }
-          this._validate(true, false);
+          setTimeout(() => {
+            if (this.flatpickrInstance) {
+              this.flatpickrInstance.setDate([validDates[0]], true);
+              this.value = [validDates[0], null];
+              this._hasInteracted = true;
+              if (this._inputEl) {
+                this._inputEl.value = this.flatpickrInstance.input.value;
+                this.updateFormValue();
+              }
+              this._validate(true, false);
+            }
+          }, 0);
         } else {
           console.warn(
             'Invalid or incomplete date range provided in defaultDate'
@@ -1049,11 +1138,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
           .filter((date): date is Date => date !== null);
 
         if (validDates.length === 2) {
-          this.flatpickrInstance.setDate(validDates, true);
-          if (this._inputEl) {
-            this._inputEl.value = this.flatpickrInstance.input.value;
-            this.updateFormValue();
-          }
+          setTimeout(() => {
+            if (this.flatpickrInstance) {
+              this.flatpickrInstance.setDate(validDates, true);
+              if (this._inputEl) {
+                this._inputEl.value = this.flatpickrInstance.input.value;
+                this.updateFormValue();
+              }
+            }
+          }, 0);
         } else {
           console.warn('Invalid or incomplete date range provided in value');
         }
@@ -1097,6 +1190,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
           source: 'date-selection',
         });
       } else {
+        if (selectedDates[1] < selectedDates[0]) {
+          console.error(
+            'Invalid date selection: End date cannot be earlier than start date'
+          );
+          this.invalidText = 'End date cannot be earlier than start date';
+          this._validate(true, false);
+          this.value = [selectedDates[0], null];
+          return;
+        }
+
         this.value = [selectedDates[0], selectedDates[1]];
         const formattedDates = selectedDates.map((date) => date.toISOString());
         const dateStringFinal =
