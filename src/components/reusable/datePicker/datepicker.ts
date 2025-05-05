@@ -443,6 +443,13 @@ export class DatePicker extends FormMixin(LitElement) {
         title=${this.warningTitle || 'Warning'}
         @mousedown=${this.preventFlatpickrOpen}
         @click=${this.preventFlatpickrOpen}
+        tabindex="0"
+        @keydown=${(e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.preventFlatpickrOpen(e);
+          }
+        }}
       >
         ${this.warnText}
       </div>`;

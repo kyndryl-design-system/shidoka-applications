@@ -360,7 +360,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const showClearButton =
       this.hasValue() &&
       !this.readonly &&
-      this.rangeEditMode === DateRangeEditableMode.BOTH;
+      this.rangeEditMode !== DateRangeEditableMode.START &&
+      this.rangeEditMode !== DateRangeEditableMode.END &&
+      this.rangeEditMode !== DateRangeEditableMode.NONE;
 
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
@@ -370,6 +372,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
           @click=${this.preventFlatpickrOpen}
           aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
           id=${`label-${anchorId}`}
+          tabindex="0"
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.preventFlatpickrOpen(e);
+            }
+          }}
         >
           ${this.required
             ? html`<abbr
@@ -472,6 +481,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
           title=${this.errorTitle || 'Error'}
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
+          tabindex="0"
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.preventFlatpickrOpen(e);
+            }
+          }}
         >
           <span
             class="error-icon"
@@ -504,6 +520,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
           title=${this.warningTitle || 'Warning'}
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
+          tabindex="0"
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.preventFlatpickrOpen(e);
+            }
+          }}
         >
           ${this.warnText}
         </div>
@@ -810,30 +833,34 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private async _clearInput(
     options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
   ) {
-    let newValue: [Date | null, Date | null] = [null, null];
-
-    if (
-      this.rangeEditMode === DateRangeEditableMode.START &&
-      this.value[1] !== null
-    ) {
-      newValue = [null, this.value[1]];
-    } else if (
-      this.rangeEditMode === DateRangeEditableMode.END &&
-      this.value[0] !== null
-    ) {
-      newValue = [this.value[0], null];
-    } else if (this.rangeEditMode === DateRangeEditableMode.NONE) {
+    if (this.rangeEditMode === DateRangeEditableMode.NONE) {
       return;
-    } else {
-      newValue = [null, null];
     }
+
+    const newValue: [Date | null, Date | null] = [null, null];
+    const preservedDateExists = false;
 
     this.value = newValue;
     this.defaultDate = null;
 
-    await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
+    if (preservedDateExists) {
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.clear();
+
+        const datesToSet = newValue.filter(
+          (date): date is Date => date !== null
+        );
+        if (datesToSet.length > 0) {
+          this.flatpickrInstance.setDate(datesToSet, true);
+        }
+      }
+
       this.updateFormValue();
-    });
+    } else {
+      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
+        this.updateFormValue();
+      });
+    }
 
     emitValue(this, 'on-change', {
       dates: this.value,
