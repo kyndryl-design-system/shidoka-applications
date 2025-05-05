@@ -966,7 +966,6 @@ export class DatePicker extends FormMixin(LitElement) {
   private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
 
-    // Don't apply validation when the component is disabled
     if (this.datePickerDisabled) {
       this._internals.setValidity({}, '', this._inputEl);
       this._isInvalid = false;

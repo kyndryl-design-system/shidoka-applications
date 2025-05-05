@@ -256,7 +256,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     try {
       await this.initializeFlatpickr();
     } catch (error) {
-      console.error('Error in debounced update:', error);
+      if (
+        process.env.NODE_ENV === 'development' &&
+        error instanceof Error &&
+        !error.message.includes('calendarContainer') &&
+        !error.message.includes('selectedDates')
+      ) {
+        console.warn('DateRangePicker update info:', error.message);
+      }
     }
   }, 100);
 
@@ -265,7 +272,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
       try {
         await this.initializeFlatpickr();
       } catch (error) {
-        console.error('Error handling resize:', error);
+        if (
+          process.env.NODE_ENV === 'development' &&
+          error instanceof Error &&
+          !error.message.includes('calendarContainer') &&
+          !error.message.includes('selectedDates')
+        ) {
+          console.debug('DateRangePicker resize info:', error.message);
+        }
       }
     }
   }, 250);
@@ -882,7 +896,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     try {
       await this.initializeFlatpickr();
     } catch (error) {
-      console.error('Error setting up flatpickr:', error);
+      if (
+        process.env.NODE_ENV === 'development' &&
+        error instanceof Error &&
+        !error.message.includes('calendarContainer') &&
+        !error.message.includes('selectedDates')
+      ) {
+        console.debug('DateRangePicker setup info:', error.message);
+      }
     }
   }
 
@@ -967,18 +988,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
         inputEl: this._inputEl,
         getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
         setCalendarAttributes: (instance) => {
-          try {
-            if (!instance?.calendarContainer) {
-              throw new Error('Calendar container not available');
+          if (instance && instance.calendarContainer) {
+            try {
+              const container = getModalContainer(this);
+              setCalendarAttributes(instance, container !== document.body);
+              instance.calendarContainer.setAttribute(
+                'aria-label',
+                'Date range calendar'
+              );
+            } catch (error) {
+              if (process.env.NODE_ENV === 'development') {
+                console.debug(
+                  'Non-critical issue setting calendar attributes:',
+                  error
+                );
+              }
             }
-            const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
-            instance.calendarContainer.setAttribute(
-              'aria-label',
-              'Date range calendar'
-            );
-          } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
           }
         },
         setInitialDates: this.setInitialDates.bind(this),
@@ -991,10 +1016,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
       hideEmptyYear();
       this._validate(false, false);
     } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
-
-      if (error instanceof Error) {
-        console.error('Error details:', error.message);
+      if (
+        error instanceof Error &&
+        !error.message.includes('calendarContainer') &&
+        !error.message.includes('selectedDates')
+      ) {
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('DateRangePicker initialization info:', error.message);
+        } else if (error.message.includes('Failed to initialize')) {
+          console.error('Critical DateRangePicker error:', error.message);
+        }
       }
     }
   }
@@ -1051,11 +1082,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (!this.flatpickrInstance) {
       return;
     }
-    try {
-      if (!this.dateFormat) {
-        this.dateFormat = 'Y-m-d';
-      }
 
+    if (!this.dateFormat) {
+      this.dateFormat = 'Y-m-d';
+    }
+
+    try {
       this.flatpickrInstance.clear();
 
       if (this.flatpickrInstance.calendarContainer) {
@@ -1078,6 +1110,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
         Array.isArray(this.value) &&
         this.value.length === 2 &&
         (this.value[0] !== null || this.value[1] !== null);
+
+      if (!hasValidValue && !this.defaultDate) {
+        return;
+      }
 
       if (!hasValidValue && this.defaultDate) {
         const validDates = this.processDefaultDates(this.defaultDate);
@@ -1152,10 +1188,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       }
     } catch (error) {
-      console.error(
-        'Error in setInitialDates:',
-        error instanceof Error ? error.message : String(error)
-      );
+      if (
+        !this.flatpickrInstance &&
+        error instanceof Error &&
+        !error.message.includes('calendarContainer') &&
+        !error.message.includes('selectedDates') &&
+        process.env.NODE_ENV === 'development'
+      ) {
+        console.debug('DateRangePicker initialization state:', error.message);
+      }
     }
   }
 
