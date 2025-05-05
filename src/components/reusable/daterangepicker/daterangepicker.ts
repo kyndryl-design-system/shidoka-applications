@@ -48,6 +48,12 @@ const _defaultTextStrings = {
   invalidDateRange:
     'Invalid date range: End date cannot be earlier than start date',
   dateRangeSelected: 'Selected date range: {0} to {1}',
+
+  lockedStartDate: 'Start date is locked',
+  lockedEndDate: 'End date is locked',
+  dateLocked: 'Date is locked',
+  dateNotAvailable: 'Date is not available',
+  dateInSelectedRange: 'Date is in selected range',
 };
 
 /**
@@ -717,6 +723,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
+
+      if (
+        this.flatpickrInstance &&
+        this.rangeEditMode !== DateRangeEditableMode.BOTH
+      ) {
+        this.updateFlatpickrOptions();
+      }
+    }
+
     if (
       (changedProperties.has('dateRangePickerDisabled') &&
         this.dateRangePickerDisabled) ||
@@ -983,10 +1001,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
     });
 
     if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
+      const tooltipStrings = {
+        lockedStartDate: this._textStrings.lockedStartDate,
+        lockedEndDate: this._textStrings.lockedEndDate,
+        dateLocked: this._textStrings.dateLocked,
+        dateNotAvailable: this._textStrings.dateNotAvailable,
+        dateInSelectedRange: this._textStrings.dateInSelectedRange,
+      };
+
       return applyDateRangeEditingRestrictions(
         options,
         this.rangeEditMode,
-        this.value
+        this.value,
+        tooltipStrings
       );
     }
 

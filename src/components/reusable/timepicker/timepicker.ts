@@ -41,6 +41,12 @@ const _defaultTextStrings = {
   pleaseSelectDate: 'Please select a date',
   noTimeSelected: 'No time selected',
   pleaseSelectValidDate: 'Please select a valid date',
+
+  lockedStartDate: 'Start date is locked',
+  lockedEndDate: 'End date is locked',
+  dateLocked: 'Date is locked',
+  dateNotAvailable: 'Date is not available',
+  dateInSelectedRange: 'Date is in selected range',
 };
 
 /**
@@ -399,6 +405,11 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override async updated(changedProperties: PropertyValues) {
     await super.updated(changedProperties);
+
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
+    }
+
     if (
       changedProperties.has('defaultHour') ||
       changedProperties.has('defaultMinute')
@@ -696,7 +707,6 @@ export class TimePicker extends FormMixin(LitElement) {
       return;
     }
 
-    // Don't apply validation when the component is disabled
     if (this.timepickerDisabled) {
       this._internals.setValidity({}, '', this._inputEl);
       this._isInvalid = false;

@@ -42,6 +42,12 @@ const _defaultTextStrings = {
   pleaseSelectValidDate: 'Please select a valid date',
   invalidDateFormat: 'Invalid date format provided',
   errorProcessing: 'Error processing date',
+
+  lockedStartDate: 'Start date is locked',
+  lockedEndDate: 'End date is locked',
+  dateLocked: 'Date is locked',
+  dateNotAvailable: 'Date is not available',
+  dateInSelectedRange: 'Date is in selected range',
 };
 
 /**
@@ -404,7 +410,8 @@ export class DatePicker extends FormMixin(LitElement) {
       >
         <span
           class="error-icon"
-          aria-label=${`${this.errorAriaLabel}` || 'Error message icon'}
+          role="img"
+          aria-label=${this.errorAriaLabel || 'Error message icon'}
           >${unsafeSVG(errorIcon)}</span
         >${this.invalidText ||
         this._internalValidationMsg ||
@@ -493,6 +500,10 @@ export class DatePicker extends FormMixin(LitElement) {
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
+    }
 
     if (changedProperties.has('value') && !this._isClearing) {
       let newValue = this.value;

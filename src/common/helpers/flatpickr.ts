@@ -8,10 +8,7 @@ import { langsArray, SupportedLocale } from '../flatpickrLangs';
 
 let flatpickrStylesInjected = false;
 
-/**
- * Default text strings for flatpickr functionality
- */
-export const _defaultTextStrings = {
+export const _defaultCalendarTooltipStrings = {
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
   dateLocked: 'Date is locked',
@@ -19,12 +16,25 @@ export const _defaultTextStrings = {
   dateInSelectedRange: 'Date is in selected range',
 };
 
-export type FlatpickrTextStrings = Partial<typeof _defaultTextStrings>;
+export type FlatpickrTextStrings = Partial<
+  typeof _defaultCalendarTooltipStrings
+>;
+
+let currentTooltipStrings = { ..._defaultCalendarTooltipStrings };
+
+export function setTooltipStrings(
+  customTextStrings: FlatpickrTextStrings = {}
+): void {
+  currentTooltipStrings = {
+    ..._defaultCalendarTooltipStrings,
+    ...customTextStrings,
+  };
+}
 
 export function getTextStrings(
   customTextStrings: FlatpickrTextStrings = {}
-): typeof _defaultTextStrings {
-  return { ..._defaultTextStrings, ...customTextStrings };
+): typeof _defaultCalendarTooltipStrings {
+  return { ...currentTooltipStrings, ...customTextStrings };
 }
 
 interface BaseFlatpickrContext {
@@ -534,6 +544,21 @@ export function setCalendarAttributes(
           );
           calendarContainer.classList.add(`static-position-${config.static}`);
         }
+
+        const dayElements =
+          calendarContainer.querySelectorAll('.flatpickr-day');
+        dayElements.forEach((dayElem) => {
+          if (!dayElem.hasAttribute('role')) {
+            dayElem.setAttribute('role', 'button');
+          }
+
+          if (
+            dayElem.hasAttribute('aria-label') &&
+            !dayElem.hasAttribute('role')
+          ) {
+            dayElem.setAttribute('role', 'button');
+          }
+        });
       } catch (error) {
         console.warn('Error setting calendar attributes:', error);
       }
@@ -694,7 +719,7 @@ export function createDateRangeDayLockHandler(
           dayElem.classList.add('flatpickr-locked-date');
           dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
           dayElem.setAttribute('locked', 'start');
-          dayElem.setAttribute('aria-readonly', 'true');
+          dayElem.setAttribute('aria-disabled', 'true');
         } else {
           dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
           dayElem.setAttribute('title', getTextStrings().lockedStartDate);
@@ -709,7 +734,7 @@ export function createDateRangeDayLockHandler(
           dayElem.classList.add('flatpickr-locked-date');
           dayElem.setAttribute('title', getTextStrings().lockedEndDate);
           dayElem.setAttribute('locked', 'end');
-          dayElem.setAttribute('aria-readonly', 'true');
+          dayElem.setAttribute('aria-disabled', 'true');
         } else {
           dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
           dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
@@ -724,12 +749,12 @@ export function createDateRangeDayLockHandler(
         dayElem.classList.add('flatpickr-locked-date');
         dayElem.setAttribute('title', getTextStrings().dateLocked);
         dayElem.setAttribute('locked', 'start');
-        dayElem.setAttribute('aria-readonly', 'true');
+        dayElem.setAttribute('aria-disabled', 'true');
       } else if (currentDate.getTime() === currentValue[1].getTime()) {
         dayElem.classList.add('flatpickr-locked-date');
         dayElem.setAttribute('title', getTextStrings().dateLocked);
         dayElem.setAttribute('locked', 'end');
-        dayElem.setAttribute('aria-readonly', 'true');
+        dayElem.setAttribute('aria-disabled', 'true');
       } else if (
         currentDate.getTime() > currentValue[0].getTime() &&
         currentDate.getTime() < currentValue[1].getTime()
@@ -877,8 +902,12 @@ function callOriginalOnChange(
 export function applyDateRangeEditingRestrictions(
   options: Partial<BaseOptions>,
   editableMode: DateRangeEditableMode,
-  currentValue: [Date | null, Date | null]
+  currentValue: [Date | null, Date | null],
+  tooltipStrings?: FlatpickrTextStrings
 ): Partial<BaseOptions> {
+  if (tooltipStrings) {
+    setTooltipStrings(tooltipStrings);
+  }
   const newOptions = { ...options };
 
   if (editableMode === DateRangeEditableMode.BOTH) {
