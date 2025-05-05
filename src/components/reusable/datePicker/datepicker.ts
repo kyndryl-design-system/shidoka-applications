@@ -975,6 +975,15 @@ export class DatePicker extends FormMixin(LitElement) {
       return;
     }
 
+    if (this.mode === 'multiple' && this._inputEl.value.trim() !== '') {
+      if (
+        this.invalidText === 'Invalid date format provided' ||
+        this.invalidText === 'Invalid date format'
+      ) {
+        this.invalidText = '';
+      }
+    }
+
     if (this.invalidText) {
       validity = { ...validity, customError: true };
       validationMessage = this.invalidText;
