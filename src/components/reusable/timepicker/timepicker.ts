@@ -18,6 +18,7 @@ import {
   emitValue,
   hideEmptyYear,
   getModalContainer,
+  clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -482,17 +483,17 @@ export class TimePicker extends FormMixin(LitElement) {
 
     try {
       this.value = null;
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.clear();
+
+      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
         if (this._inputEl) {
-          this._inputEl.value = '';
           this._inputEl.setAttribute(
             'aria-label',
             this._textStrings.noTimeSelected
           );
           this.updateFormValue();
         }
-      }
+      });
+
       emitValue(this, 'on-change', {
         time: this.value,
         source: 'clear',

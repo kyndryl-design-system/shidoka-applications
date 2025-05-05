@@ -18,6 +18,7 @@ import {
   emitValue,
   hideEmptyYear,
   getModalContainer,
+  clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -287,6 +288,12 @@ export class DatePicker extends FormMixin(LitElement) {
       return !!this.defaultDate;
     }
     return false;
+  }
+
+  private updateFormValue(): void {
+    if (this._internals && this._inputEl) {
+      this._internals.setFormValue(this._inputEl.value);
+    }
   }
 
   override render() {
@@ -621,10 +628,9 @@ export class DatePicker extends FormMixin(LitElement) {
       this.value = this.mode === 'multiple' ? [] : null;
       this.defaultDate = null;
 
-      this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
+      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
+        this.updateFormValue();
+      });
 
       emitValue(this, 'on-change', {
         dates: this.value,

@@ -20,6 +20,7 @@ import {
   hideEmptyYear,
   getModalContainer,
   applyDateRangeEditingRestrictions,
+  clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -806,11 +807,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   ) {
     this.value = [null, null];
     this.defaultDate = null;
-    this.flatpickrInstance?.clear();
-    if (this._inputEl) {
-      this._inputEl.value = '';
+
+    await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
       this.updateFormValue();
-    }
+    });
 
     emitValue(this, 'on-change', {
       dates: this.value,
