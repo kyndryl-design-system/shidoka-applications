@@ -8,6 +8,25 @@ import { langsArray, SupportedLocale } from '../flatpickrLangs';
 
 let flatpickrStylesInjected = false;
 
+/**
+ * Default text strings for flatpickr functionality
+ */
+export const _defaultTextStrings = {
+  lockedStartDate: 'Start date is locked',
+  lockedEndDate: 'End date is locked',
+  dateLocked: 'Date is locked',
+  dateNotAvailable: 'Date is not available',
+  dateInSelectedRange: 'Date is in selected range',
+};
+
+export type FlatpickrTextStrings = Partial<typeof _defaultTextStrings>;
+
+export function getTextStrings(
+  customTextStrings: FlatpickrTextStrings = {}
+): typeof _defaultTextStrings {
+  return { ..._defaultTextStrings, ...customTextStrings };
+}
+
 interface BaseFlatpickrContext {
   getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
   setCalendarAttributes: (instance: Instance) => void;
@@ -654,26 +673,6 @@ export enum DateRangeEditableMode {
   NONE = 'none',
 }
 
-export function addLockedDateStyles(): void {
-  const styleId = 'kyn-date-range-picker-locked-dates-style';
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement('style');
-    style.id = styleId;
-    style.textContent = `
-      .flatpickr-locked-date:not(.flatpickr-disabled) {
-        opacity: 0.8 !important;
-        background: var(--kd-color-date-and-time-picker-background-default) !important;
-        border-color: var(--kd-color-date-and-time-picker-border-focus) !important;
-        cursor: not-allowed !important;
-      }
-      .flatpickr-locked-date.inRange {
-        color: var(--kd-color-date-and-time-picker-text-secondary) !important;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-}
-
 export function createDateRangeDayLockHandler(
   editableMode: DateRangeEditableMode,
   currentValue: [Date | null, Date | null]
@@ -693,12 +692,12 @@ export function createDateRangeDayLockHandler(
       if (currentDate.getTime() <= currentValue[0].getTime()) {
         if (currentDate.getTime() === currentValue[0].getTime()) {
           dayElem.classList.add('flatpickr-locked-date');
-          dayElem.setAttribute('title', 'Start date is locked');
+          dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
           dayElem.setAttribute('locked', 'start');
           dayElem.setAttribute('aria-readonly', 'true');
         } else {
           dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
-          dayElem.setAttribute('title', 'Date is not available');
+          dayElem.setAttribute('title', getTextStrings().lockedStartDate);
         }
       }
     } else if (
@@ -708,12 +707,12 @@ export function createDateRangeDayLockHandler(
       if (currentDate.getTime() >= currentValue[1].getTime()) {
         if (currentDate.getTime() === currentValue[1].getTime()) {
           dayElem.classList.add('flatpickr-locked-date');
-          dayElem.setAttribute('title', 'End date is locked');
+          dayElem.setAttribute('title', getTextStrings().lockedEndDate);
           dayElem.setAttribute('locked', 'end');
           dayElem.setAttribute('aria-readonly', 'true');
         } else {
           dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
-          dayElem.setAttribute('title', 'Date is not available');
+          dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
         }
       }
     } else if (
@@ -723,12 +722,12 @@ export function createDateRangeDayLockHandler(
     ) {
       if (currentDate.getTime() === currentValue[0].getTime()) {
         dayElem.classList.add('flatpickr-locked-date');
-        dayElem.setAttribute('title', 'Date is locked');
+        dayElem.setAttribute('title', getTextStrings().dateLocked);
         dayElem.setAttribute('locked', 'start');
         dayElem.setAttribute('aria-readonly', 'true');
       } else if (currentDate.getTime() === currentValue[1].getTime()) {
         dayElem.classList.add('flatpickr-locked-date');
-        dayElem.setAttribute('title', 'Date is locked');
+        dayElem.setAttribute('title', getTextStrings().dateLocked);
         dayElem.setAttribute('locked', 'end');
         dayElem.setAttribute('aria-readonly', 'true');
       } else if (
@@ -736,10 +735,10 @@ export function createDateRangeDayLockHandler(
         currentDate.getTime() < currentValue[1].getTime()
       ) {
         dayElem.classList.add('flatpickr-locked-date');
-        dayElem.setAttribute('title', 'Date is in selected range');
+        dayElem.setAttribute('title', getTextStrings().dateInSelectedRange);
       } else {
         dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
-        dayElem.setAttribute('title', 'Date is not available');
+        dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
       }
     }
 
@@ -885,8 +884,6 @@ export function applyDateRangeEditingRestrictions(
   if (editableMode === DateRangeEditableMode.BOTH) {
     return newOptions;
   }
-
-  addLockedDateStyles();
 
   const originalOnChange = newOptions.onChange;
 

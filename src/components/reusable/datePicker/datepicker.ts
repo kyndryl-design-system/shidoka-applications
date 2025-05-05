@@ -40,6 +40,8 @@ const _defaultTextStrings = {
   pleaseSelectDate: 'Please select a date',
   noDateSelected: 'No date selected',
   pleaseSelectValidDate: 'Please select a valid date',
+  invalidDateFormat: 'Invalid date format provided',
+  errorProcessing: 'Error processing date',
 };
 
 /**
@@ -366,15 +368,7 @@ export class DatePicker extends FormMixin(LitElement) {
                 class="input-icon ${this.datePickerDisabled
                   ? 'is-disabled'
                   : ''}"
-                tabindex="0"
-                role="button"
-                aria-label="Open calendar"
-                @keydown=${(e: KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.handleInputClickEvent();
-                  }
-                }}
+                aria-hidden="true"
                 @click=${this.handleInputClickEvent}
                 >${unsafeSVG(calendarIcon)}</span
               >`}
@@ -387,14 +381,6 @@ export class DatePicker extends FormMixin(LitElement) {
               aria-disabled=${this.datePickerDisabled}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
-              tabindex="0"
-              role="button"
-              @keydown=${(e: KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  this.preventFlatpickrOpen(e);
-                }
-              }}
             >
               ${this.caption}
             </div>`
@@ -419,14 +405,6 @@ export class DatePicker extends FormMixin(LitElement) {
         <span
           class="error-icon"
           aria-label=${`${this.errorAriaLabel}` || 'Error message icon'}
-          role="button"
-          tabindex="0"
-          @keydown=${(e: KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              this.preventFlatpickrOpen(e);
-            }
-          }}
           >${unsafeSVG(errorIcon)}</span
         >${this.invalidText ||
         this._internalValidationMsg ||
@@ -507,7 +485,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (valid.length !== parsed.length) {
       console.error('Invalid date(s) provided in defaultDate');
-      this.invalidText = 'Invalid date format provided';
+      this.invalidText = this._textStrings.invalidDateFormat;
     }
 
     return valid;
@@ -848,8 +826,7 @@ export class DatePicker extends FormMixin(LitElement) {
         isNaN(date.getTime())
       );
       if (invalidDates.length > 0) {
-        console.error('Invalid date selected');
-        this.invalidText = 'Invalid date format';
+        this.invalidText = this._textStrings.invalidDateFormat;
         this._validate(true, false);
         return;
       }
@@ -876,10 +853,7 @@ export class DatePicker extends FormMixin(LitElement) {
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });
 
-      if (
-        this.invalidText === 'Invalid date format' ||
-        this.invalidText === 'Invalid date provided'
-      ) {
+      if (this.invalidText) {
         this.invalidText = '';
       }
 
@@ -888,7 +862,7 @@ export class DatePicker extends FormMixin(LitElement) {
       this.requestUpdate();
     } catch (error) {
       console.error('Error handling date change:', error);
-      this.invalidText = 'Error processing date selection';
+      this.invalidText = this._textStrings.errorProcessing;
       this._validate(true, false);
     }
   }
@@ -976,10 +950,7 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     if (this.mode === 'multiple' && this._inputEl.value.trim() !== '') {
-      if (
-        this.invalidText === 'Invalid date format provided' ||
-        this.invalidText === 'Invalid date format'
-      ) {
+      if (this.invalidText) {
         this.invalidText = '';
       }
     }

@@ -45,6 +45,8 @@ const _defaultTextStrings = {
   dateRange: 'Date range',
   noDateSelected: 'No dates selected',
   startDateSelected: 'Start date selected: {0}. Please select end date.',
+  invalidDateRange:
+    'Invalid date range: End date cannot be earlier than start date',
   dateRangeSelected: 'Selected date range: {0} to {1}',
 };
 
@@ -445,15 +447,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             : html`<span
                 class="input-icon
                 ${this.dateRangePickerDisabled ? 'is-disabled' : ''}"
-                tabindex="0"
-                role="button"
-                aria-label="Open calendar"
-                @keydown=${(e: KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.handleInputClickEvent();
-                  }
-                }}
+                aria-hidden="true"
                 @click=${this.handleInputClickEvent}
                 >${unsafeSVG(calendarIcon)}</span
               >`}
@@ -466,14 +460,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
               aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
-              tabindex="0"
-              role="button"
-              @keydown=${(e: KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  this.preventFlatpickrOpen(e);
-                }
-              }}
             >
               ${this.caption}
             </div>`
@@ -506,14 +492,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
           <span
             class="error-icon"
             aria-label=${this.errorAriaLabel || 'Error message icon'}
-            role="button"
-            tabindex="0"
-            @keydown=${(e: KeyboardEvent) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.preventFlatpickrOpen(e);
-              }
-            }}
           >
             ${unsafeSVG(errorIcon)}
           </span>
@@ -576,8 +554,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
         console.error(
           'Invalid date range: End date cannot be earlier than start date'
         );
-        this.invalidText =
-          'Invalid date range: End date cannot be earlier than start date';
+        this.invalidText = this._textStrings.invalidDateRange;
         return [parsedDates[0]];
       }
 
