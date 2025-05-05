@@ -357,6 +357,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const descriptionId = this.name ?? '';
     const placeholder = getPlaceholder(this.dateFormat, true);
 
+    const showClearButton =
+      this.hasValue() &&
+      !this.readonly &&
+      this.rangeEditMode === DateRangeEditableMode.BOTH;
+
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
@@ -399,7 +404,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
-          ${this.hasValue() && !this.readonly
+          ${showClearButton
             ? html`
                 <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
@@ -805,7 +810,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private async _clearInput(
     options: { reinitFlatpickr?: boolean } = { reinitFlatpickr: true }
   ) {
-    this.value = [null, null];
+    let newValue: [Date | null, Date | null] = [null, null];
+
+    if (
+      this.rangeEditMode === DateRangeEditableMode.START &&
+      this.value[1] !== null
+    ) {
+      newValue = [null, this.value[1]];
+    } else if (
+      this.rangeEditMode === DateRangeEditableMode.END &&
+      this.value[0] !== null
+    ) {
+      newValue = [this.value[0], null];
+    } else if (this.rangeEditMode === DateRangeEditableMode.NONE) {
+      return;
+    } else {
+      newValue = [null, null];
+    }
+
+    this.value = newValue;
     this.defaultDate = null;
 
     await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {

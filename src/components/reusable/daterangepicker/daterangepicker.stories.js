@@ -191,7 +191,6 @@ FixedDeadline.args = {
   label: 'Flexible Start - Fixed Deadline',
   rangeEditMode: 'start',
 };
-FixedDeadline.storyName = 'Fixed Deadline Date';
 
 export const ScheduleLockdown_BothDatesFixed = Template.bind({});
 ScheduleLockdown_BothDatesFixed.args = {
@@ -199,8 +198,6 @@ ScheduleLockdown_BothDatesFixed.args = {
   name: 'both-dates-fixed-picker',
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-01-01', '2024-01-07'],
-  caption:
-    'Use case: Schedule lockdown where both dates are fixed after initial selection',
   label: 'Fixed Date Range (View Only)',
   rangeEditMode: 'none',
 };
