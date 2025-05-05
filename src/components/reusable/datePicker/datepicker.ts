@@ -493,46 +493,24 @@ export class DatePicker extends FormMixin(LitElement) {
   ): Date[] {
     if (!defaultDate) return [];
 
-    if (Array.isArray(defaultDate)) {
-      const parsedDates = defaultDate
-        .map((date) => {
-          if (date instanceof Date) return date;
-          if (typeof date === 'string') return this.parseDateString(date);
-          return null;
-        })
-        .filter((date): date is Date => date !== null);
+    const values = Array.isArray(defaultDate) ? defaultDate : [defaultDate];
 
-      if (parsedDates.length > 0) {
-        const invalidDates = parsedDates.filter((date) => {
-          return isNaN(date.getTime());
-        });
+    const parsed = values.map((d) => {
+      if (d instanceof Date) return d;
+      if (typeof d === 'string') return this.parseDateString(d);
+      return null;
+    });
 
-        if (invalidDates.length > 0) {
-          console.error('Invalid date(s) provided in defaultDate');
-          this.invalidText = 'Invalid date format provided';
-          return parsedDates.filter((date) => !isNaN(date.getTime()));
-        }
-      }
+    const valid = parsed.filter(
+      (d): d is Date => d instanceof Date && !isNaN(d.getTime())
+    );
 
-      return parsedDates;
-    } else if (typeof defaultDate === 'string') {
-      const parsed = this.parseDateString(defaultDate);
-      if (!parsed) {
-        console.error('Invalid date string provided in defaultDate');
-        this.invalidText = 'Invalid date format provided';
-        return [];
-      }
-      return [parsed];
-    } else if (defaultDate instanceof Date) {
-      if (isNaN(defaultDate.getTime())) {
-        console.error('Invalid Date object provided in defaultDate');
-        this.invalidText = 'Invalid date provided';
-        return [];
-      }
-      return [defaultDate];
+    if (valid.length !== parsed.length) {
+      console.error('Invalid date(s) provided in defaultDate');
+      this.invalidText = 'Invalid date format provided';
     }
 
-    return [];
+    return valid;
   }
 
   override updated(changedProperties: PropertyValues) {
@@ -740,49 +718,25 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private parseDateString(dateStr: string): Date | null {
-    if (!dateStr || !dateStr.trim()) return null;
+    if (!dateStr.trim()) return null;
 
-    if (dateStr.includes('T')) {
-      const date = new Date(dateStr);
-      return isNaN(date.getTime()) ? null : date;
+    const dtMatch = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})$/.exec(
+      dateStr
+    );
+    if (dtMatch) {
+      const [, y, mo, da, hh, mm] = dtMatch.map(Number);
+      const dt = new Date(y, mo - 1, da, hh, mm);
+      return isNaN(dt.getTime()) ? null : dt;
     }
 
-    const formats: { [key: string]: RegExp } = {
-      'Y-m-d': /^\d{4}-\d{2}-\d{2}$/,
-      'Y-m-d h:i K': /^\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2} [AP]M)?$/,
-      'm-d-Y': /^\d{2}-\d{2}-\d{4}$/,
-      'd-m-Y': /^\d{2}-\d{2}-\d{4}$/,
-    };
-
-    const pattern = formats[this.dateFormat] || formats['Y-m-d'];
-    if (!pattern || !pattern.test(dateStr)) return null;
-
-    const [datePart] = dateStr.split(' ');
-    let year: number, month: number, day: number;
-
-    switch (this.dateFormat) {
-      case 'Y-m-d':
-      case 'Y-m-d h:i K':
-        [year, month, day] = datePart.split('-').map(Number);
-        break;
-      case 'm-d-Y':
-        [month, day, year] = datePart.split('-').map(Number);
-        break;
-      case 'd-m-Y':
-        [day, month, year] = datePart.split('-').map(Number);
-        break;
-      default:
-        [year, month, day] = datePart.split('-').map(Number);
+    const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+    if (dateMatch) {
+      const [, y, mo, da] = dateMatch.map(Number);
+      const dt = new Date(y, mo - 1, da);
+      return isNaN(dt.getTime()) ? null : dt;
     }
 
-    if (!year || !month || !day) return null;
-
-    const date = new Date(year, month - 1, day);
-    if (isNaN(date.getTime())) {
-      console.warn('Invalid date created from parsed string:', dateStr);
-      return null;
-    }
-    return date;
+    return null;
   }
 
   setInitialDates() {
