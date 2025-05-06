@@ -1134,7 +1134,12 @@ export class Dropdown extends FormMixin(LitElement) {
           const option = AllOptions.find(
             (option: any) => option.value === this.value
           );
-          this.text = option.textContent.trim();
+          if (option) {
+            this.text = option.textContent.trim();
+          } else {
+            this.text = '';
+            console.warn(`No dropdown option found with value: ${this.value}`);
+          }
         }
 
         // set search input value
