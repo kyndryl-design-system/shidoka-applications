@@ -204,6 +204,13 @@ export class Dropdown extends FormMixin(LitElement) {
   clearMultipleEl!: HTMLElement;
 
   /**
+   * Queries the .add-option-input DOM element.
+   * @ignore
+   */
+  @query('.add-option-input')
+  addOptionInputEl!: HTMLInputElement;
+
+  /**
    * Open drawer upwards.
    * @ignore
    */
@@ -360,15 +367,24 @@ export class Dropdown extends FormMixin(LitElement) {
                       type="text"
                       placeholder=${this._textStrings.addItem}
                       .value=${this.newOptionValue}
+                      aria-label="Add new option"
                       @input=${(e: any) => this._handleInputNewOption(e)}
-                      @mousedown=${(e: Event) => e.stopPropagation()}
-                      @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
-                      @focus=${(e: KeyboardEvent) => e.stopPropagation()}
+                      @keydown=${(e: KeyboardEvent) => {
+                        e.stopPropagation();
+                        this._handleAddInputKeydown(e);
+                      }}
+                      @focus=${(e: KeyboardEvent) => {
+                        e.stopPropagation();
+                        this.assistiveText = 'Add new option input';
+                      }}
                     />
                     <kyn-button
                       kind="secondary"
                       size="small"
-                      @click=${() => this._handleAddOption()}
+                      @click=${() => this._handleAddBtnOption()}
+                      @keydown=${(e: any) => {
+                        this._handleAddBtnKeydown(e);
+                      }}
                     >
                       ${this._textStrings.add}
                     </kyn-button>
@@ -415,6 +431,35 @@ export class Dropdown extends FormMixin(LitElement) {
         ${this.renderHelperContent()}
       </div>
     `;
+  }
+
+  private _handleAddInputKeydown(e: any) {
+    const ENTER_KEY_CODE = 13;
+    if (e.keyCode === ENTER_KEY_CODE) {
+      this._handleAddBtnOption();
+    }
+    const DOWN_ARROW_KEY_CODE = 40;
+    const UP_ARROW_KEY_CODE = 38;
+    const ESCAPE_KEY_CODE = 27;
+    if (
+      e.keyCode === DOWN_ARROW_KEY_CODE ||
+      e.keyCode === UP_ARROW_KEY_CODE ||
+      e.keyCode === ESCAPE_KEY_CODE
+    ) {
+      this.handleKeyboard(e, e.keyCode, 'addOption');
+    }
+  }
+
+  private _handleAddBtnKeydown(e: any) {
+    const ENTER_KEY_CODE = 13;
+    const TAB_KEY_CODE = 9;
+    if (e.keyCode === ENTER_KEY_CODE) {
+      this._handleAddBtnOption();
+    }
+    if (e.keyCode === TAB_KEY_CODE) {
+      e.preventDefault();
+      this.handleKeyboard(e, 40, 'addOption');
+    }
   }
 
   private renderHelperContent() {
@@ -576,6 +621,8 @@ export class Dropdown extends FormMixin(LitElement) {
       ...Array.from(this.shadowRoot?.querySelectorAll('.select-all') || []),
       ...this.options.filter((option: any) => option.style.display !== 'none'),
     ];
+    visibleOptions.forEach((e) => (e.tabIndex = 0));
+
     const highlightedEl = visibleOptions.find(
       (option: any) => option.highlighted
     );
@@ -593,14 +640,14 @@ export class Dropdown extends FormMixin(LitElement) {
 
     const isListboxElOpened = this.open;
     // open the listbox
-    if (target === 'button') {
+    if (target === 'button' || target === 'addOption') {
       let openDropdown =
         SPACEBAR_KEY_CODE.includes(keyCode) ||
         keyCode === ENTER_KEY_CODE ||
         keyCode == DOWN_ARROW_KEY_CODE ||
         keyCode == UP_ARROW_KEY_CODE;
 
-      if (e.target === this.clearMultipleEl) {
+      if (e.target === this.clearMultipleEl && keyCode === ENTER_KEY_CODE) {
         openDropdown = false;
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[highlightedIndex].selected =
@@ -612,9 +659,21 @@ export class Dropdown extends FormMixin(LitElement) {
       if (openDropdown) {
         this.open = true;
 
-        // scroll to highlighted option
-        if (!this.multiple && this.value !== '') {
-          visibleOptions[highlightedIndex].scrollIntoView({ block: 'nearest' });
+        if (
+          this.allowAddOption &&
+          target === 'button' &&
+          keyCode === ENTER_KEY_CODE
+        ) {
+          setTimeout(() => {
+            this.addOptionInputEl?.focus();
+          }, 100);
+        } else {
+          // scroll to highlighted option
+          if (!this.multiple && this.value !== '') {
+            visibleOptions[highlightedIndex].scrollIntoView({
+              block: 'nearest',
+            });
+          }
         }
       }
     }
@@ -658,6 +717,7 @@ export class Dropdown extends FormMixin(LitElement) {
             nextIndex === visibleOptions.length - 1 ? 0 : nextIndex + 1;
         }
 
+        visibleOptions[nextIndex].focus();
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
 
@@ -680,6 +740,7 @@ export class Dropdown extends FormMixin(LitElement) {
             nextIndex === 0 ? visibleOptions.length - 1 : nextIndex - 1;
         }
 
+        visibleOptions[nextIndex].focus();
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
 
@@ -1192,7 +1253,7 @@ export class Dropdown extends FormMixin(LitElement) {
     this.newOptionValue = target.value;
   }
 
-  private _handleAddOption() {
+  private _handleAddBtnOption() {
     if (this.newOptionValue) {
       const event = new CustomEvent('on-add-option', {
         detail: { value: this.newOptionValue },
@@ -1205,8 +1266,11 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _handleRemoveOption(e: any) {
-    console.log('Option removed : ', e.detail.value);
-    this.open = false;
+    this.assistiveText = 'MY option removed ';
+    setTimeout(() => {
+      this.open = false;
+      this.buttonEl.focus();
+    }, 100);
   }
 }
 
