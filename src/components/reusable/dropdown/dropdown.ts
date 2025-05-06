@@ -30,6 +30,13 @@ const _defaultTextStrings = {
   add: 'Add',
 };
 
+const KEY = {
+  Enter: 'Enter',
+  Escape: 'Escape',
+  ArrowDown: 'ArrowDown',
+  ArrowUp: 'ArrowUp',
+} as const;
+
 /**
  * Dropdown, single select.
  * @fires on-change - Captures the input event and emits the selected value and original event details.
@@ -344,64 +351,34 @@ export class Dropdown extends FormMixin(LitElement) {
 
             <ul
               id="options"
-              class=${classMap({
-                options: true,
-                open: this.open,
-                upwards: this._openUpwards,
-              })}
-              style="min-width: ${this.menuMinWidth};"
-              aria-labelledby="label-${this.name}"
-              name=${this.name}
+              class=${classMap({ options: true, open: this.open })}
               role="listbox"
               tabindex="0"
-              aria-expanded=${this.open}
               aria-hidden=${!this.open}
-              @keydown=${(e: any) => this.handleListKeydown(e)}
-              @blur=${(e: any) => this.handleListBlur(e)}
+              @keydown=${this.handleListKeydown}
+              @blur=${this.handleListBlur}
             >
-              <!-- Add New Option -->
               ${this.allowAddOption
-                ? html` <li class="add-option">
-                    <input
-                      class="add-option-input"
-                      type="text"
-                      placeholder=${this._textStrings.addItem}
-                      .value=${this.newOptionValue}
-                      aria-label="Add new option"
-                      @input=${(e: any) => this._handleInputNewOption(e)}
-                      @keydown=${(e: KeyboardEvent) => {
-                        e.stopPropagation();
-                        this._handleAddInputKeydown(e);
-                      }}
-                      @focus=${(e: KeyboardEvent) => {
-                        e.stopPropagation();
-                        this.assistiveText = 'Add new option input';
-                      }}
-                    />
-                    <kyn-button
-                      kind="secondary"
-                      size="small"
-                      @click=${() => this._handleAddBtnOption()}
-                      @keydown=${(e: any) => {
-                        this._handleAddBtnKeydown(e);
-                      }}
-                    >
-                      ${this._textStrings.add}
-                    </kyn-button>
-                  </li>`
-                : null}
-              ${this.multiple && this.selectAll
                 ? html`
-                    <kyn-dropdown-option
-                      class="select-all"
-                      value="selectAll"
-                      multiple
-                      ?selected=${this.selectAllChecked}
-                      ?indeterminate=${this.selectAllIndeterminate}
-                      ?disabled=${this.disabled}
-                    >
-                      ${this.selectAllText}
-                    </kyn-dropdown-option>
+                    <li class="add-option">
+                      <input
+                        class="add-option-input"
+                        type="text"
+                        placeholder=${this._textStrings.addItem}
+                        .value=${this.newOptionValue}
+                        aria-label="Add new option"
+                        @input=${this._handleInputNewOption}
+                        @keydown=${this._onAddOptionInputKeydown}
+                        @focus=${this._onAddOptionInputFocus}
+                      />
+                      <button
+                        type="button"
+                        class="add-option-btn"
+                        @click=${this._handleAddOption}
+                      >
+                        ${this._textStrings.add}
+                      </button>
+                    </li>
                   `
                 : null}
 
@@ -433,33 +410,39 @@ export class Dropdown extends FormMixin(LitElement) {
     `;
   }
 
-  private _handleAddInputKeydown(e: any) {
-    const ENTER_KEY_CODE = 13;
-    if (e.keyCode === ENTER_KEY_CODE) {
-      this._handleAddBtnOption();
-    }
-    const DOWN_ARROW_KEY_CODE = 40;
-    const UP_ARROW_KEY_CODE = 38;
-    const ESCAPE_KEY_CODE = 27;
-    if (
-      e.keyCode === DOWN_ARROW_KEY_CODE ||
-      e.keyCode === UP_ARROW_KEY_CODE ||
-      e.keyCode === ESCAPE_KEY_CODE
-    ) {
-      this.handleKeyboard(e, e.keyCode, 'addOption');
+  private _onAddOptionInputKeydown(e: KeyboardEvent) {
+    e.stopPropagation();
+    switch (e.key) {
+      case KEY.Enter:
+        this._handleAddOption();
+        break;
+      case KEY.Escape:
+        this.newOptionValue = '';
+        this.open = false;
+        this.buttonEl.focus();
+        break;
+      case KEY.ArrowDown:
+        this.handleKeyboard(e, 40, 'addOption');
+        break;
+      case KEY.ArrowUp:
+        this.handleKeyboard(e, 38, 'addOption');
+        break;
     }
   }
 
-  private _handleAddBtnKeydown(e: any) {
-    const ENTER_KEY_CODE = 13;
-    const TAB_KEY_CODE = 9;
-    if (e.keyCode === ENTER_KEY_CODE) {
-      this._handleAddBtnOption();
-    }
-    if (e.keyCode === TAB_KEY_CODE) {
-      e.preventDefault();
-      this.handleKeyboard(e, 40, 'addOption');
-    }
+  private _onAddOptionInputFocus() {
+    this.assistiveText = 'Add new option input';
+  }
+
+  private _handleAddOption() {
+    const v = this.newOptionValue.trim();
+    if (!v) return;
+    this.dispatchEvent(
+      new CustomEvent('on-add-option', { detail: { value: v } })
+    );
+    this.newOptionValue = '';
+    this.open = false;
+    this.buttonEl.focus();
   }
 
   private renderHelperContent() {
@@ -596,16 +579,20 @@ export class Dropdown extends FormMixin(LitElement) {
     this.handleKeyboard(e, e.keyCode, 'list');
   }
 
-  private handleListBlur(e: any) {
-    this.options.forEach((option) => (option.highlighted = false));
+  private handleListBlur(e: FocusEvent): void {
+    this.options.forEach((o) => (o.highlighted = false));
+    const target = e.relatedTarget as HTMLElement | null;
 
-    // don't blur if clicking an option inside
     if (
-      e.relatedTarget &&
-      e.relatedTarget.localName !== 'kyn-dropdown-option'
+      target &&
+      (target.closest('kyn-dropdown-option') ||
+        target.classList.contains('search') ||
+        target.closest('.add-option'))
     ) {
-      this.open = false;
+      return;
     }
+
+    this.open = false;
     this.assistiveText = 'Dropdown menu options.';
   }
 
@@ -1249,18 +1236,6 @@ export class Dropdown extends FormMixin(LitElement) {
   private _handleInputNewOption(e: Event) {
     const target = e.target as HTMLInputElement;
     this.newOptionValue = target.value;
-  }
-
-  private _handleAddBtnOption() {
-    if (this.newOptionValue) {
-      const event = new CustomEvent('on-add-option', {
-        detail: { value: this.newOptionValue },
-      });
-      this.dispatchEvent(event);
-      console.log('Option added : ', this.newOptionValue);
-      this.newOptionValue = '';
-    }
-    this.open = false;
   }
 
   private _handleRemoveOption() {
