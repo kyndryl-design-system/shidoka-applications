@@ -1008,9 +1008,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // capture child options click event
     this.addEventListener('on-click', (e: any) => this._handleClick(e));
-    this.addEventListener('on-remove-option', (e: any) =>
-      this._handleRemoveOption(e)
-    );
+    this.addEventListener('on-remove-option', () => this._handleRemoveOption());
 
     // capture child options blur event
     this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
@@ -1022,8 +1020,8 @@ export class Dropdown extends FormMixin(LitElement) {
 
     document.removeEventListener('click', (e) => this._handleClickOut(e));
     this.removeEventListener('on-click', (e: any) => this._handleClick(e));
-    this.removeEventListener('on-remove-option', (e: any) =>
-      this._handleRemoveOption(e)
+    this.removeEventListener('on-remove-option', () =>
+      this._handleRemoveOption()
     );
     this.removeEventListener('on-blur', (e: any) => this._handleBlur(e));
 
@@ -1265,7 +1263,7 @@ export class Dropdown extends FormMixin(LitElement) {
     this.open = false;
   }
 
-  private _handleRemoveOption(e: any) {
+  private _handleRemoveOption() {
     this.assistiveText = 'MY option removed ';
     setTimeout(() => {
       this.open = false;
