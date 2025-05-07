@@ -525,6 +525,7 @@ export class Dropdown extends FormMixin(LitElement) {
   private handleSlotChange() {
     this.updateChildOptions();
     this._updateOptions();
+    this._updateSelectedText();
   }
 
   private updateChildOptions() {
@@ -1123,31 +1124,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
       this._updateOptions();
       this._updateTags();
-
-      // update selected option text
-      const AllOptions: any = Array.from(
-        this.querySelectorAll('kyn-dropdown-option')
-      );
-
-      if (!this.multiple) {
-        if (AllOptions.length && this.value !== '') {
-          const option = AllOptions.find(
-            (option: any) => option.value === this.value
-          );
-          if (option) {
-            this.text = option.textContent.trim();
-          } else {
-            this.text = '';
-            console.warn(`No dropdown option found with value: ${this.value}`);
-          }
-        }
-
-        // set search input value
-        if (this.searchable && this.text) {
-          this.searchText = this.text === this.placeholder ? '' : this.text;
-          this.searchEl.value = this.searchText;
-        }
-      }
+      this._updateSelectedText();
     }
 
     if (changedProps.has('open')) {
@@ -1249,6 +1226,33 @@ export class Dropdown extends FormMixin(LitElement) {
       this.open = false;
       this.buttonEl.focus();
     }, 100);
+  }
+
+  private _updateSelectedText() {
+    // update selected option text
+    const AllOptions: any = Array.from(
+      this.querySelectorAll('kyn-dropdown-option')
+    );
+
+    if (!this.multiple) {
+      if (AllOptions.length && this.value !== '') {
+        const option = AllOptions.find(
+          (option: any) => option.value === this.value
+        );
+        if (option) {
+          this.text = option.textContent.trim();
+        } else {
+          this.text = '';
+          console.warn(`No dropdown option found with value: ${this.value}`);
+        }
+      }
+
+      // set search input value
+      if (this.searchable && this.text) {
+        this.searchText = this.text === this.placeholder ? '' : this.text;
+        this.searchEl.value = this.searchText;
+      }
+    }
   }
 }
 
