@@ -11,8 +11,14 @@ import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
+// Button needs to be updated as per figma design
+import chevronLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
+import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+
 const _defaultTextStrings = {
   error: 'Error',
+  subtract: 'Subtract',
+  add: 'Add',
 };
 
 /**
@@ -84,6 +90,10 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   enableTooltip = false;
 
+  /** Set this to `true` for button controls. */
+  @property({ type: Boolean })
+  enableButtonControls = false;
+
   /** Internal text strings.
    * @internal
    */
@@ -134,6 +144,22 @@ export class SliderInput extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
         <div class="slider-container">
+${
+  this.enableButtonControls
+    ? html`
+        <kyn-button
+          class="left_button"
+          kind="outline"
+          size="small"
+          ?disabled=${this.disabled || this.value <= this.min}
+          description=${this._textStrings.subtract}
+          @on-click=${this._handleSubtract}
+        >
+          <span slot="icon">${unsafeSVG(chevronLeft)}</span>
+        </kyn-button>
+      `
+    : null
+}
           <div class="${classMap(styles)}">
               <input
                 type="range"
@@ -166,6 +192,22 @@ export class SliderInput extends FormMixin(LitElement) {
                     : null
                 }
               </div>
+${
+  this.enableButtonControls
+    ? html`
+        <kyn-button
+          class="right_button"
+          kind="outline"
+          size="small"
+          ?disabled=${this.disabled || this.value >= this.max}
+          description=${this._textStrings.add}
+          @on-click=${this._handleAdd}
+        >
+          <span slot="icon">${unsafeSVG(chevronRight)}</span>
+        </kyn-button>
+      `
+    : null
+}
             ${this.editableInput ? this._renderEditableInput() : null}
 
         </div>
@@ -223,6 +265,24 @@ export class SliderInput extends FormMixin(LitElement) {
         })}
       </div>
     `;
+  }
+
+  // Handle the subtract button click
+  private _handleSubtract() {
+    this._inputRangeEl.stepDown();
+    this.value = Number(this._inputRangeEl.value);
+
+    this._validate(true, false);
+    this._emitValue();
+  }
+
+  // Handle the add button click
+  private _handleAdd() {
+    this._inputRangeEl.stepUp();
+    this.value = Number(this._inputRangeEl.value);
+
+    this._validate(true, false);
+    this._emitValue();
   }
 
   //render CustomLabel Html
@@ -299,7 +359,9 @@ export class SliderInput extends FormMixin(LitElement) {
 
   // Handle show the tooltip
   private _showTooltip() {
-    this.tooltipVisible = true;
+    if (!this.disabled) {
+      this.tooltipVisible = true;
+    }
   }
 
   // Handle hide the tooltip

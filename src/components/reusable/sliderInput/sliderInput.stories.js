@@ -137,6 +137,32 @@ export const Discrete = {
   },
 };
 
+export const WithButtonControls = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-slider-input
+        name=${args.name}
+        value=${args.value}
+        caption=${args.caption}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        step=${ifDefined(args.step)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
+        ?enableTooltip=${args.enableTooltip}
+        ?editableInput=${args.editableInput}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        ?enableButtonControls=${true}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-slider-input>
+    `;
+  },
+};
+
 export const WithNumberInput = {
   args: { ...args, editableInput: true },
   render: (args) => {
