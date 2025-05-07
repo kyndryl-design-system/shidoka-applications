@@ -137,7 +137,7 @@ export class Pagination extends LitElement {
     if (changedProps.has('count') || changedProps.has('pageSize')) {
       if (this.pageSize && this.count) {
         this._numberOfPages = Math.ceil(this.count / this.pageSize);
-        this.pageNumber = 1;
+        // this.pageNumber = 1;
       }
     }
   }
