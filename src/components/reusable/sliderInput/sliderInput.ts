@@ -11,9 +11,8 @@ import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
-// Button needs to be updated as per figma design
-import chevronLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
-import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import squiggleThin from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle.svg';
+import squiggleThick from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle-thick.svg';
 
 const _defaultTextStrings = {
   error: 'Error',
@@ -155,7 +154,7 @@ ${
           description=${this._textStrings.subtract}
           @on-click=${this._handleSubtract}
         >
-          <span slot="icon">${unsafeSVG(chevronLeft)}</span>
+          <span slot="icon">${unsafeSVG(squiggleThin)}</span>
         </kyn-button>
       `
     : null
@@ -203,7 +202,7 @@ ${
           description=${this._textStrings.add}
           @on-click=${this._handleAdd}
         >
-          <span slot="icon">${unsafeSVG(chevronRight)}</span>
+          <span slot="icon">${unsafeSVG(squiggleThick)}</span>
         </kyn-button>
       `
     : null
