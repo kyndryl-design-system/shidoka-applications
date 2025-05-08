@@ -305,7 +305,6 @@ const items = [
   {
     value: 'option2',
     text: 'Option 2',
-    selected: true,
   },
   {
     value: 'option3',
@@ -318,18 +317,18 @@ const items = [
   },
 ];
 
-const initialSelectedValues = items
-  .filter((item) => item.selected)
-  .map((item) => item.value);
-
 export const DataDrivenOptions = {
-  args: { ...args, value: initialSelectedValues },
+  args: { ...args, value: ['option2'] },
   render: (args) => {
-    let selectedValues = args.value || [];
+    const [{ value }, updateArgs] = useArgs();
+
     const handleChange = (e) => {
-      selectedValues = e.detail.value;
+      updateArgs({
+        value: e.detail.value,
+      });
       action(e.type)(e);
     };
+
     return html`
       <kyn-dropdown
         label=${args.label}
@@ -347,7 +346,7 @@ export const DataDrivenOptions = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        .value=${selectedValues}
+        .value=${value}
         @on-change=${handleChange}
       >
         <kyn-tooltip slot="tooltip">
@@ -371,19 +370,21 @@ export const DataDrivenOptions = {
 export const AddNewOption = {
   args: {
     ...args,
-    value: initialSelectedValues,
+    value: ['option2'],
     allowAddOption: true,
     items: items,
     dropdownItems: items,
   },
   render: (args) => {
-    const [{ dropdownItems }, updateArgs] = useArgs();
-    let selectedValues = args.value || [];
+    const [{ dropdownItems, value }, updateArgs] = useArgs();
 
     const handleChange = (e) => {
-      selectedValues = e.detail.value;
+      updateArgs({
+        value: e.detail.value,
+      });
       action(e.type)(e);
     };
+
     const handleAddOption = (e, dropdownItems) => {
       const newOption = {
         value: e.detail.value,
@@ -391,20 +392,31 @@ export const AddNewOption = {
         removable: true,
       };
 
-      updateArgs({
-        dropdownItems: [...dropdownItems, newOption], // Create a new array with the new option
+      // Create a new array with the new option
+      const newItems = [...dropdownItems, newOption].sort((a, b) => {
+        return a.text.localeCompare(b.text);
       });
+
+      updateArgs({
+        dropdownItems: newItems,
+      });
+
+      action(e.type)(e);
     };
+
     const handleRemoveOption = (e, dropdownItems) => {
       const removedOption = e.detail.value;
       const newOption = dropdownItems.filter(
         (item) => item.value !== removedOption
       );
-      action(e.type)(e);
+      const newValue = [...value].filter((item) => item !== removedOption);
 
       updateArgs({
         dropdownItems: [...newOption], // Create a new array with the new option
+        value: newValue, // remove value if removed item was selected
       });
+
+      action(e.type)(e);
     };
     return html`
       <style>
@@ -412,6 +424,7 @@ export const AddNewOption = {
           min-width: 15rem;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         multiple
@@ -428,14 +441,13 @@ export const AddNewOption = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        .value=${selectedValues}
+        .value=${value}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         .allowAddOption=${args.allowAddOption}
         @on-change=${handleChange}
         @on-add-option=${(e) => {
           handleAddOption(e, dropdownItems);
-          action(e.type)(e);
         }}
       >
         <kyn-tooltip slot="tooltip">
