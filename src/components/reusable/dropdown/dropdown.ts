@@ -375,7 +375,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         type="button"
                         size="small"
                         kind="secondary"
-                        @click=${this._handleAddOption}
+                        @on-click=${this._handleAddOption}
                       >
                         ${this._textStrings.add}
                       </kyn-button>
@@ -442,8 +442,6 @@ export class Dropdown extends FormMixin(LitElement) {
       new CustomEvent('on-add-option', { detail: { value: v } })
     );
     this.newOptionValue = '';
-    this.open = false;
-    this.buttonEl.focus();
   }
 
   private renderHelperContent() {
