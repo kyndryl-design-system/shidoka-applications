@@ -8,7 +8,7 @@ import {
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import HeaderScss from './header.scss';
-import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
+import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 
 /**
  * The global Header component.
