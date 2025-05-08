@@ -81,6 +81,16 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Array })
   defaultDate: string[] | null = null;
 
+  /** Controls which parts of the date range are editable.
+   * Possible values:
+   * - "both" (default): Both start and end dates can be edited
+   * - "start": Only the start date can be edited, end date is locked once set
+   * - "end": Only the end date can be edited, start date is locked once set
+   * - "none": Neither date can be edited once set (similar to readonly)
+   */
+  @property({ type: String })
+  rangeEditMode: DateRangeEditableMode = DateRangeEditableMode.BOTH;
+
   /** Sets default error message. */
   @property({ type: String })
   defaultErrorMessage = '';
@@ -132,16 +142,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   /** Sets entire date range picker form element to readonly. */
   @property({ type: Boolean })
   readonly = false;
-
-  /** Controls which parts of the date range are editable.
-   * Possible values:
-   * - "both" (default): Both start and end dates can be edited
-   * - "start": Only the start date can be edited, end date is locked once set
-   * - "end": Only the end date can be edited, start date is locked once set
-   * - "none": Neither date can be edited once set (similar to readonly)
-   */
-  @property({ type: String })
-  rangeEditMode: DateRangeEditableMode = DateRangeEditableMode.BOTH;
 
   /** Sets 24-hour formatting true/false.
    * Defaults to 12H for all `en-` locales and 24H for all other locales.
@@ -748,6 +748,41 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     }
 
+    if (changedProperties.has('rangeEditMode') && this.flatpickrInstance) {
+      if (Array.isArray(this.defaultDate) && this.defaultDate.length === 2) {
+        if (
+          this.rangeEditMode === DateRangeEditableMode.START &&
+          !this.defaultDate[0] &&
+          this.defaultDate[1]
+        ) {
+          const processedDate = this.processDefaultDates([this.defaultDate[1]]);
+          if (processedDate.length === 1) {
+            this.value = [null, processedDate[0]];
+          }
+        } else if (
+          this.rangeEditMode === DateRangeEditableMode.END &&
+          this.defaultDate[0] &&
+          !this.defaultDate[1]
+        ) {
+          const processedDate = this.processDefaultDates([this.defaultDate[0]]);
+          if (processedDate.length === 1) {
+            this.value = [processedDate[0], null];
+          }
+        }
+      }
+
+      this.flatpickrInstance.destroy();
+      setTimeout(() => {
+        this.initializeFlatpickr().then(() => {
+          if (this._inputEl && this.flatpickrInstance) {
+            this._inputEl.value = this.flatpickrInstance.input.value;
+            this.flatpickrInstance.redraw();
+            this.updateFormValue();
+          }
+        });
+      }, 0);
+    }
+
     if (
       changedProperties.has('value') &&
       !this.dateRangePickerDisabled &&
@@ -793,12 +828,34 @@ export class DateRangePicker extends FormMixin(LitElement) {
           : dates.length === 1
           ? ([dates[0], null] as [Date, null])
           : ([null, null] as [null, null]);
+      if (Array.isArray(this.defaultDate) && this.defaultDate.length === 2) {
+        if (
+          this.rangeEditMode === DateRangeEditableMode.START &&
+          !this.defaultDate[0] &&
+          this.defaultDate[1]
+        ) {
+          const processedDate = this.processDefaultDates([this.defaultDate[1]]);
+          if (processedDate.length === 1) {
+            this.value = [null, processedDate[0]];
+          }
+        } else if (
+          this.rangeEditMode === DateRangeEditableMode.END &&
+          this.defaultDate[0] &&
+          !this.defaultDate[1]
+        ) {
+          const processedDate = this.processDefaultDates([this.defaultDate[0]]);
+          if (processedDate.length === 1) {
+            this.value = [processedDate[0], null];
+          }
+        }
+      }
 
       this.flatpickrInstance.destroy();
       this.initializeFlatpickr().then(() => {
         if (this._inputEl && this.flatpickrInstance) {
           this._inputEl.value = this.flatpickrInstance.input.value;
           this.flatpickrInstance.redraw();
+          this.updateFormValue();
         }
       });
     }
@@ -1009,10 +1066,36 @@ export class DateRangePicker extends FormMixin(LitElement) {
         dateInSelectedRange: this._textStrings.dateInSelectedRange,
       };
 
+      let initialValue = this.value;
+
+      if (this.defaultDate && Array.isArray(this.defaultDate)) {
+        if (
+          this.rangeEditMode === DateRangeEditableMode.START &&
+          this.defaultDate.length === 2 &&
+          !this.defaultDate[0] &&
+          this.defaultDate[1]
+        ) {
+          const processedDate = this.processDefaultDates(this.defaultDate);
+          if (processedDate.length === 1) {
+            initialValue = [null, processedDate[0]];
+          }
+        } else if (
+          this.rangeEditMode === DateRangeEditableMode.END &&
+          this.defaultDate.length === 2 &&
+          this.defaultDate[0] &&
+          !this.defaultDate[1]
+        ) {
+          const processedDate = this.processDefaultDates(this.defaultDate);
+          if (processedDate.length === 1) {
+            initialValue = [processedDate[0], null];
+          }
+        }
+      }
+
       return applyDateRangeEditingRestrictions(
         options,
         this.rangeEditMode,
-        this.value,
+        initialValue,
         tooltipStrings
       );
     }

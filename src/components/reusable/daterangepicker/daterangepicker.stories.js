@@ -57,13 +57,49 @@ export default {
 
 const Template = (args) => {
   useEffect(() => {
+    const renderId = Math.random().toString(36).substring(2, 9);
+
+    setTimeout(() => {
+      const container = document.createElement('div');
+      container.setAttribute('data-picker-container', renderId);
+      container.style.display = 'contents';
+
+      const picker = document.querySelector(
+        `kyn-date-range-picker[name="${args.name}"]`
+      );
+      if (picker && picker.parentNode) {
+        picker.parentNode.insertBefore(container, picker);
+        container.appendChild(picker);
+
+        if (args.rangeEditMode !== undefined) {
+          picker.rangeEditMode = args.rangeEditMode;
+          if (
+            picker.flatpickrInstance &&
+            args.defaultDate &&
+            Array.isArray(args.defaultDate) &&
+            args.defaultDate.length === 2 &&
+            (!args.defaultDate[0] || !args.defaultDate[1])
+          ) {
+            picker.flatpickrInstance.destroy();
+            setTimeout(() => picker.initializeFlatpickr(), 10);
+          }
+        }
+      }
+    }, 0);
+
     return () => {
-      const picker = document.querySelector('kyn-date-range-picker');
-      if (picker) {
-        picker.remove();
+      const container = document.querySelector(
+        `div[data-picker-container="${renderId}"]`
+      );
+      if (container) {
+        if (container.firstChild) {
+          const picker = container.firstChild;
+          container.parentNode.insertBefore(picker, container);
+        }
+        container.remove();
       }
     };
-  }, []);
+  }, [args.rangeEditMode, args.defaultDate, args.name]);
 
   return html`
     <kyn-date-range-picker
@@ -72,6 +108,7 @@ const Template = (args) => {
       .locale=${args.locale}
       .dateFormat=${args.dateFormat}
       .defaultDate=${args.defaultDate}
+      .rangeEditMode=${args.rangeEditMode}
       .defaultErrorMessage=${args.defaultErrorMessage}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
@@ -83,7 +120,6 @@ const Template = (args) => {
       .size=${args.size}
       ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
       ?readonly=${args.readonly}
-      .rangeEditMode=${args.rangeEditMode}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
@@ -178,8 +214,8 @@ FixedStartDate.args = {
   name: 'fixed-deadline-date-picker',
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-05-01', '2024-05-15'],
-  label: 'Fixed Start - Flexible Deadline',
   rangeEditMode: 'end',
+  label: 'Fixed Start - Flexible Deadline',
 };
 
 export const FixedDeadline = Template.bind({});
@@ -188,8 +224,8 @@ FixedDeadline.args = {
   name: 'fixed-deadline-date-picker',
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-05-01', '2024-05-15'],
-  label: 'Flexible Start - Fixed Deadline',
   rangeEditMode: 'start',
+  label: 'Flexible Start - Fixed Deadline',
 };
 
 export const ScheduleLockdown_BothDatesFixed = Template.bind({});
@@ -198,8 +234,8 @@ ScheduleLockdown_BothDatesFixed.args = {
   name: 'both-dates-fixed-picker',
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-01-01', '2024-01-07'],
-  label: 'Fixed Date Range (View Only)',
   rangeEditMode: 'none',
+  label: 'Fixed Date Range (View Only)',
 };
 ScheduleLockdown_BothDatesFixed.storyName = 'Both Dates Fixed';
 
