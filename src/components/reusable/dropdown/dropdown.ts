@@ -371,13 +371,14 @@ export class Dropdown extends FormMixin(LitElement) {
                         @keydown=${this._onAddOptionInputKeydown}
                         @focus=${this._onAddOptionInputFocus}
                       />
-                      <button
+                      <kyn-button
                         type="button"
-                        class="add-option-btn"
+                        size="small"
+                        kind="secondary"
                         @click=${this._handleAddOption}
                       >
                         ${this._textStrings.add}
-                      </button>
+                      </kyn-button>
                     </li>
                   `
                 : null}
