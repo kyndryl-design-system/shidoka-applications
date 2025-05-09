@@ -6,6 +6,10 @@ import './sampleCardComponents/card.content.sample.ts';
 
 export default {
   title: 'Patterns/Informational Card',
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=13361-615913&m=dev',
+  },
 };
 
 const args = {
