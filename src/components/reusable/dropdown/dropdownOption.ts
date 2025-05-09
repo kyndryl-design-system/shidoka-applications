@@ -3,14 +3,17 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import '../checkbox';
+import '../button';
 
 import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/check.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 import DropdownOptionScss from './dropdownOption.scss';
 
 /**
  * Dropdown option.
  * @fires on-click - Emits the option details to the parent dropdown.
+ * @fires on-remove-option - Emits the option that is removed.
  * @slot unnamed - Slot for option text.
  * @slot icon - Slot for option icon. Icon size should be 16px only.
  */
@@ -32,6 +35,10 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Allow Add Option state, derived from parent. */
+  @property({ type: Boolean })
+  allowAddOption = false;
+
   /**
    * Option highlighted state for keyboard navigation, automatically derived.
    * @ignore
@@ -45,6 +52,10 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean })
   multiple = false;
 
+  /** Removable option. */
+  @property({ type: Boolean })
+  removable = false;
+
   /**
    * Option text, automatically derived.
    * @ignore
@@ -56,18 +67,23 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   indeterminate = false;
 
+  @property({ type: String, reflect: true })
+  override role = 'option';
+
+  @property({ type: String, reflect: true, attribute: 'aria-selected' })
+  override ariaSelected = 'option';
+
   override render() {
     return html`
-      <li
-        role="option"
+      <div
+        class="option"
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
-        aria-selected=${this.selected}
         ?disabled=${this.disabled}
         aria-disabled=${this.disabled}
         ?multiple=${this.multiple}
         title=${this.text}
-        @click=${(e: any) => this.handleClick(e)}
+        @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
         <slot name="icon"></slot>
@@ -77,27 +93,66 @@ export class DropdownOption extends LitElement {
                 <kyn-checkbox
                   type="checkbox"
                   value=${this.value}
-                  aria-hidden="true"
-                  tabindex="-1"
-                  @pointerdown=${(e: any) => e.preventDefault()}
-                  @pointerup=${(e: any) => e.preventDefault()}
                   .checked=${this.selected}
                   ?checked=${this.selected}
                   ?disabled=${this.disabled}
-                  visiblyHidden
+                  notFocusable
                   .indeterminate=${this.indeterminate}
-                ></kyn-checkbox>
+                >
+                  <slot
+                    @slotchange=${(e: any) => this.handleSlotChange(e)}
+                  ></slot>
+                </kyn-checkbox>
               `
-            : null}
-
-          <slot @slotchange=${(e: any) => this.handleSlotChange(e)}></slot>
+            : html`
+                <slot
+                  @slotchange=${(e: any) => this.handleSlotChange(e)}
+                ></slot>
+              `}
         </span>
 
         ${this.selected && !this.multiple
-          ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
+          ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
+          : this.allowAddOption && this.removable
+          ? html`
+              <kyn-button
+                class="remove-option"
+                kind="ghost"
+                size="small"
+                aria-label="Delete ${this.value}"
+                description="Delete ${this.value}"
+                ?disabled=${this.disabled}
+                @click=${(e: Event) => this.handleRemoveClick(e)}
+                @mousedown=${(e: Event) => e.stopPropagation()}
+                @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
+                @focus=${(e: KeyboardEvent) => e.stopPropagation()}
+              >
+                <span slot="icon" class="clear-icon">
+                  ${unsafeSVG(clearIcon)}
+                </span>
+              </kyn-button>
+            `
           : null}
-      </li>
+      </div>
     `;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('selected')) {
+      this.ariaSelected = this.selected.toString();
+    }
+  }
+
+  private handleRemoveClick(e: Event) {
+    e.stopPropagation();
+    const event = new CustomEvent('on-remove-option', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        value: this.value,
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   private handleSlotChange(e: any) {
@@ -113,6 +168,7 @@ export class DropdownOption extends LitElement {
   }
 
   private handleClick(e: Event) {
+    console.log('blah');
     // prevent click if disabled
     if (this.disabled) {
       return;

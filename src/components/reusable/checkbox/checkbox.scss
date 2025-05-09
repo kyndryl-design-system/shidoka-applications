@@ -59,7 +59,7 @@ input {
     transform: scale(0);
   }
 
-  &:not([disabled]) {
+  &:not(.disabled) {
     &:active {
       background: var(--kd-color-background-button-primary-pressed);
       border-color: var(--kd-color-background-ui-hollow-pressed);
@@ -84,7 +84,7 @@ input {
     }
   }
 
-  &:not([disabled]):checked {
+  &:not(.disabled):checked {
     background: $main-checkbox-background;
     border-color: transparent;
 
@@ -123,7 +123,7 @@ input {
     }
   }
 
-  &[disabled] {
+  &.disabled {
     background: var(--kd-color-background-forms-disabled);
     border-color: var(--kd-color-border-ui-disabled);
 
@@ -148,7 +148,7 @@ input {
 }
 
 input[type='checkbox']:indeterminate {
-  &:not([disabled]) {
+  &:not(.disabled) {
     background: $main-checkbox-background;
     border-color: transparent;
 
@@ -187,7 +187,7 @@ input[type='checkbox']:indeterminate {
   }
 }
 
-input[type='checkbox']:indeterminate:disabled {
+input[type='checkbox']:indeterminate.disabled {
   background: var(--kd-color-background-ui-default-disabled);
   border-color: transparent;
 
@@ -210,7 +210,7 @@ input[type='checkbox']:indeterminate:disabled {
 input[type='checkbox'][invalid] {
   border-color: $invalid-checkbox-background;
 
-  &:not([disabled]) {
+  &:not(.disabled) {
     &:checked,
     &:indeterminate {
       background: $invalid-checkbox-background;
@@ -237,7 +237,7 @@ input[type='checkbox'][invalid] {
     }
   }
 
-  &[disabled] {
+  &.disabled {
     border-color: var(--kd-color-border-ui-disabled);
 
     &:hover {
