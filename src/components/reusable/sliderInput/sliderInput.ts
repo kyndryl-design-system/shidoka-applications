@@ -16,8 +16,8 @@ import squiggleThick from '@kyndryl-design-system/shidoka-icons/svg/monochrome/1
 
 const _defaultTextStrings = {
   error: 'Error',
-  subtract: 'Subtract',
-  add: 'Add',
+  decrease: 'Decrease',
+  increase: 'Increase',
 };
 
 /**
@@ -27,6 +27,8 @@ const _defaultTextStrings = {
  * @prop {number} max - The maximum value.
  * @prop {number} step - The step between values.
  * @slot tooltip - Slot for tooltip.
+ * @slot btnIconLeft - Slot for button icon left.
+ * @slot btnIconRight - Slot for button icon right.
  *
  */
 @customElement('kyn-slider-input')
@@ -151,10 +153,12 @@ ${
           kind="outline"
           size="small"
           ?disabled=${this.disabled || this.value <= this.min}
-          description=${this._textStrings.subtract}
-          @on-click=${this._handleSubtract}
+          description=${this._textStrings.decrease}
+          @on-click=${this._handleDecrease}
         >
-          <span slot="icon">${unsafeSVG(squiggleThin)}</span>
+          <span slot="icon"
+            ><slot name="btnIconLeft">${unsafeSVG(squiggleThin)}</slot></span
+          >
         </kyn-button>
       `
     : null
@@ -199,10 +203,12 @@ ${
           kind="outline"
           size="small"
           ?disabled=${this.disabled || this.value >= this.max}
-          description=${this._textStrings.add}
-          @on-click=${this._handleAdd}
+          description=${this._textStrings.increase}
+          @on-click=${this._handleIncrease}
         >
-          <span slot="icon">${unsafeSVG(squiggleThick)}</span>
+          <span slot="icon"
+            ><slot name="btnIconRight">${unsafeSVG(squiggleThick)}</slot></span
+          >
         </kyn-button>
       `
     : null
@@ -266,8 +272,8 @@ ${
     `;
   }
 
-  // Handle the subtract button click
-  private _handleSubtract() {
+  // Handle left/decrease button click
+  private _handleDecrease() {
     this._inputRangeEl.stepDown();
     this.value = Number(this._inputRangeEl.value);
 
@@ -275,8 +281,8 @@ ${
     this._emitValue();
   }
 
-  // Handle the add button click
-  private _handleAdd() {
+  // Handle right/increase button click
+  private _handleIncrease() {
     this._inputRangeEl.stepUp();
     this.value = Number(this._inputRangeEl.value);
 

@@ -2,6 +2,9 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import Substract from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
+import Add from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 
 export default {
   title: 'Components/Slider Input',
@@ -158,6 +161,13 @@ export const WithButtonControls = {
         ?enableButtonControls=${true}
         @on-input=${(e) => action(e.type)(e)}
       >
+        <!-- For Testing  -->
+        <!-- <span slot="btnIconLeft" style="display: flex;"
+          >${unsafeSVG(Substract)}</span
+        >
+        <span slot="btnIconRight" style="display: flex;"
+          >${unsafeSVG(Add)}</span
+        > -->
       </kyn-slider-input>
     `;
   },
