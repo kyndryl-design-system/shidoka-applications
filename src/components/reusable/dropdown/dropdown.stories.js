@@ -1,3 +1,4 @@
+import { useArgs } from '@storybook/preview-api';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
@@ -50,9 +51,16 @@ const args = {
 };
 
 export const Single = {
-  args: args,
+  args: {
+    ...args,
+  },
   render: (args) => {
     return html`
+      <style>
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -295,7 +303,6 @@ const items = [
   {
     value: 'option2',
     text: 'Option 2',
-    selected: true,
   },
   {
     value: 'option3',
@@ -308,18 +315,18 @@ const items = [
   },
 ];
 
-const initialSelectedValues = items
-  .filter((item) => item.selected)
-  .map((item) => item.value);
-
 export const DataDrivenOptions = {
-  args: { ...args, value: initialSelectedValues },
+  args: { ...args, value: ['option2'] },
   render: (args) => {
-    let selectedValues = args.value || [];
+    const [{ value }, updateArgs] = useArgs();
+
     const handleChange = (e) => {
-      selectedValues = e.detail.value;
+      updateArgs({
+        value: e.detail.value,
+      });
       action(e.type)(e);
     };
+
     return html`
       <kyn-dropdown
         label=${args.label}
@@ -337,7 +344,7 @@ export const DataDrivenOptions = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        .value=${selectedValues}
+        .value=${value}
         @on-change=${handleChange}
       >
         <kyn-tooltip slot="tooltip">
@@ -348,6 +355,112 @@ export const DataDrivenOptions = {
         ${items.map((item) => {
           return html`
             <kyn-dropdown-option value=${item.value} ?disabled=${item.disabled}>
+              <span slot="icon">${unsafeSVG(infoIcon)}</span>
+              ${item.text}
+            </kyn-dropdown-option>
+          `;
+        })}
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const AddNewOption = {
+  args: {
+    ...args,
+    value: ['option2'],
+    allowAddOption: true,
+    items: items,
+    dropdownItems: items,
+  },
+  render: (args) => {
+    const [{ dropdownItems, value }, updateArgs] = useArgs();
+
+    const handleChange = (e) => {
+      updateArgs({
+        value: e.detail.value,
+      });
+      action(e.type)(e);
+    };
+
+    const handleAddOption = (e, dropdownItems) => {
+      const newOption = {
+        value: e.detail.value,
+        text: e.detail.value,
+        removable: true,
+      };
+
+      // Create a new array with the new option
+      const newItems = [...dropdownItems, newOption].sort((a, b) => {
+        return a.text.localeCompare(b.text);
+      });
+
+      updateArgs({
+        dropdownItems: newItems,
+      });
+
+      action(e.type)(e);
+    };
+
+    const handleRemoveOption = (e, dropdownItems) => {
+      const removedOption = e.detail.value;
+      const newOption = dropdownItems.filter(
+        (item) => item.value !== removedOption
+      );
+      const newValue = [...value].filter((item) => item !== removedOption);
+
+      updateArgs({
+        dropdownItems: [...newOption], // Create a new array with the new option
+        value: newValue, // remove value if removed item was selected
+      });
+
+      action(e.type)(e);
+    };
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
+
+      <kyn-dropdown
+        label=${args.label}
+        multiple
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        ?hideTags=${args.hideTags}
+        name=${args.name}
+        ?open=${args.open}
+        ?hideLabel=${args.hideLabel}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        .value=${value}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
+        .allowAddOption=${args.allowAddOption}
+        @on-change=${handleChange}
+        @on-add-option=${(e) => {
+          handleAddOption(e, dropdownItems);
+        }}
+      >
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
+
+        ${dropdownItems.map((item) => {
+          return html`
+            <kyn-dropdown-option
+              value=${item.value}
+              ?disabled=${item.disabled}
+              ?removable=${item.removable}
+              @on-remove-option=${(e) => handleRemoveOption(e, dropdownItems)}
+            >
               <span slot="icon">${unsafeSVG(infoIcon)}</span>
               ${item.text}
             </kyn-dropdown-option>
