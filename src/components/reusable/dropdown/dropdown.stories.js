@@ -53,7 +53,6 @@ const args = {
 export const Single = {
   args: {
     ...args,
-    allowAddOption: false,
   },
   render: (args) => {
     return html`
@@ -77,7 +76,6 @@ export const Single = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
-        .allowAddOption=${args.allowAddOption}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">

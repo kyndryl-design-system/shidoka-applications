@@ -26,6 +26,7 @@ const _defaultTextStrings = {
   requiredText: 'Required',
   errorText: 'Error',
   clearAll: 'Clear all',
+  clear: 'Clear',
   addItem: 'Add item...',
   add: 'Add',
 };
@@ -312,6 +313,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       aria-label="${this.value
                         .length} items selected. Clear selections"
                       ?disabled=${this.disabled}
+                      title=${this._textStrings.clear}
                       @click=${(e: Event) => this.handleClearMultiple(e)}
                     >
                       ${this.value.length}
