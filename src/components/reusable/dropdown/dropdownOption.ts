@@ -112,8 +112,8 @@ export class DropdownOption extends LitElement {
               kind="ghost"
               size="small"
               tabindex="0"
-              aria-label="Delete  ${this.text}"
-              description="Delete ${this.text}"
+              aria-label="Delete  ${this.value}"
+              description="Delete ${this.value}"
               ?disabled=${this.disabled}
               @click=${(e: Event) => this.handleRemoveClick(e)}
               @mousedown=${(e: Event) => e.stopPropagation()}
