@@ -77,7 +77,7 @@ export class DropdownOption extends LitElement {
         ?disabled=${this.disabled}
         aria-disabled=${this.disabled}
         ?multiple=${this.multiple}
-        title=${this.text}
+        title=${this.value}
         @click=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
