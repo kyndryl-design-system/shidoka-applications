@@ -27,8 +27,8 @@ const _defaultTextStrings = {
  * @prop {number} max - The maximum value.
  * @prop {number} step - The step between values.
  * @slot tooltip - Slot for tooltip.
- * @slot btnIconLeft - Slot for button icon left.
- * @slot btnIconRight - Slot for button icon right.
+ * @slot leftBtnIcon - Slot for left button icon.
+ * @slot rightBtnIcon - Slot for right button icon.
  *
  */
 @customElement('kyn-slider-input')
@@ -157,7 +157,7 @@ ${
           @on-click=${this._handleDecrease}
         >
           <span slot="icon"
-            ><slot name="btnIconLeft">${unsafeSVG(squiggleThin)}</slot></span
+            ><slot name="leftBtnIcon">${unsafeSVG(squiggleThin)}</slot></span
           >
         </kyn-button>
       `
@@ -207,7 +207,7 @@ ${
           @on-click=${this._handleIncrease}
         >
           <span slot="icon"
-            ><slot name="btnIconRight">${unsafeSVG(squiggleThick)}</slot></span
+            ><slot name="rightBtnIcon">${unsafeSVG(squiggleThick)}</slot></span
           >
         </kyn-button>
       `

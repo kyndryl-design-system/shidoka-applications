@@ -162,10 +162,10 @@ export const WithButtonControls = {
         @on-input=${(e) => action(e.type)(e)}
       >
         <!-- For Testing  -->
-        <!-- <span slot="btnIconLeft" style="display: flex;"
+        <!-- <span slot="leftBtnIcon" style="display: flex;"
           >${unsafeSVG(Substract)}</span
         >
-        <span slot="btnIconRight" style="display: flex;"
+        <span slot="rightBtnIcon" style="display: flex;"
           >${unsafeSVG(Add)}</span
         > -->
       </kyn-slider-input>
