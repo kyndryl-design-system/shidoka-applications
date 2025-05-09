@@ -50,6 +50,12 @@ export class Checkbox extends LitElement {
   disabled = false;
 
   /**
+   * Prevent checkbox from being focusable. Disables it functionally but not visually.
+   */
+  @property({ type: Boolean })
+  notFocusable = false;
+
+  /**
    * Checkbox group invalid state, inherited from the parent group.
    * @internal
    */
@@ -79,13 +85,14 @@ export class Checkbox extends LitElement {
         </span>
 
         <input
+          class=${this.disabled ? 'disabled' : ''}
           type="checkbox"
           name=${this.name}
           value=${this.value}
           .checked=${this.checked}
           ?checked=${this.checked}
           ?required=${this.required}
-          ?disabled=${this.disabled}
+          ?disabled=${this.disabled || this.notFocusable}
           ?invalid=${this.invalid}
           @change=${(e: any) => this.handleChange(e)}
           .indeterminate=${this.indeterminate}

@@ -67,18 +67,23 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   indeterminate = false;
 
+  @property({ type: String, reflect: true })
+  override role = 'option';
+
+  @property({ type: String, reflect: true, attribute: 'aria-selected' })
+  override ariaSelected = 'option';
+
   override render() {
     return html`
-      <li
-        role="option"
+      <div
+        class="option"
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
-        aria-selected=${this.selected}
         ?disabled=${this.disabled}
         aria-disabled=${this.disabled}
         ?multiple=${this.multiple}
         title=${this.text}
-        @click=${(e: any) => this.handleClick(e)}
+        @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
         <slot name="icon"></slot>
@@ -88,45 +93,54 @@ export class DropdownOption extends LitElement {
                 <kyn-checkbox
                   type="checkbox"
                   value=${this.value}
-                  aria-hidden="true"
-                  tabindex="-1"
-                  @pointerdown=${(e: any) => e.preventDefault()}
-                  @pointerup=${(e: any) => e.preventDefault()}
                   .checked=${this.selected}
                   ?checked=${this.selected}
                   ?disabled=${this.disabled}
-                  visiblyHidden
+                  notFocusable
                   .indeterminate=${this.indeterminate}
-                ></kyn-checkbox>
+                >
+                  <slot
+                    @slotchange=${(e: any) => this.handleSlotChange(e)}
+                  ></slot>
+                </kyn-checkbox>
               `
-            : null}
-
-          <slot @slotchange=${(e: any) => this.handleSlotChange(e)}></slot>
+            : html`
+                <slot
+                  @slotchange=${(e: any) => this.handleSlotChange(e)}
+                ></slot>
+              `}
         </span>
 
         ${this.selected && !this.multiple
-          ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
+          ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
           : this.allowAddOption && this.removable
-          ? html`<kyn-button
-              class="remove-option"
-              kind="ghost"
-              size="small"
-              tabindex="0"
-              aria-label="Delete  ${this.value}"
-              description="Delete ${this.value}"
-              ?disabled=${this.disabled}
-              @click=${(e: Event) => this.handleRemoveClick(e)}
-              @mousedown=${(e: Event) => e.stopPropagation()}
-              @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
-              @focus=${(e: KeyboardEvent) => e.stopPropagation()}
-            >
-              <span slot="icon" class="clear-icon"
-                >${unsafeSVG(clearIcon)}</span
+          ? html`
+              <kyn-button
+                class="remove-option"
+                kind="ghost"
+                size="small"
+                aria-label="Delete ${this.value}"
+                description="Delete ${this.value}"
+                ?disabled=${this.disabled}
+                @click=${(e: Event) => this.handleRemoveClick(e)}
+                @mousedown=${(e: Event) => e.stopPropagation()}
+                @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
+                @focus=${(e: KeyboardEvent) => e.stopPropagation()}
               >
-            </kyn-button>`
+                <span slot="icon" class="clear-icon">
+                  ${unsafeSVG(clearIcon)}
+                </span>
+              </kyn-button>
+            `
           : null}
-      </li>
+      </div>
     `;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('selected')) {
+      this.ariaSelected = this.selected.toString();
+    }
   }
 
   private handleRemoveClick(e: Event) {
@@ -154,6 +168,7 @@ export class DropdownOption extends LitElement {
   }
 
   private handleClick(e: Event) {
+    console.log('blah');
     // prevent click if disabled
     if (this.disabled) {
       return;

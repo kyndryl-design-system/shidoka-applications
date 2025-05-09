@@ -351,18 +351,16 @@ export class Dropdown extends FormMixin(LitElement) {
               <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
             </div>
 
-            <ul
+            <div
               id="options"
               class=${classMap({ options: true, open: this.open })}
-              role="listbox"
-              tabindex="0"
               aria-hidden=${!this.open}
               @keydown=${this.handleListKeydown}
               @blur=${this.handleListBlur}
             >
               ${this.allowAddOption
                 ? html`
-                    <li class="add-option">
+                    <div class="add-option">
                       <input
                         class="add-option-input"
                         type="text"
@@ -381,15 +379,17 @@ export class Dropdown extends FormMixin(LitElement) {
                       >
                         ${this._textStrings.add}
                       </kyn-button>
-                    </li>
+                    </div>
                   `
                 : null}
 
-              <slot
-                id="children"
-                @slotchange=${() => this.handleSlotChange()}
-              ></slot>
-            </ul>
+              <div role="listbox" aria-labelledby="label-${this.name}">
+                <slot
+                  id="children"
+                  @slotchange=${() => this.handleSlotChange()}
+                ></slot>
+              </div>
+            </div>
           </div>
           ${this.searchText !== ''
             ? html`
@@ -610,7 +610,7 @@ export class Dropdown extends FormMixin(LitElement) {
       ...Array.from(this.shadowRoot?.querySelectorAll('.select-all') || []),
       ...this.options.filter((option: any) => option.style.display !== 'none'),
     ];
-    visibleOptions.forEach((e) => (e.tabIndex = 0));
+    // visibleOptions.forEach((e) => (e.tabIndex = 0));
 
     const highlightedEl = visibleOptions.find(
       (option: any) => option.highlighted
