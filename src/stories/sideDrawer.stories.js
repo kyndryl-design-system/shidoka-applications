@@ -10,7 +10,6 @@ import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import arrowsVerticalIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrows-vertical.svg';
 import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
 import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
-import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
 import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
 import listIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/list.svg';
 import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/filter.svg';
@@ -59,14 +58,13 @@ export const SideDrawer = {
     items: mockData,
   },
   render: () => {
-    const [{ selectedTabId, items }, updateArgs] = useArgs();
+    const [{ items }, updateArgs] = useArgs();
 
     const handleRecommendClick = (e, index) => {
       const updatedItems = mockData.map((item, i) => ({
         ...item,
-        favourite: i === index, // Set favourite to true for the clicked index, false for others
+        favourite: i === index,
       }));
-      console.log('newItems', updatedItems);
       updateArgs({
         items: updatedItems,
       });
@@ -76,6 +74,7 @@ export const SideDrawer = {
     return html`
       <kyn-side-drawer
         ?open=${false}
+        size="standard"
         ?hideFooter=${true}
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
@@ -93,8 +92,6 @@ export const SideDrawer = {
           <kyn-tab slot="tabs" id="widgets" selected> Widgets </kyn-tab>
           <kyn-tab slot="tabs" id="dashboards"> Dashboards </kyn-tab>
           <kyn-tab slot="tabs" id="settings"> Settings </kyn-tab>
-
-          <kyn-tab-panel tabId="settings"> Setting content </kyn-tab-panel>
           <kyn-tab-panel tabId="widgets" visible>
             <div class="dashboard-wrapper">
               <kyn-page-title
@@ -114,7 +111,7 @@ export const SideDrawer = {
                     >${unsafeSVG(listIcon)}</span
                   >
                 </kyn-button>
-                <div class="content-item">
+                <div class="content-items">
                   <kyn-button
                     kind="outline"
                     size="small"
@@ -174,8 +171,8 @@ export const SideDrawer = {
                       style="width:100%"
                     >
                       <div class="content-container">
-                        <div class="content-item">
-                          <div class="content-item-item">
+                        <div class="content-items">
+                          <div class="content-item">
                             <kyn-button
                               kind="ghost"
                               size="small"
@@ -192,7 +189,11 @@ export const SideDrawer = {
                               description="recommended"
                               @on-click=${(e) => handleRecommendClick(e, i)}
                             >
-                              <span style="display:flex;" slot="icon">
+                              <span
+                                class=${item.favourite ? 'star-filled' : ''}
+                                style="display:flex;"
+                                slot="icon"
+                              >
                                 ${unsafeSVG(
                                   item.favourite
                                     ? recommendFilledIcon
@@ -201,9 +202,17 @@ export const SideDrawer = {
                               </span>
                             </kyn-button>
                           </div>
-                          <div class="content-item">${item.name}</div>
+                          <div class="content-items">${item.name}</div>
                         </div>
-                        <div class="content-item-item">
+                        <div class="content-item">
+                          ${InlineConfirm.render({
+                            destructive: true,
+                            anchorText: 'Delete',
+                            confirmText: 'Confirm',
+                            cancelText: 'Cancel',
+                            openRight: false,
+                          })}
+
                           <kyn-button
                             kind="ghost"
                             size="small"
@@ -214,23 +223,6 @@ export const SideDrawer = {
                               >${unsafeSVG(editIcon)}</span
                             >
                           </kyn-button>
-                          <!-- <kyn-button
-                              kind="ghost"
-                              size="small"
-                              description="delete"
-                              @on-click=${(e) => action(e.type)(e)}
-                            >
-                              <span style="display:flex;" slot="icon"
-                                >${unsafeSVG(deleteIcon)}</span
-                              >
-                            </kyn-button> -->
-                          ${InlineConfirm.render({
-                            destructive: true,
-                            anchorText: 'Delete',
-                            confirmText: 'Confirm',
-                            cancelText: 'Cancel',
-                            openRight: false,
-                          })}
                         </div>
                       </div>
                     </kyn-card>
@@ -239,6 +231,16 @@ export const SideDrawer = {
               </div>
             </div>
           </kyn-tab-panel>
+
+          <kyn-tab-panel tabId="settings">
+            <div class="dashboard-wrapper">
+              <kyn-page-title
+                type="tertiary"
+                pageTitle="Settings"
+                subTitle="Change Dashboard settings"
+              >
+              </kyn-page-title></div
+          ></kyn-tab-panel>
         </kyn-tabs>
       </kyn-side-drawer>
       <style>
@@ -269,12 +271,12 @@ export const SideDrawer = {
           align-items: center;
           align-self: stretch;
         }
-        .content-item {
+        .content-items {
           display: flex;
           align-items: center;
           gap: 8px;
         }
-        .content-item-item {
+        .content-item {
           display: flex;
           align-items: center;
           gap: 4px;
@@ -291,6 +293,9 @@ export const SideDrawer = {
             width: 80px;
             height: 80px;
           }
+        }
+        .star-filled > svg {
+          color: var(--kd-color-icon-brand);
         }
       </style>
     `;
