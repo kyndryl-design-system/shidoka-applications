@@ -18,6 +18,7 @@ import {
   emitValue,
   hideEmptyYear,
   getModalContainer,
+  clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -39,6 +40,14 @@ const _defaultTextStrings = {
   pleaseSelectDate: 'Please select a date',
   noDateSelected: 'No date selected',
   pleaseSelectValidDate: 'Please select a valid date',
+  invalidDateFormat: 'Invalid date format provided',
+  errorProcessing: 'Error processing date',
+
+  lockedStartDate: 'Start date is locked',
+  lockedEndDate: 'End date is locked',
+  dateLocked: 'Date is locked',
+  dateNotAvailable: 'Date is not available',
+  dateInSelectedRange: 'Date is in selected range',
 };
 
 /**
@@ -218,11 +227,6 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
-  /** Store submit event listener reference for cleanup
-   * @internal
-   */
-  private _submitListener: ((e: SubmitEvent) => void) | null = null;
-
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
@@ -292,6 +296,12 @@ export class DatePicker extends FormMixin(LitElement) {
       return !!this.defaultDate;
     }
     return false;
+  }
+
+  private updateFormValue(): void {
+    if (this._internals && this._inputEl) {
+      this._internals.setFormValue(this._inputEl.value);
+    }
   }
 
   override render() {
@@ -364,6 +374,8 @@ export class DatePicker extends FormMixin(LitElement) {
                 class="input-icon ${this.datePickerDisabled
                   ? 'is-disabled'
                   : ''}"
+                aria-hidden="true"
+                @click=${this.handleInputClickEvent}
                 >${unsafeSVG(calendarIcon)}</span
               >`}
         </div>
@@ -398,8 +410,8 @@ export class DatePicker extends FormMixin(LitElement) {
       >
         <span
           class="error-icon"
-          aria-label=${`${this.errorAriaLabel}` || 'Error message icon'}
-          role="button"
+          role="img"
+          aria-label=${this.errorAriaLabel || 'Error message icon'}
           >${unsafeSVG(errorIcon)}</span
         >${this.invalidText ||
         this._internalValidationMsg ||
@@ -416,6 +428,13 @@ export class DatePicker extends FormMixin(LitElement) {
         title=${this.warningTitle || 'Warning'}
         @mousedown=${this.preventFlatpickrOpen}
         @click=${this.preventFlatpickrOpen}
+        tabindex="0"
+        @keydown=${(e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.preventFlatpickrOpen(e);
+          }
+        }}
       >
         ${this.warnText}
       </div>`;
@@ -459,26 +478,32 @@ export class DatePicker extends FormMixin(LitElement) {
   ): Date[] {
     if (!defaultDate) return [];
 
-    if (Array.isArray(defaultDate)) {
-      return defaultDate
-        .map((date) => {
-          if (date instanceof Date) return date;
-          if (typeof date === 'string') return this.parseDateString(date);
-          return null;
-        })
-        .filter((date): date is Date => date !== null);
-    } else if (typeof defaultDate === 'string') {
-      const parsed = this.parseDateString(defaultDate);
-      return parsed ? [parsed] : [];
-    } else if (defaultDate instanceof Date) {
-      return [defaultDate];
+    const values = Array.isArray(defaultDate) ? defaultDate : [defaultDate];
+
+    const parsed = values.map((d) => {
+      if (d instanceof Date) return d;
+      if (typeof d === 'string') return this.parseDateString(d);
+      return null;
+    });
+
+    const valid = parsed.filter(
+      (d): d is Date => d instanceof Date && !isNaN(d.getTime())
+    );
+
+    if (valid.length !== parsed.length) {
+      console.error('Invalid date(s) provided in defaultDate');
+      this.invalidText = this._textStrings.invalidDateFormat;
     }
 
-    return [];
+    return valid;
   }
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
+
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
+    }
 
     if (changedProperties.has('value') && !this._isClearing) {
       let newValue = this.value;
@@ -601,10 +626,9 @@ export class DatePicker extends FormMixin(LitElement) {
       this.value = this.mode === 'multiple' ? [] : null;
       this.defaultDate = null;
 
-      this.flatpickrInstance.clear();
-      if (this._inputEl) {
-        this._inputEl.value = '';
-      }
+      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
+        this.updateFormValue();
+      });
 
       emitValue(this, 'on-change', {
         dates: this.value,
@@ -683,28 +707,25 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private parseDateString(dateStr: string): Date | null {
-    if (!dateStr || !dateStr.trim()) return null;
+    if (!dateStr.trim()) return null;
 
-    if (dateStr.includes('T')) {
-      const date = new Date(dateStr);
-      return isNaN(date.getTime()) ? null : date;
+    const dtMatch = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})$/.exec(
+      dateStr
+    );
+    if (dtMatch) {
+      const [, y, mo, da, hh, mm] = dtMatch.map(Number);
+      const dt = new Date(y, mo - 1, da, hh, mm);
+      return isNaN(dt.getTime()) ? null : dt;
     }
 
-    const formats: { [key: string]: RegExp } = {
-      'Y-m-d': /^\d{4}-\d{2}-\d{2}$/,
-      'Y-m-d h:i K': /^\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2} [AP]M)?$/,
-    };
+    const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+    if (dateMatch) {
+      const [, y, mo, da] = dateMatch.map(Number);
+      const dt = new Date(y, mo - 1, da);
+      return isNaN(dt.getTime()) ? null : dt;
+    }
 
-    const pattern = formats[this.dateFormat];
-    if (!pattern || !pattern.test(dateStr)) return null;
-
-    const [datePart] = dateStr.split(' ');
-    const [year, month, day] = datePart.split('-').map(Number);
-
-    if (!year || !month || !day) return null;
-
-    const date = new Date(year, month - 1, day);
-    return isNaN(date.getTime()) ? null : date;
+    return null;
   }
 
   setInitialDates() {
@@ -812,6 +833,15 @@ export class DatePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
 
     try {
+      const invalidDates = selectedDates.filter((date) =>
+        isNaN(date.getTime())
+      );
+      if (invalidDates.length > 0) {
+        this.invalidText = this._textStrings.invalidDateFormat;
+        this._validate(true, false);
+        return;
+      }
+
       if (this.mode === 'multiple') {
         this.value = selectedDates.length > 0 ? [...selectedDates] : [];
       } else {
@@ -834,11 +864,17 @@ export class DatePicker extends FormMixin(LitElement) {
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });
 
+      if (this.invalidText) {
+        this.invalidText = '';
+      }
+
       this._validate(true, false);
       await this.updateComplete;
       this.requestUpdate();
     } catch (error) {
-      console.warn('Error handling date change:', error);
+      console.error('Error handling date change:', error);
+      this.invalidText = this._textStrings.errorProcessing;
+      this._validate(true, false);
     }
   }
 
@@ -869,7 +905,6 @@ export class DatePicker extends FormMixin(LitElement) {
   private _validate(interacted: boolean, report: boolean) {
     if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
 
-    // Don't apply validation when the component is disabled
     if (this.datePickerDisabled) {
       this._internals.setValidity({}, '', this._inputEl);
       this._isInvalid = false;
@@ -923,6 +958,12 @@ export class DatePicker extends FormMixin(LitElement) {
 
       this.requestUpdate();
       return;
+    }
+
+    if (this.mode === 'multiple' && this._inputEl.value.trim() !== '') {
+      if (this.invalidText) {
+        this.invalidText = '';
+      }
     }
 
     if (this.invalidText) {

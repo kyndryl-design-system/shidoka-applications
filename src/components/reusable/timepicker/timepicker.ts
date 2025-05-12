@@ -18,6 +18,7 @@ import {
   emitValue,
   hideEmptyYear,
   getModalContainer,
+  clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -40,6 +41,12 @@ const _defaultTextStrings = {
   pleaseSelectDate: 'Please select a date',
   noTimeSelected: 'No time selected',
   pleaseSelectValidDate: 'Please select a valid date',
+
+  lockedStartDate: 'Start date is locked',
+  lockedEndDate: 'End date is locked',
+  dateLocked: 'Date is locked',
+  dateNotAvailable: 'Date is not available',
+  dateInSelectedRange: 'Date is in selected range',
 };
 
 /**
@@ -356,7 +363,6 @@ export class TimePicker extends FormMixin(LitElement) {
         <span
           class="error-icon"
           aria-label=${this.errorAriaLabel || 'Error message icon'}
-          role="button"
           >${unsafeSVG(errorIcon)}</span
         >
         ${this.invalidText ||
@@ -399,6 +405,11 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override async updated(changedProperties: PropertyValues) {
     await super.updated(changedProperties);
+
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
+    }
+
     if (
       changedProperties.has('defaultHour') ||
       changedProperties.has('defaultMinute')
@@ -482,17 +493,17 @@ export class TimePicker extends FormMixin(LitElement) {
 
     try {
       this.value = null;
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.clear();
+
+      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
         if (this._inputEl) {
-          this._inputEl.value = '';
           this._inputEl.setAttribute(
             'aria-label',
             this._textStrings.noTimeSelected
           );
           this.updateFormValue();
         }
-      }
+      });
+
       emitValue(this, 'on-change', {
         time: this.value,
         source: 'clear',
@@ -696,7 +707,6 @@ export class TimePicker extends FormMixin(LitElement) {
       return;
     }
 
-    // Don't apply validation when the component is disabled
     if (this.timepickerDisabled) {
       this._internals.setValidity({}, '', this._inputEl);
       this._isInvalid = false;
