@@ -87,7 +87,7 @@ export class DropdownOption extends LitElement {
         @blur=${(e: any) => this.handleBlur(e)}
       >
         <slot name="icon"></slot>
-        <span>
+        <span class="text">
           ${this.multiple
             ? html`
                 <kyn-checkbox
