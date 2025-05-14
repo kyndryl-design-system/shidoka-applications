@@ -147,7 +147,7 @@ export const SingleSearchable = {
 };
 
 export const MultiSelect = {
-  args: { ...args, value: ['1'] },
+  args: { ...args, value: ['1', '3'] },
   render: (args) => {
     return html`
       <kyn-dropdown

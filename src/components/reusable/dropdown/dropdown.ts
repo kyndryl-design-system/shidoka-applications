@@ -476,8 +476,8 @@ export class Dropdown extends FormMixin(LitElement) {
                       <kyn-tag
                         role="listitem"
                         label=${tag.text}
-                        ?disabled=${this.disabled}
-                        @on-close=${() => this.handleTagClear(tag.value)}
+                        ?disabled=${this.disabled || tag.disabled}
+                        @on-close=${() => this.handleTagClear(tag)}
                       ></kyn-tag>
                     `;
                   })}
@@ -804,9 +804,9 @@ export class Dropdown extends FormMixin(LitElement) {
     this.dispatchEvent(event);
   }
 
-  private handleTagClear(value: string) {
+  private handleTagClear(tag: any) {
     // remove value
-    this.updateValue(value, false);
+    this.updateValue(tag.value, false);
     this._updateSelectedOptions();
     this.emitValue();
   }
@@ -1224,6 +1224,7 @@ export class Dropdown extends FormMixin(LitElement) {
             Tags.push({
               value: option.value,
               text: option.textContent,
+              disabled: option.disabled,
             });
           }
         });
