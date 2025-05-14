@@ -393,9 +393,6 @@ export class Dropdown extends FormMixin(LitElement) {
                         ?selected=${this.selectAllChecked}
                         ?indeterminate=${this.selectAllIndeterminate}
                         ?disabled=${this.disabled}
-                        @on-click=${(e: any) => {
-                          this.selectAllChecked = e.detail.selected;
-                        }}
                       >
                         ${this.selectAllText}
                       </kyn-dropdown-option>
@@ -782,7 +779,15 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // clear values
     if (this.multiple) {
-      this.value = [];
+      const Slot: any = this.shadowRoot?.querySelector('slot#children');
+      const Options: Array<any> = Slot.assignedElements();
+      const DisabledSelectedOptions: Array<any> = Options.filter(
+        (option: any) => option.selected && option.disabled
+      ).map((option: any) => option.value);
+
+      this.value = DisabledSelectedOptions.length
+        ? DisabledSelectedOptions
+        : [];
     } else {
       this.value = '';
     }
@@ -956,15 +961,27 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private _handleClick(e: any) {
     if (e.detail.value === 'selectAll') {
+      this.selectAllChecked = e.detail.selected;
+
+      const Slot: any = this.shadowRoot?.querySelector('slot#children');
+      const Options: Array<any> = Slot.assignedElements();
+      const DisabledSelectedOptions: Array<any> = Options.filter(
+        (option: any) => option.selected && option.disabled
+      ).map((option: any) => option.value);
+
       if (e.detail.selected) {
         this.value = this.options
-          .filter((option) => !option.disabled)
+          .filter(
+            (option) => !option.disabled || (option.disabled && option.selected)
+          )
           .map((option) => {
             return option.value;
           });
         this.assistiveText = 'Selected all items.';
       } else {
-        this.value = [];
+        this.value = DisabledSelectedOptions.length
+          ? DisabledSelectedOptions
+          : [];
         this.assistiveText = 'Deselected all items.';
       }
 
