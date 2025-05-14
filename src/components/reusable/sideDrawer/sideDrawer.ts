@@ -271,16 +271,14 @@ export class SideDrawer extends LitElement {
       if (this.open) {
         if (this.noBackdrop) {
           this._dialog.classList.add('no-backdrop');
-          // this._dialog.classList.add('non-modal');
           this._dialog.show();
         } else {
-          // this._dialog.classList.remove('non-modal');
           this._dialog.classList.remove('no-backdrop');
           this._dialog.showModal();
         }
         this._emitOpenEvent();
       } else {
-        this._dialog.classList.remove('non-modal', 'no-backdrop');
+        this._dialog.classList.remove('no-backdrop');
         this._dialog.close();
       }
     }

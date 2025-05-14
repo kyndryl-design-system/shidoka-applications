@@ -8,6 +8,8 @@ import '../components/reusable/button';
 import '../components/reusable/widget';
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import arrowsVerticalIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrows-vertical.svg';
+import arrowDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-down.svg';
+import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-up.svg';
 import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
 import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
@@ -51,6 +53,20 @@ const mockData = [
     favourite: false,
   },
 ];
+const getArrowIcon = (index, totalItems) => {
+  if (index === 0) {
+    return arrowDownIcon; // Show arrowDownIcon for the first item
+  } else if (index === totalItems - 1) {
+    return arrowUpIcon; // Show arrowUpIcon for the last item
+  }
+  return arrowsVerticalIcon; // Show arrowsVerticalIcon for all other items
+};
+
+const displayImages = [
+  { name: 'Sample_one.png', selected: false },
+  { name: 'Sample_two.png', selected: true },
+  { name: 'Sample_three.png', selected: false },
+];
 
 export const SideDrawer = {
   args: {
@@ -60,8 +76,25 @@ export const SideDrawer = {
   render: () => {
     const [{ items }, updateArgs] = useArgs();
 
+    const handleReorderClick = (e, index) => {
+      const updatedItems = [...items];
+      if (index === items.length - 1) {
+        const temp = updatedItems[index];
+        updatedItems[index] = updatedItems[index - 1];
+        updatedItems[index - 1] = temp;
+      } else {
+        const temp = updatedItems[index];
+        updatedItems[index] = updatedItems[index + 1];
+        updatedItems[index + 1] = temp;
+      }
+      updateArgs({
+        items: updatedItems,
+      });
+      action('re-order')(updatedItems);
+    };
+
     const handleRecommendClick = (e, index) => {
-      const updatedItems = mockData.map((item, i) => ({
+      const updatedItems = [...items].map((item, i) => ({
         ...item,
         favourite: i === index,
       }));
@@ -76,6 +109,7 @@ export const SideDrawer = {
         ?open=${false}
         size="standard"
         ?hideFooter=${true}
+        noBackdrop
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
@@ -144,7 +178,7 @@ export const SideDrawer = {
                           >${unsafeSVG(rolesIcon)}</span
                         >
                         <div class="kd-type--ui-01" style="font-weight: 500">
-                          View a snapshot of your cost drivers and usage trends.
+                          Add some description text here
                         </div>
                       </div>
                     </kyn-widget>
@@ -163,6 +197,7 @@ export const SideDrawer = {
               </kyn-page-title>
               <div class="content-wrapper">
                 ${items.map((item, i) => {
+                  const arrowIcon = getArrowIcon(i, items.length);
                   return html`
                     <kyn-card
                       type="normal"
@@ -177,10 +212,10 @@ export const SideDrawer = {
                               kind="ghost"
                               size="small"
                               description="reorder"
-                              @on-click=${(e) => action(e.type)(e)}
+                              @on-click=${(e) => handleReorderClick(e, i)}
                             >
                               <span style="display:flex;" slot="icon"
-                                >${unsafeSVG(arrowsVerticalIcon)}</span
+                                >${unsafeSVG(arrowIcon)}</span
                               >
                             </kyn-button>
                             <kyn-button
@@ -239,8 +274,14 @@ export const SideDrawer = {
                 pageTitle="Settings"
                 subTitle="Change Dashboard settings"
               >
-              </kyn-page-title></div
-          ></kyn-tab-panel>
+              </kyn-page-title>
+              <div class="content-wrapper">
+                ${displayImages.map((item) => {
+                  return html`<img src="${item.name}" alt="${item.name}" /> `;
+                })}
+              </div>
+            </div></kyn-tab-panel
+          >
         </kyn-tabs>
       </kyn-side-drawer>
       <style>

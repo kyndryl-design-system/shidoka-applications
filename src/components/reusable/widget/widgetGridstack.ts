@@ -5,6 +5,7 @@ import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import { Config } from '../../../common/helpers/gridstack';
 import { GridStack } from 'gridstack';
+import '@kyndryl-design-system/shidoka-charts/components/chart';
 
 /**
  * GridStack wrapper that includes Shidoka default config and styles.
@@ -65,7 +66,6 @@ export class WidgetGridstack extends LitElement {
       const El: any = e.target;
       const Widget: any = querySelectorDeep('kyn-widget', El);
       Widget.dragActive = false;
-
       this._saveLayout();
     });
 
@@ -73,6 +73,38 @@ export class WidgetGridstack extends LitElement {
     this.grid.on('resizestop', () => {
       this._saveLayout();
     });
+
+    this.grid.on('added', (event: any) => {
+      const El: any = event.target;
+      const Widget: any = querySelectorDeep('kyn-widget', El);
+      Widget.dragActive = false;
+      this._saveLayout();
+    });
+
+    // Chart re-render testing
+
+    // this.grid.on('added', (_event: any, items: any[]) => {
+    //   items.forEach((item) => {
+    //     const widget = item.el.querySelector('kyn-widget');
+    //     if (!widget) return;
+
+    //     // Wait for DOM/layout to settle
+    //     requestAnimationFrame(() => {
+    //       const chart = widget.shadowRoot?.querySelector('kd-chart');
+    //       console.log('Chart size:', chart?.offsetWidth, chart?.offsetHeight);
+    //       if (chart) {
+    //         requestAnimationFrame(() => {
+    //           if (typeof chart.resize === 'function') {
+    //             chart.resize();
+    //           } else {
+    //             chart.requestUpdate?.();
+    //             window.dispatchEvent(new Event('resize'));
+    //           }
+    //         });
+    //       }
+    //     });
+    //   });
+    // });
 
     // emit init event
     const event = new CustomEvent('on-grid-init', {
