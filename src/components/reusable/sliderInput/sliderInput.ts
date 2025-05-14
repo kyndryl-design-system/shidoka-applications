@@ -11,8 +11,13 @@ import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
+import squiggleThin from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle.svg';
+import squiggleThick from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle-thick.svg';
+
 const _defaultTextStrings = {
   error: 'Error',
+  decrease: 'Decrease',
+  increase: 'Increase',
 };
 
 /**
@@ -22,6 +27,8 @@ const _defaultTextStrings = {
  * @prop {number} max - The maximum value.
  * @prop {number} step - The step between values.
  * @slot tooltip - Slot for tooltip.
+ * @slot leftBtnIcon - Slot for left button icon.
+ * @slot rightBtnIcon - Slot for right button icon.
  *
  */
 @customElement('kyn-slider-input')
@@ -84,6 +91,10 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   enableTooltip = false;
 
+  /** Set this to `true` for button controls. */
+  @property({ type: Boolean })
+  enableButtonControls = false;
+
   /** Internal text strings.
    * @internal
    */
@@ -134,6 +145,24 @@ export class SliderInput extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
         <div class="slider-container">
+${
+  this.enableButtonControls
+    ? html`
+        <kyn-button
+          class="left_button"
+          kind="outline"
+          size="small"
+          ?disabled=${this.disabled || this.value <= this.min}
+          description=${this._textStrings.decrease}
+          @on-click=${this._handleDecrease}
+        >
+          <span slot="icon"
+            ><slot name="leftBtnIcon">${unsafeSVG(squiggleThin)}</slot></span
+          >
+        </kyn-button>
+      `
+    : null
+}
           <div class="${classMap(styles)}">
               <input
                 type="range"
@@ -166,6 +195,24 @@ export class SliderInput extends FormMixin(LitElement) {
                     : null
                 }
               </div>
+${
+  this.enableButtonControls
+    ? html`
+        <kyn-button
+          class="right_button"
+          kind="outline"
+          size="small"
+          ?disabled=${this.disabled || this.value >= this.max}
+          description=${this._textStrings.increase}
+          @on-click=${this._handleIncrease}
+        >
+          <span slot="icon"
+            ><slot name="rightBtnIcon">${unsafeSVG(squiggleThick)}</slot></span
+          >
+        </kyn-button>
+      `
+    : null
+}
             ${this.editableInput ? this._renderEditableInput() : null}
 
         </div>
@@ -223,6 +270,24 @@ export class SliderInput extends FormMixin(LitElement) {
         })}
       </div>
     `;
+  }
+
+  // Handle left/decrease button click
+  private _handleDecrease() {
+    this._inputRangeEl.stepDown();
+    this.value = Number(this._inputRangeEl.value);
+
+    this._validate(true, false);
+    this._emitValue();
+  }
+
+  // Handle right/increase button click
+  private _handleIncrease() {
+    this._inputRangeEl.stepUp();
+    this.value = Number(this._inputRangeEl.value);
+
+    this._validate(true, false);
+    this._emitValue();
   }
 
   //render CustomLabel Html
@@ -299,7 +364,9 @@ export class SliderInput extends FormMixin(LitElement) {
 
   // Handle show the tooltip
   private _showTooltip() {
-    this.tooltipVisible = true;
+    if (!this.disabled) {
+      this.tooltipVisible = true;
+    }
   }
 
   // Handle hide the tooltip
