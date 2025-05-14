@@ -384,6 +384,24 @@ export class Dropdown extends FormMixin(LitElement) {
                 : null}
 
               <div role="listbox" aria-labelledby="label-${this.name}">
+                ${this.multiple && this.selectAll
+                  ? html`
+                      <kyn-dropdown-option
+                        class="select-all"
+                        value="selectAll"
+                        multiple
+                        ?selected=${this.selectAllChecked}
+                        ?indeterminate=${this.selectAllIndeterminate}
+                        ?disabled=${this.disabled}
+                        @on-click=${(e: any) => {
+                          this.selectAllChecked = e.detail.selected;
+                        }}
+                      >
+                        ${this.selectAllText}
+                      </kyn-dropdown-option>
+                    `
+                  : null}
+
                 <slot
                   id="children"
                   @slotchange=${() => this.handleSlotChange()}
@@ -1108,6 +1126,8 @@ export class Dropdown extends FormMixin(LitElement) {
     this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
+      this._updateOptions();
+
       const Slot: any = this.shadowRoot?.querySelector('slot#children');
       const Options: Array<any> = Slot.assignedElements().filter(
         (option: any) => !option.disabled
@@ -1123,7 +1143,6 @@ export class Dropdown extends FormMixin(LitElement) {
       this.selectAllIndeterminate =
         SelectedOptions.length < Options.length && SelectedOptions.length > 0;
 
-      this._updateOptions();
       this._updateTags();
       this._updateSelectedText();
     }
