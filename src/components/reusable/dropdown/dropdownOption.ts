@@ -28,7 +28,7 @@ export class DropdownOption extends LitElement {
   /** Internal text strings.
    * @internal
    */
-  @state()
+  @property({ type: Boolean })
   selected = false;
 
   /** Option disabled state. */
@@ -168,7 +168,6 @@ export class DropdownOption extends LitElement {
   }
 
   private handleClick(e: Event) {
-    console.log('blah');
     // prevent click if disabled
     if (this.disabled) {
       return;
