@@ -2,6 +2,9 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import Substract from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
+import Add from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 
 export default {
   title: 'Components/Slider Input',
@@ -130,6 +133,32 @@ export const Discrete = {
         ?enableScaleMarker=${true}
         .textStrings=${args.textStrings}
         label=${args.label}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-slider-input>
+    `;
+  },
+};
+
+export const WithButtonControls = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-slider-input
+        name=${args.name}
+        value=${args.value}
+        caption=${args.caption}
+        ?disabled=${args.disabled}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        step=${ifDefined(args.step)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
+        ?enableTooltip=${args.enableTooltip}
+        ?editableInput=${args.editableInput}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        ?enableButtonControls=${true}
         @on-input=${(e) => action(e.type)(e)}
       >
       </kyn-slider-input>
