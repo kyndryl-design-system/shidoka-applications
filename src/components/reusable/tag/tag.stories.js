@@ -35,7 +35,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/rC5XdRnXVbDmu3vPN8tJ4q/2.1-Edinburgh?node-id=4068-5127&p=f&t=zD5Z2mgIhkDeoPnr-0',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=21792-35948&p=f&m=dev',
     },
   },
 };
