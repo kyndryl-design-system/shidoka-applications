@@ -1,5 +1,6 @@
 import { useArgs } from '@storybook/preview-api';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
@@ -147,7 +148,7 @@ export const SingleSearchable = {
 };
 
 export const MultiSelect = {
-  args: { ...args, value: ['1'] },
+  args: { ...args, value: ['1', '3'] },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -453,8 +454,10 @@ export const AddNewOption = {
           tooltip
         </kyn-tooltip>
 
-        ${dropdownItems.map((item) => {
-          return html`
+        ${repeat(
+          dropdownItems,
+          (item) => item.value,
+          (item) => html`
             <kyn-dropdown-option
               value=${item.value}
               ?disabled=${item.disabled}
@@ -464,8 +467,8 @@ export const AddNewOption = {
               <span slot="icon">${unsafeSVG(infoIcon)}</span>
               ${item.text}
             </kyn-dropdown-option>
-          `;
-        })}
+          `
+        )}
       </kyn-dropdown>
     `;
   },
