@@ -9,6 +9,7 @@ import Styles from './widget.scss';
  * @slot action - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
+ * @slot footer - Slot for footer content.
  */
 @customElement('kyn-widget')
 export class Widget extends LitElement {
@@ -68,7 +69,13 @@ export class Widget extends LitElement {
         </div>
 
         <div class="widget-content">
-          <slot @slotchange=${this._handleSlotChange}></slot>
+          <div class="widget-body">
+            <slot @slotchange=${this._handleSlotChange}></slot>
+          </div>
+
+          <div class="widget-footer">
+            <slot name="footer"></slot>
+          </div>
         </div>
       </div>
     `;
