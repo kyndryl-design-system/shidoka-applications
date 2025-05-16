@@ -66,7 +66,24 @@
 }
 
 .widget-content {
+  display: flex;
+  flex-direction: column;
   padding: 8px 16px 16px 16px;
   overflow: auto;
   flex-grow: 1;
+}
+
+.widget-body {
+  overflow: auto;
+  flex-grow: 1;
+}
+
+.widget-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+slot[name='footer']::slotted(*) {
+  margin-top: 8px;
 }
