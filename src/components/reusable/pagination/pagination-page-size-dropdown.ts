@@ -66,6 +66,7 @@ export class PaginationPageSizeDropdown extends LitElement {
         inline
         size="sm"
         value=${this.pageSize.toString()}
+        openDirection="auto"
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
         <span slot="label">${this.textStrings.itemsPerPage}</span>

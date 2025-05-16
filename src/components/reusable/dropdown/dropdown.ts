@@ -116,6 +116,10 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   menuMinWidth = 'initial';
 
+  /** Controls direction that dropdown opens. */
+  @property({ type: String })
+  openDirection: 'auto' | 'up' | 'down' = 'auto';
+
   /** Is "Select All" box checked.
    * @internal
    */
@@ -1183,17 +1187,15 @@ export class Dropdown extends FormMixin(LitElement) {
             .find((option) => option.selected)
             ?.scrollIntoView({ block: 'nearest' });
         }
-
-        // open dropdown upwards if closer to bottom of viewport
-        const Threshold = 0.6;
-
-        if (
-          this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * Threshold
-        ) {
+        if (this.openDirection === 'up') {
           this._openUpwards = true;
-        } else {
+        } else if (this.openDirection === 'down') {
           this._openUpwards = false;
+        } else {
+          const openThreshold = 0.6;
+          this._openUpwards =
+            this.buttonEl.getBoundingClientRect().top >
+            window.innerHeight * openThreshold;
         }
       }
     }
