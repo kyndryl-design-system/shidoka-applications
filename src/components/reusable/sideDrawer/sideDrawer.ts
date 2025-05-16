@@ -123,6 +123,7 @@ export class SideDrawer extends LitElement {
   override render() {
     const classes = {
       dialog: true,
+      'non-Modal': this.noBackdrop,
       'size--md': this.size === 'md',
       'size--standard': this.size === 'standard',
       'size--sm': this.size === 'sm',

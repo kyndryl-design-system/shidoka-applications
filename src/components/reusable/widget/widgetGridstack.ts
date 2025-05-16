@@ -5,7 +5,6 @@ import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import { Config } from '../../../common/helpers/gridstack';
 import { GridStack } from 'gridstack';
-import '@kyndryl-design-system/shidoka-charts/components/chart';
 
 /**
  * GridStack wrapper that includes Shidoka default config and styles.
@@ -181,7 +180,6 @@ export class WidgetGridstack extends LitElement {
   }
 
   private _updateLayout() {
-    console.log('_updateLayout---');
     // get layout for current breakpoint
     const Layout = this.layout[this._breakpoint] || this.layout['max'];
 
