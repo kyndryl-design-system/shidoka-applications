@@ -90,6 +90,7 @@ export const Default = {
         <kyn-dropdown
           label="Dropdown"
           name="dropdown"
+          openDirection="auto"
           caption="Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
@@ -114,6 +115,7 @@ export const Default = {
         <kyn-dropdown
           name="dropdownMulti"
           label="Multi-select dropdown"
+          openDirection="auto"
           multiple
           searchable
           caption="Searchable Multi-Select Dropdown example"
