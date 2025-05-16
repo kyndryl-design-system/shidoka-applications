@@ -135,7 +135,31 @@ export const WithFooter = {
           >
             <div class="example">Widget Content</div>
 
-            <span slot="footer">Footer</span>
+            <kyn-button
+              slot="footer"
+              kind="outline"
+              size="small"
+              style="margin-left: auto;"
+            >
+              CTA
+            </kyn-button>
+          </kyn-widget>
+        </div>
+      </div>
+
+      <br />
+
+      <div style="display: flex; max-width: 500px; min-height: 300px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+          >
+            <div class="example">Widget Content</div>
+
+            <span slot="footer">Footer Content</span>
             <kyn-button slot="footer" kind="outline" size="small">
               CTA
             </kyn-button>
