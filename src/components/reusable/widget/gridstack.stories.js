@@ -51,50 +51,23 @@ export const Gridstack = {
         @on-grid-save=${(e) => action(e.type)(e)}
       >
         <div class="grid-stack">
-          <div gs-id="w1" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 1" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w2" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 2" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w3" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 3" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w4" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 4" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w5" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 5" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
+          ${Array(5)
+            .fill(null)
+            .map((_, i) => {
+              return html`
+                <div gs-id="w${i + 1}" class="grid-stack-item">
+                  <div class="grid-stack-item-content">
+                    <kyn-widget
+                      widgetTitle="Widget ${i + 1}"
+                      subTitle="Widget Subtitle"
+                    >
+                      <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                      <div class="test">Widget Content</div>
+                    </kyn-widget>
+                  </div>
+                </div>
+              `;
+            })}
 
           <div gs-id="w6" class="grid-stack-item">
             <div class="grid-stack-item-content">
@@ -204,10 +177,6 @@ export const Gridstack = {
 
 export const AddWidget = {
   render: () => {
-    // document
-    //   .querySelector('kyn-widget-gridstack')
-    //   .grid.setupDragIn('.newWidget', { appendTo: 'body', helper: 'clone' });
-
-    return html` <new-widget-sample></new-widget-sample> `;
+    return html`<new-widget-sample></new-widget-sample>`;
   },
 };
