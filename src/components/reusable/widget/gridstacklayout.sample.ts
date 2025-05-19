@@ -1,7 +1,7 @@
 import {
   WidgetSizes,
   WidgetConstraints,
-} from '../../../../common/helpers/gridstack';
+} from '../../../common/helpers/gridstack';
 
 export default {
   max: [

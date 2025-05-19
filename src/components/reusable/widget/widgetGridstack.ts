@@ -73,14 +73,17 @@ export class WidgetGridstack extends LitElement {
       this._saveLayout();
     });
 
-    this.grid.on('added', (event: Event, items: any[]) => {
+    this.grid.on('added', (_: any, items: any[]) => {
       const breakpoints = Object.keys(this.layout);
       items.forEach((item) => {
         const widgetEl = item.el;
         const widgetId = widgetEl.getAttribute('gs-id');
         const overflowMenu = widgetEl.querySelector('kyn-overflow-menu');
-        if (overflowMenu && overflowMenu.classList.contains('hidden')) {
-          overflowMenu.classList.remove('hidden');
+        if (
+          overflowMenu &&
+          overflowMenu.classList.contains('overflowmenu_hidden')
+        ) {
+          overflowMenu.classList.remove('overflowmenu_hidden');
         }
         const deleteItem = widgetEl.querySelector(
           'kyn-overflow-menu-item[destructive]'
@@ -95,7 +98,6 @@ export class WidgetGridstack extends LitElement {
           .save(false)
           .find((w: any) => w.id === widgetId);
 
-        console.log('Widget', newWidgetData.w, newWidgetData.h);
         const widgetLayout = {
           ...newWidgetData,
           w: newWidgetData.w || newWidgetData.minW,

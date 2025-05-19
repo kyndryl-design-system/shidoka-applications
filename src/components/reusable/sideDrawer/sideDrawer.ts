@@ -123,7 +123,7 @@ export class SideDrawer extends LitElement {
   override render() {
     const classes = {
       dialog: true,
-      'non-Modal': this.noBackdrop,
+      'no-backdrop': this.noBackdrop,
       'size--md': this.size === 'md',
       'size--standard': this.size === 'standard',
       'size--sm': this.size === 'sm',
@@ -271,15 +271,12 @@ export class SideDrawer extends LitElement {
     if (changedProps.has('open')) {
       if (this.open) {
         if (this.noBackdrop) {
-          this._dialog.classList.add('no-backdrop');
           this._dialog.show();
         } else {
-          this._dialog.classList.remove('no-backdrop');
           this._dialog.showModal();
         }
         this._emitOpenEvent();
       } else {
-        this._dialog.classList.remove('no-backdrop');
         this._dialog.close();
       }
     }
