@@ -360,7 +360,7 @@ export class Dropdown extends FormMixin(LitElement) {
               class=${classMap({
                 options: true,
                 open: this.open,
-                upwards: this.openDirection === 'up' ? true : this._openUpwards,
+                upwards: this._openUpwards,
               })}
               aria-hidden=${!this.open}
               @keydown=${this.handleListKeydown}
