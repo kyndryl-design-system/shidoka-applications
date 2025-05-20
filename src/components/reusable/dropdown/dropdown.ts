@@ -360,7 +360,7 @@ export class Dropdown extends FormMixin(LitElement) {
               class=${classMap({
                 options: true,
                 open: this.open,
-                upwards: this._openUpwards,
+                upwards: this.openDirection === 'up' ? true : this._openUpwards,
               })}
               aria-hidden=${!this.open}
               @keydown=${this.handleListKeydown}
@@ -1172,7 +1172,7 @@ export class Dropdown extends FormMixin(LitElement) {
       this._updateSelectedText();
     }
 
-    if (changedProps.has('open')) {
+    if (changedProps.has('open') || changedProps.has('openDirection')) {
       if (this.open && !this.searchable) {
         // focus listbox if not searchable
         this.listboxEl.focus({ preventScroll: true });
@@ -1180,23 +1180,21 @@ export class Dropdown extends FormMixin(LitElement) {
           'Selecting items. Use up and down arrow keys to navigate.';
       }
 
-      if (this.open) {
-        if (!this.multiple) {
-          // scroll to selected option
-          this.options
-            .find((option) => option.selected)
-            ?.scrollIntoView({ block: 'nearest' });
-        }
-        if (this.openDirection === 'up') {
-          this._openUpwards = true;
-        } else if (this.openDirection === 'down') {
-          this._openUpwards = false;
-        } else {
-          const openThreshold = 0.6;
-          this._openUpwards =
-            this.buttonEl.getBoundingClientRect().top >
-            window.innerHeight * openThreshold;
-        }
+      if (this.openDirection === 'up') {
+        this._openUpwards = true;
+      } else if (this.openDirection === 'down') {
+        this._openUpwards = false;
+      } else if (this.open) {
+        const openThreshold = 0.6;
+        this._openUpwards =
+          this.buttonEl.getBoundingClientRect().top >
+          window.innerHeight * openThreshold;
+      }
+
+      if (this.open && !this.multiple) {
+        this.options
+          .find((option) => option.selected)
+          ?.scrollIntoView({ block: 'nearest' });
       }
     }
 

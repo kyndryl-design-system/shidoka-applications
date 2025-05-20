@@ -90,7 +90,7 @@ export const Default = {
         <kyn-dropdown
           label="Dropdown"
           name="dropdown"
-          openDirection="auto"
+          openDirection="down"
           caption="Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
@@ -114,8 +114,30 @@ export const Default = {
 
         <kyn-dropdown
           name="dropdownMulti"
-          label="Multi-select dropdown"
+          label="Multi-select dropdown (auto open direction)"
           openDirection="auto"
+          multiple
+          searchable
+          caption="Searchable Multi-Select Dropdown example"
+          @on-change=${(e) => action(e.type)(e)}
+        >
+          <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+          <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+          <kyn-dropdown-option value="3" disabled>
+            Disabled Option
+          </kyn-dropdown-option>
+          <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+          <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+          <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+          <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+        </kyn-dropdown>
+
+        <br /><br />
+
+        <kyn-dropdown
+          name="dropdownMulti"
+          label="Multi-select dropdown (opens up)"
+          openDirection="up"
           multiple
           searchable
           caption="Searchable Multi-Select Dropdown example"
