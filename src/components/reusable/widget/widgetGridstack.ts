@@ -97,16 +97,20 @@ export class WidgetGridstack extends LitElement {
         const newWidgetData = this.grid
           .save(false)
           .find((w: any) => w.id === widgetId);
-
         const widgetLayout = {
           ...newWidgetData,
           w: newWidgetData.w || newWidgetData.minW,
           h: newWidgetData.h || newWidgetData.minH,
         };
-
         breakpoints.forEach((bp) => {
-          const existing = this.layout[bp] || [];
-          this.layout[bp] = [...existing, { ...widgetLayout }];
+          const existingBreakpoint = this.layout[bp] || [];
+          if (existingBreakpoint.length === 0) return;
+          if (bp === this._breakpoint) {
+            this.layout[bp] = [...existingBreakpoint, { ...widgetLayout }];
+          } else if (existingBreakpoint.length > 0) {
+            const clone = { ...existingBreakpoint[0], id: widgetId };
+            this.layout[bp] = [...existingBreakpoint, clone];
+          }
         });
 
         // Optionally emit save
