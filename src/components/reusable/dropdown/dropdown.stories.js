@@ -81,6 +81,7 @@ export const Single = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
+        openDirection=${args.openDirection}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
