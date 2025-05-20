@@ -116,6 +116,10 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   menuMinWidth = 'initial';
 
+  /** Controls direction that dropdown opens. */
+  @property({ type: String })
+  openDirection: 'auto' | 'up' | 'down' = 'auto';
+
   /** Is "Select All" box checked.
    * @internal
    */
@@ -1168,7 +1172,7 @@ export class Dropdown extends FormMixin(LitElement) {
       this._updateSelectedText();
     }
 
-    if (changedProps.has('open')) {
+    if (changedProps.has('open') || changedProps.has('openDirection')) {
       if (this.open && !this.searchable) {
         // focus listbox if not searchable
         this.listboxEl.focus({ preventScroll: true });
@@ -1176,25 +1180,21 @@ export class Dropdown extends FormMixin(LitElement) {
           'Selecting items. Use up and down arrow keys to navigate.';
       }
 
-      if (this.open) {
-        if (!this.multiple) {
-          // scroll to selected option
-          this.options
-            .find((option) => option.selected)
-            ?.scrollIntoView({ block: 'nearest' });
-        }
-
-        // open dropdown upwards if closer to bottom of viewport
-        const Threshold = 0.6;
-
-        if (
+      if (this.openDirection === 'up') {
+        this._openUpwards = true;
+      } else if (this.openDirection === 'down') {
+        this._openUpwards = false;
+      } else if (this.open) {
+        const openThreshold = 0.6;
+        this._openUpwards =
           this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * Threshold
-        ) {
-          this._openUpwards = true;
-        } else {
-          this._openUpwards = false;
-        }
+          window.innerHeight * openThreshold;
+      }
+
+      if (this.open && !this.multiple) {
+        this.options
+          .find((option) => option.selected)
+          ?.scrollIntoView({ block: 'nearest' });
       }
     }
 
