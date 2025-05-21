@@ -85,15 +85,15 @@ export class WidgetGridstack extends LitElement {
         ) {
           overflowMenu.classList.remove('overflowmenu_hidden');
         }
-        const deleteItem = widgetEl.querySelector(
-          'kyn-overflow-menu-item[destructive]'
-        );
-        if (deleteItem) {
-          const widgetId = widgetEl.getAttribute('gs-id');
-          deleteItem.addEventListener('click', () => {
-            this.removeWidgetById(widgetId);
-          });
-        }
+        // const deleteItem = widgetEl.querySelector(
+        //   'kyn-overflow-menu-item[destructive]'
+        // );
+        // if (deleteItem) {
+        //   const widgetId = widgetEl.getAttribute('gs-id');
+        //   deleteItem.addEventListener('click', () => {
+        //     this.removeWidgetById(widgetId);
+        //   });
+        // }
         const newWidgetData = this.grid
           .save(false)
           .find((w: any) => w.id === widgetId);
@@ -127,21 +127,6 @@ export class WidgetGridstack extends LitElement {
       detail: { grid: this.grid, gridStack: this.gridStack },
     });
     this.dispatchEvent(event);
-  }
-
-  public removeWidgetById(widgetId: string) {
-    if (!this.grid) {
-      return;
-    }
-
-    const widgetElement = this.querySelector(
-      `.grid-stack-item[gs-id="${widgetId}"]`
-    );
-    if (widgetElement) {
-      this.grid.removeWidget(widgetElement);
-      this.grid.compact();
-      this._saveLayout(widgetId);
-    }
   }
 
   override willUpdate(changedProps: any) {

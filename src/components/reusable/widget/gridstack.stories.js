@@ -11,11 +11,6 @@ import gridStackLayout from './gridstacklayout.sample.ts';
 import rolesIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/roles.svg';
 import listIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/list.svg';
 import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/filter.svg';
-import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
-import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
-import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
-import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
-import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/split.svg';
 
 import '../sideDrawer';
 import '../button';
@@ -28,6 +23,9 @@ import '../search';
 import '../radioButton';
 import '../checkbox';
 import '../fileUploader';
+
+import { Dashboards } from './gridStackDashboards.stories.js';
+import { Settings } from './gridStackSettings.stories.js';
 
 export default {
   title: 'Components/Widget/Gridstack',
@@ -239,17 +237,6 @@ const mockItems = [
     favourite: false,
   },
 ];
-const colorSwatch = [
-  '#D9D9D9',
-  '#FFFFFF',
-  '#E8BA02',
-  '#2F808C',
-  '#FF462D',
-  '#9747FF',
-  '#4CDD84',
-  '#1D2125',
-  '#5FBEAC',
-];
 
 export const AddWidget = {
   args: {
@@ -262,7 +249,7 @@ export const AddWidget = {
       acceptWidgets: true,
     };
 
-    const [{ items, selectedTabId }, updateArgs] = useArgs();
+    const [{ selectedTabId }, updateArgs] = useArgs();
 
     const handleInit = (e) => {
       const gridStack = e.detail.gridStack;
@@ -274,25 +261,6 @@ export const AddWidget = {
       });
     };
 
-    const deleteWidget = (widgetId) => {
-      const gridstackElement = document.querySelector('kyn-widget-gridstack');
-      if (gridstackElement) {
-        gridstackElement.removeWidgetById(widgetId);
-      } else {
-        console.error('kyn-widget-gridstack element not found.');
-      }
-    };
-
-    const handleRecommendClick = (e, index) => {
-      const updatedItems = [...items].map((item, i) => ({
-        ...item,
-        favourite: i === index,
-      }));
-      updateArgs({
-        items: updatedItems,
-      });
-      action(e.type)(e);
-    };
     const handleTabSelected = (e) => {
       updateArgs({ selectedTabId: e.detail.selectedTabId });
     };
@@ -461,187 +429,14 @@ export const AddWidget = {
             </div>
           </kyn-tab-panel>
           <kyn-tab-panel tabId="dashboards">
-            <div class="dashboard-wrapper">
-              <kyn-page-title
-                type="tertiary"
-                pageTitle="Dashboards"
-                subTitle="Add, edit, reorder, and select a default dashboard"
-              >
-              </kyn-page-title>
-              <div class="content-wrapper">
-                ${items.map((item, i) => {
-                  return html`
-                    <kyn-card
-                      type="normal"
-                      role="article"
-                      aria-label="card content"
-                      style="width:100%"
-                    >
-                      <div class="content-container">
-                        <div class="content-items">
-                          <div class="content-item">
-                            <kyn-button
-                              kind="ghost"
-                              size="small"
-                              description="reorder"
-                              @on-click=${(e) => action('on-click')(e)}
-                            >
-                              <span style="display:flex;" slot="icon"
-                                >${unsafeSVG(splitIcon)}</span
-                              >
-                            </kyn-button>
-                            <kyn-button
-                              kind="ghost"
-                              size="small"
-                              description="recommended"
-                              @on-click=${(e) => handleRecommendClick(e, i)}
-                            >
-                              <span
-                                class=${item.favourite ? 'star-filled' : ''}
-                                style="display:flex;"
-                                slot="icon"
-                              >
-                                ${unsafeSVG(
-                                  item.favourite
-                                    ? recommendFilledIcon
-                                    : recommendIcon
-                                )}
-                              </span>
-                            </kyn-button>
-                          </div>
-                          <div class="content-items">${item.name}</div>
-                        </div>
-                        <div class="content-item">
-                          <kyn-inline-confirm
-                            destructive
-                            anchorText="Delete"
-                            confirmText="Confirm"
-                            cancelText="Cancel"
-                            @on-confirm=${(e) => action('on-confirm')(e)}
-                          >
-                            ${unsafeSVG(deleteIcon)}
-                            <span slot="confirmIcon"
-                              >${unsafeSVG(deleteIcon)}</span
-                            >
-                          </kyn-inline-confirm>
-
-                          <kyn-button
-                            kind="ghost"
-                            size="small"
-                            description="edit"
-                            @on-click=${(e) => action(e.type)(e)}
-                          >
-                            <span style="display:flex;" slot="icon"
-                              >${unsafeSVG(editIcon)}</span
-                            >
-                          </kyn-button>
-                        </div>
-                      </div>
-                    </kyn-card>
-                  `;
-                })}
-              </div>
-            </div>
+            ${Dashboards.render()}
           </kyn-tab-panel>
-          <kyn-tab-panel tabId="settings">
-            <div class="dashboard-wrapper">
-              <kyn-page-title
-                type="tertiary"
-                pageTitle="Settings"
-                subTitle="Change the background image or color"
-              >
-              </kyn-page-title>
-              <div class="visual-customizer">
-                <div class="bacground-image">
-                  <div class="bg_title kd-type--body-02">Background Image</div>
-                  <div class="image-grid">
-                    <div class="image-row">
-                      <img
-                        class="image-content"
-                        src="./VisualSelector/VisualSelector.png"
-                        alt="Logo"
-                      />
-                      <img
-                        class="image-content"
-                        src="./VisualSelector/VisualSelector1.png"
-                        alt="Logo"
-                      />
-                    </div>
-                    <div class="image-row">
-                      <img
-                        class="image-content"
-                        src="./VisualSelector/VisualSelector2.png"
-                        alt="Logo"
-                      />
-                      <img
-                        class="image-content"
-                        src="./VisualSelector/VisualSelector3.png"
-                        alt="Logo"
-                      />
-                    </div>
-                  </div>
-                  <kyn-side-drawer
-                    style="display:contents"
-                    ?open=${false}
-                    size="standard"
-                    titleText="Dashboard Manager"
-                    ?hideCancelButton=${true}
-                    submitBtnText="Save"
-                  >
-                    <kyn-button
-                      style="width:100%"
-                      slot="anchor"
-                      kind="secondary"
-                      type="button"
-                      size="medium"
-                      >Upload Image</kyn-button
-                    >
-                    <div class="dashboard-wrapper">
-                      <div class="bacground-image">
-                        <div class="bg_title kd-type--body-02">
-                          Background Image
-                        </div>
-                        <div class="bacground-image">
-                          <kyn-file-uploader
-                            style="width:100%"
-                          ></kyn-file-uploader>
-                        </div>
-                      </div>
-                    </div>
-                  </kyn-side-drawer>
-                </div>
-                <div class="bacground-image">
-                  <div class="bg_title kd-type--body-02">Background Color</div>
-                  <div class="color-swatch">
-                    ${colorSwatch.map((color) => {
-                      return html`
-                        <div
-                          class="color-selector"
-                          style="background-color:${color}"
-                        ></div>
-                      `;
-                    })}
-                  </div>
-                  <kyn-button
-                    style="width:100%"
-                    kind="secondary"
-                    type="button"
-                    size="medium"
-                    iconposition="right"
-                    description="Add new color"
-                  >
-                    Add New Color
-                  </kyn-button>
-                </div>
-              </div>
-            </div>
-          </kyn-tab-panel>
+          <kyn-tab-panel tabId="settings"> ${Settings.render()} </kyn-tab-panel>
         </kyn-tabs>
       </kyn-side-drawer>
 
       <br />
       <br />
-
       <kyn-widget-gridstack
         .layout=${gridStackLayout}
         .gridstackConfig=${modifiedConfig}
@@ -666,9 +461,7 @@ export const AddWidget = {
                         anchorRight
                         verticalDots
                       >
-                        <kyn-overflow-menu-item
-                          destructive
-                          @click=${() => deleteWidget(widgetId)}
+                        <kyn-overflow-menu-item destructive
                           >Delete</kyn-overflow-menu-item
                         >
                       </kyn-overflow-menu>
@@ -740,64 +533,8 @@ export const AddWidget = {
             height: 80px;
           }
         }
-        .star-filled > svg {
-          color: var(--kd-color-icon-brand);
-        }
         .overflowmenu_hidden {
           display: none;
-        }
-        .visual-customizer {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          align-self: stretch;
-          .bg_title {
-            color: var(--kd-color-text-title-tertiary);
-          }
-        }
-        .bacground-image {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 16px;
-          align-self: stretch;
-        }
-
-        .image-grid {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 16px;
-          align-self: stretch;
-        }
-        .image-row {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          align-self: stretch;
-        }
-
-        .image-content {
-          display: flex;
-          height: 240px;
-          align-items: flex-end;
-          gap: 10px;
-          flex: 1 0 0;
-        }
-        .color-swatch {
-          display: flex;
-          align-items: flex-start;
-          align-content: flex-start;
-          gap: 10px;
-          align-self: stretch;
-          flex-wrap: wrap;
-        }
-        .color-selector {
-          display: block;
-          border-radius: 50%;
-          outline: 1px solid var(--kd-color-border-accent-secondary);
-          width: 60px;
-          height: 60px;
         }
       </style> `;
   },
