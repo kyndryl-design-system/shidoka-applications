@@ -71,6 +71,12 @@ export class SampleFilterComponent extends LitElement {
       (option) => option.checked
     );
 
+    const args = {
+      textStrings: {
+        showMore: 'Show all',
+      },
+    };
+
     return html`
       <kyn-global-filter>
         <kyn-text-input
@@ -87,11 +93,14 @@ export class SampleFilterComponent extends LitElement {
         <kyn-modal
           size="lg"
           titleText="Filter"
+          okText=${SelectedOptions.length
+            ? `Apply (${SelectedOptions.length})`
+            : 'Apply'}
           @on-close=${(e: any) => this._handleModalClose(e)}
         >
           <kyn-button
             slot="anchor"
-            kind="tertiary"
+            kind="ghost"
             size="small"
             iconPosition="left"
             outlineOnly
@@ -118,6 +127,7 @@ export class SampleFilterComponent extends LitElement {
                   hideLegend
                   selectAll
                   filterable
+                  .textStrings=${args.textStrings}
                   limitCheckboxes
                   .value=${SelectedOptions.map((option) => {
                     return option.value;
@@ -175,6 +185,7 @@ export class SampleFilterComponent extends LitElement {
               html`
                 <kyn-tag
                   label=${filter.text}
+                  tagColor="default"
                   @on-close=${(e: any) => this._handleTagClick(e, filter)}
                 ></kyn-tag>
               `
@@ -185,7 +196,7 @@ export class SampleFilterComponent extends LitElement {
           ? html`
               <kyn-button
                 slot="tags"
-                kind="tertiary"
+                kind="ghost"
                 size="small"
                 iconPosition="right"
                 @on-click=${(e: any) => this._handleClearTags(e)}
