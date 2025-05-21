@@ -11,15 +11,12 @@ import gridStackLayout from './gridstacklayout.sample.ts';
 import rolesIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/roles.svg';
 import listIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/list.svg';
 import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/filter.svg';
-import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
-import arrowsVerticalIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrows-vertical.svg';
-import arrowDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-down.svg';
-import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-up.svg';
 import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
 import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
+import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/split.svg';
 
 import '../sideDrawer';
 import '../button';
@@ -28,6 +25,10 @@ import '../pagetitle';
 import '../card';
 import '../inlineConfirm';
 import '../overflowMenu';
+import '../search';
+import '../radioButton';
+import '../checkbox';
+import '../fileUploader';
 
 export default {
   title: 'Components/Widget/Gridstack',
@@ -205,24 +206,56 @@ const mockItems = [
   },
   {
     id: 2,
-    name: 'My Dashboard Test',
+    name: 'My Dashboard',
     favourite: false,
   },
   {
     id: 3,
-    name: 'My Dashboard Test 1',
+    name: 'My Dashboard',
     favourite: false,
   },
   {
     id: 4,
-    name: 'My Dashboard Test 2 ',
+    name: 'My Dashboard',
     favourite: false,
   },
+  {
+    id: 5,
+    name: 'My Dashboard',
+    favourite: false,
+  },
+  {
+    id: 6,
+    name: 'My Dashboard',
+    favourite: false,
+  },
+  {
+    id: 7,
+    name: 'My Dashboard',
+    favourite: false,
+  },
+  {
+    id: 8,
+    name: 'My Dashboard',
+    favourite: false,
+  },
+];
+const colorSwatch = [
+  '#D9D9D9',
+  '#FFFFFF',
+  '#E8BA02',
+  '#2F808C',
+  '#FF462D',
+  '#9747FF',
+  '#4CDD84',
+  '#1D2125',
+  '#5FBEAC',
 ];
 
 export const AddWidget = {
   args: {
     items: mockItems,
+    selectedTabId: 'widgets',
   },
   render: () => {
     const modifiedConfig = {
@@ -230,7 +263,7 @@ export const AddWidget = {
       acceptWidgets: true,
     };
 
-    const [{ items }, updateArgs] = useArgs();
+    const [{ items, selectedTabId }, updateArgs] = useArgs();
 
     const handleInit = (e) => {
       const gridStack = e.detail.gridStack;
@@ -251,23 +284,6 @@ export const AddWidget = {
       }
     };
 
-    const handleReorderClick = (e, index) => {
-      const updatedItems = [...items];
-      if (index === items.length - 1) {
-        const temp = updatedItems[index];
-        updatedItems[index] = updatedItems[index - 1];
-        updatedItems[index - 1] = temp;
-      } else {
-        const temp = updatedItems[index];
-        updatedItems[index] = updatedItems[index + 1];
-        updatedItems[index + 1] = temp;
-      }
-      updateArgs({
-        items: updatedItems,
-      });
-      action(e.type)(e);
-    };
-
     const handleRecommendClick = (e, index) => {
       const updatedItems = [...items].map((item, i) => ({
         ...item,
@@ -278,20 +294,18 @@ export const AddWidget = {
       });
       action(e.type)(e);
     };
-
-    const getArrowIcon = (i, length) => {
-      if (i === 0) {
-        return arrowDownIcon;
-      } else if (i === length - 1) {
-        return arrowUpIcon;
-      }
-      return arrowsVerticalIcon;
+    const handleTabSelected = (e) => {
+      updateArgs({ selectedTabId: e.detail.selectedTabId });
     };
+
     return html`<kyn-side-drawer
         ?open=${false}
         size="standard"
         titleText="Dashboard Manager"
-        ?hideFooter=${true}
+        ?hideFooter=${selectedTabId === 'widgets' ||
+        selectedTabId === 'settings'}
+        ?hideCancelButton=${true}
+        submitBtnText="Add Dashboard"
         noBackdrop
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
@@ -302,10 +316,11 @@ export const AddWidget = {
           tabSize="sm"
           scrollablePanels
           tabStyle="line"
-          @on-change=${(e) => action(e.type)(e)}
+          @on-change=${handleTabSelected}
         >
           <kyn-tab slot="tabs" id="widgets" selected> Widgets </kyn-tab>
           <kyn-tab slot="tabs" id="dashboards"> Dashboards </kyn-tab>
+          <kyn-tab slot="tabs" id="settings"> Settings </kyn-tab>
           <kyn-tab-panel tabId="widgets" visible>
             <div class="dashboard-wrapper">
               <kyn-page-title
@@ -326,26 +341,85 @@ export const AddWidget = {
                   >
                 </kyn-button>
                 <div class="content-items">
-                  <kyn-button
-                    kind="outline"
-                    size="small"
-                    description="search"
-                    @on-click=${(e) => action(e.type)(e)}
+                  <kyn-search
+                    name="search"
+                    label="Search..."
+                    value=""
+                    size="sm"
+                    expandable
+                    expandablesearchbtndescription="Expandable search button"
+                  ></kyn-search>
+                  <kyn-side-drawer
+                    ?open=${false}
+                    size="standard"
+                    titleText="Dashboard Manager"
+                    showSecondaryButton
+                    ?hideCancelButton=${true}
+                    submitBtnText="Apply(1)"
+                    secondaryButtonText="Reset All"
                   >
-                    <span style="display:flex;" slot="icon"
-                      >${unsafeSVG(searchIcon)}</span
+                    <kyn-button slot="anchor" kind="outline" size="small">
+                      <span style="display:flex;" slot="icon"
+                        >${unsafeSVG(filterIcon)}</span
+                      ></kyn-button
                     >
-                  </kyn-button>
-                  <kyn-button
-                    kind="outline"
-                    size="small"
-                    description="filter"
-                    @on-click=${(e) => action(e.type)(e)}
-                  >
-                    <span style="display:flex;" slot="icon"
-                      >${unsafeSVG(filterIcon)}</span
-                    >
-                  </kyn-button>
+                    <div class="dashboard-wrapper">
+                      <div class="bacground-image">
+                        <kyn-page-title
+                          type="tertiary"
+                          pageTitle="Filter & Sort Results"
+                          subTitle=""
+                        >
+                        </kyn-page-title>
+                        <div class="bacground-image">
+                          <kyn-radio-button value="1">
+                            Alphabetically (A-Z)</kyn-radio-button
+                          >
+                          <kyn-radio-button value="2">
+                            Alphabetically (Z-A)
+                          </kyn-radio-button>
+                        </div>
+                      </div>
+                      <div class="bacground-image">
+                        <kyn-page-title
+                          type="tertiary"
+                          pageTitle="Applications"
+                          subTitle=""
+                        >
+                        </kyn-page-title>
+                        <div class="bacground-image">
+                          <kyn-checkbox value="1">
+                            Kyndryl IT Support Services (0)</kyn-checkbox
+                          >
+                          <kyn-checkbox value="2">
+                            Kyndryl Modern Device Management Services
+                            (1)</kyn-checkbox
+                          >
+                          <kyn-checkbox value="3">
+                            Common Discovery (0)</kyn-checkbox
+                          >
+                        </div>
+                      </div>
+                      <div class="bacground-image">
+                        <kyn-page-title
+                          type="tertiary"
+                          pageTitle="Bundles"
+                          subTitle=""
+                        >
+                        </kyn-page-title>
+                        <div class="bacground-image">
+                          <kyn-checkbox value="1"
+                            >Kyndryl IT Support Services Call Logs
+                            (0)</kyn-checkbox
+                          >
+                          <kyn-checkbox value="2"
+                            >Kyndryl Modern Device Management Services
+                            (1)</kyn-checkbox
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </kyn-side-drawer>
                 </div>
               </div>
             </div>
@@ -357,10 +431,7 @@ export const AddWidget = {
                   return html`
                     <div class="grid-stack-item new-widget" gs-id="${widgetId}">
                       <div class="grid-stack-item-content">
-                        <kyn-widget
-                          widgetTitle="New Widget Title ${i + 3}"
-                          subTitle=""
-                        >
+                        <kyn-widget widgetTitle="New Widget Title" subTitle="">
                           <kyn-widget-drag-handle></kyn-widget-drag-handle>
                           <kyn-button
                             slot="actions"
@@ -410,7 +481,6 @@ export const AddWidget = {
               </kyn-page-title>
               <div class="content-wrapper">
                 ${items.map((item, i) => {
-                  const arrowIcon = getArrowIcon(i, items.length);
                   return html`
                     <kyn-card
                       type="normal"
@@ -425,10 +495,10 @@ export const AddWidget = {
                               kind="ghost"
                               size="small"
                               description="reorder"
-                              @on-click=${(e) => handleReorderClick(e, i)}
+                              @on-click=${(e) => action('on-click')(e)}
                             >
                               <span style="display:flex;" slot="icon"
-                                >${unsafeSVG(arrowIcon)}</span
+                                >${unsafeSVG(splitIcon)}</span
                               >
                             </kyn-button>
                             <kyn-button
@@ -481,6 +551,106 @@ export const AddWidget = {
                     </kyn-card>
                   `;
                 })}
+              </div>
+            </div>
+          </kyn-tab-panel>
+          <kyn-tab-panel tabId="settings">
+            <div class="dashboard-wrapper">
+              <kyn-page-title
+                type="tertiary"
+                pageTitle="Settings"
+                subTitle="Change the background image or color"
+              >
+              </kyn-page-title>
+              <div class="visual-customizer">
+                <div class="bacground-image">
+                  <div class="bg_title kd-type--body-02">Background Image</div>
+                  <div class="image-grid">
+                    <div class="image-row">
+                      <img
+                        class="image-content"
+                        src="./VisualSelector/VisualSelector.png"
+                        alt="Logo"
+                      />
+                      <img
+                        class="image-content"
+                        src="./VisualSelector/VisualSelector1.png"
+                        alt="Logo"
+                      />
+                    </div>
+                    <div class="image-row">
+                      <img
+                        class="image-content"
+                        src="./VisualSelector/VisualSelector2.png"
+                        alt="Logo"
+                      />
+                      <img
+                        class="image-content"
+                        src="./VisualSelector/VisualSelector3.png"
+                        alt="Logo"
+                      />
+                    </div>
+                  </div>
+                  <kyn-side-drawer
+                    style="display:contents"
+                    ?open=${false}
+                    size="standard"
+                    titleText="Dashboard Manager"
+                    ?hideCancelButton=${true}
+                    submitBtnText="Save"
+                  >
+                    <kyn-button
+                      style="width:100%"
+                      slot="anchor"
+                      kind="primary"
+                      type="button"
+                      size="medium"
+                      >Upload Image</kyn-button
+                    >
+                    <div class="dashboard-wrapper">
+                      <div class="bacground-image">
+                        <kyn-page-title
+                          type="tertiary"
+                          pageTitle="Background Image"
+                          subTitle=""
+                        >
+                        </kyn-page-title>
+                        <div class="bacground-image">
+                          <kyn-file-uploader
+                            style="width:100%"
+                          ></kyn-file-uploader>
+                        </div>
+                      </div>
+                    </div>
+                  </kyn-side-drawer>
+                </div>
+                <div class="bacground-image">
+                  <div class="bg_title kd-type--body-02">Background Color</div>
+                  <div class="color-swatch">
+                    ${colorSwatch.map((color) => {
+                      return html`
+                        <div
+                          class="color-selector"
+                          style="background-color:${color}"
+                        ></div>
+                      `;
+                    })}
+                  </div>
+                  <kyn-button
+                    style="width:100%"
+                    kind="primary"
+                    type="button"
+                    size="medium"
+                    iconposition="right"
+                    description="Upload Image"
+                    href=""
+                    target="_self"
+                    name=""
+                    value=""
+                  >
+                    Add New Color
+                  </kyn-button>
+                </div>
               </div>
             </div>
           </kyn-tab-panel>
@@ -603,6 +773,59 @@ export const AddWidget = {
         }
         .overflowmenu_hidden {
           display: none;
+        }
+        .visual-customizer {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          align-self: stretch;
+          .bg_title {
+            color: var(--kd-color-text-title-tertiary);
+          }
+        }
+        .bacground-image {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+          align-self: stretch;
+        }
+
+        .image-grid {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+          align-self: stretch;
+        }
+        .image-row {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          align-self: stretch;
+        }
+
+        .image-content {
+          display: flex;
+          height: 240px;
+          align-items: flex-end;
+          gap: 10px;
+          flex: 1 0 0;
+        }
+        .color-swatch {
+          display: flex;
+          align-items: flex-start;
+          align-content: flex-start;
+          gap: 10px;
+          align-self: stretch;
+          flex-wrap: wrap;
+        }
+        .color-selector {
+          display: block;
+          border-radius: 50%;
+          outline: 1px solid var(--kd-color-border-accent-secondary);
+          width: 60px;
+          height: 60px;
         }
       </style> `;
   },

@@ -139,6 +139,7 @@ export class WidgetGridstack extends LitElement {
     );
     if (widgetElement) {
       this.grid.removeWidget(widgetElement);
+      this.grid.compact();
       this._saveLayout(widgetId);
     }
   }
