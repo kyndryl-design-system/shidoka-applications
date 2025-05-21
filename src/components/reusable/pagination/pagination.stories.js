@@ -8,7 +8,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-383230&m=dev',
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-443883&t=A5tcETiCf23sAgKK-0',
     },
   },
   argTypes: {
@@ -74,6 +74,6 @@ export const Skeleton = {
 Skeleton.parameters = {
   design: {
     type: 'figma',
-    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546626&m=dev',
+    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546635&t=A5tcETiCf23sAgKK-0',
   },
 };
