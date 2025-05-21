@@ -18,6 +18,10 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    openDirection: {
+      options: ['auto', 'up', 'down'],
+      control: { type: 'select' },
+    },
   },
   parameters: {
     design: {
@@ -77,6 +81,7 @@ export const Single = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
+        openDirection=${args.openDirection}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -362,6 +367,80 @@ export const DataDrivenOptions = {
           `;
         })}
       </kyn-dropdown>
+    `;
+  },
+};
+
+export const DirectionalControl = {
+  args: {
+    ...args,
+    label: 'Open Direction Control',
+    placeholder: 'Choose direction',
+    openDirection: 'auto',
+  },
+  render: (args) => {
+    return html`
+      <style>
+        .dropdown-container {
+          margin-top: 150px;
+          display: flex;
+          gap: 20px;
+          flex-direction: column;
+          align-items: center;
+        }
+        .dropdown-row {
+          display: flex;
+          gap: 20px;
+        }
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
+      <div class="dropdown-container">
+        <div class="dropdown-row">
+          <kyn-dropdown
+            label="Auto (default)"
+            placeholder="Auto detection"
+            size=${args.size}
+            name="auto-direction"
+            openDirection="auto"
+            .textStrings=${args.textStrings}
+            @on-change=${(e) => action(e.type)(e)}
+          >
+            <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+            <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+            <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+          </kyn-dropdown>
+
+          <kyn-dropdown
+            label="Force Upward"
+            placeholder="Opens upward"
+            size=${args.size}
+            name="up-direction"
+            openDirection="up"
+            .textStrings=${args.textStrings}
+            @on-change=${(e) => action(e.type)(e)}
+          >
+            <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+            <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+            <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+          </kyn-dropdown>
+
+          <kyn-dropdown
+            label="Force Downward"
+            placeholder="Opens downward"
+            size=${args.size}
+            name="down-direction"
+            openDirection="down"
+            .textStrings=${args.textStrings}
+            @on-change=${(e) => action(e.type)(e)}
+          >
+            <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+            <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+            <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+          </kyn-dropdown>
+        </div>
+      </div>
     `;
   },
 };
