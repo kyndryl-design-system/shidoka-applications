@@ -73,7 +73,12 @@ export class SampleFilterComponent extends LitElement {
 
     const args = {
       textStrings: {
+        selectAll: 'Select all',
         showMore: 'Show all',
+        showLess: 'Show less',
+        search: 'Search',
+        required: 'Required',
+        error: 'Error',
       },
     };
 
