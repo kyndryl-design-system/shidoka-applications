@@ -1,5 +1,6 @@
 import { useArgs } from '@storybook/preview-api';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
@@ -15,6 +16,10 @@ export default {
   argTypes: {
     size: {
       options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
+    },
+    openDirection: {
+      options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
   },
@@ -76,6 +81,7 @@ export const Single = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
+        openDirection=${args.openDirection}
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-tooltip slot="tooltip">
@@ -147,7 +153,7 @@ export const SingleSearchable = {
 };
 
 export const MultiSelect = {
-  args: { ...args, value: ['1'] },
+  args: { ...args, value: ['1', '3'] },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -365,6 +371,80 @@ export const DataDrivenOptions = {
   },
 };
 
+export const DirectionalControl = {
+  args: {
+    ...args,
+    label: 'Open Direction Control',
+    placeholder: 'Choose direction',
+    openDirection: 'auto',
+  },
+  render: (args) => {
+    return html`
+      <style>
+        .dropdown-container {
+          margin-top: 150px;
+          display: flex;
+          gap: 20px;
+          flex-direction: column;
+          align-items: center;
+        }
+        .dropdown-row {
+          display: flex;
+          gap: 20px;
+        }
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
+      <div class="dropdown-container">
+        <div class="dropdown-row">
+          <kyn-dropdown
+            label="Auto (default)"
+            placeholder="Auto detection"
+            size=${args.size}
+            name="auto-direction"
+            openDirection="auto"
+            .textStrings=${args.textStrings}
+            @on-change=${(e) => action(e.type)(e)}
+          >
+            <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+            <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+            <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+          </kyn-dropdown>
+
+          <kyn-dropdown
+            label="Force Upward"
+            placeholder="Opens upward"
+            size=${args.size}
+            name="up-direction"
+            openDirection="up"
+            .textStrings=${args.textStrings}
+            @on-change=${(e) => action(e.type)(e)}
+          >
+            <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+            <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+            <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+          </kyn-dropdown>
+
+          <kyn-dropdown
+            label="Force Downward"
+            placeholder="Opens downward"
+            size=${args.size}
+            name="down-direction"
+            openDirection="down"
+            .textStrings=${args.textStrings}
+            @on-change=${(e) => action(e.type)(e)}
+          >
+            <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
+            <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+            <kyn-dropdown-option value="3">Option 3</kyn-dropdown-option>
+          </kyn-dropdown>
+        </div>
+      </div>
+    `;
+  },
+};
+
 export const AddNewOption = {
   args: {
     ...args,
@@ -453,8 +533,10 @@ export const AddNewOption = {
           tooltip
         </kyn-tooltip>
 
-        ${dropdownItems.map((item) => {
-          return html`
+        ${repeat(
+          dropdownItems,
+          (item) => item.value,
+          (item) => html`
             <kyn-dropdown-option
               value=${item.value}
               ?disabled=${item.disabled}
@@ -464,8 +546,8 @@ export const AddNewOption = {
               <span slot="icon">${unsafeSVG(infoIcon)}</span>
               ${item.text}
             </kyn-dropdown-option>
-          `;
-        })}
+          `
+        )}
       </kyn-dropdown>
     `;
   },

@@ -116,6 +116,10 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   menuMinWidth = 'initial';
 
+  /** Controls direction that dropdown opens. */
+  @property({ type: String })
+  openDirection: 'auto' | 'up' | 'down' = 'auto';
+
   /** Is "Select All" box checked.
    * @internal
    */
@@ -353,7 +357,11 @@ export class Dropdown extends FormMixin(LitElement) {
 
             <div
               id="options"
-              class=${classMap({ options: true, open: this.open })}
+              class=${classMap({
+                options: true,
+                open: this.open,
+                upwards: this._openUpwards,
+              })}
               aria-hidden=${!this.open}
               @keydown=${this.handleListKeydown}
               @blur=${this.handleListBlur}
@@ -384,6 +392,21 @@ export class Dropdown extends FormMixin(LitElement) {
                 : null}
 
               <div role="listbox" aria-labelledby="label-${this.name}">
+                ${this.multiple && this.selectAll
+                  ? html`
+                      <kyn-dropdown-option
+                        class="select-all"
+                        value="selectAll"
+                        multiple
+                        ?selected=${this.selectAllChecked}
+                        ?indeterminate=${this.selectAllIndeterminate}
+                        ?disabled=${this.disabled}
+                      >
+                        ${this.selectAllText}
+                      </kyn-dropdown-option>
+                    `
+                  : null}
+
                 <slot
                   id="children"
                   @slotchange=${() => this.handleSlotChange()}
@@ -461,8 +484,8 @@ export class Dropdown extends FormMixin(LitElement) {
                       <kyn-tag
                         role="listitem"
                         label=${tag.text}
-                        ?disabled=${this.disabled}
-                        @on-close=${() => this.handleTagClear(tag.value)}
+                        ?disabled=${this.disabled || tag.disabled}
+                        @on-close=${() => this.handleTagClear(tag)}
                       ></kyn-tag>
                     `;
                   })}
@@ -764,7 +787,15 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // clear values
     if (this.multiple) {
-      this.value = [];
+      const Slot: any = this.shadowRoot?.querySelector('slot#children');
+      const Options: Array<any> = Slot.assignedElements();
+      const DisabledSelectedOptions: Array<any> = Options.filter(
+        (option: any) => option.selected && option.disabled
+      ).map((option: any) => option.value);
+
+      this.value = DisabledSelectedOptions.length
+        ? DisabledSelectedOptions
+        : [];
     } else {
       this.value = '';
     }
@@ -781,9 +812,9 @@ export class Dropdown extends FormMixin(LitElement) {
     this.dispatchEvent(event);
   }
 
-  private handleTagClear(value: string) {
+  private handleTagClear(tag: any) {
     // remove value
-    this.updateValue(value, false);
+    this.updateValue(tag.value, false);
     this._updateSelectedOptions();
     this.emitValue();
   }
@@ -938,15 +969,27 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private _handleClick(e: any) {
     if (e.detail.value === 'selectAll') {
+      this.selectAllChecked = e.detail.selected;
+
+      const Slot: any = this.shadowRoot?.querySelector('slot#children');
+      const Options: Array<any> = Slot.assignedElements();
+      const DisabledSelectedOptions: Array<any> = Options.filter(
+        (option: any) => option.selected && option.disabled
+      ).map((option: any) => option.value);
+
       if (e.detail.selected) {
         this.value = this.options
-          .filter((option) => !option.disabled)
+          .filter(
+            (option) => !option.disabled || (option.disabled && option.selected)
+          )
           .map((option) => {
             return option.value;
           });
         this.assistiveText = 'Selected all items.';
       } else {
-        this.value = [];
+        this.value = DisabledSelectedOptions.length
+          ? DisabledSelectedOptions
+          : [];
         this.assistiveText = 'Deselected all items.';
       }
 
@@ -1108,6 +1151,8 @@ export class Dropdown extends FormMixin(LitElement) {
     this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
+      this._updateOptions();
+
       const Slot: any = this.shadowRoot?.querySelector('slot#children');
       const Options: Array<any> = Slot.assignedElements().filter(
         (option: any) => !option.disabled
@@ -1123,12 +1168,11 @@ export class Dropdown extends FormMixin(LitElement) {
       this.selectAllIndeterminate =
         SelectedOptions.length < Options.length && SelectedOptions.length > 0;
 
-      this._updateOptions();
       this._updateTags();
       this._updateSelectedText();
     }
 
-    if (changedProps.has('open')) {
+    if (changedProps.has('open') || changedProps.has('openDirection')) {
       if (this.open && !this.searchable) {
         // focus listbox if not searchable
         this.listboxEl.focus({ preventScroll: true });
@@ -1136,25 +1180,21 @@ export class Dropdown extends FormMixin(LitElement) {
           'Selecting items. Use up and down arrow keys to navigate.';
       }
 
-      if (this.open) {
-        if (!this.multiple) {
-          // scroll to selected option
-          this.options
-            .find((option) => option.selected)
-            ?.scrollIntoView({ block: 'nearest' });
-        }
-
-        // open dropdown upwards if closer to bottom of viewport
-        const Threshold = 0.6;
-
-        if (
+      if (this.openDirection === 'up') {
+        this._openUpwards = true;
+      } else if (this.openDirection === 'down') {
+        this._openUpwards = false;
+      } else if (this.open) {
+        const openThreshold = 0.6;
+        this._openUpwards =
           this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * Threshold
-        ) {
-          this._openUpwards = true;
-        } else {
-          this._openUpwards = false;
-        }
+          window.innerHeight * openThreshold;
+      }
+
+      if (this.open && !this.multiple) {
+        this.options
+          .find((option) => option.selected)
+          ?.scrollIntoView({ block: 'nearest' });
       }
     }
 
@@ -1188,6 +1228,7 @@ export class Dropdown extends FormMixin(LitElement) {
             Tags.push({
               value: option.value,
               text: option.textContent,
+              disabled: option.disabled,
             });
           }
         });
