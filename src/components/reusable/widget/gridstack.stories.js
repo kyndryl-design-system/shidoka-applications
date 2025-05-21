@@ -11,7 +11,6 @@ import gridStackLayout from './gridstacklayout.sample.ts';
 import rolesIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/roles.svg';
 import listIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/list.svg';
 import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/filter.svg';
-import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
 import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
@@ -310,7 +309,7 @@ export const AddWidget = {
         @on-close=${(e) => action(e.type)(e)}
         @on-open=${(e) => action(e.type)(e)}
       >
-        <kyn-button slot="anchor">+ Widget</kyn-button>
+        <kyn-button slot="anchor">Add Widget</kyn-button>
         <kyn-tabs
           style="height: 100%;"
           tabSize="sm"
@@ -433,16 +432,6 @@ export const AddWidget = {
                       <div class="grid-stack-item-content">
                         <kyn-widget widgetTitle="New Widget Title" subTitle="">
                           <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                          <kyn-button
-                            slot="actions"
-                            kind="tertiary"
-                            size="small"
-                            description="External link"
-                          >
-                            <span slot="icon" style="display:flex"
-                              >${unsafeSVG(launchIcon)}</span
-                            >
-                          </kyn-button>
                           <kyn-overflow-menu
                             class="overflowmenu_hidden"
                             slot="actions"
@@ -602,19 +591,16 @@ export const AddWidget = {
                     <kyn-button
                       style="width:100%"
                       slot="anchor"
-                      kind="primary"
+                      kind="secondary"
                       type="button"
                       size="medium"
                       >Upload Image</kyn-button
                     >
                     <div class="dashboard-wrapper">
                       <div class="bacground-image">
-                        <kyn-page-title
-                          type="tertiary"
-                          pageTitle="Background Image"
-                          subTitle=""
-                        >
-                        </kyn-page-title>
+                        <div class="bg_title kd-type--body-02">
+                          Background Image
+                        </div>
                         <div class="bacground-image">
                           <kyn-file-uploader
                             style="width:100%"
@@ -638,15 +624,11 @@ export const AddWidget = {
                   </div>
                   <kyn-button
                     style="width:100%"
-                    kind="primary"
+                    kind="secondary"
                     type="button"
                     size="medium"
                     iconposition="right"
-                    description="Upload Image"
-                    href=""
-                    target="_self"
-                    name=""
-                    value=""
+                    description="Add new color"
                   >
                     Add New Color
                   </kyn-button>
@@ -679,16 +661,6 @@ export const AddWidget = {
                       subTitle="Widget Subtitle"
                     >
                       <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                      <kyn-button
-                        slot="actions"
-                        kind="tertiary"
-                        size="small"
-                        description="External link"
-                      >
-                        <span slot="icon" style="display:flex"
-                          >${unsafeSVG(launchIcon)}</span
-                        >
-                      </kyn-button>
                       <kyn-overflow-menu
                         slot="actions"
                         anchorRight
