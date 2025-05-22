@@ -37,6 +37,11 @@ export default {
         defaultValue: { summary: LINK_TARGETS.SELF },
       },
     },
+    isBreadcrumb: {
+      table: {
+        disable: true,
+      },
+    },
   },
 };
 

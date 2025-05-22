@@ -46,6 +46,10 @@ export class Link extends LitElement {
   @property({ type: Boolean })
   iconLeft = false;
 
+  /** Whether this link is part of a breadcrumb component. */
+  @property({ type: Boolean })
+  isBreadcrumb = false;
+
   override render() {
     const classes = this.returnClassMap();
 
@@ -73,6 +77,7 @@ export class Link extends LitElement {
       'kyn-link-text-disabled': this.disabled,
       'icon-left': this.iconLeft,
       'kyn-link-text-ai': this.kind === LINK_TYPES.AI_CONNECTED,
+      'kyn-link-text-breadcrumb': this.isBreadcrumb,
     };
 
     if (this.disabled) {
@@ -83,7 +88,6 @@ export class Link extends LitElement {
         'kyn-link-text-primary': this.kind === LINK_TYPES.PRIMARY || !this.kind,
         'kyn-link-text-secondary': this.kind === LINK_TYPES.SECONDARY,
         'kyn-link-text-secondary-ai': this.kind === LINK_TYPES.SECONDARY_AI,
-        'kyn-link-text-breadcrumb': this.kind === LINK_TYPES.BREADCRUMB,
         'kyn-link-text-inline': !this.standalone,
         'kyn-link-text-standalone': this.standalone,
       });
