@@ -17,7 +17,7 @@ export class ToggleButton extends FormMixin(LitElement) {
   label = '';
 
   /** Checkbox checked state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   checked = false;
 
   /** Checked state text. */
@@ -29,11 +29,11 @@ export class ToggleButton extends FormMixin(LitElement) {
   uncheckedText = 'Off';
 
   /** Option to use small size. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   small = false;
 
   /** Checkbox disabled state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   disabled = false;
 
   /** Reverse UI element order, label on the left. */
@@ -71,23 +71,10 @@ export class ToggleButton extends FormMixin(LitElement) {
             role="switch"
             aria-checked=${this.checked}
             aria-describedby=${statusId}
+            value=${this.value}
             .checked=${this.checked}
             ?disabled=${this.disabled}
-            @change=${(e: Event) => {
-              this.checked = (e.target as HTMLInputElement).checked;
-              this._internals.setFormValue(this.checked ? this.value : null);
-              this.dispatchEvent(
-                new CustomEvent('on-change', {
-                  detail: {
-                    checked: this.checked,
-                    value: this.value,
-                    origEvent: e,
-                  },
-                  bubbles: true,
-                  composed: true,
-                })
-              );
-            }}
+            @change=${this.handleChange}
           />
 
           <span id=${statusId} class="label-text sr-only">
@@ -101,6 +88,19 @@ export class ToggleButton extends FormMixin(LitElement) {
       </div>
     `;
   }
+
+  private handleChange = (e: Event): void => {
+    const input = e.target as HTMLInputElement;
+    this.checked = input.checked;
+    this._internals.setFormValue(this.checked ? this.value : null);
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        detail: { checked: this.checked, value: this.value, origEvent: e },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  };
 
   override updated(changedProps: any) {
     this._onUpdated(changedProps);
