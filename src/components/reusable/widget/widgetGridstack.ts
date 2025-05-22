@@ -65,13 +65,61 @@ export class WidgetGridstack extends LitElement {
       const El: any = e.target;
       const Widget: any = querySelectorDeep('kyn-widget', El);
       Widget.dragActive = false;
-
       this._saveLayout();
     });
 
     // save layout on resizestop
     this.grid.on('resizestop', () => {
       this._saveLayout();
+    });
+
+    this.grid.on('added', (_: any, items: any[]) => {
+      const breakpoints = Object.keys(this.layout);
+      items.forEach((item) => {
+        const widgetEl = item.el;
+        const widgetId = widgetEl.getAttribute('gs-id');
+        const overflowMenu = widgetEl.querySelector('kyn-overflow-menu');
+        if (
+          overflowMenu &&
+          overflowMenu.classList.contains('overflowmenu_hidden')
+        ) {
+          overflowMenu.classList.remove('overflowmenu_hidden');
+        }
+        // const deleteItem = widgetEl.querySelector(
+        //   'kyn-overflow-menu-item[destructive]'
+        // );
+        // if (deleteItem) {
+        //   const widgetId = widgetEl.getAttribute('gs-id');
+        //   deleteItem.addEventListener('click', () => {
+        //     this.removeWidgetById(widgetId);
+        //   });
+        // }
+        const newWidgetData = this.grid
+          .save(false)
+          .find((w: any) => w.id === widgetId);
+        const widgetLayout = {
+          ...newWidgetData,
+          w: newWidgetData.w || newWidgetData.minW,
+          h: newWidgetData.h || newWidgetData.minH,
+        };
+        breakpoints.forEach((bp) => {
+          const existingBreakpoint = this.layout[bp] || [];
+          if (existingBreakpoint.length === 0) return;
+          if (bp === this._breakpoint) {
+            this.layout[bp] = [...existingBreakpoint, { ...widgetLayout }];
+          } else if (existingBreakpoint.length > 0) {
+            const clone = { ...existingBreakpoint[0], id: widgetId };
+            this.layout[bp] = [...existingBreakpoint, clone];
+          }
+        });
+
+        // Optionally emit save
+        this.dispatchEvent(
+          new CustomEvent('on-grid-save', {
+            detail: { layout: this.layout },
+          })
+        );
+      });
     });
 
     // emit init event
@@ -92,7 +140,7 @@ export class WidgetGridstack extends LitElement {
     }
   }
 
-  private _saveLayout() {
+  private _saveLayout(widgetId?: string) {
     // get new grid layout
     let NewLayout = this.grid.save(false);
 
@@ -104,6 +152,14 @@ export class WidgetGridstack extends LitElement {
         h: Widget.h || Widget.minH,
       };
     });
+
+    if (widgetId) {
+      Object.keys(this.layout).forEach((breakpoint) => {
+        this.layout[breakpoint] = this.layout[breakpoint].filter(
+          (Widget: any) => Widget.id !== widgetId
+        );
+      });
+    }
 
     // update layout for current breakpoint
     this.layout[this._breakpoint] = NewLayout;
