@@ -3,6 +3,7 @@ export enum LINK_TYPES {
   SECONDARY = 'secondary',
   AI_CONNECTED = 'ai',
   SECONDARY_AI = 'secondary-ai',
+  BREADCRUMB = 'breadcrumb',
 }
 
 export enum LINK_SIZES {
