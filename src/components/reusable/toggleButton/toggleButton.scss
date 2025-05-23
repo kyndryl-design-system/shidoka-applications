@@ -5,6 +5,23 @@
   display: inline-block;
 }
 
+.toggle-button:has(input:focus-visible) {
+  outline: 3px solid var(--kd-border-variants-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input[type='checkbox'][role='switch']:focus-visible + .status-text {
+  outline: 3px solid var(--kd-border-variants-focus);
+  outline-offset: 2px;
+}
+
+input:focus-visible:not(:hover),
+input:focus-visible:hover {
+  outline: 3px solid var(--kd-color-border-variants-focus);
+  outline-offset: 2px;
+}
+
 .wrapper {
   display: flex;
   align-items: center;
@@ -19,11 +36,6 @@
   [disabled] & {
     color: var(--kd-color-text-link-level-disabled);
   }
-}
-
-input[type='checkbox'][role='switch']:focus-visible + .status-text {
-  outline: 3px solid var(--kd-border-variants-focus);
-  outline-offset: 2px;
 }
 
 input {
@@ -56,33 +68,22 @@ input {
     }
   }
 
-  &:active {
+  &:active,
+  &:active:hover {
     background-color: var(--kd-color-background-button-web-default);
 
     &:before {
       background-color: var(--kd-color-background-ui-hollow-default);
     }
-
-    &:hover {
-      background-color: var(--kd-color-background-button-web-default);
-
-      &:before {
-        background-color: var(--kd-color-background-ui-hollow-default);
-      }
-    }
   }
 
   &:focus-visible:not(:hover) {
-    outline-color: var(--kd-color-border-variants-focus);
-
     &:before {
       background-color: var(--kd-color-background-ui-hollow-default);
     }
   }
 
   &:focus-visible:hover {
-    outline-color: var(--kd-color-border-variants-focus);
-
     &:before {
       background-color: var(--kd-color-background-ui-hollow-hover);
     }
@@ -112,27 +113,13 @@ input {
     }
   }
 
-  &[disabled] {
+  &[disabled],
+  &[disabled]:hover,
+  &[disabled]:active {
     background-color: var(--kd-color-states-disabled);
 
     &:before {
       background-color: var(--kd-color-background-ui-hollow-default);
-    }
-
-    &:hover {
-      background-color: var(--kd-color-states-disabled);
-
-      &:before {
-        background-color: var(--kd-color-background-ui-hollow-default);
-      }
-    }
-
-    &:active {
-      background-color: var(--kd-color-states-disabled);
-
-      &:before {
-        background-color: var(--kd-color-background-ui-hollow-default);
-      }
     }
   }
 
@@ -155,25 +142,16 @@ input {
         content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSIjMDBBRjQxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Ik02LjI0MDA4IDIuMjQwMDFMMy4yMDAwOCA1LjI4MDAxTDEuNDQwMDggMy41MjAwMUwxLjA4MDA4IDMuODgwMDFMMi44NDAwOCA1LjY0MDAxTDMuMjAwMDggNi4wMDAwMUw2LjYwMDA4IDIuNjAwMDFMNi4yNDAwOCAyLjI0MDAxWiIgLz4KPC9zdmc+IA==');
         background-color: var(--kd-color-background-ui-hollow-default);
         transform: translateX(16px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
         line-height: 0;
       }
 
-      &:hover {
-        &:before {
-          content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSIjNDg0Nzg2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Ik02LjI0MDA4IDIuMjQwMDFMMy4yMDAwOCA1LjI4MDAxTDEuNDQwMDggMy41MjAwMUwxLjA4MDA4IDMuODgwMDFMMi44NDAwOCA1LjY0MDAxTDMuMjAwMDggNi4wMDAwMUw2LjYwMDA4IDIuNjAwMDFMNi4yNDAwOCAyLjI0MDAxWiIgLz4KPC9zdmc+IA==');
-        }
+      &:hover:before {
+        content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSIjNDg0Nzg2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Ik02LjI0MDA4IDIuMjQwMDFMMy4yMDAwOCA1LjI4MDAxTDEuNDQwMDggMy41MjAwMUwxLjA4MDA4IDMuODgwMDFMMi44NDAwOCA1LjY0MDAxTDMuMjAwMDggNi4wMDAwMUw2LjYwMDA4IDIuNjAwMDFMNi4yNDAwOCAyLjI0MDAxWiIgLz4KPC9zdmc+IA==');
       }
     }
 
-    &[disabled] {
-      &:checked {
-        &:before {
-          content: '';
-        }
-      }
+    &[disabled]:checked:before {
+      content: '';
     }
   }
 }

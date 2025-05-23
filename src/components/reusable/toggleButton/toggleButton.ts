@@ -75,6 +75,7 @@ export class ToggleButton extends FormMixin(LitElement) {
             .checked=${this.checked}
             ?disabled=${this.disabled}
             @change=${this.handleChange}
+            @keydown=${this.handleKeyDown}
           />
 
           <span id=${statusId} class="label-text sr-only">
@@ -100,6 +101,21 @@ export class ToggleButton extends FormMixin(LitElement) {
         composed: true,
       })
     );
+  };
+
+  private handleKeyDown = (e: KeyboardEvent): void => {
+    if (e.code === 'Space' || e.key === ' ') {
+      e.preventDefault();
+      this.checked = !this.checked;
+      this._internals.setFormValue(this.checked ? this.value : null);
+      this.dispatchEvent(
+        new CustomEvent('on-change', {
+          detail: { checked: this.checked, value: this.value, origEvent: e },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   };
 
   override updated(changedProps: any) {
