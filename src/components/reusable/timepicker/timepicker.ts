@@ -1,5 +1,6 @@
 import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { ref, createRef } from 'lit/directives/ref.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { langsArray } from '../../../common/flatpickrLangs';
@@ -41,6 +42,11 @@ const _defaultTextStrings = {
   pleaseSelectDate: 'Please select a date',
   noTimeSelected: 'No time selected',
   pleaseSelectValidDate: 'Please select a valid date',
+  timePickerOpened:
+    'Time picker opened. Use up and down arrow keys to adjust hours and minutes. Press Tab to move between controls.',
+  timeSelected: 'Selected time: {0}',
+  hourLabel: 'Hour: {0}',
+  minuteLabel: 'Minute: {0}',
 
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
@@ -199,6 +205,12 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
+  /**
+   * Reference to the live region element for screen reader announcements
+   * @internal
+   */
+  private _announcerRef = createRef<HTMLDivElement>();
+
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
@@ -270,6 +282,23 @@ export class TimePicker extends FormMixin(LitElement) {
     const descriptionId = this.name ?? '';
     const placeholder = '—— : ——';
     return html`
+      <div
+        ${ref(this._announcerRef)}
+        class="sr-only label-text"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        ${this.value
+          ? this._textStrings.timeSelected.replace(
+              '{0}',
+              this.value.toLocaleTimeString(this.locale, {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: !this.twentyFourHourFormat,
+              })
+            )
+          : this._textStrings.noTimeSelected}
+      </div>
       <div class=${classMap(this.getTimepickerClasses())}>
         <div
           class="label-text"
@@ -656,6 +685,48 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
+
+    // for screen readers
+    if (this._announcerRef.value) {
+      this._announcerRef.value.textContent = this._textStrings.timePickerOpened;
+    }
+
+    if (this.flatpickrInstance?.calendarContainer) {
+      const hourInput = this.flatpickrInstance.calendarContainer.querySelector(
+        '.numInputWrapper input.numInput.flatpickr-hour'
+      );
+      const minuteInput =
+        this.flatpickrInstance.calendarContainer.querySelector(
+          '.numInputWrapper input.numInput.flatpickr-minute'
+        );
+
+      if (hourInput && hourInput instanceof HTMLInputElement) {
+        const hourValue = hourInput.value || '0';
+        hourInput.setAttribute(
+          'aria-label',
+          this._textStrings.hourLabel.replace('{0}', hourValue)
+        );
+        hourInput.setAttribute('aria-valuemin', '0');
+        hourInput.setAttribute(
+          'aria-valuemax',
+          this.twentyFourHourFormat ? '23' : '12'
+        );
+        hourInput.setAttribute('aria-valuenow', hourValue);
+        hourInput.setAttribute('role', 'spinbutton');
+      }
+
+      if (minuteInput && minuteInput instanceof HTMLInputElement) {
+        const minuteValue = minuteInput.value || '0';
+        minuteInput.setAttribute(
+          'aria-label',
+          this._textStrings.minuteLabel.replace('{0}', minuteValue)
+        );
+        minuteInput.setAttribute('aria-valuemin', '0');
+        minuteInput.setAttribute('aria-valuemax', '59');
+        minuteInput.setAttribute('aria-valuenow', minuteValue);
+        minuteInput.setAttribute('role', 'spinbutton');
+      }
+    }
   }
 
   async handleClose() {
@@ -680,12 +751,29 @@ export class TimePicker extends FormMixin(LitElement) {
         newDate.setSeconds(0);
         newDate.setMilliseconds(0);
         this.value = newDate;
+
+        if (this._announcerRef.value) {
+          const formattedTime = newDate.toLocaleTimeString(this.locale, {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: !this.twentyFourHourFormat,
+          });
+          this._announcerRef.value.textContent =
+            this._textStrings.timeSelected.replace('{0}', formattedTime);
+        }
+
         emitValue(this, 'on-change', {
           time: dateStr,
           source: undefined,
         });
       } else {
         this.value = null;
+
+        if (this._announcerRef.value) {
+          this._announcerRef.value.textContent =
+            this._textStrings.noTimeSelected;
+        }
+
         emitValue(this, 'on-change', {
           time: this.value,
           source: 'clear',

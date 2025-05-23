@@ -1,5 +1,6 @@
 import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { ref, createRef } from 'lit/directives/ref.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -44,6 +45,10 @@ const _defaultTextStrings = {
   pleaseSelectBothDates: 'Please select a start and end date.',
   dateRange: 'Date range',
   noDateSelected: 'No dates selected',
+  selectingStartDate:
+    'Selecting start date. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close.',
+  selectingEndDate:
+    'Selecting end date. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close.',
   startDateSelected: 'Start date selected: {0}. Please select end date.',
   invalidDateRange:
     'Invalid date range: End date cannot be earlier than start date',
@@ -195,6 +200,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   @query('input')
   private _inputEl?: HTMLInputElement;
+
+  /**
+   * Reference to the live region element for screen reader announcements
+   * @internal
+   */
+  private _announcerRef = createRef<HTMLDivElement>();
 
   /**
    * Sets whether user has interacted with datepicker for error handling.
@@ -387,6 +398,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.rangeEditMode !== DateRangeEditableMode.NONE;
 
     return html`
+      <div
+        ${ref(this._announcerRef)}
+        class="sr-only label-text"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        ${this.value[0]
+          ? this._textStrings.startDateSelected.replace(
+              '{0}',
+              this.value[0].toLocaleDateString(this.locale)
+            )
+          : this._textStrings.selectingStartDate}
+      </div>
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
           class="label-text"
@@ -432,8 +456,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
             aria-labelledby=${`label-${anchorId}`}
+            aria-describedby="date-range-status"
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @keydown=${this.handleInputKeydown}
           />
           ${showClearButton
             ? html`
@@ -998,6 +1024,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
               'aria-label',
               'Date range calendar'
             );
+
+            let selectionAnnouncer = instance.calendarContainer.querySelector(
+              '.selection-phase-announcer'
+            );
+            if (!selectionAnnouncer) {
+              selectionAnnouncer = document.createElement('div');
+              selectionAnnouncer.className =
+                'sr-only selection-phase-announcer';
+              selectionAnnouncer.setAttribute('aria-live', 'assertive');
+              instance.calendarContainer.appendChild(selectionAnnouncer);
+            }
+
+            const phase =
+              instance.selectedDates.length === 0
+                ? this._textStrings.selectingStartDate
+                : this._textStrings.selectingEndDate;
+
+            selectionAnnouncer.textContent = phase;
           } catch (error) {
             console.warn('Error setting calendar attributes:', error);
           }
@@ -1161,7 +1205,31 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this._shouldFlatpickrOpen = true;
 
     this._isInvalid = false;
+
+    this.announceSelectionState();
+
     this.requestUpdate();
+  }
+
+  private announceSelectionState() {
+    if (!this._announcerRef.value) return;
+
+    let announcement = '';
+
+    if (this.value[0] === null && this.value[1] === null) {
+      announcement = this._textStrings.selectingStartDate;
+    } else if (this.value[0] !== null && this.value[1] === null) {
+      announcement = this._textStrings.startDateSelected.replace(
+        '{0}',
+        this.value[0].toLocaleDateString(this.locale)
+      );
+    } else if (this.value[0] !== null && this.value[1] !== null) {
+      announcement = this._textStrings.dateRangeSelected
+        .replace('{0}', this.value[0].toLocaleDateString(this.locale))
+        .replace('{1}', this.value[1].toLocaleDateString(this.locale));
+    }
+
+    this._announcerRef.value.textContent = announcement;
   }
 
   public async handleDateChange(selectedDates: Date[]) {
@@ -1296,6 +1364,30 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     } catch (e) {
       console.warn('Error handling input focus event:', e);
+    }
+  }
+
+  private handleInputKeydown(event: KeyboardEvent) {
+    if (
+      !this.flatpickrInstance ||
+      this.readonly ||
+      this.dateRangePickerDisabled
+    )
+      return;
+
+    if (
+      (event.key === ' ' || event.key === 'Enter') &&
+      !this.flatpickrInstance.isOpen
+    ) {
+      event.preventDefault();
+      this.flatpickrInstance.open();
+      if (this._announcerRef.value) {
+        const message =
+          this.value[0] === null
+            ? this._textStrings.selectingStartDate
+            : this._textStrings.selectingEndDate;
+        this._announcerRef.value.textContent = message;
+      }
     }
   }
 
