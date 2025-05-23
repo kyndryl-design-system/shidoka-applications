@@ -558,13 +558,105 @@ export function setCalendarAttributes(
           ) {
             dayElem.setAttribute('role', 'button');
           }
+
+          if (!dayElem.hasAttribute('tabindex')) {
+            dayElem.setAttribute('tabindex', '0');
+          }
         });
+
+        enhanceCalendarKeyboardNavigation(instance);
+
+        const monthNav = calendarContainer.querySelector('.flatpickr-month');
+        if (monthNav) {
+          const prevMonthButton = monthNav.querySelector(
+            '.flatpickr-prev-month'
+          );
+          const nextMonthButton = monthNav.querySelector(
+            '.flatpickr-next-month'
+          );
+
+          if (prevMonthButton && !prevMonthButton.hasAttribute('tabindex')) {
+            prevMonthButton.setAttribute('tabindex', '0');
+            prevMonthButton.setAttribute('role', 'button');
+            prevMonthButton.setAttribute('aria-label', 'Previous month');
+          }
+
+          if (nextMonthButton && !nextMonthButton.hasAttribute('tabindex')) {
+            nextMonthButton.setAttribute('tabindex', '0');
+            nextMonthButton.setAttribute('role', 'button');
+            nextMonthButton.setAttribute('aria-label', 'Next month');
+          }
+
+          const monthElement = monthNav.querySelector('.cur-month');
+          const yearInput = monthNav.querySelector('.numInput.cur-year');
+
+          if (monthElement && !monthElement.hasAttribute('tabindex')) {
+            monthElement.setAttribute('tabindex', '0');
+            monthElement.setAttribute('role', 'button');
+            monthElement.setAttribute('aria-label', 'Select month');
+          }
+
+          if (yearInput && !yearInput.hasAttribute('aria-label')) {
+            yearInput.setAttribute('aria-label', 'Select year');
+          }
+        }
       } catch (error) {
         console.warn('Error setting calendar attributes:', error);
       }
     });
   } else {
     console.warn('Calendar container not available...');
+  }
+}
+
+function enhanceCalendarKeyboardNavigation(instance: Instance): void {
+  if (!instance?.calendarContainer) return;
+
+  const boundKeydownHandler = (e: KeyboardEvent) => {
+    handleCalendarKeydown(e, instance);
+  };
+
+  const oldHandler = (instance as any)._keydownHandler;
+  if (oldHandler) {
+    instance.calendarContainer.removeEventListener('keydown', oldHandler);
+  }
+
+  (instance as any)._keydownHandler = boundKeydownHandler;
+
+  instance.calendarContainer.addEventListener('keydown', boundKeydownHandler);
+}
+
+function handleCalendarKeydown(event: KeyboardEvent, instance: Instance): void {
+  const target = event.target as HTMLElement;
+
+  if (event.key === ' ' && target.classList.contains('flatpickr-day')) {
+    event.preventDefault();
+    target.click();
+    return;
+  }
+
+  if (
+    target.classList.contains('flatpickr-prev-month') ||
+    target.classList.contains('flatpickr-next-month')
+  ) {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      target.click();
+      return;
+    }
+  }
+
+  if (target.classList.contains('cur-month')) {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      const monthsDropdown = instance.calendarContainer.querySelector(
+        '.flatpickr-monthDropdown-months'
+      );
+      if (monthsDropdown) {
+        (monthsDropdown as HTMLElement).click();
+      }
+      return;
+    }
   }
 }
 

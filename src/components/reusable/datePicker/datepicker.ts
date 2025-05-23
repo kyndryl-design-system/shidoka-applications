@@ -1,5 +1,6 @@
 import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { ref, createRef } from 'lit/directives/ref.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -42,6 +43,9 @@ const _defaultTextStrings = {
   pleaseSelectValidDate: 'Please select a valid date',
   invalidDateFormat: 'Invalid date format provided',
   errorProcessing: 'Error processing date',
+  calendarOpened:
+    'Calendar opened. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close.',
+  dateSelected: 'Date selected: {0}',
 
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
@@ -227,6 +231,12 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
+  /**
+   * Reference to the live region element for screen reader announcements
+   * @internal
+   */
+  private _announcerRef = createRef<HTMLDivElement>();
+
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
@@ -314,6 +324,23 @@ export class DatePicker extends FormMixin(LitElement) {
     const placeholder = getPlaceholder(this.dateFormat);
 
     return html`
+      <div
+        ${ref(this._announcerRef)}
+        class="sr-only label-text"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        ${this.value
+          ? this._textStrings.dateSelected.replace(
+              '{0}',
+              this.value instanceof Date
+                ? this.value.toLocaleDateString(this.locale)
+                : Array.isArray(this.value) && this.value.length > 0
+                ? this.value[0].toLocaleDateString(this.locale)
+                : ''
+            )
+          : this._textStrings.noDateSelected}
+      </div>
       <div class=${classMap(this.getDatepickerClasses())}>
         <div
           class="label-text"
@@ -354,6 +381,7 @@ export class DatePicker extends FormMixin(LitElement) {
             aria-labelledby=${`label-${anchorId}`}
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @keydown=${this.handleInputKeydown}
           />
           ${this.hasValue() && !this.readonly
             ? html`
@@ -816,6 +844,10 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
     }
+
+    if (this._announcerRef.value) {
+      this._announcerRef.value.textContent = this._textStrings.calendarOpened;
+    }
   }
 
   async handleClose() {
@@ -868,6 +900,15 @@ export class DatePicker extends FormMixin(LitElement) {
         this.invalidText = '';
       }
 
+      // for screen readers
+      if (this._announcerRef.value && selectedDates.length > 0) {
+        const selectedDate = selectedDates[0].toLocaleDateString(this.locale);
+        this._announcerRef.value.textContent =
+          this._textStrings.dateSelected.replace('{0}', selectedDate);
+      } else if (this._announcerRef.value) {
+        this._announcerRef.value.textContent = this._textStrings.noDateSelected;
+      }
+
       this._validate(true, false);
       await this.updateComplete;
       this.requestUpdate();
@@ -900,6 +941,20 @@ export class DatePicker extends FormMixin(LitElement) {
       this.closeFlatpickr.bind(this),
       this.setShouldFlatpickrOpen.bind(this)
     );
+  }
+
+  private handleInputKeydown(event: KeyboardEvent) {
+    if (!this.flatpickrInstance || this.readonly || this.datePickerDisabled)
+      return;
+
+    if (
+      (event.key === ' ' || event.key === 'Enter') &&
+      !this.flatpickrInstance.isOpen
+    ) {
+      event.preventDefault();
+      this.flatpickrInstance.open();
+      this._announcerRef.value!.textContent = this._textStrings.calendarOpened;
+    }
   }
 
   private _validate(interacted: boolean, report: boolean) {
