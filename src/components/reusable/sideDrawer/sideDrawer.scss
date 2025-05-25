@@ -37,19 +37,16 @@ dialog {
   height: 100vh;
   max-height: 100vh;
   overflow: hidden;
+  z-index: 9999;
 
   &.ai-connected {
     @include elevation.shadow(3, true);
     background: var(--kd-color-background-container-ai-subtle);
-    // background: linear-gradient(
-    //   180deg,
-    //   var(--kd-color-background-gradients-ai-linear-top-gradient-1) 0%,
-    //   var(--kd-color-background-gradients-ai-linear-bottom-gradient-1) 70.5%
-    // );
   }
 
   &[open] {
     animation: dialog-in 400ms forwards;
+    position: fixed;
   }
 
   &.size--sm {
@@ -195,6 +192,10 @@ form {
       }
     }
   }
+}
+
+.no-backdrop {
+  max-width: calc(100% - 2em - 6px);
 }
 
 @keyframes dialog-in {

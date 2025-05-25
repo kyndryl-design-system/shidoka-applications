@@ -110,6 +110,10 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   aiConnected = false;
 
+  /** Set this to `true` for no backdrop */
+  @property({ type: Boolean })
+  noBackdrop = false;
+
   /** The dialog element
    * @internal
    */
@@ -118,8 +122,8 @@ export class SideDrawer extends LitElement {
 
   override render() {
     const classes = {
-      modal: true,
       dialog: true,
+      'no-backdrop': this.noBackdrop,
       'size--md': this.size === 'md',
       'size--standard': this.size === 'standard',
       'size--sm': this.size === 'sm',
@@ -266,7 +270,11 @@ export class SideDrawer extends LitElement {
   override updated(changedProps: any) {
     if (changedProps.has('open')) {
       if (this.open) {
-        this._dialog.showModal();
+        if (this.noBackdrop) {
+          this._dialog.show();
+        } else {
+          this._dialog.showModal();
+        }
         this._emitOpenEvent();
       } else {
         this._dialog.close();
