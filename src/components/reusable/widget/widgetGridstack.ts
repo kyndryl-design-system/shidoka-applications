@@ -137,7 +137,7 @@ export class WidgetGridstack extends LitElement {
     }
   }
 
-  private _saveLayout(widgetId?: string) {
+  private _saveLayout() {
     // get new grid layout
     let NewLayout = this.grid.save(false);
 
@@ -150,13 +150,6 @@ export class WidgetGridstack extends LitElement {
       };
     });
 
-    if (widgetId) {
-      Object.keys(this.layout).forEach((breakpoint) => {
-        this.layout[breakpoint] = this.layout[breakpoint].filter(
-          (Widget: any) => Widget.id !== widgetId
-        );
-      });
-    }
     // update layout for current breakpoint
     this.layout[this._breakpoint] = NewLayout;
 
