@@ -204,10 +204,6 @@ export const Gridstack = {
 
 export const AddWidget = {
   render: () => {
-    // document
-    //   .querySelector('kyn-widget-gridstack')
-    //   .grid.setupDragIn('.newWidget', { appendTo: 'body', helper: 'clone' });
-
     return html` <new-widget-sample></new-widget-sample> `;
   },
 };
