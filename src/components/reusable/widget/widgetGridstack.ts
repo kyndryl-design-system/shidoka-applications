@@ -110,7 +110,6 @@ export class WidgetGridstack extends LitElement {
           }
         });
 
-        // Optionally emit save
         this.dispatchEvent(
           new CustomEvent('on-grid-save', {
             detail: { layout: this.layout },

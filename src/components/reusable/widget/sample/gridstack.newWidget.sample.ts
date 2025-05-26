@@ -186,16 +186,16 @@ export class NewWidgetSample extends LitElement {
         ?open=${false}
         size="standard"
         titleText="Dashboard Manager"
-        ?hideFooter=${this.getHideFooter()}
         hideCancelButton
         ?showSecondaryButton=${showSecondaryButton}
         submitBtnText=${submitBtnText}
         secondaryButtonText=${secondaryButtonText}
         noBackdrop
-        @on-close=${(e: any) => this.handleClose(e)}
+        @on-close=${(e: any) => action(e.type)(e)}
         @on-open=${(e: any) => action(e.type)(e)}
         .beforeClose=${(returnValue: any) =>
           this.handleBeforeClose(returnValue)}
+        ?hideFooter=${this.getHideFooter()}
       >
         <kyn-button slot="anchor">Add Widget</kyn-button>
         <kyn-tabs
@@ -604,17 +604,10 @@ export class NewWidgetSample extends LitElement {
 
   private getHideFooter() {
     return (
+      !this.selectedTabId ||
       (this.selectedTabId === 'widgets' && !this.showFilter) ||
       (this.selectedTabId === 'settings' && !this.showFileUploader)
     );
-  }
-
-  private handleClose(e: any) {
-    this.addNewDashboard = false;
-    this.showFilter = false;
-    this.showFileUploader = false;
-    this.selectedTabId = '';
-    action(e.type)(e);
   }
 
   private handleBeforeClose(returnValue: any) {
@@ -632,7 +625,6 @@ export class NewWidgetSample extends LitElement {
       }
       return false;
     } else {
-      this.selectedTabId = '';
       this.showFilter = false;
       this.addNewDashboard = false;
       this.showFileUploader = false;
