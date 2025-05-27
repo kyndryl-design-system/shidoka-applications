@@ -400,7 +400,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return html`
       <div
         ${ref(this._announcerRef)}
-        class="sr-only label-text"
+        class="label-text sr-only"
         aria-live="polite"
         aria-atomic="true"
       >
@@ -1031,7 +1031,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             if (!selectionAnnouncer) {
               selectionAnnouncer = document.createElement('div');
               selectionAnnouncer.className =
-                'sr-only selection-phase-announcer';
+                'label-text sr-only selection-phase-announcer';
               selectionAnnouncer.setAttribute('aria-live', 'assertive');
               instance.calendarContainer.appendChild(selectionAnnouncer);
             }
