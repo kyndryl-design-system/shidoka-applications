@@ -37,6 +37,10 @@ export default {
         defaultValue: { summary: LINK_TARGETS.SELF },
       },
     },
+    linkFontWeight: {
+      options: ['default', 'lighter'],
+      control: { type: 'select' },
+    },
   },
 };
 
@@ -48,6 +52,7 @@ const args = {
   disabled: false,
   standalone: false,
   iconLeft: false,
+  linkFontWeight: 'default',
   'on-click': fn(),
 };
 
@@ -64,6 +69,7 @@ export const Link = {
         href=${args.href}
         target=${args.target}
         kind=${args.kind}
+        linkFontWeight=${args.linkFontWeight}
         ?disabled=${args.disabled}
         @on-click=${args['on-click']}
       >
@@ -90,6 +96,7 @@ export const LinkWithIcon = {
       href=${args.href}
       target=${args.target}
       kind=${args.kind}
+      linkFontWeight=${args.linkFontWeight}
       ?disabled=${args.disabled}
       @on-click=${args['on-click']}
     >
@@ -119,6 +126,7 @@ export const LinkAISpecific = {
         href=${args.href}
         target=${args.target}
         kind=${args.kind}
+        linkFontWeight=${args.linkFontWeight}
         ?disabled=${args.disabled}
         @on-click=${args['on-click']}
       >

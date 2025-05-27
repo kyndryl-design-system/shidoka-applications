@@ -46,6 +46,10 @@ export class Link extends LitElement {
   @property({ type: Boolean })
   iconLeft = false;
 
+  /** Sets font-weight between default heavier and lighter font-weight. */
+  @property({ type: String })
+  linkFontWeight: 'lighter' | 'default' = 'default';
+
   override render() {
     const classes = this.returnClassMap();
 
@@ -73,6 +77,7 @@ export class Link extends LitElement {
       'kyn-link-text-disabled': this.disabled,
       'icon-left': this.iconLeft,
       'kyn-link-text-ai': this.kind === LINK_TYPES.AI_CONNECTED,
+      'kyn-link-text-font-lighter': this.linkFontWeight === 'lighter',
     };
 
     if (this.disabled) {
