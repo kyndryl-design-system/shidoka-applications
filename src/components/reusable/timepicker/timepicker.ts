@@ -23,6 +23,7 @@ import {
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
+import type { Instance as FlatpickrInstance } from 'flatpickr/dist/types/instance';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 
 import TimepickerStyles from './timepicker.scss';
@@ -209,7 +210,7 @@ export class TimePicker extends FormMixin(LitElement) {
    * Reference to the live region element for screen reader announcements
    * @internal
    */
-  private _announcerRef = createRef<HTMLDivElement>();
+  private _screenReaderRef = createRef<HTMLDivElement>();
 
   private debounce<T extends (...args: any[]) => any>(
     func: T,
@@ -283,9 +284,9 @@ export class TimePicker extends FormMixin(LitElement) {
     const placeholder = '—— : ——';
     return html`
       <div
-        ${ref(this._announcerRef)}
+        ${ref(this._screenReaderRef)}
         class="sr-only label-text"
-        aria-live="assertive"
+        aria-live="polite"
         aria-atomic="true"
       >
         ${this.value
@@ -633,26 +634,139 @@ export class TimePicker extends FormMixin(LitElement) {
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
     const effectiveDateFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
-    return getFlatpickrOptions({
+
+    const ctx = await getFlatpickrOptions({
+      inputEl: this._inputEl!,
       locale: this.locale,
       enableTime: true,
-      twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
-      inputEl: this._inputEl!,
-      allowInput: true,
+      noCalendar: true,
       dateFormat: effectiveDateFormat,
+      defaultHour: this.defaultHour ?? undefined,
+      defaultMinute: this.defaultMinute ?? undefined,
       minTime: this.minTime,
       maxTime: this.maxTime,
       loadLocale,
-      mode: 'time',
-      noCalendar: true,
-      onChange: this.handleTimeChange.bind(this),
-      onClose: this.handleClose.bind(this),
-      onOpen: this.handleOpen.bind(this),
       appendTo: container,
       static: this.staticPosition,
-      defaultHour: this.defaultHour ?? undefined,
-      defaultMinute: this.defaultMinute ?? undefined,
+      onClose: this.handleClose.bind(this),
+      onChange: this.handleTimeChange.bind(this),
     });
+
+    return {
+      ...ctx,
+      allowInput: true,
+      time_24hr: this.twentyFourHourFormat ?? false,
+
+      onKeyDown: (
+        _dates: Date[],
+        _str: string,
+        fp: FlatpickrInstance,
+        e: KeyboardEvent
+      ) => {
+        if (e.key === 'Tab' && document.activeElement === this._inputEl) {
+          e.preventDefault();
+          fp.calendarContainer!.querySelector<HTMLInputElement>(
+            '.flatpickr-hour'
+          )!.focus();
+        }
+      },
+
+      onOpen: () => {
+        this._announceTimeComponent(this._textStrings.timePickerOpened);
+        const fp = this.flatpickrInstance!;
+
+        const hourInput =
+          fp.calendarContainer!.querySelector<HTMLInputElement>(
+            '.flatpickr-hour'
+          )!;
+        const minuteInput =
+          fp.calendarContainer!.querySelector<HTMLInputElement>(
+            '.flatpickr-minute'
+          )!;
+
+        // make AM/PM toggle reachable
+        const ampmToggle =
+          fp.calendarContainer!.querySelector<HTMLElement>('.flatpickr-am-pm');
+        if (ampmToggle) {
+          ampmToggle.setAttribute('tabindex', '0');
+        }
+
+        // configure both spinbuttons as tabbable
+        [hourInput, minuteInput].forEach((el, idx) => {
+          const label =
+            idx === 0
+              ? this._textStrings.hourLabel
+              : this._textStrings.minuteLabel;
+
+          el.setAttribute('role', 'spinbutton');
+          el.setAttribute('tabindex', '0');
+          el.setAttribute('aria-valuemin', '0');
+          el.setAttribute(
+            'aria-valuemax',
+            idx === 0 && !this.twentyFourHourFormat ? '12' : '59'
+          );
+          el.setAttribute('aria-valuenow', el.value);
+          el.setAttribute('aria-label', label.replace('{0}', el.value));
+
+          const announceChange = () => {
+            this._announceTimeComponent(
+              label.replace('{0}', el.value.padStart(2, '0'))
+            );
+          };
+          el.addEventListener('input', announceChange);
+          el.addEventListener('keydown', (ev) => {
+            if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown') {
+              setTimeout(announceChange, 50);
+            }
+          });
+        });
+      },
+
+      onReady: (_dates: Date[], _dateStr: string, fp: FlatpickrInstance) => {
+        const t = fp.selectedDates[0];
+        if (t) {
+          const fmt = t.toLocaleTimeString(this.locale, {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: !this.twentyFourHourFormat,
+          });
+          this._announceTimeComponent(
+            this._textStrings.timeSelected.replace('{0}', fmt)
+          );
+        }
+      },
+
+      onChange: (dates: Date[], str: string) => {
+        if (dates.length) {
+          const t = dates[0];
+          const fmt = t.toLocaleTimeString(this.locale, {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: !this.twentyFourHourFormat,
+          });
+          this._announceTimeComponent(
+            this._textStrings.timeSelected.replace('{0}', fmt)
+          );
+        } else {
+          this._announceTimeComponent(this._textStrings.noTimeSelected);
+        }
+        this.handleTimeChange(dates, str);
+      },
+
+      onClose: this.handleClose.bind(this),
+    };
+  }
+
+  private _announceTimeComponent(message: string) {
+    if (this._screenReaderRef.value) {
+      this._screenReaderRef.value.textContent = message;
+    }
+  }
+
+  async handleClose() {
+    this._hasInteracted = true;
+    this._validate(true, false);
+    await this.updateComplete;
   }
 
   setInitialDates(instance: flatpickr.Instance) {
@@ -676,66 +790,7 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  handleOpen() {
-    if (this.readonly) {
-      this.flatpickrInstance?.close();
-      return;
-    }
-    if (!this._shouldFlatpickrOpen) {
-      this.flatpickrInstance?.close();
-      this._shouldFlatpickrOpen = true;
-    }
-
-    // for screen readers
-    if (this._announcerRef.value) {
-      this._announcerRef.value.textContent = this._textStrings.timePickerOpened;
-    }
-
-    if (this.flatpickrInstance?.calendarContainer) {
-      const hourInput = this.flatpickrInstance.calendarContainer.querySelector(
-        '.numInputWrapper input.numInput.flatpickr-hour'
-      );
-      const minuteInput =
-        this.flatpickrInstance.calendarContainer.querySelector(
-          '.numInputWrapper input.numInput.flatpickr-minute'
-        );
-
-      if (hourInput && hourInput instanceof HTMLInputElement) {
-        const hourValue = hourInput.value || '0';
-        hourInput.setAttribute(
-          'aria-label',
-          this._textStrings.hourLabel.replace('{0}', hourValue)
-        );
-        hourInput.setAttribute('aria-valuemin', '0');
-        hourInput.setAttribute(
-          'aria-valuemax',
-          this.twentyFourHourFormat ? '23' : '12'
-        );
-        hourInput.setAttribute('aria-valuenow', hourValue);
-        hourInput.setAttribute('role', 'spinbutton');
-      }
-
-      if (minuteInput && minuteInput instanceof HTMLInputElement) {
-        const minuteValue = minuteInput.value || '0';
-        minuteInput.setAttribute(
-          'aria-label',
-          this._textStrings.minuteLabel.replace('{0}', minuteValue)
-        );
-        minuteInput.setAttribute('aria-valuemin', '0');
-        minuteInput.setAttribute('aria-valuemax', '59');
-        minuteInput.setAttribute('aria-valuenow', minuteValue);
-        minuteInput.setAttribute('role', 'spinbutton');
-      }
-    }
-  }
-
-  async handleClose() {
-    this._hasInteracted = true;
-    this._validate(true, false);
-    await this.updateComplete;
-  }
-
-  async handleTimeChange(selectedDates: Date[], dateStr: string) {
+  private async handleTimeChange(selectedDates: Date[], dateStr: string) {
     if (this._isClearing) return;
     try {
       if (selectedDates.length > 0) {
@@ -752,13 +807,13 @@ export class TimePicker extends FormMixin(LitElement) {
         newDate.setMilliseconds(0);
         this.value = newDate;
 
-        if (this._announcerRef.value) {
+        if (this._screenReaderRef.value) {
           const formattedTime = newDate.toLocaleTimeString(this.locale, {
             hour: 'numeric',
             minute: 'numeric',
             hour12: !this.twentyFourHourFormat,
           });
-          this._announcerRef.value.textContent =
+          this._screenReaderRef.value.textContent =
             this._textStrings.timeSelected.replace('{0}', formattedTime);
         }
 
@@ -769,8 +824,8 @@ export class TimePicker extends FormMixin(LitElement) {
       } else {
         this.value = null;
 
-        if (this._announcerRef.value) {
-          this._announcerRef.value.textContent =
+        if (this._screenReaderRef.value) {
+          this._screenReaderRef.value.textContent =
             this._textStrings.noTimeSelected;
         }
 

@@ -22,9 +22,9 @@ import {
   clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
-
 import flatpickr from 'flatpickr';
-import { BaseOptions } from 'flatpickr/dist/types/options';
+import type { Options as FlatpickrOptions } from 'flatpickr/dist/types/options';
+import type { Instance as FlatpickrInstance } from 'flatpickr/dist/types/instance';
 
 import DatePickerStyles from './datepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
@@ -44,8 +44,11 @@ const _defaultTextStrings = {
   invalidDateFormat: 'Invalid date format provided',
   errorProcessing: 'Error processing date',
   calendarOpened:
-    'Calendar opened. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close.',
+    'Calendar opened. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close. Use Page Up and Page Down to navigate months, Home and End to navigate years.',
   dateSelected: 'Date selected: {0}',
+  yearNavigationInstructions: 'Press Home or End to navigate years',
+  monthNavigationInstructions: 'Press Page Up or Page Down to navigate months',
+  dateInputInstructions: 'You can also type a date directly in the format {0}',
 
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
@@ -235,19 +238,15 @@ export class DatePicker extends FormMixin(LitElement) {
    * Reference to the live region element for screen reader announcements
    * @internal
    */
-  private _announcerRef = createRef<HTMLDivElement>();
+  private _screenReaderRef = createRef<HTMLDivElement>();
 
   private debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
   ): (...args: Parameters<T>) => void {
     let timeout: number | null = null;
-
     return (...args: Parameters<T>) => {
-      if (timeout !== null) {
-        window.clearTimeout(timeout);
-      }
-
+      if (timeout !== null) window.clearTimeout(timeout);
       timeout = window.setTimeout(() => {
         func.apply(this, args);
         timeout = null;
@@ -259,8 +258,8 @@ export class DatePicker extends FormMixin(LitElement) {
     if (!this.flatpickrInstance) return;
     try {
       await this.initializeFlatpickr();
-    } catch (error) {
-      console.error('Error in debounced update:', error);
+    } catch (e) {
+      console.error(e);
     }
   }, 100);
 
@@ -268,10 +267,7 @@ export class DatePicker extends FormMixin(LitElement) {
     super.connectedCallback();
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
-
-    if (!this.value && this.defaultDate) {
-      this._hasInitialDefaultDate = true;
-    }
+    if (!this.value && this.defaultDate) this._hasInitialDefaultDate = true;
   }
 
   override disconnectedCallback() {
@@ -279,7 +275,6 @@ export class DatePicker extends FormMixin(LitElement) {
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
-
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
@@ -289,43 +284,36 @@ export class DatePicker extends FormMixin(LitElement) {
   private hasValue(): boolean {
     if (this._inputEl?.value) return true;
     if (this.value) {
-      if (Array.isArray(this.value)) {
-        return (
-          this.value.length > 0 && !this.value.every((date) => date === null)
-        );
-      }
+      if (Array.isArray(this.value))
+        return this.value.length > 0 && !this.value.every((d) => d === null);
       return true;
     }
     if (this.defaultDate) {
-      if (Array.isArray(this.defaultDate)) {
+      if (Array.isArray(this.defaultDate))
         return (
           this.defaultDate.length > 0 &&
-          !this.defaultDate.every((date) => !date || date === '')
+          !this.defaultDate.every((d) => !d || d === '')
         );
-      }
       return !!this.defaultDate;
     }
     return false;
   }
 
   private updateFormValue(): void {
-    if (this._internals && this._inputEl) {
+    if (this._internals && this._inputEl)
       this._internals.setFormValue(this._inputEl.value);
-    }
   }
 
   override render() {
     const errorId = `${this.name}-error-message`;
     const warningId = `${this.name}-warning-message`;
     const anchorId = this.name
-      ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
-      : `date-picker-${Math.random().toString(36).slice(2, 11)}`;
-    const descriptionId = this.name ?? '';
+      ? `${this.name}-${Math.random().toString(36).slice(2)}`
+      : `date-picker-${Math.random().toString(36).slice(2)}`;
     const placeholder = getPlaceholder(this.dateFormat);
-
     return html`
       <div
-        ${ref(this._announcerRef)}
+        ${ref(this._screenReaderRef)}
         class="sr-only label-text"
         aria-live="polite"
         aria-atomic="true"
@@ -333,15 +321,20 @@ export class DatePicker extends FormMixin(LitElement) {
         ${this.value
           ? this._textStrings.dateSelected.replace(
               '{0}',
-              this.value instanceof Date
-                ? this.value.toLocaleDateString(this.locale)
-                : Array.isArray(this.value) && this.value.length > 0
+              Array.isArray(this.value)
                 ? this.value[0].toLocaleDateString(this.locale)
-                : ''
+                : this.value.toLocaleDateString(this.locale)
             )
           : this._textStrings.noDateSelected}
       </div>
-      <div class=${classMap(this.getDatepickerClasses())}>
+      <div
+        class=${classMap({
+          'date-picker': true,
+          'date-picker__enable-time': this._enableTime,
+          'date-picker__multiple-select': this.mode === 'multiple',
+          'date-picker__disabled': this.datePickerDisabled,
+        })}
+      >
         <div
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
@@ -352,23 +345,20 @@ export class DatePicker extends FormMixin(LitElement) {
           ${this.required
             ? html`<abbr
                 class="required"
-                title=${this._textStrings?.requiredText}
+                title=${this._textStrings.requiredText}
                 role="img"
-                aria-label=${this._textStrings?.requiredText}
+                aria-label=${this._textStrings.requiredText}
                 >*</abbr
               >`
-            : null}
-          ${this.label}
-          <slot name="tooltip"></slot>
+            : null}${this.label}<slot name="tooltip"></slot>
         </div>
-
         <div class="input-wrapper">
           <input
-            class="${classMap({
+            class=${classMap({
               [`size--${this.size}`]: true,
               'input-custom': true,
               'is-readonly': this.readonly,
-            })}"
+            })}
             type="text"
             id=${anchorId}
             name=${this.name}
@@ -377,27 +367,24 @@ export class DatePicker extends FormMixin(LitElement) {
             ?readonly=${this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
-            aria-invalid=${this._isInvalid ? 'true' : 'false'}
+            aria-invalid=${this._isInvalid}
             aria-labelledby=${`label-${anchorId}`}
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
             @keydown=${this.handleInputKeydown}
           />
           ${this.hasValue() && !this.readonly
-            ? html`
-                <kyn-button
-                  ?disabled=${this.datePickerDisabled}
-                  class="clear-button"
-                  kind="ghost"
-                  size="small"
-                  description=${this._textStrings.clearAll}
-                  @click=${this._handleClear}
-                >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
-                </kyn-button>
-              `
+            ? html`<kyn-button
+                ?disabled=${this.datePickerDisabled}
+                class="clear-button"
+                kind="ghost"
+                size="small"
+                description=${this._textStrings.clearAll}
+                @click=${this._handleClear}
+                ><span slot="icon" style="display:flex;"
+                  >${unsafeSVG(clearIcon)}</span
+                ></kyn-button
+              >`
             : html`<span
                 class="input-icon ${this.datePickerDisabled
                   ? 'is-disabled'
@@ -407,11 +394,10 @@ export class DatePicker extends FormMixin(LitElement) {
                 >${unsafeSVG(calendarIcon)}</span
               >`}
         </div>
-
         ${this.caption
           ? html`<div
-              id=${descriptionId}
               class="caption"
+              id=${anchorId}
               aria-disabled=${this.datePickerDisabled}
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
@@ -426,7 +412,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private renderValidationMessage(errorId: string, warningId: string) {
     if (this.datePickerDisabled) return null;
-
     if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
       return html`<div
         id=${errorId}
@@ -446,7 +431,6 @@ export class DatePicker extends FormMixin(LitElement) {
         this.defaultErrorMessage}
       </div>`;
     }
-
     if (this.warnText) {
       return html`<div
         id=${warningId}
@@ -464,10 +448,9 @@ export class DatePicker extends FormMixin(LitElement) {
           }
         }}
       >
-        ${this.warnText}
+        {this.warnText}
       </div>`;
     }
-
     return null;
   }
 
@@ -487,15 +470,11 @@ export class DatePicker extends FormMixin(LitElement) {
       this._initialized = true;
       await this.updateComplete;
       this.setupAnchor();
-
       if (this._hasInitialDefaultDate && this.defaultDate) {
         const processedDates = this.processDefaultDates(this.defaultDate);
-        if (processedDates && processedDates.length > 0) {
-          if (this.mode === 'multiple') {
-            this.value = [...processedDates];
-          } else {
-            this.value = processedDates[0];
-          }
+        if (processedDates.length) {
+          this.value =
+            this.mode === 'multiple' ? [...processedDates] : processedDates[0];
         }
       }
     }
@@ -809,12 +788,12 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+  async getComponentFlatpickrOptions(): Promise<Partial<FlatpickrOptions>> {
     const container = getModalContainer(this);
-    const options = await getFlatpickrOptions({
+    const base = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ? this.defaultDate : undefined,
+      defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
@@ -822,7 +801,7 @@ export class DatePicker extends FormMixin(LitElement) {
       maxDate: this.maxDate,
       enable: this.enable,
       disable: this._processedDisableDates,
-      mode: this.mode,
+      mode: this.mode as 'single' | 'multiple',
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
       loadLocale,
       onOpen: this.handleOpen.bind(this),
@@ -832,7 +811,42 @@ export class DatePicker extends FormMixin(LitElement) {
       noCalendar: false,
       static: this.staticPosition,
     });
-    return options;
+
+    return {
+      ...base,
+      mode: base.mode,
+      onReady: () => {
+        const tc =
+          this.flatpickrInstance!.calendarContainer!.querySelector<HTMLElement>(
+            '.flatpickr-time'
+          );
+        if (tc) {
+          const hr = tc.querySelector<HTMLInputElement>(
+            '.numInputWrapper:nth-child(1) input'
+          );
+          const mn = tc.querySelector<HTMLInputElement>(
+            '.numInputWrapper:nth-child(2) input'
+          );
+          if (hr) hr.setAttribute('aria-label', 'Hours');
+          if (mn) mn.setAttribute('aria-label', 'Minutes');
+          [hr, mn].forEach((el) => {
+            el?.addEventListener('input', () => {
+              const h = hr!.value.padStart(2, '0');
+              const m = mn!.value.padStart(2, '0');
+              this.announce(`Time set to ${h} hours ${m} minutes`);
+            });
+          });
+        }
+      },
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.handleDateChange(selectedDates, dateStr);
+      },
+    };
+  }
+
+  private announce(msg: string) {
+    const lr = this._screenReaderRef.value!;
+    lr.textContent = msg;
   }
 
   handleOpen() {
@@ -845,8 +859,9 @@ export class DatePicker extends FormMixin(LitElement) {
       this._shouldFlatpickrOpen = true;
     }
 
-    if (this._announcerRef.value) {
-      this._announcerRef.value.textContent = this._textStrings.calendarOpened;
+    if (this._screenReaderRef.value) {
+      this._screenReaderRef.value.textContent =
+        this._textStrings.calendarOpened;
     }
   }
 
@@ -901,12 +916,13 @@ export class DatePicker extends FormMixin(LitElement) {
       }
 
       // for screen readers
-      if (this._announcerRef.value && selectedDates.length > 0) {
+      if (this._screenReaderRef.value && selectedDates.length > 0) {
         const selectedDate = selectedDates[0].toLocaleDateString(this.locale);
-        this._announcerRef.value.textContent =
+        this._screenReaderRef.value.textContent =
           this._textStrings.dateSelected.replace('{0}', selectedDate);
-      } else if (this._announcerRef.value) {
-        this._announcerRef.value.textContent = this._textStrings.noDateSelected;
+      } else if (this._screenReaderRef.value) {
+        this._screenReaderRef.value.textContent =
+          this._textStrings.noDateSelected;
       }
 
       this._validate(true, false);
@@ -948,12 +964,96 @@ export class DatePicker extends FormMixin(LitElement) {
       return;
 
     if (
+      !this.flatpickrInstance.isOpen &&
+      event.key !== ' ' &&
+      event.key !== 'Enter' &&
+      event.key !== 'Escape' &&
+      !event.ctrlKey &&
+      !event.altKey &&
+      !event.metaKey
+    ) {
+      if (this._screenReaderRef.value && !this._inputEl?.value) {
+        this._screenReaderRef.value.textContent =
+          this._textStrings.dateInputInstructions.replace(
+            '{0}',
+            this.dateFormat
+          );
+      }
+      return;
+    }
+
+    if (
       (event.key === ' ' || event.key === 'Enter') &&
       !this.flatpickrInstance.isOpen
     ) {
       event.preventDefault();
       this.flatpickrInstance.open();
-      this._announcerRef.value!.textContent = this._textStrings.calendarOpened;
+      if (this._screenReaderRef.value) {
+        this._screenReaderRef.value.textContent =
+          this._textStrings.calendarOpened;
+      }
+    } else if (
+      this.flatpickrInstance.isOpen &&
+      (event.key === ' ' || event.key === 'Enter')
+    ) {
+      event.preventDefault();
+      const highlightedDate =
+        this.flatpickrInstance.selectedDates[0] ||
+        this.flatpickrInstance.latestSelectedDateObj;
+      if (highlightedDate) {
+        this.flatpickrInstance.setDate(highlightedDate, true);
+        this.flatpickrInstance.close();
+
+        if (this._screenReaderRef.value) {
+          this._screenReaderRef.value.textContent =
+            this._textStrings.dateSelected.replace(
+              '{0}',
+              highlightedDate.toLocaleDateString(this.locale)
+            );
+        }
+      }
+    } else if (event.key === 'Home' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeYear(currentYear - 1);
+      this._announceYearChange(currentYear - 1);
+    } else if (event.key === 'End' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeYear(currentYear + 1);
+      this._announceYearChange(currentYear + 1);
+    } else if (event.key === 'PageUp' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentMonth = this.flatpickrInstance.currentMonth;
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeMonth(-1);
+      this._announceMonthChange(
+        currentMonth === 0 ? 11 : currentMonth - 1,
+        currentMonth === 0 ? currentYear - 1 : currentYear
+      );
+    } else if (event.key === 'PageDown' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentMonth = this.flatpickrInstance.currentMonth;
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeMonth(1);
+      this._announceMonthChange(
+        currentMonth === 11 ? 0 : currentMonth + 1,
+        currentMonth === 11 ? currentYear + 1 : currentYear
+      );
+    }
+  }
+
+  private _announceYearChange(year: number) {
+    if (this._screenReaderRef.value) {
+      this._screenReaderRef.value.textContent = `Year changed to ${year}. ${this._textStrings.yearNavigationInstructions}`;
+    }
+  }
+
+  private _announceMonthChange(month: number, year: number) {
+    if (this._screenReaderRef.value) {
+      const date = new Date(year, month, 1);
+      const monthName = date.toLocaleString(this.locale, { month: 'long' });
+      this._screenReaderRef.value.textContent = `Month changed to ${monthName}. ${this._textStrings.monthNavigationInstructions}`;
     }
   }
 
