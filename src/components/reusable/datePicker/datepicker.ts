@@ -44,10 +44,11 @@ const _defaultTextStrings = {
   invalidDateFormat: 'Invalid date format provided',
   errorProcessing: 'Error processing date',
   calendarOpened:
-    'Calendar opened. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close. Use Page Up and Page Down to navigate months, Home and End to navigate years.',
+    'Calendar opened. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close. Use Page Up/Down or Alt+Arrow Up/Down to navigate months, Home and End to navigate years.',
   dateSelected: 'Date selected: {0}',
   yearNavigationInstructions: 'Press Home or End to navigate years',
-  monthNavigationInstructions: 'Press Page Up or Page Down to navigate months',
+  monthNavigationInstructions:
+    'Press Page Up/Down or Alt+Arrow Up/Down to navigate months',
   dateInputInstructions: 'You can also type a date directly in the format {0}',
 
   lockedStartDate: 'Start date is locked',
@@ -815,11 +816,11 @@ export class DatePicker extends FormMixin(LitElement) {
     return {
       ...base,
       mode: base.mode,
-      onReady: () => {
-        const tc =
-          this.flatpickrInstance!.calendarContainer!.querySelector<HTMLElement>(
-            '.flatpickr-time'
-          );
+      allowInput: true,
+      onReady: (_dates, _str, instance) => {
+        const container = instance.calendarContainer!;
+
+        const tc = container.querySelector<HTMLElement>('.flatpickr-time');
         if (tc) {
           const hr = tc.querySelector<HTMLInputElement>(
             '.numInputWrapper:nth-child(1) input'
@@ -837,6 +838,37 @@ export class DatePicker extends FormMixin(LitElement) {
             });
           });
         }
+
+        // 2) Year spinner setup
+        requestAnimationFrame(() => {
+          const yearInput =
+            container.querySelector<HTMLInputElement>('input.cur-year');
+          if (!yearInput) {
+            console.warn('Year input not found');
+            return;
+          }
+          yearInput.disabled = false;
+          yearInput.tabIndex = 0;
+          yearInput.setAttribute('role', 'spinbutton');
+          yearInput.setAttribute('aria-label', 'Year');
+          yearInput.addEventListener(
+            'keydown',
+            (e) => {
+              if (
+                document.activeElement === yearInput &&
+                (e.key === 'ArrowUp' || e.key === 'ArrowDown')
+              ) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const next =
+                  instance.currentYear + (e.key === 'ArrowUp' ? 1 : -1);
+                instance.changeYear(next);
+                this._announceYearChange(next);
+              }
+            },
+            { capture: true }
+          );
+        });
       },
       onChange: (selectedDates: Date[], dateStr: string) => {
         this.handleDateChange(selectedDates, dateStr);
@@ -963,82 +995,71 @@ export class DatePicker extends FormMixin(LitElement) {
     if (!this.flatpickrInstance || this.readonly || this.datePickerDisabled)
       return;
 
-    if (
-      !this.flatpickrInstance.isOpen &&
-      event.key !== ' ' &&
-      event.key !== 'Enter' &&
-      event.key !== 'Escape' &&
-      !event.ctrlKey &&
-      !event.altKey &&
-      !event.metaKey
-    ) {
-      if (this._screenReaderRef.value && !this._inputEl?.value) {
-        this._screenReaderRef.value.textContent =
-          this._textStrings.dateInputInstructions.replace(
+    const isOpen = this.flatpickrInstance.isOpen;
+    const { key, altKey, metaKey, ctrlKey } = event;
+
+    if (!isOpen && (key === ' ' || key === 'Enter')) {
+      event.preventDefault();
+      this.flatpickrInstance.open();
+      this._screenReaderRef.value!.textContent =
+        this._textStrings.calendarOpened;
+      return;
+    }
+    if (isOpen && (key === ' ' || key === 'Enter')) {
+      event.preventDefault();
+      const date =
+        this.flatpickrInstance.selectedDates[0] ||
+        this.flatpickrInstance.latestSelectedDateObj;
+      if (date) {
+        this.flatpickrInstance.setDate(date, true);
+        this.flatpickrInstance.close();
+        this._screenReaderRef.value!.textContent =
+          this._textStrings.dateSelected.replace(
             '{0}',
-            this.dateFormat
+            date.toLocaleDateString(this.locale)
           );
       }
       return;
     }
 
-    if (
-      (event.key === ' ' || event.key === 'Enter') &&
-      !this.flatpickrInstance.isOpen
-    ) {
+    if (isOpen && key === 'Home') {
       event.preventDefault();
-      this.flatpickrInstance.open();
-      if (this._screenReaderRef.value) {
-        this._screenReaderRef.value.textContent =
-          this._textStrings.calendarOpened;
-      }
-    } else if (
-      this.flatpickrInstance.isOpen &&
-      (event.key === ' ' || event.key === 'Enter')
-    ) {
+      const y = this.flatpickrInstance.currentYear - 1;
+      this.flatpickrInstance.changeYear(y);
+      return this._announceYearChange(y);
+    }
+    if (isOpen && key === 'End') {
       event.preventDefault();
-      const highlightedDate =
-        this.flatpickrInstance.selectedDates[0] ||
-        this.flatpickrInstance.latestSelectedDateObj;
-      if (highlightedDate) {
-        this.flatpickrInstance.setDate(highlightedDate, true);
-        this.flatpickrInstance.close();
+      const y = this.flatpickrInstance.currentYear + 1;
+      this.flatpickrInstance.changeYear(y);
+      return this._announceYearChange(y);
+    }
 
-        if (this._screenReaderRef.value) {
-          this._screenReaderRef.value.textContent =
-            this._textStrings.dateSelected.replace(
-              '{0}',
-              highlightedDate.toLocaleDateString(this.locale)
-            );
-        }
-      }
-    } else if (event.key === 'Home' && this.flatpickrInstance.isOpen) {
+    const prevMonthKey =
+      key === 'PageUp' || (key === 'ArrowUp' && (altKey || metaKey || ctrlKey));
+    const nextMonthKey =
+      key === 'PageDown' ||
+      (key === 'ArrowDown' && (altKey || metaKey || ctrlKey));
+
+    if (isOpen && prevMonthKey) {
       event.preventDefault();
-      const currentYear = this.flatpickrInstance.currentYear;
-      this.flatpickrInstance.changeYear(currentYear - 1);
-      this._announceYearChange(currentYear - 1);
-    } else if (event.key === 'End' && this.flatpickrInstance.isOpen) {
-      event.preventDefault();
-      const currentYear = this.flatpickrInstance.currentYear;
-      this.flatpickrInstance.changeYear(currentYear + 1);
-      this._announceYearChange(currentYear + 1);
-    } else if (event.key === 'PageUp' && this.flatpickrInstance.isOpen) {
-      event.preventDefault();
-      const currentMonth = this.flatpickrInstance.currentMonth;
-      const currentYear = this.flatpickrInstance.currentYear;
+      const m = this.flatpickrInstance.currentMonth;
+      const y = this.flatpickrInstance.currentYear;
       this.flatpickrInstance.changeMonth(-1);
-      this._announceMonthChange(
-        currentMonth === 0 ? 11 : currentMonth - 1,
-        currentMonth === 0 ? currentYear - 1 : currentYear
+      return this._announceMonthChange(
+        m === 0 ? 11 : m - 1,
+        m === 0 ? y - 1 : y
       );
-    } else if (event.key === 'PageDown' && this.flatpickrInstance.isOpen) {
+    }
+
+    if (isOpen && nextMonthKey) {
       event.preventDefault();
-      const currentMonth = this.flatpickrInstance.currentMonth;
-      const currentYear = this.flatpickrInstance.currentYear;
+      const m = this.flatpickrInstance.currentMonth;
+      const y = this.flatpickrInstance.currentYear;
       this.flatpickrInstance.changeMonth(1);
-      this._announceMonthChange(
-        currentMonth === 11 ? 0 : currentMonth + 1,
-        currentMonth === 11 ? currentYear + 1 : currentYear
+      return this._announceMonthChange(
+        m === 11 ? 0 : m + 1,
+        m === 11 ? y + 1 : y
       );
     }
   }
