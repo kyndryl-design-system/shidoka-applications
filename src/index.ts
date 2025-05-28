@@ -113,3 +113,4 @@ export {
 export { FloatingContainer } from './components/reusable/floatingContainer';
 export { AISourcesFeedback } from './components/ai/sourcesFeedback';
 export { InlineConfirm } from './components/reusable/inlineConfirm';
+export { ColorPicker } from './components/reusable/colorPicker';
