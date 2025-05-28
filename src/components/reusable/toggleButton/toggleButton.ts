@@ -17,7 +17,7 @@ export class ToggleButton extends FormMixin(LitElement) {
   label = '';
 
   /** Checkbox checked state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   checked = false;
 
   /** Checked state text. */
@@ -29,11 +29,11 @@ export class ToggleButton extends FormMixin(LitElement) {
   uncheckedText = 'Off';
 
   /** Option to use small size. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   small = false;
 
   /** Checkbox disabled state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   disabled = false;
 
   /** Reverse UI element order, label on the left. */
@@ -52,30 +52,37 @@ export class ToggleButton extends FormMixin(LitElement) {
   _inputEl!: HTMLInputElement;
 
   override render() {
+    const id = this.name;
+    const statusId = `${id}-status`;
+
     return html`
       <div class="toggle-button" ?disabled=${this.disabled}>
-        <label
-          class="label-text  ${this.hideLabel ? 'sr-only' : ''}"
-          for=${this.name}
-        >
-          <span>${this.label}</span>
+        <label class="label-text ${this.hideLabel ? 'sr-only' : ''}" for=${id}>
+          ${this.label}
           <slot name="tooltip"></slot>
         </label>
 
         <div class="wrapper ${this.reverse ? 'reverse' : ''}">
           <input
-            class="${this.small ? 'size--sm' : ''}"
+            id=${id}
+            class=${this.small ? 'size--sm' : ''}
             type="checkbox"
             name=${this.name}
-            id=${this.name}
+            role="switch"
+            aria-checked=${this.checked}
+            aria-describedby=${statusId}
             value=${this.value}
             .checked=${this.checked}
-            ?checked=${this.checked}
             ?disabled=${this.disabled}
-            @change=${(e: any) => this.handleChange(e)}
+            @change=${this.handleChange}
+            @keydown=${this.handleKeyDown}
           />
 
-          <span class="status-text">
+          <span id=${statusId} class="label-text sr-only">
+            ${this.checked ? this.checkedText : this.uncheckedText}
+          </span>
+
+          <span aria-hidden="true" class="status-text">
             ${this.checked ? this.checkedText : this.uncheckedText}
           </span>
         </div>
@@ -83,44 +90,33 @@ export class ToggleButton extends FormMixin(LitElement) {
     `;
   }
 
-  private handleChange(e: any) {
-    this.checked = e.target.checked;
-    // emit selected value, bubble so it can be captured by the checkbox group
-    const event = new CustomEvent('on-change', {
-      detail: {
-        checked: e.target.checked,
-        value: this.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
-  }
+  private handleChange = (e: Event): void => {
+    const input = e.target as HTMLInputElement;
+    this.checked = input.checked;
+    this._internals.setFormValue(this.checked ? this.value : null);
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        detail: { checked: this.checked, value: this.value, origEvent: e },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  };
 
-  private _validate(interacted: Boolean, report: Boolean) {
-    // get validity state from inputEl, combine customError flag if invalidText is provided
-    const Validity =
-      this.invalidText !== ''
-        ? { ...this._inputEl.validity, customError: true }
-        : this._inputEl.validity;
-    // set validationMessage to invalidText if present, otherwise use inputEl validationMessage
-    const ValidationMessage =
-      this.invalidText !== ''
-        ? this.invalidText
-        : this._inputEl.validationMessage;
-
-    // set validity on custom element, anchor to inputEl
-    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
-
-    // set internal validation message if value was changed by user input
-    if (interacted) {
-      this._internalValidationMsg = this._inputEl.validationMessage;
+  private handleKeyDown = (e: KeyboardEvent): void => {
+    if (e.code === 'Space' || e.key === ' ') {
+      e.preventDefault();
+      this.checked = !this.checked;
+      this._internals.setFormValue(this.checked ? this.value : null);
+      this.dispatchEvent(
+        new CustomEvent('on-change', {
+          detail: { checked: this.checked, value: this.value, origEvent: e },
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
-
-    // focus the form field to show validity
-    if (report) {
-      this._internals.reportValidity();
-    }
-  }
+  };
 
   override updated(changedProps: any) {
     this._onUpdated(changedProps);
@@ -130,12 +126,6 @@ export class ToggleButton extends FormMixin(LitElement) {
       this._internals.setFormValue(this.checked ? this.value : null);
     }
   }
-
-  // private _handleFormdata(e: any) {
-  //   if (this.checked) {
-  //     e.formData.append(this.name, this.value);
-  //   }
-  // }
 }
 
 declare global {
