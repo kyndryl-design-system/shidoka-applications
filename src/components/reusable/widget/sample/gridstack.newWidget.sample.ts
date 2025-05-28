@@ -225,7 +225,7 @@ export class NewWidgetSample extends LitElement {
                           kind="outline"
                           size="small"
                           description="list"
-                          @on-click=${(e: any) => this.toggleList()}
+                          @on-click=${() => this.toggleList()}
                         >
                           <span style="display:flex;" slot="icon"
                             >${unsafeSVG(listIcon)}</span
