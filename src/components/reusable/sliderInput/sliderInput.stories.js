@@ -2,9 +2,6 @@ import { html } from 'lit';
 import './index';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import Substract from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/substract-simple.svg';
-import Add from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 
 export default {
   title: 'Components/Slider Input',
