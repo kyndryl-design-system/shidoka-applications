@@ -37,8 +37,9 @@ import '../widgetGridstack';
 import '../widget';
 import '../widgetDragHandle';
 import '../../card';
+import '../../modal';
 import '../../fileUploader/fileUploader.sample';
-import { GridStack, GridStackElement } from 'gridstack';
+import { GridStack } from 'gridstack';
 
 type Breakpoint = 'max' | 'xl' | 'lg' | 'md' | 'sm';
 
@@ -554,17 +555,22 @@ export class NewWidgetSample extends LitElement {
                   <div class="content-items">${item.name}</div>
                 </div>
                 <div class="content-item">
-                  <kyn-inline-confirm
+                  <kyn-modal
+                    size="auto"
+                    titletext="Delete Dashboard"
+                    labeltext=""
+                    oktext="OK"
+                    canceltext="Cancel"
+                    closetext="Close"
                     destructive
-                    anchorText="Delete"
-                    confirmText="Confirm"
-                    cancelText="Cancel"
-                    @on-confirm=${(e: any) => action('on-confirm')(e)}
+                    secondarybuttontext="Secondary"
                   >
-                    ${unsafeSVG(deleteIcon)}
-                    <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
-                  </kyn-inline-confirm>
+                    <kyn-button slot="anchor" kind="ghost" size="small">
+                      <span slot="icon">${unsafeSVG(deleteIcon)}</span>
+                    </kyn-button>
 
+                    Are you sure you want to delete "My dashboard"?
+                  </kyn-modal>
                   <kyn-button
                     kind="ghost"
                     size="small"
