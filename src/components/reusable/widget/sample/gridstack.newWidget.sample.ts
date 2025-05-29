@@ -652,7 +652,6 @@ export class NewWidgetSample extends LitElement {
     const gridStackElement = this.shadowRoot?.querySelector(
       '.grid-stack'
     ) as GridStackElement;
-    console.log('GridStack Element:', gridStackElement);
     if (gridStackElement) {
       this.grid = GridStack.init(
         {
@@ -660,7 +659,7 @@ export class NewWidgetSample extends LitElement {
           acceptWidgets: (el) => {
             const widgetId = el.getAttribute('gs-id');
             const exists = this.grid?.engine.nodes.some(
-              (node) => node.id === widgetId // limit duplicates id
+              (node) => node.id === widgetId // limit duplicate id's being added
             );
             return !exists;
           },
