@@ -204,11 +204,14 @@ export class TextInput extends FormMixin(LitElement) {
                       >`}
                 </div>
               `
-            : this.value !== '' && !this.readonly
+            : null}
+          ${this.value !== '' && !this.readonly
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled}
-                  class="clear-button"
+                  class="clear-button ${this.type === 'password'
+                    ? 'with-visibility-toggle'
+                    : ''}"
                   kind="ghost"
                   size="small"
                   description=${this._textStrings.clearAll}

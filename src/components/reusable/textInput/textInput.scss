@@ -63,6 +63,10 @@ input {
   &.icon--left {
     padding-left: 48px;
   }
+
+  &[type='password'] {
+    padding-right: 85px; // adds extra space to avoid password manager overlay from crowding out password input controls
+  }
 }
 
 input[type='search']::-webkit-search-decoration,
@@ -70,6 +74,17 @@ input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
   appearance: none;
+}
+
+.clear-button {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+
+  &.with-visibility-toggle {
+    right: 45px;
+  }
 }
 
 .visibility-toggle {
@@ -83,6 +98,10 @@ input[type='search']::-webkit-search-results-decoration {
   transform: translateY(-50%);
   color: var(--kd-color-neutral-70);
   transition: color 0.15s ease-in-out;
+
+  &.with-clear-button {
+    right: 8px;
+  }
 
   &:hover {
     color: var(--kd-color-neutral-90);
