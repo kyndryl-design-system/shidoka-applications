@@ -380,29 +380,25 @@ export class NewWidgetSample extends LitElement {
 
   async toggleList() {
     this.displayTwoPerRow = !this.displayTwoPerRow;
-
     await this.updateComplete;
-    const gridStackElement = this.shadowRoot?.querySelector(
-      'kyn-widget-gridstack'
-    );
-    if (gridStackElement && gridStackElement.gridStack) {
-      const draggableElements =
-        this.shadowRoot?.querySelectorAll('.new-widget');
-      gridStackElement.gridStack.setupDragIn(draggableElements, {
-        appendTo: 'body',
-        helper: 'clone',
-      });
-    }
+    setTimeout(() => {
+      const gridStackElement = this.shadowRoot?.querySelector(
+        'kyn-widget-gridstack'
+      );
+      if (gridStackElement && gridStackElement.gridStack) {
+        const draggableElements =
+          this.shadowRoot?.querySelectorAll('.new-widget');
+        gridStackElement.gridStack.setupDragIn(draggableElements, {
+          appendTo: 'body',
+          helper: 'clone',
+        });
+      }
+    }, 0);
   }
 
   private getWidgetTemplate(item: any, contentShown = true) {
     return html`
-      <div
-        class="grid-stack-item new-widget"
-        gs-id="${item.id}"
-        gs-w="4"
-        gs-h="4"
-      >
+      <div class="grid-stack-item new-widget" gs-id="${item.id}">
         <div class="grid-stack-item-content">
           <kyn-widget widgetTitle=${item.name} subTitle="">
             <kyn-widget-drag-handle></kyn-widget-drag-handle>
@@ -667,6 +663,7 @@ export class NewWidgetSample extends LitElement {
         gridStackElement
       );
       this.grid.on('added', (_: any, items: any[]) => {
+        const breakpoints: Breakpoint[] = ['max', 'xl', 'lg', 'md', 'sm'];
         items.forEach((item) => {
           const widgetEl = item.el;
           const widgetId = widgetEl.getAttribute('gs-id');
@@ -685,15 +682,15 @@ export class NewWidgetSample extends LitElement {
           const newWidgetData = Array.isArray(savedData)
             ? savedData.find((w: any) => w.id === widgetId)
             : undefined;
-          if (!newWidgetData) return;
-          const existingLayout = { ...this.updateLayout };
-          const breakpoints: Breakpoint[] = ['max', 'xl', 'lg', 'md', 'sm'];
-          breakpoints.forEach((bp) => {
-            const existingBreakpoint = existingLayout[bp] || [];
-            const cloneLayout = { ...existingBreakpoint[0], id: widgetId };
-            existingLayout[bp] = [...existingBreakpoint, cloneLayout];
-          });
-          this.updateLayout = existingLayout;
+          if (newWidgetData) {
+            const existingLayout = { ...this.updateLayout };
+            breakpoints.forEach((bp) => {
+              const existingBreakpoint = existingLayout[bp] || [];
+              const cloneLayout = { ...existingBreakpoint[0], id: widgetId };
+              existingLayout[bp] = [...existingBreakpoint, cloneLayout];
+            });
+            this.updateLayout = existingLayout;
+          }
         });
       });
     }
