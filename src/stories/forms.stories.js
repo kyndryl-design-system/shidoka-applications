@@ -10,7 +10,6 @@ import '../components/reusable/dropdown';
 import '../components/reusable/timepicker';
 import '../components/reusable/datePicker';
 import '../components/reusable/daterangepicker';
-import '../components/reusable/passwordInput/passwordInput';
 import '../components/reusable/tooltip';
 import '../components/reusable/button';
 import '../components/reusable/sliderInput';
@@ -187,9 +186,10 @@ export const Default = {
         </kyn-text-area>
         <br /><br />
 
-        <kyn-password-input
+        <kyn-text-input
           name="password-form-input"
           label="Password"
+          type="password"
           placeholder="Enter password"
           minLength="8"
           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
@@ -200,7 +200,7 @@ export const Default = {
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Password must be at least 8 characters.
           </kyn-tooltip>
-        </kyn-password-input>
+        </kyn-text-input>
         <br /><br />
 
         <kyn-number-input

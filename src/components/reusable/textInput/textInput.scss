@@ -71,3 +71,35 @@ input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
   appearance: none;
 }
+
+.visibility-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  color: var(--kd-color-neutral-70);
+  transition: color 0.15s ease-in-out;
+
+  &:hover {
+    color: var(--kd-color-neutral-90);
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      color: var(--kd-color-neutral-70);
+    }
+  }
+
+  .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

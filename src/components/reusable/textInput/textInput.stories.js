@@ -124,3 +124,38 @@ export const WithIcon = {
     `;
   },
 };
+
+export const PasswordInput = {
+  args: {
+    ...args,
+    type: 'password',
+    label: 'Password',
+    name: 'password',
+    placeholder: 'Enter password',
+  },
+  render: (args) => {
+    return html`
+      <kyn-text-input
+        type=${args.type}
+        size=${args.size}
+        name=${args.name}
+        value=${args.value}
+        placeholder=${args.placeholder}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        ?iconRight=${args.iconRight}
+        pattern=${ifDefined(args.pattern)}
+        minLength=${ifDefined(args.minLength)}
+        maxLength=${ifDefined(args.maxLength)}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        @on-input=${(e) => action(e.type)(e)}
+      >
+      </kyn-text-input>
+    `;
+  },
+};

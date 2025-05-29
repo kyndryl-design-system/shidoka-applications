@@ -15,6 +15,8 @@ import '../../reusable/button';
 
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/no-overview.svg';
+import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overview.svg';
 
 import { FormMixin } from '../../../common/mixins/form-input';
 import TextInputScss from './textInput.scss';
@@ -115,6 +117,10 @@ export class TextInput extends FormMixin(LitElement) {
   @state()
   iconSlotted = false;
 
+  /** Internal state for password visibility */
+  @state()
+  private passwordVisible = false;
+
   /**
    * Queries any slotted icons.
    * @ignore
@@ -163,7 +169,9 @@ export class TextInput extends FormMixin(LitElement) {
               'size--lg': this.size === 'lg',
               'is-readonly': this.readonly,
             })}"
-            type=${this.type}
+            type=${this.type === 'password' && this.passwordVisible
+              ? 'text'
+              : this.type}
             id=${this.name}
             name=${this.name}
             value=${this.value}
@@ -179,7 +187,24 @@ export class TextInput extends FormMixin(LitElement) {
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
           />
-          ${this.value !== '' && !this.readonly
+          ${this.type === 'password' && !this.readonly
+            ? html`
+                <div
+                  class="visibility-toggle ${this.disabled ? 'disabled' : ''}"
+                  @click="${this.disabled
+                    ? null
+                    : this._togglePasswordVisibility}"
+                >
+                  ${this.passwordVisible
+                    ? html`<span class="icon-container"
+                        >${unsafeSVG(unlockIcon)}</span
+                      >`
+                    : html`<span class="icon-container"
+                        >${unsafeSVG(lockIcon)}</span
+                      >`}
+                </div>
+              `
+            : this.value !== '' && !this.readonly
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled}
@@ -309,6 +334,11 @@ export class TextInput extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
+  }
+
+  private _togglePasswordVisibility(e: MouseEvent) {
+    e.stopPropagation();
+    this.passwordVisible = !this.passwordVisible;
   }
 }
 
