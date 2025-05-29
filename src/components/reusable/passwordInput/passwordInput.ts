@@ -5,8 +5,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import '../textInput/textInput';
 
-import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
-import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/unlock.svg';
+import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/no-overview.svg';
+import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overview.svg';
 
 import styles from './passwordInput.scss';
 
