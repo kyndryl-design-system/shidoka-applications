@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { Config } from '../../../../common/helpers/gridstack';
-import sampleLayout from './gridstacklayout.sample';
+import SampleLayout from './gridstacklayout.sample';
 import { action } from '@storybook/addon-actions';
 import '../index';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
@@ -38,6 +38,9 @@ import '../widget';
 import '../widgetDragHandle';
 import '../../card';
 import '../../fileUploader/fileUploader.sample';
+import { GridStack, GridStackElement } from 'gridstack';
+
+type Breakpoint = 'max' | 'xl' | 'lg' | 'md' | 'sm';
 
 /**
  * New Widget sample.
@@ -46,8 +49,10 @@ import '../../fileUploader/fileUploader.sample';
 export class NewWidgetSample extends LitElement {
   static override styles = Styles;
 
+  @state()
+  private grid?: GridStack;
+
   private _handleInit(e: any) {
-    console.log('GridStack initialized', e.detail.gridStack);
     e.detail.gridStack.setupDragIn(
       this.shadowRoot?.querySelectorAll('.new-widget'),
       {
@@ -155,6 +160,9 @@ export class NewWidgetSample extends LitElement {
 
   @state()
   displayTwoPerRow = false;
+
+  @state()
+  updateLayout = SampleLayout;
 
   override render() {
     const modifiedConfig = {
@@ -327,7 +335,7 @@ export class NewWidgetSample extends LitElement {
       <br />
       <br />
       <kyn-widget-gridstack
-        .layout=${sampleLayout}
+        .layout=${this.updateLayout}
         .gridstackConfig=${modifiedConfig}
         @on-grid-init=${(e: any) => this._handleInit(e)}
         @on-grid-save=${(e: any) => action(e.type)(e)}
@@ -638,6 +646,58 @@ export class NewWidgetSample extends LitElement {
   private handleUploadImageClick(e: any) {
     this.showFileUploader = !this.showFileUploader;
     action(e.type)(e);
+  }
+
+  override firstUpdated() {
+    const gridStackElement = this.shadowRoot?.querySelector(
+      '.grid-stack'
+    ) as GridStackElement;
+    console.log('GridStack Element:', gridStackElement);
+    if (gridStackElement) {
+      this.grid = GridStack.init(
+        {
+          ...Config,
+          acceptWidgets: (el) => {
+            const widgetId = el.getAttribute('gs-id');
+            const exists = this.grid?.engine.nodes.some(
+              (node) => node.id === widgetId // limit duplicates id
+            );
+            return !exists;
+          },
+        },
+        gridStackElement
+      );
+      this.grid.on('added', (_: any, items: any[]) => {
+        items.forEach((item) => {
+          const widgetEl = item.el;
+          const widgetId = widgetEl.getAttribute('gs-id');
+          const overflowMenu = widgetEl.querySelector('kyn-overflow-menu');
+          if (
+            overflowMenu &&
+            overflowMenu.classList.contains('overflowmenu_hidden')
+          ) {
+            overflowMenu.classList.remove('overflowmenu_hidden');
+          }
+          const contentItemEls = widgetEl.querySelectorAll('.content_item');
+          contentItemEls.forEach((el: any) => {
+            el.classList.remove('content_item');
+          });
+          const savedData = this.grid?.save(false);
+          const newWidgetData = Array.isArray(savedData)
+            ? savedData.find((w: any) => w.id === widgetId)
+            : undefined;
+          if (!newWidgetData) return;
+          const existingLayout = { ...this.updateLayout };
+          const breakpoints: Breakpoint[] = ['max', 'xl', 'lg', 'md', 'sm'];
+          breakpoints.forEach((bp) => {
+            const existingBreakpoint = existingLayout[bp] || [];
+            const cloneLayout = { ...existingBreakpoint[0], id: widgetId };
+            existingLayout[bp] = [...existingBreakpoint, cloneLayout];
+          });
+          this.updateLayout = existingLayout;
+        });
+      });
+    }
   }
 }
 

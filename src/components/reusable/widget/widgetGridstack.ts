@@ -74,50 +74,6 @@ export class WidgetGridstack extends LitElement {
       this._saveLayout();
     });
 
-    this.grid.on('added', (_: any, items: any[]) => {
-      const breakpoints = Object.keys(this.layout);
-      items.forEach((item) => {
-        const widgetEl = item.el;
-        const widgetId = widgetEl.getAttribute('gs-id');
-        const overflowMenu = widgetEl.querySelector('kyn-overflow-menu');
-        if (
-          overflowMenu &&
-          overflowMenu.classList.contains('overflowmenu_hidden')
-        ) {
-          overflowMenu.classList.remove('overflowmenu_hidden');
-        }
-
-        const contentItemEls = widgetEl.querySelectorAll('.content_item');
-        contentItemEls.forEach((el: any) => {
-          el.classList.remove('content_item');
-        });
-
-        const newWidgetData = this.grid
-          .save(false)
-          .find((w: any) => w.id === widgetId);
-        const widgetLayout = {
-          ...newWidgetData,
-          w: newWidgetData.w || newWidgetData.minW,
-          h: newWidgetData.h || newWidgetData.minH,
-        };
-        breakpoints.forEach((bp) => {
-          const existingBreakpoint = this.layout[bp] || [];
-          if (existingBreakpoint.length > 0) {
-            const cloneLayout = { ...existingBreakpoint[0], id: widgetId };
-            this.layout[bp] = [...existingBreakpoint, cloneLayout];
-          } else {
-            this.layout[bp] = [{ ...widgetLayout }];
-          }
-        });
-
-        this.dispatchEvent(
-          new CustomEvent('on-grid-save', {
-            detail: { layout: this.layout },
-          })
-        );
-      });
-    });
-
     // emit init event
     const event = new CustomEvent('on-grid-init', {
       detail: { grid: this.grid, gridStack: this.gridStack },
