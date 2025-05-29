@@ -1229,22 +1229,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private announceSelectionState() {
     if (!this._screenReaderRef.value) return;
 
-    let announcement = '';
+    const [start, end] = this.value;
+    let msg: string;
 
-    if (this.value[0] === null && this.value[1] === null) {
-      announcement = this._textStrings.selectingStartDate;
-    } else if (this.value[0] !== null && this.value[1] === null) {
-      announcement = this._textStrings.startDateSelected.replace(
-        '{0}',
-        this.value[0].toLocaleDateString(this.locale)
-      );
-    } else if (this.value[0] !== null && this.value[1] !== null) {
-      announcement = this._textStrings.dateRangeSelected
-        .replace('{0}', this.value[0].toLocaleDateString(this.locale))
-        .replace('{1}', this.value[1].toLocaleDateString(this.locale));
+    if (start === null && end === null) {
+      msg = this._textStrings.selectingStartDate;
+    } else if (start !== null && end === null) {
+      msg = this._textStrings.selectingEndDate;
+    } else {
+      const s = start!.toLocaleDateString(this.locale);
+      const e = end!.toLocaleDateString(this.locale);
+      msg = this._textStrings.dateRangeSelected
+        .replace('{0}', s)
+        .replace('{1}', e);
     }
 
-    this._screenReaderRef.value.textContent = announcement;
+    this._screenReaderRef.value.textContent = msg;
+
+    this._inputEl!.setAttribute('aria‑label', msg);
   }
 
   public async handleDateChange(selectedDates: Date[]) {
@@ -1278,46 +1280,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     }
 
-    this.updateSelectedDateRangeAria(selectedDates);
+    if (this._inputEl && this.flatpickrInstance) {
+      this._inputEl.value = this.flatpickrInstance.input.value;
+      this.updateFormValue();
+    }
+
     this._validate(true, false);
     await this.updateComplete;
 
-    if (this._inputEl && this.flatpickrInstance) {
-      if (
-        !this.flatpickrInstance.isOpen &&
-        this.value[0] !== null &&
-        this.value[1] === null
-      ) {
-        this._inputEl.value = '';
-        this.value = [null, null];
-        this.updateFormValue();
-      } else {
-        this._inputEl.value = this.flatpickrInstance.input.value;
-        this.updateFormValue();
-      }
-    }
-  }
-
-  private updateSelectedDateRangeAria(selectedDates: Date[]) {
-    if (!this._inputEl) return;
-
-    let ariaLabel = this._textStrings.dateRange;
-
-    if (selectedDates.length === 0) {
-      ariaLabel = this._textStrings.noDateSelected;
-    } else if (selectedDates.length === 1) {
-      ariaLabel = this._textStrings.startDateSelected.replace(
-        '{0}',
-        selectedDates[0].toLocaleDateString(this.locale)
-      );
-    } else if (selectedDates.length === 2) {
-      const [startDate, endDate] = selectedDates;
-      ariaLabel = this._textStrings.dateRangeSelected
-        .replace('{0}', startDate.toLocaleDateString(this.locale))
-        .replace('{1}', endDate.toLocaleDateString(this.locale));
-    }
-
-    this._inputEl.setAttribute('aria-label', ariaLabel);
+    this.announceSelectionState();
   }
 
   private setShouldFlatpickrOpen(value: boolean) {

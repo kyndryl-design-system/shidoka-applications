@@ -676,6 +676,7 @@ export class TimePicker extends FormMixin(LitElement) {
       onOpen: () => {
         this._announceTimeComponent(this._textStrings.timePickerOpened);
         const fp = this.flatpickrInstance!;
+
         if (!fp || !fp.calendarContainer) return;
 
         setTimeout(() => {
@@ -804,7 +805,7 @@ export class TimePicker extends FormMixin(LitElement) {
               'aria-valuemax',
               idx === 0 && !this.twentyFourHourFormat ? '12' : '59'
             );
-            el.setAttribute('aria-valuenow', el.value);
+            el.setAttribute('aria-valuenow', el.value.padStart(2, '0'));
             el.setAttribute('aria-label', label.replace('{0}', el.value));
 
             const announceChange = () => {
