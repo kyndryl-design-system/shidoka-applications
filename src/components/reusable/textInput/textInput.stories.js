@@ -193,37 +193,7 @@ export const PasswordInputWithValidation = {
           maxLength=${ifDefined(args.maxLength)}
           .textStrings=${args.textStrings}
           label=${args.label}
-          @on-input=${(e) => {
-            action(e.type)(e);
-            const value = e.detail.value;
-            const hasLength = value.length >= 8;
-            const hasUpper = /[A-Z]/.test(value);
-            const hasLower = /[a-z]/.test(value);
-            const hasNumber = /\d/.test(value);
-
-            // Update validation indicators dynamically
-            const lengthEl = document.getElementById('validation-length');
-            const upperEl = document.getElementById('validation-uppercase');
-            const lowerEl = document.getElementById('validation-lowercase');
-            const numberEl = document.getElementById('validation-number');
-
-            if (lengthEl)
-              lengthEl.className = `validation-item ${
-                hasLength ? '' : 'invalid'
-              }`;
-            if (upperEl)
-              upperEl.className = `validation-item ${
-                hasUpper ? '' : 'invalid'
-              }`;
-            if (lowerEl)
-              lowerEl.className = `validation-item ${
-                hasLower ? '' : 'invalid'
-              }`;
-            if (numberEl)
-              numberEl.className = `validation-item ${
-                hasNumber ? '' : 'invalid'
-              }`;
-          }}
+          @on-input=${(e) => action(e.type)(e)}
           style="min-width: 350px;"
         >
         </kyn-text-input>
@@ -233,18 +203,18 @@ export const PasswordInputWithValidation = {
           style="max-width: 350px; margin-top: 8px;"
         >
           <p>Password requirements:</p>
-          <div id="validation-length" class="validation-item invalid">
+          <div class="validation-item">
             <span class="validation-icon">&bull;</span> At least 8 characters
           </div>
-          <div id="validation-uppercase" class="validation-item invalid">
+          <div class="validation-item">
             <span class="validation-icon">&bull;</span> At least one uppercase
             letter
           </div>
-          <div id="validation-lowercase" class="validation-item invalid">
+          <div class="validation-item">
             <span class="validation-icon">&bull;</span> At least one lowercase
             letter
           </div>
-          <div id="validation-number" class="validation-item invalid">
+          <div class="validation-item">
             <span class="validation-icon">&bull;</span> At least one number
           </div>
         </div>
