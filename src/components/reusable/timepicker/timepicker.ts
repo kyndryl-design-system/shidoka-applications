@@ -656,7 +656,6 @@ export class TimePicker extends FormMixin(LitElement) {
       ...ctx,
       allowInput: true,
       time_24hr: this.twentyFourHourFormat ?? false,
-
       onKeyDown: (
         _dates: Date[],
         _str: string,
@@ -665,61 +664,163 @@ export class TimePicker extends FormMixin(LitElement) {
       ) => {
         if (e.key === 'Tab' && document.activeElement === this._inputEl) {
           e.preventDefault();
-          fp.calendarContainer!.querySelector<HTMLInputElement>(
-            '.flatpickr-hour'
-          )!.focus();
+          const hourInput =
+            fp.calendarContainer!.querySelector<HTMLInputElement>(
+              '.flatpickr-hour'
+            );
+          if (hourInput) {
+            hourInput.focus();
+          }
         }
       },
-
       onOpen: () => {
         this._announceTimeComponent(this._textStrings.timePickerOpened);
         const fp = this.flatpickrInstance!;
+        if (!fp || !fp.calendarContainer) return;
 
-        const hourInput =
-          fp.calendarContainer!.querySelector<HTMLInputElement>(
-            '.flatpickr-hour'
-          )!;
-        const minuteInput =
-          fp.calendarContainer!.querySelector<HTMLInputElement>(
-            '.flatpickr-minute'
-          )!;
-
-        // make AM/PM toggle reachable
-        const ampmToggle =
-          fp.calendarContainer!.querySelector<HTMLElement>('.flatpickr-am-pm');
-        if (ampmToggle) {
-          ampmToggle.setAttribute('tabindex', '0');
-        }
-
-        // configure both spinbuttons as tabbable
-        [hourInput, minuteInput].forEach((el, idx) => {
-          const label =
-            idx === 0
-              ? this._textStrings.hourLabel
-              : this._textStrings.minuteLabel;
-
-          el.setAttribute('role', 'spinbutton');
-          el.setAttribute('tabindex', '0');
-          el.setAttribute('aria-valuemin', '0');
-          el.setAttribute(
-            'aria-valuemax',
-            idx === 0 && !this.twentyFourHourFormat ? '12' : '59'
-          );
-          el.setAttribute('aria-valuenow', el.value);
-          el.setAttribute('aria-label', label.replace('{0}', el.value));
-
-          const announceChange = () => {
-            this._announceTimeComponent(
-              label.replace('{0}', el.value.padStart(2, '0'))
+        setTimeout(() => {
+          const hourInput =
+            fp.calendarContainer!.querySelector<HTMLInputElement>(
+              '.flatpickr-hour'
             );
-          };
-          el.addEventListener('input', announceChange);
-          el.addEventListener('keydown', (ev) => {
-            if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown') {
-              setTimeout(announceChange, 50);
+          const minuteInput =
+            fp.calendarContainer!.querySelector<HTMLInputElement>(
+              '.flatpickr-minute'
+            );
+          const ampmToggle =
+            fp.calendarContainer!.querySelector<HTMLElement>(
+              '.flatpickr-am-pm'
+            );
+
+          if (!hourInput || !minuteInput) return;
+
+          hourInput.setAttribute('tabindex', '0');
+          minuteInput.setAttribute('tabindex', '0');
+
+          if (ampmToggle) {
+            ampmToggle.setAttribute('tabindex', '0');
+
+            const cleanElement = (el: HTMLElement) => {
+              const clone = el.cloneNode(true) as HTMLElement;
+              if (el.parentNode) {
+                el.parentNode.replaceChild(clone, el);
+              }
+              return clone;
+            };
+
+            const newHourInput = cleanElement(hourInput) as HTMLInputElement;
+            const newMinuteInput = cleanElement(
+              minuteInput
+            ) as HTMLInputElement;
+            const newAmpmToggle = cleanElement(ampmToggle);
+
+            if (!this.twentyFourHourFormat && newAmpmToggle) {
+              newAmpmToggle.setAttribute('role', 'button');
+              newAmpmToggle.setAttribute(
+                'aria-label',
+                'Toggle between AM and PM'
+              );
+
+              newAmpmToggle.addEventListener('keydown', (e) => {
+                if (
+                  e.key === 'Enter' ||
+                  e.key === ' ' ||
+                  e.key === 'ArrowUp' ||
+                  e.key === 'ArrowDown'
+                ) {
+                  e.preventDefault();
+
+                  const isAM = newAmpmToggle.textContent?.trim() === 'AM';
+                  newAmpmToggle.textContent = isAM ? 'PM' : 'AM';
+
+                  if (
+                    this.flatpickrInstance &&
+                    this.flatpickrInstance.selectedDates.length > 0
+                  ) {
+                    const currentDate = this.flatpickrInstance.selectedDates[0];
+                    const hours = currentDate.getHours();
+
+                    if (!isAM && hours < 12) {
+                      currentDate.setHours(hours + 12);
+                    } else if (isAM && hours >= 12) {
+                      currentDate.setHours(hours - 12);
+                    }
+
+                    this.flatpickrInstance.setDate(currentDate, true);
+                  }
+                }
+              });
             }
+            if (!this.twentyFourHourFormat) {
+              newHourInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab' && !e.shiftKey) {
+                  e.preventDefault();
+                  newMinuteInput.focus();
+                }
+              });
+
+              newMinuteInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab' && !e.shiftKey) {
+                  e.preventDefault();
+                  newAmpmToggle.focus();
+                } else if (e.key === 'Tab' && e.shiftKey) {
+                  e.preventDefault();
+                  newHourInput.focus();
+                }
+              });
+
+              newAmpmToggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab' && e.shiftKey) {
+                  e.preventDefault();
+                  newMinuteInput.focus();
+                }
+              });
+            } else {
+              newHourInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab' && !e.shiftKey) {
+                  e.preventDefault();
+                  newMinuteInput.focus();
+                }
+              });
+
+              newMinuteInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab' && e.shiftKey) {
+                  e.preventDefault();
+                  newHourInput.focus();
+                }
+              });
+            }
+          }
+
+          [hourInput, minuteInput].forEach((el, idx) => {
+            const label =
+              idx === 0
+                ? this._textStrings.hourLabel
+                : this._textStrings.minuteLabel;
+
+            el.setAttribute('role', 'spinbutton');
+            el.setAttribute('aria-valuemin', '0');
+            el.setAttribute(
+              'aria-valuemax',
+              idx === 0 && !this.twentyFourHourFormat ? '12' : '59'
+            );
+            el.setAttribute('aria-valuenow', el.value);
+            el.setAttribute('aria-label', label.replace('{0}', el.value));
+
+            const announceChange = () => {
+              this._announceTimeComponent(
+                label.replace('{0}', el.value.padStart(2, '0'))
+              );
+            };
+
+            el.addEventListener('input', announceChange);
+            el.addEventListener('keydown', (ev) => {
+              if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown') {
+                setTimeout(announceChange, 50);
+              }
+            });
           });
-        });
+        }, 100);
       },
 
       onReady: (_dates: Date[], _dateStr: string, fp: FlatpickrInstance) => {

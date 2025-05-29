@@ -520,6 +520,111 @@ export function updateEnableTime(dateFormat: string): boolean {
   return dateFormat.includes('H:') || dateFormat.includes('h:');
 }
 
+export function setupAdvancedKeyboardNavigation(
+  instance: Instance,
+  announceCallback?: (message: string) => void
+): void {
+  if (!instance?.calendarContainer) return;
+
+  const container = instance.calendarContainer;
+
+  requestAnimationFrame(() => {
+    const yearInput =
+      container.querySelector<HTMLInputElement>('input.cur-year');
+    if (!yearInput) return;
+
+    yearInput.disabled = false;
+    yearInput.tabIndex = 0;
+    yearInput.setAttribute('role', 'spinbutton');
+    yearInput.setAttribute('aria-label', 'Year');
+
+    yearInput.addEventListener(
+      'keydown',
+      (e: KeyboardEvent) => {
+        if (
+          document.activeElement === yearInput &&
+          (e.key === 'ArrowUp' || e.key === 'ArrowDown')
+        ) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          const next = instance.currentYear + (e.key === 'ArrowUp' ? 1 : -1);
+          instance.changeYear(next);
+          if (announceCallback) {
+            announceCallback(`Year changed to ${next}`);
+          }
+        } else if (
+          document.activeElement === yearInput &&
+          e.key === 'Tab' &&
+          !e.shiftKey
+        ) {
+          e.preventDefault();
+
+          const dayElements = container.querySelectorAll<HTMLElement>(
+            '.flatpickr-day:not(.flatpickr-disabled)'
+          );
+          if (dayElements.length > 0) {
+            dayElements[0].tabIndex = 0;
+            dayElements[0].focus();
+          }
+        }
+      },
+      { capture: true }
+    );
+  });
+
+  requestAnimationFrame(() => {
+    const daysContainer = container.querySelector('.dayContainer');
+    if (!daysContainer) return;
+
+    const dayElements =
+      container.querySelectorAll<HTMLElement>('.flatpickr-day');
+
+    dayElements.forEach((day) => {
+      day.setAttribute('tabindex', '-1');
+    });
+
+    daysContainer.addEventListener('keydown', (evt: Event) => {
+      const e = evt as KeyboardEvent;
+      const target = e.target as HTMLElement;
+
+      if (!target.classList.contains('flatpickr-day')) return;
+
+      if (e.key === 'Tab') {
+        return;
+      }
+
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+        e.preventDefault();
+
+        const currentIndex = Array.from(dayElements).indexOf(target);
+        let nextIndex = currentIndex;
+
+        const daysPerRow = 7;
+
+        if (e.key === 'ArrowRight') {
+          nextIndex = currentIndex + 1;
+        } else if (e.key === 'ArrowLeft') {
+          nextIndex = currentIndex - 1;
+        } else if (e.key === 'ArrowDown') {
+          nextIndex = currentIndex + daysPerRow;
+        } else if (e.key === 'ArrowUp') {
+          nextIndex = currentIndex - daysPerRow;
+        }
+
+        if (nextIndex >= 0 && nextIndex < dayElements.length) {
+          const nextDay = dayElements[nextIndex];
+          if (!nextDay.classList.contains('flatpickr-disabled')) {
+            nextDay.focus();
+          }
+        }
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        target.click();
+      }
+    });
+  });
+}
+
 export function setCalendarAttributes(
   instance: Instance,
   modalDetected?: boolean
@@ -565,6 +670,7 @@ export function setCalendarAttributes(
         });
 
         enhanceCalendarKeyboardNavigation(instance);
+        setupAdvancedKeyboardNavigation(instance);
 
         const monthNav = calendarContainer.querySelector('.flatpickr-month');
         if (monthNav) {

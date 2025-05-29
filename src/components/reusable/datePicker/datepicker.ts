@@ -20,11 +20,11 @@ import {
   hideEmptyYear,
   getModalContainer,
   clearFlatpickrInput,
+  setupAdvancedKeyboardNavigation,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 import flatpickr from 'flatpickr';
 import type { Options as FlatpickrOptions } from 'flatpickr/dist/types/options';
-import type { Instance as FlatpickrInstance } from 'flatpickr/dist/types/instance';
 
 import DatePickerStyles from './datepicker.scss';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss';
@@ -839,35 +839,14 @@ export class DatePicker extends FormMixin(LitElement) {
           });
         }
 
-        // 2) Year spinner setup
-        requestAnimationFrame(() => {
-          const yearInput =
-            container.querySelector<HTMLInputElement>('input.cur-year');
-          if (!yearInput) {
-            console.warn('Year input not found');
-            return;
+        setupAdvancedKeyboardNavigation(instance, (message: string) => {
+          if (message.startsWith('Year changed to')) {
+            this._announceYearChange(
+              parseInt(message.replace('Year changed to ', ''))
+            );
+          } else {
+            this.announce(message);
           }
-          yearInput.disabled = false;
-          yearInput.tabIndex = 0;
-          yearInput.setAttribute('role', 'spinbutton');
-          yearInput.setAttribute('aria-label', 'Year');
-          yearInput.addEventListener(
-            'keydown',
-            (e) => {
-              if (
-                document.activeElement === yearInput &&
-                (e.key === 'ArrowUp' || e.key === 'ArrowDown')
-              ) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                const next =
-                  instance.currentYear + (e.key === 'ArrowUp' ? 1 : -1);
-                instance.changeYear(next);
-                this._announceYearChange(next);
-              }
-            },
-            { capture: true }
-          );
         });
       },
       onChange: (selectedDates: Date[], dateStr: string) => {

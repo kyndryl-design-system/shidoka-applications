@@ -22,6 +22,7 @@ import {
   getModalContainer,
   applyDateRangeEditingRestrictions,
   clearFlatpickrInput,
+  setupAdvancedKeyboardNavigation,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -1044,6 +1045,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 : this._textStrings.selectingEndDate;
 
             selectionReader.textContent = phase;
+
+            setupAdvancedKeyboardNavigation(instance, (message: string) => {
+              if (message.startsWith('Year changed to')) {
+                this._announceYearChange(
+                  parseInt(message.replace('Year changed to ', ''))
+                );
+              } else {
+                if (this._screenReaderRef.value) {
+                  this._screenReaderRef.value.textContent = message;
+                }
+              }
+            });
           } catch (error) {
             console.warn('Error setting calendar attributes:', error);
           }
