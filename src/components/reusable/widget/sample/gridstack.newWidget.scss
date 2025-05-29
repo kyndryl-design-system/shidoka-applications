@@ -1,5 +1,6 @@
 @use '../../../../common/scss/global.scss';
 @use '../../../../common/scss/utility/gridstack-shidoka.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
@@ -25,6 +26,7 @@
   gap: 32px;
   align-self: stretch;
   .bg_title {
+    @include typography.type-body-02;
     color: var(--kd-color-text-title-tertiary);
   }
 }
@@ -78,6 +80,12 @@
   align-items: center;
   gap: 16px;
   align-self: stretch;
+  justify-content: flex-start;
+}
+
+.widget-content-description {
+  @include typography.type-body-02;
+  font-weight: 500;
 }
 
 .widget-column {

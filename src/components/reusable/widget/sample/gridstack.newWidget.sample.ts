@@ -183,6 +183,7 @@ export class NewWidgetSample extends LitElement {
 
     return html`
       <kyn-side-drawer
+        style="float:right"
         ?open=${false}
         size="standard"
         titleText="Dashboard Manager"
@@ -283,9 +284,7 @@ export class NewWidgetSample extends LitElement {
               </kyn-page-title>
               ${this.addNewDashboard
                 ? html` <div class="new-dashboard">
-                    <div class="bg_title kd-type--body-02">
-                      Add a new Dashboard
-                    </div>
+                    <div class="bg_title">Add a new Dashboard</div>
                     <kyn-text-input
                       type="text"
                       size="md"
@@ -311,7 +310,7 @@ export class NewWidgetSample extends LitElement {
               </kyn-page-title>
               <div class="visual-customizer">
                 <div class="bacground-image">
-                  <div class="bg_title kd-type--body-02">Background Image</div>
+                  <div class="bg_title">Background Image</div>
                   ${this.showFileUploader
                     ? html`
                         <div style="width:100%">
@@ -410,12 +409,11 @@ export class NewWidgetSample extends LitElement {
               >
             </kyn-overflow-menu>
             <div class="test widget-content">
-              <span style="display:flex;" slot="icon"
-                >${unsafeSVG(item.iconName)}</span
-              >
+              <div slot="icon">${unsafeSVG(item.iconName)}</div>
               <div
-                class="kd-type--ui-01 ${!contentShown ? 'content_item' : ''}"
-                style="font-weight: 500;"
+                class="widget-content-description ${!contentShown
+                  ? 'content_item'
+                  : ''}"
               >
                 ${item.content}
               </div>
