@@ -60,6 +60,38 @@ export class NewWidgetSample extends LitElement {
         helper: 'clone',
       }
     );
+    this.grid = e.detail.grid;
+    this.grid?.on('added', (_: any, items: any[]) => {
+      const breakpoints: Breakpoint[] = ['max', 'xl', 'lg', 'md', 'sm'];
+      items.forEach((item) => {
+        const widgetEl = item.el;
+        const widgetId = widgetEl.getAttribute('gs-id');
+        const overflowMenu = widgetEl.querySelector('kyn-overflow-menu');
+        if (
+          overflowMenu &&
+          overflowMenu.classList.contains('overflowmenu_hidden')
+        ) {
+          overflowMenu.classList.remove('overflowmenu_hidden');
+        }
+        const contentItemEls = widgetEl.querySelectorAll('.content_item');
+        contentItemEls.forEach((el: any) => {
+          el.classList.remove('content_item');
+        });
+        const savedData = this.grid?.save(false);
+        const newWidgetData = Array.isArray(savedData)
+          ? savedData.find((w: any) => w.id === widgetId)
+          : undefined;
+        if (newWidgetData) {
+          const existingLayout = { ...this.updateLayout };
+          breakpoints.forEach((bp) => {
+            const existingBreakpoint = existingLayout[bp] || [];
+            const cloneLayout = { ...existingBreakpoint[0], id: widgetId };
+            existingLayout[bp] = [...existingBreakpoint, cloneLayout];
+          });
+          this.updateLayout = existingLayout;
+        }
+      });
+    });
   }
 
   @state()
@@ -167,7 +199,13 @@ export class NewWidgetSample extends LitElement {
   override render() {
     const modifiedConfig = {
       ...Config,
-      acceptWidgets: true,
+      acceptWidgets: (el: any) => {
+        const widgetId = el.getAttribute('gs-id');
+        const exists = this.grid?.engine.nodes.some(
+          (node) => node.id === widgetId // limit duplicate id's being added
+        );
+        return !exists;
+      },
     };
 
     const submitBtnText =
@@ -642,58 +680,6 @@ export class NewWidgetSample extends LitElement {
   private handleUploadImageClick(e: any) {
     this.showFileUploader = !this.showFileUploader;
     action(e.type)(e);
-  }
-
-  override firstUpdated() {
-    const gridStackElement = this.shadowRoot?.querySelector(
-      '.grid-stack'
-    ) as GridStackElement;
-    if (gridStackElement) {
-      this.grid = GridStack.init(
-        {
-          ...Config,
-          acceptWidgets: (el) => {
-            const widgetId = el.getAttribute('gs-id');
-            const exists = this.grid?.engine.nodes.some(
-              (node) => node.id === widgetId // limit duplicate id's being added
-            );
-            return !exists;
-          },
-        },
-        gridStackElement
-      );
-      this.grid.on('added', (_: any, items: any[]) => {
-        const breakpoints: Breakpoint[] = ['max', 'xl', 'lg', 'md', 'sm'];
-        items.forEach((item) => {
-          const widgetEl = item.el;
-          const widgetId = widgetEl.getAttribute('gs-id');
-          const overflowMenu = widgetEl.querySelector('kyn-overflow-menu');
-          if (
-            overflowMenu &&
-            overflowMenu.classList.contains('overflowmenu_hidden')
-          ) {
-            overflowMenu.classList.remove('overflowmenu_hidden');
-          }
-          const contentItemEls = widgetEl.querySelectorAll('.content_item');
-          contentItemEls.forEach((el: any) => {
-            el.classList.remove('content_item');
-          });
-          const savedData = this.grid?.save(false);
-          const newWidgetData = Array.isArray(savedData)
-            ? savedData.find((w: any) => w.id === widgetId)
-            : undefined;
-          if (newWidgetData) {
-            const existingLayout = { ...this.updateLayout };
-            breakpoints.forEach((bp) => {
-              const existingBreakpoint = existingLayout[bp] || [];
-              const cloneLayout = { ...existingBreakpoint[0], id: widgetId };
-              existingLayout[bp] = [...existingBreakpoint, cloneLayout];
-            });
-            this.updateLayout = existingLayout;
-          }
-        });
-      });
-    }
   }
 }
 
