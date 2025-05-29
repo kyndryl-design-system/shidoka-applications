@@ -102,6 +102,7 @@ export class FileUploader extends FormMixin(LitElement) {
     id: string;
     file: File;
     status: 'sizeError' | 'typeError' | 'unknownError';
+    customErrorMsg?: string;
   }[] = [];
 
   /**
@@ -251,7 +252,10 @@ export class FileUploader extends FormMixin(LitElement) {
                                 </p>
                                 ·
                                 <p class="file-size error">
-                                  ${file.status === 'unknownError'
+                                  ${file.customErrorMsg &&
+                                  file.customErrorMsg !== ''
+                                    ? file.customErrorMsg
+                                    : file.status === 'unknownError'
                                     ? this._textStrings.customFileErrorText
                                     : file.status === 'typeError'
                                     ? this._textStrings.fileTypeErrorText
