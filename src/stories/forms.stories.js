@@ -186,6 +186,23 @@ export const Default = {
         </kyn-text-area>
         <br /><br />
 
+        <kyn-text-input
+          name="password-form-input"
+          label="Password"
+          type="password"
+          placeholder="Enter password"
+          minLength="8"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
+          caption="Password must contain at least 8 characters, including uppercase, lowercase, and numbers"
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Password must be at least 8 characters.
+          </kyn-tooltip>
+        </kyn-text-input>
+        <br /><br />
+
         <kyn-number-input
           name="numberInput"
           caption="Number input example"

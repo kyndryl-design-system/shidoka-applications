@@ -124,3 +124,101 @@ export const WithIcon = {
     `;
   },
 };
+
+export const PasswordInput = {
+  args: {
+    ...args,
+    type: 'password',
+    label: 'Password',
+    name: 'password',
+    placeholder: 'Enter password',
+  },
+  render: (args) => {
+    return html`
+      <kyn-text-input
+        type=${args.type}
+        size=${args.size}
+        name=${args.name}
+        value=${args.value}
+        placeholder=${args.placeholder}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        ?iconRight=${args.iconRight}
+        pattern=${ifDefined(args.pattern)}
+        minLength=${ifDefined(args.minLength)}
+        maxLength=${ifDefined(args.maxLength)}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        @on-input=${(e) => action(e.type)(e)}
+        style="min-width: 350px;"
+      >
+      </kyn-text-input>
+    `;
+  },
+};
+
+export const PasswordInputWithValidation = {
+  args: {
+    ...args,
+    type: 'password',
+    label: 'Create Password',
+    name: 'password-validation',
+    placeholder: 'Enter a secure password',
+    required: true,
+    pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$',
+    minLength: 8,
+  },
+  render: (args) => {
+    return html`
+      <div class="password-container">
+        <kyn-text-input
+          type=${args.type}
+          size=${args.size}
+          name=${args.name}
+          value=${args.value}
+          placeholder=${args.placeholder}
+          caption=${args.caption}
+          ?required=${args.required}
+          ?disabled=${args.disabled}
+          ?readonly=${args.readonly}
+          invalidText=${args.invalidText}
+          ?hideLabel=${args.hideLabel}
+          ?iconRight=${args.iconRight}
+          pattern=${ifDefined(args.pattern)}
+          minLength=${ifDefined(args.minLength)}
+          maxLength=${ifDefined(args.maxLength)}
+          .textStrings=${args.textStrings}
+          label=${args.label}
+          @on-input=${(e) => action(e.type)(e)}
+          style="min-width: 350px;"
+        >
+        </kyn-text-input>
+
+        <div
+          class="password-validation"
+          style="max-width: 350px; margin-top: 8px;"
+        >
+          <p>Password requirements:</p>
+          <div class="validation-item">
+            <span class="validation-icon">&bull;</span> At least 8 characters
+          </div>
+          <div class="validation-item">
+            <span class="validation-icon">&bull;</span> At least one uppercase
+            letter
+          </div>
+          <div class="validation-item">
+            <span class="validation-icon">&bull;</span> At least one lowercase
+            letter
+          </div>
+          <div class="validation-item">
+            <span class="validation-icon">&bull;</span> At least one number
+          </div>
+        </div>
+      </div>
+    `;
+  },
+};
