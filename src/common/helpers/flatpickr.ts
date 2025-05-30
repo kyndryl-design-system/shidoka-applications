@@ -564,7 +564,7 @@ export function setCalendarAttributes(
 
         calendarContainer
           .querySelectorAll<HTMLElement>('.flatpickr-month')
-          .forEach((monthNav, idx) => {
+          .forEach((monthNav) => {
             const prevBtn = monthNav.querySelector<HTMLElement>(
               '.flatpickr-prev-month'
             );

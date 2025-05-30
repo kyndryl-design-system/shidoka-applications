@@ -637,6 +637,29 @@ export class TimePicker extends FormMixin(LitElement) {
       },
 
       onReady: (_dates, _str, instance) => {
+        const timeContainer =
+          instance.calendarContainer!.querySelector('.flatpickr-time')!;
+        const hourInput =
+          timeContainer.querySelector<HTMLInputElement>('.flatpickr-hour')!;
+        const minuteInput =
+          timeContainer.querySelector<HTMLInputElement>('.flatpickr-minute')!;
+        hourInput.replaceWith(hourInput.cloneNode(true));
+        minuteInput.replaceWith(minuteInput.cloneNode(true));
+
+        const freshHour =
+          timeContainer.querySelector<HTMLInputElement>('.flatpickr-hour')!;
+        const freshMinute =
+          timeContainer.querySelector<HTMLInputElement>('.flatpickr-minute')!;
+
+        freshHour.addEventListener('input', () => {
+          this._screenReaderRef.value!.textContent =
+            this._textStrings.hourLabel.replace('{0}', freshHour.value);
+        });
+        freshMinute.addEventListener('input', () => {
+          this._screenReaderRef.value!.textContent =
+            this._textStrings.minuteLabel.replace('{0}', freshMinute.value);
+        });
+
         applyCalendarA11y(instance, container !== document.body);
         setupAdvancedKeyboardNavigation(instance);
 
@@ -654,10 +677,6 @@ export class TimePicker extends FormMixin(LitElement) {
             this._textStrings.noTimeSelected;
         }
       },
-      onChange: (dates, str) => {
-        this.handleTimeChange(dates, str);
-      },
-      onClose: this.handleClose.bind(this),
     };
   }
 
@@ -758,12 +777,15 @@ export class TimePicker extends FormMixin(LitElement) {
     if (interacted) {
       this._hasInteracted = true;
     }
+
     const hasDefaultValue =
       this.defaultHour !== null || this.defaultMinute !== null;
     const isEmpty = !this._inputEl.value.trim() && !hasDefaultValue;
     const isRequired = this.required;
+
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
+
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
       validationMessage =
@@ -773,14 +795,21 @@ export class TimePicker extends FormMixin(LitElement) {
       validity = { ...validity, customError: true };
       validationMessage = this.invalidText;
     }
+
     const isValid = !validity.valueMissing && !validity.customError;
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }
+
     this._internals.setValidity(validity, validationMessage, this._inputEl);
     this._isInvalid =
       !isValid && (this._hasInteracted || this.invalidText !== '');
     this._internalValidationMsg = validationMessage;
+
+    if (this._screenReaderRef.value && validity.customError) {
+      this._screenReaderRef.value.textContent = validationMessage;
+    }
+
     if (report) {
       this._internals.reportValidity();
     }

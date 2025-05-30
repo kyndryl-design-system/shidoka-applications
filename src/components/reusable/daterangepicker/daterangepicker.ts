@@ -1187,8 +1187,27 @@ export class DateRangePicker extends FormMixin(LitElement) {
       );
     }
 
-    options.onMonthChange = (_sd, _ds, inst) => {
-      makeNavFocusable(inst.calendarContainer!);
+    options.onMonthChange = (
+      _selectedDates: Date[],
+      _dateStr: string,
+      instance: Instance
+    ) => {
+      makeNavFocusable(instance.calendarContainer!);
+      const monthName = new Date(
+        instance.currentYear,
+        instance.currentMonth,
+        1
+      ).toLocaleString(this.locale, { month: 'long' });
+      this._screenReaderRef.value!.textContent = `Month changed to ${monthName}. ${this._textStrings.monthNavigationInstructions}`;
+    };
+
+    options.onYearChange = (
+      _selectedDates: Date[],
+      _dateStr: string,
+      instance: Instance
+    ) => {
+      const year = instance.currentYear;
+      this._screenReaderRef.value!.textContent = `Year changed to ${year}. ${this._textStrings.yearNavigationInstructions}`;
     };
 
     return options;

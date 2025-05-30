@@ -775,7 +775,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<FlatpickrOptions>> {
     const container = getModalContainer(this);
-
     const base = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -801,14 +800,34 @@ export class DatePicker extends FormMixin(LitElement) {
     return {
       ...base,
       allowInput: true,
+
       onReady: (_dates, _str, instance) => {
         applyCalendarA11y(instance, container !== document.body);
         setupAdvancedKeyboardNavigation(instance);
       },
+
       onMonthChange: (_dates, _str, instance) => {
         makeNavFocusable(instance.calendarContainer!);
         makeFirstDayTabbable(instance.calendarContainer!);
+
+        const monthName = new Date(
+          instance.currentYear,
+          instance.currentMonth,
+          1
+        ).toLocaleString(this.locale, { month: 'long' });
+
+        if (this._screenReaderRef.value) {
+          this._screenReaderRef.value.textContent = `Month changed to ${monthName}. ${this._textStrings.monthNavigationInstructions}`;
+        }
       },
+
+      onYearChange: (_dates, _str, instance) => {
+        const year = instance.currentYear;
+        if (this._screenReaderRef.value) {
+          this._screenReaderRef.value.textContent = `Year changed to ${year}. ${this._textStrings.yearNavigationInstructions}`;
+        }
+      },
+
       onChange: (selectedDates, dateStr) =>
         this.handleDateChange(selectedDates, dateStr),
     };
@@ -839,65 +858,59 @@ export class DatePicker extends FormMixin(LitElement) {
     }
   }
 
-  async handleDateChange(selectedDates: Date[], dateStr: string) {
-    if (this._isClearing) return;
+  private async handleDateChange(selectedDates: Date[], dateStr: string) {
+    const invalidDates = selectedDates.filter((d) => isNaN(d.getTime()));
+    if (this._isClearing || invalidDates.length > 0) {
+      if (invalidDates.length > 0)
+        this.invalidText = this._textStrings.invalidDateFormat;
+      this._validate(true, false);
+      return;
+    }
 
     this._hasInteracted = true;
+    this.value =
+      this.mode === 'multiple'
+        ? selectedDates.length
+          ? [...selectedDates]
+          : []
+        : selectedDates.length
+        ? selectedDates[0]
+        : null;
 
-    try {
-      const invalidDates = selectedDates.filter((date) =>
-        isNaN(date.getTime())
-      );
-      if (invalidDates.length > 0) {
-        this.invalidText = this._textStrings.invalidDateFormat;
-        this._validate(true, false);
-        return;
-      }
+    const formattedDates =
+      this.mode === 'multiple'
+        ? selectedDates.map((d) => d.toISOString())
+        : selectedDates.length
+        ? selectedDates[0].toISOString()
+        : null;
 
-      if (this.mode === 'multiple') {
-        this.value = selectedDates.length > 0 ? [...selectedDates] : [];
-      } else {
-        this.value = selectedDates.length > 0 ? selectedDates[0] : null;
-      }
+    emitValue(this, 'on-change', {
+      dates: formattedDates,
+      dateString: this._inputEl?.value || dateStr,
+      source: selectedDates.length === 0 ? 'clear' : undefined,
+    });
 
-      let formattedDates;
-      const isMultiple = this.mode === 'multiple';
-      if (isMultiple) {
-        formattedDates = selectedDates.map((date) => date.toISOString());
-      } else if (selectedDates.length > 0) {
-        formattedDates = selectedDates[0].toISOString();
-      } else {
-        formattedDates = isMultiple ? [] : null;
-      }
+    this.invalidText = '';
 
-      emitValue(this, 'on-change', {
-        dates: formattedDates,
-        dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
-        source: selectedDates.length === 0 ? 'clear' : undefined,
-      });
-
-      if (this.invalidText) {
-        this.invalidText = '';
-      }
-
-      // for screen readers
-      if (this._screenReaderRef.value && selectedDates.length > 0) {
-        const selectedDate = selectedDates[0].toLocaleDateString(this.locale);
-        this._screenReaderRef.value.textContent =
-          this._textStrings.dateSelected.replace('{0}', selectedDate);
-      } else if (this._screenReaderRef.value) {
+    if (this._screenReaderRef.value) {
+      if (!selectedDates.length) {
         this._screenReaderRef.value.textContent =
           this._textStrings.noDateSelected;
+      } else if (this.mode === 'multiple') {
+        const last = selectedDates[selectedDates.length - 1].toLocaleDateString(
+          this.locale
+        );
+        this._screenReaderRef.value.textContent = `Selected ${selectedDates.length} dates. Last: ${last}.`;
+      } else {
+        const sel = selectedDates[0].toLocaleDateString(this.locale);
+        this._screenReaderRef.value.textContent =
+          this._textStrings.dateSelected.replace('{0}', sel);
       }
-
-      this._validate(true, false);
-      await this.updateComplete;
-      this.requestUpdate();
-    } catch (error) {
-      console.error('Error handling date change:', error);
-      this.invalidText = this._textStrings.errorProcessing;
-      this._validate(true, false);
     }
+
+    this._validate(true, false);
+    await this.updateComplete;
+    this.requestUpdate();
   }
 
   private setShouldFlatpickrOpen(value: boolean) {
@@ -922,6 +935,11 @@ export class DatePicker extends FormMixin(LitElement) {
       this.closeFlatpickr.bind(this),
       this.setShouldFlatpickrOpen.bind(this)
     );
+    this._screenReaderRef.value!.textContent =
+      this._textStrings.dateInputInstructions.replace(
+        '{0}',
+        getPlaceholder(this.dateFormat)
+      );
   }
 
   private handleInputKeydown(event: KeyboardEvent) {
@@ -1012,7 +1030,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private _validate(interacted: boolean, report: boolean) {
-    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) return;
+    if (!this._inputEl) return;
 
     if (this.datePickerDisabled) {
       this._internals.setValidity({}, '', this._inputEl);
@@ -1021,82 +1039,40 @@ export class DatePicker extends FormMixin(LitElement) {
       return;
     }
 
-    if (interacted) {
-      this._hasInteracted = true;
-    }
+    if (interacted) this._hasInteracted = true;
 
-    const hasValidDefaultValue =
-      this.defaultDate !== null &&
+    const hasDefault =
+      this.defaultDate != null &&
       ((typeof this.defaultDate === 'string' &&
         this.defaultDate.trim() !== '') ||
-        (Array.isArray(this.defaultDate) &&
-          this.defaultDate.length > 0 &&
-          this.defaultDate.some((date) => date && date !== '')));
-
-    const isEmpty = !this._inputEl.value.trim() && !hasValidDefaultValue;
+        (Array.isArray(this.defaultDate) && this.defaultDate.some((d) => !!d)));
+    const isEmpty = !this._inputEl.value.trim() && !hasDefault;
     const isRequired = this.required;
 
     let validity = this._inputEl.validity;
-    let validationMessage = this._inputEl.validationMessage;
-
-    if (
-      !this._hasInteracted &&
-      !interacted &&
-      this._enableTime &&
-      !(isRequired && isEmpty)
-    ) {
-      this._internals.setValidity({}, '', this._inputEl);
-      this._isInvalid = false;
-      this._internalValidationMsg = '';
-      return;
-    }
+    let msg = this._inputEl.validationMessage;
 
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
-      validationMessage =
-        this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
-
-      this._internals.setValidity(validity, validationMessage, this._inputEl);
-
-      this._isInvalid = this._hasInteracted || interacted;
-      this._internalValidationMsg = validationMessage;
-
-      if (report) {
-        this._internals.reportValidity();
-      }
-
-      this.requestUpdate();
-      return;
-    }
-
-    if (this.mode === 'multiple' && this._inputEl.value.trim() !== '') {
-      if (this.invalidText) {
-        this.invalidText = '';
-      }
+      msg = this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     }
 
     if (this.invalidText) {
       validity = { ...validity, customError: true };
-      validationMessage = this.invalidText;
+      msg = this.invalidText;
     }
 
     const isValid = !validity.valueMissing && !validity.customError;
+    if (!isValid && !msg) msg = this._textStrings.pleaseSelectValidDate;
 
-    if (!isValid && !validationMessage) {
-      validationMessage = this._textStrings.pleaseSelectValidDate;
+    this._internals.setValidity(validity, msg, this._inputEl);
+    this._isInvalid = !isValid && (this._hasInteracted || report);
+
+    if (this._screenReaderRef.value && validity.customError) {
+      this._screenReaderRef.value.textContent = msg;
     }
 
-    this._internals.setValidity(validity, validationMessage, this._inputEl);
-
-    this._isInvalid =
-      !isValid &&
-      (this._hasInteracted || this.invalidText !== '' || interacted);
-    this._internalValidationMsg = validationMessage;
-
-    if (report) {
-      this._internals.reportValidity();
-    }
-
+    if (report) this._internals.reportValidity();
     this.requestUpdate();
   }
 
