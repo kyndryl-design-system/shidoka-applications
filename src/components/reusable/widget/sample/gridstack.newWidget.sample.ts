@@ -39,6 +39,8 @@ import '../widgetDragHandle';
 import '../../card';
 import '../../modal';
 import '../../fileUploader/fileUploader.sample';
+import './colorswatch.sample';
+
 import { GridStack } from 'gridstack';
 
 type Breakpoint = 'max' | 'xl' | 'lg' | 'md' | 'sm';
@@ -366,6 +368,7 @@ export class NewWidgetSample extends LitElement {
                       `
                     : this.getImageBackgroundTemplate()}
                 </div>
+                <color-swatch></color-swatch>
               </div>
             </div>
           </kyn-tab-panel>
