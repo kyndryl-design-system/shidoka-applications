@@ -20,6 +20,7 @@ import {
   hideEmptyYear,
   getModalContainer,
   clearFlatpickrInput,
+  setupAdvancedKeyboardNavigation,
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
@@ -34,6 +35,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/time.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import { applyCalendarA11y } from '../../../common/helpers/calendarA11y';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -561,58 +563,32 @@ export class TimePicker extends FormMixin(LitElement) {
   private _isDestroyed = false;
 
   async initializeFlatpickr() {
-    if (this._isDestroyed) {
-      return;
-    }
-    if (!this._inputEl || !this._inputEl.isConnected) {
+    if (this._isDestroyed) return;
+
+    if (!this._inputEl?.isConnected) {
       console.warn(
         'Cannot initialize Flatpickr: input element not available or not connected to DOM'
       );
       return;
     }
-    const inputEl = this._inputEl;
+
     try {
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.destroy();
-        this.flatpickrInstance = undefined;
-        await new Promise((resolve) => setTimeout(resolve, 0));
-      }
-      if (this._isDestroyed || !inputEl.isConnected) {
-        return;
-      }
-      await new Promise((resolve) => requestAnimationFrame(resolve));
-      if (this._isDestroyed || !inputEl.isConnected) {
-        return;
-      }
+      this.flatpickrInstance?.destroy();
+
       this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
         inputEl: this._inputEl,
         getFlatpickrOptions: async () => {
-          const options = await this.getComponentFlatpickrOptions();
-          if (options.noCalendar === false) {
-            options.noCalendar = true;
-          }
-          return options;
-        },
-        setCalendarAttributes: (instance) => {
-          try {
-            const container = getModalContainer(this);
-            const modalDetected = container !== document.body;
-            setCalendarAttributes(instance, modalDetected);
-            if (instance.calendarContainer) {
-              instance.calendarContainer.setAttribute(
-                'aria-label',
-                'Time picker'
-              );
-            }
-          } catch (error) {
-            console.error('Error setting calendar attributes:', error);
-          }
+          const opts = await this.getComponentFlatpickrOptions();
+          opts.noCalendar = true;
+          return opts;
         },
         setInitialDates: this.setInitialDates.bind(this),
       });
+
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
       }
+
       hideEmptyYear();
       this._validate(false, false);
     } catch (error) {
@@ -633,18 +609,19 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
-    const effectiveDateFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
+    const effectiveFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
 
-    const ctx = await getFlatpickrOptions({
+    const base = await getFlatpickrOptions({
       inputEl: this._inputEl!,
       locale: this.locale,
+      dateFormat: effectiveFormat,
       enableTime: true,
       noCalendar: true,
-      dateFormat: effectiveDateFormat,
       defaultHour: this.defaultHour ?? undefined,
       defaultMinute: this.defaultMinute ?? undefined,
       minTime: this.minTime,
       maxTime: this.maxTime,
+      twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       loadLocale,
       appendTo: container,
       static: this.staticPosition,
@@ -653,192 +630,37 @@ export class TimePicker extends FormMixin(LitElement) {
     });
 
     return {
-      ...ctx,
+      ...base,
       allowInput: true,
-      time_24hr: this.twentyFourHourFormat ?? false,
-      onKeyDown: (
-        _dates: Date[],
-        _str: string,
-        fp: FlatpickrInstance,
-        e: KeyboardEvent
-      ) => {
-        if (e.key === 'Tab' && document.activeElement === this._inputEl) {
-          e.preventDefault();
-          const hourInput =
-            fp.calendarContainer!.querySelector<HTMLInputElement>(
-              '.flatpickr-hour'
-            );
-          if (hourInput) {
-            hourInput.focus();
-          }
-        }
-      },
-      onOpen: () => {
-        this._announceTimeComponent(this._textStrings.timePickerOpened);
-        const fp = this.flatpickrInstance!;
-        if (!fp || !fp.calendarContainer) return;
 
-        setTimeout(() => {
-          const hourInput =
-            fp.calendarContainer!.querySelector<HTMLInputElement>(
-              '.flatpickr-hour'
-            );
-          const minuteInput =
-            fp.calendarContainer!.querySelector<HTMLInputElement>(
-              '.flatpickr-minute'
-            );
-          const ampmToggle =
-            fp.calendarContainer!.querySelector<HTMLElement>(
-              '.flatpickr-am-pm'
-            );
-
-          if (!hourInput || !minuteInput) return;
-
-          hourInput.setAttribute('tabindex', '0');
-          minuteInput.setAttribute('tabindex', '0');
-
-          if (ampmToggle) {
-            ampmToggle.setAttribute('tabindex', '0');
-
-            const cleanElement = (el: HTMLElement) => {
-              const clone = el.cloneNode(true) as HTMLElement;
-              if (el.parentNode) {
-                el.parentNode.replaceChild(clone, el);
-              }
-              return clone;
-            };
-
-            const newHourInput = cleanElement(hourInput) as HTMLInputElement;
-            const newMinuteInput = cleanElement(
-              minuteInput
-            ) as HTMLInputElement;
-            const newAmpmToggle = cleanElement(ampmToggle);
-
-            if (!this.twentyFourHourFormat && newAmpmToggle) {
-              newAmpmToggle.setAttribute('role', 'button');
-              newAmpmToggle.addEventListener('keydown', (e) => {
-                if (
-                  e.key === 'Enter' ||
-                  e.key === ' ' ||
-                  e.key === 'ArrowUp' ||
-                  e.key === 'ArrowDown'
-                ) {
-                  e.preventDefault();
-                  newAmpmToggle.click();
-                }
-              });
-            }
-            if (!this.twentyFourHourFormat) {
-              newHourInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab' && !e.shiftKey) {
-                  e.preventDefault();
-                  newMinuteInput.focus();
-                }
-              });
-
-              newMinuteInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab' && !e.shiftKey) {
-                  e.preventDefault();
-                  newAmpmToggle.focus();
-                } else if (e.key === 'Tab' && e.shiftKey) {
-                  e.preventDefault();
-                  newHourInput.focus();
-                }
-              });
-
-              newAmpmToggle.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab' && e.shiftKey) {
-                  e.preventDefault();
-                  newMinuteInput.focus();
-                }
-              });
-            } else {
-              newHourInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab' && !e.shiftKey) {
-                  e.preventDefault();
-                  newMinuteInput.focus();
-                }
-              });
-
-              newMinuteInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab' && e.shiftKey) {
-                  e.preventDefault();
-                  newHourInput.focus();
-                }
-              });
-            }
-          }
-
-          [hourInput, minuteInput].forEach((el, idx) => {
-            const label =
-              idx === 0
-                ? this._textStrings.hourLabel
-                : this._textStrings.minuteLabel;
-
-            el.setAttribute('role', 'spinbutton');
-            el.setAttribute('aria-valuemin', '0');
-            el.setAttribute(
-              'aria-valuemax',
-              idx === 0 && !this.twentyFourHourFormat ? '12' : '59'
-            );
-            el.setAttribute('aria-valuenow', el.value);
-            el.setAttribute('aria-label', label.replace('{0}', el.value));
-
-            const announceChange = () => {
-              this._announceTimeComponent(
-                label.replace('{0}', el.value.padStart(2, '0'))
-              );
-            };
-
-            el.addEventListener('input', announceChange);
-            el.addEventListener('keydown', (ev) => {
-              if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown') {
-                setTimeout(announceChange, 50);
-              }
-            });
-          });
-        }, 100);
+      onOpen: (_dates, _str) => {
+        this._screenReaderRef.value!.textContent =
+          this._textStrings.timePickerOpened;
       },
 
-      onReady: (_dates: Date[], _dateStr: string, fp: FlatpickrInstance) => {
-        const t = fp.selectedDates[0];
-        if (t) {
+      onReady: (_dates, _str, instance) => {
+        applyCalendarA11y(instance, container !== document.body);
+        setupAdvancedKeyboardNavigation(instance);
+
+        if (instance.selectedDates.length) {
+          const t = instance.selectedDates[0]!;
           const fmt = t.toLocaleTimeString(this.locale, {
             hour: 'numeric',
             minute: 'numeric',
             hour12: !this.twentyFourHourFormat,
           });
-          this._announceTimeComponent(
-            this._textStrings.timeSelected.replace('{0}', fmt)
-          );
-        }
-      },
-
-      onChange: (dates: Date[], str: string) => {
-        if (dates.length) {
-          const t = dates[0];
-          const fmt = t.toLocaleTimeString(this.locale, {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: !this.twentyFourHourFormat,
-          });
-          this._announceTimeComponent(
-            this._textStrings.timeSelected.replace('{0}', fmt)
-          );
+          this._screenReaderRef.value!.textContent =
+            this._textStrings.timeSelected.replace('{0}', fmt);
         } else {
-          this._announceTimeComponent(this._textStrings.noTimeSelected);
+          this._screenReaderRef.value!.textContent =
+            this._textStrings.noTimeSelected;
         }
+      },
+      onChange: (dates, str) => {
         this.handleTimeChange(dates, str);
       },
-
       onClose: this.handleClose.bind(this),
     };
-  }
-
-  private _announceTimeComponent(message: string) {
-    if (this._screenReaderRef.value) {
-      this._screenReaderRef.value.textContent = message;
-    }
   }
 
   async handleClose() {
