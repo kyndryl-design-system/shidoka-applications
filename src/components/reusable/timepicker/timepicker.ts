@@ -676,7 +676,6 @@ export class TimePicker extends FormMixin(LitElement) {
       onOpen: () => {
         this._announceTimeComponent(this._textStrings.timePickerOpened);
         const fp = this.flatpickrInstance!;
-
         if (!fp || !fp.calendarContainer) return;
 
         setTimeout(() => {
@@ -717,11 +716,6 @@ export class TimePicker extends FormMixin(LitElement) {
 
             if (!this.twentyFourHourFormat && newAmpmToggle) {
               newAmpmToggle.setAttribute('role', 'button');
-              newAmpmToggle.setAttribute(
-                'aria-label',
-                'Toggle between AM and PM'
-              );
-
               newAmpmToggle.addEventListener('keydown', (e) => {
                 if (
                   e.key === 'Enter' ||
@@ -730,25 +724,7 @@ export class TimePicker extends FormMixin(LitElement) {
                   e.key === 'ArrowDown'
                 ) {
                   e.preventDefault();
-
-                  const isAM = newAmpmToggle.textContent?.trim() === 'AM';
-                  newAmpmToggle.textContent = isAM ? 'PM' : 'AM';
-
-                  if (
-                    this.flatpickrInstance &&
-                    this.flatpickrInstance.selectedDates.length > 0
-                  ) {
-                    const currentDate = this.flatpickrInstance.selectedDates[0];
-                    const hours = currentDate.getHours();
-
-                    if (!isAM && hours < 12) {
-                      currentDate.setHours(hours + 12);
-                    } else if (isAM && hours >= 12) {
-                      currentDate.setHours(hours - 12);
-                    }
-
-                    this.flatpickrInstance.setDate(currentDate, true);
-                  }
+                  newAmpmToggle.click();
                 }
               });
             }
@@ -805,7 +781,7 @@ export class TimePicker extends FormMixin(LitElement) {
               'aria-valuemax',
               idx === 0 && !this.twentyFourHourFormat ? '12' : '59'
             );
-            el.setAttribute('aria-valuenow', el.value.padStart(2, '0'));
+            el.setAttribute('aria-valuenow', el.value);
             el.setAttribute('aria-label', label.replace('{0}', el.value));
 
             const announceChange = () => {

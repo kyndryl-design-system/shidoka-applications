@@ -5,6 +5,12 @@ import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import { langsArray, SupportedLocale } from '../flatpickrLangs';
+import {
+  makeFirstDayTabbable,
+  makeNavFocusable,
+  makeTimeFocusable,
+  applyCalendarA11y,
+} from './calendarA11y';
 
 let flatpickrStylesInjected = false;
 
@@ -39,7 +45,6 @@ export function getTextStrings(
 
 interface BaseFlatpickrContext {
   getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
-  setCalendarAttributes: (instance: Instance) => void;
   setInitialDates?: (instance: Instance) => void;
 }
 
@@ -151,13 +156,7 @@ export function injectFlatpickrStyles(customStyle: string): void {
 export async function initializeMultiAnchorFlatpickr(
   context: RangeFlatpickrContext
 ): Promise<Instance | undefined> {
-  const {
-    inputEl,
-    endinputEl,
-    getFlatpickrOptions,
-    setCalendarAttributes,
-    setInitialDates,
-  } = context;
+  const { inputEl, endinputEl, getFlatpickrOptions, setInitialDates } = context;
 
   if (!inputEl) {
     console.error('Cannot initialize Flatpickr: inputEl is undefined');
@@ -236,19 +235,15 @@ export async function initializeMultiAnchorFlatpickr(
 }
 
 export async function initializeSingleAnchorFlatpickr(
-  context: SingleFlatpickrContext & { appendTo?: HTMLElement }
+  inputElContext: SingleFlatpickrContext & { appendTo?: HTMLElement }
 ): Promise<Instance | undefined> {
-  const {
-    inputEl,
-    getFlatpickrOptions,
-    setCalendarAttributes,
-    setInitialDates,
-    appendTo,
-  } = context;
+  const { inputEl, getFlatpickrOptions, setInitialDates, appendTo } =
+    inputElContext;
   if (!inputEl) {
     console.error('Cannot initialize Flatpickr: inputEl is undefined');
     return undefined;
   }
+
   try {
     const options = await getFlatpickrOptions();
     const effectiveDateFormat =
@@ -260,47 +255,36 @@ export async function initializeSingleAnchorFlatpickr(
       inputElement = inputEl;
       options.clickOpens = true;
     } else {
-      try {
-        inputElement = document.createElement('input');
-        inputElement.type = 'text';
-        inputElement.style.display = 'none';
+      inputElement = document.createElement('input');
+      inputElement.type = 'text';
+      inputElement.style.display = 'none';
 
-        const targetElement = appendTo || inputEl;
-        if (!targetElement) {
-          throw new Error('No valid element to append input to');
-        }
+      const targetElement = appendTo || inputEl;
+      if (!targetElement)
+        throw new Error('No valid element to append input to');
 
-        targetElement.appendChild(inputElement);
-        options.clickOpens = false;
-        options.positionElement = inputEl;
-      } catch (error) {
-        console.error('Error creating input element:', error);
-        throw error;
-      }
+      targetElement.appendChild(inputElement);
+      options.clickOpens = false;
+      options.positionElement = inputEl;
     }
-    const flatpickrInstance = flatpickr(inputElement, options) as Instance;
-    if (flatpickrInstance) {
-      setTimeout(() => {
-        if (setCalendarAttributes) {
-          setCalendarAttributes(flatpickrInstance);
-        }
-      }, 0);
-      if (setInitialDates) {
-        setInitialDates(flatpickrInstance);
-      }
-      if (!(inputEl instanceof HTMLInputElement)) {
-        inputEl.addEventListener('click', () => flatpickrInstance.open());
-      }
-      return flatpickrInstance;
-    } else {
+
+    const fp = flatpickr(inputElement, options) as Instance;
+    if (!fp) {
       console.error('Failed to initialize Flatpickr');
       return undefined;
     }
+
+    applyCalendarA11y(
+      fp,
+      getModalContainer(inputElContext.inputEl) !== document.body
+    );
+
+    if (setInitialDates) setInitialDates(fp);
+
+    return fp;
   } catch (error) {
     console.error('Error initializing Flatpickr:', error);
-    if (error instanceof Error) {
-      console.error('Error details:', error.message);
-    }
+    if (error instanceof Error) console.error('Error details:', error.message);
     return undefined;
   }
 }
@@ -520,108 +504,14 @@ export function updateEnableTime(dateFormat: string): boolean {
   return dateFormat.includes('H:') || dateFormat.includes('h:');
 }
 
-export function setupAdvancedKeyboardNavigation(
-  instance: Instance,
-  announceCallback?: (message: string) => void
-): void {
-  if (!instance?.calendarContainer) return;
-
+export function setupAdvancedKeyboardNavigation(instance: Instance) {
   const container = instance.calendarContainer;
+  if (!container) return;
 
   requestAnimationFrame(() => {
-    const yearInput =
-      container.querySelector<HTMLInputElement>('input.cur-year');
-    if (!yearInput) return;
-
-    yearInput.disabled = false;
-    yearInput.tabIndex = 0;
-    yearInput.setAttribute('role', 'spinbutton');
-    yearInput.setAttribute('aria-label', 'Year');
-
-    yearInput.addEventListener(
-      'keydown',
-      (e: KeyboardEvent) => {
-        if (
-          document.activeElement === yearInput &&
-          (e.key === 'ArrowUp' || e.key === 'ArrowDown')
-        ) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          const next = instance.currentYear + (e.key === 'ArrowUp' ? 1 : -1);
-          instance.changeYear(next);
-          if (announceCallback) {
-            announceCallback(`Year changed to ${next}`);
-          }
-        } else if (
-          document.activeElement === yearInput &&
-          e.key === 'Tab' &&
-          !e.shiftKey
-        ) {
-          e.preventDefault();
-
-          const dayElements = container.querySelectorAll<HTMLElement>(
-            '.flatpickr-day:not(.flatpickr-disabled)'
-          );
-          if (dayElements.length > 0) {
-            dayElements[0].tabIndex = 0;
-            dayElements[0].focus();
-          }
-        }
-      },
-      { capture: true }
-    );
-  });
-
-  requestAnimationFrame(() => {
-    const daysContainer = container.querySelector('.dayContainer');
-    if (!daysContainer) return;
-
-    const dayElements =
-      container.querySelectorAll<HTMLElement>('.flatpickr-day');
-
-    dayElements.forEach((day) => {
-      day.setAttribute('tabindex', '-1');
-    });
-
-    daysContainer.addEventListener('keydown', (evt: Event) => {
-      const e = evt as KeyboardEvent;
-      const target = e.target as HTMLElement;
-
-      if (!target.classList.contains('flatpickr-day')) return;
-
-      if (e.key === 'Tab') {
-        return;
-      }
-
-      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
-        e.preventDefault();
-
-        const currentIndex = Array.from(dayElements).indexOf(target);
-        let nextIndex = currentIndex;
-
-        const daysPerRow = 7;
-
-        if (e.key === 'ArrowRight') {
-          nextIndex = currentIndex + 1;
-        } else if (e.key === 'ArrowLeft') {
-          nextIndex = currentIndex - 1;
-        } else if (e.key === 'ArrowDown') {
-          nextIndex = currentIndex + daysPerRow;
-        } else if (e.key === 'ArrowUp') {
-          nextIndex = currentIndex - daysPerRow;
-        }
-
-        if (nextIndex >= 0 && nextIndex < dayElements.length) {
-          const nextDay = dayElements[nextIndex];
-          if (!nextDay.classList.contains('flatpickr-disabled')) {
-            nextDay.focus();
-          }
-        }
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        target.click();
-      }
-    });
+    makeFirstDayTabbable(container);
+    makeNavFocusable(container);
+    if (instance.config.enableTime) makeTimeFocusable(container);
   });
 }
 
@@ -672,40 +562,40 @@ export function setCalendarAttributes(
         enhanceCalendarKeyboardNavigation(instance);
         setupAdvancedKeyboardNavigation(instance);
 
-        const monthNav = calendarContainer.querySelector('.flatpickr-month');
-        if (monthNav) {
-          const prevMonthButton = monthNav.querySelector(
-            '.flatpickr-prev-month'
-          );
-          const nextMonthButton = monthNav.querySelector(
-            '.flatpickr-next-month'
-          );
+        calendarContainer
+          .querySelectorAll<HTMLElement>('.flatpickr-month')
+          .forEach((monthNav, idx) => {
+            const prevBtn = monthNav.querySelector<HTMLElement>(
+              '.flatpickr-prev-month'
+            );
+            const nextBtn = monthNav.querySelector<HTMLElement>(
+              '.flatpickr-next-month'
+            );
+            const monthEl = monthNav.querySelector<HTMLElement>(
+              '.flatpickr-monthDropdown-months, .cur-month'
+            );
+            const yearInp =
+              monthNav.querySelector<HTMLInputElement>('input.cur-year');
 
-          if (prevMonthButton && !prevMonthButton.hasAttribute('tabindex')) {
-            prevMonthButton.setAttribute('tabindex', '0');
-            prevMonthButton.setAttribute('role', 'button');
-            prevMonthButton.setAttribute('aria-label', 'Previous month');
-          }
-
-          if (nextMonthButton && !nextMonthButton.hasAttribute('tabindex')) {
-            nextMonthButton.setAttribute('tabindex', '0');
-            nextMonthButton.setAttribute('role', 'button');
-            nextMonthButton.setAttribute('aria-label', 'Next month');
-          }
-
-          const monthElement = monthNav.querySelector('.cur-month');
-          const yearInput = monthNav.querySelector('.numInput.cur-year');
-
-          if (monthElement && !monthElement.hasAttribute('tabindex')) {
-            monthElement.setAttribute('tabindex', '0');
-            monthElement.setAttribute('role', 'button');
-            monthElement.setAttribute('aria-label', 'Select month');
-          }
-
-          if (yearInput && !yearInput.hasAttribute('aria-label')) {
-            yearInput.setAttribute('aria-label', 'Select year');
-          }
-        }
+            for (const el of [prevBtn, monthEl, yearInp, nextBtn]) {
+              if (!el) continue;
+              el.tabIndex = 0;
+              if (el === prevBtn || el === nextBtn) {
+                el.setAttribute('role', 'button');
+                el.setAttribute(
+                  'aria-label',
+                  el === prevBtn ? 'Previous month' : 'Next month'
+                );
+              } else if (el === monthEl) {
+                el.setAttribute('role', 'button');
+                el.setAttribute('aria-label', 'Select month');
+              } else if (el === yearInp) {
+                yearInp.disabled = false;
+                el.setAttribute('role', 'spinbutton');
+                el.setAttribute('aria-label', 'Year');
+              }
+            }
+          });
       } catch (error) {
         console.warn('Error setting calendar attributes:', error);
       }

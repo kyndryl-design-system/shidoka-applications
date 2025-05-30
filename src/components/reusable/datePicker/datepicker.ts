@@ -32,6 +32,11 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import {
+  applyCalendarA11y,
+  makeFirstDayTabbable,
+  makeNavFocusable,
+} from '../../../common/helpers/calendarA11y';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -656,53 +661,33 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr() {
-    if (this._isDestroyed) {
+    if (this._isDestroyed) return;
+    if (!this._inputEl || !this._inputEl.isConnected) {
+      console.warn('Cannot initialize Flatpickr: input element not in DOM');
       return;
     }
 
-    if (!this._inputEl || !this._inputEl.isConnected) {
-      console.warn(
-        'Cannot initialize Flatpickr: input element not available or not connected to DOM'
-      );
-      return;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.destroy();
+      this.flatpickrInstance = undefined;
     }
 
     try {
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.destroy();
-      }
-
       this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
         inputEl: this._inputEl,
         getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
-          try {
-            const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
-            if (instance.calendarContainer) {
-              instance.calendarContainer.setAttribute(
-                'aria-label',
-                'Date picker'
-              );
-            }
-          } catch (error) {
-            console.error('Error setting calendar attributes:', error);
-          }
-        },
         setInitialDates: this.setInitialDates.bind(this),
       });
 
       if (!this.flatpickrInstance) {
-        throw new Error('Failed to initialize Flatpickr instance');
+        throw new Error('Flatpickr init returned undefined');
       }
 
       hideEmptyYear();
       this._validate(false, false);
-    } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
-      if (error instanceof Error) {
-        console.error('Error details:', error.message);
-      }
+    } catch (err) {
+      console.error('Error initializing Flatpickr:', err);
+      if (err instanceof Error) console.error(err.message);
     }
   }
 
@@ -791,6 +776,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<FlatpickrOptions>> {
     const container = getModalContainer(this);
+
     const base = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -815,49 +801,18 @@ export class DatePicker extends FormMixin(LitElement) {
 
     return {
       ...base,
-      mode: base.mode,
       allowInput: true,
       onReady: (_dates, _str, instance) => {
-        const container = instance.calendarContainer!;
-
-        const tc = container.querySelector<HTMLElement>('.flatpickr-time');
-        if (tc) {
-          const hr = tc.querySelector<HTMLInputElement>(
-            '.numInputWrapper:nth-child(1) input'
-          );
-          const mn = tc.querySelector<HTMLInputElement>(
-            '.numInputWrapper:nth-child(2) input'
-          );
-          if (hr) hr.setAttribute('aria-label', 'Hours');
-          if (mn) mn.setAttribute('aria-label', 'Minutes');
-          [hr, mn].forEach((el) => {
-            el?.addEventListener('input', () => {
-              const h = hr!.value.padStart(2, '0');
-              const m = mn!.value.padStart(2, '0');
-              this.announce(`Time set to ${h} hours ${m} minutes`);
-            });
-          });
-        }
-
-        setupAdvancedKeyboardNavigation(instance, (message: string) => {
-          if (message.startsWith('Year changed to')) {
-            this._announceYearChange(
-              parseInt(message.replace('Year changed to ', ''))
-            );
-          } else {
-            this.announce(message);
-          }
-        });
+        applyCalendarA11y(instance, container !== document.body);
+        setupAdvancedKeyboardNavigation(instance);
       },
-      onChange: (selectedDates: Date[], dateStr: string) => {
-        this.handleDateChange(selectedDates, dateStr);
+      onMonthChange: (_dates, _str, instance) => {
+        makeNavFocusable(instance.calendarContainer!);
+        makeFirstDayTabbable(instance.calendarContainer!);
       },
+      onChange: (selectedDates, dateStr) =>
+        this.handleDateChange(selectedDates, dateStr),
     };
-  }
-
-  private announce(msg: string) {
-    const lr = this._screenReaderRef.value!;
-    lr.textContent = msg;
   }
 
   handleOpen() {

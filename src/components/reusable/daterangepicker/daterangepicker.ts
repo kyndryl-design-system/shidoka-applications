@@ -14,7 +14,6 @@ import {
   preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
-  setCalendarAttributes,
   loadLocale,
   emitValue,
   updateEnableTime,
@@ -22,7 +21,6 @@ import {
   getModalContainer,
   applyDateRangeEditingRestrictions,
   clearFlatpickrInput,
-  setupAdvancedKeyboardNavigation,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -35,6 +33,10 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import {
+  applyCalendarA11y,
+  makeNavFocusable,
+} from '../../../common/helpers/calendarA11y';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -1011,72 +1013,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.dateFormat = 'Y-m-d';
     }
 
-    try {
-      this.flatpickrInstance?.destroy();
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-        inputEl: this._inputEl,
-        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
-          try {
-            if (!instance?.calendarContainer) {
-              throw new Error('Calendar container not available');
-            }
-            const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
-            instance.calendarContainer.setAttribute(
-              'aria-label',
-              'Date range calendar'
-            );
+    this.flatpickrInstance?.destroy();
 
-            let selectionReader = instance.calendarContainer.querySelector(
-              '.selection-phase-reader'
-            );
-            if (!selectionReader) {
-              selectionReader = document.createElement('div');
-              selectionReader.className =
-                'label-text sr-only selection-phase-reader';
-              selectionReader.setAttribute('aria-live', 'assertive');
-              instance.calendarContainer.appendChild(selectionReader);
-            }
+    this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+      inputEl: this._inputEl,
+      appendTo: getModalContainer(this),
+      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+      setInitialDates: this.setInitialDates.bind(this),
+    });
 
-            const phase =
-              instance.selectedDates.length === 0
-                ? this._textStrings.selectingStartDate
-                : this._textStrings.selectingEndDate;
-
-            selectionReader.textContent = phase;
-
-            setupAdvancedKeyboardNavigation(instance, (message: string) => {
-              if (message.startsWith('Year changed to')) {
-                this._announceYearChange(
-                  parseInt(message.replace('Year changed to ', ''))
-                );
-              } else {
-                if (this._screenReaderRef.value) {
-                  this._screenReaderRef.value.textContent = message;
-                }
-              }
-            });
-          } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
-          }
-        },
-        setInitialDates: this.setInitialDates.bind(this),
-      });
-
-      if (!this.flatpickrInstance) {
-        throw new Error('Failed to initialize Flatpickr instance');
-      }
-
-      hideEmptyYear();
-      this._validate(false, false);
-    } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
-
-      if (error instanceof Error) {
-        console.error('Error details:', error.message);
-      }
+    if (!this.flatpickrInstance) {
+      throw new Error('Failed to initialize Flatpickr instance');
     }
+
+    hideEmptyYear();
+    this._validate(false, false);
   }
 
   public async updateFlatpickrOptions() {
@@ -1097,7 +1048,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const options = await getFlatpickrOptions({
       locale: this.locale || 'en',
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ? this.defaultDate : undefined,
+      defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
@@ -1116,48 +1067,129 @@ export class DateRangePicker extends FormMixin(LitElement) {
       static: this.staticPosition,
     });
 
-    if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
-      const tooltipStrings = {
-        lockedStartDate: this._textStrings.lockedStartDate,
-        lockedEndDate: this._textStrings.lockedEndDate,
-        dateLocked: this._textStrings.dateLocked,
-        dateNotAvailable: this._textStrings.dateNotAvailable,
-        dateInSelectedRange: this._textStrings.dateInSelectedRange,
-      };
-
-      let initialValue = this.value;
-
-      if (this.defaultDate && Array.isArray(this.defaultDate)) {
-        if (
-          this.rangeEditMode === DateRangeEditableMode.START &&
-          this.defaultDate.length === 2 &&
-          !this.defaultDate[0] &&
-          this.defaultDate[1]
-        ) {
-          const processedDate = this.processDefaultDates(this.defaultDate);
-          if (processedDate.length === 1) {
-            initialValue = [null, processedDate[0]];
-          }
-        } else if (
-          this.rangeEditMode === DateRangeEditableMode.END &&
-          this.defaultDate.length === 2 &&
-          this.defaultDate[0] &&
-          !this.defaultDate[1]
-        ) {
-          const processedDate = this.processDefaultDates(this.defaultDate);
-          if (processedDate.length === 1) {
-            initialValue = [processedDate[0], null];
+    const originalOnReady = options.onReady;
+    options.onReady = (selectedDates, dateStr, instance) => {
+      if (originalOnReady) {
+        if (typeof originalOnReady === 'function') {
+          originalOnReady(selectedDates, dateStr, instance);
+        } else {
+          for (const fn of originalOnReady as any[]) {
+            fn(selectedDates, dateStr, instance);
           }
         }
       }
 
+      const cal = instance.calendarContainer!;
+      cal.setAttribute('role', 'application');
+      cal.setAttribute('aria-label', 'Date range calendar');
+
+      let reader = cal.querySelector<HTMLElement>('.selection-phase-reader');
+      if (!reader) {
+        reader = document.createElement('div');
+        reader.className = 'label-text sr-only selection-phase-reader';
+        reader.setAttribute('aria-live', 'assertive');
+        cal.appendChild(reader);
+      }
+      reader.textContent =
+        instance.selectedDates.length === 0
+          ? this._textStrings.selectingStartDate
+          : this._textStrings.selectingEndDate;
+
+      applyCalendarA11y(instance, container !== document.body);
+    };
+
+    if (this._enableTime) {
+      const origOnReady = options.onReady;
+      options.onReady = (selectedDates, dateStr, instance) => {
+        origOnReady && (origOnReady as any)(selectedDates, dateStr, instance);
+
+        setTimeout(() => {
+          const timeContainer =
+            instance.calendarContainer!.querySelector('.flatpickr-time');
+          if (!timeContainer) return;
+
+          const hourInput =
+            timeContainer.querySelector<HTMLInputElement>('.flatpickr-hour');
+          const minuteInput =
+            timeContainer.querySelector<HTMLInputElement>('.flatpickr-minute');
+          const amPmElement =
+            timeContainer.querySelector<HTMLElement>('.flatpickr-am-pm');
+
+          if (hourInput) {
+            hourInput.setAttribute('tabindex', '0');
+            hourInput.setAttribute('aria-label', 'Hour');
+          }
+          if (minuteInput) {
+            minuteInput.setAttribute('tabindex', '0');
+            minuteInput.setAttribute('aria-label', 'Minute');
+          }
+          if (amPmElement) {
+            amPmElement.setAttribute('tabindex', '0');
+            amPmElement.setAttribute('role', 'button');
+            amPmElement.setAttribute('aria-label', 'Toggle AM/PM');
+          }
+
+          if (hourInput && minuteInput) {
+            hourInput.addEventListener('keydown', (e: KeyboardEvent) => {
+              if (e.key === 'Tab' && !e.shiftKey) {
+                e.preventDefault();
+                minuteInput.focus();
+              }
+            });
+            minuteInput.addEventListener('keydown', (e: KeyboardEvent) => {
+              if (e.key === 'Tab' && e.shiftKey) {
+                e.preventDefault();
+                hourInput.focus();
+              } else if (e.key === 'Tab' && !e.shiftKey && amPmElement) {
+                e.preventDefault();
+                amPmElement.focus();
+              }
+            });
+            amPmElement?.addEventListener('keydown', (e: KeyboardEvent) => {
+              if (e.key === 'Tab' && e.shiftKey) {
+                e.preventDefault();
+                minuteInput.focus();
+              } else if (['Enter', ' '].includes(e.key)) {
+                e.preventDefault();
+                const isAM = amPmElement.textContent?.trim() === 'AM';
+                amPmElement.textContent = isAM ? 'PM' : 'AM';
+                if (instance.selectedDates.length > 0) {
+                  const cd = instance.selectedDates[0];
+                  const hrs = cd.getHours();
+                  cd.setHours(
+                    isAM && hrs < 12
+                      ? hrs + 12
+                      : !isAM && hrs >= 12
+                      ? hrs - 12
+                      : hrs
+                  );
+                  instance.setDate(cd, true);
+                }
+              }
+            });
+          }
+        }, 100);
+      };
+    }
+
+    if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
       return applyDateRangeEditingRestrictions(
         options,
         this.rangeEditMode,
-        initialValue,
-        tooltipStrings
+        this.value,
+        {
+          lockedStartDate: this._textStrings.lockedStartDate,
+          lockedEndDate: this._textStrings.lockedEndDate,
+          dateLocked: this._textStrings.dateLocked,
+          dateNotAvailable: this._textStrings.dateNotAvailable,
+          dateInSelectedRange: this._textStrings.dateInSelectedRange,
+        }
       );
     }
+
+    options.onMonthChange = (_sd, _ds, inst) => {
+      makeNavFocusable(inst.calendarContainer!);
+    };
 
     return options;
   }
