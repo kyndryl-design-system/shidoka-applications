@@ -1,5 +1,6 @@
 import { html, LitElement, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { ref, createRef } from 'lit/directives/ref.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -13,7 +14,6 @@ import {
   preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
-  setCalendarAttributes,
   loadLocale,
   emitValue,
   updateEnableTime,
@@ -33,6 +33,10 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import {
+  applyCalendarA11y,
+  makeNavFocusable,
+} from '../../../common/helpers/calendarA11y';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -44,10 +48,16 @@ const _defaultTextStrings = {
   pleaseSelectBothDates: 'Please select a start and end date.',
   dateRange: 'Date range',
   noDateSelected: 'No dates selected',
-  startDateSelected: 'Start date selected: {0}. Please select end date.',
+  selectingStartDate:
+    'Selecting start date. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close. Use Page Up and Page Down to navigate months, Home and End to navigate years.',
+  selectingEndDate:
+    'Now selecting end date. Use arrow keys to navigate dates, Enter or Space to select, and Escape to close. Use Page Up and Page Down to navigate months, Home and End to navigate years.',
+  startDateSelected: 'Start date selected: {0}. Now please select end date.',
   invalidDateRange:
     'Invalid date range: End date cannot be earlier than start date',
   dateRangeSelected: 'Selected date range: {0} to {1}',
+  yearNavigationInstructions: 'Press Home or End to navigate years',
+  monthNavigationInstructions: 'Press Page Up or Page Down to navigate months',
 
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
@@ -195,6 +205,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   @query('input')
   private _inputEl?: HTMLInputElement;
+
+  /**
+   * Reference to the live region element for screen reader announcements
+   * @internal
+   */
+  private _screenReaderRef = createRef<HTMLDivElement>();
 
   /**
    * Sets whether user has interacted with datepicker for error handling.
@@ -387,6 +403,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.rangeEditMode !== DateRangeEditableMode.NONE;
 
     return html`
+      <div
+        ${ref(this._screenReaderRef)}
+        class="label-text sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        ${this.value[0]
+          ? this._textStrings.startDateSelected.replace(
+              '{0}',
+              this.value[0].toLocaleDateString(this.locale)
+            )
+          : this._textStrings.selectingStartDate}
+      </div>
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
           class="label-text"
@@ -432,8 +461,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
             aria-labelledby=${`label-${anchorId}`}
+            aria-describedby="date-range-status"
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @keydown=${this.handleInputKeydown}
           />
           ${showClearButton
             ? html`
@@ -982,42 +1013,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.dateFormat = 'Y-m-d';
     }
 
-    try {
-      this.flatpickrInstance?.destroy();
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-        inputEl: this._inputEl,
-        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
-          try {
-            if (!instance?.calendarContainer) {
-              throw new Error('Calendar container not available');
-            }
-            const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
-            instance.calendarContainer.setAttribute(
-              'aria-label',
-              'Date range calendar'
-            );
-          } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
-          }
-        },
-        setInitialDates: this.setInitialDates.bind(this),
-      });
+    this.flatpickrInstance?.destroy();
 
-      if (!this.flatpickrInstance) {
-        throw new Error('Failed to initialize Flatpickr instance');
-      }
+    this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+      inputEl: this._inputEl,
+      appendTo: getModalContainer(this),
+      getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+      setInitialDates: this.setInitialDates.bind(this),
+    });
 
-      hideEmptyYear();
-      this._validate(false, false);
-    } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
-
-      if (error instanceof Error) {
-        console.error('Error details:', error.message);
-      }
+    if (!this.flatpickrInstance) {
+      throw new Error('Failed to initialize Flatpickr instance');
     }
+
+    hideEmptyYear();
+    this._validate(false, false);
   }
 
   public async updateFlatpickrOptions() {
@@ -1038,7 +1048,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const options = await getFlatpickrOptions({
       locale: this.locale || 'en',
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ? this.defaultDate : undefined,
+      defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
@@ -1057,48 +1067,148 @@ export class DateRangePicker extends FormMixin(LitElement) {
       static: this.staticPosition,
     });
 
-    if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
-      const tooltipStrings = {
-        lockedStartDate: this._textStrings.lockedStartDate,
-        lockedEndDate: this._textStrings.lockedEndDate,
-        dateLocked: this._textStrings.dateLocked,
-        dateNotAvailable: this._textStrings.dateNotAvailable,
-        dateInSelectedRange: this._textStrings.dateInSelectedRange,
-      };
-
-      let initialValue = this.value;
-
-      if (this.defaultDate && Array.isArray(this.defaultDate)) {
-        if (
-          this.rangeEditMode === DateRangeEditableMode.START &&
-          this.defaultDate.length === 2 &&
-          !this.defaultDate[0] &&
-          this.defaultDate[1]
-        ) {
-          const processedDate = this.processDefaultDates(this.defaultDate);
-          if (processedDate.length === 1) {
-            initialValue = [null, processedDate[0]];
-          }
-        } else if (
-          this.rangeEditMode === DateRangeEditableMode.END &&
-          this.defaultDate.length === 2 &&
-          this.defaultDate[0] &&
-          !this.defaultDate[1]
-        ) {
-          const processedDate = this.processDefaultDates(this.defaultDate);
-          if (processedDate.length === 1) {
-            initialValue = [processedDate[0], null];
+    const originalOnReady = options.onReady;
+    options.onReady = (selectedDates, dateStr, instance) => {
+      if (originalOnReady) {
+        if (typeof originalOnReady === 'function') {
+          originalOnReady(selectedDates, dateStr, instance);
+        } else {
+          for (const fn of originalOnReady as any[]) {
+            fn(selectedDates, dateStr, instance);
           }
         }
       }
 
+      const cal = instance.calendarContainer!;
+      cal.setAttribute('role', 'application');
+      cal.setAttribute('aria-label', 'Date range calendar');
+
+      let reader = cal.querySelector<HTMLElement>('.selection-phase-reader');
+      if (!reader) {
+        reader = document.createElement('div');
+        reader.className = 'label-text sr-only selection-phase-reader';
+        reader.setAttribute('aria-live', 'assertive');
+        cal.appendChild(reader);
+      }
+      reader.textContent =
+        instance.selectedDates.length === 0
+          ? this._textStrings.selectingStartDate
+          : this._textStrings.selectingEndDate;
+
+      applyCalendarA11y(instance, container !== document.body);
+    };
+
+    if (this._enableTime) {
+      const origOnReady = options.onReady;
+      options.onReady = (selectedDates, dateStr, instance) => {
+        origOnReady && (origOnReady as any)(selectedDates, dateStr, instance);
+
+        setTimeout(() => {
+          const timeContainer =
+            instance.calendarContainer!.querySelector('.flatpickr-time');
+          if (!timeContainer) return;
+
+          const hourInput =
+            timeContainer.querySelector<HTMLInputElement>('.flatpickr-hour');
+          const minuteInput =
+            timeContainer.querySelector<HTMLInputElement>('.flatpickr-minute');
+          const amPmElement =
+            timeContainer.querySelector<HTMLElement>('.flatpickr-am-pm');
+
+          if (hourInput) {
+            hourInput.setAttribute('tabindex', '0');
+            hourInput.setAttribute('aria-label', 'Hour');
+          }
+          if (minuteInput) {
+            minuteInput.setAttribute('tabindex', '0');
+            minuteInput.setAttribute('aria-label', 'Minute');
+          }
+          if (amPmElement) {
+            amPmElement.setAttribute('tabindex', '0');
+            amPmElement.setAttribute('role', 'button');
+            amPmElement.setAttribute('aria-label', 'Toggle AM/PM');
+          }
+
+          if (hourInput && minuteInput) {
+            hourInput.addEventListener('keydown', (e: KeyboardEvent) => {
+              if (e.key === 'Tab' && !e.shiftKey) {
+                e.preventDefault();
+                minuteInput.focus();
+              }
+            });
+            minuteInput.addEventListener('keydown', (e: KeyboardEvent) => {
+              if (e.key === 'Tab' && e.shiftKey) {
+                e.preventDefault();
+                hourInput.focus();
+              } else if (e.key === 'Tab' && !e.shiftKey && amPmElement) {
+                e.preventDefault();
+                amPmElement.focus();
+              }
+            });
+            amPmElement?.addEventListener('keydown', (e: KeyboardEvent) => {
+              if (e.key === 'Tab' && e.shiftKey) {
+                e.preventDefault();
+                minuteInput.focus();
+              } else if (['Enter', ' '].includes(e.key)) {
+                e.preventDefault();
+                const isAM = amPmElement.textContent?.trim() === 'AM';
+                amPmElement.textContent = isAM ? 'PM' : 'AM';
+                if (instance.selectedDates.length > 0) {
+                  const cd = instance.selectedDates[0];
+                  const hrs = cd.getHours();
+                  cd.setHours(
+                    isAM && hrs < 12
+                      ? hrs + 12
+                      : !isAM && hrs >= 12
+                      ? hrs - 12
+                      : hrs
+                  );
+                  instance.setDate(cd, true);
+                }
+              }
+            });
+          }
+        }, 100);
+      };
+    }
+
+    if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
       return applyDateRangeEditingRestrictions(
         options,
         this.rangeEditMode,
-        initialValue,
-        tooltipStrings
+        this.value,
+        {
+          lockedStartDate: this._textStrings.lockedStartDate,
+          lockedEndDate: this._textStrings.lockedEndDate,
+          dateLocked: this._textStrings.dateLocked,
+          dateNotAvailable: this._textStrings.dateNotAvailable,
+          dateInSelectedRange: this._textStrings.dateInSelectedRange,
+        }
       );
     }
+
+    options.onMonthChange = (
+      _selectedDates: Date[],
+      _dateStr: string,
+      instance: Instance
+    ) => {
+      makeNavFocusable(instance.calendarContainer!);
+      const monthName = new Date(
+        instance.currentYear,
+        instance.currentMonth,
+        1
+      ).toLocaleString(this.locale, { month: 'long' });
+      this._screenReaderRef.value!.textContent = `Month changed to ${monthName}. ${this._textStrings.monthNavigationInstructions}`;
+    };
+
+    options.onYearChange = (
+      _selectedDates: Date[],
+      _dateStr: string,
+      instance: Instance
+    ) => {
+      const year = instance.currentYear;
+      this._screenReaderRef.value!.textContent = `Year changed to ${year}. ${this._textStrings.yearNavigationInstructions}`;
+    };
 
     return options;
   }
@@ -1161,7 +1271,33 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this._shouldFlatpickrOpen = true;
 
     this._isInvalid = false;
+
+    this.announceSelectionState();
+
     this.requestUpdate();
+  }
+
+  private announceSelectionState() {
+    if (!this._screenReaderRef.value) return;
+
+    const [start, end] = this.value;
+    let msg: string;
+
+    if (start === null && end === null) {
+      msg = this._textStrings.selectingStartDate;
+    } else if (start !== null && end === null) {
+      msg = this._textStrings.selectingEndDate;
+    } else {
+      const s = start!.toLocaleDateString(this.locale);
+      const e = end!.toLocaleDateString(this.locale);
+      msg = this._textStrings.dateRangeSelected
+        .replace('{0}', s)
+        .replace('{1}', e);
+    }
+
+    this._screenReaderRef.value.textContent = msg;
+
+    this._inputEl!.setAttribute('aria‑label', msg);
   }
 
   public async handleDateChange(selectedDates: Date[]) {
@@ -1195,46 +1331,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     }
 
-    this.updateSelectedDateRangeAria(selectedDates);
+    if (this._inputEl && this.flatpickrInstance) {
+      this._inputEl.value = this.flatpickrInstance.input.value;
+      this.updateFormValue();
+    }
+
     this._validate(true, false);
     await this.updateComplete;
 
-    if (this._inputEl && this.flatpickrInstance) {
-      if (
-        !this.flatpickrInstance.isOpen &&
-        this.value[0] !== null &&
-        this.value[1] === null
-      ) {
-        this._inputEl.value = '';
-        this.value = [null, null];
-        this.updateFormValue();
-      } else {
-        this._inputEl.value = this.flatpickrInstance.input.value;
-        this.updateFormValue();
-      }
-    }
-  }
-
-  private updateSelectedDateRangeAria(selectedDates: Date[]) {
-    if (!this._inputEl) return;
-
-    let ariaLabel = this._textStrings.dateRange;
-
-    if (selectedDates.length === 0) {
-      ariaLabel = this._textStrings.noDateSelected;
-    } else if (selectedDates.length === 1) {
-      ariaLabel = this._textStrings.startDateSelected.replace(
-        '{0}',
-        selectedDates[0].toLocaleDateString(this.locale)
-      );
-    } else if (selectedDates.length === 2) {
-      const [startDate, endDate] = selectedDates;
-      ariaLabel = this._textStrings.dateRangeSelected
-        .replace('{0}', startDate.toLocaleDateString(this.locale))
-        .replace('{1}', endDate.toLocaleDateString(this.locale));
-    }
-
-    this._inputEl.setAttribute('aria-label', ariaLabel);
+    this.announceSelectionState();
   }
 
   private setShouldFlatpickrOpen(value: boolean) {
@@ -1296,6 +1401,93 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     } catch (e) {
       console.warn('Error handling input focus event:', e);
+    }
+  }
+
+  private handleInputKeydown(event: KeyboardEvent) {
+    if (
+      !this.flatpickrInstance ||
+      this.readonly ||
+      this.dateRangePickerDisabled
+    )
+      return;
+
+    if (
+      (event.key === ' ' || event.key === 'Enter') &&
+      !this.flatpickrInstance.isOpen
+    ) {
+      event.preventDefault();
+      this.flatpickrInstance.open();
+      if (this._screenReaderRef.value) {
+        const message =
+          this.value[0] === null
+            ? this._textStrings.selectingStartDate
+            : this._textStrings.selectingEndDate;
+        this._screenReaderRef.value.textContent = message;
+      }
+    } else if (
+      this.flatpickrInstance.isOpen &&
+      (event.key === ' ' || event.key === 'Enter') &&
+      document.activeElement === this._inputEl
+    ) {
+      event.preventDefault();
+      const highlightedDate =
+        this.flatpickrInstance.selectedDates[0] ||
+        this.flatpickrInstance.latestSelectedDateObj;
+      if (highlightedDate) {
+        this.flatpickrInstance.setDate(highlightedDate, true);
+        if (this.value[0] !== null && this.value[1] === null) {
+          this.flatpickrInstance.close();
+        }
+      }
+    } else if (event.key === 'Home' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeYear(currentYear - 1);
+      this._announceYearChange(currentYear - 1);
+    } else if (event.key === 'End' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeYear(currentYear + 1);
+      this._announceYearChange(currentYear + 1);
+    } else if (event.key === 'PageUp' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentMonth = this.flatpickrInstance.currentMonth;
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeMonth(-1);
+      this._announceMonthChange(
+        currentMonth === 0 ? 11 : currentMonth - 1,
+        currentMonth === 0 ? currentYear - 1 : currentYear
+      );
+    } else if (event.key === 'PageDown' && this.flatpickrInstance.isOpen) {
+      event.preventDefault();
+      const currentMonth = this.flatpickrInstance.currentMonth;
+      const currentYear = this.flatpickrInstance.currentYear;
+      this.flatpickrInstance.changeMonth(1);
+      this._announceMonthChange(
+        currentMonth === 11 ? 0 : currentMonth + 1,
+        currentMonth === 11 ? currentYear + 1 : currentYear
+      );
+    }
+  }
+
+  private _announceYearChange(year: number) {
+    if (this._screenReaderRef.value) {
+      this._screenReaderRef.value.textContent = `Year changed to ${year}. ${
+        this._textStrings.yearNavigationInstructions ||
+        'Press Home or End to navigate years.'
+      }`;
+    }
+  }
+
+  private _announceMonthChange(month: number, year: number) {
+    if (this._screenReaderRef.value) {
+      const date = new Date(year, month, 1);
+      const monthName = date.toLocaleString(this.locale, { month: 'long' });
+      this._screenReaderRef.value.textContent = `Month changed to ${monthName}. ${
+        this._textStrings.monthNavigationInstructions ||
+        'Press Page Up or Page Down to navigate months.'
+      }`;
     }
   }
 
