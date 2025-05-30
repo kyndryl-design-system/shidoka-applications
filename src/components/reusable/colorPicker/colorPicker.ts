@@ -1,6 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
+import penIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/pen.svg';
 import { TinyColor } from '@ctrl/tinycolor';
 import styles from './colorPicker.scss';
 
@@ -104,7 +106,6 @@ export class ColorPicker extends LitElement {
 
         ${this.showPicker
           ? html`
-              <div class="overlay"></div>
               <div
                 class="picker-popup"
                 @click=${(e: any) => e.stopPropagation()}
@@ -122,6 +123,20 @@ export class ColorPicker extends LitElement {
                   @click=${(e: any) => this.pickColor(e)}
                 ></canvas>
                 <div class="color-picker__controls">
+                  ${hasEyeDropper
+                    ? html`
+                        <kyn-button
+                          kind="outline"
+                          type="button"
+                          size="small"
+                          description="Eyedropper"
+                          name="eyedropper"
+                          @on-click=${(e: any) => this.handleEyeDropper(e)}
+                        >
+                          <span slot="icon">${unsafeSVG(penIcon)}</span>
+                        </kyn-button>
+                      `
+                    : null}
                   <div class="color-picker__sliders">
                     <div
                       class="color-picker__hue color-picker__slider"
@@ -496,7 +511,8 @@ export class ColorPicker extends LitElement {
     }
   }
 
-  handleEyeDropper() {
+  handleEyeDropper(e: Event) {
+    e.preventDefault();
     if (!hasEyeDropper) {
       return;
     }
@@ -569,6 +585,10 @@ export class ColorPicker extends LitElement {
     const ctx = canvas?.getContext('2d') as CanvasRenderingContext2D;
     const width = canvas?.width;
     const height = canvas?.height;
+
+    if (!ctx || !width || !height) {
+      return;
+    }
 
     ctx.fillStyle = `hsl(${this.hue}, 100%, 50%)`;
     ctx.fillRect(0, 0, width, height);
