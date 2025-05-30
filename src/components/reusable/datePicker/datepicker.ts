@@ -14,7 +14,6 @@ import {
   handleInputClick,
   handleInputFocus,
   updateEnableTime,
-  setCalendarAttributes,
   loadLocale,
   emitValue,
   hideEmptyYear,

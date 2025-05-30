@@ -14,7 +14,6 @@ import {
   preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
-  setCalendarAttributes,
   loadLocale,
   emitValue,
   hideEmptyYear,
@@ -24,7 +23,6 @@ import {
 } from '../../../common/helpers/flatpickr';
 
 import flatpickr from 'flatpickr';
-import type { Instance as FlatpickrInstance } from 'flatpickr/dist/types/instance';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 
 import TimepickerStyles from './timepicker.scss';
