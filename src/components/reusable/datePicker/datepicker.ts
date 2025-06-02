@@ -946,43 +946,56 @@ export class DatePicker extends FormMixin(LitElement) {
     if (!this.flatpickrInstance || this.readonly || this.datePickerDisabled)
       return;
 
-    const isOpen = this.flatpickrInstance.isOpen;
+    const inst = this.flatpickrInstance;
+    const isOpen = inst.isOpen;
     const { key, altKey, metaKey, ctrlKey } = event;
 
     if (!isOpen && (key === ' ' || key === 'Enter')) {
       event.preventDefault();
-      this.flatpickrInstance.open();
+      inst.open();
       this._screenReaderRef.value!.textContent =
         this._textStrings.calendarOpened;
       return;
     }
+
     if (isOpen && (key === ' ' || key === 'Enter')) {
       event.preventDefault();
-      const date =
-        this.flatpickrInstance.selectedDates[0] ||
-        this.flatpickrInstance.latestSelectedDateObj;
-      if (date) {
-        this.flatpickrInstance.setDate(date, true);
-        this.flatpickrInstance.close();
+      const highlighted = inst.selectedDates[0] || inst.latestSelectedDateObj;
+      if (!highlighted) return;
+
+      inst.setDate(highlighted, true);
+
+      if (this.mode !== 'multiple') {
+        inst.close();
         this._screenReaderRef.value!.textContent =
           this._textStrings.dateSelected.replace(
             '{0}',
-            date.toLocaleDateString(this.locale)
+            highlighted.toLocaleDateString(this.locale)
           );
+      } else {
+        const sel = inst.selectedDates;
+        const lastDate = sel[sel.length - 1].toLocaleDateString(this.locale);
+        this._screenReaderRef.value!.textContent = `Selected ${sel.length} dates. Last: ${lastDate}.`;
+
+        makeFirstDayTabbable(inst.calendarContainer!);
+        const dayCell = inst.calendarContainer!.querySelector<HTMLElement>(
+          '.flatpickr-day[tabindex="0"]'
+        );
+        dayCell?.focus();
       }
       return;
     }
 
     if (isOpen && key === 'Home') {
       event.preventDefault();
-      const y = this.flatpickrInstance.currentYear - 1;
-      this.flatpickrInstance.changeYear(y);
+      const y = inst.currentYear - 1;
+      inst.changeYear(y);
       return this._announceYearChange(y);
     }
     if (isOpen && key === 'End') {
       event.preventDefault();
-      const y = this.flatpickrInstance.currentYear + 1;
-      this.flatpickrInstance.changeYear(y);
+      const y = inst.currentYear + 1;
+      inst.changeYear(y);
       return this._announceYearChange(y);
     }
 
@@ -994,9 +1007,9 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (isOpen && prevMonthKey) {
       event.preventDefault();
-      const m = this.flatpickrInstance.currentMonth;
-      const y = this.flatpickrInstance.currentYear;
-      this.flatpickrInstance.changeMonth(-1);
+      const m = inst.currentMonth;
+      const y = inst.currentYear;
+      inst.changeMonth(-1);
       return this._announceMonthChange(
         m === 0 ? 11 : m - 1,
         m === 0 ? y - 1 : y
@@ -1005,9 +1018,9 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (isOpen && nextMonthKey) {
       event.preventDefault();
-      const m = this.flatpickrInstance.currentMonth;
-      const y = this.flatpickrInstance.currentYear;
-      this.flatpickrInstance.changeMonth(1);
+      const m = inst.currentMonth;
+      const y = inst.currentYear;
+      inst.changeMonth(1);
       return this._announceMonthChange(
         m === 11 ? 0 : m + 1,
         m === 11 ? y + 1 : y
