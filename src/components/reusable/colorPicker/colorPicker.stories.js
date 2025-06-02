@@ -15,7 +15,7 @@ export default {
 
 const args = {
   label: 'Color Picker',
-  value: '#a32284',
+  value: '#d1dbc5',
 };
 
 export const Default = {
@@ -36,7 +36,7 @@ export const Opacity = {
   args: {
     ...args,
     label: 'Color Picker with Opacity',
-    value: '#761d82db',
+    value: '#226570b0',
   },
   render: (args) => {
     return html`

@@ -40,14 +40,20 @@ export class ColorPicker extends LitElement {
 
   /** Color text. */
   @property({ type: String })
-  value = '';
+  value = '#ff0000';
 
   /** Set to true for Opacity enabled */
   @property({ type: Boolean })
   opacity = false;
 
+  // @property({ type: Boolean })
+  // showPicker = true;
+
   @state()
   isDragging = false;
+
+  @state()
+  isDraggingHue = false;
 
   @state()
   showPicker = false;
@@ -90,11 +96,7 @@ export class ColorPicker extends LitElement {
       <div class="field">
         <label>${this.label}</label>
         <div style="display: flex; gap:8px;">
-          <div
-            tabindex="0"
-            class="color-picker__preview"
-            style="background-color: ${this.value};"
-          ></div>
+          <div tabindex="0" class="color-picker__preview"></div>
           <input
             type="text"
             aria-label="hex color"
@@ -141,7 +143,6 @@ export class ColorPicker extends LitElement {
                     <div
                       class="color-picker__hue color-picker__slider"
                       @pointerdown=${this.handleHueDrag}
-                      @touchmove=${this.handleTouchMove}
                     >
                       <span
                         class="color-picker__slider-handle"
@@ -164,7 +165,6 @@ export class ColorPicker extends LitElement {
                           <div
                             class="color-picker__alpha color-picker__slider color-picker__transparent-bg"
                             @pointerdown="${this.handleOpacityDrag}"
-                            @touchmove=${this.handleTouchMove}
                           >
                             <div
                               class="color-picker__alpha-gradient"
@@ -201,9 +201,7 @@ export class ColorPicker extends LitElement {
                 </div>
 
                 <div class="colors">
-                  <div
-                    style="display: flex; flex-direction: column;gap:2px;align-items: flex-start;"
-                  >
+                  <div class="colors-content">
                     <div class="kd-type--body-02">HEX</div>
                     <input
                       type="text"
@@ -214,43 +212,34 @@ export class ColorPicker extends LitElement {
                     />
                   </div>
                   <div style="display: flex;align-items: center;gap: 2px;">
-                    <div
-                      style="display: flex; flex-direction: column;gap:2px;align-items: flex-start;"
-                    >
+                    <div class="colors-content">
                       <div class="kd-type--body-02">R</div>
                       <input
                         type="number"
                         min="0"
                         max="255"
-                        maxlength="3"
                         aria-label="r"
                         .value=${String(this.r)}
                         @input=${(e: any) => this.handleRgbChange(e, 'r')}
                       />
                     </div>
-                    <div
-                      style="display: flex; flex-direction: column;align-items: flex-start;gap: 2px;"
-                    >
+                    <div class="colors-content">
                       <div class="kd-type--body-02">G</div>
                       <input
                         type="number"
                         min="0"
                         max="255"
-                        maxlength="3"
                         aria-label="g"
                         .value=${String(this.g)}
                         @input=${(e: any) => this.handleRgbChange(e, 'g')}
                       />
                     </div>
-                    <div
-                      style="display: flex; flex-direction: column;align-items: flex-start;gap: 2px;"
-                    >
+                    <div class="colors-content">
                       <div class="kd-type--body-02">B</div>
                       <input
                         type="number"
                         min="0"
                         max="255"
-                        maxlength="3"
                         aria-label="b"
                         .value=${String(this.b)}
                         @input=${(e: any) => this.handleRgbChange(e, 'b')}
@@ -277,43 +266,49 @@ export class ColorPicker extends LitElement {
     const newValue = event.target.value;
     if (newValue !== this.value) {
       this.value = newValue;
-      const parsedColor = this.parseColor(newValue);
-      if (parsedColor) {
-        this.hue = parsedColor.hsva.h;
-        this.saturation = parsedColor.hsva.s;
-        this.brightness = parsedColor.hsva.v;
-        this.alpha = this.opacity ? parsedColor.hsva.a * 100 : 100;
-        this.handleX = (this.saturation / 100) * 260;
-        this.handleY = 180 - (this.brightness / 100) * 180;
-        this.drawCanvas();
-        this.syncValues();
-      }
+      this.syncFromValue(newValue);
+      this.updateColorPreview();
     }
   }
 
   handleHueDrag(event: PointerEvent) {
-    console.log('handleHueDrag--', event);
+    event.stopPropagation();
     const container = this.shadowRoot!.querySelector<HTMLElement>(
       '.color-picker__slider.color-picker__hue'
     )!;
     const handle = container.querySelector<HTMLElement>(
       '.color-picker__slider-handle'
     )!;
-    const { width } = container.getBoundingClientRect();
+    const { width, left } = container.getBoundingClientRect();
 
     handle.focus();
     event.preventDefault();
 
+    const x = event.clientX - left;
+
+    this.hue = Math.round(this.clamp((x / width) * 360, 0, 360));
+    this.syncValues();
+    this.pickColorAt(this.handleX, this.handleY);
     drag(container, {
       onMove: (x) => {
         this.hue = Math.round(this.clamp((x / width) * 360, 0, 360));
         this.syncValues();
         this.updateHueHandleColor();
         this.pickColorAt(this.handleX, this.handleY);
+        this.updateColorPreview();
       },
       onStop: () => {},
       initialEvent: event,
     });
+  }
+
+  updateColorPreview() {
+    const preview = this.shadowRoot?.querySelector(
+      '.color-picker__preview'
+    ) as HTMLElement;
+    if (preview) {
+      preview.style.backgroundColor = this.value;
+    }
   }
 
   updateHueHandleColor() {
@@ -338,10 +333,6 @@ export class ColorPicker extends LitElement {
 
     this.value = this.opacity ? currentColor.hexa : currentColor.hex;
     await this.updateComplete;
-  }
-
-  handleTouchMove(event: TouchEvent) {
-    event.preventDefault();
   }
 
   clamp(value: number, min: number, max: number) {
@@ -373,6 +364,7 @@ export class ColorPicker extends LitElement {
 
     if (this.value !== oldValue) {
       this.pickColorAt(this.handleX, this.handleY);
+      this.updateColorPreview();
     }
   }
 
@@ -392,6 +384,8 @@ export class ColorPicker extends LitElement {
       onMove: (x) => {
         this.alpha = Math.round(this.clamp((x / width) * 100, 0, 100));
         this.syncValues();
+        this.updateHueHandleColor();
+        this.updateColorPreview();
         this.dispatchColorChange();
       },
       onStop: () => {},
@@ -511,49 +505,117 @@ export class ColorPicker extends LitElement {
     }
   }
 
-  handleEyeDropper(e: Event) {
+  async handleEyeDropper(e: Event) {
     e.preventDefault();
     if (!hasEyeDropper) {
       return;
     }
-
     const eyeDropper = new EyeDropper();
+    const result = await eyeDropper.open();
+    const parsed = this.parseColor(result.sRGBHex);
+    if (parsed) {
+      this.hue = parsed.hsva.h;
+      this.saturation = parsed.hsva.s;
+      this.brightness = parsed.hsva.v;
+      const pos = this.findClosestPixelPosition(parsed.rgb);
+      this.handleX = pos.x;
+      this.handleY = pos.y;
+      this.syncValues();
+      this.updateCanvasAndHandle();
+      this.updateColorPreview();
+      this.dispatchColorChange();
+    }
+  }
 
-    eyeDropper
-      .open()
-      .then((colorSelectionResult) => {
-        const oldValue = this.value;
+  findClosestPixelPosition(targetRgb: { r: number; g: number; b: number }) {
+    const canvas = this.shadowRoot?.getElementById(
+      'color-canvas'
+    ) as HTMLCanvasElement;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return { x: 0, y: 0 };
 
-        this.setColor(colorSelectionResult.sRGBHex);
+    const width = canvas.width;
+    const height = canvas.height;
+    const imageData = ctx?.getImageData(0, 0, width, height).data;
 
-        if (this.value !== oldValue) {
-          console.log('eye dropper-- on stop', this.value);
+    let minDiff = Number.MAX_VALUE;
+    let closestX = 0;
+    let closestY = 0;
+
+    for (let y = 0; y < height; y += 2) {
+      for (let x = 0; x < width; x += 2) {
+        const index = (y * width + x) * 4;
+        const r = imageData[index];
+        const g = imageData[index + 1];
+        const b = imageData[index + 2];
+
+        const diff =
+          Math.abs(r - targetRgb.r) +
+          Math.abs(g - targetRgb.g) +
+          Math.abs(b - targetRgb.b);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestX = x;
+          closestY = y;
         }
-      })
-      .catch(() => {});
+      }
+    }
+
+    return { x: closestX, y: closestY };
   }
 
   setColor(colorString: string) {
     const newColor = this.parseColor(colorString);
-
-    if (newColor === null) {
-      return false;
-    }
+    if (!newColor) return;
 
     this.hue = newColor.hsva.h;
     this.saturation = newColor.hsva.s;
     this.brightness = newColor.hsva.v;
     this.alpha = this.opacity ? newColor.hsva.a * 100 : 100;
-
+    const canvas = this.shadowRoot?.getElementById(
+      'color-canvas'
+    ) as HTMLCanvasElement;
+    if (canvas) {
+      this.handleX = (this.saturation / 100) * canvas.width;
+      this.handleY = canvas.height - (this.brightness / 100) * canvas.height;
+    }
     this.syncValues();
-
+    this.updateCanvasAndHandle();
     return true;
+  }
+
+  syncFromValue(colorString: string) {
+    const parsedColor = this.parseColor(colorString);
+    if (parsedColor) {
+      this.hue = parsedColor.hsva.h;
+      this.saturation = parsedColor.hsva.s;
+      this.brightness = parsedColor.hsva.v;
+      this.alpha = this.opacity ? parsedColor.hsva.a * 100 : 100;
+
+      // Map to your canvas size (assuming width 260, height 180)
+      this.handleX = (this.saturation / 100) * 260;
+      this.handleY = 180 - (this.brightness / 100) * 180;
+
+      requestAnimationFrame(() => {
+        this.updateCanvasAndHandle();
+      });
+    }
   }
 
   override firstUpdated() {
     this.setColorFromValue();
+    this.updateColorPreview();
     this.updateHueHandleColor();
-    this.drawCanvas();
+    this.syncFromValue(this.value);
+    this.updateCanvasAndHandle();
+  }
+
+  override updated(changedProps: any) {
+    if (changedProps.has('showPicker') && this.showPicker) {
+      requestAnimationFrame(() => {
+        this.updateCanvasAndHandle();
+      });
+    }
   }
 
   override connectedCallback() {
@@ -575,7 +637,7 @@ export class ColorPicker extends LitElement {
   togglePicker(e: Event) {
     e.stopPropagation();
     this.showPicker = !this.showPicker;
-    this.updateComplete.then(() => this.drawCanvas());
+    this.updateComplete.then(() => this.updateCanvasAndHandle());
   }
 
   drawCanvas() {
@@ -604,15 +666,20 @@ export class ColorPicker extends LitElement {
     blackGrad.addColorStop(1, '#000');
     ctx.fillStyle = blackGrad;
     ctx.fillRect(0, 0, width, height);
+  }
 
-    // canvas handle
+  drawHandle() {
+    const canvas = this.shadowRoot?.getElementById(
+      'color-canvas'
+    ) as HTMLCanvasElement;
+    const ctx = canvas?.getContext('2d') as CanvasRenderingContext2D;
+    if (!ctx) return;
+
     ctx.beginPath();
     ctx.arc(this.handleX, this.handleY, 6, 0, 2 * Math.PI);
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(this.handleX, this.handleY, 3, 0, 2 * Math.PI);
   }
 
   pickColorAt(x: number, y: number) {
@@ -628,7 +695,7 @@ export class ColorPicker extends LitElement {
     const clampedX = Math.max(0, Math.min(canvas.width - 1, x));
     const clampedY = Math.max(0, Math.min(canvas.height - 1, y));
 
-    const imageData = ctx.getImageData(clampedX, clampedY, 1, 1).data;
+    const imageData = ctx?.getImageData(clampedX, clampedY, 1, 1).data;
 
     const alpha = this.opacity
       ? Math.round((this.alpha / 100) * 255)
@@ -644,16 +711,18 @@ export class ColorPicker extends LitElement {
       this.r = imageData[0];
       this.g = imageData[1];
       this.b = imageData[2];
-      this.value = newValue;
       this.handleX = x;
       this.handleY = y;
-      this.drawCanvas();
+
+      this.value = newValue;
+      this.updateCanvasAndHandle();
       this.dispatchColorChange();
     }
   }
 
   pickColor(e: any) {
     this.pickColorAt(e.offsetX, e.offsetY);
+    this.updateColorPreview();
   }
 
   startDrag() {
@@ -663,6 +732,7 @@ export class ColorPicker extends LitElement {
   onDrag(e: any) {
     if (this.isDragging) {
       this.pickColorAt(e.offsetX, e.offsetY);
+      this.updateColorPreview();
     }
   }
 
@@ -672,7 +742,7 @@ export class ColorPicker extends LitElement {
 
   updateHue(e: any) {
     this.hue = e.target.value;
-    this.drawCanvas();
+    this.updateCanvasAndHandle();
   }
 
   handleHexInput(e: any) {
@@ -686,8 +756,14 @@ export class ColorPicker extends LitElement {
   }
 
   handleRgbChange(e: any, rgb: 'r' | 'g' | 'b') {
-    this[rgb] = parseInt(e.target.value) || 0;
-    this.value = this.rgbToHex(this.r, this.g, this.b);
+    if (
+      parseInt(e.target.value) <= 255 &&
+      parseInt(e.target.value) >= 0 &&
+      e.target.value.length <= 3
+    ) {
+      this[rgb] = parseInt(e.target.value) || 0;
+      this.value = this.rgbToHex(this.r, this.g, this.b);
+    }
   }
 
   rgbToHex(r: number, g: number, b: number, a?: number) {
@@ -722,6 +798,11 @@ export class ColorPicker extends LitElement {
         composed: true,
       })
     );
+  }
+
+  private updateCanvasAndHandle() {
+    this.drawCanvas();
+    this.drawHandle();
   }
 }
 
