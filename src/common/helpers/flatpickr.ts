@@ -5,6 +5,12 @@ import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import { langsArray, SupportedLocale } from '../flatpickrLangs';
+import {
+  makeFirstDayTabbable,
+  makeNavFocusable,
+  makeTimeFocusable,
+  applyCalendarA11y,
+} from './calendarA11y';
 
 let flatpickrStylesInjected = false;
 
@@ -39,7 +45,6 @@ export function getTextStrings(
 
 interface BaseFlatpickrContext {
   getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
-  setCalendarAttributes: (instance: Instance) => void;
   setInitialDates?: (instance: Instance) => void;
 }
 
@@ -69,32 +74,31 @@ const DATE_FORMAT_OPTIONS = {
 
 type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
 
-interface FlatpickrOptionsContext {
+export interface FlatpickrOptionsContext {
   locale: string;
   dateFormat?: string;
-  defaultDate?: string | Date | string[] | Date[];
-  defaultHour?: number;
-  defaultMinute?: number;
   enableTime: boolean;
   twentyFourHourFormat?: boolean;
-  endinputEl?: HTMLElement;
   inputEl: HTMLElement;
   allowInput?: boolean;
   minDate?: string | number | Date;
   maxDate?: string | number | Date;
   minTime?: string | number | Date;
   maxTime?: string | number | Date;
+  defaultDate?: string | number | Date | (string | number | Date)[];
+  defaultHour?: number;
+  defaultMinute?: number;
   enable?: (string | number | Date)[];
   disable?: (string | number | Date)[];
-  onChange?: Hook;
-  onClose?: Hook;
-  onOpen?: Hook;
-  loadLocale: (locale: string) => Promise<Partial<Locale>>;
   mode?: 'single' | 'multiple' | 'range' | 'time';
   closeOnSelect?: boolean;
   wrap?: boolean;
   noCalendar?: boolean;
   appendTo?: HTMLElement;
+  onChange?: Hook;
+  onClose?: Hook;
+  onOpen?: Hook;
+  loadLocale: (locale: string) => Promise<Partial<Locale>>;
   static?: boolean;
 }
 
@@ -151,13 +155,7 @@ export function injectFlatpickrStyles(customStyle: string): void {
 export async function initializeMultiAnchorFlatpickr(
   context: RangeFlatpickrContext
 ): Promise<Instance | undefined> {
-  const {
-    inputEl,
-    endinputEl,
-    getFlatpickrOptions,
-    setCalendarAttributes,
-    setInitialDates,
-  } = context;
+  const { inputEl, endinputEl, getFlatpickrOptions, setInitialDates } = context;
 
   if (!inputEl) {
     console.error('Cannot initialize Flatpickr: inputEl is undefined');
@@ -235,72 +233,71 @@ export async function initializeMultiAnchorFlatpickr(
   }
 }
 
-export async function initializeSingleAnchorFlatpickr(
-  context: SingleFlatpickrContext & { appendTo?: HTMLElement }
-): Promise<Instance | undefined> {
-  const {
-    inputEl,
-    getFlatpickrOptions,
-    setCalendarAttributes,
-    setInitialDates,
-    appendTo,
-  } = context;
+export async function initializeSingleAnchorFlatpickr(context: {
+  inputEl: HTMLElement;
+  getFlatpickrOptions: () => Promise<Partial<BaseOptions>>;
+  setInitialDates?: (fp: Instance) => void;
+  appendTo?: HTMLElement;
+}): Promise<Instance | undefined> {
+  const { inputEl, getFlatpickrOptions, setInitialDates, appendTo } = context;
+
   if (!inputEl) {
     console.error('Cannot initialize Flatpickr: inputEl is undefined');
     return undefined;
   }
+
   try {
+    // 1) Build Flatpickr options (dateFormat, locale, enableTime, etc.)
     const options = await getFlatpickrOptions();
-    const effectiveDateFormat =
-      options.dateFormat || (options.mode === 'time' ? 'H:i' : 'Y-m-d');
-    options.dateFormat = effectiveDateFormat;
 
-    let inputElement: HTMLInputElement;
+    // 2) Enforce “if this is a native <input>, force append to <body>”
     if (inputEl instanceof HTMLInputElement) {
-      inputElement = inputEl;
+      // Remove any “appendTo” so Flatpickr will append the calendar into <body>
+      delete (options as any).appendTo;
+
+      // Make sure FP knows where to position itself (next to the real <input>)
+      options.positionElement = inputEl;
       options.clickOpens = true;
-    } else {
-      try {
-        inputElement = document.createElement('input');
-        inputElement.type = 'text';
-        inputElement.style.display = 'none';
-
-        const targetElement = appendTo || inputEl;
-        if (!targetElement) {
-          throw new Error('No valid element to append input to');
-        }
-
-        targetElement.appendChild(inputElement);
-        options.clickOpens = false;
-        options.positionElement = inputEl;
-      } catch (error) {
-        console.error('Error creating input element:', error);
-        throw error;
-      }
     }
-    const flatpickrInstance = flatpickr(inputElement, options) as Instance;
-    if (flatpickrInstance) {
-      setTimeout(() => {
-        if (setCalendarAttributes) {
-          setCalendarAttributes(flatpickrInstance);
-        }
-      }, 0);
-      if (setInitialDates) {
-        setInitialDates(flatpickrInstance);
-      }
-      if (!(inputEl instanceof HTMLInputElement)) {
-        inputEl.addEventListener('click', () => flatpickrInstance.open());
-      }
-      return flatpickrInstance;
+
+    // 3) Decide which HTMLInputElement we actually pass to flatpickr()
+    let hiddenInput: HTMLInputElement;
+    if (inputEl instanceof HTMLInputElement) {
+      // If <input> is already an actual <input>, just use it
+      hiddenInput = inputEl;
     } else {
+      // Otherwise, create a “shadow” <input> and append it into the wrapper
+      hiddenInput = document.createElement('input');
+      hiddenInput.type = 'text';
+      hiddenInput.style.display = 'none';
+
+      const container = appendTo || inputEl;
+      if (!container) {
+        throw new Error('No valid element to append a hidden input to');
+      }
+      container.appendChild(hiddenInput);
+
+      options.clickOpens = false;
+      // Tell Flatpickr “position next to the visible anchor”
+      options.positionElement = inputEl;
+    }
+
+    // 4) Finally create the Flatpickr instance on that HTMLInputElement
+    const fpInstance = flatpickr(hiddenInput, options) as Instance;
+    if (!fpInstance) {
       console.error('Failed to initialize Flatpickr');
       return undefined;
     }
+
+    // 5) Run A11y & initial‐dates hooks
+    applyCalendarA11y(fpInstance, getModalContainer(inputEl) !== document.body);
+    if (setInitialDates) {
+      setInitialDates(fpInstance);
+    }
+
+    return fpInstance;
   } catch (error) {
     console.error('Error initializing Flatpickr:', error);
-    if (error instanceof Error) {
-      console.error('Error details:', error.message);
-    }
     return undefined;
   }
 }
@@ -337,11 +334,6 @@ export function getModalContainer(element: HTMLElement): HTMLElement {
 export async function getFlatpickrOptions(
   context: FlatpickrOptionsContext
 ): Promise<Partial<BaseOptions>> {
-  if (!context) {
-    console.error('Context is required for getFlatpickrOptions');
-    return {};
-  }
-
   const {
     locale,
     dateFormat,
@@ -367,6 +359,7 @@ export async function getFlatpickrOptions(
     onClose,
     onOpen,
     loadLocale,
+    static: isStatic,
   } = context;
 
   if (!locale) {
@@ -377,7 +370,7 @@ export async function getFlatpickrOptions(
     console.warn('Date format not provided. Using default format.');
   }
 
-  let localeOptions;
+  let localeOptions: Partial<Locale>;
   try {
     localeOptions = await loadLocale(locale);
     modifyWeekdayShorthands(localeOptions);
@@ -388,9 +381,7 @@ export async function getFlatpickrOptions(
 
   const baseLocale = locale.split('-')[0].toLowerCase();
   const isEnglishOr12HourLocale = ['en', 'es'].includes(baseLocale);
-
   const isWideScreen = window.innerWidth >= 767;
-
   const effectiveDateFormat =
     dateFormat ||
     (mode === 'time' ? (twentyFourHourFormat ? 'H:i' : 'h:i K') : 'Y-m-d');
@@ -409,14 +400,14 @@ export async function getFlatpickrOptions(
         ? twentyFourHourFormat
         : !isEnglishOr12HourLocale,
     weekNumbers: false,
-    static: context.static ?? false,
+    static: isStatic ?? false,
     wrap,
     showMonths: mode === 'range' && isWideScreen ? 2 : 1,
     monthSelectorType: 'static',
     locale: localeOptions,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),
-    onChange: (selectedDates, dateStr, instance) => {
-      onChange && onChange(selectedDates, dateStr, instance);
+    onOpen: (selectedDates, dateStr, instance) => {
+      onOpen && onOpen(selectedDates, dateStr, instance);
     },
     onClose: (selectedDates, dateStr, instance) => {
       if (mode === 'range' && instance.calendarContainer) {
@@ -429,13 +420,28 @@ export async function getFlatpickrOptions(
       }
       onClose && onClose(selectedDates, dateStr, instance);
     },
-    onOpen: (selectedDates, dateStr, instance) => {
-      onOpen && onOpen(selectedDates, dateStr, instance);
-    },
+  };
+
+  const originalOnChange = onChange;
+  options.onChange = (selectedDates, dateStr, instance) => {
+    originalOnChange && originalOnChange(selectedDates, dateStr, instance);
+
+    if (mode === 'multiple') {
+      if (!instance.isOpen) {
+        instance.open();
+      }
+      requestAnimationFrame(() => {
+        makeFirstDayTabbable(instance.calendarContainer!);
+        const firstSel = instance.calendarContainer!.querySelector<HTMLElement>(
+          '.flatpickr-day.selected'
+        );
+        firstSel?.focus();
+      });
+    }
   };
 
   if (mode === 'range') {
-    options.onReady = (_, __, instance) => {
+    options.onReady = (selectedDates, dateStr, instance) => {
       if (instance.calendarContainer) {
         const timeContainer =
           instance.calendarContainer.querySelector('.flatpickr-time');
@@ -448,76 +454,62 @@ export async function getFlatpickrOptions(
     options.positionElement = inputEl;
   }
 
-  if (minDate) options.minDate = minDate;
-  if (maxDate) options.maxDate = maxDate;
-  if (minTime) options.minTime = minTime;
-  if (maxTime) options.maxTime = maxTime;
-
-  if (defaultDate) {
-    if (
-      Array.isArray(defaultDate) &&
-      (mode === 'range' || mode === 'multiple')
-    ) {
-      options.defaultDate = defaultDate;
-    } else if (!Array.isArray(defaultDate)) {
-      if (typeof defaultDate === 'string') {
-        let parsedDate: Date | null = null;
-        switch (effectiveDateFormat) {
-          case 'Y-m-d': {
-            const [year, month, day] = defaultDate.split('-').map(Number);
-            parsedDate =
-              !isNaN(year) && !isNaN(month) && !isNaN(day)
-                ? new Date(year, month - 1, day, 12)
-                : null;
-            break;
-          }
-          case 'd-m-Y': {
-            const [day, month, year] = defaultDate.split('-').map(Number);
-            parsedDate =
-              !isNaN(day) && !isNaN(month) && !isNaN(year)
-                ? new Date(year, month - 1, day, 12)
-                : null;
-            break;
-          }
-          case 'm-d-Y': {
-            const [month, day, year] = defaultDate.split('-').map(Number);
-            parsedDate =
-              !isNaN(month) && !isNaN(day) && !isNaN(year)
-                ? new Date(year, month - 1, day, 12)
-                : null;
-            break;
-          }
-          default:
-            parsedDate = new Date(defaultDate);
-            break;
-        }
-        options.defaultDate = parsedDate || defaultDate;
-      }
-    }
+  if (minDate) {
+    options.minDate = minDate;
   }
-  if (defaultHour !== undefined && defaultHour !== null)
+  if (maxDate) {
+    options.maxDate = maxDate;
+  }
+  if (minTime) {
+    options.minTime = minTime;
+  }
+  if (maxTime) {
+    options.maxTime = maxTime;
+  }
+
+  // Preserve defaultHour/defaultMinute
+  if (defaultHour != null) {
     options.defaultHour = defaultHour;
-  if (defaultMinute !== undefined && defaultMinute !== null)
+  }
+  if (defaultMinute != null) {
     options.defaultMinute = defaultMinute;
-  if (enable && enable.length > 0) options.enable = enable;
+  }
+
+  if (enable && enable.length > 0) {
+    options.enable = enable;
+  }
   if (disable && disable.length > 0) {
-    options.disable = disable.map((date) => {
-      if (date instanceof Date) return date;
-      if (typeof date === 'number') return new Date(date);
-      if (typeof date === 'string') {
-        const parsed = flatpickr.parseDate(date, effectiveDateFormat);
-        return parsed || date;
+    options.disable = disable.map((d) => {
+      if (d instanceof Date) return d;
+      if (typeof d === 'number') return new Date(d);
+      if (typeof d === 'string') {
+        const parsed = flatpickr.parseDate(d, effectiveDateFormat);
+        return parsed || d;
       }
-      return date;
+      return d;
     });
   }
-  if (appendTo) options.appendTo = appendTo;
+
+  if (appendTo) {
+    options.appendTo = appendTo;
+  }
 
   return options;
 }
 
 export function updateEnableTime(dateFormat: string): boolean {
   return dateFormat.includes('H:') || dateFormat.includes('h:');
+}
+
+export function setupAdvancedKeyboardNavigation(instance: Instance) {
+  const container = instance.calendarContainer;
+  if (!container) return;
+
+  requestAnimationFrame(() => {
+    makeFirstDayTabbable(container);
+    makeNavFocusable(container);
+    if (instance.config.enableTime) makeTimeFocusable(container);
+  });
 }
 
 export function setCalendarAttributes(
@@ -558,13 +550,106 @@ export function setCalendarAttributes(
           ) {
             dayElem.setAttribute('role', 'button');
           }
+
+          if (!dayElem.hasAttribute('tabindex')) {
+            dayElem.setAttribute('tabindex', '0');
+          }
         });
+
+        enhanceCalendarKeyboardNavigation(instance);
+        setupAdvancedKeyboardNavigation(instance);
+
+        calendarContainer
+          .querySelectorAll<HTMLElement>('.flatpickr-month')
+          .forEach((monthNav) => {
+            const prevBtn = monthNav.querySelector<HTMLElement>(
+              '.flatpickr-prev-month'
+            );
+            const nextBtn = monthNav.querySelector<HTMLElement>(
+              '.flatpickr-next-month'
+            );
+            const monthEl = monthNav.querySelector<HTMLElement>(
+              '.flatpickr-monthDropdown-months, .cur-month'
+            );
+            const yearInp =
+              monthNav.querySelector<HTMLInputElement>('input.cur-year');
+
+            for (const el of [prevBtn, monthEl, yearInp, nextBtn]) {
+              if (!el) continue;
+              el.tabIndex = 0;
+              if (el === prevBtn || el === nextBtn) {
+                el.setAttribute('role', 'button');
+                el.setAttribute(
+                  'aria-label',
+                  el === prevBtn ? 'Previous month' : 'Next month'
+                );
+              } else if (el === monthEl) {
+                el.setAttribute('role', 'button');
+                el.setAttribute('aria-label', 'Select month');
+              } else if (el === yearInp) {
+                yearInp.disabled = false;
+                el.setAttribute('role', 'spinbutton');
+                el.setAttribute('aria-label', 'Year');
+              }
+            }
+          });
       } catch (error) {
         console.warn('Error setting calendar attributes:', error);
       }
     });
   } else {
     console.warn('Calendar container not available...');
+  }
+}
+
+function enhanceCalendarKeyboardNavigation(instance: Instance): void {
+  if (!instance?.calendarContainer) return;
+
+  const boundKeydownHandler = (e: KeyboardEvent) => {
+    handleCalendarKeydown(e, instance);
+  };
+
+  const oldHandler = (instance as any)._keydownHandler;
+  if (oldHandler) {
+    instance.calendarContainer.removeEventListener('keydown', oldHandler);
+  }
+
+  (instance as any)._keydownHandler = boundKeydownHandler;
+
+  instance.calendarContainer.addEventListener('keydown', boundKeydownHandler);
+}
+
+function handleCalendarKeydown(event: KeyboardEvent, instance: Instance): void {
+  const target = event.target as HTMLElement;
+
+  if (event.key === ' ' && target.classList.contains('flatpickr-day')) {
+    event.preventDefault();
+    target.click();
+    return;
+  }
+
+  if (
+    target.classList.contains('flatpickr-prev-month') ||
+    target.classList.contains('flatpickr-next-month')
+  ) {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      target.click();
+      return;
+    }
+  }
+
+  if (target.classList.contains('cur-month')) {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      const monthsDropdown = instance.calendarContainer.querySelector(
+        '.flatpickr-monthDropdown-months'
+      );
+      if (monthsDropdown) {
+        (monthsDropdown as HTMLElement).click();
+      }
+      return;
+    }
   }
 }
 
