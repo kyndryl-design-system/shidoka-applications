@@ -46,9 +46,6 @@ export class ColorPicker extends LitElement {
   @property({ type: Boolean })
   opacity = false;
 
-  // @property({ type: Boolean })
-  // showPicker = true;
-
   @state()
   isDragging = false;
 
