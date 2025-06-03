@@ -39,7 +39,6 @@ import '../widgetDragHandle';
 import '../../card';
 import '../../modal';
 import '../../fileUploader/fileUploader.sample';
-
 import { GridStack } from 'gridstack';
 
 type Breakpoint = 'max' | 'xl' | 'lg' | 'md' | 'sm';
