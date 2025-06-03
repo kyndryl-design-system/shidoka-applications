@@ -39,7 +39,6 @@ import '../widgetDragHandle';
 import '../../card';
 import '../../modal';
 import '../../fileUploader/fileUploader.sample';
-import './colorswatch.sample';
 
 import { GridStack } from 'gridstack';
 
@@ -368,7 +367,6 @@ export class NewWidgetSample extends LitElement {
                       `
                     : this.getImageBackgroundTemplate()}
                 </div>
-                <color-swatch></color-swatch>
               </div>
             </div>
           </kyn-tab-panel>
