@@ -71,7 +71,7 @@ export class ColorPicker extends LitElement {
   saturation = 100;
 
   @state()
-  brightness = 100;
+  lightness = 100;
 
   @state()
   alpha = 100;
@@ -86,12 +86,12 @@ export class ColorPicker extends LitElement {
   b = 0;
 
   override render() {
-    const { r, g, b } = this.hexToRgb(this.value);
+    const { r, g, b } = this.hexToRgba(this.value);
     this.r = r;
     this.g = g;
     this.b = b;
     const alphaValue = this.getAlphaFromHex(this.value);
-    this.alpha = alphaValue * 100;
+    this.alpha = Math.round(alphaValue * 100);
     return html`
       <div class="field">
         <label>${this.label}</label>
@@ -99,6 +99,7 @@ export class ColorPicker extends LitElement {
           <div tabindex="0" class="color-picker__preview"></div>
           <input
             type="text"
+            maxlength="9"
             aria-label="hex color"
             .value=${this.value.toUpperCase()}
             @input=${(e: any) => this.handleValueChange(e)}
@@ -116,7 +117,7 @@ export class ColorPicker extends LitElement {
                 <canvas
                   id="color-canvas"
                   class="canvas"
-                  width="270"
+                  width="275"
                   height="180"
                   @mousedown=${this.startDrag}
                   @mousemove=${(e: any) => this.onDrag(e)}
@@ -171,13 +172,13 @@ export class ColorPicker extends LitElement {
                               style="background-image: linear-gradient(to right, ${this.getHexString(
                                 this.hue,
                                 this.saturation,
-                                this.brightness,
+                                this.lightness,
                                 0
                               )} 0%,
                           ${this.getHexString(
                                 this.hue,
                                 this.saturation,
-                                this.brightness,
+                                this.lightness,
                                 100
                               )} 100%);"
                             ></div>
@@ -288,13 +289,13 @@ export class ColorPicker extends LitElement {
 
     this.hue = Math.round(this.clamp((x / width) * 360, 0, 360));
     this.syncValues();
-    this.pickColorAt(this.handleX, this.handleY);
     drag(container, {
       onMove: (x) => {
         this.hue = Math.round(this.clamp((x / width) * 360, 0, 360));
         this.syncValues();
         this.updateHueHandleColor();
-        this.pickColorAt(this.handleX, this.handleY);
+        this.updateCanvasAndHandle();
+        this.dispatchColorChange();
         this.updateColorPreview();
       },
       onStop: () => {},
@@ -307,7 +308,12 @@ export class ColorPicker extends LitElement {
       '.color-picker__preview'
     ) as HTMLElement;
     if (preview) {
-      preview.style.backgroundColor = this.value;
+      const color = this.opacity
+        ? `rgba(${this.r}, ${this.g}, ${this.b}, ${(this.alpha / 100).toFixed(
+            2
+          )})`
+        : this.value;
+      preview.style.backgroundColor = color;
     }
   }
 
@@ -322,10 +328,12 @@ export class ColorPicker extends LitElement {
 
   async syncValues() {
     const currentColor = this.parseColor(
-      `hsva(${this.hue}, ${this.saturation}%, ${this.brightness}%, ${
+      `hsva(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${
         this.alpha / 100
       })`
     );
+
+    console.log('Syncing values:', this.alpha);
 
     if (currentColor === null) {
       return;
@@ -383,6 +391,7 @@ export class ColorPicker extends LitElement {
     drag(container, {
       onMove: (x) => {
         this.alpha = Math.round(this.clamp((x / width) * 100, 0, 100));
+        console.log('Alpha: drag', this.alpha);
         this.syncValues();
         this.updateHueHandleColor();
         this.updateColorPreview();
@@ -412,11 +421,11 @@ export class ColorPicker extends LitElement {
   private getHexString(
     hue: number,
     saturation: number,
-    brightness: number,
-    alpha = 100
+    lightness: number,
+    alpha: number
   ) {
     const color = new TinyColor(
-      `hsva(${hue}, ${saturation}%, ${brightness}%, ${alpha / 100})`
+      `hsva(${hue}, ${saturation}%, ${lightness}%, ${alpha / 100})`
     );
     if (!color.isValid) {
       return '';
@@ -488,23 +497,6 @@ export class ColorPicker extends LitElement {
     return string.toUpperCase();
   }
 
-  setColorFromValue() {
-    const parsed = new TinyColor(this.value);
-    if (parsed.isValid) {
-      const hsv = parsed.toHsv();
-      this.hue = hsv.h;
-      this.saturation = hsv.s * 100;
-      this.brightness = hsv.v * 100;
-      const canvas = this.shadowRoot?.getElementById(
-        'color-canvas'
-      ) as HTMLCanvasElement;
-      if (canvas) {
-        this.handleX = (this.saturation / 100) * canvas.width;
-        this.handleY = canvas.height - (this.brightness / 100) * canvas.height;
-      }
-    }
-  }
-
   async handleEyeDropper(e: Event) {
     e.preventDefault();
     if (!hasEyeDropper) {
@@ -516,7 +508,7 @@ export class ColorPicker extends LitElement {
     if (parsed) {
       this.hue = parsed.hsva.h;
       this.saturation = parsed.hsva.s;
-      this.brightness = parsed.hsva.v;
+      this.lightness = parsed.hsva.v;
       const pos = this.findClosestPixelPosition(parsed.rgb);
       this.handleX = pos.x;
       this.handleY = pos.y;
@@ -527,7 +519,12 @@ export class ColorPicker extends LitElement {
     }
   }
 
-  findClosestPixelPosition(targetRgb: { r: number; g: number; b: number }) {
+  findClosestPixelPosition(targetRgb: {
+    r: number;
+    g: number;
+    b: number;
+    a?: number;
+  }) {
     const canvas = this.shadowRoot?.getElementById(
       'color-canvas'
     ) as HTMLCanvasElement;
@@ -548,11 +545,18 @@ export class ColorPicker extends LitElement {
         const r = imageData[index];
         const g = imageData[index + 1];
         const b = imageData[index + 2];
+        const a = imageData[index + 3];
+
+        const alphaDiff =
+          this.opacity && targetRgb.a !== undefined
+            ? Math.abs(a - targetRgb.a)
+            : 0;
 
         const diff =
           Math.abs(r - targetRgb.r) +
           Math.abs(g - targetRgb.g) +
-          Math.abs(b - targetRgb.b);
+          Math.abs(b - targetRgb.b) +
+          alphaDiff;
         if (diff < minDiff) {
           minDiff = diff;
           closestX = x;
@@ -570,14 +574,15 @@ export class ColorPicker extends LitElement {
 
     this.hue = newColor.hsva.h;
     this.saturation = newColor.hsva.s;
-    this.brightness = newColor.hsva.v;
+    this.lightness = newColor.hsva.v;
     this.alpha = this.opacity ? newColor.hsva.a * 100 : 100;
+    console.log('Alpha value: setColor', this.alpha);
     const canvas = this.shadowRoot?.getElementById(
       'color-canvas'
     ) as HTMLCanvasElement;
     if (canvas) {
       this.handleX = (this.saturation / 100) * canvas.width;
-      this.handleY = canvas.height - (this.brightness / 100) * canvas.height;
+      this.handleY = canvas.height - (this.lightness / 100) * canvas.height;
     }
     this.syncValues();
     this.updateCanvasAndHandle();
@@ -589,32 +594,46 @@ export class ColorPicker extends LitElement {
     if (parsedColor) {
       this.hue = parsedColor.hsva.h;
       this.saturation = parsedColor.hsva.s;
-      this.brightness = parsedColor.hsva.v;
+      this.lightness = parsedColor.hsva.v;
       this.alpha = this.opacity ? parsedColor.hsva.a * 100 : 100;
-
-      // Map to your canvas size (assuming width 260, height 180)
-      this.handleX = (this.saturation / 100) * 260;
-      this.handleY = 180 - (this.brightness / 100) * 180;
-
-      requestAnimationFrame(() => {
-        this.updateCanvasAndHandle();
-      });
+      if (this.opacity) {
+        const pos = this.findClosestPixelPosition({
+          r: this.r,
+          g: this.g,
+          b: this.b,
+        });
+        this.handleX = pos.x;
+        this.handleY = pos.y;
+      } else {
+        this.handleX = (this.saturation / 100) * 275;
+        this.handleY = 180 - (this.lightness / 100) * 180;
+      }
+      this.updateCanvasAndHandle();
+      this.requestUpdate();
     }
   }
 
   override firstUpdated() {
-    this.setColorFromValue();
     this.updateColorPreview();
     this.updateHueHandleColor();
     this.syncFromValue(this.value);
-    this.updateCanvasAndHandle();
+    this.drawCanvas();
+    this.handleX = (this.saturation / 100) * 275;
+    this.handleY = 180 - (this.lightness / 100) * 180;
+
+    // Update the handle position style
+    const handle = this.shadowRoot?.querySelector(
+      '.canvas__handle'
+    ) as HTMLElement;
+    if (handle) {
+      handle.style.left = `${this.handleX}px`;
+      handle.style.top = `${this.handleY}px`;
+    }
   }
 
   override updated(changedProps: any) {
     if (changedProps.has('showPicker') && this.showPicker) {
-      requestAnimationFrame(() => {
-        this.updateCanvasAndHandle();
-      });
+      this.updateCanvasAndHandle();
     }
   }
 
@@ -651,19 +670,19 @@ export class ColorPicker extends LitElement {
     if (!ctx || !width || !height) {
       return;
     }
-
+    ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = `hsl(${this.hue}, 100%, 50%)`;
     ctx.fillRect(0, 0, width, height);
 
     const whiteGrad = ctx.createLinearGradient(0, 0, width, 0);
-    whiteGrad.addColorStop(0, '#fff');
-    whiteGrad.addColorStop(1, 'transparent');
+    whiteGrad.addColorStop(0, 'rgba(255,255,255,1)');
+    whiteGrad.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = whiteGrad;
     ctx.fillRect(0, 0, width, height);
 
     const blackGrad = ctx.createLinearGradient(0, 0, 0, height);
-    blackGrad.addColorStop(0, 'transparent');
-    blackGrad.addColorStop(1, '#000');
+    blackGrad.addColorStop(0, 'rgba(0,0,0,0)');
+    blackGrad.addColorStop(1, 'rgba(0,0,0,1)');
     ctx.fillStyle = blackGrad;
     ctx.fillRect(0, 0, width, height);
   }
@@ -696,24 +715,23 @@ export class ColorPicker extends LitElement {
     const clampedY = Math.max(0, Math.min(canvas.height - 1, y));
 
     const imageData = ctx?.getImageData(clampedX, clampedY, 1, 1).data;
-
-    const alpha = this.opacity
+    this.saturation = this.clamp((x / canvas.width) * 100, 0, 100);
+    this.lightness = this.clamp(100 - (y / canvas.height) * 100, 0, 100);
+    const alphaValue = this.opacity
       ? Math.round((this.alpha / 100) * 255)
-      : undefined;
+      : 255;
     const newValue = this.rgbToHex(
       imageData[0],
       imageData[1],
       imageData[2],
-      alpha
+      alphaValue
     );
-
     if (newValue !== this.value) {
       this.r = imageData[0];
       this.g = imageData[1];
       this.b = imageData[2];
       this.handleX = x;
       this.handleY = y;
-
       this.value = newValue;
       this.updateCanvasAndHandle();
       this.dispatchColorChange();
@@ -740,18 +758,21 @@ export class ColorPicker extends LitElement {
     this.isDragging = false;
   }
 
-  updateHue(e: any) {
-    this.hue = e.target.value;
-    this.updateCanvasAndHandle();
-  }
+  // updateHue(e: any) {
+  //   this.hue = e.target.value;
+  //   this.updateCanvasAndHandle();
+  // }
 
   handleHexInput(e: any) {
     this.value = e.target.value;
-    if (/^#([0-9A-Fa-f]{6})$/.test(this.value)) {
-      const { r, g, b } = this.hexToRgb(this.value);
+    if (/^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/.test(this.value)) {
+      const { r, g, b, a } = this.hexToRgba(this.value);
       this.r = r;
       this.g = g;
       this.b = b;
+      if (this.opacity && a !== undefined) {
+        this.alpha = (a / 255) * 100;
+      }
     }
   }
 
@@ -762,31 +783,36 @@ export class ColorPicker extends LitElement {
       e.target.value.length <= 3
     ) {
       this[rgb] = parseInt(e.target.value) || 0;
-      this.value = this.rgbToHex(this.r, this.g, this.b);
+      this.value = this.rgbToHex(this.r, this.g, this.b, 255);
     }
   }
 
-  rgbToHex(r: number, g: number, b: number, a?: number) {
+  rgbToHex(r: number, g: number, b: number, a: number) {
     const toHex = (x: number) => {
       const hex = x.toString(16);
       return hex.length === 1 ? '0' + hex : hex;
     };
 
     const hex = [r, g, b].map(toHex).join('');
-    if (typeof a === 'number') {
-      return '#' + hex + toHex(a);
+    if (this.opacity) {
+      const alphaHex = toHex(a);
+      return '#' + hex + alphaHex; // include alpha in hex
     }
+
     return '#' + hex;
   }
 
-  hexToRgb(hex: string) {
+  hexToRgba(hex: string) {
     let c = hex.replace('#', '');
-    if (c.length === 8) c = c.slice(0, 6);
+    if (c.length === 6) c += 'ff'; // default to fully opaque if no alpha provided
+
     const bigint = parseInt(c, 16);
+
     return {
-      r: (bigint >> 16) & 255,
-      g: (bigint >> 8) & 255,
-      b: bigint & 255,
+      r: (bigint >> 24) & 255,
+      g: (bigint >> 16) & 255,
+      b: (bigint >> 8) & 255,
+      a: bigint & 255,
     };
   }
 
