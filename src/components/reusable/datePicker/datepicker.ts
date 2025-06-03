@@ -647,7 +647,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async initializeFlatpickr() {
     if (!this._inputEl || !this._inputEl.isConnected) {
-      // (nothing to do if the input isn’t in the DOM yet)
       return;
     }
 
@@ -753,14 +752,13 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    // we no longer pass “appendTo” here—our helper will decide.
     const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
       defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
-      inputEl: this._inputEl!, // this is already a real <input>
+      inputEl: this._inputEl!,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,

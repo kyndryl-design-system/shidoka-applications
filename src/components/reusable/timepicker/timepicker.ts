@@ -21,6 +21,8 @@ import {
   clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
 
+import { makeTimeFocusable } from '../../../common/helpers/calendarA11y';
+
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
 
@@ -49,154 +51,40 @@ const _defaultTextStrings = {
   dateInSelectedRange: 'Date is in selected range',
 };
 
-/**
- * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
- * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @slot tooltip - Slot for tooltip.
- */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
   static override styles = [TimepickerStyles, ShidokaFlatpickrTheme];
 
-  /** Label text. */
-  @property({ type: String })
-  label = '';
+  @property({ type: String }) label = '';
+  @property({ type: String }) locale: SupportedLocale | string = 'en';
+  @state() override value: Date | null = null;
+  @property({ type: Number }) defaultHour: number | null = null;
+  @property({ type: Number }) defaultMinute: number | null = null;
+  @property({ type: String }) defaultErrorMessage = '';
+  @property({ type: String }) warnText = '';
+  @property({ type: String }) caption = '';
+  @property({ type: Boolean }) required = false;
+  @property({ type: String }) size = 'md';
+  @property({ type: Boolean }) timepickerDisabled = false;
+  @property({ type: Boolean }) readonly = false;
+  @property({ type: Boolean }) twentyFourHourFormat: boolean | null = null;
+  @property({ type: String }) minTime: string | number | Date = '';
+  @property({ type: String }) maxTime: string | number | Date = '';
+  @property({ type: String }) errorAriaLabel = '';
+  @property({ type: String }) errorTitle = '';
+  @property({ type: String }) warningAriaLabel = '';
+  @property({ type: String }) warningTitle = '';
+  @property({ type: Boolean }) staticPosition = false;
 
-  /** Sets desired locale and, if supported, dynamically loads language lib */
-  @property({ type: String })
-  locale: SupportedLocale | string = 'en';
-
-  /**
-   * Sets the time value for the component.
-   *
-   * For controlled usage patterns, this property allows parent components to directly control the selected time.
-   * When used together with defaultHour/defaultMinute, value takes precedence if both are provided.
-   *
-   * In uncontrolled usage, this is populated automatically based on defaultHour/defaultMinute and user selections.
-   * @internal
-   */
-  @state()
-  override value: Date | null = null;
-
-  /** Sets initial value of the hour element. */
-  @property({ type: Number })
-  defaultHour: number | null = null;
-
-  /** Sets initial value of the minute element. */
-  @property({ type: Number })
-  defaultMinute: number | null = null;
-
-  /** Sets default error message. */
-  @property({ type: String })
-  defaultErrorMessage = '';
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  warnText = '';
-
-  /** Sets caption to be displayed under primary time picker elements. */
-  @property({ type: String })
-  caption = '';
-
-  /** Sets timepicker form input value to required. */
-  @property({ type: Boolean })
-  required = false;
-
-  /** Input size. "sm", "md", or "lg". */
-  @property({ type: String })
-  size = 'md';
-
-  /** Sets entire timepicker form element to enabled/disabled. */
-  @property({ type: Boolean })
-  timepickerDisabled = false;
-
-  /** Sets entire timepicker form element to readonly. */
-  @property({ type: Boolean })
-  readonly = false;
-
-  /** Sets 24-hour formatting true/false. */
-  @property({ type: Boolean })
-  twentyFourHourFormat: boolean | null = null;
-
-  /** Sets lower boundary of time selection. */
-  @property({ type: String })
-  minTime: string | number | Date = '';
-
-  /** Sets upper boundary of time selection. */
-  @property({ type: String })
-  maxTime: string | number | Date = '';
-
-  /** Sets aria label attribute for error message. */
-  @property({ type: String })
-  errorAriaLabel = '';
-
-  /** Sets title attribute for error message. */
-  @property({ type: String })
-  errorTitle = '';
-
-  /** Sets aria label attribute for warning message. */
-  @property({ type: String })
-  warningAriaLabel = '';
-
-  /** Sets title attribute for warning message. */
-  @property({ type: String })
-  warningTitle = '';
-
-  /** Sets whether the Flatpickr calendar UI should use static positioning. */
-  @property({ type: Boolean })
-  staticPosition = false;
-
-  /**
-   * Sets whether user has interacted with timepicker for error handling.
-   * @internal
-   */
-  @state()
-  private _hasInteracted = false;
-
-  /** Flatpickr instantiation.
-   * @internal
-   */
-  @state()
-  private flatpickrInstance?: flatpickr.Instance;
-
-  /**
-   * Queries the anchor DOM element.
-   * @ignore
-   */
-  @query('input.input-custom')
-  private _inputEl?: HTMLInputElement;
-
-  /** Tracks if we're in a clear operation to prevent duplicate events
-   * @internal
-   */
-  @state()
-  private _isClearing = false;
-
-  /** Tracks if user has explicitly cleared the input despite having defaults
-   * @internal
-   */
-  @state()
-  private _userHasCleared = false;
-
-  /** Customizable text strings. */
-  @property({ type: Object })
-  textStrings = _defaultTextStrings;
-
-  /** Internal text strings.
-   * @internal
-   */
-  @state()
-  _textStrings = { ..._defaultTextStrings };
-
-  /** Control flag to determine if Flatpickr should open
-   * @internal
-   */
+  @state() private _hasInteracted = false;
+  @state() private flatpickrInstance?: flatpickr.Instance;
+  @query('input.input-custom') private _inputEl?: HTMLInputElement;
+  @state() private _isClearing = false;
+  @state() private _userHasCleared = false;
+  @property({ type: Object }) textStrings = _defaultTextStrings;
+  @state() _textStrings = { ..._defaultTextStrings };
   private _shouldFlatpickrOpen = true;
   private _initialized = false;
-
-  /** Store submit event listener reference for cleanup
-   * @internal
-   */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
   private debounce<T extends (...args: any[]) => any>(
@@ -204,12 +92,8 @@ export class TimePicker extends FormMixin(LitElement) {
     wait: number
   ): (...args: Parameters<T>) => void {
     let timeout: number | null = null;
-
     return (...args: Parameters<T>) => {
-      if (timeout !== null) {
-        window.clearTimeout(timeout);
-      }
-
+      if (timeout !== null) window.clearTimeout(timeout);
       timeout = window.setTimeout(() => {
         func.apply(this, args);
         timeout = null;
@@ -238,10 +122,7 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this._internals.form) {
       this._submitListener = (e: SubmitEvent) => {
         this._validate(true, true);
-
-        if (this.required && !this.hasValue()) {
-          e.preventDefault();
-        }
+        if (this.required && !this.hasValue()) e.preventDefault();
       };
       this._internals.form.addEventListener('submit', this._submitListener);
     }
@@ -269,6 +150,7 @@ export class TimePicker extends FormMixin(LitElement) {
       : this.generateRandomId('time-picker');
     const descriptionId = this.name ?? '';
     const placeholder = '—— : ——';
+
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
         <div
@@ -325,23 +207,27 @@ export class TimePicker extends FormMixin(LitElement) {
                   </span>
                 </kyn-button>
               `
-            : html`<span
-                class="input-icon ${this.timepickerDisabled
-                  ? 'is-disabled'
-                  : ''}"
-                >${unsafeSVG(clockIcon)}</span
-              >`}
+            : html`
+                <span
+                  class="input-icon ${this.timepickerDisabled
+                    ? 'is-disabled'
+                    : ''}"
+                  >${unsafeSVG(clockIcon)}</span
+                >
+              `}
         </div>
         ${this.caption
-          ? html`<div
-              id=${descriptionId}
-              class="caption"
-              aria-disabled=${this.timepickerDisabled}
-              @mousedown=${this.preventFlatpickrOpen}
-              @click=${this.preventFlatpickrOpen}
-            >
-              ${this.caption}
-            </div>`
+          ? html`
+              <div
+                id=${descriptionId}
+                class="caption"
+                aria-disabled=${this.timepickerDisabled}
+                @mousedown=${this.preventFlatpickrOpen}
+                @click=${this.preventFlatpickrOpen}
+              >
+                ${this.caption}
+              </div>
+            `
           : ''}
         ${this.renderValidationMessage(errorId, warningId)}
       </div>
@@ -352,36 +238,40 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this.timepickerDisabled) return null;
 
     if (this.invalidText || (this._isInvalid && this._hasInteracted)) {
-      return html`<div
-        id=${errorId}
-        class="error error-text"
-        role="alert"
-        title=${this.errorTitle || 'Error'}
-        @mousedown=${this.preventFlatpickrOpen}
-        @click=${this.preventFlatpickrOpen}
-      >
-        <span
-          class="error-icon"
-          aria-label=${this.errorAriaLabel || 'Error message icon'}
-          >${unsafeSVG(errorIcon)}</span
+      return html`
+        <div
+          id=${errorId}
+          class="error error-text"
+          role="alert"
+          title=${this.errorTitle || 'Error'}
+          @mousedown=${this.preventFlatpickrOpen}
+          @click=${this.preventFlatpickrOpen}
         >
-        ${this.invalidText ||
-        this._internalValidationMsg ||
-        this.defaultErrorMessage}
-      </div>`;
+          <span
+            class="error-icon"
+            aria-label=${this.errorAriaLabel || 'Error message icon'}
+            >${unsafeSVG(errorIcon)}</span
+          >
+          ${this.invalidText ||
+          this._internalValidationMsg ||
+          this.defaultErrorMessage}
+        </div>
+      `;
     }
     if (this.warnText) {
-      return html`<div
-        id=${warningId}
-        class="warn warn-text"
-        role="alert"
-        aria-label=${this.warningAriaLabel || 'Warning message'}
-        title=${this.warningTitle || 'Warning'}
-        @mousedown=${this.preventFlatpickrOpen}
-        @click=${this.preventFlatpickrOpen}
-      >
-        ${this.warnText}
-      </div>`;
+      return html`
+        <div
+          id=${warningId}
+          class="warn warn-text"
+          role="alert"
+          aria-label=${this.warningAriaLabel || 'Warning message'}
+          title=${this.warningTitle || 'Warning'}
+          @mousedown=${this.preventFlatpickrOpen}
+          @click=${this.preventFlatpickrOpen}
+        >
+          ${this.warnText}
+        </div>
+      `;
     }
     return null;
   }
@@ -518,28 +408,25 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private async setupAnchor() {
-    if (!this._inputEl) {
-      return;
-    }
+    if (!this._inputEl) return;
     try {
       await this.initializeFlatpickr();
     } catch (error) {
-      console.error('Error setting up flatpickr:', error);
+      console.error('Error setting up Flatpickr:', error);
     }
   }
 
   private _isDestroyed = false;
 
   async initializeFlatpickr() {
-    if (this._isDestroyed) {
-      return;
-    }
+    if (this._isDestroyed) return;
     if (!this._inputEl || !this._inputEl.isConnected) {
       console.warn(
         'Cannot initialize Flatpickr: input element not available or not connected to DOM'
       );
       return;
     }
+
     const inputEl = this._inputEl;
     try {
       if (this.flatpickrInstance) {
@@ -547,14 +434,11 @@ export class TimePicker extends FormMixin(LitElement) {
         this.flatpickrInstance = undefined;
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
-      if (this._isDestroyed || !inputEl.isConnected) {
-        return;
-      }
+      if (this._isDestroyed || !inputEl.isConnected) return;
       await new Promise((resolve) => requestAnimationFrame(resolve));
-      if (this._isDestroyed || !inputEl.isConnected) {
-        return;
-      }
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+      if (this._isDestroyed || !inputEl.isConnected) return;
+
+      const ctx: any = {
         inputEl: this._inputEl,
         getFlatpickrOptions: async () => {
           const options = await this.getComponentFlatpickrOptions();
@@ -563,11 +447,18 @@ export class TimePicker extends FormMixin(LitElement) {
           }
           return options;
         },
-        setCalendarAttributes: (instance) => {
+
+        setCalendarAttributes: (instance: flatpickr.Instance) => {
           try {
             const container = getModalContainer(this);
             const modalDetected = container !== document.body;
+
             setCalendarAttributes(instance, modalDetected);
+
+            if (instance.config.enableTime) {
+              makeTimeFocusable(container);
+            }
+
             if (instance.calendarContainer) {
               instance.calendarContainer.setAttribute(
                 'aria-label',
@@ -578,8 +469,11 @@ export class TimePicker extends FormMixin(LitElement) {
             console.error('Error setting calendar attributes:', error);
           }
         },
+
         setInitialDates: this.setInitialDates.bind(this),
-      });
+      };
+
+      this.flatpickrInstance = await initializeSingleAnchorFlatpickr(ctx);
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
       }
@@ -603,14 +497,14 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
-    const effectiveDateFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
+    const effectiveFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
       allowInput: true,
-      dateFormat: effectiveDateFormat,
+      dateFormat: effectiveFormat,
       minTime: this.minTime,
       maxTime: this.maxTime,
       loadLocale,
@@ -639,7 +533,6 @@ export class TimePicker extends FormMixin(LitElement) {
         if (this.defaultMinute !== null) date.setMinutes(this.defaultMinute);
         date.setSeconds(0);
         date.setMilliseconds(0);
-
         instance.setDate(date, false);
       }
     } catch (error) {
@@ -668,15 +561,13 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this._isClearing) return;
     try {
       if (selectedDates.length > 0) {
-        if (!this._hasInteracted) {
-          this._hasInteracted = true;
-        }
+        if (!this._hasInteracted) this._hasInteracted = true;
         this._userHasCleared = false;
 
-        const selectedTime = selectedDates[0];
+        const sel = selectedDates[0];
         const newDate = new Date();
-        newDate.setHours(selectedTime.getHours());
-        newDate.setMinutes(selectedTime.getMinutes());
+        newDate.setHours(sel.getHours());
+        newDate.setMinutes(sel.getMinutes());
         newDate.setSeconds(0);
         newDate.setMilliseconds(0);
         this.value = newDate;
@@ -694,19 +585,14 @@ export class TimePicker extends FormMixin(LitElement) {
       this._validate(true, false);
       await this.updateComplete;
       this.requestUpdate();
-      if (this._inputEl) {
-        this.updateFormValue();
-      }
+      if (this._inputEl) this.updateFormValue();
     } catch (error) {
       console.warn('Error handling time change:', error);
     }
   }
 
   private _validate(interacted: boolean, report: boolean) {
-    if (!this._inputEl || !(this._inputEl instanceof HTMLInputElement)) {
-      return;
-    }
-
+    if (!this._inputEl) return;
     if (this.timepickerDisabled) {
       this._internals.setValidity({}, '', this._inputEl);
       this._isInvalid = false;
@@ -714,15 +600,13 @@ export class TimePicker extends FormMixin(LitElement) {
       return;
     }
 
-    if (interacted) {
-      this._hasInteracted = true;
-    }
-    const hasDefaultValue =
-      this.defaultHour !== null || this.defaultMinute !== null;
-    const isEmpty = !this._inputEl.value.trim() && !hasDefaultValue;
+    if (interacted) this._hasInteracted = true;
+    const hasDefault = this.defaultHour !== null || this.defaultMinute !== null;
+    const isEmpty = !this._inputEl.value.trim() && !hasDefault;
     const isRequired = this.required;
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
+
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
       validationMessage =
@@ -740,9 +624,7 @@ export class TimePicker extends FormMixin(LitElement) {
     this._isInvalid =
       !isValid && (this._hasInteracted || this.invalidText !== '');
     this._internalValidationMsg = validationMessage;
-    if (report) {
-      this._internals.reportValidity();
-    }
+    if (report) this._internals.reportValidity();
     this.requestUpdate();
   }
 
@@ -753,9 +635,7 @@ export class TimePicker extends FormMixin(LitElement) {
   private _handleFormReset() {
     this.value = null;
     this._userHasCleared = false;
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.clear();
-    }
+    if (this.flatpickrInstance) this.flatpickrInstance.clear();
     this._hasInteracted = false;
     this._validate(false, false);
   }

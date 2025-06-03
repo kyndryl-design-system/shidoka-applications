@@ -247,26 +247,19 @@ export async function initializeSingleAnchorFlatpickr(context: {
   }
 
   try {
-    // 1) Build Flatpickr options (dateFormat, locale, enableTime, etc.)
     const options = await getFlatpickrOptions();
 
-    // 2) Enforce “if this is a native <input>, force append to <body>”
     if (inputEl instanceof HTMLInputElement) {
-      // Remove any “appendTo” so Flatpickr will append the calendar into <body>
       delete (options as any).appendTo;
 
-      // Make sure FP knows where to position itself (next to the real <input>)
       options.positionElement = inputEl;
       options.clickOpens = true;
     }
 
-    // 3) Decide which HTMLInputElement we actually pass to flatpickr()
     let hiddenInput: HTMLInputElement;
     if (inputEl instanceof HTMLInputElement) {
-      // If <input> is already an actual <input>, just use it
       hiddenInput = inputEl;
     } else {
-      // Otherwise, create a “shadow” <input> and append it into the wrapper
       hiddenInput = document.createElement('input');
       hiddenInput.type = 'text';
       hiddenInput.style.display = 'none';
@@ -278,18 +271,15 @@ export async function initializeSingleAnchorFlatpickr(context: {
       container.appendChild(hiddenInput);
 
       options.clickOpens = false;
-      // Tell Flatpickr “position next to the visible anchor”
       options.positionElement = inputEl;
     }
 
-    // 4) Finally create the Flatpickr instance on that HTMLInputElement
     const fpInstance = flatpickr(hiddenInput, options) as Instance;
     if (!fpInstance) {
       console.error('Failed to initialize Flatpickr');
       return undefined;
     }
 
-    // 5) Run A11y & initial‐dates hooks
     applyCalendarA11y(fpInstance, getModalContainer(inputEl) !== document.body);
     if (setInitialDates) {
       setInitialDates(fpInstance);
@@ -467,7 +457,6 @@ export async function getFlatpickrOptions(
     options.maxTime = maxTime;
   }
 
-  // Preserve defaultHour/defaultMinute
   if (defaultHour != null) {
     options.defaultHour = defaultHour;
   }
