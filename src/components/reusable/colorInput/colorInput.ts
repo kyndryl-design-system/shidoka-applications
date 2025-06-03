@@ -94,7 +94,6 @@ export class ColorInput extends FormMixin(LitElement) {
             aria-label=${this._textStrings.toggleColorInput}
             .value=${this.value}
             ?disabled=${this.disabled}
-
             @input=${this.handleColorChange}
           />
           </div>
@@ -149,6 +148,7 @@ export class ColorInput extends FormMixin(LitElement) {
   private handleColorChange(e: any) {
     this.value = e.target.value;
     this._inputEl.value = e.target.value;
+    this._validate(true, false);
     this._emitValue(e);
   }
 
@@ -208,7 +208,7 @@ export class ColorInput extends FormMixin(LitElement) {
     this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
-      this._validate(true, false);
+      this._inputEl.value = this.value;
     }
   }
 
