@@ -51,40 +51,154 @@ const _defaultTextStrings = {
   dateInSelectedRange: 'Date is in selected range',
 };
 
+/**
+ * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
+ * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @slot tooltip - Slot for tooltip.
+ */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
   static override styles = [TimepickerStyles, ShidokaFlatpickrTheme];
 
-  @property({ type: String }) label = '';
-  @property({ type: String }) locale: SupportedLocale | string = 'en';
-  @state() override value: Date | null = null;
-  @property({ type: Number }) defaultHour: number | null = null;
-  @property({ type: Number }) defaultMinute: number | null = null;
-  @property({ type: String }) defaultErrorMessage = '';
-  @property({ type: String }) warnText = '';
-  @property({ type: String }) caption = '';
-  @property({ type: Boolean }) required = false;
-  @property({ type: String }) size = 'md';
-  @property({ type: Boolean }) timepickerDisabled = false;
-  @property({ type: Boolean }) readonly = false;
-  @property({ type: Boolean }) twentyFourHourFormat: boolean | null = null;
-  @property({ type: String }) minTime: string | number | Date = '';
-  @property({ type: String }) maxTime: string | number | Date = '';
-  @property({ type: String }) errorAriaLabel = '';
-  @property({ type: String }) errorTitle = '';
-  @property({ type: String }) warningAriaLabel = '';
-  @property({ type: String }) warningTitle = '';
-  @property({ type: Boolean }) staticPosition = false;
+  /** Label text. */
+  @property({ type: String })
+  label = '';
 
-  @state() private _hasInteracted = false;
-  @state() private flatpickrInstance?: flatpickr.Instance;
-  @query('input.input-custom') private _inputEl?: HTMLInputElement;
-  @state() private _isClearing = false;
-  @state() private _userHasCleared = false;
-  @property({ type: Object }) textStrings = _defaultTextStrings;
-  @state() _textStrings = { ..._defaultTextStrings };
+  /** Sets desired locale and, if supported, dynamically loads language lib */
+  @property({ type: String })
+  locale: SupportedLocale | string = 'en';
+
+  /**
+   * Sets the time value for the component.
+   *
+   * For controlled usage patterns, this property allows parent components to directly control the selected time.
+   * When used together with defaultHour/defaultMinute, value takes precedence if both are provided.
+   *
+   * In uncontrolled usage, this is populated automatically based on defaultHour/defaultMinute and user selections.
+   * @internal
+   */
+  @state()
+  override value: Date | null = null;
+
+  /** Sets initial value of the hour element. */
+  @property({ type: Number })
+  defaultHour: number | null = null;
+
+  /** Sets initial value of the minute element. */
+  @property({ type: Number })
+  defaultMinute: number | null = null;
+
+  /** Sets default error message. */
+  @property({ type: String })
+  defaultErrorMessage = '';
+
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  warnText = '';
+
+  /** Sets caption to be displayed under primary time picker elements. */
+  @property({ type: String })
+  caption = '';
+
+  /** Sets timepicker form input value to required. */
+  @property({ type: Boolean })
+  required = false;
+
+  /** Input size. "sm", "md", or "lg". */
+  @property({ type: String })
+  size = 'md';
+
+  /** Sets entire timepicker form element to enabled/disabled. */
+  @property({ type: Boolean })
+  timepickerDisabled = false;
+
+  /** Sets entire timepicker form element to readonly. */
+  @property({ type: Boolean })
+  readonly = false;
+
+  /** Sets 24-hour formatting true/false. */
+  @property({ type: Boolean })
+  twentyFourHourFormat: boolean | null = null;
+
+  /** Sets lower boundary of time selection. */
+  @property({ type: String })
+  minTime: string | number | Date = '';
+
+  /** Sets upper boundary of time selection. */
+  @property({ type: String })
+  maxTime: string | number | Date = '';
+
+  /** Sets aria label attribute for error message. */
+  @property({ type: String })
+  errorAriaLabel = '';
+
+  /** Sets title attribute for error message. */
+  @property({ type: String })
+  errorTitle = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  warningTitle = '';
+
+  /** Sets whether the Flatpickr calendar UI should use static positioning. */
+  @property({ type: Boolean })
+  staticPosition = false;
+
+  /**
+   * Sets whether user has interacted with timepicker for error handling.
+   * @internal
+   */
+  @state()
+  private _hasInteracted = false;
+
+  /** Flatpickr instantiation.
+   * @internal
+   */
+  @state()
+  private flatpickrInstance?: flatpickr.Instance;
+
+  /**
+   * Queries the anchor DOM element.
+   * @ignore
+   */
+  @query('input.input-custom')
+  private _inputEl?: HTMLInputElement;
+
+  /** Tracks if we're in a clear operation to prevent duplicate events
+   * @internal
+   */
+  @state()
+  private _isClearing = false;
+
+  /** Tracks if user has explicitly cleared the input despite having defaults
+   * @internal
+   */
+  @state()
+  private _userHasCleared = false;
+
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = { ..._defaultTextStrings };
+
+  /** Control flag to determine if Flatpickr should open
+   * @internal
+   */
   private _shouldFlatpickrOpen = true;
   private _initialized = false;
+
+  /** Store submit event listener reference for cleanup
+   * @internal
+   */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
   private debounce<T extends (...args: any[]) => any>(
