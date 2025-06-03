@@ -11,13 +11,13 @@ const _defaultTextStrings = {
   errorText: 'Error',
   pleaseSelectColor: 'Please select a color',
   invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',
-  toggleColorInput: 'Toggle Color Input',
+  toggleColorInput: 'Toggle color input',
+  colorTextInput: 'Color text input',
 };
 
 /**
  * Color input.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
- * @slot icon - Slot for contextual icon.
  * @slot tooltip - Slot for tooltip.
  *
  */
@@ -56,19 +56,22 @@ export class ColorInput extends FormMixin(LitElement) {
   _textStrings = _defaultTextStrings;
 
   /**
-   * Queries the <input> DOM element.
+   * Queries the <input[type="color"]> DOM element.
    * @ignore
    */
   @query('input[type="color"]')
   _inputColorEl!: HTMLInputElement;
 
   /**
-   * Queries the <input> DOM element.
+   * Queries the <input[type="text"]> DOM element.
    * @ignore
    */
   @query('input[type="text"]')
   _inputEl!: HTMLInputElement;
 
+  /** Sets whether user has interacted with input text for error handling..
+   * @internal
+   */
   @state()
   _hasInteracted = false;
 
@@ -88,7 +91,10 @@ export class ColorInput extends FormMixin(LitElement) {
         </label>
         <div class="color-input-wrapper">
           <input
-            class="custom-color"
+          class=${classMap({
+            'custom-color': true,
+            readonly: this.readonly,
+          })}
             type="color"
             name="colorInput"
             aria-label=${this._textStrings.toggleColorInput}
@@ -107,7 +113,7 @@ export class ColorInput extends FormMixin(LitElement) {
             ?disabled=${this.disabled}
             ?readonly=${this.readonly}
             ?invalid=${this._isInvalid}
-            aria-label=${this.name}
+            aria-label=${this._textStrings.colorTextInput}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
             @input=${(e: any) => this.handleTextInput(e)}
@@ -133,7 +139,7 @@ export class ColorInput extends FormMixin(LitElement) {
                           aria-label=${this._textStrings.errorText}
                           >${unsafeSVG(errorIcon)}</span
                         >
-                        ${this.invalidText || this._internalValidationMsg}
+                        ${this._internalValidationMsg}
                       </div>
                     `
                   : null
@@ -174,27 +180,39 @@ export class ColorInput extends FormMixin(LitElement) {
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
-    // get validity state from inputEl, combine customError flag if invalidText is provided
+    // get validity state from inputEl
     if (interacted) this._hasInteracted = true;
     const hexPattern = /^#([0-9a-fA-F]{6})$/;
     const value = this._inputEl.value;
+    const validityFlags = {
+      valueMissing: false,
+      patternMismatch: false,
+      customError: false,
+      valid: true,
+    };
+
+    let validationMessage = '';
+
     if (!value) {
-      this._inputEl.setCustomValidity(this._textStrings.pleaseSelectColor);
+      validityFlags.valueMissing = true;
+      validityFlags.valid = false;
+      validationMessage = this._textStrings.pleaseSelectColor;
     } else if (!hexPattern.test(value)) {
-      this._inputEl.setCustomValidity(this._textStrings.invalidFormat);
-    } else {
-      this._inputEl.setCustomValidity('');
+      validityFlags.patternMismatch = true;
+      validityFlags.valid = false;
+      validationMessage = this._textStrings.invalidFormat;
     }
 
-    const Validity = this._inputEl.validity;
-    const ValidationMessage = this._inputEl.validationMessage;
-
     // set validity on custom element, anchor to inputEl
-    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
+    this._internals.setValidity(
+      validityFlags,
+      validationMessage,
+      this._inputEl
+    );
 
     // set internal validation message if value was changed by user input
     if (interacted) {
-      this._internalValidationMsg = this._inputEl.validationMessage;
+      this._internalValidationMsg = validationMessage;
     }
 
     // focus the form field to show validity
