@@ -21,6 +21,7 @@ import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/1
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
 import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/split.svg';
+import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
 
 import '../../overflowMenu';
 import '../../button';
@@ -42,6 +43,17 @@ import '../../fileUploader/fileUploader.sample';
 import { GridStack } from 'gridstack';
 
 type Breakpoint = 'max' | 'xl' | 'lg' | 'md' | 'sm';
+
+const colorSwatchArr = [
+  '#D9D9D9',
+  '#E8BA02',
+  '#2F808C',
+  'linear-gradient(180deg, #FF462D 0%, rgba(153, 42, 27, 0.00) 100%)',
+  '#9747FF',
+  '#4CDD84',
+  '#1D2125',
+  '#5FBEAC',
+];
 
 /**
  * New Widget sample.
@@ -196,6 +208,12 @@ export class NewWidgetSample extends LitElement {
 
   @state()
   updateLayout = SampleLayout;
+
+  @state()
+  formattedColorSwatches = colorSwatchArr.map((color) => ({
+    color: color,
+    selected: false,
+  }));
 
   override render() {
     const modifiedConfig = {
@@ -365,6 +383,31 @@ export class NewWidgetSample extends LitElement {
                         </div>
                       `
                     : this.getImageBackgroundTemplate()}
+                </div>
+                <div class="bacground-image">
+                  <div class="bg_title">Background Image</div>
+                  <div class="color-swatch">
+                    ${this.formattedColorSwatches.map((color) => {
+                      return html`
+                        <button
+                          class="preset-button"
+                          style="background:${color.color};"
+                          type="button"
+                          aria-label="Background Color"
+                          title="Background Color"
+                          name="Background Color"
+                          @click=${(e: Event) =>
+                            this._handleSelection(e, color.color)}
+                        >
+                          ${color.selected
+                            ? html`<span style="display:flex"
+                                >${unsafeSVG(CheckMarkFilledIcon)}</span
+                              >`
+                            : null}
+                        </button>
+                      `;
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
@@ -686,6 +729,23 @@ export class NewWidgetSample extends LitElement {
   private handleUploadImageClick(e: any) {
     this.showFileUploader = !this.showFileUploader;
     action(e.type)(e);
+  }
+
+  private _handleSelection(e: Event, colorSelected: string) {
+    const button = e.target as HTMLButtonElement;
+    const isSelected = button.classList.contains('selected');
+    this.formattedColorSwatches = this.formattedColorSwatches.map((color) => {
+      return {
+        ...color,
+        selected: color.color === colorSelected ? !isSelected : false,
+      };
+    });
+    const event = new CustomEvent('on-click', {
+      detail: { value: colorSelected, origEvent: e },
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
   }
 }
 
