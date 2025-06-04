@@ -56,93 +56,189 @@ const _defaultTextStrings = {
   dateInSelectedRange: 'Date is in selected range',
 };
 
+/**
+ * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
+ * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @slot tooltip - Slot for tooltip.
+ */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {
   static override styles = [DateRangePickerStyles, ShidokaFlatpickrTheme];
 
   /** Label text. */
-  @property({ type: String }) label = '';
+  @property({ type: String })
+  label = '';
 
-  /** Locale code. */
-  @property({ type: String }) locale: SupportedLocale | string = 'en';
+  /** Sets and dynamically imports specific l10n calendar localization. */
+  @property({ type: String })
+  locale: SupportedLocale | string = 'en';
 
-  /** Format for display (e.g., `Y-m-d`). */
-  @property({ type: String }) dateFormat = 'Y-m-d';
+  /** Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`). */
+  @property({ type: String })
+  dateFormat = 'Y-m-d';
 
-  /** Initial value as an array of two strings (start/end). */
-  @property({ type: Array }) defaultDate: string[] | null = null;
+  /** Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. ["2024-01-01", "2024-01-07"]). */
+  @property({ type: Array })
+  defaultDate: string[] | null = null;
 
-  /** Which side of range is editable. */
+  /** Controls which parts of the date range are editable.
+   * Possible values:
+   * - "both" (default): Both start and end dates can be edited
+   * - "start": Only the start date can be edited, end date is locked once set
+   * - "end": Only the end date can be edited, start date is locked once set
+   * - "none": Neither date can be edited once set (similar to readonly)
+   */
   @property({ type: String })
   rangeEditMode: DateRangeEditableMode = DateRangeEditableMode.BOTH;
 
-  /** Default error text. */
-  @property({ type: String }) defaultErrorMessage = '';
+  /** Sets default error message. */
+  @property({ type: String })
+  defaultErrorMessage = '';
 
-  /** Controlled value as [Date|null, Date|null]. */
-  @state() override value: [Date | null, Date | null] = [null, null];
+  /**
+   * Sets the date/time value for the component.
+   *
+   * For controlled usage patterns, this property allows parent components to directly control the selected date.
+   * When used together with defaultDate, value takes precedence if both are provided.
+   *
+   * In uncontrolled usage, this is populated automatically based on defaultDate and user selections.
+   * @internal
+   */
+  @state()
+  override value: [Date | null, Date | null] = [null, null];
 
-  /** Warning text. */
-  @property({ type: String }) warnText = '';
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  warnText = '';
 
-  /** Disable specific dates (array of strings/number/Date). */
-  @property({ type: Array }) disable: (string | number | Date)[] = [];
+  /** Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects. */
+  @property({ type: Array })
+  disable: (string | number | Date)[] = [];
 
-  @state() private _processedDisableDates: (string | number | Date)[] = [];
+  /** Internal storage for processed disable dates */
+  @state()
+  private _processedDisableDates: (string | number | Date)[] = [];
 
-  /** Enable specific dates. */
-  @property({ type: Array }) enable: (string | number | Date)[] = [];
+  /** Sets flatpickr options setting to enable specific dates. */
+  @property({ type: Array })
+  enable: (string | number | Date)[] = [];
 
-  /** Caption text below input. */
-  @property({ type: String }) caption = '';
+  /** Sets caption to be displayed under primary date picker elements. */
+  @property({ type: String })
+  caption = '';
 
-  /** Required flag. */
-  @property({ type: Boolean }) required = false;
+  /** Sets date range picker form input value to required. */
+  @property({ type: Boolean })
+  required = false;
 
-  /** Input size: "sm" | "md" | "lg". */
-  @property({ type: String }) size = 'md';
+  /** Input size. "sm", "md", or "lg". */
+  @property({ type: String })
+  size = 'md';
 
-  /** Disabled state. */
-  @property({ type: Boolean }) dateRangePickerDisabled = false;
+  /** Sets entire date range picker form element to enabled/disabled. */
+  @property({ type: Boolean })
+  dateRangePickerDisabled = false;
 
-  /** Readonly state. */
-  @property({ type: Boolean }) readonly = false;
+  /** Sets entire date range picker form element to readonly. */
+  @property({ type: Boolean })
+  readonly = false;
 
-  /** Force 24‑hour time. */
-  @property({ type: Boolean }) twentyFourHourFormat: boolean | null = null;
+  /** Sets 24-hour formatting true/false.
+   * Defaults to 12H for all `en-` locales and 24H for all other locales.
+   */
+  @property({ type: Boolean })
+  twentyFourHourFormat: boolean | null = null;
 
-  /** Minimum selectable date. */
-  @property({ type: String }) minDate: string | number | Date = '';
+  /** Sets lower boundary of date range picker date selection. */
+  @property({ type: String })
+  minDate: string | number | Date = '';
 
-  /** Maximum selectable date. */
-  @property({ type: String }) maxDate: string | number | Date = '';
+  /** Sets upper boundary of date range picker date selection. */
+  @property({ type: String })
+  maxDate: string | number | Date = '';
 
-  /** Aria label for error. */
-  @property({ type: String }) errorAriaLabel = '';
+  /** Sets aria label attribute for error message. */
+  @property({ type: String })
+  errorAriaLabel = '';
 
-  /** Title for error. */
-  @property({ type: String }) errorTitle = '';
+  /** Sets title attribute for error message. */
+  @property({ type: String })
+  errorTitle = '';
 
-  /** Aria label for warning. */
-  @property({ type: String }) warningAriaLabel = '';
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  warningAriaLabel = '';
 
-  /** Title for warning. */
-  @property({ type: String }) warningTitle = '';
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  warningTitle = '';
 
-  /** Static positioning for calendar. */
-  @property({ type: Boolean }) staticPosition = false;
+  /** Sets whether the Flatpickr calendar UI should use static positioning. */
+  @property({ type: Boolean })
+  staticPosition = false;
 
-  @state() private _enableTime = false;
-  @state() private flatpickrInstance?: Instance;
-  @query('input') private _inputEl?: HTMLInputElement;
-  @state() private _hasInteracted = false;
-  @property({ type: Object }) textStrings = _defaultTextStrings;
-  @state() _textStrings = { ..._defaultTextStrings };
-  @state() private _isClearing = false;
-  @state() private _shouldFlatpickrOpen = false;
-  @state() private _hasInitialDefaultDate = false;
+  /** Sets flatpickr enableTime value based on detected dateFormat.
+   * @internal
+   */
+  @state()
+  private _enableTime = false;
 
+  /** Flatpickr instantiation.
+   * @internal
+   */
+  @state()
+  private flatpickrInstance?: Instance;
+
+  /**
+   * Queries the input DOM element.
+   * @internal
+   */
+  @query('input')
+  private _inputEl?: HTMLInputElement;
+
+  /**
+   * Sets whether user has interacted with datepicker for error handling.
+   * @internal
+   */
+  @state()
+  private _hasInteracted = false;
+
+  /** Customizable text strings. */
+  @property({ type: Object })
+  textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  _textStrings = { ..._defaultTextStrings };
+
+  /** Tracks if we're in a clear operation to prevent duplicate events
+   * @internal
+   */
+  @state()
+  private _isClearing = false;
+
+  /** Control flag to prevent Flatpickr from opening when clicking caption, error, label, or warning elements.
+   * @internal
+   */
+  @state()
+  private _shouldFlatpickrOpen = false;
+
+  /** Track if we initially had a defaultDate when the component was first connected
+   * @internal
+   */
+  @state()
+  private _hasInitialDefaultDate = false;
+
+  /** Track initialization state
+   * @internal
+   */
   private _initialized = false;
+
+  /** Store submit event listener reference for cleanup
+   * @internal
+   */
   private _submitListener: ((e: Event) => void) | null = null;
 
   private debounce<T extends (...args: any[]) => any>(
