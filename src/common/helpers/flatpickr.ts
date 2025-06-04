@@ -249,9 +249,23 @@ export async function initializeSingleAnchorFlatpickr(context: {
   try {
     const options = await getFlatpickrOptions();
 
-    if (inputEl instanceof HTMLInputElement) {
-      delete (options as any).appendTo;
+    // ───────────────────────────────
+    // Do NOT delete "options.appendTo" here.
+    // We want Flatpickr to append into the modal if `appendTo` was set.
+    //
+    // Formerly, the code read:
+    //   if (inputEl instanceof HTMLInputElement) {
+    //     delete (options as any).appendTo;
+    //     options.positionElement = inputEl;
+    //     options.clickOpens = true;
+    //   }
+    //
+    // But that forcibly strips out whatever `appendTo` you gave it.
+    // Instead, we simply do:
+    // ───────────────────────────────
 
+    if (inputEl instanceof HTMLInputElement) {
+      // leave any appendTo in place – that tells Flatpickr “where to insert the calendar DOM.”
       options.positionElement = inputEl;
       options.clickOpens = true;
     }
@@ -264,6 +278,7 @@ export async function initializeSingleAnchorFlatpickr(context: {
       hiddenInput.type = 'text';
       hiddenInput.style.display = 'none';
 
+      // Use `appendTo` (modal) if provided, otherwise fallback to inputEl node itself.
       const container = appendTo || inputEl;
       if (!container) {
         throw new Error('No valid element to append a hidden input to');
@@ -274,13 +289,21 @@ export async function initializeSingleAnchorFlatpickr(context: {
       options.positionElement = inputEl;
     }
 
+    // Now, since we did not delete appendTo, options.appendTo is still whatever came from `getFlatpickrOptions()`.
+    if (appendTo) {
+      // (Just confirming that appendTo was indeed read from getFlatpickrOptions.)
+      options.appendTo = appendTo;
+    }
+
     const fpInstance = flatpickr(hiddenInput, options) as Instance;
     if (!fpInstance) {
       console.error('Failed to initialize Flatpickr');
       return undefined;
     }
 
+    // Immediately apply our a11y enhancements (including container-modal vs container-default).
     applyCalendarA11y(fpInstance, getModalContainer(inputEl) !== document.body);
+
     if (setInitialDates) {
       setInitialDates(fpInstance);
     }
@@ -313,12 +336,34 @@ export function getPlaceholder(
   return 'Select date';
 }
 
-export function getModalContainer(element: HTMLElement): HTMLElement {
-  return (
-    ['kyn-modal', 'kyn-side-drawer']
-      .map((selector) => element.closest(selector))
-      .find((el): el is HTMLElement => el !== null) || document.body
-  );
+export function getModalContainer(startEl: HTMLElement): HTMLElement {
+  let node: Node | null = startEl;
+
+  while (node) {
+    // 1) If this node is inside a shadow root, jump to its host.
+    if (node instanceof ShadowRoot) {
+      node = (node as ShadowRoot).host;
+      continue;
+    }
+
+    // 2) If this node is an Element, check if it matches <kyn-modal> or <kyn-side-drawer>.
+    if (node instanceof Element) {
+      if (
+        node.tagName.toLowerCase() === 'kyn-modal' ||
+        node.tagName.toLowerCase() === 'kyn-side-drawer'
+      ) {
+        return node as HTMLElement;
+      }
+      // Otherwise step up to parentNode (could cross into a ShadowRoot).
+      node = node.parentNode;
+      continue;
+    }
+
+    // 3) If we hit document (or anything else), stop.
+    break;
+  }
+
+  return document.body;
 }
 
 export async function getFlatpickrOptions(
