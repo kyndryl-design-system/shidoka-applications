@@ -17,6 +17,7 @@ import {
   emitValue,
   hideEmptyYear,
   clearFlatpickrInput,
+  getModalContainer,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -752,6 +753,8 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    const container = getModalContainer(this);
+
     const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -770,6 +773,7 @@ export class DatePicker extends FormMixin(LitElement) {
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
+      appendTo: container,
     });
 
     return options;
