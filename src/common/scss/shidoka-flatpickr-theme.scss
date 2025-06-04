@@ -323,6 +323,12 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+
+  height: 34px;
+  &:focus-visible {
+    outline: 2px solid var(--kd-color-date-and-time-picker-border-focus);
+    outline-offset: 0px;
+  }
 }
 
 .flatpickr-months .flatpickr-month {
@@ -568,6 +574,11 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 
 .flatpickr-current-month span.cur-month:hover {
   background: transparent;
+}
+
+.flatpickr-current-month span.cur-month:focus-visible {
+  outline: 2px solid var(--kd-color-date-and-time-picker-border-focus);
+  outline-offset: 2px;
 }
 
 .flatpickr-current-month .numInputWrapper {
@@ -953,6 +964,11 @@ span.flatpickr-weekday {
   box-sizing: border-box;
   overflow: hidden;
   background: $date-picker-background;
+
+  &:focus-visible {
+    outline: 2px solid var(--kd-color-date-and-time-picker-border-focus);
+    outline-offset: 0px;
+  }
 }
 
 .flatpickr-rContainer {
@@ -960,6 +976,11 @@ span.flatpickr-weekday {
   padding: 0;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+
+  &:focus-visible {
+    outline: 2px solid var(--kd-color-date-and-time-picker-border-focus);
+    outline-offset: 0px;
+  }
 }
 
 .flatpickr-time {
@@ -1062,9 +1083,13 @@ span.flatpickr-weekday {
   font-weight: 500;
 }
 
-.flatpickr-time input:focus-visible {
+.flatpickr-time input.flatpickr-hour:focus-visible,
+.flatpickr-time input.flatpickr-minute:focus-visible,
+.flatpickr-time input.flatpickr-second:focus-visible {
+  background-color: var(--kd-color-date-and-time-picker-background-pressed);
+  color: var(--kd-color-date-and-time-picker-text-dark);
   outline: 0;
-  border: none;
+  border: 0;
 }
 
 .flatpickr-time .flatpickr-time-separator,
