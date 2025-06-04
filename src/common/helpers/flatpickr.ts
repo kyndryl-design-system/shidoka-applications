@@ -48,10 +48,6 @@ interface BaseFlatpickrContext {
   setInitialDates?: (instance: Instance) => void;
 }
 
-interface SingleFlatpickrContext extends BaseFlatpickrContext {
-  inputEl: HTMLElement;
-}
-
 interface RangeFlatpickrContext extends BaseFlatpickrContext {
   inputEl: HTMLElement;
   endinputEl?: HTMLElement;
@@ -489,14 +485,14 @@ export async function getFlatpickrOptions(
     options.enable = enable;
   }
   if (disable && disable.length > 0) {
-    options.disable = disable.map((d) => {
-      if (d instanceof Date) return d;
-      if (typeof d === 'number') return new Date(d);
-      if (typeof d === 'string') {
-        const parsed = flatpickr.parseDate(d, effectiveDateFormat);
-        return parsed || d;
+    options.disable = disable.map((date) => {
+      if (date instanceof Date) return date;
+      if (typeof date === 'number') return new Date(date);
+      if (typeof date === 'string') {
+        const parsed = flatpickr.parseDate(date, effectiveDateFormat);
+        return parsed || date;
       }
-      return d;
+      return date;
     });
   }
 
