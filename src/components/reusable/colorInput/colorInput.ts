@@ -19,7 +19,6 @@ const _defaultTextStrings = {
  * Color input.
  * @fires on-input - Captures the input event and emits the selected value and original event details.
  * @slot tooltip - Slot for tooltip.
- *
  */
 @customElement('kyn-color-input')
 export class ColorInput extends FormMixin(LitElement) {
