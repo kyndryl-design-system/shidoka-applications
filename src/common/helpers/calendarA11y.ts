@@ -2,6 +2,35 @@ import { Instance } from 'flatpickr/dist/types/instance';
 import { Hook } from 'flatpickr/dist/types/options';
 import { setCalendarAttributes } from './flatpickr';
 
+/**
+ * Adds ARIA attributes, keyboard support, and screen reader announcements
+ * making it fully accessible for screen readers by:
+ *
+ * 1. creating a hidden “live region” (<div aria-live="polite">) that
+ *    gets updated whenever a date, month, or year changes, so screen readers
+ *    speak relevant status messages.
+ *
+ * 2. exposing calendar navigation elements (prev/next buttons, month selector,
+ *    year input, etc.) to the keyboard by setting tabindex, role, and aria-label,
+ *    and hooking into arrow/up/down or 'Enter'/'Space' keypress to change month/year
+ *    or open the month dropdown, with announcements.
+ *
+ * 3. making each selectable day in the calendar focusable (tabIndex=0), assigns
+ *    role="button", and listens for 'Enter'/'Space' to select a date, announcing
+ *    the chosen date.
+ *
+ * 4. if time selection is enabled, makes hour/minute inputs and the AM/PM toggle
+ *    into spinbutton or button roles, handles arrow keys to adjust values, and
+ *    announces changes via the live region.
+ *
+ * 5. hooking into Flatpickr’s onMonthChange and onDayCreate events to reapply
+ *    focusable roles and keyboard handlers whenever the calendar view updates,
+ *    and to announce the new month/year or selected date(s).
+ *
+ * 6. enabling arrow-key navigation between days (up/down/left/right) in the
+ *    calendar grid, with announcements of each focused date.
+ */
+
 let srLiveRegion: HTMLElement | null = null;
 
 function getScreenReaderLiveRegion(): HTMLElement {
