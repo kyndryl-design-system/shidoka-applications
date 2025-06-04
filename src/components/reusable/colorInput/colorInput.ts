@@ -11,7 +11,6 @@ const _defaultTextStrings = {
   errorText: 'Error',
   pleaseSelectColor: 'Please select a color',
   invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',
-  toggleColorInput: 'Toggle color input',
   colorTextInput: 'Color text input',
 };
 
@@ -96,7 +95,7 @@ export class ColorInput extends FormMixin(LitElement) {
           })}
             type="color"
             name="colorInput"
-            aria-label=${this._textStrings.toggleColorInput}
+            id="colorInput"
             .value=${this.value}
             ?disabled=${this.disabled}
             @input=${this.handleColorChange}
