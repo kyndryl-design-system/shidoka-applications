@@ -448,7 +448,7 @@ export async function getFlatpickrOptions(
   };
 
   if (mode === 'range') {
-    options.onReady = (selectedDates, dateStr, instance) => {
+    options.onReady = (_, __, instance) => {
       if (instance.calendarContainer) {
         const timeContainer =
           instance.calendarContainer.querySelector('.flatpickr-time');
