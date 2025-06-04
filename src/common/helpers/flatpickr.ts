@@ -526,8 +526,22 @@ export function setCalendarAttributes(
     requestAnimationFrame(() => {
       try {
         const { calendarContainer, config } = instance;
-        calendarContainer.setAttribute('role', 'application');
-        calendarContainer.setAttribute('aria-label', 'Calendar');
+        calendarContainer.setAttribute('role', 'dialog');
+
+        if (config.mode === 'range') {
+          calendarContainer.setAttribute('aria-label', 'Date range picker');
+        } else if (config.mode === 'multiple') {
+          calendarContainer.setAttribute(
+            'aria-label',
+            'Multiple date selection'
+          );
+        } else if (config.enableTime) {
+          calendarContainer.setAttribute('aria-label', 'Date and time picker');
+        } else {
+          calendarContainer.setAttribute('aria-label', 'Date picker');
+        }
+
+        calendarContainer.setAttribute('aria-modal', 'true');
 
         calendarContainer.classList.remove('container-modal', 'container-body');
         const containerClass = modalDetected

@@ -647,19 +647,38 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr() {
+    if (this._isDestroyed) return;
     if (!this._inputEl || !this._inputEl.isConnected) {
       return;
     }
 
     try {
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+      const ctx = {
         inputEl: this._inputEl,
         getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
         setInitialDates: this.setInitialDates.bind(this),
-      });
+        appendTo: getModalContainer(this),
+      };
+
+      this.flatpickrInstance = await initializeSingleAnchorFlatpickr(ctx);
 
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
+      }
+
+      if (this.flatpickrInstance?.calendarContainer) {
+        const container = getModalContainer(this);
+        const modalDetected = container !== document.body;
+
+        if (modalDetected) {
+          this.flatpickrInstance.calendarContainer.classList.add(
+            'container-modal'
+          );
+        } else {
+          this.flatpickrInstance.calendarContainer.classList.add(
+            'container-default'
+          );
+        }
       }
 
       hideEmptyYear();
