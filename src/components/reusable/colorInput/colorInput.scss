@@ -1,0 +1,51 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.color-input-wrapper {
+  display: flex;
+  align-items: center;
+  float: left;
+  margin-right: 8px;
+}
+
+input[type='text'] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 90px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  height: 32px;
+  padding: 4px 10px;
+}
+
+.custom-color {
+  -webkit-appearance: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+.custom-color::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.custom-color::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
+}
+.custom-color::-moz-color-swatch {
+  border: none;
+  border-radius: 4px;
+}
+
+input[type='color'].readonly {
+  pointer-events: none;
+}
