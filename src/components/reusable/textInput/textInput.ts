@@ -199,8 +199,8 @@ export class TextInput extends FormMixin(LitElement) {
                   kind="ghost"
                   size="small"
                   description=${this.passwordVisible
-                    ? this.textStrings.hidePassword
-                    : this.textStrings.showPassword}
+                    ? this._textStrings.hidePassword
+                    : this._textStrings.showPassword}
                   @click=${this.disabled
                     ? null
                     : this._togglePasswordVisibility}
