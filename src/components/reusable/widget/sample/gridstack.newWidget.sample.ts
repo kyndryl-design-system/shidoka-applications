@@ -45,14 +45,12 @@ import { GridStack } from 'gridstack';
 type Breakpoint = 'max' | 'xl' | 'lg' | 'md' | 'sm';
 
 const colorSwatchArr = [
-  '#D9D9D9',
-  '#E8BA02',
-  '#2F808C',
-  'linear-gradient(180deg, #FF462D 0%, rgba(153, 42, 27, 0.00) 100%)',
-  '#9747FF',
-  '#4CDD84',
-  '#1D2125',
-  '#5FBEAC',
+  'linear-gradient(180deg, #2F808C 0%, var(--kd-color-background-page-default, #1D2125) 100%)',
+  'linear-gradient(180deg, #FF462D 0%, var(--kd-color-background-page-default, #1D2125) 100%)',
+  'linear-gradient(180deg, #4CDD84 0%, var(--kd-color-background-page-default, #1D2125) 100%)',
+  'linear-gradient(180deg, #101316 0%, var(--kd-color-background-page-default, #1D2125) 100%)',
+  'linear-gradient(180deg, #5FBEAC 0%, var(--kd-color-background-page-default, #1D2125) 100%)',
+  'linear-gradient(180deg, #E8BA02 0%, var(--kd-colo-background-page-default, #1D2125) 100%)',
 ];
 
 /**
