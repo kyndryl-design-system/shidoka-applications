@@ -117,7 +117,9 @@ export class TextInput extends FormMixin(LitElement) {
   @state()
   iconSlotted = false;
 
-  /** Internal state for password visibility */
+  /** Internal state for password visibility
+   * @internal
+   */
   @state()
   private passwordVisible = false;
 
