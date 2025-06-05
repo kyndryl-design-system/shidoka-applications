@@ -416,6 +416,7 @@ export class NewWidgetSample extends LitElement {
       </kyn-side-drawer>
       <br />
       <br />
+      <br />
       <kyn-widget-gridstack
         .layout=${this.updateLayout}
         .gridstackConfig=${modifiedConfig}
