@@ -385,7 +385,7 @@ export class NewWidgetSample extends LitElement {
                     : this.getImageBackgroundTemplate()}
                 </div>
                 <div class="bacground-image">
-                  <div class="bg_title">Background Image</div>
+                  <div class="bg_title">Background Color</div>
                   <div class="color-swatch">
                     ${this.formattedColorSwatches.map((color) => {
                       return html`
