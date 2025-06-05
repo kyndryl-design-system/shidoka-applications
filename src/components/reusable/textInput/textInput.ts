@@ -25,6 +25,8 @@ const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear all',
   errorText: 'Error',
+  showPassword: 'Show password',
+  hidePassword: 'Hide password',
 };
 
 /**
@@ -191,20 +193,24 @@ export class TextInput extends FormMixin(LitElement) {
           />
           ${this.type === 'password' && !this.readonly
             ? html`
-                <div
-                  class="visibility-toggle ${this.disabled ? 'disabled' : ''}"
-                  @click="${this.disabled
+                <kyn-button
+                  ?disabled=${this.disabled}
+                  class="visibility-toggle"
+                  kind="ghost"
+                  size="small"
+                  description=${this.passwordVisible
+                    ? this.textStrings.hidePassword
+                    : this.textStrings.showPassword}
+                  @click=${this.disabled
                     ? null
-                    : this._togglePasswordVisibility}"
+                    : this._togglePasswordVisibility}
                 >
-                  ${this.passwordVisible
-                    ? html`<span class="icon-container"
-                        >${unsafeSVG(unlockIcon)}</span
-                      >`
-                    : html`<span class="icon-container"
-                        >${unsafeSVG(lockIcon)}</span
-                      >`}
-                </div>
+                  <span style="display:flex;" slot="icon">
+                    ${this.passwordVisible
+                      ? html`${unsafeSVG(unlockIcon)}`
+                      : html`${unsafeSVG(lockIcon)}`}
+                  </span>
+                </kyn-button>
               `
             : null}
           ${this.value === 'search' && !this.readonly
