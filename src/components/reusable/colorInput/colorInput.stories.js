@@ -15,6 +15,7 @@ const args = {
   disabled: false,
   readonly: false,
   hideLabel: false,
+  invalidText: '',
   textStrings: {
     errorText: 'Error',
     pleaseSelectColor: 'Please select a color',
@@ -33,6 +34,7 @@ export const Default = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-input=${(e) => action(e.type)(e)}

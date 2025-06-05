@@ -137,7 +137,7 @@ export class ColorInput extends FormMixin(LitElement) {
                           aria-label=${this._textStrings.errorText}
                           >${unsafeSVG(errorIcon)}</span
                         >
-                        ${this._internalValidationMsg}
+                        ${this.invalidText || this._internalValidationMsg}
                       </div>
                     `
                   : null
