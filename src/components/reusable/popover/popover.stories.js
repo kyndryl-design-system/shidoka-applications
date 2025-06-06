@@ -26,7 +26,7 @@ export default {
 };
 
 const args = {
-  size: 'auto',
+  popoverSize: 'narrow',
   titleText: 'Modal Title',
   labelText: '',
   okText: 'Primary Button',
@@ -44,7 +44,7 @@ const args = {
 export const NarrowPopover = {
   args: {
     ...args,
-    size: 'narrow',
+    popoverSize: 'narrow',
     titleText: 'Narrow Popover Title',
     labelText: 'Narrow Popover Label',
     okText: 'Primary Button',

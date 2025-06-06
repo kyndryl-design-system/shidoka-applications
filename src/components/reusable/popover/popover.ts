@@ -87,14 +87,6 @@ export class Popover extends LitElement {
   @property({ attribute: false })
   beforeClose!: Function;
 
-  /**
-   * Maps popoverSize to modal size values
-   * All set to auto and controlled by CSS
-   */
-  get size(): string {
-    return 'auto'; // Use auto for all sizes and control width via CSS
-  }
-
   /** Toggles the popover open state
    * @internal
    */
@@ -103,26 +95,13 @@ export class Popover extends LitElement {
     console.log('Toggle popover:', this.open); // Add logging to debug
   }
 
-  private getDialogWidth(): string {
-    const widths = {
-      mini: '400px',
-      narrow: '500px',
-      wide: '600px',
+  private getModalSize(): string {
+    const sizeMap = {
+      mini: 'md',
+      narrow: 'md',
+      wide: 'lg',
     };
-    return widths[this.popoverSize] || 'auto';
-  }
-
-  override updated(changedProps: any) {
-    super.updated(changedProps);
-
-    if (changedProps.has('popoverSize') || changedProps.has('open')) {
-      setTimeout(() => {
-        const modal = this.shadowRoot?.querySelector('kyn-modal');
-        if (modal) {
-          modal.style.setProperty('--dialog-width', this.getDialogWidth());
-        }
-      }, 0);
-    }
+    return sizeMap[this.popoverSize] || 'auto';
   }
 
   override render() {
@@ -138,10 +117,9 @@ export class Popover extends LitElement {
         </span>
 
         <kyn-modal
-          class="popover-modal"
+          class="popover-modal popover-size--${this.popoverSize}"
           .open=${this.open}
-          size=${'auto'}
-          style="--dialog-width: ${this.getDialogWidth()};"
+          size=${this.getModalSize()}
           titleText=${this.titleText}
           labelText=${this.labelText}
           okText=${this.okText}
