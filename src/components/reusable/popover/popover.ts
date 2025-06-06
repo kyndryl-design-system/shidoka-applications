@@ -7,9 +7,8 @@ import PopoverScss from './popover.scss';
 import '../modal';
 /**
  * Popover component.
- * @slot unnamed - Main content of the popover.
+ * @slot unnamed - Slot for content that appears at different sizes (wide, narrow, mini).
  * @slot anchor - Element that triggers the popover.
- * @slot expansion - Slot for expansion content that appears at different sizes (wide, narrow, mini).
  */
 
 @customElement('kyn-popover')
@@ -22,7 +21,7 @@ export class Popover extends LitElement {
 
   /** Popover size, one of 'mini', 'narrow', or 'wide' */
   @property({ type: String })
-  size: 'mini' | 'narrow' | 'wide' = 'mini';
+  popoverSize: 'mini' | 'narrow' | 'wide' = 'mini';
 
   /** Controls popover visibility */
   @property({ type: Boolean })
@@ -42,11 +41,11 @@ export class Popover extends LitElement {
 
   /** Cancel button text */
   @property({ type: String })
-  cancelText = 'Cancel';
+  cancelText = '';
 
   /** Close button text */
   @property({ type: String })
-  closeText = 'Close';
+  closeText = '';
 
   /** Changes the primary button styles to indicate the action is destructive */
   @property({ type: Boolean })
@@ -66,7 +65,7 @@ export class Popover extends LitElement {
 
   /** Secondary button text */
   @property({ type: String })
-  secondaryButtonText = 'Secondary';
+  secondaryButtonText = '';
 
   /** Disables the secondary button */
   @property({ type: Boolean })
@@ -88,47 +87,83 @@ export class Popover extends LitElement {
   @property({ attribute: false })
   beforeClose!: Function;
 
+  /**
+   * Maps popoverSize to modal size values
+   * All set to auto and controlled by CSS
+   */
+  get size(): string {
+    return 'auto'; // Use auto for all sizes and control width via CSS
+  }
+
+  /** Toggles the popover open state
+   * @internal
+   */
   private _toggle() {
     this.open = !this.open;
+    console.log('Toggle popover:', this.open); // Add logging to debug
+  }
+
+  private getDialogWidth(): string {
+    const widths = {
+      mini: '400px',
+      narrow: '500px',
+      wide: '600px',
+    };
+    return widths[this.popoverSize] || 'auto';
+  }
+
+  override updated(changedProps: any) {
+    super.updated(changedProps);
+
+    if (changedProps.has('popoverSize') || changedProps.has('open')) {
+      setTimeout(() => {
+        const modal = this.shadowRoot?.querySelector('kyn-modal');
+        if (modal) {
+          modal.style.setProperty('--dialog-width', this.getDialogWidth());
+        }
+      }, 0);
+    }
   }
 
   override render() {
-    const modalClasses = {
+    const popoverClasses = {
       [`type--${this.type}`]: true,
-      [`size--${this.size}`]: true,
+      [`popover-size--${this.popoverSize}`]: true,
     };
 
     return html`
-      <span class="anchor" @click=${this._toggle}>
-        <slot name="anchor"></slot>
-      </span>
+      <div class=${classMap(popoverClasses)}>
+        <span class="anchor" @click=${() => this._toggle()}>
+          <slot name="anchor"></slot>
+        </span>
 
-      <kyn-modal
-        ?open=${this.open}
-        size=${this.size}
-        titleText=${this.titleText}
-        labelText=${this.labelText}
-        okText=${this.okText}
-        cancelText=${this.cancelText}
-        closeText=${this.closeText}
-        ?destructive=${this.destructive}
-        ?okDisabled=${this.okDisabled}
-        ?hideFooter=${this.hideFooter}
-        ?showSecondaryButton=${this.showSecondaryButton}
-        secondaryButtonText=${this.secondaryButtonText}
-        ?secondaryDisabled=${this.secondaryDisabled}
-        ?hideCancelButton=${this.hideCancelButton}
-        ?aiConnected=${this.aiConnected}
-        ?disableScroll=${this.disableScroll}
-        .beforeClose=${this.beforeClose}
-        class=${classMap(modalClasses)}
-        @on-close=${() => (this.open = false)}
-      >
-        <slot></slot>
-        <div class="expansion-container">
-          <slot name="expansion"></slot>
-        </div>
-      </kyn-modal>
+        <kyn-modal
+          class="popover-modal"
+          .open=${this.open}
+          size=${'auto'}
+          style="--dialog-width: ${this.getDialogWidth()};"
+          titleText=${this.titleText}
+          labelText=${this.labelText}
+          okText=${this.okText}
+          cancelText=${this.cancelText}
+          closeText=${this.closeText}
+          ?destructive=${this.destructive}
+          ?okDisabled=${this.okDisabled}
+          ?hideFooter=${this.hideFooter}
+          ?showSecondaryButton=${this.showSecondaryButton}
+          secondaryButtonText=${this.secondaryButtonText}
+          ?secondaryDisabled=${this.secondaryDisabled}
+          ?hideCancelButton=${this.hideCancelButton}
+          ?aiConnected=${this.aiConnected}
+          ?disableScroll=${this.disableScroll}
+          .beforeClose=${this.beforeClose}
+          @on-close=${() => (this.open = false)}
+        >
+          <div class="expansion-container">
+            <slot></slot>
+          </div>
+        </kyn-modal>
+      </div>
     `;
   }
 }

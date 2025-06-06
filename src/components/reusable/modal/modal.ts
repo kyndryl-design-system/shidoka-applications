@@ -143,7 +143,9 @@ export class Modal extends LitElement {
           </kyn-button>
           <header>
             <div>
-              <h1 id="dialogLabel">${this.titleText}</h1>
+              ${this.titleText !== ''
+                ? html`<h1 id="dialogLabel">${this.titleText}</h1>`
+                : null}
               ${this.labelText !== ''
                 ? html`<span class="label">${this.labelText}</span>`
                 : null}
