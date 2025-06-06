@@ -13,12 +13,11 @@ import {
   handleInputClick,
   handleInputFocus,
   updateEnableTime,
-  setCalendarAttributes,
   loadLocale,
   emitValue,
   hideEmptyYear,
-  getModalContainer,
   clearFlatpickrInput,
+  getModalContainer,
 } from '../../../common/helpers/flatpickr';
 import '../../reusable/button';
 
@@ -648,53 +647,44 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr() {
-    if (this._isDestroyed) {
-      return;
-    }
-
+    if (this._isDestroyed) return;
     if (!this._inputEl || !this._inputEl.isConnected) {
-      console.warn(
-        'Cannot initialize Flatpickr: input element not available or not connected to DOM'
-      );
       return;
     }
 
     try {
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.destroy();
-      }
-
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+      const ctx = {
         inputEl: this._inputEl,
         getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
-          try {
-            const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
-            if (instance.calendarContainer) {
-              instance.calendarContainer.setAttribute(
-                'aria-label',
-                'Date picker'
-              );
-            }
-          } catch (error) {
-            console.error('Error setting calendar attributes:', error);
-          }
-        },
         setInitialDates: this.setInitialDates.bind(this),
-      });
+        appendTo: getModalContainer(this),
+      };
+
+      this.flatpickrInstance = await initializeSingleAnchorFlatpickr(ctx);
 
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
       }
 
+      if (this.flatpickrInstance?.calendarContainer) {
+        const container = getModalContainer(this);
+        const modalDetected = container !== document.body;
+
+        if (modalDetected) {
+          this.flatpickrInstance.calendarContainer.classList.add(
+            'container-modal'
+          );
+        } else {
+          this.flatpickrInstance.calendarContainer.classList.add(
+            'container-default'
+          );
+        }
+      }
+
       hideEmptyYear();
       this._validate(false, false);
-    } catch (error) {
-      console.error('Error initializing Flatpickr:', error);
-      if (error instanceof Error) {
-        console.error('Error details:', error.message);
-      }
+    } catch (err) {
+      console.error('Error initializing Flatpickr:', err);
     }
   }
 
@@ -783,10 +773,11 @@ export class DatePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
+
     const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ? this.defaultDate : undefined,
+      defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl!,
@@ -797,13 +788,13 @@ export class DatePicker extends FormMixin(LitElement) {
       mode: this.mode,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
       loadLocale,
+      static: this.staticPosition,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
       onChange: this.handleDateChange.bind(this),
       appendTo: container,
-      noCalendar: false,
-      static: this.staticPosition,
     });
+
     return options;
   }
 
