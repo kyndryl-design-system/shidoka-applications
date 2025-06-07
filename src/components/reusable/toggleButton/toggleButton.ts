@@ -126,6 +126,27 @@ export class ToggleButton extends FormMixin(LitElement) {
       this._internals.setFormValue(this.checked ? this.value : null);
     }
   }
+
+  _validate(interacted: Boolean, report: Boolean) {
+    const Validity =
+      this.invalidText !== ''
+        ? { ...this._inputEl.validity, customError: true }
+        : this._inputEl.validity;
+    const ValidationMessage =
+      this.invalidText !== ''
+        ? this.invalidText
+        : this._inputEl.validationMessage;
+
+    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
+
+    if (interacted) {
+      this._internalValidationMsg = this._inputEl.validationMessage;
+    }
+
+    if (report) {
+      this._internals.reportValidity();
+    }
+  }
 }
 
 declare global {
