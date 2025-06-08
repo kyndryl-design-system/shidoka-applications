@@ -127,11 +127,13 @@ export class ToggleButton extends FormMixin(LitElement) {
     }
   }
 
-  _validate(interacted: Boolean, report: Boolean) {
+  // ignore warning, FormMixin requires this method
+  private _validate(interacted: boolean, report: boolean) {
     const Validity =
       this.invalidText !== ''
         ? { ...this._inputEl.validity, customError: true }
         : this._inputEl.validity;
+
     const ValidationMessage =
       this.invalidText !== ''
         ? this.invalidText
@@ -142,7 +144,6 @@ export class ToggleButton extends FormMixin(LitElement) {
     if (interacted) {
       this._internalValidationMsg = this._inputEl.validationMessage;
     }
-
     if (report) {
       this._internals.reportValidity();
     }
