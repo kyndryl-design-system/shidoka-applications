@@ -353,6 +353,7 @@ export class DatePicker extends FormMixin(LitElement) {
             aria-labelledby=${`label-${anchorId}`}
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @keydown=${this.handleInputKeydownEvent}
           />
           ${this.hasValue() && !this.readonly
             ? html`
@@ -594,6 +595,24 @@ export class DatePicker extends FormMixin(LitElement) {
     ) {
       if (this.flatpickrInstance) {
         this.flatpickrInstance.close();
+      }
+    }
+  }
+
+  private handleInputKeydownEvent(e: KeyboardEvent) {
+    if (!this.flatpickrInstance) return;
+    if (e.key === ' ') {
+      e.preventDefault();
+      this.flatpickrInstance.open();
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = (this._inputEl as HTMLInputElement).value;
+      try {
+        this.flatpickrInstance.setDate(val, true);
+      } catch {
+        this.invalidText = this._textStrings.invalidDateFormat;
+        this._validate(true, false);
       }
     }
   }

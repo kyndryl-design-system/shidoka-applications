@@ -425,6 +425,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             aria-labelledby=${`label-${anchorId}`}
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @keydown=${this.handleInputKeydownEvent}
           />
           ${showClearButton
             ? html`
@@ -526,6 +527,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     return null;
+  }
+
+  private handleInputKeydownEvent(e: KeyboardEvent) {
+    if (!this.flatpickrInstance) return;
+    if (e.key === ' ') {
+      e.preventDefault();
+      this.flatpickrInstance.open();
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = (this._inputEl as HTMLInputElement).value;
+      try {
+        this.flatpickrInstance.setDate(val, true);
+      } catch {
+        this.invalidText = this._textStrings.pleaseSelectValidDate;
+        this._validate(true, false);
+      }
+    }
   }
 
   private getDateRangePickerClasses() {
@@ -1002,6 +1021,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       disable: this._processedDisableDates,
       mode: 'range',
       closeOnSelect: !this._enableTime,
+      allowInput: true,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
