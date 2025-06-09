@@ -245,32 +245,18 @@ export async function initializeSingleAnchorFlatpickr(context: {
   try {
     const options = await getFlatpickrOptions();
 
-    if (inputEl instanceof HTMLInputElement) {
-      options.positionElement = inputEl;
-      options.clickOpens = true;
-    }
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'text';
+    hiddenInput.classList.add('flatpickr-input');
+    hiddenInput.style.position = 'absolute';
+    hiddenInput.style.opacity = '0';
+    document.body.appendChild(hiddenInput);
 
-    let hiddenInput: HTMLInputElement;
-    if (inputEl instanceof HTMLInputElement) {
-      hiddenInput = inputEl;
-    } else {
-      hiddenInput = document.createElement('input');
-      hiddenInput.type = 'text';
-      hiddenInput.style.display = 'none';
+    options.positionElement = inputEl;
 
-      const container = appendTo || inputEl;
-      if (!container) {
-        throw new Error('No valid element to append a hidden input to');
-      }
-      container.appendChild(hiddenInput);
+    options.appendTo = document.body;
 
-      options.clickOpens = false;
-      options.positionElement = inputEl;
-    }
-
-    if (appendTo) {
-      options.appendTo = appendTo;
-    }
+    options.clickOpens = false;
 
     const fpInstance = flatpickr(hiddenInput, options) as Instance;
     if (!fpInstance) {
@@ -279,6 +265,20 @@ export async function initializeSingleAnchorFlatpickr(context: {
     }
 
     applyCalendarA11y(fpInstance, getModalContainer(inputEl) !== document.body);
+
+    if (
+      inputEl instanceof HTMLInputElement &&
+      fpInstance.input &&
+      fpInstance.input.value
+    ) {
+      inputEl.value = fpInstance.input.value;
+    }
+
+    inputEl.addEventListener('click', () => {
+      if (!fpInstance.isOpen) {
+        fpInstance.open();
+      }
+    });
 
     if (setInitialDates) {
       setInitialDates(fpInstance);
