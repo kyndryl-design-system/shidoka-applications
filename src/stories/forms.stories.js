@@ -14,6 +14,7 @@ import '../components/reusable/tooltip';
 import '../components/reusable/button';
 import '../components/reusable/sliderInput';
 import '../components/reusable/fileUploader';
+import '../components/reusable/colorInput';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
@@ -528,6 +529,20 @@ export const Default = {
             Tooltip example.
           </kyn-tooltip>
         </kyn-slider-input>
+
+        <br /><br />
+        <kyn-color-input
+          name="colorInput"
+          value=""
+          caption="Color input example"
+          label="Color input"
+          @on-input=${(e) => action(e.type)(e)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Tooltip example.
+          </kyn-tooltip>
+        </kyn-color-input>
         <br /><br />
         <kyn-file-uploader
           name="file-uploader"
