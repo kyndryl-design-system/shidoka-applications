@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/mixins.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: inline-block;
@@ -66,6 +67,13 @@ kyn-text-input {
       background-color: var(--kd-color-background-ui-hollow-hover);
     }
   }
+  .suggestion-title {
+    @include typography.type-ui-02;
+    padding: 16px;
+    transition: background-color 150ms ease-out;
+    background-color: var(--kd-color-background-forms-default);
+    color: var(--kd-color-text-level-secondary);
+  }
 }
 
 .assistive-text {
@@ -74,4 +82,18 @@ kyn-text-input {
 
 span[slot='icon'] {
   display: flex;
+}
+
+.history-suggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bold-text {
+  font-weight: var(--kd-font-weight-bold);
+}
+
+.light-text {
+  color: var(--kd-color-text-level-secondary);
 }

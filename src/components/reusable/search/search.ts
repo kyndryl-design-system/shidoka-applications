@@ -7,6 +7,7 @@ import Styles from './search.scss';
 import '../textInput';
 import '../button';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
+import historyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/history.svg';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -60,6 +61,10 @@ export class Search extends LitElement {
   @property({ type: Object })
   assistiveTextStrings = _defaultTextStrings;
 
+  /** To show history searches in suggestion panel */
+  @property({ type: Boolean })
+  enableSearchHistory = false;
+
   /**
    * Internal assistive text strings.
    * @internal
@@ -92,7 +97,7 @@ export class Search extends LitElement {
       expanded: this._expanded,
       expandable: this.expandable,
       focused: this._focused,
-      'has-value': this.value !== '',
+      'has-value': this.value !== '' || this.enableSearchHistory,
     };
 
     return html`
@@ -128,6 +133,9 @@ export class Search extends LitElement {
           class="suggestions"
           @keydown=${(e: any) => this.handleListKeydown(e)}
         >
+          ${!this.value && this.enableSearchHistory
+            ? html` <div class="suggestion-title">Recent searches</div>`
+            : null}
           ${this.suggestions.map(
             (suggestion) =>
               html`
@@ -140,7 +148,30 @@ export class Search extends LitElement {
                   @mousedown=${(e: any) =>
                     this._handleSuggestionWithMouseDown(e)}
                 >
-                  ${suggestion}
+                  ${(() => {
+                    if (this.value === '') {
+                      if (this.enableSearchHistory) {
+                        return html`<div class="history-suggestion">
+                          <span style="display:flex"
+                            >${unsafeSVG(historyIcon)}</span
+                          ><span>${suggestion}</span>
+                        </div>`;
+                      } else {
+                        return html`${suggestion}`;
+                      }
+                    }
+                    const regex = new RegExp(`(${this.value})`, 'ig');
+                    if (!regex.test(suggestion)) {
+                      return html`${suggestion}`;
+                    }
+                    const parts = suggestion.split(regex);
+                    return parts.map((part) =>
+                      part.toLowerCase() === this.value.toLowerCase() &&
+                      this.value
+                        ? html`<span class="bold-text">${part}</span>`
+                        : html`<span class="light-text">${part}</span>`
+                    );
+                  })()}
                 </div>
               `
           )}
@@ -171,6 +202,10 @@ export class Search extends LitElement {
 
   private _handleFocus() {
     this._focused = true;
+
+    if (this.enableSearchHistory) {
+      this._expanded = true;
+    }
   }
 
   private _handleBlur() {
@@ -317,8 +352,6 @@ export class Search extends LitElement {
     }
     const Els: any = this.shadowRoot?.querySelectorAll('.suggestion');
     const suggestionEls: any = [...Els];
-
-    console.log('suggestions', this.suggestions);
     const matchedOptionIndex = this.suggestions.findIndex((option) => {
       return option.toLowerCase().includes(this.value.toLowerCase());
     });
@@ -329,7 +362,6 @@ export class Search extends LitElement {
       this._assistiveText = `${this._assistiveTextStrings.noMatches} ${this.value}`;
       return;
     }
-    suggestionEls[matchedOptionIndex].setAttribute('highlighted', true);
     suggestionEls[matchedOptionIndex].scrollIntoView({ block: 'nearest' });
     this._assistiveText = `${this._assistiveTextStrings.found} ${this.suggestions[matchedOptionIndex]}`;
   }
