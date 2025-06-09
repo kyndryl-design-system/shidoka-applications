@@ -476,7 +476,12 @@ export class DatePicker extends FormMixin(LitElement) {
   private processDefaultDates(
     defaultDate: string | string[] | Date | Date[] | null
   ): Date[] {
-    if (!defaultDate) return [];
+    if (
+      !defaultDate ||
+      (typeof defaultDate === 'string' && !defaultDate.trim())
+    ) {
+      return [];
+    }
 
     const values = Array.isArray(defaultDate) ? defaultDate : [defaultDate];
 
@@ -490,7 +495,7 @@ export class DatePicker extends FormMixin(LitElement) {
       (d): d is Date => d instanceof Date && !isNaN(d.getTime())
     );
 
-    if (valid.length !== parsed.length) {
+    if (parsed.length > 0 && valid.length !== parsed.length) {
       console.error('Invalid date(s) provided in defaultDate');
       this.invalidText = this._textStrings.invalidDateFormat;
     }
@@ -716,7 +721,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private parseDateString(dateStr: string): Date | null {
-    if (!dateStr.trim()) return null;
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      return d;
+    }
 
     const dtMatch = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})$/.exec(
       dateStr

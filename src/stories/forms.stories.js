@@ -195,6 +195,7 @@ export const Default = {
           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
           caption="Password must contain at least 8 characters, including uppercase, lowercase, and numbers"
           @on-input=${(e) => action(e.type)(e)}
+          style="width: 100%; max-width: 400px;"
         >
           <kyn-tooltip slot="tooltip">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -352,7 +353,7 @@ export const Default = {
           dateFormat="Y-m-d"
           mode="multiple"
           caption="Date picker example (multi, pre-selected)"
-          .defaultDate=${'2022-01-03T00:00:00Z'}
+          .defaultDate=${'2022-01-03 00:00'}
           defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 425px;"

@@ -1078,7 +1078,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   public setInitialDates() {
     if (!this.flatpickrInstance) return;
-    if (!this.dateFormat) this.dateFormat = 'Y-m-d';
+
+    if (!this.dateFormat) {
+      this.dateFormat = 'Y-m-d';
+    }
 
     try {
       const hasValidValue =
@@ -1088,6 +1091,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
       if (!hasValidValue && this.defaultDate) {
         const validDates = this.processDefaultDates(this.defaultDate);
+
         if (validDates.length === 2) {
           this.flatpickrInstance.setDate(validDates, true);
           this.flatpickrInstance.redraw();
@@ -1095,6 +1099,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           this._inputEl!.value = this.flatpickrInstance.input.value;
           this.updateFormValue();
         } else if (validDates.length === 1) {
+          // Only a single default date given
           this.flatpickrInstance.setDate([validDates[0]], true);
           this.flatpickrInstance.redraw();
           this.value = [validDates[0], null];
@@ -1102,12 +1107,21 @@ export class DateRangePicker extends FormMixin(LitElement) {
           this.updateFormValue();
           this._validate(true, false);
         }
+
         return;
       }
 
       if (Array.isArray(this.value) && this.value.length === 2) {
         const validDates = (this.value as (string | Date)[])
-          .map((d) => (d instanceof Date ? d : this.parseDateString(d)))
+          .map((d) => {
+            if (d instanceof Date) {
+              return d;
+            }
+            if (typeof d === 'string' && d.trim()) {
+              return this.parseDateString(d);
+            }
+            return null;
+          })
           .filter((d): d is Date => d !== null);
 
         if (validDates.length === 2) {
