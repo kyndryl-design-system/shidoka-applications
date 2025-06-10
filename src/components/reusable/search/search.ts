@@ -150,15 +150,16 @@ export class Search extends LitElement {
                 >
                   ${(() => {
                     if (this.value === '') {
-                      if (this.enableSearchHistory) {
-                        return html`<div class="history-suggestion">
-                          <span style="display:flex"
-                            >${unsafeSVG(historyIcon)}</span
-                          ><span>${suggestion}</span>
-                        </div>`;
-                      } else {
-                        return html`${suggestion}`;
-                      }
+                      return this.enableSearchHistory
+                        ? html`
+                            <div class="history-suggestion">
+                              <span style="display:flex"
+                                >${unsafeSVG(historyIcon)}</span
+                              >
+                              <span>${suggestion}</span>
+                            </div>
+                          `
+                        : html`${suggestion}`;
                     }
                     const regex = new RegExp(`(${this.value})`, 'ig');
                     if (!regex.test(suggestion)) {
@@ -260,6 +261,7 @@ export class Search extends LitElement {
   }
 
   private _handleSuggestionWithMouseDown(e: any) {
+    console.log('mousedown', e);
     e.preventDefault();
   }
 
