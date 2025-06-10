@@ -67,7 +67,9 @@ export const NarrowPopover = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
       >
-        <kyn-button slot="anchor" kind="secondary">Narrow Popover</kyn-button>
+        <kyn-button slot="anchor" kind="secondary"
+          >Launch Narrow Popover</kyn-button
+        >
         <div
           style="background: var(--kd-color-background-container-subtle); padding: 16px; border-radius: 4px;       text-align: center; height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 8px;"
         >
@@ -120,7 +122,9 @@ export const WidePopover = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
       >
-        <kyn-button slot="anchor" kind="primary">Wide Popover</kyn-button>
+        <kyn-button slot="anchor" kind="primary"
+          >Launch Wide Popover</kyn-button
+        >
         <div
           style="background: var(--kd-color-background-container-subtle); padding: 16px; border-radius: 4px;       text-align: center; height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 8px;"
         >
@@ -150,7 +154,7 @@ export const WidePopover = {
 export const MiniPopover = {
   args: {
     ...args,
-    titleText: null,
+    titleText: '',
     labelText: '',
     popoverSize: 'mini',
     hideFooter: true,
@@ -172,11 +176,10 @@ export const MiniPopover = {
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideCancelButton=${args.hideCancelButton}
       >
-        <kyn-button slot="anchor" kind="tertiary">Mini Popover</kyn-button>
-        <div
-          style="background: var(--kd-color-background-container-subtle); padding: 4px 16px; 
-          text-align: center;border-radius: 4px; width: 95%;"
+        <kyn-button slot="anchor" kind="tertiary"
+          >Launch Mini Popover</kyn-button
         >
+        <div class="expansion-slot">
           <div>
             <span
               slot="icon"
