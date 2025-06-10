@@ -204,6 +204,10 @@ export const Gridstack = {
 
 export const AddWidget = {
   render: () => {
-    return html` <new-widget-sample></new-widget-sample> `;
+    return html`
+      <new-widget-sample
+        @on-click=${(e) => action(e.type)(e)}
+      ></new-widget-sample>
+    `;
   },
 };
