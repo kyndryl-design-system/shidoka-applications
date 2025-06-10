@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../components/reusable/popover/popover.scss';
 
 :host {
   display: inline-block;
@@ -21,48 +22,6 @@ dialog {
   &[open] {
     display: flex;
     animation: dialog-in 400ms ease-out;
-  }
-
-  &.popover-extended-true {
-    .body {
-      padding: 4px 6px 4px 4px;
-    }
-
-    border: none;
-    box-shadow: none;
-
-    header {
-      margin-bottom: 24px;
-    }
-
-    .footer {
-      margin-top: 16px;
-    }
-
-    &.popover-size--wide {
-      width: 95%;
-      max-width: 600px;
-    }
-
-    &.popover-size--narrow {
-      width: 95%;
-      max-width: 395px;
-    }
-
-    &.popover-size--mini {
-      width: 95%;
-      max-width: 350px;
-      padding: 16px;
-
-      header {
-        display: none;
-      }
-
-      .close {
-        top: 18px;
-        right: 16px;
-      }
-    }
   }
 
   &::backdrop {

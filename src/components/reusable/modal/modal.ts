@@ -116,6 +116,10 @@ export class Modal extends LitElement {
   @property({ type: String, reflect: true })
   popoverSize = '';
 
+  /** Determines the positioning, relative to the anchor, of the popover. */
+  @property({ type: String, reflect: true })
+  popoverType = '';
+
   /** Disables scroll on the modal body to allow scrolling of nested elements inside. */
   @property({ type: Boolean })
   disableScroll = false;
@@ -129,6 +133,7 @@ export class Modal extends LitElement {
       'ai-connected': this.aiConnected,
       'popover-extended-true': this.popoverExtended,
       [`popover-size--${this.popoverSize}`]: this.popoverSize !== '',
+      [`popover-type--${this.popoverType}`]: this.popoverType !== '',
     };
 
     return html`
@@ -262,8 +267,8 @@ export class Modal extends LitElement {
     this.dispatchEvent(event);
   }
 
-  override updated(changedProps: any) {
-    if (changedProps.has('open')) {
+  override updated(changed: Map<string, any>) {
+    if (changed.has('open')) {
       if (this.open) {
         this._dialog.showModal();
         this._emitOpenEvent();
@@ -271,6 +276,20 @@ export class Modal extends LitElement {
         this._dialog.close();
       }
     }
+  }
+
+  public positionRelativeTo(anchor: HTMLElement) {
+    const rect = anchor.getBoundingClientRect();
+    this._dialog.style.position = 'absolute';
+    this._dialog.style.top = `${rect.bottom + window.scrollY + 6}px`;
+    this._dialog.style.left = `
+      ${
+        rect.left +
+        window.scrollX -
+        this._dialog.offsetWidth / 2 +
+        rect.width / 2
+      }px
+    `.trim();
   }
 }
 

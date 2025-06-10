@@ -1,13 +1,32 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
 :host {
   display: block;
+  position: relative;
 }
 
-div {
-  width: inherit;
+.anchor {
+  display: inline-block;
+  cursor: pointer;
 }
 
-.popover-modal {
-  width: 100%;
+/* other types stay default modal centering */
+.type--link .popover-modal dialog,
+.type--button .popover-modal dialog {
+  position: fixed;
+}
+
+/* sizing */
+.popover-size--mini .popover-modal {
+  max-width: 160px;
+}
+.popover-size--narrow .popover-modal {
+  max-width: 400px;
+}
+.popover-size--wide .popover-modal {
+  max-width: 600px;
 }
 
 .expansion-container {
@@ -16,14 +35,80 @@ div {
   border-radius: 8px;
   opacity: 0.9;
   background: var(--kd-color-background-container-subtle);
-  padding: 4px 16px;
-  text-align: center;
-  border-radius: 4px;
-  flex: 1;
-  margin-right: 40px;
 }
 
-span svg {
+.popover-size--mini {
+  .expansion-container {
+    padding: 4px 16px;
+    text-align: center;
+    border-radius: 4px;
+    flex: 1;
+    margin-right: 40px;
+  }
+}
+
+dialog {
+  &.popover-extended-true {
+    border: none;
+    box-shadow: none;
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    .footer {
+      margin-top: 16px;
+    }
+
+    &.popover-size--wide {
+      width: 95%;
+      max-width: 600px;
+    }
+
+    &.popover-size--narrow {
+      width: 95%;
+      max-width: 395px;
+    }
+
+    &.popover-size--mini {
+      width: 95%;
+      max-width: 350px;
+      padding: 16px;
+
+      header {
+        display: none;
+      }
+
+      .close {
+        top: 18px;
+        right: 16px;
+      }
+    }
+  }
+}
+
+.link-slot {
+  margin-top: 8px;
+}
+
+.link-slot:empty {
+  display: none;
+}
+
+.cube-icon {
   width: 67px;
   height: 67px;
+  display: inline-flex;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block; /* Ensures no extra space */
+  }
+
+  /* Ensure the path fills the SVG container */
+  path {
+    transform-origin: center;
+    transform: scale(1.5); /* Scale the path to fill more of the SVG space */
+  }
 }
