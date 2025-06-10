@@ -175,13 +175,13 @@ export const MiniPopover = {
         <kyn-button slot="anchor" kind="tertiary">Mini Popover</kyn-button>
         <div
           style="background: var(--kd-color-background-container-subtle); padding: 4px 16px; 
-          text-align: center;border-radius: 4px;"
+          text-align: center;border-radius: 4px; width: 95%;"
         >
           <div>
             <span
               slot="icon"
               class="cube-icon"
-              style="padding: 0; margin-left: 10px; display: inline-flex; align-items: center; color: var(--kd-color-icon-brand); vertical-align: middle;"
+              style="padding: 0; display: inline-flex; align-items: center; color: var(--kd-color-icon-brand); vertical-align: middle;"
               >${unsafeSVG(smCube)}</span
             ><span
               class="kd-type--ui-02"

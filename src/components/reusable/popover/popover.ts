@@ -135,6 +135,8 @@ export class Popover extends LitElement {
           ?aiConnected=${this.aiConnected}
           ?disableScroll=${this.disableScroll}
           .beforeClose=${this.beforeClose}
+          ?popoverExtended=${true}
+          popoverSize=${this.popoverSize}
           @on-close=${() => (this.open = false)}
         >
           <div class="expansion-container">

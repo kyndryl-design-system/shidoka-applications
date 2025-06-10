@@ -108,6 +108,14 @@ export class Modal extends LitElement {
   @property({ type: Boolean, reflect: true })
   aiConnected = false;
 
+  /** Determines if the component is being extended for popover.*/
+  @property({ type: Boolean, reflect: true })
+  popoverExtended = false;
+
+  /** Determines the size variant when used in a popover */
+  @property({ type: String, reflect: true })
+  popoverSize = '';
+
   /** Disables scroll on the modal body to allow scrolling of nested elements inside. */
   @property({ type: Boolean })
   disableScroll = false;
@@ -119,6 +127,8 @@ export class Modal extends LitElement {
       'size--lg': this.size === 'lg',
       'size--xl': this.size === 'xl',
       'ai-connected': this.aiConnected,
+      'popover-extended-true': this.popoverExtended,
+      [`popover-size--${this.popoverSize}`]: this.popoverSize !== '',
     };
 
     return html`
@@ -152,7 +162,12 @@ export class Modal extends LitElement {
             </div>
           </header>
 
-          <div class="body ${this.disableScroll ? 'disableScroll' : ''}">
+          <div
+            class="body ${this.disableScroll ? 'disableScroll' : ''} ${this
+              .popoverExtended
+              ? 'popover-extended'
+              : ''}"
+          >
             <slot></slot>
           </div>
 
@@ -163,6 +178,7 @@ export class Modal extends LitElement {
                     <kyn-button
                       class="action-button"
                       value="ok"
+                      size="${this.popoverExtended ? 'small' : 'medium'}"
                       kind=${this.destructive
                         ? 'primary-destructive'
                         : this.aiConnected
@@ -178,6 +194,7 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
+                            size="${this.popoverExtended ? 'small' : 'medium'}"
                             kind=${this.aiConnected ? 'outline-ai' : 'outline'}
                             ?disabled=${this.secondaryDisabled}
                             @click=${(e: Event) =>
@@ -194,6 +211,7 @@ export class Modal extends LitElement {
                             class="action-button"
                             value="cancel"
                             kind="tertiary"
+                            size="${this.popoverExtended ? 'small' : 'medium'}"
                             @click=${(e: Event) =>
                               this._closeModal(e, 'cancel')}
                           >
