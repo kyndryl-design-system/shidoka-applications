@@ -18,7 +18,7 @@ export class Popover extends LitElement {
   static override styles = [PopoverScss];
 
   /** Popover display type */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   type: 'icon' | 'link' | 'button' = 'icon';
 
   /** Popover size, one of 'mini', 'narrow', or 'wide' */
@@ -120,8 +120,7 @@ export class Popover extends LitElement {
         </span>
 
         <kyn-modal
-          class="popover-modal popover-size--${this
-            .popoverSize} popover-type--${this.type}"
+          class="popover-modal"
           .open=${this.open}
           size=${this.popoverSize === 'wide' ? 'lg' : 'md'}
           titleText=${this.titleText}
@@ -140,8 +139,8 @@ export class Popover extends LitElement {
           ?disableScroll=${this.disableScroll}
           .beforeClose=${this.beforeClose}
           popoverExtended
-          popoverSize=${this.popoverSize}
-          popoverType=${this.type}
+          .popoverSize=${this.popoverSize}
+          .popoverType=${this.type}
           @on-close=${() => (this.open = false)}
         >
           <div class="expansion-container">

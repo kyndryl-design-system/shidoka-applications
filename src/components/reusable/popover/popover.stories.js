@@ -28,6 +28,7 @@ export default {
 const args = {
   popoverSize: 'narrow',
   titleText: 'Modal Title',
+  type: 'button',
   labelText: '',
   okText: 'Primary Button',
   cancelText: 'Secondary Button',
@@ -53,8 +54,8 @@ export const NarrowPopover = {
   render: (args) => {
     return html`
       <kyn-popover
-        type=${args.type}
-        popoverSize=${args.popoverSize}
+        type="${args.type}"
+        popoverSize="${args.popoverSize}"
         titleText=${args.titleText}
         labelText=${args.labelText}
         okText=${args.okText}
