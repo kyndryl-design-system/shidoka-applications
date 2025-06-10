@@ -18,58 +18,76 @@ export class Popover extends LitElement {
   static override styles = [PopoverScss];
 
   /** Popover display type */
-  @property({ type: String }) type: 'icon' | 'link' | 'button' = 'icon';
+  @property({ type: String })
+  type: 'icon' | 'link' | 'button' = 'icon';
 
   /** Popover size, one of 'mini', 'narrow', or 'wide' */
-  @property({ type: String }) popoverSize: 'mini' | 'narrow' | 'wide' = 'mini';
+  @property({ type: String })
+  popoverSize: 'mini' | 'narrow' | 'wide' = 'mini';
 
   /** Controls popover visibility */
-  @property({ type: Boolean }) open = false;
+  @property({ type: Boolean })
+  open = false;
 
   /** Title/heading text for the modal */
-  @property({ type: String }) titleText = '';
+  @property({ type: String })
+  titleText = '';
 
   /** Label text for the modal */
-  @property({ type: String }) labelText = '';
+  @property({ type: String })
+  labelText = '';
 
   /** OK button text */
-  @property({ type: String }) okText = 'OK';
+  @property({ type: String })
+  okText = 'OK';
 
   /** Cancel button text */
-  @property({ type: String }) cancelText = '';
+  @property({ type: String })
+  cancelText = '';
 
   /** Close button text */
-  @property({ type: String }) closeText = '';
+  @property({ type: String })
+  closeText = '';
 
   /** Changes the primary button styles to indicate the action is destructive */
-  @property({ type: Boolean }) destructive = false;
+  @property({ type: Boolean })
+  destructive = false;
 
   /** Disables the primary button */
-  @property({ type: Boolean }) okDisabled = false;
+  @property({ type: Boolean })
+  okDisabled = false;
 
   /** Hides the footer/action buttons to create a passive modal */
-  @property({ type: Boolean }) hideFooter = false;
+  @property({ type: Boolean })
+  hideFooter = false;
 
   /** Shows the secondary button */
-  @property({ type: Boolean }) showSecondaryButton = false;
+  @property({ type: Boolean })
+  showSecondaryButton = false;
 
   /** Secondary button text */
-  @property({ type: String }) secondaryButtonText = '';
+  @property({ type: String })
+  secondaryButtonText = '';
 
   /** Disables the secondary button */
-  @property({ type: Boolean }) secondaryDisabled = false;
+  @property({ type: Boolean })
+  secondaryDisabled = false;
 
   /** Hides the cancel button */
-  @property({ type: Boolean }) hideCancelButton = false;
+  @property({ type: Boolean })
+  hideCancelButton = false;
 
   /** Determines if the component is themed for GenAI */
-  @property({ type: Boolean }) aiConnected = false;
+  @property({ type: Boolean })
+  aiConnected = false;
 
   /** Disables scroll on the modal body to allow scrolling of nested elements inside */
-  @property({ type: Boolean }) disableScroll = false;
+  @property({ type: Boolean })
+  disableScroll = false;
 
   /** Function to execute before the modal can close */
-  @property({ attribute: false }) beforeClose!: () => void;
+  @property({ attribute: false })
+  beforeClose!: () => void;
 
   /** Queries the .anchor element.
    * @internal
