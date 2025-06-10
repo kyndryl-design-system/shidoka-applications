@@ -153,7 +153,7 @@ export class HeaderLink extends LitElement {
             ${this.backText}
           </button>
 
-          ${Links.length > this.searchThreshold
+          ${Links.length >= this.searchThreshold
             ? html`
                 <kyn-text-input
                   hideLabel
