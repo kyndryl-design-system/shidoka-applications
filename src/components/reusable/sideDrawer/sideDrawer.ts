@@ -45,10 +45,10 @@ export class SideDrawer extends LitElement {
   open = false;
 
   /**
-   * Drawer size. `'md'`, or `'sm'`.
+   * Drawer size.
    */
   @property({ type: String })
-  size = 'md';
+  size: 'md' | 'sm' | 'lg' | 'standard' = 'md';
 
   /**
    * Title / Heading text, required.
@@ -124,9 +124,7 @@ export class SideDrawer extends LitElement {
     const classes = {
       dialog: true,
       'no-backdrop': this.noBackdrop,
-      'size--md': this.size === 'md',
-      'size--standard': this.size === 'standard',
-      'size--sm': this.size === 'sm',
+      [`size--${this.size}`]: this.size,
       'ai-connected': this.aiConnected,
     };
 
