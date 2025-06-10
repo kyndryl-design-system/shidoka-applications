@@ -382,31 +382,36 @@ export class NewWidgetSample extends LitElement {
                       `
                     : this.getImageBackgroundTemplate()}
                 </div>
-                <div class="bacground-image">
-                  <div class="bg_title">Background Color</div>
-                  <div class="color-swatch">
-                    ${this.formattedColorSwatches.map((color) => {
-                      return html`
-                        <button
-                          class="preset-button"
-                          style="background:${color.color};"
-                          type="button"
-                          aria-label="Background Color"
-                          title="Background Color"
-                          name="Background Color"
-                          @click=${(e: Event) =>
-                            this._handleSelection(e, color.color)}
-                        >
-                          ${color.selected
-                            ? html`<span style="display:flex"
-                                >${unsafeSVG(CheckMarkFilledIcon)}</span
-                              >`
-                            : null}
-                        </button>
-                      `;
-                    })}
-                  </div>
-                </div>
+
+                ${!this.showFileUploader
+                  ? html`
+                      <div class="bacground-image">
+                        <div class="bg_title">Background Color</div>
+                        <div class="color-swatch">
+                          ${this.formattedColorSwatches.map((color) => {
+                            return html`
+                              <button
+                                class="preset-button"
+                                style="background:${color.color};"
+                                type="button"
+                                aria-label="Background Color"
+                                title="Background Color"
+                                name="Background Color"
+                                @click=${(e: Event) =>
+                                  this._handleSelection(e, color.color)}
+                              >
+                                ${color.selected
+                                  ? html`<span style="display:flex"
+                                      >${unsafeSVG(CheckMarkFilledIcon)}</span
+                                    >`
+                                  : null}
+                              </button>
+                            `;
+                          })}
+                        </div>
+                      </div>
+                    `
+                  : null}
               </div>
             </div>
           </kyn-tab-panel>
