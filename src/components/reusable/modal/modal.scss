@@ -1,7 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
-@use '../../../components/reusable/popover/popover.scss';
 
 :host {
   display: inline-block;
@@ -16,8 +15,8 @@ dialog {
   border: 1px solid var(--kd-color-border-variants-light);
   min-width: 288px;
   max-width: calc(100% - 32px);
-  max-height: calc(100% - 32px);
-  overflow: hidden;
+  max-height: none;
+  overflow: visible;
 
   &[open] {
     display: flex;
@@ -44,12 +43,38 @@ dialog {
     @include elevation.shadow('3', true);
     border: none;
     background: var(--kd-color-background-container-ai-subtle);
-    // background: linear-gradient(
-    //   180deg,
-    //   var(--kd-color-background-gradients-ai-linear-top-gradient-1) 0%,
-    //   var(--kd-color-background-gradients-ai-linear-bottom-gradient-1) 70.5%
-    // );
   }
+}
+
+:host([popoverExtended][popoverType='floating']) dialog {
+  position: fixed;
+  max-height: none;
+  height: auto;
+}
+
+:host([popoverExtended]) dialog.popover-size--mini {
+  width: auto;
+  max-width: 230px;
+  height: auto;
+  min-height: unset;
+  padding: 16px;
+}
+
+:host([popoverExtended]) dialog.popover-size--mini header {
+  display: none;
+}
+
+:host([popoverExtended]) dialog.popover-size--mini .close {
+  top: 18px;
+  right: 16px;
+}
+
+:host([popoverExtended]) dialog {
+  border: none;
+}
+
+:host([popoverExtended][popoverType='modal']) dialog {
+  border: none;
 }
 
 form {

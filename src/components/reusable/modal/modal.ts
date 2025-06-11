@@ -1,8 +1,10 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+
 import { classMap } from 'lit/directives/class-map.js';
 import ModalScss from './modal.scss';
+import PopoverScss from '../popover/popover.scss';
 
 import '../button';
 
@@ -20,6 +22,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
 export class Modal extends LitElement {
   static override styles = [
     ModalScss,
+    PopoverScss,
     css`
       @supports (transition-behavior: allow-discrete) {
         @starting-style {
@@ -45,6 +48,9 @@ export class Modal extends LitElement {
   /** Modal size. `'auto'`, `'md'`, or `'lg', or `'xl'`. */
   @property({ type: String })
   size = 'auto';
+
+  @property({ type: String })
+  triggerType = 'auto';
 
   /** Title/heading text, required. */
   @property({ type: String })
@@ -123,6 +129,10 @@ export class Modal extends LitElement {
   /** Disables scroll on the modal body to allow scrolling of nested elements inside. */
   @property({ type: Boolean })
   disableScroll = false;
+
+  /** Determines if the modal is inline, meaning it will not use the dialog element and will be rendered inline in the DOM. */
+  @property({ type: Boolean, reflect: true })
+  inline = false;
 
   override render() {
     const classes = {
@@ -223,11 +233,6 @@ export class Modal extends LitElement {
                             ${this.cancelText}
                           </kyn-button>
                         `}
-                    <!--
-            <div class="custom-actions">
-              <slot name="actions"></slot>
-            </div>
-            -->
                   </div>
                 </slot>
               `
@@ -268,13 +273,16 @@ export class Modal extends LitElement {
   }
 
   override updated(changed: Map<string, any>) {
-    if (changed.has('open')) {
-      if (this.open) {
-        this._dialog.showModal();
-        this._emitOpenEvent();
+    if (!changed.has('open')) return;
+    if (this.open) {
+      if (this.inline) {
+        this._dialog.show();
       } else {
-        this._dialog.close();
+        this._dialog.showModal();
       }
+      this._emitOpenEvent();
+    } else {
+      this._dialog.close();
     }
   }
 

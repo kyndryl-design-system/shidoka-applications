@@ -29,14 +29,19 @@
 
 .expansion-container {
   margin-top: 0;
+  padding: 32px 16px;
+  text-align: center;
   border: 1px dashed var(--kd-color-utility-variant-border);
   border-radius: 8px;
   opacity: 0.9;
   background: var(--kd-color-background-container-subtle);
+  height: auto;
+  min-height: fit-content;
 }
 
 .popover-size--mini {
   .expansion-container {
+    text-align: left;
     padding: 4px 16px;
     text-align: center;
     border-radius: 4px;
@@ -117,4 +122,15 @@ dialog {
     transform-origin: center;
     transform: scale(1.5);
   }
+}
+
+:host([popoverExtended][popoverType='fixed']) dialog::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent red transparent;
 }

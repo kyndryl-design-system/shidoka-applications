@@ -1,25 +1,27 @@
+// Popover.ts
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-
+import { computePosition, offset, flip } from '@floating-ui/dom';
 import PopoverScss from './popover.scss';
-
 import '../modal';
 import '../link';
 
-/**
- * Popover component.
- * @slot unnamed - Slot for content that appears at different sizes (wide, narrow, mini).
- * @slot anchor - Element that triggers the popover.
- * @slot link - Optional slot for a link element.
- */
 @customElement('kyn-popover')
 export class Popover extends LitElement {
   static override styles = [PopoverScss];
 
-  /** Popover display type */
+  /** trigger style */
   @property({ type: String, reflect: true })
-  type: 'icon' | 'link' | 'button' = 'icon';
+  triggerType: 'icon' | 'link' | 'button' = 'icon';
+
+  /** positioning mode */
+  @property({ type: String, reflect: true })
+  mode: 'modal' | 'anchor' | 'floating' = 'anchor';
+
+  /** fine-tune floating placement */
+  @property({ type: String })
+  placement: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 
   /** Popover size, one of 'mini', 'narrow', or 'wide' */
   @property({ type: String })
@@ -89,6 +91,11 @@ export class Popover extends LitElement {
   @property({ attribute: false })
   beforeClose!: () => void;
 
+  /** manual coords for floating mode (overrides anchor) -- x coord */
+  @property({ type: Number })
+  x = 0;
+  y = 0;
+
   /** Queries the .anchor element.
    * @internal
    */
@@ -109,7 +116,7 @@ export class Popover extends LitElement {
 
   override render() {
     const popoverClasses = {
-      [`type--${this.type}`]: true,
+      [`type--${this.triggerType}`]: true,
       [`popover-size--${this.popoverSize}`]: true,
     };
 
@@ -118,9 +125,11 @@ export class Popover extends LitElement {
         <span class="anchor" @click=${this._toggle}>
           <slot name="anchor"></slot>
         </span>
-
         <kyn-modal
           class="popover-modal"
+          ?inline=${this.mode !== 'modal'}
+          popoverExtended
+          .popoverType=${this.mode}
           .open=${this.open}
           size=${this.popoverSize === 'wide' ? 'lg' : 'md'}
           titleText=${this.titleText}
@@ -128,6 +137,7 @@ export class Popover extends LitElement {
           okText=${this.okText}
           cancelText=${this.cancelText}
           closeText=${this.closeText}
+          triggerType=${this.triggerType}
           ?destructive=${this.destructive}
           ?okDisabled=${this.okDisabled}
           ?hideFooter=${this.hideFooter}
@@ -138,15 +148,10 @@ export class Popover extends LitElement {
           ?aiConnected=${this.aiConnected}
           ?disableScroll=${this.disableScroll}
           .beforeClose=${this.beforeClose}
-          popoverExtended
           .popoverSize=${this.popoverSize}
-          .popoverType=${this.type}
           @on-close=${() => (this.open = false)}
         >
-          <div class="expansion-container">
-            <slot></slot>
-          </div>
-
+          <div class="expansion-container"><slot></slot></div>
           <div class="link-slot" ?hidden=${!this.hasLinkSlot}>
             <slot name="link"></slot>
           </div>
@@ -156,9 +161,51 @@ export class Popover extends LitElement {
   }
 
   override updated(changed: Map<string, any>) {
-    if (changed.has('open') && this.open && this.type === 'icon') {
-      this._positionTooltip();
+    console.log('Updated values:', { x: this.x, y: this.y });
+    if (
+      changed.has('open') ||
+      changed.has('x') ||
+      changed.has('y') ||
+      changed.has('placement') ||
+      changed.has('mode')
+    ) {
+      this._position();
     }
+  }
+
+  private _position() {
+    console.log('Positioning popover at:', { x: this.x, y: this.y });
+    console.log('Dialog element before positioning:', this._dialog);
+    console.log('Dialog element:', this._dialog);
+    if (!this._dialog) {
+      console.error('Dialog element is not available.');
+      return;
+    }
+    console.log('Positioning popover at:', { x: this.x, y: this.y });
+    if (
+      this.mode === 'floating' &&
+      typeof this.x === 'number' &&
+      typeof this.y === 'number'
+    ) {
+      Object.assign(this._dialog.style, {
+        position: 'fixed',
+        left: `${this.x}px`,
+        top: `${this.y}px`,
+      });
+      return;
+    }
+
+    computePosition(this._anchor, this._dialog, {
+      placement: this.placement,
+      strategy: this.mode === 'floating' ? 'fixed' : 'absolute',
+      middleware: [offset(6), flip()],
+    }).then(({ x, y }) => {
+      Object.assign(this._dialog.style, {
+        position: this.mode === 'floating' ? 'fixed' : 'absolute',
+        left: `${x}px`,
+        top: `${y}px`,
+      });
+    });
   }
 
   override firstUpdated() {
@@ -166,26 +213,18 @@ export class Popover extends LitElement {
       this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="link"]');
     slot?.addEventListener('slotchange', () => this._updateLinkSlot());
     this._updateLinkSlot();
+    setTimeout(() => {
+      this._position();
+    }, 0);
   }
 
   private _updateLinkSlot() {
     const slot =
       this.renderRoot.querySelector<HTMLSlotElement>('slot[name="link"]');
-    const nodes = slot?.assignedNodes({ flatten: true }) ?? [];
-    this.hasLinkSlot = nodes.some(
+    this.hasLinkSlot = (slot?.assignedNodes({ flatten: true }) ?? []).some(
       (n) =>
         n.nodeType !== Node.TEXT_NODE || (n.textContent?.trim() ?? '') !== ''
     );
-  }
-
-  private _positionTooltip() {
-    if (!this._anchor || !this._dialog) return;
-    const rect = this._anchor.getBoundingClientRect();
-    this._dialog.style.position = 'absolute';
-    this._dialog.style.top = `${rect.bottom + window.scrollY + 6}px`;
-    this._dialog.style.left = `${
-      rect.left + window.scrollX - this._dialog.offsetWidth / 2 + rect.width / 2
-    }px`;
   }
 
   private _toggle() {
