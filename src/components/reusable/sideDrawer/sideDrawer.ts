@@ -48,7 +48,7 @@ export class SideDrawer extends LitElement {
    * Drawer size.
    */
   @property({ type: String })
-  size: 'md' | 'sm' | 'lg' | 'standard' = 'md';
+  size: 'md' | 'sm' | 'xl' | 'standard' = 'md';
 
   /**
    * Title / Heading text, required.

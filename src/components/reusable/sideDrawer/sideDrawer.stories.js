@@ -8,7 +8,7 @@ export default {
   component: 'kyn-side-drawer',
   argTypes: {
     size: {
-      options: ['md', 'sm', 'lg', 'standard'],
+      options: ['md', 'sm', 'xl', 'standard'],
       control: { type: 'select' },
     },
   },
