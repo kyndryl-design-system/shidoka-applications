@@ -49,9 +49,6 @@ export class Modal extends LitElement {
   @property({ type: String })
   size = 'auto';
 
-  @property({ type: String })
-  triggerType = 'auto';
-
   /** Title/heading text, required. */
   @property({ type: String })
   titleText = '';
@@ -114,6 +111,16 @@ export class Modal extends LitElement {
   @property({ type: Boolean, reflect: true })
   aiConnected = false;
 
+  /** Disables scroll on the modal body to allow scrolling of nested elements inside. */
+  @property({ type: Boolean })
+  disableScroll = false;
+
+  /** Determines if the modal is inline, meaning it will not use the dialog element and will be rendered inline in the DOM. */
+  @property({ type: Boolean, reflect: true })
+  inline = false;
+
+  /** --- */
+  /** Popover extended mode, which changes the layout of the modal to be more compact. */
   /** Determines if the component is being extended for popover.*/
   @property({ type: Boolean, reflect: true })
   popoverExtended = false;
@@ -125,14 +132,7 @@ export class Modal extends LitElement {
   /** Determines the positioning, relative to the anchor, of the popover. */
   @property({ type: String, reflect: true })
   popoverType = '';
-
-  /** Disables scroll on the modal body to allow scrolling of nested elements inside. */
-  @property({ type: Boolean })
-  disableScroll = false;
-
-  /** Determines if the modal is inline, meaning it will not use the dialog element and will be rendered inline in the DOM. */
-  @property({ type: Boolean, reflect: true })
-  inline = false;
+  /** --- */
 
   override render() {
     const classes = {

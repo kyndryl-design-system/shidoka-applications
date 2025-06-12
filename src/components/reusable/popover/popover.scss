@@ -49,7 +49,6 @@
       position: absolute;
     }
 
-    // Arrow for anchor mode
     &[popoverType='anchor'] {
       dialog::before {
         content: '';
@@ -62,37 +61,42 @@
       &.direction--bottom dialog::before {
         bottom: 100%;
       }
+
       &.direction--top dialog::before {
         top: 100%;
         border-color: var(--kd-color-background-container-default) transparent
           transparent transparent;
       }
+
       &.direction--left dialog::before {
         left: 100%;
         border-color: transparent var(--kd-color-background-container-default)
           transparent transparent;
       }
+
       &.direction--right dialog::before {
         right: 100%;
         border-color: transparent transparent transparent
           var(--kd-color-background-container-default);
       }
-      // Anchor positioning (horizontal)
+
       &.anchor-position--start dialog::before {
         left: 5%;
         transform: translateX(0) translateY(-50%);
         top: auto;
         bottom: auto;
       }
+
       &.anchor-position--center dialog::before {
         left: 50%;
         transform: translateX(-50%);
       }
+
       &.anchor-position--end dialog::before {
         left: 95%;
         transform: translateX(-100%);
       }
-      // Anchor positioning (vertical for left/right arrows)
+
       &.anchor-position--start.direction--left dialog::before,
       &.anchor-position--start.direction--right dialog::before {
         top: 5%;

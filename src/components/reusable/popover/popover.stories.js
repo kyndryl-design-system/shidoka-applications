@@ -211,7 +211,7 @@ BottomRightPosition.args = {
   cancelText: 'Cancel',
   closeText: 'Close',
   bottom: '5%',
-  right: '10%',
+  right: '5%',
   open: false,
   hideFooter: false,
 };
