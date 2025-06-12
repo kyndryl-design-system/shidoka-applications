@@ -213,7 +213,7 @@ export class TextInput extends FormMixin(LitElement) {
                 </kyn-button>
               `
             : null}
-          ${this.value === 'search' && !this.readonly
+          ${this.type === 'search' && this.value !== '' && !this.readonly
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled}
