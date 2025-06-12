@@ -1,3 +1,5 @@
+// modal.scss
+
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
@@ -9,13 +11,12 @@
 dialog {
   @include elevation.shadow(3);
   padding: 32px;
-  color: inherit;
   background: var(--kd-color-background-container-default);
+  color: inherit;
   border-radius: 8px;
   border: 1px solid var(--kd-color-border-variants-light);
   min-width: 288px;
   max-width: calc(100% - 32px);
-  max-height: none;
   overflow: visible;
 
   &[open] {
@@ -30,11 +31,9 @@ dialog {
   &.size--md {
     width: 384px;
   }
-
   &.size--lg {
     width: 800px;
   }
-
   &.size--xl {
     width: 1024px;
   }
@@ -48,29 +47,30 @@ dialog {
 
 :host([popoverExtended][popoverType='floating']) dialog {
   position: fixed;
+  height: auto;
   max-height: none;
-  height: auto;
 }
 
-:host([popoverExtended]) dialog.popover-size--mini {
-  width: auto;
-  max-width: 230px;
-  height: auto;
-  min-height: unset;
-  padding: 16px;
-}
+:host([popoverExtended]) {
+  dialog.popover-size--mini {
+    width: auto;
+    max-width: 230px;
+    min-height: unset;
+    padding: 16px;
 
-:host([popoverExtended]) dialog.popover-size--mini header {
-  display: none;
-}
+    header {
+      display: none;
+    }
 
-:host([popoverExtended]) dialog.popover-size--mini .close {
-  top: 18px;
-  right: 16px;
-}
+    .close {
+      top: 18px;
+      right: 16px;
+    }
+  }
 
-:host([popoverExtended]) dialog {
-  border: none;
+  dialog {
+    border: none;
+  }
 }
 
 :host([popoverExtended][popoverType='modal']) dialog {
@@ -85,7 +85,7 @@ form {
 
 @supports (transition-behavior: allow-discrete) {
   dialog {
-    transition: opacity 400ms ease-out, transform 400ms ease-out,
+    transition: opacity 400ms ease-out, transform 400ms ease-out allow-discrete,
       overlay 400ms ease-out allow-discrete,
       display 400ms ease-out allow-discrete;
     opacity: 0;
@@ -110,12 +110,11 @@ form {
 }
 
 @keyframes dialog-in {
-  0% {
+  from {
     opacity: 0;
     transform: scale(0);
   }
-
-  100% {
+  to {
     opacity: 1;
     transform: none;
   }

@@ -5,6 +5,113 @@
 :host {
   display: block;
   position: relative;
+
+  &[popoverExtended] {
+    dialog {
+      margin: 0;
+    }
+
+    &[popoverType='floating'] dialog {
+      width: auto;
+      &.popover-size--mini {
+        max-width: 350px;
+      }
+      &.popover-size--narrow {
+        max-width: 395px;
+      }
+      &.popover-size--wide {
+        max-width: 600px;
+      }
+    }
+
+    &[popoverType='modal'] dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: none;
+
+      &.popover-size--wide {
+        width: 95%;
+        max-width: 600px;
+      }
+      &.popover-size--narrow {
+        width: 95%;
+        max-width: 395px;
+      }
+      &.popover-size--mini {
+        width: 95%;
+        max-width: 350px;
+      }
+    }
+
+    &[popoverType='anchor'] dialog {
+      position: absolute;
+    }
+
+    // Arrow for anchor mode
+    &[popoverType='anchor'] {
+      dialog::before {
+        content: '';
+        position: absolute;
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent transparent
+          var(--kd-color-background-container-default) transparent;
+      }
+      &.direction--bottom dialog::before {
+        bottom: 100%;
+      }
+      &.direction--top dialog::before {
+        top: 100%;
+        border-color: var(--kd-color-background-container-default) transparent
+          transparent transparent;
+      }
+      &.direction--left dialog::before {
+        left: 100%;
+        border-color: transparent var(--kd-color-background-container-default)
+          transparent transparent;
+      }
+      &.direction--right dialog::before {
+        right: 100%;
+        border-color: transparent transparent transparent
+          var(--kd-color-background-container-default);
+      }
+      // Anchor positioning (horizontal)
+      &.anchor-position--start dialog::before {
+        left: 5%;
+        transform: translateX(0) translateY(-50%);
+        top: auto;
+        bottom: auto;
+      }
+      &.anchor-position--center dialog::before {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &.anchor-position--end dialog::before {
+        left: 95%;
+        transform: translateX(-100%);
+      }
+      // Anchor positioning (vertical for left/right arrows)
+      &.anchor-position--start.direction--left dialog::before,
+      &.anchor-position--start.direction--right dialog::before {
+        top: 5%;
+        left: auto;
+        bottom: auto;
+        transform: translateY(0);
+      }
+      &.anchor-position--center.direction--left dialog::before,
+      &.anchor-position--center.direction--right dialog::before {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      &.anchor-position--end.direction--left dialog::before,
+      &.anchor-position--end.direction--right dialog::before {
+        top: 95%;
+        transform: translateY(-100%);
+      }
+    }
+  }
 }
 
 .anchor {
@@ -35,76 +142,60 @@
   border-radius: 8px;
   opacity: 0.9;
   background: var(--kd-color-background-container-subtle);
-  height: auto;
   min-height: fit-content;
 }
 
-.popover-size--mini {
-  .expansion-container {
-    text-align: left;
-    padding: 4px 16px;
-    text-align: center;
-    border-radius: 4px;
-    flex: 1;
-    margin-right: 40px;
-  }
+.popover-size--mini .expansion-container {
+  padding: 4px 16px;
+  border-radius: 4px;
+  margin-right: 40px;
+  text-align: center;
 }
 
-dialog {
-  &.popover-extended-true {
+dialog.popover-extended-true {
+  header {
+    margin-bottom: 24px;
+  }
+  .footer {
+    margin-top: 16px;
+  }
+
+  &.popover-type--button,
+  &.popover-type--link {
+    border: none;
+    box-shadow: none;
+  }
+
+  &.popover-size--mini {
+    padding: 16px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 5%;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent
+        var(--kd-color-background-container-default) transparent;
+    }
+
     header {
-      margin-bottom: 24px;
+      display: none;
     }
-
-    .footer {
-      margin-top: 16px;
-    }
-
-    &.popover-size--wide {
-      width: 95%;
-      max-width: 600px;
-    }
-
-    &.popover-size--narrow {
-      width: 95%;
-      max-width: 395px;
-    }
-
-    &.popover-type--icon {
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-
-    &.popover-type--button,
-    &.popover-type--link {
-      border: none;
-      box-shadow: none;
-    }
-
-    &.popover-size--mini {
-      width: 95%;
-      max-width: 350px;
-      padding: 16px;
-
-      header {
-        display: none;
-      }
-
-      .close {
-        top: 18px;
-        right: 16px;
-      }
+    .close {
+      top: 18px;
+      right: 16px;
     }
   }
 }
 
 .link-slot {
   margin-top: 8px;
-}
 
-.link-slot:empty {
-  display: none;
+  &:empty {
+    display: none;
+  }
 }
 
 .cube-icon {
@@ -115,22 +206,10 @@ dialog {
   svg {
     width: 100%;
     height: 100%;
-    display: block;
   }
 
   path {
     transform-origin: center;
     transform: scale(1.5);
   }
-}
-
-:host([popoverExtended][popoverType='fixed']) dialog::after {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 10px;
-  border-style: solid;
-  border-color: transparent transparent red transparent;
 }
