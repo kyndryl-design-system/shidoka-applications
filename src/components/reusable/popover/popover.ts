@@ -166,13 +166,11 @@ export class Popover extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if (
-      changed.has('open') ||
-      changed.has('top') ||
-      changed.has('left') ||
-      changed.has('placement') ||
-      changed.has('mode')
-    ) {
+    const repositionKeys = ['top', 'left', 'placement', 'mode'];
+    const shouldReposition =
+      this.open &&
+      (changed.has('open') || repositionKeys.some((k) => changed.has(k)));
+    if (shouldReposition) {
       (positionPopover as any).call(this);
     }
   }
