@@ -59,6 +59,10 @@ export class HeaderLink extends LitElement {
   @property({ type: String })
   searchLabel = 'Search';
 
+  /** Number of child links required to show search input. */
+  @property({ type: Number })
+  searchThreshold = 6;
+
   /** Text for mobile "Back" button. */
   @property({ type: String })
   backText = 'Back';
@@ -149,7 +153,7 @@ export class HeaderLink extends LitElement {
             ${this.backText}
           </button>
 
-          ${Links.length > 5
+          ${Links.length >= this.searchThreshold
             ? html`
                 <kyn-text-input
                   hideLabel
