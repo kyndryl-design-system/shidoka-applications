@@ -1,6 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import Styles from './search.scss';
@@ -15,6 +15,7 @@ const _defaultTextStrings = {
   noMatches: 'No matches found for',
   selected: 'Selected',
   found: 'Found',
+  recentSearches: 'Recent searches',
 };
 
 /**
@@ -52,6 +53,9 @@ export class Search extends LitElement {
   /** Auto-suggest array of strings that should match the current value. Update this array externally after on-input. */
   @property({ type: Array })
   suggestions: Array<string> = [];
+
+  @property({ type: Array })
+  searchHistory: Array<string> = [];
 
   /** Expandable style search button description (Required to support accessibility). */
   @property({ type: String })
@@ -91,6 +95,12 @@ export class Search extends LitElement {
   @state()
   _expanded = false;
 
+  /** Expanded state.
+   * @internal
+   */
+  @query('kyn-text-input')
+  _textInput!: any;
+
   override render() {
     const classes = {
       search: true,
@@ -122,7 +132,6 @@ export class Search extends LitElement {
           ?disabled=${this.disabled}
           @on-input=${(e: CustomEvent) => this._handleInput(e)}
           @focus=${this._handleFocus}
-          @blur=${this._handleBlur}
           @keydown=${(e: any) => this.handleSearchKeydown(e)}
         >
           ${this.label}
@@ -133,49 +142,39 @@ export class Search extends LitElement {
           class="suggestions"
           @keydown=${(e: any) => this.handleListKeydown(e)}
         >
-          ${!this.value && this.enableSearchHistory
-            ? html` <div class="suggestion-title">Recent searches</div>`
-            : null}
-          ${this.suggestions.map(
-            (suggestion) =>
-              html`
-                <div
-                  class="suggestion"
-                  @click=${(e: any) =>
-                    this._handleSuggestionClick(e, suggestion)}
-                  @mouseup=${() =>
-                    this._handleSuggestionWithMouseUp(suggestion)}
-                  @mousedown=${(e: any) =>
-                    this._handleSuggestionWithMouseDown(e)}
-                >
-                  ${(() => {
-                    if (this.value === '') {
-                      return this.enableSearchHistory
-                        ? html`
-                            <div class="history-suggestion">
-                              <span style="display:flex"
-                                >${unsafeSVG(historyIcon)}</span
-                              >
-                              <span>${suggestion}</span>
-                            </div>
-                          `
-                        : html`${suggestion}`;
-                    }
-                    const regex = new RegExp(`(${this.value})`, 'ig');
-                    if (!regex.test(suggestion)) {
-                      return html`${suggestion}`;
-                    }
-                    const parts = suggestion.split(regex);
-                    return parts.map((part) =>
-                      part.toLowerCase() === this.value.toLowerCase() &&
-                      this.value
-                        ? html`<span class="bold-text">${part}</span>`
-                        : html`<span class="light-text">${part}</span>`
-                    );
-                  })()}
-                </div>
-              `
-          )}
+          ${(() => {
+            const isSearchHistory =
+              this.value === '' && this.enableSearchHistory;
+            const listToRender = isSearchHistory
+              ? this.searchHistory
+              : this.suggestions;
+
+            return html`
+              ${isSearchHistory
+                ? html`<div class="suggestion-title">
+                    ${this.assistiveTextStrings.recentSearches}
+                  </div>`
+                : null}
+              ${listToRender.map(
+                (suggestion) => html`
+                  <div
+                    class="suggestion"
+                    @click=${(e: any) =>
+                      this._handleSuggestionClick(e, suggestion)}
+                    @mouseup=${() =>
+                      this._handleSuggestionWithMouseUp(suggestion)}
+                    @mousedown=${(e: any) =>
+                      this._handleSuggestionWithMouseDown(e)}
+                  >
+                    ${this._renderSuggestionContent(
+                      suggestion,
+                      isSearchHistory
+                    )}
+                  </div>
+                `
+              )}
+            `;
+          })()}
         </div>
         <div
           class="assistive-text"
@@ -209,16 +208,6 @@ export class Search extends LitElement {
     }
   }
 
-  private _handleBlur() {
-    setTimeout(() => {
-      this._focused = false;
-
-      if (this.value === '') {
-        this._expanded = false;
-      }
-    }, 100);
-  }
-
   private _handleButtonClick() {
     this._expanded = true;
 
@@ -228,6 +217,7 @@ export class Search extends LitElement {
   }
 
   private _handleInput(e: CustomEvent) {
+    console.log('_handleInput', e.detail.value);
     this.value = e.detail.value;
     this._focused = true;
 
@@ -257,31 +247,33 @@ export class Search extends LitElement {
   private _handleSuggestionWithMouseUp(suggestion: string) {
     this.value = suggestion;
     this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
+    this.shadowRoot
+      ?.querySelector('kyn-text-input')
+      ?.setValueAndNotify(this.value);
     this._focused = false;
   }
 
   private _handleSuggestionWithMouseDown(e: any) {
-    console.log('mousedown', e);
     e.preventDefault();
   }
 
   private handleSearchKeydown(e: any) {
     e.stopPropagation();
-
-    this.handleKeyboard(e.keyCode, 'input');
+    console.log('handleSearchKeydown', e.keyCode);
+    this.handleKeyboard(e, e.keyCode, 'input');
   }
 
   private handleListKeydown(e: any) {
+    console.log('handleListKeydown', e.keyCode);
     const TAB_KEY_CODE = 9;
-
     if (e.keyCode !== TAB_KEY_CODE) {
       e.preventDefault();
     }
 
-    this.handleKeyboard(e.keyCode, 'list');
+    this.handleKeyboard(e, e.keyCode, 'list');
   }
 
-  private handleKeyboard(keyCode: number, target: string) {
+  private handleKeyboard(e: any, keyCode: number, target: string) {
     // const SPACEBAR_KEY_CODE = [0, 32];
     const ENTER_KEY_CODE = 13;
     const DOWN_ARROW_KEY_CODE = 40;
@@ -305,9 +297,15 @@ export class Search extends LitElement {
     switch (keyCode) {
       case ENTER_KEY_CODE: {
         // select highlighted option
-        this.value = suggestionEls[highlightedIndex].innerText;
+        e.preventDefault();
+        const selectedValue = suggestionEls[highlightedIndex].innerText;
+        this.shadowRoot
+          ?.querySelector('kyn-text-input')
+          ?.setValueAndNotify(selectedValue);
         if (target === 'input')
-          this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
+          this._assistiveText = `${this._assistiveTextStrings.selected} ${selectedValue}`;
+        this._focused = false;
+        this._expanded = false;
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
@@ -375,5 +373,71 @@ export class Search extends LitElement {
         this.assistiveTextStrings
       );
     }
+  }
+
+  private _renderSuggestionContent(
+    suggestion: string,
+    isSearchHistory: boolean
+  ) {
+    const showHistoryIcon =
+      isSearchHistory || this.searchHistory.includes(suggestion);
+
+    const iconTemplate = showHistoryIcon
+      ? html`<span style="display:flex">${unsafeSVG(historyIcon)}</span>`
+      : null;
+
+    if (isSearchHistory) {
+      return html`
+        <div class="history-suggestion">
+          ${iconTemplate}
+          <span>${suggestion}</span>
+        </div>
+      `;
+    }
+    const regex = new RegExp(`(${this.value})`, 'ig');
+    if (!regex.test(suggestion)) {
+      return html`
+        <!-- <div class="active-suggestion">
+          ${iconTemplate}
+          <span>${suggestion}</span>
+        </div> -->
+        ${suggestion}
+      `;
+    }
+
+    const parts = suggestion.split(regex);
+    return html`
+      <!-- <div class="active-suggestion">
+        ${iconTemplate}
+        <span class="text-parts"> -->
+      ${parts.map((part) =>
+        part.toLowerCase() === this.value.toLowerCase() && this.value
+          ? html`<span class="bold-text">${part}</span>`
+          : html`<span class="light-text">${part}</span>`
+      )}
+      <!-- </span>
+      </div> -->
+    `;
+  }
+
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      setTimeout(() => {
+        this._focused = false;
+        if (this.value === '') {
+          this._expanded = false;
+        }
+      }, 100);
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener('click', (e) => this._handleClickOut(e), true);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', (e) => this._handleClickOut(e), true);
   }
 }

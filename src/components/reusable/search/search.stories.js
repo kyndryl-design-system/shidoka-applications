@@ -33,6 +33,7 @@ const args = {
     noMatches: 'No matches found for',
     selected: 'Selected',
     found: 'Found',
+    recentSearches: 'Recent searches',
   },
 };
 
@@ -59,16 +60,21 @@ export const Search = {
 export const SearchHistory = {
   args: {
     ...args,
-    suggestions: ['Search', 'History', 'Text', 'Here'],
+    searchHistory: [
+      'Searched Item A',
+      'Searched Item B',
+      'Searched Item C',
+      'Searched Item D',
+    ],
   },
   render: (args) => {
-    const [{ suggestions }, updateArgs] = useArgs();
-    const handleInput = (e) => {
-      updateArgs({
-        suggestions: ['text', 'strings', 'matching', 'value'],
-      });
-      action(e.type)(e);
-    };
+    // const [{ suggestions }, updateArgs] = useArgs();
+    // const handleInput = (e) => {
+    //   updateArgs({
+    //     suggestions: ['text', 'strings', 'matching', 'value'],
+    //   });
+    //   action(e.type)(e);
+    // };
     return html`
       <kyn-search
         name=${args.name}
@@ -78,10 +84,11 @@ export const SearchHistory = {
         ?disabled=${args.disabled}
         size=${args.size}
         ?enableSearchHistory=${true}
-        .suggestions=${suggestions}
+        .searchHistory=${args.searchHistory}
+        .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         .assistiveTextStrings=${args.assistiveTextStrings}
-        @on-input=${(e) => handleInput(e)}
+        @on-input=${(e) => action(e.type)(e)}
       ></kyn-search>
     `;
   },
