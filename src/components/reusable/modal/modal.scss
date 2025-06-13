@@ -1,5 +1,3 @@
-// modal.scss
-
 @use '../../../common/scss/global.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
@@ -11,13 +9,14 @@
 dialog {
   @include elevation.shadow(3);
   padding: 32px;
-  background: var(--kd-color-background-container-default);
   color: inherit;
+  background: var(--kd-color-background-container-default);
   border-radius: 8px;
   border: 1px solid var(--kd-color-border-variants-light);
   min-width: 288px;
   max-width: calc(100% - 32px);
-  overflow: visible;
+  max-height: calc(100% - 32px);
+  overflow: hidden;
 
   &[open] {
     display: flex;
@@ -31,9 +30,11 @@ dialog {
   &.size--md {
     width: 384px;
   }
+
   &.size--lg {
     width: 800px;
   }
+
   &.size--xl {
     width: 1024px;
   }
@@ -42,39 +43,12 @@ dialog {
     @include elevation.shadow('3', true);
     border: none;
     background: var(--kd-color-background-container-ai-subtle);
+    // background: linear-gradient(
+    //   180deg,
+    //   var(--kd-color-background-gradients-ai-linear-top-gradient-1) 0%,
+    //   var(--kd-color-background-gradients-ai-linear-bottom-gradient-1) 70.5%
+    // );
   }
-}
-
-:host([popoverExtended][popoverType='floating']) dialog {
-  position: fixed;
-  height: auto;
-  max-height: none;
-}
-
-:host([popoverExtended]) {
-  dialog.popover-size--mini {
-    width: auto;
-    max-width: 230px;
-    min-height: unset;
-    padding: 16px;
-
-    header {
-      display: none;
-    }
-
-    .close {
-      top: 18px;
-      right: 16px;
-    }
-  }
-
-  dialog {
-    border: none;
-  }
-}
-
-:host([popoverExtended][popoverType='modal']) dialog {
-  border: none;
 }
 
 form {
@@ -85,7 +59,7 @@ form {
 
 @supports (transition-behavior: allow-discrete) {
   dialog {
-    transition: opacity 400ms ease-out, transform 400ms ease-out allow-discrete,
+    transition: opacity 400ms ease-out, transform 400ms ease-out,
       overlay 400ms ease-out allow-discrete,
       display 400ms ease-out allow-discrete;
     opacity: 0;
@@ -110,11 +84,12 @@ form {
 }
 
 @keyframes dialog-in {
-  from {
+  0% {
     opacity: 0;
     transform: scale(0);
   }
-  to {
+
+  100% {
     opacity: 1;
     transform: none;
   }
@@ -187,10 +162,6 @@ slot[name='footer']::slotted(*) {
   margin: -4px;
   padding: 4px 16px 4px 4px;
   min-height: 0;
-
-  &.popover-extended {
-    padding: 4px 8px 4px 4px;
-  }
 
   &:not(.disableScroll) {
     overflow-y: auto;

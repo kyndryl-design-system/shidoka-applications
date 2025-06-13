@@ -3,201 +3,239 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
-  display: block;
+  display: inline-block;
   position: relative;
+  width: 100%;
+}
 
-  &[popoverExtended] {
-    dialog {
-      margin: 0;
-    }
+.popover {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
 
-    &[popoverType='floating'] dialog {
-      width: auto;
-      &.popover-size--mini {
-        max-width: 350px;
-      }
-      &.popover-size--narrow {
-        max-width: 395px;
-      }
-      &.popover-size--wide {
-        max-width: 600px;
-      }
-    }
+.popover > div {
+  @include elevation.shadow(3);
+  position: absolute;
+  background: var(--kd-color-background-container-default);
+  border-radius: 8px;
+  padding: 32px;
+  color: inherit;
+  overflow: visible;
+  min-width: 288px;
+  max-width: calc(100% - 32px);
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
 
-    &[popoverType='modal'] dialog {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: none;
+.popover > div.open {
+  visibility: visible;
+  opacity: 1;
+}
 
-      &.popover-size--wide {
-        width: 95%;
-        max-width: 600px;
-      }
-      &.popover-size--narrow {
-        width: 95%;
-        max-width: 395px;
-      }
-      &.popover-size--mini {
-        width: 95%;
-        max-width: 350px;
-      }
-    }
+.popover-inner {
+  border-radius: 8px;
+}
 
-    &[popoverType='anchor'] dialog {
-      position: absolute;
-    }
-
-    &[popoverType='anchor'] {
-      dialog::before {
-        content: '';
-        position: absolute;
-        border-width: 10px;
-        border-style: solid;
-        border-color: transparent transparent
-          var(--kd-color-background-container-default) transparent;
-      }
-      &.direction--bottom dialog::before {
-        bottom: 100%;
-      }
-
-      &.direction--top dialog::before {
-        top: 100%;
-        border-color: var(--kd-color-background-container-default) transparent
-          transparent transparent;
-      }
-
-      &.direction--left dialog::before {
-        left: 100%;
-        border-color: transparent var(--kd-color-background-container-default)
-          transparent transparent;
-      }
-
-      &.direction--right dialog::before {
-        right: 100%;
-        border-color: transparent transparent transparent
-          var(--kd-color-background-container-default);
-      }
-
-      &.anchor-position--start dialog::before {
-        left: 5%;
-        transform: translateX(0) translateY(-50%);
-        top: auto;
-        bottom: auto;
-      }
-
-      &.anchor-position--center dialog::before {
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      &.anchor-position--end dialog::before {
-        left: 95%;
-        transform: translateX(-100%);
-      }
-
-      &.anchor-position--start.direction--left dialog::before,
-      &.anchor-position--start.direction--right dialog::before {
-        top: 5%;
-        left: auto;
-        bottom: auto;
-        transform: translateY(0);
-      }
-      &.anchor-position--center.direction--left dialog::before,
-      &.anchor-position--center.direction--right dialog::before {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      &.anchor-position--end.direction--left dialog::before,
-      &.anchor-position--end.direction--right dialog::before {
-        top: 95%;
-        transform: translateY(-100%);
-      }
-    }
+.popover-inner.no-header-text {
+  header {
+    margin-bottom: 48px;
   }
 }
 
-.anchor {
-  display: inline-block;
-  cursor: pointer;
+/* Size variants */
+.popover-inner.popover-size--mini {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 240px;
+  justify-content: space-between;
+
+  .mini-content {
+    width: inherit;
+  }
 }
 
-.type--link .popover-modal dialog,
-.type--button .popover-modal dialog {
-  position: fixed;
+.mini-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 95%;
+
+  kyn-button.close {
+    position: static;
+    top: auto;
+    right: auto;
+    margin-left: auto;
+    padding: 4px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
 }
 
-.popover-size--mini .popover-modal {
-  max-width: 160px;
+.mini-header kyn-button.close:hover {
+  background-color: var(--kd-color-background-hover);
 }
-.popover-size--narrow .popover-modal {
-  max-width: 400px;
+
+.popover > div.popover-size--narrow {
+  width: 95%;
+  max-width: 395px;
 }
-.popover-size--wide .popover-modal {
+
+.popover-inner.popover-size--wide {
+  width: 95%;
   max-width: 600px;
 }
 
-.expansion-container {
-  margin-top: 0;
-  padding: 32px 16px;
-  text-align: center;
-  border: 1px dashed var(--kd-color-utility-variant-border);
-  border-radius: 8px;
-  opacity: 0.9;
-  background: var(--kd-color-background-container-subtle);
-  min-height: fit-content;
+header {
+  margin-bottom: 24px;
 }
 
-.popover-size--mini .expansion-container {
-  padding: 4px 16px;
-  border-radius: 4px;
-  margin-right: 40px;
-  text-align: center;
+.close {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  width: 20px;
+  height: 20px;
+  color: var(--kd-color-icon-primary);
+
+  span {
+    display: flex;
+  }
 }
 
-dialog.popover-extended-true {
-  header {
-    margin-bottom: 24px;
-  }
-  .footer {
-    margin-top: 16px;
-  }
+.label {
+  @include typography.type-ui-02;
+  color: var(--kd-color-text-level-secondary);
+}
 
-  &.popover-type--button,
-  &.popover-type--link {
-    border: none;
-    box-shadow: none;
-  }
+h1 {
+  @include typography.type-body-01;
+  margin: 0;
+  order: 1;
+}
 
-  &.popover-size--mini {
-    padding: 16px;
+.popover > div .body {
+  flex-grow: 1;
+  margin-bottom: 32px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
 
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 100%;
-      left: 5%;
-      border-width: 10px;
-      border-style: solid;
-      border-color: transparent transparent
-        var(--kd-color-background-container-default) transparent;
-    }
+.popover > div .footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
 
-    header {
-      display: none;
-    }
-    .close {
-      top: 18px;
-      right: 16px;
+  @media (max-width: calc(42rem - 0.001px)) {
+    kyn-button {
+      width: 100%;
+      flex-grow: 1;
     }
   }
 }
 
-.link-slot {
-  margin-top: 8px;
+@mixin arrow($dir) {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  z-index: 1001;
 
-  &:empty {
-    display: none;
+  @if $dir == top {
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--kd-color-background-container-default);
+  } @else if $dir == bottom {
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--kd-color-background-container-default);
+  } @else if $dir == left {
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: var(--kd-color-background-container-default);
+  } @else if $dir == right {
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: var(--kd-color-background-container-default);
   }
+}
+
+.direction--top > div {
+  bottom: calc(100% + 8px);
+}
+.direction--bottom > div {
+  top: calc(100% + 8px);
+}
+.direction--left > div {
+  right: calc(100% + 8px);
+}
+.direction--right > div {
+  left: calc(100% + 8px);
+}
+
+.direction--top > div::before {
+  @include arrow(top);
+}
+.direction--bottom > div::before {
+  @include arrow(bottom);
+}
+.direction--left > div::before {
+  @include arrow(left);
+}
+.direction--right > div::before {
+  @include arrow(right);
+}
+
+.anchor--start.direction--top > div {
+  left: 8px;
+  transform: none;
+}
+.anchor--end.direction--top > div {
+  right: 8px;
+  left: auto;
+  transform: none;
+}
+.anchor--start.direction--bottom > div {
+  left: 8px;
+  transform: none;
+}
+.anchor--end.direction--bottom > div {
+  right: 8px;
+  left: auto;
+  transform: none;
+}
+.anchor--start.direction--left > div {
+  top: 8px;
+  transform: none;
+}
+.anchor--end.direction--left > div {
+  bottom: 8px;
+  top: auto;
+  transform: none;
+}
+.anchor--start.direction--right > div {
+  top: 8px;
+  transform: none;
+}
+.anchor--end.direction--right > div {
+  bottom: 8px;
+  top: auto;
+  transform: none;
 }

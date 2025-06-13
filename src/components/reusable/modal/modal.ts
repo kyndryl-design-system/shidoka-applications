@@ -1,10 +1,8 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-
 import { classMap } from 'lit/directives/class-map.js';
 import ModalScss from './modal.scss';
-import PopoverScss from '../popover/popover.scss';
 
 import '../button';
 
@@ -22,7 +20,6 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
 export class Modal extends LitElement {
   static override styles = [
     ModalScss,
-    PopoverScss,
     css`
       @supports (transition-behavior: allow-discrete) {
         @starting-style {
@@ -115,25 +112,6 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   disableScroll = false;
 
-  /** Determines if the modal is inline, meaning it will not use the dialog element and will be rendered inline in the DOM. */
-  @property({ type: Boolean, reflect: true })
-  inline = false;
-
-  /** --- */
-  /** Popover extended mode, which changes the layout of the modal to be more compact. */
-  /** Determines if the component is being extended for popover.*/
-  @property({ type: Boolean, reflect: true })
-  popoverExtended = false;
-
-  /** Determines the size variant when used in a popover */
-  @property({ type: String, reflect: true })
-  popoverSize = '';
-
-  /** Determines the positioning, relative to the anchor, of the popover. */
-  @property({ type: String, reflect: true })
-  popoverType = '';
-  /** --- */
-
   override render() {
     const classes = {
       modal: true,
@@ -141,9 +119,6 @@ export class Modal extends LitElement {
       'size--lg': this.size === 'lg',
       'size--xl': this.size === 'xl',
       'ai-connected': this.aiConnected,
-      'popover-extended-true': this.popoverExtended,
-      [`popover-size--${this.popoverSize}`]: this.popoverSize !== '',
-      [`popover-type--${this.popoverType}`]: this.popoverType !== '',
     };
 
     return html`
@@ -168,21 +143,14 @@ export class Modal extends LitElement {
           </kyn-button>
           <header>
             <div>
-              ${this.titleText !== ''
-                ? html`<h1 id="dialogLabel">${this.titleText}</h1>`
-                : null}
+              <h1 id="dialogLabel">${this.titleText}</h1>
               ${this.labelText !== ''
                 ? html`<span class="label">${this.labelText}</span>`
                 : null}
             </div>
           </header>
 
-          <div
-            class="body ${this.disableScroll ? 'disableScroll' : ''} ${this
-              .popoverExtended
-              ? 'popover-extended'
-              : ''}"
-          >
+          <div class="body ${this.disableScroll ? 'disableScroll' : ''}">
             <slot></slot>
           </div>
 
@@ -193,7 +161,6 @@ export class Modal extends LitElement {
                     <kyn-button
                       class="action-button"
                       value="ok"
-                      size="${this.popoverExtended ? 'small' : 'medium'}"
                       kind=${this.destructive
                         ? 'primary-destructive'
                         : this.aiConnected
@@ -209,7 +176,6 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            size="${this.popoverExtended ? 'small' : 'medium'}"
                             kind=${this.aiConnected ? 'outline-ai' : 'outline'}
                             ?disabled=${this.secondaryDisabled}
                             @click=${(e: Event) =>
@@ -226,13 +192,17 @@ export class Modal extends LitElement {
                             class="action-button"
                             value="cancel"
                             kind="tertiary"
-                            size="${this.popoverExtended ? 'small' : 'medium'}"
                             @click=${(e: Event) =>
                               this._closeModal(e, 'cancel')}
                           >
                             ${this.cancelText}
                           </kyn-button>
                         `}
+                    <!--
+            <div class="custom-actions">
+              <slot name="actions"></slot>
+            </div>
+            -->
                   </div>
                 </slot>
               `
@@ -272,32 +242,15 @@ export class Modal extends LitElement {
     this.dispatchEvent(event);
   }
 
-  override updated(changed: Map<string, any>) {
-    if (!changed.has('open')) return;
-    if (this.open) {
-      if (this.inline) {
-        this._dialog.show();
-      } else {
+  override updated(changedProps: any) {
+    if (changedProps.has('open')) {
+      if (this.open) {
         this._dialog.showModal();
+        this._emitOpenEvent();
+      } else {
+        this._dialog.close();
       }
-      this._emitOpenEvent();
-    } else {
-      this._dialog.close();
     }
-  }
-
-  public positionRelativeTo(anchor: HTMLElement) {
-    const rect = anchor.getBoundingClientRect();
-    this._dialog.style.position = 'absolute';
-    this._dialog.style.top = `${rect.bottom + window.scrollY + 6}px`;
-    this._dialog.style.left = `
-      ${
-        rect.left +
-        window.scrollX -
-        this._dialog.offsetWidth / 2 +
-        rect.width / 2
-      }px
-    `.trim();
   }
 }
 

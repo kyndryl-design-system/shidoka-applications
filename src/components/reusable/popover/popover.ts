@@ -1,203 +1,279 @@
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import PopoverScss from './popover.scss';
+import '../button';
 
-import '../modal';
-import '../link';
-import positionPopover from '../../../common/helpers/popoverHelper';
+import PopoverScss from './popover.scss';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 /**
  * Popover component.
- * @slot unnamed - Slot for content that appears at different sizes (wide, narrow, mini).
- * @slot anchor - Element that triggers the popover.
- * @slot link - Optional slot for a link element.
+ * @slot anchor      - The trigger element (icon, button, link, etc.).
+ * @slot default     - The popover body content.
+ * @slot footer      - Optional custom footer (replaces default buttons).
+ * @fires on-close   - Emitted when any action closes the popover.
  */
 @customElement('kyn-popover')
 export class Popover extends LitElement {
   static override styles = [PopoverScss];
 
-  /** trigger style */
+  /** trigger slot styling */
   @property({ type: String, reflect: true })
   triggerType: 'icon' | 'link' | 'button' = 'icon';
 
-  /** positioning mode */
+  /** manual direction or auto */
   @property({ type: String, reflect: true })
-  mode: 'modal' | 'anchor' | 'floating' = 'anchor';
+  direction: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'auto';
 
-  /** Placement for anchor and floating. */
-  @property({ type: String, reflect: true })
-  placement: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
-
-  /** Direction for arrow orientation */
-  @property({ type: String, reflect: true })
-  direction: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
-
-  /** Anchor position for arrow alignment */
-  @property({ type: String, reflect: true })
-  anchorPosition: 'start' | 'center' | 'end' = 'center';
-
-  /** Popover size, one of 'mini', 'narrow', or 'wide' */
+  /** size variant */
   @property({ type: String })
   popoverSize: 'mini' | 'narrow' | 'wide' = 'mini';
 
-  /** Controls popover visibility */
-  @property({ type: Boolean })
-  open = false;
-
-  /** Title/heading text for the modal */
+  /** body title text */
   @property({ type: String })
   titleText = '';
 
-  /** Label text for the modal */
-  @property({ type: String })
-  labelText = '';
-
-  /** OK button text */
-  @property({ type: String })
-  okText = 'OK';
-
-  /** Cancel button text */
-  @property({ type: String })
-  cancelText = '';
-
-  /** Close button text */
-  @property({ type: String })
-  closeText = '';
-
-  /** Changes the primary button styles to indicate the action is destructive */
+  /** Changes the primary button styles to indicate the action is destructive. */
   @property({ type: Boolean })
   destructive = false;
 
-  /** Disables the primary button */
-  @property({ type: Boolean })
-  okDisabled = false;
+  /** body subtitle/label */
+  @property({ type: String })
+  labelText = '';
 
-  /** Hides the footer/action buttons to create a passive modal */
-  @property({ type: Boolean })
-  hideFooter = false;
+  /** OK button label */
+  @property({ type: String })
+  okText = 'OK';
 
-  /** Shows the secondary button */
+  /** Cancel button label */
+  @property({ type: String })
+  cancelText = 'Cancel';
+
+  /** Secondary button text. */
+  @property({ type: String })
+  secondaryButtonText = 'Secondary';
+
+  /** Hides the secondary button. */
   @property({ type: Boolean })
   showSecondaryButton = false;
 
-  /** Secondary button text */
+  /** hide entire footer */
+  @property({ type: Boolean })
+  hideFooter = false;
+
+  /** Whether popover is open */
+  @property({ type: Boolean })
+  open = false;
+
+  /** Close button text. */
   @property({ type: String })
-  secondaryButtonText = '';
+  closeText = 'Close';
 
-  /** Disables the secondary button */
-  @property({ type: Boolean })
-  secondaryDisabled = false;
-
-  /** Hides the cancel button */
-  @property({ type: Boolean })
-  hideCancelButton = false;
-
-  /** Determines if the component is themed for GenAI */
-  @property({ type: Boolean })
-  aiConnected = false;
-
-  /** Disables scroll on the modal body to allow scrolling of nested elements inside */
-  @property({ type: Boolean })
-  disableScroll = false;
-
-  /** Function to execute before the modal can close */
-  @property({ attribute: false })
-  beforeClose!: () => void;
-
-  /** Manual coords for floating mode (overrides anchor); accepts px, %, vw/vh, etc. */
-  @property({ type: String }) top: string | number = 0;
-  @property({ type: String }) left: string | number = 0;
-  @property({ type: String }) right: string | number = 0;
-  @property({ type: String }) bottom: string | number = 0;
-
-  /** Internal link slot detection. */
-  @state()
-  private hasLinkSlot = false;
+  @state() private _calculatedDirection: 'top' | 'bottom' | 'left' | 'right' =
+    'bottom';
+  @state() private _anchorPosition: 'start' | 'center' | 'end' = 'center';
+  @state() private _coords = { top: 0, left: 0 };
 
   override render() {
-    const popoverClasses = {
-      [`type--${this.triggerType}`]: true,
+    const hasHeaderText = !!(this.titleText || this.labelText);
+    const panelClasses = {
+      [`direction--${this._calculatedDirection}`]: true,
+      [`anchor--${this._anchorPosition}`]: true,
       [`popover-size--${this.popoverSize}`]: true,
-      [`direction--${this.direction}`]: this.mode === 'anchor',
-      [`anchor--${this.anchorPosition}`]: this.mode === 'anchor',
+      'popover-inner': true,
+      open: this.open,
+      'no-header-text': !hasHeaderText,
     };
 
     return html`
-      <div class=${classMap(popoverClasses)}>
-        <span class="anchor" @click=${(e: MouseEvent) => this._toggle(e)}>
+      <div class="popover">
+        <span class="anchor" @click=${this._toggle}>
           <slot name="anchor"></slot>
         </span>
 
-        <kyn-modal
-          class="popover-modal"
-          ?inline=${this.mode !== 'modal'}
-          popoverExtended
-          .popoverType=${this.mode}
-          .open=${this.open}
-          size=${this.popoverSize === 'wide' ? 'lg' : 'md'}
-          titleText=${this.titleText}
-          labelText=${this.labelText}
-          okText=${this.okText}
-          cancelText=${this.cancelText}
-          closeText=${this.closeText}
-          triggerType=${this.triggerType}
-          ?destructive=${this.destructive}
-          ?okDisabled=${this.okDisabled}
-          ?hideFooter=${this.mode === 'anchor' || this.hideFooter}
-          ?showSecondaryButton=${this.showSecondaryButton}
-          secondaryButtonText=${this.secondaryButtonText}
-          ?secondaryDisabled=${this.secondaryDisabled}
-          ?hideCancelButton=${this.hideCancelButton}
-          ?aiConnected=${this.aiConnected}
-          ?disableScroll=${this.disableScroll}
-          .beforeClose=${this.beforeClose}
-          .popoverSize=${this.popoverSize}
-          @on-close=${() => (this.open = false)}
-        >
-          <div class="expansion-container"><slot></slot></div>
-          <div class="link-slot" ?hidden=${!this.hasLinkSlot}>
-            <slot name="link"></slot>
-          </div>
-        </kyn-modal>
+        ${this.open
+          ? html`
+              <div
+                class=${classMap(panelClasses)}
+                style="top:${this._coords.top}px; left:${this._coords.left}px;"
+              >
+                ${this.popoverSize === 'mini'
+                  ? html`
+                      <div class="mini-header">
+                        <div class="mini-content">
+                          <slot></slot>
+                        </div>
+                        <kyn-button
+                          class="close"
+                          kind="ghost"
+                          size="small"
+                          description=${this.closeText}
+                          @click=${() => this._handleAction('cancel')}
+                        >
+                          ${unsafeSVG(closeIcon)}
+                        </kyn-button>
+                      </div>
+                    `
+                  : html`
+                      <header>
+                        ${this.titleText
+                          ? html`<h1>${this.titleText}</h1>`
+                          : null}
+                        ${this.labelText
+                          ? html`<span class="label">${this.labelText}</span>`
+                          : null}
+                        <kyn-button
+                          class="close"
+                          kind="ghost"
+                          size="small"
+                          description=${this.closeText}
+                          @click=${() => this._handleAction('cancel')}
+                        >
+                          ${unsafeSVG(closeIcon)}
+                        </kyn-button>
+                      </header>
+                      <div class="body">
+                        <slot></slot>
+                      </div>
+                    `}
+                ${!this.hideFooter && this.popoverSize !== 'mini'
+                  ? html`
+                      <slot name="footer">
+                        <div class="footer">
+                          <kyn-button
+                            class="action-button"
+                            value="ok"
+                            size="small"
+                            kind=${this.destructive
+                              ? 'primary-destructive'
+                              : 'primary'}
+                            @click=${() => this._handleAction('ok')}
+                          >
+                            ${this.okText}
+                          </kyn-button>
+                          ${this.showSecondaryButton
+                            ? html`
+                                <kyn-button
+                                  class="action-button"
+                                  value="Secondary"
+                                  size="small"
+                                  kind=${'secondary'}
+                                  @click=${() =>
+                                    this._handleAction('secondary')}
+                                >
+                                  ${this.secondaryButtonText}
+                                </kyn-button>
+                              `
+                            : null}
+                        </div>
+                      </slot>
+                    `
+                  : null}
+              </div>
+            `
+          : null}
       </div>
     `;
   }
 
   override updated(changed: Map<string, unknown>) {
-    const repositionKeys = ['top', 'left', 'placement', 'mode'];
-    const shouldReposition =
-      this.open &&
-      (changed.has('open') || repositionKeys.some((k) => changed.has(k)));
-    if (shouldReposition) {
-      (positionPopover as any).call(this);
+    if (changed.has('open') && this.open) {
+      this.updateComplete.then(() => this._position());
     }
   }
 
-  override firstUpdated() {
-    const slot = this.shadowRoot!.querySelector('slot[name="link"]')!;
-    slot.addEventListener('slotchange', () => this._updateLinkSlot());
-    this._updateLinkSlot();
-    setTimeout(() => (positionPopover as any).call(this), 0);
+  private _toggle() {
+    this.open = !this.open;
   }
 
-  private _updateLinkSlot() {
-    const slot = this.renderRoot.querySelector(
-      'slot[name="link"]'
-    ) as HTMLSlotElement;
-    this.hasLinkSlot = (slot.assignedNodes({ flatten: true }) ?? []).some(
-      (n) =>
-        n.nodeType !== Node.TEXT_NODE || (n.textContent?.trim() ?? '') !== ''
+  private _handleClose() {
+    this.open = false;
+    this.dispatchEvent(
+      new CustomEvent('on-close', { detail: { action: 'close' } })
     );
   }
 
-  private _toggle(e: MouseEvent) {
-    this.open = !this.open;
-    if (this.mode !== 'floating') {
-      this.left = e.clientX;
-      this.top = e.clientY;
+  private _handleAction(action: 'ok' | 'cancel' | 'secondary') {
+    this.open = false;
+    this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
+  }
+
+  private _position() {
+    const anchor = this.shadowRoot!.querySelector('.anchor') as HTMLElement;
+    const panel = this.shadowRoot!.querySelector(
+      'div:not(.anchor)'
+    ) as HTMLElement;
+    if (!anchor || !panel) return;
+    const a = anchor.getBoundingClientRect();
+    const p = panel.getBoundingClientRect();
+
+    let dir: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
+    if (this.direction !== 'auto') dir = this.direction;
+    else {
+      const space = {
+        top: a.top,
+        bottom: innerHeight - a.bottom,
+        left: a.left,
+        right: innerWidth - a.right,
+      };
+      dir = (Object.keys(space) as Array<keyof typeof space>).reduce(
+        (b, k) => (space[k] > space[b] ? k : b),
+        'bottom'
+      );
     }
+    this._calculatedDirection = dir;
+
+    let anchorPos: 'start' | 'center' | 'end' = 'center';
+    if (dir === 'top' || dir === 'bottom') {
+      const cx = a.left + a.width / 2;
+      if (cx - a.left < a.width * 0.33) anchorPos = 'start';
+      else if (a.right - cx < a.width * 0.33) anchorPos = 'end';
+    } else {
+      const cy = a.top + a.height / 2;
+      if (cy - a.top < a.height * 0.33) anchorPos = 'start';
+      else if (a.bottom - cy < a.height * 0.33) anchorPos = 'end';
+    }
+    this._anchorPosition = anchorPos;
+
+    let top = 0,
+      left = 0;
+    switch (dir) {
+      case 'top':
+        top = a.top - p.height;
+        left = a.left + a.width / 2 - p.width / 2;
+        break;
+      case 'bottom':
+        top = a.bottom;
+        left = a.left + a.width / 2 - p.width / 2;
+        break;
+      case 'left':
+        top = a.top + a.height / 2 - p.height / 2;
+        left = a.left - p.width;
+        break;
+      case 'right':
+        top = a.top + a.height / 2 - p.height / 2;
+        left = a.right;
+        break;
+    }
+    top = Math.max(8, Math.min(top, innerHeight - p.height - 8));
+    left = Math.max(8, Math.min(left, innerWidth - p.width - 8));
+    this._coords = { top, left };
+
+    let arrowOffset = 0;
+    if (dir === 'top' || dir === 'bottom') {
+      const anchorCenterX = a.left + a.width / 2;
+      const panelLeft = left;
+      const OFFSET = 10;
+      arrowOffset = anchorCenterX - panelLeft + OFFSET;
+    } else if (dir === 'left' || dir === 'right') {
+      const anchorCenterY = a.top + a.height / 2;
+      const panelTop = top;
+      arrowOffset = anchorCenterY - panelTop;
+    }
+
+    panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
   }
 }
 
