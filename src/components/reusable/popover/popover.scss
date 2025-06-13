@@ -1,0 +1,186 @@
+@use '../../../common/scss/global.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+
+:host {
+  display: inline;
+  position: relative;
+}
+
+.popover {
+  all: unset;
+}
+
+.popover > div {
+  @include elevation.shadow(3);
+  position: absolute;
+  background: var(--kd-color-background-container-default);
+  border-radius: 8px;
+  padding: 24px;
+  color: inherit;
+  overflow: visible;
+  min-width: 288px;
+  max-width: calc(100% - 32px);
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.popover > div.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popover-inner {
+  position: fixed;
+  border-radius: 8px;
+}
+
+.popover-inner.no-header-text {
+  padding-top: 30px !important;
+
+  .close {
+    top: 12px;
+  }
+}
+
+.popover-inner.popover-size--mini {
+  width: 240px;
+  min-width: 0;
+  max-width: 240px;
+
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+
+  .mini-content {
+    width: inherit;
+  }
+}
+
+.mini-header {
+  display: flex;
+  align-items: center;
+  gap: px;
+  width: 95%;
+
+  kyn-button.close {
+    position: static;
+    margin-left: auto;
+    padding: 4px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    // justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+}
+
+.mini-header kyn-button.close:hover {
+  background-color: var(--kd-color-background-hover);
+}
+
+.popover-inner.popover-size--wide {
+  width: 95%;
+  max-width: 600px;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+.close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 20px;
+  height: 20px;
+  color: var(--kd-color-icon-primary);
+
+  span {
+    display: flex;
+  }
+}
+
+.label {
+  @include typography.type-ui-02;
+  color: var(--kd-color-text-level-secondary);
+}
+
+h1 {
+  @include typography.type-body-01;
+  margin: 0;
+  order: 1;
+}
+
+.popover > div .body {
+  flex-grow: 1;
+  margin-bottom: 32px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.anchor {
+  cursor: pointer;
+}
+
+.popover > div .footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+
+  @media (max-width: calc(42rem - 0.001px)) {
+    kyn-button {
+      width: 100%;
+      flex-grow: 1;
+    }
+  }
+}
+
+@mixin arrow($dir) {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  z-index: 1001;
+
+  @if $dir == top {
+    bottom: -12px;
+    left: calc(var(--arrow-offset, 48px));
+    border-top-color: var(--kd-color-background-container-default);
+  } @else if $dir == bottom {
+    top: -12px;
+    left: calc(var(--arrow-offset, 48px));
+    border-bottom-color: var(--kd-color-background-container-default);
+  } @else if $dir == left {
+    right: -12px;
+    top: calc(var(--arrow-offset, 48px));
+    border-left-color: var(--kd-color-background-container-default);
+  } @else if $dir == right {
+    left: -12px;
+    top: calc(var(--arrow-offset, 48px));
+    border-right-color: var(--kd-color-background-container-default);
+  }
+}
+
+.direction--top > div::before {
+  @include arrow(top);
+}
+.direction--bottom > div::before {
+  @include arrow(bottom);
+}
+.direction--left > div::before {
+  @include arrow(left);
+}
+.direction--right > div::before {
+  @include arrow(right);
+}
