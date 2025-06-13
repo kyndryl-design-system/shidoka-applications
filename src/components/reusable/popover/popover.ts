@@ -122,18 +122,33 @@ export class Popover extends LitElement {
   @property({ type: String })
   right?: string;
 
-  @state()
-  private _calculatedDirection: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
+  /** Optional manual offset for tooltip-like triangular shaped arrow. */
+  @property({ type: String, reflect: true })
+  arrowOffset?: string;
 
+  /**
+   * The calculated direction for the popover panel, used when direction is set to 'auto'.
+   * @private
+   */
   @state()
-  private _anchorPosition: 'start' | 'center' | 'end' = 'center';
+  _calculatedDirection: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 
+  /**
+   * The calculated anchor alignment position ('start', 'center', or 'end').
+   * @private
+   */
   @state()
-  private _coords = { top: 0, left: 0 };
+  _anchorPosition: 'start' | 'center' | 'end' = 'center';
+
+  /**
+   * The calculated coordinates for the popover panel (top and left in pixels).
+   * @private
+   */
+  @state()
+  _coords = { top: 0, left: 0 };
 
   override render() {
     const hasHeader = !!(this.titleText || this.labelText);
-
     const dir =
       this.direction === 'auto' ? this._calculatedDirection : this.direction;
 
@@ -146,26 +161,17 @@ export class Popover extends LitElement {
       'no-header-text': !hasHeader,
     };
 
-    let styleAttr: string;
-    if (this.isAnchored) {
-      styleAttr = `top:${this._coords.top}px;left:${this._coords.left}px;`;
-    } else {
-      styleAttr = 'position:fixed;';
-      styleAttr += this.top ? `top:${this.top};` : '';
-      styleAttr += this.left ? `left:${this.left};` : '';
-      styleAttr += this.bottom ? `bottom:${this.bottom};` : '';
-      styleAttr += this.right ? `right:${this.right};` : '';
-    }
-
     return html`
       <div class="popover">
         <span class="anchor" @click=${this._toggle}>
           <slot name="anchor"></slot>
         </span>
-
         ${this.open
           ? html`
-              <div class=${classMap(panelClasses)} style=${styleAttr}>
+              <div
+                class=${classMap(panelClasses)}
+                style=${this._getPanelStyle()}
+              >
                 ${this.popoverSize === 'mini'
                   ? html`
                       <div class="mini-header">
@@ -241,8 +247,23 @@ export class Popover extends LitElement {
     `;
   }
 
+  private _getPanelStyle() {
+    if (this.isAnchored) {
+      return `position: fixed; top: ${this._coords.top}px; left: ${this._coords.left}px;`;
+    }
+    let s = 'position: fixed;';
+    if (this.top) s += `top: ${this.top};`;
+    if (this.left) s += `left: ${this.left};`;
+    if (this.bottom) s += `bottom: ${this.bottom};`;
+    if (this.right) s += `right: ${this.right};`;
+    return s;
+  }
+
   override updated(changed: Map<string, unknown>) {
-    if (changed.has('open') && this.open) {
+    if (
+      this.isAnchored &&
+      ((changed.has('open') && this.open) || changed.has('arrowOffset'))
+    ) {
       this.updateComplete.then(() => this._position());
     }
   }
@@ -257,79 +278,91 @@ export class Popover extends LitElement {
   }
 
   private _position() {
-    const anchor = this.shadowRoot!.querySelector('.anchor') as HTMLElement;
-    const panel = this.shadowRoot!.querySelector(
-      'div:not(.anchor)'
-    ) as HTMLElement;
-    if (!anchor || !panel) return;
-    const a = anchor.getBoundingClientRect();
-    const p = panel.getBoundingClientRect();
+    requestAnimationFrame(() => {
+      const anchor = this.shadowRoot!.querySelector('.anchor') as HTMLElement;
+      const panel = this.shadowRoot!.querySelector(
+        '.popover-inner'
+      ) as HTMLElement;
+      if (!anchor || !panel) return;
 
-    let dir: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
-    if (this.direction !== 'auto') dir = this.direction;
-    else {
-      const space = {
-        top: a.top,
-        bottom: innerHeight - a.bottom,
-        left: a.left,
-        right: innerWidth - a.right,
-      };
-      dir = (Object.keys(space) as Array<keyof typeof space>).reduce(
-        (b, k) => (space[k] > space[b] ? k : b),
-        'bottom'
-      );
-    }
-    this._calculatedDirection = dir;
+      const a = anchor.getBoundingClientRect();
+      const p = panel.getBoundingClientRect();
 
-    let anchorPos: 'start' | 'center' | 'end' = 'center';
-    if (dir === 'top' || dir === 'bottom') {
-      const cx = a.left + a.width / 2;
-      if (cx - a.left < a.width * 0.33) anchorPos = 'start';
-      else if (a.right - cx < a.width * 0.33) anchorPos = 'end';
-    } else {
-      const cy = a.top + a.height / 2;
-      if (cy - a.top < a.height * 0.33) anchorPos = 'start';
-      else if (a.bottom - cy < a.height * 0.33) anchorPos = 'end';
-    }
-    this._anchorPosition = anchorPos;
+      let dir: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
+      if (this.direction === 'auto') {
+        const space = {
+          top: a.top,
+          bottom: window.innerHeight - a.bottom,
+          left: a.left,
+          right: window.innerWidth - a.right,
+        };
+        if (space.bottom >= p.height + 16) dir = 'bottom';
+        else if (space.top >= p.height + 16) dir = 'top';
+        else if (space.right >= p.width + 16) dir = 'right';
+        else dir = 'left';
+        this._calculatedDirection = dir;
+      } else {
+        dir = this.direction;
+        this._calculatedDirection = dir;
+      }
 
-    let top = 0,
-      left = 0;
-    switch (dir) {
-      case 'top':
-        top = a.top - p.height;
-        left = a.left + a.width / 2 - p.width / 2;
-        break;
-      case 'bottom':
-        top = a.bottom;
-        left = a.left + a.width / 2 - p.width / 2;
-        break;
-      case 'left':
-        top = a.top + a.height / 2 - p.height / 2;
-        left = a.left - p.width;
-        break;
-      case 'right':
-        top = a.top + a.height / 2 - p.height / 2;
-        left = a.right;
-        break;
-    }
-    top = Math.max(8, Math.min(top, innerHeight - p.height - 8));
-    left = Math.max(8, Math.min(left, innerWidth - p.width - 8));
-    this._coords = { top, left };
+      const GUTTER = 8;
+      const OFFSET = 20;
+      const ARROW_HALF = 6;
 
-    let arrowOffset = 0;
-    if (dir === 'top' || dir === 'bottom') {
-      const anchorCenterX = a.left + a.width / 2;
-      const panelLeft = left;
-      const OFFSET = 10;
-      arrowOffset = anchorCenterX - panelLeft + OFFSET;
-    } else if (dir === 'left' || dir === 'right') {
-      const anchorCenterY = a.top + a.height / 2;
-      const panelTop = top;
-      arrowOffset = anchorCenterY - panelTop;
-    }
+      panel.style.transform = '';
 
-    panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+      let topPos: number;
+      let leftPos: number;
+      let rawOffset: number;
+
+      if (dir === 'top' || dir === 'bottom') {
+        const cx = a.left + a.width / 2;
+        const idealLeft = cx - p.width / 2;
+        leftPos = Math.min(
+          Math.max(idealLeft, GUTTER),
+          window.innerWidth - p.width - GUTTER
+        );
+
+        const rawTop =
+          dir === 'top' ? a.top - p.height - OFFSET : a.bottom + OFFSET;
+        topPos = Math.min(
+          Math.max(rawTop, GUTTER),
+          window.innerHeight - p.height - GUTTER
+        );
+
+        rawOffset = cx - leftPos;
+      } else {
+        const cy = a.top + a.height / 2;
+        const idealTop = cy - p.height / 2;
+        topPos = Math.min(
+          Math.max(idealTop, GUTTER),
+          window.innerHeight - p.height - GUTTER
+        );
+
+        const rawLeft =
+          dir === 'left' ? a.left - p.width - OFFSET : a.right + OFFSET;
+        leftPos = Math.min(
+          Math.max(rawLeft, GUTTER),
+          window.innerWidth - p.width - GUTTER
+        );
+
+        rawOffset = cy - topPos;
+      }
+
+      const maxOffset =
+        dir === 'top' || dir === 'bottom'
+          ? p.width - ARROW_HALF
+          : p.height - ARROW_HALF;
+
+      const arrowOffsetVal = this.arrowOffset
+        ? parseFloat(this.arrowOffset)
+        : Math.max(ARROW_HALF, Math.min(rawOffset, maxOffset));
+
+      panel.style.top = `${topPos}px`;
+      panel.style.left = `${leftPos}px`;
+      panel.style.setProperty('--arrow-offset', `${arrowOffsetVal}px`);
+    });
   }
 }
 

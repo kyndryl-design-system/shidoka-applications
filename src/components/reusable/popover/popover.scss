@@ -3,15 +3,12 @@
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
-  display: inline-block;
+  display: inline;
   position: relative;
-  width: 100%;
 }
 
 .popover {
-  position: relative;
-  display: inline-block;
-  width: 100%;
+  all: unset;
 }
 
 .popover > div {
@@ -36,6 +33,7 @@
 }
 
 .popover-inner {
+  position: fixed;
   border-radius: 8px;
 }
 
@@ -48,11 +46,14 @@
 }
 
 .popover-inner.popover-size--mini {
+  width: 240px;
+  min-width: 0;
+  max-width: 240px;
+
   padding: 15px;
   display: flex;
   align-items: center;
   gap: 16px;
-  max-width: 240px;
   justify-content: space-between;
 
   .mini-content {
@@ -68,8 +69,6 @@
 
   kyn-button.close {
     position: static;
-    top: auto;
-    right: auto;
     margin-left: auto;
     padding: 4px;
     width: 20px;
@@ -85,11 +84,6 @@
 
 .mini-header kyn-button.close:hover {
   background-color: var(--kd-color-background-hover);
-}
-
-.popover > div.popover-size--narrow {
-  width: 95%;
-  max-width: 395px;
 }
 
 .popover-inner.popover-size--wide {
@@ -161,38 +155,21 @@ h1 {
 
   @if $dir == top {
     bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: calc(var(--arrow-offset, 48px));
     border-top-color: var(--kd-color-background-container-default);
   } @else if $dir == bottom {
     top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: calc(var(--arrow-offset, 48px));
     border-bottom-color: var(--kd-color-background-container-default);
   } @else if $dir == left {
     right: -12px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: calc(var(--arrow-offset, 48px));
     border-left-color: var(--kd-color-background-container-default);
   } @else if $dir == right {
     left: -12px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: calc(var(--arrow-offset, 48px));
     border-right-color: var(--kd-color-background-container-default);
   }
-}
-
-.direction--top > div {
-  bottom: calc(100% + 8px);
-}
-.direction--bottom > div {
-  top: calc(100% + 8px);
-}
-.direction--left > div {
-  right: calc(100% + 8px);
-}
-.direction--right > div {
-  left: calc(100% + 8px);
 }
 
 .direction--top > div::before {
@@ -206,41 +183,4 @@ h1 {
 }
 .direction--right > div::before {
   @include arrow(right);
-}
-
-.anchor--start.direction--top > div {
-  left: 8px;
-  transform: none;
-}
-.anchor--end.direction--top > div {
-  right: 8px;
-  left: auto;
-  transform: none;
-}
-.anchor--start.direction--bottom > div {
-  left: 8px;
-  transform: none;
-}
-.anchor--end.direction--bottom > div {
-  right: 8px;
-  left: auto;
-  transform: none;
-}
-.anchor--start.direction--left > div {
-  top: 8px;
-  transform: none;
-}
-.anchor--end.direction--left > div {
-  bottom: 8px;
-  top: auto;
-  transform: none;
-}
-.anchor--start.direction--right > div {
-  top: 8px;
-  transform: none;
-}
-.anchor--end.direction--right > div {
-  bottom: 8px;
-  top: auto;
-  transform: none;
 }
