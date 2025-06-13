@@ -4,88 +4,158 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import '../button';
-
 import PopoverScss from './popover.scss';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 /**
  * Popover component.
- * @slot anchor      - The trigger element (icon, button, link, etc.).
- * @slot default     - The popover body content.
- * @slot footer      - Optional custom footer (replaces default buttons).
- * @fires on-close   - Emitted when any action closes the popover.
+ *
+ * - anchor: positioned relative to an anchor slot
+ * - floating: manually positioned via top/left/bottom/right
+ *
+ * @slot anchor - The trigger element (icon, button, link, etc.)
+ * @slot default - The popover body content
+ * @slot footer - Optional custom footer (replaces default buttons)
+ *
+ * @fires on-close - Emitted when any action closes the popover
  */
 @customElement('kyn-popover')
 export class Popover extends LitElement {
   static override styles = [PopoverScss];
 
-  /** trigger slot styling */
-  @property({ type: String, reflect: true })
-  triggerType: 'icon' | 'link' | 'button' = 'icon';
+  /**
+   * Determines whether popover is anchored to launch element
+   */
+  @property({ type: Boolean, reflect: true })
+  isAnchored = false;
 
-  /** manual direction or auto */
+  /**
+   * Manual direction or auto (anchor mode only)
+   */
   @property({ type: String, reflect: true })
   direction: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'auto';
 
-  /** size variant */
+  /** how we style the anchor slot */
+  @property({ type: String, reflect: true })
+  triggerType: 'icon' | 'link' | 'button' = 'button';
+
+  /**
+   * Size variant
+   */
   @property({ type: String })
   popoverSize: 'mini' | 'narrow' | 'wide' = 'mini';
 
-  /** body title text */
+  /**
+   * Body title text
+   */
   @property({ type: String })
   titleText = '';
 
-  /** Changes the primary button styles to indicate the action is destructive. */
+  /**
+   * Changes the primary button styles to indicate a destructive action
+   */
   @property({ type: Boolean })
   destructive = false;
 
-  /** body subtitle/label */
+  /**
+   * Body subtitle/label
+   */
   @property({ type: String })
   labelText = '';
 
-  /** OK button label */
+  /**
+   * OK button label
+   */
   @property({ type: String })
   okText = 'OK';
 
-  /** Cancel button label */
+  /**
+   * Cancel button label
+   */
   @property({ type: String })
   cancelText = 'Cancel';
 
-  /** Secondary button text. */
+  /**
+   * Secondary button text
+   */
   @property({ type: String })
   secondaryButtonText = 'Secondary';
 
-  /** Hides the secondary button. */
+  /**
+   * Show or hide the secondary button
+   */
   @property({ type: Boolean })
   showSecondaryButton = false;
 
-  /** hide entire footer */
+  /**
+   * Hide the entire footer
+   */
   @property({ type: Boolean })
   hideFooter = false;
 
-  /** Whether popover is open */
+  /**
+   * Whether popover is open
+   */
   @property({ type: Boolean })
   open = false;
 
-  /** Close button text. */
+  /**
+   * Close button description text
+   */
   @property({ type: String })
   closeText = 'Close';
 
-  @state() private _calculatedDirection: 'top' | 'bottom' | 'left' | 'right' =
-    'bottom';
-  @state() private _anchorPosition: 'start' | 'center' | 'end' = 'center';
-  @state() private _coords = { top: 0, left: 0 };
+  // Floating-only offset props
+  /** Top position value. */
+  @property({ type: String })
+  top?: string;
+
+  /** Left position value. */
+  @property({ type: String })
+  left?: string;
+
+  /** Bottom position value. */
+  @property({ type: String })
+  bottom?: string;
+
+  /** Right position value. */
+  @property({ type: String })
+  right?: string;
+
+  @state()
+  private _calculatedDirection: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
+
+  @state()
+  private _anchorPosition: 'start' | 'center' | 'end' = 'center';
+
+  @state()
+  private _coords = { top: 0, left: 0 };
 
   override render() {
-    const hasHeaderText = !!(this.titleText || this.labelText);
+    const hasHeader = !!(this.titleText || this.labelText);
+
+    const dir =
+      this.direction === 'auto' ? this._calculatedDirection : this.direction;
+
     const panelClasses = {
-      [`direction--${this._calculatedDirection}`]: true,
-      [`anchor--${this._anchorPosition}`]: true,
+      [`direction--${dir}`]: true,
+      ...(this.isAnchored && { [`anchor--${this._anchorPosition}`]: true }),
       [`popover-size--${this.popoverSize}`]: true,
       'popover-inner': true,
       open: this.open,
-      'no-header-text': !hasHeaderText,
+      'no-header-text': !hasHeader,
     };
+
+    let styleAttr: string;
+    if (this.isAnchored) {
+      styleAttr = `top:${this._coords.top}px;left:${this._coords.left}px;`;
+    } else {
+      styleAttr = 'position:fixed;';
+      styleAttr += this.top ? `top:${this.top};` : '';
+      styleAttr += this.left ? `left:${this.left};` : '';
+      styleAttr += this.bottom ? `bottom:${this.bottom};` : '';
+      styleAttr += this.right ? `right:${this.right};` : '';
+    }
 
     return html`
       <div class="popover">
@@ -95,16 +165,11 @@ export class Popover extends LitElement {
 
         ${this.open
           ? html`
-              <div
-                class=${classMap(panelClasses)}
-                style="top:${this._coords.top}px; left:${this._coords.left}px;"
-              >
+              <div class=${classMap(panelClasses)} style=${styleAttr}>
                 ${this.popoverSize === 'mini'
                   ? html`
                       <div class="mini-header">
-                        <div class="mini-content">
-                          <slot></slot>
-                        </div>
+                        <div class="mini-content"><slot></slot></div>
                         <kyn-button
                           class="close"
                           kind="ghost"
@@ -134,9 +199,7 @@ export class Popover extends LitElement {
                           ${unsafeSVG(closeIcon)}
                         </kyn-button>
                       </header>
-                      <div class="body">
-                        <slot></slot>
-                      </div>
+                      <div class="body"><slot></slot></div>
                     `}
                 ${!this.hideFooter && this.popoverSize !== 'mini'
                   ? html`
@@ -157,9 +220,9 @@ export class Popover extends LitElement {
                             ? html`
                                 <kyn-button
                                   class="action-button"
-                                  value="Secondary"
+                                  value="secondary"
                                   size="small"
-                                  kind=${'secondary'}
+                                  kind="secondary"
                                   @click=${() =>
                                     this._handleAction('secondary')}
                                 >
@@ -186,13 +249,6 @@ export class Popover extends LitElement {
 
   private _toggle() {
     this.open = !this.open;
-  }
-
-  private _handleClose() {
-    this.open = false;
-    this.dispatchEvent(
-      new CustomEvent('on-close', { detail: { action: 'close' } })
-    );
   }
 
   private _handleAction(action: 'ok' | 'cancel' | 'secondary') {
