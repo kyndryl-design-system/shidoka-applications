@@ -349,6 +349,17 @@ export class TextInput extends FormMixin(LitElement) {
     e.stopPropagation();
     this.passwordVisible = !this.passwordVisible;
   }
+
+  // Added for search input to set value from suggestion panel on select and notify
+  setValueAndNotify(val: string) {
+    const oldValue = this.value;
+    this.value = val;
+    this._inputEl.value = val;
+    this.requestUpdate('value', oldValue);
+
+    this._validate(true, false);
+    this._emitValue();
+  }
 }
 
 declare global {
