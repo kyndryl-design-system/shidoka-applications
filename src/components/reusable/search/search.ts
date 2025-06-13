@@ -217,7 +217,6 @@ export class Search extends LitElement {
   }
 
   private _handleInput(e: CustomEvent) {
-    console.log('_handleInput', e.detail.value);
     this.value = e.detail.value;
     this._focused = true;
 
@@ -259,12 +258,10 @@ export class Search extends LitElement {
 
   private handleSearchKeydown(e: any) {
     e.stopPropagation();
-    console.log('handleSearchKeydown', e.keyCode);
     this.handleKeyboard(e, e.keyCode, 'input');
   }
 
   private handleListKeydown(e: any) {
-    console.log('handleListKeydown', e.keyCode);
     const TAB_KEY_CODE = 9;
     if (e.keyCode !== TAB_KEY_CODE) {
       e.preventDefault();
