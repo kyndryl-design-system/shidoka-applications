@@ -127,6 +127,18 @@ export class Popover extends LitElement {
   arrowOffset?: string;
 
   /**
+   * Horizontal offset in px for anchored panel.
+   */
+  @property({ type: Number, attribute: 'offset-x' })
+  offsetX = 0;
+
+  /**
+   * Vertical offset in px for anchored panel.
+   */
+  @property({ type: Number, attribute: 'offset-y' })
+  offsetY = 0;
+
+  /**
    * The calculated direction for the popover panel, used when direction is set to 'auto'.
    * @private
    */
@@ -277,7 +289,7 @@ export class Popover extends LitElement {
     this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
   }
 
-  private _position() {
+  private _position(): void {
     requestAnimationFrame(() => {
       const anchor = this.shadowRoot!.querySelector('.anchor') as HTMLElement;
       const panel = this.shadowRoot!.querySelector(
@@ -288,6 +300,7 @@ export class Popover extends LitElement {
       const a = anchor.getBoundingClientRect();
       const p = panel.getBoundingClientRect();
 
+      // figure out direction
       let dir: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
       if (this.direction === 'auto') {
         const space = {
@@ -307,14 +320,14 @@ export class Popover extends LitElement {
       }
 
       const GUTTER = 8;
-      const OFFSET = 20;
+      const DEFAULT_SP = 20;
       const ARROW_HALF = 6;
 
-      panel.style.transform = '';
+      // use a smaller gap for left/right so arrow tip touches button
+      const SPACING =
+        dir === 'left' || dir === 'right' ? ARROW_HALF : DEFAULT_SP;
 
-      let topPos: number;
-      let leftPos: number;
-      let rawOffset: number;
+      let topPos: number, leftPos: number, rawOffset: number;
 
       if (dir === 'top' || dir === 'bottom') {
         const cx = a.left + a.width / 2;
@@ -325,7 +338,7 @@ export class Popover extends LitElement {
         );
 
         const rawTop =
-          dir === 'top' ? a.top - p.height - OFFSET : a.bottom + OFFSET;
+          dir === 'top' ? a.top - p.height - SPACING : a.bottom + SPACING;
         topPos = Math.min(
           Math.max(rawTop, GUTTER),
           window.innerHeight - p.height - GUTTER
@@ -341,7 +354,7 @@ export class Popover extends LitElement {
         );
 
         const rawLeft =
-          dir === 'left' ? a.left - p.width - OFFSET : a.right + OFFSET;
+          dir === 'left' ? a.left - p.width - SPACING : a.right + SPACING;
         leftPos = Math.min(
           Math.max(rawLeft, GUTTER),
           window.innerWidth - p.width - GUTTER
@@ -359,6 +372,7 @@ export class Popover extends LitElement {
         ? parseFloat(this.arrowOffset)
         : Math.max(ARROW_HALF, Math.min(rawOffset, maxOffset));
 
+      panel.style.position = 'fixed';
       panel.style.top = `${topPos}px`;
       panel.style.left = `${leftPos}px`;
       panel.style.setProperty('--arrow-offset', `${arrowOffsetVal}px`);

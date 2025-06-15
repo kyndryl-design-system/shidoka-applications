@@ -206,7 +206,7 @@ export const CenteredButtonAutoMini = {
     direction: 'auto',
     popoverSize: 'mini',
     triggerType: 'button',
-    arrowOffset: '80px',
+    arrowOffset: '30px',
   },
   decorators: [
     (Story) => html`
@@ -214,6 +214,21 @@ export const CenteredButtonAutoMini = {
         style="height:80vh;display:flex;justify-content:center;align-items:center;"
       >
         <div style="position:relative;">${Story()}</div>
+      </div>
+    `,
+  ],
+};
+
+export const DirectionLeftButtonRight = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    direction: 'left',
+  },
+  decorators: [
+    (Story) => html`
+      <div style="position: relative; width: 100vw; height: 100vh;">
+        <div style="position: absolute; right: 10%; top: 20px;">${Story()}</div>
       </div>
     `,
   ],
