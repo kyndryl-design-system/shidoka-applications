@@ -232,26 +232,17 @@ export class DatePicker extends FormMixin(LitElement) {
     wait: number
   ): (...args: Parameters<T>) => void {
     let timeout: number | null = null;
-
     return (...args: Parameters<T>) => {
-      if (timeout !== null) {
-        window.clearTimeout(timeout);
-      }
-
+      if (timeout) window.clearTimeout(timeout);
       timeout = window.setTimeout(() => {
-        func.apply(this, args);
+        func(...args);
         timeout = null;
       }, wait);
     };
   }
 
   private debouncedUpdate = this.debounce(async () => {
-    if (!this.flatpickrInstance) return;
-    try {
-      await this.initializeFlatpickr();
-    } catch (error) {
-      console.error('Error in debounced update:', error);
-    }
+    if (this.flatpickrInstance) await this.initializeFlatpickr();
   }, 100);
 
   override connectedCallback() {
@@ -670,7 +661,15 @@ export class DatePicker extends FormMixin(LitElement) {
         setCalendarAttributes: (instance) => {
           try {
             const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
+            const isInModal = container !== document.body;
+
+            if (instance.calendarContainer && isInModal) {
+              instance.calendarContainer.classList.add('container-modal');
+              instance.calendarContainer.classList.remove('container-default');
+            }
+
+            setCalendarAttributes(instance, isInModal);
+
             if (instance.calendarContainer) {
               instance.calendarContainer.setAttribute(
                 'aria-label',
@@ -804,6 +803,11 @@ export class DatePicker extends FormMixin(LitElement) {
       noCalendar: false,
       static: this.staticPosition,
     });
+
+    if (this.mode === 'multiple') {
+      options.closeOnSelect = false;
+    }
+
     return options;
   }
 
