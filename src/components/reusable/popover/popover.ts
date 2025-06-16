@@ -300,7 +300,6 @@ export class Popover extends LitElement {
       const a = anchor.getBoundingClientRect();
       const p = panel.getBoundingClientRect();
 
-      // figure out direction
       let dir: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
       if (this.direction === 'auto') {
         const space = {
@@ -320,25 +319,21 @@ export class Popover extends LitElement {
       }
 
       const GUTTER = 8;
-      const DEFAULT_SP = 20;
+      const OFFSET_DIM = 20;
       const ARROW_HALF = 6;
-
-      // use a smaller gap for left/right so arrow tip touches button
-      const SPACING =
-        dir === 'left' || dir === 'right' ? ARROW_HALF : DEFAULT_SP;
 
       let topPos: number, leftPos: number, rawOffset: number;
 
       if (dir === 'top' || dir === 'bottom') {
         const cx = a.left + a.width / 2;
-        const idealLeft = cx - p.width / 2;
+        const idealLeft = a.left;
         leftPos = Math.min(
           Math.max(idealLeft, GUTTER),
           window.innerWidth - p.width - GUTTER
         );
 
         const rawTop =
-          dir === 'top' ? a.top - p.height - SPACING : a.bottom + SPACING;
+          dir === 'top' ? a.top - p.height - OFFSET_DIM : a.bottom + OFFSET_DIM;
         topPos = Math.min(
           Math.max(rawTop, GUTTER),
           window.innerHeight - p.height - GUTTER
@@ -353,8 +348,11 @@ export class Popover extends LitElement {
           window.innerHeight - p.height - GUTTER
         );
 
+        const HORIZONTAL_OFFSET = 8;
         const rawLeft =
-          dir === 'left' ? a.left - p.width - SPACING : a.right + SPACING;
+          dir === 'left'
+            ? a.left - p.width - HORIZONTAL_OFFSET
+            : a.right + HORIZONTAL_OFFSET;
         leftPos = Math.min(
           Math.max(rawLeft, GUTTER),
           window.innerWidth - p.width - GUTTER
