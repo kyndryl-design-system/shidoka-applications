@@ -308,7 +308,7 @@ export class Dropdown extends FormMixin(LitElement) {
                   e.preventDefault();
                 }
               }}
-              @blur=${(e: any) => this.handleButtonBlur(e)}
+              @blur=${(e: any) => e.stopPropagation()}
             >
               ${this.multiple && this.value.length
                 ? html`
@@ -338,7 +338,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       aria-disabled=${this.disabled}
                       @keydown=${(e: any) => this.handleSearchKeydown(e)}
                       @input=${(e: any) => this.handleSearchInput(e)}
-                      @blur=${(e: any) => this.handleSearchBlur(e)}
+                      @blur=${(e: any) => e.stopPropagation()}
                       @click=${(e: any) => this.handleSearchClick(e)}
                     />
                   `
@@ -848,33 +848,6 @@ export class Dropdown extends FormMixin(LitElement) {
   private handleSearchClick(e: any) {
     e.stopPropagation();
     this.open = true;
-  }
-
-  private handleButtonBlur(e: any) {
-    // don't blur if entering listbox or search input
-    if (
-      e.relatedTarget?.localName !== 'kyn-dropdown-option' &&
-      !e.relatedTarget?.classList.contains('options') &&
-      !e.relatedTarget?.classList.contains('search') &&
-      !e.relatedTarget?.closest('.add-option')
-    ) {
-      this.open = false;
-    }
-    this._validate(true, false);
-  }
-
-  private handleSearchBlur(e: any) {
-    // don't blur if entering listbox of button
-    if (
-      !e.relatedTarget ||
-      (e.relatedTarget?.localName !== 'kyn-dropdown-option' &&
-        !e.relatedTarget?.classList.contains('options') &&
-        !e.relatedTarget?.classList.contains('select') &&
-        !e.relatedTarget?.closest('.add-option'))
-    ) {
-      this.open = false;
-    }
-    this._validate(true, false);
   }
 
   private handleSearchKeydown(e: any) {
