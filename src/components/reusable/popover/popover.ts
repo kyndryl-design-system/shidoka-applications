@@ -7,6 +7,44 @@ import '../button';
 import PopoverScss from './popover.scss';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
+type Dir = 'top' | 'bottom' | 'left' | 'right';
+type AnchorPos = 'start' | 'center' | 'end';
+
+interface Rect {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+  width: number;
+  height: number;
+}
+interface Coords {
+  top: number;
+  left: number;
+}
+interface PositionResult {
+  dir: Dir;
+  anchorPos: AnchorPos;
+  coords: Coords;
+  arrowOffset: number;
+}
+
+const GUTTER = 8;
+const OFFSET_DIM = 22;
+const ARROW_HALF = 6;
+const SIZE_RATIO_MAP: Record<
+  'mini' | 'narrow' | 'wide',
+  {
+    gap: number;
+    shift: number;
+    arrow: number;
+  }
+> = {
+  mini: { gap: 0.15, shift: -0.35, arrow: 0.03 },
+  narrow: { gap: 0.025, shift: -0.045, arrow: 0.06 },
+  wide: { gap: 0.15, shift: -0.2, arrow: 0.08 },
+};
+
 /**
  * Popover component.
  *
@@ -33,7 +71,7 @@ export class Popover extends LitElement {
    * Manual direction or auto (anchor mode only)
    */
   @property({ type: String, reflect: true })
-  direction: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'auto';
+  direction: Dir | 'auto' = 'auto';
 
   /** how we style the anchor slot */
   @property({ type: String, reflect: true })
@@ -139,25 +177,28 @@ export class Popover extends LitElement {
   offsetY = 0;
 
   /**
-   * The calculated direction for the popover panel, used when direction is set to 'auto'.
+   * The computed direction of the popover panel when `direction="auto"`.
+   * One of 'top', 'bottom', 'left', or 'right'.
    * @private
    */
   @state()
-  _calculatedDirection: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
+  private _calculatedDirection: Dir = 'bottom';
 
   /**
-   * The calculated anchor alignment position ('start', 'center', or 'end').
+   * The computed anchor alignment relative to the trigger element.
+   * One of 'start', 'center', or 'end'.
    * @private
    */
   @state()
-  _anchorPosition: 'start' | 'center' | 'end' = 'center';
+  private _anchorPosition: AnchorPos = 'center';
 
   /**
-   * The calculated coordinates for the popover panel (top and left in pixels).
+   * The computed panel coordinates for positioning.
+   * Contains `top` and `left` in pixels.
    * @private
    */
   @state()
-  _coords = { top: 0, left: 0 };
+  private _coords: Coords = { top: 0, left: 0 };
 
   override render() {
     const hasHeader = !!(this.titleText || this.labelText);
@@ -179,87 +220,76 @@ export class Popover extends LitElement {
           <slot name="anchor"></slot>
         </span>
         ${this.open
-          ? html`
-              <div
-                class=${classMap(panelClasses)}
-                style=${this._getPanelStyle()}
-              >
-                ${this.popoverSize === 'mini'
-                  ? html`
-                      <div class="mini-header">
-                        <div class="mini-content"><slot></slot></div>
-                        <kyn-button
-                          class="close"
-                          kind="ghost"
-                          size="small"
-                          description=${this.closeText}
-                          @click=${() => this._handleAction('cancel')}
-                        >
-                          ${unsafeSVG(closeIcon)}
-                        </kyn-button>
-                      </div>
-                    `
-                  : html`
-                      <header>
-                        ${this.titleText
-                          ? html`<h1>${this.titleText}</h1>`
-                          : null}
-                        ${this.labelText
-                          ? html`<span class="label">${this.labelText}</span>`
-                          : null}
-                        <kyn-button
-                          class="close"
-                          kind="ghost"
-                          size="small"
-                          description=${this.closeText}
-                          @click=${() => this._handleAction('cancel')}
-                        >
-                          ${unsafeSVG(closeIcon)}
-                        </kyn-button>
-                      </header>
-                      <div class="body"><slot></slot></div>
-                    `}
-                ${!this.hideFooter && this.popoverSize !== 'mini'
-                  ? html`
-                      <slot name="footer">
-                        <div class="footer">
-                          <kyn-button
+          ? html` <div
+              class=${classMap(panelClasses)}
+              style=${this._getPanelStyle()}
+            >
+              ${this.popoverSize === 'mini'
+                ? html` <div class="mini-header">
+                    <div class="mini-content"><slot></slot></div>
+                    <kyn-button
+                      class="close"
+                      kind="ghost"
+                      size="small"
+                      description=${this.closeText}
+                      @click=${() => this._handleAction('cancel')}
+                    >
+                      ${unsafeSVG(closeIcon)}
+                    </kyn-button>
+                  </div>`
+                : html` <header>
+                      ${this.titleText
+                        ? html`<h1>${this.titleText}</h1>`
+                        : null}
+                      ${this.labelText
+                        ? html`<span class="label">${this.labelText}</span>`
+                        : null}
+                      <kyn-button
+                        class="close"
+                        kind="ghost"
+                        size="small"
+                        description=${this.closeText}
+                        @click=${() => this._handleAction('cancel')}
+                      >
+                        ${unsafeSVG(closeIcon)}
+                      </kyn-button>
+                    </header>
+                    <div class="body"><slot></slot></div>`}
+              ${!this.hideFooter && this.popoverSize !== 'mini'
+                ? html` <slot name="footer">
+                    <div class="footer">
+                      <kyn-button
+                        class="action-button"
+                        value="ok"
+                        size="small"
+                        kind=${this.destructive
+                          ? 'primary-destructive'
+                          : 'primary'}
+                        @click=${() => this._handleAction('ok')}
+                      >
+                        ${this.okText}
+                      </kyn-button>
+                      ${this.showSecondaryButton
+                        ? html` <kyn-button
                             class="action-button"
-                            value="ok"
+                            value="secondary"
                             size="small"
-                            kind=${this.destructive
-                              ? 'primary-destructive'
-                              : 'primary'}
-                            @click=${() => this._handleAction('ok')}
+                            kind="secondary"
+                            @click=${() => this._handleAction('secondary')}
                           >
-                            ${this.okText}
-                          </kyn-button>
-                          ${this.showSecondaryButton
-                            ? html`
-                                <kyn-button
-                                  class="action-button"
-                                  value="secondary"
-                                  size="small"
-                                  kind="secondary"
-                                  @click=${() =>
-                                    this._handleAction('secondary')}
-                                >
-                                  ${this.secondaryButtonText}
-                                </kyn-button>
-                              `
-                            : null}
-                        </div>
-                      </slot>
-                    `
-                  : null}
-              </div>
-            `
+                            ${this.secondaryButtonText}
+                          </kyn-button>`
+                        : null}
+                    </div>
+                  </slot>`
+                : null}
+            </div>`
           : null}
       </div>
     `;
   }
 
-  private _getPanelStyle() {
+  private _getPanelStyle = (): string => {
     if (this.isAnchored) {
       return `position: fixed; top: ${this._coords.top}px; left: ${this._coords.left}px;`;
     }
@@ -269,7 +299,7 @@ export class Popover extends LitElement {
     if (this.bottom) s += `bottom: ${this.bottom};`;
     if (this.right) s += `right: ${this.right};`;
     return s;
-  }
+  };
 
   override updated(changed: Map<string, unknown>) {
     if (
@@ -280,16 +310,142 @@ export class Popover extends LitElement {
     }
   }
 
-  private _toggle() {
+  private _toggle = (): void => {
     this.open = !this.open;
-  }
+  };
 
-  private _handleAction(action: 'ok' | 'cancel' | 'secondary') {
+  private _handleAction = (action: 'ok' | 'cancel' | 'secondary'): void => {
     this.open = false;
     this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
-  }
+  };
 
-  private _position(): void {
+  private chooseDirection = (a: Rect, p: Rect): Dir => {
+    const space = {
+      top: a.top,
+      bottom: window.innerHeight - a.bottom,
+      left: a.left,
+      right: window.innerWidth - a.right,
+    };
+    const sideNeeded = p.width + OFFSET_DIM;
+
+    if (this.popoverSize === 'mini') {
+      if (space.bottom >= p.height + OFFSET_DIM) return 'bottom';
+      if (space.top >= p.height + OFFSET_DIM) return 'top';
+    }
+
+    if (space.left >= sideNeeded) return 'left';
+    if (space.right >= sideNeeded) return 'right';
+
+    if (space.bottom >= p.height + OFFSET_DIM) return 'bottom';
+    return 'top';
+  };
+
+  private chooseAnchorPos = (a: Rect, dir: Dir): AnchorPos => {
+    if (dir === 'top' || dir === 'bottom') {
+      const cx = a.left + a.width / 2;
+      if (cx < a.left + a.width * 0.33) return 'start';
+      if (cx > a.left + a.width * 0.67) return 'end';
+      return 'center';
+    } else {
+      const cy = a.top + a.height / 2;
+      if (cy < a.top + a.height * 0.33) return 'start';
+      if (cy > a.top + a.height * 0.67) return 'end';
+      return 'center';
+    }
+  };
+
+  private calcCoords = (a: Rect, p: Rect, dir: Dir): Coords => {
+    let top: number, left: number;
+    if (dir === 'top' || dir === 'bottom') {
+      const idealLeft = a.left;
+      left = Math.min(
+        Math.max(idealLeft, GUTTER),
+        window.innerWidth - p.width - GUTTER
+      );
+      const rawTop =
+        dir === 'top' ? a.top - p.height - OFFSET_DIM : a.bottom + OFFSET_DIM;
+      top = Math.min(
+        Math.max(rawTop, GUTTER),
+        window.innerHeight - p.height - GUTTER
+      );
+    } else {
+      const idealTop = a.top + a.height / 2 - p.height / 2;
+      top = Math.min(
+        Math.max(idealTop, GUTTER),
+        window.innerHeight - p.height - GUTTER
+      );
+      const rawLeft =
+        dir === 'left'
+          ? a.left - p.width - OFFSET_DIM / 2
+          : a.right + OFFSET_DIM / 2;
+      left = Math.min(
+        Math.max(rawLeft, GUTTER),
+        window.innerWidth - p.width - GUTTER
+      );
+    }
+    return { top, left };
+  };
+
+  private clampArrowOffset = (rawOffset: number, panelSize: number): number =>
+    Math.max(ARROW_HALF, Math.min(rawOffset, panelSize - ARROW_HALF));
+
+  private autoPosition = (
+    anchorEl: HTMLElement,
+    panelEl: HTMLElement,
+    forceDir?: Dir,
+    manualArrowOffset?: number
+  ): PositionResult => {
+    const a = anchorEl.getBoundingClientRect() as Rect;
+    const p = panelEl.getBoundingClientRect() as Rect;
+    const dir = forceDir ?? this.chooseDirection(a, p);
+
+    let coords: Coords;
+    let arrowOffset: number;
+
+    if (dir === 'top' || dir === 'bottom') {
+      coords = this.calcCoords(a, p, dir);
+
+      const {
+        gap: gR,
+        shift: sR,
+        arrow: aR,
+      } = SIZE_RATIO_MAP[this.popoverSize];
+      const gap = p.width * gR;
+      const shiftX = p.width * sR;
+      const rawX = a.left + a.width / 2 - coords.left + shiftX;
+
+      coords.left += dir === 'top' ? 0 : 0;
+      arrowOffset = manualArrowOffset ?? this.clampArrowOffset(rawX, p.width);
+    } else {
+      const {
+        gap: gR,
+        shift: sR,
+        arrow: aR,
+      } = SIZE_RATIO_MAP[this.popoverSize];
+      const gap = p.height * gR;
+      const shiftY = p.height * sR;
+      const arrowDy = p.height * aR;
+
+      const desiredTop = a.top + shiftY;
+      const top = Math.min(
+        Math.max(desiredTop, GUTTER),
+        window.innerHeight - p.height - GUTTER
+      );
+      const left = dir === 'left' ? a.left - p.width - gap : a.right + gap;
+      coords = { top, left };
+
+      arrowOffset = manualArrowOffset ?? arrowDy;
+    }
+
+    return {
+      dir,
+      anchorPos: this.chooseAnchorPos(a, dir),
+      coords,
+      arrowOffset,
+    };
+  };
+
+  private _position = (): void => {
     requestAnimationFrame(() => {
       const anchor = this.shadowRoot!.querySelector('.anchor') as HTMLElement;
       const panel = this.shadowRoot!.querySelector(
@@ -297,85 +453,26 @@ export class Popover extends LitElement {
       ) as HTMLElement;
       if (!anchor || !panel) return;
 
-      const a = anchor.getBoundingClientRect();
-      const p = panel.getBoundingClientRect();
+      const manual = parseFloat(this.arrowOffset ?? '');
+      const { dir, anchorPos, coords, arrowOffset } =
+        this.direction === 'auto'
+          ? this.autoPosition(anchor, panel)
+          : this.autoPosition(
+              anchor,
+              panel,
+              this.direction as Dir,
+              isNaN(manual) ? undefined : manual
+            );
 
-      let dir: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
-      if (this.direction === 'auto') {
-        const space = {
-          top: a.top,
-          bottom: window.innerHeight - a.bottom,
-          left: a.left,
-          right: window.innerWidth - a.right,
-        };
-        if (space.bottom >= p.height + 16) dir = 'bottom';
-        else if (space.top >= p.height + 16) dir = 'top';
-        else if (space.right >= p.width + 16) dir = 'right';
-        else dir = 'left';
-        this._calculatedDirection = dir;
-      } else {
-        dir = this.direction;
-        this._calculatedDirection = dir;
-      }
+      this._calculatedDirection = dir;
+      this._anchorPosition = anchorPos;
+      this._coords = coords;
 
-      const GUTTER = 8;
-      const OFFSET_DIM = 20;
-      const ARROW_HALF = 6;
-
-      let topPos: number, leftPos: number, rawOffset: number;
-
-      if (dir === 'top' || dir === 'bottom') {
-        const cx = a.left + a.width / 2;
-        const idealLeft = a.left;
-        leftPos = Math.min(
-          Math.max(idealLeft, GUTTER),
-          window.innerWidth - p.width - GUTTER
-        );
-
-        const rawTop =
-          dir === 'top' ? a.top - p.height - OFFSET_DIM : a.bottom + OFFSET_DIM;
-        topPos = Math.min(
-          Math.max(rawTop, GUTTER),
-          window.innerHeight - p.height - GUTTER
-        );
-
-        rawOffset = cx - leftPos;
-      } else {
-        const cy = a.top + a.height / 2;
-        const idealTop = cy - p.height / 2;
-        topPos = Math.min(
-          Math.max(idealTop, GUTTER),
-          window.innerHeight - p.height - GUTTER
-        );
-
-        const HORIZONTAL_OFFSET = 8;
-        const rawLeft =
-          dir === 'left'
-            ? a.left - p.width - HORIZONTAL_OFFSET
-            : a.right + HORIZONTAL_OFFSET;
-        leftPos = Math.min(
-          Math.max(rawLeft, GUTTER),
-          window.innerWidth - p.width - GUTTER
-        );
-
-        rawOffset = cy - topPos;
-      }
-
-      const maxOffset =
-        dir === 'top' || dir === 'bottom'
-          ? p.width - ARROW_HALF
-          : p.height - ARROW_HALF;
-
-      const arrowOffsetVal = this.arrowOffset
-        ? parseFloat(this.arrowOffset)
-        : Math.max(ARROW_HALF, Math.min(rawOffset, maxOffset));
-
-      panel.style.position = 'fixed';
-      panel.style.top = `${topPos}px`;
-      panel.style.left = `${leftPos}px`;
-      panel.style.setProperty('--arrow-offset', `${arrowOffsetVal}px`);
+      panel.style.top = `${coords.top}px`;
+      panel.style.left = `${coords.left}px`;
+      panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
     });
-  }
+  };
 }
 
 declare global {

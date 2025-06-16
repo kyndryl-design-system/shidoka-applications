@@ -172,15 +172,19 @@ h1 {
   }
 }
 
-.direction--top > div::before {
+.popover-inner.direction--top::before {
   @include arrow(top);
 }
-.direction--bottom > div::before {
+
+.popover-inner.direction--bottom::before {
   @include arrow(bottom);
 }
-.direction--left > div::before {
+
+.popover-inner.direction--left::before {
   @include arrow(left);
+  top: var(--arrow-offset) !important;
 }
-.direction--right > div::before {
+.popover-inner.direction--right::before {
   @include arrow(right);
+  top: var(--arrow-offset) !important;
 }

@@ -163,6 +163,23 @@ export const ManualLeftLinkNarrow = {
   },
 };
 
+export const ManualLeftIconNarrow = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    direction: 'left',
+    popoverSize: 'narrow',
+    triggerType: 'icon',
+  },
+  decorators: [
+    (Story) => html`
+      <div style="position: relative; width: 100vw; height: 100vh;">
+        <div style="position: absolute; right: 10%; top: 20px;">${Story()}</div>
+      </div>
+    `,
+  ],
+};
+
 export const FloatingUpperNoHeader = {
   render: Template,
   args: {
