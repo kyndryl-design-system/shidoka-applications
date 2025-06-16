@@ -1,11 +1,11 @@
 import { html } from 'lit';
 import { render } from 'lit-html';
-import '../components/reusable/textArea';
+import '../components/reusable/textInput';
 import '../components/reusable/tag';
 
 export default {
   title: 'Patterns/Invite User Email',
-  component: 'kyn-text-area',
+  component: 'kyn-text-input',
 };
 
 const users = [
@@ -34,12 +34,12 @@ export const InviteUserEmail = () => {
   const update = () => {
     render(
       html`
-        <kyn-text-area
+        <kyn-text-input
           rows="5"
           placeholder="Enter user email and press Enter"
           @keydown=${onKeydown}
           style="width: 95%; max-width: 600px;"
-        ></kyn-text-area>
+        ></kyn-text-input>
 
         ${tags.length
           ? html`
