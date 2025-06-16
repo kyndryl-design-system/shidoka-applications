@@ -92,6 +92,7 @@ export const Default = {
           label="Dropdown"
           name="dropdown"
           openDirection="down"
+          value="1"
           caption="Dropdown example"
           @on-change=${(e) => action(e.type)(e)}
         >
