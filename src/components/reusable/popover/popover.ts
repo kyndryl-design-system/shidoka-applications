@@ -405,12 +405,7 @@ export class Popover extends LitElement {
     if (dir === 'top' || dir === 'bottom') {
       coords = this.calcCoords(a, p, dir);
 
-      const {
-        gap: gR,
-        shift: sR,
-        arrow: aR,
-      } = SIZE_RATIO_MAP[this.popoverSize];
-      const gap = p.width * gR;
+      const { shift: sR } = SIZE_RATIO_MAP[this.popoverSize];
       const shiftX = p.width * sR;
       const rawX = a.left + a.width / 2 - coords.left + shiftX;
 
