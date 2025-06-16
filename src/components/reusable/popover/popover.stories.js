@@ -20,7 +20,25 @@ export default {
     bottom: { control: 'text' },
     right: { control: 'text' },
     arrowOffset: { control: 'text' },
-    triggerType: { control: 'select', options: ['icon', 'link', 'button'] },
+    anchorPoint: {
+      control: 'select',
+      options: [
+        'center',
+        'top',
+        'bottom',
+        'left',
+        'right',
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+      ],
+    },
+    useModernPositioning: { control: 'boolean' },
+    fullScreenOnMobile: { control: 'boolean' },
+    hideHeader: { control: 'boolean' },
+    autoFocus: { control: 'boolean' },
+    anchorType: { control: 'select', options: ['icon', 'link', 'button'] },
     direction: {
       control: 'select',
       options: ['auto', 'top', 'bottom', 'left', 'right'],
@@ -35,7 +53,7 @@ const baseArgs = {
   bottom: undefined,
   left: undefined,
   arrowOffset: undefined,
-  triggerType: 'button',
+  anchorType: 'button',
   direction: 'auto',
   popoverSize: 'mini',
   okText: 'Primary Button',
@@ -47,6 +65,13 @@ const baseArgs = {
   cancelText: '',
   open: false,
   closeText: 'Close',
+  anchorPoint: 'center',
+  useModernPositioning: true,
+  fullScreenOnMobile: false,
+  hideHeader: false,
+  autoFocus: true,
+  offsetX: 0,
+  offsetY: 0,
 };
 
 const Template = (args) => html`
@@ -58,7 +83,7 @@ const Template = (args) => html`
     labelText=${args.labelText}
     secondaryButtonText=${args.secondaryButtonText}
     ?showSecondaryButton=${args.showSecondaryButton}
-    triggerType=${args.triggerType}
+    anchorType=${args.anchorType}
     direction=${args.direction}
     popoverSize=${args.popoverSize}
     top=${args.top}
@@ -66,12 +91,19 @@ const Template = (args) => html`
     bottom=${args.bottom}
     right=${args.right}
     arrowOffset=${args.arrowOffset}
+    anchorPoint=${args.anchorPoint}
+    ?useModernPositioning=${args.useModernPositioning}
+    ?fullScreenOnMobile=${args.fullScreenOnMobile}
+    ?hideHeader=${args.hideHeader}
+    ?autoFocus=${args.autoFocus}
+    offset-x=${args.offsetX}
+    offset-y=${args.offsetY}
     @on-open=${() => action('on-open')()}
     @on-close=${() => action('on-close')()}
   >
-    ${args.triggerType === 'icon'
+    ${args.anchorType === 'icon'
       ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
-      : args.triggerType === 'link'
+      : args.anchorType === 'link'
       ? html`<kyn-link slot="anchor" kind="primary">Launch</kyn-link>`
       : html`<kyn-button slot="anchor" kind="primary">Launch</kyn-button>`}
     ${args.popoverSize === 'mini'
@@ -157,9 +189,10 @@ export const ManualLeftLinkNarrow = {
   render: Template,
   args: {
     ...baseArgs,
-    triggerType: 'link',
+    anchorType: 'link',
     direction: 'right',
     popoverSize: 'narrow',
+    anchorPoint: 'top-left',
   },
 };
 
@@ -169,7 +202,7 @@ export const ManualLeftIconNarrow = {
     ...baseArgs,
     direction: 'left',
     popoverSize: 'narrow',
-    triggerType: 'icon',
+    anchorType: 'icon',
   },
   decorators: [
     (Story) => html`
@@ -222,7 +255,7 @@ export const CenteredButtonAutoMini = {
     ...baseArgs,
     direction: 'auto',
     popoverSize: 'mini',
-    triggerType: 'button',
+    anchorType: 'button',
     arrowOffset: '30px',
   },
   decorators: [
@@ -249,4 +282,99 @@ export const DirectionLeftButtonRight = {
       </div>
     `,
   ],
+};
+
+export const PreciseAnchorPoint = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    direction: 'bottom',
+    popoverSize: 'narrow',
+    anchorPoint: 'center',
+  },
+  decorators: [
+    (Story) => html`
+      <div style="padding: 100px;">
+        <div style="position: relative;">
+          <div
+            style="border: 1px dashed var(--kd-color-border-variants-light); border-radius: 4px; padding: 40px; display: inline-block; position: relative;"
+          >
+            <span style="margin-right: 10px;">Anchor container</span>
+            ${Story()}
+          </div>
+        </div>
+      </div>
+    `,
+  ],
+};
+
+export const MobileFullScreen = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    direction: 'bottom',
+    popoverSize: 'wide',
+    fullScreenOnMobile: true,
+    titleText: 'Mobile Fullscreen Mode',
+    labelText: 'Resize window to mobile size (under 480px) to see effect',
+  },
+};
+
+export const MiniWithCustomText = {
+  args: {
+    ...baseArgs,
+    popoverSize: 'mini',
+    titleText: 'Mini Popover',
+    labelText: 'This is a mini popover with a paragraph of text.',
+    anchorType: 'button',
+    direction: 'right',
+  },
+  render: (args) => html`
+    <kyn-popover
+      ?isAnchored=${args.isAnchored}
+      okText=${args.okText}
+      cancelText=${args.cancelText}
+      titleText=${args.titleText}
+      labelText=${args.labelText}
+      secondaryButtonText=${args.secondaryButtonText}
+      ?showSecondaryButton=${args.showSecondaryButton}
+      direction=${args.direction}
+      popoverSize=${args.popoverSize}
+      arrowOffset=${args.arrowOffset}
+      anchorPoint=${args.anchorPoint}
+      ?useModernPositioning=${args.useModernPositioning}
+      ?fullScreenOnMobile=${args.fullScreenOnMobile}
+      ?hideHeader=${args.hideHeader}
+      ?autoFocus=${args.autoFocus}
+      offset-x=${args.offsetX}
+      offset-y=${args.offsetY}
+      @on-open=${() => action('on-open')()}
+      @on-close=${() => action('on-close')()}
+    >
+      ${args.anchorType === 'icon'
+        ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
+        : args.anchorType === 'link'
+        ? html`<kyn-link slot="anchor" kind="primary">Launch</kyn-link>`
+        : html`<kyn-button slot="anchor" kind="primary">Launch</kyn-button>`}
+      <div
+        class="expansion-slot"
+        style="
+					padding:16px;
+					background:var(--kd-color-background-container-subtle);
+					border-radius:4px;
+				"
+      >
+        <p
+          style="
+						font-size:14px;
+						line-height:20px;
+						margin:0;
+					"
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
+          risus.
+        </p>
+      </div>
+    </kyn-popover>
+  `,
 };
