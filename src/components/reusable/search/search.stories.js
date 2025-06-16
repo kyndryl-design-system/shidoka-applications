@@ -60,21 +60,15 @@ export const Search = {
 export const SearchHistory = {
   args: {
     ...args,
+    suggestions: ['Shidoka-search', 'Shidoka-input', 'Strings', 'Matching'],
     searchHistory: [
-      'Searched Item A',
-      'Searched Item B',
-      'Searched Item C',
-      'Searched Item D',
+      'Shidoka-input',
+      'Shidoka-text',
+      'Shidoka-pageTitle',
+      'Shidoka-search',
     ],
   },
   render: (args) => {
-    // const [{ suggestions }, updateArgs] = useArgs();
-    // const handleInput = (e) => {
-    //   updateArgs({
-    //     suggestions: ['text', 'strings', 'matching', 'value'],
-    //   });
-    //   action(e.type)(e);
-    // };
     return html`
       <kyn-search
         name=${args.name}

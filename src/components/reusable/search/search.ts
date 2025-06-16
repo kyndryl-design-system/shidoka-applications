@@ -385,36 +385,70 @@ export class Search extends LitElement {
 
     if (isSearchHistory) {
       return html`
-        <div class="history-suggestion">
+        <div class="suggestion-content">
           ${iconTemplate}
           <span>${suggestion}</span>
         </div>
       `;
     }
-    const regex = new RegExp(`(${this.value})`, 'ig');
-    if (!regex.test(suggestion)) {
+
+    const escapedValue = this.value
+      .trim()
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const trailingSpace = this.value.endsWith(' ');
+
+    const valueRegex = new RegExp(
+      `(${escapedValue.replace(/\s+/g, '\\s+')})`,
+      'ig'
+    );
+
+    if (!valueRegex.test(suggestion)) {
       return html`
-        <!-- <div class="active-suggestion">
+        <div class="suggestion-content">
           ${iconTemplate}
           <span>${suggestion}</span>
-        </div> -->
-        ${suggestion}
+        </div>
       `;
     }
 
-    const parts = suggestion.split(regex);
+    const result = [];
+    let lastIndex = 0;
+
+    suggestion.replace(valueRegex, (match, _p1, offset) => {
+      if (offset > lastIndex) {
+        const textBefore = suggestion.slice(lastIndex, offset);
+        result.push(this._wrapTextWithSpaces(textBefore));
+      }
+      result.push(html`<span class="bold-text">${match}</span>`);
+      lastIndex = offset + match.length;
+      return match;
+    });
+
+    if (lastIndex < suggestion.length) {
+      const textAfter = suggestion.slice(lastIndex);
+      result.push(this._wrapTextWithSpaces(textAfter));
+    }
+
+    if (trailingSpace) {
+      result.push(html`<span>&nbsp;</span>`);
+    }
+
     return html`
-      <!-- <div class="active-suggestion">
+      <div class="suggestion-content">
         ${iconTemplate}
-        <span class="text-parts"> -->
-      ${parts.map((part) =>
-        part.toLowerCase() === this.value.toLowerCase() && this.value
-          ? html`<span class="bold-text">${part}</span>`
-          : html`<span class="light-text">${part}</span>`
-      )}
-      <!-- </span>
-      </div> -->
+        <span class="text-parts">${result}</span>
+      </div>
     `;
+  }
+
+  private _wrapTextWithSpaces(text: string) {
+    return html`${text
+      .split(/(\s)/)
+      .map((part) =>
+        part === ' '
+          ? html`<span>&nbsp;</span>`
+          : html`<span class="light-text">${part}</span>`
+      )}`;
   }
 
   private _handleClickOut(e: Event) {
