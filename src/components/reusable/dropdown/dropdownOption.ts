@@ -86,7 +86,6 @@ export class DropdownOption extends LitElement {
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
-        <slot name="icon"></slot>
         <span class="text">
           ${this.multiple
             ? html`
@@ -99,10 +98,11 @@ export class DropdownOption extends LitElement {
                   notFocusable
                   .indeterminate=${this.indeterminate}
                 >
-                  <slot
-                    @slotchange=${(e: any) => this.handleSlotChange(e)}
-                  ></slot>
                 </kyn-checkbox>
+
+                <slot
+                  @slotchange=${(e: any) => this.handleSlotChange(e)}
+                ></slot>
               `
             : html`
                 <slot
@@ -133,6 +133,8 @@ export class DropdownOption extends LitElement {
               </kyn-button>
             `
           : null}
+
+        <slot name="icon"></slot>
       </div>
     `;
   }
