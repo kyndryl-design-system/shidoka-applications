@@ -111,6 +111,7 @@ export class DropdownOption extends LitElement {
               `}
         </span>
 
+        <slot name="icon" style="display:flex"></slot>
         ${this.selected && !this.multiple
           ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
           : this.allowAddOption && this.removable
@@ -133,8 +134,6 @@ export class DropdownOption extends LitElement {
               </kyn-button>
             `
           : null}
-
-        <slot name="icon"></slot>
       </div>
     `;
   }
