@@ -289,12 +289,7 @@ export class Popover extends LitElement {
 
     return html`
       <div class="popover">
-        <span
-          class="anchor"
-          @click=${this._toggle}
-          aria-expanded=${this.open ? 'true' : 'false'}
-          aria-haspopup="dialog"
-        >
+        <span class="anchor" @click=${this._toggle}>
           <slot name="anchor"></slot>
         </span>
         ${this.open
