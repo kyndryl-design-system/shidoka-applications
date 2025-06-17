@@ -28,9 +28,9 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-540521&p=f&m=dev',
     },
-    a11y: {
-      disable: true,
-    },
+    // a11y: {
+    //   disable: true,
+    // },
   },
 };
 
@@ -61,6 +61,11 @@ const args = {
 export const Single = {
   args: {
     ...args,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     return html`
@@ -157,6 +162,11 @@ export const SingleSearchable = {
 
 export const MultiSelect = {
   args: { ...args, value: ['1', '3'] },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -261,6 +271,11 @@ export const MultiSelectSearchable = {
 
 export const Grouped = {
   args: args,
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -326,6 +341,11 @@ const items = [
 
 export const DataDrivenOptions = {
   args: { ...args, value: ['option2'] },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     const [{ value }, updateArgs] = useArgs();
 
@@ -380,6 +400,11 @@ export const DirectionalControl = {
     label: 'Open Direction Control',
     placeholder: 'Choose direction',
     openDirection: 'auto',
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     return html`
@@ -455,6 +480,11 @@ export const AddNewOption = {
     allowAddOption: true,
     items: items,
     dropdownItems: items,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     const [{ dropdownItems, value }, updateArgs] = useArgs();
