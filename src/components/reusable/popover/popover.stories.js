@@ -252,7 +252,7 @@ export const WideFloatingLower = {
   },
 };
 
-export const ManualArrowOffset = {
+export const ManualArrowPosition = {
   render: Template,
   args: {
     ...baseArgs,
@@ -366,20 +366,6 @@ export const AbsolutePositioning = {
       </div>
     `,
   ],
-};
-
-export const CustomZIndex = {
-  render: Template,
-  args: {
-    ...baseArgs,
-    anchorType: 'none',
-    popoverSize: 'narrow',
-    top: '40%',
-    left: '40%',
-    'z-index': 2000,
-    titleText: 'Custom Z-Index',
-    labelText: 'This popover has a custom z-index of 2000',
-  },
 };
 
 export const MiniWithCustomText = {

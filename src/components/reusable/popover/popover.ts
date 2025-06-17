@@ -6,55 +6,25 @@ import { classMap } from 'lit/directives/class-map.js';
 import '../button';
 import PopoverScss from './popover.scss';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import {
+  Dir,
+  AnchorPosition,
+  AnchorPoint,
+  PositionType,
+  Coords,
+  Rect,
+  getPanelStyle,
+  setupFocusTrap,
+  removeFocusTrap,
+  debounce,
+  applyResponsivePosition,
+  chooseDirection,
+  calcCoords,
+  autoPosition,
+  getAnchorPoint,
+} from '../../../common/helpers/popoverHelper';
 
-type Dir = 'top' | 'bottom' | 'left' | 'right';
-type AnchorPosition = 'start' | 'center' | 'end';
-type AnchorPoint =
-  | 'center'
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
-type PositionType = 'fixed' | 'absolute';
-
-interface Rect {
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-  width: number;
-  height: number;
-}
-interface Coords {
-  top: number;
-  left: number;
-}
-interface PositionResult {
-  dir: Dir;
-  anchorPos: AnchorPosition;
-  coords: Coords;
-  arrowOffset: number;
-}
-
-const GUTTER = 8;
-const OFFSET_DIM = 22;
 const ARROW_HALF = 6;
-const SIZE_RATIO_MAP: Record<
-  'mini' | 'narrow' | 'wide',
-  {
-    gap: number;
-    shift: number;
-    arrow: number;
-  }
-> = {
-  mini: { gap: 0.15, shift: -0.35, arrow: 0.03 },
-  narrow: { gap: 0.025, shift: -0.045, arrow: 0.06 },
-  wide: { gap: 0.15, shift: -0.2, arrow: 0.08 },
-};
 
 /**
  * Popover component.
@@ -281,7 +251,6 @@ export class Popover extends LitElement {
   private _resizeObserver: ResizeObserver | null = null;
   private _keyboardListener: ((e: Event) => void) | null = null;
   private _previouslyFocusedElement: HTMLElement | null = null;
-  private _focusableElements: NodeListOf<HTMLElement> | null = null;
   private _positionDebounceTimeout: number | null = null;
   private _debounceDelay = 100;
 
@@ -399,33 +368,17 @@ export class Popover extends LitElement {
     `;
   }
 
-  /**
-   * Gets a new z-index value for stacking popovers
-   * @returns incremented z-index value
-   */
-  private _getZIndex(): number {
-    return this.zIndex ?? 1000;
-  }
-
   private _getPanelStyle = (): string => {
-    let style = '';
-    const position = this.positionType || 'fixed';
-
-    if (this.zIndex !== undefined) {
-      style += `z-index: ${this.zIndex};`;
-    }
-
-    if (this.anchorType !== 'none') {
-      return `position: ${position}; top: ${this._coords.top}px; left: ${this._coords.left}px; ${style}`;
-    }
-
-    let panelPosition = `position: ${position};`;
-    if (this.top) panelPosition += `top: ${this.top};`;
-    if (this.left) panelPosition += `left: ${this.left};`;
-    if (this.bottom) panelPosition += `bottom: ${this.bottom};`;
-    if (this.right) panelPosition += `right: ${this.right};`;
-
-    return panelPosition + style;
+    return getPanelStyle(
+      this.positionType,
+      this.zIndex,
+      this.anchorType,
+      this._coords,
+      this.top,
+      this.left,
+      this.bottom,
+      this.right
+    );
   };
 
   override connectedCallback() {
@@ -501,267 +454,41 @@ export class Popover extends LitElement {
     this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
   };
 
-  private chooseDirection = (anchor: Rect, panel: Rect): Dir => {
-    const space = {
-      top: anchor.top,
-      bottom: window.innerHeight - anchor.bottom,
-      left: anchor.left,
-      right: window.innerWidth - anchor.right,
-    };
-    const sideNeeded = panel.width + OFFSET_DIM;
-
-    const verticalSpaceNeeded =
-      this.popoverSize === 'mini'
-        ? panel.height + 10
-        : panel.height + OFFSET_DIM;
-
-    if (this.popoverSize === 'mini') {
-      if (space.bottom >= verticalSpaceNeeded) return 'bottom';
-      if (space.top >= verticalSpaceNeeded) return 'top';
-    }
-
-    if (space.left >= sideNeeded) return 'left';
-    if (space.right >= sideNeeded) return 'right';
-
-    if (space.bottom >= panel.height + OFFSET_DIM) return 'bottom';
-    return 'top';
-  };
-
-  private chooseAnchorPos = (anchor: Rect, dir: Dir): AnchorPosition => {
-    if (dir === 'top' || dir === 'bottom') {
-      const anchorHorizontalCenter = anchor.left + anchor.width / 2;
-      if (anchorHorizontalCenter < anchor.left + anchor.width * 0.33)
-        return 'start';
-      if (anchorHorizontalCenter > anchor.left + anchor.width * 0.67)
-        return 'end';
-      return 'center';
-    } else {
-      const anchorVerticalCenter = anchor.top + anchor.height / 2;
-      if (anchorVerticalCenter < anchor.top + anchor.height * 0.33)
-        return 'start';
-      if (anchorVerticalCenter > anchor.top + anchor.height * 0.67)
-        return 'end';
-      return 'center';
-    }
-  };
-
-  private calcCoords = (anchor: Rect, panel: Rect, dir: Dir): Coords => {
-    let top: number, left: number;
-    if (dir === 'top' || dir === 'bottom') {
-      const verticalOffset = 10;
-
-      const idealLeft = anchor.left;
-      left = Math.min(
-        Math.max(idealLeft, GUTTER),
-        window.innerWidth - panel.width - GUTTER
-      );
-      const rawTop =
-        dir === 'top'
-          ? anchor.top - panel.height - verticalOffset
-          : anchor.bottom + verticalOffset;
-      top = Math.min(
-        Math.max(rawTop, GUTTER),
-        window.innerHeight - panel.height - GUTTER
-      );
-    } else {
-      const anchorVerticalCenter = anchor.top + anchor.height / 2;
-      const topOffset = 30;
-      const calcTop = anchorVerticalCenter - topOffset;
-
-      top = Math.min(
-        Math.max(calcTop, GUTTER),
-        window.innerHeight - panel.height - GUTTER
-      );
-      const rawLeft =
-        dir === 'left'
-          ? anchor.left - panel.width - OFFSET_DIM / 2
-          : anchor.right + OFFSET_DIM / 2;
-      left = Math.min(
-        Math.max(rawLeft, GUTTER),
-        window.innerWidth - panel.width - GUTTER
-      );
-    }
-    return { top, left };
-  };
-
-  private clampArrowOffset = (rawOffset: number, panelSize: number): number =>
-    Math.max(ARROW_HALF, Math.min(rawOffset, panelSize - ARROW_HALF));
-
-  private autoPosition = (
-    anchorEl: HTMLElement,
-    panelEl: HTMLElement,
-    forceDir?: Dir,
-    manualArrowOffset?: number
-  ): PositionResult => {
-    const anchor = anchorEl.getBoundingClientRect() as Rect;
-    const panel = panelEl.getBoundingClientRect() as Rect;
-    const dir = forceDir ?? this.chooseDirection(anchor, panel);
-
-    let coords: Coords;
-    let arrowOffset: number;
-
-    if (dir === 'top' || dir === 'bottom') {
-      coords = this.calcCoords(anchor, panel, dir);
-
-      const { shift: sR } = SIZE_RATIO_MAP[this.popoverSize];
-      const shiftX = panel.width * sR;
-      const rawX = anchor.left + anchor.width / 2 - coords.left + shiftX;
-
-      coords.left += dir === 'top' ? 0 : 0;
-      arrowOffset =
-        manualArrowOffset ?? this.clampArrowOffset(rawX, panel.width);
-    } else {
-      const {
-        gap: gR,
-        shift: sR,
-        arrow: aR,
-      } = SIZE_RATIO_MAP[this.popoverSize];
-      const gap = panel.height * gR;
-      const shiftY = panel.height * sR;
-      const arrowDy = panel.height * aR;
-
-      const desiredTop = anchor.top + shiftY;
-      const top = Math.min(
-        Math.max(desiredTop, GUTTER),
-        window.innerHeight - panel.height - GUTTER
-      );
-      const left =
-        dir === 'left' ? anchor.left - panel.width - gap : anchor.right + gap;
-      coords = { top, left };
-
-      arrowOffset = manualArrowOffset ?? arrowDy;
-    }
-
-    return {
-      dir,
-      anchorPos: this.chooseAnchorPos(anchor, dir),
-      coords,
-      arrowOffset,
-    };
-  };
-
   private _setupFocusTrap(): void {
     if (!this.open) return;
 
-    const panel = this.shadowRoot!.querySelector('.popover-inner');
+    const panel = this.shadowRoot!.querySelector(
+      '.popover-inner'
+    ) as HTMLElement;
     if (!panel) return;
 
-    this._previouslyFocusedElement = document.activeElement as HTMLElement;
-
-    this._focusableElements = panel.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-
-    if (this._focusableElements.length) {
-      if (this.autoFocus) {
-        (this._focusableElements[0] as HTMLElement).focus();
-      }
-
-      this._keyboardListener = (e: Event) => {
-        const keyEvent = e as KeyboardEvent;
-
-        if (keyEvent.key === 'Tab') {
-          const firstFocusable = this._focusableElements![0] as HTMLElement;
-          const lastFocusable = this._focusableElements![
-            this._focusableElements!.length - 1
-          ] as HTMLElement;
-
-          if (keyEvent.shiftKey && document.activeElement === firstFocusable) {
-            keyEvent.preventDefault();
-            lastFocusable.focus();
-          } else if (
-            !keyEvent.shiftKey &&
-            document.activeElement === lastFocusable
-          ) {
-            keyEvent.preventDefault();
-            firstFocusable.focus();
-          }
-          return;
-        }
-
-        if (
-          [
-            'ArrowUp',
-            'ArrowDown',
-            'ArrowLeft',
-            'ArrowRight',
-            'Home',
-            'End',
-          ].includes(keyEvent.key)
-        ) {
-          keyEvent.preventDefault();
-
-          if (!this._focusableElements || this._focusableElements.length === 0)
-            return;
-
-          const currentIndex = Array.from(this._focusableElements).findIndex(
-            (el) => el === document.activeElement
-          );
-
-          let nextIndex = currentIndex;
-
-          switch (keyEvent.key) {
-            case 'ArrowUp':
-            case 'ArrowLeft':
-              nextIndex =
-                currentIndex > 0
-                  ? currentIndex - 1
-                  : this._focusableElements.length - 1;
-              break;
-            case 'ArrowDown':
-            case 'ArrowRight':
-              nextIndex =
-                currentIndex < this._focusableElements.length - 1
-                  ? currentIndex + 1
-                  : 0;
-              break;
-            case 'Home':
-              nextIndex = 0;
-              break;
-            case 'End':
-              nextIndex = this._focusableElements.length - 1;
-              break;
-          }
-
-          if (nextIndex !== currentIndex) {
-            (this._focusableElements[nextIndex] as HTMLElement).focus();
-          }
-        }
-      };
-
-      panel.addEventListener('keydown', this._keyboardListener);
-    }
+    const result = setupFocusTrap(panel, this.autoFocus);
+    this._previouslyFocusedElement = result.previouslyFocusedElement;
+    this._keyboardListener = result.keyboardListener;
   }
 
   private _removeFocusTrap(): void {
-    if (this._keyboardListener) {
-      const panel = this.shadowRoot!.querySelector('.popover-inner');
-      if (panel) {
-        panel.removeEventListener('keydown', this._keyboardListener);
-      }
-      this._keyboardListener = null;
-    }
+    const panel = this.shadowRoot!.querySelector(
+      '.popover-inner'
+    ) as HTMLElement;
+    removeFocusTrap(
+      panel,
+      this._keyboardListener,
+      this._previouslyFocusedElement
+    );
 
-    if (this._previouslyFocusedElement) {
-      this._previouslyFocusedElement.focus();
-      this._previouslyFocusedElement = null;
-    }
-
-    this._focusableElements = null;
+    this._keyboardListener = null;
+    this._previouslyFocusedElement = null;
   }
 
   private _debounce<T extends (...args: any[]) => any>(
     fn: T,
     delay: number
   ): (...args: Parameters<T>) => void {
+    const debouncedFn = debounce(fn, delay);
     return (...args: Parameters<T>) => {
-      if (this._positionDebounceTimeout !== null) {
-        window.clearTimeout(this._positionDebounceTimeout);
-      }
-      this._positionDebounceTimeout = window.setTimeout(() => {
-        fn.apply(this, args);
-        this._positionDebounceTimeout = null;
-      }, delay);
+      this._positionDebounceTimeout = window.setTimeout(() => {}, 0);
+      debouncedFn(...args);
     };
   }
 
@@ -794,29 +521,7 @@ export class Popover extends LitElement {
   }
 
   private _getAnchorPoint(anchorRect: Rect): { x: number; y: number } {
-    const { left, right, top, bottom, width, height } = anchorRect;
-
-    switch (this.anchorPoint) {
-      case 'top':
-        return { x: left + width / 2, y: top };
-      case 'bottom':
-        return { x: left + width / 2, y: bottom };
-      case 'left':
-        return { x: left, y: top + height / 2 };
-      case 'right':
-        return { x: right, y: top + height / 2 };
-      case 'top-left':
-        return { x: left, y: top };
-      case 'top-right':
-        return { x: right, y: top };
-      case 'bottom-left':
-        return { x: left, y: bottom };
-      case 'bottom-right':
-        return { x: right, y: bottom };
-      case 'center':
-      default:
-        return { x: left + width / 2, y: top + height / 2 };
-    }
+    return getAnchorPoint(anchorRect, this.anchorPoint);
   }
 
   private _position = (): void => {
@@ -861,7 +566,7 @@ export class Popover extends LitElement {
 
       const dir =
         this.direction === 'auto'
-          ? this.chooseDirection(anchorRect, panelRect)
+          ? chooseDirection(anchorRect, panelRect, this.popoverSize)
           : (this.direction as Dir);
 
       const anchorPoint = this._getAnchorPoint(anchorRect);
@@ -896,7 +601,7 @@ export class Popover extends LitElement {
 
       this._calculatedDirection = dir;
 
-      const coords = this.calcCoords(anchorRect, panelRect, dir);
+      const coords = calcCoords(anchorRect, panelRect, dir);
       coords.top += this.offsetY;
       coords.left += this.offsetX;
 
@@ -945,10 +650,17 @@ export class Popover extends LitElement {
 
       const { dir, anchorPos, coords, arrowOffset } =
         this.direction === 'auto'
-          ? this.autoPosition(anchor, panel, undefined, manualOffset)
-          : this.autoPosition(
+          ? autoPosition(
               anchor,
               panel,
+              this.popoverSize,
+              undefined,
+              manualOffset
+            )
+          : autoPosition(
+              anchor,
+              panel,
+              this.popoverSize,
               this.direction as Dir,
               manualOffset
             );
@@ -972,49 +684,12 @@ export class Popover extends LitElement {
       ) as HTMLElement;
       if (!panel) return;
 
-      const viewportWidth = window.innerWidth;
-      const rules = this.responsivePosition?.split('|') || [];
-      const sortedRules = rules
-        .map((rule) => {
-          const [breakpoint, prop, value] = rule.split(':');
-          return {
-            breakpoint: parseInt(breakpoint, 10),
-            prop,
-            value,
-          };
-        })
-        .sort((a, b) => b.breakpoint - a.breakpoint);
-
-      for (const rule of sortedRules) {
-        if (viewportWidth <= rule.breakpoint) {
-          switch (rule.prop) {
-            case 'top':
-            case 'left':
-            case 'bottom':
-            case 'right':
-              panel.style[rule.prop] = rule.value;
-              break;
-            case 'offset-x':
-              if (this.anchorType !== 'none') {
-                const offsetX = parseInt(rule.value, 10);
-                if (!isNaN(offsetX)) {
-                  this._coords.left += offsetX;
-                  panel.style.left = `${this._coords.left}px`;
-                }
-              }
-              break;
-            case 'offset-y':
-              if (this.anchorType !== 'none') {
-                const offsetY = parseInt(rule.value, 10);
-                if (!isNaN(offsetY)) {
-                  this._coords.top += offsetY;
-                  panel.style.top = `${this._coords.top}px`;
-                }
-              }
-              break;
-          }
-        }
-      }
+      applyResponsivePosition(
+        panel,
+        this.responsivePosition,
+        this._coords,
+        this.anchorType
+      );
     });
   }
 }
