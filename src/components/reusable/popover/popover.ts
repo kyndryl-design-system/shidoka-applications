@@ -67,8 +67,7 @@ const SIZE_RATIO_MAP: Record<
  * based on the direction and anchorPoint properties. The position can be fixed or absolute.
  *
  * For floating (manual) mode, set anchorType="none" and use top/left/bottom/right
- * properties to position the popover. Boundary detection can be enabled to prevent
- * the popover from extending off-screen.
+ * properties to position the popover.
  *
  * @slot anchor - The trigger element (icon, button, link, etc.)
  * @slot default - The popover body content
@@ -242,15 +241,7 @@ export class Popover extends LitElement {
   offsetY = 0;
 
   /**
-   * Enable boundary detection for manual positioning.
-   * When enabled, prevents the popover from extending beyond the viewport.
-   */
-  @property({ type: Boolean, attribute: 'boundary-detection' })
-  boundaryDetection = false;
-
-  /**
-   * Custom z-index for the popover.
-   * Overrides the default z-index from CSS.
+   * Z-index for the popover.
    */
   @property({ type: Number, attribute: 'z-index' })
   zIndex?: number;
@@ -288,8 +279,11 @@ export class Popover extends LitElement {
   private _coords: Coords = { top: 0, left: 0 };
 
   private _resizeObserver: ResizeObserver | null = null;
-  private _tabListener: ((e: Event) => void) | null = null;
+  private _keyboardListener: ((e: Event) => void) | null = null;
   private _previouslyFocusedElement: HTMLElement | null = null;
+  private _focusableElements: NodeListOf<HTMLElement> | null = null;
+  private _positionDebounceTimeout: number | null = null;
+  private _debounceDelay = 100;
 
   /**
    * Opens the popover programmatically
@@ -405,6 +399,14 @@ export class Popover extends LitElement {
     `;
   }
 
+  /**
+   * Gets a new z-index value for stacking popovers
+   * @returns incremented z-index value
+   */
+  private _getZIndex(): number {
+    return this.zIndex ?? 1000;
+  }
+
   private _getPanelStyle = (): string => {
     let style = '';
     const position = this.positionType || 'fixed';
@@ -439,6 +441,11 @@ export class Popover extends LitElement {
     );
     this._removeResizeObserver();
     this._removeFocusTrap();
+
+    if (this._positionDebounceTimeout !== null) {
+      window.clearTimeout(this._positionDebounceTimeout);
+      this._positionDebounceTimeout = null;
+    }
   }
 
   override updated(changed: Map<string, unknown>) {
@@ -446,9 +453,6 @@ export class Popover extends LitElement {
       if (this.open) {
         if (this.anchorType !== 'none') {
           this.updateComplete.then(() => this._position());
-        } else if (this.boundaryDetection) {
-          // Apply boundary detection for manual positioning
-          this.updateComplete.then(() => this._applyBoundaryDetection());
         }
         this._setupFocusTrap();
         this._addResizeObserver();
@@ -466,12 +470,6 @@ export class Popover extends LitElement {
         changed.has('positionType'))
     ) {
       this.updateComplete.then(() => this._position());
-    } else if (
-      changed.has('boundaryDetection') &&
-      this.open &&
-      this.anchorType === 'none'
-    ) {
-      this.updateComplete.then(() => this._applyBoundaryDetection());
     } else if (changed.has('animationDuration') && this.animationDuration) {
       this.style.setProperty(
         '--kyn-popover-animation-duration',
@@ -512,9 +510,14 @@ export class Popover extends LitElement {
     };
     const sideNeeded = panel.width + OFFSET_DIM;
 
+    const verticalSpaceNeeded =
+      this.popoverSize === 'mini'
+        ? panel.height + 10
+        : panel.height + OFFSET_DIM;
+
     if (this.popoverSize === 'mini') {
-      if (space.bottom >= panel.height + OFFSET_DIM) return 'bottom';
-      if (space.top >= panel.height + OFFSET_DIM) return 'top';
+      if (space.bottom >= verticalSpaceNeeded) return 'bottom';
+      if (space.top >= verticalSpaceNeeded) return 'top';
     }
 
     if (space.left >= sideNeeded) return 'left';
@@ -545,6 +548,8 @@ export class Popover extends LitElement {
   private calcCoords = (anchor: Rect, panel: Rect, dir: Dir): Coords => {
     let top: number, left: number;
     if (dir === 'top' || dir === 'bottom') {
+      const verticalOffset = 10;
+
       const idealLeft = anchor.left;
       left = Math.min(
         Math.max(idealLeft, GUTTER),
@@ -552,8 +557,8 @@ export class Popover extends LitElement {
       );
       const rawTop =
         dir === 'top'
-          ? anchor.top - panel.height - OFFSET_DIM
-          : anchor.bottom + OFFSET_DIM;
+          ? anchor.top - panel.height - verticalOffset
+          : anchor.bottom + verticalOffset;
       top = Math.min(
         Math.max(rawTop, GUTTER),
         window.innerHeight - panel.height - GUTTER
@@ -643,60 +648,131 @@ export class Popover extends LitElement {
 
     this._previouslyFocusedElement = document.activeElement as HTMLElement;
 
-    const focusableElements = panel.querySelectorAll(
+    this._focusableElements = panel.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
 
-    if (focusableElements.length) {
+    if (this._focusableElements.length) {
       if (this.autoFocus) {
-        (focusableElements[0] as HTMLElement).focus();
+        (this._focusableElements[0] as HTMLElement).focus();
       }
 
-      this._tabListener = (e: Event) => {
+      this._keyboardListener = (e: Event) => {
         const keyEvent = e as KeyboardEvent;
-        if (keyEvent.key !== 'Tab') return;
 
-        const firstFocusable = focusableElements[0] as HTMLElement;
-        const lastFocusable = focusableElements[
-          focusableElements.length - 1
-        ] as HTMLElement;
+        if (keyEvent.key === 'Tab') {
+          const firstFocusable = this._focusableElements![0] as HTMLElement;
+          const lastFocusable = this._focusableElements![
+            this._focusableElements!.length - 1
+          ] as HTMLElement;
 
-        if (keyEvent.shiftKey && document.activeElement === firstFocusable) {
-          keyEvent.preventDefault();
-          lastFocusable.focus();
-        } else if (
-          !keyEvent.shiftKey &&
-          document.activeElement === lastFocusable
+          if (keyEvent.shiftKey && document.activeElement === firstFocusable) {
+            keyEvent.preventDefault();
+            lastFocusable.focus();
+          } else if (
+            !keyEvent.shiftKey &&
+            document.activeElement === lastFocusable
+          ) {
+            keyEvent.preventDefault();
+            firstFocusable.focus();
+          }
+          return;
+        }
+
+        if (
+          [
+            'ArrowUp',
+            'ArrowDown',
+            'ArrowLeft',
+            'ArrowRight',
+            'Home',
+            'End',
+          ].includes(keyEvent.key)
         ) {
           keyEvent.preventDefault();
-          firstFocusable.focus();
+
+          if (!this._focusableElements || this._focusableElements.length === 0)
+            return;
+
+          const currentIndex = Array.from(this._focusableElements).findIndex(
+            (el) => el === document.activeElement
+          );
+
+          let nextIndex = currentIndex;
+
+          switch (keyEvent.key) {
+            case 'ArrowUp':
+            case 'ArrowLeft':
+              nextIndex =
+                currentIndex > 0
+                  ? currentIndex - 1
+                  : this._focusableElements.length - 1;
+              break;
+            case 'ArrowDown':
+            case 'ArrowRight':
+              nextIndex =
+                currentIndex < this._focusableElements.length - 1
+                  ? currentIndex + 1
+                  : 0;
+              break;
+            case 'Home':
+              nextIndex = 0;
+              break;
+            case 'End':
+              nextIndex = this._focusableElements.length - 1;
+              break;
+          }
+
+          if (nextIndex !== currentIndex) {
+            (this._focusableElements[nextIndex] as HTMLElement).focus();
+          }
         }
       };
 
-      panel.addEventListener('keydown', this._tabListener);
+      panel.addEventListener('keydown', this._keyboardListener);
     }
   }
 
   private _removeFocusTrap(): void {
-    if (this._tabListener) {
+    if (this._keyboardListener) {
       const panel = this.shadowRoot!.querySelector('.popover-inner');
       if (panel) {
-        panel.removeEventListener('keydown', this._tabListener);
+        panel.removeEventListener('keydown', this._keyboardListener);
       }
-      this._tabListener = null;
+      this._keyboardListener = null;
     }
 
     if (this._previouslyFocusedElement) {
       this._previouslyFocusedElement.focus();
       this._previouslyFocusedElement = null;
     }
+
+    this._focusableElements = null;
+  }
+
+  private _debounce<T extends (...args: any[]) => any>(
+    fn: T,
+    delay: number
+  ): (...args: Parameters<T>) => void {
+    return (...args: Parameters<T>) => {
+      if (this._positionDebounceTimeout !== null) {
+        window.clearTimeout(this._positionDebounceTimeout);
+      }
+      this._positionDebounceTimeout = window.setTimeout(() => {
+        fn.apply(this, args);
+        this._positionDebounceTimeout = null;
+      }, delay);
+    };
   }
 
   private _addResizeObserver() {
     if (this._resizeObserver) return;
-    this._resizeObserver = new ResizeObserver(() => {
+
+    const debouncedPosition = this._debounce(() => {
       if (this.open && this.anchorType !== 'none') this._position();
-    });
+    }, this._debounceDelay);
+
+    this._resizeObserver = new ResizeObserver(debouncedPosition);
 
     const panel = this.shadowRoot!.querySelector('.popover-inner');
     if (panel) this._resizeObserver.observe(panel);
@@ -709,6 +785,11 @@ export class Popover extends LitElement {
     if (this._resizeObserver) {
       this._resizeObserver.disconnect();
       this._resizeObserver = null;
+    }
+
+    if (this._positionDebounceTimeout !== null) {
+      window.clearTimeout(this._positionDebounceTimeout);
+      this._positionDebounceTimeout = null;
     }
   }
 
@@ -758,8 +839,26 @@ export class Popover extends LitElement {
       ) as HTMLElement;
       if (!anchor || !panel) return;
 
-      const anchorRect = anchor.getBoundingClientRect() as Rect;
+      let anchorElement: HTMLElement;
+      const slottedElements = (
+        anchor.querySelector('slot[name="anchor"]') as HTMLSlotElement | null
+      )?.assignedElements();
+
+      if (slottedElements && slottedElements.length > 0) {
+        anchorElement = slottedElements[0] as HTMLElement;
+      } else {
+        anchorElement = anchor;
+      }
+
+      const anchorRect = anchorElement.getBoundingClientRect() as Rect;
       const panelRect = panel.getBoundingClientRect() as Rect;
+
+      const wasHidden = panel.style.visibility === 'hidden';
+      if (wasHidden) {
+        panel.style.visibility = 'visible';
+        panel.style.opacity = '0';
+      }
+
       const dir =
         this.direction === 'auto'
           ? this.chooseDirection(anchorRect, panelRect)
@@ -780,10 +879,19 @@ export class Popover extends LitElement {
         );
       } else {
         const panelTop = panel.getBoundingClientRect().top;
-        arrowOffset = Math.max(
-          ARROW_HALF,
-          Math.min(anchorPoint.y - panelTop, panelRect.height - ARROW_HALF)
-        );
+
+        if (this.anchorType === 'link' || this.anchorType === 'button') {
+          const linkCenterY = anchorRect.top + anchorRect.height / 2;
+          arrowOffset = Math.max(
+            ARROW_HALF,
+            Math.min(linkCenterY - panelTop, panelRect.height - ARROW_HALF)
+          );
+        } else {
+          arrowOffset = Math.max(
+            ARROW_HALF,
+            Math.min(anchorPoint.y - panelTop, panelRect.height - ARROW_HALF)
+          );
+        }
       }
 
       this._calculatedDirection = dir;
@@ -797,6 +905,10 @@ export class Popover extends LitElement {
       panel.style.top = `${coords.top}px`;
       panel.style.left = `${coords.left}px`;
       panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+
+      if (wasHidden) {
+        panel.style.opacity = '';
+      }
 
       let transformOrigin = 'center';
       switch (dir) {
@@ -851,64 +963,6 @@ export class Popover extends LitElement {
     });
   };
 
-  private _applyBoundaryDetection(): void {
-    if (!this.boundaryDetection || this.anchorType !== 'none') return;
-
-    requestAnimationFrame(() => {
-      const panel = this.shadowRoot!.querySelector(
-        '.popover-inner'
-      ) as HTMLElement;
-      if (!panel) return;
-
-      const rect = panel.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      const SAFE_MARGIN = GUTTER;
-
-      if (rect.right > viewportWidth - SAFE_MARGIN) {
-        if (this.right) {
-          const currentRight = parseFloat(getComputedStyle(panel).right);
-          if (!isNaN(currentRight)) {
-            panel.style.right = `${
-              currentRight + (rect.right - viewportWidth + SAFE_MARGIN)
-            }px`;
-          }
-        } else {
-          const newLeft = Math.max(
-            SAFE_MARGIN,
-            viewportWidth - rect.width - SAFE_MARGIN
-          );
-          panel.style.left = `${newLeft}px`;
-        }
-      }
-
-      if (rect.left < SAFE_MARGIN) {
-        panel.style.left = `${SAFE_MARGIN}px`;
-      }
-
-      if (rect.bottom > viewportHeight - SAFE_MARGIN) {
-        if (this.bottom) {
-          const currentBottom = parseFloat(getComputedStyle(panel).bottom);
-          if (!isNaN(currentBottom)) {
-            panel.style.bottom = `${
-              currentBottom + (rect.bottom - viewportHeight + SAFE_MARGIN)
-            }px`;
-          }
-        } else {
-          const newTop = Math.max(
-            SAFE_MARGIN,
-            viewportHeight - rect.height - SAFE_MARGIN
-          );
-          panel.style.top = `${newTop}px`;
-        }
-      }
-
-      if (rect.top < SAFE_MARGIN) {
-        panel.style.top = `${SAFE_MARGIN}px`;
-      }
-    });
-  }
-
   private _applyResponsivePosition(): void {
     if (!this.responsivePosition || !this.open) return;
 
@@ -960,10 +1014,6 @@ export class Popover extends LitElement {
               break;
           }
         }
-      }
-
-      if (this.boundaryDetection && this.anchorType === 'none') {
-        this._applyBoundaryDetection();
       }
     });
   }

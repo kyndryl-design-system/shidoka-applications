@@ -38,7 +38,6 @@ export default {
       control: 'select',
       options: ['fixed', 'absolute'],
     },
-    boundaryDetection: { control: 'boolean' },
     'z-index': { control: 'number' },
     'responsive-position': { control: 'text' },
     useModernPositioning: { control: 'boolean' },
@@ -82,7 +81,6 @@ const baseArgs = {
   offsetX: 0,
   offsetY: 0,
   positionType: 'fixed',
-  boundaryDetection: false,
   'z-index': undefined,
   'responsive-position': undefined,
 };
@@ -105,7 +103,6 @@ const Template = (args) => html`
     arrowOffset=${args.arrowOffset}
     anchorPoint=${args.anchorPoint}
     positionType=${args.positionType}
-    ?boundaryDetection=${args.boundaryDetection}
     z-index=${args['z-index']}
     responsive-position=${args['responsive-position']}
     ?useModernPositioning=${args.useModernPositioning}
@@ -201,17 +198,6 @@ export const ManualBottomWide = {
   },
 };
 
-export const ManualRightLinkNarrow = {
-  render: Template,
-  args: {
-    ...baseArgs,
-    anchorType: 'link',
-    direction: 'right',
-    popoverSize: 'narrow',
-    anchorPoint: 'top-left',
-  },
-};
-
 export const ManualLeftIconNarrow = {
   render: Template,
   args: {
@@ -227,6 +213,17 @@ export const ManualLeftIconNarrow = {
       </div>
     `,
   ],
+};
+
+export const ManualRightLinkNarrow = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    anchorType: 'link',
+    direction: 'right',
+    popoverSize: 'narrow',
+    anchorPoint: 'top-left',
+  },
 };
 
 export const FloatingUpperNoHeader = {
@@ -261,7 +258,7 @@ export const ManualArrowOffset = {
     ...baseArgs,
     direction: 'bottom',
     popoverSize: 'narrow',
-    arrowOffset: '5px',
+    arrowOffset: '35px',
     titleText: 'Arrow Offset Demo',
     labelText: 'Notice the arrow is offset to 5px from the left edge',
   },
@@ -371,27 +368,6 @@ export const AbsolutePositioning = {
   ],
 };
 
-export const BoundaryDetection = {
-  render: Template,
-  args: {
-    ...baseArgs,
-    anchorType: 'none',
-    popoverSize: 'narrow',
-    top: '10px',
-    right: '10px',
-    boundaryDetection: true,
-    titleText: 'Boundary Detection',
-    labelText: 'This popover will detect and adjust to viewport boundaries',
-  },
-  decorators: [
-    (Story) => html`
-      <div style="width: 100%; display: flex; justify-content: flex-end;">
-        ${Story()}
-      </div>
-    `,
-  ],
-};
-
 export const CustomZIndex = {
   render: Template,
   args: {
@@ -415,6 +391,7 @@ export const MiniWithCustomText = {
     anchorType: 'button',
     direction: 'right',
   },
+  name: 'Mini With Custom Text',
   render: (args) => html`
     <kyn-popover
       okText=${args.okText}
