@@ -8,7 +8,7 @@ import PopoverScss from './popover.scss';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 type Dir = 'top' | 'bottom' | 'left' | 'right';
-type AnchorPos = 'start' | 'center' | 'end';
+type AnchorPosition = 'start' | 'center' | 'end';
 type AnchorPoint =
   | 'center'
   | 'top'
@@ -34,7 +34,7 @@ interface Coords {
 }
 interface PositionResult {
   dir: Dir;
-  anchorPos: AnchorPos;
+  anchorPos: AnchorPosition;
   coords: Coords;
   arrowOffset: number;
 }
@@ -244,7 +244,7 @@ export class Popover extends LitElement {
    * @private
    */
   @state()
-  private _anchorPosition: AnchorPos = 'center';
+  private _anchorPosition: AnchorPosition = 'center';
 
   /**
    * The computed panel coordinates for positioning.
@@ -379,12 +379,12 @@ export class Popover extends LitElement {
     if (this.isAnchored) {
       return `position: fixed; top: ${this._coords.top}px; left: ${this._coords.left}px;`;
     }
-    let s = 'position: fixed;';
-    if (this.top) s += `top: ${this.top};`;
-    if (this.left) s += `left: ${this.left};`;
-    if (this.bottom) s += `bottom: ${this.bottom};`;
-    if (this.right) s += `right: ${this.right};`;
-    return s;
+    let panelPosition = 'position: fixed;';
+    if (this.top) panelPosition += `top: ${this.top};`;
+    if (this.left) panelPosition += `left: ${this.left};`;
+    if (this.bottom) panelPosition += `bottom: ${this.bottom};`;
+    if (this.right) panelPosition += `right: ${this.right};`;
+    return panelPosition;
   };
 
   override connectedCallback() {
@@ -450,71 +450,77 @@ export class Popover extends LitElement {
     this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
   };
 
-  private chooseDirection = (a: Rect, p: Rect): Dir => {
+  private chooseDirection = (anchor: Rect, panel: Rect): Dir => {
     const space = {
-      top: a.top,
-      bottom: window.innerHeight - a.bottom,
-      left: a.left,
-      right: window.innerWidth - a.right,
+      top: anchor.top,
+      bottom: window.innerHeight - anchor.bottom,
+      left: anchor.left,
+      right: window.innerWidth - anchor.right,
     };
-    const sideNeeded = p.width + OFFSET_DIM;
+    const sideNeeded = panel.width + OFFSET_DIM;
 
     if (this.popoverSize === 'mini') {
-      if (space.bottom >= p.height + OFFSET_DIM) return 'bottom';
-      if (space.top >= p.height + OFFSET_DIM) return 'top';
+      if (space.bottom >= panel.height + OFFSET_DIM) return 'bottom';
+      if (space.top >= panel.height + OFFSET_DIM) return 'top';
     }
 
     if (space.left >= sideNeeded) return 'left';
     if (space.right >= sideNeeded) return 'right';
 
-    if (space.bottom >= p.height + OFFSET_DIM) return 'bottom';
+    if (space.bottom >= panel.height + OFFSET_DIM) return 'bottom';
     return 'top';
   };
 
-  private chooseAnchorPos = (a: Rect, dir: Dir): AnchorPos => {
+  private chooseAnchorPos = (anchor: Rect, dir: Dir): AnchorPosition => {
     if (dir === 'top' || dir === 'bottom') {
-      const cx = a.left + a.width / 2;
-      if (cx < a.left + a.width * 0.33) return 'start';
-      if (cx > a.left + a.width * 0.67) return 'end';
+      const anchorHorizontalCenter = anchor.left + anchor.width / 2;
+      if (anchorHorizontalCenter < anchor.left + anchor.width * 0.33)
+        return 'start';
+      if (anchorHorizontalCenter > anchor.left + anchor.width * 0.67)
+        return 'end';
       return 'center';
     } else {
-      const cy = a.top + a.height / 2;
-      if (cy < a.top + a.height * 0.33) return 'start';
-      if (cy > a.top + a.height * 0.67) return 'end';
+      const anchorVerticalCenter = anchor.top + anchor.height / 2;
+      if (anchorVerticalCenter < anchor.top + anchor.height * 0.33)
+        return 'start';
+      if (anchorVerticalCenter > anchor.top + anchor.height * 0.67)
+        return 'end';
       return 'center';
     }
   };
 
-  private calcCoords = (a: Rect, p: Rect, dir: Dir): Coords => {
+  private calcCoords = (anchor: Rect, panel: Rect, dir: Dir): Coords => {
     let top: number, left: number;
     if (dir === 'top' || dir === 'bottom') {
-      const idealLeft = a.left;
+      const idealLeft = anchor.left;
       left = Math.min(
         Math.max(idealLeft, GUTTER),
-        window.innerWidth - p.width - GUTTER
+        window.innerWidth - panel.width - GUTTER
       );
       const rawTop =
-        dir === 'top' ? a.top - p.height - OFFSET_DIM : a.bottom + OFFSET_DIM;
+        dir === 'top'
+          ? anchor.top - panel.height - OFFSET_DIM
+          : anchor.bottom + OFFSET_DIM;
       top = Math.min(
         Math.max(rawTop, GUTTER),
-        window.innerHeight - p.height - GUTTER
+        window.innerHeight - panel.height - GUTTER
       );
     } else {
-      const anchorCenterY = a.top + a.height / 2;
+      const anchorVerticalCenter = anchor.top + anchor.height / 2;
       const topOffset = 30;
-      const idealTop = anchorCenterY - topOffset;
+      const calcTop = anchorVerticalCenter - topOffset;
 
       top = Math.min(
-        Math.max(idealTop, GUTTER),
-        window.innerHeight - p.height - GUTTER
+        Math.max(calcTop, GUTTER),
+        window.innerHeight - panel.height - GUTTER
       );
       const rawLeft =
         dir === 'left'
-          ? a.left - p.width - OFFSET_DIM / 2
-          : a.right + OFFSET_DIM / 2;
+          ? anchor.left - panel.width - OFFSET_DIM / 2
+          : anchor.right + OFFSET_DIM / 2;
       left = Math.min(
         Math.max(rawLeft, GUTTER),
-        window.innerWidth - p.width - GUTTER
+        window.innerWidth - panel.width - GUTTER
       );
     }
     return { top, left };
@@ -529,38 +535,40 @@ export class Popover extends LitElement {
     forceDir?: Dir,
     manualArrowOffset?: number
   ): PositionResult => {
-    const a = anchorEl.getBoundingClientRect() as Rect;
-    const p = panelEl.getBoundingClientRect() as Rect;
-    const dir = forceDir ?? this.chooseDirection(a, p);
+    const anchor = anchorEl.getBoundingClientRect() as Rect;
+    const panel = panelEl.getBoundingClientRect() as Rect;
+    const dir = forceDir ?? this.chooseDirection(anchor, panel);
 
     let coords: Coords;
     let arrowOffset: number;
 
     if (dir === 'top' || dir === 'bottom') {
-      coords = this.calcCoords(a, p, dir);
+      coords = this.calcCoords(anchor, panel, dir);
 
       const { shift: sR } = SIZE_RATIO_MAP[this.popoverSize];
-      const shiftX = p.width * sR;
-      const rawX = a.left + a.width / 2 - coords.left + shiftX;
+      const shiftX = panel.width * sR;
+      const rawX = anchor.left + anchor.width / 2 - coords.left + shiftX;
 
       coords.left += dir === 'top' ? 0 : 0;
-      arrowOffset = manualArrowOffset ?? this.clampArrowOffset(rawX, p.width);
+      arrowOffset =
+        manualArrowOffset ?? this.clampArrowOffset(rawX, panel.width);
     } else {
       const {
         gap: gR,
         shift: sR,
         arrow: aR,
       } = SIZE_RATIO_MAP[this.popoverSize];
-      const gap = p.height * gR;
-      const shiftY = p.height * sR;
-      const arrowDy = p.height * aR;
+      const gap = panel.height * gR;
+      const shiftY = panel.height * sR;
+      const arrowDy = panel.height * aR;
 
-      const desiredTop = a.top + shiftY;
+      const desiredTop = anchor.top + shiftY;
       const top = Math.min(
         Math.max(desiredTop, GUTTER),
-        window.innerHeight - p.height - GUTTER
+        window.innerHeight - panel.height - GUTTER
       );
-      const left = dir === 'left' ? a.left - p.width - gap : a.right + gap;
+      const left =
+        dir === 'left' ? anchor.left - panel.width - gap : anchor.right + gap;
       coords = { top, left };
 
       arrowOffset = manualArrowOffset ?? arrowDy;
@@ -568,7 +576,7 @@ export class Popover extends LitElement {
 
     return {
       dir,
-      anchorPos: this.chooseAnchorPos(a, dir),
+      anchorPos: this.chooseAnchorPos(anchor, dir),
       coords,
       arrowOffset,
     };
@@ -706,23 +714,18 @@ export class Popover extends LitElement {
 
       const anchorPoint = this._getAnchorPoint(anchorRect);
 
-      // Calculate the arrow offset based on the anchor point
       let arrowOffset: number;
 
       if (dir === 'top' || dir === 'bottom') {
-        // Get panel's left position in viewport
         const panelLeft = panel.getBoundingClientRect().left;
 
-        // Calculate where the arrow should point to horizontally
         arrowOffset = Math.max(
           ARROW_HALF,
           Math.min(anchorPoint.x - panelLeft, panelRect.width - ARROW_HALF)
         );
       } else {
-        // Get panel's top position in viewport
         const panelTop = panel.getBoundingClientRect().top;
 
-        // Calculate where the arrow should point to vertically
         arrowOffset = Math.max(
           ARROW_HALF,
           Math.min(anchorPoint.y - panelTop, panelRect.height - ARROW_HALF)
@@ -731,7 +734,6 @@ export class Popover extends LitElement {
 
       this._calculatedDirection = dir;
 
-      // Position the panel
       const coords = this.calcCoords(anchorRect, panelRect, dir);
       coords.top += this.offsetY;
       coords.left += this.offsetX;
@@ -769,10 +771,6 @@ export class Popover extends LitElement {
       ) as HTMLElement;
       if (!anchor || !panel) return;
 
-      const anchorRect = anchor.getBoundingClientRect() as Rect;
-      const anchorPoint = this._getAnchorPoint(anchorRect);
-
-      // Allow manual arrow offset override if specified
       const manual = parseFloat(this.arrowOffset ?? '');
       let manualOffset = undefined;
       if (!isNaN(manual)) {
