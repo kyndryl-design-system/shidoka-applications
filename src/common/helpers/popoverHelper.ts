@@ -44,7 +44,7 @@ export const SIZE_RATIO_MAP: Record<
     arrow: number;
   }
 > = {
-  mini: { gap: 0.15, shift: -0.35, arrow: 0.03 },
+  mini: { gap: 0.2, shift: -0.25, arrow: 0.03 },
   narrow: { gap: 0.025, shift: -0.045, arrow: 0.06 },
   wide: { gap: 0.15, shift: -0.2, arrow: 0.08 },
 };
@@ -97,7 +97,7 @@ export function chooseAnchorPos(anchor: Rect, dir: Dir): AnchorPosition {
 export function calcCoords(anchor: Rect, panel: Rect, dir: Dir): Coords {
   let top: number, left: number;
   if (dir === 'top' || dir === 'bottom') {
-    const verticalOffset = 10;
+    const verticalOffset = 16;
 
     const idealLeft = anchor.left;
     left = Math.min(
@@ -114,17 +114,32 @@ export function calcCoords(anchor: Rect, panel: Rect, dir: Dir): Coords {
     );
   } else {
     const anchorVerticalCenter = anchor.top + anchor.height / 2;
-    const topOffset = 30;
+    const topOffset = 20;
     const calcTop = anchorVerticalCenter - topOffset;
 
     top = Math.min(
       Math.max(calcTop, GUTTER),
       window.innerHeight - panel.height - GUTTER
     );
+
+    let horizontalOffset = 8;
+
+    if (panel.width < 300) {
+      horizontalOffset = 10;
+    } else if (panel.width < 500) {
+      horizontalOffset = 12;
+    } else {
+      horizontalOffset = 14;
+    }
+
+    if (anchor.width < 30) {
+      horizontalOffset -= 2;
+    }
+
     const rawLeft =
       dir === 'left'
-        ? anchor.left - panel.width - OFFSET_DIM / 2
-        : anchor.right + OFFSET_DIM / 2;
+        ? anchor.left - panel.width - ARROW_HALF * 1.5
+        : anchor.right + ARROW_HALF * 1.5;
     left = Math.min(
       Math.max(rawLeft, GUTTER),
       window.innerWidth - panel.width - GUTTER
@@ -151,18 +166,31 @@ export function autoPosition(
   let coords: Coords;
   let arrowOffset: number;
 
+  const isSmallButton = anchor.width < 30 || anchor.height < 30;
+
   if (dir === 'top' || dir === 'bottom') {
     coords = calcCoords(anchor, panel, dir);
+
+    if (isSmallButton && popoverSize === 'mini') {
+      const centerAdjustment = anchor.width / 4;
+      coords.left += centerAdjustment;
+    }
 
     const { shift: sR } = SIZE_RATIO_MAP[popoverSize];
     const shiftX = panel.width * sR;
     const rawX = anchor.left + anchor.width / 2 - coords.left + shiftX;
 
-    coords.left += dir === 'top' ? 0 : 0;
     arrowOffset = manualArrowOffset ?? clampArrowOffset(rawX, panel.width);
   } else {
     const { gap: gR, shift: sR, arrow: aR } = SIZE_RATIO_MAP[popoverSize];
-    const gap = panel.height * gR;
+
+    let gap = panel.height * gR;
+
+    if (isSmallButton) {
+      const minGap = popoverSize === 'mini' ? 8 : 0;
+      gap = Math.max(gap, minGap);
+    }
+
     const shiftY = panel.height * sR;
     const arrowDy = panel.height * aR;
 

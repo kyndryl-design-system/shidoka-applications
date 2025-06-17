@@ -16,7 +16,6 @@ import {
   getPanelStyle,
   setupFocusTrap,
   removeFocusTrap,
-  debounce,
   applyResponsivePosition,
   chooseDirection,
   calcCoords,
@@ -285,16 +284,18 @@ export class Popover extends LitElement {
       'fullscreen-mobile': this.fullScreenOnMobile,
     };
 
+    const panelStyles = this._getPanelStyle();
+    const style = this.arrowOffset
+      ? `${panelStyles}; --arrow-offset: ${this.arrowOffset};`
+      : panelStyles;
+
     return html`
       <div class="popover">
         <span class="anchor" @click=${this._toggle}>
           <slot name="anchor"></slot>
         </span>
         ${this.open
-          ? html` <div
-              class=${classMap(panelClasses)}
-              style=${this._getPanelStyle()}
-            >
+          ? html` <div class=${classMap(panelClasses)} style=${style}>
               ${this.popoverSize === 'mini'
                 ? html` <div class="mini-header">
                     <div class="mini-content"><slot></slot></div>
@@ -405,8 +406,23 @@ export class Popover extends LitElement {
     if (changed.has('open')) {
       if (this.open) {
         if (this.anchorType !== 'none') {
-          this.updateComplete.then(() => this._position());
+          const panel = this.shadowRoot!.querySelector(
+            '.popover-inner'
+          ) as HTMLElement;
+          if (panel) {
+            const currentTransition = panel.style.transition;
+            panel.style.transition = 'none';
+
+            void panel.offsetWidth;
+
+            this._position();
+
+            setTimeout(() => {
+              panel.style.transition = currentTransition;
+            }, 10);
+          }
         }
+
         this._setupFocusTrap();
         this._addResizeObserver();
         this._applyResponsivePosition();
@@ -415,14 +431,19 @@ export class Popover extends LitElement {
         this._removeFocusTrap();
         this._removeResizeObserver();
       }
+    } else if (changed.has('arrowOffset')) {
+      this.requestUpdate();
     } else if (
-      this.anchorType !== 'none' &&
       this.open &&
-      (changed.has('arrowOffset') ||
-        changed.has('anchorPoint') ||
-        changed.has('positionType'))
+      ((this.anchorType !== 'none' &&
+        (changed.has('anchorPoint') || changed.has('positionType'))) ||
+        changed.has('direction'))
     ) {
-      this.updateComplete.then(() => this._position());
+      this.updateComplete.then(() => {
+        if (this.anchorType !== 'none') {
+          this._position();
+        }
+      });
     } else if (changed.has('animationDuration') && this.animationDuration) {
       this.style.setProperty(
         '--kyn-popover-animation-duration',
@@ -481,25 +502,30 @@ export class Popover extends LitElement {
     this._previouslyFocusedElement = null;
   }
 
-  private _debounce<T extends (...args: any[]) => any>(
-    fn: T,
-    delay: number
-  ): (...args: Parameters<T>) => void {
-    const debouncedFn = debounce(fn, delay);
-    return (...args: Parameters<T>) => {
-      this._positionDebounceTimeout = window.setTimeout(() => {}, 0);
-      debouncedFn(...args);
-    };
-  }
-
   private _addResizeObserver() {
     if (this._resizeObserver) return;
 
-    const debouncedPosition = this._debounce(() => {
-      if (this.open && this.anchorType !== 'none') this._position();
-    }, this._debounceDelay);
+    let initialPositionDone = false;
 
-    this._resizeObserver = new ResizeObserver(debouncedPosition);
+    const handleResize = () => {
+      if (!this.open || this.anchorType === 'none') return;
+
+      if (!initialPositionDone) {
+        this._position();
+        initialPositionDone = true;
+      } else {
+        if (this._positionDebounceTimeout !== null) {
+          window.clearTimeout(this._positionDebounceTimeout);
+        }
+
+        this._positionDebounceTimeout = window.setTimeout(() => {
+          this._position();
+          this._positionDebounceTimeout = null;
+        }, this._debounceDelay);
+      }
+    };
+
+    this._resizeObserver = new ResizeObserver(handleResize);
 
     const panel = this.shadowRoot!.querySelector('.popover-inner');
     if (panel) this._resizeObserver.observe(panel);
@@ -609,7 +635,10 @@ export class Popover extends LitElement {
 
       panel.style.top = `${coords.top}px`;
       panel.style.left = `${coords.left}px`;
-      panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+
+      if (isNaN(manualArrowOffset)) {
+        panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+      }
 
       if (wasHidden) {
         panel.style.opacity = '';
@@ -671,7 +700,10 @@ export class Popover extends LitElement {
 
       panel.style.top = `${coords.top}px`;
       panel.style.left = `${coords.left}px`;
-      panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+
+      if (isNaN(manual)) {
+        panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
+      }
     });
   };
 

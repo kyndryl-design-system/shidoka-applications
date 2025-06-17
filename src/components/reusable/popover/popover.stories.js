@@ -117,8 +117,14 @@ const Template = (args) => html`
     ${args.anchorType === 'icon'
       ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
       : args.anchorType === 'link'
-      ? html`<kyn-link slot="anchor" kind="primary">Launch</kyn-link>`
-      : html`<kyn-button slot="anchor" kind="primary">Launch</kyn-button>`}
+      ? html`<kyn-link slot="anchor" kind="primary">Link</kyn-link>`
+      : html`<kyn-button
+          slot="anchor"
+          style="height:24px;width:24px;"
+          kind="primary"
+          size="small"
+          >1</kyn-button
+        >`}
     ${args.popoverSize === 'mini'
       ? html`
           <div
@@ -258,9 +264,9 @@ export const ManualArrowPosition = {
     ...baseArgs,
     direction: 'bottom',
     popoverSize: 'narrow',
-    arrowOffset: '35px',
+    arrowOffset: '10px',
     titleText: 'Arrow Offset Demo',
-    labelText: 'Notice the arrow is offset to 5px from the left edge',
+    labelText: 'Notice the arrow is offset to 63px from the left edge',
   },
   decorators: [
     (Story) => html`
@@ -278,7 +284,6 @@ export const CenteredButtonAutoMini = {
     direction: 'auto',
     popoverSize: 'mini',
     anchorType: 'button',
-    arrowOffset: '30px',
   },
   decorators: [
     (Story) => html`
@@ -349,10 +354,11 @@ export const AbsolutePositioning = {
     anchorType: 'none',
     positionType: 'absolute',
     popoverSize: 'narrow',
-    top: '40px',
-    left: '10px',
+    top: '35px',
+    left: '0px',
     titleText: 'Absolute Positioning',
     labelText: 'This popover uses position: absolute relative to its container',
+    arrowOffset: '10px',
   },
   decorators: [
     (Story) => html`
@@ -402,8 +408,14 @@ export const MiniWithCustomText = {
       ${args.anchorType === 'icon'
         ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
         : args.anchorType === 'link'
-        ? html`<kyn-link slot="anchor" kind="primary">Launch</kyn-link>`
-        : html`<kyn-button slot="anchor" kind="primary">Launch</kyn-button>`}
+        ? html`<kyn-link slot="anchor" kind="primary">Link</kyn-link>`
+        : html`<kyn-button
+            slot="anchor"
+            style="height:24px;width:24px;"
+            kind="primary"
+            size="small"
+            >1</kyn-button
+          >`}
       <div
         class="expansion-slot"
         style="

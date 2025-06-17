@@ -38,12 +38,18 @@
   visibility: hidden;
   opacity: 0;
   transform: scale(0.95);
-  transform-origin: var(--transform-origin);
+  transform-origin: var(--transform-origin, center);
   transition: opacity var(--kyn-popover-animation-duration)
       var(--kyn-popover-animation-timing),
     transform var(--kyn-popover-animation-duration)
       var(--kyn-popover-animation-timing),
     visibility 0s var(--kyn-popover-animation-duration);
+  &::before {
+    content: '';
+    position: absolute;
+    visibility: inherit;
+    opacity: inherit;
+  }
 }
 
 .popover > div.open {
@@ -58,7 +64,6 @@
 }
 
 .popover-inner {
-  position: fixed;
   border-radius: 8px;
 
   &.direction--top {
@@ -109,13 +114,16 @@
 
 .mini-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   width: 95%;
+  position: relative;
 
   kyn-button.close {
+    top: 0;
     position: static;
     margin-left: auto;
+    margin-top: 6px;
     padding: 4px;
     width: 20px;
     height: 20px;
@@ -124,6 +132,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
+    align-self: flex-start;
   }
 }
 
@@ -157,6 +166,7 @@ header {
   width: 20px;
   height: 20px;
   color: var(--kd-color-icon-primary);
+  z-index: 1;
 
   span {
     display: flex;
@@ -276,7 +286,8 @@ h1 {
     }
 
     header {
-      padding-top: 8px;
+      margin-bottom: 24px;
+      position: relative;
     }
 
     .footer {
