@@ -34,11 +34,21 @@ export default {
         'bottom-right',
       ],
     },
+    positionType: {
+      control: 'select',
+      options: ['fixed', 'absolute'],
+    },
+    boundaryDetection: { control: 'boolean' },
+    'z-index': { control: 'number' },
+    'responsive-position': { control: 'text' },
     useModernPositioning: { control: 'boolean' },
     fullScreenOnMobile: { control: 'boolean' },
     hideHeader: { control: 'boolean' },
     autoFocus: { control: 'boolean' },
-    anchorType: { control: 'select', options: ['icon', 'link', 'button'] },
+    anchorType: {
+      control: 'select',
+      options: ['icon', 'link', 'button', 'none'],
+    },
     direction: {
       control: 'select',
       options: ['auto', 'top', 'bottom', 'left', 'right'],
@@ -47,7 +57,6 @@ export default {
 };
 
 const baseArgs = {
-  isAnchored: true,
   top: undefined,
   right: undefined,
   bottom: undefined,
@@ -72,11 +81,14 @@ const baseArgs = {
   autoFocus: true,
   offsetX: 0,
   offsetY: 0,
+  positionType: 'fixed',
+  boundaryDetection: false,
+  'z-index': undefined,
+  'responsive-position': undefined,
 };
 
 const Template = (args) => html`
   <kyn-popover
-    ?isAnchored=${args.isAnchored}
     okText=${args.okText}
     cancelText=${args.cancelText}
     titleText=${args.titleText}
@@ -92,6 +104,10 @@ const Template = (args) => html`
     right=${args.right}
     arrowOffset=${args.arrowOffset}
     anchorPoint=${args.anchorPoint}
+    positionType=${args.positionType}
+    ?boundaryDetection=${args.boundaryDetection}
+    z-index=${args['z-index']}
+    responsive-position=${args['responsive-position']}
     ?useModernPositioning=${args.useModernPositioning}
     ?fullScreenOnMobile=${args.fullScreenOnMobile}
     ?hideHeader=${args.hideHeader}
@@ -185,7 +201,7 @@ export const ManualBottomWide = {
   },
 };
 
-export const ManualLeftLinkNarrow = {
+export const ManualRightLinkNarrow = {
   render: Template,
   args: {
     ...baseArgs,
@@ -217,7 +233,7 @@ export const FloatingUpperNoHeader = {
   render: Template,
   args: {
     ...baseArgs,
-    isAnchored: false,
+    anchorType: 'none',
     titleText: '',
     labelText: '',
     popoverSize: 'narrow',
@@ -231,7 +247,7 @@ export const WideFloatingLower = {
   render: Template,
   args: {
     ...baseArgs,
-    isAnchored: false,
+    anchorType: 'none',
     popoverSize: 'wide',
     direction: 'left',
     bottom: '5%',
@@ -245,8 +261,17 @@ export const ManualArrowOffset = {
     ...baseArgs,
     direction: 'bottom',
     popoverSize: 'narrow',
-    arrowOffset: '45px',
+    arrowOffset: '5px',
+    titleText: 'Arrow Offset Demo',
+    labelText: 'Notice the arrow is offset to 5px from the left edge',
   },
+  decorators: [
+    (Story) => html`
+      <div style="display: flex; justify-content: center; padding: 50px;">
+        ${Story()}
+      </div>
+    `,
+  ],
 };
 
 export const CenteredButtonAutoMini = {
@@ -320,6 +345,67 @@ export const MobileFullScreen = {
   },
 };
 
+export const AbsolutePositioning = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    anchorType: 'none',
+    positionType: 'absolute',
+    popoverSize: 'narrow',
+    top: '40px',
+    left: '10px',
+    titleText: 'Absolute Positioning',
+    labelText: 'This popover uses position: absolute relative to its container',
+  },
+  decorators: [
+    (Story) => html`
+      <div
+        style="position: relative; width: 80%; height: 300px; border: 1px dashed #ccc; padding: 10px; margin: 40px;"
+      >
+        <div style="margin-bottom: 10px;">
+          Container with position: relative
+        </div>
+        ${Story()}
+      </div>
+    `,
+  ],
+};
+
+export const BoundaryDetection = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    anchorType: 'none',
+    popoverSize: 'narrow',
+    top: '10px',
+    right: '10px',
+    boundaryDetection: true,
+    titleText: 'Boundary Detection',
+    labelText: 'This popover will detect and adjust to viewport boundaries',
+  },
+  decorators: [
+    (Story) => html`
+      <div style="width: 100%; display: flex; justify-content: flex-end;">
+        ${Story()}
+      </div>
+    `,
+  ],
+};
+
+export const CustomZIndex = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    anchorType: 'none',
+    popoverSize: 'narrow',
+    top: '40%',
+    left: '40%',
+    'z-index': 2000,
+    titleText: 'Custom Z-Index',
+    labelText: 'This popover has a custom z-index of 2000',
+  },
+};
+
 export const MiniWithCustomText = {
   args: {
     ...baseArgs,
@@ -331,7 +417,6 @@ export const MiniWithCustomText = {
   },
   render: (args) => html`
     <kyn-popover
-      ?isAnchored=${args.isAnchored}
       okText=${args.okText}
       cancelText=${args.cancelText}
       titleText=${args.titleText}

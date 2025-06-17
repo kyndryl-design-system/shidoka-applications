@@ -19,6 +19,7 @@ type AnchorPoint =
   | 'top-right'
   | 'bottom-left'
   | 'bottom-right';
+type PositionType = 'fixed' | 'absolute';
 
 interface Rect {
   top: number;
@@ -58,8 +59,16 @@ const SIZE_RATIO_MAP: Record<
 /**
  * Popover component.
  *
- * - anchor: positioned relative to an anchor slot
- * - floating: manually positioned via top/left/bottom/right
+ * Two positioning modes are available:
+ * - anchor: positioned relative to an anchor slot element
+ * - floating: manually positioned via top/left/bottom/right properties
+ *
+ * For anchor mode, the popover will be positioned relative to the anchor element
+ * based on the direction and anchorPoint properties. The position can be fixed or absolute.
+ *
+ * For floating (manual) mode, set anchorType="none" and use top/left/bottom/right
+ * properties to position the popover. Boundary detection can be enabled to prevent
+ * the popover from extending off-screen.
  *
  * @slot anchor - The trigger element (icon, button, link, etc.)
  * @slot default - The popover body content
@@ -72,12 +81,6 @@ const SIZE_RATIO_MAP: Record<
 @customElement('kyn-popover')
 export class Popover extends LitElement {
   static override styles = [PopoverScss];
-
-  /**
-   * Determines whether popover is anchored to launch element
-   */
-  @property({ type: Boolean, reflect: true })
-  isAnchored = false;
 
   /**
    * Manual direction or auto (anchor mode only)
@@ -97,9 +100,17 @@ export class Popover extends LitElement {
   @property({ type: Boolean })
   useModernPositioning = true;
 
+  /**
+   * Position type: fixed (default) or absolute
+   * - fixed: positions relative to the viewport
+   * - absolute: positions relative to the nearest positioned ancestor
+   */
+  @property({ type: String })
+  positionType: PositionType = 'fixed';
+
   /** how we style the anchor slot */
   @property({ type: String, reflect: true })
-  anchorType: 'icon' | 'link' | 'button' = 'button';
+  anchorType: 'icon' | 'link' | 'button' | 'none' = 'button';
 
   /**
    * Size variant
@@ -231,6 +242,28 @@ export class Popover extends LitElement {
   offsetY = 0;
 
   /**
+   * Enable boundary detection for manual positioning.
+   * When enabled, prevents the popover from extending beyond the viewport.
+   */
+  @property({ type: Boolean, attribute: 'boundary-detection' })
+  boundaryDetection = false;
+
+  /**
+   * Custom z-index for the popover.
+   * Overrides the default z-index from CSS.
+   */
+  @property({ type: Number, attribute: 'z-index' })
+  zIndex?: number;
+
+  /**
+   * Responsive breakpoints for adjusting position.
+   * Format: "breakpoint:prop:value|breakpoint:prop:value"
+   * Example: "768:top:10%|480:left:5%"
+   */
+  @property({ type: String, attribute: 'responsive-position' })
+  responsivePosition?: string;
+
+  /**
    * The computed direction of the popover panel when `direction="auto"`.
    * One of 'top', 'bottom', 'left', or 'right'.
    * @private
@@ -279,7 +312,9 @@ export class Popover extends LitElement {
 
     const panelClasses = {
       [`direction--${dir}`]: true,
-      ...(this.isAnchored && { [`anchor--${this._anchorPosition}`]: true }),
+      ...(this.anchorType !== 'none' && {
+        [`anchor--${this._anchorPosition}`]: true,
+      }),
       [`popover-size--${this.popoverSize}`]: true,
       'popover-inner': true,
       open: this.open,
@@ -371,15 +406,24 @@ export class Popover extends LitElement {
   }
 
   private _getPanelStyle = (): string => {
-    if (this.isAnchored) {
-      return `position: fixed; top: ${this._coords.top}px; left: ${this._coords.left}px;`;
+    let style = '';
+    const position = this.positionType || 'fixed';
+
+    if (this.zIndex !== undefined) {
+      style += `z-index: ${this.zIndex};`;
     }
-    let panelPosition = 'position: fixed;';
+
+    if (this.anchorType !== 'none') {
+      return `position: ${position}; top: ${this._coords.top}px; left: ${this._coords.left}px; ${style}`;
+    }
+
+    let panelPosition = `position: ${position};`;
     if (this.top) panelPosition += `top: ${this.top};`;
     if (this.left) panelPosition += `left: ${this.left};`;
     if (this.bottom) panelPosition += `bottom: ${this.bottom};`;
     if (this.right) panelPosition += `right: ${this.right};`;
-    return panelPosition;
+
+    return panelPosition + style;
   };
 
   override connectedCallback() {
@@ -400,22 +444,34 @@ export class Popover extends LitElement {
   override updated(changed: Map<string, unknown>) {
     if (changed.has('open')) {
       if (this.open) {
-        if (this.isAnchored) {
+        if (this.anchorType !== 'none') {
           this.updateComplete.then(() => this._position());
+        } else if (this.boundaryDetection) {
+          // Apply boundary detection for manual positioning
+          this.updateComplete.then(() => this._applyBoundaryDetection());
         }
         this._setupFocusTrap();
         this._addResizeObserver();
+        this._applyResponsivePosition();
         this.dispatchEvent(new CustomEvent('on-open'));
       } else {
         this._removeFocusTrap();
         this._removeResizeObserver();
       }
     } else if (
-      this.isAnchored &&
+      this.anchorType !== 'none' &&
       this.open &&
-      (changed.has('arrowOffset') || changed.has('anchorPoint'))
+      (changed.has('arrowOffset') ||
+        changed.has('anchorPoint') ||
+        changed.has('positionType'))
     ) {
       this.updateComplete.then(() => this._position());
+    } else if (
+      changed.has('boundaryDetection') &&
+      this.open &&
+      this.anchorType === 'none'
+    ) {
+      this.updateComplete.then(() => this._applyBoundaryDetection());
     } else if (changed.has('animationDuration') && this.animationDuration) {
       this.style.setProperty(
         '--kyn-popover-animation-duration',
@@ -426,6 +482,8 @@ export class Popover extends LitElement {
       if (body) {
         body.style.maxHeight = this.maxHeight;
       }
+    } else if (changed.has('responsivePosition') && this.open) {
+      this._applyResponsivePosition();
     }
   }
 
@@ -637,7 +695,7 @@ export class Popover extends LitElement {
   private _addResizeObserver() {
     if (this._resizeObserver) return;
     this._resizeObserver = new ResizeObserver(() => {
-      if (this.open && this.isAnchored) this._position();
+      if (this.open && this.anchorType !== 'none') this._position();
     });
 
     const panel = this.shadowRoot!.querySelector('.popover-inner');
@@ -709,18 +767,19 @@ export class Popover extends LitElement {
 
       const anchorPoint = this._getAnchorPoint(anchorRect);
 
+      const manualArrowOffset = parseFloat(this.arrowOffset ?? '');
       let arrowOffset: number;
 
-      if (dir === 'top' || dir === 'bottom') {
+      if (!isNaN(manualArrowOffset)) {
+        arrowOffset = manualArrowOffset;
+      } else if (dir === 'top' || dir === 'bottom') {
         const panelLeft = panel.getBoundingClientRect().left;
-
         arrowOffset = Math.max(
           ARROW_HALF,
           Math.min(anchorPoint.x - panelLeft, panelRect.width - ARROW_HALF)
         );
       } else {
         const panelTop = panel.getBoundingClientRect().top;
-
         arrowOffset = Math.max(
           ARROW_HALF,
           Math.min(anchorPoint.y - panelTop, panelRect.height - ARROW_HALF)
@@ -791,6 +850,123 @@ export class Popover extends LitElement {
       panel.style.setProperty('--arrow-offset', `${arrowOffset}px`);
     });
   };
+
+  private _applyBoundaryDetection(): void {
+    if (!this.boundaryDetection || this.anchorType !== 'none') return;
+
+    requestAnimationFrame(() => {
+      const panel = this.shadowRoot!.querySelector(
+        '.popover-inner'
+      ) as HTMLElement;
+      if (!panel) return;
+
+      const rect = panel.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const SAFE_MARGIN = GUTTER;
+
+      if (rect.right > viewportWidth - SAFE_MARGIN) {
+        if (this.right) {
+          const currentRight = parseFloat(getComputedStyle(panel).right);
+          if (!isNaN(currentRight)) {
+            panel.style.right = `${
+              currentRight + (rect.right - viewportWidth + SAFE_MARGIN)
+            }px`;
+          }
+        } else {
+          const newLeft = Math.max(
+            SAFE_MARGIN,
+            viewportWidth - rect.width - SAFE_MARGIN
+          );
+          panel.style.left = `${newLeft}px`;
+        }
+      }
+
+      if (rect.left < SAFE_MARGIN) {
+        panel.style.left = `${SAFE_MARGIN}px`;
+      }
+
+      if (rect.bottom > viewportHeight - SAFE_MARGIN) {
+        if (this.bottom) {
+          const currentBottom = parseFloat(getComputedStyle(panel).bottom);
+          if (!isNaN(currentBottom)) {
+            panel.style.bottom = `${
+              currentBottom + (rect.bottom - viewportHeight + SAFE_MARGIN)
+            }px`;
+          }
+        } else {
+          const newTop = Math.max(
+            SAFE_MARGIN,
+            viewportHeight - rect.height - SAFE_MARGIN
+          );
+          panel.style.top = `${newTop}px`;
+        }
+      }
+
+      if (rect.top < SAFE_MARGIN) {
+        panel.style.top = `${SAFE_MARGIN}px`;
+      }
+    });
+  }
+
+  private _applyResponsivePosition(): void {
+    if (!this.responsivePosition || !this.open) return;
+
+    requestAnimationFrame(() => {
+      const panel = this.shadowRoot!.querySelector(
+        '.popover-inner'
+      ) as HTMLElement;
+      if (!panel) return;
+
+      const viewportWidth = window.innerWidth;
+      const rules = this.responsivePosition?.split('|') || [];
+      const sortedRules = rules
+        .map((rule) => {
+          const [breakpoint, prop, value] = rule.split(':');
+          return {
+            breakpoint: parseInt(breakpoint, 10),
+            prop,
+            value,
+          };
+        })
+        .sort((a, b) => b.breakpoint - a.breakpoint);
+
+      for (const rule of sortedRules) {
+        if (viewportWidth <= rule.breakpoint) {
+          switch (rule.prop) {
+            case 'top':
+            case 'left':
+            case 'bottom':
+            case 'right':
+              panel.style[rule.prop] = rule.value;
+              break;
+            case 'offset-x':
+              if (this.anchorType !== 'none') {
+                const offsetX = parseInt(rule.value, 10);
+                if (!isNaN(offsetX)) {
+                  this._coords.left += offsetX;
+                  panel.style.left = `${this._coords.left}px`;
+                }
+              }
+              break;
+            case 'offset-y':
+              if (this.anchorType !== 'none') {
+                const offsetY = parseInt(rule.value, 10);
+                if (!isNaN(offsetY)) {
+                  this._coords.top += offsetY;
+                  panel.style.top = `${this._coords.top}px`;
+                }
+              }
+              break;
+          }
+        }
+      }
+
+      if (this.boundaryDetection && this.anchorType === 'none') {
+        this._applyBoundaryDetection();
+      }
+    });
+  }
 }
 
 declare global {
