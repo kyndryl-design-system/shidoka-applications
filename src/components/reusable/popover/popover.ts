@@ -2,24 +2,21 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-
-import '../button';
-import PopoverScss from './popover.scss';
-import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import { Placement } from '@floating-ui/dom';
 
 import {
   autoPosition,
   PositionType,
   Coords,
-  setupFocusTrap,
+  handleFocusKeyboardEvents,
   removeFocusTrap,
   getPanelStyle,
   applyResponsivePosition,
 } from '../../../common/helpers/popoverHelper';
-import { Placement } from '@floating-ui/dom';
 
-const DEFAULT_GUTTER = 8;
-const ARROW_PADDING = 6;
+import '../button';
+import PopoverScss from './popover.scss';
+import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 /**
  * Popover component.
@@ -29,15 +26,14 @@ const ARROW_PADDING = 6;
  * - floating: manually positioned via top/left/bottom/right properties
  *
  * For anchor mode, the popover will be positioned relative to the anchor element
- * based on the direction and anchorPoint properties. The position can be fixed or absolute.
+ * based on the direction and anchorAlign properties. The position can be fixed or absolute.
  *
- * For floating (manual) mode, set anchorType="none" and use top/left/bottom/right
+ * For floating (manual) mode, set triggerType="none" and use top/left/bottom/right
  * properties to position the popover.
  *
  * @slot anchor - The trigger element (icon, button, link, etc.)
  * @slot default - The popover body content
  * @slot header - Optional custom header (replaces default title/label)
- * @slot footer - Optional custom footer (replaces default buttons)
  *
  * @fires on-close - Emitted when any action closes the popover
  * @fires on-open - Emitted when popover opens
@@ -56,13 +52,52 @@ export class Popover extends LitElement {
    * The anchor point for positioning the popover
    */
   @property({ type: String })
-  anchorPoint = 'center';
+  anchorAlign = 'center';
 
   /**
    * Use modern positioning API when available
    */
   @property({ type: Boolean })
   useModernPositioning = true;
+
+  /**
+   * Distance between anchor and popover (px)
+   * Controls how far the popover is positioned from its anchor element
+   */
+  @property({ type: Number })
+  anchorDistance: number | undefined;
+
+  /**
+   * Padding from viewport edges (px)
+   * Controls minimum distance from popover to viewport boundaries
+   */
+  @property({ type: Number, attribute: 'viewport-padding' })
+  edgeShift: number | undefined;
+
+  /**
+   * Arrow position padding (px)
+   * Controls minimum distance of arrow from popover edges
+   */
+  @property({ type: Number, attribute: 'arrow-distance' })
+  arrowMinPadding: number | undefined;
+
+  /**
+   * @deprecated Use anchorDistance instead
+   */
+  @property({ type: Number })
+  gutter: number | undefined;
+
+  /**
+   * @deprecated Use edgeShift instead
+   */
+  @property({ type: Number, attribute: 'shift-padding' })
+  shiftPadding: number | undefined;
+
+  /**
+   * @deprecated Use arrowMinPadding instead
+   */
+  @property({ type: Number, attribute: 'arrow-padding' })
+  arrowPadding: number | undefined;
 
   /**
    * Position type: fixed (default) or absolute
@@ -74,13 +109,13 @@ export class Popover extends LitElement {
 
   /** how we style the anchor slot */
   @property({ type: String, reflect: true })
-  anchorType: 'icon' | 'link' | 'button' | 'none' = 'button';
+  triggerType: 'icon' | 'link' | 'button' | 'none' = 'button';
 
   /**
-   * Size variant
+   * Size variants for the popover.
    */
   @property({ type: String })
-  popoverSize: 'mini' | 'narrow' | 'wide' = 'mini';
+  size: 'mini' | 'narrow' | 'wide' = 'mini';
 
   /**
    * Body title text
@@ -131,12 +166,6 @@ export class Popover extends LitElement {
   hideFooter = false;
 
   /**
-   * Hide the header (title and label)
-   */
-  @property({ type: Boolean })
-  hideHeader = false;
-
-  /**
    * Whether popover is open
    */
   @property({ type: Boolean })
@@ -146,7 +175,7 @@ export class Popover extends LitElement {
    * Enable full screen mode on mobile devices
    */
   @property({ type: Boolean })
-  fullScreenOnMobile = false;
+  mobileBreakpoint = false;
 
   /**
    * Auto focus the first focusable element when opened
@@ -201,7 +230,7 @@ export class Popover extends LitElement {
    * When set, this will override the automatic arrow positioning.
    */
   @property({ type: String, reflect: true })
-  arrowOffset?: string;
+  arrowPosition?: string;
 
   /**
    * The computed direction of the popover panel when `direction="auto"`.
@@ -210,18 +239,6 @@ export class Popover extends LitElement {
    */
   @state()
   private _calculatedDirection = 'bottom';
-
-  /**
-   * Horizontal offset in px for anchored panel.
-   */
-  @property({ type: Number, attribute: 'offset-x' })
-  offsetX = 0;
-
-  /**
-   * Vertical offset in px for anchored panel.
-   */
-  @property({ type: Number, attribute: 'offset-y' })
-  offsetY = 0;
 
   /**
    * Z-index for the popover.
@@ -257,19 +274,20 @@ export class Popover extends LitElement {
 
     const panelClasses = {
       [`direction--${dir}`]: true,
-      ...(this.anchorType !== 'none' && {
+      ...(this.triggerType !== 'none' && {
         [`anchor--${this._anchorPosition}`]: true,
       }),
-      [`popover-size--${this.popoverSize}`]: true,
+      [`popover-size--${this.size}`]: true,
       'popover-inner': true,
       open: this.open,
       'no-header-text': !hasHeader,
-      'fullscreen-mobile': this.fullScreenOnMobile,
+      [`has-footer-${!this.hideFooter}`]: true,
+      'fullscreen-mobile': this.mobileBreakpoint,
     };
 
     const panelStyles = this._getPanelStyle();
-    const style = this.arrowOffset
-      ? `${panelStyles}; --arrow-offset: ${this.arrowOffset};`
+    const style = this.arrowPosition
+      ? `${panelStyles}; --arrow-offset: ${this.arrowPosition};`
       : panelStyles;
 
     return html`
@@ -281,7 +299,7 @@ export class Popover extends LitElement {
           ? html`
               <div class=${classMap(panelClasses)} style=${style}>
                 <div class="arrow"></div>
-                ${this.popoverSize === 'mini'
+                ${this.size === 'mini'
                   ? html`
                       <div class="mini-header">
                         <div class="mini-content"><slot></slot></div>
@@ -297,7 +315,7 @@ export class Popover extends LitElement {
                       </div>
                     `
                   : html`
-                      ${!this.hideHeader
+                      ${hasHeader
                         ? html`
                             <header>
                               <slot name="header">
@@ -326,7 +344,7 @@ export class Popover extends LitElement {
                         : null}
                       <div class="body" id="popover-content"><slot></slot></div>
                     `}
-                ${!this.hideFooter && this.popoverSize !== 'mini'
+                ${!this.hideFooter && this.size !== 'mini'
                   ? html`
                       <slot name="footer">
                         <div class="footer">
@@ -379,10 +397,19 @@ export class Popover extends LitElement {
   }
 
   override updated(changed: Map<string, unknown>) {
-    if ((changed.has('open') && this.open) || changed.has('arrowOffset')) {
+    if (
+      (changed.has('open') && this.open) ||
+      changed.has('arrowPosition') ||
+      changed.has('anchorDistance') ||
+      changed.has('edgeShift') ||
+      changed.has('arrowMinPadding') ||
+      changed.has('gutter') ||
+      changed.has('shiftPadding') ||
+      changed.has('arrowPadding')
+    ) {
       this.updateComplete.then(() => {
         this._position();
-        this._setupFocusTrap();
+        this._handleFocusKeyboardEvents();
         this._addObservers();
       });
     }
@@ -392,7 +419,7 @@ export class Popover extends LitElement {
     return getPanelStyle(
       this.positionType,
       this.zIndex,
-      this.anchorType,
+      this.triggerType,
       this._coords,
       this.top,
       this.left,
@@ -419,12 +446,12 @@ export class Popover extends LitElement {
     if ((e as KeyboardEvent).key === 'Escape' && this.open) this._close();
   };
 
-  private _setupFocusTrap() {
+  private _handleFocusKeyboardEvents() {
     const panel = this.shadowRoot!.querySelector(
       '.popover-inner'
     ) as HTMLElement;
     if (!panel) return;
-    const res = setupFocusTrap(panel, this.autoFocus);
+    const res = handleFocusKeyboardEvents(panel, this.autoFocus);
     this._prevFocused = res.previouslyFocusedElement;
     this._keyboardListener = res.keyboardListener;
   }
@@ -479,10 +506,10 @@ export class Popover extends LitElement {
     ) as HTMLElement;
     if (!panel) return;
 
-    if (this.anchorType === 'none') {
+    if (this.triggerType === 'none') {
       const baseStyle = this._getPanelStyle();
-      const arrowStyle = this.arrowOffset
-        ? `; --arrow-offset: ${this.arrowOffset}`
+      const arrowStyle = this.arrowPosition
+        ? `; --arrow-offset: ${this.arrowPosition}`
         : '';
       panel.setAttribute('style', baseStyle + arrowStyle);
 
@@ -494,7 +521,7 @@ export class Popover extends LitElement {
           panel,
           this.responsivePosition,
           this._coords,
-          this.anchorType
+          this.triggerType
         );
       }
       return;
@@ -510,38 +537,46 @@ export class Popover extends LitElement {
     const override: Placement | undefined =
       this.direction !== 'auto' ? this.direction : undefined;
 
+    const baseOpts = {
+      gutter: this.anchorDistance ?? this.gutter,
+      shiftPadding: this.edgeShift ?? this.shiftPadding,
+      arrowPadding: this.arrowMinPadding ?? this.arrowPadding,
+    };
+
     const { x, y, placement, arrowX } = await autoPosition(
       anchorEl,
       panel,
       arrowEl,
       override,
-      {
-        gutter: DEFAULT_GUTTER,
-        shiftPadding: 0,
-        arrowPadding: ARROW_PADDING,
-      }
+      baseOpts
     );
-
     const [dir, anchorPos] = (
       placement.includes('-') ? placement.split('-') : [placement, 'center']
     ) as ['top' | 'bottom' | 'left' | 'right', 'start' | 'center' | 'end'];
     this._calculatedDirection = dir;
     this._anchorPosition = anchorPos;
 
+    const numericTopOffset = this.top
+      ? parseInt(this.top.replace(/[^0-9-]/g, ''), 10)
+      : 0;
+    const numericLeftOffset = this.left
+      ? parseInt(this.left.replace(/[^0-9-]/g, ''), 10)
+      : 0;
+
     this._coords = {
-      top: Math.round(y) + this.offsetY,
-      left: Math.round(x) + this.offsetX,
+      top: Math.round(y) + numericTopOffset,
+      left: Math.round(x) + numericLeftOffset,
     };
 
     panel.style.top = `${this._coords.top}px`;
     panel.style.left = `${this._coords.left}px`;
 
-    if (this.arrowOffset) {
+    if (this.arrowPosition) {
       const arrowElement = panel.querySelector('.arrow');
       if (arrowElement) {
         arrowElement.removeAttribute('style');
       }
-      panel.style.setProperty('--arrow-offset', this.arrowOffset);
+      panel.style.setProperty('--arrow-offset', this.arrowPosition);
     } else if (arrowX != null) {
       panel.style.setProperty('--arrow-offset', `${Math.round(arrowX)}px`);
     }
@@ -551,7 +586,7 @@ export class Popover extends LitElement {
         panel,
         this.responsivePosition,
         this._coords,
-        this.anchorType
+        this.triggerType
       );
     }
   }

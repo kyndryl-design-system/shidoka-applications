@@ -5,23 +5,25 @@ import { action } from '@storybook/addon-actions';
 import '../button';
 import '../link';
 
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/cube.svg';
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { arrow } from '@floating-ui/dom';
 
 export default {
   title: 'Components/Popover',
   component: 'kyn-popover',
   argTypes: {
-    popoverSize: { control: 'select', options: ['mini', 'narrow', 'wide'] },
+    size: { control: 'select', options: ['mini', 'narrow', 'wide'] },
     top: { control: 'text' },
     left: { control: 'text' },
     bottom: { control: 'text' },
     right: { control: 'text' },
-    arrowOffset: { control: 'text' },
-    anchorPoint: {
+    arrowPosition: { control: 'text' },
+    anchorDistance: { control: 'number' },
+    edgeShift: { name: 'viewport-padding', control: 'number' },
+    arrowMinPadding: { name: 'arrow-distance', control: 'number' },
+    anchorAlign: {
       control: 'select',
       options: [
         'center',
@@ -42,10 +44,9 @@ export default {
     'z-index': { control: 'number' },
     'responsive-position': { control: 'text' },
     useModernPositioning: { control: 'boolean' },
-    fullScreenOnMobile: { control: 'boolean' },
-    hideHeader: { control: 'boolean' },
+    mobileBreakpoint: { control: 'boolean' },
     autoFocus: { control: 'boolean' },
-    anchorType: {
+    triggerType: {
       control: 'select',
       options: ['icon', 'link', 'button', 'none'],
     },
@@ -53,6 +54,9 @@ export default {
       control: 'select',
       options: ['auto', 'top', 'bottom', 'left', 'right'],
     },
+    gutter: { control: 'number' },
+    'shift-padding': { control: 'number' },
+    'arrow-padding': { control: 'number' },
   },
 };
 
@@ -61,23 +65,26 @@ const baseArgs = {
   right: undefined,
   bottom: undefined,
   left: undefined,
-  arrowOffset: undefined,
-  anchorType: 'button',
+  arrowPosition: undefined,
+  anchorDistance: undefined,
+  edgeShift: undefined,
+  arrowMinPadding: undefined,
+  triggerType: 'button',
   direction: 'auto',
-  popoverSize: 'mini',
+  size: 'mini',
   okText: 'Primary Button',
   secondaryButtonText: 'Secondary Button',
   showSecondaryButton: true,
+  hideFooter: false,
   titleText: 'Popover Title',
   labelText: 'Example label text content.',
   destructive: false,
   cancelText: '',
   open: false,
   closeText: 'Close',
-  anchorPoint: 'center',
+  anchorAlign: 'center',
   useModernPositioning: true,
-  fullScreenOnMobile: false,
-  hideHeader: false,
+  mobileBreakpoint: false,
   autoFocus: true,
   offsetX: 0,
   offsetY: 0,
@@ -94,30 +101,36 @@ const Template = (args) => html`
     labelText=${args.labelText}
     secondaryButtonText=${args.secondaryButtonText}
     ?showSecondaryButton=${args.showSecondaryButton}
-    anchorType=${args.anchorType}
+    ?hideFooter=${args.hideFooter}
+    triggerType=${args.triggerType}
     direction=${args.direction}
-    popoverSize=${args.popoverSize}
+    size=${args.size}
     top=${args.top}
     left=${args.left}
     bottom=${args.bottom}
     right=${args.right}
-    arrowOffset=${args.arrowOffset}
-    anchorPoint=${args.anchorPoint}
+    arrowPosition=${args.arrowPosition}
+    .anchorDistance=${args.anchorDistance}
+    .edgeShift=${args.edgeShift}
+    .arrowMinPadding=${args.arrowMinPadding}
+    anchorAlign=${args.anchorAlign}
     positionType=${args.positionType}
     z-index=${args['z-index']}
     responsive-position=${args['responsive-position']}
     ?useModernPositioning=${args.useModernPositioning}
-    ?fullScreenOnMobile=${args.fullScreenOnMobile}
-    ?hideHeader=${args.hideHeader}
+    ?mobileBreakpoint=${args.mobileBreakpoint}
     ?autoFocus=${args.autoFocus}
     offset-x=${args.offsetX}
     offset-y=${args.offsetY}
+    .gutter=${args.gutter}
+    .shiftPadding=${args['shift-padding']}
+    .arrowPadding=${args['arrow-padding']}
     @on-open=${() => action('on-open')()}
     @on-close=${() => action('on-close')()}
   >
-    ${args.anchorType === 'icon'
+    ${args.triggerType === 'icon'
       ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
-      : args.anchorType === 'link'
+      : args.triggerType === 'link'
       ? html`<kyn-link slot="anchor" kind="primary">Link</kyn-link>`
       : html`<kyn-button
           slot="anchor"
@@ -126,7 +139,7 @@ const Template = (args) => html`
           size="small"
           >1</kyn-button
         >`}
-    ${args.popoverSize === 'mini'
+    ${args.size === 'mini'
       ? html`
           <div
             class="expansion-slot"
@@ -196,12 +209,36 @@ export const DefaultAuto = {
   args: { ...baseArgs },
 };
 
+export const CustomSpacingDemo = {
+  render: Template,
+  args: {
+    ...baseArgs,
+    open: true,
+    direction: 'top',
+    size: 'narrow',
+    anchorDistance: 14,
+    edgeShift: 40,
+    arrowMinPadding: 192,
+    titleText: '',
+    labelText: '',
+    hideFooter: true,
+  },
+  decorators: [
+    (Story) =>
+      html`<div
+        style="height:100vh;display:flex;justify-content:center;align-items:center;"
+      >
+        ${Story()}
+      </div>`,
+  ],
+};
+
 export const ManualBottomWide = {
   render: Template,
   args: {
     ...baseArgs,
     direction: 'bottom',
-    popoverSize: 'wide',
+    size: 'wide',
   },
 };
 
@@ -210,8 +247,8 @@ export const ManualLeftIconNarrow = {
   args: {
     ...baseArgs,
     direction: 'left',
-    popoverSize: 'narrow',
-    anchorType: 'icon',
+    size: 'narrow',
+    triggerType: 'icon',
   },
   decorators: [
     (Story) => html`
@@ -226,10 +263,10 @@ export const ManualRightLinkNarrow = {
   render: Template,
   args: {
     ...baseArgs,
-    anchorType: 'link',
+    triggerType: 'link',
     direction: 'right',
-    popoverSize: 'narrow',
-    anchorPoint: 'top-left',
+    size: 'narrow',
+    anchorAlign: 'top-left',
   },
 };
 
@@ -237,14 +274,14 @@ export const FloatingUpperNoHeader = {
   render: Template,
   args: {
     ...baseArgs,
-    anchorType: 'none',
+    triggerType: 'none',
     titleText: '',
     labelText: '',
-    popoverSize: 'narrow',
+    size: 'narrow',
     direction: 'left',
     top: '5%',
     right: '1%',
-    arrowOffset: '45%',
+    arrowPosition: '45%',
   },
 };
 
@@ -252,8 +289,8 @@ export const WideFloatingLower = {
   render: Template,
   args: {
     ...baseArgs,
-    anchorType: 'none',
-    popoverSize: 'wide',
+    triggerType: 'none',
+    size: 'wide',
     direction: 'left',
     bottom: '5%',
     right: '2%',
@@ -265,8 +302,8 @@ export const ManualArrowPosition = {
   args: {
     ...baseArgs,
     direction: 'bottom',
-    popoverSize: 'narrow',
-    arrowOffset: '50%',
+    size: 'narrow',
+    arrowPosition: '50%',
     titleText: 'Arrow Offset Demo',
     labelText: 'Notice the arrow is offset to 63px from the left edge',
   },
@@ -284,9 +321,9 @@ export const CenteredButtonAutoMini = {
   args: {
     ...baseArgs,
     direction: 'auto',
-    popoverSize: 'mini',
-    anchorType: 'button',
-    arrowOffset: '50%',
+    size: 'mini',
+    triggerType: 'button',
+    arrowPosition: '50%',
   },
   decorators: [
     (Story) => html`
@@ -314,13 +351,13 @@ export const DirectionLeftButtonRight = {
   ],
 };
 
-export const PreciseAnchorPoint = {
+export const PreciseanchorAlign = {
   render: Template,
   args: {
     ...baseArgs,
     direction: 'bottom',
-    popoverSize: 'narrow',
-    anchorPoint: 'center',
+    size: 'narrow',
+    anchorAlign: 'center',
   },
   decorators: [
     (Story) => html`
@@ -343,8 +380,8 @@ export const MobileFullScreen = {
   args: {
     ...baseArgs,
     direction: 'bottom',
-    popoverSize: 'wide',
-    fullScreenOnMobile: true,
+    size: 'wide',
+    mobileBreakpoint: true,
     titleText: 'Mobile Fullscreen Mode',
     labelText: 'Resize window to mobile size (under 480px) to see effect',
   },
@@ -354,14 +391,14 @@ export const AbsolutePositioning = {
   render: Template,
   args: {
     ...baseArgs,
-    anchorType: 'none',
+    triggerType: 'none',
     positionType: 'absolute',
-    popoverSize: 'narrow',
+    size: 'narrow',
     top: '35px',
     left: '0px',
     titleText: 'Absolute Positioning',
     labelText: 'This popover uses position: absolute relative to its container',
-    arrowOffset: '10px',
+    arrowPosition: '10px',
   },
   decorators: [
     (Story) => html`
@@ -380,10 +417,10 @@ export const AbsolutePositioning = {
 export const MiniWithCustomText = {
   args: {
     ...baseArgs,
-    popoverSize: 'mini',
+    size: 'mini',
     titleText: 'Mini Popover',
     labelText: 'This is a mini popover with a paragraph of text.',
-    anchorType: 'button',
+    triggerType: 'button',
     direction: 'right',
   },
   name: 'Mini With Custom Text',
@@ -395,22 +432,25 @@ export const MiniWithCustomText = {
       labelText=${args.labelText}
       secondaryButtonText=${args.secondaryButtonText}
       ?showSecondaryButton=${args.showSecondaryButton}
+      ?hideFooter=${args.hideFooter}
       direction=${args.direction}
-      popoverSize=${args.popoverSize}
-      arrowOffset=${args.arrowOffset}
-      anchorPoint=${args.anchorPoint}
+      size=${args.size}
+      arrowPosition=${args.arrowPosition}
+      .anchorDistance=${args.anchorDistance}
+      .edgeShift=${args.edgeShift}
+      .arrowMinPadding=${args.arrowMinPadding}
+      anchorAlign=${args.anchorAlign}
       ?useModernPositioning=${args.useModernPositioning}
-      ?fullScreenOnMobile=${args.fullScreenOnMobile}
-      ?hideHeader=${args.hideHeader}
+      ?mobileBreakpoint=${args.mobileBreakpoint}
       ?autoFocus=${args.autoFocus}
       offset-x=${args.offsetX}
       offset-y=${args.offsetY}
       @on-open=${() => action('on-open')()}
       @on-close=${() => action('on-close')()}
     >
-      ${args.anchorType === 'icon'
+      ${args.triggerType === 'icon'
         ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
-        : args.anchorType === 'link'
+        : args.triggerType === 'link'
         ? html`<kyn-link slot="anchor" kind="primary">Link</kyn-link>`
         : html`<kyn-button
             slot="anchor"

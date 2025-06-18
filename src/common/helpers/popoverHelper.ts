@@ -8,6 +8,10 @@ export interface Coords {
   left: number;
 }
 
+const DEFAULT_GUTTER = 8;
+const DEFAULT_SHIFT_PADDING = 8;
+const DEFAULT_ARROW_PADDING = 6;
+
 export async function autoPosition(
   anchor: HTMLElement,
   panel: HTMLElement,
@@ -17,6 +21,9 @@ export async function autoPosition(
     gutter?: number;
     shiftPadding?: number;
     arrowPadding?: number;
+    anchorDistance?: number;
+    edgeShift?: number;
+    arrowMinPadding?: number;
   } = {}
 ): Promise<{
   x: number;
@@ -25,33 +32,45 @@ export async function autoPosition(
   arrowX?: number;
   arrowY?: number;
 }> {
-  const baseGutter = opts.gutter ?? 8;
-  const baseShiftPadding = opts.shiftPadding ?? 8;
-  const baseArrowPadding = opts.arrowPadding ?? 6;
+  const userGutter = opts.anchorDistance ?? opts.gutter;
+  const userShift = opts.edgeShift ?? opts.shiftPadding;
+  const userArrow = opts.arrowMinPadding ?? opts.arrowPadding;
 
+  const baseGutter = userGutter ?? DEFAULT_GUTTER;
+  const baseShift = userShift ?? DEFAULT_SHIFT_PADDING;
+  const baseArrow = userArrow ?? DEFAULT_ARROW_PADDING;
   const placement = placementOverride ?? 'bottom';
 
   const config = {
     gutter: baseGutter,
-    shiftPadding: baseShiftPadding,
-    arrowPadding: baseArrowPadding,
+    shiftPadding: baseShift,
+    arrowPadding: baseArrow,
   };
 
-  if (placement.startsWith('bottom')) {
-    config.gutter = 16;
-    config.shiftPadding = 26;
-    config.arrowPadding = 16;
-  } else if (placement.startsWith('top')) {
-    config.shiftPadding = 26;
-    config.arrowPadding = 4;
-  } else if (placement.startsWith('left')) {
-    config.gutter = 12;
-    config.shiftPadding = 45;
-    config.arrowPadding = 6;
-  } else if (placement.startsWith('right')) {
-    config.gutter = 16;
-    config.shiftPadding = 20;
-    config.arrowPadding = 20;
+  if (userGutter !== undefined) {
+    config.gutter = userGutter;
+  } else {
+    if (placement.startsWith('bottom')) config.gutter = 16;
+    else if (placement.startsWith('left')) config.gutter = 12;
+    else if (placement.startsWith('right')) config.gutter = 16;
+  }
+
+  if (userShift !== undefined) {
+    config.shiftPadding = userShift;
+  } else {
+    if (placement.startsWith('bottom') || placement.startsWith('top'))
+      config.shiftPadding = 26;
+    else if (placement.startsWith('left')) config.shiftPadding = 45;
+    else if (placement.startsWith('right')) config.shiftPadding = 20;
+  }
+
+  if (userArrow !== undefined) {
+    config.arrowPadding = userArrow;
+  } else {
+    if (placement.startsWith('bottom')) config.arrowPadding = 16;
+    else if (placement.startsWith('top')) config.arrowPadding = 4;
+    else if (placement.startsWith('left')) config.arrowPadding = 6;
+    else if (placement.startsWith('right')) config.arrowPadding = 20;
   }
 
   const {
@@ -80,7 +99,6 @@ export async function autoPosition(
     top: `${Math.round(y)}px`,
     position: 'fixed',
   });
-
   const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {};
   if (arrowX != null) arrowEl.style.left = `${Math.round(arrowX)}px`;
   if (arrowY != null) arrowEl.style.top = `${Math.round(arrowY)}px`;
@@ -88,7 +106,7 @@ export async function autoPosition(
   return { x, y, placement: finalPlacement, arrowX, arrowY };
 }
 
-export function setupFocusTrap(
+export function handleFocusKeyboardEvents(
   panel: HTMLElement,
   autoFocus: boolean
 ): {
@@ -162,7 +180,7 @@ export function setupFocusTrap(
 export function getPanelStyle(
   positionType: PositionType,
   zIndex: number | undefined,
-  anchorType: string,
+  triggerType: string,
   coords: Coords,
   top?: string,
   left?: string,
@@ -176,7 +194,7 @@ export function getPanelStyle(
     style += `z-index: ${zIndex};`;
   }
 
-  if (anchorType !== 'none') {
+  if (triggerType !== 'none') {
     return `position: ${pos}; top: ${coords.top}px; left: ${coords.left}px; ${style}`;
   }
 
@@ -203,7 +221,7 @@ export function applyResponsivePosition(
   panel: HTMLElement,
   responsivePosition: string,
   coords: Coords,
-  anchorType: string
+  triggerType: string
 ): void {
   const viewportWidth = window.innerWidth;
   const rules = responsivePosition
@@ -224,7 +242,7 @@ export function applyResponsivePosition(
           panel.style[r.prop] = r.value;
           break;
         case 'offset-x':
-          if (anchorType !== 'none') {
+          if (triggerType !== 'none') {
             const n = parseInt(r.value, 10);
             if (!isNaN(n)) {
               coords.left += n;
@@ -233,7 +251,7 @@ export function applyResponsivePosition(
           }
           break;
         case 'offset-y':
-          if (anchorType !== 'none') {
+          if (triggerType !== 'none') {
             const n = parseInt(r.value, 10);
             if (!isNaN(n)) {
               coords.top += n;
