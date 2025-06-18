@@ -9,6 +9,7 @@ import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/inf
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/cube.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { arrow } from '@floating-ui/dom';
 
 export default {
   title: 'Components/Popover',
@@ -243,6 +244,7 @@ export const FloatingUpperNoHeader = {
     direction: 'left',
     top: '5%',
     right: '1%',
+    arrowOffset: '45%',
   },
 };
 
@@ -264,7 +266,7 @@ export const ManualArrowPosition = {
     ...baseArgs,
     direction: 'bottom',
     popoverSize: 'narrow',
-    arrowOffset: '10px',
+    arrowOffset: '50%',
     titleText: 'Arrow Offset Demo',
     labelText: 'Notice the arrow is offset to 63px from the left edge',
   },
@@ -284,6 +286,7 @@ export const CenteredButtonAutoMini = {
     direction: 'auto',
     popoverSize: 'mini',
     anchorType: 'button',
+    arrowOffset: '50%',
   },
   decorators: [
     (Story) => html`
