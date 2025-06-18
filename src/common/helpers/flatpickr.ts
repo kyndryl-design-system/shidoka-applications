@@ -131,7 +131,7 @@ export function handleInputFocus(
 }
 
 export function modifyWeekdayShorthands(localeOptions: Partial<Locale>): void {
-  if (localeOptions.weekdays && localeOptions.weekdays.shorthand) {
+  if (localeOptions.weekdays?.shorthand) {
     localeOptions.weekdays.shorthand = localeOptions.weekdays.shorthand.map(
       (day) => day.charAt(0)
     ) as [string, string, string, string, string, string, string];
@@ -327,11 +327,27 @@ export function getPlaceholder(
 }
 
 export function getModalContainer(element: HTMLElement): HTMLElement {
-  return (
-    ['kyn-modal', 'kyn-side-drawer']
-      .map((selector) => element.closest(selector))
-      .find((el): el is HTMLElement => el !== null) || document.body
-  );
+  let node: Node | null = element;
+
+  while (node) {
+    if (node instanceof ShadowRoot) {
+      node = node.host;
+      continue;
+    }
+
+    if (node instanceof Element) {
+      const tag = node.tagName.toLowerCase();
+      if (tag === 'kyn-modal' || tag === 'kyn-side-drawer') {
+        return node as HTMLElement;
+      }
+      node = node.parentNode;
+      continue;
+    }
+
+    break;
+  }
+
+  return document.body;
 }
 
 export async function getFlatpickrOptions(
@@ -522,50 +538,227 @@ export function updateEnableTime(dateFormat: string): boolean {
 
 export function setCalendarAttributes(
   instance: Instance,
-  modalDetected?: boolean
+  modalDetected = false
 ): void {
-  if (instance?.calendarContainer) {
-    requestAnimationFrame(() => {
-      try {
-        const { calendarContainer, config } = instance;
-        calendarContainer.setAttribute('role', 'application');
-        calendarContainer.setAttribute('aria-label', 'Calendar');
+  const container = instance.calendarContainer;
+  if (!container) return;
 
-        calendarContainer.classList.remove('container-modal', 'container-body');
-        const containerClass = modalDetected
-          ? 'container-modal'
-          : 'container-default';
-        calendarContainer.classList.add(containerClass);
+  requestAnimationFrame(() => {
+    const mode = instance.config.mode as
+      | 'single'
+      | 'multiple'
+      | 'range'
+      | 'time';
 
-        if (config && typeof config.static !== 'undefined') {
-          calendarContainer.classList.remove(
-            'static-position-true',
-            'static-position-false'
-          );
-          calendarContainer.classList.add(`static-position-${config.static}`);
-        }
+    container.setAttribute('role', 'application');
+    container.setAttribute('aria-label', 'Calendar');
+    container.classList.remove(
+      'container-modal',
+      'container-body',
+      'container-default'
+    );
+    container.classList.add(
+      modalDetected ? 'container-modal' : 'container-default'
+    );
 
-        const dayElements =
-          calendarContainer.querySelectorAll('.flatpickr-day');
-        dayElements.forEach((dayElem) => {
-          if (!dayElem.hasAttribute('role')) {
-            dayElem.setAttribute('role', 'button');
-          }
+    const monthsEl = container.querySelector<HTMLElement>('.flatpickr-months');
+    monthsEl?.setAttribute('tabindex', '0');
+    monthsEl?.setAttribute('role', 'group');
+    monthsEl?.setAttribute('aria-label', 'Month and year navigation');
 
-          if (
-            dayElem.hasAttribute('aria-label') &&
-            !dayElem.hasAttribute('role')
-          ) {
-            dayElem.setAttribute('role', 'button');
-          }
-        });
-      } catch (error) {
-        console.warn('Error setting calendar attributes:', error);
+    const prevBtn = container.querySelector<HTMLElement>(
+      '.flatpickr-prev-month'
+    );
+    prevBtn?.setAttribute('tabindex', '0');
+    prevBtn?.setAttribute('role', 'button');
+    prevBtn?.setAttribute('aria-label', 'Previous month');
+    prevBtn?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        instance.changeMonth(-1);
       }
     });
-  } else {
-    console.warn('Calendar container not available...');
-  }
+
+    const nextBtn = container.querySelector<HTMLElement>(
+      '.flatpickr-next-month'
+    );
+    nextBtn?.setAttribute('tabindex', '0');
+    nextBtn?.setAttribute('role', 'button');
+    nextBtn?.setAttribute('aria-label', 'Next month');
+    nextBtn?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        instance.changeMonth(1);
+      }
+    });
+
+    const firstMonth = container.querySelector<HTMLElement>('.flatpickr-month');
+    const yearInput = firstMonth?.querySelector<HTMLInputElement>(
+      'input.numInput.cur-year'
+    );
+    if (yearInput) {
+      yearInput.tabIndex = 0;
+      yearInput.setAttribute('role', 'spinbutton');
+      yearInput.setAttribute('aria-label', 'Year');
+      if (instance.config.minDate) {
+        yearInput.setAttribute(
+          'aria-valuemin',
+          String(new Date(instance.config.minDate!).getFullYear())
+        );
+      }
+      if (instance.config.maxDate) {
+        yearInput.setAttribute(
+          'aria-valuemax',
+          String(new Date(instance.config.maxDate!).getFullYear())
+        );
+      }
+      const updateNow = () =>
+        yearInput.setAttribute('aria-valuenow', yearInput.value);
+      yearInput.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          instance.changeYear(1);
+          setTimeout(updateNow, 0);
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          instance.changeYear(-1);
+          setTimeout(updateNow, 0);
+        }
+      });
+      setTimeout(updateNow, 0);
+    }
+
+    const daysGrid = container.querySelector<HTMLElement>('.flatpickr-days');
+    daysGrid?.removeAttribute('tabindex');
+    daysGrid?.setAttribute('role', 'grid');
+    daysGrid?.setAttribute(
+      'aria-multiselectable',
+      mode === 'multiple' ? 'true' : 'false'
+    );
+
+    const enabledDays = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        '.flatpickr-day:not(.flatpickr-disabled)'
+      )
+    );
+    enabledDays.forEach((day) => {
+      day.tabIndex = 0;
+      day.setAttribute('role', mode === 'range' ? 'gridcell' : 'button');
+    });
+
+    const oldNav = (container as any)._keyboardNav as EventListener | undefined;
+    if (oldNav) container.removeEventListener('keydown', oldNav);
+
+    const keyboardNav = (e: KeyboardEvent) => {
+      const targetDay = (e.target as HTMLElement).closest<HTMLElement>(
+        '.flatpickr-day:not(.flatpickr-disabled)'
+      );
+      if (!targetDay) return;
+
+      switch (e.key) {
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          targetDay.click();
+          return;
+        case 'ArrowRight':
+        case 'ArrowLeft':
+        case 'ArrowDown':
+        case 'ArrowUp': {
+          e.preventDefault();
+          const idx = enabledDays.indexOf(targetDay);
+          let nextIdx: number;
+          switch (e.key) {
+            case 'ArrowRight':
+              nextIdx = idx + 1;
+              break;
+            case 'ArrowLeft':
+              nextIdx = idx - 1;
+              break;
+            case 'ArrowDown':
+              nextIdx = idx + 7;
+              break;
+            case 'ArrowUp':
+              nextIdx = idx - 7;
+              break;
+            default:
+              return;
+          }
+          const next = enabledDays[nextIdx];
+          if (next) next.focus();
+          return;
+        }
+      }
+    };
+    container.addEventListener('keydown', keyboardNav);
+    (container as any)._keyboardNav = keyboardNav;
+
+    const hourInput = container.querySelector<HTMLInputElement>(
+      'input.flatpickr-hour'
+    );
+    if (hourInput) {
+      hourInput.tabIndex = 0;
+      hourInput.setAttribute('role', 'spinbutton');
+      hourInput.setAttribute('aria-label', 'Hour');
+      hourInput.setAttribute('aria-valuemin', hourInput.min);
+      hourInput.setAttribute('aria-valuemax', hourInput.max);
+      hourInput.setAttribute('aria-valuenow', hourInput.value);
+      hourInput.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          hourInput.stepUp();
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          hourInput.stepDown();
+        }
+        setTimeout(
+          () => hourInput.setAttribute('aria-valuenow', hourInput.value),
+          0
+        );
+      });
+    }
+
+    const minuteInput = container.querySelector<HTMLInputElement>(
+      'input.flatpickr-minute'
+    );
+    if (minuteInput) {
+      minuteInput.tabIndex = 0;
+      minuteInput.setAttribute('role', 'spinbutton');
+      minuteInput.setAttribute('aria-label', 'Minute');
+      minuteInput.setAttribute('aria-valuemin', minuteInput.min);
+      minuteInput.setAttribute('aria-valuemax', minuteInput.max);
+      minuteInput.setAttribute('aria-valuenow', minuteInput.value);
+      minuteInput.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          minuteInput.stepUp();
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          minuteInput.stepDown();
+        }
+        setTimeout(
+          () => minuteInput.setAttribute('aria-valuenow', minuteInput.value),
+          0
+        );
+      });
+    }
+
+    const ampmToggle = container.querySelector<HTMLElement>('.flatpickr-am-pm');
+    if (ampmToggle) {
+      ampmToggle.tabIndex = 0;
+      ampmToggle.setAttribute('role', 'button');
+      ampmToggle.setAttribute('aria-label', 'Toggle AM/PM');
+      ampmToggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          ampmToggle.click();
+        }
+      });
+    }
+  });
 }
 
 const localeCache: Record<string, Partial<Locale>> = {};
