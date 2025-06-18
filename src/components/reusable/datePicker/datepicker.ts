@@ -461,6 +461,8 @@ export class DatePicker extends FormMixin(LitElement) {
           }
         }
       }
+
+      this.invalidText = '';
     }
   }
 
@@ -471,7 +473,17 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const values = Array.isArray(defaultDate) ? defaultDate : [defaultDate];
 
-    const parsed = values.map((d) => {
+    const nonEmptyValues = values.filter(
+      (v) =>
+        v !== null &&
+        v !== undefined &&
+        v !== '' &&
+        !(typeof v === 'string' && v.trim() === '')
+    );
+
+    if (nonEmptyValues.length === 0) return [];
+
+    const parsed = nonEmptyValues.map((d) => {
       if (d instanceof Date) return d;
       if (typeof d === 'string') return this.parseDateString(d);
       return null;
@@ -707,6 +719,15 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private parseDateString(dateStr: string): Date | null {
     if (!dateStr.trim()) return null;
+
+    if (dateStr.includes('T')) {
+      try {
+        const date = new Date(dateStr);
+        return isNaN(date.getTime()) ? null : date;
+      } catch (e) {
+        console.warn('Error parsing ISO date string:', e);
+      }
+    }
 
     const dtMatch = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})$/.exec(
       dateStr

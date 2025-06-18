@@ -994,7 +994,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             console.warn('Error setting calendar attributes:', error);
           }
         },
-        setInitialDates: this.setInitialDates.bind(this),
+        setInitialDates: () => this.setInitialDates(),
       });
 
       if (!this.flatpickrInstance) {
@@ -1211,6 +1211,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const announcer = this.shadowRoot?.getElementById(
       `${this._inputEl.id}-announcer`
     );
+
     if (!announcer) return;
 
     let announcement = '';
