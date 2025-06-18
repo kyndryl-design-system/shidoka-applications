@@ -1208,9 +1208,11 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
   private updateSelectedDateRangeAria(selectedDates: Date[]) {
     if (!this._inputEl) return;
-    const announcer = this.shadowRoot!.getElementById(
+    const announcer = this.shadowRoot?.getElementById(
       `${this._inputEl.id}-announcer`
-    )!;
+    );
+    if (!announcer) return;
+
     let announcement = '';
 
     if (selectedDates.length === 0) {
