@@ -2,11 +2,11 @@
  * Helper functions for positioning and managing popover panels using the `@floating-ui/dom` library.
  *
  * This module provides utilities for:
- * - Automatically positioning popover panels relative to anchor elements, including arrow positioning and collision handling.
- * - Managing keyboard focus within popover panels for accessibility.
- * - Generating and applying CSS styles for panel positioning.
- * - Supporting responsive positioning rules.
- * - Cleaning up focus traps when panels are closed.
+ * - automatically positioning popover panels relative to anchor elements, including arrow positioning.
+ * - managing keyboard focus within popover panels for accessibility.
+ * - generating and applying CSS styles for panel positioning.
+ * - supporting responsive positioning rules.
+ * - cleaning up focus when panels are closed.
  *
  * @see {@link https://floating-ui.com/}
  */
@@ -22,9 +22,8 @@ export interface Coords {
 
 const DEFAULT_ANCHOR_DISTANCE = 8;
 const DEFAULT_EDGE_SHIFT = 8;
-const DEFAULT_ARROW_MIN_PADDING = 6;
 
-export async function autoPosition(
+export const autoPosition = async (
   anchor: HTMLElement,
   panel: HTMLElement,
   arrowEl: HTMLElement,
@@ -32,7 +31,6 @@ export async function autoPosition(
   opts: {
     anchorDistance?: number;
     edgeShift?: number;
-    arrowMinPadding?: number;
   } = {}
 ): Promise<{
   x: number;
@@ -40,20 +38,18 @@ export async function autoPosition(
   placement: string;
   arrowX?: number;
   arrowY?: number;
-}> {
+}> => {
   const useAnchorDistance = opts.anchorDistance;
   const useEdgeShift = opts.edgeShift;
-  const useArrowMinPadding = opts.arrowMinPadding;
 
   const baseGutter = useAnchorDistance ?? DEFAULT_ANCHOR_DISTANCE;
   const baseShift = useEdgeShift ?? DEFAULT_EDGE_SHIFT;
-  const baseArrow = useArrowMinPadding ?? DEFAULT_ARROW_MIN_PADDING;
   const placement = placementOverride ?? 'bottom';
 
   const config = {
     anchorDistance: baseGutter,
     edgeShift: baseShift,
-    arrowMinPadding: baseArrow,
+    arrowPadding: 6,
   };
 
   if (useAnchorDistance !== undefined) {
@@ -69,18 +65,14 @@ export async function autoPosition(
   } else {
     if (placement.startsWith('bottom') || placement.startsWith('top'))
       config.edgeShift = 26;
-    else if (placement.startsWith('left')) config.edgeShift = 45;
+    else if (placement.startsWith('left')) config.edgeShift = 40;
     else if (placement.startsWith('right')) config.edgeShift = 20;
   }
 
-  if (useArrowMinPadding !== undefined) {
-    config.arrowMinPadding = useArrowMinPadding;
-  } else {
-    if (placement.startsWith('bottom')) config.arrowMinPadding = 16;
-    else if (placement.startsWith('top')) config.arrowMinPadding = 4;
-    else if (placement.startsWith('left')) config.arrowMinPadding = 6;
-    else if (placement.startsWith('right')) config.arrowMinPadding = 20;
-  }
+  if (placement.startsWith('bottom')) config.arrowPadding = 16;
+  else if (placement.startsWith('top')) config.arrowPadding = 4;
+  else if (placement.startsWith('left')) config.arrowPadding = 6;
+  else if (placement.startsWith('right')) config.arrowPadding = 20;
 
   const {
     x,
@@ -90,20 +82,14 @@ export async function autoPosition(
   } = await computePosition(anchor, panel, {
     placement,
     middleware: [
+      // only a single main-axis gap; cross-axis handled by shift()
       offset(config.anchorDistance),
       flip(),
-      shift({
-        padding: config.edgeShift,
-        crossAxis:
-          placement.startsWith('top') || placement.startsWith('bottom')
-            ? false
-            : true,
-      }),
-      arrow({ element: arrowEl, padding: config.arrowMinPadding }),
+      shift({ padding: config.edgeShift }),
+      arrow({ element: arrowEl, padding: config.arrowPadding }),
     ],
   });
 
-  // apply panel position only; arrow styling comes back via arrowX/arrowY
   Object.assign(panel.style, {
     left: `${Math.round(x)}px`,
     top: `${Math.round(y)}px`,
@@ -112,13 +98,15 @@ export async function autoPosition(
 
   const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {};
   return { x, y, placement: finalPlacement, arrowX, arrowY };
-}
+};
 
-export function handleFocusKeyboardEvents(panel: HTMLElement): {
+export const handleFocusKeyboardEvents = (
+  panel: HTMLElement
+): {
   previouslyFocusedElement: HTMLElement | null;
   focusableElements: NodeListOf<HTMLElement>;
   keyboardListener: ((e: Event) => void) | null;
-} {
+} => {
   const previouslyFocusedElement = document.activeElement as HTMLElement;
   const focusableElements = panel.querySelectorAll<HTMLElement>(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -178,9 +166,9 @@ export function handleFocusKeyboardEvents(panel: HTMLElement): {
   }
 
   return { previouslyFocusedElement, focusableElements, keyboardListener };
-}
+};
 
-export function getPanelStyle(
+export const getPanelStyle = (
   positionType: PositionType,
   zIndex: number | undefined,
   triggerType: string,
@@ -189,7 +177,7 @@ export function getPanelStyle(
   left?: string,
   bottom?: string,
   right?: string
-): string {
+): string => {
   let style = '';
   const pos = positionType || 'fixed';
 
@@ -208,24 +196,24 @@ export function getPanelStyle(
   if (right) style += `right: ${right};`;
 
   return style;
-}
+};
 
-export function removeFocusTrap(
+export const removeFocusListener = (
   panel: HTMLElement | null,
   keyboardListener: ((e: Event) => void) | null,
   previouslyFocusedElement: HTMLElement | null
-): void {
+): void => {
   if (keyboardListener && panel)
     panel.removeEventListener('keydown', keyboardListener);
   if (previouslyFocusedElement) previouslyFocusedElement.focus();
-}
+};
 
-export function applyResponsivePosition(
+export const applyResponsivePosition = (
   panel: HTMLElement,
   responsivePosition: string,
   coords: Coords,
   triggerType: string
-): void {
+): void => {
   const viewportWidth = window.innerWidth;
   const rules = responsivePosition
     .split('|')
@@ -265,4 +253,4 @@ export function applyResponsivePosition(
       }
     }
   }
-}
+};

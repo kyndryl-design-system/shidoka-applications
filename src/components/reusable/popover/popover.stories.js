@@ -22,21 +22,6 @@ export default {
     arrowPosition: { control: 'text' },
     anchorDistance: { control: 'number' },
     edgeShift: { control: 'number' },
-    arrowMinPadding: { control: 'number' },
-    anchorAlign: {
-      control: 'select',
-      options: [
-        'center',
-        'top',
-        'bottom',
-        'left',
-        'right',
-        'top-left',
-        'top-right',
-        'bottom-left',
-        'bottom-right',
-      ],
-    },
     positionType: { control: 'select', options: ['fixed', 'absolute'] },
     zIndex: { control: 'number' },
     responsivePosition: { control: 'text' },
@@ -59,20 +44,18 @@ const baseArgs = {
   positionType: 'fixed',
   anchorDistance: undefined,
   edgeShift: undefined,
-  arrowMinPadding: undefined,
+  arrowPosition: undefined,
   okText: 'Primary Button',
   secondaryButtonText: 'Secondary Button',
   titleText: 'Popover Title',
   labelText: 'Example label text content.',
   cancelText: '',
   closeText: 'Close',
-  anchorAlign: 'center',
   showSecondaryButton: true,
   hideFooter: false,
   mobileBreakpoint: false,
   destructive: false,
   open: false,
-  arrowPosition: undefined,
   top: undefined,
   right: undefined,
   bottom: undefined,
@@ -100,8 +83,6 @@ const Template = (args) => html`
     arrowPosition=${args.arrowPosition}
     .anchorDistance=${args.anchorDistance}
     .edgeShift=${args.edgeShift}
-    .arrowMinPadding=${args.arrowMinPadding}
-    anchorAlign=${args.anchorAlign}
     positionType=${args.positionType}
     z-index=${args['z-index']}
     responsive-position=${args['responsive-position']}
@@ -125,26 +106,27 @@ const Template = (args) => html`
           <div
             class="expansion-slot"
             style="
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              background:var(--kd-color-background-container-subtle);
-              padding:4px 8px;
-              border-radius:4px;
-              border:1px dashed var(--kd-color-utility-variant-border);
-              width:95%;
-              text-align:center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: var(--kd-color-background-container-subtle);
+              padding: 4px 8px;
+              border-radius: 4px;
+              border: 1px dashed var(--kd-color-utility-variant-border);
+              width: 95%;
+              min-width: 170px;
+              text-align: center;
             "
           >
             <span
               class="cube-icon"
               style="
-                display:inline-flex;
-                align-items:center;
-                color:var(--kd-color-icon-brand);
-                width:24px;
-                height:24px;
-                margin-right:8px;
+                display: inline-flex;
+                align-items: center;
+                color: var(--kd-color-icon-brand);
+                width: 24px;
+                height: 24px;
+                margin-right: 8px;
               "
               >${unsafeSVG(smCube)}</span
             >
@@ -155,28 +137,28 @@ const Template = (args) => html`
           <div
             class="expansion-slot"
             style="
-              text-align:center;
-              display:flex;
-              flex-direction:column;
-              align-items:center;
-              justify-content:center;
-              background:var(--kd-color-background-container-subtle);
-              padding:32px 16px;
-              height:255px;
-              border-radius:4px;
-              border:1px dashed var(--kd-color-utility-variant-border);
+              text-align: center;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              background: var(--kd-color-background-container-subtle);
+              padding: 32px 16px;
+              height: 255px;
+              border-radius: 4px;
+              border: 1px dashed var(--kd-color-utility-variant-border);
             "
           >
             <span class="cube-icon" style="color:var(--kd-color-icon-brand);"
               >${unsafeSVG(lgCube)}</span
             >
             <h3
-              style="font-size:16px;font-weight:500;line-height:24px;letter-spacing:0.32px;"
+              style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
             >
               Slot Content
             </h3>
             <p
-              style="font-size:12px;font-weight:300;line-height:16px;letter-spacing:0.32px;"
+              style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
             >
               Swap this with your own component.
             </p>
@@ -190,7 +172,7 @@ export const DefaultAuto = {
   args: { ...baseArgs },
 };
 
-export const CustomSpacingDemo = {
+export const CustomSpacingBodySlotOnly = {
   render: Template,
   args: {
     ...baseArgs,
@@ -199,7 +181,7 @@ export const CustomSpacingDemo = {
     size: 'narrow',
     edgeShift: 110,
     anchorDistance: 19,
-    arrowMinPadding: 191,
+    arrowPosition: '50%',
     titleText: '',
     labelText: '',
     hideFooter: true,
@@ -207,7 +189,7 @@ export const CustomSpacingDemo = {
   decorators: [
     (Story) =>
       html`<div
-        style="height:100vh;display:flex;justify-content:center;align-items:center;"
+        style="height: 100vh; display: flex; justify-content: center; align-items: center;"
       >
         ${Story()}
       </div>`,
@@ -247,7 +229,6 @@ export const ManualRightLinkNarrow = {
     triggerType: 'link',
     direction: 'right',
     size: 'narrow',
-    anchorAlign: 'top-left',
   },
 };
 
@@ -304,12 +285,12 @@ export const CenteredButtonAutoMini = {
     direction: 'auto',
     size: 'mini',
     triggerType: 'button',
-    arrowPosition: '50%',
+    arrowPosition: '48%',
   },
   decorators: [
     (Story) => html`
       <div
-        style="height:80vh;display:flex;justify-content:center;align-items:center;"
+        style="height: 80vh; display: flex; justify-content: center; align-items: center;"
       >
         <div style="position:relative;">${Story()}</div>
       </div>
@@ -322,6 +303,7 @@ export const DirectionLeftButtonRight = {
   args: {
     ...baseArgs,
     direction: 'left',
+    edgeShift: 45,
   },
   decorators: [
     (Story) => html`
@@ -332,13 +314,14 @@ export const DirectionLeftButtonRight = {
   ],
 };
 
-export const PreciseanchorAlign = {
+export const PreciseAnchorAlign = {
   render: Template,
   args: {
     ...baseArgs,
     direction: 'bottom',
     size: 'narrow',
-    anchorAlign: 'center',
+    edgeShift: 165,
+    arrowPosition: '20px',
   },
   decorators: [
     (Story) => html`
@@ -418,8 +401,6 @@ export const MiniWithCustomText = {
       arrowPosition=${args.arrowPosition}
       .anchorDistance=${args.anchorDistance}
       .edgeShift=${args.edgeShift}
-      .arrowMinPadding=${args.arrowMinPadding}
-      anchorAlign=${args.anchorAlign}
       ?mobileBreakpoint=${args.mobileBreakpoint}
       @on-open=${() => action('on-open')()}
       @on-close=${() => action('on-close')()}
@@ -430,7 +411,7 @@ export const MiniWithCustomText = {
         ? html`<kyn-link slot="anchor" kind="primary">Link</kyn-link>`
         : html`<kyn-button
             slot="anchor"
-            style="height:24px;width:24px;"
+            style="height: 24px; width: 24px;"
             kind="primary"
             size="small"
             >1</kyn-button
@@ -438,16 +419,16 @@ export const MiniWithCustomText = {
       <div
         class="expansion-slot"
         style="
-					padding:16px;
-					background:var(--kd-color-background-container-subtle);
-					border-radius:4px;
+					padding: 16px;
+					background: var(--kd-color-background-container-subtle);
+					border-radius: 4px;
 				"
       >
         <p
           style="
-						font-size:14px;
-						line-height:20px;
-						margin:0;
+						font-size: 14px;
+						line-height: 20px;
+						margin: 0;
 					"
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
