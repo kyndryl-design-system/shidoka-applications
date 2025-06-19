@@ -20,9 +20,9 @@ export interface Coords {
   left: number;
 }
 
-const DEFAULT_GUTTER = 8;
-const DEFAULT_SHIFT_PADDING = 8;
-const DEFAULT_ARROW_PADDING = 6;
+const DEFAULT_ANCHOR_DISTANCE = 8;
+const DEFAULT_EDGE_SHIFT = 8;
+const DEFAULT_ARROW_MIN_PADDING = 6;
 
 export async function autoPosition(
   anchor: HTMLElement,
@@ -30,9 +30,6 @@ export async function autoPosition(
   arrowEl: HTMLElement,
   placementOverride: Placement | undefined,
   opts: {
-    gutter?: number;
-    shiftPadding?: number;
-    arrowPadding?: number;
     anchorDistance?: number;
     edgeShift?: number;
     arrowMinPadding?: number;
@@ -44,45 +41,45 @@ export async function autoPosition(
   arrowX?: number;
   arrowY?: number;
 }> {
-  const userGutter = opts.anchorDistance ?? opts.gutter;
-  const userShift = opts.edgeShift ?? opts.shiftPadding;
-  const userArrow = opts.arrowMinPadding ?? opts.arrowPadding;
+  const useAnchorDistance = opts.anchorDistance;
+  const useEdgeShift = opts.edgeShift;
+  const useArrrowMinPadding = opts.arrowMinPadding;
 
-  const baseGutter = userGutter ?? DEFAULT_GUTTER;
-  const baseShift = userShift ?? DEFAULT_SHIFT_PADDING;
-  const baseArrow = userArrow ?? DEFAULT_ARROW_PADDING;
+  const baseGutter = useAnchorDistance ?? DEFAULT_ANCHOR_DISTANCE;
+  const baseShift = useEdgeShift ?? DEFAULT_EDGE_SHIFT;
+  const baseArrow = useArrrowMinPadding ?? DEFAULT_ARROW_MIN_PADDING;
   const placement = placementOverride ?? 'bottom';
 
   const config = {
-    gutter: baseGutter,
-    shiftPadding: baseShift,
-    arrowPadding: baseArrow,
+    anchorDistance: baseGutter,
+    edgeShift: baseShift,
+    arrowMinPadding: baseArrow,
   };
 
-  if (userGutter !== undefined) {
-    config.gutter = userGutter;
+  if (useAnchorDistance !== undefined) {
+    config.anchorDistance = useAnchorDistance;
   } else {
-    if (placement.startsWith('bottom')) config.gutter = 16;
-    else if (placement.startsWith('left')) config.gutter = 12;
-    else if (placement.startsWith('right')) config.gutter = 16;
+    if (placement.startsWith('bottom')) config.anchorDistance = 16;
+    else if (placement.startsWith('left')) config.anchorDistance = 12;
+    else if (placement.startsWith('right')) config.anchorDistance = 16;
   }
 
-  if (userShift !== undefined) {
-    config.shiftPadding = userShift;
+  if (useEdgeShift !== undefined) {
+    config.edgeShift = useEdgeShift;
   } else {
     if (placement.startsWith('bottom') || placement.startsWith('top'))
-      config.shiftPadding = 26;
-    else if (placement.startsWith('left')) config.shiftPadding = 45;
-    else if (placement.startsWith('right')) config.shiftPadding = 20;
+      config.edgeShift = 26;
+    else if (placement.startsWith('left')) config.edgeShift = 45;
+    else if (placement.startsWith('right')) config.edgeShift = 20;
   }
 
-  if (userArrow !== undefined) {
-    config.arrowPadding = userArrow;
+  if (useArrrowMinPadding !== undefined) {
+    config.arrowMinPadding = useArrrowMinPadding;
   } else {
-    if (placement.startsWith('bottom')) config.arrowPadding = 16;
-    else if (placement.startsWith('top')) config.arrowPadding = 4;
-    else if (placement.startsWith('left')) config.arrowPadding = 6;
-    else if (placement.startsWith('right')) config.arrowPadding = 20;
+    if (placement.startsWith('bottom')) config.arrowMinPadding = 16;
+    else if (placement.startsWith('top')) config.arrowMinPadding = 4;
+    else if (placement.startsWith('left')) config.arrowMinPadding = 6;
+    else if (placement.startsWith('right')) config.arrowMinPadding = 20;
   }
 
   const {
@@ -93,16 +90,16 @@ export async function autoPosition(
   } = await computePosition(anchor, panel, {
     placement,
     middleware: [
-      offset(config.gutter),
+      offset(config.anchorDistance),
       flip(),
       shift({
-        padding: config.shiftPadding,
+        padding: config.edgeShift,
         crossAxis:
           placement.startsWith('top') || placement.startsWith('bottom')
             ? false
             : true,
       }),
-      arrow({ element: arrowEl, padding: config.arrowPadding }),
+      arrow({ element: arrowEl, padding: config.arrowMinPadding }),
     ],
   });
 

@@ -32,7 +32,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
  * properties to position the popover.
  *
  * @slot anchor - The trigger element (icon, button, link, etc.)
- * @slot default - The popover body content
+ * @slot unnamed - The popover body content
  * @slot header - Optional custom header (replaces default title/label)
  *
  * @fires on-close - Emitted when any action closes the popover
@@ -78,7 +78,6 @@ export class Popover extends LitElement {
 
   /**
    * Padding from viewport edges (px)
-   * Controls minimum distance from popover to viewport boundaries
    */
   @property({ type: Number, attribute: 'viewport-padding' })
   edgeShift: number | undefined;
@@ -89,24 +88,6 @@ export class Popover extends LitElement {
    */
   @property({ type: Number, attribute: 'arrow-distance' })
   arrowMinPadding: number | undefined;
-
-  /**
-   * @deprecated Use anchorDistance instead
-   */
-  @property({ type: Number })
-  gutter: number | undefined;
-
-  /**
-   * @deprecated Use edgeShift instead
-   */
-  @property({ type: Number, attribute: 'shift-padding' })
-  shiftPadding: number | undefined;
-
-  /**
-   * @deprecated Use arrowMinPadding instead
-   */
-  @property({ type: Number, attribute: 'arrow-padding' })
-  arrowPadding: number | undefined;
 
   /**
    * Position type: fixed (default) or absolute
@@ -411,10 +392,7 @@ export class Popover extends LitElement {
       changed.has('arrowPosition') ||
       changed.has('anchorDistance') ||
       changed.has('edgeShift') ||
-      changed.has('arrowMinPadding') ||
-      changed.has('gutter') ||
-      changed.has('shiftPadding') ||
-      changed.has('arrowPadding')
+      changed.has('arrowMinPadding')
     ) {
       this.updateComplete.then(() => {
         this._position();
@@ -547,9 +525,9 @@ export class Popover extends LitElement {
       this.direction !== 'auto' ? this.direction : undefined;
 
     const baseOpts = {
-      gutter: this.anchorDistance ?? this.gutter,
-      shiftPadding: this.edgeShift ?? this.shiftPadding,
-      arrowPadding: this.arrowMinPadding ?? this.arrowPadding,
+      anchorDistance: this.anchorDistance,
+      edgeShift: this.edgeShift,
+      arrowMinPadding: this.arrowMinPadding,
     };
 
     const { x, y, placement, arrowX } = await autoPosition(
