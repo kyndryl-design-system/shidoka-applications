@@ -52,7 +52,16 @@ export class Popover extends LitElement {
    * The anchor point for positioning the popover
    */
   @property({ type: String })
-  anchorAlign = 'center';
+  anchorAlign:
+    | 'center'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'top-left'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-right' = 'center';
 
   /**
    * Use modern positioning API when available

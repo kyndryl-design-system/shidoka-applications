@@ -1,3 +1,15 @@
+/**
+ * Helper functions for positioning and managing popover panels using the `@floating-ui/dom` library.
+ *
+ * This module provides utilities for:
+ * - Automatically positioning popover panels relative to anchor elements, including arrow positioning and collision handling.
+ * - Managing keyboard focus within popover panels for accessibility.
+ * - Generating and applying CSS styles for panel positioning.
+ * - Supporting responsive positioning rules.
+ * - Cleaning up focus traps when panels are closed.
+ *
+ * @see {@link https://floating-ui.com/}
+ */
 import { computePosition, offset, flip, shift, arrow } from '@floating-ui/dom';
 import type { Placement } from '@floating-ui/dom';
 
