@@ -17,7 +17,7 @@ export class CheckboxSubgroup extends LitElement {
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-checkbox' })
-  _children: Array<any> = [];
+  _children!: Array<any>;
 
   override render() {
     return html`
