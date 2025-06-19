@@ -82,7 +82,6 @@ export const autoPosition = async (
   } = await computePosition(anchor, panel, {
     placement,
     middleware: [
-      // only a single main-axis gap; cross-axis handled by shift()
       offset(config.anchorDistance),
       flip(),
       shift({ padding: config.edgeShift }),
