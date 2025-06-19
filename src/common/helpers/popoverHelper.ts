@@ -115,10 +115,7 @@ export async function autoPosition(
   return { x, y, placement: finalPlacement, arrowX, arrowY };
 }
 
-export function handleFocusKeyboardEvents(
-  panel: HTMLElement,
-  autoFocus: boolean
-): {
+export function handleFocusKeyboardEvents(panel: HTMLElement): {
   previouslyFocusedElement: HTMLElement | null;
   focusableElements: NodeListOf<HTMLElement>;
   keyboardListener: ((e: Event) => void) | null;
@@ -130,8 +127,6 @@ export function handleFocusKeyboardEvents(
   let keyboardListener: ((e: Event) => void) | null = null;
 
   if (focusableElements.length) {
-    if (autoFocus) focusableElements[0].focus();
-
     keyboardListener = (e: Event) => {
       const keyEvent = e as KeyboardEvent;
       if (keyEvent.key === 'Tab') {

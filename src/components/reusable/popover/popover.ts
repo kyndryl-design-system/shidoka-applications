@@ -49,6 +49,20 @@ export class Popover extends LitElement {
   direction: 'top' | 'right' | 'bottom' | 'left' | 'auto' = 'auto';
 
   /**
+   * Position type: fixed (default) or absolute
+   * - fixed: positions relative to the viewport
+   * - absolute: positions relative to the nearest positioned ancestor
+   */
+  @property({ type: String })
+  positionType: PositionType = 'fixed';
+
+  /**
+   * Size variants for the popover.
+   */
+  @property({ type: String })
+  size: 'mini' | 'narrow' | 'wide' = 'mini';
+
+  /**
    * The anchor point for positioning the popover
    */
   @property({ type: String })
@@ -62,12 +76,6 @@ export class Popover extends LitElement {
     | 'top-right'
     | 'bottom-left'
     | 'bottom-right' = 'center';
-
-  /**
-   * Use modern positioning API when available
-   */
-  @property({ type: Boolean })
-  useModernPositioning = true;
 
   /**
    * Distance between anchor and popover (px)
@@ -89,35 +97,75 @@ export class Popover extends LitElement {
   @property({ type: Number, attribute: 'arrow-distance' })
   arrowMinPadding: number | undefined;
 
-  /**
-   * Position type: fixed (default) or absolute
-   * - fixed: positions relative to the viewport
-   * - absolute: positions relative to the nearest positioned ancestor
-   */
-  @property({ type: String })
-  positionType: PositionType = 'fixed';
-
   /** how we style the anchor slot */
   @property({ type: String, reflect: true })
   triggerType: 'icon' | 'link' | 'button' | 'none' = 'button';
 
-  /**
-   * Size variants for the popover.
+  /** Optional manual offset for tooltip-like triangular shaped arrow.
+   * When set, this will override the automatic arrow positioning.
    */
-  @property({ type: String })
-  size: 'mini' | 'narrow' | 'wide' = 'mini';
+  @property({ type: String, reflect: true })
+  arrowPosition?: string;
 
   /**
-   * Body title text
+   * Whether popover is open
    */
+  @property({ type: Boolean })
+  open = false;
+
+  /**
+   * Enable full screen mode on mobile devices
+   */
+  @property({ type: Boolean })
+  mobileBreakpoint = false;
+
+  /**
+   * Animation duration in milliseconds
+   */
+  @property({ type: Number, attribute: 'animation-duration' })
+  animationDuration = 200;
+
+  // Floating-only offset props
+  /** Top position value. */
   @property({ type: String })
-  titleText = '';
+  top?: string;
+
+  /** Left position value. */
+  @property({ type: String })
+  left?: string;
+
+  /** Bottom position value. */
+  @property({ type: String })
+  bottom?: string;
+
+  /** Right position value. */
+  @property({ type: String })
+  right?: string;
+  //
 
   /**
    * Changes the primary button styles to indicate a destructive action
    */
   @property({ type: Boolean })
   destructive = false;
+
+  /**
+   * Z-index for the popover.
+   */
+  @property({ type: Number, attribute: 'z-index' })
+  zIndex?: number;
+
+  /**
+   * Responsive breakpoints for adjusting position.
+   */
+  @property({ type: String, attribute: 'responsive-position' })
+  responsivePosition?: string;
+
+  /**
+   * Body title text
+   */
+  @property({ type: String })
+  titleText = '';
 
   /**
    * Body subtitle/label
@@ -138,6 +186,12 @@ export class Popover extends LitElement {
   cancelText = 'Cancel';
 
   /**
+   * Close button description text
+   */
+  @property({ type: String })
+  closeText = 'Close';
+
+  /**
    * Secondary button text
    */
   @property({ type: String })
@@ -156,98 +210,22 @@ export class Popover extends LitElement {
   hideFooter = false;
 
   /**
-   * Whether popover is open
-   */
-  @property({ type: Boolean })
-  open = false;
-
-  /**
-   * Enable full screen mode on mobile devices
-   */
-  @property({ type: Boolean })
-  mobileBreakpoint = false;
-
-  /**
-   * Auto focus the first focusable element when opened
-   */
-  @property({ type: Boolean })
-  autoFocus = true;
-
-  /**
    * The computed panel coordinates for positioning.
    * Contains `top` and `left` in pixels.
-   * @private
    */
   @state()
   private _coords: Coords = { top: 0, left: 0 };
 
   /**
-   * Maximum height of the popover body (e.g., "300px", "50vh")
-   */
-  @property({ type: String, attribute: 'max-height' })
-  maxHeight?: string;
-
-  /**
-   * Animation duration in milliseconds
-   */
-  @property({ type: Number, attribute: 'animation-duration' })
-  animationDuration = 200;
-
-  /**
-   * Close button description text
-   */
-  @property({ type: String })
-  closeText = 'Close';
-
-  // Floating-only offset props
-  /** Top position value. */
-  @property({ type: String })
-  top?: string;
-
-  /** Left position value. */
-  @property({ type: String })
-  left?: string;
-
-  /** Bottom position value. */
-  @property({ type: String })
-  bottom?: string;
-
-  /** Right position value. */
-  @property({ type: String })
-  right?: string;
-
-  /** Optional manual offset for tooltip-like triangular shaped arrow.
-   * When set, this will override the automatic arrow positioning.
-   */
-  @property({ type: String, reflect: true })
-  arrowPosition?: string;
-
-  /**
    * The computed direction of the popover panel when `direction="auto"`.
-   * One of 'top', 'bottom', 'left', or 'right'.
-   * @private
+   * 'top', 'bottom', 'left', or 'right'.
    */
   @state()
   private _calculatedDirection = 'bottom';
 
   /**
-   * Z-index for the popover.
-   */
-  @property({ type: Number, attribute: 'z-index' })
-  zIndex?: number;
-
-  /**
-   * Responsive breakpoints for adjusting position.
-   * Format: "breakpoint:prop:value|breakpoint:prop:value"
-   * Example: "768:top:10%|480:left:5%"
-   */
-  @property({ type: String, attribute: 'responsive-position' })
-  responsivePosition?: string;
-
-  /**
    * The computed anchor alignment relative to the trigger element.
-   * One of 'start', 'center', or 'end'.
-   * @private
+   * 'start', 'center', or 'end'.
    */
   @state()
   private _anchorPosition = 'center';
@@ -438,7 +416,7 @@ export class Popover extends LitElement {
       '.popover-inner'
     ) as HTMLElement;
     if (!panel) return;
-    const res = handleFocusKeyboardEvents(panel, this.autoFocus);
+    const res = handleFocusKeyboardEvents(panel);
     this._prevFocused = res.previouslyFocusedElement;
     this._keyboardListener = res.keyboardListener;
   }

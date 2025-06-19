@@ -43,9 +43,7 @@ export default {
     },
     'z-index': { control: 'number' },
     'responsive-position': { control: 'text' },
-    useModernPositioning: { control: 'boolean' },
     mobileBreakpoint: { control: 'boolean' },
-    autoFocus: { control: 'boolean' },
     triggerType: {
       control: 'select',
       options: ['icon', 'link', 'button', 'none'],
@@ -83,9 +81,7 @@ const baseArgs = {
   open: false,
   closeText: 'Close',
   anchorAlign: 'center',
-  useModernPositioning: true,
   mobileBreakpoint: false,
-  autoFocus: true,
   offsetX: 0,
   offsetY: 0,
   positionType: 'fixed',
@@ -117,9 +113,7 @@ const Template = (args) => html`
     positionType=${args.positionType}
     z-index=${args['z-index']}
     responsive-position=${args['responsive-position']}
-    ?useModernPositioning=${args.useModernPositioning}
     ?mobileBreakpoint=${args.mobileBreakpoint}
-    ?autoFocus=${args.autoFocus}
     offset-x=${args.offsetX}
     offset-y=${args.offsetY}
     .gutter=${args.gutter}
@@ -440,9 +434,7 @@ export const MiniWithCustomText = {
       .edgeShift=${args.edgeShift}
       .arrowMinPadding=${args.arrowMinPadding}
       anchorAlign=${args.anchorAlign}
-      ?useModernPositioning=${args.useModernPositioning}
       ?mobileBreakpoint=${args.mobileBreakpoint}
-      ?autoFocus=${args.autoFocus}
       offset-x=${args.offsetX}
       offset-y=${args.offsetY}
       @on-open=${() => action('on-open')()}
