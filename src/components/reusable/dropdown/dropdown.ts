@@ -343,7 +343,11 @@ export class Dropdown extends FormMixin(LitElement) {
                     />
                   `
                 : html`
-                    <span aria-disabled=${this.disabled}>
+                    <span
+                      class="${classMap({
+                        'placeholder-text': this.text === '',
+                      })}"
+                    >
                       ${this.multiple
                         ? this.placeholder
                         : this.value === ''
