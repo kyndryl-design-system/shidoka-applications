@@ -196,6 +196,7 @@ export const Default = {
           minLength="8"
           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
           caption="Password must contain at least 8 characters, including uppercase, lowercase, and numbers"
+          style="width: 95%; max-width: 350px;"
           @on-input=${(e) => action(e.type)(e)}
         >
           <kyn-tooltip slot="tooltip">
