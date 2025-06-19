@@ -43,11 +43,11 @@ export async function autoPosition(
 }> {
   const useAnchorDistance = opts.anchorDistance;
   const useEdgeShift = opts.edgeShift;
-  const useArrrowMinPadding = opts.arrowMinPadding;
+  const useArrowMinPadding = opts.arrowMinPadding;
 
   const baseGutter = useAnchorDistance ?? DEFAULT_ANCHOR_DISTANCE;
   const baseShift = useEdgeShift ?? DEFAULT_EDGE_SHIFT;
-  const baseArrow = useArrrowMinPadding ?? DEFAULT_ARROW_MIN_PADDING;
+  const baseArrow = useArrowMinPadding ?? DEFAULT_ARROW_MIN_PADDING;
   const placement = placementOverride ?? 'bottom';
 
   const config = {
@@ -73,8 +73,8 @@ export async function autoPosition(
     else if (placement.startsWith('right')) config.edgeShift = 20;
   }
 
-  if (useArrrowMinPadding !== undefined) {
-    config.arrowMinPadding = useArrrowMinPadding;
+  if (useArrowMinPadding !== undefined) {
+    config.arrowMinPadding = useArrowMinPadding;
   } else {
     if (placement.startsWith('bottom')) config.arrowMinPadding = 16;
     else if (placement.startsWith('top')) config.arrowMinPadding = 4;
@@ -103,15 +103,14 @@ export async function autoPosition(
     ],
   });
 
+  // apply panel position only; arrow styling comes back via arrowX/arrowY
   Object.assign(panel.style, {
     left: `${Math.round(x)}px`,
     top: `${Math.round(y)}px`,
     position: 'fixed',
   });
-  const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {};
-  if (arrowX != null) arrowEl.style.left = `${Math.round(arrowX)}px`;
-  if (arrowY != null) arrowEl.style.top = `${Math.round(arrowY)}px`;
 
+  const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {};
   return { x, y, placement: finalPlacement, arrowX, arrowY };
 }
 

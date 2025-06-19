@@ -77,25 +77,27 @@ export class Popover extends LitElement {
     | 'bottom-left'
     | 'bottom-right' = 'center';
 
+  // Following three props map directly to Floating-UI’s offset(), shift(), and arrow() middleware
   /**
    * Distance between anchor and popover (px)
    * Controls how far the popover is positioned from its anchor element
    */
-  @property({ type: Number })
+  @property({ type: Number, reflect: true })
   anchorDistance: number | undefined;
 
   /**
    * Padding from viewport edges (px)
    */
-  @property({ type: Number, attribute: 'viewport-padding' })
+  @property({ type: Number, reflect: true })
   edgeShift: number | undefined;
 
   /**
    * Arrow position padding (px)
    * Controls minimum distance of arrow from popover edges
    */
-  @property({ type: Number, attribute: 'arrow-distance' })
+  @property({ type: Number, reflect: true })
   arrowMinPadding: number | undefined;
+  ////**//// */
 
   /** how we style the anchor slot */
   @property({ type: String, reflect: true })
@@ -122,7 +124,7 @@ export class Popover extends LitElement {
   /**
    * Animation duration in milliseconds
    */
-  @property({ type: Number, attribute: 'animation-duration' })
+  @property({ type: Number })
   animationDuration = 200;
 
   // Floating-only offset props
@@ -152,13 +154,13 @@ export class Popover extends LitElement {
   /**
    * Z-index for the popover.
    */
-  @property({ type: Number, attribute: 'z-index' })
+  @property({ type: Number })
   zIndex?: number;
 
   /**
    * Responsive breakpoints for adjusting position.
    */
-  @property({ type: String, attribute: 'responsive-position' })
+  @property({ type: String })
   responsivePosition?: string;
 
   /**
@@ -212,27 +214,49 @@ export class Popover extends LitElement {
   /**
    * The computed panel coordinates for positioning.
    * Contains `top` and `left` in pixels.
+   * @internal
    */
   @state()
-  private _coords: Coords = { top: 0, left: 0 };
+  _coords: Coords = { top: 0, left: 0 };
 
   /**
    * The computed direction of the popover panel when `direction="auto"`.
    * 'top', 'bottom', 'left', or 'right'.
+   * @internal
    */
   @state()
-  private _calculatedDirection = 'bottom';
+  _calculatedDirection = 'bottom';
 
   /**
    * The computed anchor alignment relative to the trigger element.
    * 'start', 'center', or 'end'.
+   * @internal
    */
   @state()
-  private _anchorPosition = 'center';
+  _anchorPosition = 'center';
 
+  /**
+   * ResizeObserver watching for size changes on the popover and anchor.
+   * @internal
+   */
   private _resizeObserver: ResizeObserver | null = null;
+
+  /**
+   * Keyboard event listener attached to trap focus within the popover.
+   * @internal
+   */
   private _keyboardListener: ((e: Event) => void) | null = null;
+
+  /**
+   * Previously focused element before the popover opened, so it can be restored on close.
+   * @internal
+   */
   private _prevFocused: HTMLElement | null = null;
+
+  /**
+   * Debounce timeout ID for delaying reposition calls.
+   * @internal
+   */
   private _debounceTimeout: number | null = null;
 
   override render() {
@@ -380,6 +404,7 @@ export class Popover extends LitElement {
     }
   }
 
+  /** @internal */
   private _getPanelStyle = (): string => {
     return getPanelStyle(
       this.positionType,
@@ -391,6 +416,17 @@ export class Popover extends LitElement {
       this.bottom,
       this.right
     );
+  };
+
+  /** @internal */
+  private _onKeyDown = (e: Event) => {
+    if ((e as KeyboardEvent).key === 'Escape' && this.open) this._close();
+  };
+
+  /** @internal */
+  private _handleAction = (action: 'ok' | 'cancel' | 'secondary'): void => {
+    this.open = false;
+    this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
   };
 
   private _toggle() {
@@ -406,10 +442,6 @@ export class Popover extends LitElement {
     this.open = false;
     this.dispatchEvent(new CustomEvent('on-close'));
   }
-
-  private _onKeyDown = (e: Event) => {
-    if ((e as KeyboardEvent).key === 'Escape' && this.open) this._close();
-  };
 
   private _handleFocusKeyboardEvents() {
     const panel = this.shadowRoot!.querySelector(
@@ -458,11 +490,6 @@ export class Popover extends LitElement {
     }, 100);
   }
 
-  private _handleAction = (action: 'ok' | 'cancel' | 'secondary'): void => {
-    this.open = false;
-    this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
-  };
-
   private async _position() {
     await this.updateComplete;
 
@@ -471,16 +498,15 @@ export class Popover extends LitElement {
     ) as HTMLElement;
     if (!panel) return;
 
+    // --- floating mode shortcut unchanged ---
     if (this.triggerType === 'none') {
       const baseStyle = this._getPanelStyle();
       const arrowStyle = this.arrowPosition
-        ? `; --arrow-offset: ${this.arrowPosition}`
+        ? `; --arrow-offset-x: ${this.arrowPosition};`
         : '';
       panel.setAttribute('style', baseStyle + arrowStyle);
-
-      const dir = this.direction === 'auto' ? 'bottom' : this.direction;
-      this._calculatedDirection = dir as 'top' | 'bottom' | 'left' | 'right';
-
+      this._calculatedDirection =
+        this.direction === 'auto' ? 'bottom' : this.direction;
       if (this.responsivePosition) {
         applyResponsivePosition(
           panel,
@@ -492,9 +518,10 @@ export class Popover extends LitElement {
       return;
     }
 
+    // --- anchor mode ---
     const anchorHost = this.shadowRoot!.querySelector('.anchor') as HTMLElement;
     const slotted = (
-      anchorHost.querySelector('slot[name="anchor"]') as HTMLSlotElement | null
+      anchorHost.querySelector('slot[name="anchor"]') as HTMLSlotElement
     )?.assignedElements();
     const anchorEl = slotted?.length ? (slotted[0] as HTMLElement) : anchorHost;
     const arrowEl = panel.querySelector<HTMLElement>('.arrow')!;
@@ -508,7 +535,7 @@ export class Popover extends LitElement {
       arrowMinPadding: this.arrowMinPadding,
     };
 
-    const { x, y, placement, arrowX } = await autoPosition(
+    const { x, y, placement, arrowX, arrowY } = await autoPosition(
       anchorEl,
       panel,
       arrowEl,
@@ -521,29 +548,28 @@ export class Popover extends LitElement {
     this._calculatedDirection = dir;
     this._anchorPosition = anchorPos;
 
+    // apply numeric offsets + any manual top/left props
     const numericTopOffset = this.top
       ? parseInt(this.top.replace(/[^0-9-]/g, ''), 10)
       : 0;
     const numericLeftOffset = this.left
       ? parseInt(this.left.replace(/[^0-9-]/g, ''), 10)
       : 0;
-
     this._coords = {
       top: Math.round(y) + numericTopOffset,
       left: Math.round(x) + numericLeftOffset,
     };
-
     panel.style.top = `${this._coords.top}px`;
     panel.style.left = `${this._coords.left}px`;
 
+    // ▲ NEW: set both arrow offsets via CSS vars
     if (this.arrowPosition) {
-      const arrowElement = panel.querySelector('.arrow');
-      if (arrowElement) {
-        arrowElement.removeAttribute('style');
-      }
-      panel.style.setProperty('--arrow-offset', this.arrowPosition);
-    } else if (arrowX != null) {
-      panel.style.setProperty('--arrow-offset', `${Math.round(arrowX)}px`);
+      panel.style.setProperty('--arrow-offset-x', this.arrowPosition);
+    } else {
+      if (arrowX != null)
+        panel.style.setProperty('--arrow-offset-x', `${Math.round(arrowX)}px`);
+      if (arrowY != null)
+        panel.style.setProperty('--arrow-offset-y', `${Math.round(arrowY)}px`);
     }
 
     if (this.responsivePosition) {

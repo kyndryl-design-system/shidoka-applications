@@ -21,8 +21,8 @@ export default {
     right: { control: 'text' },
     arrowPosition: { control: 'text' },
     anchorDistance: { control: 'number' },
-    edgeShift: { name: 'viewport-padding', control: 'number' },
-    arrowMinPadding: { name: 'arrow-distance', control: 'number' },
+    edgeShift: { control: 'number' },
+    arrowMinPadding: { control: 'number' },
     anchorAlign: {
       control: 'select',
       options: [
@@ -37,12 +37,9 @@ export default {
         'bottom-right',
       ],
     },
-    positionType: {
-      control: 'select',
-      options: ['fixed', 'absolute'],
-    },
-    'z-index': { control: 'number' },
-    'responsive-position': { control: 'text' },
+    positionType: { control: 'select', options: ['fixed', 'absolute'] },
+    zIndex: { control: 'number' },
+    responsivePosition: { control: 'text' },
     mobileBreakpoint: { control: 'boolean' },
     triggerType: {
       control: 'select',
@@ -52,41 +49,36 @@ export default {
       control: 'select',
       options: ['auto', 'top', 'bottom', 'left', 'right'],
     },
-    gutter: { control: 'number' },
-    'shift-padding': { control: 'number' },
-    'arrow-padding': { control: 'number' },
   },
 };
 
 const baseArgs = {
+  triggerType: 'button',
+  direction: 'auto',
+  size: 'mini',
+  positionType: 'fixed',
+  anchorDistance: undefined,
+  edgeShift: undefined,
+  arrowMinPadding: undefined,
+  okText: 'Primary Button',
+  secondaryButtonText: 'Secondary Button',
+  titleText: 'Popover Title',
+  labelText: 'Example label text content.',
+  cancelText: '',
+  closeText: 'Close',
+  anchorAlign: 'center',
+  showSecondaryButton: true,
+  hideFooter: false,
+  mobileBreakpoint: false,
+  destructive: false,
+  open: false,
+  arrowPosition: undefined,
   top: undefined,
   right: undefined,
   bottom: undefined,
   left: undefined,
-  arrowPosition: undefined,
-  anchorDistance: undefined,
-  edgeShift: undefined,
-  arrowMinPadding: undefined,
-  triggerType: 'button',
-  direction: 'auto',
-  size: 'mini',
-  okText: 'Primary Button',
-  secondaryButtonText: 'Secondary Button',
-  showSecondaryButton: true,
-  hideFooter: false,
-  titleText: 'Popover Title',
-  labelText: 'Example label text content.',
-  destructive: false,
-  cancelText: '',
-  open: false,
-  closeText: 'Close',
-  anchorAlign: 'center',
-  mobileBreakpoint: false,
-  offsetX: 0,
-  offsetY: 0,
-  positionType: 'fixed',
-  'z-index': undefined,
-  'responsive-position': undefined,
+  zIndex: undefined,
+  responsivePosition: undefined,
 };
 
 const Template = (args) => html`
@@ -114,11 +106,6 @@ const Template = (args) => html`
     z-index=${args['z-index']}
     responsive-position=${args['responsive-position']}
     ?mobileBreakpoint=${args.mobileBreakpoint}
-    offset-x=${args.offsetX}
-    offset-y=${args.offsetY}
-    .gutter=${args.gutter}
-    .shiftPadding=${args['shift-padding']}
-    .arrowPadding=${args['arrow-padding']}
     @on-open=${() => action('on-open')()}
     @on-close=${() => action('on-close')()}
   >
@@ -210,9 +197,9 @@ export const CustomSpacingDemo = {
     open: true,
     direction: 'top',
     size: 'narrow',
-    anchorDistance: 14,
-    edgeShift: 40,
-    arrowMinPadding: 192,
+    edgeShift: 110,
+    anchorDistance: 19,
+    arrowMinPadding: 191,
     titleText: '',
     labelText: '',
     hideFooter: true,
@@ -417,7 +404,6 @@ export const MiniWithCustomText = {
     triggerType: 'button',
     direction: 'right',
   },
-  name: 'Mini With Custom Text',
   render: (args) => html`
     <kyn-popover
       okText=${args.okText}
@@ -435,8 +421,6 @@ export const MiniWithCustomText = {
       .arrowMinPadding=${args.arrowMinPadding}
       anchorAlign=${args.anchorAlign}
       ?mobileBreakpoint=${args.mobileBreakpoint}
-      offset-x=${args.offsetX}
-      offset-y=${args.offsetY}
       @on-open=${() => action('on-open')()}
       @on-close=${() => action('on-close')()}
     >
