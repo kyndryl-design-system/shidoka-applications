@@ -243,7 +243,7 @@ export const FloatingUpperNoHeader = {
     direction: 'left',
     top: '5%',
     right: '1%',
-    arrowPosition: '45%',
+    arrowPosition: '15%',
   },
 };
 
