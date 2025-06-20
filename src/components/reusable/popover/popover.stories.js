@@ -25,6 +25,8 @@ export default {
     positionType: { control: 'select', options: ['fixed', 'absolute'] },
     zIndex: { control: 'number' },
     responsivePosition: { control: 'text' },
+    footerLinkText: { control: 'text' },
+    footerLinkHref: { control: 'text' },
     mobileBreakpoint: { control: 'boolean' },
     triggerType: {
       control: 'select',
@@ -51,6 +53,9 @@ const baseArgs = {
   labelText: 'Example label text content.',
   cancelText: '',
   closeText: 'Close',
+  footerLinkText: '',
+  footerLinkHref: '',
+  footerLinkTarget: '_blank',
   showSecondaryButton: true,
   hideFooter: false,
   mobileBreakpoint: false,
@@ -85,6 +90,9 @@ const Template = (args) => html`
     .shiftPadding=${args.shiftPadding}
     positionType=${args.positionType}
     z-index=${args['z-index']}
+    footerLinkText=${args.footerLinkText}
+    footerLinkHref=${args.footerLinkHref}
+    footerLinkTarget=${args.footerLinkTarget}
     responsive-position=${args['responsive-position']}
     ?mobileBreakpoint=${args.mobileBreakpoint}
     @on-open=${() => action('on-open')()}
@@ -315,7 +323,7 @@ export const DirectionLeftButtonRight = {
   ],
 };
 
-export const PreciseAnchorAlign = {
+export const PreciseAnchorAlignWithLink = {
   render: Template,
   args: {
     ...baseArgs,
@@ -323,6 +331,10 @@ export const PreciseAnchorAlign = {
     size: 'narrow',
     shiftPadding: 165,
     arrowPosition: '20px',
+    footerLinkHref:
+      'https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers',
+    footerLinkText: 'Link',
+    footerLinkTarget: '_blank',
   },
   decorators: [
     (Story) => html`
@@ -402,6 +414,9 @@ export const MiniWithCustomText = {
       ?hideFooter=${args.hideFooter}
       direction=${args.direction}
       size=${args.size}
+      footerLinkText=${args.footerLinkText}
+      footerLinkHref=${args.footerLinkHref}
+      footerLinkTarget=${args.footerLinkTarget}
       arrowPosition=${args.arrowPosition}
       .offsetDistance=${args.offsetDistance}
       .shiftPadding=${args.shiftPadding}

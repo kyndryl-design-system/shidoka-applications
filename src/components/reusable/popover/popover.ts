@@ -14,7 +14,10 @@ import {
 } from '../../../common/helpers/popoverHelper';
 
 import '../button';
+import '../link';
+
 import PopoverScss from './popover.scss';
+
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 /**
@@ -237,6 +240,25 @@ export class Popover extends LitElement {
   showSecondaryButton = false;
 
   /**
+   * Text to display for an optional link in the footer.
+   */
+  @property({ type: String })
+  footerLinkText = '';
+
+  /**
+   * URL for the optional footer link.
+   */
+  @property({ type: String })
+  footerLinkHref = '';
+
+  /**
+   * Target for the footer link (ex: "_blank" for new tab).
+   * If empty, defaults to same tab.
+   */
+  @property({ type: String })
+  footerLinkTarget: '_self' | '_blank' | '_parent' | '_top' = '_self';
+
+  /**
    * Hide the entire footer
    */
   @property({ type: Boolean })
@@ -278,7 +300,16 @@ export class Popover extends LitElement {
    */
   private _prevFocused: HTMLElement | null = null;
 
+  /**
+   * Cleanup callback for any automatic update routines.
+   * @internal
+   */
   private _autoUpdateCleanup: (() => void) | null = null;
+
+  /**
+   * Popover open state.
+   * @internal
+   */
   private _open = false;
 
   override render() {
@@ -346,14 +377,12 @@ export class Popover extends LitElement {
     return html`
       ${hasHeader
         ? html` <header>
-            <slot name="header">
-              ${this.titleText
-                ? html`<h1 id="popover-title">${this.titleText}</h1>`
-                : null}
-              ${this.labelText
-                ? html`<span class="label">${this.labelText}</span>`
-                : null}
-            </slot>
+            ${this.titleText
+              ? html`<h1 id="popover-title">${this.titleText}</h1>`
+              : null}
+            ${this.labelText
+              ? html`<span class="label">${this.labelText}</span>`
+              : null}
             <kyn-button
               class="close"
               kind="ghost"
@@ -367,7 +396,7 @@ export class Popover extends LitElement {
         : null}
       <div class="body" id="popover-content"><slot></slot></div>
       ${!this.hideFooter
-        ? html` <slot name="footer">
+        ? html`
             <div class="footer">
               <kyn-button
                 class="action-button"
@@ -379,7 +408,7 @@ export class Popover extends LitElement {
                 ${this.okText}
               </kyn-button>
               ${this.showSecondaryButton
-                ? html` <kyn-button
+                ? html`<kyn-button
                     class="action-button"
                     value="secondary"
                     size="small"
@@ -389,8 +418,17 @@ export class Popover extends LitElement {
                     ${this.secondaryButtonText}
                   </kyn-button>`
                 : null}
+              ${this.footerLinkText && this.footerLinkHref
+                ? html`<kyn-link
+                    href=${this.footerLinkHref}
+                    class="footer-link"
+                    target=${this.footerLinkTarget}
+                  >
+                    ${this.footerLinkText}
+                  </kyn-link>`
+                : null}
             </div>
-          </slot>`
+          `
         : null}
     `;
   }
