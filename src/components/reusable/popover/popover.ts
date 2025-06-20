@@ -340,7 +340,7 @@ export class Popover extends LitElement {
           class="anchor"
           tabindex="0"
           aria-haspopup="dialog"
-          aria-controls="popover-panel"
+          aria-controls=${ifDefined(this.open ? 'popover-panel' : undefined)}
           @click=${this._toggle}
           @keydown=${(e: KeyboardEvent) =>
             (e.key === 'Enter' || e.key === ' ') && this._toggle()}
