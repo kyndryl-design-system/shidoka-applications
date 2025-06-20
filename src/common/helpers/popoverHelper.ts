@@ -1,16 +1,23 @@
 /**
- * Helper functions for positioning and managing popover panels using the `@floating-ui/dom` library.
+ * Helper functions for positioning + managing popover panels using the `@floating-ui/dom` library.
  *
- * This module provides utilities for:
- * - automatically positioning popover panels relative to anchor elements, including arrow positioning.
- * - managing keyboard focus within popover panels for accessibility.
- * - generating and applying CSS styles for panel positioning.
- * - supporting responsive positioning rules.
- * - cleaning up focus when panels are closed.
+ * Provides utilities for:
+ * - automatically positioning popover panels relative to anchor elements, including arrow positioning
+ * - managing keyboard focus within popover panels for accessibility
+ * - generating and applying CSS styles for panel positioning
+ * - supporting responsive positioning rules
+ * - cleaning up focus when panels are closed
  *
  * @see {@link https://floating-ui.com/}
  */
-import { computePosition, offset, flip, shift, arrow } from '@floating-ui/dom';
+import {
+  computePosition,
+  offset,
+  flip,
+  shift,
+  arrow,
+  size,
+} from '@floating-ui/dom';
 import type { Placement } from '@floating-ui/dom';
 
 export type PositionType = 'fixed' | 'absolute';
@@ -20,8 +27,7 @@ export interface Coords {
   left: number;
 }
 
-const DEFAULT_ANCHOR_DISTANCE = 8;
-const DEFAULT_EDGE_SHIFT = 8;
+const DEFAULT_ARROW_PADDING = 6;
 
 export const autoPosition = async (
   anchor: HTMLElement,
@@ -29,8 +35,9 @@ export const autoPosition = async (
   arrowEl: HTMLElement,
   placementOverride: Placement | undefined,
   opts: {
-    anchorDistance?: number;
-    edgeShift?: number;
+    offsetDistance?: number;
+    shiftPadding?: number;
+    positionType?: PositionType;
   } = {}
 ): Promise<{
   x: number;
@@ -39,40 +46,24 @@ export const autoPosition = async (
   arrowX?: number;
   arrowY?: number;
 }> => {
-  const useAnchorDistance = opts.anchorDistance;
-  const useEdgeShift = opts.edgeShift;
-
-  const baseGutter = useAnchorDistance ?? DEFAULT_ANCHOR_DISTANCE;
-  const baseShift = useEdgeShift ?? DEFAULT_EDGE_SHIFT;
   const placement = placementOverride ?? 'bottom';
 
-  const config = {
-    anchorDistance: baseGutter,
-    edgeShift: baseShift,
-    arrowPadding: 6,
-  };
-
-  if (useAnchorDistance !== undefined) {
-    config.anchorDistance = useAnchorDistance;
-  } else {
-    if (placement.startsWith('bottom')) config.anchorDistance = 16;
-    else if (placement.startsWith('left')) config.anchorDistance = 12;
-    else if (placement.startsWith('right')) config.anchorDistance = 16;
-  }
-
-  if (useEdgeShift !== undefined) {
-    config.edgeShift = useEdgeShift;
-  } else {
-    if (placement.startsWith('bottom') || placement.startsWith('top'))
-      config.edgeShift = 26;
-    else if (placement.startsWith('left')) config.edgeShift = 40;
-    else if (placement.startsWith('right')) config.edgeShift = 20;
-  }
-
-  if (placement.startsWith('bottom')) config.arrowPadding = 16;
-  else if (placement.startsWith('top')) config.arrowPadding = 4;
-  else if (placement.startsWith('left')) config.arrowPadding = 6;
-  else if (placement.startsWith('right')) config.arrowPadding = 20;
+  const baseOffset =
+    opts.offsetDistance ??
+    (placement.startsWith('bottom')
+      ? 16
+      : placement.startsWith('top')
+      ? 4
+      : placement.startsWith('left')
+      ? 12
+      : 16);
+  const baseShift =
+    opts.shiftPadding ??
+    (placement.startsWith('bottom') || placement.startsWith('top')
+      ? 26
+      : placement.startsWith('left')
+      ? 40
+      : 20);
 
   const {
     x,
@@ -80,19 +71,22 @@ export const autoPosition = async (
     placement: finalPlacement,
     middlewareData,
   } = await computePosition(anchor, panel, {
+    strategy: opts.positionType,
     placement,
     middleware: [
-      offset(config.anchorDistance),
+      offset(baseOffset),
       flip(),
-      shift({ padding: config.edgeShift }),
-      arrow({ element: arrowEl, padding: config.arrowPadding }),
+      shift({ padding: baseShift }),
+      arrow({ element: arrowEl, padding: DEFAULT_ARROW_PADDING }),
+      size({
+        apply({ availableWidth, availableHeight, elements }) {
+          Object.assign(elements.floating.style, {
+            maxWidth: `${availableWidth}px`,
+            maxHeight: `${availableHeight}px`,
+          });
+        },
+      }),
     ],
-  });
-
-  Object.assign(panel.style, {
-    left: `${Math.round(x)}px`,
-    top: `${Math.round(y)}px`,
-    position: 'fixed',
   });
 
   const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {};
@@ -202,54 +196,10 @@ export const removeFocusListener = (
   keyboardListener: ((e: Event) => void) | null,
   previouslyFocusedElement: HTMLElement | null
 ): void => {
-  if (keyboardListener && panel)
+  if (keyboardListener && panel) {
     panel.removeEventListener('keydown', keyboardListener);
-  if (previouslyFocusedElement) previouslyFocusedElement.focus();
-};
-
-export const applyResponsivePosition = (
-  panel: HTMLElement,
-  responsivePosition: string,
-  coords: Coords,
-  triggerType: string
-): void => {
-  const viewportWidth = window.innerWidth;
-  const rules = responsivePosition
-    .split('|')
-    .map((rule) => {
-      const [bp, prop, val] = rule.split(':');
-      return { breakpoint: parseInt(bp, 10), prop, value: val };
-    })
-    .sort((a, b) => b.breakpoint - a.breakpoint);
-
-  for (const r of rules) {
-    if (viewportWidth <= r.breakpoint) {
-      switch (r.prop) {
-        case 'top':
-        case 'left':
-        case 'bottom':
-        case 'right':
-          panel.style[r.prop] = r.value;
-          break;
-        case 'offset-x':
-          if (triggerType !== 'none') {
-            const n = parseInt(r.value, 10);
-            if (!isNaN(n)) {
-              coords.left += n;
-              panel.style.left = `${coords.left}px`;
-            }
-          }
-          break;
-        case 'offset-y':
-          if (triggerType !== 'none') {
-            const n = parseInt(r.value, 10);
-            if (!isNaN(n)) {
-              coords.top += n;
-              panel.style.top = `${coords.top}px`;
-            }
-          }
-          break;
-      }
-    }
+  }
+  if (previouslyFocusedElement) {
+    previouslyFocusedElement.focus();
   }
 };

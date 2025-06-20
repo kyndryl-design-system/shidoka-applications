@@ -1,8 +1,8 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { Placement } from '@floating-ui/dom';
+import { Placement, autoUpdate } from '@floating-ui/dom';
 
 import {
   autoPosition,
@@ -11,7 +11,6 @@ import {
   handleFocusKeyboardEvents,
   removeFocusListener,
   getPanelStyle,
-  applyResponsivePosition,
 } from '../../../common/helpers/popoverHelper';
 
 import '../button';
@@ -68,14 +67,13 @@ export class Popover extends LitElement {
    * Controls how far the popover is positioned from its anchor element
    */
   @property({ type: Number, reflect: true })
-  anchorDistance: number | undefined;
+  offsetDistance: number | undefined;
 
   /**
    * Padding from viewport edges (px)
    */
   @property({ type: Number, reflect: true })
-  edgeShift: number | undefined;
-
+  shiftPadding: number | undefined;
   ////**//// */
 
   /** how we style the anchor slot */
@@ -89,10 +87,64 @@ export class Popover extends LitElement {
   arrowPosition?: string;
 
   /**
-   * Whether popover is open
+   * Controls the popover’s open state.
+   *
+   * @remarks
+   * Setting to `true`:
+   * - dispatches `on-open`
+   * - starts Floating-UI `autoUpdate` to track repositioning
+   * - saves the anchor element for focus restoration
+   *
+   * Setting to `false`:
+   * - dispatches `on-close`
+   * - stops floating-ui `autoUpdate`
+   * - restores focus to the saved anchor element
    */
   @property({ type: Boolean })
-  open = false;
+  get open() {
+    return this._open;
+  }
+  set open(value: boolean) {
+    const old = this._open;
+    this._open = value;
+    this.requestUpdate('open', old);
+
+    if (value && !old) {
+      const anchorHost = this.shadowRoot!.querySelector(
+        '.anchor'
+      ) as HTMLElement;
+      const slotted = (
+        anchorHost.querySelector('slot[name="anchor"]') as HTMLSlotElement
+      )?.assignedElements();
+      const anchorEl = (
+        slotted?.length ? slotted[0] : anchorHost
+      ) as HTMLElement;
+      this._prevFocused = anchorEl;
+
+      this.dispatchEvent(new CustomEvent('on-open'));
+
+      const panel = this.shadowRoot!.querySelector(
+        '.popover-inner'
+      ) as HTMLElement;
+      this._autoUpdateCleanup = autoUpdate(anchorEl, panel, () =>
+        this._position()
+      );
+    }
+
+    if (!value && old) {
+      this.dispatchEvent(new CustomEvent('on-close'));
+
+      if (this._autoUpdateCleanup) {
+        this._autoUpdateCleanup();
+        this._autoUpdateCleanup = null;
+      }
+
+      if (this._prevFocused) {
+        this._prevFocused.focus();
+        this._prevFocused = null;
+      }
+    }
+  }
 
   /**
    * Enable full screen mode on mobile devices
@@ -196,7 +248,7 @@ export class Popover extends LitElement {
    * @internal
    */
   @state()
-  _coords: Coords = { top: 0, left: 0 };
+  _panelCoords: Coords = { top: 0, left: 0 };
 
   /**
    * The computed direction of the popover panel when `direction="auto"`.
@@ -215,12 +267,6 @@ export class Popover extends LitElement {
   _anchorPosition = 'center';
 
   /**
-   * ResizeObserver watching for size changes on the popover and anchor.
-   * @internal
-   */
-  private _resizeObserver: ResizeObserver | null = null;
-
-  /**
    * Keyboard event listener attached to trap focus within the popover.
    * @internal
    */
@@ -232,11 +278,8 @@ export class Popover extends LitElement {
    */
   private _prevFocused: HTMLElement | null = null;
 
-  /**
-   * Debounce timeout ID for delaying reposition calls.
-   * @internal
-   */
-  private _debounceTimeout: number | null = null;
+  private _autoUpdateCleanup: (() => void) | null = null;
+  private _open = false;
 
   override render() {
     const hasHeader = !!(this.titleText || this.labelText);
@@ -258,9 +301,6 @@ export class Popover extends LitElement {
     };
 
     const panelStyles = this._getPanelStyle();
-    const style = this.arrowPosition
-      ? `${panelStyles}; --arrow-offset: ${this.arrowPosition};`
-      : panelStyles;
 
     return html`
       <div class="popover">
@@ -269,106 +309,125 @@ export class Popover extends LitElement {
         </span>
 
         ${this.open
-          ? html`
-              <div part="panel" class=${classMap(panelClasses)} style=${style}>
-                <div part="arrow" class="arrow"></div>
-
-                ${this.size === 'mini'
-                  ? html`
-                      <div class="mini-header">
-                        <div class="mini-content"><slot></slot></div>
-                        <kyn-button
-                          class="close"
-                          kind="ghost"
-                          size="small"
-                          description=${this.closeText}
-                          @click=${() => this._handleAction('cancel')}
-                        >
-                          ${unsafeSVG(closeIcon)}
-                        </kyn-button>
-                      </div>
-                    `
-                  : html`
-                      ${hasHeader
-                        ? html`
-                            <header>
-                              <slot name="header">
-                                ${this.titleText
-                                  ? html`<h1 id="popover-title">
-                                      ${this.titleText}
-                                    </h1>`
-                                  : null}
-                                ${this.labelText
-                                  ? html`<span class="label"
-                                      >${this.labelText}</span
-                                    >`
-                                  : null}
-                              </slot>
-                              <kyn-button
-                                class="close"
-                                kind="ghost"
-                                size="small"
-                                description=${this.closeText}
-                                @click=${() => this._handleAction('cancel')}
-                              >
-                                ${unsafeSVG(closeIcon)}
-                              </kyn-button>
-                            </header>
-                          `
-                        : null}
-                      <div class="body" id="popover-content">
-                        <slot></slot>
-                      </div>
-                    `}
-                ${!this.hideFooter && this.size !== 'mini'
-                  ? html`
-                      <slot name="footer">
-                        <div class="footer">
-                          <kyn-button
-                            class="action-button"
-                            value="ok"
-                            size="small"
-                            kind=${this.destructive
-                              ? 'primary-destructive'
-                              : 'primary'}
-                            @click=${() => this._handleAction('ok')}
-                          >
-                            ${this.okText}
-                          </kyn-button>
-                          ${this.showSecondaryButton
-                            ? html`
-                                <kyn-button
-                                  class="action-button"
-                                  value="secondary"
-                                  size="small"
-                                  kind="secondary"
-                                  @click=${() =>
-                                    this._handleAction('secondary')}
-                                >
-                                  ${this.secondaryButtonText}
-                                </kyn-button>
-                              `
-                            : null}
-                        </div>
-                      </slot>
-                    `
-                  : null}
-              </div>
-            `
+          ? html` <div
+              part="panel"
+              class=${classMap(panelClasses)}
+              style=${panelStyles}
+            >
+              <div part="arrow" class="arrow"></div>
+              ${this.size === 'mini'
+                ? this._renderMini()
+                : this._renderStandard()}
+            </div>`
           : null}
       </div>
+    `;
+  }
+
+  private _renderMini(): TemplateResult {
+    return html`
+      <div class="mini-header">
+        <div class="mini-content"><slot></slot></div>
+        <kyn-button
+          class="close"
+          kind="ghost"
+          size="small"
+          description=${this.closeText}
+          @click=${() => this._handleAction('cancel')}
+        >
+          ${unsafeSVG(closeIcon)}
+        </kyn-button>
+      </div>
+    `;
+  }
+
+  private _renderStandard(): TemplateResult {
+    const hasHeader = !!(this.titleText || this.labelText);
+    return html`
+      ${hasHeader
+        ? html` <header>
+            <slot name="header">
+              ${this.titleText
+                ? html`<h1 id="popover-title">${this.titleText}</h1>`
+                : null}
+              ${this.labelText
+                ? html`<span class="label">${this.labelText}</span>`
+                : null}
+            </slot>
+            <kyn-button
+              class="close"
+              kind="ghost"
+              size="small"
+              description=${this.closeText}
+              @click=${() => this._handleAction('cancel')}
+            >
+              ${unsafeSVG(closeIcon)}
+            </kyn-button>
+          </header>`
+        : null}
+      <div class="body" id="popover-content"><slot></slot></div>
+      ${!this.hideFooter
+        ? html` <slot name="footer">
+            <div class="footer">
+              <kyn-button
+                class="action-button"
+                value="ok"
+                size="small"
+                kind=${this.destructive ? 'primary-destructive' : 'primary'}
+                @click=${() => this._handleAction('ok')}
+              >
+                ${this.okText}
+              </kyn-button>
+              ${this.showSecondaryButton
+                ? html` <kyn-button
+                    class="action-button"
+                    value="secondary"
+                    size="small"
+                    kind="secondary"
+                    @click=${() => this._handleAction('secondary')}
+                  >
+                    ${this.secondaryButtonText}
+                  </kyn-button>`
+                : null}
+            </div>
+          </slot>`
+        : null}
     `;
   }
 
   override connectedCallback() {
     super.connectedCallback();
     document.addEventListener('keydown', this._onKeyDown as EventListener);
+
+    if (this.open) {
+      const anchorHost = this.shadowRoot!.querySelector(
+        '.anchor'
+      ) as HTMLElement;
+      const slotted = (
+        anchorHost.querySelector('slot[name="anchor"]') as HTMLSlotElement
+      )?.assignedElements();
+      const anchorEl = (
+        slotted?.length ? slotted[0] : anchorHost
+      ) as HTMLElement;
+      const panel = this.shadowRoot!.querySelector(
+        '.popover-inner'
+      ) as HTMLElement;
+
+      this._autoUpdateCleanup = autoUpdate(anchorEl, panel, () =>
+        this._position()
+      );
+    }
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener('keydown', this._onKeyDown as EventListener);
-    this._removeObservers();
+
+    if (this._autoUpdateCleanup) {
+      this._autoUpdateCleanup();
+      this._autoUpdateCleanup = null;
+    }
+
     this._removeFocusListener();
   }
 
@@ -376,13 +435,13 @@ export class Popover extends LitElement {
     if (
       (changed.has('open') && this.open) ||
       changed.has('arrowPosition') ||
-      changed.has('anchorDistance') ||
-      changed.has('edgeShift')
+      changed.has('offsetDistance') ||
+      changed.has('shiftPadding') ||
+      changed.has('positionType')
     ) {
       this.updateComplete.then(() => {
         this._position();
         this._handleFocusKeyboardEvents();
-        this._addObservers();
       });
     }
 
@@ -391,38 +450,45 @@ export class Popover extends LitElement {
     }
   }
 
-  /** @internal */
+  /**
+   * @internal
+   */
   private _getPanelStyle = (): string => {
-    return getPanelStyle(
+    const base = getPanelStyle(
       this.positionType,
       this.zIndex,
       this.triggerType,
-      this._coords,
+      this._panelCoords,
       this.top,
       this.left,
       this.bottom,
       this.right
     );
+
+    const arrowOff = this.arrowPosition
+      ? `--arrow-offset: ${this.arrowPosition};`
+      : '';
+
+    return `${base}${arrowOff}`;
   };
 
-  /** @internal */
+  /**
+   * @internal
+   */
   private _onKeyDown = (e: Event) => {
     if ((e as KeyboardEvent).key === 'Escape' && this.open) this._close();
   };
 
-  /** @internal */
+  /**
+   * @internal
+   */
   private _handleAction = (action: 'ok' | 'cancel' | 'secondary'): void => {
     this.open = false;
     this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
   };
 
   private _toggle() {
-    const wasOpen = this.open;
-    this.open = !wasOpen;
-
-    if (!wasOpen) {
-      this.dispatchEvent(new CustomEvent('on-open'));
-    }
+    this.open = !this.open;
   }
 
   private _close() {
@@ -449,34 +515,6 @@ export class Popover extends LitElement {
     this._prevFocused = null;
   }
 
-  private _addObservers() {
-    if (this._resizeObserver) return;
-    this._resizeObserver = new ResizeObserver(() => this._positionDebounced());
-    const panel = this.shadowRoot!.querySelector('.popover-inner');
-    const anchor = this.shadowRoot!.querySelector('.anchor');
-    if (panel) this._resizeObserver.observe(panel);
-    if (anchor) this._resizeObserver.observe(anchor);
-  }
-
-  private _removeObservers() {
-    if (this._resizeObserver) {
-      this._resizeObserver.disconnect();
-      this._resizeObserver = null;
-    }
-    if (this._debounceTimeout != null) {
-      clearTimeout(this._debounceTimeout);
-      this._debounceTimeout = null;
-    }
-  }
-
-  private _positionDebounced() {
-    if (this._debounceTimeout != null) clearTimeout(this._debounceTimeout);
-    this._debounceTimeout = window.setTimeout(() => {
-      this._position();
-      this._debounceTimeout = null;
-    }, 100);
-  }
-
   private async _position() {
     await this.updateComplete;
 
@@ -493,14 +531,6 @@ export class Popover extends LitElement {
       panel.setAttribute('style', baseStyle + arrowStyle);
       this._calculatedDirection =
         this.direction === 'auto' ? 'bottom' : this.direction;
-      if (this.responsivePosition) {
-        applyResponsivePosition(
-          panel,
-          this.responsivePosition,
-          this._coords,
-          this.triggerType
-        );
-      }
       return;
     }
 
@@ -515,8 +545,9 @@ export class Popover extends LitElement {
       this.direction !== 'auto' ? this.direction : undefined;
 
     const baseOpts = {
-      anchorDistance: this.anchorDistance,
-      edgeShift: this.edgeShift,
+      offsetDistance: this.offsetDistance,
+      shiftPadding: this.shiftPadding,
+      positionType: this.positionType,
     };
 
     const { x, y, placement, arrowX, arrowY } = await autoPosition(
@@ -539,12 +570,12 @@ export class Popover extends LitElement {
     const numericLeftOffset = this.left
       ? parseInt(this.left.replace(/[^0-9-]/g, ''), 10)
       : 0;
-    this._coords = {
+    this._panelCoords = {
       top: Math.round(y) + numericTopOffset,
       left: Math.round(x) + numericLeftOffset,
     };
-    panel.style.top = `${this._coords.top}px`;
-    panel.style.left = `${this._coords.left}px`;
+    panel.style.top = `${this._panelCoords.top}px`;
+    panel.style.left = `${this._panelCoords.left}px`;
 
     if (this.arrowPosition) {
       panel.style.setProperty('--arrow-offset-x', this.arrowPosition);
@@ -553,15 +584,6 @@ export class Popover extends LitElement {
         panel.style.setProperty('--arrow-offset-x', `${Math.round(arrowX)}px`);
       if (arrowY != null)
         panel.style.setProperty('--arrow-offset-y', `${Math.round(arrowY)}px`);
-    }
-
-    if (this.responsivePosition) {
-      applyResponsivePosition(
-        panel,
-        this.responsivePosition,
-        this._coords,
-        this.triggerType
-      );
     }
   }
 }

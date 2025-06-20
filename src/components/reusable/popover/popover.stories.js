@@ -1,11 +1,11 @@
 import { html } from 'lit';
-import './index';
 import { action } from '@storybook/addon-actions';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
+import './index';
 import '../button';
 import '../link';
 
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/cube.svg';
@@ -20,8 +20,8 @@ export default {
     bottom: { control: 'text' },
     right: { control: 'text' },
     arrowPosition: { control: 'text' },
-    anchorDistance: { control: 'number' },
-    edgeShift: { control: 'number' },
+    offsetDistance: { control: 'number' },
+    shiftPadding: { control: 'number' },
     positionType: { control: 'select', options: ['fixed', 'absolute'] },
     zIndex: { control: 'number' },
     responsivePosition: { control: 'text' },
@@ -42,8 +42,8 @@ const baseArgs = {
   direction: 'auto',
   size: 'mini',
   positionType: 'fixed',
-  anchorDistance: undefined,
-  edgeShift: undefined,
+  offsetDistance: undefined,
+  shiftPadding: undefined,
   arrowPosition: undefined,
   okText: 'Primary Button',
   secondaryButtonText: 'Secondary Button',
@@ -81,8 +81,8 @@ const Template = (args) => html`
     bottom=${args.bottom}
     right=${args.right}
     arrowPosition=${args.arrowPosition}
-    .anchorDistance=${args.anchorDistance}
-    .edgeShift=${args.edgeShift}
+    .offsetDistance=${args.offsetDistance}
+    .shiftPadding=${args.shiftPadding}
     positionType=${args.positionType}
     z-index=${args['z-index']}
     responsive-position=${args['responsive-position']}
@@ -179,8 +179,8 @@ export const CustomSpacingBodySlotOnly = {
     open: true,
     direction: 'top',
     size: 'narrow',
-    edgeShift: 110,
-    anchorDistance: 19,
+    shiftPadding: 110,
+    offsetDistance: 19,
     arrowPosition: '50%',
     titleText: '',
     labelText: '',
@@ -267,7 +267,7 @@ export const ManualArrowPosition = {
     size: 'narrow',
     arrowPosition: '50%',
     titleText: 'Arrow Offset Demo',
-    labelText: 'Notice the arrow is offset to 63px from the left edge',
+    labelText: 'Example labelText content.',
   },
   decorators: [
     (Story) => html`
@@ -285,7 +285,7 @@ export const CenteredButtonAutoMini = {
     direction: 'auto',
     size: 'mini',
     triggerType: 'button',
-    arrowPosition: '48%',
+    arrowPosition: '50%',
   },
   decorators: [
     (Story) => html`
@@ -303,7 +303,8 @@ export const DirectionLeftButtonRight = {
   args: {
     ...baseArgs,
     direction: 'left',
-    edgeShift: 45,
+    shiftPadding: 38,
+    arrowPosition: '28px',
   },
   decorators: [
     (Story) => html`
@@ -320,7 +321,7 @@ export const PreciseAnchorAlign = {
     ...baseArgs,
     direction: 'bottom',
     size: 'narrow',
-    edgeShift: 165,
+    shiftPadding: 165,
     arrowPosition: '20px',
   },
   decorators: [
@@ -330,7 +331,9 @@ export const PreciseAnchorAlign = {
           <div
             style="border: 1px dashed var(--kd-color-border-variants-light); border-radius: 4px; padding: 40px; display: inline-block; position: relative;"
           >
-            <span style="margin-right: 10px;">Anchor container</span>
+            <span style="margin-right: 10px; padding-bottom: 10px;"
+              >Anchor container</span
+            >
             ${Story()}
           </div>
         </div>
@@ -367,7 +370,7 @@ export const AbsolutePositioning = {
   decorators: [
     (Story) => html`
       <div
-        style="position: relative; width: 80%; height: 300px; border: 1px dashed #ccc; padding: 10px; margin: 40px;"
+        style="position: relative; width: 80%; height: 300px; border: 1px dashed var(--kd-color-border-variants-light); padding: 10px; margin: 40px;"
       >
         <div style="margin-bottom: 10px;">
           Container with position: relative
@@ -386,6 +389,7 @@ export const MiniWithCustomText = {
     labelText: 'This is a mini popover with a paragraph of text.',
     triggerType: 'button',
     direction: 'right',
+    arrowPosition: '15%',
   },
   render: (args) => html`
     <kyn-popover
@@ -399,8 +403,8 @@ export const MiniWithCustomText = {
       direction=${args.direction}
       size=${args.size}
       arrowPosition=${args.arrowPosition}
-      .anchorDistance=${args.anchorDistance}
-      .edgeShift=${args.edgeShift}
+      .offsetDistance=${args.offsetDistance}
+      .shiftPadding=${args.shiftPadding}
       ?mobileBreakpoint=${args.mobileBreakpoint}
       @on-open=${() => action('on-open')()}
       @on-close=${() => action('on-close')()}

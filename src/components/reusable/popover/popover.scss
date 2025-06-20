@@ -12,7 +12,6 @@
   --kyn-popover-narrow-max-width: 400px;
   --kyn-popover-wide-width: 95%;
   --kyn-popover-wide-max-width: 600px;
-  --kyn-popover-max-height: 80vh;
   --kyn-popover-body-max-height: calc(60vh - 80px);
   --kyn-popover-animation-duration: 200ms;
   --kyn-popover-animation-timing: cubic-bezier(0.2, 0, 0, 1);
@@ -60,6 +59,7 @@
   padding-bottom: 0;
 }
 
+/* Size variants */
 :host [part='panel'].popover-size--mini {
   width: var(--kyn-popover-mini-width);
   min-width: 0;
@@ -70,10 +70,12 @@
   gap: 8px;
   justify-content: space-between;
 }
+
 :host [part='panel'].popover-size--narrow {
   width: var(--kyn-popover-narrow-width);
   max-width: var(--kyn-popover-narrow-max-width);
 }
+
 :host [part='panel'].popover-size--wide {
   width: var(--kyn-popover-wide-width);
   max-width: var(--kyn-popover-wide-max-width);
@@ -103,6 +105,7 @@
   margin-bottom: 24px;
   position: relative;
 }
+
 :host [part='panel'] .close {
   position: absolute;
   top: 2px;
@@ -111,6 +114,7 @@
   height: 20px;
   color: var(--kd-color-icon-primary);
   z-index: 1;
+
   span {
     display: flex;
   }
@@ -120,6 +124,7 @@
   @include typography.type-ui-02;
   color: var(--kd-color-text-level-secondary);
 }
+
 :host [part='panel'] h1 {
   @include typography.type-body-01;
   margin: 0;
@@ -132,6 +137,7 @@
   max-height: var(--kyn-popover-body-max-height);
   overflow-y: auto;
   scrollbar-width: thin;
+
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -150,6 +156,7 @@
   gap: 16px;
   margin-top: 16px;
   flex-wrap: wrap;
+
   @media (max-width: calc(42rem - 0.001px)) {
     kyn-button {
       width: 100%;
@@ -164,6 +171,7 @@
   gap: 8px;
   width: 95%;
   position: relative;
+
   kyn-button.close {
     position: static;
     margin-left: auto;
@@ -179,6 +187,7 @@
     align-self: flex-start;
   }
 }
+
 :host [part='panel'] .mini-header kyn-button.close:hover {
   background-color: var(--kd-color-background-hover);
 }
@@ -262,7 +271,7 @@
     }
   }
 
-  :host(:has([part='panel'].fullscreen-mobile.open)) .anchor {
+  :host([open][mobileBreakpoint]) .anchor {
     display: none;
   }
 }
