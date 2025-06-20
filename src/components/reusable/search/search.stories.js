@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import { useArgs } from '@storybook/preview-api';
 import './index';
 import { action } from '@storybook/addon-actions';
 
@@ -26,7 +25,12 @@ const args = {
   value: '',
   label: 'Search...',
   size: 'md',
-  suggestions: ['Strings', 'Matching', 'Value', 'Here'],
+  suggestions: [
+    'Component',
+    'Component search',
+    'Component example',
+    'Shidoka',
+  ],
   expandableSearchBtnDescription: 'Expandable search button',
   assistiveTextStrings: {
     searchSuggestions: 'Search suggestions',
@@ -60,12 +64,17 @@ export const Search = {
 export const SearchHistory = {
   args: {
     ...args,
-    suggestions: ['Shidoka-search', 'Shidoka-input', 'Strings', 'Matching'],
+    suggestions: [
+      'Shidoka search',
+      'Shidoka input',
+      'Shidoka component',
+      'Shidoka',
+    ],
     searchHistory: [
-      'Shidoka-input',
-      'Shidoka-text',
-      'Shidoka-pageTitle',
-      'Shidoka-search',
+      'Shidoka input',
+      'Shidoka text',
+      'Shidoka pageTitle',
+      'Shidoka search',
     ],
   },
   render: (args) => {
@@ -93,10 +102,10 @@ export const TypeAheadSuggestions = {
     ...args,
     value: 'Shidoka',
     suggestions: [
-      'Shidoka-input',
-      'Shidoka-text',
-      'Shidoka-pageTitle',
-      'Shidoka-search',
+      'Shidoka input',
+      'Shidoka text',
+      'Shidoka pageTitle',
+      'Shidoka search',
     ],
   },
   render: (args) => {
