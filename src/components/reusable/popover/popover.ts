@@ -1,6 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { Placement, autoUpdate } from '@floating-ui/dom';
 
@@ -335,13 +336,28 @@ export class Popover extends LitElement {
 
     return html`
       <div class="popover">
-        <span class="anchor" @click=${this._toggle}>
+        <span
+          class="anchor"
+          tabindex="0"
+          aria-haspopup="dialog"
+          aria-controls="popover-panel"
+          @click=${this._toggle}
+          @keydown=${(e: KeyboardEvent) =>
+            (e.key === 'Enter' || e.key === ' ') && this._toggle()}
+        >
           <slot name="anchor"></slot>
         </span>
 
         ${this.open
           ? html` <div
+              id="popover-panel"
               part="panel"
+              role="dialog"
+              aria-modal="false"
+              aria-labelledby=${ifDefined(
+                hasHeader ? 'popover-title' : undefined
+              )}
+              aria-describedby="popover-content"
               class=${classMap(panelClasses)}
               style=${panelStyles}
             >
@@ -364,6 +380,7 @@ export class Popover extends LitElement {
           kind="ghost"
           size="small"
           description=${this.closeText}
+          aria-label=${this.closeText}
           @click=${() => this._handleAction('cancel')}
         >
           ${unsafeSVG(closeIcon)}
