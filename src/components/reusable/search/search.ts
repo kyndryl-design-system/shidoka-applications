@@ -1,12 +1,13 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import Styles from './search.scss';
 import '../textInput';
 import '../button';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
+import historyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/history.svg';
 import { deepmerge } from 'deepmerge-ts';
 
 const _defaultTextStrings = {
@@ -14,6 +15,7 @@ const _defaultTextStrings = {
   noMatches: 'No matches found for',
   selected: 'Selected',
   found: 'Found',
+  recentSearches: 'Recent searches',
 };
 
 /**
@@ -52,6 +54,9 @@ export class Search extends LitElement {
   @property({ type: Array })
   suggestions: Array<string> = [];
 
+  @property({ type: Array })
+  searchHistory: Array<string> = [];
+
   /** Expandable style search button description (Required to support accessibility). */
   @property({ type: String })
   expandableSearchBtnDescription = '';
@@ -59,6 +64,10 @@ export class Search extends LitElement {
   /** Assistive text strings. */
   @property({ type: Object })
   assistiveTextStrings = _defaultTextStrings;
+
+  /** To show history searches in suggestion panel */
+  @property({ type: Boolean })
+  enableSearchHistory = false;
 
   /**
    * Internal assistive text strings.
@@ -86,13 +95,19 @@ export class Search extends LitElement {
   @state()
   _expanded = false;
 
+  /** Expanded state.
+   * @internal
+   */
+  @query('kyn-text-input')
+  _textInput!: any;
+
   override render() {
     const classes = {
       search: true,
       expanded: this._expanded,
       expandable: this.expandable,
       focused: this._focused,
-      'has-value': this.value !== '',
+      'has-value': this.value !== '' || this.enableSearchHistory,
     };
 
     return html`
@@ -117,7 +132,6 @@ export class Search extends LitElement {
           ?disabled=${this.disabled}
           @on-input=${(e: CustomEvent) => this._handleInput(e)}
           @focus=${this._handleFocus}
-          @blur=${this._handleBlur}
           @keydown=${(e: any) => this.handleSearchKeydown(e)}
         >
           ${this.label}
@@ -128,22 +142,39 @@ export class Search extends LitElement {
           class="suggestions"
           @keydown=${(e: any) => this.handleListKeydown(e)}
         >
-          ${this.suggestions.map(
-            (suggestion) =>
-              html`
-                <div
-                  class="suggestion"
-                  @click=${(e: any) =>
-                    this._handleSuggestionClick(e, suggestion)}
-                  @mouseup=${() =>
-                    this._handleSuggestionWithMouseUp(suggestion)}
-                  @mousedown=${(e: any) =>
-                    this._handleSuggestionWithMouseDown(e)}
-                >
-                  ${suggestion}
-                </div>
-              `
-          )}
+          ${(() => {
+            const isSearchHistory =
+              this.value === '' && this.enableSearchHistory;
+            const listToRender = isSearchHistory
+              ? this.searchHistory
+              : this.suggestions;
+
+            return html`
+              ${isSearchHistory
+                ? html`<div class="suggestion-title">
+                    ${this.assistiveTextStrings.recentSearches}
+                  </div>`
+                : null}
+              ${listToRender.map(
+                (suggestion) => html`
+                  <div
+                    class="suggestion"
+                    @click=${(e: any) =>
+                      this._handleSuggestionClick(e, suggestion)}
+                    @mouseup=${() =>
+                      this._handleSuggestionWithMouseUp(suggestion)}
+                    @mousedown=${(e: any) =>
+                      this._handleSuggestionWithMouseDown(e)}
+                  >
+                    ${this._renderSuggestionContent(
+                      suggestion,
+                      isSearchHistory
+                    )}
+                  </div>
+                `
+              )}
+            `;
+          })()}
         </div>
         <div
           class="assistive-text"
@@ -171,16 +202,10 @@ export class Search extends LitElement {
 
   private _handleFocus() {
     this._focused = true;
-  }
 
-  private _handleBlur() {
-    setTimeout(() => {
-      this._focused = false;
-
-      if (this.value === '') {
-        this._expanded = false;
-      }
-    }, 100);
+    if (this.enableSearchHistory) {
+      this._expanded = true;
+    }
   }
 
   private _handleButtonClick() {
@@ -221,6 +246,9 @@ export class Search extends LitElement {
   private _handleSuggestionWithMouseUp(suggestion: string) {
     this.value = suggestion;
     this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
+    this.shadowRoot
+      ?.querySelector('kyn-text-input')
+      ?.setValueAndNotify(this.value);
     this._focused = false;
   }
 
@@ -230,21 +258,19 @@ export class Search extends LitElement {
 
   private handleSearchKeydown(e: any) {
     e.stopPropagation();
-
-    this.handleKeyboard(e.keyCode, 'input');
+    this.handleKeyboard(e, e.keyCode, 'input');
   }
 
   private handleListKeydown(e: any) {
     const TAB_KEY_CODE = 9;
-
     if (e.keyCode !== TAB_KEY_CODE) {
       e.preventDefault();
     }
 
-    this.handleKeyboard(e.keyCode, 'list');
+    this.handleKeyboard(e, e.keyCode, 'list');
   }
 
-  private handleKeyboard(keyCode: number, target: string) {
+  private handleKeyboard(e: any, keyCode: number, target: string) {
     // const SPACEBAR_KEY_CODE = [0, 32];
     const ENTER_KEY_CODE = 13;
     const DOWN_ARROW_KEY_CODE = 40;
@@ -268,9 +294,15 @@ export class Search extends LitElement {
     switch (keyCode) {
       case ENTER_KEY_CODE: {
         // select highlighted option
-        this.value = suggestionEls[highlightedIndex].innerText;
+        e.preventDefault();
+        const selectedValue = suggestionEls[highlightedIndex].innerText;
+        this.shadowRoot
+          ?.querySelector('kyn-text-input')
+          ?.setValueAndNotify(selectedValue);
         if (target === 'input')
-          this._assistiveText = `${this._assistiveTextStrings.selected} ${this.value}`;
+          this._assistiveText = `${this._assistiveTextStrings.selected} ${selectedValue}`;
+        this._focused = false;
+        this._expanded = false;
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
@@ -317,8 +349,6 @@ export class Search extends LitElement {
     }
     const Els: any = this.shadowRoot?.querySelectorAll('.suggestion');
     const suggestionEls: any = [...Els];
-
-    console.log('suggestions', this.suggestions);
     const matchedOptionIndex = this.suggestions.findIndex((option) => {
       return option.toLowerCase().includes(this.value.toLowerCase());
     });
@@ -329,7 +359,6 @@ export class Search extends LitElement {
       this._assistiveText = `${this._assistiveTextStrings.noMatches} ${this.value}`;
       return;
     }
-    suggestionEls[matchedOptionIndex].setAttribute('highlighted', true);
     suggestionEls[matchedOptionIndex].scrollIntoView({ block: 'nearest' });
     this._assistiveText = `${this._assistiveTextStrings.found} ${this.suggestions[matchedOptionIndex]}`;
   }
@@ -341,5 +370,105 @@ export class Search extends LitElement {
         this.assistiveTextStrings
       );
     }
+  }
+
+  private _renderSuggestionContent(
+    suggestion: string,
+    isSearchHistory: boolean
+  ) {
+    const showHistoryIcon =
+      isSearchHistory || this.searchHistory.includes(suggestion);
+
+    const iconTemplate = showHistoryIcon
+      ? html`<span style="display:flex">${unsafeSVG(historyIcon)}</span>`
+      : null;
+
+    if (isSearchHistory) {
+      return html`
+        <div class="suggestion-content">
+          ${iconTemplate}
+          <span>${suggestion}</span>
+        </div>
+      `;
+    }
+
+    const escapedValue = this.value
+      .trim()
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const trailingSpace = this.value.endsWith(' ');
+
+    const valueRegex = new RegExp(
+      `(${escapedValue.replace(/\s+/g, '\\s+')})`,
+      'ig'
+    );
+
+    if (!valueRegex.test(suggestion)) {
+      return html`
+        <div class="suggestion-content">
+          ${iconTemplate}
+          <span>${suggestion}</span>
+        </div>
+      `;
+    }
+
+    const result = [];
+    let lastIndex = 0;
+
+    suggestion.replace(valueRegex, (match, _p1, offset) => {
+      if (offset > lastIndex) {
+        const textBefore = suggestion.slice(lastIndex, offset);
+        result.push(this._wrapTextWithSpaces(textBefore));
+      }
+      result.push(html`<span class="bold-text">${match}</span>`);
+      lastIndex = offset + match.length;
+      return match;
+    });
+
+    if (lastIndex < suggestion.length) {
+      const textAfter = suggestion.slice(lastIndex);
+      result.push(this._wrapTextWithSpaces(textAfter));
+    }
+
+    if (trailingSpace) {
+      result.push(html`<span>&nbsp;</span>`);
+    }
+
+    return html`
+      <div class="suggestion-content">
+        ${iconTemplate}
+        <span class="text-parts">${result}</span>
+      </div>
+    `;
+  }
+
+  private _wrapTextWithSpaces(text: string) {
+    return html`${text
+      .split(/(\s)/)
+      .map((part) =>
+        part === ' '
+          ? html`<span>&nbsp;</span>`
+          : html`<span class="light-text">${part}</span>`
+      )}`;
+  }
+
+  private _handleClickOut(e: Event) {
+    if (!e.composedPath().includes(this)) {
+      setTimeout(() => {
+        this._focused = false;
+        if (this.value === '') {
+          this._expanded = false;
+        }
+      }, 100);
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener('click', (e) => this._handleClickOut(e), true);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', (e) => this._handleClickOut(e), true);
   }
 }
