@@ -27,7 +27,6 @@ export default {
     responsivePosition: { control: 'text' },
     footerLinkText: { control: 'text' },
     footerLinkHref: { control: 'text' },
-    mobileBreakpoint: { control: 'boolean' },
     triggerType: {
       control: 'select',
       options: ['icon', 'link', 'button', 'none'],
@@ -60,7 +59,6 @@ const baseArgs = {
   showTertiaryButton: false,
   tertiaryButtonText: '',
   hideFooter: false,
-  mobileBreakpoint: false,
   destructive: false,
   open: false,
   top: undefined,
@@ -98,7 +96,6 @@ const Template = (args) => html`
     footerLinkHref=${args.footerLinkHref}
     footerLinkTarget=${args.footerLinkTarget}
     responsive-position=${args['responsive-position']}
-    ?mobileBreakpoint=${args.mobileBreakpoint}
     @on-open=${() => action('on-open')()}
     @on-close=${() => action('on-close')()}
   >
@@ -359,7 +356,6 @@ export const PreciseAnchorAlignWithLink = {
       positionType=${args.positionType}
       z-index=${args['z-index']}
       responsive-position=${args['responsive-position']}
-      ?mobileBreakpoint=${args.mobileBreakpoint}
       @on-open=${() => action('on-open')()}
       @on-close=${() => action('on-close')()}
     >
@@ -471,7 +467,6 @@ export const MobileFullScreen = {
     ...baseArgs,
     direction: 'bottom',
     size: 'wide',
-    mobileBreakpoint: true,
     titleText: 'Mobile Fullscreen Mode',
     labelText: 'Resize window to mobile size (under 480px) to see effect',
     showTertiaryButton: true,
@@ -535,7 +530,6 @@ export const MiniWithCustomText = {
       arrowPosition=${args.arrowPosition}
       .offsetDistance=${args.offsetDistance}
       .shiftPadding=${args.shiftPadding}
-      ?mobileBreakpoint=${args.mobileBreakpoint}
       @on-open=${() => action('on-open')()}
       @on-close=${() => action('on-close')()}
     >

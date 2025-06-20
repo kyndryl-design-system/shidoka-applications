@@ -150,12 +150,6 @@ export class Popover extends LitElement {
   }
 
   /**
-   * Enable full screen mode on mobile devices
-   */
-  @property({ type: Boolean })
-  mobileBreakpoint = false;
-
-  /**
    * Animation duration in milliseconds
    */
   @property({ type: Number })
@@ -347,7 +341,8 @@ export class Popover extends LitElement {
       open: this.open,
       'no-header-text': !hasHeader,
       [`has-footer-${!this.hideFooter}`]: true,
-      'fullscreen-mobile': this.mobileBreakpoint,
+      'fullscreen-mobile': true,
+      [`position-type--${this.positionType}`]: true,
     };
 
     const panelStyles = this._getPanelStyle();
