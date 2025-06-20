@@ -1,7 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { Placement, autoUpdate } from '@floating-ui/dom';
 
@@ -36,7 +35,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
  *
  * @slot unnamed - The main popover slotted body content
  * @slot anchor - The trigger element (icon, button, link, etc.)
- * @slot header - Optional custom header (replaces default title/label)
+ * @slot footerLink - Optional link to be displayed in the footer
  *
  * @fires on-close - Emitted when any action closes the popover
  * @fires on-open - Emitted when popover opens
@@ -65,7 +64,7 @@ export class Popover extends LitElement {
   @property({ type: String })
   size: 'mini' | 'narrow' | 'wide' = 'mini';
 
-  // Following two props map directly to Floating-UI’s offset(), shift(), and arrow() middleware
+  // Following two props map directly to Floating-UI's offset(), shift(), and arrow() middleware
   /**
    * Distance between anchor and popover (px)
    * Controls how far the popover is positioned from its anchor element
@@ -91,7 +90,7 @@ export class Popover extends LitElement {
   arrowPosition?: string;
 
   /**
-   * Controls the popover’s open state.
+   * Controls the popover's open state.
    *
    * @remarks
    * Setting to `true`:
@@ -229,6 +228,13 @@ export class Popover extends LitElement {
   closeText = 'Close';
 
   /**
+   * Accessible name for the popover dialog
+   * Used as aria-label when no title is present
+   */
+  @property({ type: String })
+  popoverAriaLabel = 'Popover';
+
+  /**
    * Secondary button text
    */
   @property({ type: String })
@@ -239,6 +245,18 @@ export class Popover extends LitElement {
    */
   @property({ type: Boolean })
   showSecondaryButton = false;
+
+  /**
+   * Tertiary button text
+   */
+  @property({ type: String })
+  tertiaryButtonText = 'Tertiary';
+
+  /**
+   * Show or hide the tertiary button
+   */
+  @property({ type: Boolean })
+  showTertiaryButton = false;
 
   /**
    * Text to display for an optional link in the footer.
@@ -334,38 +352,57 @@ export class Popover extends LitElement {
 
     const panelStyles = this._getPanelStyle();
 
+    const overlayStyles = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: transparent;
+      z-index: ${this.zIndex ? this.zIndex - 1 : 999};
+    `;
+
     return html`
       <div class="popover">
         <span
           class="anchor"
           tabindex="0"
           aria-haspopup="dialog"
-          aria-controls=${ifDefined(this.open ? 'popover-panel' : undefined)}
           @click=${this._toggle}
-          @keydown=${(e: KeyboardEvent) =>
-            (e.key === 'Enter' || e.key === ' ') && this._toggle()}
+          @keydown=${this._handleAnchorKeydown}
         >
           <slot name="anchor"></slot>
         </span>
 
         ${this.open
-          ? html` <div
-              id="popover-panel"
-              part="panel"
-              role="dialog"
-              aria-modal="false"
-              aria-labelledby=${ifDefined(
-                hasHeader ? 'popover-title' : undefined
-              )}
-              aria-describedby="popover-content"
-              class=${classMap(panelClasses)}
-              style=${panelStyles}
-            >
-              <div part="arrow" class="arrow"></div>
-              ${this.size === 'mini'
-                ? this._renderMini()
-                : this._renderStandard()}
-            </div>`
+          ? html`
+              <div
+                class="popover-overlay"
+                style=${overlayStyles}
+                @click=${this._close}
+              ></div>
+
+              <div
+                id="popover-panel"
+                part="panel"
+                role="dialog"
+                aria-modal="false"
+                aria-label="${hasHeader && this.titleText
+                  ? this.titleText
+                  : this.popoverAriaLabel}"
+                aria-describedby="${this.size === 'mini'
+                  ? 'mini-popover-content'
+                  : 'popover-content'}"
+                title="${this.size === 'mini' ? this.popoverAriaLabel : ''}"
+                class=${classMap(panelClasses)}
+                style=${panelStyles}
+              >
+                <div part="arrow" class="arrow"></div>
+                ${this.size === 'mini'
+                  ? this._renderMini()
+                  : this._renderStandard()}
+              </div>
+            `
           : null}
       </div>
     `;
@@ -374,14 +411,15 @@ export class Popover extends LitElement {
   private _renderMini(): TemplateResult {
     return html`
       <div class="mini-header">
-        <div class="mini-content"><slot></slot></div>
+        <div id="mini-popover-content" class="mini-content">
+          <slot></slot>
+        </div>
         <kyn-button
           class="close"
           kind="ghost"
           size="small"
           description=${this.closeText}
-          aria-label=${this.closeText}
-          @click=${() => this._handleAction('cancel')}
+          @on-click=${() => this._handleAction('cancel')}
         >
           ${unsafeSVG(closeIcon)}
         </kyn-button>
@@ -394,9 +432,7 @@ export class Popover extends LitElement {
     return html`
       ${hasHeader
         ? html` <header>
-            ${this.titleText
-              ? html`<h1 id="popover-title">${this.titleText}</h1>`
-              : null}
+            ${this.titleText ? html`<h2>${this.titleText}</h2>` : null}
             ${this.labelText
               ? html`<span class="label">${this.labelText}</span>`
               : null}
@@ -405,7 +441,7 @@ export class Popover extends LitElement {
               kind="ghost"
               size="small"
               description=${this.closeText}
-              @click=${() => this._handleAction('cancel')}
+              @on-click=${() => this._handleAction('cancel')}
             >
               ${unsafeSVG(closeIcon)}
             </kyn-button>
@@ -420,7 +456,7 @@ export class Popover extends LitElement {
                 value="ok"
                 size="small"
                 kind=${this.destructive ? 'primary-destructive' : 'primary'}
-                @click=${() => this._handleAction('ok')}
+                @on-click=${() => this._handleAction('ok')}
               >
                 ${this.okText}
               </kyn-button>
@@ -430,20 +466,23 @@ export class Popover extends LitElement {
                     value="secondary"
                     size="small"
                     kind="secondary"
-                    @click=${() => this._handleAction('secondary')}
+                    @on-click=${() => this._handleAction('secondary')}
                   >
                     ${this.secondaryButtonText}
                   </kyn-button>`
                 : null}
-              ${this.footerLinkText && this.footerLinkHref
-                ? html`<kyn-link
-                    href=${this.footerLinkHref}
-                    class="footer-link"
-                    target=${this.footerLinkTarget}
+              ${this.showTertiaryButton
+                ? html`<kyn-button
+                    class="action-button"
+                    value="tertiary"
+                    size="small"
+                    kind="tertiary"
+                    @on-click=${() => this._handleAction('tertiary')}
                   >
-                    ${this.footerLinkText}
-                  </kyn-link>`
+                    ${this.tertiaryButtonText}
+                  </kyn-button>`
                 : null}
+              <slot name="footerLink"></slot>
             </div>
           `
         : null}
@@ -537,7 +576,9 @@ export class Popover extends LitElement {
   /**
    * @internal
    */
-  private _handleAction = (action: 'ok' | 'cancel' | 'secondary'): void => {
+  private _handleAction = (
+    action: 'ok' | 'cancel' | 'secondary' | 'tertiary'
+  ): void => {
     this.open = false;
     this.dispatchEvent(new CustomEvent('on-close', { detail: { action } }));
   };
@@ -548,7 +589,16 @@ export class Popover extends LitElement {
 
   private _close() {
     this.open = false;
-    this.dispatchEvent(new CustomEvent('on-close'));
+  }
+
+  /**
+   * @internal
+   */
+  private _handleAnchorKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      this._toggle();
+    }
   }
 
   private _handleFocusKeyboardEvents() {

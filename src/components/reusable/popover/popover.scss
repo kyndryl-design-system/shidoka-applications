@@ -125,7 +125,7 @@
   color: var(--kd-color-text-level-secondary);
 }
 
-:host [part='panel'] h1 {
+:host [part='panel'] h2 {
   @include typography.type-body-01;
   margin: 0;
   order: 1;
@@ -156,6 +156,16 @@
   gap: 16px;
   margin-top: 16px;
   flex-wrap: wrap;
+
+  &:has(.action-button[value='tertiary']) {
+    flex-direction: column;
+    width: 100%;
+
+    .action-button {
+      width: 100%;
+      flex-grow: 1;
+    }
+  }
 
   @media (max-width: calc(42rem - 0.001px)) {
     kyn-button {
