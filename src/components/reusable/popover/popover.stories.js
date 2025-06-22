@@ -186,10 +186,10 @@ export const CustomSpacingBodySlotOnly = {
   args: {
     ...baseArgs,
     open: true,
-    direction: 'top',
+    direction: 'right',
     size: 'narrow',
-    shiftPadding: 110,
-    offsetDistance: 19,
+    shiftPadding: 11,
+    offsetDistance: 20,
     arrowPosition: '50%',
     titleText: '',
     labelText: '',
