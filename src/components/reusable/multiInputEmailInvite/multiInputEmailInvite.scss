@@ -1,0 +1,64 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+.container {
+  @include typography.type-body-02;
+  border: 1px solid var(--kd-color-border-forms-default);
+  background: var(--kd-color-background-forms-default);
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  height: 168px;
+  gap: 4px;
+
+  textarea {
+    border: none;
+    flex: 1 1 200px;
+    min-width: 200px;
+    padding: 2px 4px;
+    text-indent: 0.5em;
+    line-height: 2;
+    min-height: 3rem;
+    outline: none;
+    font-size: 0.9rem;
+    resize: none;
+    background: transparent;
+
+    &::placeholder {
+      @include typography.type-body-02;
+      color: var(--kd-color-text-variant-placeholder);
+    }
+  }
+}
+
+.tag-group {
+  display: contents;
+}
+
+.chip {
+  background: var(--kd-color-bg-variant);
+  margin-top: -0;
+  padding: 4px 8px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  gap: 8px;
+
+  svg {
+    display: inline-block;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+}
+
+.chip.invalid {
+  border: 1px solid var(--kd-color-destructive);
+}
