@@ -222,7 +222,6 @@ ${this.value}</textarea
       const idx = this.emails.length;
       this.emails = [...this.emails, email];
 
-      // mark as error if not in allowedEmails
       if (!this.allowedEmails.includes(email)) {
         this.invalids.add(idx);
       }
