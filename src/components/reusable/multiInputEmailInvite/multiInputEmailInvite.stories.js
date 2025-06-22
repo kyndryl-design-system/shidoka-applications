@@ -8,6 +8,10 @@ export default {
   component: 'kyn-email-invite-input',
   argTypes: {
     allowedEmails: { control: 'object' },
+    emails: { control: 'array' },
+    invalidText: { control: 'text' },
+    invalid: { control: 'boolean' },
+    invalids: { control: 'array' },
     label: { control: 'text' },
     caption: { control: 'text' },
     required: { control: 'boolean' },
@@ -24,6 +28,10 @@ export default {
 const Template = (args) => html`
   <kyn-email-invite-input
     .allowedEmails=${args.allowedEmails}
+    .emails=${args.emails}
+    .invalidText=${args.invalidText}
+    ?invalid=${args.invalid}
+    .invalids=${args.invalids}
     label=${args.label}
     caption=${args.caption}
     ?required=${args.required}
@@ -40,8 +48,15 @@ const Template = (args) => html`
 
 export const Default = Template.bind({});
 Default.args = {
-  allowedEmails: [],
-  label: 'Invite by email',
+  allowedEmails: [
+    'example@email.com',
+    'john.doe@email.com',
+    'suzy.example@email.com',
+  ],
+  emails: [],
+  invalidText: '',
+  invalid: false,
+  label: 'Label',
   caption: '',
   required: false,
   placeholder: 'Type address and hit enter... ',
@@ -49,24 +64,15 @@ Default.args = {
   readonly: false,
   hideLabel: false,
   name: 'invite',
+  invalids: [],
   maxLength: undefined,
   minLength: undefined,
 };
 
-export const WithAllowedList = Template.bind({});
-WithAllowedList.args = {
+export const ErrorState = Template.bind({});
+ErrorState.args = {
   ...Default.args,
-  allowedEmails: ['alice@example.com', 'bob@example.com'],
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  ...Default.args,
-  disabled: true,
-};
-
-export const ReadOnly = Template.bind({});
-ReadOnly.args = {
-  ...Default.args,
-  readonly: true,
+  emails: ['bad@invalid.com'],
+  invalidText: 'This email is not on the allowed list.',
+  invalid: true,
 };

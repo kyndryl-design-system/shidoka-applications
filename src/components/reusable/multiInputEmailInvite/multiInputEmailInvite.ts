@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import MultiInputScss from './multiInputEmailInvite.scss';
 
@@ -126,28 +126,29 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
 
         <div class="container" @click=${() => this.inputEl.focus()}>
           <kyn-tag-group class="tag-group"
-            >${this.emails.map(
-              (email, i) => html`
+            >${this.emails.map((email, i) => {
+              const isInvalid = !this.allowedEmails.includes(email);
+              return html`
                 <kyn-tag
-                  class="chip ${this.invalids.has(i) ? 'error' : 'success'}"
+                  class="indiv-tag"
+                  tagColor=${isInvalid ? 'error' : 'spruce'}
                   filter
                   clickable
+                  noTruncation
                   @on-close=${() => this.removeAt(i)}
                 >
-                  ${unsafeSVG(userIcon)} <span>${email}</span>
+                  ${unsafeSVG(userIcon)}<span>${email}</span>
                 </kyn-tag>
-              `
-            )}</kyn-tag-group
-          >
-
-          <textarea
-            id=${this.name}
-            placeholder=${ifDefined(this.placeholder || undefined)}
-            @input=${this.handleInput}
-            @keydown=${this.onKeydown}
-          >
-${this.value}</textarea
-          >
+              `;
+            })}
+            <textarea
+              id=${this.name}
+              .value=${this.value}
+              placeholder=${ifDefined(this.placeholder || undefined)}
+              @input=${this.handleInput}
+              @keydown=${this.onKeydown}
+            ></textarea>
+          </kyn-tag-group>
         </div>
 
         <div class="caption-error-count">
@@ -218,16 +219,24 @@ ${this.value}</textarea
       .map((s) => s.trim())
       .filter(Boolean);
 
+    const invalidSet =
+      this.invalids instanceof Set
+        ? this.invalids
+        : new Set<number>(this.invalids as unknown as number[]);
+
     parts.forEach((email) => {
       const idx = this.emails.length;
       this.emails = [...this.emails, email];
-
       if (!this.allowedEmails.includes(email)) {
-        this.invalids.add(idx);
+        invalidSet.add(idx);
       }
     });
 
+    this.invalids = invalidSet;
+
     this.inputEl.value = '';
+    this.value = '';
+
     this.dispatchEvent(
       new CustomEvent<string[]>('emails-changed', {
         detail: this.emails,

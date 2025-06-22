@@ -4,24 +4,29 @@
 
 :host {
   display: block;
+  min-height: 168px;
 }
 .container {
   @include typography.type-body-02;
   border: 1px solid var(--kd-color-border-forms-default);
   background: var(--kd-color-background-forms-default);
   border-radius: 4px;
+  max-width: 544px;
+  height: 168px;
   padding: 8px;
   display: flex;
   flex-wrap: wrap;
   align-items: start;
-  height: 168px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   gap: 4px;
 
   textarea {
     border: none;
-    flex: 1 1 200px;
-    min-width: 200px;
-    padding: 2px 4px;
+    flex: 1 1 225px;
+    min-width: 225px;
+    padding: 3px 0 2px;
     text-indent: 0.5em;
     line-height: 2;
     min-height: 3rem;
@@ -29,6 +34,7 @@
     font-size: 0.9rem;
     resize: none;
     background: transparent;
+    white-space: pre;
 
     &::placeholder {
       @include typography.type-body-02;
@@ -38,13 +44,15 @@
 }
 
 .tag-group {
-  display: contents;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
-.chip {
+.indiv-tag {
   background: var(--kd-color-bg-variant);
   margin-top: -0;
-  padding: 4px 8px;
+  padding: 4px;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -59,6 +67,6 @@
   }
 }
 
-.chip.invalid {
-  border: 1px solid var(--kd-color-destructive);
+.tags--new {
+  max-width: 1000px !important;
 }
