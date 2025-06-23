@@ -72,20 +72,20 @@ Default.args = {
   maxEmailAddresses: undefined,
 };
 
+export const MaxEmailExample = Template.bind({});
+MaxEmailExample.args = {
+  ...Default.args,
+  emails: ['example@email.com'],
+  caption: 'You can add up to 10 email addresses.',
+  maxEmailAddresses: 10,
+};
+
 export const ErrorState = Template.bind({});
 ErrorState.args = {
   ...Default.args,
   emails: ['bad@invalid.com'],
   invalidText: 'This email is not on the allowed list.',
   invalid: true,
-};
-
-export const MaxEmailExample = Template.bind({});
-MaxEmailExample.args = {
-  ...Default.args,
-  emails: ['example@email.com'],
-  caption: 'You can only add up to 10 email addresses.',
-  maxEmailAddresses: 10,
 };
 
 export const DisabledState = Template.bind({});
