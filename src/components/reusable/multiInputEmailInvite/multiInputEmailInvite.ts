@@ -18,6 +18,7 @@ const _defaultTextStrings = {
   errorText: 'Not in allowed list',
   placeholderAdd: 'Add another email address',
 };
+
 /**
  * Multi-input email invite.
  * @fires on-input – emits { value, origEvent } on every keystroke
@@ -97,11 +98,57 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   @state()
   invalids = new Set<number>();
 
+  /** Current type-ahead suggestions.
+   * @internal
+   */
+  @state()
+  suggestions: string[] = [];
+
+  /** Whether the suggestion panel is expanded.
+   * @internal
+   */
+  @state()
+  _expanded = false;
+
+  /** Currently highlighted suggestion index.
+   * @internal
+   */
+  @state()
+  highlightedIndex = -1;
+
+  /** Inline ‘top’ style for suggestions (px)
+   * @internal
+   */
+  @state()
+  private _suggestionTop = '0px';
+
+  /** Inline ‘left’ style for suggestions (px)
+   * @internal
+   */
+  @state()
+  private _suggestionLeft = '0px';
+
+  /** Container wrapper for relative positioning */
+  @query('.container')
+  private _containerEl!: HTMLElement;
+
   /** The `<textarea>` element.
    * @ignore
    */
   @query('textarea')
   inputEl!: HTMLTextAreaElement;
+
+  private static _mockDb: string[] = [
+    'alice@example.com',
+    'bob.smith@example.com',
+    'charlie@example.org',
+    'someone@acme.com',
+    'evan@example.net',
+    'frank@example.io',
+    'example@email.com',
+    'john.doe@email.com',
+    'suzy.example@email.com',
+  ];
 
   override render() {
     const validCount = this.emails.filter((email) =>
@@ -160,10 +207,33 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
               id=${this.name}
               .value=${this.value}
               placeholder=${ifDefined(placeholderText)}
+              @focus=${() => this._handleFocus()}
+              @blur=${() => this._handleBlur()}
               @input=${(e: InputEvent) => this.handleInput(e)}
               @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
             ></textarea>
           </kyn-tag-group>
+
+          <div
+            class="suggestions"
+            style="top: ${this._suggestionTop}; left: ${this._suggestionLeft};"
+            ?hidden=${!this._expanded || this.suggestions.length === 0}
+          >
+            ${this.suggestions.map(
+              (sugg, suggIndex) => html`
+                <div
+                  class=${classMap({
+                    suggestion: true,
+                    highlighted: suggIndex === this.highlightedIndex,
+                  })}
+                  @mousedown=${(e: MouseEvent) => e.preventDefault()}
+                  @click=${() => this._selectSuggestion(sugg)}
+                >
+                  ${sugg}
+                </div>
+              `
+            )}
+          </div>
         </div>
 
         <div class="caption-count-container">
@@ -207,11 +277,149 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     if (this.readonly) return;
     this.value = (e.target as HTMLTextAreaElement).value;
     this._validate(true, false);
+
+    this._expanded = true;
+
     this.dispatchEvent(
       new CustomEvent('on-input', {
         detail: { value: this.value, origEvent: e },
       })
     );
+
+    this._fetchSuggestions();
+  }
+
+  private _handleFocus() {
+    this._expanded = true;
+    this.highlightedIndex = -1;
+  }
+
+  private _handleBlur() {
+    setTimeout(() => {
+      this._expanded = false;
+    }, 100);
+  }
+
+  private async _fetchSuggestions() {
+    const query = this.inputEl.value.trim();
+    if (!query) {
+      this.suggestions = [];
+      return;
+    }
+    this.suggestions = await this._queryEmails(query);
+    this.highlightedIndex = -1;
+
+    this._updateSuggestionPosition();
+  }
+
+  private async _queryEmails(query: string): Promise<string[]> {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    const lower = query.toLowerCase();
+    return MultiInputEmailInvite._mockDb.filter((email) =>
+      email.toLowerCase().includes(lower)
+    );
+  }
+
+  private _selectSuggestion(suggestion: string) {
+    const idx = this.emails.length;
+    this.emails = [...this.emails, suggestion];
+    const invalidSet =
+      this.invalids instanceof Set
+        ? new Set(this.invalids)
+        : new Set<number>(this.invalids as unknown as number[]);
+    if (!this.allowedEmails.includes(suggestion)) invalidSet.add(idx);
+    this.invalids = invalidSet;
+
+    this.suggestions = [];
+    this._expanded = false;
+    this.inputEl.value = '';
+    this.value = '';
+
+    this.dispatchEvent(
+      new CustomEvent<string[]>('emails-changed', { detail: this.emails })
+    );
+
+    this.inputEl.focus();
+    this._expanded = true;
+    this._fetchSuggestions();
+  }
+
+  private onKeydown(e: KeyboardEvent): void {
+    const UP = 'ArrowUp',
+      DOWN = 'ArrowDown',
+      ENTER = 'Enter';
+    if (
+      this._expanded &&
+      this.suggestions.length > 0 &&
+      [UP, DOWN, ENTER].includes(e.key)
+    ) {
+      e.preventDefault();
+      if (e.key === DOWN) {
+        this.highlightedIndex = Math.min(
+          this.highlightedIndex + 1,
+          this.suggestions.length - 1
+        );
+      } else if (e.key === UP) {
+        this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
+      } else if (e.key === ENTER && this.highlightedIndex >= 0) {
+        this._selectSuggestion(this.suggestions[this.highlightedIndex]);
+      }
+      return;
+    }
+
+    if ((e.key === 'Enter' && !e.shiftKey) || e.key === ',') {
+      e.preventDefault();
+      this.addTagsFromValue();
+    }
+  }
+
+  private _updateSuggestionPosition() {
+    const textarea = this.inputEl;
+    const container = this._containerEl;
+    const selEnd = textarea.selectionEnd ?? textarea.value.length;
+
+    const mirror = document.createElement('div');
+    const style = getComputedStyle(textarea);
+    for (const prop of [
+      'font-size',
+      'font-family',
+      'font-weight',
+      'line-height',
+      'padding',
+      'border',
+      'box-sizing',
+      'white-space',
+      'word-wrap',
+      'width',
+    ]) {
+      mirror.style.setProperty(prop, style.getPropertyValue(prop));
+    }
+    mirror.style.position = 'absolute';
+    mirror.style.top = `${textarea.offsetTop}px`;
+    mirror.style.left = `${textarea.offsetLeft}px`;
+    mirror.style.visibility = 'hidden';
+    mirror.style.whiteSpace = 'pre-wrap';
+    mirror.style.wordWrap = 'break-word';
+    mirror.textContent = textarea.value.slice(0, selEnd);
+
+    container.appendChild(mirror);
+
+    const span = document.createElement('span');
+    span.textContent = textarea.value.slice(selEnd) || '.';
+    mirror.appendChild(span);
+
+    const spanLeft = span.offsetLeft;
+    const spanTop = span.offsetTop;
+    const lh = parseFloat(style.lineHeight) || span.offsetHeight;
+
+    const topPx = textarea.offsetTop + spanTop + lh;
+    const leftPx = textarea.offsetLeft + spanLeft;
+
+    this._suggestionTop = `${topPx}px`;
+    this._suggestionLeft = `${leftPx}px`;
+
+    container.removeChild(mirror);
   }
 
   private _validate(interacted: boolean, report: boolean): void {
@@ -249,18 +457,9 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     );
   }
 
-  private onKeydown(e: KeyboardEvent) {
-    if ((e.key === 'Enter' && !e.shiftKey) || e.key === ',') {
-      e.preventDefault();
-      this.addTagsFromValue();
-    }
-  }
-
   private removeAt(idx: number) {
-    // 1) remove the tag from the array
     this.emails = this.emails.filter((_, i) => i !== idx);
 
-    // 2) normalize invalids to a Set, delete the removed index, and shift higher indexes down
     const invalidSet =
       this.invalids instanceof Set
         ? new Set(this.invalids)

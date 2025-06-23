@@ -1,5 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
+@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
@@ -41,6 +42,41 @@
     &::placeholder {
       @include typography.type-body-02;
       color: var(--kd-color-text-variant-placeholder);
+    }
+  }
+
+  .suggestions {
+    @include elevation.shadow(2);
+    position: absolute;
+    width: max-content;
+    background: var(--kd-color-background-forms-default);
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .suggestion {
+    padding: 8px 16px;
+    @include typography.type-body-02;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+
+    &:hover,
+    &.highlighted {
+      background-color: var(--kd-color-background-ui-hollow-hover);
+    }
+  }
+
+  .suggestion {
+    padding: 8px 16px;
+    @include typography.type-body-02;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+
+    &:hover,
+    &.highlighted {
+      background-color: var(--kd-color-background-ui-hollow-hover);
     }
   }
 }
