@@ -84,37 +84,37 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  private _textStrings = _defaultTextStrings;
 
   /** Entered email tags.
    * @internal
    */
   @state()
-  emails: string[] = [];
+  private emails: string[] = [];
 
   /** Indexes of invalid emails in `emails`.
    * @internal
    */
   @state()
-  invalids = new Set<number>();
+  private invalids = new Set<number>();
 
   /** Current type-ahead suggestions.
    * @internal
    */
   @state()
-  suggestions: string[] = [];
+  private suggestions: string[] = [];
 
   /** Whether the suggestion panel is expanded.
    * @internal
    */
   @state()
-  _expanded = false;
+  private _expanded = false;
 
   /** Currently highlighted suggestion index.
    * @internal
    */
   @state()
-  highlightedIndex = -1;
+  private highlightedIndex = -1;
 
   /** Inline ‘top’ style for suggestions (px)
    * @internal
@@ -128,7 +128,9 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   @state()
   private _suggestionLeft = '0px';
 
-  /** Container wrapper for relative positioning */
+  /** Container wrapper for relative positioning
+   * @ignore
+   */
   @query('.container')
   private _containerEl!: HTMLElement;
 
@@ -136,8 +138,11 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
    * @ignore
    */
   @query('textarea')
-  inputEl!: HTMLTextAreaElement;
+  private inputEl!: HTMLTextAreaElement;
 
+  /** Mock database of emails to simulate type-ahead suggestions.
+   * @ignore
+   */
   private static _mockDb: string[] = [
     'alice@example.com',
     'bob.smith@example.com',
@@ -390,7 +395,6 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       'border',
       'box-sizing',
       'white-space',
-      'word-wrap',
       'width',
     ]) {
       mirror.style.setProperty(prop, style.getPropertyValue(prop));
@@ -400,7 +404,6 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     mirror.style.left = `${textarea.offsetLeft}px`;
     mirror.style.visibility = 'hidden';
     mirror.style.whiteSpace = 'pre-wrap';
-    mirror.style.wordWrap = 'break-word';
     mirror.textContent = textarea.value.slice(0, selEnd);
 
     container.appendChild(mirror);
