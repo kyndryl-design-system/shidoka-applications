@@ -150,6 +150,13 @@
         );
       }
     }
+
+    &.selected {
+      background-color: var(
+        --kd-color-background-button-primary-state-selected
+      );
+      color: var(--kd-color-text-button-dark-primary);
+    }
   }
 
   &--primary-ai {
@@ -169,6 +176,11 @@
       &:before {
         background-color: var(--kd-color-background-button-primary-ai-pressed);
       }
+    }
+
+    &.selected {
+      background-color: var(--kd-color-background-button-primary-ai-selected);
+      color: var(--kd-color-text-button-dark-primary);
     }
   }
 
@@ -196,11 +208,18 @@
         );
       }
     }
+
+    &.selected {
+      background-color: var(
+        --kd-color-background-button-primary-destructive-selected
+      );
+      color: var(--kd-color-text-button-dark-destructive);
+    }
   }
 
   &--secondary {
     background-color: var(--kd-color-background-button-secondary-state-default);
-    color: var(--kd-color-text-button-dark-primary);
+    color: var(--kd-color-text-button-light-primary);
 
     // hover
     &:before {
@@ -212,11 +231,20 @@
     }
 
     &:active {
+      color: var(--kd-color-text-button-dark-secondary);
+
       &:before {
         background-color: var(
           --kd-color-background-button-secondary-state-pressed
         );
       }
+    }
+
+    &.selected {
+      background-color: var(
+        --kd-color-background-button-secondary-state-selected
+      );
+      color: var(--kd-color-text-button-dark-secondary);
     }
   }
 
@@ -245,6 +273,11 @@
         );
       }
     }
+
+    &.selected {
+      background-color: var(--kd-color-background-button-secondary-ai-selected);
+      color: var(--kd-color-text-level-light);
+    }
   }
 
   &--secondary-destructive {
@@ -271,11 +304,18 @@
         );
       }
     }
+
+    &.selected {
+      background-color: var(
+        --kd-color-background-button-secondary-destructive-selected
+      );
+      color: var(--kd-color-text-level-primary);
+    }
   }
 
   &--tertiary {
     background-color: var(--kd-color-background-button-tertiary-state-default);
-    color: var(--kd-color-text-button-light-primary);
+    color: var(--kd-color-text-button-dark-tertiary);
 
     // hover
     &:before {
@@ -294,6 +334,13 @@
           --kd-color-background-button-tertiary-state-pressed
         );
       }
+    }
+
+    &.selected {
+      background-color: var(
+        --kd-color-background-button-tertiary-state-selected
+      );
+      color: var(--kd-color-text-button-dark-tertiary);
     }
   }
 
@@ -314,6 +361,11 @@
       &:before {
         background-color: var(--kd-color-background-button-web-pressed);
       }
+    }
+
+    &.selected {
+      background-color: var(--kd-color-background-button-web-selected);
+      color: var(--kd-color-text-level-light);
     }
   }
 
@@ -341,7 +393,9 @@
     border-color: var(--kd-color-border-button-primary-state-default);
 
     &:hover {
-      background-color: var(--kd-color-background-button-ghost-state-hover);
+      background-color: var(
+        --kd-color-background-button-secondary-state-default
+      );
       border-color: var(--kd-color-border-button-primary-state-hover);
     }
 
@@ -351,9 +405,16 @@
     }
 
     &:active {
-      background-color: var(--kd-color-background-button-ghost-state-pressed);
+      background-color: var(
+        --kd-color-background-button-secondary-state-pressed
+      );
       border-color: var(--kd-color-border-button-primary-state-pressed);
       color: var(--kd-color-text-button-dark-primary);
+    }
+
+    &.selected {
+      background-color: var(--kd-color-background-secondary-state-selected);
+      color: var(--kd-color-text-level-light);
     }
   }
 
@@ -376,6 +437,11 @@
       background-color: var(--kd-color-background-button-primary-ai-pressed);
       border-color: var(--kd-color-border-button-ai-state-pressed);
       color: var(--kd-color-text-level-light);
+    }
+
+    &.selected {
+      background-color: var(--kd-color-background-secondary-ai-selected);
+      color: var(--kd-color-text-button-dark-primary);
     }
   }
 
@@ -403,10 +469,17 @@
       border-color: var(--kd-color-border-button-primary-destructive-pressed);
       color: var(--kd-color-text-level-primary);
     }
+
+    &.selected {
+      background-color: var(
+        --kd-color-background-button-primary-destructive-selected
+      );
+      color: var(--kd-color-text-button-dark-destructive);
+    }
   }
 
   &--ghost {
-    color: var(--kd-color-text-button-light-primary);
+    color: var(--kd-color-text-link-level-default);
 
     &:hover {
       background-color: var(--kd-color-background-button-ghost-state-hover);
@@ -427,6 +500,45 @@
       &:hover {
         background-color: transparent;
       }
+    }
+
+    &.selected {
+      background-color: var(--kd-color-background-secondary-state-selected);
+      color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &--ghost-destructive {
+    color: var(--kd-color-text-button-light-destructive);
+
+    &:hover {
+      background-color: var(
+        --kd-color-background-button-secondary-destructive-hover
+      );
+    }
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-button-primary-destructive-focused);
+    }
+
+    &:active {
+      background-color: var(
+        --kd-color-background-button-secondary-destructive-pressed
+      );
+      color: var(--kd-color-text-button-light-destructive);
+    }
+
+    &[disabled] {
+      color: var(--kd-color-text-link-level-disabled);
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    &.selected {
+      background-color: var(--kd-color-background-primary-destructive-selected);
+      color: var(--kd-color-text-button-dark-destructive);
     }
   }
 }
