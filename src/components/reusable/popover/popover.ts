@@ -142,10 +142,7 @@ export class Popover extends LitElement {
         this._autoUpdateCleanup = null;
       }
 
-      if (this._prevFocused) {
-        this._prevFocused.focus();
-        this._prevFocused = null;
-      }
+      this._prevFocused = null;
     }
   }
 
@@ -610,7 +607,7 @@ export class Popover extends LitElement {
     const panel = this.shadowRoot!.querySelector(
       '.popover-inner'
     ) as HTMLElement;
-    removeFocusListener(panel, this._keyboardListener, this._prevFocused);
+    removeFocusListener(panel, this._keyboardListener, null);
     this._keyboardListener = null;
     this._prevFocused = null;
   }
@@ -676,6 +673,14 @@ export class Popover extends LitElement {
     };
     panel.style.top = `${this._panelCoords.top}px`;
     panel.style.left = `${this._panelCoords.left}px`;
+
+    if (this.size === 'wide') {
+      panel.style.maxWidth = 'var(--kyn-popover-wide-max-width)';
+    } else if (this.size === 'narrow') {
+      panel.style.maxWidth = 'var(--kyn-popover-narrow-max-width)';
+    } else if (this.size === 'mini') {
+      panel.style.maxWidth = 'var(--kyn-popover-mini-max-width)';
+    }
 
     if (this.arrowPosition) {
       panel.style.setProperty('--arrow-offset-x', this.arrowPosition);

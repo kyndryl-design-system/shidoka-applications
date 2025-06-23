@@ -17,7 +17,6 @@
   --kyn-popover-animation-timing: cubic-bezier(0.2, 0, 0, 1);
   --transform-origin: center;
 }
-
 :host [part='panel'] {
   @include elevation.shadow(3);
   position: absolute;
@@ -69,16 +68,40 @@
   align-items: center;
   gap: 8px;
   justify-content: space-between;
+
+  h2 {
+    max-width: calc(95% - 20px);
+  }
+
+  .label {
+    max-width: calc(95% - 20px);
+  }
 }
 
 :host [part='panel'].popover-size--narrow {
   width: var(--kyn-popover-narrow-width);
   max-width: var(--kyn-popover-narrow-max-width);
+
+  h2 {
+    max-width: calc(95% - 20px);
+  }
+
+  .label {
+    max-width: calc(95% - 20px);
+  }
 }
 
 :host [part='panel'].popover-size--wide {
   width: var(--kyn-popover-wide-width);
   max-width: var(--kyn-popover-wide-max-width);
+
+  h2 {
+    max-width: calc(95% - 20px);
+  }
+
+  .label {
+    max-width: calc(95% - 20px);
+  }
 }
 
 :host [part='panel'].direction--top {
@@ -104,6 +127,7 @@
 :host [part='panel'] header {
   margin-bottom: 24px;
   position: relative;
+  width: 100%;
 }
 
 :host [part='panel'] .close {
@@ -120,15 +144,24 @@
   }
 }
 
-:host [part='panel'] .label {
-  @include typography.type-ui-02;
-  color: var(--kd-color-text-level-secondary);
-}
-
 :host [part='panel'] h2 {
   @include typography.type-body-01;
   margin: 0;
   order: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+
+:host [part='panel'] .label {
+  @include typography.type-ui-02;
+  color: var(--kd-color-text-level-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+  display: inline-block;
 }
 
 :host [part='panel'] .body {
@@ -204,6 +237,11 @@
 
 :host .anchor {
   cursor: pointer;
+  position: relative;
+}
+
+:host .anchor:focus-visible {
+  outline: none;
 }
 
 @mixin arrow($dir) {
