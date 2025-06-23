@@ -199,9 +199,6 @@ export class TableRow extends LitElement {
       const { expanded, nextElementSibling } = this;
       if (nextElementSibling?.matches('kyn-expanded-tr')) {
         (nextElementSibling as TableExpandedRow).expanded = expanded;
-        // (nextElementSibling as HTMLElement).style.display = expanded
-        //   ? 'inherit'
-        //   : 'none';
       }
     }
 
