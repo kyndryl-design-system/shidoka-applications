@@ -139,10 +139,14 @@
 .caption-count-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
   max-width: 544px;
   margin-top: 4px;
+  position: relative;
+
+  > div:first-child {
+    max-width: calc(100% - 100px);
+  }
 
   .caption-error {
     display: flex;
@@ -156,5 +160,8 @@
     margin-top: 8px;
     color: var(--kd-color-text-forms-label-secondary);
     font-size: 0.9rem;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }

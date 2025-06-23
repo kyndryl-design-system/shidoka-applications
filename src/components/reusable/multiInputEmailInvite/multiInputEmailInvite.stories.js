@@ -89,7 +89,8 @@ SuggestionValidationDisabled.args = {
   ...Default.args,
   autoSuggestionDisabled: true,
   validationsDisabled: true,
-  caption: '',
+  caption:
+    'No validations, no suggestions. Whatever the user types is accepted and converted to a tag.',
   maxEmailAddresses: 5,
 };
 
