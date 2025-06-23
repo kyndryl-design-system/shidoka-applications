@@ -2,6 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 
@@ -15,10 +16,10 @@ import '../textArea';
 const _defaultTextStrings = {
   requiredText: 'Required',
   errorText: 'Not in allowed list',
+  placeholderAdd: 'Add another email address',
 };
-
 /**
- * Multi‐email invite input.
+ * Multi-input email invite.
  * @fires on-input – emits { value, origEvent } on every keystroke
  * @fires emails-changed – emits string[] after tags are added/removed
  */
@@ -57,6 +58,10 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   /** Hide visible label (for screen‐reader only). */
   @property({ type: Boolean })
   hideLabel = false;
+
+  /** Maximum number of email tags allowed. */
+  @property({ type: Number })
+  maxEmailAddresses?: number;
 
   /** Name attribute (for form‐internals). */
   @property({ type: String })
@@ -98,13 +103,16 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   @query('textarea')
   inputEl!: HTMLTextAreaElement;
 
-  override willUpdate(changed: Map<string, any>) {
-    if (changed.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
-  }
-
   override render() {
+    const validCount = this.emails.filter((email) =>
+      this.allowedEmails.includes(email)
+    ).length;
+
+    const placeholderText =
+      this.emails.length > 0
+        ? this._textStrings.placeholderAdd
+        : this.placeholder;
+
     return html`
       <div>
         <label
@@ -124,16 +132,23 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
 
-        <div class="container" @click=${() => this.inputEl.focus()}>
-          <kyn-tag-group class="tag-group"
-            >${this.emails.map((email, i) => {
+        <div
+          class="${classMap({
+            container: true,
+            'error-state': this._isInvalid,
+          })}"
+          @click=${() => this.inputEl.focus()}
+          ?invalid=${this._isInvalid}
+          aria-invalid=${this._isInvalid}
+          aria-describedby=${this._isInvalid ? 'error' : ''}
+        >
+          <kyn-tag-group class="tag-group" filter>
+            ${this.emails.map((email, i) => {
               const isInvalid = !this.allowedEmails.includes(email);
               return html`
                 <kyn-tag
                   class="indiv-tag"
-                  tagColor=${isInvalid ? 'error' : 'spruce'}
-                  filter
-                  clickable
+                  tagColor=${isInvalid ? 'lilac' : 'spruce'}
                   noTruncation
                   @on-close=${() => this.removeAt(i)}
                 >
@@ -144,23 +159,23 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
             <textarea
               id=${this.name}
               .value=${this.value}
-              placeholder=${ifDefined(this.placeholder || undefined)}
-              @input=${this.handleInput}
-              @keydown=${this.onKeydown}
+              placeholder=${ifDefined(placeholderText)}
+              @input=${(e: InputEvent) => this.handleInput(e)}
+              @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
             ></textarea>
           </kyn-tag-group>
         </div>
 
-        <div class="caption-error-count">
-          <div>
-            ${this.caption
-              ? html`<div class="caption" aria-disabled=${this.disabled}>
-                  ${this.caption}
-                </div>`
-              : null}
-            ${this._isInvalid
-              ? html`
-                  <div id="error" class="error">
+        <div class="caption-count-container">
+          <div class="caption-error-count">
+            <div>
+              ${this.caption
+                ? html`<div class="caption" aria-disabled=${this.disabled}>
+                    ${this.caption}
+                  </div>`
+                : null}
+              ${this._isInvalid
+                ? html`<div id="error" class="error">
                     <span
                       role="img"
                       class="error-icon"
@@ -168,18 +183,24 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
                       >${unsafeSVG(errorIcon)}</span
                     >
                     ${this._internals.validationMessage}
-                  </div>
-                `
-              : null}
+                  </div>`
+                : null}
+            </div>
           </div>
-          ${this.maxLength
-            ? html`
-                <div class="count">${this.value.length}/${this.maxLength}</div>
-              `
+          ${this.maxEmailAddresses
+            ? html`<div class="validated-count">
+                ${validCount}/${this.maxEmailAddresses}
+              </div>`
             : null}
         </div>
       </div>
     `;
+  }
+
+  override willUpdate(changed: Map<string, any>) {
+    if (changed.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   private handleInput(e: InputEvent) {
@@ -197,20 +218,13 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     const validityState = this.invalidText
       ? { ...this.inputEl.validity, customError: true }
       : this.inputEl.validity;
-
     const validationMessage = this.invalidText
       ? this.invalidText
       : this.inputEl.validationMessage;
-
     this._internals.setValidity(validityState, validationMessage, this.inputEl);
-
-    if (interacted) {
+    if (interacted)
       this._internalValidationMsg = this.inputEl.validationMessage;
-    }
-
-    if (report) {
-      this._internals.reportValidity();
-    }
+    if (report) this._internals.reportValidity();
   }
 
   private addTagsFromValue(): void {
@@ -218,29 +232,20 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
-
     const invalidSet =
       this.invalids instanceof Set
-        ? this.invalids
+        ? new Set(this.invalids)
         : new Set<number>(this.invalids as unknown as number[]);
-
     parts.forEach((email) => {
       const idx = this.emails.length;
       this.emails = [...this.emails, email];
-      if (!this.allowedEmails.includes(email)) {
-        invalidSet.add(idx);
-      }
+      if (!this.allowedEmails.includes(email)) invalidSet.add(idx);
     });
-
     this.invalids = invalidSet;
-
     this.inputEl.value = '';
     this.value = '';
-
     this.dispatchEvent(
-      new CustomEvent<string[]>('emails-changed', {
-        detail: this.emails,
-      })
+      new CustomEvent<string[]>('emails-changed', { detail: this.emails })
     );
   }
 
@@ -252,12 +257,22 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   }
 
   private removeAt(idx: number) {
+    // 1) remove the tag from the array
     this.emails = this.emails.filter((_, i) => i !== idx);
-    this.invalids.delete(idx);
+
+    // 2) normalize invalids to a Set, delete the removed index, and shift higher indexes down
+    const invalidSet =
+      this.invalids instanceof Set
+        ? new Set(this.invalids)
+        : new Set<number>(this.invalids as unknown as number[]);
+    invalidSet.delete(idx);
+    const shifted = new Set<number>(
+      [...invalidSet].map((i) => (i > idx ? i - 1 : i))
+    );
+    this.invalids = shifted;
+
     this.dispatchEvent(
-      new CustomEvent<string[]>('emails-changed', {
-        detail: this.emails,
-      })
+      new CustomEvent<string[]>('emails-changed', { detail: this.emails })
     );
   }
 }

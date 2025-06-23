@@ -22,6 +22,7 @@ export default {
     name: { control: 'text' },
     maxLength: { control: 'number' },
     minLength: { control: 'number' },
+    maxEmailAddresses: { control: 'number' },
   },
 };
 
@@ -40,6 +41,7 @@ const Template = (args) => html`
     ?readonly=${args.readonly}
     ?hideLabel=${args.hideLabel}
     name=${args.name}
+    maxEmailAddresses=${ifDefined(args.maxEmailAddresses)}
     maxLength=${ifDefined(args.maxLength)}
     minLength=${ifDefined(args.minLength)}
     @emails-changed=${(e) => action('emails-changed')(e.detail)}
@@ -59,7 +61,7 @@ Default.args = {
   label: 'Label',
   caption: '',
   required: false,
-  placeholder: 'Type address and hit enter... ',
+  placeholder: 'Add email addresses and press Enter',
   disabled: false,
   readonly: false,
   hideLabel: false,
@@ -67,6 +69,7 @@ Default.args = {
   invalids: [],
   maxLength: undefined,
   minLength: undefined,
+  maxEmailAddresses: undefined,
 };
 
 export const ErrorState = Template.bind({});
@@ -75,4 +78,12 @@ ErrorState.args = {
   emails: ['bad@invalid.com'],
   invalidText: 'This email is not on the allowed list.',
   invalid: true,
+};
+
+export const MaxEmailExample = Template.bind({});
+MaxEmailExample.args = {
+  ...Default.args,
+  emails: ['example@email.com'],
+  caption: 'You can only add up to 10 email addresses.',
+  maxEmailAddresses: 10,
 };
