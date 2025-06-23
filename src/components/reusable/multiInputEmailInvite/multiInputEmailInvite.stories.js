@@ -10,19 +10,20 @@ export default {
     allowedEmails: { control: 'object' },
     emails: { control: 'array', table: { disable: true } },
     invalids: { control: 'array', table: { disable: true } },
-    invalidText: { control: 'text', table: { disable: true } },
-    invalid: { control: 'boolean', table: { disable: true } },
+    invalidText: { control: 'text' },
+    invalid: { control: 'boolean' },
+    autoSuggestionDisabled: { control: 'boolean' },
     label: { control: 'text' },
     caption: { control: 'text' },
     required: { control: 'boolean' },
+    validationsDisabled: { control: 'boolean' },
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     hideLabel: { control: 'boolean' },
     name: { control: 'text' },
-    maxLength: { control: 'number' },
-    minLength: { control: 'number' },
     maxEmailAddresses: { control: 'number' },
+    textStrings: { control: 'object' },
   },
 };
 
@@ -31,6 +32,9 @@ const Template = (args) => html`
     .allowedEmails=${args.allowedEmails}
     .emails=${args.emails}
     .invalidText=${args.invalidText}
+    .textStrings=${args.textStrings}
+    ?autoSuggestionDisabled=${args.autoSuggestionDisabled}
+    ?validationsDisabled=${args.validationsDisabled}
     ?invalid=${args.invalid}
     .invalids=${args.invalids}
     label=${args.label}
@@ -42,9 +46,7 @@ const Template = (args) => html`
     ?hideLabel=${args.hideLabel}
     name=${args.name}
     maxEmailAddresses=${ifDefined(args.maxEmailAddresses)}
-    maxLength=${ifDefined(args.maxLength)}
-    minLength=${ifDefined(args.minLength)}
-    @emails-changed=${(e) => action('emails-changed')(e.detail)}
+    @on-change=${(e) => action('on-change')(e.detail)}
   ></kyn-email-invite-input>
 `;
 
@@ -59,17 +61,36 @@ Default.args = {
   invalidText: '',
   invalid: false,
   label: 'Label',
-  caption: '',
+  caption: 'Automatic suggestions and validations are enabled.',
   required: false,
+  validationsDisabled: false,
   placeholder: 'Add email addresses and press Enter',
   disabled: false,
+  autoSuggestionDisabled: false,
   readonly: false,
   hideLabel: false,
   name: 'invite',
   invalids: [],
-  maxLength: undefined,
-  minLength: undefined,
   maxEmailAddresses: undefined,
+  textStrings: {
+    requiredText: 'Required',
+    errorText: 'Email address not in the allowed list.',
+    placeholderAdd: 'Add another email address ...',
+    invalidEmail: 'Invalid email format. Please check and try again.',
+    emailMaxExceededError: 'Maximum number of email addresses exceeded.',
+    duplicateEmail: 'Email address already added.',
+    emailRequired: 'At least one email address is required.',
+  },
+};
+
+export const SuggestionValidationDisabled = Template.bind({});
+SuggestionValidationDisabled.storyName = 'Suggestions + Validations Disabled';
+SuggestionValidationDisabled.args = {
+  ...Default.args,
+  autoSuggestionDisabled: true,
+  validationsDisabled: true,
+  caption: '',
+  maxEmailAddresses: 5,
 };
 
 export const MaxEmailExample = Template.bind({});
@@ -84,20 +105,36 @@ export const ErrorState = Template.bind({});
 ErrorState.args = {
   ...Default.args,
   emails: ['bad@invalid.com'],
-  invalidText: 'This email is not on the allowed list.',
-  invalid: true,
+  caption: '',
 };
 
-export const DisabledState = Template.bind({});
-DisabledState.args = {
+export const InvalidEmailFormat = Template.bind({});
+InvalidEmailFormat.args = {
   ...Default.args,
-  disabled: true,
-  emails: ['exampl@email.com', 'john.doe@example.com'],
+  caption: 'Shows custom error message for invalid email format',
+  emails: ['not-an-email'],
+  textStrings: {
+    invalidEmail: 'Please enter a valid email address format',
+  },
 };
 
-export const ReadonlyState = Template.bind({});
-ReadonlyState.args = {
+export const MaxEmailsExceeded = Template.bind({});
+MaxEmailsExceeded.args = {
   ...Default.args,
-  readonly: true,
-  emails: ['exampl@email.com', 'john.doe@example.com'],
+  caption: 'Shows error when maximum number of emails is exceeded',
+  emails: ['john.doe@email.com', 'example@email.com', 'suzy.example@email.com'],
+  maxEmailAddresses: 2,
+  textStrings: {
+    emailMaxExceeded: 'You cannot add more than 2 email addresses',
+  },
+};
+
+export const DuplicateEmail = Template.bind({});
+DuplicateEmail.args = {
+  ...Default.args,
+  caption: 'Shows error for duplicate email addresses',
+  emails: ['john.doe@email.com', 'john.doe@email.com'],
+  textStrings: {
+    duplicateEmail: 'This email address has already been added',
+  },
 };
