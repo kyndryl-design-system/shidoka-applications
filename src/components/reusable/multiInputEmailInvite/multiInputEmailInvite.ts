@@ -156,6 +156,12 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   ];
 
   override render() {
+    const stateMgmtClasses = {
+      disabled: this.disabled,
+      'is-readonly': this.readonly,
+      'error-state': this._isInvalid,
+    };
+
     const validCount = this.emails.filter((email) =>
       this.allowedEmails.includes(email)
     ).length;
@@ -187,14 +193,17 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
         <div
           class="${classMap({
             container: true,
-            'error-state': this._isInvalid,
+            ...stateMgmtClasses,
           })}"
           @click=${() => this.inputEl.focus()}
           ?invalid=${this._isInvalid}
           aria-invalid=${this._isInvalid}
           aria-describedby=${this._isInvalid ? 'error' : ''}
         >
-          <kyn-tag-group class="tag-group" filter>
+          <kyn-tag-group
+            class="tag-group"
+            ?filter=${!this.readonly && !this.disabled}
+          >
             ${this.emails.map((email, i) => {
               const isInvalid = !this.allowedEmails.includes(email);
               return html`
@@ -202,6 +211,9 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
                   class="indiv-tag"
                   tagColor=${isInvalid ? 'lilac' : 'spruce'}
                   noTruncation
+                  ?clickable=${!this.readonly && !this.disabled}
+                  ?disabled=${this.disabled}
+                  ?readonly=${this.readonly}
                   @on-close=${() => this.removeAt(i)}
                 >
                   ${unsafeSVG(userIcon)}<span>${email}</span>
@@ -209,6 +221,11 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
               `;
             })}
             <textarea
+              class="${classMap({
+                ...stateMgmtClasses,
+              })}"
+              ?disabled=${this.disabled}
+              ?readonly=${this.readonly}
               id=${this.name}
               .value=${this.value}
               placeholder=${ifDefined(placeholderText)}

@@ -87,3 +87,17 @@ MaxEmailExample.args = {
   caption: 'You can only add up to 10 email addresses.',
   maxEmailAddresses: 10,
 };
+
+export const DisabledState = Template.bind({});
+DisabledState.args = {
+  ...Default.args,
+  disabled: true,
+  emails: ['exampl@email.com', 'john.doe@example.com'],
+};
+
+export const ReadonlyState = Template.bind({});
+ReadonlyState.args = {
+  ...Default.args,
+  readonly: true,
+  emails: ['exampl@email.com', 'john.doe@example.com'],
+};
