@@ -357,7 +357,7 @@ export class Popover extends LitElement {
     return html`
       <div class="popover">
         <span
-          class="anchor"
+          class="anchor ${this.triggerType}-anchor"
           tabindex="0"
           aria-haspopup="dialog"
           @click=${this._toggle}
