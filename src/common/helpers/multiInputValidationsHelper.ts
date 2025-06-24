@@ -130,3 +130,99 @@ export const validateAllEmailTags = (
 
   return { state, message, hasError };
 };
+
+export const processEmailTagsFromValue = (
+  inputValue: string,
+  existingEmails: string[],
+  maxEmailAddresses?: number,
+  validationsDisabled?: boolean,
+  textStrings?: any
+): {
+  newEmails: string[];
+  validationState: any;
+  validationMessage: string;
+  hasError: boolean;
+  invalidIndexes: Set<number>;
+} => {
+  const _textStrings = textStrings || defaultTextStrings;
+  const parts = inputValue
+    .split(',')
+    .map((s: string) => s.trim())
+    .filter(Boolean);
+
+  if (
+    !validationsDisabled &&
+    maxEmailsExceededCheck(
+      existingEmails.length,
+      parts.length,
+      maxEmailAddresses
+    )
+  ) {
+    const state = { customError: true, valueMissing: false };
+    const msg = _textStrings.emailMaxExceededError;
+    return {
+      newEmails: [],
+      validationState: state,
+      validationMessage: msg,
+      hasError: true,
+      invalidIndexes: new Set<number>(),
+    };
+  }
+
+  const invalidIndexes = new Set<number>();
+  const existingEmailsSet = new Set(existingEmails);
+  const newEmails: string[] = [];
+  let duplicateFound = false;
+  let duplicateEmail = '';
+
+  for (const email of parts) {
+    if (!validationsDisabled && isEmailDuplicate(email, existingEmailsSet)) {
+      duplicateFound = true;
+      duplicateEmail = email;
+      break;
+    }
+
+    existingEmailsSet.add(email);
+    newEmails.push(email);
+
+    const idx = existingEmails.length + newEmails.length - 1;
+    if (!validationsDisabled && !isValidEmail(email)) {
+      invalidIndexes.add(idx);
+    }
+  }
+
+  if (duplicateFound) {
+    const state = { customError: true, valueMissing: false };
+    const msg = _textStrings.duplicateEmail;
+    return {
+      newEmails: [],
+      validationState: state,
+      validationMessage: msg,
+      hasError: true,
+      invalidIndexes: new Set<number>(),
+    };
+  }
+
+  return {
+    newEmails,
+    validationState: { customError: false, valueMissing: false },
+    validationMessage: '',
+    hasError: false,
+    invalidIndexes,
+  };
+};
+
+export const updateInvalidIndexesAfterRemoval = (
+  invalidIndexes: Set<number>,
+  removedIndex: number
+): Set<number> => {
+  const newInvalidIndexes = new Set<number>();
+
+  for (const idx of invalidIndexes) {
+    if (idx !== removedIndex) {
+      newInvalidIndexes.add(idx > removedIndex ? idx - 1 : idx);
+    }
+  }
+
+  return newInvalidIndexes;
+};

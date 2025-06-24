@@ -7,10 +7,10 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import {
   isValidEmail,
-  maxEmailsExceededCheck,
-  isEmailDuplicate,
   defaultTextStrings,
   validateAllEmailTags,
+  processEmailTagsFromValue,
+  updateInvalidIndexesAfterRemoval,
 } from '../../../common/helpers/multiInputValidationsHelper';
 
 import '../tag';
@@ -166,6 +166,150 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     'suzy.example@email.com',
   ];
 
+  private renderLabel() {
+    return html`
+      <label
+        class="label-text ${this.hideLabel ? 'sr-only' : ''}"
+        for=${this.name}
+      >
+        ${this.required
+          ? html`<abbr
+              class="required"
+              title=${this._textStrings.requiredText}
+              role="img"
+              aria-label=${this._textStrings.requiredText}
+              >*</abbr
+            >`
+          : null}
+        ${this.label}
+        <slot name="tooltip"></slot>
+      </label>
+    `;
+  }
+
+  private renderEmailTag(email: string, index: number) {
+    const isInvalid = !this.validationsDisabled && !isValidEmail(email);
+    return html`
+      <kyn-tag
+        class="indiv-tag"
+        tagColor=${isInvalid ? 'error' : 'spruce'}
+        noTruncation
+        ?clickable=${!this.readonly && !this.disabled}
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+        @on-close=${() => this.removeAt(index)}
+      >
+        ${unsafeSVG(userIcon)}<span>${email}</span>
+      </kyn-tag>
+    `;
+  }
+
+  private renderInput(stateMgmtClasses: any, placeholderText: string) {
+    return html`
+      <input
+        class="${classMap({
+          ...stateMgmtClasses,
+        })}"
+        type="email"
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+        id=${this.name}
+        borderless
+        placeholder=${ifDefined(placeholderText)}
+        @focus=${() => this._handleFocus()}
+        @blur=${() => {
+          this._validateAllTags();
+          this._handleBlur();
+        }}
+        @input=${(e: InputEvent) => this.handleInput(e)}
+        @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
+      ></input>
+    `;
+  }
+
+  private renderTagsAndInput(stateMgmtClasses: any, placeholderText: string) {
+    return html`
+      <div
+        class="${classMap({
+          container: true,
+          ...stateMgmtClasses,
+        })}"
+        @click=${() => this.inputEl.focus()}
+        ?invalid=${this._isInvalid}
+        aria-invalid=${this._isInvalid}
+        aria-describedby=${this._isInvalid ? 'error' : ''}
+      >
+        <kyn-tag-group
+          class="tag-group"
+          ?filter=${!this.readonly && !this.disabled}
+        >
+          ${this._emails.map((email: string, i: number) =>
+            this.renderEmailTag(email, i)
+          )}
+          ${this.renderInput(stateMgmtClasses, placeholderText)}
+        </kyn-tag-group>
+
+        ${this.renderSuggestions()}
+      </div>
+    `;
+  }
+
+  private renderSuggestions() {
+    if (this.autoSuggestionDisabled) {
+      return null;
+    }
+
+    return html`
+      <div
+        class="suggestions"
+        style="top: ${this._suggestionTop}; left: ${this._suggestionLeft};"
+        ?hidden=${!this._expanded || this.suggestions.length === 0}
+      >
+        ${this.suggestions.map(
+          (sugg, suggIndex) => html`
+            <div
+              class=${classMap({
+                suggestion: true,
+                highlighted: suggIndex === this.highlightedIndex,
+              })}
+              @mousedown=${(e: MouseEvent) => e.preventDefault()}
+              @click=${() => this._selectSuggestion(sugg)}
+            >
+              ${sugg}
+            </div>
+          `
+        )}
+      </div>
+    `;
+  }
+
+  private renderCaptionAndError(error: boolean, validCount: number) {
+    return html`
+      <div class="caption-count-container">
+        <div>
+          ${this.caption
+            ? html`<div class="caption" aria-disabled=${this.disabled}>
+                ${this.caption}
+              </div>`
+            : null}
+          ${error
+            ? html`<div id="error" class="error">
+                <span role="img" class="error-icon" aria-label="error">
+                  ${unsafeSVG(errorIcon)}
+                </span>
+                ${this.invalidText || this._validationMessage}
+              </div>`
+            : null}
+        </div>
+        ${this.maxEmailAddresses
+          ? html`<div class="validated-count">
+              ${validCount}/${this.maxEmailAddresses}
+            </div>`
+          : null}
+      </div>
+    `;
+  }
+
   override render() {
     const error = this._isInvalid;
 
@@ -186,131 +330,9 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
 
     return html`
       <div ?disabled=${this.disabled} ?readonly=${this.readonly}>
-        <label
-          class="label-text ${this.hideLabel ? 'sr-only' : ''}"
-          for=${this.name}
-        >
-          ${
-            this.required
-              ? html`<abbr
-                  class="required"
-                  title=${this._textStrings.requiredText}
-                  role="img"
-                  aria-label=${this._textStrings.requiredText}
-                  >*</abbr
-                >`
-              : null
-          }
-          ${this.label}
-          <slot name="tooltip"></slot>
-        </label>
-
-        <div
-          class="${classMap({
-            container: true,
-            ...stateMgmtClasses,
-          })}"
-          @click=${() => this.inputEl.focus()}
-          ?invalid=${this._isInvalid}
-          aria-invalid=${this._isInvalid}
-          aria-describedby=${this._isInvalid ? 'error' : ''}
-        >
-          <kyn-tag-group
-            class="tag-group"
-            ?filter=${!this.readonly && !this.disabled}
-          >
-            ${this._emails.map((email: string, i: number) => {
-              const isInvalid =
-                !this.validationsDisabled && !isValidEmail(email);
-              return html`
-                <kyn-tag
-                  class="indiv-tag"
-                  tagColor=${isInvalid ? 'error' : 'spruce'}
-                  noTruncation
-                  ?clickable=${!this.readonly && !this.disabled}
-                  ?disabled=${this.disabled}
-                  ?readonly=${this.readonly}
-                  @on-close=${() => this.removeAt(i)}
-                >
-                  ${unsafeSVG(userIcon)}<span>${email}</span>
-                </kyn-tag>
-              `;
-            })}
-            <input
-              class="${classMap({
-                ...stateMgmtClasses,
-              })}"
-              type="email"
-              ?disabled=${this.disabled}
-              ?readonly=${this.readonly}
-              id=${this.name}
-              borderless
-              placeholder=${ifDefined(placeholderText)}
-              @focus=${() => this._handleFocus()}
-              @blur=${() => {
-                this._validateAllTags();
-                this._handleBlur();
-              }}
-              @input=${(e: InputEvent) => this.handleInput(e)}
-              @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
-            ></input>
-          </kyn-tag-group>
-
-          ${
-            !this.autoSuggestionDisabled
-              ? html`<div
-                  class="suggestions"
-                  style="top: ${this._suggestionTop}; left: ${this
-                    ._suggestionLeft};"
-                  ?hidden=${!this._expanded || this.suggestions.length === 0}
-                >
-                  ${this.suggestions.map(
-                    (sugg, suggIndex) => html`
-                      <div
-                        class=${classMap({
-                          suggestion: true,
-                          highlighted: suggIndex === this.highlightedIndex,
-                        })}
-                        @mousedown=${(e: MouseEvent) => e.preventDefault()}
-                        @click=${() => this._selectSuggestion(sugg)}
-                      >
-                        ${sugg}
-                      </div>
-                    `
-                  )}
-                </div>`
-              : null
-          }
-        </div>
-
-        <div class="caption-count-container">
-          <div>
-            ${
-              this.caption
-                ? html`<div class="caption" aria-disabled=${this.disabled}>
-                    ${this.caption}
-                  </div>`
-                : null
-            }
-            ${
-              error
-                ? html`<div id="error" class="error">
-                    <span role="img" class="error-icon" aria-label="error">
-                      ${unsafeSVG(errorIcon)}
-                    </span>
-                    ${this.invalidText || this._validationMessage}
-                  </div>`
-                : null
-            }
-          </div>
-          ${
-            this.maxEmailAddresses
-              ? html`<div class="validated-count">
-                  ${validCount}/${this.maxEmailAddresses}
-                </div>`
-              : null
-          }
-        </div>
+        ${this.renderLabel()}
+        ${this.renderTagsAndInput(stateMgmtClasses, placeholderText)}
+        ${this.renderCaptionAndError(error, validCount)}
       </div>
     `;
   }
@@ -318,33 +340,11 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   override updated(_changed: Map<string, any>) {
     this._validateAllTags();
 
-    if (this._emails.length > 0 && !this.validationsDisabled) {
-      this._validate(true);
-
-      const invalidTagIndexes = this._emails
-        .map((e: string, i: number) => (!isValidEmail(e) ? i : -1))
-        .filter((i: number) => i >= 0);
-      const hasInvalidTags = invalidTagIndexes.length > 0;
-
-      const isMaxExceeded =
-        this.maxEmailAddresses !== undefined &&
-        this._emails.length > this.maxEmailAddresses;
-
-      const uniqueEmails = new Set(this._emails);
-      const hasDuplicates = uniqueEmails.size < this._emails.length;
-
-      if (hasInvalidTags || isMaxExceeded || hasDuplicates) {
-        this._isInvalid = true;
-      }
-    }
-
     this.value = this._emails.join(', ');
-
     this._internals.setFormValue(this.value);
 
     if (this._internals.form) {
       this._internals.form.setAttribute(`data-${this.name}-emails`, 'true');
-
       (this._internals.form as any)[`${this.name}Emails`] = [...this._emails];
     }
   }
@@ -440,46 +440,41 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   }
 
   private _selectSuggestion(suggestion: string) {
-    if (!this.validationsDisabled) {
-      if (
-        maxEmailsExceededCheck(this._emails.length, 1, this.maxEmailAddresses)
-      ) {
-        const state = { ...this._internals.validity };
-        state.customError = true;
-        const msg = this._textStrings.emailMaxExceededError;
-        this._validationMessage = msg;
-        this._internals.setValidity(state, msg, this.inputEl);
+    const result = processEmailTagsFromValue(
+      suggestion,
+      this._emails,
+      this.maxEmailAddresses,
+      this.validationsDisabled,
+      this._textStrings
+    );
 
-        this.suggestions = [];
-        this._expanded = false;
-        this.inputEl.focus();
-        return;
-      }
+    if (result.hasError) {
+      const state = { ...this._internals.validity, ...result.validationState };
+      this._validationMessage = result.validationMessage;
+      this._internals.setValidity(
+        state,
+        result.validationMessage,
+        this.inputEl
+      );
 
-      if (isEmailDuplicate(suggestion, this._emails)) {
-        const state = { ...this._internals.validity };
-        state.customError = true;
-        const msg = this._textStrings.duplicateEmail;
-        this._validationMessage = msg;
-        this._internals.setValidity(state, msg, this.inputEl);
-
-        this.suggestions = [];
-        this._expanded = false;
-        this.inputEl.focus();
-        return;
-      }
+      this.suggestions = [];
+      this._expanded = false;
+      this.inputEl.focus();
+      return;
     }
 
-    const idx = this._emails.length;
     this._emails = [...this._emails, suggestion];
+
     const invalidSet =
       this._invalids instanceof Set
         ? new Set(this._invalids)
         : new Set<number>(this._invalids as unknown as number[]);
-    if (!this.validationsDisabled && !isValidEmail(suggestion))
-      invalidSet.add(idx);
-    this._invalids = invalidSet;
 
+    if (!this.validationsDisabled && !isValidEmail(suggestion)) {
+      invalidSet.add(this._emails.length - 1);
+    }
+
+    this._invalids = invalidSet;
     this._validateAllTags();
 
     this.suggestions = [];
@@ -495,43 +490,61 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     this._fetchSuggestions();
   }
 
-  private onKeydown(e: KeyboardEvent): void {
+  private handleSuggestionNavigation(e: KeyboardEvent): boolean {
     const UP = 'ArrowUp',
       DOWN = 'ArrowDown',
       ENTER = 'Enter';
+
     if (
-      this._expanded &&
-      this.suggestions.length > 0 &&
-      [UP, DOWN, ENTER].includes(e.key)
+      !this._expanded ||
+      this.suggestions.length === 0 ||
+      ![UP, DOWN, ENTER].includes(e.key)
     ) {
-      e.preventDefault();
-      if (e.key === DOWN) {
-        this.highlightedIndex = Math.min(
-          this.highlightedIndex + 1,
-          this.suggestions.length - 1
-        );
-      } else if (e.key === UP) {
-        this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
-      } else if (e.key === ENTER && this.highlightedIndex >= 0) {
-        this._selectSuggestion(this.suggestions[this.highlightedIndex]);
-      }
-      return;
+      return false;
     }
 
+    e.preventDefault();
+
+    if (e.key === DOWN) {
+      this.highlightedIndex = Math.min(
+        this.highlightedIndex + 1,
+        this.suggestions.length - 1
+      );
+    } else if (e.key === UP) {
+      this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
+    } else if (e.key === ENTER && this.highlightedIndex >= 0) {
+      this._selectSuggestion(this.suggestions[this.highlightedIndex]);
+    }
+
+    return true;
+  }
+
+  private handleTagCreation(e: KeyboardEvent): boolean {
     if ((e.key === 'Enter' && !e.shiftKey) || e.key === ',') {
       e.preventDefault();
       this.addTagsFromValue();
+      return true;
     }
+
+    return false;
   }
 
-  private _updateSuggestionPosition() {
-    const textarea = this.inputEl;
-    const container = this._containerEl;
-    const selEnd = textarea.selectionEnd ?? textarea.value.length;
+  private onKeydown(e: KeyboardEvent): void {
+    if (this.handleSuggestionNavigation(e)) {
+      return;
+    }
 
+    this.handleTagCreation(e);
+  }
+
+  private createPositionMirror(
+    textarea: HTMLTextAreaElement,
+    selEnd: number
+  ): HTMLElement {
     const mirror = document.createElement('div');
     const style = getComputedStyle(textarea);
-    for (const prop of [
+
+    const stylesToCopy = [
       'font-size',
       'font-family',
       'font-weight',
@@ -541,31 +554,58 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       'box-sizing',
       'white-space',
       'width',
-    ]) {
+    ];
+
+    for (const prop of stylesToCopy) {
       mirror.style.setProperty(prop, style.getPropertyValue(prop));
     }
+
     mirror.style.position = 'absolute';
     mirror.style.top = `${textarea.offsetTop}px`;
     mirror.style.left = `${textarea.offsetLeft}px`;
     mirror.style.visibility = 'hidden';
     mirror.style.whiteSpace = 'pre-wrap';
+
     mirror.textContent = textarea.value.slice(0, selEnd);
 
-    container.appendChild(mirror);
+    return mirror;
+  }
 
+  private calculateSuggestionPosition(
+    textarea: HTMLTextAreaElement,
+    mirror: HTMLElement,
+    selEnd: number
+  ): { top: string; left: string } {
     const span = document.createElement('span');
     span.textContent = textarea.value.slice(selEnd) || '.';
     mirror.appendChild(span);
 
     const spanLeft = span.offsetLeft;
     const spanTop = span.offsetTop;
+    const style = getComputedStyle(textarea);
     const lh = parseFloat(style.lineHeight) || span.offsetHeight;
 
     const topPx = textarea.offsetTop + spanTop + lh;
     const leftPx = textarea.offsetLeft + spanLeft;
 
-    this._suggestionTop = `${topPx}px`;
-    this._suggestionLeft = `${leftPx}px`;
+    return {
+      top: `${topPx}px`,
+      left: `${leftPx}px`,
+    };
+  }
+
+  private _updateSuggestionPosition() {
+    const textarea = this.inputEl;
+    const container = this._containerEl;
+    const selEnd = textarea.selectionEnd ?? textarea.value.length;
+
+    const mirror = this.createPositionMirror(textarea, selEnd);
+    container.appendChild(mirror);
+
+    const position = this.calculateSuggestionPosition(textarea, mirror, selEnd);
+
+    this._suggestionTop = position.top;
+    this._suggestionLeft = position.left;
 
     container.removeChild(mirror);
   }
@@ -602,72 +642,48 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   }
 
   private addTagsFromValue(): void {
-    const parts = this.inputEl.value
-      .split(',')
-      .map((s: string) => s.trim())
-      .filter(Boolean);
+    const inputValue = this.inputEl.value;
 
-    if (
-      !this.validationsDisabled &&
-      maxEmailsExceededCheck(
-        this._emails.length,
-        parts.length,
-        this.maxEmailAddresses
-      )
-    ) {
-      const state = { ...this._internals.validity };
-      state.customError = true;
-      const msg = this._textStrings.emailMaxExceededError;
-      this._validationMessage = msg;
-      this._internals.setValidity(state, msg, this.inputEl);
+    const result = processEmailTagsFromValue(
+      inputValue,
+      this._emails,
+      this.maxEmailAddresses,
+      this.validationsDisabled,
+      this._textStrings
+    );
+
+    if (result.hasError) {
+      const state = { ...this._internals.validity, ...result.validationState };
+      this._validationMessage = result.validationMessage;
+      this._internals.setValidity(
+        state,
+        result.validationMessage,
+        this.inputEl
+      );
       return;
     }
 
-    const invalidSet =
-      this._invalids instanceof Set
-        ? new Set(this._invalids)
-        : new Set<number>(this._invalids as unknown as number[]);
+    if (result.newEmails.length > 0) {
+      this._emails = [...this._emails, ...result.newEmails];
 
-    const existingEmails = new Set(this._emails);
-    const newEmails: string[] = [];
-    let duplicateFound = false;
+      const invalidSet =
+        this._invalids instanceof Set
+          ? new Set(this._invalids)
+          : new Set<number>(this._invalids as unknown as number[]);
 
-    for (const email of parts) {
-      if (
-        !this.validationsDisabled &&
-        isEmailDuplicate(email, existingEmails)
-      ) {
-        const state = { ...this._internals.validity };
-        state.customError = true;
-        const msg = this._textStrings.duplicateEmail;
-        this._validationMessage = msg;
-        this._internals.setValidity(state, msg, this.inputEl);
-        duplicateFound = true;
-        break;
-      }
-
-      existingEmails.add(email);
-      newEmails.push(email);
-
-      const idx = this._emails.length + newEmails.length - 1;
-      if (!this.validationsDisabled && !isValidEmail(email)) {
+      for (const idx of result.invalidIndexes) {
         invalidSet.add(idx);
       }
+
+      this._invalids = invalidSet;
+
+      this._validateAllTags();
+
+      this.inputEl.value = '';
+      this.dispatchEvent(
+        new CustomEvent<string[]>('on-change', { detail: this._emails })
+      );
     }
-
-    if (duplicateFound) {
-      return;
-    }
-
-    this._emails = [...this._emails, ...newEmails];
-    this._invalids = invalidSet;
-
-    this._validateAllTags();
-
-    this.inputEl.value = '';
-    this.dispatchEvent(
-      new CustomEvent<string[]>('on-change', { detail: this._emails })
-    );
   }
 
   private removeAt(idx: number) {
@@ -677,11 +693,8 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       this._invalids instanceof Set
         ? new Set(this._invalids)
         : new Set<number>(this._invalids as unknown as number[]);
-    invalidSet.delete(idx);
-    const shifted = new Set<number>(
-      [...invalidSet].map((i: number) => (i > idx ? i - 1 : i))
-    );
-    this._invalids = shifted;
+
+    this._invalids = updateInvalidIndexesAfterRemoval(invalidSet, idx);
 
     if (this._emails.length === 0) {
       this._isInvalid = false;
