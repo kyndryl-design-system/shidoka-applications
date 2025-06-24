@@ -73,6 +73,7 @@ const args = {
   value: '',
   isFloating: false,
   showOnScroll: false,
+  selected: false,
 };
 
 export const Button = {
@@ -92,6 +93,7 @@ export const Button = {
         target=${args.target}
         name=${args.name}
         value=${args.value}
+        ?selected=${args.selected}
         @on-click=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
@@ -124,6 +126,7 @@ export const ButtonWithIcon = {
         target=${args.target}
         name=${args.name}
         value=${args.value}
+        ?selected=${args.selected}
         @on-click=${(e) => action(e.type)(e)}
       >
         ${args.unnamed}
@@ -153,6 +156,7 @@ export const IconOnly = {
         target=${args.target}
         name=${args.name}
         value=${args.value}
+        ?selected=${args.selected}
         @on-click=${(e) => action(e.type)(e)}
       >
         <span style="display:flex;" slot="icon"
@@ -174,6 +178,7 @@ export const Gallery = {
       <kyn-button kind="secondary">Secondary</kyn-button>
       <kyn-button kind="tertiary">Tertiary</kyn-button>
       <kyn-button kind="outline">Outline</kyn-button>
+      <kyn-button kind="ghost">Ghost</kyn-button>
 
       <div class="heading kd-type--headline-06">AI</div>
 
@@ -188,10 +193,10 @@ export const Gallery = {
         Secondary Destructive
       </kyn-button>
       <kyn-button kind="outline-destructive">Outline Destructive</kyn-button>
+      <kyn-button kind="ghost-destructive">Ghost Destructive</kyn-button>
 
       <div class="heading kd-type--headline-06">Miscellaneous</div>
 
-      <kyn-button kind="ghost">Ghost</kyn-button>
       <kyn-button kind="content">Content</kyn-button>
 
       <div class="heading kd-type--headline-06">Disabled</div>

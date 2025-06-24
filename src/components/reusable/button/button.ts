@@ -106,9 +106,13 @@ export class Button extends LitElement {
   @property({ type: Boolean })
   isFloating = false;
 
-  /** Show button after scrolling to 50% of the page*/
+  /** Show button after scrolling to 50% of the page */
   @property({ type: Boolean })
   showOnScroll = false;
+
+  /** Button selected state. */
+  @property({ type: Boolean })
+  selected = false;
 
   /** Determines showButton state .
    * @internal
@@ -160,6 +164,7 @@ export class Button extends LitElement {
       'kd-btn--float': this.isFloating,
       'kd-btn--hidden': this.showOnScroll && !this._showButton,
       'icon-only': this._iconEls?.length && this.iconOnly,
+      selected: this.selected,
     };
 
     return html`
