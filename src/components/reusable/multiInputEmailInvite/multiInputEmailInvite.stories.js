@@ -97,6 +97,7 @@ ErrorState.args = {
   ...Default.args,
   value: 'bad@invalid.com',
   caption: '',
+  invalid: true,
 };
 
 export const InvalidEmailFormat = Template.bind({});

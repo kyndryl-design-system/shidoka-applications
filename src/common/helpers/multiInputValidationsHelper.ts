@@ -71,7 +71,7 @@ const validateEmailTags = (
   };
 };
 
-export const wouldExceedMaxEmails = (
+export const maxEmailsExceededCheck = (
   currentCount: number,
   newCount: number,
   maxEmailAddresses?: number
@@ -108,7 +108,8 @@ export const validateAllEmailTags = (
 
   if (forceInvalid) {
     state.customError = true;
-    message = invalidText || '';
+    message =
+      invalidText || textStrings?.errorText || defaultTextStrings.errorText;
     hasError = true;
   } else {
     const validationResult = validateEmailTags(

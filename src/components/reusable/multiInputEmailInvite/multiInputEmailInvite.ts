@@ -7,7 +7,7 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 import {
   isValidEmail,
-  wouldExceedMaxEmails,
+  maxEmailsExceededCheck,
   isEmailDuplicate,
   defaultTextStrings,
   validateAllEmailTags,
@@ -97,6 +97,11 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   @state()
   private _emails: string[] = [];
 
+  /** Flag to track if initial value has been processed
+   * @internal
+   */
+  private _initialValueProcessed = false;
+
   /** Indexes of invalid emails in `_emails`.
    * @internal
    */
@@ -175,9 +180,9 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       'error-state': error,
     };
 
-    const validCount = this._emails.filter((email: string) =>
-      isValidEmail(email)
-    ).length;
+    const validCount = this.validationsDisabled
+      ? this._emails.length
+      : this._emails.filter((email: string) => isValidEmail(email)).length;
 
     const placeholderText =
       this._emails.length > 0
@@ -220,7 +225,8 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
             ?filter=${!this.readonly && !this.disabled}
           >
             ${this._emails.map((email: string, i: number) => {
-              const isInvalid = !isValidEmail(email);
+              const isInvalid =
+                !this.validationsDisabled && !isValidEmail(email);
               return html`
                 <kyn-tag
                   class="indiv-tag"
@@ -243,7 +249,6 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
               ?disabled=${this.disabled}
               ?readonly=${this.readonly}
               id=${this.name}
-              .value=${this.value}
               borderless
               placeholder=${ifDefined(placeholderText)}
               @focus=${() => this._handleFocus()}
@@ -337,6 +342,8 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
         this._isInvalid = true;
       }
     }
+
+    this.value = this._emails.join(', ');
   }
 
   override willUpdate(changed: Map<string, any>) {
@@ -345,21 +352,32 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     }
 
     if (
+      !this._initialValueProcessed &&
       changed.has('value') &&
       typeof this.value === 'string' &&
       this.value &&
-      this._emails.length === 0 &&
-      this.value.includes(',')
+      this._emails.length === 0
     ) {
-      const emailsFromValue = this.value
-        .split(',')
-        .map((email: string) => email.trim())
-        .filter(Boolean);
+      const emailsFromValue = this.value.includes(',')
+        ? this.value
+            .split(',')
+            .map((email: string) => email.trim())
+            .filter(Boolean)
+        : [this.value.trim()].filter(Boolean);
 
       if (emailsFromValue.length > 0) {
         this._emails = emailsFromValue;
-        this._validateAllTags();
+        this._initialValueProcessed = true;
       }
+    }
+  }
+
+  override firstUpdated(): void {
+    if (this._emails.length > 0) {
+      if (this.inputEl && this.inputEl.value) {
+        this.inputEl.value = '';
+      }
+      this._validateAllTags();
     }
   }
 
@@ -376,14 +394,13 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       return;
     }
 
-    this.value = inputValue;
     this._validate(true);
 
     this._expanded = true;
 
     this.dispatchEvent(
       new CustomEvent('on-input', {
-        detail: { value: this.value, origEvent: e },
+        detail: { value: inputValue, origEvent: e },
       })
     );
 
@@ -425,7 +442,7 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   private _selectSuggestion(suggestion: string) {
     if (!this.validationsDisabled) {
       if (
-        wouldExceedMaxEmails(this._emails.length, 1, this.maxEmailAddresses)
+        maxEmailsExceededCheck(this._emails.length, 1, this.maxEmailAddresses)
       ) {
         const state = { ...this._internals.validity };
         state.customError = true;
@@ -459,7 +476,8 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       this._invalids instanceof Set
         ? new Set(this._invalids)
         : new Set<number>(this._invalids as unknown as number[]);
-    if (!isValidEmail(suggestion)) invalidSet.add(idx);
+    if (!this.validationsDisabled && !isValidEmail(suggestion))
+      invalidSet.add(idx);
     this._invalids = invalidSet;
 
     this._validateAllTags();
@@ -467,7 +485,6 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     this.suggestions = [];
     this._expanded = false;
     this.inputEl.value = '';
-    this.value = '';
 
     this.dispatchEvent(
       new CustomEvent<string[]>('on-change', { detail: this._emails })
@@ -572,7 +589,16 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
 
     this._validationMessage = validationResult.message;
     this._isInvalid = validationResult.hasError;
-    this._internals.setValidity(state, validationResult.message, this.inputEl);
+
+    if (this.inputEl) {
+      this._internals.setValidity(
+        state,
+        validationResult.message,
+        this.inputEl
+      );
+    } else {
+      this._internals.setValidity(state, validationResult.message);
+    }
   }
 
   private addTagsFromValue(): void {
@@ -583,7 +609,7 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
 
     if (
       !this.validationsDisabled &&
-      wouldExceedMaxEmails(
+      maxEmailsExceededCheck(
         this._emails.length,
         parts.length,
         this.maxEmailAddresses
@@ -604,8 +630,9 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
 
     const existingEmails = new Set(this._emails);
     const newEmails: string[] = [];
+    let duplicateFound = false;
 
-    parts.forEach((email: string) => {
+    for (const email of parts) {
       if (
         !this.validationsDisabled &&
         isEmailDuplicate(email, existingEmails)
@@ -615,17 +642,22 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
         const msg = this._textStrings.duplicateEmail;
         this._validationMessage = msg;
         this._internals.setValidity(state, msg, this.inputEl);
-        return;
+        duplicateFound = true;
+        break;
       }
 
       existingEmails.add(email);
       newEmails.push(email);
 
       const idx = this._emails.length + newEmails.length - 1;
-      if (!isValidEmail(email)) {
+      if (!this.validationsDisabled && !isValidEmail(email)) {
         invalidSet.add(idx);
       }
-    });
+    }
+
+    if (duplicateFound) {
+      return;
+    }
 
     this._emails = [...this._emails, ...newEmails];
     this._invalids = invalidSet;
@@ -633,7 +665,6 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     this._validateAllTags();
 
     this.inputEl.value = '';
-    this.value = '';
     this.dispatchEvent(
       new CustomEvent<string[]>('on-change', { detail: this._emails })
     );
