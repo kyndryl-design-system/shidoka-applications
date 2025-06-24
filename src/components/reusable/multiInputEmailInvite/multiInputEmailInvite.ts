@@ -97,11 +97,6 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   @state()
   private _emails: string[] = [];
 
-  /** Flag to track if initial value has been processed
-   * @internal
-   */
-  private _initialValueProcessed = false;
-
   /** Indexes of invalid emails in `_emails`.
    * @internal
    */
@@ -359,23 +354,20 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       this._textStrings = deepmerge(defaultTextStrings, this.textStrings);
     }
 
-    if (
-      !this._initialValueProcessed &&
-      changed.has('value') &&
-      typeof this.value === 'string' &&
-      this.value &&
-      this._emails.length === 0
-    ) {
-      const emailsFromValue = this.value.includes(',')
-        ? this.value
-            .split(',')
-            .map((email: string) => email.trim())
-            .filter(Boolean)
-        : [this.value.trim()].filter(Boolean);
+    if (changed.has('value') && typeof this.value === 'string' && this.value) {
+      const hasComma = this.value.includes(',');
 
-      if (emailsFromValue.length > 0) {
-        this._emails = emailsFromValue;
-        this._initialValueProcessed = true;
+      if (hasComma) {
+        const emailsFromValue = this.value
+          .split(',')
+          .map((email: string) => email.trim())
+          .filter(Boolean);
+
+        if (emailsFromValue.length > 0) {
+          this._emails = emailsFromValue;
+        }
+      } else {
+        this._emails = [this.value.trim()];
       }
     }
   }

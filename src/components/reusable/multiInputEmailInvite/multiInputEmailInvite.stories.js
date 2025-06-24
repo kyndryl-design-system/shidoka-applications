@@ -7,7 +7,13 @@ export default {
   title: 'Components/Multi Input Email Invite',
   component: 'kyn-email-invite-input',
   argTypes: {
-    value: { control: 'text', table: { category: 'attributes' } },
+    value: {
+      control: 'text',
+      table: { category: 'attributes' },
+      defaultValue: '',
+      description:
+        'Comma-separated list of email addresses. For proper tag creation, include @ symbol or commas.',
+    },
     invalidText: { control: 'text' },
     invalid: { control: 'boolean' },
     autoSuggestionDisabled: { control: 'boolean' },
@@ -81,7 +87,7 @@ SuggestionValidationDisabled.args = {
   validationsDisabled: true,
   caption:
     'No validations, no suggestions. Whatever the user types is accepted and converted to a tag.',
-  maxEmailAddresses: 5,
+  maxEmailAddresses: 10,
 };
 
 export const MaxEmailExample = Template.bind({});
@@ -89,15 +95,7 @@ MaxEmailExample.args = {
   ...Default.args,
   value: 'example@email.com',
   caption: 'You can add up to 10 email addresses.',
-  maxEmailAddresses: 10,
-};
-
-export const ErrorState = Template.bind({});
-ErrorState.args = {
-  ...Default.args,
-  value: 'bad@invalid.com',
-  caption: '',
-  invalid: true,
+  maxEmailAddresses: 5,
 };
 
 export const InvalidEmailFormat = Template.bind({});
