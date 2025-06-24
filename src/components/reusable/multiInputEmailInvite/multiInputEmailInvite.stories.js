@@ -88,14 +88,6 @@ SuggestionValidationDisabled.args = {
   maxEmailAddresses: 10,
 };
 
-export const MaxEmailExample = Template.bind({});
-MaxEmailExample.args = {
-  ...Default.args,
-  value: 'example@email.com',
-  caption: 'You can add up to 5 email addresses.',
-  maxEmailAddresses: 5,
-};
-
 export const InvalidEmailFormat = Template.bind({});
 InvalidEmailFormat.args = {
   ...Default.args,
