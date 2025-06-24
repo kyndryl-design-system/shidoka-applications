@@ -160,7 +160,7 @@ export const processTagsFromValue = (
   maxItems?: number,
   validationsDisabled?: boolean,
   textStrings?: typeof defaultTextStrings,
-  inputType = 'email',
+  inputType = 'default',
   pattern?: string
 ): {
   newItems: string[];

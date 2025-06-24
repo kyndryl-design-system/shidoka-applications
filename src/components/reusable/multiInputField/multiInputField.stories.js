@@ -9,7 +9,7 @@ export default {
   component: 'kyn-multi-input-field',
   argTypes: {
     invalidText: { control: 'text' },
-    inputType: { control: 'select', options: ['email', 'text'] },
+    inputType: { control: 'select', options: ['email', 'default'] },
     invalid: { control: 'boolean' },
     autoSuggestionDisabled: { control: 'boolean' },
     label: { control: 'text' },
@@ -51,7 +51,7 @@ const Template = (args) => html`
     ?readonly=${args.readonly}
     ?hideLabel=${args.hideLabel}
     name=${args.name}
-    pattern=${args.pattern}
+    pattern=${ifDefined(args.pattern)}
     maxItems=${ifDefined(args.maxItems)}
     @on-change=${(e) => action('on-change')(e.detail)}
   ></kyn-multi-input-field>

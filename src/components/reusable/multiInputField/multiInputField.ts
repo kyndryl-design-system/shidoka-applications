@@ -242,26 +242,17 @@ export class MultiInputField extends FormMixin(LitElement) {
   private renderTagsAndInput(stateMgmtClasses: any, placeholderText: string) {
     return html`
       <div
-        class="${classMap({
-          container: true,
-          ...stateMgmtClasses,
-        })}"
-        @click=${(e: MouseEvent) => {
-          if (!(e.target as HTMLElement).closest('kyn-tag')) {
-            this.inputEl.focus();
-          }
-        }}
+        class="${classMap({ container: true, ...stateMgmtClasses })}"
+        @click=${() => this.inputEl.focus()}
         ?invalid=${this._isInvalid}
         aria-invalid=${this._isInvalid}
-        aria-describedby=${this._isInvalid ? 'error' : ''}
+        aria-describedby=${ifDefined(this._isInvalid ? 'error' : undefined)}
       >
         <kyn-tag-group
           class="tag-group"
           ?filter=${!this.readonly && !this.disabled}
         >
-          ${this._items.map((item: string, i: number) =>
-            this.renderTag(item, i)
-          )}
+          ${this._items.map((item, i) => this.renderTag(item, i))}
           ${this.renderInput(stateMgmtClasses, placeholderText)}
         </kyn-tag-group>
 
@@ -271,23 +262,23 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private renderSuggestions() {
-    if (this.autoSuggestionDisabled) {
-      return null;
-    }
-
+    if (this.autoSuggestionDisabled) return null;
     return html`
       <div
         class="suggestions"
+        role="listbox"
         style="top: ${this._suggestionTop}; left: ${this._suggestionLeft};"
         ?hidden=${!this._expanded || this.suggestions.length === 0}
       >
         ${this.suggestions.map(
-          (sugg, suggIndex) => html`
+          (sugg, idx) => html`
             <div
               class=${classMap({
                 suggestion: true,
-                highlighted: suggIndex === this.highlightedIndex,
+                highlighted: idx === this.highlightedIndex,
               })}
+              role="option"
+              aria-selected=${idx === this.highlightedIndex}
               @mousedown=${(e: MouseEvent) => e.preventDefault()}
               @click=${() => this._selectSuggestion(sugg)}
             >
@@ -298,7 +289,6 @@ export class MultiInputField extends FormMixin(LitElement) {
       </div>
     `;
   }
-
   private renderCaptionAndError(error: boolean, validCount: number) {
     return html`
       <div class="caption-count-container">
