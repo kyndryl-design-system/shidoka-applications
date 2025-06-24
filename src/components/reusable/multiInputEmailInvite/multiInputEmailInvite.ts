@@ -344,6 +344,14 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
     }
 
     this.value = this._emails.join(', ');
+
+    this._internals.setFormValue(this.value);
+
+    if (this._internals.form) {
+      this._internals.form.setAttribute(`data-${this.name}-emails`, 'true');
+
+      (this._internals.form as any)[`${this.name}Emails`] = [...this._emails];
+    }
   }
 
   override willUpdate(changed: Map<string, any>) {

@@ -15,6 +15,7 @@ import '../components/reusable/button';
 import '../components/reusable/sliderInput';
 import '../components/reusable/fileUploader';
 import '../components/reusable/colorInput';
+import '../components/reusable/multiInputEmailInvite';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
@@ -43,7 +44,6 @@ export const Default = {
           handleFileSubmit();
           const formData = new FormData(e.target);
           console.log(...formData);
-
           // console.log(e.submitter);
           // submitter is not accessible with form associated custom elements, see https://github.com/WICG/webcomponents/issues/814
 
@@ -545,6 +545,20 @@ export const Default = {
             Tooltip example.
           </kyn-tooltip>
         </kyn-color-input>
+        <br /><br />
+
+        <kyn-email-invite-input
+          name="inviteEmails"
+          label="Email Invites"
+          caption="Enter email addresses and press Enter after each one"
+          placeholder="Enter email addresses"
+          @on-change=${(e) => action('email-change')(e.detail)}
+        >
+          <kyn-tooltip slot="tooltip" anchorPosition="start">
+            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
+            Enter multiple email addresses
+          </kyn-tooltip>
+        </kyn-email-invite-input>
         <br /><br />
         <kyn-file-uploader
           name="file-uploader"
