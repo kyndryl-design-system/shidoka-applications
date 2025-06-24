@@ -115,7 +115,7 @@ DuplicateEmail.args = {
   caption: 'Shows error for duplicate email addresses',
   value: 'john.doe@email.com, john.doe@email.com',
   textStrings: {
-    duplicateEmail: 'This email address has already been added.',
+    duplicateEmailError: 'This email address has already been added.',
   },
 };
 

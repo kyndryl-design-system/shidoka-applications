@@ -1,12 +1,12 @@
 export const defaultTextStrings = {
   requiredText: 'Required',
-  errorText: 'Invalid email format.',
   placeholderAdditional: 'Add another email address...',
   invalidEmailError:
     'Invalid email format. Please enter a valid email address.',
+  defaultErrorText: 'Invalid email format.',
   emailMaxExceededError: 'Maximum number of email addresses exceeded.',
-  duplicateEmail: 'Email address already added',
-  emailRequired: 'At least one email address is required',
+  duplicateEmailError: 'Email address already added',
+  emailRequiredError: 'At least one email address is required',
 };
 
 export const isValidEmail = (email: string): boolean => {
@@ -48,7 +48,7 @@ const validateEmailTags = (
 
   if (isEmptyButRequired) {
     state.valueMissing = true;
-    msg = _textStrings.emailRequired || _textStrings.requiredText;
+    msg = _textStrings.emailRequiredError || _textStrings.requiredText;
     hasError = true;
   } else if (hasInvalidTags) {
     state.customError = true;
@@ -60,7 +60,7 @@ const validateEmailTags = (
     hasError = true;
   } else if (hasDuplicates) {
     state.customError = true;
-    msg = invalidText || _textStrings.duplicateEmail;
+    msg = invalidText || _textStrings.duplicateEmailError;
     hasError = true;
   }
 
@@ -109,7 +109,9 @@ export const validateAllEmailTags = (
   if (forceInvalid) {
     state.customError = true;
     message =
-      invalidText || textStrings?.errorText || defaultTextStrings.errorText;
+      invalidText ||
+      textStrings?.defaultErrorText ||
+      defaultTextStrings.defaultErrorText;
     hasError = true;
   } else {
     const validationResult = validateEmailTags(
@@ -173,12 +175,10 @@ export const processEmailTagsFromValue = (
   const existingEmailsSet = new Set(existingEmails);
   const newEmails: string[] = [];
   let duplicateFound = false;
-  let duplicateEmail = '';
 
   for (const email of parts) {
     if (!validationsDisabled && isEmailDuplicate(email, existingEmailsSet)) {
       duplicateFound = true;
-      duplicateEmail = email;
       break;
     }
 
@@ -193,7 +193,7 @@ export const processEmailTagsFromValue = (
 
   if (duplicateFound) {
     const state = { customError: true, valueMissing: false };
-    const msg = _textStrings.duplicateEmail;
+    const msg = _textStrings.duplicateEmailError;
     return {
       newEmails: [],
       validationState: state,
