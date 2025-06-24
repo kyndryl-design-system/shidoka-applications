@@ -27,26 +27,21 @@
     background-color: var(--kd-color-background-ui-error-subtle);
   }
 
-  &.disabled,
-  &.is-readonly {
+  &.disabled {
     background: var(--kd-color-background-forms-disabled);
-    border-color: var(--kd-color-border-variants-light);
+    border: none;
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
 
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
     }
+  }
 
-    &.disabled:not([disabled])[invalid] {
-      border-color: var(--kd-color-border-variants-destructive);
-    }
-
-    input {
-      &::placeholder {
-        color: var(--kd-color-text-level-disabled);
-      }
-    }
+  &.is-readonly {
+    background: var(--kd-color-background-forms-disabled);
+    border-color: var(--kd-color-border-variants-light);
+    cursor: default;
   }
 
   input {

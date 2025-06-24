@@ -1,10 +1,12 @@
 export const defaultTextStrings = {
   requiredText: 'Required',
+
+  requiredError: 'At least one item is required',
+
   placeholderAdditional: 'Add another item...',
   invalidFormatError: 'Invalid format.',
   maxExceededError: 'Maximum number of items exceeded.',
   duplicateError: 'Item already added',
-  requiredError: 'At least one item is required',
 };
 
 export const isValidEmail = (email: string): boolean => {
@@ -53,7 +55,8 @@ const validateInputTags = (
     };
   }
 
-  const _textStrings = textStrings || defaultTextStrings;
+  const _textStrings = { ...defaultTextStrings, ...(textStrings || {}) };
+
   const invalidTagIndexes = inputs
     .map((input, i) => (!isValidInput(input, inputType, pattern) ? i : -1))
     .filter((i) => i >= 0);
@@ -69,7 +72,7 @@ const validateInputTags = (
 
   if (isEmptyButRequired) {
     state.valueMissing = true;
-    msg = _textStrings.requiredError || _textStrings.requiredText;
+    msg = invalidText || _textStrings.requiredError;
     hasError = true;
   } else if (hasInvalidTags) {
     state.customError = true;
@@ -119,6 +122,11 @@ export const validateAllTags = (
   inputType = 'default',
   pattern?: string
 ): { state: any; message: string; hasError: boolean } => {
+  const mergedTextStrings = {
+    ...defaultTextStrings,
+    ...(textStrings || {}),
+  };
+
   let state = { customError: false, valueMissing: false };
   let message = '';
   let hasError = false;
@@ -129,9 +137,7 @@ export const validateAllTags = (
 
   if (forceInvalid) {
     state.customError = true;
-    const formatError =
-      textStrings?.invalidFormatError ?? defaultTextStrings.invalidFormatError;
-    message = invalidText || formatError;
+    message = invalidText || mergedTextStrings.invalidFormatError;
     hasError = true;
   } else {
     const { isValid, validationState, validationMessage } = validateInputTags(
@@ -141,7 +147,7 @@ export const validateAllTags = (
       pattern,
       maxItems,
       invalidText,
-      textStrings,
+      mergedTextStrings,
       validationsDisabled
     );
     if (!isValid) {

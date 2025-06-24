@@ -4,7 +4,6 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
-import { deepmerge } from 'deepmerge-ts';
 import {
   isValidInput,
   defaultTextStrings,
@@ -96,8 +95,9 @@ export class MultiInputField extends FormMixin(LitElement) {
   /** Merged internal text strings.
    * @internal
    */
-  @state()
-  private _textStrings = defaultTextStrings;
+  private get _textStrings() {
+    return { ...defaultTextStrings, ...this.textStrings };
+  }
 
   /** Entered tags.
    * @internal
@@ -223,9 +223,8 @@ export class MultiInputField extends FormMixin(LitElement) {
         type=${this.inputType === 'email' ? 'email' : 'text'}
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
-        id=${this.name}
-        name=${this.name}
-        borderless
+        name=${ifDefined(this.name || undefined)}
+        id=${ifDefined(this.name || undefined)}
         placeholder=${ifDefined(placeholderText)}
         pattern=${ifDefined(this.pattern)}
         @focus=${() => this._handleFocus()}
@@ -360,24 +359,22 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   override willUpdate(changed: Map<string, any>) {
-    if (changed.has('textStrings')) {
-      this._textStrings = deepmerge(defaultTextStrings, this.textStrings);
-    }
-
-    if (changed.has('value') && typeof this.value === 'string' && this.value) {
-      const hasComma = this.value.includes(',');
-
-      if (hasComma) {
-        const itemsFromValue = this.value
-          .split(',')
-          .map((item: string) => item.trim())
-          .filter(Boolean);
-
-        if (itemsFromValue.length > 0) {
-          this._items = itemsFromValue;
+    if (changed.has('value') && typeof this.value === 'string') {
+      const newVal = this.value.trim();
+      const currentVal = this._items.join(', ');
+      if (newVal !== currentVal) {
+        const hasComma = newVal.includes(',');
+        if (hasComma) {
+          const itemsFromValue = newVal
+            .split(',')
+            .map((item: string) => item.trim())
+            .filter(Boolean);
+          if (itemsFromValue.length > 0) {
+            this._items = itemsFromValue;
+          }
+        } else {
+          this._items = [newVal];
         }
-      } else {
-        this._items = [this.value.trim()];
       }
     }
   }
@@ -429,7 +426,7 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private async _queryEmails(query: string): Promise<string[]> {
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     if (this.inputType !== 'email') {
       return [];
@@ -497,28 +494,37 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private handleSuggestionNavigation(e: KeyboardEvent): boolean {
-    const UP = 'ArrowUp',
-      DOWN = 'ArrowDown',
-      ENTER = 'Enter';
+    if (!this._expanded || this.suggestions.length === 0) {
+      return false;
+    }
 
-    if (
-      !this._expanded ||
-      this.suggestions.length === 0 ||
-      ![UP, DOWN, ENTER].includes(e.key)
-    ) {
+    const { key } = e;
+    const UP = 'ArrowUp';
+    const DOWN = 'ArrowDown';
+    const ENTER = 'Enter';
+    const HOME = 'Home';
+    const END = 'End';
+    const PGUP = 'PageUp';
+    const PGDN = 'PageDown';
+
+    if (![UP, DOWN, ENTER, HOME, END, PGUP, PGDN].includes(key)) {
       return false;
     }
 
     e.preventDefault();
 
-    if (e.key === DOWN) {
+    if (key === DOWN) {
       this.highlightedIndex = Math.min(
         this.highlightedIndex + 1,
         this.suggestions.length - 1
       );
-    } else if (e.key === UP) {
+    } else if (key === UP) {
       this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
-    } else if (e.key === ENTER && this.highlightedIndex >= 0) {
+    } else if (key === HOME || key === PGUP) {
+      this.highlightedIndex = 0;
+    } else if (key === END || key === PGDN) {
+      this.highlightedIndex = this.suggestions.length - 1;
+    } else if (key === ENTER && this.highlightedIndex >= 0) {
       this._selectSuggestion(this.suggestions[this.highlightedIndex]);
     }
 
@@ -536,6 +542,12 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private onKeydown(e: KeyboardEvent): void {
+    if (e.key === 'Escape') {
+      this._expanded = false;
+      this.inputEl.focus();
+      return;
+    }
+
     if (this.handleSuggestionNavigation(e)) {
       return;
     }
