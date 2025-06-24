@@ -21,6 +21,7 @@
   outline: 1px solid transparent;
   outline-offset: -1px;
   transition: box-shadow 100ms ease-out, outline-color 150ms ease-out;
+  position: relative;
 
   &.disabled {
     opacity: 0.6;
@@ -66,6 +67,7 @@
 }
 
 .widget-content {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 8px 16px 16px 16px;
@@ -86,4 +88,33 @@
 
 slot[name='footer']::slotted(*) {
   margin-top: 8px;
+}
+
+.opacity-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--kd-color-background-opacity-8---dark);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.checkmark-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 3;
+  svg {
+    fill: var(--kd-color-status-success-dark);
+  }
+}
+
+.checkmark-toggle {
+  cursor: pointer;
+}
+
+.checkmark-visible {
+  pointer-events: none;
 }

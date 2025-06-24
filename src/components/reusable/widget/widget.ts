@@ -1,6 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
 import Styles from './widget.scss';
 
 /**
@@ -31,6 +33,16 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
+  /** Widget checked state. */
+  @property({ type: Boolean, reflect: true })
+  selected = false;
+
+  /** selected state.
+   * @internal
+   */
+  @state()
+  _checkmarkVisible = this.selected;
+
   /** Slotted chart element.
    * @internal
    */
@@ -51,7 +63,11 @@ export class Widget extends LitElement {
         role="group"
         aria-disabled=${this.disabled}
       >
-        <div class="widget-header">
+        <div
+          class="widget-header ${this.selected && this._checkmarkVisible
+            ? 'checkmark-visible'
+            : ''}"
+        >
           <slot name="draghandle"></slot>
 
           <div class="title-desc">
@@ -68,17 +84,53 @@ export class Widget extends LitElement {
           </div>
         </div>
 
-        <div class="widget-content">
-          <div class="widget-body">
-            <slot @slotchange=${this._handleSlotChange}></slot>
-          </div>
+        <div
+          class=${classMap({
+            'widget-content': true,
+          })}
+        >
+          ${this.selected
+            ? html`<div
+                class="widget-body checkmark-toggle"
+                @click=${this._handleBodyClick}
+              >
+                <slot @slotchange=${this._handleSlotChange}></slot>
+              </div>`
+            : html`<div class="widget-body">
+                <slot @slotchange=${this._handleSlotChange}></slot>
+              </div>`}
 
-          <div class="widget-footer">
+          <div
+            class="widget-footer ${this.selected && this._checkmarkVisible
+              ? 'checkmark-visible'
+              : ''}"
+          >
             <slot name="footer"></slot>
           </div>
         </div>
+
+        ${this._checkmarkVisible
+          ? html`
+              <div class="opacity-overlay"></div>
+              <div class="checkmark-overlay">
+                ${unsafeSVG(CheckMarkFilledIcon)}
+              </div>
+            `
+          : null}
       </div>
     `;
+  }
+
+  private _handleBodyClick() {
+    if (this.disabled) return;
+    this._checkmarkVisible = !this._checkmarkVisible;
+    this.dispatchEvent(
+      new CustomEvent('on-select', {
+        detail: { selected: this._checkmarkVisible },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private _handleSlotChange() {

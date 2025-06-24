@@ -1,5 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import './index';
 
 import '../button';
@@ -57,6 +58,7 @@ const args = {
   subTitle: 'Subtitle',
   disabled: false,
   dragActive: false,
+  selected: false,
 };
 
 export const Widget = {
@@ -70,6 +72,9 @@ export const Widget = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selected=${args.selected}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example">Widget Content</div>
           </kyn-widget>
@@ -90,6 +95,8 @@ export const WithActions = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
             <kyn-button
               slot="actions"
@@ -132,6 +139,8 @@ export const WithFooter = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example">Widget Content</div>
 
@@ -156,6 +165,8 @@ export const WithFooter = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example">Widget Content</div>
 
@@ -175,7 +186,12 @@ export const WithChart = {
   render: (args) => {
     return html`
       <div style="max-width: 500px;">
-        <kyn-widget ?disabled=${args.disabled} ?dragActive=${args.dragActive}>
+        <kyn-widget
+          ?disabled=${args.disabled}
+          ?dragActive=${args.dragActive}
+          ?selected=${args.selected}
+          @on-select=${(e) => action(e.type)(e)}
+        >
           <kd-chart
             type="bar"
             chartTitle=${args.widgetTitle}
