@@ -403,27 +403,15 @@ export class MultiInputField extends FormMixin(LitElement) {
 
   private handleInput(e: InputEvent) {
     if (this.readonly) return;
-
     const inputValue = (e.target as HTMLInputElement).value;
 
-    if (
-      inputValue.length === 1 &&
-      this._items.length > 0 &&
-      this._items[this._items.length - 1] === inputValue
-    ) {
-      return;
-    }
-
     this._validate(true);
-
     this._expanded = true;
-
     this.dispatchEvent(
       new CustomEvent('on-input', {
         detail: { value: inputValue, origEvent: e },
       })
     );
-
     this._fetchSuggestions();
   }
 

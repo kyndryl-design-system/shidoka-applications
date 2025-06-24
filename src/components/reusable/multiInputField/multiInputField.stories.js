@@ -97,7 +97,7 @@ InvalidEmailFormat.args = {
   caption: 'Shows custom error message for invalid email format.',
   value: 'not-an-email',
   textStrings: {
-    invalidInputError: 'Please enter a valid email address format.',
+    invalidFormatError: 'Please enter a valid email address format.',
   },
 };
 
@@ -129,7 +129,7 @@ CustomEmailPattern.args = {
   value: 'user@example.com',
   pattern: '[a-zA-Z0-9._%+-]+@example\\.com$',
   textStrings: {
-    invalidInputError:
+    invalidFormatError:
       'Please enter a valid email address from example.com domain.',
   },
 };

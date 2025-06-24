@@ -1,9 +1,7 @@
 export const defaultTextStrings = {
   requiredText: 'Required',
   placeholderAdditional: 'Add another item...',
-  invalidInputError:
-    'Invalid email format. Please enter a valid email address.',
-  defaultErrorText: 'Invalid format.',
+  invalidFormatError: 'Invalid format.',
   maxExceededError: 'Maximum number of items exceeded.',
   duplicateError: 'Item already added',
   requiredError: 'At least one item is required',
@@ -75,11 +73,7 @@ const validateInputTags = (
     hasError = true;
   } else if (hasInvalidTags) {
     state.customError = true;
-    msg =
-      invalidText ||
-      (inputType === 'email'
-        ? _textStrings.invalidInputError
-        : _textStrings.defaultErrorText);
+    msg = invalidText || _textStrings.invalidFormatError;
     hasError = true;
   } else if (isMaxExceeded) {
     state.customError = true;
@@ -119,10 +113,10 @@ export const validateAllTags = (
   required: boolean,
   maxItems?: number,
   invalidText?: string,
-  textStrings?: any,
+  textStrings?: Partial<typeof defaultTextStrings>,
   validationsDisabled?: boolean,
   forceInvalid?: boolean,
-  inputType = 'email',
+  inputType = 'default',
   pattern?: string
 ): { state: any; message: string; hasError: boolean } => {
   let state = { customError: false, valueMissing: false };
@@ -135,13 +129,12 @@ export const validateAllTags = (
 
   if (forceInvalid) {
     state.customError = true;
-    message =
-      invalidText ||
-      textStrings?.defaultErrorText ||
-      defaultTextStrings.defaultErrorText;
+    const formatError =
+      textStrings?.invalidFormatError ?? defaultTextStrings.invalidFormatError;
+    message = invalidText || formatError;
     hasError = true;
   } else {
-    const validationResult = validateInputTags(
+    const { isValid, validationState, validationMessage } = validateInputTags(
       inputs,
       required,
       inputType,
@@ -151,10 +144,9 @@ export const validateAllTags = (
       textStrings,
       validationsDisabled
     );
-
-    if (!validationResult.isValid) {
-      state = { ...state, ...validationResult.validationState };
-      message = validationResult.validationMessage;
+    if (!isValid) {
+      state = { ...state, ...validationState };
+      message = validationMessage;
       hasError = true;
     }
   }

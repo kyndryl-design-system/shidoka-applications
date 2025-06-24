@@ -27,9 +27,10 @@
     background-color: var(--kd-color-background-ui-error-subtle);
   }
 
-  &.disabled {
+  &.disabled,
+  &.is-readonly {
     background: var(--kd-color-background-forms-disabled);
-    border: none;
+    border-color: var(--kd-color-border-variants-light);
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
 
@@ -37,38 +38,14 @@
       border-color: var(--kd-color-border-ui-disabled);
     }
 
-    &::placeholder {
-      color: var(--kd-color-text-level-disabled);
-    }
-
-    &:-ms-input-placeholder {
-      color: var(--kd-color-text-level-disabled);
-    }
-
-    &::-ms-input-placeholder {
-      color: var(--kd-color-text-level-disabled);
-    }
-
-    &:not([disabled])[invalid] {
+    &.disabled:not([disabled])[invalid] {
       border-color: var(--kd-color-border-variants-destructive);
     }
-  }
 
-  &.is-readonly {
-    background: var(--kd-color-background-forms-disabled);
-    border-color: var(--kd-color-border-variants-light);
-    cursor: default;
-
-    &::placeholder {
-      color: var(--kd-color-text-forms-input-field-text);
-    }
-
-    &:-ms-input-placeholder {
-      color: var(--kd-color-text-forms-input-field-text);
-    }
-
-    &::-ms-input-placeholder {
-      color: var(--kd-color-text-forms-input-field-text);
+    input {
+      &::placeholder {
+        color: var(--kd-color-text-level-disabled);
+      }
     }
   }
 
@@ -77,15 +54,16 @@
     flex: 1 1 auto;
     min-width: 300px;
     padding: 0;
-    text-indent: 0.5em;
+    padding-left: 8px;
     line-height: 2;
-    min-height: 2.15rem;
+    min-height: 34.4px;
     outline: none;
-    font-size: 0.9rem;
-    resize: none;
+    font-size: 14.4px;
     background: transparent;
 
-    &::placeholder {
+    &::placeholder,
+    &:-ms-input-placeholder,
+    &::-ms-input-placeholder {
       @include typography.type-body-02;
       color: var(--kd-color-text-variant-placeholder);
     }
@@ -94,12 +72,15 @@
   .suggestions {
     @include elevation.shadow(2);
     position: absolute;
-    width: max-content;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    max-width: 544px;
     background: var(--kd-color-background-accent-light);
     border-radius: 4px;
     max-height: 200px;
     overflow-y: auto;
-    z-index: 100;
+    z-index: var(--suggestion-z-index);
   }
 
   .suggestion {
@@ -107,7 +88,6 @@
     @include typography.type-body-02;
     cursor: pointer;
     transition: background-color 150ms ease-out;
-    background-color: var(--kd-color-background-forms-default);
 
     &:hover,
     &.highlighted {
@@ -131,7 +111,6 @@
 
   svg {
     display: inline-block;
-    margin-right: 4px;
     vertical-align: middle;
   }
 }
@@ -159,7 +138,7 @@
     font-weight: 400;
     margin-top: 8px;
     color: var(--kd-color-text-forms-label-secondary);
-    font-size: 0.9rem;
+    font-size: 14.4px;
     position: absolute;
     right: 0;
     top: 0;
