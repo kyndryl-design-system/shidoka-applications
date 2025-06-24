@@ -41,7 +41,7 @@ export class Widget extends LitElement {
    * @internal
    */
   @state()
-  _checkmarkVisible = this.selected;
+  _checkmarkVisible = false;
 
   /** Slotted chart element.
    * @internal
@@ -57,17 +57,28 @@ export class Widget extends LitElement {
       disabled: this.disabled,
     };
 
+    const headerClasses = {
+      'widget-header': true,
+      'checkmark-visible': this.selected && this._checkmarkVisible,
+    };
+
+    const bodyClasses = {
+      'widget-body': true,
+      'checkmark-toggle': this.selected,
+    };
+
+    const footerClasses = {
+      'widget-footer': true,
+      'checkmark-visible': this.selected && this._checkmarkVisible,
+    };
+
     return html`
       <div
         class=${classMap(Classes)}
         role="group"
         aria-disabled=${this.disabled}
       >
-        <div
-          class="widget-header ${this.selected && this._checkmarkVisible
-            ? 'checkmark-visible'
-            : ''}"
-        >
+        <div class=${classMap(headerClasses)}>
           <slot name="draghandle"></slot>
 
           <div class="title-desc">
@@ -84,32 +95,20 @@ export class Widget extends LitElement {
           </div>
         </div>
 
-        <div
-          class=${classMap({
-            'widget-content': true,
-          })}
-        >
-          ${this.selected
-            ? html`<div
-                class="widget-body checkmark-toggle"
-                @click=${this._handleBodyClick}
-              >
-                <slot @slotchange=${this._handleSlotChange}></slot>
-              </div>`
-            : html`<div class="widget-body">
-                <slot @slotchange=${this._handleSlotChange}></slot>
-              </div>`}
-
+        <div class="widget-content">
           <div
-            class="widget-footer ${this.selected && this._checkmarkVisible
-              ? 'checkmark-visible'
-              : ''}"
+            class=${classMap(bodyClasses)}
+            @click=${this.selected ? this._handleBodyClick : null}
           >
+            <slot @slotchange=${this._handleSlotChange}></slot>
+          </div>
+
+          <div class=${classMap(footerClasses)}>
             <slot name="footer"></slot>
           </div>
         </div>
 
-        ${this._checkmarkVisible
+        ${this.selected && this._checkmarkVisible
           ? html`
               <div class="opacity-overlay"></div>
               <div class="checkmark-overlay">
@@ -143,6 +142,12 @@ export class Widget extends LitElement {
     if (Chart) {
       this._chart = Chart;
       this._chart._widget = true;
+    }
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('selected')) {
+      this._checkmarkVisible = true;
     }
   }
 }
