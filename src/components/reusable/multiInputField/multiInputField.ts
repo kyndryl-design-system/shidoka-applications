@@ -8,8 +8,8 @@ import { deepmerge } from 'deepmerge-ts';
 import {
   isValidInput,
   defaultTextStrings,
-  validateAllEmailTags,
-  processEmailTagsFromValue,
+  validateAllTags,
+  processTagsFromValue,
   updateInvalidIndexesAfterRemoval,
 } from '../../../common/helpers/multiInputValidationsHelper';
 
@@ -157,7 +157,7 @@ export class MultiInputField extends FormMixin(LitElement) {
    * @ignore
    */
   @query('input')
-  private inputEl!: HTMLTextAreaElement;
+  private inputEl!: HTMLInputElement;
 
   /** Mock database of emails to simulate type-ahead suggestions.
    * @ignore
@@ -224,6 +224,7 @@ export class MultiInputField extends FormMixin(LitElement) {
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         id=${this.name}
+        name=${this.name}
         borderless
         placeholder=${ifDefined(placeholderText)}
         pattern=${ifDefined(this.pattern)}
@@ -234,7 +235,7 @@ export class MultiInputField extends FormMixin(LitElement) {
         }}
         @input=${(e: InputEvent) => this.handleInput(e)}
         @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
-      ></input>
+      />
     `;
   }
 
@@ -403,7 +404,7 @@ export class MultiInputField extends FormMixin(LitElement) {
   private handleInput(e: InputEvent) {
     if (this.readonly) return;
 
-    const inputValue = (e.target as HTMLTextAreaElement).value;
+    const inputValue = (e.target as HTMLInputElement).value;
 
     if (
       inputValue.length === 1 &&
@@ -463,7 +464,7 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private _selectSuggestion(suggestion: string) {
-    const result = processEmailTagsFromValue(
+    const result = processTagsFromValue(
       suggestion,
       this._items,
       this.maxItems,
@@ -508,9 +509,6 @@ export class MultiInputField extends FormMixin(LitElement) {
     this._expanded = false;
     this.inputEl.value = '';
 
-    this.dispatchEvent(
-      new CustomEvent<string[]>('on-change', { detail: this._items })
-    );
     this.dispatchEvent(
       new CustomEvent<string[]>('on-change', { detail: this._items })
     );
@@ -568,11 +566,11 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private createPositionMirror(
-    textarea: HTMLTextAreaElement,
+    input: HTMLInputElement,
     selEnd: number
   ): HTMLElement {
     const mirror = document.createElement('div');
-    const style = getComputedStyle(textarea);
+    const style = getComputedStyle(input);
 
     const stylesToCopy = [
       'font-size',
@@ -591,32 +589,32 @@ export class MultiInputField extends FormMixin(LitElement) {
     }
 
     mirror.style.position = 'absolute';
-    mirror.style.top = `${textarea.offsetTop}px`;
-    mirror.style.left = `${textarea.offsetLeft}px`;
+    mirror.style.top = `${input.offsetTop}px`;
+    mirror.style.left = `${input.offsetLeft}px`;
     mirror.style.visibility = 'hidden';
     mirror.style.whiteSpace = 'pre-wrap';
 
-    mirror.textContent = textarea.value.slice(0, selEnd);
+    mirror.textContent = input.value.slice(0, selEnd);
 
     return mirror;
   }
 
   private calculateSuggestionPosition(
-    textarea: HTMLTextAreaElement,
+    input: HTMLInputElement,
     mirror: HTMLElement,
     selEnd: number
   ): { top: string; left: string } {
     const span = document.createElement('span');
-    span.textContent = textarea.value.slice(selEnd) || '.';
+    span.textContent = input.value.slice(selEnd) || '.';
     mirror.appendChild(span);
 
     const spanLeft = span.offsetLeft;
     const spanTop = span.offsetTop;
-    const style = getComputedStyle(textarea);
+    const style = getComputedStyle(input);
     const lh = parseFloat(style.lineHeight) || span.offsetHeight;
 
-    const topPx = textarea.offsetTop + spanTop + lh;
-    const leftPx = textarea.offsetLeft + spanLeft;
+    const topPx = input.offsetTop + spanTop + lh;
+    const leftPx = input.offsetLeft + spanLeft;
 
     return {
       top: `${topPx}px`,
@@ -625,14 +623,14 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private _updateSuggestionPosition() {
-    const textarea = this.inputEl;
+    const input = this.inputEl;
     const container = this._containerEl;
-    const selEnd = textarea.selectionEnd ?? textarea.value.length;
+    const selEnd = input.selectionEnd ?? input.value.length;
 
-    const mirror = this.createPositionMirror(textarea, selEnd);
+    const mirror = this.createPositionMirror(input, selEnd);
     container.appendChild(mirror);
 
-    const position = this.calculateSuggestionPosition(textarea, mirror, selEnd);
+    const position = this.calculateSuggestionPosition(input, mirror, selEnd);
 
     this._suggestionTop = position.top;
     this._suggestionLeft = position.left;
@@ -645,7 +643,7 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private _validateAllTags(): void {
-    const validationResult = validateAllEmailTags(
+    const validationResult = validateAllTags(
       this._items,
       this.required,
       this.maxItems,
@@ -676,7 +674,7 @@ export class MultiInputField extends FormMixin(LitElement) {
   private addTagsFromValue(): void {
     const inputValue = this.inputEl.value;
 
-    const result = processEmailTagsFromValue(
+    const result = processTagsFromValue(
       inputValue,
       this._items,
       this.maxItems,
@@ -697,8 +695,8 @@ export class MultiInputField extends FormMixin(LitElement) {
       return;
     }
 
-    if (result.newEmails.length > 0) {
-      this._items = [...this._items, ...result.newEmails];
+    if (result.newItems.length > 0) {
+      this._items = [...this._items, ...result.newItems];
 
       const invalidSet =
         this._invalids instanceof Set

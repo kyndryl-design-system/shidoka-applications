@@ -1,12 +1,12 @@
 export const defaultTextStrings = {
   requiredText: 'Required',
   placeholderAdditional: 'Add another item...',
-  invalidEmailError:
+  invalidInputError:
     'Invalid email format. Please enter a valid email address.',
   defaultErrorText: 'Invalid format.',
-  emailMaxExceededError: 'Maximum number of items exceeded.',
-  duplicateEmailError: 'Item already added',
-  emailRequiredError: 'At least one item is required',
+  maxExceededError: 'Maximum number of items exceeded.',
+  duplicateError: 'Item already added',
+  requiredError: 'At least one item is required',
 };
 
 export const isValidEmail = (email: string): boolean => {
@@ -71,23 +71,23 @@ const validateInputTags = (
 
   if (isEmptyButRequired) {
     state.valueMissing = true;
-    msg = _textStrings.emailRequiredError || _textStrings.requiredText;
+    msg = _textStrings.requiredError || _textStrings.requiredText;
     hasError = true;
   } else if (hasInvalidTags) {
     state.customError = true;
     msg =
       invalidText ||
       (inputType === 'email'
-        ? _textStrings.invalidEmailError
+        ? _textStrings.invalidInputError
         : _textStrings.defaultErrorText);
     hasError = true;
   } else if (isMaxExceeded) {
     state.customError = true;
-    msg = invalidText || _textStrings.emailMaxExceededError;
+    msg = invalidText || _textStrings.maxExceededError;
     hasError = true;
   } else if (hasDuplicates) {
     state.customError = true;
-    msg = invalidText || _textStrings.duplicateEmailError;
+    msg = invalidText || _textStrings.duplicateError;
     hasError = true;
   }
 
@@ -114,7 +114,7 @@ export const isItemDuplicate = (
   return existingItems.includes(item);
 };
 
-export const validateAllEmailTags = (
+export const validateAllTags = (
   inputs: string[],
   required: boolean,
   maxItems?: number,
@@ -162,17 +162,17 @@ export const validateAllEmailTags = (
   return { state, message, hasError };
 };
 
-export const processEmailTagsFromValue = (
+export const processTagsFromValue = (
   inputValue: string,
   existingItems: string[],
   maxItems?: number,
   validationsDisabled?: boolean,
-  textStrings?: any,
+  textStrings?: typeof defaultTextStrings,
   inputType = 'email',
   pattern?: string
 ): {
-  newEmails: string[];
-  validationState: any;
+  newItems: string[];
+  validationState: { customError: boolean; valueMissing: boolean };
   validationMessage: string;
   hasError: boolean;
   invalidIndexes: Set<number>;
@@ -187,51 +187,47 @@ export const processEmailTagsFromValue = (
     !validationsDisabled &&
     maxItemsExceededCheck(existingItems.length, parts.length, maxItems)
   ) {
-    const state = { customError: true, valueMissing: false };
-    const msg = _textStrings.emailMaxExceededError;
     return {
-      newEmails: [],
-      validationState: state,
-      validationMessage: msg,
+      newItems: [],
+      validationState: { customError: true, valueMissing: false },
+      validationMessage: _textStrings.maxExceededError,
       hasError: true,
       invalidIndexes: new Set<number>(),
     };
   }
 
   const invalidIndexes = new Set<number>();
-  const existingItemsSet = new Set(existingItems);
-  const newEmails: string[] = [];
+  const existingSet = new Set(existingItems);
+  const newItems: string[] = [];
   let duplicateFound = false;
 
-  for (const item of parts) {
-    if (!validationsDisabled && isItemDuplicate(item, existingItemsSet)) {
+  for (const part of parts) {
+    if (!validationsDisabled && isItemDuplicate(part, existingSet)) {
       duplicateFound = true;
       break;
     }
 
-    existingItemsSet.add(item);
-    newEmails.push(item);
+    existingSet.add(part);
+    newItems.push(part);
 
-    const idx = existingItems.length + newEmails.length - 1;
-    if (!validationsDisabled && !isValidInput(item, inputType, pattern)) {
+    const idx = existingItems.length + newItems.length - 1;
+    if (!validationsDisabled && !isValidInput(part, inputType, pattern)) {
       invalidIndexes.add(idx);
     }
   }
 
   if (duplicateFound) {
-    const state = { customError: true, valueMissing: false };
-    const msg = _textStrings.duplicateEmailError;
     return {
-      newEmails: [],
-      validationState: state,
-      validationMessage: msg,
+      newItems: [],
+      validationState: { customError: true, valueMissing: false },
+      validationMessage: _textStrings.duplicateError,
       hasError: true,
       invalidIndexes: new Set<number>(),
     };
   }
 
   return {
-    newEmails,
+    newItems,
     validationState: { customError: false, valueMissing: false },
     validationMessage: '',
     hasError: false,

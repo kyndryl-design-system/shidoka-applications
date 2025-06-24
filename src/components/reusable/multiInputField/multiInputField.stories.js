@@ -97,7 +97,7 @@ InvalidEmailFormat.args = {
   caption: 'Shows custom error message for invalid email format.',
   value: 'not-an-email',
   textStrings: {
-    invalidEmailError: 'Please enter a valid email address format.',
+    invalidInputError: 'Please enter a valid email address format.',
   },
 };
 
@@ -108,7 +108,7 @@ MaxEmailsExceeded.args = {
   value: 'john.doe@email.com, example@email.com, suzy.example@email.com',
   maxItems: 2,
   textStrings: {
-    emailMaxExceededError: 'You cannot add more than 2 email addresses.',
+    maxExceededError: 'You cannot add more than 2 email addresses.',
   },
 };
 
@@ -118,7 +118,7 @@ DuplicateEmail.args = {
   caption: 'Shows error for duplicate email addresses',
   value: 'john.doe@email.com, john.doe@email.com',
   textStrings: {
-    duplicateEmailError: 'This email address has already been added.',
+    duplicateError: 'This email address has already been added.',
   },
 };
 
@@ -129,7 +129,7 @@ CustomEmailPattern.args = {
   value: 'user@example.com',
   pattern: '[a-zA-Z0-9._%+-]+@example\\.com$',
   textStrings: {
-    invalidEmailError:
+    invalidInputError:
       'Please enter a valid email address from example.com domain.',
   },
 };
