@@ -239,7 +239,11 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
           container: true,
           ...stateMgmtClasses,
         })}"
-        @click=${() => this.inputEl.focus()}
+        @click=${(e: MouseEvent) => {
+          if (!(e.target as HTMLElement).closest('kyn-tag')) {
+            this.inputEl.focus();
+          }
+        }}
         ?invalid=${this._isInvalid}
         aria-invalid=${this._isInvalid}
         aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -328,10 +332,10 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
       ? this._emails.length
       : this._emails.filter((email: string) => isValidEmail(email)).length;
 
-    const placeholderText =
-      this._emails.length > 0
-        ? this._textStrings.placeholderAdditional
-        : this.placeholder;
+    const hasValidEmail = this._emails.some((email) => isValidEmail(email));
+    const placeholderText = hasValidEmail
+      ? this._textStrings.placeholderAdditional
+      : this.placeholder;
 
     return html`
       <div ?disabled=${this.disabled} ?readonly=${this.readonly}>

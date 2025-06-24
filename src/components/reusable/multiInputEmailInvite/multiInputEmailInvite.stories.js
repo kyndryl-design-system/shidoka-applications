@@ -64,7 +64,7 @@ Default.args = {
   caption: 'Automatic suggestions and validations are enabled.',
   required: false,
   validationsDisabled: false,
-  placeholder: 'Add email addresses and press Enter',
+  placeholder: `Add email addresses and press 'Enter'...`,
   disabled: false,
   autoSuggestionDisabled: false,
   readonly: false,
