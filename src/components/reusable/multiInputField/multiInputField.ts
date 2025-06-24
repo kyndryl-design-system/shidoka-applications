@@ -528,6 +528,31 @@ export class MultiInputField extends FormMixin(LitElement) {
       this._selectSuggestion(this.suggestions[this.highlightedIndex]);
     }
 
+    this.updateComplete.then(() => {
+      const suggestionsContainer = this.shadowRoot?.querySelector(
+        '.suggestions'
+      ) as HTMLElement;
+      const highlightedElement = this.shadowRoot?.querySelector(
+        '.suggestion.highlighted'
+      ) as HTMLElement;
+
+      if (suggestionsContainer && highlightedElement) {
+        const containerRect = suggestionsContainer.getBoundingClientRect();
+        const elementRect = highlightedElement.getBoundingClientRect();
+
+        const isInView =
+          elementRect.top >= containerRect.top &&
+          elementRect.bottom <= containerRect.bottom;
+
+        if (!isInView) {
+          highlightedElement.scrollIntoView({
+            block: 'nearest',
+            behavior: 'smooth',
+          });
+        }
+      }
+    });
+
     return true;
   }
 
