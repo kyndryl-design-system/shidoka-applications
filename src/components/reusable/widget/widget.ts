@@ -12,6 +12,7 @@ import Styles from './widget.scss';
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
  * @slot footer - Slot for footer content.
+ * @slot icon - Slot for icon.
  */
 @customElement('kyn-widget')
 export class Widget extends LitElement {
@@ -37,7 +38,7 @@ export class Widget extends LitElement {
   @property({ type: Boolean, reflect: true })
   selected = false;
 
-  /** selected state.
+  /** checkmark visibility state.
    * @internal
    */
   @state()
@@ -112,7 +113,7 @@ export class Widget extends LitElement {
           ? html`
               <div class="opacity-overlay"></div>
               <div class="checkmark-overlay">
-                ${unsafeSVG(CheckMarkFilledIcon)}
+                <slot name="icon">${unsafeSVG(CheckMarkFilledIcon)}</slot>
               </div>
             `
           : null}
