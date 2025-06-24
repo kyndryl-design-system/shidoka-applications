@@ -230,7 +230,7 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
               return html`
                 <kyn-tag
                   class="indiv-tag"
-                  tagColor=${isInvalid ? 'lilac' : 'spruce'}
+                  tagColor=${isInvalid ? 'error' : 'spruce'}
                   noTruncation
                   ?clickable=${!this.readonly && !this.disabled}
                   ?disabled=${this.disabled}
