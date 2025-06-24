@@ -7,6 +7,7 @@ import Styles from './widget.scss';
 
 /**
  * Widget.
+ * @fires on-select - Emits the widget selected state .
  * @slot unnamed - Slot for widget content.
  * @slot action - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.
