@@ -1,1 +1,0 @@
-export { MultiInputEmailInvite } from './multiInputEmailInvite';

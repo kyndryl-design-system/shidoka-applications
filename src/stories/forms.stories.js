@@ -15,7 +15,7 @@ import '../components/reusable/button';
 import '../components/reusable/sliderInput';
 import '../components/reusable/fileUploader';
 import '../components/reusable/colorInput';
-import '../components/reusable/multiInputEmailInvite';
+import '../components/reusable/multiInputField';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 import { action } from '@storybook/addon-actions';
 
@@ -547,10 +547,11 @@ export const Default = {
         </kyn-color-input>
         <br /><br />
 
-        <kyn-email-invite-input
+        <kyn-multi-input-field
           name="inviteEmails"
+          inputType="email"
           label="Email Invites"
-          caption="Enter email addresses and press Enter after each one"
+          caption="Enter email addresses and press Enter after each one."
           placeholder="Enter email addresses"
           @on-change=${(e) => action('email-change')(e.detail)}
         >
@@ -558,7 +559,7 @@ export const Default = {
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
             Enter multiple email addresses
           </kyn-tooltip>
-        </kyn-email-invite-input>
+        </kyn-multi-input-field>
         <br /><br />
         <kyn-file-uploader
           name="file-uploader"

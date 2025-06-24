@@ -1,14 +1,15 @@
 import { html } from 'lit';
-import './multiInputEmailInvite';
+import './multiInputField';
 import { action } from '@storybook/addon-actions';
 import { defaultTextStrings } from '../../../common/helpers/multiInputValidationsHelper';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export default {
-  title: 'Components/Multi Input Email Invite',
-  component: 'kyn-email-invite-input',
+  title: 'Components/Multi Input Field',
+  component: 'kyn-multi-input-field',
   argTypes: {
     invalidText: { control: 'text' },
+    inputType: { control: 'select', options: ['email', 'text'] },
     invalid: { control: 'boolean' },
     autoSuggestionDisabled: { control: 'boolean' },
     label: { control: 'text' },
@@ -20,7 +21,7 @@ export default {
     readonly: { control: 'boolean' },
     hideLabel: { control: 'boolean' },
     name: { control: 'text' },
-    maxEmailAddresses: { control: 'number' },
+    maxItems: { control: 'number' },
     pattern: { control: 'text' },
     textStrings: { control: 'object' },
     value: {
@@ -34,8 +35,9 @@ export default {
 };
 
 const Template = (args) => html`
-  <kyn-email-invite-input
+  <kyn-multi-input-field
     .value=${args.value}
+    .inputType=${args.inputType}
     .invalidText=${args.invalidText}
     .textStrings=${args.textStrings}
     ?autoSuggestionDisabled=${args.autoSuggestionDisabled}
@@ -50,14 +52,15 @@ const Template = (args) => html`
     ?hideLabel=${args.hideLabel}
     name=${args.name}
     pattern=${args.pattern}
-    maxEmailAddresses=${ifDefined(args.maxEmailAddresses)}
+    maxItems=${ifDefined(args.maxItems)}
     @on-change=${(e) => action('on-change')(e.detail)}
-  ></kyn-email-invite-input>
+  ></kyn-multi-input-field>
 `;
 
 export const Default = Template.bind({});
 Default.args = {
   value: '',
+  inputType: 'email',
   invalidText: '',
   invalid: false,
   label: 'Label',
@@ -71,7 +74,7 @@ Default.args = {
   hideLabel: false,
   name: 'invite',
   pattern: undefined,
-  maxEmailAddresses: undefined,
+  maxItems: undefined,
   textStrings: {
     ...defaultTextStrings,
   },
@@ -85,7 +88,7 @@ SuggestionValidationDisabled.args = {
   validationsDisabled: true,
   caption:
     'No validations, no suggestions. Whatever the user types is accepted and converted to a tag.',
-  maxEmailAddresses: 10,
+  maxItems: 10,
 };
 
 export const InvalidEmailFormat = Template.bind({});
@@ -103,7 +106,7 @@ MaxEmailsExceeded.args = {
   ...Default.args,
   caption: 'Shows error when maximum number of emails is exceeded.',
   value: 'john.doe@email.com, example@email.com, suzy.example@email.com',
-  maxEmailAddresses: 2,
+  maxItems: 2,
   textStrings: {
     emailMaxExceededError: 'You cannot add more than 2 email addresses.',
   },
@@ -119,8 +122,8 @@ DuplicateEmail.args = {
   },
 };
 
-export const CustomPattern = Template.bind({});
-CustomPattern.args = {
+export const CustomEmailPattern = Template.bind({});
+CustomEmailPattern.args = {
   ...Default.args,
   caption: 'Uses a custom pattern to validate email addresses.',
   value: 'user@example.com',
@@ -128,5 +131,18 @@ CustomPattern.args = {
   textStrings: {
     invalidEmailError:
       'Please enter a valid email address from example.com domain.',
+  },
+};
+
+export const DefaultInputType = Template.bind({});
+DefaultInputType.args = {
+  ...Default.args,
+  inputType: 'default',
+  caption: 'Uses default input type for generic content tags.',
+  value: 'Tag 1, Tag 2',
+  placeholder: `Add tags and press 'Enter'...`,
+  textStrings: {
+    ...defaultTextStrings,
+    placeholderAdditional: 'Add more tags...',
   },
 };

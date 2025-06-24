@@ -1,12 +1,12 @@
 export const defaultTextStrings = {
   requiredText: 'Required',
-  placeholderAdditional: 'Add another email address...',
+  placeholderAdditional: 'Add another item...',
   invalidEmailError:
     'Invalid email format. Please enter a valid email address.',
-  defaultErrorText: 'Invalid email format.',
-  emailMaxExceededError: 'Maximum number of email addresses exceeded.',
-  duplicateEmailError: 'Email address already added',
-  emailRequiredError: 'At least one email address is required',
+  defaultErrorText: 'Invalid format.',
+  emailMaxExceededError: 'Maximum number of items exceeded.',
+  duplicateEmailError: 'Item already added',
+  emailRequiredError: 'At least one item is required',
 };
 
 export const isValidEmail = (email: string): boolean => {
@@ -15,10 +15,34 @@ export const isValidEmail = (email: string): boolean => {
   return EMAIL_RE.test(email);
 };
 
-const validateEmailTags = (
-  emails: string[],
+export const isValidInput = (
+  input: string,
+  inputType: string,
+  pattern?: string
+): boolean => {
+  if (pattern) {
+    try {
+      const regex = new RegExp(pattern);
+      return regex.test(input);
+    } catch (e) {
+      console.error('Invalid regex pattern:', e);
+      return true;
+    }
+  }
+
+  if (inputType === 'email') {
+    return isValidEmail(input);
+  }
+
+  return true;
+};
+
+const validateInputTags = (
+  inputs: string[],
   required: boolean,
-  maxEmailAddresses?: number,
+  inputType: string,
+  pattern?: string,
+  maxItems?: number,
   invalidText?: string,
   textStrings?: any,
   validationsDisabled?: boolean
@@ -32,15 +56,14 @@ const validateEmailTags = (
   }
 
   const _textStrings = textStrings || defaultTextStrings;
-  const invalidTagIndexes = emails
-    .map((e, i) => (!isValidEmail(e) ? i : -1))
+  const invalidTagIndexes = inputs
+    .map((input, i) => (!isValidInput(input, inputType, pattern) ? i : -1))
     .filter((i) => i >= 0);
   const hasInvalidTags = invalidTagIndexes.length > 0;
-  const isEmptyButRequired = required && emails.length === 0;
-  const isMaxExceeded =
-    maxEmailAddresses !== undefined && emails.length > maxEmailAddresses;
-  const uniqueEmails = new Set(emails);
-  const hasDuplicates = uniqueEmails.size < emails.length;
+  const isEmptyButRequired = required && inputs.length === 0;
+  const isMaxExceeded = maxItems !== undefined && inputs.length > maxItems;
+  const uniqueInputs = new Set(inputs);
+  const hasDuplicates = uniqueInputs.size < inputs.length;
 
   const state = { customError: false, valueMissing: false };
   let msg = '';
@@ -52,7 +75,11 @@ const validateEmailTags = (
     hasError = true;
   } else if (hasInvalidTags) {
     state.customError = true;
-    msg = invalidText || _textStrings.invalidEmailError;
+    msg =
+      invalidText ||
+      (inputType === 'email'
+        ? _textStrings.invalidEmailError
+        : _textStrings.defaultErrorText);
     hasError = true;
   } else if (isMaxExceeded) {
     state.customError = true;
@@ -71,32 +98,32 @@ const validateEmailTags = (
   };
 };
 
-export const maxEmailsExceededCheck = (
+export const maxItemsExceededCheck = (
   currentCount: number,
   newCount: number,
-  maxEmailAddresses?: number
-): boolean =>
-  maxEmailAddresses !== undefined &&
-  currentCount + newCount > maxEmailAddresses;
+  maxItems?: number
+): boolean => maxItems !== undefined && currentCount + newCount > maxItems;
 
-export const isEmailDuplicate = (
-  email: string,
-  existingEmails: Set<string> | string[]
+export const isItemDuplicate = (
+  item: string,
+  existingItems: Set<string> | string[]
 ): boolean => {
-  if (existingEmails instanceof Set) {
-    return existingEmails.has(email);
+  if (existingItems instanceof Set) {
+    return existingItems.has(item);
   }
-  return existingEmails.includes(email);
+  return existingItems.includes(item);
 };
 
 export const validateAllEmailTags = (
-  emails: string[],
+  inputs: string[],
   required: boolean,
-  maxEmailAddresses?: number,
+  maxItems?: number,
   invalidText?: string,
   textStrings?: any,
   validationsDisabled?: boolean,
-  forceInvalid?: boolean
+  forceInvalid?: boolean,
+  inputType = 'email',
+  pattern?: string
 ): { state: any; message: string; hasError: boolean } => {
   let state = { customError: false, valueMissing: false };
   let message = '';
@@ -114,10 +141,12 @@ export const validateAllEmailTags = (
       defaultTextStrings.defaultErrorText;
     hasError = true;
   } else {
-    const validationResult = validateEmailTags(
-      emails,
+    const validationResult = validateInputTags(
+      inputs,
       required,
-      maxEmailAddresses,
+      inputType,
+      pattern,
+      maxItems,
       invalidText,
       textStrings,
       validationsDisabled
@@ -135,10 +164,12 @@ export const validateAllEmailTags = (
 
 export const processEmailTagsFromValue = (
   inputValue: string,
-  existingEmails: string[],
-  maxEmailAddresses?: number,
+  existingItems: string[],
+  maxItems?: number,
   validationsDisabled?: boolean,
-  textStrings?: any
+  textStrings?: any,
+  inputType = 'email',
+  pattern?: string
 ): {
   newEmails: string[];
   validationState: any;
@@ -154,11 +185,7 @@ export const processEmailTagsFromValue = (
 
   if (
     !validationsDisabled &&
-    maxEmailsExceededCheck(
-      existingEmails.length,
-      parts.length,
-      maxEmailAddresses
-    )
+    maxItemsExceededCheck(existingItems.length, parts.length, maxItems)
   ) {
     const state = { customError: true, valueMissing: false };
     const msg = _textStrings.emailMaxExceededError;
@@ -172,21 +199,21 @@ export const processEmailTagsFromValue = (
   }
 
   const invalidIndexes = new Set<number>();
-  const existingEmailsSet = new Set(existingEmails);
+  const existingItemsSet = new Set(existingItems);
   const newEmails: string[] = [];
   let duplicateFound = false;
 
-  for (const email of parts) {
-    if (!validationsDisabled && isEmailDuplicate(email, existingEmailsSet)) {
+  for (const item of parts) {
+    if (!validationsDisabled && isItemDuplicate(item, existingItemsSet)) {
       duplicateFound = true;
       break;
     }
 
-    existingEmailsSet.add(email);
-    newEmails.push(email);
+    existingItemsSet.add(item);
+    newEmails.push(item);
 
-    const idx = existingEmails.length + newEmails.length - 1;
-    if (!validationsDisabled && !isValidEmail(email)) {
+    const idx = existingItems.length + newEmails.length - 1;
+    if (!validationsDisabled && !isValidInput(item, inputType, pattern)) {
       invalidIndexes.add(idx);
     }
   }
