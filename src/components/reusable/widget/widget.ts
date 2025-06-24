@@ -57,21 +57,12 @@ export class Widget extends LitElement {
       'drag-active': this.dragActive,
       'has-chart': this._chart,
       disabled: this.disabled,
-    };
-
-    const headerClasses = {
-      'widget-header': true,
-      'checkmark-visible': this.selected && this._checkmarkVisible,
+      'checkmark-active': this.selected && this._checkmarkVisible,
     };
 
     const bodyClasses = {
       'widget-body': true,
       'checkmark-toggle': this.selected,
-    };
-
-    const footerClasses = {
-      'widget-footer': true,
-      'checkmark-visible': this.selected && this._checkmarkVisible,
     };
 
     return html`
@@ -80,7 +71,7 @@ export class Widget extends LitElement {
         role="group"
         aria-disabled=${this.disabled}
       >
-        <div class=${classMap(headerClasses)}>
+        <div class="widget-header">
           <slot name="draghandle"></slot>
 
           <div class="title-desc">
@@ -105,7 +96,7 @@ export class Widget extends LitElement {
             <slot @slotchange=${this._handleSlotChange}></slot>
           </div>
 
-          <div class=${classMap(footerClasses)}>
+          <div class="widget-footer">
             <slot name="footer"></slot>
           </div>
         </div>
@@ -147,7 +138,7 @@ export class Widget extends LitElement {
     }
   }
 
-  override willUpdate(changedProps: any) {
+  override firstUpdated(changedProps: any) {
     if (changedProps.has('selected')) {
       this._checkmarkVisible = true;
     }

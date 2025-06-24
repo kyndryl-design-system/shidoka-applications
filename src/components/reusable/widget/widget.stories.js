@@ -265,15 +265,19 @@ export const WithFooter = {
 export const WithChart = {
   args,
   render: (args) => {
+    const chartSelected = args.selected || args.disabled;
     return html`
       <div style="max-width: 500px;">
         <kyn-widget
           ?disabled=${args.disabled}
           ?dragActive=${args.dragActive}
           ?selected=${args.selected}
-          @on-select=${(e) => action(e.type)(e)}
+          @on-select=${(e) => {
+            action(e.type)(e);
+          }}
         >
           <kd-chart
+            style="pointer-events: ${chartSelected ? 'none' : 'auto'}"
             type="bar"
             chartTitle=${args.widgetTitle}
             description=${args.subTitle}
