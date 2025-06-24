@@ -85,6 +85,10 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
   @property({ type: Boolean })
   validationsDisabled = false;
 
+  /** Pattern attribute for the input element. */
+  @property({ type: String })
+  pattern?: string;
+
   /** Merged internal text strings.
    * @internal
    */
@@ -216,6 +220,7 @@ export class MultiInputEmailInvite extends FormMixin(LitElement) {
         id=${this.name}
         borderless
         placeholder=${ifDefined(placeholderText)}
+        pattern=${ifDefined(this.pattern)}
         @focus=${() => this._handleFocus()}
         @blur=${() => {
           this._validateAllTags();

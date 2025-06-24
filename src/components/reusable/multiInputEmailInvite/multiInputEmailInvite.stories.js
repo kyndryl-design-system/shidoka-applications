@@ -1,19 +1,13 @@
 import { html } from 'lit';
 import './multiInputEmailInvite';
 import { action } from '@storybook/addon-actions';
+import { defaultTextStrings } from '../../../common/helpers/multiInputValidationsHelper';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export default {
   title: 'Components/Multi Input Email Invite',
   component: 'kyn-email-invite-input',
   argTypes: {
-    value: {
-      control: 'text',
-      table: { category: 'attributes' },
-      defaultValue: '',
-      description:
-        'Comma-separated list of email addresses. For proper tag creation, include @ symbol or commas.',
-    },
     invalidText: { control: 'text' },
     invalid: { control: 'boolean' },
     autoSuggestionDisabled: { control: 'boolean' },
@@ -27,7 +21,15 @@ export default {
     hideLabel: { control: 'boolean' },
     name: { control: 'text' },
     maxEmailAddresses: { control: 'number' },
+    pattern: { control: 'text' },
     textStrings: { control: 'object' },
+    value: {
+      control: 'text',
+      table: { category: 'attributes' },
+      defaultValue: '',
+      description:
+        'Comma-separated list of email addresses. For proper tag creation, include @ symbol or commas.',
+    },
   },
 };
 
@@ -47,6 +49,7 @@ const Template = (args) => html`
     ?readonly=${args.readonly}
     ?hideLabel=${args.hideLabel}
     name=${args.name}
+    pattern=${args.pattern}
     maxEmailAddresses=${ifDefined(args.maxEmailAddresses)}
     @on-change=${(e) => action('on-change')(e.detail)}
   ></kyn-email-invite-input>
@@ -67,15 +70,10 @@ Default.args = {
   readonly: false,
   hideLabel: false,
   name: 'invite',
+  pattern: undefined,
   maxEmailAddresses: undefined,
   textStrings: {
-    requiredText: 'Required',
-    errorText: 'Invalid email format.',
-    placeholderAdditional: 'Add another email address ...',
-    invalidEmailError: 'Invalid email format. Please check and try again.',
-    emailMaxExceededError: 'Maximum number of email addresses exceeded.',
-    duplicateEmail: 'Email address already added.',
-    emailRequired: 'At least one email address is required.',
+    ...defaultTextStrings,
   },
 };
 
@@ -94,28 +92,28 @@ export const MaxEmailExample = Template.bind({});
 MaxEmailExample.args = {
   ...Default.args,
   value: 'example@email.com',
-  caption: 'You can add up to 10 email addresses.',
+  caption: 'You can add up to 5 email addresses.',
   maxEmailAddresses: 5,
 };
 
 export const InvalidEmailFormat = Template.bind({});
 InvalidEmailFormat.args = {
   ...Default.args,
-  caption: 'Shows custom error message for invalid email format',
+  caption: 'Shows custom error message for invalid email format.',
   value: 'not-an-email',
   textStrings: {
-    invalidEmailError: 'Please enter a valid email address format',
+    invalidEmailError: 'Please enter a valid email address format.',
   },
 };
 
 export const MaxEmailsExceeded = Template.bind({});
 MaxEmailsExceeded.args = {
   ...Default.args,
-  caption: 'Shows error when maximum number of emails is exceeded',
+  caption: 'Shows error when maximum number of emails is exceeded.',
   value: 'john.doe@email.com, example@email.com, suzy.example@email.com',
   maxEmailAddresses: 2,
   textStrings: {
-    emailMaxExceededError: 'You cannot add more than 2 email addresses',
+    emailMaxExceededError: 'You cannot add more than 2 email addresses.',
   },
 };
 
@@ -125,6 +123,18 @@ DuplicateEmail.args = {
   caption: 'Shows error for duplicate email addresses',
   value: 'john.doe@email.com, john.doe@email.com',
   textStrings: {
-    duplicateEmail: 'This email address has already been added',
+    duplicateEmail: 'This email address has already been added.',
+  },
+};
+
+export const CustomPattern = Template.bind({});
+CustomPattern.args = {
+  ...Default.args,
+  caption: 'Uses a custom pattern to validate email addresses.',
+  value: 'user@example.com',
+  pattern: '[a-zA-Z0-9._%+-]+@example\\.com$',
+  textStrings: {
+    invalidEmailError:
+      'Please enter a valid email address from example.com domain.',
   },
 };
