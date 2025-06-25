@@ -228,18 +228,18 @@ export class BlockCodeView extends LitElement {
     return html`
       <kyn-button
         class="code-view__copy-button"
-        kind="tertiary"
+        kind="secondary"
         size="small"
         iconPosition="left"
         ?disabled=${this._copyState.copied}
         description=${ifDefined(this.copyButtonDescriptionAttr)}
         @click=${this.copyCode}
       >
-        <span slot="icon" class="copy-icon"
-          >${this._copyState.copied
+        <span slot="icon" class="copy-icon">
+          ${this._copyState.copied
             ? unsafeSVG(checkmarkIcon)
-            : unsafeSVG(copyIcon)}</span
-        >
+            : unsafeSVG(copyIcon)}
+        </span>
         ${this._copyState.text
           ? html`<span class="copy-text">${this._copyState.text}</span>`
           : null}
