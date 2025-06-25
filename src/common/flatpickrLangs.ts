@@ -1,3 +1,6 @@
+import { Locale } from 'flatpickr/dist/types/locale';
+import { default as English } from 'flatpickr/dist/l10n/default.js';
+
 export const langsArray = [
   'ar', // Arabic
   'at', // Austria
@@ -63,3 +66,107 @@ export const langsArray = [
 ] as const;
 
 export type SupportedLocale = (typeof langsArray)[number];
+
+const localeCache: Record<string, Partial<Locale>> = {};
+
+const loaderMap: Record<SupportedLocale, () => Promise<any>> = {
+  ar: () => import('flatpickr/dist/l10n/ar.js'),
+  at: () => import('flatpickr/dist/l10n/at.js'),
+  az: () => import('flatpickr/dist/l10n/az.js'),
+  be: () => import('flatpickr/dist/l10n/be.js'),
+  bg: () => import('flatpickr/dist/l10n/bg.js'),
+  bn: () => import('flatpickr/dist/l10n/bn.js'),
+  bs: () => import('flatpickr/dist/l10n/bs.js'),
+  cat: () => import('flatpickr/dist/l10n/cat.js'),
+  cs: () => import('flatpickr/dist/l10n/cs.js'),
+  cy: () => import('flatpickr/dist/l10n/cy.js'),
+  da: () => import('flatpickr/dist/l10n/da.js'),
+  de: () => import('flatpickr/dist/l10n/de.js'),
+  eo: () => import('flatpickr/dist/l10n/eo.js'),
+  es: () => import('flatpickr/dist/l10n/es.js'),
+  et: () => import('flatpickr/dist/l10n/et.js'),
+  fa: () => import('flatpickr/dist/l10n/fa.js'),
+  fi: () => import('flatpickr/dist/l10n/fi.js'),
+  fo: () => import('flatpickr/dist/l10n/fo.js'),
+  fr: () => import('flatpickr/dist/l10n/fr.js'),
+  ga: () => import('flatpickr/dist/l10n/ga.js'),
+  gr: () => import('flatpickr/dist/l10n/gr.js'),
+  he: () => import('flatpickr/dist/l10n/he.js'),
+  hi: () => import('flatpickr/dist/l10n/hi.js'),
+  hr: () => import('flatpickr/dist/l10n/hr.js'),
+  hu: () => import('flatpickr/dist/l10n/hu.js'),
+  id: () => import('flatpickr/dist/l10n/id.js'),
+  is: () => import('flatpickr/dist/l10n/is.js'),
+  it: () => import('flatpickr/dist/l10n/it.js'),
+  ja: () => import('flatpickr/dist/l10n/ja.js'),
+  ka: () => import('flatpickr/dist/l10n/ka.js'),
+  km: () => import('flatpickr/dist/l10n/km.js'),
+  ko: () => import('flatpickr/dist/l10n/ko.js'),
+  kz: () => import('flatpickr/dist/l10n/kz.js'),
+  lt: () => import('flatpickr/dist/l10n/lt.js'),
+  lv: () => import('flatpickr/dist/l10n/lv.js'),
+  mk: () => import('flatpickr/dist/l10n/mk.js'),
+  mn: () => import('flatpickr/dist/l10n/mn.js'),
+  ms: () => import('flatpickr/dist/l10n/ms.js'),
+  my: () => import('flatpickr/dist/l10n/my.js'),
+  nl: () => import('flatpickr/dist/l10n/nl.js'),
+  no: () => import('flatpickr/dist/l10n/no.js'),
+  pa: () => import('flatpickr/dist/l10n/pa.js'),
+  pl: () => import('flatpickr/dist/l10n/pl.js'),
+  pt: () => import('flatpickr/dist/l10n/pt.js'),
+  ro: () => import('flatpickr/dist/l10n/ro.js'),
+  ru: () => import('flatpickr/dist/l10n/ru.js'),
+  si: () => import('flatpickr/dist/l10n/si.js'),
+  sk: () => import('flatpickr/dist/l10n/sk.js'),
+  sl: () => import('flatpickr/dist/l10n/sl.js'),
+  sq: () => import('flatpickr/dist/l10n/sq.js'),
+  sr: () => import('flatpickr/dist/l10n/sr.js'),
+  sv: () => import('flatpickr/dist/l10n/sv.js'),
+  th: () => import('flatpickr/dist/l10n/th.js'),
+  tr: () => import('flatpickr/dist/l10n/tr.js'),
+  uk: () => import('flatpickr/dist/l10n/uk.js'),
+  uz: () => import('flatpickr/dist/l10n/uz.js'),
+  uz_latn: () => import('flatpickr/dist/l10n/uz_latn.js'),
+  vn: () => import('flatpickr/dist/l10n/vn.js'),
+  zh_tw: () => import('flatpickr/dist/l10n/zh-tw.js'),
+  zh: () => import('flatpickr/dist/l10n/zh.js'),
+  en: () => Promise.resolve({} as Partial<Locale>),
+};
+
+export function isSupportedLocale(locale: string): boolean {
+  const base = locale.split('-')[0].toLowerCase() as SupportedLocale;
+  return langsArray.includes(base);
+}
+
+export async function loadLocale(locale: string): Promise<Partial<Locale>> {
+  if (locale === 'en') return English;
+  if (localeCache[locale]) return localeCache[locale];
+
+  const base = locale.split('-')[0].toLowerCase() as SupportedLocale;
+  if (!isSupportedLocale(locale)) {
+    console.warn(`Unsupported locale "${locale}". Falling back to English.`);
+    return English;
+  }
+
+  const importer = loaderMap[base];
+  try {
+    const module = await importer();
+    const config =
+      (module as any)[base] ??
+      (module.default && (module.default as any)[base]) ??
+      module.default;
+
+    if (!config) {
+      console.warn(
+        `Locale data missing for "${locale}". Falling back to English.`
+      );
+      return English;
+    }
+
+    localeCache[locale] = config;
+    return config;
+  } catch (error) {
+    console.error(`Error loading locale "${locale}":`, error);
+    return English;
+  }
+}
