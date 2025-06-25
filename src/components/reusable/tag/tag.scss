@@ -864,6 +864,15 @@
     padding: 2px 8px;
   }
 
+  &-disable {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background-color: var(--kd-color-tag-background-disabled) !important;
+    color: var(--kd-color-tag-text-disabled) !important;
+    border-color: var(--kd-color-tag-border-disabled) !important;
+    outline: none !important;
+  }
+
   &-clickable {
     cursor: pointer;
 
@@ -905,22 +914,6 @@
       &:hover,
       &:active {
         background-color: var(--kd-color-tag-hover-ai);
-      }
-    }
-
-    &-disabled {
-      cursor: not-allowed;
-      &:hover,
-      &:active {
-        background-color: var(--kd-color-tag-background-disabled);
-      }
-
-      &:active {
-        outline-color: transparent;
-      }
-
-      &:focus-visible {
-        outline-color: transparent;
       }
     }
   }
@@ -1033,34 +1026,6 @@
 
       &:focus-visible {
         outline-color: var(--kd-color-border-variants-focus);
-      }
-    }
-  }
-
-  /* disabled tag */
-  &-disabled {
-    color: var(--kd-color-tag-text-disabled);
-    background-color: var(--kd-color-tag-background-disabled);
-    border-color: var(--kd-color-tag-border-disabled);
-
-    &-close-btn {
-      border-radius: 2px;
-      color: var(--kd-color-tag-icon-disabled);
-
-      svg {
-        display: block;
-      }
-
-      &:hover {
-        background-color: var(--kd-color-tag-background-disabled);
-      }
-
-      &:active {
-        outline-color: transparent;
-      }
-
-      &:focus-visible {
-        outline-color: transparent;
       }
     }
   }
