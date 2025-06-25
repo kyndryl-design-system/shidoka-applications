@@ -65,19 +65,19 @@ const Template = (args) => html`
   </kyn-multi-input-field>
 `;
 
-export const Default = Template.bind({});
-Default.args = {
+export const DefaultMultiInput = Template.bind({});
+DefaultMultiInput.args = {
   value: 'Tag 1',
   inputType: 'default',
   invalidText: '',
   invalid: false,
   label: 'Label',
-  caption: 'Automatic suggestions and validations are enabled.',
+  caption: '',
   required: false,
-  validationsDisabled: false,
+  validationsDisabled: true,
   placeholder: `Add items and press 'Enter'...`,
   disabled: false,
-  autoSuggestionDisabled: false,
+  autoSuggestionDisabled: true,
   readonly: false,
   hideLabel: false,
   hideIcon: true,
@@ -89,26 +89,25 @@ Default.args = {
   },
 };
 
-export const SuggestionValidationDisabled = Template.bind({});
-SuggestionValidationDisabled.storyName = 'Suggestions + Validations Disabled';
-SuggestionValidationDisabled.args = {
-  ...Default.args,
+export const EmailMultiInput = Template.bind({});
+EmailMultiInput.args = {
+  ...DefaultMultiInput.args,
   inputType: 'email',
-  value: '',
-  autoSuggestionDisabled: true,
-  validationsDisabled: true,
+  value: 'email@example.com',
   caption:
-    'No validations, no suggestions. Whatever the user types is accepted and converted to a tag.',
+    'Validates email addresses and provides suggestions based on user input.',
   maxItems: 10,
 };
 
 export const InvalidEmailFormat = Template.bind({});
 InvalidEmailFormat.args = {
-  ...Default.args,
+  ...DefaultMultiInput.args,
   inputType: 'email',
   value: 'not-an-email',
   caption: 'Shows custom error message for invalid email format.',
   hideIcon: false,
+  autoSuggestionDisabled: false,
+  validationsDisabled: false,
   textStrings: {
     placeholder: 'Add email addresses and press Enter...',
     invalidFormatError: 'Please enter a valid email address format.',
@@ -117,11 +116,13 @@ InvalidEmailFormat.args = {
 
 export const MaxEmailsExceeded = Template.bind({});
 MaxEmailsExceeded.args = {
-  ...Default.args,
+  ...DefaultMultiInput.args,
   inputType: 'email',
   value: 'john.doe@email.com, example@email.com, suzy.example@email.com',
   caption: 'Shows error when maximum number of emails is exceeded.',
   hideIcon: false,
+  autoSuggestionDisabled: false,
+  validationsDisabled: false,
   maxItems: 2,
   textStrings: {
     placeholder: 'Add email addresses and press Enter...',
@@ -131,11 +132,13 @@ MaxEmailsExceeded.args = {
 
 export const DuplicateEmail = Template.bind({});
 DuplicateEmail.args = {
-  ...Default.args,
+  ...DefaultMultiInput.args,
   inputType: 'email',
   value: 'john.doe@email.com, john.doe@email.com',
   caption: 'Shows error for duplicate email addresses',
   hideIcon: false,
+  autoSuggestionDisabled: false,
+  validationsDisabled: false,
   textStrings: {
     placeholder: 'Add email addresses and press Enter...',
     duplicateError: 'This email address has already been added.',
@@ -144,17 +147,32 @@ DuplicateEmail.args = {
 
 export const CustomEmailPattern = Template.bind({});
 CustomEmailPattern.args = {
-  ...Default.args,
+  ...DefaultMultiInput.args,
   inputType: 'email',
   value: 'user@example.com',
   caption: 'Uses a custom pattern to validate email addresses.',
   hideIcon: false,
+  autoSuggestionDisabled: false,
+  validationsDisabled: false,
   pattern: '[a-zA-Z0-9._%+-]+@example\\.com$',
   textStrings: {
     placeholder: 'Add email addresses and press Enter...',
     invalidFormatError:
       'Please enter a valid email address from example.com domain.',
   },
+};
+
+export const SuggestionValidationDisabled = Template.bind({});
+SuggestionValidationDisabled.storyName = 'Suggestions + Validations Disabled';
+SuggestionValidationDisabled.args = {
+  ...DefaultMultiInput.args,
+  inputType: 'email',
+  value: '',
+  autoSuggestionDisabled: true,
+  validationsDisabled: true,
+  caption:
+    'No validations, no suggestions. Whatever the user types is accepted and converted to a tag.',
+  maxItems: 10,
 };
 
 export const WithCustomIcon = (args) => html`
@@ -183,7 +201,7 @@ export const WithCustomIcon = (args) => html`
   </kyn-multi-input-field>
 `;
 WithCustomIcon.args = {
-  ...Default.args,
+  ...DefaultMultiInput.args,
   hideIcon: false,
   placeholder: `Add attachments and press 'Enter'…`,
 };
