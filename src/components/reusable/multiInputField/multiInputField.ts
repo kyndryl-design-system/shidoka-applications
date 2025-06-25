@@ -217,15 +217,21 @@ export class MultiInputField extends FormMixin(LitElement) {
       !this.validationsDisabled &&
       !isValidInput(item, this.inputType, this.pattern);
 
+    const isOverLimit = this.maxItems !== undefined && index >= this.maxItems;
+
+    const firstIndex = this._items.indexOf(item);
+    const isDuplicate = firstIndex !== index;
+
+    const tagColor = isInvalid || isOverLimit || isDuplicate ? 'red' : 'spruce';
+
     const showIcon =
       !this.hideIcon && (this._useIcon || this.inputType === 'email');
-
     const iconSvg = this._iconSvg || userIcon;
 
     return html`
       <kyn-tag
         class="indiv-tag"
-        tagColor=${isInvalid ? 'red' : 'spruce'}
+        tagColor=${tagColor}
         noTruncation
         ?clickable=${!this.readonly && !this.disabled}
         ?disabled=${this.disabled}
