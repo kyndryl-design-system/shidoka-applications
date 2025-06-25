@@ -228,7 +228,7 @@ export class BlockCodeView extends LitElement {
     return html`
       <kyn-button
         class="code-view__copy-button"
-        kind="tertiary"
+        kind="secondary"
         size="small"
         iconPosition="left"
         ?disabled=${this._copyState.copied}
