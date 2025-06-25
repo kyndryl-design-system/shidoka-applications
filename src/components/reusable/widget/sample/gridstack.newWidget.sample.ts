@@ -22,6 +22,7 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/d
 import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
 import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/split.svg';
 import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
+import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
 import '../../overflowMenu';
 import '../../button';
@@ -202,6 +203,12 @@ export class NewWidgetSample extends LitElement {
   showFileUploader = false;
 
   @state()
+  showBundles = false;
+
+  @state()
+  showCreateBundles = false;
+
+  @state()
   displayTwoPerRow = false;
 
   @state()
@@ -228,6 +235,10 @@ export class NewWidgetSample extends LitElement {
     const submitBtnText =
       this.selectedTabId === 'widgets' && this.showFilter
         ? 'Apply(1)'
+        : this.selectedTabId === 'admin' && this.showCreateBundles
+        ? 'Create'
+        : this.selectedTabId === 'admin' && this.showBundles
+        ? 'Create New Bundle'
         : (this.selectedTabId === 'dashboards' && this.addNewDashboard) ||
           (this.selectedTabId === 'settings' && this.showFileUploader)
         ? 'Save'
@@ -236,12 +247,17 @@ export class NewWidgetSample extends LitElement {
     const showSecondaryButton =
       (this.selectedTabId === 'widgets' && this.showFilter) ||
       (this.selectedTabId === 'dashboards' && this.addNewDashboard) ||
-      (this.selectedTabId === 'settings' && this.showFileUploader);
+      (this.selectedTabId === 'settings' && this.showFileUploader) ||
+      (this.selectedTabId === 'admin' && this.showBundles) ||
+      (this.selectedTabId === 'admin' && this.showCreateBundles);
 
     const secondaryButtonText =
       (this.selectedTabId === 'dashboards' && this.addNewDashboard) ||
       (this.selectedTabId === 'settings' && this.showFileUploader)
         ? 'Cancel'
+        : (this.selectedTabId === 'admin' && this.showBundles) ||
+          (this.selectedTabId === 'admin' && this.showCreateBundles)
+        ? 'Go Back'
         : 'Reset All';
 
     return html`
@@ -272,6 +288,7 @@ export class NewWidgetSample extends LitElement {
           <kyn-tab slot="tabs" id="widgets" selected> Widgets </kyn-tab>
           <kyn-tab slot="tabs" id="dashboards"> Dashboards </kyn-tab>
           <kyn-tab slot="tabs" id="settings"> Settings </kyn-tab>
+          <kyn-tab slot="tabs" id="admin"> Admin </kyn-tab>
           <kyn-tab-panel tabId="widgets" visible>
             ${this.showFilter
               ? this.getFilterSortTemplate()
@@ -415,6 +432,15 @@ export class NewWidgetSample extends LitElement {
               </div>
             </div>
           </kyn-tab-panel>
+          <kyn-tab-panel tabId="admin">
+            <div class="dashboard-wrapper">
+              ${this.showCreateBundles
+                ? this.getCreateNewBundleTemplate()
+                : this.showBundles
+                ? this.getBundleTemplate()
+                : this.getAdminTemplate()}
+            </div>
+          </kyn-tab-panel>
         </kyn-tabs>
       </kyn-side-drawer>
       <br />
@@ -482,12 +508,100 @@ export class NewWidgetSample extends LitElement {
     }, 0);
   }
 
-  private getWidgetTemplate(item: any, contentShown = true) {
+  private getCreateNewBundleTemplate() {
+    return html`<kyn-page-title
+        type="tertiary"
+        pageTitle="Create and Edit New Bundles"
+        subTitle="Assign a name and Widgets of the bundle"
+      >
+      </kyn-page-title>
+      <div class="new-dashboard">
+        <div class="bg_title">Create a Bundle Name</div>
+        <kyn-text-input
+          type="text"
+          size="md"
+          name="textInput"
+          value=""
+          placeholder="Enter Bundle Name"
+          caption=""
+          invalidtext=""
+          label=""
+        >
+        </kyn-text-input>
+        <div class="bg_title" style="margin-bottom: 32px;">
+          Select the Widgets that are part of this bundle
+        </div>
+        <div>
+          <div class="dashboard-wrapper">
+            <div class="content-content">
+              <kyn-button
+                kind="outline"
+                size="small"
+                description="list"
+                @on-click=${() => this.toggleList()}
+              >
+                <span style="display:flex;" slot="icon"
+                  >${unsafeSVG(listIcon)}</span
+                >
+              </kyn-button>
+              <div class="content-items">
+                <kyn-search
+                  name="search"
+                  label="Search..."
+                  value=""
+                  size="sm"
+                  expandable
+                  expandablesearchbtndescription="Expandable search button"
+                ></kyn-search>
+                <kyn-button
+                  slot="anchor"
+                  kind="outline"
+                  size="small"
+                  @on-click=${(e: any) => this.handleFilterClick(e)}
+                >
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(filterIcon)}</span
+                  ></kyn-button
+                >
+              </div>
+            </div>
+          </div>
+          ${this.displayTwoPerRow
+            ? this.handleListDisplay(this.widgetItems, 2).map(
+                (row) => html`
+                  <div class="widget-row">
+                    ${row.map((item: any) =>
+                      this.getWidgetTemplate(item, false, 'admin')
+                    )}
+                  </div>
+                `
+              )
+            : html`
+                <div class="widget-column">
+                  ${this.widgetItems.map((item) => {
+                    return this.getWidgetTemplate(item, true, 'admin');
+                  })}
+                </div>
+              `}
+        </div>
+      </div>`;
+  }
+
+  private getWidgetTemplate(
+    item: any,
+    contentShown = true,
+    type = 'dashboard'
+  ) {
     return html`
-      <div class="grid-stack-item new-widget" gs-id="${item.id}">
+      <div
+        class="grid-stack-item ${type === 'dashboard' ? 'new-widget' : ''}"
+        gs-id="${item.id}"
+      >
         <div class="grid-stack-item-content">
           <kyn-widget widgetTitle=${item.name} subTitle="">
-            <kyn-widget-drag-handle></kyn-widget-drag-handle>
+            ${type === 'dashboard'
+              ? html` <kyn-widget-drag-handle></kyn-widget-drag-handle>`
+              : null}
             <kyn-overflow-menu
               class="overflowmenu_hidden"
               slot="actions"
@@ -498,7 +612,11 @@ export class NewWidgetSample extends LitElement {
                 >Delete</kyn-overflow-menu-item
               >
             </kyn-overflow-menu>
-            <div class="test widget-content">
+            <div
+              class="test widget-content ${contentShown
+                ? 'widget-content-wdDescription'
+                : ''}"
+            >
               <div slot="icon">${unsafeSVG(item.iconName)}</div>
               <div
                 class="widget-content-description ${!contentShown
@@ -556,6 +674,82 @@ export class NewWidgetSample extends LitElement {
         </div>
       </div>
     </div>`;
+  }
+
+  private getAdminTemplate() {
+    return html`<kyn-page-title
+        type="tertiary"
+        pageTitle="Administer Widgets"
+        subTitle="This is a place to perform additional tasks on the dashboard"
+      >
+      </kyn-page-title>
+      <kyn-button
+        style="width:100%"
+        kind="tertiary"
+        @on-click=${this.handleBundleClick}
+      >
+        Bundles
+        <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
+      </kyn-button>`;
+  }
+
+  private getBundleTemplate() {
+    return html`
+      <kyn-page-title
+        type="tertiary"
+        pageTitle="Bundles"
+        subTitle="This is a place to perform additional tasks on the dashboard"
+      >
+      </kyn-page-title>
+      <div class="content-wrapper">
+        ${Array(3)
+          .fill(null)
+          .map((_, i) => {
+            return html`
+              <kyn-card
+                type="normal"
+                role="article"
+                aria-label="card content"
+                style="width:100%"
+              >
+                <div class="content-container">
+                  <div class="content-items">
+                    <div class="content-items">Bundle ${i + 1}</div>
+                  </div>
+                  <div class="content-item">
+                    <kyn-modal
+                      size="auto"
+                      titletext="Delete Dashboard"
+                      labeltext=""
+                      oktext="OK"
+                      canceltext="Cancel"
+                      closetext="Close"
+                      destructive
+                      secondarybuttontext="Secondary"
+                    >
+                      <kyn-button slot="anchor" kind="ghost" size="small">
+                        <span slot="icon">${unsafeSVG(deleteIcon)}</span>
+                      </kyn-button>
+
+                      Are you sure you want to delete "Bundle ${i + 1}"?
+                    </kyn-modal>
+                    <kyn-button
+                      kind="ghost"
+                      size="small"
+                      description="edit"
+                      @on-click=${(e: any) => action(e.type)(e)}
+                    >
+                      <span style="display:flex;" slot="icon"
+                        >${unsafeSVG(editIcon)}</span
+                      >
+                    </kyn-button>
+                  </div>
+                </div>
+              </kyn-card>
+            `;
+          })}
+      </div>
+    `;
   }
 
   private getDashboardTemplate() {
@@ -691,6 +885,8 @@ export class NewWidgetSample extends LitElement {
       this.showFilter = false;
       this.addNewDashboard = false;
       this.showFileUploader = false;
+      this.showBundles = false;
+      this.showCreateBundles = false;
       action(e.type)(e);
     };
   }
@@ -699,7 +895,10 @@ export class NewWidgetSample extends LitElement {
     return (
       !this.selectedTabId ||
       (this.selectedTabId === 'widgets' && !this.showFilter) ||
-      (this.selectedTabId === 'settings' && !this.showFileUploader)
+      (this.selectedTabId === 'settings' && !this.showFileUploader) ||
+      (this.selectedTabId === 'admin' &&
+        !this.showBundles &&
+        !this.showCreateBundles)
     );
   }
 
@@ -715,12 +914,28 @@ export class NewWidgetSample extends LitElement {
         case 'settings':
           this.showFileUploader = !this.showFileUploader;
           break;
+        case 'admin':
+          if (returnValue === 'ok') {
+            this.showCreateBundles = !this.showCreateBundles;
+            this.showBundles = !this.showBundles;
+          }
+          if (returnValue === 'secondary') {
+            if (this.showCreateBundles) {
+              this.showCreateBundles = false;
+              this.showBundles = true;
+            } else {
+              this.showBundles = !this.showBundles;
+            }
+          }
+          break;
       }
       return false;
     } else {
       this.showFilter = false;
       this.addNewDashboard = false;
       this.showFileUploader = false;
+      this.showBundles = false;
+      this.showCreateBundles = false;
       return true;
     }
   }
@@ -750,6 +965,11 @@ export class NewWidgetSample extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+  }
+
+  private handleBundleClick(e: any) {
+    this.showBundles = !this.showBundles;
+    action(e.type)(e);
   }
 }
 
