@@ -24,6 +24,7 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
  * @slot unnamed - Slot for tag icon.
  * @fires on-input – emits { value, origEvent } on every keystroke
  * @fires on-change – emits string[] after tags are added/removed
+ * @prop {string[]} customSuggestions - Optional array of custom suggestions to use instead of the default mock data
  */
 @customElement('kyn-multi-input-field')
 export class MultiInputField extends FormMixin(LitElement) {
@@ -65,6 +66,10 @@ export class MultiInputField extends FormMixin(LitElement) {
   @property({ type: Boolean })
   autoSuggestionDisabled = false;
 
+  /** Custom suggestions data to override default mock data for type-ahead functionality. */
+  @property({ type: Array })
+  customSuggestions?: string[];
+
   /** Maximum number of tags allowed. */
   @property({ type: Number })
   maxItems?: number;
@@ -76,14 +81,6 @@ export class MultiInputField extends FormMixin(LitElement) {
   /** Customizable text strings. */
   @property({ type: Object })
   textStrings = defaultTextStrings;
-
-  /** Custom override error message. */
-  @property({ type: String })
-  override invalidText = '';
-
-  /** Force the component into error state (for stories). */
-  @property({ type: Boolean, reflect: true })
-  invalid = false;
 
   /** Disable all validations. */
   @property({ type: Boolean })
@@ -333,7 +330,7 @@ export class MultiInputField extends FormMixin(LitElement) {
                 <span role="img" class="error-icon" aria-label="error">
                   ${unsafeSVG(errorIcon)}
                 </span>
-                ${this.invalidText || this._validationMessage}
+                ${this._validationMessage}
               </div>`
             : null}
         </div>
@@ -486,10 +483,10 @@ export class MultiInputField extends FormMixin(LitElement) {
       return [];
     }
 
+    const dataSource = this.customSuggestions || MultiInputField._mockDb;
+
     const lower = query.toLowerCase();
-    return MultiInputField._mockDb.filter((email) =>
-      email.toLowerCase().includes(lower)
-    );
+    return dataSource.filter((item) => item.toLowerCase().includes(lower));
   }
 
   private _selectSuggestion(suggestion: string) {
@@ -783,10 +780,8 @@ export class MultiInputField extends FormMixin(LitElement) {
       this._items,
       this.required,
       this.maxItems,
-      this.invalidText,
       this._textStrings,
       this.validationsDisabled,
-      this.invalid,
       this.inputType,
       this.pattern
     );

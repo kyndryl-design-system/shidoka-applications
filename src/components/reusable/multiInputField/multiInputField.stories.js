@@ -12,9 +12,7 @@ export default {
   title: 'Components/Multi Input Field',
   component: 'kyn-multi-input-field',
   argTypes: {
-    invalidText: { control: 'text' },
     inputType: { control: 'select', options: ['email', 'default'] },
-    invalid: { control: 'boolean' },
     autoSuggestionDisabled: { control: 'boolean' },
     label: { control: 'text' },
     caption: { control: 'text' },
@@ -29,6 +27,7 @@ export default {
     maxItems: { control: 'number' },
     pattern: { control: 'text' },
     textStrings: { control: 'object' },
+    customSuggestions: { control: 'array' },
     value: {
       control: 'text',
       table: { category: 'attributes' },
@@ -43,11 +42,10 @@ const Template = (args) => html`
   <kyn-multi-input-field
     .value=${args.value}
     .inputType=${args.inputType}
-    .invalidText=${args.invalidText}
     .textStrings=${args.textStrings}
+    .customSuggestions=${args.customSuggestions}
     ?autoSuggestionDisabled=${args.autoSuggestionDisabled}
     ?validationsDisabled=${args.validationsDisabled}
-    ?invalid=${args.invalid}
     label=${args.label}
     caption=${args.caption}
     ?required=${args.required}
@@ -69,8 +67,6 @@ export const DefaultMultiInput = Template.bind({});
 DefaultMultiInput.args = {
   value: 'Tag 1',
   inputType: 'default',
-  invalidText: '',
-  invalid: false,
   label: 'Label',
   caption: '',
   required: false,
@@ -93,10 +89,23 @@ export const EmailMultiInput = Template.bind({});
 EmailMultiInput.args = {
   ...DefaultMultiInput.args,
   inputType: 'email',
-  value: 'email@example.com',
+  value: 'email@example.com, not-an-email',
   caption:
     'Validates email addresses and provides suggestions based on user input.',
+  validationsDisabled: false,
+  autoSuggestionDisabled: false,
   maxItems: 10,
+  customSuggestions: [
+    'alice@example.com',
+    'bob.smith@example.com',
+    'charlie@example.org',
+    'someone@acme.com',
+    'evan@example.net',
+    'frank@example.io',
+    'example@email.com',
+    'john.doe@email.com',
+    'suzy.example@email.com',
+  ],
 };
 
 export const InvalidEmailFormat = Template.bind({});
@@ -155,6 +164,13 @@ CustomEmailPattern.args = {
   autoSuggestionDisabled: false,
   validationsDisabled: false,
   pattern: '[a-zA-Z0-9._%+-]+@example\\.com$',
+  customSuggestions: [
+    'test@example.com',
+    'dev@example.com',
+    'support@example.com',
+    'sales@example.com',
+    'info@example.com',
+  ],
   textStrings: {
     placeholder: 'Add email addresses and press Enter...',
     invalidFormatError:
@@ -175,15 +191,33 @@ SuggestionValidationDisabled.args = {
   maxItems: 10,
 };
 
+export const CustomSuggestions = Template.bind({});
+CustomSuggestions.args = {
+  ...DefaultMultiInput.args,
+  inputType: 'email',
+  value: '',
+  caption:
+    'Populate suggestions with data provided through the customSuggestions prop.',
+  hideIcon: false,
+  autoSuggestionDisabled: false,
+  validationsDisabled: false,
+  customSuggestions: [
+    'custom1@company.com',
+    'custom2@company.com',
+    'custom3@company.com',
+    'anotheruser@organization.net',
+    'specialuser@company.org',
+  ],
+};
+
 export const WithCustomIcon = (args) => html`
   <kyn-multi-input-field
     .value=${args.value}
     .inputType=${args.inputType}
-    .invalidText=${args.invalidText}
     .textStrings=${args.textStrings}
+    .customSuggestions=${args.customSuggestions}
     ?autoSuggestionDisabled=${args.autoSuggestionDisabled}
     ?validationsDisabled=${args.validationsDisabled}
-    ?invalid=${args.invalid}
     label=${args.label}
     caption=${args.caption}
     ?required=${args.required}

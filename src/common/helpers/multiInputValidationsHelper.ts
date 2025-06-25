@@ -41,7 +41,6 @@ const validateInputTags = (
   inputType: string,
   pattern?: string,
   maxItems?: number,
-  invalidText?: string,
   textStrings?: any,
   validationsDisabled?: boolean
 ): { isValid: boolean; validationState: any; validationMessage: string } => {
@@ -70,19 +69,19 @@ const validateInputTags = (
 
   if (isEmptyButRequired) {
     state.valueMissing = true;
-    msg = invalidText || _textStrings.requiredError;
+    msg = _textStrings.requiredError;
     hasError = true;
   } else if (hasInvalidTags) {
     state.customError = true;
-    msg = invalidText || _textStrings.invalidFormatError;
+    msg = _textStrings.invalidFormatError;
     hasError = true;
   } else if (isMaxExceeded) {
     state.customError = true;
-    msg = invalidText || _textStrings.maxExceededError;
+    msg = _textStrings.maxExceededError;
     hasError = true;
   } else if (hasDuplicates) {
     state.customError = true;
-    msg = invalidText || _textStrings.duplicateError;
+    msg = _textStrings.duplicateError;
     hasError = true;
   }
 
@@ -113,10 +112,8 @@ export const validateAllTags = (
   inputs: string[],
   required: boolean,
   maxItems?: number,
-  invalidText?: string,
   textStrings?: Partial<typeof defaultTextStrings>,
   validationsDisabled?: boolean,
-  forceInvalid?: boolean,
   inputType = 'default',
   pattern?: string
 ): { state: any; message: string; hasError: boolean } => {
@@ -133,26 +130,20 @@ export const validateAllTags = (
     return { state, message: '', hasError: false };
   }
 
-  if (forceInvalid) {
-    state.customError = true;
-    message = invalidText || mergedTextStrings.invalidFormatError;
+  const { isValid, validationState, validationMessage } = validateInputTags(
+    inputs,
+    required,
+    inputType,
+    pattern,
+    maxItems,
+    mergedTextStrings,
+    validationsDisabled
+  );
+
+  if (!isValid) {
+    state = { ...state, ...validationState };
+    message = validationMessage;
     hasError = true;
-  } else {
-    const { isValid, validationState, validationMessage } = validateInputTags(
-      inputs,
-      required,
-      inputType,
-      pattern,
-      maxItems,
-      invalidText,
-      mergedTextStrings,
-      validationsDisabled
-    );
-    if (!isValid) {
-      state = { ...state, ...validationState };
-      message = validationMessage;
-      hasError = true;
-    }
   }
 
   return { state, message, hasError };
