@@ -6,6 +6,7 @@ import { defaultTextStrings } from '../../../common/helpers/multiInputValidation
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 
 export default {
   title: 'Components/Multi Input Field',
@@ -23,6 +24,7 @@ export default {
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     hideLabel: { control: 'boolean' },
+    hideIcon: { control: 'boolean' },
     name: { control: 'text' },
     maxItems: { control: 'number' },
     pattern: { control: 'text' },
@@ -53,6 +55,7 @@ const Template = (args) => html`
     ?disabled=${args.disabled}
     ?readonly=${args.readonly}
     ?hideLabel=${args.hideLabel}
+    ?hideIcon=${args.hideIcon}
     name=${args.name}
     pattern=${ifDefined(args.pattern)}
     maxItems=${ifDefined(args.maxItems)}
@@ -64,7 +67,7 @@ const Template = (args) => html`
 
 export const Default = Template.bind({});
 Default.args = {
-  value: '',
+  value: 'Tag 1',
   inputType: 'default',
   invalidText: '',
   invalid: false,
@@ -72,11 +75,12 @@ Default.args = {
   caption: 'Automatic suggestions and validations are enabled.',
   required: false,
   validationsDisabled: false,
-  placeholder: `Add email addresses and press 'Enter'...`,
+  placeholder: `Add items and press 'Enter'...`,
   disabled: false,
   autoSuggestionDisabled: false,
   readonly: false,
   hideLabel: false,
+  hideIcon: true,
   name: 'invite',
   pattern: undefined,
   maxItems: undefined,
@@ -90,6 +94,7 @@ SuggestionValidationDisabled.storyName = 'Suggestions + Validations Disabled';
 SuggestionValidationDisabled.args = {
   ...Default.args,
   inputType: 'email',
+  value: '',
   autoSuggestionDisabled: true,
   validationsDisabled: true,
   caption:
@@ -101,9 +106,11 @@ export const InvalidEmailFormat = Template.bind({});
 InvalidEmailFormat.args = {
   ...Default.args,
   inputType: 'email',
-  caption: 'Shows custom error message for invalid email format.',
   value: 'not-an-email',
+  caption: 'Shows custom error message for invalid email format.',
+  hideIcon: false,
   textStrings: {
+    placeholder: 'Add email addresses and press Enter...',
     invalidFormatError: 'Please enter a valid email address format.',
   },
 };
@@ -112,10 +119,12 @@ export const MaxEmailsExceeded = Template.bind({});
 MaxEmailsExceeded.args = {
   ...Default.args,
   inputType: 'email',
-  caption: 'Shows error when maximum number of emails is exceeded.',
   value: 'john.doe@email.com, example@email.com, suzy.example@email.com',
+  caption: 'Shows error when maximum number of emails is exceeded.',
+  hideIcon: false,
   maxItems: 2,
   textStrings: {
+    placeholder: 'Add email addresses and press Enter...',
     maxExceededError: 'You cannot add more than 2 email addresses.',
   },
 };
@@ -124,9 +133,11 @@ export const DuplicateEmail = Template.bind({});
 DuplicateEmail.args = {
   ...Default.args,
   inputType: 'email',
-  caption: 'Shows error for duplicate email addresses',
   value: 'john.doe@email.com, john.doe@email.com',
+  caption: 'Shows error for duplicate email addresses',
+  hideIcon: false,
   textStrings: {
+    placeholder: 'Add email addresses and press Enter...',
     duplicateError: 'This email address has already been added.',
   },
 };
@@ -135,11 +146,44 @@ export const CustomEmailPattern = Template.bind({});
 CustomEmailPattern.args = {
   ...Default.args,
   inputType: 'email',
-  caption: 'Uses a custom pattern to validate email addresses.',
   value: 'user@example.com',
+  caption: 'Uses a custom pattern to validate email addresses.',
+  hideIcon: false,
   pattern: '[a-zA-Z0-9._%+-]+@example\\.com$',
   textStrings: {
+    placeholder: 'Add email addresses and press Enter...',
     invalidFormatError:
       'Please enter a valid email address from example.com domain.',
   },
+};
+
+export const WithCustomIcon = (args) => html`
+  <kyn-multi-input-field
+    .value=${args.value}
+    .inputType=${args.inputType}
+    .invalidText=${args.invalidText}
+    .textStrings=${args.textStrings}
+    ?autoSuggestionDisabled=${args.autoSuggestionDisabled}
+    ?validationsDisabled=${args.validationsDisabled}
+    ?invalid=${args.invalid}
+    label=${args.label}
+    caption=${args.caption}
+    ?required=${args.required}
+    placeholder=${args.placeholder}
+    ?disabled=${args.disabled}
+    ?readonly=${args.readonly}
+    ?hideLabel=${args.hideLabel}
+    ?hideIcon=${args.hideIcon}
+    name=${args.name}
+    pattern=${ifDefined(args.pattern)}
+    maxItems=${ifDefined(args.maxItems)}
+    @on-change=${(e) => action('on-change')(e.detail)}
+  >
+    ${unsafeSVG(checkmarkIcon)}
+  </kyn-multi-input-field>
+`;
+WithCustomIcon.args = {
+  ...Default.args,
+  hideIcon: false,
+  placeholder: `Add attachments and press 'Enter'…`,
 };

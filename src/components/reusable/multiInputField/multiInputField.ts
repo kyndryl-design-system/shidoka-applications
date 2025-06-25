@@ -148,6 +148,10 @@ export class MultiInputField extends FormMixin(LitElement) {
   @state()
   private _validationMessage = '';
 
+  /** Suppress any tag icon (even on email). */
+  @property({ type: Boolean })
+  hideIcon = false;
+
   /** Store the slotted icon SVG string.
    * @internal
    */
@@ -213,7 +217,10 @@ export class MultiInputField extends FormMixin(LitElement) {
       !this.validationsDisabled &&
       !isValidInput(item, this.inputType, this.pattern);
 
-    const showIcon = this._useIcon || this.inputType === 'email';
+    const showIcon =
+      !this.hideIcon && (this._useIcon || this.inputType === 'email');
+
+    const iconSvg = this._iconSvg || userIcon;
 
     return html`
       <kyn-tag
@@ -225,7 +232,7 @@ export class MultiInputField extends FormMixin(LitElement) {
         ?readonly=${this.readonly}
         @on-close=${() => this.removeAt(index)}
       >
-        ${showIcon ? html`${unsafeSVG(this._iconSvg || userIcon)}` : ''}
+        ${showIcon ? html`${unsafeSVG(iconSvg)}` : ''}
         <span>${item}</span>
       </kyn-tag>
     `;
@@ -250,6 +257,7 @@ export class MultiInputField extends FormMixin(LitElement) {
           this._handleBlur();
         }}
         @input=${(e: InputEvent) => this.handleInput(e)}
+        @paste=${(e: ClipboardEvent) => this.handlePaste(e)}
         @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
       />
     `;
@@ -340,13 +348,11 @@ export class MultiInputField extends FormMixin(LitElement) {
       'is-readonly': this.readonly,
       'error-state': error,
     };
-
     const validCount = this.validationsDisabled
       ? this._items.length
       : this._items.filter((item: string) =>
           isValidInput(item, this.inputType, this.pattern)
         ).length;
-
     const hasValidItem = this._items.some((item) =>
       isValidInput(item, this.inputType, this.pattern)
     );
@@ -405,30 +411,20 @@ export class MultiInputField extends FormMixin(LitElement) {
       'slot:not([name])'
     ) as HTMLSlotElement;
     if (slot) {
-      const nodes = slot.assignedNodes();
-      if (nodes.length > 0 && nodes[0].nodeType !== Node.TEXT_NODE) {
-        this._useIcon = true;
+      const assigned = slot.assignedNodes({ flatten: true });
+      const iconNode = assigned.find(
+        (n) => n.nodeType === Node.ELEMENT_NODE
+      ) as Element | undefined;
 
-        const iconElement = nodes[0] as HTMLElement;
-        if (
-          iconElement.innerHTML &&
-          iconElement.innerHTML.trim().startsWith('<svg')
-        ) {
-          this._iconSvg = iconElement.innerHTML;
-        } else if (
-          iconElement.outerHTML &&
-          iconElement.outerHTML.trim().startsWith('<svg')
-        ) {
-          this._iconSvg = iconElement.outerHTML;
-        } else {
-          this._iconSvg = this.inputType === 'email' ? userIcon : '';
-        }
+      if (iconNode && iconNode.outerHTML.trim().startsWith('<svg')) {
+        this._useIcon = true;
+        this._iconSvg = iconNode.outerHTML;
+      } else if (this.inputType === 'email') {
+        this._useIcon = true;
+        this._iconSvg = userIcon;
       } else {
         this._useIcon = false;
-
-        if (this.inputType === 'email') {
-          this._iconSvg = userIcon;
-        }
+        this._iconSvg = '';
       }
     }
 
@@ -630,6 +626,73 @@ export class MultiInputField extends FormMixin(LitElement) {
     }
 
     this.handleTagCreation(e);
+  }
+
+  private handlePaste(e: ClipboardEvent): void {
+    if (this.readonly || this.disabled) return;
+
+    const clipboardData = e.clipboardData;
+
+    if (!clipboardData) return;
+
+    const pastedText = clipboardData.getData('text');
+
+    if (pastedText.includes(',')) {
+      e.preventDefault();
+
+      const currentValue = this.inputEl.value;
+
+      const valueToProcess = currentValue
+        ? currentValue + (currentValue.endsWith(',') ? ' ' : ', ') + pastedText
+        : pastedText;
+
+      const result = processTagsFromValue(
+        valueToProcess,
+        this._items,
+        this.maxItems,
+        this.validationsDisabled,
+        this._textStrings,
+        this.inputType,
+        this.pattern
+      );
+
+      if (result.hasError) {
+        const state = {
+          ...this._internals.validity,
+          ...result.validationState,
+        };
+        this._validationMessage = result.validationMessage;
+        this._internals.setValidity(
+          state,
+          result.validationMessage,
+          this.inputEl
+        );
+        return;
+      }
+
+      if (result.newItems.length > 0) {
+        this._items = [...this._items, ...result.newItems];
+
+        const invalidSet =
+          this._invalids instanceof Set
+            ? new Set(this._invalids)
+            : new Set<number>(this._invalids as unknown as number[]);
+
+        for (const idx of result.invalidIndexes) {
+          invalidSet.add(idx);
+        }
+
+        this._invalids = invalidSet;
+
+        this._validateAllTags();
+
+        this.inputEl.value = '';
+
+        this.dispatchEvent(
+          new CustomEvent<string[]>('on-change', { detail: this._items })
+        );
+      }
+    }
   }
 
   private createPositionMirror(
