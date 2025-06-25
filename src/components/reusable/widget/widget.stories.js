@@ -66,6 +66,7 @@ const args = {
   disabled: false,
   dragActive: false,
   selectable: false,
+  selected: false,
 };
 
 export const Widget = {
@@ -80,6 +81,7 @@ export const Widget = {
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
+            ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example" style="flex-direction: column;">
@@ -119,6 +121,7 @@ export const SelectableWidget = {
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
+            ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example" style="flex-direction: column;">
@@ -154,6 +157,7 @@ export const WithActions = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
             ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
@@ -212,6 +216,9 @@ export const WithFooter = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example" style="flex-direction: column;">
               <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
@@ -250,6 +257,7 @@ export const WithFooter = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
             ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
@@ -302,12 +310,10 @@ export const WithFooter = {
 export const WithChart = {
   args,
   render: (args) => {
-    const chartSelected = args.selected || args.disabled;
     return html`
       <div style="max-width: 500px;">
         <kyn-widget ?disabled=${args.disabled} ?dragActive=${args.dragActive}>
           <kd-chart
-            style="pointer-events: ${chartSelected ? 'none' : 'auto'}"
             type="bar"
             chartTitle=${args.widgetTitle}
             description=${args.subTitle}
