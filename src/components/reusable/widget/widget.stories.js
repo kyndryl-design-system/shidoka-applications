@@ -65,7 +65,7 @@ const args = {
   subTitle: 'Subtitle',
   disabled: false,
   dragActive: false,
-  selected: false,
+  selectable: false,
 };
 
 export const Widget = {
@@ -79,7 +79,46 @@ export const Widget = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
-            ?selected=${args.selected}
+            ?selectable=${args.selectable}
+            @on-select=${(e) => action(e.type)(e)}
+          >
+            <div class="example" style="flex-direction: column;">
+              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+                ${unsafeSVG(lgCube)}
+              </div>
+              <h3
+                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
+              >
+                Expansion Slot
+              </h3>
+              <p
+                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
+              >
+                Swap this with your own component.
+              </p>
+            </div>
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const SelectableWidget = {
+  args: {
+    ...args,
+    selectable: true,
+  },
+  render: (args) => {
+    return html`
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
             @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example" style="flex-direction: column;">
@@ -173,8 +212,6 @@ export const WithFooter = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
-            ?selected=${args.selected}
-            @on-select=${(e) => action(e.type)(e)}
           >
             <div class="example" style="flex-direction: column;">
               <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
@@ -268,14 +305,7 @@ export const WithChart = {
     const chartSelected = args.selected || args.disabled;
     return html`
       <div style="max-width: 500px;">
-        <kyn-widget
-          ?disabled=${args.disabled}
-          ?dragActive=${args.dragActive}
-          ?selected=${args.selected}
-          @on-select=${(e) => {
-            action(e.type)(e);
-          }}
-        >
+        <kyn-widget ?disabled=${args.disabled} ?dragActive=${args.dragActive}>
           <kd-chart
             style="pointer-events: ${chartSelected ? 'none' : 'auto'}"
             type="bar"

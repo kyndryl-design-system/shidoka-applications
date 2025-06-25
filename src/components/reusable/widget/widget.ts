@@ -37,7 +37,7 @@ export class Widget extends LitElement {
 
   /** Widget selectable state. */
   @property({ type: Boolean })
-  selectable = true;
+  selectable = false;
 
   /** Widget selected state. */
   @property({ type: Boolean })
@@ -65,7 +65,6 @@ export class Widget extends LitElement {
         aria-disabled=${this.disabled}
         @click=${this._handleBodyClick}
         @keydown=${this._handleKeyDown}
-        tabindex=${this.disabled ? '-1' : '0'}
       >
         <div class="widget-header">
           <slot name="draghandle"></slot>
