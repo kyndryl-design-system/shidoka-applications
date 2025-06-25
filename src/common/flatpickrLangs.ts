@@ -63,8 +63,3 @@ export const langsArray = [
 ] as const;
 
 export type SupportedLocale = (typeof langsArray)[number];
-
-export function isSupportedLocale(locale: string): boolean {
-  const baseLocale = locale.split('-')[0].toLowerCase();
-  return langsArray.includes(baseLocale as SupportedLocale);
-}
