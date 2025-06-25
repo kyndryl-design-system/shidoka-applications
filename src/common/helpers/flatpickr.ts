@@ -772,9 +772,209 @@ export async function loadLocale(locale: string): Promise<Partial<Locale>> {
   }
   try {
     const baseLocale = locale.split('-')[0].toLowerCase();
-    const module = await import(`flatpickr/dist/l10n/${baseLocale}.js`);
-    const localeConfig =
-      module[baseLocale] ?? module.default?.[baseLocale] ?? module.default;
+
+    let module;
+
+    switch (baseLocale) {
+      case 'ar':
+        module = await import('flatpickr/dist/l10n/ar.js');
+        break;
+      case 'at':
+        module = await import('flatpickr/dist/l10n/at.js');
+        break;
+      case 'az':
+        module = await import('flatpickr/dist/l10n/az.js');
+        break;
+      case 'be':
+        module = await import('flatpickr/dist/l10n/be.js');
+        break;
+      case 'bg':
+        module = await import('flatpickr/dist/l10n/bg.js');
+        break;
+      case 'bn':
+        module = await import('flatpickr/dist/l10n/bn.js');
+        break;
+      case 'bs':
+        module = await import('flatpickr/dist/l10n/bs.js');
+        break;
+      case 'cat':
+        module = await import('flatpickr/dist/l10n/cat.js');
+        break;
+      case 'cs':
+        module = await import('flatpickr/dist/l10n/cs.js');
+        break;
+      case 'cy':
+        module = await import('flatpickr/dist/l10n/cy.js');
+        break;
+      case 'da':
+        module = await import('flatpickr/dist/l10n/da.js');
+        break;
+      case 'de':
+        module = await import('flatpickr/dist/l10n/de.js');
+        break;
+      case 'eo':
+        module = await import('flatpickr/dist/l10n/eo.js');
+        break;
+      case 'es':
+        module = await import('flatpickr/dist/l10n/es.js');
+        break;
+      case 'et':
+        module = await import('flatpickr/dist/l10n/et.js');
+        break;
+      case 'fa':
+        module = await import('flatpickr/dist/l10n/fa.js');
+        break;
+      case 'fi':
+        module = await import('flatpickr/dist/l10n/fi.js');
+        break;
+      case 'fo':
+        module = await import('flatpickr/dist/l10n/fo.js');
+        break;
+      case 'fr':
+        module = await import('flatpickr/dist/l10n/fr.js');
+        break;
+      case 'ga':
+        module = await import('flatpickr/dist/l10n/ga.js');
+        break;
+      case 'gr':
+        module = await import('flatpickr/dist/l10n/gr.js');
+        break;
+      case 'he':
+        module = await import('flatpickr/dist/l10n/he.js');
+        break;
+      case 'hi':
+        module = await import('flatpickr/dist/l10n/hi.js');
+        break;
+      case 'hr':
+        module = await import('flatpickr/dist/l10n/hr.js');
+        break;
+      case 'hu':
+        module = await import('flatpickr/dist/l10n/hu.js');
+        break;
+      case 'id':
+        module = await import('flatpickr/dist/l10n/id.js');
+        break;
+      case 'is':
+        module = await import('flatpickr/dist/l10n/is.js');
+        break;
+      case 'it':
+        module = await import('flatpickr/dist/l10n/it.js');
+        break;
+      case 'ja':
+        module = await import('flatpickr/dist/l10n/ja.js');
+        break;
+      case 'ka':
+        module = await import('flatpickr/dist/l10n/ka.js');
+        break;
+      case 'km':
+        module = await import('flatpickr/dist/l10n/km.js');
+        break;
+      case 'ko':
+        module = await import('flatpickr/dist/l10n/ko.js');
+        break;
+      case 'kz':
+        module = await import('flatpickr/dist/l10n/kz.js');
+        break;
+      case 'lt':
+        module = await import('flatpickr/dist/l10n/lt.js');
+        break;
+      case 'lv':
+        module = await import('flatpickr/dist/l10n/lv.js');
+        break;
+      case 'mk':
+        module = await import('flatpickr/dist/l10n/mk.js');
+        break;
+      case 'mn':
+        module = await import('flatpickr/dist/l10n/mn.js');
+        break;
+      case 'ms':
+        module = await import('flatpickr/dist/l10n/ms.js');
+        break;
+      case 'my':
+        module = await import('flatpickr/dist/l10n/my.js');
+        break;
+      case 'nl':
+        module = await import('flatpickr/dist/l10n/nl.js');
+        break;
+      case 'no':
+        module = await import('flatpickr/dist/l10n/no.js');
+        break;
+      case 'pa':
+        module = await import('flatpickr/dist/l10n/pa.js');
+        break;
+      case 'pl':
+        module = await import('flatpickr/dist/l10n/pl.js');
+        break;
+      case 'pt':
+        module = await import('flatpickr/dist/l10n/pt.js');
+        break;
+      case 'ro':
+        module = await import('flatpickr/dist/l10n/ro.js');
+        break;
+      case 'ru':
+        module = await import('flatpickr/dist/l10n/ru.js');
+        break;
+      case 'si':
+        module = await import('flatpickr/dist/l10n/si.js');
+        break;
+      case 'sk':
+        module = await import('flatpickr/dist/l10n/sk.js');
+        break;
+      case 'sl':
+        module = await import('flatpickr/dist/l10n/sl.js');
+        break;
+      case 'sq':
+        module = await import('flatpickr/dist/l10n/sq.js');
+        break;
+      case 'sr':
+        module = await import('flatpickr/dist/l10n/sr.js');
+        break;
+      case 'sv':
+        module = await import('flatpickr/dist/l10n/sv.js');
+        break;
+      case 'th':
+        module = await import('flatpickr/dist/l10n/th.js');
+        break;
+      case 'tr':
+        module = await import('flatpickr/dist/l10n/tr.js');
+        break;
+      case 'uk':
+        module = await import('flatpickr/dist/l10n/uk.js');
+        break;
+      case 'uz':
+        module = await import('flatpickr/dist/l10n/uz.js');
+        break;
+      case 'uz_latn':
+        module = await import('flatpickr/dist/l10n/uz_latn.js');
+        break;
+      case 'vn':
+        module = await import('flatpickr/dist/l10n/vn.js');
+        break;
+      case 'zh_tw':
+        module = await import('flatpickr/dist/l10n/zh-tw.js');
+        break;
+      case 'zh':
+        module = await import('flatpickr/dist/l10n/zh.js');
+        break;
+      default:
+        console.warn(
+          `No explicit import for locale "${baseLocale}". Falling back to English.`
+        );
+        return English;
+    }
+    let localeConfig: Partial<Locale>;
+
+    if (baseLocale in module) {
+      localeConfig = (module as any)[baseLocale] as Partial<Locale>;
+    } else if (
+      module.default &&
+      typeof module.default === 'object' &&
+      baseLocale in module.default
+    ) {
+      localeConfig = (module.default as any)[baseLocale] as Partial<Locale>;
+    } else {
+      localeConfig = module.default as Partial<Locale>;
+    }
     if (!localeConfig) {
       console.warn(
         `Locale configuration not found for "${locale}". Falling back to English.`
