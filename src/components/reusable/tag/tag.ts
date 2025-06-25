@@ -168,7 +168,15 @@ export class Tag extends LitElement {
   }
 
   private _chechForNewTag() {
-    const newTags = ['default', 'spruce', 'sea', 'lilac', 'error', 'ai'];
+    const newTags = [
+      'default',
+      'spruce',
+      'sea',
+      'lilac',
+      'ai',
+      'disabled',
+      'red',
+    ];
     if (newTags.includes(this.tagColor)) {
       return true;
     } else {

@@ -148,13 +148,13 @@ export class MultiInputField extends FormMixin(LitElement) {
   @state()
   private _validationMessage = '';
 
-  /** Store the slotted icon SVG string
+  /** Store the slotted icon SVG string.
    * @internal
    */
   @state()
   private _iconSvg = '';
 
-  /** Whether to use the icon
+  /** Whether to use the icon.
    * @internal
    */
   @state()
@@ -218,7 +218,7 @@ export class MultiInputField extends FormMixin(LitElement) {
     return html`
       <kyn-tag
         class="indiv-tag"
-        tagColor=${isInvalid ? 'error' : 'spruce'}
+        tagColor=${isInvalid ? 'red' : 'spruce'}
         noTruncation
         ?clickable=${!this.readonly && !this.disabled}
         ?disabled=${this.disabled}

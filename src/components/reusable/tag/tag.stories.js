@@ -13,7 +13,7 @@ export default {
       control: { type: 'select' },
     },
     tagColor: {
-      options: ['default', 'spruce', 'sea', 'lilac', 'error', 'ai'],
+      options: ['default', 'spruce', 'sea', 'lilac', 'ai', 'disabled', 'red'],
       control: { type: 'select' },
     },
     disabled: {
