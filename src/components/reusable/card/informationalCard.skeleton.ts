@@ -1,9 +1,9 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../loaders/skeleton';
 
-import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scss';
+import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scss?inline';
 
 /**
  * `kyn-info-card-skeleton` Web Component.
@@ -11,15 +11,15 @@ import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scs
  */
 @customElement('kyn-info-card-skeleton')
 export class InformationalCardSkeleton extends LitElement {
-  static override styles = CardSampleScss;
+  static override styles = unsafeCSS(CardSampleScss);
 
   /**  Sets the number of body/description lines to show in the skeleton pattern example. */
   @property({ type: Number })
-  lines? = 0;
+  accessor lines: any | undefined = 0;
 
   /**  Sets show or hide thumbnail element. */
   @property({ type: Boolean })
-  thumbnailVisible?: boolean = false;
+  accessor thumbnailVisible: boolean | undefined = false;
 
   override render() {
     return html`

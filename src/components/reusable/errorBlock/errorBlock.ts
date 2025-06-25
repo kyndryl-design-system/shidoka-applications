@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import ErrorScss from './errorBlock.scss';
+import ErrorScss from './errorBlock.scss?inline';
 
 import '../button';
 
@@ -13,11 +13,11 @@ import '../button';
 
 @customElement('kyn-error-block')
 export class ErrorBlock extends LitElement {
-  static override styles = [ErrorScss];
+  static override styles = unsafeCSS(ErrorScss);
 
   /** Title text */
   @property({ type: String })
-  titleText = '';
+  accessor titleText = '';
 
   override render() {
     return html`

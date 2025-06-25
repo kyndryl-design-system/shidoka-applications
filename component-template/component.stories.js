@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions'; // used to log an action in storybook
+import { action } from 'storybook/actions'; // used to log an action in storybook
 
 export default {
   title: 'Components/Component', // component name

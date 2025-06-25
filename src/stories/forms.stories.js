@@ -16,7 +16,7 @@ import '../components/reusable/sliderInput';
 import '../components/reusable/fileUploader';
 import '../components/reusable/colorInput';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 export default {
   title: 'Patterns/Forms',

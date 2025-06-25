@@ -1,10 +1,10 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
 import animationData from './json/ai_assist.json';
 import aiLaunchButtonDisabled from './json/ai_assist_disabled.json';
-import Styles from './aiLaunchButton.scss';
+import Styles from './aiLaunchButton.scss?inline';
 
 /**
  * AI Assistant Launch Button.
@@ -12,29 +12,29 @@ import Styles from './aiLaunchButton.scss';
  */
 @customElement('kyn-ai-launch-btn')
 export class AILaunchButton extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Whether the button is disabled. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Animation container element.
    * @internal
    */
   @query('.container')
-  private _containerEl!: any;
+  private accessor _containerEl!: any;
 
   /** Instance of animation.
    * @internal
    */
   @state()
-  private _animation!: any;
+  private accessor _animation!: any;
 
   /** Whether to stop at next loop completion
    * @internal
    */
   @state()
-  private _shouldStop = false;
+  private accessor _shouldStop = false;
 
   override render() {
     const Classes = {

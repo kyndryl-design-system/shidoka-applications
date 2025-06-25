@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { property, customElement, state } from 'lit/decorators.js';
 
 // Import required components and icons
@@ -8,7 +8,7 @@ import '../dropdown';
 import chevLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
 import chevRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
-import styles from './pagination-navigation-buttons.scss';
+import styles from './pagination-navigation-buttons.scss?inline';
 // import { OF_TEXT, PAGES_TEXT } from './constants';
 
 /**
@@ -21,25 +21,25 @@ import styles from './pagination-navigation-buttons.scss';
  */
 @customElement('kyn-pagination-navigation-buttons')
 export class PaginationNavigationButtons extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   // Current page number, defaults to 0
   @property({ type: Number, reflect: true })
-  pageNumber = 1;
+  accessor pageNumber = 1;
 
   // Total number of pages, defaults to 0
   @property({ type: Number, reflect: true })
-  numberOfPages = 1;
+  accessor numberOfPages = 1;
 
   /** Customizable text strings. Inherited from parent
    * @internal
    */
   @property({ type: Object })
-  textStrings: any = {};
+  accessor textStrings: any = {};
 
   /** Available options for the page number. */
   @state()
-  pageNumberOptions: Array<number> = [];
+  accessor pageNumberOptions: Array<number> = [];
 
   // Constant representing the smallest possible page number
   private readonly SMALLEST_PAGE_NUMBER = 1;
@@ -48,7 +48,7 @@ export class PaginationNavigationButtons extends LitElement {
    * @internal
    */
   @property({ type: String })
-  pageNumberLabel = 'Page number';
+  accessor pageNumberLabel = 'Page number';
 
   /**
    * Handles the button click event, either moving to the next page or previous page

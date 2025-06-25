@@ -1,7 +1,7 @@
-import { html, LitElement } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import styles from './table-foot.scss';
+import styles from './table-foot.scss?inline';
 
 /**
  * `kyn-tfoot` Web Component.
@@ -13,13 +13,13 @@ import styles from './table-foot.scss';
  */
 @customElement('kyn-tfoot')
 export class TableFoot extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'rowgroup';
+  override accessor role = 'rowgroup';
 
   override render() {
     return html` <slot></slot> `;

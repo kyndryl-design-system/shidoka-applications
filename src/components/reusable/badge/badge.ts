@@ -1,4 +1,4 @@
-import { html, LitElement, PropertyValues } from 'lit';
+import { html, LitElement, PropertyValues, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
@@ -7,7 +7,7 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning.svg';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
-import BadgeScss from './badge.scss';
+import BadgeScss from './badge.scss?inline';
 
 /**
  * Badge.
@@ -15,57 +15,57 @@ import BadgeScss from './badge.scss';
  */
 @customElement('kyn-badge')
 export class Badge extends LitElement {
-  static override styles = BadgeScss;
+  static override styles = unsafeCSS(BadgeScss);
 
   /**
    * Badge name.
    */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /**
    * Badge size, `'md'` (default) or `'sm'`. Icon size: 16px only.
    */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /**
    * Badge type, `'medium'` (default), `'heavy'`, or `'light'`.
    */
   @property({ type: String })
-  type = 'medium';
+  accessor type = 'medium';
 
   /**
    * Badge status, `'success'` (default), `'critical'`, `'error'`, `'warning'`, `'information'`, `'others'`.
    *
    */
   @property({ type: String })
-  status = 'success';
+  accessor status = 'success';
 
   /**
    * Removes label text truncation.
    */
   @property({ type: Boolean })
-  noTruncation = false;
+  accessor noTruncation = false;
 
   /**
    * Icon title for screen readers.
    */
   @property({ type: String })
-  iconTitle = 'Icon title';
+  accessor iconTitle = 'Icon title';
 
   /**
    * Hide icon. Default is `false`.
    */
   @property({ type: Boolean })
-  hideIcon = false;
+  accessor hideIcon = false;
 
   /**
    * Determine if Badge is icon only.
    * @internal
    */
   @state()
-  _iconOnly = false;
+  accessor _iconOnly = false;
 
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);

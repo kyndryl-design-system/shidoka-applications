@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -8,7 +8,7 @@ import {
 import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit-html/directives/class-map.js';
 
-import stylesheet from './aiSourcesFeedback.scss';
+import stylesheet from './aiSourcesFeedback.scss?inline';
 
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -43,76 +43,76 @@ const _defaultTextStrings = {
 
 @customElement('kyn-ai-sources-feedback')
 export class AISourcesFeedback extends LitElement {
-  static override styles = [stylesheet];
+  static override styles = unsafeCSS(stylesheet);
 
   /** expandable anchor opened state for Sources used. */
   @property({ type: Boolean })
-  sourcesOpened = false;
+  accessor sourcesOpened = false;
 
   /** expandable anchor opened state for Feedback buttons. */
   @property({ type: Boolean })
-  feedbackOpened = false;
+  accessor feedbackOpened = false;
 
   /** expandable anchor disabled state for Sources used.. */
   @property({ type: Boolean })
-  sourcesDisabled = false;
+  accessor sourcesDisabled = false;
 
   /** expandable anchor disabled state for Feedback buttons. */
   @property({ type: Boolean })
-  feedbackDisabled = false;
+  accessor feedbackDisabled = false;
 
   /** Limits visible sources behind a "Show more" button. */
   @property({ type: Boolean })
-  revealAllSources = false;
+  accessor revealAllSources = false;
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Close button text. */
   @property({ type: String })
-  closeText = 'Close';
+  accessor closeText = 'Close';
 
   /** Number of sources visible when limited.
    * @internal
    */
   @state()
-  _limitCount = 4;
+  accessor _limitCount = 4;
 
   /** Sources limit visibility.
    * @internal
    */
   @state()
-  limitRevealed = false;
+  accessor limitRevealed = false;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /** Selecting Positive or Negative Feedback
    * @internal
    */
   @state()
-  _selectedFeedbackType: any = null;
+  accessor _selectedFeedbackType: any = null;
 
   /**
    * Queries slotted sources.
    * @ignore
    */
   @queryAssignedElements({ slot: 'sources' })
-  _sourceEls!: any;
+  accessor _sourceEls!: any;
 
   /**  Tracks the number of clicks on thumbs up icon
    * @internal
    */
-  @state() thumbsUpClickCount = 0;
+  @state() accessor thumbsUpClickCount = 0;
 
   /**  Tracks the number of clicks on thumbs down icon
    * @internal
    */
-  @state() thumbsDownClickCount = 0;
+  @state() accessor thumbsDownClickCount = 0;
 
   override render() {
     const classesSources: any = classMap({

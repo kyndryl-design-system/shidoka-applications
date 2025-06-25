@@ -1,10 +1,10 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
 import animationData from './json/indeterminate.json';
-import Styles from './inline.scss';
+import Styles from './inline.scss?inline';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
@@ -16,17 +16,17 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
  */
 @customElement('kyn-loader-inline')
 export class LoaderInline extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Status. Can be `active`, `inactive`, `success`, `error`. */
   @property({ type: String })
-  status = 'active';
+  accessor status = 'active';
 
   /** Animation loop has finished and stopped
    * @internal
    */
   @state()
-  private _stopped = false;
+  private accessor _stopped = false;
 
   // /** Wrapper element
   //  * @internal
@@ -38,13 +38,13 @@ export class LoaderInline extends LitElement {
    * @internal
    */
   @state()
-  private _hidden = false;
+  private accessor _hidden = false;
 
   /** Animation container element
    * @internal
    */
   @query('.container')
-  private _containerEl!: any;
+  private accessor _containerEl!: any;
 
   // /** Animation instance
   //  * @internal

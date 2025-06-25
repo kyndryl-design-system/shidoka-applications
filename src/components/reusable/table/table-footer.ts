@@ -1,7 +1,7 @@
-import { html, LitElement } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import styles from './table-footer.scss';
+import styles from './table-footer.scss?inline';
 
 /**
  * Table Footer
@@ -12,7 +12,7 @@ import styles from './table-footer.scss';
  */
 @customElement('kyn-table-footer')
 export class TableFooter extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   override render() {
     return html` <slot></slot> `;

@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, css, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { repeat } from 'lit/directives/repeat.js';
 
 import './index';
@@ -41,7 +41,7 @@ export class SampleFilterTableComponent extends LitElement {
 
   /** Array of sample checkbox filter options. */
   @state()
-  checkboxOptions: Array<any> = [
+  accessor checkboxOptions: Array<any> = [
     {
       value: 'Stark',
       text: 'Stark',
@@ -57,13 +57,13 @@ export class SampleFilterTableComponent extends LitElement {
   ];
 
   @state()
-  houses: Array<string> = ['Stark', 'Lannister', 'Targaryen'];
+  accessor houses: Array<string> = ['Stark', 'Lannister', 'Targaryen'];
 
   @state()
-  filteredHouses: Array<string> = [];
+  accessor filteredHouses: Array<string> = [];
 
   @state()
-  private characters = [
+  private accessor characters = [
     { name: 'Jon Snow', age: 23, house: 'Stark' },
     { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },
     { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },
@@ -75,7 +75,7 @@ export class SampleFilterTableComponent extends LitElement {
   ];
 
   @state()
-  private characters_backup = [
+  private accessor characters_backup = [
     { name: 'Jon Snow', age: 23, house: 'Stark' },
     { name: 'Daenerys Targaryen', age: 22, house: 'Targaryen' },
     { name: 'Tyrion Lannister', age: 39, house: 'Lannister' },
@@ -87,10 +87,10 @@ export class SampleFilterTableComponent extends LitElement {
   ];
 
   @state()
-  selectedRows = [];
+  accessor selectedRows = [];
 
   @state()
-  opened = false;
+  accessor opened = false;
 
   private toggleMenu() {
     this.opened = !this.opened;
@@ -101,10 +101,10 @@ export class SampleFilterTableComponent extends LitElement {
    * @ignore
    */
   @state()
-  private kynTable: any;
+  private accessor kynTable: any;
 
   @state()
-  private textInput: any;
+  private accessor textInput: any;
 
   override render() {
     const SelectedOptions = this.checkboxOptions.filter(

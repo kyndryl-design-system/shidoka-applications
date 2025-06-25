@@ -1,11 +1,11 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import CardSampleScss from './cardSample.scss';
+import CardSampleScss from './cardSample.scss?inline';
 
 /**  Sample Lit component to show card pattern. */
 @customElement('sample-card-component')
 export class SampleCardComponent extends LitElement {
-  static override styles = CardSampleScss;
+  static override styles = unsafeCSS(CardSampleScss);
 
   override render() {
     return html`

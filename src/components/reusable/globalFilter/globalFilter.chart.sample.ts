@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, css, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import './index';
 import '../checkbox';
@@ -39,7 +39,7 @@ export class SampleFilterChartComponent extends LitElement {
 
   /** Array of sample checkbox filter options. */
   @property({ type: Array })
-  checkboxOptions: Array<any> = [
+  accessor checkboxOptions: Array<any> = [
     {
       value: 'Red',
       text: 'Red',
@@ -67,7 +67,7 @@ export class SampleFilterChartComponent extends LitElement {
   ];
 
   @property({ type: Array })
-  chartLabels: Array<string> = [
+  accessor chartLabels: Array<string> = [
     'Red',
     'Blue',
     'Yellow',
@@ -77,10 +77,10 @@ export class SampleFilterChartComponent extends LitElement {
   ];
 
   @property({ type: Array })
-  filteredChartLabels: Array<string> = [];
+  accessor filteredChartLabels: Array<string> = [];
 
   @property({ type: Array })
-  chartDatasets: Array<any> = [
+  accessor chartDatasets: Array<any> = [
     {
       label: 'Dataset 1',
       data: [12, 19, 3, 5, 2, 3],
@@ -92,7 +92,7 @@ export class SampleFilterChartComponent extends LitElement {
   ];
 
   @property({ type: Object })
-  chartOptions = {
+  accessor chartOptions = {
     scales: {
       x: {
         title: {

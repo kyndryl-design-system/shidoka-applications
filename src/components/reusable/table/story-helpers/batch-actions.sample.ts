@@ -1,30 +1,30 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import '../../button';
 import exportIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/upload.svg';
 import exportIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/upload.svg';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
 import trashCanIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
-import styles from './batch-actions.scss';
+import styles from './batch-actions.scss?inline';
 import '../index';
 
 @customElement('batch-actions')
 export class BatchActions extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   @property({ attribute: false })
-  handleDelete = () => {};
+  accessor handleDelete = () => {};
 
   @property({ type: Boolean, reflect: true })
-  opened = false;
+  accessor opened = false;
 
   /**
    * Determines if the component is being rendered on a mobile device.
    * @ignore
    */
   @state()
-  isMobile = window.innerWidth < 768;
+  accessor isMobile = window.innerWidth < 768;
 
   handleClick = (e: Event) => {
     e.stopPropagation();

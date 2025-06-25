@@ -1,23 +1,23 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '../../overflowMenu';
 
-import styles from './action-menu.scss';
+import styles from './action-menu.scss?inline';
 
 @customElement('action-menu')
 export class ActionMenu extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   @property({ type: Boolean })
-  opened = false;
+  accessor opened = false;
 
   @property({ attribute: false })
-  handleDelete = (id: number) => {
+  accessor handleDelete = (id: number) => {
     console.log('Delete action triggered', id);
   };
 
   @property({ type: Number })
-  itemId = 0;
+  accessor itemId = 0;
 
   toggleMenu() {
     this.opened = !this.opened;

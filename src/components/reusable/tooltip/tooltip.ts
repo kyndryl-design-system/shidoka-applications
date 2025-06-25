@@ -1,8 +1,8 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import TooltipScss from './tooltip.scss';
+import TooltipScss from './tooltip.scss?inline';
 
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/information.svg';
 
@@ -14,47 +14,47 @@ import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/inf
  */
 @customElement('kyn-tooltip')
 export class Tooltip extends LitElement {
-  static override styles = TooltipScss;
+  static override styles = unsafeCSS(TooltipScss);
 
   /** Assistive text for anchor button. */
   @property({ type: String })
-  assistiveText = 'Tooltip';
+  accessor assistiveText = 'Tooltip';
 
   /** Tooltip open state.
    * @internal
    */
   @state()
-  _open = false;
+  accessor _open = false;
 
   /** Tooltip anchor position. `'start'`, `'end'`, or `'center'`.
    * @internal
    */
   @state()
-  _anchorPosition = 'center';
+  accessor _anchorPosition = 'center';
 
   /** Tooltip direction. `'top'`, `'bottom'`, `'left'`, or `'right'`.
    * @internal
    */
   @state()
-  _direction = 'top';
+  accessor _direction = 'top';
 
   /** Timeout function to delay modal close.
    * @internal
    */
   @state()
-  _timer: any;
+  accessor _timer: any;
 
   /** Anchor element
    * @internal
    */
   @query('.anchor')
-  _anchorEl!: any;
+  accessor _anchorEl!: any;
 
   /** Content element
    * @internal
    */
   @query('.content')
-  _contentEl!: any;
+  accessor _contentEl!: any;
 
   override render() {
     const classes = {

@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -9,7 +9,7 @@ import {
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
 import '../../reusable/button';
-import LocalNavScss from './localNav.scss';
+import LocalNavScss from './localNav.scss?inline';
 
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/side-drawer-out.svg';
@@ -30,51 +30,51 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-local-nav')
 export class LocalNav extends LitElement {
-  static override styles = LocalNavScss;
+  static override styles = unsafeCSS(LocalNavScss);
 
   /** Local nav pinned state. */
   @property({ type: Boolean })
-  pinned = false;
+  accessor pinned = false;
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /** Local nav desktop expanded state.
    * @internal
    */
   @state()
-  _expanded = false;
+  accessor _expanded = false;
 
   /** Local nav mobile expanded state.
    * @internal
    */
   @state()
-  _mobileExpanded = false;
+  accessor _mobileExpanded = false;
 
   /** Active Link text.
    * @internal
    */
   @state()
-  _activeLinkText!: string;
+  accessor _activeLinkText!: string;
 
   /** Queries top-level slotted links.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
-  _navLinks!: any;
+  accessor _navLinks!: any;
 
   /** Queries top-level slotted dividers.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-divider' })
-  _dividers!: any;
+  accessor _dividers!: any;
 
   /** Timeout function to delay flyout open.
    * @internal
@@ -85,7 +85,7 @@ export class LocalNav extends LitElement {
    * @internal
    */
   @state()
-  _leaveTimer: any;
+  accessor _leaveTimer: any;
 
   override render() {
     return html`

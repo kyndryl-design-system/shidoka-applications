@@ -1,8 +1,8 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 // Relative component imports
-import styles from './breadcrumbs.scss';
+import styles from './breadcrumbs.scss?inline';
 
 /**
  * Breadcrumbs Component.
@@ -11,7 +11,7 @@ import styles from './breadcrumbs.scss';
  */
 @customElement('kyn-breadcrumbs')
 export class Breadcrumbs extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   override render() {
     return html`

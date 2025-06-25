@@ -1,8 +1,8 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { PAGE_SIZE_LABEL, PAGE_NUMBER_LABEL } from './constants.sample';
-import styles from './pagination.scss';
+import styles from './pagination.scss?inline';
 
 import './pagination-items-range';
 import './pagination-page-size-dropdown';
@@ -21,51 +21,51 @@ import './pagination-navigation-buttons';
  */
 @customElement('kyn-pagination')
 export class Pagination extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** Total number of items that need pagination. */
   @property({ type: Number, reflect: true })
-  count = 0;
+  accessor count = 0;
 
   /** Current active page number. */
   @property({ type: Number, reflect: true })
-  pageNumber = 1;
+  accessor pageNumber = 1;
 
   /** Number of items displayed per page. */
   @property({ type: Number, reflect: true })
-  pageSize = 5;
+  accessor pageSize = 5;
 
   /** Available options for the page size. */
   @property({ type: Array })
-  pageSizeOptions: number[] = [5, 10, 20, 30, 40, 50, 100];
+  accessor pageSizeOptions: number[] = [5, 10, 20, 30, 40, 50, 100];
 
   /** Number of pages. */
   @state()
-  _numberOfPages = 1;
+  accessor _numberOfPages = 1;
 
   /** Label for the page size dropdown. Required for accessibility. */
   @property({ type: String })
-  pageSizeDropdownLabel = PAGE_SIZE_LABEL;
+  accessor pageSizeDropdownLabel = PAGE_SIZE_LABEL;
 
   /** Label for the page size dropdown. Required for accessibility. */
   @property({ type: String })
-  pageNumberLabel = PAGE_NUMBER_LABEL;
+  accessor pageNumberLabel = PAGE_NUMBER_LABEL;
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
-  hideItemsRange = false;
+  accessor hideItemsRange = false;
 
   /** Option to hide the page size dropdown. */
   @property({ type: Boolean })
-  hidePageSizeDropdown = false;
+  accessor hidePageSizeDropdown = false;
 
   /** Option to hide the navigation buttons. */
   @property({ type: Boolean })
-  hideNavigationButtons = false;
+  accessor hideNavigationButtons = false;
 
   /** Customizable text strings */
   @property({ type: Object })
-  textStrings = {
+  accessor textStrings = {
     showing: 'Showing',
     of: 'of',
     items: 'items',

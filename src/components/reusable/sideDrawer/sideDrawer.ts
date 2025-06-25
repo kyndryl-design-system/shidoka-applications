@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '../button';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
-import SideDrawerScss from './sideDrawer.scss';
+import SideDrawerScss from './sideDrawer.scss?inline';
 
 /**
  * Side Drawer.
@@ -20,7 +20,7 @@ import SideDrawerScss from './sideDrawer.scss';
 @customElement('kyn-side-drawer')
 export class SideDrawer extends LitElement {
   static override styles = [
-    SideDrawerScss,
+    unsafeCSS(SideDrawerScss),
     css`
       @supports (transition-behavior: allow-discrete) {
         @starting-style {
@@ -42,83 +42,83 @@ export class SideDrawer extends LitElement {
    * Drawer open state.
    */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /**
    * Drawer size.
    */
   @property({ type: String })
-  size: 'md' | 'sm' | 'xl' | 'standard' = 'md';
+  accessor size: 'md' | 'sm' | 'xl' | 'standard' = 'md';
 
   /**
    * Title / Heading text, required.
    */
   @property({ type: String })
-  titleText = '';
+  accessor titleText = '';
 
   /**
    * Label text, optional.
    */
   @property({ type: String })
-  labelText = '';
+  accessor labelText = '';
 
   /**
    * Submit button text.
    */
   @property({ type: String })
-  submitBtnText = 'Ok';
+  accessor submitBtnText = 'Ok';
 
   /**
    * Cancel button text.
    */
   @property({ type: String })
-  cancelBtnText = 'Cancel';
+  accessor cancelBtnText = 'Cancel';
 
   /** Close button description (Required to support accessibility). */
   @property({ type: String })
-  closeBtnDescription = 'Close';
+  accessor closeBtnDescription = 'Close';
 
   /** Disables the primary button. */
   @property({ type: Boolean })
-  submitBtnDisabled = false;
+  accessor submitBtnDisabled = false;
 
   /** Determine whether needs footer */
   @property({ type: Boolean })
-  hideFooter = false;
+  accessor hideFooter = false;
 
   /** Changes the primary button styles to indicate the action is destructive. */
   @property({ type: Boolean })
-  destructive = false;
+  accessor destructive = false;
 
   /** Secondary button text. */
   @property({ type: String })
-  secondaryButtonText = 'Secondary';
+  accessor secondaryButtonText = 'Secondary';
 
   /** Hides the secondary button. */
   @property({ type: Boolean })
-  showSecondaryButton = false;
+  accessor showSecondaryButton = false;
 
   /** Hides the cancel button. */
   @property({ type: Boolean })
-  hideCancelButton = false;
+  accessor hideCancelButton = false;
 
   /** Function to execute before the Drawer can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
-  beforeClose!: Function;
+  accessor beforeClose!: Function;
 
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
-  aiConnected = false;
+  accessor aiConnected = false;
 
   /** Set this to `true` for no backdrop */
   @property({ type: Boolean })
-  noBackdrop = false;
+  accessor noBackdrop = false;
 
   /** The dialog element
    * @internal
    */
   @query('dialog')
-  _dialog!: any;
+  accessor _dialog!: any;
 
   override render() {
     const classes = {

@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -7,7 +7,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import HeaderScss from './header.scss';
+import HeaderScss from './header.scss?inline';
 import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
 
 /**
@@ -21,45 +21,45 @@ import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-l
  */
 @customElement('kyn-header')
 export class Header extends LitElement {
-  static override styles = HeaderScss;
+  static override styles = unsafeCSS(HeaderScss);
 
   /** URL for the header logo link. Should target the application home page. */
   @property({ type: String })
-  rootUrl = '/';
+  accessor rootUrl = '/';
 
   /** App title text next to logo.  Hidden on smaller screens. */
   @property({ type: String })
-  appTitle = '';
+  accessor appTitle = '';
 
   /** Queries for slotted header-nav.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-header-nav' })
-  navEls!: any;
+  accessor navEls!: any;
 
   /** Queries for all slotted elements.
    * @internal
    */
   @queryAssignedElements()
-  assignedElements!: any;
+  accessor assignedElements!: any;
 
   /** Queries for elements in left slot.
    * @internal
    */
   @queryAssignedElements({ slot: 'left' })
-  leftEls!: any;
+  accessor leftEls!: any;
 
   /** header-nav open state
    * @internal
    */
   @state()
-  _navOpen = false;
+  accessor _navOpen = false;
 
   /** header-flyouts open state
    * @internal
    */
   @state()
-  _flyoutsOpen = false;
+  accessor _flyoutsOpen = false;
 
   override render() {
     const classes = {

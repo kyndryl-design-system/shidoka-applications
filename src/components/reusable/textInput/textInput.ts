@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -19,7 +19,7 @@ import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/no-
 import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overview.svg';
 
 import { FormMixin } from '../../../common/mixins/form-input';
-import TextInputScss from './textInput.scss';
+import TextInputScss from './textInput.scss?inline';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -41,96 +41,97 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-text-input')
 export class TextInput extends FormMixin(LitElement) {
-  static override styles = TextInputScss;
+  static override styles = unsafeCSS(TextInputScss);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Input type, limited to options that are "text like". */
   @property({ type: String })
-  type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' = 'text';
+  accessor type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' =
+    'text';
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Input placeholder. */
   @property({ type: String })
-  placeholder = '';
+  accessor placeholder = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Input readonly state. */
   @property({ type: Boolean })
-  readonly = false;
+  accessor readonly = false;
 
   /** RegEx pattern to validate. */
   @property({ type: String })
-  pattern!: string;
+  accessor pattern!: string;
 
   /** Maximum number of characters. */
   @property({ type: Number })
-  maxLength!: number;
+  accessor maxLength!: number;
 
   /** Minimum number of characters. */
   @property({ type: Number })
-  minLength!: number;
+  accessor minLength!: number;
 
   /** Place icon on the right. */
   @property({ type: Boolean })
-  iconRight = false;
+  accessor iconRight = false;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input')
-  _inputEl!: HTMLInputElement;
+  accessor _inputEl!: HTMLInputElement;
 
   /**
    * Evaluates if an icon is slotted.
    * @ignore
    */
   @state()
-  iconSlotted = false;
+  accessor iconSlotted = false;
 
   /** Internal state for password visibility
    * @internal
    */
   @state()
-  private passwordVisible = false;
+  private accessor passwordVisible = false;
 
   /**
    * Queries any slotted icons.
    * @ignore
    */
   @queryAssignedElements({ slot: 'icon' })
-  iconSlot!: Array<HTMLElement>;
+  accessor iconSlot!: Array<HTMLElement>;
 
   override render() {
     return html`

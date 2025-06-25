@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import Styles from './widget.scss';
+import Styles from './widget.scss?inline';
 
 /**
  * Widget.
@@ -13,29 +13,29 @@ import Styles from './widget.scss';
  */
 @customElement('kyn-widget')
 export class Widget extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Widget title. */
   @property({ type: String })
-  widgetTitle = '';
+  accessor widgetTitle = '';
 
   /** Widget sub-title. */
   @property({ type: String })
-  subTitle = '';
+  accessor subTitle = '';
 
   /** Widget drag active state. */
   @property({ type: Boolean })
-  dragActive = false;
+  accessor dragActive = false;
 
   /** Widget disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Slotted chart element.
    * @internal
    */
   @state()
-  _chart!: any;
+  accessor _chart!: any;
 
   override render() {
     const Classes = {
