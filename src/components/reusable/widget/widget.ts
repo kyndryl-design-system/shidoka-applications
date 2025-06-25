@@ -13,7 +13,7 @@ import Styles from './widget.scss';
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
  * @slot footer - Slot for footer content.
- * @slot icon - Slot for icon.
+ * @slot icon - Slot for widget selectable icon.
  */
 @customElement('kyn-widget')
 export class Widget extends LitElement {
@@ -35,15 +35,13 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   disabled = false;
 
-  /** Widget checked state. */
-  @property({ type: Boolean, reflect: true })
-  selected = false;
+  /** Widget selectable state. */
+  @property({ type: Boolean })
+  selectable = true;
 
-  /** checkmark visibility state.
-   * @internal
-   */
-  @state()
-  _checkmarkVisible = false;
+  /** Widget selected state. */
+  @property({ type: Boolean })
+  selected = false;
 
   /** Slotted chart element.
    * @internal
@@ -57,12 +55,7 @@ export class Widget extends LitElement {
       'drag-active': this.dragActive,
       'has-chart': this._chart,
       disabled: this.disabled,
-      'checkmark-active': this.selected && this._checkmarkVisible,
-    };
-
-    const bodyClasses = {
-      'widget-body': true,
-      'checkmark-toggle': this.selected,
+      selectable: this.selectable,
     };
 
     return html`
@@ -70,6 +63,9 @@ export class Widget extends LitElement {
         class=${classMap(Classes)}
         role="group"
         aria-disabled=${this.disabled}
+        @click=${this._handleBodyClick}
+        @keydown=${this._handleKeyDown}
+        tabindex=${this.disabled ? '-1' : '0'}
       >
         <div class="widget-header">
           <slot name="draghandle"></slot>
@@ -89,10 +85,7 @@ export class Widget extends LitElement {
         </div>
 
         <div class="widget-content">
-          <div
-            class=${classMap(bodyClasses)}
-            @click=${this.selected ? this._handleBodyClick : null}
-          >
+          <div class="widget-body">
             <slot @slotchange=${this._handleSlotChange}></slot>
           </div>
 
@@ -101,7 +94,7 @@ export class Widget extends LitElement {
           </div>
         </div>
 
-        ${this.selected && this._checkmarkVisible
+        ${this.selectable && this.selected
           ? html`
               <div class="opacity-overlay"></div>
               <div class="checkmark-overlay">
@@ -114,15 +107,21 @@ export class Widget extends LitElement {
   }
 
   private _handleBodyClick() {
-    if (this.disabled) return;
-    this._checkmarkVisible = !this._checkmarkVisible;
+    if (!this.selectable || this.disabled) return;
+    this.selected = !this.selected;
     this.dispatchEvent(
       new CustomEvent('on-select', {
-        detail: { selected: this._checkmarkVisible },
+        detail: { selected: this.selected },
         bubbles: true,
         composed: true,
       })
     );
+  }
+
+  private _handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this._handleBodyClick();
+    }
   }
 
   private _handleSlotChange() {
@@ -135,12 +134,6 @@ export class Widget extends LitElement {
     if (Chart) {
       this._chart = Chart;
       this._chart._widget = true;
-    }
-  }
-
-  override firstUpdated(changedProps: any) {
-    if (changedProps.has('selected')) {
-      this._checkmarkVisible = true;
     }
   }
 }

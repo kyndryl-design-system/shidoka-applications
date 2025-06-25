@@ -4014,6 +4014,16 @@
             },
             {
               "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Button selected state.",
+              "attribute": "selected"
+            },
+            {
+              "kind": "field",
               "name": "formmethod",
               "type": {
                 "text": "any"
@@ -4155,6 +4165,15 @@
               "default": "false",
               "description": "Show button after scrolling to 50% of the page",
               "fieldName": "showOnScroll"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Button selected state.",
+              "fieldName": "selected"
             },
             {
               "name": "formmethod",
@@ -21669,7 +21688,7 @@
               "name": "footer"
             },
             {
-              "description": "Slot for icon.",
+              "description": "Slot for widget selectable icon.",
               "name": "icon"
             }
           ],
@@ -21716,19 +21735,41 @@
             },
             {
               "kind": "field",
+              "name": "selectable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Widget selectable state.",
+              "attribute": "selectable"
+            },
+            {
+              "kind": "field",
               "name": "selected",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Widget checked state.",
-              "attribute": "selected",
-              "reflects": true
+              "description": "Widget selected state.",
+              "attribute": "selected"
             },
             {
               "kind": "method",
               "name": "_handleBodyClick",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeyDown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -21788,12 +21829,21 @@
               "fieldName": "disabled"
             },
             {
+              "name": "selectable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Widget selectable state.",
+              "fieldName": "selectable"
+            },
+            {
               "name": "selected",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Widget checked state.",
+              "description": "Widget selected state.",
               "fieldName": "selected"
             }
           ],
