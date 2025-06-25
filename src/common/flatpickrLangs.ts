@@ -1,7 +1,3 @@
-import { Locale } from 'flatpickr/dist/types/locale';
-
-import { default as English } from 'flatpickr/dist/l10n/default.js';
-
 export const langsArray = [
   'ar', // Arabic
   'at', // Austria
@@ -71,53 +67,4 @@ export type SupportedLocale = (typeof langsArray)[number];
 export function isSupportedLocale(locale: string): boolean {
   const baseLocale = locale.split('-')[0].toLowerCase();
   return langsArray.includes(baseLocale as SupportedLocale);
-}
-
-const localeCache: Record<string, Partial<Locale>> = {};
-
-export async function loadLocale(locale: string): Promise<Partial<Locale>> {
-  const base = locale.split('-')[0].toLowerCase();
-
-  if (base === 'en') {
-    return English;
-  }
-
-  if (localeCache[base]) {
-    return localeCache[base]!;
-  }
-
-  if (!isSupportedLocale(base)) {
-    console.warn(`Unsupported locale "${locale}". Falling back to English.`);
-    return English;
-  }
-
-  const filenameMap: Record<string, string> = {
-    zh_tw: 'zh-tw',
-  };
-  const fileName = filenameMap[base] ?? base;
-
-  try {
-    const module = await import(`flatpickr/dist/l10n/${fileName}.js`);
-
-    const localeConfig: Partial<Locale> | undefined =
-      (module as any)[base] ||
-      (module.default as any)?.[base] ||
-      module.default;
-
-    if (!localeConfig) {
-      console.warn(
-        `Locale configuration not found for "${locale}". Falling back to English.`
-      );
-      return English;
-    }
-
-    localeCache[base] = localeConfig;
-    return localeConfig;
-  } catch (err) {
-    console.error(
-      `Failed to load locale "${locale}". Falling back to English.`,
-      err
-    );
-    return English;
-  }
 }
