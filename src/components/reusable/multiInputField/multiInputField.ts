@@ -557,20 +557,36 @@ export class MultiInputField extends FormMixin(LitElement) {
     const END = 'End';
     const PGUP = 'PageUp';
     const PGDN = 'PageDown';
+    const TAB = 'Tab';
 
-    if (![UP, DOWN, ENTER, HOME, END, PGUP, PGDN].includes(key)) {
+    if (![UP, DOWN, ENTER, HOME, END, PGUP, PGDN, TAB].includes(key)) {
       return false;
     }
 
     e.preventDefault();
+    e.stopPropagation();
 
-    if (key === DOWN) {
-      this.highlightedIndex = Math.min(
-        this.highlightedIndex + 1,
-        this.suggestions.length - 1
-      );
+    if (key === TAB) {
+      if (this.highlightedIndex === -1 && this.suggestions.length > 0) {
+        this.highlightedIndex = 0;
+      } else if (this.highlightedIndex >= 0) {
+        this._selectSuggestion(this.suggestions[this.highlightedIndex]);
+      }
+    } else if (key === DOWN) {
+      if (this.highlightedIndex === this.suggestions.length - 1) {
+        this.highlightedIndex = 0;
+      } else {
+        this.highlightedIndex = Math.min(
+          this.highlightedIndex + 1,
+          this.suggestions.length - 1
+        );
+      }
     } else if (key === UP) {
-      this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
+      if (this.highlightedIndex === 0) {
+        this.highlightedIndex = this.suggestions.length - 1;
+      } else {
+        this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
+      }
     } else if (key === HOME || key === PGUP) {
       this.highlightedIndex = 0;
     } else if (key === END || key === PGDN) {
