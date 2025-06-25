@@ -363,7 +363,7 @@ export class MultiInputField extends FormMixin(LitElement) {
       isValidInput(item, this.inputType, this.pattern)
     );
     const placeholderText = hasValidItem
-      ? this._textStrings.placeholderAdditional
+      ? this._textStrings.placeholderSecondary
       : this.placeholder;
 
     return html`

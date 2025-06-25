@@ -1,9 +1,7 @@
 export const defaultTextStrings = {
   requiredText: 'Required',
-
   requiredError: 'At least one item is required',
-
-  placeholderAdditional: 'Add another item...',
+  placeholderSecondary: 'Add another item...',
   invalidFormatError: 'Invalid format.',
   maxExceededError: 'Maximum number of items exceeded.',
   duplicateError: 'Item already added',
