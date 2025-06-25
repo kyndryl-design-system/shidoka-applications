@@ -1,8 +1,8 @@
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import {
   isValidInput,
@@ -21,6 +21,7 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
 
 /**
  * Multi-input field component.
+ * @slot unnamed - Slot for tag icon.
  * @fires on-input – emits { value, origEvent } on every keystroke
  * @fires on-change – emits string[] after tags are added/removed
  */
@@ -147,6 +148,18 @@ export class MultiInputField extends FormMixin(LitElement) {
   @state()
   private _validationMessage = '';
 
+  /** Store the slotted icon SVG string
+   * @internal
+   */
+  @state()
+  private _iconSvg = '';
+
+  /** Whether to use the icon
+   * @internal
+   */
+  @state()
+  private _useIcon = false;
+
   /** Container wrapper for relative positioning
    * @ignore
    */
@@ -199,6 +212,9 @@ export class MultiInputField extends FormMixin(LitElement) {
     const isInvalid =
       !this.validationsDisabled &&
       !isValidInput(item, this.inputType, this.pattern);
+
+    const showIcon = this._useIcon || this.inputType === 'email';
+
     return html`
       <kyn-tag
         class="indiv-tag"
@@ -209,7 +225,8 @@ export class MultiInputField extends FormMixin(LitElement) {
         ?readonly=${this.readonly}
         @on-close=${() => this.removeAt(index)}
       >
-        ${unsafeSVG(userIcon)}<span>${item}</span>
+        ${showIcon ? html`${unsafeSVG(this._iconSvg || userIcon)}` : ''}
+        <span>${item}</span>
       </kyn-tag>
     `;
   }
@@ -338,6 +355,10 @@ export class MultiInputField extends FormMixin(LitElement) {
       : this.placeholder;
 
     return html`
+      <div style="display: none">
+        <slot></slot>
+      </div>
+
       <div ?disabled=${this.disabled} ?readonly=${this.readonly}>
         ${this.renderLabel()}
         ${this.renderTagsAndInput(stateMgmtClasses, placeholderText)}
@@ -380,6 +401,37 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   override firstUpdated(): void {
+    const slot = this.shadowRoot?.querySelector(
+      'slot:not([name])'
+    ) as HTMLSlotElement;
+    if (slot) {
+      const nodes = slot.assignedNodes();
+      if (nodes.length > 0 && nodes[0].nodeType !== Node.TEXT_NODE) {
+        this._useIcon = true;
+
+        const iconElement = nodes[0] as HTMLElement;
+        if (
+          iconElement.innerHTML &&
+          iconElement.innerHTML.trim().startsWith('<svg')
+        ) {
+          this._iconSvg = iconElement.innerHTML;
+        } else if (
+          iconElement.outerHTML &&
+          iconElement.outerHTML.trim().startsWith('<svg')
+        ) {
+          this._iconSvg = iconElement.outerHTML;
+        } else {
+          this._iconSvg = this.inputType === 'email' ? userIcon : '';
+        }
+      } else {
+        this._useIcon = false;
+
+        if (this.inputType === 'email') {
+          this._iconSvg = userIcon;
+        }
+      }
+    }
+
     if (this._items.length > 0) {
       if (this.inputEl && this.inputEl.value) {
         this.inputEl.value = '';
