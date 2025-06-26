@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
+import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/checkmarkFilled.svg';
 import Styles from './widget.scss';
 
 /**
