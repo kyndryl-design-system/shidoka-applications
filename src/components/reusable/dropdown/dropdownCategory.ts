@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import Styles from './dropdownCategory.scss';
+import Styles from './dropdownCategory.scss?inline';
 
 /**
  * Dropdown category.
@@ -8,7 +8,7 @@ import Styles from './dropdownCategory.scss';
  */
 @customElement('kyn-dropdown-category')
 export class DropdownCategory extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   override render() {
     return html`

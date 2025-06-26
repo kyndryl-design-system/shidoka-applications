@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import CardSampleScss from './cardSample.scss';
+import CardSampleScss from './cardSample.scss?inline';
 import '../../components/reusable/overflowMenu';
 import '../../components/reusable/tag';
 
@@ -11,7 +11,7 @@ import actionIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/b
 /**  Sample Lit component to show containable items inside Card. */
 @customElement('sample-card-story-content-component')
 export class SampleCardStoryContentComponent extends LitElement {
-  static override styles = CardSampleScss;
+  static override styles = unsafeCSS(CardSampleScss);
 
   override render() {
     const tagGroupArr = [

@@ -1,51 +1,51 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import skeletonStyles from './skeleton.scss';
+import skeletonStyles from './skeleton.scss?inline';
 
 @customElement('kyn-skeleton')
 export class Skeleton extends LitElement {
-  static override styles = skeletonStyles;
+  static override styles = unsafeCSS(skeletonStyles);
 
   /**
    * Defines the shape of the skeleton element.
    */
   @property({ type: String, reflect: true })
-  shape: 'rectangle' | 'circle' = 'rectangle';
+  accessor shape: 'rectangle' | 'circle' = 'rectangle';
 
   /**
    * Optional: Predefined size (small, medium, large).
    */
   @property({ type: String })
-  size?: 'small' | 'medium' | 'large';
+  accessor size: 'small' | 'medium' | 'large' | undefined;
 
   /**
    * Optional: Custom width (overrides size if provided).
    */
   @property({ type: String })
-  width?: string;
+  accessor width: string | undefined;
 
   /**
    * Optional: Custom height (overrides size if provided).
    */
   @property({ type: String })
-  height?: string;
+  accessor height: string | undefined;
 
   /**
    * Sets the number of skeleton lines to display.
    */
   @property({ type: Number })
-  lines = 1;
+  accessor lines = 1;
 
   /**
    * Sets whether to display inline or block.
    */
   @property({ type: Boolean })
-  inline = false;
+  accessor inline = false;
 
   /** Set to `true` for AI theme. */
   @property({ type: Boolean })
-  aiConnected = false;
+  accessor aiConnected = false;
 
   override render() {
     const classes = {

@@ -131,7 +131,6 @@
 }
 
 .swiper-pagination-fraction {
-  @include typography.type-ui-02;
   justify-content: end;
   gap: 2px;
   color: var(--kd-color-text-level-secondary);
@@ -139,19 +138,20 @@
   .swiper-full-bleed & {
     padding-right: var(--kd-page-gutter);
   }
+
+  @include typography.type-ui-02;
 }
 
 .pagination-with-link {
-  @include typography.type-ui-02;
   display: flex;
   align-items: baseline;
   gap: 40px;
   padding-right: 4px;
+  @include typography.type-ui-02;
 }
 
 .swiper-button-prev,
 .swiper-button-next {
-  @include elevation.shadow(2);
   display: none;
   border-radius: 50%;
   width: var(--swiper-navigation-size);
@@ -192,8 +192,8 @@
   }
 
   &:hover {
-    @include elevation.shadow(3);
     color: var(--kd-color-icon-secondary);
+    @include elevation.shadow(3);
   }
 
   &:after {
@@ -203,6 +203,8 @@
   &.swiper-button-disabled {
     color: var(--kd-color-icon-disabled);
   }
+
+  @include elevation.shadow(2);
 }
 
 .swiper-button-next svg {

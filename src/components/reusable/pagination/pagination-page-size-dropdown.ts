@@ -1,10 +1,10 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 import '../dropdown/dropdown';
 import '../dropdown/dropdownOption';
 
-import styles from './pagination-page-size-dropdown.scss';
+import styles from './pagination-page-size-dropdown.scss?inline';
 // import { PAGE_SIZE_LABEL } from './constants';
 
 /**
@@ -17,27 +17,27 @@ import styles from './pagination-page-size-dropdown.scss';
  */
 @customElement('kyn-pagination-page-size-dropdown')
 export class PaginationPageSizeDropdown extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** Current page size. */
   @property({ type: Number, reflect: true })
-  pageSize = 5;
+  accessor pageSize = 5;
 
   /** Available options for the page size. */
   @property({ type: Array })
-  pageSizeOptions: Array<number> = [5, 10, 20, 30, 40, 50];
+  accessor pageSizeOptions: Array<number> = [5, 10, 20, 30, 40, 50];
 
   /** Customizable text strings. Inherited from parent
    * @internal
    */
   @property({ type: Object })
-  textStrings: any = {};
+  accessor textStrings: any = {};
 
   /** Label for the page size dropdown. Required for accessibility.
    * @internal
    */
   @property({ type: String })
-  pageSizeDropdownLabel = 'Items per page';
+  accessor pageSizeDropdownLabel = 'Items per page';
 
   /**
    * Handles the dropdown change event.

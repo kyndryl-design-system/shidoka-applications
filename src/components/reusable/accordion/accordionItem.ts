@@ -2,10 +2,10 @@
  * Copyright Kyndryl, Inc. 2022
  */
 
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { state, property, customElement } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import stylesheet from './accordionItem.scss';
+import stylesheet from './accordionItem.scss?inline';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/chevron-down.svg';
 
@@ -20,39 +20,39 @@ import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/
  */
 @customElement('kyn-accordion-item')
 export class AccordionItem extends LitElement {
-  static override styles = [stylesheet];
+  static override styles = unsafeCSS(stylesheet);
 
   /** Accordion item opened state. */
   @property({ type: Boolean })
-  opened = false;
+  accessor opened = false;
 
   /** Accordion item disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /**
    * The index of this item. Passed from the Accordion.
    * @ignore
    */
-  @state() private _index = 1;
+  @state() private accessor _index = 1;
 
   /**
    * Whether the number should be shown. Passed from the Accordion.
    * @ignore
    */
-  @state() private _showNumber = false;
+  @state() private accessor _showNumber = false;
 
   /**
    * Whether this item displays a filled header. Passed from the Accordion.
    * @ignore
    */
-  @state() private _filledHeader = false;
+  @state() private accessor _filledHeader = false;
 
   /**
    * Whether this item is compact. Passed from the Accordion.
    * @ignore
    */
-  @state() private _compact = false;
+  @state() private accessor _compact = false;
 
   setIndex(index: number) {
     this._index = index;

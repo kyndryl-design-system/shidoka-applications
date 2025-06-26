@@ -1,9 +1,9 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
-import FooterScss from './footer.scss';
+import FooterScss from './footer.scss?inline';
 
 /**
  * The global Footer component.
@@ -14,15 +14,15 @@ import FooterScss from './footer.scss';
  */
 @customElement('kyn-footer')
 export class Footer extends LitElement {
-  static override styles = FooterScss;
+  static override styles = unsafeCSS(FooterScss);
 
   /** URL for the footer logo link. Should target the application home page. */
   @property({ type: String })
-  rootUrl = '/';
+  accessor rootUrl = '/';
 
   /** Sets aria label attribute for logo link. */
   @property({ type: String })
-  logoAriaLabel = '';
+  accessor logoAriaLabel = '';
 
   override render() {
     const classes = {

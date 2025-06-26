@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
 import sourceIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/earth.svg';

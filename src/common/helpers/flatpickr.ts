@@ -4,7 +4,7 @@ import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
-import { langsArray, SupportedLocale } from '../flatpickrLangs';
+import { loadLocale as loadLocaleFromLangs } from '../flatpickrLangs';
 
 let flatpickrStylesInjected = false;
 
@@ -96,11 +96,6 @@ interface FlatpickrOptionsContext {
   noCalendar?: boolean;
   appendTo?: HTMLElement;
   static?: boolean;
-}
-
-export function isSupportedLocale(locale: string): boolean {
-  const baseLocale = locale.split('-')[0].toLowerCase();
-  return langsArray.includes(baseLocale as SupportedLocale);
 }
 
 export function preventFlatpickrOpen(
@@ -324,6 +319,10 @@ export function getPlaceholder(
     return placeholder;
   }
   return 'Select date';
+}
+
+export function loadLocale(locale: string): Promise<Partial<Locale>> {
+  return loadLocaleFromLangs(locale);
 }
 
 export function getModalContainer(element: HTMLElement): HTMLElement {
@@ -759,37 +758,6 @@ export function setCalendarAttributes(
       });
     }
   });
-}
-
-const localeCache: Record<string, Partial<Locale>> = {};
-
-export async function loadLocale(locale: string): Promise<Partial<Locale>> {
-  if (locale === 'en') return English;
-  if (localeCache[locale]) return localeCache[locale];
-  if (!isSupportedLocale(locale)) {
-    console.warn(`Unsupported locale "${locale}". Falling back to English.`);
-    return English;
-  }
-  try {
-    const baseLocale = locale.split('-')[0].toLowerCase();
-    const module = await import(`flatpickr/dist/l10n/${baseLocale}.js`);
-    const localeConfig =
-      module[baseLocale] ?? module.default?.[baseLocale] ?? module.default;
-    if (!localeConfig) {
-      console.warn(
-        `Locale configuration not found for "${locale}". Falling back to English.`
-      );
-      return English;
-    }
-    localeCache[locale] = localeConfig;
-    return localeConfig;
-  } catch (error) {
-    console.error(
-      `Failed to load locale "${locale}". Falling back to English.`,
-      error
-    );
-    return English;
-  }
 }
 
 export function hideEmptyYear(): void {

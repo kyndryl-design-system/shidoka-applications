@@ -2,7 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import '../../button';
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
@@ -40,73 +40,73 @@ class MyStoryTable extends LitElement {
    * @ignore
    */
   @state()
-  private kynTable: Table | null | undefined;
+  private accessor kynTable: Table | null | undefined;
 
   @property({ type: Array })
-  rows: any = [];
+  accessor rows: any = [];
 
   @property({ type: Array })
-  selectedRows = [];
+  accessor selectedRows = [];
 
   @property({ type: Boolean, reflect: true })
-  checkboxSelection = false;
+  accessor checkboxSelection = false;
 
   @property({ type: Boolean, reflect: true })
-  striped = false;
+  accessor striped = false;
 
   @property({ type: Boolean, reflect: true })
-  stickyHeader = false;
+  accessor stickyHeader = false;
 
   @property({ type: Boolean, reflect: true })
-  dense = false;
+  accessor dense = false;
 
   @property({ type: Boolean, reflect: true })
-  fixedLayout = false;
+  accessor fixedLayout = false;
 
   @property({ type: Number, reflect: true })
-  selectedCount = 0;
+  accessor selectedCount = 0;
 
   @property({ type: Boolean, reflect: true })
-  showTableActions = false;
+  accessor showTableActions = false;
 
   @property({ type: Boolean, reflect: true })
-  sortable = false;
+  accessor sortable = false;
 
   @property({ type: Boolean, reflect: true })
-  expandable = false;
+  accessor expandable = false;
 
   @property({ type: String, reflect: true })
-  tableTitle = 'Table Title';
+  accessor tableTitle = 'Table Title';
 
   @property({ type: String, reflect: true })
-  tableSubtitle = 'Table Subtitle';
+  accessor tableSubtitle = 'Table Subtitle';
 
   @property({ type: Boolean })
-  showPagination = false;
+  accessor showPagination = false;
 
   @property({ type: Boolean })
-  showLegend = false;
+  accessor showLegend = false;
 
   @property({ type: Number })
-  pageSize = 5;
+  accessor pageSize = 5;
 
   @property({ type: Number })
-  pageNumber = 0;
+  accessor pageNumber = 0;
 
   @property({ type: Array })
-  pageSizeOptions = [5, 10];
+  accessor pageSizeOptions = [5, 10];
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
-  hideItemsRange = false;
+  accessor hideItemsRange = false;
 
   /** Option to hide the page size dropdown. */
   @property({ type: Boolean })
-  hidePageSizeDropdown = false;
+  accessor hidePageSizeDropdown = false;
 
   /** Option to hide the navigation buttons. */
   @property({ type: Boolean })
-  hideNavigationButtons = false;
+  accessor hideNavigationButtons = false;
 
   /**
    * multiSelectColumnWidth: The width of the multi-select column.
@@ -114,7 +114,7 @@ class MyStoryTable extends LitElement {
    * @default '64px'
    */
   @property({ type: String })
-  multiSelectColumnWidth = '64px';
+  accessor multiSelectColumnWidth = '64px';
 
   /**
    * Handles the change of page size in pagination.

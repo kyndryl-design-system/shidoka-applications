@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
-import { useEffect } from '@storybook/preview-api';
+import { action } from 'storybook/actions';
+import { useEffect } from 'storybook/preview-api';
 
 import '../button';
 import '../modal';

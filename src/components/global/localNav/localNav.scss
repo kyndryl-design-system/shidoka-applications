@@ -1,6 +1,6 @@
 @use '../../../common/scss/global.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: block;
@@ -13,7 +13,6 @@
 }
 
 nav {
-  @include typography.type-ui-02;
   display: flex;
   flex-direction: column;
   top: 0;
@@ -24,7 +23,6 @@ nav {
   overflow: hidden;
 
   @media (min-width: 42rem) {
-    @include elevation.shadow(2);
     position: fixed;
     z-index: var(--kd-z-local-nav);
     height: 100%;
@@ -35,6 +33,8 @@ nav {
     &.pinned {
       box-shadow: none;
     }
+
+    @include elevation.shadow(2);
   }
 
   .nav--expanded-mobile & {
@@ -46,6 +46,8 @@ nav {
       width: var(--kd-local-nav-width-expanded);
     }
   }
+
+  @include typography.type-ui-02;
 }
 
 @media (min-width: 42rem) {

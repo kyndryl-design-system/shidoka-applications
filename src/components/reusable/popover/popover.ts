@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, TemplateResult } from 'lit';
+import { LitElement, html, TemplateResult, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { Placement, autoUpdate } from '@floating-ui/dom';
@@ -16,7 +16,7 @@ import {
 import '../button';
 import '../link';
 
-import PopoverScss from './popover.scss';
+import PopoverScss from './popover.scss?inline';
 
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
@@ -42,13 +42,13 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
  */
 @customElement('kyn-popover')
 export class Popover extends LitElement {
-  static override styles = [PopoverScss];
+  static override styles = unsafeCSS(PopoverScss);
 
   /**
    * Manual direction or auto (anchor mode only)
    */
   @property({ type: String, reflect: true })
-  direction: 'top' | 'right' | 'bottom' | 'left' | 'auto' = 'auto';
+  accessor direction: 'top' | 'right' | 'bottom' | 'left' | 'auto' = 'auto';
 
   /**
    * Position type: fixed (default) or absolute
@@ -56,13 +56,13 @@ export class Popover extends LitElement {
    * - absolute: positions relative to the nearest positioned ancestor
    */
   @property({ type: String })
-  positionType: PositionType = 'fixed';
+  accessor positionType: PositionType = 'fixed';
 
   /**
    * Size variants for the popover.
    */
   @property({ type: String })
-  size: 'mini' | 'narrow' | 'wide' = 'mini';
+  accessor size: 'mini' | 'narrow' | 'wide' = 'mini';
 
   // Following two props map directly to Floating-UI's offset(), shift(), and arrow() middleware
   /**
@@ -70,24 +70,24 @@ export class Popover extends LitElement {
    * Controls how far the popover is positioned from its anchor element
    */
   @property({ type: Number, reflect: true })
-  offsetDistance: number | undefined;
+  accessor offsetDistance: number | undefined;
 
   /**
    * Padding from viewport edges (px)
    */
   @property({ type: Number, reflect: true })
-  shiftPadding: number | undefined;
+  accessor shiftPadding: number | undefined;
   ////**//// */
 
   /** how we style the anchor slot */
   @property({ type: String, reflect: true })
-  triggerType: 'icon' | 'link' | 'button' | 'none' = 'button';
+  accessor triggerType: 'icon' | 'link' | 'button' | 'none' = 'button';
 
   /** Optional manual offset for tooltip-like triangular shaped arrow.
    * When set, this will override the automatic arrow positioning.
    */
   @property({ type: String, reflect: true })
-  arrowPosition?: string;
+  accessor arrowPosition: string | undefined;
 
   /**
    * Controls the popover's open state.
@@ -103,7 +103,6 @@ export class Popover extends LitElement {
    * - stops floating-ui `autoUpdate`
    * - restores focus to the saved anchor element
    */
-  @property({ type: Boolean })
   get open() {
     return this._open;
   }
@@ -150,129 +149,129 @@ export class Popover extends LitElement {
    * Animation duration in milliseconds
    */
   @property({ type: Number })
-  animationDuration = 200;
+  accessor animationDuration = 200;
 
   // Floating-only offset props
   /** Top position value. */
   @property({ type: String })
-  top?: string;
+  accessor top: string | undefined;
 
   /** Left position value. */
   @property({ type: String })
-  left?: string;
+  accessor left: string | undefined;
 
   /** Bottom position value. */
   @property({ type: String })
-  bottom?: string;
+  accessor bottom: string | undefined;
 
   /** Right position value. */
   @property({ type: String })
-  right?: string;
+  accessor right: string | undefined;
   //
 
   /**
    * Changes the primary button styles to indicate a destructive action
    */
   @property({ type: Boolean })
-  destructive = false;
+  accessor destructive = false;
 
   /**
    * Z-index for the popover.
    */
   @property({ type: Number })
-  zIndex?: number;
+  accessor zIndex: number | undefined;
 
   /**
    * Responsive breakpoints for adjusting position.
    */
   @property({ type: String })
-  responsivePosition?: string;
+  accessor responsivePosition: string | undefined;
 
   /**
    * Body title text
    */
   @property({ type: String })
-  titleText = '';
+  accessor titleText = '';
 
   /**
    * Body subtitle/label
    */
   @property({ type: String })
-  labelText = '';
+  accessor labelText = '';
 
   /**
    * OK button label
    */
   @property({ type: String })
-  okText = 'OK';
+  accessor okText = 'OK';
 
   /**
    * Cancel button label
    */
   @property({ type: String })
-  cancelText = 'Cancel';
+  accessor cancelText = 'Cancel';
 
   /**
    * Close button description text
    */
   @property({ type: String })
-  closeText = 'Close';
+  accessor closeText = 'Close';
 
   /**
    * Accessible name for the popover dialog
    * Used as aria-label when no title is present
    */
   @property({ type: String })
-  popoverAriaLabel = 'Popover';
+  accessor popoverAriaLabel = 'Popover';
 
   /**
    * Secondary button text
    */
   @property({ type: String })
-  secondaryButtonText = 'Secondary';
+  accessor secondaryButtonText = 'Secondary';
 
   /**
    * Show or hide the secondary button
    */
   @property({ type: Boolean })
-  showSecondaryButton = false;
+  accessor showSecondaryButton = false;
 
   /**
    * Tertiary button text
    */
   @property({ type: String })
-  tertiaryButtonText = 'Tertiary';
+  accessor tertiaryButtonText = 'Tertiary';
 
   /**
    * Show or hide the tertiary button
    */
   @property({ type: Boolean })
-  showTertiaryButton = false;
+  accessor showTertiaryButton = false;
 
   /**
    * Text to display for an optional link in the footer.
    */
   @property({ type: String })
-  footerLinkText = '';
+  accessor footerLinkText = '';
 
   /**
    * URL for the optional footer link.
    */
   @property({ type: String })
-  footerLinkHref = '';
+  accessor footerLinkHref = '';
 
   /**
    * Target for the footer link (ex: "_blank" for new tab).
    * If empty, defaults to same tab.
    */
   @property({ type: String })
-  footerLinkTarget: '_self' | '_blank' | '_parent' | '_top' = '_self';
+  accessor footerLinkTarget: '_self' | '_blank' | '_parent' | '_top' = '_self';
 
   /**
    * Hide the entire footer
    */
   @property({ type: Boolean })
-  hideFooter = false;
+  accessor hideFooter = false;
 
   /**
    * The computed panel coordinates for positioning.
@@ -280,7 +279,7 @@ export class Popover extends LitElement {
    * @internal
    */
   @state()
-  _panelCoords: Coords = { top: 0, left: 0 };
+  accessor _panelCoords: Coords = { top: 0, left: 0 };
 
   /**
    * The computed direction of the popover panel when `direction="auto"`.
@@ -288,7 +287,7 @@ export class Popover extends LitElement {
    * @internal
    */
   @state()
-  _calculatedDirection = 'bottom';
+  accessor _calculatedDirection = 'bottom';
 
   /**
    * The computed anchor alignment relative to the trigger element.
@@ -296,7 +295,7 @@ export class Popover extends LitElement {
    * @internal
    */
   @state()
-  _anchorPosition = 'center';
+  accessor _anchorPosition = 'center';
 
   /**
    * Keyboard event listener attached to trap focus within the popover.

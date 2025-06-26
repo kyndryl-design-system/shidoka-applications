@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import styles from './table-toolbar.scss';
+import styles from './table-toolbar.scss?inline';
 
 /**
  * `kyn-table-toolbar` Web Component.
@@ -13,15 +13,15 @@ import styles from './table-toolbar.scss';
  */
 @customElement('kyn-table-toolbar')
 export class TableToolbar extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /**The title for the toolbar */
   @property({ type: String })
-  tableTitle = '';
+  accessor tableTitle = '';
 
   /**The subtitle for the toolbar */
   @property({ type: String })
-  tableSubtitle = '';
+  accessor tableSubtitle = '';
 
   override render() {
     return html`

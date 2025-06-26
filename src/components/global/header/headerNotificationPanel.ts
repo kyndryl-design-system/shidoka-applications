@@ -1,8 +1,8 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '../../reusable/button';
 
-import HeaderNotificationPanelScss from './headerNotificationPanel.scss';
+import HeaderNotificationPanelScss from './headerNotificationPanel.scss?inline';
 
 /**
  * Component for notification panel within the Header.
@@ -13,19 +13,19 @@ import HeaderNotificationPanelScss from './headerNotificationPanel.scss';
 
 @customElement('kyn-header-notification-panel')
 export class HeaderNotificationPanel extends LitElement {
-  static override styles = HeaderNotificationPanelScss;
+  static override styles = unsafeCSS(HeaderNotificationPanelScss);
 
   /** Notification panel Title. */
   @property({ type: String })
-  panelTitle = '';
+  accessor panelTitle = '';
 
   /** Notification panel footer button text. */
   @property({ type: String })
-  panelFooterBtnText = '';
+  accessor panelFooterBtnText = '';
 
   /** Hide notification panel footer */
   @property({ type: Boolean })
-  hidePanelFooter = false;
+  accessor hidePanelFooter = false;
 
   override render() {
     return html` <div class="panel-wrapper">

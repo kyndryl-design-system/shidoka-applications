@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import TabPanelScss from './tabPanel.scss';
+import TabPanelScss from './tabPanel.scss?inline';
 
 /**
  * Tabs.
@@ -9,31 +9,30 @@ import TabPanelScss from './tabPanel.scss';
  */
 @customElement('kyn-tab-panel')
 export class TabPanel extends LitElement {
-  static override styles = TabPanelScss;
+  static override styles = unsafeCSS(TabPanelScss);
 
   /** Matching Tab ID, required. */
   @property({ type: String })
-  tabId = '';
+  accessor tabId = '';
 
   /** Tab Panel visible state.  Must match Tab selected state. */
   @property({ type: Boolean, reflect: true })
-  visible = false;
+  accessor visible = false;
 
   /** Remove side padding (left/right) on tab panel. */
   @property({ type: Boolean })
-  noPadding = false;
+  accessor noPadding = false;
 
   /** Vertical orientation. Inherited.
    * @internal
    */
   @property({ type: Boolean, reflect: true, attribute: 'vertical' })
-  vertical = false;
+  accessor vertical = false;
 
   /**
    * @internal
    * Kept for backward compatibility
    */
-  @state()
   private get _vertical(): boolean {
     return this.vertical;
   }
@@ -42,19 +41,19 @@ export class TabPanel extends LitElement {
    * @internal
    */
   @property({ type: String, reflect: true })
-  override id = '';
+  override accessor id = '';
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'tabpanel';
+  override accessor role = 'tabpanel';
 
   /** aria-labelledby, derived from tabId.
    * @internal
    */
   @property({ type: String, reflect: true })
-  'aria-labelledby' = '';
+  accessor 'aria-labelledby' = '';
 
   override render() {
     const classes = {

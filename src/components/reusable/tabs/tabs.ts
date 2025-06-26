@@ -1,11 +1,11 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import TabsScss from './tabs.scss';
+import TabsScss from './tabs.scss?inline';
 
 /**
  * Tabs.
@@ -15,39 +15,39 @@ import TabsScss from './tabs.scss';
  */
 @customElement('kyn-tabs')
 export class Tabs extends LitElement {
-  static override styles = TabsScss;
+  static override styles = unsafeCSS(TabsScss);
 
   /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
   @property({ type: String })
-  tabSize = 'md';
+  accessor tabSize = 'md';
 
   /** Vertical orientation. */
   @property({ type: Boolean })
-  vertical = false;
+  accessor vertical = false;
 
   /** AI specifier. */
   @property({ type: Boolean })
-  aiConnected = false;
+  accessor aiConnected = false;
 
   /** Enables tab content change on focus with keyboard navigation/assistive technologies. */
   @property({ type: Boolean })
-  disableAutoFocusUpdate = false;
+  accessor disableAutoFocusUpdate = false;
 
   /** Adds scrollable overflow to the tab panels. */
   @property({ type: Boolean })
-  scrollablePanels = false;
+  accessor scrollablePanels = false;
 
   /** Queries for slotted tabs.
    * @internal
    */
   @queryAssignedElements({ slot: 'tabs', selector: 'kyn-tab' })
-  _tabs!: any;
+  accessor _tabs!: any;
 
   /** Queries for slotted tab panels.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-tab-panel' })
-  _tabPanels!: any;
+  accessor _tabPanels!: any;
 
   override render() {
     const wrapperClasses = {

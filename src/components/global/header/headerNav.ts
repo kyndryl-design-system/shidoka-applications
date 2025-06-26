@@ -1,8 +1,8 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import HeaderNavScss from './headerNav.scss';
+import HeaderNavScss from './headerNav.scss?inline';
 
 import menuIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/hamburger-menu.svg';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
@@ -13,17 +13,17 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cl
  */
 @customElement('kyn-header-nav')
 export class HeaderNav extends LitElement {
-  static override styles = HeaderNavScss;
+  static override styles = unsafeCSS(HeaderNavScss);
 
   /** Small screen header nav visibility.
    * @ignore
    */
   @state()
-  menuOpen = false;
+  accessor menuOpen = false;
 
   /** Force correct slot */
   @property({ type: String, reflect: true })
-  override slot = 'left';
+  override accessor slot = 'left';
 
   override render() {
     const classes = {

@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -8,7 +8,7 @@ import {
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
-import styles from './table-head.scss';
+import styles from './table-head.scss?inline';
 
 /**
  * `kyn-thead` Web Component.
@@ -20,16 +20,16 @@ import styles from './table-head.scss';
  */
 @customElement('kyn-thead')
 export class TableHead extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'rowgroup';
+  override accessor role = 'rowgroup';
 
   @property({ type: Boolean, reflect: true })
-  stickyHeader = false;
+  accessor stickyHeader = false;
 
   /**
    * Context consumer for the table context.
@@ -40,7 +40,7 @@ export class TableHead extends LitElement {
    */
   @state()
   // @ts-expect-error - This is a context consumer
-  private _contextConsumer = new ContextConsumer(
+  private accessor _contextConsumer = new ContextConsumer(
     this,
     tableContext,
     (context) => {
@@ -63,7 +63,7 @@ export class TableHead extends LitElement {
    * @ignore
    */
   @queryAssignedElements()
-  unnamedSlotEls!: Array<HTMLElement>;
+  accessor unnamedSlotEls!: Array<HTMLElement>;
 
   override connectedCallback() {
     super.connectedCallback();

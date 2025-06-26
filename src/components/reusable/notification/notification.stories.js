@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import '../button';
 import '../link';
 
@@ -257,7 +257,6 @@ export const Toast = {
           timeout=${14}
           ?hideCloseButton=${args.hideCloseButton}
           @on-close=${(e) => action(e.type)(e)}
-          timeout=${0}
         >
           <div>I will disappear after <code>14</code> seconds.</div>
         </kyn-notification>

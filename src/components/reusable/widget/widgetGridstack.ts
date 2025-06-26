@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import Styles from './widgetGridstack.scss';
+import Styles from './widgetGridstack.scss?inline';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
 import { Config } from '../../../common/helpers/gridstack';
@@ -14,29 +14,29 @@ import { GridStack } from 'gridstack';
  */
 @customElement('kyn-widget-gridstack')
 export class WidgetGridstack extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** GridStack layout/widget size/position definitions for each breakpoint. */
   @property({ type: Object })
-  layout: any = {};
+  accessor layout: any = {};
 
   /** GridStack config. */
   @property({ type: Object })
-  gridstackConfig: any = Config;
+  accessor gridstackConfig: any = Config;
 
   /** GridStack instance. */
   @property({ attribute: false })
-  gridStack: any = GridStack;
+  accessor gridStack: any = GridStack;
 
   /** GridStack grid instance. */
   @property({ attribute: false })
-  grid!: any;
+  accessor grid!: any;
 
   /** Current breakpoint.
    * @internal
    */
   @state()
-  _breakpoint = '';
+  accessor _breakpoint = '';
 
   override render() {
     return html`
