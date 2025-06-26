@@ -107,7 +107,7 @@ function vitePluginRawSvg() {
     name: 'vite-plugin-raw-svg',
     enforce: 'pre', // to override `vite:asset`'s behavior
     async load(id) {
-      if (id.includes('.svg?')) {
+      if (id.includes('.svg') && !id.includes('.svg.js')) {
         const svg = await fs.promises.readFile(id, 'utf8');
         // Escape backticks and backslashes for template literal
         const safe = svg.replace(/\\/g, '\\\\').replace(/`/g, '\\`');
