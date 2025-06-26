@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -14,7 +14,7 @@ import {
 
 import '../tag';
 
-import MultiInputScss from './multiInputField.scss';
+import MultiInputScss from './multiInputField.scss?inline';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
@@ -26,69 +26,66 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
  * @fires on-change – emits string[] after tags are added/removed
  * @prop {string[]} customSuggestions - Optional array of custom suggestions to use instead of the default mock data
  */
+
 @customElement('kyn-multi-input-field')
 export class MultiInputField extends FormMixin(LitElement) {
-  static override styles = [MultiInputScss];
+  static override styles = unsafeCSS(MultiInputScss);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Helper or error caption. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Sets input type to either email or default. */
   @property({ type: String })
-  inputType: 'email' | 'default' = 'default';
+  accessor inputType: 'email' | 'default' = 'default';
 
   /** Makes field required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Placeholder text. */
   @property({ type: String })
-  placeholder = '';
+  accessor placeholder = '';
 
   /** Disable the textarea. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Read‐only mode. */
   @property({ type: Boolean })
-  readonly = false;
+  accessor readonly = false;
 
   /** Hide visible label (for screen‐reader only). */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** Whether automatic suggestion is active. */
   @property({ type: Boolean })
-  autoSuggestionDisabled = false;
+  accessor autoSuggestionDisabled = false;
 
   /** Custom suggestions data to override default mock data for type-ahead functionality. */
   @property({ type: Array })
-  customSuggestions?: string[];
+  accessor customSuggestions: string[] = [];
 
   /** Maximum number of tags allowed. */
   @property({ type: Number })
-  maxItems?: number;
-
-  /** Name attribute (for form‐internals). */
-  @property({ type: String })
-  override name = '';
+  accessor maxItems: number | undefined = undefined;
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = defaultTextStrings;
+  accessor textStrings = defaultTextStrings;
 
   /** Disable all validations. */
   @property({ type: Boolean })
-  validationsDisabled = false;
+  accessor validationsDisabled = false;
 
   /** Pattern attribute for the input element. */
   @property({ type: String })
-  pattern?: string;
+  accessor pattern: string | undefined = undefined;
 
   /** Merged internal text strings.
    * @internal
@@ -101,77 +98,77 @@ export class MultiInputField extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  private _items: string[] = [];
+  private accessor _items: string[] = [];
 
   /** Indexes of invalid items in `_items`.
    * @internal
    */
   @state()
-  private _invalids = new Set<number>();
+  private accessor _invalids = new Set<number>();
 
   /** Current type-ahead suggestions.
    * @internal
    */
   @state()
-  private suggestions: string[] = [];
+  private accessor suggestions: string[] = [];
 
   /** Whether the suggestion panel is expanded.
    * @internal
    */
   @state()
-  private _expanded = false;
+  private accessor _expanded = false;
 
   /** Currently highlighted suggestion index.
    * @internal
    */
   @state()
-  private highlightedIndex = -1;
+  private accessor highlightedIndex = -1;
 
   /** Inline 'top' style for suggestions (px)
    * @internal
    */
   @state()
-  private _suggestionTop = '0px';
+  private accessor _suggestionTop = '0px';
 
   /** Inline 'left' style for suggestions (px).
    * @internal
    */
   @state()
-  private _suggestionLeft = '0px';
+  private accessor _suggestionLeft = '0px';
 
   /** Displayed validation message.
    * @internal
    */
   @state()
-  private _validationMessage = '';
+  private accessor _validationMessage = '';
 
   /** Suppress any tag icon (even on email). */
   @property({ type: Boolean })
-  hideIcon = false;
+  accessor hideIcon = false;
 
   /** Store the slotted icon SVG string.
    * @internal
    */
   @state()
-  private _iconSvg = '';
+  private accessor _iconSvg = '';
 
   /** Whether to use the icon.
    * @internal
    */
   @state()
-  private _useIcon = false;
+  private accessor _useIcon = false;
 
   /** Container wrapper for relative positioning
    * @ignore
    */
   @query('.container')
-  private _containerEl!: HTMLElement;
+  private accessor _containerEl!: HTMLElement;
 
   /** The `<input>` element.
    * @ignore
    */
   @query('input')
-  private inputEl!: HTMLInputElement;
+  private accessor inputEl!: HTMLInputElement;
 
   /** Mock database of emails to simulate type-ahead suggestions.
    * @ignore

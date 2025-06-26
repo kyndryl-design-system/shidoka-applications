@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import './multiInputField';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { defaultTextStrings } from '../../../common/helpers/multiInputValidationsHelper';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
