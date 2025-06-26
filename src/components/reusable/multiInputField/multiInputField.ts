@@ -83,6 +83,10 @@ export class MultiInputField extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor validationsDisabled = false;
 
+  /** Suppress any tag icon (even on email). */
+  @property({ type: Boolean })
+  accessor hideIcon = false;
+
   /** Pattern attribute for the input element. */
   @property({ type: String })
   accessor pattern: string | undefined = undefined;
@@ -141,10 +145,6 @@ export class MultiInputField extends FormMixin(LitElement) {
    */
   @state()
   private accessor _validationMessage = '';
-
-  /** Suppress any tag icon (even on email). */
-  @property({ type: Boolean })
-  accessor hideIcon = false;
 
   /** Store the slotted icon SVG string.
    * @internal
@@ -290,32 +290,38 @@ export class MultiInputField extends FormMixin(LitElement) {
 
   private renderSuggestions() {
     if (this.autoSuggestionDisabled) return null;
+    const query = this.inputEl?.value.trim() || '';
     return html`
       <div
         class="suggestions"
         role="listbox"
         style="top: ${this._suggestionTop}; left: ${this._suggestionLeft};"
-        ?hidden=${!this._expanded || this.suggestions.length === 0}
+        ?hidden=${!this._expanded}
       >
-        ${this.suggestions.map(
-          (sugg, idx) => html`
-            <div
-              class=${classMap({
-                suggestion: true,
-                highlighted: idx === this.highlightedIndex,
-              })}
-              role="option"
-              aria-selected=${idx === this.highlightedIndex}
-              @mousedown=${(e: MouseEvent) => e.preventDefault()}
-              @click=${() => this._selectSuggestion(sugg)}
-            >
-              ${sugg}
-            </div>
-          `
-        )}
+        ${query && this.suggestions.length === 0
+          ? html`<div class="no-suggestions">
+              ${this._textStrings.noSuggestionsMsg}
+            </div>`
+          : this.suggestions.map(
+              (sugg, idx) => html`
+                <div
+                  class=${classMap({
+                    suggestion: true,
+                    highlighted: idx === this.highlightedIndex,
+                  })}
+                  role="option"
+                  aria-selected=${idx === this.highlightedIndex}
+                  @mousedown=${(e: MouseEvent) => e.preventDefault()}
+                  @click=${() => this._selectSuggestion(sugg)}
+                >
+                  ${sugg}
+                </div>
+              `
+            )}
       </div>
     `;
   }
+
   private renderCaptionAndError(error: boolean, validCount: number) {
     return html`
       <div class="caption-count-container">

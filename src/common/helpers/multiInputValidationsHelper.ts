@@ -1,7 +1,8 @@
 export const defaultTextStrings = {
   requiredText: 'Required',
-  requiredError: 'At least one item is required',
+  noSuggestionsMsg: 'No suggestions found',
   placeholderSecondary: 'Add another item...',
+  requiredError: 'At least one item is required',
   invalidFormatError: 'Invalid format.',
   maxExceededError: 'Maximum number of items exceeded.',
   duplicateError: 'Item already added',
