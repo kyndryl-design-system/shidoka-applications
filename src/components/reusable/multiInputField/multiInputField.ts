@@ -214,10 +214,13 @@ export class MultiInputField extends FormMixin(LitElement) {
       !this.validationsDisabled &&
       !isValidInput(item, this.inputType, this.pattern);
 
-    const isOverLimit = this.maxItems !== undefined && index >= this.maxItems;
+    const isOverLimit =
+      !this.validationsDisabled &&
+      this.maxItems !== undefined &&
+      index >= this.maxItems;
 
     const firstIndex = this._items.indexOf(item);
-    const isDuplicate = firstIndex !== index;
+    const isDuplicate = !this.validationsDisabled && firstIndex !== index;
 
     const tagColor = isInvalid || isOverLimit || isDuplicate ? 'red' : 'spruce';
 
