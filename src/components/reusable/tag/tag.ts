@@ -1,9 +1,9 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import clearIcon16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import TagScss from './tag.scss';
+import TagScss from './tag.scss?inline';
 
 /**
  * Tag.
@@ -14,37 +14,37 @@ import TagScss from './tag.scss';
 
 @customElement('kyn-tag')
 export class Tag extends LitElement {
-  static override styles = TagScss;
+  static override styles = unsafeCSS(TagScss);
 
   /**
    * Tag name (Required).
    */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /**
    * Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.
    */
   @property({ type: String })
-  tagSize = 'md';
+  accessor tagSize = 'md';
 
   /**
    * Specify if the Tag is disabled.
    */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /**
    * Determine if Tag state is filter.
    */
   @property({ type: Boolean })
-  filter = false;
+  accessor filter = false;
 
   /**
    * Removes label text truncation.
    */
   @property({ type: Boolean })
-  noTruncation = false;
+  accessor noTruncation = false;
 
   /**
    * Determine if Tag is clickable(applicable for old tags only).
@@ -52,19 +52,19 @@ export class Tag extends LitElement {
    * **NOTE**: New tags are **clickable** by **default**.
    */
   @property({ type: Boolean })
-  clickable = false;
+  accessor clickable = false;
 
   /**
    * Color variants. Default `'spruce'`.
    */
   @property({ type: String })
-  tagColor = 'spruce';
+  accessor tagColor = 'spruce';
 
   /**
    * Clear Tag Text to improve accessibility
    */
   @property({ type: String })
-  clearTagText = 'Clear Tag';
+  accessor clearTagText = 'Clear Tag';
 
   override updated() {
     this.label = this.label.trim();

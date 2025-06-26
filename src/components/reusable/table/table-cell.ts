@@ -1,9 +1,9 @@
-import { html, LitElement, PropertyValues } from 'lit';
+import { html, LitElement, PropertyValues, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
-import styles from './table-cell.scss';
+import styles from './table-cell.scss?inline';
 
 import { TABLE_CELL_ALIGN } from './defs';
 
@@ -18,34 +18,34 @@ import { TABLE_CELL_ALIGN } from './defs';
  */
 @customElement('kyn-td')
 export class TableCell extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   @property({ type: Boolean, reflect: true })
-  dense = false;
+  accessor dense = false;
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'cell';
+  override accessor role = 'cell';
 
   /** Determines the text alignment of the table cell's content. */
   @property({ type: String, reflect: true })
-  align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
+  accessor align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
 
   /**
    * Sets a fixed width for the cell.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
   @property({ type: String, reflect: true })
-  width = '';
+  accessor width = '';
 
   /**
    * Sets a maximum width for the cell.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
   @property({ type: String, reflect: true })
-  maxWidth = '';
+  accessor maxWidth = '';
 
   /**
    * Sets a minimum width for the cell;
@@ -53,15 +53,15 @@ export class TableCell extends LitElement {
    * @type {string}
    */
   @property({ type: String, reflect: true })
-  minWidth = '';
+  accessor minWidth = '';
 
   /** Disables the cell. */
   @property({ type: Boolean, reflect: true })
-  disabled = false;
+  accessor disabled = false;
 
   /** Dim the cell. */
   @property({ type: Boolean, reflect: true })
-  dimmed = false;
+  accessor dimmed = false;
 
   /**
    * Context consumer for the table context.
@@ -72,7 +72,7 @@ export class TableCell extends LitElement {
    */
   @state()
   // @ts-expect-error - This is a context consumer
-  private _contextConsumer = new ContextConsumer(
+  private accessor _contextConsumer = new ContextConsumer(
     this,
     tableContext,
     (context) => {

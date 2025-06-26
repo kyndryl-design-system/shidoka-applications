@@ -1,9 +1,9 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
 import animationData from './json/loader.json';
-import Styles from './loader.scss';
+import Styles from './loader.scss?inline';
 
 /**
  * Loader.
@@ -12,45 +12,45 @@ import Styles from './loader.scss';
  */
 @customElement('kyn-loader')
 export class Loader extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Animation stopped state */
   @property({ type: Boolean })
-  stopped = false;
+  accessor stopped = false;
 
   /** Display the loader as an overlay */
   @property({ type: Boolean })
-  overlay = false;
+  accessor overlay = false;
 
   /** Animation loop has finished and stopped
    * @internal
    */
   @state()
-  private _stopped = false;
+  private accessor _stopped = false;
 
   /** Wrapper element
    * @internal
    */
   @query('.wrapper')
-  private _wrapperEl!: any;
+  private accessor _wrapperEl!: any;
 
   /** Hidden state
    * @internal
    */
   @state()
-  private _hidden = false;
+  private accessor _hidden = false;
 
   /** Animation container element
    * @internal
    */
   @query('.container')
-  private _containerEl!: any;
+  private accessor _containerEl!: any;
 
   /** Animation instance
    * @internal
    */
   @state()
-  private _animation!: any;
+  private accessor _animation!: any;
 
   override render() {
     const Classes = {

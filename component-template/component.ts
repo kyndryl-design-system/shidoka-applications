@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import Styles from './component.scss';
+import Styles from './component.scss?inline';
 
 /**
  * Example component template.
@@ -9,31 +9,31 @@ import Styles from './component.scss';
  */
 @customElement('kyn-component')
 export class Component extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** exposed reactive string property */
   @property({ type: String })
-  stringProp = '';
+  accessor stringProp = '';
 
   /** exposed reactive boolean property */
   @property({ type: Boolean })
-  booleanProp = false; // booleans must always default to false
+  accessor booleanProp = false; // booleans must always default to false
 
   /** exposed reactive array property */
   @property({ type: Array })
-  arrayProp = [];
+  accessor arrayProp = [];
 
   /** internal reactive property
    * @internal
    */
   @state()
-  _internalProp = 'Internal Prop'; // use an underscore to signify internal variables/methods
+  accessor _internalProp = 'Internal Prop'; // use an underscore to signify internal variables/methods
 
   /** .component element reference. does not get updated until after Lit update lifecycle completes
    * @internal
    */
   @query('.component')
-  _component!: HTMLElement;
+  accessor _component!: HTMLElement;
 
   override render() {
     return html`

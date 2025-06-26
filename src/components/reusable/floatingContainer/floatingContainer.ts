@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import FloatingContainerScss from './floatingContainer.scss';
+import FloatingContainerScss from './floatingContainer.scss?inline';
 
 /**
  * Floating Container.
@@ -9,7 +9,7 @@ import FloatingContainerScss from './floatingContainer.scss';
 
 @customElement('kyn-button-float-container')
 export class FloatingContainer extends LitElement {
-  static override styles = FloatingContainerScss;
+  static override styles = unsafeCSS(FloatingContainerScss);
   override render() {
     return html`
       <div class="floating-btn-wrapper">

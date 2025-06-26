@@ -1,9 +1,9 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
-import SampleFileUploaderScss from './fileUploader.sample.scss';
+import SampleFileUploaderScss from './fileUploader.sample.scss?inline';
 import './index';
 import '../button';
 import '../notification';
@@ -31,52 +31,52 @@ const _textStrings = {
 
 @customElement('sample-file-uploader')
 export class SampleFileUploader extends LitElement {
-  static override styles = SampleFileUploaderScss;
+  static override styles = unsafeCSS(SampleFileUploaderScss);
 
   @property({ type: Boolean })
-  multiple = false;
+  accessor multiple = false;
 
   @state()
-  _validFiles: any[] = [];
+  accessor _validFiles: any[] = [];
 
   @state()
-  _invalidFiles: any[] = [];
+  accessor _invalidFiles: any[] = [];
 
   @state()
-  _showNotification = false;
+  accessor _showNotification = false;
 
   @state()
-  _notificationStatus = 'default';
+  accessor _notificationStatus = 'default';
 
   @state()
-  _notificationTitle = '';
+  accessor _notificationTitle = '';
 
   @state()
-  _notificationMessage = '';
+  accessor _notificationMessage = '';
 
   @state()
-  _showProgressBar = false;
+  accessor _showProgressBar = false;
 
   @state()
-  _currentFileUploading = '';
+  accessor _currentFileUploading = '';
 
   @state()
-  _completedFiles = 0;
+  accessor _completedFiles = 0;
 
   @state()
-  _totalFiles = 0;
+  accessor _totalFiles = 0;
 
   @state()
-  _overallProgress = 0;
+  accessor _overallProgress = 0;
 
   @state()
-  _uploadCanceled = false;
+  accessor _uploadCanceled = false;
 
   @state()
-  _helperText = '';
+  accessor _helperText = '';
 
   @state()
-  _disabled = false;
+  accessor _disabled = false;
 
   override render() {
     return html`

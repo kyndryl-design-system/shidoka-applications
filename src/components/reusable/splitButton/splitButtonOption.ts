@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import SplitButtonOptionScss from './splitButtonOption.scss';
+import SplitButtonOptionScss from './splitButtonOption.scss?inline';
 
 /**
  * Split button option.
@@ -11,33 +11,33 @@ import SplitButtonOptionScss from './splitButtonOption.scss';
 
 @customElement('kyn-splitbutton-option')
 export class SplitButtonOption extends LitElement {
-  static override styles = SplitButtonOptionScss;
+  static override styles = unsafeCSS(SplitButtonOptionScss);
 
   /** Split button option value. */
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   /** Split button option selected state. */
   @property({ type: Boolean, reflect: true })
-  selected = false;
+  accessor selected = false;
 
   /** Split button menu option disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /**
    * Option highlighted state for keyboard navigation, automatically derived.
    * @ignore
    */
   @state()
-  highlighted = false;
+  accessor highlighted = false;
 
   /**
    * Option text, automatically derived.
    * @ignore
    */
   @state()
-  text: any = '';
+  accessor text: any = '';
 
   override render() {
     return html`

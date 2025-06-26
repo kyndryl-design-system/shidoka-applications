@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOf, Source } from '@storybook/blocks';
+import { useOf, Source } from '@storybook/addon-docs/blocks';
 
 export const UsageExample = () => {
   const resolvedOf = useOf('story');

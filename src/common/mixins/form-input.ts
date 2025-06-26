@@ -38,33 +38,33 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
      * @ignore
      */
     @state()
-    _internals = this.attachInternals();
+    accessor _internals = this.attachInternals();
 
     /** Input value. */
     @property({ type: String })
-    value = '';
+    accessor value = '';
 
     /** Input name. */
     @property({ type: String })
-    name = '';
+    accessor name = '';
 
     /** Input invalid text. */
     @property({ type: String })
-    invalidText = '';
+    accessor invalidText = '';
 
     /**
      * Internal validation message.
      * @ignore
      */
     @state()
-    _internalValidationMsg = '';
+    accessor _internalValidationMsg = '';
 
     /**
      * isInvalid when internalValidationMsg or invalidText is non-empty.
      * @ignore
      */
     @state()
-    _isInvalid = false;
+    accessor _isInvalid = false;
 
     // /** Handles the form element formdata event and appends the name/value. Alternative solution to internals.setFormValue.
     //  * @internal

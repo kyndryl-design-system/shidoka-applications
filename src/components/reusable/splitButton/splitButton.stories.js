@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark.svg';
 import './index';
 import { createOptionsArray } from '../../../common/helpers/helpers';

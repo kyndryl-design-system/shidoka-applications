@@ -1,23 +1,23 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import Styles from './localNavDivider.scss';
+import Styles from './localNavDivider.scss?inline';
 
 /**
  * Local Nav divider
  */
 @customElement('kyn-local-nav-divider')
 export class LocalNavDivider extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Optional heading text. */
   @property({ type: String })
-  heading = '';
+  accessor heading = '';
 
   /** The local nav desktop expanded state.
    * @internal
    */
   @state()
-  _navExpanded = false;
+  accessor _navExpanded = false;
 
   override render() {
     return html`

@@ -1,8 +1,8 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import ModalScss from './modal.scss';
+import ModalScss from './modal.scss?inline';
 
 import '../button';
 
@@ -19,7 +19,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
 @customElement('kyn-modal')
 export class Modal extends LitElement {
   static override styles = [
-    ModalScss,
+    unsafeCSS(ModalScss),
     css`
       @supports (transition-behavior: allow-discrete) {
         @starting-style {
@@ -40,77 +40,77 @@ export class Modal extends LitElement {
 
   /** Modal open state. */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /** Modal size. `'auto'`, `'md'`, or `'lg', or `'xl'`. */
   @property({ type: String })
-  size = 'auto';
+  accessor size = 'auto';
 
   /** Title/heading text, required. */
   @property({ type: String })
-  titleText = '';
+  accessor titleText = '';
 
   /** Label text, optional. */
   @property({ type: String })
-  labelText = '';
+  accessor labelText = '';
 
   /** OK button text. */
   @property({ type: String })
-  okText = 'OK';
+  accessor okText = 'OK';
 
   /** Cancel button text. */
   @property({ type: String })
-  cancelText = 'Cancel';
+  accessor cancelText = 'Cancel';
 
   /** Changes the primary button styles to indicate the action is destructive. */
   @property({ type: Boolean })
-  destructive = false;
+  accessor destructive = false;
 
   /** Disables the primary button. */
   @property({ type: Boolean })
-  okDisabled = false;
+  accessor okDisabled = false;
 
   /** Disables the secondary button. */
   @property({ type: Boolean })
-  secondaryDisabled = false;
+  accessor secondaryDisabled = false;
 
   /** Hides the footer/action buttons to create a passive modal. */
   @property({ type: Boolean })
-  hideFooter = false;
+  accessor hideFooter = false;
 
   /** Secondary button text. */
   @property({ type: String })
-  secondaryButtonText = 'Secondary';
+  accessor secondaryButtonText = 'Secondary';
 
   /** Hides the secondary button. */
   @property({ type: Boolean })
-  showSecondaryButton = false;
+  accessor showSecondaryButton = false;
 
   /** Hides the cancel button. */
   @property({ type: Boolean })
-  hideCancelButton = false;
+  accessor hideCancelButton = false;
 
   /** Function to execute before the modal can close. Useful for running checks or validations before closing. Exposes `returnValue` (`'ok'` or `'cancel'`). Must return `true` or `false`. */
   @property({ attribute: false })
-  beforeClose!: Function;
+  accessor beforeClose!: Function;
 
   /** Close button text. */
   @property({ type: String })
-  closeText = 'Close';
+  accessor closeText = 'Close';
 
   /** The dialog element
    * @internal
    */
   @query('dialog')
-  _dialog!: any;
+  accessor _dialog!: any;
 
   /** Determines if the component is themed for GenAI.*/
   @property({ type: Boolean, reflect: true })
-  aiConnected = false;
+  accessor aiConnected = false;
 
   /** Disables scroll on the modal body to allow scrolling of nested elements inside. */
   @property({ type: Boolean })
-  disableScroll = false;
+  accessor disableScroll = false;
 
   override render() {
     const classes = {

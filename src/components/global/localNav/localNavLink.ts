@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -7,7 +7,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import LocalNavLinkScss from './localNavLink.scss';
+import LocalNavLinkScss from './localNavLink.scss?inline';
 
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -21,76 +21,76 @@ import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
  */
 @customElement('kyn-local-nav-link')
 export class LocalNavLink extends LitElement {
-  static override styles = LocalNavLinkScss;
+  static override styles = unsafeCSS(LocalNavLinkScss);
 
   /** Link url. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Expanded state. */
   @property({ type: Boolean })
-  expanded = false;
+  accessor expanded = false;
 
   /** Active state. */
   @property({ type: Boolean, reflect: true })
-  active = false;
+  accessor active = false;
 
   /** Disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Text for mobile "Back" button. */
   @property({ type: String })
-  backText = 'Back';
+  accessor backText = 'Back';
 
   /** Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1. */
   @property({ type: Boolean })
-  leftPadding = false;
+  accessor leftPadding = false;
 
   /** Link level, supports three levels.
    * @ignore
    */
   @state()
-  _level = 1;
+  accessor _level = 1;
 
   /** The local nav desktop expanded state.
    * @internal
    */
   @state()
-  _navExpanded = false;
+  accessor _navExpanded = false;
 
   /** The local nav mobile expanded state.
    * @internal
    */
   @state()
-  _navExpandedMobile = false;
+  accessor _navExpandedMobile = false;
 
   /** The slotted text.
    * @internal
    */
   @state()
-  _text = '';
+  accessor _text = '';
 
   /**
    * Queries slotted links.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
-  _navLinks!: Array<any>;
+  accessor _navLinks!: Array<any>;
 
   /**
    * Queries slotted dividers.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-divider' })
-  _dividers!: Array<any>;
+  accessor _dividers!: Array<any>;
 
   /**
    * Queries slotted icon.
    * @ignore
    */
   @queryAssignedElements({ slot: 'icon' })
-  _icon!: Array<any>;
+  accessor _icon!: Array<any>;
 
   override render() {
     const classes = {

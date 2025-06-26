@@ -1,9 +1,9 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { LINK_TYPES, LINK_TARGETS } from './defs';
 
-import LinkStyles from './link.scss';
+import LinkStyles from './link.scss?inline';
 
 /**
  * Component for navigation links.
@@ -14,41 +14,41 @@ import LinkStyles from './link.scss';
 
 @customElement('kyn-link')
 export class Link extends LitElement {
-  static override styles = [LinkStyles];
+  static override styles = unsafeCSS(LinkStyles);
 
   /** Link url. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
-  target: LINK_TARGETS = LINK_TARGETS.SELF;
+  accessor target: LINK_TARGETS = LINK_TARGETS.SELF;
 
   /** The Link type. Primary(App) or Secondary(Web).*/
   @property({ type: String })
-  kind: LINK_TYPES = LINK_TYPES.PRIMARY;
+  accessor kind: LINK_TYPES = LINK_TYPES.PRIMARY;
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
-  rel = '';
+  accessor rel = '';
 
   /** Determines if the link is disabled.*/
   // Reference for disabled links:
   // https://www.scottohara.me/blog/2021/05/28/disabled-links.html
   @property({ type: Boolean, reflect: true })
-  disabled = false;
+  accessor disabled = false;
 
   /** Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant. */
   @property({ type: Boolean })
-  standalone = false;
+  accessor standalone = false;
 
   /** Positions icon on the left. */
   @property({ type: Boolean })
-  iconLeft = false;
+  accessor iconLeft = false;
 
   /** Sets font-weight between default heavier and lighter font-weight. */
   @property({ type: String })
-  linkFontWeight: 'lighter' | 'default' = 'default';
+  accessor linkFontWeight: 'lighter' | 'default' = 'default';
 
   override render() {
     const classes = this.returnClassMap();

@@ -3,7 +3,7 @@ import './index';
 import './sample/gridstack.newWidget.sample';
 import { Config } from '../../../common/helpers/gridstack';
 import sampleLayout from './layout.sample';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 

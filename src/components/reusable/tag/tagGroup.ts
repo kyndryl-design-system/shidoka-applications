@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -7,7 +7,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import './tag';
-import TagGroupScss from './tagGroup.scss';
+import TagGroupScss from './tagGroup.scss?inline';
 import '../link';
 
 /**
@@ -17,41 +17,41 @@ import '../link';
 
 @customElement('kyn-tag-group')
 export class TagGroup extends LitElement {
-  static override styles = TagGroupScss;
+  static override styles = unsafeCSS(TagGroupScss);
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = {
+  accessor textStrings = {
     showAll: 'Show all',
     showLess: 'Show less',
   };
 
   /** Limits visible tags (5) behind a "Show all" button. Use only if having more than 5 tags.*/
   @property({ type: Boolean })
-  limitTags = false;
+  accessor limitTags = false;
 
   /** Tag limit visibility.
    * @internal
    */
   @state()
-  limitRevealed = false;
+  accessor limitRevealed = false;
 
   /** Tag group filter */
   @property({ type: Boolean })
-  filter = false;
+  accessor filter = false;
 
   /**
    * Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.
    */
   @property({ type: String })
-  tagSize = 'md';
+  accessor tagSize = 'md';
 
   /**
    * Queries for slotted tags.
    * @ignore
    */
   @queryAssignedElements()
-  tags!: Array<any>;
+  accessor tags!: Array<any>;
 
   override render() {
     const toggleBtnClasses = {

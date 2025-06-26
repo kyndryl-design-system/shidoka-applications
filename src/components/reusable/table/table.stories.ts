@@ -6,8 +6,8 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 // Import external libraries
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import type { Meta, StoryObj } from '@storybook/web-components';
-import { action } from '@storybook/addon-actions';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import { action } from 'storybook/actions';
 
 // Kyndryl Design System Components and Icons
 import './index';

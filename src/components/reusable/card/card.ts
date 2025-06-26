@@ -1,8 +1,8 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import CardScss from './card.scss';
+import CardScss from './card.scss?inline';
 
 /**
  * Card.
@@ -14,34 +14,34 @@ import CardScss from './card.scss';
 
 @customElement('kyn-card')
 export class Card extends LitElement {
-  static override styles = CardScss;
+  static override styles = unsafeCSS(CardScss);
 
   /** Card Type. `'normal'` & `'clickable'` */
   @property({ type: String })
-  type = 'normal';
+  accessor type = 'normal';
 
   /** Card link url for clickable cards. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship. */
   @property({ type: String })
-  rel = '';
+  accessor rel = '';
 
   /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'` */
   @property({ type: String })
-  target: any = '_self';
+  accessor target: any = '_self';
 
   /** Hide card border. Useful when clickable card use inside `<kyn-notification>` component. */
   @property({ type: Boolean })
-  hideBorder = false;
+  accessor hideBorder = false;
 
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
-  aiConnected = false;
+  accessor aiConnected = false;
   /** Set this to `true` for highlight */
   @property({ type: Boolean })
-  highlight = false;
+  accessor highlight = false;
 
   override render() {
     const cardWrapperClasses = {

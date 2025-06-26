@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import RadioButtonScss from './radioButton.scss';
+import RadioButtonScss from './radioButton.scss?inline';
 
 /**
  * Radio button.
@@ -9,7 +9,7 @@ import RadioButtonScss from './radioButton.scss';
  */
 @customElement('kyn-radio-button')
 export class RadioButton extends LitElement {
-  static override styles = RadioButtonScss;
+  static override styles = unsafeCSS(RadioButtonScss);
 
   /** @ignore */
   static override shadowRootOptions = {
@@ -19,41 +19,41 @@ export class RadioButton extends LitElement {
 
   /** Radio button value. */
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   /**
    * Radio button name, inherited from the parent group.
    * @ignore
    */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /**
    * Radio button checked state, inherited from the parent group if value matches.
    * @ignore
    */
   @property({ type: Boolean })
-  checked = false;
+  accessor checked = false;
 
   /**
    * Makes the input required, inherited from the parent group.
    * @ignore
    */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /**
    * Radio button disabled state, inherited from the parent group.
    */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /**
    * Radio button group invalid state, inherited from the parent group.
    * @ignore
    */
   @property({ type: Boolean })
-  invalid = false;
+  accessor invalid = false;
 
   override render() {
     return html`
