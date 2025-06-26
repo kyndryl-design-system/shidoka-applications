@@ -1,10 +1,12 @@
+import path from 'path';
+import node_path from 'node:path';
 import multiInput from 'rollup-plugin-multi-input';
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import del from 'rollup-plugin-delete';
 import typescript from '@rollup/plugin-typescript';
 import postcss from 'rollup-plugin-postcss';
-import litcss from 'rollup-plugin-postcss-lit';
+import postcssLit from 'rollup-plugin-postcss-lit';
 import InlineSvg from 'rollup-plugin-inline-svg';
 import copy from 'rollup-plugin-copy';
 import commonjs from '@rollup/plugin-commonjs';
@@ -53,11 +55,40 @@ export default {
     InlineSvg(),
     typescript(),
     postcss({
+      use: [
+        [
+          'sass',
+          {
+            includePaths: [path.resolve('node_modules')],
+          },
+        ],
+      ],
       inject: false,
     }),
-    litcss(),
+    postcssLit(),
     commonjs(),
     json(),
     terser(),
+    removeQueryParams(),
   ],
 };
+
+// remove query params from imports so they don't break the build
+function removeQueryParams() {
+  return {
+    name: 'remove-query-params',
+    resolveId: {
+      handler(source, importer) {
+        if (source?.includes('?inline')) {
+          const removedFromPath = source.replace(/\?.*$/, '');
+          let path = importer
+            ? node_path.resolve(node_path.dirname(importer), removedFromPath)
+            : node_path.resolve(removedFromPath);
+
+          return { id: path };
+        }
+        return null;
+      },
+    },
+  };
+}

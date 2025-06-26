@@ -11,7 +11,7 @@ import '../../globalFilter';
 import '../index';
 import '../../checkbox';
 
-import '../../../../common/scss/global.scss';
+import '../../../../common/scss/global.scss?inline';
 
 @customElement('story-column-setting')
 class StoryColumSetting extends LitElement {
@@ -78,19 +78,19 @@ class StoryColumSetting extends LitElement {
   private _rows: any = [];
 
   @state()
-  showOnlyHiddenCols = false;
+  accessor showOnlyHiddenCols = false;
 
   @state()
-  showOnlyVisibleCols = false;
+  accessor showOnlyVisibleCols = false;
 
   @state()
-  showingRows = this._rows;
+  accessor showingRows = this._rows;
 
   @state()
-  hoveredButtonId: string | null = null;
+  accessor hoveredButtonId: string | null = null;
 
   @state()
-  buttonIcon = lockedIcon;
+  accessor buttonIcon = lockedIcon;
 
   handleLockingRow(event: any, rowId: string, locked: boolean) {
     event.preventDefault();

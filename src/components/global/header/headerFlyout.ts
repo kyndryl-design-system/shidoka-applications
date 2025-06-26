@@ -1,12 +1,12 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import HeaderFlyoutScss from './headerFlyout.scss';
+import HeaderFlyoutScss from './headerFlyout.scss?inline';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
@@ -17,53 +17,53 @@ import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arr
  */
 @customElement('kyn-header-flyout')
 export class HeaderFlyout extends LitElement {
-  static override styles = HeaderFlyoutScss;
+  static override styles = unsafeCSS(HeaderFlyoutScss);
 
   /** Flyout open state. */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /** Anchor flyout menu to the left edge of the button instead of the right edge. */
   @property({ type: Boolean })
-  anchorLeft = false;
+  accessor anchorLeft = false;
 
   /** Hides the arrow. */
   @property({ type: Boolean })
-  hideArrow = false;
+  accessor hideArrow = false;
 
   /** Menu & button label. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Hide the label at the top of the flyout menu. */
   @property({ type: Boolean })
-  hideMenuLabel = false;
+  accessor hideMenuLabel = false;
 
   /** Hide the label in the mobile button. */
   @property({ type: Boolean })
-  hideButtonLabel = false;
+  accessor hideButtonLabel = false;
 
   /**
    * DEPRECATED. Use `label` instead.
    * Button assistive text, title + aria-label.
    */
   @property({ type: String })
-  assistiveText = '';
+  accessor assistiveText = '';
 
   /** Turns the button into a link. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Text for mobile "Back" button. */
   @property({ type: String })
-  backText = 'Back';
+  accessor backText = 'Back';
 
   /**
    * Queries any slotted HTML elements.
    * @ignore
    */
   @queryAssignedElements()
-  slottedElements!: Array<HTMLElement>;
+  accessor slottedElements!: Array<HTMLElement>;
 
   override render() {
     const classes = {

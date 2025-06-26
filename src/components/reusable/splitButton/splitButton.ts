@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -16,7 +16,7 @@ import {
   SPLIIT_BTN_ICON_POSITION,
 } from './defs';
 import './splitButtonOption';
-import SplitButtonScss from './splitButton.scss';
+import SplitButtonScss from './splitButton.scss?inline';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
@@ -29,7 +29,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 @customElement('kyn-split-btn')
 export class SplitButton extends LitElement {
-  static override styles = SplitButtonScss;
+  static override styles = unsafeCSS(SplitButtonScss);
 
   /** @ignore */
   static override shadowRootOptions = {
@@ -39,71 +39,72 @@ export class SplitButton extends LitElement {
 
   /** ARIA label for the buttons for accessibility. */
   @property({ type: String })
-  description = '';
+  accessor description = '';
 
   /** Split button name. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Specifies the visual appearance/kind of the split button. */
   @property({ type: String })
-  kind: SPLIT_BTN_KINDS = SPLIT_BTN_KINDS.PRIMARY_APP;
+  accessor kind: SPLIT_BTN_KINDS = SPLIT_BTN_KINDS.PRIMARY_APP;
 
   /** Specifies the size of the split button. */
   @property({ type: String })
-  size: SPLIT_BTN_SIZES = SPLIT_BTN_SIZES.MEDIUM;
+  accessor size: SPLIT_BTN_SIZES = SPLIT_BTN_SIZES.MEDIUM;
 
   /** Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.*/
   @property({ type: String })
-  iconPosition: SPLIIT_BTN_ICON_POSITION = SPLIIT_BTN_ICON_POSITION.LEFT;
+  accessor iconPosition: SPLIIT_BTN_ICON_POSITION =
+    SPLIIT_BTN_ICON_POSITION.LEFT;
 
   /** Split button text (required) */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Determines if the split button is disabled. */
   @property({ type: Boolean, reflect: true })
-  disabled = false;
+  accessor disabled = false;
 
   /** Determines if the split button indicates a destructive action. */
   @property({ type: Boolean, reflect: true })
-  destructive = false;
+  accessor destructive = false;
 
   /** Menu CSS min-width value. */
   @property({ type: String })
-  menuMinWidth = 'initial';
+  accessor menuMinWidth = 'initial';
 
   /** Listbox/menu open state. */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /**
    * Queries any slotted options.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-splitbutton-option' })
-  options!: Array<any>;
+  accessor options!: Array<any>;
 
   /**
    * Open menu upwards.
    * @ignore
    */
   @state()
-  _openUpwards = false;
+  accessor _openUpwards = false;
 
   /**
    * Queries the .select DOM element.
    * @ignore
    */
   @query('.select')
-  buttonEl!: HTMLElement;
+  accessor buttonEl!: HTMLElement;
 
   /**
    * Assistive text for screen readers.
    * @ignore
    */
   @state()
-  assistiveText = 'Split button menu options.';
+  accessor assistiveText = 'Split button menu options.';
 
   override render() {
     const typeClassMap = {

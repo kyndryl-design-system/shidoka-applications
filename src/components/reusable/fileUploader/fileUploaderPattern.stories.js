@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import { useArgs } from '@storybook/preview-api';
-import { action } from '@storybook/addon-actions';
+import { useArgs } from 'storybook/preview-api';
+import { action } from 'storybook/actions';
 import './index';
 import './fileUploader.sample';
 

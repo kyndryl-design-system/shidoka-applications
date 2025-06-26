@@ -1,7 +1,7 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import styles from './table-container.scss';
+import styles from './table-container.scss?inline';
 
 /**
  * `kyn-table-container` Web Component.
@@ -13,10 +13,10 @@ import styles from './table-container.scss';
  */
 @customElement('kyn-table-container')
 export class TableContainer extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   @property({ type: Number, reflect: true })
-  override tabIndex = 0;
+  override accessor tabIndex = 0;
 
   override render() {
     return html` <slot></slot> `;

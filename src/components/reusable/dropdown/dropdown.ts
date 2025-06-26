@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -8,7 +8,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import DropdownScss from './dropdown.scss';
+import DropdownScss from './dropdown.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 
@@ -50,191 +50,191 @@ const KEY = {
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
-  static override styles = DropdownScss;
+  static override styles = unsafeCSS(DropdownScss);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Dropdown size/height. "sm", "md", or "lg". */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /** Dropdown inline style type. */
   @property({ type: Boolean })
-  inline = false;
+  accessor inline = false;
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Dropdown placeholder. */
   @property({ type: String })
-  placeholder = '';
+  accessor placeholder = '';
 
   /** Listbox/drawer open state. */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /** Makes the dropdown searchable. */
   @property({ type: Boolean })
-  searchable = false;
+  accessor searchable = false;
 
   /** Searchable variant filters results. */
   @property({ type: Boolean })
-  filterSearch = false;
+  accessor filterSearch = false;
 
   /** Enabled multi-select functionality. */
   @property({ type: Boolean })
-  multiple = false;
+  accessor multiple = false;
 
   /** Makes the dropdown required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** Dropdown disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Hide the tags below multi-select. */
   @property({ type: Boolean })
-  hideTags = false;
+  accessor hideTags = false;
 
   /** Adds a "Select all" option to the top of a multi-select dropdown. */
   @property({ type: Boolean })
-  selectAll = false;
+  accessor selectAll = false;
 
   /** "Select all" text customization. */
   @property({ type: String })
-  selectAllText = 'Select all';
+  accessor selectAllText = 'Select all';
 
   /** Menu CSS min-width value. */
   @property({ type: String })
-  menuMinWidth = 'initial';
+  accessor menuMinWidth = 'initial';
 
   /** Controls direction that dropdown opens. */
   @property({ type: String })
-  openDirection: 'auto' | 'up' | 'down' = 'auto';
+  accessor openDirection: 'auto' | 'up' | 'down' = 'auto';
 
   /** Is "Select All" box checked.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllChecked = false;
+  accessor selectAllChecked = false;
 
   /** Is "Select All" indeterminate.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllIndeterminate = false;
+  accessor selectAllIndeterminate = false;
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Enables the "Add New Option" feature. */
   @property({ type: Boolean })
-  allowAddOption = false;
+  accessor allowAddOption = false;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * New dropdown option value.
    * @ignore
    */
   @state()
-  newOptionValue = '';
+  accessor newOptionValue = '';
 
   /**
    * Selected option text, automatically derived.
    * @ignore
    */
   @state()
-  text = '';
+  accessor text = '';
 
   /**
    * Search input value.
    */
   @property({ type: String })
-  searchText = '';
+  accessor searchText = '';
 
   /**
    * Assistive text for screen readers.
    * @ignore
    */
   @state()
-  assistiveText = 'Dropdown menu options.';
+  accessor assistiveText = 'Dropdown menu options.';
 
   /**
    * Queries any slotted options.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option' })
-  options!: Array<any>;
+  accessor options!: Array<any>;
 
   /**
    * Queries any slotted selected options.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-dropdown-option[selected]' })
-  selectedOptions!: Array<any>;
+  accessor selectedOptions!: Array<any>;
 
   /**
    * Queries the .search DOM element.
    * @ignore
    */
   @query('.search')
-  searchEl!: HTMLInputElement;
+  accessor searchEl!: HTMLInputElement;
 
   /**
    * Queries the .select DOM element.
    * @ignore
    */
   @query('.select')
-  buttonEl!: HTMLElement;
+  accessor buttonEl!: HTMLElement;
 
   /**
    * Queries the .options DOM element.
    * @ignore
    */
   @query('.options')
-  listboxEl!: HTMLElement;
+  accessor listboxEl!: HTMLElement;
 
   /**
    * Queries the .clear-multiple DOM element.
    * @ignore
    */
   @query('.clear-multiple')
-  clearMultipleEl!: HTMLElement;
+  accessor clearMultipleEl!: HTMLElement;
 
   /**
    * Queries the .add-option-input DOM element.
    * @ignore
    */
   @query('.add-option-input')
-  addOptionInputEl!: HTMLInputElement;
+  accessor addOptionInputEl!: HTMLInputElement;
 
   /**
    * Open drawer upwards.
    * @ignore
    */
   @state()
-  _openUpwards = false;
+  accessor _openUpwards = false;
 
   /**
    * Tags value/text reference.
    * @ignore
    */
   @state()
-  _tags: Array<object> = [];
+  accessor _tags: Array<object> = [];
 
   /** Toggles on clicking enter key in the search input.
    * @internal

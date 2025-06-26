@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -10,7 +10,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
-import stepperItemStyles from './stepperItem.scss';
+import stepperItemStyles from './stepperItem.scss?inline';
 import '../link';
 
 import checkmarkFilled from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark-filled.svg';
@@ -42,97 +42,97 @@ import './stepperItemChild';
 
 @customElement('kyn-stepper-item')
 export class StepperItem extends LitElement {
-  static override styles = stepperItemStyles;
+  static override styles = unsafeCSS(stepperItemStyles);
 
   /** Whether the stepper is in vertical type. */
   @property({ type: Boolean })
-  vertical = false;
+  accessor vertical = false;
 
   /** Stepper size `'large'` & `'small'`. */
   @property({ type: String })
-  stepSize = 'large';
+  accessor stepSize = 'large';
 
   /** Step name. */
   @property({ type: String })
-  stepName = '';
+  accessor stepName = '';
 
   /** Step title.*/
   @property({ type: String })
-  stepTitle = '';
+  accessor stepTitle = '';
 
   /** Step link. */
   @property({ type: String })
-  stepLink = '';
+  accessor stepLink = '';
 
   /** Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.
    *
    * `'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.
    */
   @property({ type: String })
-  stepState = 'pending';
+  accessor stepState = 'pending';
 
   /** Stepper type. Inherited from <kyn-stepper>.
    * @ignore
    */
   @state()
-  stepperType = 'procedure';
+  accessor stepperType = 'procedure';
 
   /** Disable step. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Optional. Show counter for vertical stepper when stepState is `'pending'`. */
   @property({ type: Boolean })
-  showCounter = false;
+  accessor showCounter = false;
 
   /** Progress of stepper.
    * @ignore
    */
   @state()
-  progress = 0;
+  accessor progress = 0;
 
   /** Internal state to indicate whether it's 1st step.
    * @ignore
    */
   @state()
-  isFirstStep = false;
+  accessor isFirstStep = false;
 
   /** Internal state for step index.
    * @ignore
    */
   @state()
-  stepIndex = 0;
+  accessor stepIndex = 0;
 
   /** Internal state to indicate whether it's last step.
    * @ignore
    */
   @state()
-  isLastStep = false;
+  accessor isLastStep = false;
 
   /** Internal state to indicate whether it's second-last step.
    * @ignore
    */
   @state()
-  isSecondLastStep = false;
+  accessor isSecondLastStep = false;
 
   /** Internal state to indicate whether only two steps are there inside `<kyn-wrapper>`.
    * @ignore
    */
   @state()
-  isTwoStepStepper = false;
+  accessor isTwoStepStepper = false;
 
   /** Open children toggle
    * @ignore
    */
   @state()
-  openChildren = false;
+  accessor openChildren = false;
 
   /**
    * Queries any slotted step child items.
    * @ignore
    */
   @queryAssignedElements({ slot: 'child', selector: 'kyn-stepper-item-child' })
-  childSteps!: Array<any>;
+  accessor childSteps!: Array<any>;
 
   override render() {
     const iconMapper: any = {

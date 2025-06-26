@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import NotificationContainerScss from './notificationContainer.scss';
+import NotificationContainerScss from './notificationContainer.scss?inline';
 
 /**
  * Notification container component for Toast notification.
@@ -10,7 +10,7 @@ import NotificationContainerScss from './notificationContainer.scss';
 
 @customElement('kyn-notification-container')
 export class NotificationContainer extends LitElement {
-  static override styles = NotificationContainerScss;
+  static override styles = unsafeCSS(NotificationContainerScss);
   override render() {
     return html`<div class="notification-container">
       <slot></slot>

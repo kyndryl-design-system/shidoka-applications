@@ -2,14 +2,14 @@
  * Copyright Kyndryl, Inc. 2023
  */
 
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import {
   property,
   state,
   customElement,
   queryAssignedElements,
 } from 'lit/decorators.js';
-import stylesheet from './accordion.scss';
+import stylesheet from './accordion.scss?inline';
 
 /**
  * Accordion component.
@@ -19,43 +19,43 @@ import stylesheet from './accordion.scss';
  */
 @customElement('kyn-accordion')
 export class Accordion extends LitElement {
-  static override styles = [stylesheet];
+  static override styles = unsafeCSS(stylesheet);
 
   /** Specifies whether to show numbers on the list items. */
   @property({ type: Boolean })
-  showNumbers = false;
+  accessor showNumbers = false;
 
   /** Specifies the number to start at if the list has numbers. */
   @property({ type: Number })
-  startNumber = 1;
+  accessor startNumber = 1;
 
   /** Specifies whether to show the accordion items with filled headers. */
   @property({ type: Boolean })
-  filledHeaders = false;
+  accessor filledHeaders = false;
 
   /** Display the accordion as compact or the default large size. */
   @property({ type: Boolean })
-  compact = false;
+  accessor compact = false;
 
   /** The string that displays on the toggle to expand all the accordion items. */
   @property({ type: String })
-  expandLabel = 'Expand all items';
+  accessor expandLabel = 'Expand all items';
 
   /** The string that displays on the toggle to collapse all the accordion items. */
   @property({ type: String })
-  collapseLabel = 'Collapse all items';
+  accessor collapseLabel = 'Collapse all items';
 
   /**
    * The state of the toggle controlling the "expand all" functionality
    * @ignore
    */
-  @state() private _allOpenState = false;
+  @state() private accessor _allOpenState = false;
 
   /** Slotted children kyn-accordion-item
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-accordion-item' })
-  _accordionItems!: Array<any>;
+  accessor _accordionItems!: Array<any>;
 
   protected _handleSlotChange() {
     this._updateChildren();

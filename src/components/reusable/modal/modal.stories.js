@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 import '../button';
 import '../textInput';

@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { FormMixin } from '../../../common/mixins/form-input';
-import ToggleButtonScss from './toggleButton.scss';
+import ToggleButtonScss from './toggleButton.scss?inline';
 
 /**
  * Toggle Button.
@@ -10,46 +10,46 @@ import ToggleButtonScss from './toggleButton.scss';
  */
 @customElement('kyn-toggle-button')
 export class ToggleButton extends FormMixin(LitElement) {
-  static override styles = ToggleButtonScss;
+  static override styles = unsafeCSS(ToggleButtonScss);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Checkbox checked state. */
   @property({ type: Boolean, reflect: true })
-  checked = false;
+  accessor checked = false;
 
   /** Checked state text. */
   @property({ type: String })
-  checkedText = 'On';
+  accessor checkedText = 'On';
 
   /** Unchecked state text. */
   @property({ type: String })
-  uncheckedText = 'Off';
+  accessor uncheckedText = 'Off';
 
   /** Option to use small size. */
   @property({ type: Boolean, reflect: true })
-  small = false;
+  accessor small = false;
 
   /** Checkbox disabled state. */
   @property({ type: Boolean, reflect: true })
-  disabled = false;
+  accessor disabled = false;
 
   /** Reverse UI element order, label on the left. */
   @property({ type: Boolean })
-  reverse = false;
+  accessor reverse = false;
 
   /** Hides the label visually. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /**
    * Queries the <input> DOM element.
    * @internal
    */
   @query('input')
-  _inputEl!: HTMLInputElement;
+  accessor _inputEl!: HTMLInputElement;
 
   override render() {
     const id = this.name;

@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './index';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 

@@ -1,10 +1,10 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 import { TableRow } from './table-row';
 
-import styles from './table-body.scss';
+import styles from './table-body.scss?inline';
 
 /**
  * `kyn-tbody` Web Component.
@@ -17,17 +17,17 @@ import styles from './table-body.scss';
  */
 @customElement('kyn-tbody')
 export class TableBody extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** Determines if the rows in the table body should be striped. */
   @property({ type: Boolean, reflect: true })
-  striped = false;
+  accessor striped = false;
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'rowgroup';
+  override accessor role = 'rowgroup';
 
   /**
    * Context consumer for the table context.
@@ -38,7 +38,7 @@ export class TableBody extends LitElement {
    */
   @state()
   // @ts-expect-error - This is a context consumer
-  private _contextConsumer = new ContextConsumer(
+  private accessor _contextConsumer = new ContextConsumer(
     this,
     tableContext,
     (context) => {

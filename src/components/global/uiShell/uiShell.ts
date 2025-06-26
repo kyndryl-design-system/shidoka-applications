@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, queryAssignedElements } from 'lit/decorators.js';
-import UiShellScss from './uiShell.scss';
+import UiShellScss from './uiShell.scss?inline';
 
 /**
  * Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.
@@ -8,23 +8,23 @@ import UiShellScss from './uiShell.scss';
  */
 @customElement('kyn-ui-shell')
 export class UiShell extends LitElement {
-  static override styles = UiShellScss;
+  static override styles = unsafeCSS(UiShellScss);
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-header' })
-  _headerEl!: any;
+  accessor _headerEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-local-nav' })
-  _localNavEl!: any;
+  accessor _localNavEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-footer' })
-  _footerEl!: any;
+  accessor _footerEl!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'main' })
-  _mainEl!: any;
+  accessor _mainEl!: any;
 
   override render() {
     return html` <slot @slotchange=${this.handleSlotChange}></slot> `;

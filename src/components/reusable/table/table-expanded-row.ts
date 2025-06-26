@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
-import styles from './table-expanded-row.scss';
+import styles from './table-expanded-row.scss?inline';
 
 /**
  *
@@ -14,26 +14,26 @@ import styles from './table-expanded-row.scss';
  */
 @customElement('kyn-expanded-tr')
 export class TableExpandedRow extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'row';
+  override accessor role = 'row';
 
   /**
    * The number of columns that the expanded row should span.
    * Reflects the `colspan` attribute.
    */
   @property({ type: Number, attribute: 'colspan' })
-  colSpan = 1;
+  accessor colSpan = 1;
 
   /**
    * `true` if the table row should be expanded.
    */
   @property({ type: Boolean, reflect: true })
-  expanded = false;
+  accessor expanded = false;
 
   override render() {
     const { colSpan } = this;

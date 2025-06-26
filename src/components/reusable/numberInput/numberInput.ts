@@ -1,9 +1,9 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
-import Styles from './numberInput.scss';
+import Styles from './numberInput.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '../button';
 import { deepmerge } from 'deepmerge-ts';
@@ -26,72 +26,71 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /** Input value. */
-  @property({ type: Number })
   override value = 0;
 
   /** Input placeholder. */
   @property({ type: String })
-  placeholder = '';
+  accessor placeholder = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Input readonly state. */
   @property({ type: Boolean })
-  readonly = false;
+  accessor readonly = false;
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Maximum value. */
   @property({ type: Number })
-  max!: number;
+  accessor max!: number;
 
   /** Minimum value. */
   @property({ type: Number })
-  min!: number;
+  accessor min!: number;
 
   /** Step value. */
   @property({ type: Number })
-  step = 1;
+  accessor step = 1;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input')
-  _inputEl!: HTMLInputElement;
+  accessor _inputEl!: HTMLInputElement;
 
   override render() {
     return html`

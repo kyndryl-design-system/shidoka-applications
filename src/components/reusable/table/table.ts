@@ -1,4 +1,4 @@
-import { LitElement, html, PropertyValues } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ContextProvider } from '@lit/context';
 import { tableContext } from './table-context';
@@ -6,7 +6,7 @@ import { tableContext } from './table-context';
 import { TableRow } from './table-row';
 import { TableHeaderRow } from './table-header-row';
 
-import styles from './table.scss';
+import styles from './table.scss?inline';
 
 /**
  * `kyn-table` Web Component.
@@ -18,13 +18,13 @@ import styles from './table.scss';
 
 @customElement('kyn-table')
 export class Table extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'table';
+  override accessor role = 'table';
 
   /**
    * checkboxSelection: Boolean indicating whether rows should be
@@ -33,7 +33,7 @@ export class Table extends LitElement {
    * @default false
    */
   @property({ type: Boolean })
-  checkboxSelection?: boolean;
+  accessor checkboxSelection: boolean | undefined;
 
   /**
    * striped: Boolean indicating whether rows should have alternate
@@ -42,7 +42,7 @@ export class Table extends LitElement {
    * @default false
    */
   @property({ type: Boolean })
-  striped?: boolean;
+  accessor striped: boolean | undefined;
 
   /**
    * stickyHeader: Boolean indicating whether the table header should be sticky.
@@ -51,7 +51,7 @@ export class Table extends LitElement {
    * @default false
    */
   @property({ type: Boolean })
-  stickyHeader?: boolean;
+  accessor stickyHeader: boolean | undefined;
 
   /**
    * dense: Boolean indicating whether the table should be displayed
@@ -60,7 +60,7 @@ export class Table extends LitElement {
    * @default false
    */
   @property({ type: Boolean })
-  dense?: boolean;
+  accessor dense: boolean | undefined;
 
   /**
    * fixedLayout: Boolean indicating whether the table should have a fixed layout.
@@ -71,7 +71,7 @@ export class Table extends LitElement {
    * @default false
    * */
   @property({ type: Boolean })
-  fixedLayout?: boolean;
+  accessor fixedLayout: boolean | undefined;
 
   /**
    * _provider: Context provider for the table.
@@ -79,7 +79,7 @@ export class Table extends LitElement {
    * @private
    */
   @state()
-  private _provider = new ContextProvider(this, tableContext);
+  private accessor _provider = new ContextProvider(this, tableContext);
 
   /**
    * updated: Lifecycle method called when the element is updated.
@@ -108,7 +108,7 @@ export class Table extends LitElement {
    * @private
    */
   @state()
-  private _tableHeaderRow: TableHeaderRow | null = null;
+  private accessor _tableHeaderRow: TableHeaderRow | null = null;
 
   /**
    * allRows: Array of objects representing each row in the data table.
@@ -116,7 +116,7 @@ export class Table extends LitElement {
    * @private
    */
   @state()
-  private _allRows: TableRow[] = [];
+  private accessor _allRows: TableRow[] = [];
 
   /**
    * selectedRows: Set of row ids that are currently selected.
@@ -124,7 +124,7 @@ export class Table extends LitElement {
    * @private
    */
   @state()
-  private _selectedRows: TableRow[] = [];
+  private accessor _selectedRows: TableRow[] = [];
 
   /**
    * selectedRowIds: Set of row ids that are currently selected.
@@ -132,7 +132,7 @@ export class Table extends LitElement {
    * @private
    */
   @state()
-  private _selectedRowIds: Set<string> = new Set();
+  private accessor _selectedRowIds: Set<string> = new Set();
 
   /**
    * headerCheckboxIndeterminate: Boolean indicating whether the header
@@ -141,7 +141,7 @@ export class Table extends LitElement {
    * @private
    */
   @state()
-  private _headerCheckboxIndeterminate = false;
+  private accessor _headerCheckboxIndeterminate = false;
 
   /**
    * headerCheckboxChecked: Boolean indicating whether the header checkbox is
@@ -150,7 +150,7 @@ export class Table extends LitElement {
    * @private
    */
   @state()
-  private _headerCheckboxChecked = false;
+  private accessor _headerCheckboxChecked = false;
 
   /**
    * Updates the state of the header checkbox based on the number of

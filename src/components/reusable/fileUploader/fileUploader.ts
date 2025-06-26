@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
@@ -9,7 +9,7 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/d
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/error.svg';
 import { FormMixin } from '../../../common/mixins/form-input';
-import FileUploaderScss from './fileUploader.scss';
+import FileUploaderScss from './fileUploader.scss?inline';
 import './fileUploaderListContainer';
 import '../button';
 import '../loaders';
@@ -43,7 +43,7 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-file-uploader')
 export class FileUploader extends FormMixin(LitElement) {
-  static override styles = FileUploaderScss;
+  static override styles = unsafeCSS(FileUploaderScss);
 
   /**
    * Set the file types that the component accepts. By default, it accepts all file types.
@@ -54,19 +54,19 @@ export class FileUploader extends FormMixin(LitElement) {
    * ['application/pdf', 'text/plain']
    */
   @property({ type: Array })
-  accept: string[] = [];
+  accessor accept: string[] = [];
 
   /**
    * Accept multiple files. Default value is `false`.
    */
   @property({ type: Boolean })
-  multiple = false;
+  accessor multiple = false;
 
   /**
    * Customizable text strings.
    */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /**
    * Set the maximum file size in bytes. Default value is `1048576` (1MB).
@@ -76,19 +76,19 @@ export class FileUploader extends FormMixin(LitElement) {
    * 1073741824 // 1GB
    */
   @property({ type: Number })
-  maxFileSize = 1048576; // 1MB
+  accessor maxFileSize = 1048576; // 1MB
 
   /**
    * Disable the file uploader. Default value is `false`.
    */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /**
    * Valid files. This property is used to set the initial or updated state of the valid files.
    */
   @property({ type: Array })
-  validFiles: {
+  accessor validFiles: {
     id: string;
     file: File;
     status: 'new' | 'uploading' | 'uploaded' | 'error';
@@ -98,7 +98,7 @@ export class FileUploader extends FormMixin(LitElement) {
    * Invalid files. This property is used to set the initial state of the invalid files.
    */
   @property({ type: Array })
-  invalidFiles: {
+  accessor invalidFiles: {
     id: string;
     file: File;
     status: 'sizeError' | 'typeError' | 'unknownError';
@@ -110,42 +110,42 @@ export class FileUploader extends FormMixin(LitElement) {
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * Internal dragging state.
    * @internal
    */
   @state()
-  _dragging = false;
+  accessor _dragging = false;
 
   /**
    * Internal invalid files.
    * @internal
    */
   @state()
-  _invalidFiles: Object[] = [];
+  accessor _invalidFiles: Object[] = [];
 
   /**
    * Internal valid files.
    * @internal
    */
   @state()
-  _validFiles: Object[] = [];
+  accessor _validFiles: Object[] = [];
 
   /**
    * Internal notification message flag.
    * @internal
    */
   @state()
-  _showValidationNotification = false;
+  accessor _showValidationNotification = false;
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input')
-  _inputEl!: HTMLInputElement;
+  accessor _inputEl!: HTMLInputElement;
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {

@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import GlobalFilterScss from './globalFilter.scss';
+import GlobalFilterScss from './globalFilter.scss?inline';
 
 /**
  * Global Filter bar.
@@ -10,7 +10,7 @@ import GlobalFilterScss from './globalFilter.scss';
  */
 @customElement('kyn-global-filter')
 export class GlobalFilter extends LitElement {
-  static override styles = GlobalFilterScss;
+  static override styles = unsafeCSS(GlobalFilterScss);
 
   override render() {
     return html`

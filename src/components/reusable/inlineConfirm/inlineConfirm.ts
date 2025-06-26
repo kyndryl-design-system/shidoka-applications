@@ -1,7 +1,8 @@
-import { LitElement, html, property, customElement, state } from 'lit-element';
+import { LitElement, html, unsafeCSS } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { classMap } from 'lit/directives/class-map.js';
-import styles from './inlineConfirm.scss';
+import styles from './inlineConfirm.scss?inline';
 import '../button';
 
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
@@ -15,49 +16,49 @@ import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/ch
  */
 @customElement('kyn-inline-confirm')
 export class InlineConfirm extends LitElement {
-  static override styles = styles;
+  static override styles = unsafeCSS(styles);
 
   /**
    * Determines if the action is destructive.
    * @type {boolean}
    */
   @property({ type: Boolean })
-  destructive = false;
+  accessor destructive = false;
 
   /**
    * Anchor button text.
    * @type {string}
    */
   @property({ type: String })
-  anchorText = '';
+  accessor anchorText = '';
 
   /**
    * Confirm button text.
    * @type {string}
    */
   @property({ type: String })
-  confirmText = 'Confirm';
+  accessor confirmText = 'Confirm';
 
   /**
    * Cancel button text.
    * @type {string}
    */
   @property({ type: String })
-  cancelText = 'Cancel';
+  accessor cancelText = 'Cancel';
 
   /**
    * Open to the right.
    * @type {boolean}
    */
   @property({ type: Boolean })
-  openRight = false;
+  accessor openRight = false;
 
   /**
    * Confirmation open state.
    * @internal
    */
   @state()
-  private _isOpen = false;
+  private accessor _isOpen = false;
 
   private _handleToggle() {
     this._isOpen = !this._isOpen;

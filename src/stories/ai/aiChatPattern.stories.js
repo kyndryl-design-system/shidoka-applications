@@ -2,8 +2,8 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
-import { action } from '@storybook/addon-actions';
-import { useArgs } from '@storybook/preview-api';
+import { action } from 'storybook/actions';
+import { useArgs } from 'storybook/preview-api';
 
 import '../../components/reusable/tabs';
 import '../../components/reusable/modal';

@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -7,7 +7,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
-import RadioButtonGroupScss from './radioButtonGroup.scss';
+import RadioButtonGroupScss from './radioButtonGroup.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
@@ -25,40 +25,40 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends FormMixin(LitElement) {
-  static override styles = RadioButtonGroupScss;
+  static override styles = unsafeCSS(RadioButtonGroupScss);
 
   /** Label text */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Radio button group disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Radio button group horizontal layout. */
   @property({ type: Boolean })
-  horizontal = false;
+  accessor horizontal = false;
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * Queries for slotted radio buttons.
    * @ignore
    */
   @queryAssignedElements()
-  radioButtons!: Array<any>;
+  accessor radioButtons!: Array<any>;
 
   override render() {
     return html`

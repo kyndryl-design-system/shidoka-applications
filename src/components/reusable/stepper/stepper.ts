@@ -1,11 +1,11 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
   queryAssignedElements,
 } from 'lit/decorators.js';
 
-import stepperStyles from './stepper.scss';
+import stepperStyles from './stepper.scss?inline';
 import './stepperItem';
 
 /**
@@ -16,7 +16,7 @@ import './stepperItem';
 
 @customElement('kyn-stepper')
 export class Stepper extends LitElement {
-  static override styles = stepperStyles;
+  static override styles = unsafeCSS(stepperStyles);
 
   /** Stepper type `'procedure'` & `'status'`.
    *
@@ -27,26 +27,26 @@ export class Stepper extends LitElement {
    * Note: Read the stepper guidelines for more info.
    */
   @property({ type: String })
-  stepperType = 'procedure';
+  accessor stepperType = 'procedure';
 
   /** Wheter the stepper is in vertical type. */
   @property({ type: Boolean })
-  vertical = false;
+  accessor vertical = false;
 
   /** Stepper size `'large'` & `'small'`. */
   @property({ type: String })
-  stepperSize = 'large';
+  accessor stepperSize = 'large';
 
   /** Curent index of stepper. Usefull for navigation logic like next, prev etc.*/
   @property({ type: Number })
-  currentIndex = 0;
+  accessor currentIndex = 0;
 
   /**
    * Queries any slotted step items.
    * @ignore
    */
   @queryAssignedElements({ selector: 'kyn-stepper-item' })
-  steps!: Array<any>;
+  accessor steps!: Array<any>;
 
   override render() {
     return html`

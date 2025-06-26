@@ -1,9 +1,9 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import Styles from './search.scss';
+import Styles from './search.scss?inline';
 import '../textInput';
 import '../button';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/search.svg';
@@ -24,82 +24,82 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-search')
 export class Search extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Input name. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Label text. */
   @property({ type: String })
-  label = 'Search';
+  accessor label = 'Search';
 
   /** Expandable style search. */
   @property({ type: Boolean })
-  expandable = false;
+  accessor expandable = false;
 
   /** Input value. */
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   /** Input & button size. */
   @property({ type: String })
-  size = 'md';
+  accessor size = 'md';
 
   /** Disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Auto-suggest array of strings that should match the current value. Update this array externally after on-input. */
   @property({ type: Array })
-  suggestions: Array<string> = [];
+  accessor suggestions: Array<string> = [];
 
   @property({ type: Array })
-  searchHistory: Array<string> = [];
+  accessor searchHistory: Array<string> = [];
 
   /** Expandable style search button description (Required to support accessibility). */
   @property({ type: String })
-  expandableSearchBtnDescription = '';
+  accessor expandableSearchBtnDescription = '';
 
   /** Assistive text strings. */
   @property({ type: Object })
-  assistiveTextStrings = _defaultTextStrings;
+  accessor assistiveTextStrings = _defaultTextStrings;
 
   /** To show history searches in suggestion panel */
   @property({ type: Boolean })
-  enableSearchHistory = false;
+  accessor enableSearchHistory = false;
 
   /**
    * Internal assistive text strings.
    * @internal
    * */
   @state()
-  _assistiveTextStrings = _defaultTextStrings;
+  accessor _assistiveTextStrings = _defaultTextStrings;
 
   /**
    * Assistive text for screen readers.
    * @internal
    */
   @state()
-  _assistiveText = 'Search suggestions.';
+  accessor _assistiveText = 'Search suggestions.';
 
   /** Input focused state.
    * @internal
    */
   @state()
-  _focused = false;
+  accessor _focused = false;
 
   /** Expanded state.
    * @internal
    */
   @state()
-  _expanded = false;
+  accessor _expanded = false;
 
   /** Expanded state.
    * @internal
    */
   @query('kyn-text-input')
-  _textInput!: any;
+  accessor _textInput!: any;
 
   override render() {
     const classes = {

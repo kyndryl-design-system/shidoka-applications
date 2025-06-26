@@ -14,7 +14,7 @@ import '../../sideDrawer';
 import '../../textInput';
 import { dataForColumns as rows } from './ultils.sample';
 
-import '../../../../common/scss/global.scss';
+import '../../../../common/scss/global.scss?inline';
 
 @customElement('story-table-settings')
 class StoryTableSettings extends LitElement {
@@ -53,13 +53,13 @@ class StoryTableSettings extends LitElement {
   `;
 
   @state()
-  private columnSetting: any;
+  private accessor columnSetting: any;
 
   @state()
-  open = false;
+  accessor open = false;
 
   @state()
-  columns: any = [
+  accessor columns: any = [
     {
       id: 'col1',
       order: 1,

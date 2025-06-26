@@ -1,10 +1,10 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-import Styles from './sliderInput.scss';
+import Styles from './sliderInput.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import '../button';
 import { deepmerge } from 'deepmerge-ts';
@@ -33,99 +33,99 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-slider-input')
 export class SliderInput extends FormMixin(LitElement) {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Input value. */
   @property({ type: Number })
-  override value = 0;
+  override accessor value = 0;
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Maximum value. */
   @property({ type: Number })
-  max = 100;
+  accessor max = 100;
 
   /** Minimum value. */
   @property({ type: Number })
-  min = 0;
+  accessor min = 0;
 
   /** The step between values */
   @property({ type: Number })
-  step = 1;
+  accessor step = 1;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** Set this to `true` for enable Tick Marker on slider. */
   @property({ type: Boolean })
-  enableTickMarker = false;
+  accessor enableTickMarker = false;
 
   /** Set this to `true` for enable Scale Marker below slider */
   @property({ type: Boolean })
-  enableScaleMarker = false;
+  accessor enableScaleMarker = false;
 
   /** Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip. */
   @property({ type: Boolean })
-  editableInput = false;
+  accessor editableInput = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Custom Labels */
   @property({ type: Array })
-  customLabels: string[] = [];
+  accessor customLabels: string[] = [];
 
   /** Set this to `true` for enable Tooltip. */
   @property({ type: Boolean })
-  enableTooltip = false;
+  accessor enableTooltip = false;
 
   /** Set this to `true` for button controls. */
   @property({ type: Boolean })
-  enableButtonControls = false;
+  accessor enableButtonControls = false;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**Tooltip open state.
    * @internal
    */
   @state()
-  tooltipVisible = false;
+  accessor tooltipVisible = false;
 
   /**Tooltip position.
    * @internal
    */
   @state()
-  tooltipPosition = '';
+  accessor tooltipPosition = '';
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input[type="range"]')
-  _inputRangeEl!: HTMLInputElement;
+  accessor _inputRangeEl!: HTMLInputElement;
 
   /**
    * Queries the <input> DOM element.
    * @ignore
    */
   @query('input[type="number"]')
-  _inputEl!: HTMLInputElement;
+  accessor _inputEl!: HTMLInputElement;
 
   override render() {
     // Calculate the number of ticks based on the step, min, and max values

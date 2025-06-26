@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement, PropertyValues } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -13,7 +13,7 @@ import { ContextConsumer } from '@lit/context';
 import { tableContext, TableContextType } from './table-context';
 
 import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-up.svg';
-import styles from './table-header.scss';
+import styles from './table-header.scss?inline';
 
 import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
 
@@ -28,17 +28,17 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
  */
 @customElement('kyn-th')
 export class TableHeader extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'columnheader';
+  override accessor role = 'columnheader';
 
   /** Determines if the cell should have a denser layout. */
   @property({ type: Boolean, reflect: true })
-  dense = false;
+  accessor dense = false;
 
   /**
    * Context consumer for the table context.
@@ -49,7 +49,7 @@ export class TableHeader extends LitElement {
    */
   @state()
   // @ts-expect-error - This is a context consumer
-  private _contextConsumer = new ContextConsumer(
+  private accessor _contextConsumer = new ContextConsumer(
     this,
     tableContext,
     (context) => {
@@ -73,7 +73,7 @@ export class TableHeader extends LitElement {
    * Options: 'left', 'center', 'right'
    */
   @property({ type: String, reflect: true })
-  align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
+  accessor align: TABLE_CELL_ALIGN = TABLE_CELL_ALIGN.LEFT;
 
   /**
    * Specifies if the column is sortable.
@@ -81,18 +81,18 @@ export class TableHeader extends LitElement {
    * allowing the user to toggle sort directions.
    */
   @property({ type: Boolean, reflect: true })
-  sortable = false;
+  accessor sortable = false;
 
   /** Specifies the direction of sorting applied to the column. */
   @property({ type: String, reflect: true })
-  sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFAULT;
+  accessor sortDirection: SORT_DIRECTION = SORT_DIRECTION.DEFAULT;
 
   /**
    * The textual content associated with this component.
    * Represents the primary content or label that will be displayed.
    */
   @property({ type: String })
-  headerLabel = '';
+  accessor headerLabel = '';
 
   /**
    * The unique identifier representing this column header.
@@ -100,7 +100,7 @@ export class TableHeader extends LitElement {
    * to ensure that only one column is sorted at a time.
    */
   @property({ type: String })
-  sortKey = '';
+  accessor sortKey = '';
 
   /**
    * Determines whether the content should be hidden from visual view but remain accessible
@@ -110,21 +110,21 @@ export class TableHeader extends LitElement {
    * assistive technologies without cluttering the visual UI.
    */
   @property({ type: Boolean })
-  visiblyHidden = false;
+  accessor visiblyHidden = false;
 
   /**
    * Sets a fixed width for the cell.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
   @property({ type: String, reflect: true })
-  width = '';
+  accessor width = '';
 
   /**
    * Sets a maximum width for the cell.
    * Accepts standard CSS width values (e.g., '150px', '50%').
    */
   @property({ type: String, reflect: true })
-  maxWidth = '';
+  accessor maxWidth = '';
 
   /**
    * Sets a minimum width for the cell;
@@ -132,13 +132,13 @@ export class TableHeader extends LitElement {
    * @type {string}
    */
   @property({ type: String, reflect: true })
-  minWidth = '';
+  accessor minWidth = '';
 
   /**
    * @ignore
    */
   @queryAssignedNodes({ flatten: true })
-  listItems!: Array<Node>;
+  accessor listItems!: Array<Node>;
 
   /**
    * Resets the sorting direction of the component to its default state.
@@ -153,7 +153,7 @@ export class TableHeader extends LitElement {
    * @ignore
    */
   @state()
-  assistiveText = '';
+  accessor assistiveText = '';
 
   /**
    * Toggles the sort direction between ascending, descending, and default states.

@@ -1,8 +1,8 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 // import { SHOWING_TEXT, OF_TEXT, ITEMS_TEXT } from './constants';
-import styles from './pagination-items-range.scss';
+import styles from './pagination-items-range.scss?inline';
 
 /**
  * `kyn-pagination-items-range` Web Component.
@@ -13,25 +13,25 @@ import styles from './pagination-items-range.scss';
  */
 @customElement('kyn-pagination-items-range')
 export class PaginationItemsRange extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** Total number of items. */
   @property({ type: Number, reflect: true })
-  count = 0;
+  accessor count = 0;
 
   /** Current page number being displayed. */
   @property({ type: Number, reflect: true })
-  pageNumber = 1;
+  accessor pageNumber = 1;
 
   /** Number of items displayed per page. */
   @property({ type: Number, reflect: true })
-  pageSize = 5;
+  accessor pageSize = 5;
 
   /** Customizable text strings. Inherited from parent
    * @internal
    */
   @property({ type: Object })
-  textStrings: any = {};
+  accessor textStrings: any = {};
 
   private itemsRangeText(isMobile: Boolean): string {
     const baseTotalItemsByPage = this.pageSize * this.pageNumber;

@@ -1,8 +1,8 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import SCSS from './overflowMenu.scss';
+import SCSS from './overflowMenu.scss?inline';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
 
 /**
@@ -12,46 +12,46 @@ import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
  */
 @customElement('kyn-overflow-menu')
 export class OverflowMenu extends LitElement {
-  static override styles = SCSS;
+  static override styles = unsafeCSS(SCSS);
 
   /** Menu open state. */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /** Anchors the menu to the right of the button. */
   @property({ type: Boolean })
-  anchorRight = false;
+  accessor anchorRight = false;
 
   /** 3 dots vertical orientation. */
   @property({ type: Boolean })
-  verticalDots = false;
+  accessor verticalDots = false;
 
   /** Use fixed instead of absolute position. Useful when placed within elements with overflow scroll. */
   @property({ type: Boolean })
-  fixed = false;
+  accessor fixed = false;
 
   /** Button assistive text.. */
   @property({ type: String })
-  assistiveText = 'Toggle Menu';
+  accessor assistiveText = 'Toggle Menu';
 
   /** Button element
    * @internal
    */
   @query('.btn')
-  _btnEl!: any;
+  accessor _btnEl!: any;
 
   /** Menu element
    * @internal
    */
   @query('.menu')
-  _menuEl!: any;
+  accessor _menuEl!: any;
 
   /**
    * Open drawer upwards.
    * @ignore
    */
   @state()
-  _openUpwards = false;
+  accessor _openUpwards = false;
 
   override render() {
     const buttonClasses = {

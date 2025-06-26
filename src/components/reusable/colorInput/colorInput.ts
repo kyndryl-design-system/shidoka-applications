@@ -1,10 +1,10 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, state, query, property } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit/directives/class-map.js';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
-import Styles from './colorInput.scss';
+import Styles from './colorInput.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 
 const _defaultTextStrings = {
@@ -21,57 +21,57 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-color-input')
 export class ColorInput extends FormMixin(LitElement) {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** Input readonly state. */
   @property({ type: Boolean })
-  readonly = false;
+  accessor readonly = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <input[type="color"]> DOM element.
    * @ignore
    */
   @query('input[type="color"]')
-  _inputColorEl!: HTMLInputElement;
+  accessor _inputColorEl!: HTMLInputElement;
 
   /**
    * Queries the <input[type="text"]> DOM element.
    * @ignore
    */
   @query('input[type="text"]')
-  _inputEl!: HTMLInputElement;
+  accessor _inputEl!: HTMLInputElement;
 
   /** Sets whether user has interacted with input text for error handling..
    * @internal
    */
   @state()
-  _hasInteracted = false;
+  accessor _hasInteracted = false;
 
   override render() {
     return html`

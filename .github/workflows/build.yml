@@ -68,14 +68,14 @@ jobs:
       - name: Build storybook
         run: npm run build-storybook
 
-      - name: Upload build-storybook artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-storybook-artifact
-          path: storybook-static
+      # - name: Upload build-storybook artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-storybook-artifact
+      #     path: storybook-static
 
   Test:
-    needs: [Build_Storybook]
+    # needs: [Build_Storybook]
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -93,14 +93,17 @@ jobs:
       - name: Install Playwright
         run: npx playwright@latest install --with-deps
 
-      - name: Download build-storybook artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-storybook-artifact
-          path: storybook-static
+      # - name: Download build-storybook artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-storybook-artifact
+      #     path: storybook-static
 
-      - name: Serve Storybook and run tests
-        run: |
-          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "npx http-server storybook-static --port 6006 --silent" \
-            "npx wait-on tcp:6006 && npm run test"
+      # - name: Serve Storybook and run tests
+      #   run: |
+      #     npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+      #       "npx http-server storybook-static --port 6006 --silent" \
+      #       "npx wait-on tcp:6006 && npm run test"
+
+      - name: Run tests
+        run: npm run test
