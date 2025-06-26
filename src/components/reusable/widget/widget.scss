@@ -105,10 +105,23 @@ slot[name='footer']::slotted(*) {
   justify-content: center;
   align-items: center;
   pointer-events: none;
-}
 
-.widget.selected slot::slotted(*) {
-  opacity: 0.9;
+  .checkmark-bg {
+    background: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .checkmark-iconsize {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  svg {
+    fill: var(--kd-color-status-success-dark);
+  }
 }
 
 .widget.selectable slot::slotted(*) {

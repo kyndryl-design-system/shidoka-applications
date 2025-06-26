@@ -2,7 +2,7 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/checkmarkFilled.svg';
+import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
 import Styles from './widget.scss?inline';
 
 /**
@@ -13,7 +13,6 @@ import Styles from './widget.scss?inline';
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
  * @slot footer - Slot for footer content.
- * @slot icon - Slot for widget selectable icon.
  */
 @customElement('kyn-widget')
 export class Widget extends LitElement {
@@ -37,11 +36,11 @@ export class Widget extends LitElement {
 
   /** Widget selectable state. */
   @property({ type: Boolean })
-  selectable = false;
+  accessor selectable = false;
 
   /** Widget selected state. */
   @property({ type: Boolean })
-  selected = false;
+  accessor selected = false;
 
   /** Slotted chart element.
    * @internal
@@ -98,7 +97,11 @@ export class Widget extends LitElement {
           ? html`
               <div class="opacity-overlay"></div>
               <div class="checkmark-overlay">
-                <slot name="icon">${unsafeSVG(CheckMarkFilledIcon)}</slot>
+                <div class="checkmark-bg">
+                  <span class="checkmark-iconsize"
+                    >${unsafeSVG(CheckMarkFilledIcon)}</span
+                  >
+                </div>
               </div>
             `
           : null}

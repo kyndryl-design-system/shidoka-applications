@@ -1,6 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import './index';
 
 import '../button';
