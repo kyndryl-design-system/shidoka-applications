@@ -56,6 +56,7 @@ export class Widget extends LitElement {
       'has-chart': this._chart,
       disabled: this.disabled,
       selectable: this.selectable,
+      selected: this.selected,
     };
 
     return html`

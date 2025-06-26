@@ -110,6 +110,7 @@ export const SelectableWidget = {
   args: {
     ...args,
     selectable: true,
+    selected: true,
   },
   render: (args) => {
     return html`
@@ -163,7 +164,7 @@ export const WithActions = {
           >
             <kyn-button
               slot="actions"
-              kind="tertiary"
+              kind="secondary"
               size="small"
               description="Settings"
               ?disabled=${args.disabled}
