@@ -20,7 +20,7 @@ import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monoch
 import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
-import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/reorder.svg';
+import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/split.svg';
 import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
 
 import '../../overflowMenu';
