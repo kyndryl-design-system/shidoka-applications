@@ -239,7 +239,7 @@ export const WithFooter = {
 
             <kyn-button
               slot="footer"
-              kind="outline"
+              kind="secondary"
               size="small"
               style="margin-left: auto;"
             >
@@ -277,20 +277,29 @@ export const WithFooter = {
                 Swap this with your own component.
               </p>
             </div>
-            <div slot="footer" class="footer-content">
-              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
-                ${unsafeSVG(smCube)}
+            <div
+              slot="footer"
+              style="display: flex; gap: 8px; justify-content: space-between; width: 100%;"
+            >
+              <div class="footer-content">
+                <div
+                  class="cube-icon"
+                  style="color:var(--kd-color-icon-brand);"
+                >
+                  ${unsafeSVG(smCube)}
+                </div>
+                Footer Slot
               </div>
-              Footer Slot
+              <kyn-button kind="secondary" size="small" style="display:flex">
+                CTA
+              </kyn-button>
             </div>
-            <kyn-button slot="footer" kind="outline" size="small">
-              CTA
-            </kyn-button>
           </kyn-widget>
         </div>
       </div>
       <style>
         .footer-content {
+          width: 85%;
           display: flex;
           align-items: center;
           font-size: 16px;
