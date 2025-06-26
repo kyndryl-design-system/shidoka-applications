@@ -684,6 +684,7 @@ export class NewWidgetSample extends LitElement {
       >
       </kyn-page-title>
       <kyn-button
+        id="bundles"
         style="width:100%"
         kind="tertiary"
         @on-click=${this.handleBundleClick}

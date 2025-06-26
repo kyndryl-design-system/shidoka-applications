@@ -180,7 +180,7 @@ export class Button extends LitElement {
               title=${ifDefined(this.description)}
               @click=${(e: Event) => this.handleClick(e)}
             >
-              <span>
+              <span part="button-content">
                 <slot @slotchange=${() => this._handleSlotChange()}></slot>
                 <slot
                   name="icon"
@@ -202,7 +202,7 @@ export class Button extends LitElement {
               formmethod=${ifDefined(this.formmethod)}
               @click=${(e: Event) => this.handleClick(e)}
             >
-              <span>
+              <span part="button-content">
                 <slot @slotchange=${() => this._handleSlotChange()}></slot>
                 <slot
                   name="icon"
