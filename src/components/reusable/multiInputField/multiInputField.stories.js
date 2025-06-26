@@ -117,8 +117,8 @@ InvalidEmailFormat.args = {
   hideIcon: false,
   autoSuggestionDisabled: false,
   validationsDisabled: false,
+  placeholder: 'Add email addresses and press Enter...',
   textStrings: {
-    placeholder: 'Add email addresses and press Enter...',
     invalidFormatError: 'Please enter a valid email address format.',
   },
 };
@@ -133,8 +133,8 @@ MaxEmailsExceeded.args = {
   autoSuggestionDisabled: false,
   validationsDisabled: false,
   maxItems: 2,
+  placeholder: 'Add email addresses and press Enter...',
   textStrings: {
-    placeholder: 'Add email addresses and press Enter...',
     maxExceededError: 'You cannot add more than 2 email addresses.',
   },
 };
@@ -148,8 +148,8 @@ DuplicateEmail.args = {
   hideIcon: false,
   autoSuggestionDisabled: false,
   validationsDisabled: false,
+  placeholder: 'Add email addresses and press Enter...',
   textStrings: {
-    placeholder: 'Add email addresses and press Enter...',
     duplicateError: 'This email address has already been added.',
   },
 };
@@ -171,8 +171,8 @@ CustomEmailPattern.args = {
     'sales@example.com',
     'info@example.com',
   ],
+  placeholder: 'Add email addresses and press Enter...',
   textStrings: {
-    placeholder: 'Add email addresses and press Enter...',
     invalidFormatError:
       'Please enter a valid email address from example.com domain.',
   },
