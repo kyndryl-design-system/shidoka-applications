@@ -67,6 +67,10 @@ export class MultiInputField extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor autoSuggestionDisabled = false;
 
+  /** Disable all validations. */
+  @property({ type: Boolean })
+  accessor validationsDisabled = false;
+
   /** Custom suggestions data to override default mock data for type-ahead functionality. */
   @property({ type: Array })
   accessor customSuggestions: string[] = [];
@@ -78,10 +82,6 @@ export class MultiInputField extends FormMixin(LitElement) {
   /** Customizable text strings. */
   @property({ type: Object })
   accessor textStrings = defaultTextStrings;
-
-  /** Disable all validations. */
-  @property({ type: Boolean })
-  accessor validationsDisabled = false;
 
   /** Suppress any tag icon (even on email). */
   @property({ type: Boolean })
