@@ -108,18 +108,20 @@ slot[name='footer']::slotted(*) {
 
   .checkmark-bg {
     background: #fff;
-    width: 28px;
-    height: 28px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     .checkmark-iconsize {
-      width: 32px;
-      height: 32px;
+      width: 60px;
+      height: 60px;
     }
   }
   svg {
+    width: 60px;
+    height: 60px;
     fill: var(--kd-color-status-success-dark);
   }
 }
@@ -129,8 +131,13 @@ slot[name='footer']::slotted(*) {
   pointer-events: none;
 }
 
-.widget.selectable:hover {
-  border-color: var(--kd-color-border-ui-hover);
-  cursor: pointer;
-  @include elevation.shadow(2);
+.widget.selectable {
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
+    cursor: pointer;
+    @include elevation.shadow(2);
+  }
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
 }

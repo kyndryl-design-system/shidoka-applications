@@ -65,6 +65,7 @@ export class Widget extends LitElement {
         aria-disabled=${this.disabled}
         @click=${this._handleBodyClick}
         @keydown=${this._handleKeyDown}
+        tabindex=${this.selectable && !this.disabled ? 0 : -1}
       >
         <div class="widget-header">
           <slot name="draghandle"></slot>
@@ -79,17 +80,20 @@ export class Widget extends LitElement {
           </div>
 
           <div class="actions">
-            <slot name="actions"></slot>
+            <slot name="actions" tabindex=${this.selectable ? -1 : 0}></slot>
           </div>
         </div>
 
         <div class="widget-content">
           <div class="widget-body">
-            <slot @slotchange=${this._handleSlotChange}></slot>
+            <slot
+              @slotchange=${this._handleSlotChange}
+              tabindex=${this.selectable ? -1 : 0}
+            ></slot>
           </div>
 
           <div class="widget-footer">
-            <slot name="footer"></slot>
+            <slot name="footer" tabindex=${this.selectable ? -1 : 0}></slot>
           </div>
         </div>
 
