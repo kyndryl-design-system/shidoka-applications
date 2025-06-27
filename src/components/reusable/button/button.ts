@@ -150,7 +150,7 @@ export class Button extends LitElement {
 
   /** Aligns button text and icon at the edges when `kyn-button` has a set width.*/
   @property({ type: Boolean })
-  accessor fluidLayout = false;
+  accessor splitLayout = false;
 
   /** Determines _hasIcon state
    * @internal
@@ -181,7 +181,7 @@ export class Button extends LitElement {
       'kd-btn--hidden': this.showOnScroll && !this._showButton,
       'icon-only': this._iconEls?.length && this.iconOnly,
       selected: this.selected,
-      'kd-btn--fluidLayout': this.fluidLayout && this._hasIcon && this._hasText,
+      'kd-btn--splitLayout': this.splitLayout && this._hasIcon && this._hasText,
     };
 
     return html`

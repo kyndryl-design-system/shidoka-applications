@@ -136,16 +136,16 @@ export const ButtonWithIcon = {
   },
 };
 
-export const ButtonWithIconFluidLayout = {
+export const ButtonWithIconSplitLayout = {
   args: {
     ...args,
-    fluidLayout: true,
+    splitLayout: true,
   },
   render: (args) => {
     return html`
       <kyn-button
         style="width: 100%;"
-        ?fluidLayout=${args.fluidLayout}
+        ?splitLayout=${args.splitLayout}
         kind=${args.kind}
         type=${args.type}
         ?disabled=${args.disabled}
