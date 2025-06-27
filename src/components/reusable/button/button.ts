@@ -148,9 +148,9 @@ export class Button extends LitElement {
   @query('.button')
   accessor _btnEl!: any;
 
-  /** Makes the button full width */
+  /** Aligns button text and icon at the edges when `kyn-button` has a set width.*/
   @property({ type: Boolean })
-  accessor fullwidth = false;
+  accessor fullWidth = false;
 
   /** Determines _hasIcon state
    * @internal
@@ -181,7 +181,7 @@ export class Button extends LitElement {
       'kd-btn--hidden': this.showOnScroll && !this._showButton,
       'icon-only': this._iconEls?.length && this.iconOnly,
       selected: this.selected,
-      'kd-btn--fullwidth': this.fullwidth && this._hasIcon && this._hasText,
+      'kd-btn--fullWidth': this.fullWidth && this._hasIcon && this._hasText,
     };
 
     return html`
