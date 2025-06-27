@@ -5,6 +5,7 @@ import './index';
 
 import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
+import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import '../overflowMenu';
 
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
@@ -69,6 +70,18 @@ const args = {
   selected: false,
 };
 
+const getExampleContent = () => html`
+  <div class="example" style="flex-direction: column;">
+    <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+      ${unsafeSVG(lgCube)}
+    </div>
+    <h3 class="kd-type--ui-01" style="font-weight: 500">Expansion Slot</h3>
+    <p class="kd-type--ui-04" style="font-weight: 300;">
+      Swap this with your own component.
+    </p>
+  </div>
+`;
+
 export const Widget = {
   args,
   render: (args) => {
@@ -84,21 +97,7 @@ export const Widget = {
             ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
-            <div class="example" style="flex-direction: column;">
-              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
-                ${unsafeSVG(lgCube)}
-              </div>
-              <h3
-                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
-              >
-                Expansion Slot
-              </h3>
-              <p
-                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
-              >
-                Swap this with your own component.
-              </p>
-            </div>
+            ${getExampleContent()}
           </kyn-widget>
         </div>
       </div>
@@ -125,21 +124,7 @@ export const SelectableWidget = {
             ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
-            <div class="example" style="flex-direction: column;">
-              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
-                ${unsafeSVG(lgCube)}
-              </div>
-              <h3
-                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
-              >
-                Expansion Slot
-              </h3>
-              <p
-                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
-              >
-                Swap this with your own component.
-              </p>
-            </div>
+            ${getExampleContent()}
           </kyn-widget>
         </div>
       </div>
@@ -184,21 +169,7 @@ export const WithActions = {
               <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
             </kyn-overflow-menu>
 
-            <div class="example" style="flex-direction: column;">
-              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
-                ${unsafeSVG(lgCube)}
-              </div>
-              <h3
-                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
-              >
-                Expansion Slot
-              </h3>
-              <p
-                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
-              >
-                Swap this with your own component.
-              </p>
-            </div>
+            ${getExampleContent()}
           </kyn-widget>
         </div>
       </div>
@@ -221,21 +192,7 @@ export const WithFooter = {
             ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
-            <div class="example" style="flex-direction: column;">
-              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
-                ${unsafeSVG(lgCube)}
-              </div>
-              <h3
-                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
-              >
-                Expansion Slot
-              </h3>
-              <p
-                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
-              >
-                Swap this with your own component.
-              </p>
-            </div>
+            ${getExampleContent()}
 
             <kyn-button
               slot="footer"
@@ -262,21 +219,7 @@ export const WithFooter = {
             ?selected=${args.selected}
             @on-select=${(e) => action(e.type)(e)}
           >
-            <div class="example" style="flex-direction: column;">
-              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
-                ${unsafeSVG(lgCube)}
-              </div>
-              <h3
-                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
-              >
-                Expansion Slot
-              </h3>
-              <p
-                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
-              >
-                Swap this with your own component.
-              </p>
-            </div>
+            ${getExampleContent()}
             <div
               slot="footer"
               style="display: flex; gap: 8px; justify-content: space-between; width: 100%;"
