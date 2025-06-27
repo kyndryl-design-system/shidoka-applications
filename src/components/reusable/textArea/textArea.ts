@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { FormMixin } from '../../../common/mixins/form-input';
@@ -7,7 +7,7 @@ import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
-import TextAreaScss from './textArea.scss';
+import TextAreaScss from './textArea.scss?inline';
 import { classMap } from 'lit/directives/class-map.js';
 
 const _defaultTextStrings = {
@@ -24,81 +24,81 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-text-area')
 export class TextArea extends FormMixin(LitElement) {
-  static override styles = TextAreaScss;
+  static override styles = unsafeCSS(TextAreaScss);
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Optional text beneath the input. */
   @property({ type: String })
-  caption = '';
+  accessor caption = '';
 
   /** Input placeholder. */
   @property({ type: String })
-  placeholder = '';
+  accessor placeholder = '';
 
   /** Makes the input required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Input disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Input readonly state. */
   @property({ type: Boolean })
-  readonly = false;
+  accessor readonly = false;
 
   /** Maximum number of characters. */
   @property({ type: Number })
-  maxLength!: number;
+  accessor maxLength!: number;
 
   /** Minimum number of characters. */
   @property({ type: Number })
-  minLength!: number;
+  accessor minLength!: number;
 
   /** Set it to `true`, if text area is not resizeable. */
   @property({ type: Boolean })
-  notResizeable = false;
+  accessor notResizeable = false;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** textarea rows attribute. The number of visible text lines.
    * **Required** when `aiConnected` is set to `true`.
    */
   @property({ type: Number })
-  rows!: number;
+  accessor rows!: number;
 
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
-  aiConnected = false;
+  accessor aiConnected = false;
 
   /** Maximum number of visible text lines allowed. Default `5` rows. <br />
    * **NOTE**: Applies only when `aiConnected` is set to `true`. <br />
    * `rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.
    */
   @property({ type: Number })
-  maxRowsVisible = 5;
+  accessor maxRowsVisible = 5;
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * Queries the <textarea> DOM element.
    * @ignore
    */
   @query('textarea')
-  textareaEl!: HTMLTextAreaElement;
+  accessor textareaEl!: HTMLTextAreaElement;
 
   override render() {
     return html`

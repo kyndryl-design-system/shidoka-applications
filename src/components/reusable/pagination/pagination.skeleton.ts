@@ -1,9 +1,9 @@
-import { html, css, LitElement } from 'lit';
+import { html, css, LitElement, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../loaders/skeleton';
 
-import styles from './pagination.scss';
+import styles from './pagination.scss?inline';
 
 /**
  * `kyn-pagination-skeleton` Web Component.
@@ -11,7 +11,7 @@ import styles from './pagination.scss';
 @customElement('kyn-pagination-skeleton')
 export class PaginationSkeleton extends LitElement {
   static override styles = [
-    styles,
+    unsafeCSS(styles),
     css`
       kyn-skeleton {
         width: 150px;
@@ -36,15 +36,15 @@ export class PaginationSkeleton extends LitElement {
 
   /** Option to hide the items range display. */
   @property({ type: Boolean })
-  hideItemsRange = false;
+  accessor hideItemsRange = false;
 
   /** Option to hide the page size dropdown. */
   @property({ type: Boolean })
-  hidePageSizeDropdown = false;
+  accessor hidePageSizeDropdown = false;
 
   /** Option to hide the navigation buttons. */
   @property({ type: Boolean })
-  hideNavigationButtons = false;
+  accessor hideNavigationButtons = false;
 
   override render() {
     return html`

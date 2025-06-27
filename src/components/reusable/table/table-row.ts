@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement, PropertyValues } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -11,7 +11,7 @@ import { tableContext, TableContextType } from './table-context';
 
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
-import styles from './table-row.scss';
+import styles from './table-row.scss?inline';
 import '../checkbox/checkbox';
 
 import { TableExpandedRow } from './table-expanded-row';
@@ -33,52 +33,52 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-tr')
 export class TableRow extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'row';
+  override accessor role = 'row';
 
   /** aria-disabled.
    * @internal
    */
   @property({ type: String, reflect: true })
-  'aria-disabled' = 'false';
+  accessor 'aria-disabled' = 'false';
 
   /**
    * rowId: String - Unique identifier for the row.
    */
   @property({ type: String, reflect: true })
-  rowId = '';
+  accessor rowId = '';
 
   /**
    * selected: Boolean indicating whether the row is selected.
    * Reflects the `selected` attribute.
    */
   @property({ type: Boolean, reflect: true })
-  selected = false;
+  accessor selected = false;
 
   /**
    * checkboxSelection: Boolean indicating whether rows should be
    * selectable using checkboxes.
    */
   @property({ type: Boolean, reflect: true })
-  checkboxSelection = false;
+  accessor checkboxSelection = false;
 
   /**
    * dense: Boolean indicating whether the table should be displayed
    * in dense mode.
    */
   @property({ type: Boolean })
-  dense = false;
+  accessor dense = false;
 
   /**
    * Unread row state.
    */
   @property({ type: Boolean })
-  unread = false;
+  accessor unread = false;
 
   /**
    * locked: Boolean indicating whether the row is locked.
@@ -86,19 +86,19 @@ export class TableRow extends LitElement {
    * A row can be selected and disabled/locked simultaneously.
    */
   @property({ type: Boolean, reflect: true })
-  locked = false;
+  accessor locked = false;
 
   /**
    * expandable: Boolean indicating whether the row is expandable.
    */
   @property({ type: Boolean, reflect: true })
-  expandable = false;
+  accessor expandable = false;
 
   /**
    * expanded: Boolean indicating whether the row is expanded.
    */
   @property({ type: Boolean, reflect: true })
-  expanded = false;
+  accessor expanded = false;
 
   /**
    * disabled: Boolean indicating whether the row is disabled.
@@ -106,36 +106,36 @@ export class TableRow extends LitElement {
    * A row can be selected and disabled/locked simultaneously.
    */
   @property({ type: Boolean, reflect: true })
-  disabled = false;
+  accessor disabled = false;
 
   /**
    * preventHighlight: Boolean indicating whether the row should not be highlighted.
    */
   @property({ type: Boolean, reflect: true })
-  preventHighlight = false;
+  accessor preventHighlight = false;
 
   /**
    * dimmed: Boolean indicating whether the row is dimmed.
    * A row should not be selected and dimmed simultaneously.
    */
   @property({ type: Boolean, reflect: true })
-  dimmed = false;
+  accessor dimmed = false;
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   /**
    * @ignore
    */
   @queryAssignedElements()
-  unnamedSlotEls!: Array<HTMLElement>;
+  accessor unnamedSlotEls!: Array<HTMLElement>;
 
   /**
    * Context consumer for the table context.
@@ -146,7 +146,7 @@ export class TableRow extends LitElement {
    */
   @state()
   // @ts-expect-error - This is a context consumer
-  private _contextConsumer = new ContextConsumer(
+  private accessor _contextConsumer = new ContextConsumer(
     this,
     tableContext,
     (context) => {
@@ -160,7 +160,7 @@ export class TableRow extends LitElement {
    * @ignore
    */
   @state()
-  assistiveText = '';
+  accessor assistiveText = '';
 
   /**
    * Updates the cell's dense and ellipsis properties when the context changes.

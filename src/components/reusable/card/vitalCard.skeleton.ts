@@ -1,10 +1,10 @@
-import { html, LitElement, css } from 'lit';
+import { html, LitElement, css, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../loaders/skeleton';
 
-import vitalCardScss from './vitalCard.scss';
-import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scss';
+import vitalCardScss from './vitalCard.scss?inline';
+import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scss?inline';
 
 /**
  * `kyn-vital-card-skeleton` Web Component.
@@ -13,8 +13,8 @@ import CardSampleScss from '../../../stories/sampleCardComponents/cardSample.scs
 @customElement('kyn-vital-card-skeleton')
 export class VitalCardSkeleton extends LitElement {
   static override styles = [
-    vitalCardScss,
-    CardSampleScss,
+    unsafeCSS(vitalCardScss),
+    unsafeCSS(CardSampleScss),
     css`
       .vital-card-title-label {
         margin: 0 0 4px;
@@ -34,7 +34,7 @@ export class VitalCardSkeleton extends LitElement {
 
   /**  Sets the number of body/description lines to show in the skeleton pattern example. */
   @property({ type: Number })
-  lines? = 0;
+  accessor lines: any | undefined = 0;
 
   override render() {
     return html`

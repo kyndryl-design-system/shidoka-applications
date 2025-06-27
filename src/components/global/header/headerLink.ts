@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -8,7 +8,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { debounce } from '../../../common/helpers/helpers';
-import HeaderLinkScss from './headerLink.scss';
+import HeaderLinkScss from './headerLink.scss?inline';
 import '../../reusable/textInput';
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
@@ -23,64 +23,64 @@ import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/s
  */
 @customElement('kyn-header-link')
 export class HeaderLink extends LitElement {
-  static override styles = HeaderLinkScss;
+  static override styles = unsafeCSS(HeaderLinkScss);
 
   /** Link open state. */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   /** Link url. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
-  target = '_self' as const;
+  accessor target = '_self' as const;
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
-  rel = '';
+  accessor rel = '';
 
   /** Link active state, for example when URL path matches link href. */
   @property({ type: Boolean })
-  isActive = false;
+  accessor isActive = false;
 
   /** Link level, supports two levels.
    * @ignore
    */
   @state()
-  level = 1;
+  accessor level = 1;
 
   /** DEPRECATED. Adds a 1px shadow to the bottom of the link. */
   @property({ type: Boolean })
-  divider = false;
+  accessor divider = false;
 
   /** Label for sub-menu link search input, which is visible with > 5 sub-links. */
   @property({ type: String })
-  searchLabel = 'Search';
+  accessor searchLabel = 'Search';
 
   /** Number of child links required to show search input. */
   @property({ type: Number })
-  searchThreshold = 6;
+  accessor searchThreshold = 6;
 
   /** Text for mobile "Back" button. */
   @property({ type: String })
-  backText = 'Back';
+  accessor backText = 'Back';
 
   /** Add left padding when icon is not provided to align text with links that do have icons. */
   @property({ type: Boolean })
-  leftPadding = false;
+  accessor leftPadding = false;
 
   /** Text for mobile "Back" button. */
   @state()
-  _searchTerm = '';
+  accessor _searchTerm = '';
 
   /**
    * Queries any slotted HTML elements.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links' })
-  slottedEls!: Array<HTMLElement>;
+  accessor slottedEls!: Array<HTMLElement>;
 
   /** Timeout function to delay flyout open.
    * @internal
@@ -91,13 +91,13 @@ export class HeaderLink extends LitElement {
    * @internal
    */
   @state()
-  _leaveTimer: any;
+  accessor _leaveTimer: any;
 
   /** Menu positioning
    * @internal
    */
   @state()
-  menuPosition: any = {};
+  accessor menuPosition: any = {};
 
   override render() {
     const classes = {

@@ -1,7 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/spacing.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/spacing.scss';
 
 :host {
   display: inline-block;
@@ -28,7 +28,6 @@
 }
 
 .slider-tooltip {
-  @include typography.type-body-02;
   position: absolute;
   height: 48px;
   min-width: 43px;
@@ -62,9 +61,12 @@
     border-top: var(--kd-spacing-4) solid
       var(--kd-color-background-ui-default-dark); /* Bottom side of the arrow */
   }
+
   &.open {
     visibility: visible;
   }
+
+  @include typography.type-body-02;
 }
 
 input[type='range'] {

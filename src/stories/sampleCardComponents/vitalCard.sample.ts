@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import vitalCardScss from './vitalCard.scss';
+import vitalCardScss from './vitalCard.scss?inline';
 import '../../components/reusable/link';
 import '../../components/reusable/tooltip';
 
@@ -11,15 +11,15 @@ import '../../components/reusable/loaders/skeleton';
 /**  Sample Lit component to show vital card pattern. */
 @customElement('vital-card-sample-component')
 export class VitalCardSampleComponent extends LitElement {
-  static override styles = vitalCardScss;
+  static override styles = unsafeCSS(vitalCardScss);
 
   /** loading state control */
   @property({ type: Boolean })
-  skeleton = false;
+  accessor skeleton = false;
 
   /** show tooltip */
   @property({ type: Boolean })
-  showTooltip = false;
+  accessor showTooltip = false;
 
   override render() {
     return html`

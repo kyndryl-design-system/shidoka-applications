@@ -1,7 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import HeaderFlyoutsScss from './headerFlyouts.scss';
+import HeaderFlyoutsScss from './headerFlyouts.scss?inline';
 
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
 
@@ -11,11 +11,11 @@ import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20
  */
 @customElement('kyn-header-flyouts')
 export class HeaderFlyouts extends LitElement {
-  static override styles = HeaderFlyoutsScss;
+  static override styles = unsafeCSS(HeaderFlyoutsScss);
 
   /* Menu open state (small breakpoint). */
   @property({ type: Boolean })
-  open = false;
+  accessor open = false;
 
   override render() {
     return html`

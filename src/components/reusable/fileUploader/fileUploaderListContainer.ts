@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -6,7 +6,7 @@ import {
   queryAssignedElements,
   state,
 } from 'lit/decorators.js';
-import FileUploaderListContainerScss from './fileUploaderListContainer.scss';
+import FileUploaderListContainerScss from './fileUploaderListContainer.scss?inline';
 import '../link';
 
 /**
@@ -16,13 +16,13 @@ import '../link';
  */
 @customElement('kyn-file-uploader-list-container')
 export class FileUploaderListContainer extends LitElement {
-  static override styles = FileUploaderListContainerScss;
+  static override styles = unsafeCSS(FileUploaderListContainerScss);
 
   /**
    * File details container title.
    */
   @property({ type: String })
-  titleText = 'File details';
+  accessor titleText = 'File details';
 
   /**
    * Show all text.
@@ -48,21 +48,21 @@ export class FileUploaderListContainer extends LitElement {
    * @internal
    */
   @queryAssignedElements()
-  _fileItems!: Array<any>;
+  accessor _fileItems!: Array<any>;
 
   /**
    * Queries for the items container element.
    * @internal
    */
   @query('.file-uploader-list-container__items')
-  _container!: HTMLElement;
+  accessor _container!: HTMLElement;
 
   /**
    * Scroll event handler.
    * @internal
    */
   @state()
-  _scrollHandler: EventListener | null = null;
+  accessor _scrollHandler: EventListener | null = null;
 
   /**
    * Checks if there are more than three items in the list.
@@ -139,7 +139,7 @@ export class FileUploaderListContainer extends LitElement {
     }
   }
 
-  /* 
+  /*
     ${hasMoreThanThreeItems
     ? html` <div class="file-uploader-list-container__footer">
       <kyn-link

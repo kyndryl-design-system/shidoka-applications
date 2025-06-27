@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -9,7 +9,7 @@ import '../tooltip';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
-import ProgressBarStyles from './progressBar.scss';
+import ProgressBarStyles from './progressBar.scss?inline';
 
 enum ProgressStatus {
   ACTIVE = 'active',
@@ -23,65 +23,65 @@ enum ProgressStatus {
  */
 @customElement('kyn-progress-bar')
 export class ProgressBar extends LitElement {
-  static override styles = ProgressBarStyles;
+  static override styles = unsafeCSS(ProgressBarStyles);
 
   /** Sets visibility of optional inline load status spinner. */
   @property({ type: Boolean })
-  showInlineLoadStatus = false;
+  accessor showInlineLoadStatus = false;
 
   /** Controls whether to show default helper text for active state. */
   @property({ type: Boolean })
-  showActiveHelperText = false;
+  accessor showActiveHelperText = false;
 
   /** Sets progress bar html id property for accessibility (ex: `example-progress-bar`). */
   @property({ type: String })
-  progressBarId = '';
+  accessor progressBarId = '';
 
   /** Sets progress bar status mode. */
   @property({ type: String })
-  status: 'active' | 'success' | 'error' = 'active';
+  accessor status: 'active' | 'success' | 'error' = 'active';
 
   /** Sets initial progress bar value (optionally hard-coded). */
   @property({ type: Number })
-  value: number | null = null;
+  accessor value: number | null = null;
 
   /** Sets manual max value (default = 100). */
   @property({ type: Number })
-  max = 100;
+  accessor max = 100;
 
   /** Sets optional progress bar label. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Sets optional helper text that appears underneath progress bar element. */
   @property({ type: String })
-  helperText = '';
+  accessor helperText = '';
 
   /** Sets the unit for progress measurement (ex: 'MB', 'GB', '%') */
   @property({ type: String })
-  unit = '';
+  accessor unit = '';
 
   /** Visually hide the label. */
   @property({ type: Boolean })
-  hideLabel = false;
+  accessor hideLabel = false;
 
   /** Incrementing percentage count value.
    * @internal
    */
   @state()
-  private _percentage = 0;
+  private accessor _percentage = 0;
 
   /** Increments animated movement in progress bar.
    * @internal
    */
   @state()
-  private _progress = 0;
+  private accessor _progress = 0;
 
   /** Value set to indicate absence of value and max to identify indeterminate state.
    * @internal
    */
   @state()
-  private _isIndeterminate = false;
+  private accessor _isIndeterminate = false;
 
   /** Controls timeout interval for incremented bar animation.
    * @internal

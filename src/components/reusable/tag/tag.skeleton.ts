@@ -1,38 +1,20 @@
-import { html, css, LitElement } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 
 import '../loaders/skeleton';
 
-import TagStyles from './tag.scss';
+import TagStyles from './tag.scss?inline';
 
 @customElement('kyn-tag-skeleton')
 export class TagSkeleton extends LitElement {
-  static override styles = [
-    TagStyles,
-    css`
-      .tag-small,
-      .tag-medium {
-        padding: 0px;
-      }
-      .tag-small kyn-skeleton,
-      .tag-medium kyn-skeleton {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 50px;
-        position: relative;
-      }
-    `,
-  ];
+  static override styles = unsafeCSS(TagStyles);
 
   /**
    * Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.
    */
   @property({ type: String })
-  tagSize = 'sm';
+  accessor tagSize = 'sm';
 
   override render() {
     const sizeClass = this.tagSize === 'md' ? 'tag-medium' : 'tag-small';

@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '../button';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
-import NotificationScss from './notification.scss';
+import NotificationScss from './notification.scss?inline';
 import '../card';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
@@ -25,38 +25,38 @@ import '../badge';
 
 @customElement('kyn-notification')
 export class Notification extends LitElement {
-  static override styles = NotificationScss;
+  static override styles = unsafeCSS(NotificationScss);
 
   /** Notification Title (Required). */
   @property({ type: String })
-  notificationTitle = '';
+  accessor notificationTitle = '';
 
   /** Notification subtitle.(optional) */
   @property({ type: String })
-  notificationSubtitle = '';
+  accessor notificationSubtitle = '';
 
   /**
    * Timestamp of notification.
    * It is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.
    */
   @property({ type: String })
-  timeStamp = '';
+  accessor timeStamp = '';
 
   /** Card href link */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`. */
   @property({ type: String })
-  tagStatus = 'default'; // Need to change the name to badgeStatus, once old tags are removed.
+  accessor tagStatus = 'default'; // Need to change the name to badgeStatus, once old tags are removed.
 
   /** Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel */
   @property({ type: String })
-  type = 'normal';
+  accessor type = 'normal';
 
   /** Customizable text strings. */
   @property({ type: Object })
-  textStrings: any = {
+  accessor textStrings: any = {
     success: 'Success',
     warning: 'Warning',
     info: 'Information',
@@ -65,31 +65,31 @@ export class Notification extends LitElement {
 
   /** Close button description (Required to support accessibility). */
   @property({ type: String })
-  closeBtnDescription = 'Close';
+  accessor closeBtnDescription = 'Close';
 
   /**
    * Assistive text for notification type.
    * Required for `'clickable'`, `'inline'` and `'toast'` notification types.
    * */
   @property({ type: String })
-  assistiveNotificationTypeText = '';
+  accessor assistiveNotificationTypeText = '';
 
   /** Notification role (Required to support accessibility). */
   @property({ type: String })
-  notificationRole?: 'alert' | 'log' | 'status';
+  accessor notificationRole: 'alert' | 'log' | 'status' | undefined;
 
   /**
    * Status label (Required to support accessibility).
    * Assign the localized string value for the word **Status**.
    * */
   @property({ type: String })
-  statusLabel = 'Status';
+  accessor statusLabel = 'Status';
 
   /** Set badgeColor based on provided tagStatus.
    * @internal
    */
   @state()
-  _badgeColor: any = {
+  accessor _badgeColor: any = {
     success: 'success',
     warning: 'warning',
     info: 'information',
@@ -98,15 +98,15 @@ export class Notification extends LitElement {
 
   /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
   @property({ type: Boolean, reflect: true })
-  unRead = false;
+  accessor unRead = false;
 
   /** Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true. */
   @property({ type: Boolean })
-  hideCloseButton = false;
+  accessor hideCloseButton = false;
 
   /** Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'` */
   @property({ type: Number })
-  timeout = 8;
+  accessor timeout = 8;
 
   override render() {
     const cardBgClasses = {

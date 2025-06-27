@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import '../checkbox';
@@ -8,7 +8,7 @@ import '../button';
 import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/check.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
-import DropdownOptionScss from './dropdownOption.scss';
+import DropdownOptionScss from './dropdownOption.scss?inline';
 
 /**
  * Dropdown option.
@@ -19,59 +19,59 @@ import DropdownOptionScss from './dropdownOption.scss';
  */
 @customElement('kyn-dropdown-option')
 export class DropdownOption extends LitElement {
-  static override styles = DropdownOptionScss;
+  static override styles = unsafeCSS(DropdownOptionScss);
 
   /** Option value. */
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   /** Internal text strings.
    * @internal
    */
   @property({ type: Boolean })
-  selected = false;
+  accessor selected = false;
 
   /** Option disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Allow Add Option state, derived from parent. */
   @property({ type: Boolean })
-  allowAddOption = false;
+  accessor allowAddOption = false;
 
   /**
    * Option highlighted state for keyboard navigation, automatically derived.
    * @ignore
    */
   @state()
-  highlighted = false;
+  accessor highlighted = false;
 
   /** Multi-select state, derived from parent.
    * @ignore
    */
   @property({ type: Boolean })
-  multiple = false;
+  accessor multiple = false;
 
   /** Removable option. */
   @property({ type: Boolean })
-  removable = false;
+  accessor removable = false;
 
   /**
    * Option text, automatically derived.
    * @ignore
    */
   @state()
-  text: any = '';
+  accessor text: any = '';
 
   /** Determines whether the checkbox is in an indeterminate state. */
   @property({ type: Boolean, reflect: true })
-  indeterminate = false;
+  accessor indeterminate = false;
 
   @property({ type: String, reflect: true })
-  override role = 'option';
+  override accessor role = 'option';
 
   @property({ type: String, reflect: true, attribute: 'aria-selected' })
-  override ariaSelected = 'option';
+  override accessor ariaSelected = 'option';
 
   override render() {
     return html`

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import '../../components/reusable/textArea';
 import '../../components/reusable/button';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';

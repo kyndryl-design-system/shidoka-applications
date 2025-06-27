@@ -1,22 +1,22 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import InlineCodeViewStyles from './inlineCodeView.scss';
+import InlineCodeViewStyles from './inlineCodeView.scss?inline';
 
 /**
  * `<kyn-inline-code-view>` component to display code snippets inline within HTML content.
  * @slot unnamed - inline code snippet slot.
  */ @customElement('kyn-inline-code-view')
 export class InlineCodeView extends LitElement {
-  static override styles = InlineCodeViewStyles;
+  static override styles = unsafeCSS(InlineCodeViewStyles);
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' | 'default' = 'default';
+  accessor darkTheme: 'light' | 'dark' | 'default' = 'default';
 
   /** Font size value (px) to match code snippet font-size of surrounding text (min, default 14px). */
   @property({ type: Number })
-  snippetFontSize = 14;
+  accessor snippetFontSize = 14;
 
   override render() {
     return html`

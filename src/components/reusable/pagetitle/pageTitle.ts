@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import PageTitleScss from './pageTitle.scss';
+import PageTitleScss from './pageTitle.scss?inline';
 
 /**
  * Page Title
@@ -10,27 +10,27 @@ import PageTitleScss from './pageTitle.scss';
 
 @customElement('kyn-page-title')
 export class PageTitle extends LitElement {
-  static override styles = PageTitleScss;
+  static override styles = unsafeCSS(PageTitleScss);
 
   /** Headline text. */
   @property({ type: String })
-  headLine = '';
+  accessor headLine = '';
 
   /** Page title text (required). */
   @property({ type: String })
-  pageTitle = '';
+  accessor pageTitle = '';
 
   /** Page subtitle text. */
   @property({ type: String })
-  subTitle = '';
+  accessor subTitle = '';
 
   /** Type of page title `'primary'` , `'secondary'` & `'tertiary'`. */
   @property({ type: String })
-  type = 'primary';
+  accessor type = 'primary';
 
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
-  aiConnected = false;
+  accessor aiConnected = false;
 
   override render() {
     const classes = {

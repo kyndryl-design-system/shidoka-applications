@@ -1,29 +1,28 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import TabScss from './tab.scss';
+import TabScss from './tab.scss?inline';
 
 @customElement('kyn-tab')
 export class Tab extends LitElement {
-  static override styles = TabScss;
+  static override styles = unsafeCSS(TabScss);
 
   @property({ type: String, reflect: true })
-  override id = '';
+  override accessor id = '';
 
   @property({ type: Boolean, reflect: true })
-  selected = false;
+  accessor selected = false;
 
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   @state()
-  private _size = 'md';
+  private accessor _size = 'md';
 
   @property({ type: Boolean, reflect: true, attribute: 'vertical' })
-  vertical = false;
+  accessor vertical = false;
 
   // Keep private state for backward compatibility
-  @state()
   private get _vertical(): boolean {
     return this.vertical;
   }
@@ -37,22 +36,22 @@ export class Tab extends LitElement {
       toAttribute: (value: boolean) => (value ? 'true' : 'false'),
     },
   })
-  aiConnected = false;
+  accessor aiConnected = false;
 
   @property({ type: String, reflect: true })
-  override role = 'tab';
+  override accessor role = 'tab';
 
   @property({ type: Number, reflect: true })
-  override tabIndex = 0;
+  override accessor tabIndex = 0;
 
   @property({ type: String, reflect: true })
-  'aria-selected' = 'false';
+  accessor 'aria-selected' = 'false';
 
   @property({ type: String, reflect: true })
-  'aria-controls' = '';
+  accessor 'aria-controls' = '';
 
   @property({ type: String, reflect: true })
-  'aria-disabled' = 'false';
+  accessor 'aria-disabled' = 'false';
 
   override render() {
     const classes = {

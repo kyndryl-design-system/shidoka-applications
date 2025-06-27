@@ -1,8 +1,8 @@
 import { customElement, state, property } from 'lit/decorators.js';
 import { TableRow } from './table-row';
-import { html } from 'lit';
+import { html, unsafeCSS } from 'lit';
 
-import styles from './table-header-row.scss';
+import styles from './table-header-row.scss?inline';
 
 /**
  * `kyn-header-tr` Web Component.
@@ -12,13 +12,13 @@ import styles from './table-header-row.scss';
  */
 @customElement('kyn-header-tr')
 export class TableHeaderRow extends TableRow {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   /** aria role.
    * @internal
    */
   @property({ type: String, reflect: true })
-  override role = 'row';
+  override accessor role = 'row';
 
   /**
    * headerCheckboxIndeterminate: Boolean indicating whether the header
@@ -26,7 +26,7 @@ export class TableHeaderRow extends TableRow {
    * @ignore
    */
   @state()
-  private headerCheckboxIndeterminate = false;
+  private accessor headerCheckboxIndeterminate = false;
 
   /**
    * headerCheckboxChecked: Boolean indicating whether the header checkbox is
@@ -34,7 +34,7 @@ export class TableHeaderRow extends TableRow {
    * @ignore
    */
   @state()
-  private headerCheckboxChecked = false;
+  private accessor headerCheckboxChecked = false;
 
   /**
    * expandableColumnWidth: The width of the expandable column.
@@ -42,7 +42,7 @@ export class TableHeaderRow extends TableRow {
    * @default '64px'
    */
   @property({ type: String })
-  expandableColumnWidth = '64px';
+  accessor expandableColumnWidth = '64px';
 
   /**
    * multiSelectColumnWidth: The width of the multi-select column.
@@ -50,7 +50,7 @@ export class TableHeaderRow extends TableRow {
    * @default '64px'
    */
   @property({ type: String })
-  multiSelectColumnWidth = '64px';
+  accessor multiSelectColumnWidth = '64px';
 
   /**
    * Toggles the selection state of all rows in the table.

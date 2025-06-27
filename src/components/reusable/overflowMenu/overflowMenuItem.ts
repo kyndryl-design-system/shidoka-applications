@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import SCSS from './overflowMenuItem.scss';
+import SCSS from './overflowMenuItem.scss?inline';
 import '../tooltip';
 
 /**
@@ -11,50 +11,50 @@ import '../tooltip';
  */
 @customElement('kyn-overflow-menu-item')
 export class OverflowMenuItem extends LitElement {
-  static override styles = SCSS;
+  static override styles = unsafeCSS(SCSS);
 
   /** Makes the item a link. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Adds destructive styles. */
   @property({ type: Boolean })
-  destructive = false;
+  accessor destructive = false;
 
   /** Item disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Item description text for screen reader's */
   @property({ type: String })
-  description = '';
+  accessor description = '';
 
   /**
    * Has the menu items in the current oveflow menu.
    * @ignore
    */
   @state()
-  _menuItems: any;
+  accessor _menuItems: any;
 
   /**
    * Has the current oveflow menu.
    * @ignore
    */
   @state()
-  _menu: any;
+  accessor _menu: any;
 
   /**
    * Tracks if the item content is overflowing and needs a tooltip.
    * @ignore
    */
   @state()
-  isTruncated = false;
+  accessor isTruncated = false;
 
   /** Holds the text content for the title tooltip.
    * @ignore
    */
   @state()
-  tooltipText = '';
+  accessor tooltipText = '';
 
   override render() {
     const classes = {

@@ -1,11 +1,11 @@
-import { html, css, LitElement } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../loaders/skeleton';
 import '../pagination/pagination.skeleton';
 import '.';
 
-import styles from './table.scss';
+import styles from './table.scss?inline';
 import '../globalFilter/globalFilter.skeleton.sample';
 
 /**
@@ -14,82 +14,43 @@ import '../globalFilter/globalFilter.skeleton.sample';
  */
 @customElement('kyn-table-skeleton')
 export class TableSkeleton extends LitElement {
-  static override styles = [
-    styles,
-    css`
-      .visually-hidden {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-
-      .skeleton-title-wrapper {
-        padding: 8px 0 16px;
-      }
-
-      .skeleton-title {
-        margin-bottom: 8px;
-      }
-
-      kyn-thead kyn-tr {
-        background-color: var(--kd-color-background-container-soft);
-      }
-
-      :host {
-        display: block;
-        width: 100%;
-      }
-
-      .pagination-skeleton-wrapper {
-        margin-top: 24px;
-        display: flex;
-        width: 100%;
-        justify-content: flex-end;
-      }
-    `,
-  ];
+  static override styles = unsafeCSS(styles);
 
   /** Number of skeleton rows to display. */
   @property({ type: Number })
-  rows = 5;
+  accessor rows = 5;
 
   /** Shows/hides pagination skeleton. */
   @property({ type: Boolean })
-  showPagination = false;
+  accessor showPagination = false;
 
   /** Sets dense mode value. */
   @property({ type: Boolean })
-  dense = false;
+  accessor dense = false;
 
   /** Sets striped rows value. */
   @property({ type: Boolean })
-  striped = false;
+  accessor striped = false;
 
   /** Show/hide table header. */
   @property({ type: Boolean })
-  hideTableTitles = false;
+  accessor hideTableTitles = false;
 
   /** Fixed layout boolean. */
   @property({ type: Boolean })
-  fixedLayout = false;
+  accessor fixedLayout = false;
 
   /** Sets title to display in the table toolbar. */
   @property({ type: String })
-  tableTitle = '';
+  accessor tableTitle = '';
 
   /** Sets subtitle to display in the table toolbar. */
   @property({ type: String })
-  tableSubtitle = '';
+  accessor tableSubtitle = '';
 
   /** Shows/hides golbal filter skeleton. */
   @property({ type: Boolean })
-  showGlobalFilter = false;
+  accessor showGlobalFilter = false;
 
   override render() {
     return html`

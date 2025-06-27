@@ -1,9 +1,8 @@
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
-@use '~@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '../../common/scss/mixins.scss';
 
 .label-text {
-  @include typography.type-ui-02;
   color: var(--kd-color-text-forms-label-primary);
   font-weight: 500;
   display: flex;
@@ -21,6 +20,8 @@
   [disabled] & {
     color: var(--kd-color-text-level-disabled);
   }
+
+  @include typography.type-ui-02;
 }
 
 .required {
@@ -59,7 +60,7 @@ input,
 .flatpickr-input,
 textarea {
   pointer-events: auto;
-  @include typography.type-body-02;
+
   border-color: var(--kd-color-border-forms-default);
   color: var(--kd-color-text-forms-input-field-text);
   transition: background-color 150ms ease-out, border-color 150ms ease-out,
@@ -137,6 +138,8 @@ textarea {
   &:not([disabled])[invalid] {
     border-color: var(--kd-color-border-variants-destructive);
   }
+
+  @include typography.type-body-02;
 }
 
 .error {
@@ -194,7 +197,6 @@ textarea {
 }
 
 .clear-button {
-  @include mixins.close-icon-btn($top: 50%, $right: 10px, $size: 16px);
   transform: translateY(-50%);
 
   &:not[disabled] {
@@ -204,6 +206,8 @@ textarea {
   &.dropdown-clear {
     right: 45px;
   }
+
+  @include mixins.close-icon-btn($top: 50%, $right: 10px, $size: 16px);
 }
 
 .caption-error-count {
@@ -212,13 +216,14 @@ textarea {
   gap: 1rem;
 
   .count {
-    @include typography.type-ui-02;
     color: var(--kd-color-text-forms-label-secondary);
     margin-top: 13px;
 
     [disabled] & {
       color: var(--kd-color-text-level-disabled);
     }
+
+    @include typography.type-ui-02;
   }
 }
 
@@ -254,7 +259,6 @@ textarea {
 }
 
 .description-text {
-  @include typography.type-body-02;
   color: var(--kd-color-text-level-primary);
   margin-top: -4px;
   margin-bottom: 8px;
@@ -262,4 +266,6 @@ textarea {
   [disabled] & {
     color: var(--kd-color-text-level-disabled);
   }
+
+  @include typography.type-body-02;
 }

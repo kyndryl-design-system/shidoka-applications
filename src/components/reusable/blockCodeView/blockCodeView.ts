@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -17,8 +17,8 @@ import chevronDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 
 import '../button';
 
-import BlockCodeViewStyles from './blockCodeView.scss';
-import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-theme.scss';
+import BlockCodeViewStyles from './blockCodeView.scss?inline';
+import ShidokaSyntaxTheme from '../../../common/scss/shidoka-syntax-theme.scss?inline';
 
 interface LanguageMatch {
   language: string;
@@ -46,103 +46,106 @@ const LANGUAGE_SPECIFIC_TOKENS: Record<string, string[]> = {
  */
 @customElement('kyn-block-code-view')
 export class BlockCodeView extends LitElement {
-  static override styles = [BlockCodeViewStyles, ShidokaSyntaxTheme];
+  static override styles = [
+    unsafeCSS(BlockCodeViewStyles),
+    unsafeCSS(ShidokaSyntaxTheme),
+  ];
 
   /** Sets background and text theming. */
   @property({ type: String })
-  darkTheme: 'light' | 'dark' | 'default' = 'default';
+  accessor darkTheme: 'light' | 'dark' | 'default' = 'default';
 
   /** If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language. */
   @property({ type: String })
-  language = '';
+  accessor language = '';
 
   /** Optionally display line numbers. */
   @property({ type: Boolean })
-  lineNumbers = false;
+  accessor lineNumbers = false;
 
   /** Sets the starting line number when lineNumbers is true. Must be a positive integer. */
   @property({ type: Number })
-  startLineNumber = 1;
+  accessor startLineNumber = 1;
 
   /** Customizable max-height setting for code snippet container. */
   @property({ type: Number })
-  maxHeight: number | null = null;
+  accessor maxHeight: number | null = null;
 
   /** Optionally displayed label above code snippet container. */
   @property({ type: String })
-  codeViewLabel = '';
+  accessor codeViewLabel = '';
 
   /** Optionally display button to copy code snippet. */
   @property({ type: Boolean })
-  copyOptionVisible = false;
+  accessor copyOptionVisible = false;
 
   /** Optionally display button to expand code snippet container. */
   @property({ type: Boolean })
-  codeViewExpandable = false;
+  accessor codeViewExpandable = false;
 
   /** Sets copy code button text (optional). */
   @property({ type: String })
-  copyButtonText = '';
+  accessor copyButtonText = '';
 
   /** Sets copy button description attr value. */
   @property({ type: String })
-  copyButtonDescriptionAttr = '';
+  accessor copyButtonDescriptionAttr = '';
 
   /** Sets code snippet for display -- NOTE: original formatting is preserved. */
   @property({ type: String })
-  codeSnippet = '';
+  accessor codeSnippet = '';
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  private _textStrings = _defaultTextStrings;
+  private accessor _textStrings = _defaultTextStrings;
 
   /** Auto-detect whether code snippet is single line (boolean) -- styled accordingly (boolean).
    * @internal
    */
   @state()
-  private _isSingleLine = false;
+  private accessor _isSingleLine = false;
 
   /** Auto-detect whether code snippet exceeds the max-height allowance (boolean).
    * @internal
    */
   @state()
-  private hasOverflow = false;
+  private accessor hasOverflow = false;
 
   /** Value indicating whether overflow code sample is expanded (boolean).
    * @internal
    */
   @state()
-  private codeExpanded = false;
+  private accessor codeExpanded = false;
 
   /** Copy key-values to communicate copy button styling and state.
    * @internal
    */
   @state()
-  private _copyState = { copied: false, text: '' };
+  private accessor _copyState = { copied: false, text: '' };
 
   /** Detected language for the code snippet.
    * @internal
    */
   @state()
-  private _effectiveLanguage = '';
+  private accessor _effectiveLanguage = '';
 
   /** Code snippet fits into the height of the container -- no expansion needed.
    * @internal
    */
   @state()
-  private _codeFitsContainerOnLoad = true;
+  private accessor _codeFitsContainerOnLoad = true;
 
   /** If expandable -- height of the container when fully expanded.
    * @internal
    */
   @state()
-  private _expandedHeight: number | null = null;
+  private accessor _expandedHeight: number | null = null;
 
   override updated(changedProperties: Map<string, unknown>) {
     if (changedProperties.has('darkTheme')) this.requestUpdate();

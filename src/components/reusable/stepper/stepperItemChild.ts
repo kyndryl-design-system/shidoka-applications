@@ -1,9 +1,9 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import '../link';
-import StepChildCss from './stepperItemChild.scss';
+import StepChildCss from './stepperItemChild.scss?inline';
 
 /**
  * Stepper Item child.
@@ -12,47 +12,47 @@ import StepChildCss from './stepperItemChild.scss';
  */
 @customElement('kyn-stepper-item-child')
 export class StepperItemChild extends LitElement {
-  static override styles = StepChildCss;
+  static override styles = unsafeCSS(StepChildCss);
 
   /** Child Title. Required for nested child inside step. */
   @property({ type: String })
-  childTitle = '';
+  accessor childTitle = '';
 
   /** Child link. */
   @property({ type: String })
-  childLink = '';
+  accessor childLink = '';
 
   /** Optional Child Subtitle. */
   @property({ type: String })
-  childSubTitle = '';
+  accessor childSubTitle = '';
 
   /** Child disabled or not Internal state inherit from `<kyn-step-item>`.
    * @ignore
    */
   @state()
-  disabled = false;
+  accessor disabled = false;
 
   /** Child State. `'pending'`, `'active'` & `'completed'`.  */
   @property({ type: String })
-  childState = 'pending';
+  accessor childState = 'pending';
 
   /** Child Size. Inherit from `<kyn-step-item>`.
    * @ignore
    */
   @state()
-  childSize = 'large';
+  accessor childSize = 'large';
 
   /** Child progress, calculate Internal progress.
    * @ignore
    */
   @state()
-  progress = 0;
+  accessor progress = 0;
 
   /** Child index.
    * @ignore
    */
   @state()
-  childIndex = 0;
+  accessor childIndex = 0;
 
   override render() {
     const childIconClasses = {

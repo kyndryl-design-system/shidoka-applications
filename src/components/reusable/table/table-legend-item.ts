@@ -1,7 +1,7 @@
-import { html, LitElement } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import styles from './table-legend-item.scss';
+import styles from './table-legend-item.scss?inline';
 
 /**
  * Table Legend Item
@@ -10,7 +10,7 @@ import styles from './table-legend-item.scss';
  */
 @customElement('kyn-table-legend-item')
 export class TableLegendItem extends LitElement {
-  static override styles = [styles];
+  static override styles = unsafeCSS(styles);
 
   override render() {
     return html` <div class="legend-item"><slot></slot></div> `;

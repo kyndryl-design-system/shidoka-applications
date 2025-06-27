@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import HeaderCategoryScss from './headerCategory.scss';
+import HeaderCategoryScss from './headerCategory.scss?inline';
 
 /**
  * Header link category
@@ -9,15 +9,15 @@ import HeaderCategoryScss from './headerCategory.scss';
  */
 @customElement('kyn-header-category')
 export class HeaderCategory extends LitElement {
-  static override styles = HeaderCategoryScss;
+  static override styles = unsafeCSS(HeaderCategoryScss);
 
   /** Category text. */
   @property({ type: String })
-  heading = '';
+  accessor heading = '';
 
   /** Add left padding when icon is not provided to align text with links that do have icons. */
   @property({ type: Boolean })
-  leftPadding = false;
+  accessor leftPadding = false;
 
   override render() {
     return html`

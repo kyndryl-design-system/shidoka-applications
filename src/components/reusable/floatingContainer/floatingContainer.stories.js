@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import chevronUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-up.svg';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chat.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';

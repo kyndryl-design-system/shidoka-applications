@@ -2,7 +2,7 @@
  * Copyright Kyndryl, Inc. 2023
  */
 
-import { html, LitElement } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -24,7 +24,7 @@ import {
   BUTTON_KINDS_OUTLINE,
 } from './defs';
 
-import stylesheet from './button.scss';
+import stylesheet from './button.scss?inline';
 
 /**
  * Button component.
@@ -35,7 +35,7 @@ import stylesheet from './button.scss';
  */
 @customElement('kyn-button')
 export class Button extends LitElement {
-  static override styles = [stylesheet];
+  static override styles = unsafeCSS(stylesheet);
 
   /** @ignore */
   static override shadowRootOptions = {
@@ -54,99 +54,99 @@ export class Button extends LitElement {
    * @ignore
    */
   @state()
-  internals = this.attachInternals();
+  accessor internals = this.attachInternals();
 
   /** ARIA label for the button for accessibility. */
   @property({ type: String })
-  description = '';
+  accessor description = '';
 
   /** Type for the &lt;button&gt; element. */
   @property({ type: String })
-  type: BUTTON_TYPES = BUTTON_TYPES.BUTTON;
+  accessor type: BUTTON_TYPES = BUTTON_TYPES.BUTTON;
 
   /** Specifies the visual appearance/kind of the button. */
   @property({ type: String })
-  kind: BUTTON_KINDS = BUTTON_KINDS.PRIMARY;
+  accessor kind: BUTTON_KINDS = BUTTON_KINDS.PRIMARY;
 
   /** Converts the button to an &lt;a&gt; tag if specified. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Link target, only valid if href is supplied. */
   @property({ type: String })
-  target = '_self';
+  accessor target = '_self';
 
   /** Specifies the size of the button. */
   @property({ type: String })
-  size: BUTTON_SIZES = BUTTON_SIZES.MEDIUM;
+  accessor size: BUTTON_SIZES = BUTTON_SIZES.MEDIUM;
 
   /** Specifies the position of the icon relative to any button text. */
   @property({ type: String })
-  iconPosition: BUTTON_ICON_POSITION = BUTTON_ICON_POSITION.CENTER;
+  accessor iconPosition: BUTTON_ICON_POSITION = BUTTON_ICON_POSITION.CENTER;
 
   /** Determines if the button is disabled.
    * @internal
    */
   @state()
-  iconOnly = false;
+  accessor iconOnly = false;
 
   /** Determines if the button is disabled. */
   @property({ type: Boolean, reflect: true })
-  disabled = false;
+  accessor disabled = false;
 
   /** Button value.  */
   @property({ type: String })
-  value = '';
+  accessor value = '';
 
   /** Button name. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** Determines if the button is Floatable */
   @property({ type: Boolean })
-  isFloating = false;
+  accessor isFloating = false;
 
   /** Show button after scrolling to 50% of the page */
   @property({ type: Boolean })
-  showOnScroll = false;
+  accessor showOnScroll = false;
 
   /** Button selected state. */
   @property({ type: Boolean })
-  selected = false;
+  accessor selected = false;
 
   /** Determines showButton state .
    * @internal
    */
   @state()
-  _showButton = false;
+  accessor _showButton = false;
 
   /** re-size button to 'medium' at mobile breakpoint.
    * @internal
    */
   @state()
-  _reSizeBtn = false;
+  accessor _reSizeBtn = false;
 
   /** Button formmethod.  */
   @property({ type: String })
-  formmethod!: any;
+  accessor formmethod!: any;
 
   /** Queries default slot nodes.
    * @internal
    */
   @queryAssignedNodes()
-  _slottedEls!: Array<any>;
+  accessor _slottedEls!: Array<any>;
 
   /** Queries icon slot nodes.
    * @internal
    */
   @queryAssignedElements({ slot: 'icon' })
-  _iconEls!: Array<any>;
+  accessor _iconEls!: Array<any>;
 
   /** Queries the .button element.
    * @internal
    */
   @query('.button')
-  _btnEl!: any;
+  accessor _btnEl!: any;
 
   override render() {
     const BtnClasses = {

@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import HeaderPanelLinkScss from './headerPanelLink.scss';
+import HeaderPanelLinkScss from './headerPanelLink.scss?inline';
 
 /**
  * Header fly-out panel link.
@@ -9,19 +9,19 @@ import HeaderPanelLinkScss from './headerPanelLink.scss';
  */
 @customElement('kyn-header-panel-link')
 export class HeaderPanelLink extends LitElement {
-  static override styles = HeaderPanelLinkScss;
+  static override styles = unsafeCSS(HeaderPanelLinkScss);
 
   /** Link url. */
   @property({ type: String })
-  href = '';
+  accessor href = '';
 
   /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
-  target = '_self' as const;
+  accessor target = '_self' as const;
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
-  rel = '';
+  accessor rel = '';
 
   override render() {
     return html`

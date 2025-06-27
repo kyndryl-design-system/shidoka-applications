@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, queryAssignedElements } from 'lit/decorators.js';
-import Styles from './checkboxSubgroup.scss';
+import Styles from './checkboxSubgroup.scss?inline';
 
 /**
  * Checkbox subgroup
@@ -9,15 +9,15 @@ import Styles from './checkboxSubgroup.scss';
  */
 @customElement('kyn-checkbox-subgroup')
 export class CheckboxSubgroup extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   /** @internal */
   @queryAssignedElements({ slot: 'parent', selector: 'kyn-checkbox' })
-  _parent!: any;
+  accessor _parent!: any;
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-checkbox' })
-  _children!: Array<any>;
+  accessor _children!: Array<any>;
 
   override render() {
     return html`

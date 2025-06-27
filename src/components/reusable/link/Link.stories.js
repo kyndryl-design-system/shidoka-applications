@@ -2,7 +2,7 @@
  * Copyright Kyndryl, Inc. 2023
  */
 import { html } from 'lit';
-import { userEvent, expect, waitFor, fn } from '@storybook/test';
+import { userEvent, expect, waitFor, fn } from 'storybook/test';
 import { within } from 'shadow-dom-testing-library';
 
 import './link';

@@ -5,7 +5,7 @@ import policeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/p
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/delete.svg';
 import '../../components/reusable/button';
 import '../../components/reusable/inlineConfirm/inlineConfirm';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 
 export default {
   title: 'AI/Patterns/Info',

@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import HeaderUserProfileScss from './headerUserProfile.scss';
+import HeaderUserProfileScss from './headerUserProfile.scss?inline';
 import '../../reusable/link';
 
 /**
@@ -10,27 +10,27 @@ import '../../reusable/link';
  */
 @customElement('kyn-header-user-profile')
 export class HeaderUserProfile extends LitElement {
-  static override styles = HeaderUserProfileScss;
+  static override styles = unsafeCSS(HeaderUserProfileScss);
 
   /** The user's name. */
   @property({ type: String })
-  name = '';
+  accessor name = '';
 
   /** The user's job title, or subtext. */
   @property({ type: String })
-  subtitle = '';
+  accessor subtitle = '';
 
   /** The user's email address. */
   @property({ type: String })
-  email = '';
+  accessor email = '';
 
   /** View profile link URL. */
   @property({ type: String })
-  profileLink = '';
+  accessor profileLink = '';
 
   /** View Profile link text. */
   @property({ type: String })
-  profileLinkText = 'View Profile';
+  accessor profileLinkText = 'View Profile';
 
   override render() {
     return html`

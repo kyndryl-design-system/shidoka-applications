@@ -1,9 +1,9 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
 import { FormMixin } from '../../../common/mixins/form-input';
-import CheckboxGroupScss from './checkboxGroup.scss';
+import CheckboxGroupScss from './checkboxGroup.scss?inline';
 
 import '../textInput';
 import './checkbox';
@@ -29,83 +29,82 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends FormMixin(LitElement) {
-  static override styles = CheckboxGroupScss;
+  static override styles = unsafeCSS(CheckboxGroupScss);
 
   /** Checkbox group selected values. */
-  @property({ type: Array })
   override value: Array<any> = [];
 
   /** Makes a single selection required. */
   @property({ type: Boolean })
-  required = false;
+  accessor required = false;
 
   /** Checkbox group disabled state. */
   @property({ type: Boolean })
-  disabled = false;
+  accessor disabled = false;
 
   /** Checkbox group horizontal style. */
   @property({ type: Boolean })
-  horizontal = false;
+  accessor horizontal = false;
 
   /** Adds a "Select All" checkbox to the top of the group. */
   @property({ type: Boolean })
-  selectAll = false;
+  accessor selectAll = false;
 
   /** Is "Select All" box checked.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllChecked = false;
+  accessor selectAllChecked = false;
 
   /** Is "Select All" indeterminate.
    * @internal
    */
   @property({ type: Boolean })
-  selectAllIndeterminate = false;
+  accessor selectAllIndeterminate = false;
 
   /** Hide the group legend/label visually. */
   @property({ type: Boolean })
-  hideLegend = false;
+  accessor hideLegend = false;
 
   /** Adds a search input to enable filtering of checkboxes. */
   @property({ type: Boolean })
-  filterable = false;
+  accessor filterable = false;
 
   /** Label text. */
   @property({ type: String })
-  label = '';
+  accessor label = '';
 
   /** Filter text input value.
    * @internal
    */
   @state()
-  searchTerm = '';
+  accessor searchTerm = '';
 
   /** Limits visible checkboxes behind a "Show all" button. */
   @property({ type: Boolean })
-  limitCheckboxes = false;
+  accessor limitCheckboxes = false;
 
   /** Number of checkboxes visible when limited.
    * @internal
    */
   @state()
-  _limitCount = 4;
+  accessor _limitCount = 4;
 
   /** Checkbox limit visibility.
    * @internal
    */
   @state()
-  limitRevealed = false;
+  accessor limitRevealed = false;
 
   /** Text string customization. */
   @property({ type: Object })
-  textStrings = _defaultTextStrings;
+  accessor textStrings = _defaultTextStrings;
 
   /** Internal text strings.
    * @internal
    */
   @state()
-  _textStrings = _defaultTextStrings;
+  accessor _textStrings = _defaultTextStrings;
 
   // /**
   //  * Queries for slotted checkboxes.
@@ -115,10 +114,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   // checkboxes!: Array<any>;
 
   @state()
-  checkboxes: Array<any> = [];
+  accessor checkboxes: Array<any> = [];
 
   @state()
-  filteredCheckboxes: Array<any> = [];
+  accessor filteredCheckboxes: Array<any> = [];
 
   override render() {
     return html`

@@ -1,11 +1,11 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { Config } from '../../../../common/helpers/gridstack';
 import SampleLayout from './gridstacklayout.sample';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import '../index';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
-import Styles from './gridstack.newWidget.scss';
+import Styles from './gridstack.newWidget.scss?inline';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import rolesIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/96/roles.svg';
 import appsDataIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/96/applications-data-&-Ai.svg';
@@ -59,10 +59,10 @@ const colorSwatchArr = [
  */
 @customElement('new-widget-sample')
 export class NewWidgetSample extends LitElement {
-  static override styles = Styles;
+  static override styles = unsafeCSS(Styles);
 
   @state()
-  private grid?: GridStack;
+  private accessor grid: GridStack | undefined;
 
   private _handleInit(e: any) {
     e.detail.gridStack.setupDragIn(
@@ -107,7 +107,7 @@ export class NewWidgetSample extends LitElement {
   }
 
   @state()
-  items = [
+  accessor items = [
     {
       id: 1,
       name: 'My Dashboard',
@@ -151,7 +151,7 @@ export class NewWidgetSample extends LitElement {
   ];
 
   @state()
-  widgetItems = [
+  accessor widgetItems = [
     {
       id: 'w3',
       name: 'Widget Title',
@@ -191,31 +191,31 @@ export class NewWidgetSample extends LitElement {
   ];
 
   @state()
-  selectedTabId = 'widgets';
+  accessor selectedTabId = 'widgets';
 
   @state()
-  showFilter = false;
+  accessor showFilter = false;
 
   @state()
-  addNewDashboard = false;
+  accessor addNewDashboard = false;
 
   @state()
-  showFileUploader = false;
+  accessor showFileUploader = false;
 
   @state()
-  showBundles = false;
+  accessor showBundles = false;
 
   @state()
-  showCreateBundles = false;
+  accessor showCreateBundles = false;
 
   @state()
-  displayTwoPerRow = false;
+  accessor displayTwoPerRow = false;
 
   @state()
-  updateLayout = SampleLayout;
+  accessor updateLayout = SampleLayout;
 
   @state()
-  formattedColorSwatches = colorSwatchArr.map((color) => ({
+  accessor formattedColorSwatches = colorSwatchArr.map((color) => ({
     color: color,
     selected: false,
   }));
