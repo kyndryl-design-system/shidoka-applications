@@ -148,6 +148,22 @@ export class Button extends LitElement {
   @query('.button')
   accessor _btnEl!: any;
 
+  /** Makes the button full width */
+  @property({ type: Boolean })
+  accessor fullwidth = false;
+
+  /** Determines _hasIcon state
+   * @internal
+   */
+  @state()
+  accessor _hasIcon = false;
+
+  /** Determines _hasText state
+   * @internal
+   */
+  @state()
+  accessor _hasText = false;
+
   override render() {
     const BtnClasses = {
       'kd-btn': true,
@@ -165,6 +181,7 @@ export class Button extends LitElement {
       'kd-btn--hidden': this.showOnScroll && !this._showButton,
       'icon-only': this._iconEls?.length && this.iconOnly,
       selected: this.selected,
+      'kd-btn--fullwidth': this.fullwidth && this._hasIcon && this._hasText,
     };
 
     return html`
@@ -180,7 +197,7 @@ export class Button extends LitElement {
               title=${ifDefined(this.description)}
               @click=${(e: Event) => this.handleClick(e)}
             >
-              <span part="button-content">
+              <span>
                 <slot @slotchange=${() => this._handleSlotChange()}></slot>
                 <slot
                   name="icon"
@@ -202,7 +219,7 @@ export class Button extends LitElement {
               formmethod=${ifDefined(this.formmethod)}
               @click=${(e: Event) => this.handleClick(e)}
             >
-              <span part="button-content">
+              <span>
                 <slot @slotchange=${() => this._handleSlotChange()}></slot>
                 <slot
                   name="icon"
@@ -252,6 +269,12 @@ export class Button extends LitElement {
 
   private _handleSlotChange() {
     this.iconOnly = this._testIconOnly();
+    this._hasIcon = !!this._iconEls?.length;
+
+    const TextNodes = this._slottedEls?.filter((node: any) => {
+      return node.textContent.trim() !== '';
+    });
+    this._hasText = TextNodes.length > 0;
     this.requestUpdate();
   }
 

@@ -20,7 +20,8 @@ import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monoch
 import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 import editIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/edit.svg';
-import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/split.svg';
+import splitIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/reorder.svg';
+import gridIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/grid.svg';
 import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/checkmark-filled.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
@@ -302,16 +303,27 @@ export class NewWidgetSample extends LitElement {
                       >
                       </kyn-page-title>
                       <div class="content-content">
-                        <kyn-button
-                          kind="outline"
-                          size="small"
-                          description="list"
-                          @on-click=${() => this.toggleList()}
-                        >
-                          <span style="display:flex;" slot="icon"
-                            >${unsafeSVG(listIcon)}</span
+                        <div class="content-items">
+                          <kyn-button
+                            kind="outline"
+                            size="small"
+                            description="list"
+                            @on-click=${() => this.toggleList()}
                           >
-                        </kyn-button>
+                            <span style="display:flex;" slot="icon"
+                              >${unsafeSVG(listIcon)}</span
+                            >
+                          </kyn-button>
+                          <kyn-button
+                            kind="outline"
+                            size="small"
+                            description="grid"
+                          >
+                            <span style="display:flex;" slot="icon"
+                              >${unsafeSVG(gridIcon)}</span
+                            >
+                          </kyn-button>
+                        </div>
                         <div class="content-items">
                           <kyn-search
                             name="search"
@@ -534,16 +546,23 @@ export class NewWidgetSample extends LitElement {
         <div>
           <div class="dashboard-wrapper">
             <div class="content-content">
-              <kyn-button
-                kind="outline"
-                size="small"
-                description="list"
-                @on-click=${() => this.toggleList()}
-              >
-                <span style="display:flex;" slot="icon"
-                  >${unsafeSVG(listIcon)}</span
+              <div class="content-items">
+                <kyn-button
+                  kind="outline"
+                  size="small"
+                  description="list"
+                  @on-click=${() => this.toggleList()}
                 >
-              </kyn-button>
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(listIcon)}</span
+                  >
+                </kyn-button>
+                <kyn-button kind="outline" size="small" description="grid">
+                  <span style="display:flex;" slot="icon"
+                    >${unsafeSVG(gridIcon)}</span
+                  >
+                </kyn-button>
+              </div>
               <div class="content-items">
                 <kyn-search
                   name="search"
@@ -684,9 +703,9 @@ export class NewWidgetSample extends LitElement {
       >
       </kyn-page-title>
       <kyn-button
-        id="bundles"
         style="width:100%"
         kind="tertiary"
+        fullwidth
         @on-click=${this.handleBundleClick}
       >
         Bundles
