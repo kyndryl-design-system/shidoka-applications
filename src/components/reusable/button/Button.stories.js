@@ -136,13 +136,16 @@ export const ButtonWithIcon = {
   },
 };
 
-export const ButtonWithIconFullWidth = {
-  args,
+export const ButtonWithIconFluidLayout = {
+  args: {
+    ...args,
+    fluidLayout: true,
+  },
   render: (args) => {
     return html`
       <kyn-button
         style="width: 100%;"
-        fullWidth
+        ?fluidLayout=${args.fluidLayout}
         kind=${args.kind}
         type=${args.type}
         ?disabled=${args.disabled}

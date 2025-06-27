@@ -705,7 +705,7 @@ export class NewWidgetSample extends LitElement {
       <kyn-button
         style="width:100%"
         kind="tertiary"
-        fullWidth
+        fluidLayout
         @on-click=${this.handleBundleClick}
       >
         Bundles
