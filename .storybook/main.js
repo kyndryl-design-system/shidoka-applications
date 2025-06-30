@@ -1,6 +1,5 @@
 import remarkGfm from 'remark-gfm';
 import fs from 'fs';
-import viteLitCss from 'rollup-plugin-postcss-lit';
 
 export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -95,7 +94,7 @@ export default {
     return mergeConfig(config, {
       // Add storybook-specific dependencies to pre-optimization
       assetsInclude: ['**/*.svg'],
-      plugins: [vitePluginRawSvg(), viteLitCss()],
+      plugins: [vitePluginRawSvg()],
     });
   },
 
