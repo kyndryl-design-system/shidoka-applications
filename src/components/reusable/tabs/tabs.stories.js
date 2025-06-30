@@ -40,6 +40,7 @@ const args = {
   vertical: false,
   aiConnected: false,
   disableAutoFocusUpdate: false,
+  scrollablePanels: false,
 };
 
 export const Tabs = {
@@ -161,8 +162,7 @@ export const Scrollable = {
   render: (args) => {
     return html`
       <kyn-tabs
-        style="height: 200px;"
-        scrollablePanels
+        ?scrollablePanels=${args.scrollablePanels}
         tabSize=${args.tabSize}
         ?vertical=${args.vertical}
         ?aiConnected=${args.aiConnected}
