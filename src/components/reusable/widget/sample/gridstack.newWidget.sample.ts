@@ -617,7 +617,11 @@ export class NewWidgetSample extends LitElement {
         gs-id="${item.id}"
       >
         <div class="grid-stack-item-content">
-          <kyn-widget widgetTitle=${item.name} subTitle="">
+          <kyn-widget
+            widgetTitle=${item.name}
+            subTitle=""
+            ?selectable="${type === 'admin'}"
+          >
             ${type === 'dashboard'
               ? html` <kyn-widget-drag-handle></kyn-widget-drag-handle>`
               : null}
