@@ -131,7 +131,7 @@ export class SampleFilterTableComponent extends LitElement {
         >
           <kyn-button
             slot="anchor"
-            kind="tertiary"
+            kind="ghost"
             size="small"
             iconPosition="left"
             tabindex="-1"
