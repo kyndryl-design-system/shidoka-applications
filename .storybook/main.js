@@ -1,5 +1,6 @@
 import remarkGfm from 'remark-gfm';
 import fs from 'fs';
+import viteLitCss from 'rollup-plugin-postcss-lit';
 
 export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -92,9 +93,17 @@ export default {
     const { mergeConfig } = await import('vite');
     // Merge custom configuration into the default config
     return mergeConfig(config, {
+      css: {
+        preprocessorOptions: {
+          scss: {
+            additionalData: `@use '@kyndryl-design-system/shidoka-foundation/scss/global.scss' as *;`,
+            sourceMap: true,
+          },
+        },
+      },
       // Add storybook-specific dependencies to pre-optimization
       assetsInclude: ['**/*.svg'],
-      plugins: [vitePluginRawSvg()],
+      plugins: [vitePluginRawSvg(), viteLitCss()],
     });
   },
 
