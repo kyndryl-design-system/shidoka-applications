@@ -1,10 +1,13 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
 import Styles from './widget.scss?inline';
 
 /**
  * Widget.
+ * @fires on-select - Emits the widget selected state .
  * @slot unnamed - Slot for widget content.
  * @slot action - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.
@@ -31,6 +34,14 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   accessor disabled = false;
 
+  /** Widget selectable state. */
+  @property({ type: Boolean })
+  accessor selectable = false;
+
+  /** Widget selected state. */
+  @property({ type: Boolean })
+  accessor selected = false;
+
   /** Slotted chart element.
    * @internal
    */
@@ -43,6 +54,8 @@ export class Widget extends LitElement {
       'drag-active': this.dragActive,
       'has-chart': this._chart,
       disabled: this.disabled,
+      selectable: this.selectable,
+      selected: this.selected,
     };
 
     return html`
@@ -50,6 +63,9 @@ export class Widget extends LitElement {
         class=${classMap(Classes)}
         role="group"
         aria-disabled=${this.disabled}
+        @click=${this._handleBodyClick}
+        @keydown=${this._handleKeyDown}
+        tabindex=${this.selectable && !this.disabled ? 0 : -1}
       >
         <div class="widget-header">
           <slot name="draghandle"></slot>
@@ -64,21 +80,55 @@ export class Widget extends LitElement {
           </div>
 
           <div class="actions">
-            <slot name="actions"></slot>
+            <slot name="actions" tabindex=${this.selectable ? -1 : 0}></slot>
           </div>
         </div>
 
         <div class="widget-content">
           <div class="widget-body">
-            <slot @slotchange=${this._handleSlotChange}></slot>
+            <slot
+              @slotchange=${this._handleSlotChange}
+              tabindex=${this.selectable ? -1 : 0}
+            ></slot>
           </div>
 
           <div class="widget-footer">
-            <slot name="footer"></slot>
+            <slot name="footer" tabindex=${this.selectable ? -1 : 0}></slot>
           </div>
         </div>
+
+        ${this.selectable && this.selected
+          ? html`
+              <div class="opacity-overlay"></div>
+              <div class="checkmark-overlay">
+                <div class="checkmark-bg">
+                  <span class="checkmark-iconsize"
+                    >${unsafeSVG(CheckMarkFilledIcon)}</span
+                  >
+                </div>
+              </div>
+            `
+          : null}
       </div>
     `;
+  }
+
+  private _handleBodyClick() {
+    if (!this.selectable || this.disabled) return;
+    this.selected = !this.selected;
+    this.dispatchEvent(
+      new CustomEvent('on-select', {
+        detail: { selected: this.selected },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private _handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this._handleBodyClick();
+    }
   }
 
   private _handleSlotChange() {

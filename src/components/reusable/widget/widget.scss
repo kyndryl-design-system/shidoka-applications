@@ -16,11 +16,12 @@
   width: 100%;
   height: 100%;
   padding-top: 8px;
-  background: var(--kd-color-background-container-default);
+  background: var(--kd-color-background-container-secondary);
   border-radius: 4px;
   outline: 1px solid transparent;
   outline-offset: -1px;
   transition: box-shadow 100ms ease-out, outline-color 150ms ease-out;
+  position: relative;
 
   &.disabled {
     opacity: 0.6;
@@ -54,6 +55,7 @@
 
   .description {
     @include typography.type-ui-03;
+    font-weight: 400;
     color: var(--kd-color-text-level-secondary);
   }
 
@@ -66,6 +68,7 @@
 }
 
 .widget-content {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 8px 16px 16px 16px;
@@ -86,4 +89,56 @@
 
 slot[name='footer']::slotted(*) {
   margin-top: 8px;
+}
+
+.opacity-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--kd-color-background-opacity-8---dark);
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+.checkmark-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  .checkmark-bg {
+    background: #ffffff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .checkmark-iconsize {
+      width: 60px;
+      height: 60px;
+    }
+  }
+  svg {
+    width: 60px;
+    height: 60px;
+    fill: var(--kd-color-status-success-dark);
+  }
+}
+
+.widget.selectable slot::slotted(*) {
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.widget.selectable {
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
+    cursor: pointer;
+    @include elevation.shadow(2);
+  }
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
 }
