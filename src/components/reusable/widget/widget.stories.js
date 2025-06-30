@@ -75,7 +75,7 @@ const getExampleContent = () => html`
     <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
       ${unsafeSVG(lgCube)}
     </div>
-    <h3 class="kd-type--ui-01" style="font-weight: 500">Expansion Slot</h3>
+    <div class="kd-type--ui-01" style="font-weight: 500">Expansion Slot</div>
     <p class="kd-type--ui-04" style="font-weight: 300;">
       Swap this with your own component.
     </p>
