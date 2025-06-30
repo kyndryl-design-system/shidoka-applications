@@ -5,7 +5,6 @@ import './index';
 
 import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
-import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import '../overflowMenu';
 
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';

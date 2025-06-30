@@ -93,13 +93,6 @@ export default {
     // Merge custom configuration into the default config
     return mergeConfig(config, {
       // Add storybook-specific dependencies to pre-optimization
-      css: {
-        preprocessorOptions: {
-          scss: {
-            additionalData: `@use "../../../common/scss/global.scss" as *;`,
-          },
-        },
-      },
       assetsInclude: ['**/*.svg'],
       plugins: [vitePluginRawSvg()],
     });
