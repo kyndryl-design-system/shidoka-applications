@@ -1,5 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
+import { action } from 'storybook/actions';
 import './index';
 
 import '../button';
@@ -7,6 +8,8 @@ import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
 
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
+import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
+import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
 
 export default {
   title: 'Components/Widget',
@@ -42,9 +45,14 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--kd-color-background-container-soft);
+          background: var(--kd-color-background-container-subtle);
+          border: 1px dashed var(--kd-color-utility-variant-border);
           height: 100%;
           border-radius: 4px;
+          svg {
+            height: 52px;
+            width: 52px;
+          }
         }
       </style>
       ${story()}
@@ -57,7 +65,21 @@ const args = {
   subTitle: 'Subtitle',
   disabled: false,
   dragActive: false,
+  selectable: false,
+  selected: false,
 };
+
+const getExampleContent = () => html`
+  <div class="example" style="flex-direction: column;">
+    <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+      ${unsafeSVG(lgCube)}
+    </div>
+    <div class="kd-type--ui-01 kd-type--weight-medium">Expansion Slot</div>
+    <p class="kd-type--ui-04 kd-type--weight-light">
+      Swap this with your own component.
+    </p>
+  </div>
+`;
 
 export const Widget = {
   args,
@@ -70,8 +92,43 @@ export const Widget = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
-            <div class="example">Widget Content</div>
+            ${getExampleContent()}
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const SelectableWidget = {
+  args: {
+    ...args,
+    selectable: true,
+    selected: true,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    return html`
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
+          >
+            ${getExampleContent()}
           </kyn-widget>
         </div>
       </div>
@@ -90,10 +147,13 @@ export const WithActions = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
             <kyn-button
               slot="actions"
-              kind="tertiary"
+              kind="secondary"
               size="small"
               description="Settings"
               ?disabled=${args.disabled}
@@ -113,7 +173,7 @@ export const WithActions = {
               <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
             </kyn-overflow-menu>
 
-            <div class="example">Widget Content</div>
+            ${getExampleContent()}
           </kyn-widget>
         </div>
       </div>
@@ -132,12 +192,15 @@ export const WithFooter = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
-            <div class="example">Widget Content</div>
+            ${getExampleContent()}
 
             <kyn-button
               slot="footer"
-              kind="outline"
+              kind="secondary"
               size="small"
               style="margin-left: auto;"
             >
@@ -156,16 +219,47 @@ export const WithFooter = {
             subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            @on-select=${(e) => action(e.type)(e)}
           >
-            <div class="example">Widget Content</div>
-
-            <span slot="footer">Footer Content</span>
-            <kyn-button slot="footer" kind="outline" size="small">
-              CTA
-            </kyn-button>
+            ${getExampleContent()}
+            <div
+              slot="footer"
+              style="display: flex; gap: 8px; justify-content: space-between; width: 100%;"
+            >
+              <div class="footer-content">
+                <div
+                  class="cube-icon"
+                  style="color:var(--kd-color-icon-brand);"
+                >
+                  ${unsafeSVG(smCube)}
+                </div>
+                Footer Slot
+              </div>
+              <kyn-button kind="secondary" size="small" style="display:flex">
+                CTA
+              </kyn-button>
+            </div>
           </kyn-widget>
         </div>
       </div>
+      <style>
+        .footer-content {
+          width: 85%;
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+          gap: 4px;
+          justify-content: center;
+          height: 30px;
+          border-radius: 4px;
+          font-weight: 500;
+          padding: 0 16px;
+          background: var(--kd-color-background-container-subtle);
+          border: 1px dashed var(--kd-color-utility-variant-border);
+        }
+      </style>
     `;
   },
 };
@@ -175,7 +269,13 @@ export const WithChart = {
   render: (args) => {
     return html`
       <div style="max-width: 500px;">
-        <kyn-widget ?disabled=${args.disabled} ?dragActive=${args.dragActive}>
+        <kyn-widget
+          ?disabled=${args.disabled}
+          ?dragActive=${args.dragActive}
+          ?selectable=${args.selectable}
+          ?selected=${args.selected}
+          @on-select=${(e) => action(e.type)(e)}
+        >
           <kd-chart
             type="bar"
             chartTitle=${args.widgetTitle}
