@@ -7,7 +7,6 @@ import { BREAKPOINT_VIEWPORTS } from '@kyndryl-design-system/shidoka-foundation/
 
 import '@kyndryl-design-system/shidoka-foundation/css/root.css';
 import '@kyndryl-design-system/shidoka-foundation/css/index.css';
-import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import '../src/common/scss/utility/gridstack-shidoka.scss';
 import '../src/common/scss/utility/swiper-shidoka.scss';
 
