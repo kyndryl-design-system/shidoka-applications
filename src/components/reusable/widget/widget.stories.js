@@ -5,7 +5,7 @@ import './index';
 
 import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
-import '@kyndryl-design-system/shidoka-foundation/css/typography.css?inline';
+import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import '../overflowMenu';
 
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
@@ -75,10 +75,8 @@ const getExampleContent = () => html`
     <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
       ${unsafeSVG(lgCube)}
     </div>
-    <div class="kd-type--ui-01 kd-type--weight-medium">Expansion Slot</div>
-    <p class="kd-type--ui-04 kd-type--weight-light">
-      Swap this with your own component.
-    </p>
+    <div>Expansion Slot</div>
+    <p>Swap this with your own component.</p>
   </div>
 `;
 
