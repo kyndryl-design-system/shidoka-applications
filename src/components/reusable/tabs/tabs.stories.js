@@ -158,10 +158,11 @@ export const DisabledTab = {
 };
 
 export const Scrollable = {
-  args,
+  args: { ...args, scrollablePanels: true },
   render: (args) => {
     return html`
       <kyn-tabs
+        style="height: 200px;"
         ?scrollablePanels=${args.scrollablePanels}
         tabSize=${args.tabSize}
         ?vertical=${args.vertical}
