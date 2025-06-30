@@ -75,10 +75,10 @@ const getExampleContent = () => html`
     <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
       ${unsafeSVG(lgCube)}
     </div>
-    <!-- <div class="kd-type--ui-01 kd-type--weight-medium">Expansion Slot</div>
+    <div class="kd-type--ui-01 kd-type--weight-medium">Expansion Slot</div>
     <p class="kd-type--ui-04 kd-type--weight-light">
       Swap this with your own component.
-    </p> -->
+    </p>
   </div>
 `;
 
