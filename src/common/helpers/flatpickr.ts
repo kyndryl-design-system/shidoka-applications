@@ -623,12 +623,34 @@ export function setCalendarAttributes(
       yearInput.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowUp') {
           e.preventDefault();
-          instance.changeYear(1);
+          const currentYear = parseInt(yearInput.value, 10);
+          if (!isNaN(currentYear)) {
+            const newYear = currentYear + 1;
+            const maxYear = instance?.config.maxDate
+              ? new Date(instance.config.maxDate).getFullYear()
+              : 9999;
+            if (newYear <= maxYear) {
+              yearInput.value = String(newYear);
+              yearInput.dispatchEvent(new Event('input', { bubbles: true }));
+              yearInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          }
           setTimeout(updateNow, 0);
         }
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          instance.changeYear(-1);
+          const currentYear = parseInt(yearInput.value, 10);
+          if (!isNaN(currentYear)) {
+            const newYear = currentYear - 1;
+            const minYear = instance?.config.minDate
+              ? new Date(instance.config.minDate).getFullYear()
+              : 1;
+            if (newYear >= minYear) {
+              yearInput.value = String(newYear);
+              yearInput.dispatchEvent(new Event('input', { bubbles: true }));
+              yearInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          }
           setTimeout(updateNow, 0);
         }
       });

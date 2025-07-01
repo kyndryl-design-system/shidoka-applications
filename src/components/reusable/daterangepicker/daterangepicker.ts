@@ -771,6 +771,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       'date-range-picker': true,
       'date-range-picker__enable-time': this._enableTime,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
+      'date-range-picker__single-month': this.showSingleMonth,
+      'date-range-picker__multi-month': !this.showSingleMonth,
+      'date-range-picker__multi-input': this.multiInput,
     };
   }
 
@@ -1420,12 +1423,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       } else if (Array.isArray(origOnOpen)) {
         origOnOpen.forEach((fn) => fn(selectedDates, dateStr, instance));
       }
-      setTimeout(() => {
-        const firstDay = instance.calendarContainer.querySelector<HTMLElement>(
-          '.flatpickr-day:not(.flatpickr-disabled)'
-        );
-        if (firstDay) firstDay.focus();
-      }, 0);
     };
 
     const origOnReady = options.onReady;
@@ -1435,6 +1432,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       } else if (Array.isArray(origOnReady)) {
         origOnReady.forEach((fn) => fn(_sel, _str, instance));
       }
+
       const handler = (e: KeyboardEvent) => {
         if (e.key !== 'Enter') return;
         const target = e.target as HTMLElement & { dateObj: Date };
@@ -1454,6 +1452,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       };
       instance.calendarContainer.addEventListener('keydown', handler);
+
+      const calendarDays = instance.calendarContainer.querySelectorAll(
+        '.flatpickr-day:not(.flatpickr-disabled)'
+      );
+      calendarDays.forEach((day: Element) => {
+        const dayElement = day as HTMLElement;
+        if (!dayElement.hasAttribute('tabindex')) {
+          dayElement.setAttribute('tabindex', '-1');
+        }
+      });
+
+      const navButtons = instance.calendarContainer.querySelectorAll(
+        '.flatpickr-prev-month, .flatpickr-next-month'
+      );
+      navButtons.forEach((button: Element) => {
+        const buttonElement = button as HTMLElement;
+        if (!buttonElement.hasAttribute('tabindex')) {
+          buttonElement.setAttribute('tabindex', '0');
+        }
+      });
     };
 
     if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
