@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
 import {
   customElement,
   property,
