@@ -136,6 +136,39 @@ export const ButtonWithIcon = {
   },
 };
 
+export const ButtonWithIconSplitLayout = {
+  args: {
+    ...args,
+    splitLayout: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-button
+        style="width: 100%;"
+        ?splitLayout=${args.splitLayout}
+        kind=${args.kind}
+        type=${args.type}
+        ?disabled=${args.disabled}
+        ?isFloating=${args.isFloating}
+        ?showOnScroll=${args.showOnScroll}
+        size=${args.size}
+        iconPosition=${args.iconPosition}
+        description=${args.description}
+        href=${args.href}
+        target=${args.target}
+        name=${args.name}
+        value=${args.value}
+        ?selected=${args.selected}
+        @on-click=${(e) => action(e.type)(e)}
+      >
+        ${args.unnamed}
+        <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
+      </kyn-button>
+    `;
+  },
+};
+1;
+
 export const IconOnly = {
   args: {
     ...args,

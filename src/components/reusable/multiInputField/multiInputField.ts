@@ -341,7 +341,7 @@ export class MultiInputField extends FormMixin(LitElement) {
             : null}
         </div>
         ${this.maxItems
-          ? html`<div class="validated-count">
+          ? html`<div class="validated-count" disabled=${this.disabled}>
               ${validCount}/${this.maxItems}
             </div>`
           : null}
