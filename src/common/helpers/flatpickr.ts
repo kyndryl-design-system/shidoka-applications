@@ -103,8 +103,6 @@ export function preventFlatpickrOpen(
   setShouldFlatpickrOpen: (value: boolean) => void
 ): void {
   event.preventDefault();
-  event.stopPropagation();
-  event.stopImmediatePropagation();
   setShouldFlatpickrOpen(false);
 }
 
