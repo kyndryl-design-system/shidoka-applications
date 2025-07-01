@@ -1,0 +1,163 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.container {
+  position: relative;
+  @include typography.type-body-02;
+  border: 1px solid var(--kd-color-border-forms-default);
+  background: var(--kd-color-background-forms-default);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 544px;
+  min-height: 168px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 4px;
+  cursor: text;
+
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
+  }
+
+  &.error-state {
+    border-color: var(--kd-color-border-ui-error);
+    background-color: var(--kd-color-background-ui-error-subtle);
+  }
+
+  &.disabled {
+    background: var(--kd-color-background-forms-disabled);
+    border: none;
+    color: var(--kd-color-text-level-disabled);
+    cursor: not-allowed;
+
+    &[invalid] {
+      border-color: var(--kd-color-border-ui-disabled);
+    }
+  }
+
+  &.is-readonly {
+    background: var(--kd-color-background-forms-disabled);
+    border-color: var(--kd-color-border-variants-light);
+    cursor: default;
+  }
+
+  &:has(input:focus) {
+    outline: 2px solid var(--kd-color-border-variants-focus);
+    outline-offset: 2px;
+  }
+
+  input {
+    border: none;
+    flex: 1 1 auto;
+    min-width: 300px;
+    padding: 0;
+    padding-left: 8px;
+    line-height: 2;
+    min-height: 34px;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+
+    &::placeholder,
+    &:-ms-input-placeholder,
+    &::-ms-input-placeholder {
+      @include typography.type-body-02;
+      color: var(--kd-color-text-variant-placeholder);
+    }
+  }
+
+  .suggestions {
+    @include elevation.shadow(2);
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    max-width: 275px;
+    background: var(--kd-color-background-accent-light);
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .suggestion {
+    padding: 16px;
+    @include typography.type-body-02;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+    background: var(--kd-color-background-forms-default);
+    opacity: 1;
+
+    &:hover,
+    &.highlighted {
+      background: var(--kd-color-background-ui-hollow-hover);
+    }
+  }
+}
+
+.no-suggestions {
+  padding: 16px;
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.indiv-tag {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+  gap: 8px;
+
+  span {
+    max-width: 30ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.caption-count-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 544px;
+  margin-top: 4px;
+  position: relative;
+
+  > div:first-child {
+    max-width: calc(100% - 100px);
+  }
+
+  .caption-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .validated-count {
+    @include typography.type-body-02;
+    font-weight: 400;
+    margin-top: 8px;
+    color: var(--kd-color-text-forms-label-secondary);
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.container.disabled ~ .caption-count-container .validated-count {
+  color: var(--kd-color-text-level-disabled);
+}
