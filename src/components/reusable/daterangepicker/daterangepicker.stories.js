@@ -52,6 +52,8 @@ export default {
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    multiInput: { control: { type: 'boolean' } },
+    showSingleMonth: { control: { type: 'boolean' } },
   },
 };
 
@@ -127,8 +129,9 @@ const Template = (args) => {
       .errorTitle=${args.errorTitle}
       .warningAriaLabel=${args.warningAriaLabel}
       .warningTitle=${args.warningTitle}
-      .startDateLabel=${args.startDateLabel}
-      .endDateLabel=${args.endDateLabel}
+      ?multiInput=${args.multiInput}
+      ?showSingleMonth=${args.showSingleMonth}
+      .textStrings=${args.textStrings}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-date-range-picker>
@@ -238,6 +241,50 @@ ScheduleLockdown_BothDatesFixed.args = {
   label: 'Fixed Date Range (View Only)',
 };
 ScheduleLockdown_BothDatesFixed.storyName = 'Both Dates Fixed';
+
+export const MultiInputDateRange = Template.bind({});
+MultiInputDateRange.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-date-range-picker',
+  dateFormat: 'Y-m-d',
+  multiInput: true,
+  textStrings: {
+    startLabel: 'Start Date',
+    endLabel: 'End Date',
+  },
+  label: 'Date Range Selection',
+  caption: 'Example with separate start and end date inputs.',
+};
+
+export const MultiInputSingleMonthCalendar = Template.bind({});
+MultiInputSingleMonthCalendar.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-datetime-range-picker',
+  dateFormat: 'Y-m-d H:i',
+  multiInput: true,
+  showSingleMonth: true,
+  textStrings: {
+    startLabel: 'Start Date & Time',
+    endLabel: 'End Date & Time',
+  },
+  label: 'Date & Time Range Selection',
+  caption: 'Example with separate start and end date/time inputs.',
+};
+
+export const MultiInputWithPreselected = Template.bind({});
+MultiInputWithPreselected.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-preselected-range',
+  dateFormat: 'Y-m-d',
+  defaultDate: ['2024-01-01', '2024-01-07'],
+  multiInput: true,
+  textStrings: {
+    startLabel: 'From',
+    endLabel: 'To',
+  },
+  label: 'Travel Dates',
+  caption: 'Example with preselected dates in multi-input mode.',
+};
 
 export const InModal = {
   args: {

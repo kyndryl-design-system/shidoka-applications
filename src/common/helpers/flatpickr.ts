@@ -96,6 +96,7 @@ interface FlatpickrOptionsContext {
   noCalendar?: boolean;
   appendTo?: HTMLElement;
   static?: boolean;
+  showMonths?: number;
 }
 
 export function preventFlatpickrOpen(
@@ -382,6 +383,7 @@ export async function getFlatpickrOptions(
     onClose,
     onOpen,
     loadLocale,
+    showMonths,
   } = context;
 
   if (!locale) {
@@ -426,7 +428,12 @@ export async function getFlatpickrOptions(
     weekNumbers: false,
     static: context.static ?? false,
     wrap,
-    showMonths: mode === 'range' && isWideScreen ? 2 : 1,
+    showMonths:
+      showMonths !== undefined
+        ? showMonths
+        : mode === 'range' && isWideScreen
+        ? 2
+        : 1,
     monthSelectorType: 'static',
     locale: localeOptions,
     closeOnSelect: closeOnSelect ?? !(mode === 'multiple' || enableTime),

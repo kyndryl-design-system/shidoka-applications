@@ -47,3 +47,32 @@ input {
     }
   }
 }
+
+.multi-input-wrapper {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .input-group {
+    flex: 1;
+    min-width: 200px;
+
+    .input-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--kyn-color-text-primary);
+
+      .required {
+        color: var(--kyn-color-text-error);
+        margin-right: 4px;
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

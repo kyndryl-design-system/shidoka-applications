@@ -49,7 +49,9 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
     justify-content: center;
   }
 
-  &.rangeMode.multiMonth .flatpickr-months .flatpickr-month {
+  &.rangeMode:not(.date-range-picker__single-month)
+    .flatpickr-months
+    .flatpickr-month {
     &:first-of-type {
       .flatpickr-current-month {
         left: 0;
@@ -226,14 +228,6 @@ $calendar-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08),
 .flatpickr-calendar.static {
   position: absolute;
   top: calc(100% + 2px);
-}
-
-.flatpickr-calendar.multiMonth
-  .flatpickr-days
-  .dayContainer:nth-child(n + 1)
-  .flatpickr-day.inRange:nth-child(7n + 7) {
-  -webkit-box-shadow: none;
-  box-shadow: none;
 }
 
 .flatpickr-calendar .hasWeeks .dayContainer,
@@ -919,7 +913,7 @@ span.flatpickr-weekday {
   visibility: hidden;
 }
 
-.rangeMode .flatpickr-day {
+.rangeMode:not(.date-range-picker__single-month) .flatpickr-day {
   margin-top: 4px;
 }
 
@@ -1150,7 +1144,7 @@ span.flatpickr-weekday {
 }
 
 .flatpickr-calendar {
-  &.rangeMode {
+  &.rangeMode:not(.date-range-picker__single-month) {
     .flatpickr-months {
       position: relative;
 
@@ -1186,7 +1180,7 @@ span.flatpickr-weekday {
 }
 
 @media (min-width: 767px) {
-  .flatpickr-calendar.rangeMode {
+  .flatpickr-calendar.rangeMode:not(.date-range-picker__single-month) {
     width: 625px !important;
     padding: 4px;
     box-sizing: border-box;

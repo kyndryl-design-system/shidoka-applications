@@ -8,6 +8,7 @@ import { DateRangeEditableMode } from '../../../common/helpers/flatpickr';
 import {
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
+  initializeMultiAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
   preventFlatpickrOpen,
@@ -48,12 +49,13 @@ const _defaultTextStrings = {
   invalidDateRange:
     'Invalid date range: End date cannot be earlier than start date',
   dateRangeSelected: 'Selected date range: {0} to {1}',
-
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
   dateLocked: 'Date is locked',
   dateNotAvailable: 'Date is not available',
   dateInSelectedRange: 'Date is in selected range',
+  startLabel: 'Start Date',
+  endLabel: 'End Date',
 };
 
 /**
@@ -179,6 +181,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor staticPosition = false;
 
+  /** Enables multi-input mode with separate start and end date inputs. */
+  @property({ type: Boolean })
+  accessor multiInput = false;
+
+  /** Show only one month in the calendar instead of two. Defaults to false (2 months). */
+  @property({ type: Boolean })
+  accessor showSingleMonth = false;
+
   /** Sets flatpickr enableTime value based on detected dateFormat.
    * @internal
    */
@@ -197,6 +207,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   @query('input')
   private accessor _inputEl: HTMLInputElement | any;
+
+  /**
+   * Queries the end input DOM element for multi-input mode.
+   * @internal
+   */
+  @query('input[data-end-input]')
+  private accessor _endInputEl: HTMLInputElement | any;
 
   /**
    * Sets whether user has interacted with datepicker for error handling.
@@ -379,7 +396,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
       : `date-range-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.name ?? '';
-    const placeholder = getPlaceholder(this.dateFormat, true);
 
     const showClearButton =
       this.hasValue() &&
@@ -387,6 +403,34 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.rangeEditMode !== DateRangeEditableMode.START &&
       this.rangeEditMode !== DateRangeEditableMode.END &&
       this.rangeEditMode !== DateRangeEditableMode.NONE;
+
+    if (this.multiInput) {
+      return this.renderMultiInput(
+        errorId,
+        warningId,
+        anchorId,
+        descriptionId,
+        showClearButton
+      );
+    } else {
+      return this.renderSingleInput(
+        errorId,
+        warningId,
+        anchorId,
+        descriptionId,
+        showClearButton
+      );
+    }
+  }
+
+  private renderSingleInput(
+    errorId: string,
+    warningId: string,
+    anchorId: string,
+    descriptionId: string,
+    showClearButton: boolean
+  ) {
+    const placeholder = getPlaceholder(this.dateFormat, true);
 
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
@@ -451,6 +495,200 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 @click=${this.handleInputClickEvent}
                 >${unsafeSVG(calendarIcon)}</span
               >`}
+        </div>
+
+        ${this.caption
+          ? html`<div
+              id=${descriptionId}
+              class="caption"
+              aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this.caption}
+            </div>`
+          : ''}
+        ${this.renderValidationMessage(errorId, warningId)}
+      </div>
+    `;
+  }
+
+  private renderMultiInput(
+    errorId: string,
+    warningId: string,
+    anchorId: string,
+    descriptionId: string,
+    showClearButton: boolean
+  ) {
+    const startPlaceholder = getPlaceholder(this.dateFormat, false);
+    const endPlaceholder = getPlaceholder(this.dateFormat, false);
+    const startId = `${anchorId}-start`;
+    const endId = `${anchorId}-end`;
+
+    const hasStartDate = this.value[0] !== null;
+    const hasEndDate = this.value[1] !== null;
+
+    const showStartClear =
+      hasStartDate &&
+      !this.readonly &&
+      this.rangeEditMode !== DateRangeEditableMode.END &&
+      this.rangeEditMode !== DateRangeEditableMode.NONE;
+
+    const showEndClear =
+      hasEndDate &&
+      !this.readonly &&
+      this.rangeEditMode !== DateRangeEditableMode.START &&
+      this.rangeEditMode !== DateRangeEditableMode.NONE;
+
+    return html`
+      <div class=${classMap(this.getDateRangePickerClasses())}>
+        ${this.label
+          ? html`<div
+              class="label-text"
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+              aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
+              id=${`label-${anchorId}`}
+            >
+              ${this.required
+                ? html`<abbr
+                    class="required"
+                    title=${this._textStrings.requiredText}
+                    role="img"
+                    aria-label=${this._textStrings.requiredText}
+                    >*</abbr
+                  >`
+                : null}
+              ${this.label}
+              <slot name="tooltip"></slot>
+            </div>`
+          : null}
+
+        <div class="multi-input-wrapper">
+          <div class="input-group">
+            <label
+              class="input-label"
+              for=${startId}
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this.required
+                ? html`<abbr
+                    class="required"
+                    title=${this._textStrings.requiredText}
+                    role="img"
+                    aria-label=${this._textStrings.requiredText}
+                    >*</abbr
+                  >`
+                : null}
+              ${this._textStrings.startLabel}
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="${classMap({
+                  [`size--${this.size}`]: true,
+                  'input-custom': true,
+                  'is-readonly': this.readonly,
+                })}"
+                type="text"
+                id=${startId}
+                name=${this.name ? `${this.name}-start` : 'start'}
+                placeholder=${startPlaceholder}
+                ?disabled=${this.dateRangePickerDisabled}
+                ?readonly=${this.readonly}
+                ?required=${this.required}
+                ?invalid=${this._isInvalid}
+                aria-invalid=${this._isInvalid ? 'true' : 'false'}
+                aria-labelledby=${`label-${anchorId}`}
+                @click=${this.handleInputClickEvent}
+                @focus=${this.handleInputFocusEvent}
+              />
+              ${showStartClear
+                ? html`<kyn-button
+                    ?disabled=${this.dateRangePickerDisabled}
+                    class="clear-button"
+                    kind="ghost"
+                    size="small"
+                    description="Clear start date"
+                    @click=${this._handleClearStart}
+                  >
+                    <span style="display:flex;" slot="icon"
+                      >${unsafeSVG(clearIcon)}</span
+                    >
+                  </kyn-button>`
+                : html`<span
+                    class="input-icon ${this.dateRangePickerDisabled
+                      ? 'is-disabled'
+                      : ''}"
+                    aria-hidden="true"
+                    @click=${this.handleInputClickEvent}
+                    >${unsafeSVG(calendarIcon)}</span
+                  >`}
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label
+              class="input-label"
+              for=${endId}
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this.required
+                ? html`<abbr
+                    class="required"
+                    title=${this._textStrings.requiredText}
+                    role="img"
+                    aria-label=${this._textStrings.requiredText}
+                    >*</abbr
+                  >`
+                : null}
+              ${this._textStrings.endLabel}
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="${classMap({
+                  [`size--${this.size}`]: true,
+                  'input-custom': true,
+                  'is-readonly': this.readonly,
+                })}"
+                type="text"
+                id=${endId}
+                name=${this.name ? `${this.name}-end` : 'end'}
+                placeholder=${endPlaceholder}
+                data-end-input
+                ?disabled=${this.dateRangePickerDisabled}
+                ?readonly=${this.readonly}
+                ?required=${this.required}
+                ?invalid=${this._isInvalid}
+                aria-invalid=${this._isInvalid ? 'true' : 'false'}
+                aria-labelledby=${`label-${anchorId}`}
+                @click=${this.handleEndInputClickEvent}
+                @focus=${this.handleEndInputFocusEvent}
+              />
+              ${showEndClear
+                ? html`<kyn-button
+                    ?disabled=${this.dateRangePickerDisabled}
+                    class="clear-button"
+                    kind="ghost"
+                    size="small"
+                    description="Clear end date"
+                    @click=${this._handleClearEnd}
+                  >
+                    <span style="display:flex;" slot="icon"
+                      >${unsafeSVG(clearIcon)}</span
+                    >
+                  </kyn-button>`
+                : html`<span
+                    class="input-icon ${this.dateRangePickerDisabled
+                      ? 'is-disabled'
+                      : ''}"
+                    aria-hidden="true"
+                    @click=${this.handleEndInputClickEvent}
+                    >${unsafeSVG(calendarIcon)}</span
+                  >`}
+            </div>
+          </div>
         </div>
 
         ${this.caption
@@ -730,6 +968,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     if (
+      changedProperties.has('multiInput') ||
+      changedProperties.has('showSingleMonth')
+    ) {
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.destroy();
+        setTimeout(() => {
+          this.initializeFlatpickr().then(() => {
+            if (this._inputEl && this.flatpickrInstance) {
+              this._inputEl.value = this.flatpickrInstance.input.value;
+              this.flatpickrInstance.redraw();
+              this.updateFormValue();
+            }
+          });
+        }, 0);
+      }
+      return;
+    }
+
+    if (
       (changedProperties.has('dateRangePickerDisabled') &&
         this.dateRangePickerDisabled) ||
       (changedProperties.has('readonly') && this.readonly)
@@ -959,6 +1216,66 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
+  private async _handleClearStart(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this._isClearing = true;
+    try {
+      const newValue: [Date | null, Date | null] = [null, this.value[1]];
+      this.value = newValue;
+
+      if (this.flatpickrInstance) {
+        if (this.value[1]) {
+          this.flatpickrInstance.setDate([this.value[1]], true);
+        } else {
+          this.flatpickrInstance.clear();
+        }
+        this.updateFormValue();
+      }
+
+      emitValue(this, 'on-change', {
+        dates: this.value,
+        dateString: this._inputEl?.value,
+        source: 'clear-start',
+      });
+
+      this._validate(true, false);
+      await this.updateComplete;
+    } finally {
+      this._isClearing = false;
+    }
+  }
+
+  private async _handleClearEnd(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this._isClearing = true;
+    try {
+      const newValue: [Date | null, Date | null] = [this.value[0], null];
+      this.value = newValue;
+
+      if (this.flatpickrInstance) {
+        if (this.value[0]) {
+          this.flatpickrInstance.setDate([this.value[0]], true);
+        } else {
+          this.flatpickrInstance.clear();
+        }
+        this.updateFormValue();
+      }
+
+      emitValue(this, 'on-change', {
+        dates: this.value,
+        dateString: this._inputEl?.value,
+        source: 'clear-end',
+      });
+
+      this._validate(true, false);
+      await this.updateComplete;
+    } finally {
+      this._isClearing = false;
+    }
+  }
+
   public async handleClose() {
     this._hasInteracted = true;
     this._validate(true, false);
@@ -978,26 +1295,71 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     try {
       this.flatpickrInstance?.destroy();
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-        inputEl: this._inputEl,
-        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
-          try {
-            if (!instance?.calendarContainer) {
-              throw new Error('Calendar container not available');
+
+      if (this.multiInput && this._endInputEl) {
+        this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
+          inputEl: this._inputEl,
+          endinputEl: this._endInputEl,
+          getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+          setCalendarAttributes: (instance) => {
+            try {
+              if (!instance?.calendarContainer) {
+                throw new Error('Calendar container not available');
+              }
+              const container = getModalContainer(this);
+              setCalendarAttributes(instance, container !== document.body);
+              instance.calendarContainer.setAttribute(
+                'aria-label',
+                'Date range calendar'
+              );
+
+              if (this.showSingleMonth) {
+                instance.calendarContainer.classList.add(
+                  'date-range-picker__single-month'
+                );
+              } else {
+                instance.calendarContainer.classList.remove(
+                  'date-range-picker__single-month'
+                );
+              }
+            } catch (error) {
+              console.warn('Error setting calendar attributes:', error);
             }
-            const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
-            instance.calendarContainer.setAttribute(
-              'aria-label',
-              'Date range calendar'
-            );
-          } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
-          }
-        },
-        setInitialDates: () => this.setInitialDates(),
-      });
+          },
+          setInitialDates: () => this.setInitialDates(),
+        });
+      } else {
+        this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+          inputEl: this._inputEl,
+          getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+          setCalendarAttributes: (instance) => {
+            try {
+              if (!instance?.calendarContainer) {
+                throw new Error('Calendar container not available');
+              }
+              const container = getModalContainer(this);
+              setCalendarAttributes(instance, container !== document.body);
+              instance.calendarContainer.setAttribute(
+                'aria-label',
+                'Date range calendar'
+              );
+
+              if (this.showSingleMonth) {
+                instance.calendarContainer.classList.add(
+                  'date-range-picker__single-month'
+                );
+              } else {
+                instance.calendarContainer.classList.remove(
+                  'date-range-picker__single-month'
+                );
+              }
+            } catch (error) {
+              console.warn('Error setting calendar attributes:', error);
+            }
+          },
+          setInitialDates: () => this.setInitialDates(),
+        });
+      }
 
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
@@ -1048,6 +1410,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       appendTo: container,
       noCalendar: false,
       static: this.staticPosition,
+      showMonths: this.showSingleMonth ? 1 : 2,
     });
 
     const origOnOpen = options.onOpen;
@@ -1294,6 +1657,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     } catch (e) {
       console.warn('Error handling input focus event:', e);
     }
+  }
+
+  private handleEndInputClickEvent() {
+    this.handleInputClickEvent();
+  }
+
+  private handleEndInputFocusEvent() {
+    this.handleInputFocusEvent();
   }
 
   private _validate(interacted: boolean, report: boolean) {
