@@ -572,15 +572,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
             >
-              ${this.required
-                ? html`<abbr
-                    class="required"
-                    title=${this._textStrings.requiredText}
-                    role="img"
-                    aria-label=${this._textStrings.requiredText}
-                    >*</abbr
-                  >`
-                : null}
               ${this._textStrings.startLabel}
             </label>
             <div class="input-wrapper">
@@ -634,15 +625,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
               @mousedown=${this.preventFlatpickrOpen}
               @click=${this.preventFlatpickrOpen}
             >
-              ${this.required
-                ? html`<abbr
-                    class="required"
-                    title=${this._textStrings.requiredText}
-                    role="img"
-                    aria-label=${this._textStrings.requiredText}
-                    >*</abbr
-                  >`
-                : null}
               ${this._textStrings.endLabel}
             </label>
             <div class="input-wrapper">

@@ -282,7 +282,7 @@ MultiInputWithPreselected.args = {
     startLabel: 'From',
     endLabel: 'To',
   },
-  label: 'Travel Dates',
+  label: 'Start and End Dates Example',
   caption: 'Example with preselected dates in multi-input mode.',
 };
 
