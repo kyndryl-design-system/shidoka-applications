@@ -603,7 +603,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 @click=${this.handleInputClickEvent}
                 @focus=${this.handleInputFocusEvent}
               />
-              ${showStartClear
+              ${showStartClear && showClearButton
                 ? html`<kyn-button
                     ?disabled=${this.dateRangePickerDisabled}
                     class="clear-button"
@@ -666,7 +666,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 @click=${this.handleEndInputClickEvent}
                 @focus=${this.handleEndInputFocusEvent}
               />
-              ${showEndClear
+              ${showEndClear && showClearButton
                 ? html`<kyn-button
                     ?disabled=${this.dateRangePickerDisabled}
                     class="clear-button"
