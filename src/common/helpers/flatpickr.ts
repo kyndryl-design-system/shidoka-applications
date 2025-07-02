@@ -631,8 +631,6 @@ export function setCalendarAttributes(
               : 9999;
             if (newYear <= maxYear) {
               yearInput.value = String(newYear);
-              yearInput.dispatchEvent(new Event('input', { bubbles: true }));
-              yearInput.dispatchEvent(new Event('change', { bubbles: true }));
             }
           }
           setTimeout(updateNow, 0);
@@ -647,8 +645,6 @@ export function setCalendarAttributes(
               : 1;
             if (newYear >= minYear) {
               yearInput.value = String(newYear);
-              yearInput.dispatchEvent(new Event('input', { bubbles: true }));
-              yearInput.dispatchEvent(new Event('change', { bubbles: true }));
             }
           }
           setTimeout(updateNow, 0);
