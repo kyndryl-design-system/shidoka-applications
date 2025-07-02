@@ -40,8 +40,7 @@ export class SliderInput extends FormMixin(LitElement) {
   accessor label = '';
 
   /** Input value. */
-  @property({ type: Number })
-  override accessor value = 0;
+  override value = 0;
 
   /** Input disabled state. */
   @property({ type: Boolean })
