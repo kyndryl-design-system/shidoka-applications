@@ -189,6 +189,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor showSingleMonth = false;
 
+  /** Determines whether the calendar UI should close when date range is selected. */
+  @property({ type: Boolean })
+  accessor closeOnSelection = false;
+
   /** Sets flatpickr enableTime value based on detected dateFormat.
    * @internal
    */
@@ -954,7 +958,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (
       changedProperties.has('multiInput') ||
-      changedProperties.has('showSingleMonth')
+      changedProperties.has('showSingleMonth') ||
+      changedProperties.has('closeOnSelection')
     ) {
       if (this.flatpickrInstance) {
         this.flatpickrInstance.destroy();
@@ -1387,7 +1392,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       enable: this.enable,
       disable: this._processedDisableDates,
       mode: 'range',
-      closeOnSelect: false,
+      closeOnSelect: this.closeOnSelection,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),

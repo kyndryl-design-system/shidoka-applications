@@ -54,6 +54,7 @@ export default {
     twentyFourHourFormat: { control: { type: 'boolean' } },
     multiInput: { control: { type: 'boolean' } },
     showSingleMonth: { control: { type: 'boolean' } },
+    closeOnSelection: { control: { type: 'boolean' } },
   },
 };
 
@@ -131,6 +132,7 @@ const Template = (args) => {
       .warningTitle=${args.warningTitle}
       ?multiInput=${args.multiInput}
       ?showSingleMonth=${args.showSingleMonth}
+      ?closeOnSelection=${args.closeOnSelection}
       .textStrings=${args.textStrings}
       @on-change=${(e) => action(e.type)(e)}
     >
@@ -146,6 +148,7 @@ DateRangeDefault.args = {
   defaultDate: [],
   required: false,
   staticPosition: false,
+  closeOnSelection: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
   warnText: '',
@@ -303,6 +306,7 @@ export const InModal = {
     cancelText: 'Cancel',
     closeText: 'Close',
     destructive: false,
+    closeOnSelection: true,
     okDisabled: false,
     hideFooter: false,
     showSecondaryButton: false,
@@ -357,6 +361,7 @@ export const InModal = {
           .warningAriaLabel=${args.warningAriaLabel}
           .warningTitle=${args.warningTitle}
           .startDateLabel=${args.startDateLabel}
+          ?closeOnSelection=${args.closeOnSelection}
           .endDateLabel=${args.endDateLabel}
           @on-change=${(e) => action(e.type)(e)}
         >
@@ -387,6 +392,7 @@ export const DateRangePickerInAccordionInModal = {
     okDisabled: false,
     hideFooter: false,
     showSecondaryButton: false,
+    closeOnSelection: false,
     hideCancelButton: false,
     aiConnected: false,
     disableScroll: false,
@@ -450,6 +456,7 @@ export const DateRangePickerInAccordionInModal = {
                 .warningAriaLabel=${args.warningAriaLabel}
                 .warningTitle=${args.warningTitle}
                 .startDateLabel=${args.startDateLabel}
+                ?closeOnSelection=${args.closeOnSelection}
                 .endDateLabel=${args.endDateLabel}
                 @on-change=${(e) => action(e.type)(e)}
               >
