@@ -46,7 +46,7 @@ export class SampleCardStoryContentComponent extends LitElement {
             <!-- Example : Card action button -->
             <div class="card-action-btn-class">
               <kyn-button
-                kind="tertiary"
+                kind="ghost"
                 size="small"
                 iconPosition="center"
                 description="Action"
@@ -97,14 +97,14 @@ export class SampleCardStoryContentComponent extends LitElement {
         <div class="card-link-elements">
           <kyn-button
             href="#"
-            kind="tertiary"
+            kind="outline"
             size="small"
             @click=${(e: Event) => e.preventDefault()}
             >Link 1</kyn-button
           >
           <kyn-button
             href="#"
-            kind="tertiary"
+            kind="outline"
             size="small"
             @click=${(e: Event) => e.preventDefault()}
             >Link 2</kyn-button
