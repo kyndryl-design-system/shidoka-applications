@@ -85,7 +85,7 @@ interface FlatpickrOptionsContext {
   minTime?: string | number | Date;
   maxTime?: string | number | Date;
   enable?: (string | number | Date)[];
-  disable?: (string | number | Date)[];
+  disable?: any[];
   onChange?: Hook;
   onClose?: Hook;
   onOpen?: Hook;
@@ -417,7 +417,8 @@ export async function getFlatpickrOptions(
     mode: mode === 'time' ? 'single' : mode,
     enableTime: mode === 'time' ? true : enableTime,
     noCalendar: mode === 'time' ? true : noCalendar,
-    defaultDate: defaultDate,
+    disable,
+    defaultDate,
     enableSeconds: false,
     allowInput: allowInput || false,
     clickOpens: true,
@@ -429,7 +430,7 @@ export async function getFlatpickrOptions(
     static: context.static ?? false,
     wrap,
     showMonths:
-      showMonths !== undefined
+      showMonths !== undefined && showMonths === 1
         ? showMonths
         : mode === 'range' && isWideScreen
         ? 2
@@ -524,6 +525,7 @@ export async function getFlatpickrOptions(
   if (enable && enable.length > 0) options.enable = enable;
   if (disable && disable.length > 0) {
     options.disable = disable.map((date) => {
+      if (typeof date === 'function') return date;
       if (date instanceof Date) return date;
       if (typeof date === 'number') return new Date(date);
       if (typeof date === 'string') {
@@ -641,7 +643,7 @@ export function setCalendarAttributes(
           if (!isNaN(currentYear)) {
             const newYear = currentYear - 1;
             const minYear = instance?.config.minDate
-              ? new Date(instance.config.minDate).getFullYear()
+              ? new Date(instance.config.minDate!).getFullYear()
               : 1;
             if (newYear >= minYear) {
               yearInput.value = String(newYear);
@@ -717,71 +719,6 @@ export function setCalendarAttributes(
     };
     container.addEventListener('keydown', keyboardNav);
     (container as any)._keyboardNav = keyboardNav;
-
-    const hourInput = container.querySelector<HTMLInputElement>(
-      'input.flatpickr-hour'
-    );
-    if (hourInput) {
-      hourInput.tabIndex = 0;
-      hourInput.setAttribute('role', 'spinbutton');
-      hourInput.setAttribute('aria-label', 'Hour');
-      hourInput.setAttribute('aria-valuemin', hourInput.min);
-      hourInput.setAttribute('aria-valuemax', hourInput.max);
-      hourInput.setAttribute('aria-valuenow', hourInput.value);
-      hourInput.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          hourInput.stepUp();
-        }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          hourInput.stepDown();
-        }
-        setTimeout(
-          () => hourInput.setAttribute('aria-valuenow', hourInput.value),
-          0
-        );
-      });
-    }
-
-    const minuteInput = container.querySelector<HTMLInputElement>(
-      'input.flatpickr-minute'
-    );
-    if (minuteInput) {
-      minuteInput.tabIndex = 0;
-      minuteInput.setAttribute('role', 'spinbutton');
-      minuteInput.setAttribute('aria-label', 'Minute');
-      minuteInput.setAttribute('aria-valuemin', minuteInput.min);
-      minuteInput.setAttribute('aria-valuemax', minuteInput.max);
-      minuteInput.setAttribute('aria-valuenow', minuteInput.value);
-      minuteInput.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          minuteInput.stepUp();
-        }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          minuteInput.stepDown();
-        }
-        setTimeout(
-          () => minuteInput.setAttribute('aria-valuenow', minuteInput.value),
-          0
-        );
-      });
-    }
-
-    const ampmToggle = container.querySelector<HTMLElement>('.flatpickr-am-pm');
-    if (ampmToggle) {
-      ampmToggle.tabIndex = 0;
-      ampmToggle.setAttribute('role', 'button');
-      ampmToggle.setAttribute('aria-label', 'Toggle AM/PM');
-      ampmToggle.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          ampmToggle.click();
-        }
-      });
-    }
   });
 }
 
@@ -882,84 +819,6 @@ export enum DateRangeEditableMode {
   START = 'start',
   END = 'end',
   NONE = 'none',
-}
-
-export function createDateRangeDayLockHandler(
-  editableMode: DateRangeEditableMode,
-  currentValue: [Date | null, Date | null]
-): (
-  dObj: Date,
-  dStr: string,
-  fp: Instance,
-  dayElem: HTMLElement & { dateObj: Date }
-) => void {
-  return (_dObj, _dStr, _fp, dayElem: HTMLElement & { dateObj: Date }) => {
-    const currentDate = dayElem.dateObj;
-
-    if (
-      editableMode === DateRangeEditableMode.END &&
-      currentValue[0] !== null
-    ) {
-      if (currentDate.getTime() <= currentValue[0].getTime()) {
-        if (currentDate.getTime() === currentValue[0].getTime()) {
-          dayElem.classList.add('flatpickr-locked-date');
-          dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
-          dayElem.setAttribute('locked', 'start');
-          dayElem.setAttribute('aria-disabled', 'true');
-        } else {
-          dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
-          dayElem.setAttribute('title', getTextStrings().lockedStartDate);
-        }
-      }
-    } else if (
-      editableMode === DateRangeEditableMode.START &&
-      currentValue[1] !== null
-    ) {
-      if (currentDate.getTime() >= currentValue[1].getTime()) {
-        if (currentDate.getTime() === currentValue[1].getTime()) {
-          dayElem.classList.add('flatpickr-locked-date');
-          dayElem.setAttribute('title', getTextStrings().lockedEndDate);
-          dayElem.setAttribute('locked', 'end');
-          dayElem.setAttribute('aria-disabled', 'true');
-        } else {
-          dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
-          dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
-        }
-      }
-    } else if (
-      editableMode === DateRangeEditableMode.NONE &&
-      currentValue[0] !== null &&
-      currentValue[1] !== null
-    ) {
-      if (currentDate.getTime() === currentValue[0].getTime()) {
-        dayElem.classList.add('flatpickr-locked-date');
-        dayElem.setAttribute('title', getTextStrings().dateLocked);
-        dayElem.setAttribute('locked', 'start');
-        dayElem.setAttribute('aria-disabled', 'true');
-      } else if (currentDate.getTime() === currentValue[1].getTime()) {
-        dayElem.classList.add('flatpickr-locked-date');
-        dayElem.setAttribute('title', getTextStrings().dateLocked);
-        dayElem.setAttribute('locked', 'end');
-        dayElem.setAttribute('aria-disabled', 'true');
-      } else if (
-        currentDate.getTime() > currentValue[0].getTime() &&
-        currentDate.getTime() < currentValue[1].getTime()
-      ) {
-        dayElem.classList.add('flatpickr-locked-date');
-        dayElem.setAttribute('title', getTextStrings().dateInSelectedRange);
-      } else {
-        dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
-        dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
-      }
-    }
-
-    if (
-      dayElem.classList.contains('flatpickr-disabled') &&
-      !dayElem.classList.contains('flatpickr-locked-date')
-    ) {
-      dayElem.classList.add('flatpickr-locked-date');
-    }
-  };
 }
 
 export function createDateRangeChangeLockHandler(
@@ -1120,4 +979,82 @@ export function applyDateRangeEditingRestrictions(
   }
 
   return newOptions;
+}
+
+export function createDateRangeDayLockHandler(
+  editableMode: DateRangeEditableMode,
+  currentValue: [Date | null, Date | null]
+): (
+  dObj: Date,
+  dStr: string,
+  fp: Instance,
+  dayElem: HTMLElement & { dateObj: Date }
+) => void {
+  return (_dObj, _dStr, _fp, dayElem: HTMLElement & { dateObj: Date }) => {
+    const currentDate = dayElem.dateObj;
+
+    if (
+      editableMode === DateRangeEditableMode.END &&
+      currentValue[0] !== null
+    ) {
+      if (currentDate.getTime() <= currentValue[0].getTime()) {
+        if (currentDate.getTime() === currentValue[0].getTime()) {
+          dayElem.classList.add('flatpickr-locked-date');
+          dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
+          dayElem.setAttribute('locked', 'start');
+          dayElem.setAttribute('aria-disabled', 'true');
+        } else {
+          dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
+          dayElem.setAttribute('title', getTextStrings().lockedStartDate);
+        }
+      }
+    } else if (
+      editableMode === DateRangeEditableMode.START &&
+      currentValue[1] !== null
+    ) {
+      if (currentDate.getTime() >= currentValue[1].getTime()) {
+        if (currentDate.getTime() === currentValue[1].getTime()) {
+          dayElem.classList.add('flatpickr-locked-date');
+          dayElem.setAttribute('title', getTextStrings().lockedEndDate);
+          dayElem.setAttribute('locked', 'end');
+          dayElem.setAttribute('aria-disabled', 'true');
+        } else {
+          dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
+          dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
+        }
+      }
+    } else if (
+      editableMode === DateRangeEditableMode.NONE &&
+      currentValue[0] !== null &&
+      currentValue[1] !== null
+    ) {
+      if (currentDate.getTime() === currentValue[0].getTime()) {
+        dayElem.classList.add('flatpickr-locked-date');
+        dayElem.setAttribute('title', getTextStrings().dateLocked);
+        dayElem.setAttribute('locked', 'start');
+        dayElem.setAttribute('aria-disabled', 'true');
+      } else if (currentDate.getTime() === currentValue[1].getTime()) {
+        dayElem.classList.add('flatpickr-locked-date');
+        dayElem.setAttribute('title', getTextStrings().dateLocked);
+        dayElem.setAttribute('locked', 'end');
+        dayElem.setAttribute('aria-disabled', 'true');
+      } else if (
+        currentDate.getTime() > currentValue[0].getTime() &&
+        currentDate.getTime() < currentValue[1].getTime()
+      ) {
+        dayElem.classList.add('flatpickr-locked-date');
+        dayElem.setAttribute('title', getTextStrings().dateInSelectedRange);
+      } else {
+        dayElem.classList.add('flatpickr-locked-date', 'flatpickr-disabled');
+        dayElem.setAttribute('title', getTextStrings().dateNotAvailable);
+      }
+    }
+
+    if (
+      dayElem.classList.contains('flatpickr-disabled') &&
+      !dayElem.classList.contains('flatpickr-locked-date')
+    ) {
+      dayElem.classList.add('flatpickr-locked-date');
+    }
+  };
 }
