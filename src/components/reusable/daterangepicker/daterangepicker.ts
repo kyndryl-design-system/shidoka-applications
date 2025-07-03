@@ -1657,12 +1657,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
-  private preventTextInput(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-  }
-
   private preventTextSelection(event: Event) {
     event.preventDefault();
     event.stopPropagation();
