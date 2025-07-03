@@ -816,6 +816,15 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance = undefined;
     }
   }
+
+  public getValue(): Date | null {
+    return this.value;
+  }
+
+  public setValue(newValue: Date | null): void {
+    this.value = newValue;
+    this.requestUpdate();
+  }
 }
 
 declare global {
