@@ -134,6 +134,17 @@ DateWithTime.args = {
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 
+export const MinMaxDateExample = Template.bind({});
+MinMaxDateExample.args = {
+  ...DatePickerDefault.args,
+  name: 'date-time-picker',
+  dateFormat: 'Y-m-d',
+  minDate: '2024-01-01',
+  maxDate: '2024-12-31',
+  caption: '',
+  label: 'Min and Max dates set',
+};
+
 export const DatePickerMultiple = Template.bind({});
 DatePickerMultiple.args = {
   ...DatePickerDefault.args,
