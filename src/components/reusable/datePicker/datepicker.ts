@@ -547,12 +547,22 @@ export class DatePicker extends FormMixin(LitElement) {
       this.requestUpdate();
     }
 
-    if (
-      changedProperties.has('defaultDate') &&
-      this.flatpickrInstance &&
-      !this._isClearing
-    ) {
-      this.debouncedUpdate();
+    if (changedProperties.has('defaultDate') && !this._isClearing) {
+      if (this.defaultDate && !this.value) {
+        const processedDates = this.processDefaultDates(this.defaultDate);
+        if (processedDates && processedDates.length > 0) {
+          if (this.mode === 'multiple') {
+            this.value = [...processedDates];
+          } else {
+            this.value = processedDates[0];
+          }
+          this.requestUpdate();
+        }
+      }
+
+      if (this.flatpickrInstance) {
+        this.debouncedUpdate();
+      }
     }
 
     if (changedProperties.has('disable')) {
