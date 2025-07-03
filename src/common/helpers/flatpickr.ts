@@ -542,6 +542,17 @@ export function setCalendarAttributes(
   const container = instance.calendarContainer;
   if (!container) return;
 
+  const { minDate, maxDate } = instance.config;
+  if (minDate && maxDate) {
+    const minY = new Date(minDate).getFullYear();
+    const maxY = new Date(maxDate).getFullYear();
+    if (minY === maxY) {
+      container.classList.add('single-year');
+    } else {
+      container.classList.remove('single-year');
+    }
+  }
+
   requestAnimationFrame(() => {
     const mode = instance?.config.mode as
       | 'single'
