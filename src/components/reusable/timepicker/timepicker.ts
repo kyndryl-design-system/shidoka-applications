@@ -416,6 +416,20 @@ export class TimePicker extends FormMixin(LitElement) {
       changedProperties.has('defaultHour') ||
       changedProperties.has('defaultMinute')
     ) {
+      if (
+        !this._userHasCleared &&
+        (this.defaultHour !== null || this.defaultMinute !== null) &&
+        !this.value
+      ) {
+        const date = new Date();
+        if (this.defaultHour !== null) date.setHours(this.defaultHour);
+        if (this.defaultMinute !== null) date.setMinutes(this.defaultMinute);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        this.value = date;
+        this.requestUpdate();
+      }
+
       if (this.flatpickrInstance && !this._isClearing) {
         await this.debouncedUpdate();
       }
@@ -801,6 +815,15 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
+  }
+
+  public getValue(): Date | null {
+    return this.value;
+  }
+
+  public setValue(newValue: Date | null): void {
+    this.value = newValue;
+    this.requestUpdate();
   }
 }
 
