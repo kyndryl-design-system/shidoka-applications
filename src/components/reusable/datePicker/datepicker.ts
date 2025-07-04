@@ -463,8 +463,6 @@ export class DatePicker extends FormMixin(LitElement) {
           }
         }
       }
-
-      this.invalidText = '';
     }
   }
 
@@ -485,6 +483,13 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (nonEmptyValues.length === 0) return [];
 
+    const min = this.minDate
+      ? this.parseDateString(this.minDate as string)
+      : null;
+    const max = this.maxDate
+      ? this.parseDateString(this.maxDate as string)
+      : null;
+
     const parsed = nonEmptyValues.map((d) => {
       if (d instanceof Date) return d;
       if (typeof d === 'string') return this.parseDateString(d);
@@ -492,12 +497,17 @@ export class DatePicker extends FormMixin(LitElement) {
     });
 
     const valid = parsed.filter(
-      (d): d is Date => d instanceof Date && !isNaN(d.getTime())
+      (d): d is Date =>
+        d instanceof Date &&
+        !isNaN(d.getTime()) &&
+        (!min || d >= min) &&
+        (!max || d <= max)
     );
 
     if (valid.length !== parsed.length) {
-      console.error('Invalid date(s) provided in defaultDate');
-      this.invalidText = this._textStrings.invalidDateFormat;
+      console.error('Invalid date(s) provided in defaultDate', valid);
+      this.invalidText = this._textStrings.pleaseSelectValidDate;
+      this.defaultDate = null;
     }
 
     return valid;
@@ -749,7 +759,18 @@ export class DatePicker extends FormMixin(LitElement) {
             if (typeof date === 'string') return this.parseDateString(date);
             return null;
           })
-          .filter((date): date is Date => date !== null);
+          .filter(
+            (date): date is Date => date !== null && !isNaN(date.getTime())
+          )
+          .filter((d) => {
+            const min = this.minDate
+              ? this.parseDateString(this.minDate as string)
+              : null;
+            const max = this.maxDate
+              ? this.parseDateString(this.maxDate as string)
+              : null;
+            return (!min || d >= min) && (!max || d <= max);
+          });
 
         if (validDates.length > 0) {
           this.flatpickrInstance.setDate(validDates, true);

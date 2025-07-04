@@ -1171,6 +1171,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       }
     } catch (e) {
+      this.invalidText = this._textStrings.pleaseSelectValidDate;
+      this.defaultDate = null;
       console.error('Error in setInitialDates:', (e as Error).message);
     }
   }
