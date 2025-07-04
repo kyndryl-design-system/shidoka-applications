@@ -103,7 +103,7 @@ export class InlineConfirm extends LitElement {
         <div id="confirmation">
           <kyn-button
             class="cancel-btn"
-            kind="tertiary"
+            kind="ghost"
             size="small"
             description=${this.cancelText}
             @on-click=${this._handleToggle}

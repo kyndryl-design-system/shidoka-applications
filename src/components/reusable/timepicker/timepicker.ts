@@ -232,6 +232,24 @@ export class TimePicker extends FormMixin(LitElement) {
     return `${prefix}-${Math.random().toString(36).slice(2, 11)}`;
   }
 
+  /**
+   * Parses a time string (e.g. "14:30") or Date/number into a Date object
+   * anchored to today, or returns null if invalid.
+   */
+  private parseTimeString(time: string | number | Date): Date | null {
+    if (time instanceof Date) return time;
+    if (typeof time === 'number') return new Date(time);
+    if (typeof time === 'string') {
+      const [h, m] = time.trim().split(':').map(Number);
+      if (!isNaN(h) && !isNaN(m)) {
+        const d = new Date();
+        d.setHours(h, m, 0, 0);
+        return d;
+      }
+    }
+    return null;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('change', this._onChange);
@@ -322,7 +340,7 @@ export class TimePicker extends FormMixin(LitElement) {
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClear}
                 >
-                  <span style="display:flex;" slot="icon">
+                  <span style="display:flex" slot="icon">
                     ${unsafeSVG(clearIcon)}
                   </span>
                 </kyn-button>
@@ -426,7 +444,26 @@ export class TimePicker extends FormMixin(LitElement) {
         if (this.defaultMinute !== null) date.setMinutes(this.defaultMinute);
         date.setSeconds(0);
         date.setMilliseconds(0);
-        this.value = date;
+
+        const min = this.minTime
+          ? this.parseTimeString(this.minTime as string)
+          : null;
+        const max = this.maxTime
+          ? this.parseTimeString(this.maxTime as string)
+          : null;
+
+        if (
+          (min && date.getTime() < min.getTime()) ||
+          (max && date.getTime() > max.getTime())
+        ) {
+          console.error('Invalid default time provided', date);
+          this.invalidText = this._textStrings.pleaseSelectValidDate;
+          this._userHasCleared = true;
+          this.value = null;
+        } else {
+          this.value = date;
+        }
+
         this.requestUpdate();
       }
 
@@ -456,9 +493,9 @@ export class TimePicker extends FormMixin(LitElement) {
             if (/\d{1,2}:\d{2}/.test(strValue)) {
               const [hours, minutes] = strValue.split(':').map(Number);
               if (!isNaN(hours) && !isNaN(minutes)) {
-                const date = new Date();
-                date.setHours(hours, minutes, 0, 0);
-                this.value = date;
+                const date2 = new Date();
+                date2.setHours(hours, minutes, 0, 0);
+                this.value = date2;
                 newValue = this.value;
                 if (this.flatpickrInstance) {
                   this.flatpickrInstance.setDate(newValue, true);

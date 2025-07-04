@@ -162,7 +162,7 @@ export class SampleFilterComponent extends LitElement {
 
         <kyn-button
           slot="actions"
-          kind="tertiary"
+          kind="secondary"
           size="small"
           iconPosition="left"
           @on-click=${(e: any) => this._handleCustomAction(e)}
