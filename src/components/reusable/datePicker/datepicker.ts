@@ -37,6 +37,10 @@ export class DatePicker extends FlatpickrBase {
   @property({ type: String })
   override accessor label = '';
 
+  /** Sets entire datepicker form element to enabled/disabled. */
+  @property({ type: Boolean })
+  accessor datePickerDisabled = false;
+
   /** Locale setting. */
   @property({ type: String })
   override accessor locale: (typeof langsArray)[number] | string = 'en';
@@ -178,7 +182,6 @@ export class DatePicker extends FlatpickrBase {
       this.mode === 'multiple' ? [...selectedDates] : selectedDates[0] || null;
     this.invalidText && (this.invalidText = '');
 
-    // emit via helper
     const formatted =
       this.mode === 'multiple'
         ? (this.value as Date[]).map((d) => d.toISOString())
@@ -224,7 +227,6 @@ export class DatePicker extends FlatpickrBase {
   }
 
   protected override emitChangeEvent(source?: string): void {
-    // reuse emitValue helper for all change events
     const formatted =
       this.mode === 'multiple'
         ? Array.isArray(this.value)
@@ -245,7 +247,6 @@ export class DatePicker extends FlatpickrBase {
 
   override async firstUpdated(changedProperties: Map<string, unknown>) {
     super.firstUpdated(changedProperties);
-    // inject theme styles for flatpickr calendar UI
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
   }
 

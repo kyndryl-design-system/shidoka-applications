@@ -248,7 +248,6 @@ export class DateRangePicker extends FlatpickrBase {
       emitValue(this, 'on-change', { dates: iso, dateString: dateStr });
       this._validate(true, false);
 
-      // Close calendar on complete selection if enabled
       if (this.closeOnSelection) {
         this.flatpickrInstance?.close();
       }
@@ -310,6 +309,8 @@ export class DateRangePicker extends FlatpickrBase {
     placeholder: string,
     showClear: boolean
   ): TemplateResult {
+    const fmt = (d: Date) => flatpickr.formatDate(d, this.dateFormat);
+
     const startId = `${anchorId}-start`;
     const endId = `${anchorId}-end`;
 
@@ -325,13 +326,13 @@ export class DateRangePicker extends FlatpickrBase {
               data-start-input
               class="date-range-picker__input"
               placeholder="${placeholder}"
-              .value=${this.value[0]?.toISOString() ?? ''}
+              .value=${this.value[0] ? fmt(this.value[0]!) : ''}
               ?disabled=${this.disabled}
               ?readonly=${this.readonly}
               @click=${() => this.flatpickrInstance?.open()}
             />
             ${this.value[0] && showClear
-              ? html`<kyn-button
+              ? html` <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
                   class="clear-button"
                   kind="ghost"
@@ -339,11 +340,11 @@ export class DateRangePicker extends FlatpickrBase {
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClearStart}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
+                  <span style="display:flex;" slot="icon">
+                    ${unsafeSVG(clearIcon)}
+                  </span>
                 </kyn-button>`
-              : html`<span
+              : html` <span
                   class="input-icon"
                   aria-hidden="true"
                   @click=${() => this.flatpickrInstance?.open()}
@@ -363,13 +364,13 @@ export class DateRangePicker extends FlatpickrBase {
               data-end-input
               class="date-range-picker__input"
               placeholder="${placeholder}"
-              .value=${this.value[1]?.toISOString() ?? ''}
+              .value=${this.value[1] ? fmt(this.value[1]!) : ''}
               ?disabled=${this.disabled}
               ?readonly=${this.readonly}
               @click=${() => this.flatpickrInstance?.open()}
             />
             ${this.value[1] && showClear
-              ? html`<kyn-button
+              ? html` <kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
                   class="clear-button"
                   kind="ghost"
@@ -377,11 +378,11 @@ export class DateRangePicker extends FlatpickrBase {
                   description=${this._textStrings.clearAll}
                   @click=${this._handleClearEnd}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
+                  <span style="display:flex;" slot="icon">
+                    ${unsafeSVG(clearIcon)}
+                  </span>
                 </kyn-button>`
-              : html`<span
+              : html` <span
                   class="input-icon"
                   aria-hidden="true"
                   @click=${() => this.flatpickrInstance?.open()}
@@ -396,7 +397,6 @@ export class DateRangePicker extends FlatpickrBase {
     `;
   }
 
-  // clear handlers for individual inputs
   private _handleClearStart(event: Event) {
     event.preventDefault();
     event.stopPropagation();
