@@ -205,7 +205,9 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind=${this.aiConnected ? 'outline-ai' : 'outline'}
+                            kind=${this.aiConnected
+                              ? 'secondary-ai'
+                              : 'secondary'}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'secondary')}
                           >
