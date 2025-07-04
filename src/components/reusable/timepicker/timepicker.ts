@@ -558,7 +558,10 @@ export class TimePicker extends FormMixin(LitElement) {
     }
     const inputEl = this._inputEl;
     try {
-      if (this.flatpickrInstance) {
+      if (
+        this.flatpickrInstance &&
+        typeof this.flatpickrInstance.destroy === 'function'
+      ) {
         this.flatpickrInstance.destroy();
         this.flatpickrInstance = undefined;
         await new Promise((resolve) => setTimeout(resolve, 0));
@@ -811,7 +814,10 @@ export class TimePicker extends FormMixin(LitElement) {
       this._submitListener = null;
     }
 
-    if (this.flatpickrInstance) {
+    if (
+      this.flatpickrInstance &&
+      typeof this.flatpickrInstance.destroy === 'function'
+    ) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
