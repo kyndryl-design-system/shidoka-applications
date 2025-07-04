@@ -542,6 +542,17 @@ export function setCalendarAttributes(
   const container = instance.calendarContainer;
   if (!container) return;
 
+  const { minDate, maxDate } = instance.config;
+  if (minDate && maxDate) {
+    const minY = new Date(minDate).getFullYear();
+    const maxY = new Date(maxDate).getFullYear();
+    if (minY === maxY) {
+      container.classList.add('single-year');
+    } else {
+      container.classList.remove('single-year');
+    }
+  }
+
   requestAnimationFrame(() => {
     const mode = instance?.config.mode as
       | 'single'
@@ -761,23 +772,19 @@ export function setCalendarAttributes(
 }
 
 export function hideEmptyYear(): void {
-  const currentMonth = document.querySelector(
-    '.flatpickr-current-month span.cur-month'
-  ) as HTMLElement;
+  // force year input to always be visible - don't hide it even when min === max
   document.querySelectorAll('.numInputWrapper').forEach((wrapper) => {
     const yearInput = wrapper.querySelector(
       '.numInput.cur-year'
     ) as HTMLInputElement;
-    if (
-      yearInput &&
-      yearInput.min &&
-      yearInput.max &&
-      yearInput.min === yearInput.max
-    ) {
-      (wrapper as HTMLElement).style.display = 'none';
+    if (yearInput) {
+      (wrapper as HTMLElement).style.display = '';
 
-      if (currentMonth) {
-        currentMonth.style.marginLeft = 'auto';
+      yearInput.style.display = '';
+      yearInput.disabled = false;
+
+      if (!yearInput.hasAttribute('tabindex')) {
+        yearInput.tabIndex = 0;
       }
     }
   });

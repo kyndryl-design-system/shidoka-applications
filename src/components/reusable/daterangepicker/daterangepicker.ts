@@ -814,44 +814,59 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     }
 
-    if (changedProperties.has('defaultDate') && this.flatpickrInstance) {
-      const dates = this.processDefaultDates(this.defaultDate);
-      this.value =
-        dates.length === 2
-          ? ([dates[0], dates[1]] as [Date, Date])
-          : dates.length === 1
-          ? ([dates[0], null] as [Date, null])
-          : ([null, null] as [null, null]);
-      if (Array.isArray(this.defaultDate) && this.defaultDate.length === 2) {
-        if (
-          this.rangeEditMode === DateRangeEditableMode.START &&
-          !this.defaultDate[0] &&
-          this.defaultDate[1]
-        ) {
-          const processedDate = this.processDefaultDates([this.defaultDate[1]]);
-          if (processedDate.length === 1) {
-            this.value = [null, processedDate[0]];
-          }
-        } else if (
-          this.rangeEditMode === DateRangeEditableMode.END &&
-          this.defaultDate[0] &&
-          !this.defaultDate[1]
-        ) {
-          const processedDate = this.processDefaultDates([this.defaultDate[0]]);
-          if (processedDate.length === 1) {
-            this.value = [processedDate[0], null];
+    if (changedProperties.has('defaultDate')) {
+      if (
+        this.defaultDate &&
+        (!this.value || this.value.every((v) => v === null))
+      ) {
+        const dates = this.processDefaultDates(this.defaultDate);
+        this.value =
+          dates.length === 2
+            ? ([dates[0], dates[1]] as [Date, Date])
+            : dates.length === 1
+            ? ([dates[0], null] as [Date, null])
+            : ([null, null] as [null, null]);
+
+        if (Array.isArray(this.defaultDate) && this.defaultDate.length === 2) {
+          if (
+            this.rangeEditMode === DateRangeEditableMode.START &&
+            !this.defaultDate[0] &&
+            this.defaultDate[1]
+          ) {
+            const processedDate = this.processDefaultDates([
+              this.defaultDate[1],
+            ]);
+            if (processedDate.length === 1) {
+              this.value = [null, processedDate[0]];
+            }
+          } else if (
+            this.rangeEditMode === DateRangeEditableMode.END &&
+            this.defaultDate[0] &&
+            !this.defaultDate[1]
+          ) {
+            const processedDate = this.processDefaultDates([
+              this.defaultDate[0],
+            ]);
+            if (processedDate.length === 1) {
+              this.value = [processedDate[0], null];
+            }
           }
         }
+
+        this.updateFormValue();
+        this.requestUpdate();
       }
 
-      this.flatpickrInstance.destroy();
-      this.initializeFlatpickr().then(() => {
-        if (this._inputEl && this.flatpickrInstance) {
-          this._inputEl.value = this.flatpickrInstance.input.value;
-          this.flatpickrInstance.redraw();
-          this.updateFormValue();
-        }
-      });
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.destroy();
+        this.initializeFlatpickr().then(() => {
+          if (this._inputEl && this.flatpickrInstance) {
+            this._inputEl.value = this.flatpickrInstance.input.value;
+            this.flatpickrInstance.redraw();
+            this.updateFormValue();
+          }
+        });
+      }
     }
 
     if (changedProperties.has('disable')) {
@@ -1362,6 +1377,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.flatpickrInstance?.clear();
     this._hasInteracted = false;
     this._validate(false, false);
+  }
+
+  public getValue(): [Date | null, Date | null] {
+    return this.value;
+  }
+
+  public setValue(newValue: [Date | null, Date | null]): void {
+    this.value = newValue;
+    this.requestUpdate();
   }
 }
 
