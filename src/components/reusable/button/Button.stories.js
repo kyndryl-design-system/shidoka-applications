@@ -17,7 +17,6 @@ import {
   BUTTON_ICON_POSITION,
 } from './defs';
 import { createOptionsArray } from '../../../common/helpers/helpers';
-import '@kyndryl-design-system/shidoka-foundation/css/spacing.css';
 
 const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
