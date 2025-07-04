@@ -8,6 +8,7 @@ import { DateRangeEditableMode } from '../../../common/helpers/flatpickr';
 import {
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
+  initializeMultiAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
   preventFlatpickrOpen,
@@ -22,6 +23,7 @@ import {
   applyDateRangeEditingRestrictions,
   clearFlatpickrInput,
 } from '../../../common/helpers/flatpickr';
+import flatpickr from 'flatpickr';
 import '../../reusable/button';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -48,12 +50,13 @@ const _defaultTextStrings = {
   invalidDateRange:
     'Invalid date range: End date cannot be earlier than start date',
   dateRangeSelected: 'Selected date range: {0} to {1}',
-
   lockedStartDate: 'Start date is locked',
   lockedEndDate: 'End date is locked',
   dateLocked: 'Date is locked',
   dateNotAvailable: 'Date is not available',
   dateInSelectedRange: 'Date is in selected range',
+  startLabel: 'Start Date',
+  endLabel: 'End Date',
 };
 
 /**
@@ -117,10 +120,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Array })
   accessor disable: (string | number | Date)[] = [];
 
-  /** Internal storage for processed disable dates */
-  @state()
-  private accessor _processedDisableDates: (string | number | Date)[] = [];
-
   /** Sets flatpickr options setting to enable specific dates. */
   @property({ type: Array })
   accessor enable: (string | number | Date)[] = [];
@@ -179,6 +178,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor staticPosition = false;
 
+  /** Enables multi-input mode with separate start and end date inputs. */
+  @property({ type: Boolean })
+  accessor multiInput = false;
+
+  /** Show only one month in the calendar instead of two. Defaults to false (2 months). */
+  @property({ type: Boolean })
+  accessor showSingleMonth = false;
+
+  /** Determines whether the calendar UI should close when date range is selected. */
+  @property({ type: Boolean })
+  accessor closeOnSelection = false;
+
   /** Sets flatpickr enableTime value based on detected dateFormat.
    * @internal
    */
@@ -197,6 +208,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   @query('input')
   private accessor _inputEl: HTMLInputElement | any;
+
+  /**
+   * Queries the end input DOM element for multi-input mode.
+   * @internal
+   */
+  @query('input[data-end-input]')
+  private accessor _endInputEl: HTMLInputElement | any;
 
   /**
    * Sets whether user has interacted with datepicker for error handling.
@@ -379,7 +397,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       ? `${this.name}-${Math.random().toString(36).slice(2, 11)}`
       : `date-range-picker-${Math.random().toString(36).slice(2, 11)}`;
     const descriptionId = this.name ?? '';
-    const placeholder = getPlaceholder(this.dateFormat, true);
 
     const showClearButton =
       this.hasValue() &&
@@ -387,6 +404,39 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.rangeEditMode !== DateRangeEditableMode.START &&
       this.rangeEditMode !== DateRangeEditableMode.END &&
       this.rangeEditMode !== DateRangeEditableMode.NONE;
+
+    if (this.multiInput) {
+      return this.renderMultiInput(
+        errorId,
+        warningId,
+        anchorId,
+        descriptionId,
+        showClearButton
+      );
+    } else {
+      return this.renderSingleInput(
+        errorId,
+        warningId,
+        anchorId,
+        descriptionId,
+        showClearButton
+      );
+    }
+  }
+
+  private renderSingleInput(
+    errorId: string,
+    warningId: string,
+    anchorId: string,
+    descriptionId: string,
+    showClearButton: boolean
+  ) {
+    const placeholder = getPlaceholder(this.dateFormat, true);
+    const hasFixedDates =
+      this.rangeEditMode !== DateRangeEditableMode.BOTH &&
+      (this.value[0] !== null || this.value[1] !== null);
+    const isInputDisabled = this.dateRangePickerDisabled;
+    const isInputReadonly = this.readonly || hasFixedDates;
 
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
@@ -415,14 +465,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
             class="${classMap({
               [`size--${this.size}`]: true,
               'input-custom': true,
-              'is-readonly': this.readonly,
+              'is-readonly': isInputReadonly,
             })}"
             type="text"
             id=${anchorId}
             name=${this.name}
             placeholder=${placeholder}
-            ?disabled=${this.dateRangePickerDisabled}
-            ?readonly=${this.readonly}
+            ?disabled=${isInputDisabled}
+            ?readonly=${isInputReadonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
@@ -451,6 +501,227 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 @click=${this.handleInputClickEvent}
                 >${unsafeSVG(calendarIcon)}</span
               >`}
+        </div>
+
+        ${this.caption
+          ? html`<div
+              id=${descriptionId}
+              class="caption"
+              aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this.caption}
+            </div>`
+          : ''}
+        ${this.renderValidationMessage(errorId, warningId)}
+      </div>
+    `;
+  }
+
+  private renderMultiInput(
+    errorId: string,
+    warningId: string,
+    anchorId: string,
+    descriptionId: string,
+    showClearButton: boolean
+  ) {
+    const startPlaceholder = getPlaceholder(this.dateFormat, false);
+    const endPlaceholder = getPlaceholder(this.dateFormat, false);
+    const startId = `${anchorId}-start`;
+    const endId = `${anchorId}-end`;
+
+    const hasStartDate = this.value[0] !== null;
+    const hasEndDate = this.value[1] !== null;
+
+    const isStartInputDisabled = this.dateRangePickerDisabled;
+    const isEndInputDisabled = this.dateRangePickerDisabled;
+
+    const hasStartFixedDates =
+      (this.rangeEditMode === DateRangeEditableMode.END ||
+        this.rangeEditMode === DateRangeEditableMode.NONE) &&
+      this.value[0] !== null;
+    const hasEndFixedDates =
+      (this.rangeEditMode === DateRangeEditableMode.START ||
+        this.rangeEditMode === DateRangeEditableMode.NONE) &&
+      this.value[1] !== null;
+
+    const isStartInputReadonly = this.readonly || hasStartFixedDates;
+    const isEndInputReadonly = this.readonly || hasEndFixedDates;
+
+    const showStartClear =
+      hasStartDate &&
+      !this.readonly &&
+      this.rangeEditMode !== DateRangeEditableMode.END &&
+      this.rangeEditMode !== DateRangeEditableMode.NONE;
+
+    const showEndClear =
+      hasEndDate &&
+      !this.readonly &&
+      this.rangeEditMode !== DateRangeEditableMode.START &&
+      this.rangeEditMode !== DateRangeEditableMode.NONE;
+
+    return html`
+      <div class=${classMap(this.getDateRangePickerClasses())}>
+        ${this.label
+          ? html`<div
+              class="label-text"
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+              aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
+              id=${`label-${anchorId}`}
+            >
+              ${this.required
+                ? html`<abbr
+                    class="required"
+                    title=${this._textStrings.requiredText}
+                    role="img"
+                    aria-label=${this._textStrings.requiredText}
+                    >*</abbr
+                  >`
+                : null}
+              ${this.label}
+              <slot name="tooltip"></slot>
+            </div>`
+          : null}
+
+        <div class="multi-input-wrapper">
+          <div class="input-group">
+            <label
+              class="input-label"
+              for=${startId}
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this._textStrings.startLabel}
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="${classMap({
+                  [`size--${this.size}`]: true,
+                  'input-custom': true,
+                  'is-readonly': isStartInputReadonly,
+                })}"
+                type="text"
+                id=${startId}
+                name=${this.name ? `${this.name}-start` : 'start'}
+                placeholder=${startPlaceholder}
+                ?disabled=${isStartInputDisabled}
+                ?readonly=${isStartInputReadonly}
+                ?required=${this.required}
+                ?invalid=${this._isInvalid}
+                aria-invalid=${this._isInvalid ? 'true' : 'false'}
+                aria-labelledby=${`label-${anchorId}`}
+                @click=${this.handleInputClickEvent}
+                @focus=${this.handleInputFocusEvent}
+                @keydown=${hasStartFixedDates
+                  ? this.preventAllTextInteraction
+                  : undefined}
+                @keyup=${hasStartFixedDates
+                  ? this.preventAllTextInteraction
+                  : undefined}
+                @input=${hasStartFixedDates
+                  ? this.preventAllTextInteraction
+                  : undefined}
+                @mousedown=${hasStartFixedDates
+                  ? this.preventTextSelection
+                  : undefined}
+                @mouseup=${hasStartFixedDates
+                  ? this.preventTextSelection
+                  : undefined}
+              />
+              ${showStartClear && showClearButton
+                ? html`<kyn-button
+                    ?disabled=${this.dateRangePickerDisabled}
+                    class="clear-button"
+                    kind="ghost"
+                    size="small"
+                    description="Clear start date"
+                    @click=${this._handleClearStart}
+                  >
+                    <span style="display:flex;" slot="icon"
+                      >${unsafeSVG(clearIcon)}</span
+                    >
+                  </kyn-button>`
+                : html`<span
+                    class="input-icon ${this.dateRangePickerDisabled
+                      ? 'is-disabled'
+                      : ''}"
+                    aria-hidden="true"
+                    @click=${this.handleInputClickEvent}
+                    >${unsafeSVG(calendarIcon)}</span
+                  >`}
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label
+              class="input-label"
+              for=${endId}
+              @mousedown=${this.preventFlatpickrOpen}
+              @click=${this.preventFlatpickrOpen}
+            >
+              ${this._textStrings.endLabel}
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="${classMap({
+                  [`size--${this.size}`]: true,
+                  'input-custom': true,
+                  'is-readonly': isEndInputReadonly,
+                })}"
+                type="text"
+                id=${endId}
+                name=${this.name ? `${this.name}-end` : 'end'}
+                placeholder=${endPlaceholder}
+                data-end-input
+                ?disabled=${isEndInputDisabled}
+                ?readonly=${isEndInputReadonly}
+                ?required=${this.required}
+                ?invalid=${this._isInvalid}
+                aria-invalid=${this._isInvalid ? 'true' : 'false'}
+                aria-labelledby=${`label-${anchorId}`}
+                @click=${this.handleEndInputClickEvent}
+                @focus=${this.handleEndInputFocusEvent}
+                @keydown=${hasEndFixedDates
+                  ? this.preventAllTextInteraction
+                  : undefined}
+                @keyup=${hasEndFixedDates
+                  ? this.preventAllTextInteraction
+                  : undefined}
+                @input=${hasEndFixedDates
+                  ? this.preventAllTextInteraction
+                  : undefined}
+                @mousedown=${hasEndFixedDates
+                  ? this.preventTextSelection
+                  : undefined}
+                @mouseup=${hasEndFixedDates
+                  ? this.preventTextSelection
+                  : undefined}
+              />
+              ${showEndClear && showClearButton
+                ? html`<kyn-button
+                    ?disabled=${this.dateRangePickerDisabled}
+                    class="clear-button"
+                    kind="ghost"
+                    size="small"
+                    description="Clear end date"
+                    @click=${this._handleClearEnd}
+                  >
+                    <span style="display:flex;" slot="icon"
+                      >${unsafeSVG(clearIcon)}</span
+                    >
+                  </kyn-button>`
+                : html`<span
+                    class="input-icon ${this.dateRangePickerDisabled
+                      ? 'is-disabled'
+                      : ''}"
+                    aria-hidden="true"
+                    @click=${this.handleEndInputClickEvent}
+                    >${unsafeSVG(calendarIcon)}</span
+                  >`}
+            </div>
+          </div>
         </div>
 
         ${this.caption
@@ -533,6 +804,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       'date-range-picker': true,
       'date-range-picker__enable-time': this._enableTime,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
+      'date-range-picker__single-month': this.showSingleMonth,
+      'date-range-picker__multi-month': !this.showSingleMonth,
+      'date-range-picker__multi-input': this.multiInput,
     };
   }
 
@@ -730,6 +1004,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     if (
+      changedProperties.has('multiInput') ||
+      changedProperties.has('showSingleMonth') ||
+      changedProperties.has('closeOnSelection')
+    ) {
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.destroy();
+        setTimeout(() => {
+          this.initializeFlatpickr().then(() => {
+            if (this._inputEl && this.flatpickrInstance) {
+              this._inputEl.value = this.flatpickrInstance.input.value;
+              this.flatpickrInstance.redraw();
+              this.updateFormValue();
+            }
+          });
+        }, 0);
+      }
+      return;
+    }
+
+    if (
       (changedProperties.has('dateRangePickerDisabled') &&
         this.dateRangePickerDisabled) ||
       (changedProperties.has('readonly') && this.readonly)
@@ -869,27 +1163,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     }
 
-    if (changedProperties.has('disable')) {
-      if (Array.isArray(this.disable)) {
-        this._processedDisableDates = this.disable.map((date) => {
-          if (date instanceof Date) return date;
-          if (typeof date === 'number') return new Date(date);
-          if (typeof date === 'string') {
-            const [year, month, day] = date.split('-').map(Number);
-            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-              return new Date(year, month - 1, day);
-            }
-          }
-          return date;
-        });
-      } else {
-        this._processedDisableDates = [];
-      }
-      if (this.flatpickrInstance) {
-        this.updateFlatpickrOptions();
-      }
-    }
-
     if (
       (changedProperties.has('dateFormat') ||
         changedProperties.has('minDate') ||
@@ -974,6 +1247,66 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }
 
+  private async _handleClearStart(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this._isClearing = true;
+    try {
+      const newValue: [Date | null, Date | null] = [null, this.value[1]];
+      this.value = newValue;
+
+      if (this.flatpickrInstance) {
+        if (this.value[1]) {
+          this.flatpickrInstance.setDate([this.value[1]], true);
+        } else {
+          this.flatpickrInstance.clear();
+        }
+        this.updateFormValue();
+      }
+
+      emitValue(this, 'on-change', {
+        dates: this.value,
+        dateString: this._inputEl?.value,
+        source: 'clear-start',
+      });
+
+      this._validate(true, false);
+      await this.updateComplete;
+    } finally {
+      this._isClearing = false;
+    }
+  }
+
+  private async _handleClearEnd(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this._isClearing = true;
+    try {
+      const newValue: [Date | null, Date | null] = [this.value[0], null];
+      this.value = newValue;
+
+      if (this.flatpickrInstance) {
+        if (this.value[0]) {
+          this.flatpickrInstance.setDate([this.value[0]], true);
+        } else {
+          this.flatpickrInstance.clear();
+        }
+        this.updateFormValue();
+      }
+
+      emitValue(this, 'on-change', {
+        dates: this.value,
+        dateString: this._inputEl?.value,
+        source: 'clear-end',
+      });
+
+      this._validate(true, false);
+      await this.updateComplete;
+    } finally {
+      this._isClearing = false;
+    }
+  }
+
   public async handleClose() {
     this._hasInteracted = true;
     this._validate(true, false);
@@ -993,26 +1326,71 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     try {
       this.flatpickrInstance?.destroy();
-      this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-        inputEl: this._inputEl,
-        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
-          try {
-            if (!instance?.calendarContainer) {
-              throw new Error('Calendar container not available');
+
+      if (this.multiInput && this._endInputEl) {
+        this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
+          inputEl: this._inputEl,
+          endinputEl: this._endInputEl,
+          getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+          setCalendarAttributes: (instance) => {
+            try {
+              if (!instance?.calendarContainer) {
+                throw new Error('Calendar container not available');
+              }
+              const container = getModalContainer(this);
+              setCalendarAttributes(instance, container !== document.body);
+              instance.calendarContainer.setAttribute(
+                'aria-label',
+                'Date range calendar'
+              );
+
+              if (this.showSingleMonth) {
+                instance.calendarContainer.classList.add(
+                  'date-range-picker__single-month'
+                );
+              } else {
+                instance.calendarContainer.classList.remove(
+                  'date-range-picker__single-month'
+                );
+              }
+            } catch (error) {
+              console.warn('Error setting calendar attributes:', error);
             }
-            const container = getModalContainer(this);
-            setCalendarAttributes(instance, container !== document.body);
-            instance.calendarContainer.setAttribute(
-              'aria-label',
-              'Date range calendar'
-            );
-          } catch (error) {
-            console.warn('Error setting calendar attributes:', error);
-          }
-        },
-        setInitialDates: () => this.setInitialDates(),
-      });
+          },
+          setInitialDates: () => this.setInitialDates(),
+        });
+      } else {
+        this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
+          inputEl: this._inputEl,
+          getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+          setCalendarAttributes: (instance) => {
+            try {
+              if (!instance?.calendarContainer) {
+                throw new Error('Calendar container not available');
+              }
+              const container = getModalContainer(this);
+              setCalendarAttributes(instance, container !== document.body);
+              instance.calendarContainer.setAttribute(
+                'aria-label',
+                'Date range calendar'
+              );
+
+              if (this.showSingleMonth) {
+                instance.calendarContainer.classList.add(
+                  'date-range-picker__single-month'
+                );
+              } else {
+                instance.calendarContainer.classList.remove(
+                  'date-range-picker__single-month'
+                );
+              }
+            } catch (error) {
+              console.warn('Error setting calendar attributes:', error);
+            }
+          },
+          setInitialDates: () => this.setInitialDates(),
+        });
+      }
 
       if (!this.flatpickrInstance) {
         throw new Error('Failed to initialize Flatpickr instance');
@@ -1037,6 +1415,23 @@ export class DateRangePicker extends FormMixin(LitElement) {
     await this.debouncedUpdate();
   }
 
+  private normalizeDisable(
+    raw: (string | number | Date | Function)[]
+  ): (Date | Function)[] {
+    return raw
+      .map((d) => {
+        if (typeof d === 'function') return d;
+        if (d instanceof Date) return d;
+        if (typeof d === 'number') return new Date(d);
+        if (typeof d === 'string') {
+          const parsed = flatpickr.parseDate(d, this.dateFormat);
+          return parsed && !isNaN(parsed.getTime()) ? parsed : null;
+        }
+        return null;
+      })
+      .filter((d): d is Date | Function => d !== null);
+  }
+
   public async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     if (!this.dateFormat) {
       this.dateFormat = 'Y-m-d';
@@ -1053,9 +1448,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
-      disable: this._processedDisableDates,
+      disable: this.normalizeDisable(this.disable),
       mode: 'range',
-      closeOnSelect: false,
+      closeOnSelect: this.closeOnSelection,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
@@ -1063,6 +1458,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       appendTo: container,
       noCalendar: false,
       static: this.staticPosition,
+      showMonths: this.showSingleMonth ? 1 : 2,
     });
 
     const origOnOpen = options.onOpen;
@@ -1072,12 +1468,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       } else if (Array.isArray(origOnOpen)) {
         origOnOpen.forEach((fn) => fn(selectedDates, dateStr, instance));
       }
-      setTimeout(() => {
-        const firstDay = instance.calendarContainer.querySelector<HTMLElement>(
-          '.flatpickr-day:not(.flatpickr-disabled)'
-        );
-        if (firstDay) firstDay.focus();
-      }, 0);
     };
 
     const origOnReady = options.onReady;
@@ -1087,6 +1477,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       } else if (Array.isArray(origOnReady)) {
         origOnReady.forEach((fn) => fn(_sel, _str, instance));
       }
+
       const handler = (e: KeyboardEvent) => {
         if (e.key !== 'Enter') return;
         const target = e.target as HTMLElement & { dateObj: Date };
@@ -1106,6 +1497,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       };
       instance.calendarContainer.addEventListener('keydown', handler);
+
+      const calendarDays = instance.calendarContainer.querySelectorAll(
+        '.flatpickr-day:not(.flatpickr-disabled)'
+      );
+      calendarDays.forEach((day: Element) => {
+        const dayElement = day as HTMLElement;
+        if (!dayElement.hasAttribute('tabindex')) {
+          dayElement.setAttribute('tabindex', '-1');
+        }
+      });
+
+      const navButtons = instance.calendarContainer.querySelectorAll(
+        '.flatpickr-prev-month, .flatpickr-next-month'
+      );
+      navButtons.forEach((button: Element) => {
+        const buttonElement = button as HTMLElement;
+        if (!buttonElement.hasAttribute('tabindex')) {
+          buttonElement.setAttribute('tabindex', '0');
+        }
+      });
     };
 
     if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
@@ -1142,13 +1553,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
       if (!hasValidValue && this.defaultDate) {
         const validDates = this.processDefaultDates(this.defaultDate);
         if (validDates.length === 2) {
-          this.flatpickrInstance.setDate(validDates, true);
+          this.flatpickrInstance.setDate(validDates, false);
           this.flatpickrInstance.redraw();
           this.value = validDates as [Date, Date];
           this._inputEl!.value = this.flatpickrInstance.input.value;
           this.updateFormValue();
         } else if (validDates.length === 1) {
-          this.flatpickrInstance.setDate([validDates[0]], true);
+          this.flatpickrInstance.setDate([validDates[0]], false);
           this.flatpickrInstance.redraw();
           this.value = [validDates[0], null];
           this._inputEl!.value = this.flatpickrInstance.input.value;
@@ -1164,7 +1575,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           .filter((d): d is Date => d !== null);
 
         if (validDates.length === 2) {
-          this.flatpickrInstance.setDate(validDates, true);
+          this.flatpickrInstance.setDate(validDates, false);
           this.flatpickrInstance.redraw();
           this._inputEl!.value = this.flatpickrInstance.input.value;
           this.updateFormValue();
@@ -1261,6 +1672,26 @@ export class DateRangePicker extends FormMixin(LitElement) {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
+  private preventTextSelection(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+  }
+
+  private preventAllTextInteraction(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.type === 'input' && event.target instanceof HTMLInputElement) {
+      const input = event.target;
+      if (this.flatpickrInstance) {
+        input.value = this.flatpickrInstance.input.value;
+      }
+    }
+
+    return false;
+  }
+
   private handleInputClickEvent() {
     try {
       this._shouldFlatpickrOpen = true;
@@ -1309,6 +1740,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     } catch (e) {
       console.warn('Error handling input focus event:', e);
     }
+  }
+
+  private handleEndInputClickEvent() {
+    this.handleInputClickEvent();
+  }
+
+  private handleEndInputFocusEvent() {
+    this.handleInputFocusEvent();
   }
 
   private _validate(interacted: boolean, report: boolean) {

@@ -52,6 +52,9 @@ export default {
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    multiInput: { control: { type: 'boolean' } },
+    showSingleMonth: { control: { type: 'boolean' } },
+    closeOnSelection: { control: { type: 'boolean' } },
   },
 };
 
@@ -127,8 +130,10 @@ const Template = (args) => {
       .errorTitle=${args.errorTitle}
       .warningAriaLabel=${args.warningAriaLabel}
       .warningTitle=${args.warningTitle}
-      .startDateLabel=${args.startDateLabel}
-      .endDateLabel=${args.endDateLabel}
+      ?multiInput=${args.multiInput}
+      ?showSingleMonth=${args.showSingleMonth}
+      ?closeOnSelection=${args.closeOnSelection}
+      .textStrings=${args.textStrings}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-date-range-picker>
@@ -143,6 +148,7 @@ DateRangeDefault.args = {
   defaultDate: [],
   required: false,
   staticPosition: false,
+  closeOnSelection: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
   warnText: '',
@@ -239,6 +245,50 @@ ScheduleLockdown_BothDatesFixed.args = {
 };
 ScheduleLockdown_BothDatesFixed.storyName = 'Both Dates Fixed';
 
+export const MultiInputDateRange = Template.bind({});
+MultiInputDateRange.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-date-range-picker',
+  dateFormat: 'Y-m-d',
+  multiInput: true,
+  textStrings: {
+    startLabel: 'Start Date',
+    endLabel: 'End Date',
+  },
+  label: 'Date Range Selection',
+  caption: 'Example with separate start and end date inputs.',
+};
+
+export const MultiInputSingleMonthCalendar = Template.bind({});
+MultiInputSingleMonthCalendar.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-datetime-range-picker',
+  dateFormat: 'Y-m-d H:i',
+  multiInput: true,
+  showSingleMonth: true,
+  textStrings: {
+    startLabel: 'Start Date & Time',
+    endLabel: 'End Date & Time',
+  },
+  label: 'Date & Time Range Selection',
+  caption: 'Example with separate start and end date/time inputs.',
+};
+
+export const MultiInputWithPreselected = Template.bind({});
+MultiInputWithPreselected.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-preselected-range',
+  dateFormat: 'Y-m-d',
+  defaultDate: ['2024-01-01', '2024-01-07'],
+  multiInput: true,
+  textStrings: {
+    startLabel: 'From',
+    endLabel: 'To',
+  },
+  label: 'Start and End Dates Example',
+  caption: 'Example with preselected dates in multi-input mode.',
+};
+
 export const InModal = {
   args: {
     ...DateRangeDefault.args,
@@ -256,6 +306,7 @@ export const InModal = {
     cancelText: 'Cancel',
     closeText: 'Close',
     destructive: false,
+    closeOnSelection: true,
     okDisabled: false,
     hideFooter: false,
     showSecondaryButton: false,
@@ -310,6 +361,7 @@ export const InModal = {
           .warningAriaLabel=${args.warningAriaLabel}
           .warningTitle=${args.warningTitle}
           .startDateLabel=${args.startDateLabel}
+          ?closeOnSelection=${args.closeOnSelection}
           .endDateLabel=${args.endDateLabel}
           @on-change=${(e) => action(e.type)(e)}
         >
@@ -340,6 +392,7 @@ export const DateRangePickerInAccordionInModal = {
     okDisabled: false,
     hideFooter: false,
     showSecondaryButton: false,
+    closeOnSelection: false,
     hideCancelButton: false,
     aiConnected: false,
     disableScroll: false,
@@ -403,6 +456,7 @@ export const DateRangePickerInAccordionInModal = {
                 .warningAriaLabel=${args.warningAriaLabel}
                 .warningTitle=${args.warningTitle}
                 .startDateLabel=${args.startDateLabel}
+                ?closeOnSelection=${args.closeOnSelection}
                 .endDateLabel=${args.endDateLabel}
                 @on-change=${(e) => action(e.type)(e)}
               >
