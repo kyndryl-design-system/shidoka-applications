@@ -463,6 +463,8 @@ export class DatePicker extends FormMixin(LitElement) {
           }
         }
       }
+
+      this.invalidText = '';
     }
   }
 
@@ -483,13 +485,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (nonEmptyValues.length === 0) return [];
 
-    const min = this.minDate
-      ? this.parseDateString(this.minDate as string)
-      : null;
-    const max = this.maxDate
-      ? this.parseDateString(this.maxDate as string)
-      : null;
-
     const parsed = nonEmptyValues.map((d) => {
       if (d instanceof Date) return d;
       if (typeof d === 'string') return this.parseDateString(d);
@@ -497,17 +492,12 @@ export class DatePicker extends FormMixin(LitElement) {
     });
 
     const valid = parsed.filter(
-      (d): d is Date =>
-        d instanceof Date &&
-        !isNaN(d.getTime()) &&
-        (!min || d >= min) &&
-        (!max || d <= max)
+      (d): d is Date => d instanceof Date && !isNaN(d.getTime())
     );
 
     if (valid.length !== parsed.length) {
-      console.error('Invalid date(s) provided in defaultDate', valid);
-      this.invalidText = this._textStrings.pleaseSelectValidDate;
-      this.defaultDate = null;
+      console.error('Invalid date(s) provided in defaultDate');
+      this.invalidText = this._textStrings.invalidDateFormat;
     }
 
     return valid;
@@ -521,38 +511,57 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     if (changedProperties.has('value') && !this._isClearing) {
-      const val = this.value;
-      const isNull = val === null || (Array.isArray(val) && val.length === 0);
+      let newValue = this.value;
 
+      if (typeof newValue === 'string') {
+        try {
+          const strValue = newValue as string;
+          if (strValue.trim() !== '' && /\d{4}-\d{2}-\d{2}/.test(strValue)) {
+            const [year, month, day] = strValue.split('-').map(Number);
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+              this.value = new Date(year, month - 1, day, 12);
+              newValue = this.value;
+              if (this.flatpickrInstance) {
+                this.flatpickrInstance.setDate(newValue, true);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Error parsing date string:', e);
+        }
+      }
+
+      const isNull =
+        newValue === null || (Array.isArray(newValue) && newValue.length === 0);
       if (isNull && this.flatpickrInstance) {
         this._isClearing = true;
         try {
           this.flatpickrInstance.clear();
-          this._inputEl.value = '';
+          if (this._inputEl) {
+            this._inputEl.value = '';
+          }
         } finally {
           this._isClearing = false;
         }
-      } else if (this.flatpickrInstance && val != null) {
-        const dates: Date[] = Array.isArray(val)
-          ? val.filter((d): d is Date => d instanceof Date)
-          : val instanceof Date
-          ? [val]
-          : [];
-
-        if (dates.length > 0) {
-          this.flatpickrInstance.setDate(dates, false);
-        }
       }
-
       this.requestUpdate();
     }
 
     if (changedProperties.has('defaultDate') && !this._isClearing) {
-      const processedDates = this.processDefaultDates(this.defaultDate);
-      if (processedDates.length > 0 && this.flatpickrInstance) {
-        this.value =
-          this.mode === 'multiple' ? [...processedDates] : processedDates[0];
-        this.flatpickrInstance.setDate(processedDates, true);
+      if (this.defaultDate && !this.value) {
+        const processedDates = this.processDefaultDates(this.defaultDate);
+        if (processedDates && processedDates.length > 0) {
+          if (this.mode === 'multiple') {
+            this.value = [...processedDates];
+          } else {
+            this.value = processedDates[0];
+          }
+          this.requestUpdate();
+        }
+      }
+
+      if (this.flatpickrInstance) {
+        this.debouncedUpdate();
       }
     }
 
@@ -562,17 +571,19 @@ export class DatePicker extends FormMixin(LitElement) {
           if (date instanceof Date) return date;
           if (typeof date === 'number') return new Date(date);
           if (typeof date === 'string') {
-            const [y, m, d] = date.split('-').map(Number);
-            return !isNaN(y) && !isNaN(m) && !isNaN(d)
-              ? new Date(y, m - 1, d)
-              : date;
+            const [year, month, day] = date.split('-').map(Number);
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+              return new Date(year, month - 1, day);
+            }
           }
           return date;
         });
       } else {
         this._processedDisableDates = [];
       }
-      this.flatpickrInstance && this.debouncedUpdate();
+      if (this.flatpickrInstance) {
+        this.debouncedUpdate();
+      }
     }
 
     if (
@@ -584,7 +595,11 @@ export class DatePicker extends FormMixin(LitElement) {
     ) {
       this._enableTime = updateEnableTime(this.dateFormat);
       if (this.flatpickrInstance && this._initialized && !this._isClearing) {
-        this.debouncedUpdate();
+        if (changedProperties.has('dateFormat')) {
+          this.debouncedUpdate();
+        } else {
+          this.debouncedUpdate();
+        }
       }
     }
 
@@ -593,7 +608,9 @@ export class DatePicker extends FormMixin(LitElement) {
         this.datePickerDisabled) ||
       (changedProperties.has('readonly') && this.readonly)
     ) {
-      this.flatpickrInstance?.close();
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.close();
+      }
     }
   }
 
@@ -759,18 +776,7 @@ export class DatePicker extends FormMixin(LitElement) {
             if (typeof date === 'string') return this.parseDateString(date);
             return null;
           })
-          .filter(
-            (date): date is Date => date !== null && !isNaN(date.getTime())
-          )
-          .filter((d) => {
-            const min = this.minDate
-              ? this.parseDateString(this.minDate as string)
-              : null;
-            const max = this.maxDate
-              ? this.parseDateString(this.maxDate as string)
-              : null;
-            return (!min || d >= min) && (!max || d <= max);
-          });
+          .filter((date): date is Date => date !== null);
 
         if (validDates.length > 0) {
           this.flatpickrInstance.setDate(validDates, true);
@@ -838,32 +844,15 @@ export class DatePicker extends FormMixin(LitElement) {
     return options;
   }
 
-  async handleOpen() {
+  handleOpen() {
     if (this.readonly) {
       this.flatpickrInstance?.close();
       return;
     }
-
     if (!this._shouldFlatpickrOpen) {
       this.flatpickrInstance?.close();
       this._shouldFlatpickrOpen = true;
-      return;
     }
-
-    this.flatpickrInstance?.open();
-    this._shouldFlatpickrOpen = false;
-
-    const cfg = this.flatpickrInstance!.config;
-    if (cfg.minDate && cfg.maxDate) {
-      const minY = new Date(cfg.minDate as any).getFullYear();
-      const maxY = new Date(cfg.maxDate as any).getFullYear();
-      this.flatpickrInstance!.calendarContainer.classList.toggle(
-        'single-year',
-        minY === maxY
-      );
-    }
-
-    hideEmptyYear();
   }
 
   async handleClose() {
@@ -1049,15 +1038,6 @@ export class DatePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.clear();
     }
     this._hasInteracted = false;
-  }
-
-  public getValue(): Date | Date[] | null {
-    return this.value;
-  }
-
-  public setValue(newValue: Date | Date[] | null): void {
-    this.value = newValue;
-    this.requestUpdate();
   }
 }
 

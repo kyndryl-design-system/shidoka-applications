@@ -1,7 +1,6 @@
 import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
-import { waitFor } from '@storybook/testing-library';
 import { useEffect } from 'storybook/preview-api';
 
 import '../button';
@@ -54,14 +53,16 @@ export default {
   },
 };
 
-const cleanup = () => {
-  document
-    .querySelectorAll('kyn-date-picker')
-    .forEach((picker) => picker.remove());
-};
-
 const Template = (args) => {
-  useEffect(() => cleanup, []);
+  useEffect(() => {
+    return () => {
+      const picker = document.querySelector('kyn-date-picker');
+      if (picker) {
+        picker.remove();
+      }
+    };
+  }, []);
+
   return html`
     <kyn-date-picker
       .name=${args.name}
@@ -89,7 +90,8 @@ const Template = (args) => {
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
       @on-change=${(e) => action(e.type)(e)}
-    ></kyn-date-picker>
+    >
+    </kyn-date-picker>
   `;
 };
 
@@ -119,6 +121,7 @@ DatePickerDefault.args = {
   maxDate: '',
   label: 'Date',
 };
+DatePickerDefault.storyName = 'Single Date (Default)';
 
 export const DateWithTime = Template.bind({});
 DateWithTime.args = {
@@ -126,6 +129,7 @@ DateWithTime.args = {
   locale: 'hi',
   name: 'date-time-picker',
   dateFormat: 'Y-m-d H:i',
+  caption: '',
   label: 'Hindi Locale Example',
 };
 DateWithTime.storyName = 'Date + Time (Hindi Locale)';
@@ -133,61 +137,50 @@ DateWithTime.storyName = 'Date + Time (Hindi Locale)';
 export const MinMaxDateExample = Template.bind({});
 MinMaxDateExample.args = {
   ...DatePickerDefault.args,
-  name: 'min-max-picker',
+  name: 'date-time-picker',
   dateFormat: 'Y-m-d',
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
+  caption: '',
   label: 'Min and Max dates set',
 };
 
 export const DatePickerMultiple = Template.bind({});
 DatePickerMultiple.args = {
   ...DatePickerDefault.args,
-  name: 'multiple-picker',
-  mode: 'multiple',
+  locale: 'en',
+  name: 'date-multiple-picker',
+  dateFormat: 'Y-m-d',
   caption: 'Select multiple dates.',
+  mode: 'multiple',
   label: 'Multiple Date Selection',
 };
+DatePickerMultiple.storyName = 'Multiple Date Selection';
 
 export const DateTimeMultiple = Template.bind({});
 DateTimeMultiple.args = {
   ...DatePickerDefault.args,
-  name: 'multiple-time-picker',
-  mode: 'multiple',
+  locale: 'en',
+  name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
   defaultDate: '2024-01-01 09:00',
   caption: 'Select multiple dates with time. Example shows preselected dates.',
+  mode: 'multiple',
   label: 'Multiple Date/Time Selection',
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
 
-export const WithPreselectedDateTime = Template.bind({});
-WithPreselectedDateTime.args = {
-  ...DatePickerDefault.args,
-  name: 'preselected-date-time-picker',
-  dateFormat: 'Y-m-d H:i',
-  defaultDate: '2024-01-01 09:00',
-  caption: 'Example with preselected date/time.',
-  label: 'With Preselected Date Time',
-};
-WithPreselectedDateTime.play = async ({ canvasElement }) => {
-  const picker = canvasElement.querySelector('kyn-date-picker');
-  await waitFor(() => {
-    if (!picker.flatpickrInstance) {
-      throw new Error('flatpickr still initializing');
-    }
-  });
-};
-WithPreselectedDateTime.storyName = 'With Preselected Date Time';
-
 export const WithDisabledDates = Template.bind({});
 WithDisabledDates.args = {
   ...DatePickerDefault.args,
-  name: 'disabled-dates-picker',
-  caption: 'Weekends are disabled.',
+  name: 'date-picker-with-disabled-dates',
+  dateFormat: 'Y-m-d',
+  caption: 'Example showing disabled dates (weekends are disabled)',
   label: 'Date Selection',
   disable: [
-    (d) => d.getDay() === 0 || d.getDay() === 6,
+    function (date) {
+      return date.getDay() === 0 || date.getDay() === 6;
+    },
     '2024-03-15',
     '2024-03-20',
     '2024-03-25',

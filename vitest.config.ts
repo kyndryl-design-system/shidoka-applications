@@ -15,13 +15,6 @@ const srcDir = path.resolve(dirname, '../src');
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  // Vite dev-server options—whitelist your project root & src
-  server: {
-    fs: {
-      allow: [projectRoot, srcDir],
-    },
-  },
-
   test: {
     projects: [
       {
@@ -47,5 +40,11 @@ export default defineConfig({
         },
       },
     ],
+  },
+
+  server: {
+    fs: {
+      allow: [path.join(dirname, 'src')],
+    },
   },
 });

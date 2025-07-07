@@ -364,7 +364,6 @@ export class TimePicker extends FormMixin(LitElement) {
       >
         <span
           class="error-icon"
-          role="img"
           aria-label=${this.errorAriaLabel || 'Error message icon'}
           >${unsafeSVG(errorIcon)}</span
         >
@@ -816,15 +815,6 @@ export class TimePicker extends FormMixin(LitElement) {
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
-  }
-
-  public getValue(): Date | null {
-    return this.value;
-  }
-
-  public setValue(newValue: Date | null): void {
-    this.value = newValue;
-    this.requestUpdate();
   }
 }
 

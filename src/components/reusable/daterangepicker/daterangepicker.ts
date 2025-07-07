@@ -491,7 +491,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
         >
           <span
             class="error-icon"
-            role="img"
             aria-label=${this.errorAriaLabel || 'Error message icon'}
           >
             ${unsafeSVG(errorIcon)}
@@ -1378,15 +1377,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.flatpickrInstance?.clear();
     this._hasInteracted = false;
     this._validate(false, false);
-  }
-
-  public getValue(): [Date | null, Date | null] {
-    return this.value;
-  }
-
-  public setValue(newValue: [Date | null, Date | null]): void {
-    this.value = newValue;
-    this.requestUpdate();
   }
 }
 
