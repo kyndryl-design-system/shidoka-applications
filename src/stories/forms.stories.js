@@ -244,7 +244,7 @@ export const Default = {
           label="Date Picker"
           dateFormat="Y-m-d"
           caption="Date picker example"
-          defaultErrorMessage="A date value is required"
+          defaultErrorMessage="A date value is required."
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 425px;"
         ></kyn-date-picker>
@@ -258,7 +258,7 @@ export const Default = {
           dateFormat="Y-m-d"
           mode="multiple"
           caption="Date picker example"
-          defaultErrorMessage="A date value is required"
+          defaultErrorMessage="A date value is required."
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 425px;"
         ></kyn-date-picker>
@@ -272,7 +272,7 @@ export const Default = {
           dateFormat="Y-m-d h:i K"
           caption="Date time picker example"
           ?twentyFourHourFormat=${false}
-          defaultErrorMessage="A date value is required"
+          defaultErrorMessage="A date value is required."
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 425px;"
         >
@@ -356,7 +356,7 @@ export const Default = {
           mode="multiple"
           caption="Date picker example (multi, pre-selected)"
           .defaultDate=${'2022-01-03T00:00:00Z'}
-          defaultErrorMessage="A date value is required"
+          defaultErrorMessage="A date value is required."
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 425px;"
         ></kyn-date-picker>
@@ -371,7 +371,7 @@ export const Default = {
           mode="multiple"
           caption="Date picker example (multi, pre-selected)"
           .defaultDate=${['2022-01-02', '2022-01-03']}
-          defaultErrorMessage="A date value is required"
+          defaultErrorMessage="A date value is required."
           @on-input=${(e) => action(e.type)(e)}
           style="min-width: 425px;"
         ></kyn-date-picker>

@@ -128,7 +128,7 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
 
   /** Initial selected dates for uncontrolled usage. */
   @property({ type: Array })
-  accessor defaultDate: string[] | null = null;
+  accessor defaultDate: string | string[] | null = null;
 
   /** Input size. "sm", "md", or "lg". */
   @property({ type: String })
@@ -735,6 +735,7 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
 
   protected async getBaseFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
+    const currentMode = (this as any).mode || this.config.mode;
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -747,8 +748,8 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
       maxTime: this.maxTime,
       enable: this.enable,
       disable: this._processedDisableDates,
-      mode: this.config.mode,
-      closeOnSelect: !(this.config.mode === 'multiple' || this._enableTime),
+      mode: currentMode,
+      closeOnSelect: !(currentMode === 'multiple' || this._enableTime),
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),

@@ -457,3 +457,69 @@ export const InSideDrawer = {
     `;
   },
 };
+
+export const CustomWidthExample = (args) => {
+  return html`
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div>
+        <h4>Full width (default behavior)</h4>
+        <kyn-date-picker
+          .name=${args.name + '-full'}
+          .locale=${args.locale}
+          .label=${'Full Width'}
+          .dateFormat=${args.dateFormat}
+          .mode=${args.mode}
+          .caption=${'This picker takes full width of its container'}
+        ></kyn-date-picker>
+      </div>
+
+      <div>
+        <h4>Fixed width (500px)</h4>
+        <kyn-date-picker
+          style="width: 500px;"
+          .name=${args.name + '-fixed'}
+          .locale=${args.locale}
+          .label=${'Fixed 500px Width'}
+          .dateFormat=${args.dateFormat}
+          .mode=${args.mode}
+          .caption=${'This picker has a fixed 300px width'}
+        ></kyn-date-picker>
+      </div>
+
+      <div>
+        <h4>Percentage width (50%)</h4>
+        <kyn-date-picker
+          style="width: 50%;"
+          .name=${args.name + '-percent'}
+          .locale=${args.locale}
+          .label=${'50% Width'}
+          .dateFormat=${args.dateFormat}
+          .mode=${args.mode}
+          .caption=${'This picker takes 50% of container width'}
+        ></kyn-date-picker>
+      </div>
+
+      <div>
+        <h4>Minimum width (150px)</h4>
+        <kyn-date-picker
+          style="min-width: 150px; width: 150px;"
+          .name=${args.name + '-min'}
+          .locale=${args.locale}
+          .label=${'Narrow Width'}
+          .dateFormat=${args.dateFormat}
+          .mode=${args.mode}
+          .caption=${'This picker demonstrates very narrow width'}
+        ></kyn-date-picker>
+      </div>
+    </div>
+  `;
+};
+
+CustomWidthExample.args = {
+  ...DatePickerDefault.args,
+  name: 'width-demo',
+  locale: 'en',
+  dateFormat: 'Y-m-d',
+  mode: 'single',
+};
+CustomWidthExample.storyName = 'Dev Input Width Control';
