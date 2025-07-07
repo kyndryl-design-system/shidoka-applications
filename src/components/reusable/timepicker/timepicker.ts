@@ -382,6 +382,7 @@ export class TimePicker extends FormMixin(LitElement) {
       >
         <span
           class="error-icon"
+          role="img"
           aria-label=${this.errorAriaLabel || 'Error message icon'}
           >${unsafeSVG(errorIcon)}</span
         >
