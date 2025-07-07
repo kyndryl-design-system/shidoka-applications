@@ -140,6 +140,89 @@ const Template = (args) => {
   `;
 };
 
+const LimitedTemplate = (args) => {
+  useEffect(() => {
+    const renderId = Math.random().toString(36).substring(2, 9);
+
+    setTimeout(() => {
+      const container = document.createElement('div');
+      container.setAttribute('data-picker-container', renderId);
+      container.style.display = 'contents';
+
+      const picker = document.querySelector(
+        `kyn-date-range-picker[name="${args.name}"]`
+      );
+      if (picker && picker.parentNode) {
+        picker.parentNode.insertBefore(container, picker);
+        container.appendChild(picker);
+
+        if (args.rangeEditMode !== undefined) {
+          picker.rangeEditMode = args.rangeEditMode;
+          if (
+            picker.flatpickrInstance &&
+            args.defaultDate &&
+            Array.isArray(args.defaultDate) &&
+            args.defaultDate.length === 2 &&
+            (!args.defaultDate[0] || !args.defaultDate[1])
+          ) {
+            picker.flatpickrInstance.destroy();
+            setTimeout(() => picker.initializeFlatpickr(), 10);
+          }
+        }
+      }
+    }, 0);
+
+    return () => {
+      const container = document.querySelector(
+        `div[data-picker-container="${renderId}"]`
+      );
+      if (container) {
+        if (container.firstChild) {
+          const picker = container.firstChild;
+          container.parentNode.insertBefore(picker, container);
+        }
+        container.remove();
+      }
+    };
+  }, [args.rangeEditMode, args.defaultDate, args.name]);
+
+  return html`
+    <kyn-date-range-picker
+      style="max-width: 400px;"
+      .name=${args.name}
+      .label=${args.label}
+      .locale=${args.locale}
+      .dateFormat=${args.dateFormat}
+      .defaultDate=${args.defaultDate}
+      .rangeEditMode=${args.rangeEditMode}
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .disable=${args.disable}
+      .enable=${args.enable}
+      .caption=${args.caption}
+      ?required=${args.required}
+      ?staticPosition=${args.staticPosition}
+      .size=${args.size}
+      ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+      ?readonly=${args.readonly}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .minDate=${args.minDate}
+      .maxDate=${args.maxDate}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      ?multiInput=${args.multiInput}
+      ?showSingleMonth=${args.showSingleMonth}
+      ?closeOnSelection=${args.closeOnSelection}
+      .textStrings=${args.textStrings}
+      @on-change=${(e) => action(e.type)(e)}
+    >
+    </kyn-date-range-picker>
+  `;
+};
+
 export const DateRangeDefault = Template.bind({});
 DateRangeDefault.args = {
   name: 'default-date-range-picker',
@@ -176,8 +259,9 @@ DateTimeRange.args = {
   label: 'Start + End Date / Time',
 };
 
-export const InvalidDefaultDates = Template.bind({});
+export const InvalidDefaultDates = LimitedTemplate.bind({});
 InvalidDefaultDates.args = {
+  ...DateRangeDefault.args,
   name: 'invalid-default-dates-picker',
   label: 'Invalid Default Dates',
   dateFormat: 'Y-m-d',
@@ -185,13 +269,9 @@ InvalidDefaultDates.args = {
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
   caption: 'Invalid default dates will trigger validation errors..',
-  invalidText: '',
-  defaultErrorMessage: '',
   required: false,
   size: 'md',
   staticPosition: false,
-  disable: [],
-  enable: [],
 };
 InvalidDefaultDates.storyName = 'Invalid / Out-of-Range Defaults';
 

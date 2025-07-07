@@ -449,6 +449,8 @@ export async function getFlatpickrOptions(
     },
   };
 
+  console.log('Flatpickr options:', options);
+
   if (mode === 'range') {
     options.onReady = (_, __, instance) => {
       if (instance.calendarContainer) {

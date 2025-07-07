@@ -183,11 +183,150 @@ export class DateRangePicker extends FlatpickrBase {
     return Boolean(this._inputEl?.value) || this.value.some((d) => d !== null);
   }
 
+  private _validateAndFilterDefaultDates(): {
+    validDates: string[];
+    hasErrors: boolean;
+    errorMessage: string;
+  } {
+    const result = {
+      validDates: [] as string[],
+      hasErrors: false,
+      errorMessage: '',
+    };
+
+    if (!this.defaultDate || !Array.isArray(this.defaultDate)) {
+      return result;
+    }
+
+    const errors: string[] = [];
+    const validDates: string[] = [];
+
+    this.defaultDate.forEach((dateStr, index) => {
+      if (!dateStr) return;
+
+      let isValid = true;
+      let parsedDate: Date | null = null;
+
+      if (typeof dateStr === 'string') {
+        switch (this.dateFormat) {
+          case 'Y-m-d': {
+            const [year, month, day] = dateStr.split('-').map(Number);
+            if (
+              isNaN(year) ||
+              isNaN(month) ||
+              isNaN(day) ||
+              month < 1 ||
+              month > 12 ||
+              day < 1 ||
+              day > 31
+            ) {
+              isValid = false;
+              errors.push(
+                `Invalid ${
+                  index === 0 ? 'start' : 'end'
+                } date format: ${dateStr}`
+              );
+            } else {
+              parsedDate = new Date(year, month - 1, day);
+              if (
+                parsedDate.getFullYear() !== year ||
+                parsedDate.getMonth() !== month - 1 ||
+                parsedDate.getDate() !== day
+              ) {
+                isValid = false;
+                errors.push(
+                  `Invalid ${index === 0 ? 'start' : 'end'} date: ${dateStr}`
+                );
+              }
+            }
+            break;
+          }
+          default:
+            parsedDate =
+              flatpickr.parseDate(dateStr, this.dateFormat) ||
+              new Date(dateStr);
+            if (!parsedDate || isNaN(parsedDate.getTime())) {
+              isValid = false;
+              errors.push(
+                `Invalid ${index === 0 ? 'start' : 'end'} date: ${dateStr}`
+              );
+            }
+            break;
+        }
+      }
+
+      if (isValid && parsedDate) {
+        let minDateObj: Date | null = null;
+        let maxDateObj: Date | null = null;
+
+        if (this.minDate) {
+          if (typeof this.minDate === 'string') {
+            minDateObj =
+              flatpickr.parseDate(this.minDate, this.dateFormat) ||
+              new Date(this.minDate);
+          } else if (this.minDate instanceof Date) {
+            minDateObj = this.minDate;
+          }
+        }
+
+        if (this.maxDate) {
+          if (typeof this.maxDate === 'string') {
+            maxDateObj =
+              flatpickr.parseDate(this.maxDate, this.dateFormat) ||
+              new Date(this.maxDate);
+          } else if (this.maxDate instanceof Date) {
+            maxDateObj = this.maxDate;
+          }
+        }
+
+        const dateType = index === 0 ? 'start' : 'end';
+
+        if (minDateObj && parsedDate.getTime() < minDateObj.getTime()) {
+          isValid = false;
+          errors.push(
+            `${dateType} date is before minimum allowed date (${this.minDate})`
+          );
+        }
+
+        if (maxDateObj && parsedDate.getTime() > maxDateObj.getTime()) {
+          isValid = false;
+          errors.push(
+            `${dateType} date is after maximum allowed date (${this.maxDate})`
+          );
+        }
+      }
+
+      if (isValid) {
+        validDates.push(dateStr);
+      }
+    });
+
+    if (validDates.length === 2) {
+      const startDate = flatpickr.parseDate(validDates[0], this.dateFormat);
+      const endDate = flatpickr.parseDate(validDates[1], this.dateFormat);
+
+      if (startDate && endDate && startDate.getTime() > endDate.getTime()) {
+        errors.push('Start date cannot be after end date');
+        result.hasErrors = true;
+      }
+    }
+
+    result.validDates = validDates;
+    result.hasErrors = errors.length > 0;
+    result.errorMessage = errors.join('. ');
+
+    return result;
+  }
+
   override updated(changedProperties: Map<string, unknown>) {
     super.updated(changedProperties);
 
     if (changedProperties.has('dateRangePickerDisabled')) {
       this.disabled = this.dateRangePickerDisabled;
+    }
+
+    if (changedProperties.has('showSingleMonth')) {
+      this.showSingleMonth;
     }
   }
 
@@ -215,7 +354,18 @@ export class DateRangePicker extends FlatpickrBase {
     opts.mode = 'range';
     opts.closeOnSelect = this.closeOnSelection;
     opts.showMonths = this.showSingleMonth ? 1 : 2;
-    if (this.defaultDate) opts.defaultDate = this.defaultDate;
+
+    if (this.defaultDate) {
+      const validatedDates = this._validateAndFilterDefaultDates();
+      if (validatedDates.validDates.length > 0) {
+        opts.defaultDate = validatedDates.validDates;
+      }
+
+      if (validatedDates.hasErrors) {
+        this._hasInteracted = true;
+        this.invalidText = validatedDates.errorMessage;
+      }
+    }
 
     if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
       return applyDateRangeEditingRestrictions(
@@ -300,7 +450,14 @@ export class DateRangePicker extends FlatpickrBase {
         inputEl: this._inputEl,
         endinputEl: this._endInputEl,
         getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes,
+        setCalendarAttributes: (instance) => {
+          setCalendarAttributes(instance);
+          if (this.showSingleMonth && instance.calendarContainer) {
+            instance.calendarContainer.classList.add(
+              'flatpickr-calendar-single-month'
+            );
+          }
+        },
         setInitialDates: (inst) => this.setInitialDates(inst),
       });
     } else {
