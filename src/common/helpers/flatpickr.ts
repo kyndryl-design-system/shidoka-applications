@@ -539,6 +539,10 @@ export function setCalendarAttributes(
   instance: Instance,
   modalDetected = false
 ): void {
+  if (!instance || !instance.config) {
+    return;
+  }
+
   const container = instance.calendarContainer;
   if (!container) return;
 
@@ -554,7 +558,7 @@ export function setCalendarAttributes(
   }
 
   requestAnimationFrame(() => {
-    const mode = instance?.config.mode as
+    const mode = instance.config.mode as
       | 'single'
       | 'multiple'
       | 'range'
@@ -610,13 +614,13 @@ export function setCalendarAttributes(
       yearInput.tabIndex = 0;
       yearInput.setAttribute('role', 'spinbutton');
       yearInput.setAttribute('aria-label', 'Year');
-      if (instance?.config.minDate) {
+      if (instance.config.minDate) {
         yearInput.setAttribute(
           'aria-valuemin',
           String(new Date(instance.config.minDate!).getFullYear())
         );
       }
-      if (instance?.config.maxDate) {
+      if (instance.config.maxDate) {
         yearInput.setAttribute(
           'aria-valuemax',
           String(new Date(instance.config.maxDate!).getFullYear())

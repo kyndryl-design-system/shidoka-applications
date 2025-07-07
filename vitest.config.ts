@@ -1,8 +1,8 @@
+// vitest.config.js
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { defineConfig } from 'vitest/config';
-
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 
 const dirname =
@@ -10,8 +10,18 @@ const dirname =
     ? __dirname
     : path.dirname(fileURLToPath(import.meta.url));
 
+const projectRoot = path.resolve(dirname, '../');
+const srcDir = path.resolve(dirname, '../src');
+
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  // Vite dev-server options—whitelist your project root & src
+  server: {
+    fs: {
+      allow: [projectRoot, srcDir],
+    },
+  },
+
   test: {
     projects: [
       {
