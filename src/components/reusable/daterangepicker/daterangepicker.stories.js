@@ -1,6 +1,7 @@
 import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { waitFor } from '@storybook/testing-library';
 import { useEffect } from 'storybook/preview-api';
 
 import '../button';
@@ -179,6 +180,14 @@ WithPreselectedRange.args = {
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
 };
+WithPreselectedRange.play = async ({ canvasElement }) => {
+  const picker = canvasElement.querySelector('kyn-date-range-picker');
+  await waitFor(() => {
+    if (!picker.flatpickrInstance) {
+      throw new Error('still loading');
+    }
+  });
+};
 
 export const WithPreselectedDateTime = Template.bind({});
 WithPreselectedDateTime.args = {
@@ -188,6 +197,14 @@ WithPreselectedDateTime.args = {
   defaultDate: ['2024-01-01 09:00:00', '2024-01-02 17:00:00'],
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
+};
+WithPreselectedDateTime.play = async ({ canvasElement }) => {
+  const picker = canvasElement.querySelector('kyn-date-range-picker');
+  await waitFor(() => {
+    if (!picker.flatpickrInstance) {
+      throw new Error('still loading');
+    }
+  });
 };
 
 export const WithDisabledDates = Template.bind({});

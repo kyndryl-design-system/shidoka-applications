@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
+import { waitFor } from '@storybook/testing-library';
 import { useEffect } from 'storybook/preview-api';
 
 import '../button';
@@ -122,11 +123,17 @@ TimePickerAltLanguage.storyName = 'Japanese Locale Example';
 export const TimePickerPreSelected = Template.bind({});
 TimePickerPreSelected.args = {
   ...DefaultTimePicker.args,
-  locale: 'en',
-  twentyFourHourFormat: false,
-  label: 'Timepicker with Pre-selected Hour and Minutes',
   defaultHour: 12,
   defaultMinute: 30,
+  label: 'With Pre-selected Time',
+};
+TimePickerPreSelected.play = async ({ canvasElement }) => {
+  const picker = canvasElement.querySelector('kyn-time-picker');
+  await waitFor(() => {
+    if (!picker.flatpickrInstance) {
+      throw new Error('still loading');
+    }
+  });
 };
 TimePickerPreSelected.storyName = 'With Pre-selected Time';
 
