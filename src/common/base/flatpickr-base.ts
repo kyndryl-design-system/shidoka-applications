@@ -372,7 +372,25 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
 
     return html`
       <div class=${classMap(this.getPickerClasses())}>
-        <!-- … label/tooltip … -->
+        <div
+          class="label-text"
+          @mousedown=${this.preventFlatpickrOpen}
+          @click=${this.preventFlatpickrOpen}
+          ?disabled=${this.disabled}
+          id=${`label-${anchorId}`}
+        >
+          ${this.required
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings?.requiredText}
+                role="img"
+                aria-label=${this._textStrings?.requiredText}
+                >*</abbr
+              >`
+            : null}
+          ${this.label}
+          <slot name="tooltip"></slot>
+        </div>
 
         <div class="input-wrapper">
           <input
@@ -395,7 +413,6 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
             @focus=${this.handleInputFocusEvent}
           />
 
-          ${/* if there's a value show clear, else calendar */ ''}
           ${showClearButton && this.hasValue()
             ? html`
                 <kyn-button

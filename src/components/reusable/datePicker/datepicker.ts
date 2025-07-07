@@ -142,8 +142,6 @@ export class DatePicker extends FlatpickrBase {
     mode: this.mode,
   };
 
-  // ─── Implement abstract methods ─────────────────────────────────────────────
-
   protected hasValue(): boolean {
     return !!(this._inputEl?.value || this.value);
   }
@@ -165,10 +163,7 @@ export class DatePicker extends FlatpickrBase {
     instance.setDate(this.defaultDate, false);
   }
 
-  protected async handleDateChange(
-    selectedDates: Date[],
-    dateStr: string
-  ): Promise<void> {
+  protected async handleDateChange(selectedDates: Date[]): Promise<void> {
     if (this._isClearing) return;
     this._hasInteracted = true;
 
@@ -243,14 +238,18 @@ export class DatePicker extends FlatpickrBase {
     });
   }
 
-  // ─── Lifecycle ─────────────────────────────────────────────────────────────
+  override updated(changedProperties: Map<string, unknown>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('datePickerDisabled')) {
+      this.disabled = this.datePickerDisabled;
+    }
+  }
 
   override async firstUpdated(changedProperties: Map<string, unknown>) {
     super.firstUpdated(changedProperties);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
   }
-
-  // ─── Rendering ──────────────────────────────────────────────────────────────
 
   override render(): TemplateResult {
     const placeholder = getPlaceholder(this.dateFormat) || '';

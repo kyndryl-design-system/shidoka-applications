@@ -58,71 +58,68 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FlatpickrBase {
-  private _initialValueSet = false;
-  private _initialValue: [Date | null, Date | null] = [null, null];
-
-  override async firstUpdated(changedProps: PropertyValues): Promise<void> {
-    await super.firstUpdated(changedProps);
-    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-    await this.initializeFlatpickr();
-  }
-
   static override styles = [
     unsafeCSS(DateRangePickerStyles),
     unsafeCSS(ShidokaFlatpickrTheme),
   ];
 
+  private _initialValueSet = false;
+  private _initialValue: [Date | null, Date | null] = [null, null];
+
   /** Label text. */
-  @property({ type: String }) override accessor label = '';
+  @property({ type: String })
+  override accessor label = '';
 
   /** Locale setting. */
   @property({ type: String })
   override accessor locale: (typeof langsArray)[number] | string = 'en';
 
   /** Date format for input/display. */
-  @property({ type: String }) override accessor dateFormat = 'Y-m-d';
+  @property({ type: String })
+  override accessor dateFormat = 'Y-m-d';
 
   /** Editable parts of the date range. */
   @property({ type: String })
   accessor rangeEditMode: DateRangeEditableMode = DateRangeEditableMode.BOTH;
 
   /** Default error message. */
-  @property({ type: String }) override accessor defaultErrorMessage = '';
+  @property({ type: String })
+  override accessor defaultErrorMessage = '';
 
   /** Controlled value for the date range. */
   override value: [Date | null, Date | null] = [null, null];
 
   /** Validation warning messaging. */
-  @property({ type: String }) override accessor warnText = '';
+  @property({ type: String })
+  override accessor warnText = '';
 
   /** Dates to disable. */
-  @property({ type: Array }) override accessor disable: (
-    | string
-    | number
-    | Date
-  )[] = [];
+  @property({ type: Array })
+  override accessor disable: (string | number | Date)[] = [];
 
   /** Dates to enable. */
-  @property({ type: Array }) override accessor enable: (
-    | string
-    | number
-    | Date
-  )[] = [];
+  @property({ type: Array })
+  override accessor enable: (string | number | Date)[] = [];
 
   /** Caption displayed under the picker. */
-  @property({ type: String }) override accessor caption = '';
+  @property({ type: String })
+  override accessor caption = '';
 
   /** Required flag. */
-  @property({ type: Boolean }) override accessor required = false;
+  @property({ type: Boolean })
+  override accessor required = false;
 
   /** Input size. */
-  @property({ type: String }) override accessor size = 'md';
+  @property({ type: String })
+  override accessor size = 'md';
 
   /** Disabled toggle. */
-  @property({ type: Boolean }) override accessor disabled = false;
+  @property({ type: Boolean })
+  override accessor disabled = false;
 
   /** Readonly toggle. */
-  @property({ type: Boolean }) override accessor readonly = false;
+  @property({ type: Boolean })
+  override accessor readonly = false;
 
   /** Sets entire date range picker form element to enabled/disabled. */
   @property({ type: Boolean })
@@ -141,26 +138,32 @@ export class DateRangePicker extends FlatpickrBase {
   override accessor maxDate: string | number | Date = '';
 
   /** Aria-label for error. */
-  @property({ type: String }) override accessor errorAriaLabel = '';
+  @property({ type: String })
+  override accessor errorAriaLabel = '';
 
   /** Title for error. */
-  @property({ type: String }) override accessor errorTitle = '';
+  @property({ type: String })
+  override accessor errorTitle = '';
 
   /** Aria-label for warning. */
-  @property({ type: String }) override accessor warningAriaLabel = '';
+  @property({ type: String })
+  override accessor warningAriaLabel = '';
 
   /** Title for warning. */
-  @property({ type: String }) override accessor warningTitle = '';
+  @property({ type: String })
+  override accessor warningTitle = '';
 
   /** Static calendar positioning. */
-  @property({ type: Boolean }) override accessor staticPosition = false;
+  @property({ type: Boolean })
+  override accessor staticPosition = false;
 
   /** Close on selection. */
-  @property({ type: Boolean }) accessor closeOnSelection = false;
+  @property({ type: Boolean })
+  accessor closeOnSelection = false;
 
   /** Multi-input toggle. */
-  @property({ type: Boolean, reflect: true }) override accessor multiInput =
-    false;
+  @property({ type: Boolean, reflect: true })
+  override accessor multiInput = false;
 
   /** Custom text overrides. */
   @property({ type: Object })
@@ -178,6 +181,20 @@ export class DateRangePicker extends FlatpickrBase {
 
   protected hasValue(): boolean {
     return Boolean(this._inputEl?.value) || this.value.some((d) => d !== null);
+  }
+
+  override updated(changedProperties: Map<string, unknown>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('dateRangePickerDisabled')) {
+      this.disabled = this.dateRangePickerDisabled;
+    }
+  }
+
+  override async firstUpdated(changedProps: PropertyValues): Promise<void> {
+    await super.firstUpdated(changedProps);
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
+    await this.initializeFlatpickr();
   }
 
   protected updateFormValue(): void {
@@ -254,7 +271,7 @@ export class DateRangePicker extends FlatpickrBase {
     }
   }
 
-  protected emitChangeEvent(source?: string): void {}
+  protected emitChangeEvent(): void {}
 
   protected getAriaLabel(): string {
     return 'Date range picker';

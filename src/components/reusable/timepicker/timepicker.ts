@@ -1,6 +1,5 @@
-import { html, TemplateResult, PropertyValues } from 'lit';
+import { TemplateResult, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { unsafeCSS } from 'lit';
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -35,85 +34,97 @@ export class TimePicker extends FlatpickrBase {
   ];
 
   /** Label text. */
-  @property({ type: String }) override accessor label = '';
+  @property({ type: String })
+  override accessor label = '';
 
   /** Locale setting. */
-  @property({ type: String }) override accessor locale:
-    | (typeof langsArray)[number]
-    | string = 'en';
+  @property({ type: String })
+  override accessor locale: (typeof langsArray)[number] | string = 'en';
 
   /** Bound time value. */
   override value: Date | null = null;
 
   /** Display formatted time in the input box. */
-  @property({ type: String }) override accessor dateFormat = 'H:i';
+  @property({ type: String })
+  override accessor dateFormat = 'H:i';
 
   /** Initial hour. */
-  @property({ type: Number }) accessor defaultHour: number | null = null;
+  @property({ type: Number })
+  accessor defaultHour: number | null = null;
 
   /** Initial minute. */
-  @property({ type: Number }) accessor defaultMinute: number | null = null;
+  @property({ type: Number })
+  accessor defaultMinute: number | null = null;
 
   /** Default error message. */
-  @property({ type: String }) override accessor defaultErrorMessage = '';
+  @property({ type: String })
+  override accessor defaultErrorMessage = '';
 
   /** Warning message. */
-  @property({ type: String }) override accessor warnText = '';
+  @property({ type: String })
+  override accessor warnText = '';
 
   /** Caption under picker. */
-  @property({ type: String }) override accessor caption = '';
+  @property({ type: String })
+  override accessor caption = '';
 
   /** Required flag. */
-  @property({ type: Boolean }) override accessor required = false;
+  @property({ type: Boolean })
+  override accessor required = false;
 
   /** Input size. */
-  @property({ type: String }) override accessor size = 'md';
+  @property({ type: String })
+  override accessor size = 'md';
 
   /** Disabled toggle. */
-  @property({ type: Boolean }) override accessor disabled = false;
+  @property({ type: Boolean })
+  override accessor disabled = false;
+
+  /** Disabled timepicker import toggle. */
+  @property({ type: Boolean })
+  accessor timePickerDisabled = false;
 
   /** Readonly toggle. */
-  @property({ type: Boolean }) override accessor readonly = false;
+  @property({ type: Boolean })
+  override accessor readonly = false;
 
   /** Force 24h format. */
-  @property({ type: Boolean }) override accessor twentyFourHourFormat:
-    | boolean
-    | null = null;
+  @property({ type: Boolean })
+  override accessor twentyFourHourFormat: boolean | null = null;
 
   /** Min time boundary. */
-  @property({ type: String }) override accessor minTime:
-    | string
-    | number
-    | Date = '';
+  @property({ type: String })
+  override accessor minTime: string | number | Date = '';
 
   /** Max time boundary. */
-  @property({ type: String }) override accessor maxTime:
-    | string
-    | number
-    | Date = '';
+  @property({ type: String })
+  override accessor maxTime: string | number | Date = '';
 
   /** aria-label for error. */
-  @property({ type: String }) override accessor errorAriaLabel = '';
+  @property({ type: String })
+  override accessor errorAriaLabel = '';
 
   /** title for error. */
-  @property({ type: String }) override accessor errorTitle = '';
+  @property({ type: String })
+  override accessor errorTitle = '';
 
   /** aria-label for warning. */
-  @property({ type: String }) override accessor warningAriaLabel = '';
+  @property({ type: String })
+  override accessor warningAriaLabel = '';
 
   /** title for warning. */
-  @property({ type: String }) override accessor warningTitle = '';
+  @property({ type: String })
+  override accessor warningTitle = '';
 
   /** Static calendar positioning. */
-  @property({ type: Boolean }) override accessor staticPosition = false;
+  @property({ type: Boolean })
+  override accessor staticPosition = false;
 
   /** Custom text overrides. */
   @property({ type: Object })
   override accessor textStrings: Partial<FlatpickrTextStrings> = {
     ...baseTextStrings,
   };
-
-  // ─── Rendering ──────────────────────────────────────────────────────────────
 
   override render(): TemplateResult {
     const anchorId = this.name || this.generateRandomId('time-picker');
@@ -129,12 +140,9 @@ export class TimePicker extends FlatpickrBase {
     noCalendar: true,
   };
 
-  // ─── Lifecycle & Initialization ─────────────────────────────────────────────
-
   override async firstUpdated(changedProps: PropertyValues): Promise<void> {
     await super.firstUpdated(changedProps);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-    // after Flatpickr is created, set defaultHour/defaultMinute if no value provided
     if (
       this.flatpickrInstance &&
       !this.value &&
@@ -149,33 +157,33 @@ export class TimePicker extends FlatpickrBase {
     }
   }
 
-  override updated(changedProps: PropertyValues): void {
-    super.updated(changedProps);
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
 
-    if (changedProps.has('twentyFourHourFormat')) {
+    if (changedProperties.has('timePickerDisabled')) {
+      this.disabled = this.timePickerDisabled;
+    }
+
+    if (changedProperties.has('twentyFourHourFormat')) {
       this.dateFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
       this.updateFlatpickrOptions();
     }
 
     if (
-      changedProps.has('defaultHour') ||
-      changedProps.has('defaultMinute') ||
-      changedProps.has('minTime') ||
-      changedProps.has('maxTime')
+      changedProperties.has('defaultHour') ||
+      changedProperties.has('defaultMinute') ||
+      changedProperties.has('minTime') ||
+      changedProperties.has('maxTime')
     ) {
       this.updateFlatpickrOptions();
     }
   }
 
-  // ─── Abstract Implementations ─────────────────────────────────────────────
-
   protected setInitialDates(instance: flatpickr.Instance): void {
-    // If a controlled value is provided, use it
     if (this.value) {
       instance.setDate(this.value, false);
       return;
     }
-    // Otherwise, if defaultHour/defaultMinute provided, set on instance
     if (this.defaultHour != null || this.defaultMinute != null) {
       const d = new Date();
       if (this.defaultHour != null) d.setHours(this.defaultHour);
@@ -186,9 +194,7 @@ export class TimePicker extends FlatpickrBase {
     }
   }
 
-  protected emitChangeEvent(source?: string): void {
-    // Handled in handleDateChange
-  }
+  protected emitChangeEvent(): void {}
 
   protected hasValue(): boolean {
     return this.value instanceof Date;
@@ -202,7 +208,7 @@ export class TimePicker extends FlatpickrBase {
     Partial<BaseOptions>
   > {
     const opts = await this.getBaseFlatpickrOptions();
-    // Force time-only
+
     opts.dateFormat = this.dateFormat;
     delete (opts as any).defaultDate;
     opts.noCalendar = true;
