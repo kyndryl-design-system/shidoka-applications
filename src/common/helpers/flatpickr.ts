@@ -558,6 +558,10 @@ export function setCalendarAttributes(
   }
 
   requestAnimationFrame(() => {
+    if (!instance || !instance.config) {
+      return;
+    }
+
     const mode = instance.config.mode as
       | 'single'
       | 'multiple'
