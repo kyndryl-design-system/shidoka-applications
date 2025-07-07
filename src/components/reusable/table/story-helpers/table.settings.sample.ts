@@ -301,7 +301,7 @@ class StoryTableSettings extends LitElement {
             <div slot="anchor">
               <kyn-button
                 iconposition="left"
-                kind="tertiary"
+                kind="secondary"
                 type="button"
                 size="small"
                 @on-click=${(e: CustomEvent) => this.handleSettingsClick(e)}
