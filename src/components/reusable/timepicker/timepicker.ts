@@ -602,12 +602,6 @@ export class TimePicker extends FormMixin(LitElement) {
       }
       hideEmptyYear();
       this._validate(false, false);
-      this.dispatchEvent(
-        new CustomEvent('flatpickr-ready', {
-          bubbles: true,
-          composed: true,
-        })
-      );
     } catch (error) {
       console.error('Error initializing Flatpickr:', error);
       if (error instanceof Error) {
