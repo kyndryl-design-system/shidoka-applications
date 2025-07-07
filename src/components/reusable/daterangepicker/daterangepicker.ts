@@ -1378,6 +1378,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this._hasInteracted = false;
     this._validate(false, false);
   }
+
+  public getValue(): [Date | null, Date | null] {
+    return this.value;
+  }
+
+  public setValue(newValue: [Date | null, Date | null]): void {
+    this.value = newValue;
+    this.requestUpdate();
+  }
 }
 
 declare global {
