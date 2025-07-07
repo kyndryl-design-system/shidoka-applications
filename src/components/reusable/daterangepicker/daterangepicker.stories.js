@@ -176,6 +176,25 @@ DateTimeRange.args = {
   label: 'Start + End Date / Time',
 };
 
+export const InvalidDefaultDates = Template.bind({});
+InvalidDefaultDates.args = {
+  name: 'invalid-default-dates-picker',
+  label: 'Invalid Default Dates',
+  dateFormat: 'Y-m-d',
+  defaultDate: ['2025-13-01', '2023-06-01'],
+  minDate: '2024-01-01',
+  maxDate: '2024-12-31',
+  caption: 'Invalid default dates will trigger validation errors..',
+  invalidText: '',
+  defaultErrorMessage: '',
+  required: false,
+  size: 'md',
+  staticPosition: false,
+  disable: [],
+  enable: [],
+};
+InvalidDefaultDates.storyName = 'Invalid / Out-of-Range Defaults';
+
 export const WithPreselectedRange = Template.bind({});
 WithPreselectedRange.args = {
   ...DateRangeDefault.args,
