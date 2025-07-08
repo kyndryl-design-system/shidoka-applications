@@ -25,6 +25,7 @@ const args = {
   value: '',
   label: 'Search...',
   size: 'md',
+  enableHistorySuggestion: false,
   suggestions: [
     'Component',
     'Component search',
@@ -64,6 +65,7 @@ export const Search = {
 export const SearchHistory = {
   args: {
     ...args,
+    enableHistorySuggestion: true,
     suggestions: [
       'Shidoka search',
       'Shidoka input',
@@ -86,7 +88,7 @@ export const SearchHistory = {
         ?expandable=${args.expandable}
         ?disabled=${args.disabled}
         size=${args.size}
-        ?enableHistorySuggestion=${true}
+        ?enableHistorySuggestion=${args.enableHistorySuggestion}
         .historySuggestions=${args.historySuggestions}
         .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
