@@ -203,30 +203,66 @@ export const IconOnly = {
 export const Gallery = {
   render: () => {
     return html`
-      <div class="heading kd-type--headline-04">Gallery</div>
-      <div class="heading kd-type--headline-06">Primary</div>
-      <kyn-button>Primary</kyn-button>
-      <kyn-button kind="secondary">Secondary</kyn-button>
-      <kyn-button kind="tertiary">Tertiary</kyn-button>
-      <kyn-button kind="outline">Outline</kyn-button>
-      <kyn-button kind="ghost">Ghost</kyn-button>
-      <div class="heading kd-type--headline-06">AI</div>
-      <kyn-button kind="primary-ai">Primary AI</kyn-button>
-      <kyn-button kind="secondary-ai">Secondary AI</kyn-button>
-      <kyn-button kind="outline-ai">Outline AI</kyn-button>
-      <div class="heading kd-type--headline-06">Destructive</div>
-      <kyn-button kind="primary-destructive">Primary Destructive</kyn-button>
-      <kyn-button kind="secondary-destructive">
-        Secondary Destructive
-      </kyn-button>
-      <kyn-button kind="outline-destructive">Outline Destructive</kyn-button>
-      <kyn-button kind="ghost-destructive">Ghost Destructive</kyn-button>
-      <div class="heading kd-type--headline-06">Miscellaneous</div>
-      <kyn-button kind="content">Content</kyn-button>
-      <div class="heading kd-type--headline-06">Disabled</div>
-      <kyn-button disabled>Solid Disabled</kyn-button>
-      <kyn-button kind="outline" disabled>Outline Disabled</kyn-button>
-      <kyn-button kind="ghost" disabled>Ghost Disabled</kyn-button>
+      <div
+        class="heading kd-type--headline-04"
+        style="margin-bottom:var(--kd-spacing-24)"
+      >
+        Gallery
+      </div>
+      <div
+        style="display: flex;gap: var(--kd-spacing-16); flex-direction: column; "
+      >
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">Primary</div>
+
+          <kyn-button>Primary</kyn-button>
+          <kyn-button kind="secondary">Secondary</kyn-button>
+          <kyn-button kind="tertiary">Tertiary</kyn-button>
+          <kyn-button kind="outline">Outline</kyn-button>
+          <kyn-button kind="ghost">Ghost</kyn-button>
+        </div>
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">AI</div>
+          <kyn-button kind="primary-ai">Primary AI</kyn-button>
+          <kyn-button kind="secondary-ai">Secondary AI</kyn-button>
+          <kyn-button kind="outline-ai">Outline AI</kyn-button>
+        </div>
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Destructive
+          </div>
+          <kyn-button kind="primary-destructive"
+            >Primary Destructive</kyn-button
+          >
+          <kyn-button kind="secondary-destructive">
+            Secondary Destructive
+          </kyn-button>
+          <kyn-button kind="outline-destructive"
+            >Outline Destructive</kyn-button
+          >
+          <kyn-button kind="ghost-destructive">Ghost Destructive</kyn-button>
+        </div>
+
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">
+            Miscellaneous
+          </div>
+          <kyn-button kind="content">Content</kyn-button>
+        </div>
+
+        <div>
+          <div class="heading kd-type--headline-06 heading-text">Disabled</div>
+
+          <kyn-button disabled>Solid Disabled</kyn-button>
+          <kyn-button kind="outline" disabled>Outline Disabled</kyn-button>
+          <kyn-button kind="ghost" disabled>Ghost Disabled</kyn-button>
+        </div>
+      </div>
+      <style>
+        .heading-text {
+          margin-bottom: var(--kd-spacing-12);
+        }
+      </style>
     `;
   },
 };

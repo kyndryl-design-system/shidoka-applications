@@ -491,6 +491,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
         >
           <span
             class="error-icon"
+            role="img"
             aria-label=${this.errorAriaLabel || 'Error message icon'}
           >
             ${unsafeSVG(errorIcon)}
@@ -534,39 +535,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       'date-range-picker__enable-time': this._enableTime,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
     };
-  }
-
-  private processDefaultDates(
-    defaultDate: string | string[] | Date | Date[] | null
-  ): Date[] {
-    if (!defaultDate) return [];
-
-    if (Array.isArray(defaultDate)) {
-      const parsedDates = defaultDate
-        .map((date) => {
-          if (date instanceof Date) return date;
-          if (typeof date === 'string') return this.parseDateString(date);
-          return null;
-        })
-        .filter((date): date is Date => date !== null);
-
-      if (parsedDates.length === 2 && parsedDates[1] < parsedDates[0]) {
-        console.error(
-          'Invalid date range: End date cannot be earlier than start date'
-        );
-        this.invalidText = this._textStrings.invalidDateRange;
-        return [parsedDates[0]];
-      }
-
-      return parsedDates;
-    } else if (typeof defaultDate === 'string') {
-      const parsed = this.parseDateString(defaultDate);
-      return parsed ? [parsed] : [];
-    } else if (defaultDate instanceof Date) {
-      return [defaultDate];
-    }
-
-    return [];
   }
 
   private parseDateString(dateStr: string): Date | null {
@@ -1309,6 +1277,50 @@ export class DateRangePicker extends FormMixin(LitElement) {
     } catch (e) {
       console.warn('Error handling input focus event:', e);
     }
+  }
+
+  private processDefaultDates(
+    defaultDate: string | string[] | Date | Date[] | null
+  ): Date[] {
+    if (!defaultDate) return [];
+
+    const rawValues = Array.isArray(defaultDate) ? defaultDate : [defaultDate];
+
+    const parsed = rawValues.map((d) => {
+      if (d instanceof Date) return d;
+      if (typeof d === 'string') return this.parseDateString(d);
+      return null;
+    });
+
+    const validDates = parsed.filter(
+      (date): date is Date => date instanceof Date && !isNaN(date.getTime())
+    );
+    if (validDates.length === 2 && validDates[1] < validDates[0]) {
+      console.error(
+        'Invalid date range: End date cannot be earlier than start date'
+      );
+      this.invalidText = this._textStrings.invalidDateRange;
+      return [validDates[0]];
+    }
+
+    const min = this.minDate
+      ? this.parseDateString(this.minDate as string)
+      : null;
+    const max = this.maxDate
+      ? this.parseDateString(this.maxDate as string)
+      : null;
+
+    const inRange = validDates.filter((d) => {
+      return (!min || d >= min) && (!max || d <= max);
+    });
+
+    if (inRange.length !== validDates.length) {
+      console.error('Invalid date(s) provided in defaultDate', inRange);
+      this.invalidText = this._textStrings.pleaseSelectValidDate;
+      this.defaultDate = null;
+    }
+
+    return inRange;
   }
 
   private _validate(interacted: boolean, report: boolean) {
