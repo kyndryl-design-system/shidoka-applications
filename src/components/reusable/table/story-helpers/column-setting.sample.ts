@@ -247,7 +247,7 @@ class StoryColumSetting extends LitElement {
                       @mouseover=${() => this.handleMouseOver(row.id)}
                       @mouseout=${this.handleMouseOut}
                       iconposition="center"
-                      kind="tertiary"
+                      kind="ghost"
                       type="button"
                       size="small"
                       @on-click=${(e: CustomEvent) =>
