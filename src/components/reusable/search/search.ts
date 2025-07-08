@@ -54,8 +54,13 @@ export class Search extends LitElement {
   @property({ type: Array })
   accessor suggestions: Array<string> = [];
 
+  /** Enable history suggestion */
+  @property({ type: Boolean })
+  accessor enableHistorySuggestion = false;
+
+  /** Auto-suggest array of strings. Update this array externally after on-input. */
   @property({ type: Array })
-  accessor searchHistory: Array<string> = [];
+  accessor historySuggestions: Array<string> = [];
 
   /** Expandable style search button description (Required to support accessibility). */
   @property({ type: String })
@@ -64,10 +69,6 @@ export class Search extends LitElement {
   /** Assistive text strings. */
   @property({ type: Object })
   accessor assistiveTextStrings = _defaultTextStrings;
-
-  /** To show history searches in suggestion panel */
-  @property({ type: Boolean })
-  accessor enableSearchHistory = false;
 
   /**
    * Internal assistive text strings.
@@ -107,7 +108,7 @@ export class Search extends LitElement {
       expanded: this._expanded,
       expandable: this.expandable,
       focused: this._focused,
-      'has-value': this.value !== '' || this.enableSearchHistory,
+      'has-value': this.value !== '' || this.enableHistorySuggestion,
     };
 
     return html`
@@ -144,9 +145,9 @@ export class Search extends LitElement {
         >
           ${(() => {
             const isSearchHistory =
-              this.value === '' && this.enableSearchHistory;
+              this.value === '' && this.enableHistorySuggestion;
             const listToRender = isSearchHistory
-              ? this.searchHistory
+              ? this.historySuggestions
               : this.suggestions;
 
             return html`
@@ -203,7 +204,7 @@ export class Search extends LitElement {
   private _handleFocus() {
     this._focused = true;
 
-    if (this.enableSearchHistory) {
+    if (this.enableHistorySuggestion) {
       this._expanded = true;
     }
   }
@@ -377,7 +378,7 @@ export class Search extends LitElement {
     isSearchHistory: boolean
   ) {
     const showHistoryIcon =
-      isSearchHistory || this.searchHistory.includes(suggestion);
+      isSearchHistory || this.historySuggestions.includes(suggestion);
 
     const iconTemplate = showHistoryIcon
       ? html`<span style="display:flex">${unsafeSVG(historyIcon)}</span>`

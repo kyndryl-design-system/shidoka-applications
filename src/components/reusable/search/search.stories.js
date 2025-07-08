@@ -70,7 +70,7 @@ export const SearchHistory = {
       'Shidoka component',
       'Shidoka',
     ],
-    searchHistory: [
+    historySuggestions: [
       'Shidoka input',
       'Shidoka text',
       'Shidoka pageTitle',
@@ -86,8 +86,8 @@ export const SearchHistory = {
         ?expandable=${args.expandable}
         ?disabled=${args.disabled}
         size=${args.size}
-        ?enableSearchHistory=${true}
-        .searchHistory=${args.searchHistory}
+        ?enableHistorySuggestion=${true}
+        .historySuggestions=${args.historySuggestions}
         .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         .assistiveTextStrings=${args.assistiveTextStrings}
