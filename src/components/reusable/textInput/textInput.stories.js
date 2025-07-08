@@ -46,6 +46,7 @@ const args = {
   pattern: undefined,
   minLength: undefined,
   maxLength: undefined,
+  autoComplete: false,
   textStrings: {
     requiredText: 'Required',
     clearAll: 'Clear all',
@@ -69,6 +70,7 @@ export const TextInput = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
+        ?autoComplete=${args.autoComplete}
         pattern=${ifDefined(args.pattern)}
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}
@@ -110,6 +112,7 @@ export const WithIcon = {
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
         ?iconRight=${args.iconRight}
+        ?autoComplete=${args.autoComplete}
         pattern=${ifDefined(args.pattern)}
         minLength=${ifDefined(args.minLength)}
         maxLength=${ifDefined(args.maxLength)}

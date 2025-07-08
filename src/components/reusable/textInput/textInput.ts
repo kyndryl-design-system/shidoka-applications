@@ -100,6 +100,10 @@ export class TextInput extends FormMixin(LitElement) {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
+  /** AutoComplete state */
+  @property({ type: Boolean })
+  accessor autoComplete = false;
+
   /** Internal text strings.
    * @internal
    */
@@ -191,6 +195,7 @@ export class TextInput extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
+            autocomplete=${this.autoComplete ? 'on' : 'off'}
           />
           ${this.type === 'password' && !this.readonly
             ? html`
