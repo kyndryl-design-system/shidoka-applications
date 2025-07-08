@@ -62,16 +62,17 @@ export class TableSkeleton extends LitElement {
                     tableTitle=${this.tableTitle}
                     tableSubtitle=${this.tableSubtitle}
                   ></kyn-table-toolbar>`
-                : html`<div class="skeleton-title-wrapper">
+                : html`
                     <kyn-skeleton
                       class="skeleton-title"
                       width="122px"
                     ></kyn-skeleton>
+                    <div class="skeleton-title-divider"></div>
                     <kyn-skeleton
                       class="skeleton-subtitle"
                       width="61px"
                     ></kyn-skeleton>
-                  </div>`}
+                  `}
             `
           : null}
         ${this.showGlobalFilter
