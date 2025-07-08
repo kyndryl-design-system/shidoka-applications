@@ -49,7 +49,7 @@ export class HeaderNotificationPanel extends LitElement {
         ? null
         : html` <div class="panel-footer">
             <kyn-button
-              kind="secondary"
+              kind="ghost"
               @click=${(e: Event) => this._handlefooterBtnEvent(e)}
               >${this.panelFooterBtnText}</kyn-button
             >
