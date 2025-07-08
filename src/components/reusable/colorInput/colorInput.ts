@@ -47,6 +47,10 @@ export class ColorInput extends FormMixin(LitElement) {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
+  /** AutoComplete state */
+  @property({ type: Boolean })
+  accessor autoComplete = false;
+
   /** Internal text strings.
    * @internal
    */
@@ -114,6 +118,7 @@ export class ColorInput extends FormMixin(LitElement) {
             aria-label=${this._textStrings.colorTextInput}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
+            autocomplete=${this.autoComplete ? 'on' : 'off'}
             @input=${(e: any) => this.handleTextInput(e)}
           />
           <div class="caption-error-count">
