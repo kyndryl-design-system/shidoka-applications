@@ -254,19 +254,20 @@ export class ButtonGroup extends LitElement {
     } else {
       this.selectedIndex = cmd - 1;
       this._updateWindow();
-      this.dispatchEvent(
-        new CustomEvent('on-change', {
-          bubbles: true,
-          composed: true,
-          detail: {
-            value: cmd,
-            selectedIndex: this.selectedIndex,
-            visibleStart: this.visibleStart,
-            visibleEnd: this.visibleEnd,
-          },
-        })
-      );
     }
+
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          value: typeof cmd === 'number' ? cmd : null,
+          selectedIndex: this.selectedIndex,
+          visibleStart: this.visibleStart,
+          visibleEnd: this.visibleEnd,
+        },
+      })
+    );
   }
 
   private _attachClickListeners() {
