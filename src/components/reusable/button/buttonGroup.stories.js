@@ -139,6 +139,16 @@ export const Default = {
   args: { ...BaseArgs, kind: BUTTON_GROUP_KINDS.DEFAULT },
 };
 
+export const Icons = {
+  render: IconTemplate,
+  args: {
+    ...BaseArgs,
+    kind: BUTTON_GROUP_KINDS.ICONS,
+    singleSelect: true,
+    selectedIndex: 0,
+  },
+};
+
 export const PaginationExample = {
   args: {
     kind: BUTTON_GROUP_KINDS.PAGINATION,
@@ -175,16 +185,6 @@ export const PaginationExample = {
         }}
       ></kyn-button-group>
     `;
-  },
-};
-
-export const SingleSelectIcons = {
-  render: IconTemplate,
-  args: {
-    ...BaseArgs,
-    kind: BUTTON_GROUP_KINDS.ICONS,
-    singleSelect: true,
-    selectedIndex: 0,
   },
 };
 
