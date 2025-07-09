@@ -27,16 +27,17 @@ export default {
     currentPage: { control: 'number' },
     totalPages: { control: 'number' },
     maxVisible: { control: 'number' },
-    singleSelect: { control: 'boolean' },
     selectedIndex: { control: 'number' },
     incrementBy: { control: 'number' },
+    visibleStart: {
+      control: { type: 'number' },
+      table: { category: 'read-only' },
+    },
+    visibleEnd: {
+      control: { type: 'number' },
+      table: { category: 'read-only' },
+    },
   },
-};
-
-const BaseArgs = {
-  singleSelect: false,
-  selectedIndex: -1,
-  selectedIndices: [],
 };
 
 const iconButtonConfigs = [
@@ -68,14 +69,15 @@ const Template = (args) => {
   return html`
     <kyn-button-group
       .kind=${args.kind}
-      ?singleSelect=${args.singleSelect}
       .selectedIndex=${args.selectedIndex}
-      .selectedIndices=${args.selectedIndices}
+      .currentPage=${args.currentPage}
+      .totalPages=${args.totalPages}
+      .maxVisible=${args.maxVisible}
+      .incrementBy=${args.incrementBy}
       @on-change=${(e) => {
         action('on-change')(e);
         updateArgs({
           selectedIndex: e.detail.selectedIndex,
-          selectedIndices: [...e.detail.selectedIndices],
         });
       }}
     >
@@ -92,14 +94,15 @@ const IconTemplate = (args) => {
   return html`
     <kyn-button-group
       .kind=${args.kind}
-      ?singleSelect=${args.singleSelect}
       .selectedIndex=${args.selectedIndex}
-      .selectedIndices=${args.selectedIndices}
+      .currentPage=${args.currentPage}
+      .totalPages=${args.totalPages}
+      .maxVisible=${args.maxVisible}
+      .incrementBy=${args.incrementBy}
       @on-change=${(e) => {
         action('on-change')(e);
         updateArgs({
           selectedIndex: e.detail.selectedIndex,
-          selectedIndices: [...e.detail.selectedIndices],
         });
       }}
     >
@@ -118,14 +121,15 @@ const CustomIconTemplate = (args) => {
   return html`
     <kyn-button-group
       .kind=${args.kind}
-      ?singleSelect=${args.singleSelect}
       .selectedIndex=${args.selectedIndex}
-      .selectedIndices=${args.selectedIndices}
+      .currentPage=${args.currentPage}
+      .totalPages=${args.totalPages}
+      .maxVisible=${args.maxVisible}
+      .incrementBy=${args.incrementBy}
       @on-change=${(e) => {
         action('on-change')(e);
         updateArgs({
           selectedIndex: e.detail.selectedIndex,
-          selectedIndices: [...e.detail.selectedIndices],
         });
       }}
     >
@@ -136,45 +140,42 @@ const CustomIconTemplate = (args) => {
 
 export const Default = {
   render: Template,
-  args: { ...BaseArgs, kind: BUTTON_GROUP_KINDS.DEFAULT },
+  args: {
+    kind: BUTTON_GROUP_KINDS.DEFAULT,
+    selectedIndex: -1,
+    currentPage: 1,
+    totalPages: 1,
+    maxVisible: 5,
+    incrementBy: 1,
+  },
 };
 
 export const Icons = {
   render: IconTemplate,
   args: {
-    ...BaseArgs,
     kind: BUTTON_GROUP_KINDS.ICONS,
-    singleSelect: true,
     selectedIndex: 0,
+    currentPage: 1,
+    totalPages: 1,
+    maxVisible: 5,
+    incrementBy: 1,
   },
 };
 
 export const PaginationExample = {
-  args: {
-    kind: BUTTON_GROUP_KINDS.PAGINATION,
-    currentPage: 1,
-    totalPages: 20,
-    maxVisible: 5,
-    singleSelect: true,
-    incrementBy: 3,
-    visibleStart: 1,
-    visibleEnd: 5,
-  },
   render: (args) => {
     const [, updateArgs] = useArgs();
-    const { currentPage, totalPages, visibleStart, visibleEnd } = args;
     return html`
-      <div style="margin-bottom:16px">
-        Page ${currentPage} of ${totalPages} — showing
-        ${visibleStart}–${visibleEnd}
+      <div class="helper-label">
+        Page ${args.currentPage} of ${args.totalPages} — showing
+        ${args.visibleStart}–${args.visibleEnd}
       </div>
       <kyn-button-group
         .kind=${BUTTON_GROUP_KINDS.PAGINATION}
-        .currentPage=${currentPage}
-        .totalPages=${totalPages}
+        .currentPage=${args.currentPage}
+        .totalPages=${args.totalPages}
         .maxVisible=${args.maxVisible}
         .incrementBy=${args.incrementBy}
-        ?singleSelect=${true}
         @on-change=${(e) => {
           action('on-change')(e);
           updateArgs({
@@ -184,16 +185,31 @@ export const PaginationExample = {
           });
         }}
       ></kyn-button-group>
+      <style>
+        .helper-label {
+          margin-bottom: var(--kd-spacing-12);
+        }
+      </style>
     `;
+  },
+  args: {
+    currentPage: 1,
+    totalPages: 20,
+    maxVisible: 5,
+    incrementBy: 3,
+    visibleStart: 1,
+    visibleEnd: 5,
   },
 };
 
 export const CustomIconArray = {
   render: CustomIconTemplate,
   args: {
-    ...BaseArgs,
     kind: BUTTON_GROUP_KINDS.ICONS,
-    singleSelect: false,
-    selectedIndices: [0],
+    selectedIndex: 0,
+    currentPage: 1,
+    totalPages: 1,
+    maxVisible: 5,
+    incrementBy: 1,
   },
 };
