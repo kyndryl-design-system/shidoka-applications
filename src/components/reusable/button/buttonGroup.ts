@@ -34,6 +34,12 @@ export interface ButtonConfig {
   kind?: string;
 }
 
+const _defaultTextStrings = {
+  prevButtonDescription: 'Previous Page',
+  nextButtonDescription: 'Next Page',
+  paginationButtonDescription: '',
+};
+
 /**
  * ButtonGroup component.
  *
@@ -99,6 +105,16 @@ export class ButtonGroup extends LitElement {
   public get visibleEnd(): number {
     return Math.min(this.totalPages, this._visibleStart + this.maxVisible - 1);
   }
+
+  /** Text string customization. */
+  @property({ type: Object })
+  accessor textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  accessor _textStrings = _defaultTextStrings;
 
   /** Target <kyn-button> children */
   @queryAssignedElements({ slot: '', flatten: true })
@@ -175,6 +191,8 @@ export class ButtonGroup extends LitElement {
         <kyn-button
           kind="tertiary"
           class="kd-btn--group-first"
+          description=${this.textStrings.prevButtonDescription ||
+          `Previous Page`}
           @click=${() => this._onPage('prev')}
         >
           ${unsafeSVG(chevronLeftIcon)}
@@ -184,6 +202,8 @@ export class ButtonGroup extends LitElement {
           (p, i) => html`
             <kyn-button
               kind="tertiary"
+              description=${this.textStrings.paginationButtonDescription ||
+              `Page ${p}`}
               class="kd-btn--group-middle"
               ?selected=${i === rel}
               @click=${() => this._onPage(p)}
@@ -196,6 +216,7 @@ export class ButtonGroup extends LitElement {
         <kyn-button
           kind="tertiary"
           class="kd-btn--group-last"
+          description=${this.textStrings.nextButtonDescription || `Next Page`}
           @click=${() => this._onPage('next')}
         >
           ${unsafeSVG(chevronRightIcon)}
