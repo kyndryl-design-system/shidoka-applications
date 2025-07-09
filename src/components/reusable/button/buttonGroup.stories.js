@@ -34,7 +34,7 @@ export default {
     totalPages: { control: 'number' },
     maxVisible: { control: 'number' },
     selectedIndex: { control: 'number' },
-    incrementBy: { control: 'number' },
+    clickIncrementBy: { control: 'number' },
     visibleStart: {
       control: { type: 'number' },
       table: { category: 'read-only' },
@@ -79,7 +79,7 @@ const Template = (args) => {
       .currentPage=${args.currentPage}
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
-      .incrementBy=${args.incrementBy}
+      .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
         action('on-change')(e);
         updateArgs({
@@ -104,7 +104,7 @@ const IconTemplate = (args) => {
       .currentPage=${args.currentPage}
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
-      .incrementBy=${args.incrementBy}
+      .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
         action('on-change')(e);
         updateArgs({
@@ -131,7 +131,7 @@ const CustomIconTemplate = (args) => {
       .currentPage=${args.currentPage}
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
-      .incrementBy=${args.incrementBy}
+      .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
         action('on-change')(e);
         updateArgs({
@@ -152,7 +152,7 @@ export const Default = {
     currentPage: 1,
     totalPages: 1,
     maxVisible: 5,
-    incrementBy: 1,
+    clickIncrementBy: 1,
   },
 };
 
@@ -164,7 +164,7 @@ export const Icons = {
     currentPage: 1,
     totalPages: 1,
     maxVisible: 5,
-    incrementBy: 1,
+    clickIncrementBy: 1,
   },
 };
 
@@ -174,7 +174,7 @@ export const PaginationExample = {
     currentPage: 1,
     totalPages: 20,
     maxVisible: 5,
-    incrementBy: 3,
+    clickIncrementBy: 3,
     visibleStart: 1,
     visibleEnd: 5,
   },
@@ -192,7 +192,7 @@ export const PaginationExample = {
         .currentPage=${args.currentPage}
         .totalPages=${args.totalPages}
         .maxVisible=${args.maxVisible}
-        .incrementBy=${args.incrementBy}
+        .clickIncrementBy=${args.clickIncrementBy}
         .selectedIndex=${args.selectedIndex}
         @on-change=${(e) => {
           action('on-change')(e);
@@ -227,6 +227,6 @@ export const CustomIconArray = {
     currentPage: 1,
     totalPages: 1,
     maxVisible: 5,
-    incrementBy: 1,
+    clickIncrementBy: 1,
   },
 };

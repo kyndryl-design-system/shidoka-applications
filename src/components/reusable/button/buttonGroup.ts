@@ -66,7 +66,7 @@ export class ButtonGroup extends LitElement {
 
   /** Number of pages to increment/decrement when clicking next/previous buttons in pagination */
   @property({ type: Number })
-  accessor incrementBy = 1;
+  accessor clickIncrementBy = 1;
 
   /** Starting page for the visible range (internal state) */
   @state()
@@ -268,7 +268,7 @@ export class ButtonGroup extends LitElement {
     let newPage = this.currentPage;
     let shouldUpdate = false;
     if (value === 'prev') {
-      const nextStart = Math.max(1, this._visibleStart - this.incrementBy);
+      const nextStart = Math.max(1, this._visibleStart - this.clickIncrementBy);
       if (nextStart !== this._visibleStart) {
         this._visibleStart = nextStart;
         shouldUpdate = true;
@@ -277,7 +277,7 @@ export class ButtonGroup extends LitElement {
       const maxStart = Math.max(1, this.totalPages - this.maxVisible + 1);
       const nextStart = Math.min(
         maxStart,
-        this._visibleStart + this.incrementBy
+        this._visibleStart + this.clickIncrementBy
       );
       if (nextStart !== this._visibleStart) {
         this._visibleStart = nextStart;
