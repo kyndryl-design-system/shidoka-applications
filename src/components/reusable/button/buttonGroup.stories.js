@@ -36,10 +36,6 @@ export default {
       options: Object.values(BUTTON_GROUP_KINDS),
     },
     // pagination-only props:
-    currentPage: {
-      control: 'number',
-      if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
-    },
     totalPages: {
       control: 'number',
       if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
@@ -93,7 +89,6 @@ const Template = (args) => {
     <kyn-button-group
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
-      .currentPage=${args.currentPage}
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
@@ -118,7 +113,6 @@ const IconTemplate = (args) => {
     <kyn-button-group
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
-      .currentPage=${args.currentPage}
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
@@ -145,7 +139,6 @@ const CustomIconTemplate = (args) => {
     <kyn-button-group
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
-      .currentPage=${args.currentPage}
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
@@ -166,7 +159,6 @@ export const Default = {
   args: {
     kind: BUTTON_GROUP_KINDS.DEFAULT,
     selectedIndex: -1,
-    currentPage: 1,
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
@@ -178,7 +170,6 @@ export const Icons = {
   args: {
     kind: BUTTON_GROUP_KINDS.ICONS,
     selectedIndex: 0,
-    currentPage: 1,
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
@@ -188,8 +179,7 @@ export const Icons = {
 export const PaginationExample = {
   args: {
     kind: BUTTON_GROUP_KINDS.PAGINATION,
-    selectedIndex: -1,
-    currentPage: 1,
+    selectedIndex: 0,
     totalPages: 20,
     maxVisible: 5,
     clickIncrementBy: 3,
@@ -199,30 +189,25 @@ export const PaginationExample = {
   render: (args) => {
     const [, updateArgs] = useArgs();
     return html`
-      ${args.kind === BUTTON_GROUP_KINDS.PAGINATION
-        ? html`<div class="helper-label">
-            Page ${args.currentPage} of ${args.totalPages} — showing
-            ${args.visibleStart}–${args.visibleEnd}
-          </div>`
-        : ''}
+      <div class="helper-label">
+        Page ${args.selectedIndex + 1} of ${args.totalPages} — showing
+        ${args.visibleStart}–${args.visibleEnd}
+      </div>
       <kyn-button-group
         .kind=${args.kind}
-        .currentPage=${args.currentPage}
+        .selectedIndex=${args.selectedIndex}
         .totalPages=${args.totalPages}
         .maxVisible=${args.maxVisible}
         .clickIncrementBy=${args.clickIncrementBy}
-        .selectedIndex=${args.selectedIndex}
         @on-change=${(e) => {
           action('on-change')(e);
           updateArgs({
-            ...args,
-            currentPage: e.detail.currentPage,
+            selectedIndex: e.detail.selectedIndex,
             visibleStart: e.detail.visibleStart,
             visibleEnd: e.detail.visibleEnd,
           });
         }}
       >
-        <!-- /// alternate buttons allow user to select other kind -->
         <kyn-button value="1">Button 1</kyn-button>
         <kyn-button value="2">Button 2</kyn-button>
         <kyn-button value="3">Button 3</kyn-button>
@@ -242,7 +227,6 @@ export const CustomIconArray = {
   args: {
     kind: BUTTON_GROUP_KINDS.ICONS,
     selectedIndex: 0,
-    currentPage: 1,
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,

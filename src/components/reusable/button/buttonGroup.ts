@@ -118,13 +118,24 @@ export class ButtonGroup extends LitElement {
   }
 
   override updated(changed: Map<string, any>) {
-    if (
-      this.kind === BUTTON_GROUP_KINDS.PAGINATION &&
-      (changed.has('selectedIndex') ||
+    if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) {
+      if (
+        changed.has('selectedIndex') ||
         changed.has('totalPages') ||
-        changed.has('maxVisible'))
-    ) {
-      this._updateWindow();
+        changed.has('maxVisible') ||
+        changed.has('clickIncrementBy')
+      ) {
+        this._updateWindow();
+      }
+    } else {
+      if (changed.has('selectedIndex')) {
+        this._syncSelection();
+      }
+    }
+
+    if (changed.has('kind')) {
+      this._attachClickListeners();
+      this._syncSelection();
     }
   }
 
@@ -158,7 +169,6 @@ export class ButtonGroup extends LitElement {
 
     const pages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
     const rel = pages.indexOf(currentPage);
-    this.selectedIndex = rel;
 
     return html`
       <div class="kd-btn-group" role="radiogroup">
@@ -175,7 +185,7 @@ export class ButtonGroup extends LitElement {
             <kyn-button
               kind="tertiary"
               class="kd-btn--group-middle"
-              ?selected=${i === this.selectedIndex}
+              ?selected=${i === rel}
               @click=${() => this._onPage(p)}
             >
               ${p}
@@ -208,27 +218,34 @@ export class ButtonGroup extends LitElement {
   }
 
   private _onPage(cmd: 'prev' | 'next' | number) {
-    let newPage = this.selectedIndex + 1;
-
-    if (cmd === 'prev') newPage = Math.max(1, newPage - this.clickIncrementBy);
-    else if (cmd === 'next')
-      newPage = Math.min(this.totalPages, newPage + this.clickIncrementBy);
-    else newPage = cmd;
-
-    this.selectedIndex = newPage - 1;
-    this._updateWindow();
-    this.dispatchEvent(
-      new CustomEvent('on-change', {
-        bubbles: true,
-        composed: true,
-        detail: {
-          value: newPage,
-          selectedIndex: this.selectedIndex,
-          visibleStart: this.visibleStart,
-          visibleEnd: this.visibleEnd,
-        },
-      })
-    );
+    if (cmd === 'prev') {
+      const newStart = Math.max(1, this._visibleStart - this.clickIncrementBy);
+      this._visibleStart = newStart;
+      this.requestUpdate();
+    } else if (cmd === 'next') {
+      const maxStart = Math.max(1, this.totalPages - this.maxVisible + 1);
+      const newStart = Math.min(
+        maxStart,
+        this._visibleStart + this.clickIncrementBy
+      );
+      this._visibleStart = newStart;
+      this.requestUpdate();
+    } else {
+      this.selectedIndex = cmd - 1;
+      this._updateWindow();
+      this.dispatchEvent(
+        new CustomEvent('on-change', {
+          bubbles: true,
+          composed: true,
+          detail: {
+            value: cmd,
+            selectedIndex: this.selectedIndex,
+            visibleStart: this.visibleStart,
+            visibleEnd: this.visibleEnd,
+          },
+        })
+      );
+    }
   }
 
   private _attachClickListeners() {

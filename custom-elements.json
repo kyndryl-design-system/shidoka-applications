@@ -4269,17 +4269,8 @@
                 "text": "number"
               },
               "default": "-1",
-              "description": "Index of the selected button",
+              "description": "zero-based: default button index; for pagination, page-1",
               "attribute": "selectedIndex"
-            },
-            {
-              "kind": "field",
-              "name": "currentPage",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "currentPage"
             },
             {
               "kind": "field",
@@ -4345,7 +4336,7 @@
                 "text": "Button[]"
               },
               "privacy": "private",
-              "description": "Access <kyn-button> children"
+              "description": "Target <kyn-button> children"
             },
             {
               "kind": "method",
@@ -4361,6 +4352,24 @@
               "kind": "method",
               "name": "_renderPagination",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateWindow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onPage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "cmd",
+                  "type": {
+                    "text": "'prev' | 'next' | number"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -4392,31 +4401,13 @@
             },
             {
               "kind": "method",
-              "name": "_updatePaginationSelection",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handlePaginationClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "_emitChange",
               "privacy": "private",
               "parameters": [
                 {
                   "name": "value",
                   "type": {
-                    "text": "any"
+                    "text": "unknown"
                   }
                 }
               ]
@@ -4446,16 +4437,8 @@
                 "text": "number"
               },
               "default": "-1",
-              "description": "Index of the selected button",
+              "description": "zero-based: default button index; for pagination, page-1",
               "fieldName": "selectedIndex"
-            },
-            {
-              "name": "currentPage",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "currentPage"
             },
             {
               "name": "totalPages",
@@ -6613,6 +6596,826 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale | string"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "attribute": "defaultDate"
+            },
+            {
+              "kind": "field",
+              "name": "rangeEditMode",
+              "type": {
+                "text": "DateRangeEditableMode"
+              },
+              "description": "Controls which parts of the date range are editable.\nPossible values:\n- \"both\" (default): Both start and end dates can be edited\n- \"start\": Only the start date can be edited, end date is locked once set\n- \"end\": Only the end date can be edited, start date is locked once set\n- \"none\": Neither date can be edited once set (similar to readonly)",
+              "attribute": "rangeEditMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
+              "attribute": "disable"
+            },
+            {
+              "kind": "field",
+              "name": "_processedDisableDates",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "privacy": "private",
+              "default": "[]",
+              "description": "Internal storage for processed disable dates"
+            },
+            {
+              "kind": "field",
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "attribute": "enable"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "attribute": "dateRangePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to readonly.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
+            },
+            {
+              "kind": "field",
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "attribute": "staticPosition"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n  pleaseSelectBothDates: 'Please select a start and end date.',\n  dateRange: 'Date range',\n  noDateSelected: 'No dates selected',\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\n  invalidDateRange:\n    'Invalid date range: End date cannot be earlier than start date',\n  dateRangeSelected: 'Selected date range: {0} to {1}',\n\n  lockedStartDate: 'Start date is locked',\n  lockedEndDate: 'End date is locked',\n  dateLocked: 'Date is locked',\n  dateNotAvailable: 'Date is not available',\n  dateInSelectedRange: 'Date is in selected range',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "debounce",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "(...args: Parameters<T>) => void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "func",
+                  "type": {
+                    "text": "T"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "debouncedUpdate",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleResize",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "hasValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFormValue",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderValidationMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "errorId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getDateRangePickerClasses",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "parseDateString",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date | null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_clearInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "options",
+                  "default": "{ reinitFlatpickr: true }",
+                  "type": {
+                    "text": "{ reinitFlatpickr?: boolean }"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClose",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "handleDateChange",
+              "privacy": "public",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                },
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateSelectedDateRangeAria",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "preventFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "processDefaultDates",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "defaultDate",
+                  "type": {
+                    "text": "string | string[] | Date | Date[] | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormReset",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getValue",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "[Date | null, Date | null]"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setValue",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "[Date | null, Date | null]"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale | string"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "fieldName": "locale"
+            },
+            {
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "fieldName": "dateFormat"
+            },
+            {
+              "name": "defaultDate",
+              "type": {
+                "text": "string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "rangeEditMode",
+              "type": {
+                "text": "DateRangeEditableMode"
+              },
+              "description": "Controls which parts of the date range are editable.\nPossible values:\n- \"both\" (default): Both start and end dates can be edited\n- \"start\": Only the start date can be edited, end date is locked once set\n- \"end\": Only the end date can be edited, start date is locked once set\n- \"none\": Neither date can be edited once set (similar to readonly)",
+              "fieldName": "rangeEditMode"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
+              "fieldName": "disable"
+            },
+            {
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "fieldName": "enable"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "fieldName": "dateRangePickerDisabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to readonly.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
+            },
+            {
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "fieldName": "staticPosition"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "./daterangepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/dropdown/dropdown.ts",
       "declarations": [
         {
@@ -7700,826 +8503,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale | string"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "attribute": "locale"
-            },
-            {
-              "kind": "field",
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "attribute": "dateFormat"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
-              "attribute": "defaultDate"
-            },
-            {
-              "kind": "field",
-              "name": "rangeEditMode",
-              "type": {
-                "text": "DateRangeEditableMode"
-              },
-              "description": "Controls which parts of the date range are editable.\nPossible values:\n- \"both\" (default): Both start and end dates can be edited\n- \"start\": Only the start date can be edited, end date is locked once set\n- \"end\": Only the end date can be edited, start date is locked once set\n- \"none\": Neither date can be edited once set (similar to readonly)",
-              "attribute": "rangeEditMode"
-            },
-            {
-              "kind": "field",
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
-              "attribute": "disable"
-            },
-            {
-              "kind": "field",
-              "name": "_processedDisableDates",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "privacy": "private",
-              "default": "[]",
-              "description": "Internal storage for processed disable dates"
-            },
-            {
-              "kind": "field",
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "attribute": "enable"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "attribute": "dateRangePickerDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to readonly.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "attribute": "twentyFourHourFormat"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "attribute": "errorAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "attribute": "errorTitle"
-            },
-            {
-              "kind": "field",
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "attribute": "warningAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "attribute": "warningTitle"
-            },
-            {
-              "kind": "field",
-              "name": "staticPosition",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
-              "attribute": "staticPosition"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n  pleaseSelectBothDates: 'Please select a start and end date.',\n  dateRange: 'Date range',\n  noDateSelected: 'No dates selected',\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\n  invalidDateRange:\n    'Invalid date range: End date cannot be earlier than start date',\n  dateRangeSelected: 'Selected date range: {0} to {1}',\n\n  lockedStartDate: 'Start date is locked',\n  lockedEndDate: 'End date is locked',\n  dateLocked: 'Date is locked',\n  dateNotAvailable: 'Date is not available',\n  dateInSelectedRange: 'Date is in selected range',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "debounce",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "(...args: Parameters<T>) => void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "func",
-                  "type": {
-                    "text": "T"
-                  }
-                },
-                {
-                  "name": "wait",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "debouncedUpdate",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleResize",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "hasValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updateFormValue",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderValidationMessage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "errorId",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "warningId",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getDateRangePickerClasses",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "parseDateString",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "Date | null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "dateStr",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setupAnchor",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_clearInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "options",
-                  "default": "{ reinitFlatpickr: true }",
-                  "type": {
-                    "text": "{ reinitFlatpickr?: boolean }"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClose",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "initializeFlatpickr",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "updateFlatpickrOptions",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "getComponentFlatpickrOptions",
-              "privacy": "public",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<BaseOptions>>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setInitialDates",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "handleOpen",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "handleDateChange",
-              "privacy": "public",
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                },
-                {
-                  "name": "dateStr",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateSelectedDateRangeAria",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setShouldFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "closeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "preventFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleInputClickEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleInputFocusEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "processDefaultDates",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "Date[]"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "defaultDate",
-                  "type": {
-                    "text": "string | string[] | Date | Date[] | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_onChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormReset",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getValue",
-              "privacy": "public",
-              "return": {
-                "type": {
-                  "text": "[Date | null, Date | null]"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setValue",
-              "privacy": "public",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "[Date | null, Date | null]"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale | string"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "fieldName": "locale"
-            },
-            {
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "fieldName": "dateFormat"
-            },
-            {
-              "name": "defaultDate",
-              "type": {
-                "text": "string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. [\"2024-01-01\", \"2024-01-07\"]).",
-              "fieldName": "defaultDate"
-            },
-            {
-              "name": "rangeEditMode",
-              "type": {
-                "text": "DateRangeEditableMode"
-              },
-              "description": "Controls which parts of the date range are editable.\nPossible values:\n- \"both\" (default): Both start and end dates can be edited\n- \"start\": Only the start date can be edited, end date is locked once set\n- \"end\": Only the end date can be edited, start date is locked once set\n- \"none\": Neither date can be edited once set (similar to readonly)",
-              "fieldName": "rangeEditMode"
-            },
-            {
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
-              "fieldName": "disable"
-            },
-            {
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "fieldName": "enable"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "fieldName": "dateRangePickerDisabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to readonly.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "fieldName": "twentyFourHourFormat"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "fieldName": "errorAriaLabel"
-            },
-            {
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "fieldName": "errorTitle"
-            },
-            {
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "fieldName": "warningAriaLabel"
-            },
-            {
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "fieldName": "warningTitle"
-            },
-            {
-              "name": "staticPosition",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
-              "fieldName": "staticPosition"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "./daterangepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/errorBlock/errorBlock.ts",
       "declarations": [
         {
@@ -9435,6 +9418,249 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/link/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/link/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Link",
+          "declaration": {
+            "name": "Link",
+            "module": "./link"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/link/link.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for navigation links.",
+          "name": "Link",
+          "slots": [
+            {
+              "description": "Slot for link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "LINK_TARGETS"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "LINK_TYPES"
+              },
+              "description": "The Link type. Primary(App) or Secondary(Web).",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the link is disabled.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "standalone",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
+              "attribute": "standalone"
+            },
+            {
+              "kind": "field",
+              "name": "iconLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Positions icon on the left.",
+              "attribute": "iconLeft"
+            },
+            {
+              "kind": "field",
+              "name": "linkFontWeight",
+              "type": {
+                "text": "'lighter' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets font-weight between default heavier and lighter font-weight.",
+              "attribute": "linkFontWeight"
+            },
+            {
+              "kind": "method",
+              "name": "returnClassMap",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "LINK_TARGETS"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "fieldName": "target"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "LINK_TYPES"
+              },
+              "description": "The Link type. Primary(App) or Secondary(Web).",
+              "fieldName": "kind"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "fieldName": "rel"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the link is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "standalone",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
+              "fieldName": "standalone"
+            },
+            {
+              "name": "iconLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Positions icon on the left.",
+              "fieldName": "iconLeft"
+            },
+            {
+              "name": "linkFontWeight",
+              "type": {
+                "text": "'lighter' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets font-weight between default heavier and lighter font-weight.",
+              "fieldName": "linkFontWeight"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Link",
+          "declaration": {
+            "name": "Link",
+            "module": "src/components/reusable/link/link.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-link",
+          "declaration": {
+            "name": "Link",
+            "module": "src/components/reusable/link/link.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/loaders/index.ts",
       "declarations": [],
       "exports": [
@@ -10241,249 +10467,6 @@
           "declaration": {
             "name": "Modal",
             "module": "src/components/reusable/modal/modal.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/link/defs.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/link/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Link",
-          "declaration": {
-            "name": "Link",
-            "module": "./link"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/link/link.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Component for navigation links.",
-          "name": "Link",
-          "slots": [
-            {
-              "description": "Slot for link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "LINK_TARGETS"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "LINK_TYPES"
-              },
-              "description": "The Link type. Primary(App) or Secondary(Web).",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the link is disabled.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "standalone",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
-              "attribute": "standalone"
-            },
-            {
-              "kind": "field",
-              "name": "iconLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Positions icon on the left.",
-              "attribute": "iconLeft"
-            },
-            {
-              "kind": "field",
-              "name": "linkFontWeight",
-              "type": {
-                "text": "'lighter' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets font-weight between default heavier and lighter font-weight.",
-              "attribute": "linkFontWeight"
-            },
-            {
-              "kind": "method",
-              "name": "returnClassMap",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "LINK_TARGETS"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "fieldName": "target"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "LINK_TYPES"
-              },
-              "description": "The Link type. Primary(App) or Secondary(Web).",
-              "fieldName": "kind"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "fieldName": "rel"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the link is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "standalone",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether you want the standalone Link. By default false. Use this prop. (true) with icon with link variant.",
-              "fieldName": "standalone"
-            },
-            {
-              "name": "iconLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Positions icon on the left.",
-              "fieldName": "iconLeft"
-            },
-            {
-              "name": "linkFontWeight",
-              "type": {
-                "text": "'lighter' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets font-weight between default heavier and lighter font-weight.",
-              "fieldName": "linkFontWeight"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Link",
-          "declaration": {
-            "name": "Link",
-            "module": "src/components/reusable/link/link.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-link",
-          "declaration": {
-            "name": "Link",
-            "module": "src/components/reusable/link/link.ts"
           }
         }
       ]
@@ -14310,330 +14293,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "./radioButton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "./radioButtonGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button.",
-          "name": "RadioButton",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-radio-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button group container.",
-          "name": "RadioButtonGroup",
-          "slots": [
-            {
-              "description": "Slot for individual radio buttons.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for description text.",
-              "name": "description"
-            },
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "attribute": "horizontal"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleRadioChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value.",
-              "name": "on-radio-group-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "fieldName": "label"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "fieldName": "horizontal"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button-group",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/search/index.ts",
       "declarations": [],
       "exports": [
@@ -15066,6 +14725,330 @@
           "declaration": {
             "name": "Search",
             "module": "src/components/reusable/search/search.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButton",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "./radioButton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "./radioButtonGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/radioButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Radio button.",
+          "name": "RadioButton",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Radio button value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.",
+              "name": "on-radio-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Radio button value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-radio-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButton",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-radio-button",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Radio button group container.",
+          "name": "RadioButtonGroup",
+          "slots": [
+            {
+              "description": "Slot for individual radio buttons.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for description text.",
+              "name": "description"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "attribute": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRadioChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value.",
+              "name": "on-radio-group-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "fieldName": "label"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "fieldName": "horizontal"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-radio-button-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-radio-button-group",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
           }
         }
       ]
@@ -19650,6 +19633,532 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/tag/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "./tag"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "./tagGroup"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TagSkeleton",
+          "declaration": {
+            "name": "TagSkeleton",
+            "module": "./tag.skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "TagSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'sm'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'sm'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagSkeleton",
+          "declaration": {
+            "name": "TagSkeleton",
+            "module": "src/components/reusable/tag/tag.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-skeleton",
+          "declaration": {
+            "name": "TagSkeleton",
+            "module": "src/components/reusable/tag/tag.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tag.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag.",
+          "name": "Tag",
+          "slots": [
+            {
+              "description": "Slot for icon.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "clickable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
+              "attribute": "clickable"
+            },
+            {
+              "kind": "field",
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default `'spruce'`.",
+              "attribute": "tagColor"
+            },
+            {
+              "kind": "field",
+              "name": "clearTagText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Clear Tag'",
+              "description": "Clear Tag Text to improve accessibility",
+              "attribute": "clearTagText"
+            },
+            {
+              "kind": "method",
+              "name": "_chechForNewTag",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_isTagClickable",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClearPress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTagClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTagPress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "name": "on-close"
+            },
+            {
+              "description": "Captures the click event and emits the Tag value. Works with clickable tags.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Tag name (Required).",
+              "fieldName": "label"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify if the Tag is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag state is filter.",
+              "fieldName": "filter"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "clickable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
+              "fieldName": "clickable"
+            },
+            {
+              "name": "tagColor",
+              "type": {
+                "text": "string"
+              },
+              "default": "'spruce'",
+              "description": "Color variants. Default `'spruce'`.",
+              "fieldName": "tagColor"
+            },
+            {
+              "name": "clearTagText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Clear Tag'",
+              "description": "Clear Tag Text to improve accessibility",
+              "fieldName": "clearTagText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag",
+          "declaration": {
+            "name": "Tag",
+            "module": "src/components/reusable/tag/tag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tag/tagGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tag & Tag Group",
+          "name": "TagGroup",
+          "slots": [
+            {
+              "description": "Slot for individual tags and tagsskeleton.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "attribute": "limitTags"
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "attribute": "filter"
+            },
+            {
+              "kind": "field",
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "attribute": "tagSize"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "limitTags",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
+              "fieldName": "limitTags"
+            },
+            {
+              "name": "filter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tag group filter",
+              "fieldName": "filter"
+            },
+            {
+              "name": "tagSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
+              "fieldName": "tagSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tag-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TagGroup",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tag-group",
+          "declaration": {
+            "name": "TagGroup",
+            "module": "src/components/reusable/tag/tagGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/tabs/defs.ts",
       "declarations": [],
       "exports": []
@@ -20261,532 +20770,6 @@
           "declaration": {
             "name": "Tabs",
             "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "./tag"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "./tagGroup"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TagSkeleton",
-          "declaration": {
-            "name": "TagSkeleton",
-            "module": "./tag.skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "TagSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'sm'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'sm'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagSkeleton",
-          "declaration": {
-            "name": "TagSkeleton",
-            "module": "src/components/reusable/tag/tag.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-skeleton",
-          "declaration": {
-            "name": "TagSkeleton",
-            "module": "src/components/reusable/tag/tag.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tag.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag.",
-          "name": "Tag",
-          "slots": [
-            {
-              "description": "Slot for icon.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
-            },
-            {
-              "kind": "field",
-              "name": "clickable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
-              "attribute": "clickable"
-            },
-            {
-              "kind": "field",
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default `'spruce'`.",
-              "attribute": "tagColor"
-            },
-            {
-              "kind": "field",
-              "name": "clearTagText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Clear Tag'",
-              "description": "Clear Tag Text to improve accessibility",
-              "attribute": "clearTagText"
-            },
-            {
-              "kind": "method",
-              "name": "_chechForNewTag",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_isTagClickable",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClearPress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTagClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTagPress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
-              "name": "on-close"
-            },
-            {
-              "description": "Captures the click event and emits the Tag value. Works with clickable tags.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Tag name (Required).",
-              "fieldName": "label"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify if the Tag is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag state is filter.",
-              "fieldName": "filter"
-            },
-            {
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
-            },
-            {
-              "name": "clickable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
-              "fieldName": "clickable"
-            },
-            {
-              "name": "tagColor",
-              "type": {
-                "text": "string"
-              },
-              "default": "'spruce'",
-              "description": "Color variants. Default `'spruce'`.",
-              "fieldName": "tagColor"
-            },
-            {
-              "name": "clearTagText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Clear Tag'",
-              "description": "Clear Tag Text to improve accessibility",
-              "fieldName": "clearTagText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag",
-          "declaration": {
-            "name": "Tag",
-            "module": "src/components/reusable/tag/tag.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tag/tagGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tag & Tag Group",
-          "name": "TagGroup",
-          "slots": [
-            {
-              "description": "Slot for individual tags and tagsskeleton.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "attribute": "limitTags"
-            },
-            {
-              "kind": "field",
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "attribute": "filter"
-            },
-            {
-              "kind": "field",
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "attribute": "tagSize"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "limitTags",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible tags (5) behind a \"Show all\" button. Use only if having more than 5 tags.",
-              "fieldName": "limitTags"
-            },
-            {
-              "name": "filter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tag group filter",
-              "fieldName": "filter"
-            },
-            {
-              "name": "tagSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tag, `'md'` (default) or `'sm'`. Icon size: 16px.",
-              "fieldName": "tagSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tag-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TagGroup",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tag-group",
-          "declaration": {
-            "name": "TagGroup",
-            "module": "src/components/reusable/tag/tagGroup.ts"
           }
         }
       ]
