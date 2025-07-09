@@ -8,7 +8,34 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import type { Button } from './button';
 
 import stylesheet from './buttonGroup.scss?inline';
+
+import chevronLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
+import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+
+/**
+ * Button group kinds
+ */
+export const BUTTON_GROUP_KINDS = {
+  DEFAULT: 'default',
+  PAGINATION: 'pagination',
+  ICONS: 'icons',
+} as const;
+
+export type BUTTON_GROUP_KINDS =
+  (typeof BUTTON_GROUP_KINDS)[keyof typeof BUTTON_GROUP_KINDS];
+
+/**
+ * Button configuration for array-based rendering
+ */
+export interface ButtonConfig {
+  value: string | number;
+  icon?: any;
+  text?: string;
+  description?: string;
+  disabled?: boolean;
+  kind?: string;
+}
 
 /**
  * ButtonGroup component.
@@ -19,6 +46,10 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 @customElement('kyn-button-group')
 export class ButtonGroup extends LitElement {
   static override styles = unsafeCSS(stylesheet);
+
+  /** Button group kind */
+  @property({ type: String })
+  accessor kind: BUTTON_GROUP_KINDS = BUTTON_GROUP_KINDS.DEFAULT;
 
   /** If true, only one button may be selected at a time */
   @property({ type: Boolean })
@@ -44,38 +75,58 @@ export class ButtonGroup extends LitElement {
   @property({ type: Number })
   accessor maxVisible = 5;
 
-  /** Starting page for the visible range */
+  /** Number of pages to increment/decrement when clicking next/previous buttons in pagination */
   @property({ type: Number })
-  accessor _visibleStart = 1;
-
-  /** Enable pagination mode */
-  @property({ type: Boolean })
-  accessor pagination = false;
+  accessor incrementBy = 1;
 
   /** Content for the previous button (can be text or HTML) */
   @property({ type: String })
-  accessor prevButtonContent = '‹';
+  accessor prevButtonContent = '';
 
   /** Content for the next button (can be text or HTML) */
   @property({ type: String })
-  accessor nextButtonContent = '›';
+  accessor nextButtonContent = '';
 
-  /** Number of pages to increment/decrement when clicking next/previous buttons */
+  /** Starting page for the visible range */
   @property({ type: Number })
-  accessor incrementBy = 1;
+  accessor _visibleStart = 1;
 
   /** All direct <kyn-button> children */
   @queryAssignedElements({ slot: '', flatten: true })
   private accessor _buttons!: Button[];
 
   override render() {
+    switch (this.kind) {
+      case BUTTON_GROUP_KINDS.PAGINATION:
+        return this._renderPagination();
+      case BUTTON_GROUP_KINDS.ICONS:
+        return this._renderIcons();
+      case BUTTON_GROUP_KINDS.DEFAULT:
+      default:
+        return this._renderDefault();
+    }
+  }
+
+  private _renderDefault() {
     const cls = {
       'kd-btn-group': true,
     };
 
-    if (this.pagination) {
-      return this._renderPagination();
-    }
+    return html`
+      <div
+        class=${classMap(cls)}
+        role=${this.singleSelect ? 'radiogroup' : 'group'}
+      >
+        <slot @slotchange=${() => this._handleSlotChange()}></slot>
+      </div>
+    `;
+  }
+
+  private _renderIcons() {
+    const cls = {
+      'kd-btn-group': true,
+      'kd-btn-group--icons': true,
+    };
 
     return html`
       <div
@@ -117,15 +168,14 @@ export class ButtonGroup extends LitElement {
           kind="tertiary"
           value="prev"
           class="kd-btn--group-first"
-          ?disabled=${start <= 1}
           description="Previous page"
           @click=${() => this._handlePaginationClick('prev')}
         >
-          ${unsafeSVG(this.prevButtonContent)}
+          ${unsafeSVG(chevronLeftIcon)}
         </kyn-button>
 
         ${visiblePages.map(
-          (p, idx) =>
+          (p) =>
             html`<kyn-button
               kind="tertiary"
               value="${p}"
@@ -142,47 +192,18 @@ export class ButtonGroup extends LitElement {
           kind="tertiary"
           value="next"
           class="kd-btn--group-last"
-          ?disabled=${end >= this.totalPages}
           description="Next page"
           @click=${() => this._handlePaginationClick('next')}
         >
-          ${unsafeSVG(this.nextButtonContent)}
+          ${unsafeSVG(chevronRightIcon)}
         </kyn-button>
       </div>
     `;
   }
 
-  private _handlePaginationClick(value: string | number) {
-    let newPage = this.currentPage;
-    let shouldUpdateVisibleRange = false;
-
-    if (value === 'prev') {
-      const newStart = Math.max(1, this._visibleStart - this.incrementBy);
-      if (newStart !== this._visibleStart) {
-        this._visibleStart = newStart;
-        shouldUpdateVisibleRange = true;
-      }
-    } else if (value === 'next') {
-      const maxStart = Math.max(1, this.totalPages - this.maxVisible + 1);
-      const newStart = Math.min(
-        maxStart,
-        this._visibleStart + this.incrementBy
-      );
-      if (newStart !== this._visibleStart) {
-        this._visibleStart = newStart;
-        shouldUpdateVisibleRange = true;
-      }
-    } else if (!isNaN(Number(value))) {
-      newPage = Number(value);
-    }
-
-    if (newPage !== this.currentPage) {
-      this.currentPage = newPage;
-      this._emitChange(value);
-    } else if (shouldUpdateVisibleRange) {
-      this.requestUpdate();
-    }
-  }
+  // disabled prop setting for pagination prev/next buttons
+  // ?disabled=${start <= 1}
+  // ?disabled=${end >= this.totalPages}
 
   override firstUpdated() {
     this._attachClickListeners();
@@ -214,7 +235,7 @@ export class ButtonGroup extends LitElement {
       this._attachClickListeners();
     }
     if (
-      this.pagination &&
+      this.kind === BUTTON_GROUP_KINDS.PAGINATION &&
       (changedProperties.has('currentPage') ||
         changedProperties.has('totalPages') ||
         changedProperties.has('maxVisible'))
@@ -224,7 +245,7 @@ export class ButtonGroup extends LitElement {
   }
 
   private _updatePaginationSelection() {
-    if (!this.pagination) return;
+    if (this.kind !== BUTTON_GROUP_KINDS.PAGINATION) return;
 
     const half = Math.floor(this.maxVisible / 2);
     let start = Math.max(1, this.currentPage - half);
@@ -241,7 +262,39 @@ export class ButtonGroup extends LitElement {
 
     const rel = visiblePages.indexOf(this.currentPage);
     this.selectedIndex = rel >= 0 ? rel + 1 : -1;
-    this._syncSelection();
+  }
+
+  private _handlePaginationClick(value: string | number) {
+    let newPage = this.currentPage;
+    let shouldUpdateVisibleRange = false;
+
+    if (value === 'prev') {
+      const newStart = Math.max(1, this._visibleStart - this.incrementBy);
+      if (newStart !== this._visibleStart) {
+        this._visibleStart = newStart;
+        shouldUpdateVisibleRange = true;
+      }
+    } else if (value === 'next') {
+      const maxStart = Math.max(1, this.totalPages - this.maxVisible + 1);
+      const newStart = Math.min(
+        maxStart,
+        this._visibleStart + this.incrementBy
+      );
+      if (newStart !== this._visibleStart) {
+        this._visibleStart = newStart;
+        shouldUpdateVisibleRange = true;
+      }
+    } else if (!isNaN(Number(value))) {
+      newPage = Number(value);
+    }
+
+    if (newPage !== this.currentPage) {
+      this.currentPage = newPage;
+      this._emitChange(value);
+    } else if (shouldUpdateVisibleRange) {
+      this._emitChange(value);
+      this.requestUpdate();
+    }
   }
 
   private _handleSlotChange() {
@@ -252,6 +305,8 @@ export class ButtonGroup extends LitElement {
   }
 
   private _attachClickListeners() {
+    if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) return;
+
     this._buttons.forEach((btn, idx) => {
       btn.removeEventListener('click', this._onButtonClick as any);
       btn.addEventListener('click', (e) => {
@@ -264,7 +319,7 @@ export class ButtonGroup extends LitElement {
   private _onButtonClick(idx: number) {
     if (this.singleSelect) {
       this.selectedIndex = idx;
-      this._emitChange(idx);
+      this._emitChange(this._buttons[idx]?.value || idx);
     } else {
       const existing = this.selectedIndices.indexOf(idx);
       this.selectedIndices =
@@ -296,16 +351,29 @@ export class ButtonGroup extends LitElement {
   }
 
   private _emitChange(value: any) {
+    let visibleStart = this._visibleStart;
+    let visibleEnd = Math.min(
+      this.totalPages,
+      visibleStart + this.maxVisible - 1
+    );
+
+    if (visibleEnd === this.totalPages && this.totalPages > this.maxVisible) {
+      visibleStart = Math.max(1, this.totalPages - this.maxVisible + 1);
+      visibleEnd = this.totalPages;
+    }
+
     this.dispatchEvent(
       new CustomEvent('on-change', {
+        bubbles: true,
+        composed: true,
         detail: {
           value,
           selectedIndex: this.selectedIndex,
           selectedIndices: this.selectedIndices,
           currentPage: this.currentPage,
+          visibleStart,
+          visibleEnd,
         },
-        bubbles: true,
-        composed: true,
       })
     );
   }

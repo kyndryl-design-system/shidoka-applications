@@ -6,8 +6,7 @@ import { action } from 'storybook/actions';
 import './button';
 import './buttonGroup';
 
-import chevronLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
-import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import { BUTTON_GROUP_KINDS } from './buttonGroup';
 
 import coreServicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/core-services.svg';
 import cubeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
@@ -21,10 +20,13 @@ export default {
   title: 'Components/Button/Button Group',
   component: 'kyn-button-group',
   argTypes: {
+    kind: {
+      control: 'select',
+      options: Object.values(BUTTON_GROUP_KINDS),
+    },
     currentPage: { control: 'number' },
     totalPages: { control: 'number' },
     maxVisible: { control: 'number' },
-    pagination: { control: 'boolean' },
     singleSelect: { control: 'boolean' },
     selectedIndex: { control: 'number' },
     incrementBy: { control: 'number' },
@@ -37,11 +39,35 @@ const BaseArgs = {
   selectedIndices: [],
 };
 
-const Template = (args) => {
-  const [{ disabled }, updateArgs] = useArgs();
+const iconButtonConfigs = [
+  { value: '1', icon: coreServicesIcon, description: 'Core Services' },
+  { value: '2', icon: cubeIcon, description: 'Cube' },
+  { value: '3', icon: collabDriveIcon, description: 'Collab Drive' },
+  { value: '4', icon: cloudSecurityIcon, description: 'Cloud Security' },
+  { value: '5', icon: cloudDownloadIcon, description: 'Cloud Download' },
+  { value: '6', icon: consoleIcon, description: 'Console' },
+  { value: '7', icon: deleteIcon, description: 'Delete' },
+];
 
+const renderButtonsFromArray = (buttons) =>
+  buttons.map(
+    (btn) => html`
+      <kyn-button
+        kind="${btn.kind || 'secondary'}"
+        value="${btn.value}"
+        description="${btn.description || ''}"
+        ?disabled="${btn.disabled || false}"
+      >
+        ${btn.icon ? unsafeSVG(btn.icon) : btn.text || ''}
+      </kyn-button>
+    `
+  );
+
+const Template = (args) => {
+  const [, updateArgs] = useArgs();
   return html`
     <kyn-button-group
+      .kind=${args.kind}
       ?singleSelect=${args.singleSelect}
       .selectedIndex=${args.selectedIndex}
       .selectedIndices=${args.selectedIndices}
@@ -53,43 +79,19 @@ const Template = (args) => {
         });
       }}
     >
-      <kyn-button
-        value="1"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 0
-          : args.selectedIndices.includes(0)}
-        >Button 1</kyn-button
-      >
-      <kyn-button
-        value="2"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 1
-          : args.selectedIndices.includes(1)}
-        >Button 2</kyn-button
-      >
-      <kyn-button
-        value="3"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 2
-          : args.selectedIndices.includes(2)}
-        >Button 3</kyn-button
-      >
-      <kyn-button
-        value="4"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 3
-          : args.selectedIndices.includes(3)}
-        >Button 4</kyn-button
-      >
+      <kyn-button value="1">Button 1</kyn-button>
+      <kyn-button value="2">Button 2</kyn-button>
+      <kyn-button value="3">Button 3</kyn-button>
+      <kyn-button value="4">Button 4</kyn-button>
     </kyn-button-group>
   `;
 };
 
 const IconTemplate = (args) => {
-  const [{ disabled }, updateArgs] = useArgs();
-
+  const [, updateArgs] = useArgs();
   return html`
     <kyn-button-group
+      .kind=${args.kind}
       ?singleSelect=${args.singleSelect}
       .selectedIndex=${args.selectedIndex}
       .selectedIndices=${args.selectedIndices}
@@ -101,160 +103,97 @@ const IconTemplate = (args) => {
         });
       }}
     >
-      <kyn-button
-        kind="secondary"
-        value="1"
-        description="Core Services"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 0
-          : args.selectedIndices.includes(0)}
-        >${unsafeSVG(coreServicesIcon)}</kyn-button
-      >
-      <kyn-button
-        kind="secondary"
-        value="2"
-        description="Cube"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 1
-          : args.selectedIndices.includes(1)}
-        >${unsafeSVG(cubeIcon)}</kyn-button
-      >
-      <kyn-button
-        kind="secondary"
-        value="3"
-        description="Collab Drive"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 2
-          : args.selectedIndices.includes(2)}
-        >${unsafeSVG(collabDriveIcon)}</kyn-button
-      >
-      <kyn-button
-        kind="secondary"
-        value="4"
-        description="Cloud Security"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 3
-          : args.selectedIndices.includes(3)}
-        >${unsafeSVG(cloudSecurityIcon)}</kyn-button
-      >
-      <kyn-button
-        kind="secondary"
-        value="5"
-        description="Cloud Download"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 4
-          : args.selectedIndices.includes(4)}
-        >${unsafeSVG(cloudDownloadIcon)}</kyn-button
-      >
-      <kyn-button
-        kind="secondary"
-        value="6"
-        description="Console"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 5
-          : args.selectedIndices.includes(5)}
-        >${unsafeSVG(consoleIcon)}</kyn-button
-      >
-      <kyn-button
-        kind="secondary"
-        value="7"
-        description="Delete"
-        ?selected=${args.singleSelect
-          ? args.selectedIndex === 6
-          : args.selectedIndices.includes(6)}
-        >${unsafeSVG(deleteIcon)}</kyn-button
-      >
+      ${renderButtonsFromArray(iconButtonConfigs)}
+    </kyn-button-group>
+  `;
+};
+
+const CustomIconTemplate = (args) => {
+  const [, updateArgs] = useArgs();
+  const customButtons = [
+    { value: 'action1', icon: coreServicesIcon, description: 'Core Services' },
+    { value: 'action2', icon: cubeIcon, description: 'Cube', disabled: false },
+    { value: 'action3', text: 'Text Button', description: 'Text only button' },
+  ];
+  return html`
+    <kyn-button-group
+      .kind=${args.kind}
+      ?singleSelect=${args.singleSelect}
+      .selectedIndex=${args.selectedIndex}
+      .selectedIndices=${args.selectedIndices}
+      @on-change=${(e) => {
+        action('on-change')(e);
+        updateArgs({
+          selectedIndex: e.detail.selectedIndex,
+          selectedIndices: [...e.detail.selectedIndices],
+        });
+      }}
+    >
+      ${renderButtonsFromArray(customButtons)}
     </kyn-button-group>
   `;
 };
 
 export const Default = {
   render: Template,
-  args: { ...BaseArgs },
+  args: { ...BaseArgs, kind: BUTTON_GROUP_KINDS.DEFAULT },
 };
 
 export const PaginationExample = {
   args: {
+    kind: BUTTON_GROUP_KINDS.PAGINATION,
     currentPage: 1,
     totalPages: 20,
     maxVisible: 5,
-    pagination: true,
     singleSelect: true,
-    incrementBy: 5,
+    incrementBy: 3,
+    visibleStart: 1,
+    visibleEnd: 5,
   },
   render: (args) => {
-    const [{ disabled }, updateArgs] = useArgs();
-    const { currentPage, totalPages, maxVisible } = args;
-    const half = Math.floor(maxVisible / 2);
-
-    let start, end;
-
-    start = Math.max(1, currentPage - half);
-    end = Math.min(totalPages, start + maxVisible - 1);
-
-    if (end === totalPages && totalPages > maxVisible) {
-      start = Math.max(1, totalPages - maxVisible + 1);
-    }
-
+    const [, updateArgs] = useArgs();
+    const { currentPage, totalPages, visibleStart, visibleEnd } = args;
     return html`
       <div style="margin-bottom:16px">
-        Page ${currentPage} of ${totalPages} — showing ${start}–${end}
+        Page ${currentPage} of ${totalPages} — showing
+        ${visibleStart}–${visibleEnd}
       </div>
       <kyn-button-group
+        .kind=${BUTTON_GROUP_KINDS.PAGINATION}
         .currentPage=${currentPage}
         .totalPages=${totalPages}
-        .maxVisible=${maxVisible}
+        .maxVisible=${args.maxVisible}
         .incrementBy=${args.incrementBy}
-        .prevButtonContent=${chevronLeftIcon}
-        .nextButtonContent=${chevronRightIcon}
-        ?pagination=${true}
         ?singleSelect=${true}
         @on-change=${(e) => {
           action('on-change')(e);
-          updateArgs({ currentPage: e.detail.currentPage });
+          updateArgs({
+            currentPage: e.detail.currentPage,
+            visibleStart: e.detail.visibleStart,
+            visibleEnd: e.detail.visibleEnd,
+          });
         }}
-      >
-      </kyn-button-group>
+      />
     `;
   },
 };
 
 export const SingleSelectIcons = {
   render: IconTemplate,
-  args: { ...BaseArgs, singleSelect: true, selectedIndex: 0 },
-};
-
-export const MultiSelect = {
-  render: Template,
-  args: { ...BaseArgs, singleSelect: false, selectedIndices: [1, 2] },
-};
-
-export const LetteredExample = {
-  render: (args) => {
-    const [, updateArgs] = useArgs();
-
-    return html`
-      <kyn-button-group
-        ?singleSelect=${args.singleSelect}
-        .selectedIndex=${args.selectedIndex}
-        .selectedIndices=${args.selectedIndices}
-        @on-change=${(e) => {
-          action('on-change')(e);
-          updateArgs({
-            selectedIndex: e.detail.selectedIndex,
-            selectedIndices: [...e.detail.selectedIndices],
-          });
-        }}
-      >
-        <kyn-button kind="tertiary" value="A">A</kyn-button>
-        <kyn-button kind="tertiary" value="B">B</kyn-button>
-        <kyn-button kind="tertiary" value="C">C</kyn-button>
-        <kyn-button kind="tertiary" value="D">D</kyn-button>
-        <kyn-button kind="tertiary" value="E">E</kyn-button>
-        <kyn-button kind="tertiary" value="F">F</kyn-button>
-        <kyn-button kind="tertiary" value="G">G</kyn-button>
-      </kyn-button-group>
-    `;
+  args: {
+    ...BaseArgs,
+    kind: BUTTON_GROUP_KINDS.ICONS,
+    singleSelect: true,
+    selectedIndex: 0,
   },
-  args: { ...BaseArgs, singleSelect: true, selectedIndex: 0 },
+};
+
+export const CustomIconArray = {
+  render: CustomIconTemplate,
+  args: {
+    ...BaseArgs,
+    kind: BUTTON_GROUP_KINDS.ICONS,
+    singleSelect: false,
+    selectedIndices: [0],
+  },
 };
