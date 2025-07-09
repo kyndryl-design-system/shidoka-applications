@@ -173,7 +173,7 @@ export const PaginationExample = {
             visibleEnd: e.detail.visibleEnd,
           });
         }}
-      />
+      ></kyn-button-group>
     `;
   },
 };
