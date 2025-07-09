@@ -8,6 +8,7 @@ import './buttonGroup';
 
 import { BUTTON_GROUP_KINDS } from './buttonGroup';
 
+// Example for icons example
 import coreServicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/core-services.svg';
 import cubeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
 import collabDriveIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/collab-drive.svg';
@@ -19,6 +20,11 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/d
 export default {
   title: 'Components/Button/Button Group',
   component: 'kyn-button-group',
+  parameters: {
+    controls: {
+      exclude: ['_visibleStart', '_buttons'],
+    },
+  },
   argTypes: {
     kind: {
       control: 'select',
@@ -163,42 +169,53 @@ export const Icons = {
 };
 
 export const PaginationExample = {
-  render: (args) => {
-    const [, updateArgs] = useArgs();
-    return html`
-      <div class="helper-label">
-        Page ${args.currentPage} of ${args.totalPages} — showing
-        ${args.visibleStart}–${args.visibleEnd}
-      </div>
-      <kyn-button-group
-        .kind=${BUTTON_GROUP_KINDS.PAGINATION}
-        .currentPage=${args.currentPage}
-        .totalPages=${args.totalPages}
-        .maxVisible=${args.maxVisible}
-        .incrementBy=${args.incrementBy}
-        @on-change=${(e) => {
-          action('on-change')(e);
-          updateArgs({
-            currentPage: e.detail.currentPage,
-            visibleStart: e.detail.visibleStart,
-            visibleEnd: e.detail.visibleEnd,
-          });
-        }}
-      ></kyn-button-group>
-      <style>
-        .helper-label {
-          margin-bottom: var(--kd-spacing-12);
-        }
-      </style>
-    `;
-  },
   args: {
+    kind: BUTTON_GROUP_KINDS.PAGINATION,
     currentPage: 1,
     totalPages: 20,
     maxVisible: 5,
     incrementBy: 3,
     visibleStart: 1,
     visibleEnd: 5,
+  },
+  render: (args) => {
+    const [, updateArgs] = useArgs();
+    return html`
+      ${args.kind === BUTTON_GROUP_KINDS.PAGINATION
+        ? html`<div class="helper-label">
+            Page ${args.currentPage} of ${args.totalPages} — showing
+            ${args.visibleStart}–${args.visibleEnd}
+          </div>`
+        : ''}
+      <kyn-button-group
+        .kind=${args.kind}
+        .currentPage=${args.currentPage}
+        .totalPages=${args.totalPages}
+        .maxVisible=${args.maxVisible}
+        .incrementBy=${args.incrementBy}
+        .selectedIndex=${args.selectedIndex}
+        @on-change=${(e) => {
+          action('on-change')(e);
+          updateArgs({
+            ...args,
+            currentPage: e.detail.currentPage,
+            visibleStart: e.detail.visibleStart,
+            visibleEnd: e.detail.visibleEnd,
+          });
+        }}
+      >
+        <!-- /// alternate buttons allow user to select other kind -->
+        <kyn-button value="1">Button 1</kyn-button>
+        <kyn-button value="2">Button 2</kyn-button>
+        <kyn-button value="3">Button 3</kyn-button>
+        <kyn-button value="4">Button 4</kyn-button>
+      </kyn-button-group>
+      <style>
+        .helper-label {
+          margin-bottom: var(--kd-spacing-12);
+        }
+      </style>
+    `;
   },
 };
 

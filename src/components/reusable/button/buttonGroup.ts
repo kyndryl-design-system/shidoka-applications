@@ -8,6 +8,7 @@ import {
 import { classMap } from 'lit-html/directives/class-map.js';
 import './button';
 import type { Button } from './button';
+import { BUTTON_KINDS } from './defs';
 
 import stylesheet from './buttonGroup.scss?inline';
 
@@ -99,7 +100,6 @@ export class ButtonGroup extends LitElement {
         return this._renderPagination();
       case BUTTON_GROUP_KINDS.ICONS:
         return this._renderIcons();
-      case BUTTON_GROUP_KINDS.DEFAULT:
       default:
         return this._renderDefault();
     }
@@ -188,12 +188,8 @@ export class ButtonGroup extends LitElement {
   }
 
   override updated(changedProps: Map<string, any>) {
-    if (changedProps.has('selectedIndex')) {
-      this._syncSelection();
-    }
-    if (changedProps.has('_buttons')) {
-      this._attachClickListeners();
-    }
+    if (changedProps.has('selectedIndex')) this._syncSelection();
+    if (changedProps.has('_buttons')) this._attachClickListeners();
     if (
       this.kind === BUTTON_GROUP_KINDS.PAGINATION &&
       (changedProps.has('currentPage') ||
@@ -204,78 +200,34 @@ export class ButtonGroup extends LitElement {
     }
   }
 
-  private _updatePaginationSelection() {
-    if (this.kind !== BUTTON_GROUP_KINDS.PAGINATION) return;
-    const half = Math.floor(this.maxVisible / 2);
-    let start = Math.max(1, this.currentPage - half);
-    const end = Math.min(this.totalPages, start + this.maxVisible - 1);
-
-    if (end === this.totalPages && this.totalPages > this.maxVisible) {
-      start = Math.max(1, this.totalPages - this.maxVisible + 1);
-    }
-
-    const visiblePages = Array.from(
-      { length: end - start + 1 },
-      (_, i) => start + i
-    );
-    const rel = visiblePages.indexOf(this.currentPage);
-    this.selectedIndex = rel >= 0 ? rel + 1 : -1;
-  }
-
-  private _handlePaginationClick(value: string | number) {
-    let newPage = this.currentPage;
-    let shouldUpdate = false;
-
-    if (value === 'prev') {
-      const nextStart = Math.max(1, this._visibleStart - this.incrementBy);
-      if (nextStart !== this._visibleStart) {
-        this._visibleStart = nextStart;
-        shouldUpdate = true;
-      }
-    } else if (value === 'next') {
-      const maxStart = Math.max(1, this.totalPages - this.maxVisible + 1);
-      const nextStart = Math.min(
-        maxStart,
-        this._visibleStart + this.incrementBy
-      );
-      if (nextStart !== this._visibleStart) {
-        this._visibleStart = nextStart;
-        shouldUpdate = true;
-      }
-    } else if (!isNaN(Number(value))) {
-      newPage = Number(value);
-    }
-
-    if (newPage !== this.currentPage) {
-      this.currentPage = newPage;
-      this._emitChange(value);
-    } else if (shouldUpdate) {
-      this._emitChange(value);
-      this.requestUpdate();
-    }
-  }
-
-  private _handleSlotChange() {
-    setTimeout(() => {
-      this._attachClickListeners();
-      this._syncSelection();
-    }, 0);
-  }
-
   private _attachClickListeners() {
     if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) return;
     this._buttons.forEach((btn, idx) => {
       btn.removeEventListener('click', this._onButtonClick as any);
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this._onButtonClick(idx);
+      btn.addEventListener('click', () => this._onButtonClick(idx));
+    });
+  }
+
+  private _handleSlotChange() {
+    requestAnimationFrame(() => {
+      this._buttons.forEach((btn, idx) => {
+        if (this.kind === BUTTON_GROUP_KINDS.DEFAULT)
+          btn.kind = BUTTON_KINDS.PRIMARY;
+        else if (this.kind === BUTTON_GROUP_KINDS.ICONS)
+          btn.kind = BUTTON_KINDS.SECONDARY;
+        else btn.kind = BUTTON_KINDS.TERTIARY;
+        btn.removeEventListener('click', this._onButtonClick as any);
+        btn.addEventListener('click', () => this._onButtonClick(idx));
       });
+      this._syncSelection();
     });
   }
 
   private _onButtonClick(idx: number) {
+    if (this.kind === BUTTON_GROUP_KINDS.PAGINATION)
+      return this._handlePaginationClick(this._buttons[idx].value);
     this.selectedIndex = idx;
-    this._emitChange(this._buttons[idx]?.value ?? idx);
+    this._emitChange(this._buttons[idx]?.value);
     this._syncSelection();
   }
 
@@ -296,12 +248,62 @@ export class ButtonGroup extends LitElement {
     });
   }
 
-  private _emitChange(value: any) {
-    let start = this._visibleStart;
-    let end = Math.min(this.totalPages, start + this.maxVisible - 1);
+  private _updatePaginationSelection() {
+    if (this.kind !== BUTTON_GROUP_KINDS.PAGINATION) return;
+    const half = Math.floor(this.maxVisible / 2);
+    let start = Math.max(1, this.currentPage - half);
+    const end = Math.min(this.totalPages, start + this.maxVisible - 1);
     if (end === this.totalPages && this.totalPages > this.maxVisible) {
       start = Math.max(1, this.totalPages - this.maxVisible + 1);
-      end = this.totalPages;
+    }
+    const visiblePages = Array.from(
+      { length: end - start + 1 },
+      (_, i) => start + i
+    );
+    const rel = visiblePages.indexOf(this.currentPage);
+    this.selectedIndex = rel >= 0 ? rel + 1 : -1;
+  }
+
+  private _handlePaginationClick(value: any) {
+    let newPage = this.currentPage;
+    let shouldUpdate = false;
+    if (value === 'prev') {
+      const nextStart = Math.max(1, this._visibleStart - this.incrementBy);
+      if (nextStart !== this._visibleStart) {
+        this._visibleStart = nextStart;
+        shouldUpdate = true;
+      }
+    } else if (value === 'next') {
+      const maxStart = Math.max(1, this.totalPages - this.maxVisible + 1);
+      const nextStart = Math.min(
+        maxStart,
+        this._visibleStart + this.incrementBy
+      );
+      if (nextStart !== this._visibleStart) {
+        this._visibleStart = nextStart;
+        shouldUpdate = true;
+      }
+    } else if (!isNaN(Number(value))) {
+      newPage = Number(value);
+    }
+    if (newPage !== this.currentPage) {
+      this.currentPage = newPage;
+      this._emitChange(value);
+    } else if (shouldUpdate) {
+      this._emitChange(value);
+      this.requestUpdate();
+    }
+  }
+
+  private _emitChange(value: any) {
+    let visibleStart = this._visibleStart;
+    let visibleEnd = Math.min(
+      this.totalPages,
+      visibleStart + this.maxVisible - 1
+    );
+    if (visibleEnd === this.totalPages && this.totalPages > this.maxVisible) {
+      visibleStart = Math.max(1, this.totalPages - this.maxVisible + 1);
+      visibleEnd = this.totalPages;
     }
     this.dispatchEvent(
       new CustomEvent('on-change', {
@@ -311,8 +313,8 @@ export class ButtonGroup extends LitElement {
           value,
           selectedIndex: this.selectedIndex,
           currentPage: this.currentPage,
-          visibleStart: start,
-          visibleEnd: end,
+          visibleStart,
+          visibleEnd,
         },
       })
     );
