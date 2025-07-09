@@ -48,23 +48,33 @@ export class ButtonGroup extends LitElement {
   @property({ type: String })
   accessor kind: BUTTON_GROUP_KINDS = BUTTON_GROUP_KINDS.DEFAULT;
 
-  /** Index of the selected button */
+  /** zero-based: default button index; for pagination, page-1 */
   @property({ type: Number })
   accessor selectedIndex = -1;
 
-  /** Current page number for pagination mode */
-  @property({ type: Number })
-  accessor currentPage = 1;
+  // ─── pagination-only props ─────────────────────────────────────────
 
-  /** Total number of pages for pagination mode */
+  /**
+   * @category pagination
+   * @remarks only used when `kind === BUTTON_GROUP_KINDS.PAGINATION (`pagination`)`
+   * Total number of pages for pagination mode
+   */
   @property({ type: Number })
   accessor totalPages = 1;
 
-  /** Maximum number of visible page buttons */
+  /**
+   * @category pagination
+   * @remarks only used when `kind === BUTTON_GROUP_KINDS.PAGINATION (`pagination`)`
+   * Maximum number of visible page buttons
+   */
   @property({ type: Number })
   accessor maxVisible = 5;
 
-  /** Number of pages to increment/decrement when clicking next/previous buttons in pagination */
+  /**
+   * @category pagination
+   * @remarks only used when `kind === BUTTON_GROUP_KINDS.PAGINATION (`pagination`)`
+   * Number of pages to increment/decrement when clicking next/previous
+   */
   @property({ type: Number })
   accessor clickIncrementBy = 1;
 
@@ -90,18 +100,31 @@ export class ButtonGroup extends LitElement {
     return Math.min(this.totalPages, this._visibleStart + this.maxVisible - 1);
   }
 
-  /** Access <kyn-button> children */
+  /** Target <kyn-button> children */
   @queryAssignedElements({ slot: '', flatten: true })
   private accessor _buttons!: Button[];
 
   override render() {
-    switch (this.kind) {
-      case BUTTON_GROUP_KINDS.PAGINATION:
-        return this._renderPagination();
-      case BUTTON_GROUP_KINDS.ICONS:
-        return this._renderIcons();
-      default:
-        return this._renderDefault();
+    return this.kind === BUTTON_GROUP_KINDS.PAGINATION
+      ? this._renderPagination()
+      : this.kind === BUTTON_GROUP_KINDS.ICONS
+      ? this._renderIcons()
+      : this._renderDefault();
+  }
+
+  override firstUpdated() {
+    this._attachClickListeners();
+    this._syncSelection();
+  }
+
+  override updated(changed: Map<string, any>) {
+    if (
+      this.kind === BUTTON_GROUP_KINDS.PAGINATION &&
+      (changed.has('selectedIndex') ||
+        changed.has('totalPages') ||
+        changed.has('maxVisible'))
+    ) {
+      this._updateWindow();
     }
   }
 
@@ -115,10 +138,7 @@ export class ButtonGroup extends LitElement {
   }
 
   private _renderIcons() {
-    const cls = {
-      'kd-btn-group': true,
-      'kd-btn-group--icons': true,
-    };
+    const cls = { 'kd-btn-group': true, 'kd-btn-group--icons': true };
     return html`
       <div class=${classMap(cls)} role="radiogroup">
         <slot @slotchange=${() => this._handleSlotChange()}></slot>
@@ -127,54 +147,46 @@ export class ButtonGroup extends LitElement {
   }
 
   private _renderPagination() {
-    const cls = { 'kd-btn-group': true };
+    const currentPage = this.selectedIndex + 1;
     let start = this._visibleStart;
     const end = Math.min(this.totalPages, start + this.maxVisible - 1);
 
     if (end === this.totalPages && this.totalPages > this.maxVisible) {
-      start = Math.max(1, this.totalPages - this.maxVisible + 1);
+      start = this.totalPages - this.maxVisible + 1;
       this._visibleStart = start;
     }
 
-    const visiblePages = Array.from(
-      { length: end - start + 1 },
-      (_, i) => start + i
-    );
-
-    const rel = visiblePages.indexOf(this.currentPage);
-    this.selectedIndex = rel >= 0 ? rel + 1 : -1;
+    const pages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    const rel = pages.indexOf(currentPage);
+    this.selectedIndex = rel;
 
     return html`
-      <div class=${classMap(cls)} role="radiogroup">
+      <div class="kd-btn-group" role="radiogroup">
         <kyn-button
           kind="tertiary"
-          value="prev"
           class="kd-btn--group-first"
-          description="Previous page"
-          @click=${() => this._handlePaginationClick('prev')}
+          @click=${() => this._onPage('prev')}
         >
           ${unsafeSVG(chevronLeftIcon)}
         </kyn-button>
 
-        ${visiblePages.map(
-          (p) => html`<kyn-button
-            kind="tertiary"
-            value="${p}"
-            class="kd-btn--group-middle"
-            ?selected=${p === this.currentPage}
-            description="Page ${p}"
-            @click=${() => this._handlePaginationClick(p)}
-          >
-            ${p}
-          </kyn-button>`
+        ${pages.map(
+          (p, i) => html`
+            <kyn-button
+              kind="tertiary"
+              class="kd-btn--group-middle"
+              ?selected=${i === this.selectedIndex}
+              @click=${() => this._onPage(p)}
+            >
+              ${p}
+            </kyn-button>
+          `
         )}
 
         <kyn-button
           kind="tertiary"
-          value="next"
           class="kd-btn--group-last"
-          description="Next page"
-          @click=${() => this._handlePaginationClick('next')}
+          @click=${() => this._onPage('next')}
         >
           ${unsafeSVG(chevronRightIcon)}
         </kyn-button>
@@ -182,22 +194,41 @@ export class ButtonGroup extends LitElement {
     `;
   }
 
-  override firstUpdated() {
-    this._attachClickListeners();
-    this._syncSelection();
+  private _updateWindow() {
+    const currentPage = this.selectedIndex + 1;
+    const half = Math.floor(this.maxVisible / 2);
+    let start = Math.max(1, currentPage - half);
+    const end = Math.min(this.totalPages, start + this.maxVisible - 1);
+
+    if (end === this.totalPages && this.totalPages > this.maxVisible) {
+      start = this.totalPages - this.maxVisible + 1;
+    }
+
+    this._visibleStart = start;
   }
 
-  override updated(changedProps: Map<string, any>) {
-    if (changedProps.has('selectedIndex')) this._syncSelection();
-    if (changedProps.has('_buttons')) this._attachClickListeners();
-    if (
-      this.kind === BUTTON_GROUP_KINDS.PAGINATION &&
-      (changedProps.has('currentPage') ||
-        changedProps.has('totalPages') ||
-        changedProps.has('maxVisible'))
-    ) {
-      this._updatePaginationSelection();
-    }
+  private _onPage(cmd: 'prev' | 'next' | number) {
+    let newPage = this.selectedIndex + 1;
+
+    if (cmd === 'prev') newPage = Math.max(1, newPage - this.clickIncrementBy);
+    else if (cmd === 'next')
+      newPage = Math.min(this.totalPages, newPage + this.clickIncrementBy);
+    else newPage = cmd;
+
+    this.selectedIndex = newPage - 1;
+    this._updateWindow();
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          value: newPage,
+          selectedIndex: this.selectedIndex,
+          visibleStart: this.visibleStart,
+          visibleEnd: this.visibleEnd,
+        },
+      })
+    );
   }
 
   private _attachClickListeners() {
@@ -211,11 +242,10 @@ export class ButtonGroup extends LitElement {
   private _handleSlotChange() {
     requestAnimationFrame(() => {
       this._buttons.forEach((btn, idx) => {
-        if (this.kind === BUTTON_GROUP_KINDS.DEFAULT)
-          btn.kind = BUTTON_KINDS.PRIMARY;
-        else if (this.kind === BUTTON_GROUP_KINDS.ICONS)
-          btn.kind = BUTTON_KINDS.SECONDARY;
-        else btn.kind = BUTTON_KINDS.TERTIARY;
+        btn.kind =
+          this.kind === BUTTON_GROUP_KINDS.ICONS
+            ? BUTTON_KINDS.SECONDARY
+            : BUTTON_KINDS.PRIMARY;
         btn.removeEventListener('click', this._onButtonClick as any);
         btn.addEventListener('click', () => this._onButtonClick(idx));
       });
@@ -224,10 +254,12 @@ export class ButtonGroup extends LitElement {
   }
 
   private _onButtonClick(idx: number) {
-    if (this.kind === BUTTON_GROUP_KINDS.PAGINATION)
-      return this._handlePaginationClick(this._buttons[idx].value);
+    if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) {
+      const raw = this._buttons[idx].value;
+      return this._onPage(typeof raw === 'string' ? Number(raw) : raw);
+    }
     this.selectedIndex = idx;
-    this._emitChange(this._buttons[idx]?.value);
+    this._emitChange(this._buttons[idx].value);
     this._syncSelection();
   }
 
@@ -248,74 +280,12 @@ export class ButtonGroup extends LitElement {
     });
   }
 
-  private _updatePaginationSelection() {
-    if (this.kind !== BUTTON_GROUP_KINDS.PAGINATION) return;
-    const half = Math.floor(this.maxVisible / 2);
-    let start = Math.max(1, this.currentPage - half);
-    const end = Math.min(this.totalPages, start + this.maxVisible - 1);
-    if (end === this.totalPages && this.totalPages > this.maxVisible) {
-      start = Math.max(1, this.totalPages - this.maxVisible + 1);
-    }
-    const visiblePages = Array.from(
-      { length: end - start + 1 },
-      (_, i) => start + i
-    );
-    const rel = visiblePages.indexOf(this.currentPage);
-    this.selectedIndex = rel >= 0 ? rel + 1 : -1;
-  }
-
-  private _handlePaginationClick(value: any) {
-    let newPage = this.currentPage;
-    let shouldUpdate = false;
-    if (value === 'prev') {
-      const nextStart = Math.max(1, this._visibleStart - this.clickIncrementBy);
-      if (nextStart !== this._visibleStart) {
-        this._visibleStart = nextStart;
-        shouldUpdate = true;
-      }
-    } else if (value === 'next') {
-      const maxStart = Math.max(1, this.totalPages - this.maxVisible + 1);
-      const nextStart = Math.min(
-        maxStart,
-        this._visibleStart + this.clickIncrementBy
-      );
-      if (nextStart !== this._visibleStart) {
-        this._visibleStart = nextStart;
-        shouldUpdate = true;
-      }
-    } else if (!isNaN(Number(value))) {
-      newPage = Number(value);
-    }
-    if (newPage !== this.currentPage) {
-      this.currentPage = newPage;
-      this._emitChange(value);
-    } else if (shouldUpdate) {
-      this._emitChange(value);
-      this.requestUpdate();
-    }
-  }
-
-  private _emitChange(value: any) {
-    let visibleStart = this._visibleStart;
-    let visibleEnd = Math.min(
-      this.totalPages,
-      visibleStart + this.maxVisible - 1
-    );
-    if (visibleEnd === this.totalPages && this.totalPages > this.maxVisible) {
-      visibleStart = Math.max(1, this.totalPages - this.maxVisible + 1);
-      visibleEnd = this.totalPages;
-    }
+  private _emitChange(value: unknown) {
     this.dispatchEvent(
       new CustomEvent('on-change', {
         bubbles: true,
         composed: true,
-        detail: {
-          value,
-          selectedIndex: this.selectedIndex,
-          currentPage: this.currentPage,
-          visibleStart,
-          visibleEnd,
-        },
+        detail: { value },
       })
     );
   }

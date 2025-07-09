@@ -17,6 +17,11 @@ import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochro
 import consoleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/console.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
 
+/**
+ * @typedef { import('@storybook/web-components-vite').Meta } Meta
+ */
+
+/** @type {Meta} */
 export default {
   title: 'Components/Button/Button Group',
   component: 'kyn-button-group',
@@ -30,17 +35,29 @@ export default {
       control: 'select',
       options: Object.values(BUTTON_GROUP_KINDS),
     },
-    currentPage: { control: 'number' },
-    totalPages: { control: 'number' },
-    maxVisible: { control: 'number' },
+    // pagination-only props:
+    currentPage: {
+      control: 'number',
+      if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
+    },
+    totalPages: {
+      control: 'number',
+      if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
+    },
+    maxVisible: {
+      control: 'number',
+      if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
+    },
+    clickIncrementBy: {
+      control: 'number',
+      if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
+    },
+    // always available props
     selectedIndex: { control: 'number' },
-    clickIncrementBy: { control: 'number' },
     visibleStart: {
-      control: { type: 'number' },
       table: { category: 'read-only' },
     },
     visibleEnd: {
-      control: { type: 'number' },
       table: { category: 'read-only' },
     },
   },
@@ -171,6 +188,7 @@ export const Icons = {
 export const PaginationExample = {
   args: {
     kind: BUTTON_GROUP_KINDS.PAGINATION,
+    selectedIndex: -1,
     currentPage: 1,
     totalPages: 20,
     maxVisible: 5,
