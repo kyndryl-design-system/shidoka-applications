@@ -118,6 +118,7 @@ export class ButtonGroup extends LitElement {
           value="prev"
           class="kd-btn--group-first"
           ?disabled=${start <= 1}
+          description="Previous page"
           @click=${() => this._handlePaginationClick('prev')}
         >
           ${unsafeSVG(this.prevButtonContent)}
@@ -130,6 +131,7 @@ export class ButtonGroup extends LitElement {
               value="${p}"
               class="kd-btn--group-middle"
               ?selected=${p === this.currentPage}
+              description="Page ${p}"
               @click=${() => this._handlePaginationClick(p)}
             >
               ${p}
@@ -141,6 +143,7 @@ export class ButtonGroup extends LitElement {
           value="next"
           class="kd-btn--group-last"
           ?disabled=${end >= this.totalPages}
+          description="Next page"
           @click=${() => this._handlePaginationClick('next')}
         >
           ${unsafeSVG(this.nextButtonContent)}

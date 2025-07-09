@@ -104,6 +104,7 @@ const IconTemplate = (args) => {
       <kyn-button
         kind="secondary"
         value="1"
+        description="Core Services"
         ?selected=${args.singleSelect
           ? args.selectedIndex === 0
           : args.selectedIndices.includes(0)}
@@ -112,6 +113,7 @@ const IconTemplate = (args) => {
       <kyn-button
         kind="secondary"
         value="2"
+        description="Cube"
         ?selected=${args.singleSelect
           ? args.selectedIndex === 1
           : args.selectedIndices.includes(1)}
@@ -120,6 +122,7 @@ const IconTemplate = (args) => {
       <kyn-button
         kind="secondary"
         value="3"
+        description="Collab Drive"
         ?selected=${args.singleSelect
           ? args.selectedIndex === 2
           : args.selectedIndices.includes(2)}
@@ -128,6 +131,7 @@ const IconTemplate = (args) => {
       <kyn-button
         kind="secondary"
         value="4"
+        description="Cloud Security"
         ?selected=${args.singleSelect
           ? args.selectedIndex === 3
           : args.selectedIndices.includes(3)}
@@ -135,26 +139,29 @@ const IconTemplate = (args) => {
       >
       <kyn-button
         kind="secondary"
-        value="1"
+        value="5"
+        description="Cloud Download"
         ?selected=${args.singleSelect
-          ? args.selectedIndex === 0
-          : args.selectedIndices.includes(0)}
+          ? args.selectedIndex === 4
+          : args.selectedIndices.includes(4)}
         >${unsafeSVG(cloudDownloadIcon)}</kyn-button
       >
       <kyn-button
         kind="secondary"
-        value="2"
+        value="6"
+        description="Console"
         ?selected=${args.singleSelect
-          ? args.selectedIndex === 1
-          : args.selectedIndices.includes(1)}
+          ? args.selectedIndex === 5
+          : args.selectedIndices.includes(5)}
         >${unsafeSVG(consoleIcon)}</kyn-button
       >
       <kyn-button
         kind="secondary"
-        value="3"
+        value="7"
+        description="Delete"
         ?selected=${args.singleSelect
-          ? args.selectedIndex === 2
-          : args.selectedIndices.includes(2)}
+          ? args.selectedIndex === 6
+          : args.selectedIndices.includes(6)}
         >${unsafeSVG(deleteIcon)}</kyn-button
       >
     </kyn-button-group>
