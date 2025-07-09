@@ -31,6 +31,8 @@ export default {
     },
   },
   argTypes: {
+    // always available props
+    selectedIndex: { control: 'number' },
     kind: {
       control: 'select',
       options: Object.values(BUTTON_GROUP_KINDS),
@@ -48,13 +50,13 @@ export default {
       control: 'number',
       if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
     },
-    // always available props
-    selectedIndex: { control: 'number' },
     visibleStart: {
       table: { category: 'read-only' },
+      if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
     },
     visibleEnd: {
       table: { category: 'read-only' },
+      if: { arg: 'kind', eq: BUTTON_GROUP_KINDS.PAGINATION },
     },
   },
 };
