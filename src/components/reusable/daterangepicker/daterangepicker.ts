@@ -372,6 +372,10 @@ export class DateRangePicker extends FlatpickrBase {
     opts.onOpen = (selectedDates, dateStr, instance) => {
       this._checkAndUpdateForViewportChange();
 
+      if (this.multiInput) {
+        return;
+      }
+
       if (originalOnOpen) {
         if (typeof originalOnOpen === 'function') {
           originalOnOpen(selectedDates, dateStr, instance);
@@ -595,7 +599,6 @@ export class DateRangePicker extends FlatpickrBase {
               .value=${this.value[0] ? fmt(this.value[0]!) : ''}
               ?disabled=${this.disabled}
               ?readonly=${this.readonly}
-              @click=${() => this.flatpickrInstance?.open()}
             />
             ${this.value[0] && showClear
               ? html` <kyn-button
@@ -610,11 +613,7 @@ export class DateRangePicker extends FlatpickrBase {
                     ${unsafeSVG(clearIcon)}
                   </span>
                 </kyn-button>`
-              : html` <span
-                  class="input-icon"
-                  aria-hidden="true"
-                  @click=${() => this.flatpickrInstance?.open()}
-                >
+              : html` <span class="input-icon" aria-hidden="true">
                   ${unsafeSVG(calendarIcon)}
                 </span>`}
           </div>
@@ -633,7 +632,6 @@ export class DateRangePicker extends FlatpickrBase {
               .value=${this.value[1] ? fmt(this.value[1]!) : ''}
               ?disabled=${this.disabled}
               ?readonly=${this.readonly}
-              @click=${() => this.flatpickrInstance?.open()}
             />
             ${this.value[1] && showClear
               ? html` <kyn-button
@@ -648,11 +646,7 @@ export class DateRangePicker extends FlatpickrBase {
                     ${unsafeSVG(clearIcon)}
                   </span>
                 </kyn-button>`
-              : html` <span
-                  class="input-icon"
-                  aria-hidden="true"
-                  @click=${() => this.flatpickrInstance?.open()}
-                >
+              : html` <span class="input-icon" aria-hidden="true">
                   ${unsafeSVG(calendarIcon)}
                 </span>`}
           </div>
