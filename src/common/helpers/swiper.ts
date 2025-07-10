@@ -1,4 +1,4 @@
-import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/arrow-left.svg';
+import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/arrow-left.svg';
 
 export const SwiperConfig = {
   slidesPerView: 1.25,
