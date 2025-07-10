@@ -52,6 +52,9 @@ export default {
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    multiInput: { control: { type: 'boolean' } },
+    showSingleMonth: { control: { type: 'boolean' } },
+    closeOnSelection: { control: { type: 'boolean' } },
   },
 };
 
@@ -127,8 +130,93 @@ const Template = (args) => {
       .errorTitle=${args.errorTitle}
       .warningAriaLabel=${args.warningAriaLabel}
       .warningTitle=${args.warningTitle}
-      .startDateLabel=${args.startDateLabel}
-      .endDateLabel=${args.endDateLabel}
+      ?multiInput=${args.multiInput}
+      ?showSingleMonth=${args.showSingleMonth}
+      ?closeOnSelection=${args.closeOnSelection}
+      .textStrings=${args.textStrings}
+      @on-change=${(e) => action(e.type)(e)}
+    >
+    </kyn-date-range-picker>
+  `;
+};
+
+const LimitedTemplate = (args) => {
+  useEffect(() => {
+    const renderId = Math.random().toString(36).substring(2, 9);
+
+    setTimeout(() => {
+      const container = document.createElement('div');
+      container.setAttribute('data-picker-container', renderId);
+      container.style.display = 'contents';
+
+      const picker = document.querySelector(
+        `kyn-date-range-picker[name="${args.name}"]`
+      );
+      if (picker && picker.parentNode) {
+        picker.parentNode.insertBefore(container, picker);
+        container.appendChild(picker);
+
+        if (args.rangeEditMode !== undefined) {
+          picker.rangeEditMode = args.rangeEditMode;
+          if (
+            picker.flatpickrInstance &&
+            args.defaultDate &&
+            Array.isArray(args.defaultDate) &&
+            args.defaultDate.length === 2 &&
+            (!args.defaultDate[0] || !args.defaultDate[1])
+          ) {
+            picker.flatpickrInstance.destroy();
+            setTimeout(() => picker.initializeFlatpickr(), 10);
+          }
+        }
+      }
+    }, 0);
+
+    return () => {
+      const container = document.querySelector(
+        `div[data-picker-container="${renderId}"]`
+      );
+      if (container) {
+        if (container.firstChild) {
+          const picker = container.firstChild;
+          container.parentNode.insertBefore(picker, container);
+        }
+        container.remove();
+      }
+    };
+  }, [args.rangeEditMode, args.defaultDate, args.name]);
+
+  return html`
+    <kyn-date-range-picker
+      style="max-width: 400px;"
+      .name=${args.name}
+      .label=${args.label}
+      .locale=${args.locale}
+      .dateFormat=${args.dateFormat}
+      .defaultDate=${args.defaultDate}
+      .rangeEditMode=${args.rangeEditMode}
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .disable=${args.disable}
+      .enable=${args.enable}
+      .caption=${args.caption}
+      ?required=${args.required}
+      ?staticPosition=${args.staticPosition}
+      .size=${args.size}
+      ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
+      ?readonly=${args.readonly}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .minDate=${args.minDate}
+      .maxDate=${args.maxDate}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      ?multiInput=${args.multiInput}
+      ?showSingleMonth=${args.showSingleMonth}
+      ?closeOnSelection=${args.closeOnSelection}
+      .textStrings=${args.textStrings}
       @on-change=${(e) => action(e.type)(e)}
     >
     </kyn-date-range-picker>
@@ -143,6 +231,7 @@ DateRangeDefault.args = {
   defaultDate: [],
   required: false,
   staticPosition: false,
+  closeOnSelection: false,
   size: 'md',
   defaultErrorMessage: 'Both start and end dates are required',
   warnText: '',
@@ -170,22 +259,19 @@ DateTimeRange.args = {
   label: 'Start + End Date / Time',
 };
 
-export const InvalidDefaultDates = Template.bind({});
+export const InvalidDefaultDates = LimitedTemplate.bind({});
 InvalidDefaultDates.args = {
+  ...DateRangeDefault.args,
   name: 'invalid-default-dates-picker',
   label: 'Invalid Default Dates',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2025-13-01', '2023-06-01'],
+  defaultDate: ['2024-12-01', '2024-06-01'],
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
-  caption: 'Invaolid default dates will trigger validation errors..',
-  invalidText: '',
-  defaultErrorMessage: '',
+  caption: 'Invalid default dates will trigger validation errors..',
   required: false,
   size: 'md',
   staticPosition: false,
-  disable: [],
-  enable: [],
 };
 InvalidDefaultDates.storyName = 'Invalid / Out-of-Range Defaults';
 
@@ -258,6 +344,50 @@ ScheduleLockdown_BothDatesFixed.args = {
 };
 ScheduleLockdown_BothDatesFixed.storyName = 'Both Dates Fixed';
 
+export const MultiInputDateRange = Template.bind({});
+MultiInputDateRange.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-date-range-picker',
+  dateFormat: 'Y-m-d',
+  multiInput: true,
+  textStrings: {
+    startLabel: 'Start Date',
+    endLabel: 'End Date',
+  },
+  label: 'Date Range Selection',
+  caption: 'Example with separate start and end date inputs.',
+};
+
+export const MultiInputSingleMonthCalendar = Template.bind({});
+MultiInputSingleMonthCalendar.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-datetime-range-picker',
+  dateFormat: 'Y-m-d H:i',
+  multiInput: true,
+  showSingleMonth: true,
+  textStrings: {
+    startLabel: 'Start Date & Time',
+    endLabel: 'End Date & Time',
+  },
+  label: 'Date & Time Range Selection',
+  caption: 'Example with separate start and end date/time inputs.',
+};
+
+export const MultiInputWithPreselected = Template.bind({});
+MultiInputWithPreselected.args = {
+  ...DateRangeDefault.args,
+  name: 'multi-input-preselected-range',
+  dateFormat: 'Y-m-d',
+  defaultDate: ['2024-01-01', '2024-01-07'],
+  multiInput: true,
+  textStrings: {
+    startLabel: 'From',
+    endLabel: 'To',
+  },
+  label: 'Start and End Dates Example',
+  caption: 'Example with preselected dates in multi-input mode.',
+};
+
 export const InModal = {
   args: {
     ...DateRangeDefault.args,
@@ -275,6 +405,7 @@ export const InModal = {
     cancelText: 'Cancel',
     closeText: 'Close',
     destructive: false,
+    closeOnSelection: true,
     okDisabled: false,
     hideFooter: false,
     showSecondaryButton: false,
@@ -329,6 +460,7 @@ export const InModal = {
           .warningAriaLabel=${args.warningAriaLabel}
           .warningTitle=${args.warningTitle}
           .startDateLabel=${args.startDateLabel}
+          ?closeOnSelection=${args.closeOnSelection}
           .endDateLabel=${args.endDateLabel}
           @on-change=${(e) => action(e.type)(e)}
         >
@@ -359,6 +491,7 @@ export const DateRangePickerInAccordionInModal = {
     okDisabled: false,
     hideFooter: false,
     showSecondaryButton: false,
+    closeOnSelection: false,
     hideCancelButton: false,
     aiConnected: false,
     disableScroll: false,
@@ -422,6 +555,7 @@ export const DateRangePickerInAccordionInModal = {
                 .warningAriaLabel=${args.warningAriaLabel}
                 .warningTitle=${args.warningTitle}
                 .startDateLabel=${args.startDateLabel}
+                ?closeOnSelection=${args.closeOnSelection}
                 .endDateLabel=${args.endDateLabel}
                 @on-change=${(e) => action(e.type)(e)}
               >
