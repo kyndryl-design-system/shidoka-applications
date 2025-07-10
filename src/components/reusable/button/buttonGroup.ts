@@ -10,7 +10,7 @@ import './button';
 import type { Button } from './button';
 import { BUTTON_KINDS } from './defs';
 
-import stylesheet from './buttonGroup.scss?inline';
+import ButtonGroupStyles from './buttonGroup.scss?inline';
 
 import chevronLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
@@ -48,7 +48,7 @@ const _defaultTextStrings = {
  */
 @customElement('kyn-button-group')
 export class ButtonGroup extends LitElement {
-  static override styles = unsafeCSS(stylesheet);
+  static override styles = unsafeCSS(ButtonGroupStyles);
 
   /** Button group kind */
   @property({ type: String })
