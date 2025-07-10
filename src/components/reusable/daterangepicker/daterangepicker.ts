@@ -11,7 +11,6 @@ import {
 } from '../../../common/base/flatpickr-base';
 import { langsArray } from '../../../common/flatpickrLangs';
 import {
-  emitValue,
   getPlaceholder,
   injectFlatpickrStyles,
   initializeMultiAnchorFlatpickr,
@@ -376,34 +375,38 @@ export class DateRangePicker extends FlatpickrBase {
     this.value = [null, null];
   }
 
-  protected async handleDateChange(
+  protected override async handleDateChange(
     selectedDates: Date[],
-    _dateStr: string
+    dateStr: string,
+    instance: flatpickr.Instance,
+    event?: Event
   ): Promise<void> {
-    if (selectedDates.length > 0) {
-      this.value = [selectedDates[0] ?? null, selectedDates[1] ?? null];
+    if (this._isClearing) return;
 
-      if (this.multiInput && this._inputEl && this._endInputEl) {
-        const fmt = (d: Date) => flatpickr.formatDate(d, this.dateFormat);
-        this._inputEl.value = this.value[0] ? fmt(this.value[0]!) : '';
-        this._endInputEl.value = this.value[1] ? fmt(this.value[1]!) : '';
-      }
+    this._hasInteracted = true;
 
+    const [start, end] = selectedDates;
+
+    const current = this.value ?? [null, null];
+    const bothSelected = start instanceof Date && end instanceof Date;
+    const isProgrammatic = event?.type === 'input' || event?.type === 'change';
+
+    const valueChanged =
+      current[0]?.getTime() !== start?.getTime() ||
+      current[1]?.getTime() !== end?.getTime();
+
+    if (bothSelected && valueChanged && !isProgrammatic) {
+      this.value = [start, end];
       this.updateFormValue();
-      this._validate(true, false);
-
-      emitValue(this, 'on-change', {
-        dates: this.value.map((d) => d?.toISOString() || null),
-        dateString: this.value
-          .filter(Boolean)
-          .map((d) => flatpickr.formatDate(d as Date, this.dateFormat))
-          .join(' to '),
-      });
-
-      if (this.closeOnSelection && selectedDates.length === 2) {
-        this.flatpickrInstance?.close();
-      }
+      await this.updateComplete;
     }
+
+    this.emitFlatpickrChange(
+      instance,
+      [start ?? null, end ?? null],
+      dateStr,
+      event
+    );
   }
 
   protected override async _handleClear(event: Event) {
@@ -455,12 +458,15 @@ export class DateRangePicker extends FlatpickrBase {
 
   public override async initializeFlatpickr() {
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
+
     if (this.multiInput) {
       this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
         inputEl: this._inputEl,
         endinputEl: this._endInputEl,
-        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
+        config: await this.getComponentFlatpickrOptions(),
+        onChange: (selectedDates, dateStr, instance, event) =>
+          this.handleDateChange(selectedDates, dateStr, instance, event),
+        onReady: (_, __, instance) => {
           const isWideScreen = window.innerWidth >= 767;
           const shouldShowSingleMonth = !isWideScreen || this.showSingleMonth;
 
@@ -469,9 +475,10 @@ export class DateRangePicker extends FlatpickrBase {
               'flatpickr-calendar-single-month'
             );
           }
+
           setCalendarAttributes(instance, false);
         },
-        setInitialDates: (inst) => this.setInitialDates(inst),
+        setInitialDates: (instance) => this.setInitialDates(instance),
       });
     } else {
       await super.initializeFlatpickr();

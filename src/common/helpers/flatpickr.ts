@@ -1,12 +1,16 @@
 import flatpickr from 'flatpickr';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
-import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
+import { Instance } from 'flatpickr/dist/types/instance';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import { loadLocale as loadLocaleFromLangs } from '../flatpickrLangs';
 
+import ShidokaFlatpickrTheme from '../scss/shidoka-flatpickr-theme.scss?inline';
+
 let flatpickrStylesInjected = false;
+
+export type FlatpickrConfig = Partial<BaseOptions>;
 
 export const _defaultCalendarTooltipStrings = {
   lockedStartDate: 'Start date is locked',
@@ -143,91 +147,62 @@ export function injectFlatpickrStyles(customStyle: string): void {
   }
 }
 
-export async function initializeMultiAnchorFlatpickr(
-  context: RangeFlatpickrContext
-): Promise<Instance | undefined> {
+export function initializeMultiAnchorFlatpickr(opts: {
+  inputEl: HTMLInputElement;
+  endinputEl: HTMLInputElement;
+  config: FlatpickrConfig;
+  onChange: (
+    selectedDates: Date[],
+    dateStr: string,
+    instance: Instance,
+    event?: Event
+  ) => void;
+  onReady?: Hook | Hook[];
+  setInitialDates: (instance: Instance) => void;
+}): Instance {
+  const { inputEl, endinputEl, config, onChange, onReady, setInitialDates } =
+    opts;
+
+  if (!flatpickrStylesInjected) {
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
+    flatpickrStylesInjected = true;
+  }
+
   const {
-    inputEl,
-    endinputEl,
-    getFlatpickrOptions,
-    setCalendarAttributes,
-    setInitialDates,
-  } = context;
+    altFormat = 'F j, Y',
+    altInput = false,
+    altInputClass = 'form-control flatpickr-input',
+    allowInput = true,
+    closeOnSelect = false,
+    allowInvalidPreload = false,
+    animate = true,
+    disableMobile = false,
+    plugins = [],
+    appendTo,
+    ...rest
+  } = config;
 
-  if (!inputEl) {
-    console.error('Cannot initialize Flatpickr: inputEl is undefined');
-    return undefined;
-  }
+  const rangeOptions: Partial<BaseOptions> = {
+    altFormat,
+    altInput,
+    altInputClass,
+    allowInput,
+    closeOnSelect,
+    allowInvalidPreload,
+    animate,
+    disableMobile,
+    plugins: [rangePlugin({ input: endinputEl }), ...plugins],
+    onChange,
+    ...(onReady ? { onReady } : {}),
+    ...(appendTo ? { appendTo } : {}),
+    ...Object.fromEntries(
+      Object.entries(rest).filter(([_, value]) => value !== undefined)
+    ),
+  };
 
-  try {
-    const options = await getFlatpickrOptions();
-
-    const getInputElement = (el: HTMLElement): HTMLInputElement => {
-      if (el instanceof HTMLInputElement) {
-        return el;
-      } else {
-        try {
-          let input = el.querySelector('input') as HTMLInputElement | null;
-          if (!input) {
-            input = document.createElement('input');
-            input.type = 'text';
-            input.style.display = 'none';
-            if (!el.isConnected) {
-              throw new Error('Element is not connected to the DOM');
-            }
-            el.appendChild(input);
-          }
-          return input;
-        } catch (error) {
-          console.error('Error creating or appending input element:', error);
-          throw error;
-        }
-      }
-    };
-
-    const inputElement = getInputElement(inputEl);
-    if (endinputEl) {
-      const endInputElement = getInputElement(endinputEl);
-      options.plugins = [
-        ...(options.plugins || []),
-        rangePlugin({ input: endInputElement }),
-      ];
-    }
-
-    const flatpickrInstance = flatpickr(inputElement, options) as Instance;
-
-    if (flatpickrInstance) {
-      setTimeout(() => {
-        if (setCalendarAttributes) {
-          setCalendarAttributes(flatpickrInstance);
-        }
-      }, 0);
-
-      if (setInitialDates) {
-        setInitialDates(flatpickrInstance);
-      }
-
-      if (!(inputEl instanceof HTMLInputElement)) {
-        inputEl.addEventListener('click', () => {
-          flatpickrInstance.open();
-        });
-      }
-
-      if (endinputEl && !(endinputEl instanceof HTMLInputElement)) {
-        endinputEl.addEventListener('click', () => {
-          flatpickrInstance.open();
-        });
-      }
-
-      return flatpickrInstance;
-    } else {
-      console.error('Failed to initialize Flatpickr');
-      return undefined;
-    }
-  } catch (error) {
-    console.error('Error initializing Flatpickr:', error);
-    return undefined;
-  }
+  const instance = flatpickr(inputEl, rangeOptions);
+  setInitialDates(instance);
+  return instance;
 }
 
 export async function initializeSingleAnchorFlatpickr(
@@ -250,29 +225,15 @@ export async function initializeSingleAnchorFlatpickr(
       options.dateFormat || (options.mode === 'time' ? 'H:i' : 'Y-m-d');
     options.dateFormat = effectiveDateFormat;
 
-    let inputElement: HTMLInputElement;
+    const inputElement = resolveOrCreateInput(inputEl, appendTo);
+
     if (inputEl instanceof HTMLInputElement) {
-      inputElement = inputEl;
       options.clickOpens = true;
     } else {
-      try {
-        inputElement = document.createElement('input');
-        inputElement.type = 'text';
-        inputElement.style.display = 'none';
-
-        const targetElement = appendTo || inputEl;
-        if (!targetElement) {
-          throw new Error('No valid element to append input to');
-        }
-
-        targetElement.appendChild(inputElement);
-        options.clickOpens = false;
-        options.positionElement = inputEl;
-      } catch (error) {
-        console.error('Error creating input element:', error);
-        throw error;
-      }
+      options.clickOpens = false;
+      options.positionElement = inputEl;
     }
+
     const flatpickrInstance = flatpickr(inputElement, options) as Instance;
     if (flatpickrInstance) {
       setTimeout(() => {
@@ -347,6 +308,26 @@ export function getModalContainer(element: HTMLElement): HTMLElement {
   }
 
   return document.body;
+}
+
+export function resolveOrCreateInput(
+  el: HTMLElement,
+  appendTo?: HTMLElement
+): HTMLInputElement {
+  if (el instanceof HTMLInputElement) return el;
+
+  const existing = el.querySelector('input');
+  if (existing instanceof HTMLInputElement) return existing;
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.style.display = 'none';
+  const target = appendTo || el;
+  if (!target.isConnected) {
+    throw new Error('Element is not connected to the DOM');
+  }
+  target.appendChild(input);
+  return input;
 }
 
 export async function getFlatpickrOptions(
@@ -451,15 +432,69 @@ export async function getFlatpickrOptions(
 
   console.log('Flatpickr options:', options);
 
-  if (mode === 'range') {
-    options.onReady = (_, __, instance) => {
-      if (instance.calendarContainer) {
-        const timeContainer =
-          instance.calendarContainer.querySelector('.flatpickr-time');
-        timeContainer?.classList.add('default-time-select');
+  const originalOnReady = options.onReady;
+
+  options.onReady = (selectedDates, dateStr, instance) => {
+    if (originalOnReady) {
+      if (typeof originalOnReady === 'function') {
+        originalOnReady(selectedDates, dateStr, instance);
+      } else if (Array.isArray(originalOnReady)) {
+        originalOnReady.forEach((hook) =>
+          hook(selectedDates, dateStr, instance)
+        );
       }
-    };
-  }
+    }
+
+    if (mode === 'range' && instance.calendarContainer) {
+      const timeContainer =
+        instance.calendarContainer.querySelector('.flatpickr-time');
+      timeContainer?.classList.add('default-time-select');
+    }
+
+    if ((enableTime || mode === 'time') && instance.calendarContainer) {
+      const setupHourPadding = () => {
+        const hourInput = instance.calendarContainer?.querySelector(
+          'input.flatpickr-hour'
+        ) as HTMLInputElement;
+        if (hourInput && !(hourInput as any)._paddingSetup) {
+          (hourInput as any)._paddingSetup = true;
+
+          const handleHourChange = () => {
+            const value = parseInt(hourInput.value) || 0;
+            if (value > 0 && value < 10 && hourInput.value.length === 1) {
+              hourInput.value = value.toString().padStart(2, '0');
+            }
+          };
+
+          hourInput.addEventListener('input', handleHourChange);
+          hourInput.addEventListener('change', handleHourChange);
+
+          handleHourChange();
+        }
+      };
+
+      setTimeout(setupHourPadding, 0);
+
+      if (!(instance as any)._hourPaddingObserver) {
+        const observer = new MutationObserver(() => {
+          setupHourPadding();
+        });
+
+        observer.observe(instance.calendarContainer, {
+          childList: true,
+          subtree: true,
+        });
+
+        (instance as any)._hourPaddingObserver = observer;
+
+        const originalDestroy = instance.destroy;
+        instance.destroy = function () {
+          observer.disconnect();
+          return originalDestroy.call(this);
+        };
+      }
+    }
+  };
 
   if (!(inputEl instanceof HTMLInputElement)) {
     options.positionElement = inputEl;
@@ -854,20 +889,6 @@ export function setCalendarAttributes(
       hourInput.setAttribute('aria-valuemin', hourInput.min);
       hourInput.setAttribute('aria-valuemax', hourInput.max);
       hourInput.setAttribute('aria-valuenow', hourInput.value);
-      hourInput.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          hourInput.stepUp();
-        }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          hourInput.stepDown();
-        }
-        setTimeout(
-          () => hourInput.setAttribute('aria-valuenow', hourInput.value),
-          0
-        );
-      });
     }
 
     const minuteInput = container.querySelector<HTMLInputElement>(
@@ -880,20 +901,6 @@ export function setCalendarAttributes(
       minuteInput.setAttribute('aria-valuemin', minuteInput.min);
       minuteInput.setAttribute('aria-valuemax', minuteInput.max);
       minuteInput.setAttribute('aria-valuenow', minuteInput.value);
-      minuteInput.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          minuteInput.stepUp();
-        }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          minuteInput.stepDown();
-        }
-        setTimeout(
-          () => minuteInput.setAttribute('aria-valuenow', minuteInput.value),
-          0
-        );
-      });
     }
 
     const ampmToggle = container.querySelector<HTMLElement>('.flatpickr-am-pm');

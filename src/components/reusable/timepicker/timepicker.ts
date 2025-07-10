@@ -194,7 +194,16 @@ export class TimePicker extends FlatpickrBase {
     }
   }
 
-  protected emitChangeEvent(): void {}
+  protected override emitChangeEvent(): void {
+    const date = this.value instanceof Date ? this.value : null;
+    const dateStr = (this._inputEl as HTMLInputElement)?.value || '';
+
+    if (this.flatpickrInstance && date) {
+      this.emitFlatpickrChange(this.flatpickrInstance, [date], dateStr, {
+        type: 'manual',
+      } as Event);
+    }
+  }
 
   protected hasValue(): boolean {
     return this.value instanceof Date;

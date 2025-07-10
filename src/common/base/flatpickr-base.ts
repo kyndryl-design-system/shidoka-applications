@@ -25,6 +25,7 @@ import { BaseOptions } from 'flatpickr/dist/types/options';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import { Instance } from 'flatpickr/dist/types/instance';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -284,6 +285,21 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
     }
   }
 
+  protected emitFlatpickrChange(
+    instance: Instance,
+    selectedDates: Date[],
+    dateStr: string,
+    event?: Event
+  ): void {
+    this.dispatchEvent(
+      new CustomEvent('on-change', {
+        detail: { selectedDates, dateStr, instance, event },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   protected abstract hasValue(): boolean;
   protected abstract updateFormValue(): void;
   protected abstract getComponentFlatpickrOptions(): Promise<
@@ -292,7 +308,9 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
   protected abstract setInitialDates(instance?: flatpickr.Instance): void;
   protected abstract handleDateChange(
     selectedDates: Date[],
-    dateStr: string
+    dateStr: string,
+    instance: flatpickr.Instance,
+    event?: Event
   ): Promise<void>;
   protected abstract getPickerIcon(): string;
   protected abstract getPickerClasses(): Record<string, boolean>;

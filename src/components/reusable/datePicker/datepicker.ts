@@ -142,6 +142,8 @@ export class DatePicker extends FlatpickrBase {
     mode: this.mode,
   };
 
+  protected _instance?: flatpickr.Instance;
+
   protected hasValue(): boolean {
     return !!(this._inputEl?.value || this.value);
   }
@@ -163,35 +165,20 @@ export class DatePicker extends FlatpickrBase {
     instance.setDate(this.defaultDate, false);
   }
 
-  protected async handleDateChange(selectedDates: Date[]): Promise<void> {
+  protected async handleDateChange(
+    selectedDates: Date[],
+    dateStr: string,
+    instance: flatpickr.Instance,
+    event?: Event
+  ): Promise<void> {
     if (this._isClearing) return;
     this._hasInteracted = true;
-
-    if (selectedDates.some((d) => isNaN(d.getTime()))) {
-      this.invalidText = this._textStrings.invalidDateFormat ?? '';
-      this._validate(true, false);
-      return;
-    }
-
-    this.value =
-      this.mode === 'multiple' ? [...selectedDates] : selectedDates[0] || null;
-    this.invalidText && (this.invalidText = '');
-
-    const formatted =
-      this.mode === 'multiple'
-        ? (this.value as Date[]).map((d) => d.toISOString())
-        : this.value instanceof Date
-        ? this.value.toISOString()
-        : null;
-    emitValue(this, 'on-change', {
-      dates: formatted,
-      dateString: (this._inputEl as HTMLInputElement).value,
-      source: selectedDates.length === 0 ? 'clear' : undefined,
-    });
-
+    this.value = selectedDates[0] || null;
     this._validate(true, false);
     await this.updateComplete;
     this.updateFormValue();
+
+    this.emitFlatpickrChange(instance, selectedDates, dateStr, event);
   }
 
   protected getPickerIcon(): string {
@@ -222,20 +209,19 @@ export class DatePicker extends FlatpickrBase {
   }
 
   protected override emitChangeEvent(source?: string): void {
-    const formatted =
-      this.mode === 'multiple'
-        ? Array.isArray(this.value)
-          ? this.value.map((d) => (d as Date).toISOString())
-          : []
-        : this.value instanceof Date
-        ? this.value.toISOString()
-        : null;
+    const selectedDates = Array.isArray(this.value)
+      ? this.value
+      : this.value instanceof Date
+      ? [this.value]
+      : [];
 
-    emitValue(this, 'on-change', {
-      dates: formatted,
-      dateString: (this._inputEl as HTMLInputElement).value,
-      source,
-    });
+    const dateStr = (this._inputEl as HTMLInputElement)?.value || '';
+
+    if (this._instance) {
+      this.emitFlatpickrChange(this._instance, selectedDates, dateStr, {
+        type: source ?? 'manual',
+      } as Event);
+    }
   }
 
   override updated(changedProperties: Map<string, unknown>) {
