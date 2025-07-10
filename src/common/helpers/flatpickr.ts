@@ -542,7 +542,13 @@ export function setCalendarAttributes(
   modalDetected = false
 ): void {
   if (!instance || !instance.config) {
-    console.warn('setCalendarAttributes: Invalid instance or config');
+    if (
+      typeof window !== 'undefined' &&
+      window.location &&
+      window.location.hostname === 'localhost'
+    ) {
+      console.warn('setCalendarAttributes: Invalid instance or config');
+    }
     return;
   }
 

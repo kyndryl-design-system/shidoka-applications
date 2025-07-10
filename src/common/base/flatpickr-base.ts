@@ -16,6 +16,7 @@ import {
   getModalContainer,
   clearFlatpickrInput,
   updateEnableTime,
+  emitValue,
 } from '../helpers/flatpickr';
 import '../../components/reusable/button';
 
@@ -732,6 +733,135 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
       this.closeFlatpickr.bind(this),
       this.setShouldFlatpickrOpen.bind(this)
     );
+  }
+
+  protected async _clearDateAt(index: 0 | 1, source: string): Promise<void> {
+    if (!this.flatpickrInstance) return;
+
+    this._isClearing = true;
+    try {
+      const newValue: [Date | null, Date | null] = [
+        this.value[0] ?? null,
+        this.value[1] ?? null,
+      ];
+      newValue[index] = null;
+      this.value = newValue;
+
+      const other = this.value[index === 0 ? 1 : 0];
+      if (other) {
+        this.flatpickrInstance.setDate([other], false);
+      } else {
+        this.flatpickrInstance.clear();
+      }
+
+      this.updateFormValue();
+      this.invalidText = '';
+
+      emitValue(this, 'on-change', {
+        dates: this.value.map((d: Date | null) => d?.toISOString() || null),
+        dateString: other ? flatpickr.formatDate(other, this.dateFormat) : '',
+        source,
+      });
+
+      this._validate(true, false);
+      this.requestUpdate();
+    } finally {
+      this._isClearing = false;
+    }
+  }
+
+  protected _validateAndFilterDefaultDates(
+    defaultDates: string[],
+    format: string,
+    minDate?: string | number | Date,
+    maxDate?: string | number | Date
+  ): {
+    validDates: string[];
+    hasErrors: boolean;
+    errorMessage: string;
+  } {
+    const result = {
+      validDates: [] as string[],
+      hasErrors: false,
+      errorMessage: '',
+    };
+
+    const errors: string[] = [];
+    const validDates: string[] = [];
+
+    defaultDates.forEach((dateStr, index) => {
+      if (!dateStr) return;
+
+      const parsedDate =
+        flatpickr.parseDate(dateStr, format) || new Date(dateStr);
+      const label = index === 0 ? 'Start' : 'End';
+
+      if (!parsedDate || isNaN(parsedDate.getTime())) {
+        errors.push(`Invalid ${label.toLowerCase()} date: ${dateStr}`);
+        return;
+      }
+
+      if (minDate) {
+        const min =
+          flatpickr.parseDate(minDate as any, format) || new Date(minDate);
+        if (parsedDate.getTime() < min.getTime()) {
+          errors.push(
+            `${label} date is before minimum allowed date (${minDate})`
+          );
+          return;
+        }
+      }
+
+      if (maxDate) {
+        const max =
+          flatpickr.parseDate(maxDate as any, format) || new Date(maxDate);
+        if (parsedDate.getTime() > max.getTime()) {
+          errors.push(
+            `${label} date is after maximum allowed date (${maxDate})`
+          );
+          return;
+        }
+      }
+
+      validDates.push(dateStr);
+    });
+
+    if (validDates.length === 2) {
+      const [start, end] = validDates.map((d) =>
+        flatpickr.parseDate(d, format)
+      );
+      if (start && end && start.getTime() > end.getTime()) {
+        errors.push('Start date cannot be after end date');
+        validDates.length = 0;
+      }
+    }
+
+    result.validDates = validDates;
+    result.hasErrors = errors.length > 0;
+    result.errorMessage = errors.join('. ');
+
+    return result;
+  }
+
+  protected async _checkAndUpdateForViewportChange(): Promise<void> {
+    if (!this.flatpickrInstance || this._isClearing) return;
+
+    const isWideScreen = window.innerWidth >= 767;
+    const currentShowMonths = this.flatpickrInstance.config.showMonths || 1;
+    const expected = isWideScreen && !this.showSingleMonth ? 2 : 1;
+
+    if (currentShowMonths !== expected) {
+      const currentDates = this.flatpickrInstance.selectedDates;
+      this.flatpickrInstance.destroy();
+      this.flatpickrInstance = undefined;
+
+      await this.initializeFlatpickr();
+
+      if (currentDates.length) {
+        (this as any).value = [...currentDates];
+        this.requestUpdate();
+      }
+    }
   }
 
   protected async getBaseFlatpickrOptions(): Promise<Partial<BaseOptions>> {

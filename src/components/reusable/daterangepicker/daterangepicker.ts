@@ -183,384 +183,6 @@ export class DateRangePicker extends FlatpickrBase {
     return Boolean(this._inputEl?.value) || this.value.some((d) => d !== null);
   }
 
-  private _validateAndFilterDefaultDates(): {
-    validDates: string[];
-    hasErrors: boolean;
-    errorMessage: string;
-  } {
-    const result = {
-      validDates: [] as string[],
-      hasErrors: false,
-      errorMessage: '',
-    };
-
-    if (!this.defaultDate || !Array.isArray(this.defaultDate)) {
-      return result;
-    }
-
-    const errors: string[] = [];
-    const validDates: string[] = [];
-
-    this.defaultDate.forEach((dateStr, index) => {
-      if (!dateStr) return;
-
-      let isValid = true;
-      let parsedDate: Date | null = null;
-
-      if (typeof dateStr === 'string') {
-        switch (this.dateFormat) {
-          case 'Y-m-d': {
-            const [year, month, day] = dateStr.split('-').map(Number);
-            if (
-              isNaN(year) ||
-              isNaN(month) ||
-              isNaN(day) ||
-              month < 1 ||
-              month > 12 ||
-              day < 1 ||
-              day > 31
-            ) {
-              isValid = false;
-              errors.push(
-                `Invalid ${
-                  index === 0 ? 'start' : 'end'
-                } date format: ${dateStr}`
-              );
-            } else {
-              parsedDate = new Date(year, month - 1, day);
-              if (
-                parsedDate.getFullYear() !== year ||
-                parsedDate.getMonth() !== month - 1 ||
-                parsedDate.getDate() !== day
-              ) {
-                isValid = false;
-                errors.push(
-                  `Invalid ${index === 0 ? 'start' : 'end'} date: ${dateStr}`
-                );
-              }
-            }
-            break;
-          }
-          default:
-            parsedDate =
-              flatpickr.parseDate(dateStr, this.dateFormat) ||
-              new Date(dateStr);
-            if (!parsedDate || isNaN(parsedDate.getTime())) {
-              isValid = false;
-              errors.push(
-                `Invalid ${index === 0 ? 'start' : 'end'} date: ${dateStr}`
-              );
-            }
-            break;
-        }
-      }
-
-      if (isValid && parsedDate) {
-        let minDateObj: Date | null = null;
-        let maxDateObj: Date | null = null;
-
-        if (this.minDate) {
-          if (typeof this.minDate === 'string') {
-            minDateObj =
-              flatpickr.parseDate(this.minDate, this.dateFormat) ||
-              new Date(this.minDate);
-          } else if (this.minDate instanceof Date) {
-            minDateObj = this.minDate;
-          }
-        }
-
-        if (this.maxDate) {
-          if (typeof this.maxDate === 'string') {
-            maxDateObj =
-              flatpickr.parseDate(this.maxDate, this.dateFormat) ||
-              new Date(this.maxDate);
-          } else if (this.maxDate instanceof Date) {
-            maxDateObj = this.maxDate;
-          }
-        }
-
-        const dateType = index === 0 ? 'start' : 'end';
-
-        if (minDateObj && parsedDate.getTime() < minDateObj.getTime()) {
-          isValid = false;
-          errors.push(
-            `${
-              dateType.charAt(0).toUpperCase() + dateType.slice(1)
-            } date is before minimum allowed date (${this.minDate}).`
-          );
-        }
-
-        if (maxDateObj && parsedDate.getTime() > maxDateObj.getTime()) {
-          isValid = false;
-          errors.push(
-            `${
-              dateType.charAt(0).toUpperCase() + dateType.slice(1)
-            } date is after maximum allowed date (${this.maxDate}).`
-          );
-        }
-      }
-
-      if (isValid) {
-        validDates.push(dateStr);
-      }
-    });
-
-    if (validDates.length === 2) {
-      const startDate = flatpickr.parseDate(validDates[0], this.dateFormat);
-      const endDate = flatpickr.parseDate(validDates[1], this.dateFormat);
-
-      if (startDate && endDate && startDate.getTime() > endDate.getTime()) {
-        errors.push('Start date cannot be after end date');
-        result.hasErrors = true;
-        validDates.length = 0;
-      }
-    }
-
-    result.validDates = validDates;
-    result.hasErrors = errors.length > 0;
-    result.errorMessage = errors.join('. ');
-
-    return result;
-  }
-
-  override updated(changedProperties: Map<string, unknown>) {
-    super.updated(changedProperties);
-
-    if (changedProperties.has('dateRangePickerDisabled')) {
-      this.disabled = this.dateRangePickerDisabled;
-    }
-
-    if (changedProperties.has('showSingleMonth')) {
-      if (this.flatpickrInstance && this._initialized && !this._isClearing) {
-        this.debouncedUpdate();
-      }
-    }
-  }
-
-  override async firstUpdated(changedProps: PropertyValues): Promise<void> {
-    await super.firstUpdated(changedProps);
-    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-    await this.initializeFlatpickr();
-  }
-
-  protected updateFormValue(): void {
-    if (this._internals && this._inputEl) {
-      const val = this.value
-        .filter(Boolean)
-        .map((d) => (d as Date).toISOString())
-        .join(',');
-      this._internals.setFormValue(val);
-      this._inputEl.setAttribute('value', val);
-    }
-  }
-
-  protected async getComponentFlatpickrOptions(): Promise<
-    Partial<BaseOptions>
-  > {
-    const opts = await this.getBaseFlatpickrOptions();
-    opts.mode = 'range';
-    opts.closeOnSelect = this.closeOnSelection;
-
-    const isWideScreen = window.innerWidth >= 767;
-    if (!isWideScreen) {
-      opts.showMonths = 1;
-    } else {
-      opts.showMonths = this.showSingleMonth ? 1 : 2;
-    }
-
-    const originalOnOpen = opts.onOpen;
-    opts.onOpen = (selectedDates, dateStr, instance) => {
-      this._checkAndUpdateForViewportChange();
-
-      if (this.multiInput) {
-        return;
-      }
-
-      if (originalOnOpen) {
-        if (typeof originalOnOpen === 'function') {
-          originalOnOpen(selectedDates, dateStr, instance);
-        } else if (Array.isArray(originalOnOpen)) {
-          originalOnOpen.forEach((hook) =>
-            hook(selectedDates, dateStr, instance)
-          );
-        }
-      }
-    };
-
-    if (this.defaultDate) {
-      const validatedDates = this._validateAndFilterDefaultDates();
-      if (validatedDates.validDates.length > 0) {
-        opts.defaultDate = validatedDates.validDates;
-      }
-
-      if (validatedDates.hasErrors) {
-        this._hasInteracted = true;
-        this.invalidText = validatedDates.errorMessage;
-      }
-    }
-
-    if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
-      return applyDateRangeEditingRestrictions(
-        opts,
-        this.rangeEditMode,
-        this._initialValue,
-        {
-          lockedStartDate: this._textStrings.lockedStartDate,
-          lockedEndDate: this._textStrings.lockedEndDate,
-          dateLocked: this._textStrings.dateLocked,
-          dateNotAvailable: this._textStrings.dateNotAvailable,
-          dateInSelectedRange: this._textStrings.dateInSelectedRange,
-        }
-      );
-    }
-
-    return opts;
-  }
-
-  private async _checkAndUpdateForViewportChange(): Promise<void> {
-    if (!this.flatpickrInstance || this._isClearing) {
-      return;
-    }
-
-    const isWideScreen = window.innerWidth >= 767;
-    const currentShowMonths = this.flatpickrInstance.config.showMonths || 1;
-
-    let expectedShowMonths = 1;
-    if (!isWideScreen) {
-      expectedShowMonths = 1;
-    } else {
-      expectedShowMonths = this.showSingleMonth ? 1 : 2;
-    }
-
-    if (currentShowMonths !== expectedShowMonths) {
-      try {
-        const currentDates = this.flatpickrInstance.selectedDates;
-
-        this.flatpickrInstance.destroy();
-        this.flatpickrInstance = undefined;
-
-        await this.initializeFlatpickr();
-
-        if (currentDates.length > 0) {
-          this.value = [currentDates[0] || null, currentDates[1] || null];
-          this.requestUpdate();
-        }
-      } catch (error) {
-        console.error('Error updating calendar for viewport change:', error);
-      }
-    }
-  }
-
-  protected setInitialDates(instance?: flatpickr.Instance): void {
-    const dates = instance?.selectedDates ?? [];
-    this.value = [dates[0] ?? null, dates[1] ?? null];
-    if (!this._initialValueSet) {
-      this._initialValue = [...this.value];
-      this._initialValueSet = true;
-    }
-  }
-
-  protected clearValue(): Promise<void> {
-    return Promise.resolve().then(() => {
-      this.value = [null, null];
-    });
-  }
-
-  protected resetValue(): void {
-    this.value = [null, null];
-  }
-
-  protected async handleDateChange(
-    selectedDates: Date[],
-    dateStr: string
-  ): Promise<void> {
-    if (selectedDates.length === 2) {
-      this.value = [selectedDates[0], selectedDates[1]];
-      this.flatpickrInstance?.setDate(selectedDates, false);
-      const iso = selectedDates.map((d) => d.toISOString());
-      this.invalidText = '';
-
-      emitValue(this, 'on-change', { dates: iso, dateString: dateStr });
-      this._validate(true, false);
-
-      if (this.closeOnSelection) {
-        this.flatpickrInstance?.close();
-      }
-    }
-  }
-
-  protected override async _handleClear(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (!this.flatpickrInstance) {
-      console.warn('Cannot clear: Flatpickr instance not available');
-      return;
-    }
-
-    this._isClearing = true;
-
-    try {
-      await this.clearValue();
-      this.flatpickrInstance.clear();
-      this.invalidText = '';
-      this.emitChangeEvent();
-      this._validate(true, false);
-      this.requestUpdate();
-    } catch (error) {
-      console.error('Error clearing picker:', error);
-    } finally {
-      this._isClearing = false;
-    }
-  }
-
-  protected emitChangeEvent(): void {}
-
-  protected getAriaLabel(): string {
-    return 'Date range picker';
-  }
-
-  protected getPickerIcon(): string {
-    return calendarIcon;
-  }
-
-  protected getPickerClasses(): Record<string, boolean> {
-    return {
-      'date-range-picker': true,
-      'date-range-picker__enable-time': this._enableTime,
-      'date-range-picker__disabled': this.disabled,
-      'date-range-picker__single-month': this.showSingleMonth,
-      'date-range-picker__multi-input': this.multiInput,
-      'date-range-picker__multi-input--with-time':
-        this.multiInput && this._enableTime,
-    };
-  }
-
-  public override async initializeFlatpickr() {
-    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-    if (this.multiInput) {
-      this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
-        inputEl: this._inputEl,
-        endinputEl: this._endInputEl,
-        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
-        setCalendarAttributes: (instance) => {
-          const isWideScreen = window.innerWidth >= 767;
-          const shouldShowSingleMonth = !isWideScreen || this.showSingleMonth;
-
-          if (shouldShowSingleMonth && instance.calendarContainer) {
-            instance.calendarContainer.classList.add(
-              'flatpickr-calendar-single-month'
-            );
-          }
-          setCalendarAttributes(instance, false);
-        },
-        setInitialDates: (inst) => this.setInitialDates(inst),
-      });
-    } else {
-      await super.initializeFlatpickr();
-    }
-  }
-
   override render(): TemplateResult {
     const anchorId =
       this.name || `date-range-${Math.random().toString(36).slice(2)}`;
@@ -657,85 +279,216 @@ export class DateRangePicker extends FlatpickrBase {
     `;
   }
 
-  private async _handleClearStart(event: Event) {
+  override async firstUpdated(changedProps: PropertyValues): Promise<void> {
+    await super.firstUpdated(changedProps);
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
+    await this.initializeFlatpickr();
+  }
+
+  protected updateFormValue(): void {
+    if (this._internals && this._inputEl) {
+      const val = this.value
+        .filter(Boolean)
+        .map((d) => (d as Date).toISOString())
+        .join(',');
+      this._internals.setFormValue(val);
+      this._inputEl.setAttribute('value', val);
+    }
+  }
+
+  protected async getComponentFlatpickrOptions(): Promise<
+    Partial<BaseOptions>
+  > {
+    const opts = await this.getBaseFlatpickrOptions();
+    opts.mode = 'range';
+    opts.closeOnSelect = this.closeOnSelection;
+
+    const isWideScreen = window.innerWidth >= 767;
+    opts.showMonths = isWideScreen ? (this.showSingleMonth ? 1 : 2) : 1;
+
+    const originalOnOpen = opts.onOpen;
+    opts.onOpen = (selectedDates, dateStr, instance) => {
+      this._checkAndUpdateForViewportChange();
+
+      if (!this.multiInput && originalOnOpen) {
+        if (typeof originalOnOpen === 'function') {
+          originalOnOpen(selectedDates, dateStr, instance);
+        } else if (Array.isArray(originalOnOpen)) {
+          originalOnOpen.forEach((hook) =>
+            hook(selectedDates, dateStr, instance)
+          );
+        }
+      }
+    };
+
+    if (this.defaultDate && Array.isArray(this.defaultDate)) {
+      const validatedDates = this._validateAndFilterDefaultDates(
+        this.defaultDate,
+        this.dateFormat,
+        this.minDate,
+        this.maxDate
+      );
+
+      if (validatedDates.validDates.length > 0) {
+        opts.defaultDate = validatedDates.validDates;
+      }
+
+      if (validatedDates.hasErrors) {
+        this._hasInteracted = true;
+        this.invalidText = validatedDates.errorMessage;
+      }
+    }
+
+    if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
+      return applyDateRangeEditingRestrictions(
+        opts,
+        this.rangeEditMode,
+        this._initialValue,
+        {
+          lockedStartDate: this._textStrings.lockedStartDate,
+          lockedEndDate: this._textStrings.lockedEndDate,
+          dateLocked: this._textStrings.dateLocked,
+          dateNotAvailable: this._textStrings.dateNotAvailable,
+          dateInSelectedRange: this._textStrings.dateInSelectedRange,
+        }
+      );
+    }
+
+    return opts;
+  }
+
+  protected setInitialDates(instance?: flatpickr.Instance): void {
+    const dates = instance?.selectedDates ?? [];
+    this.value = [dates[0] ?? null, dates[1] ?? null];
+    if (!this._initialValueSet) {
+      this._initialValue = [...this.value];
+      this._initialValueSet = true;
+    }
+  }
+
+  protected clearValue(): Promise<void> {
+    return Promise.resolve().then(() => {
+      this.value = [null, null];
+    });
+  }
+
+  protected resetValue(): void {
+    this.value = [null, null];
+  }
+
+  protected async handleDateChange(
+    selectedDates: Date[],
+    _dateStr: string
+  ): Promise<void> {
+    if (selectedDates.length > 0) {
+      this.value = [selectedDates[0] ?? null, selectedDates[1] ?? null];
+
+      if (this.multiInput && this._inputEl && this._endInputEl) {
+        const fmt = (d: Date) => flatpickr.formatDate(d, this.dateFormat);
+        this._inputEl.value = this.value[0] ? fmt(this.value[0]!) : '';
+        this._endInputEl.value = this.value[1] ? fmt(this.value[1]!) : '';
+      }
+
+      this.updateFormValue();
+      this._validate(true, false);
+
+      emitValue(this, 'on-change', {
+        dates: this.value.map((d) => d?.toISOString() || null),
+        dateString: this.value
+          .filter(Boolean)
+          .map((d) => flatpickr.formatDate(d as Date, this.dateFormat))
+          .join(' to '),
+      });
+
+      if (this.closeOnSelection && selectedDates.length === 2) {
+        this.flatpickrInstance?.close();
+      }
+    }
+  }
+
+  protected override async _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
 
     if (!this.flatpickrInstance) {
-      console.warn('Cannot clear start: Flatpickr instance not available');
+      console.warn('Cannot clear: Flatpickr instance not available');
       return;
     }
 
     this._isClearing = true;
 
     try {
-      this.value = [null, this.value[1]];
-
-      if (this.value[1]) {
-        this.flatpickrInstance.setDate([this.value[1]], false);
-      } else {
-        this.flatpickrInstance.clear();
-      }
-
-      this.updateFormValue();
+      await this.clearValue();
+      this.flatpickrInstance.clear();
       this.invalidText = '';
-
-      emitValue(this, 'on-change', {
-        dates: this.value.map((d) => d?.toISOString() || null),
-        dateString: this.value[1]
-          ? flatpickr.formatDate(this.value[1], this.dateFormat)
-          : '',
-        source: 'clear-start',
-      });
-
+      this.emitChangeEvent();
       this._validate(true, false);
       this.requestUpdate();
     } catch (error) {
-      console.error('Error clearing start date:', error);
+      console.error('Error clearing picker:', error);
     } finally {
       this._isClearing = false;
     }
   }
 
-  private async _handleClearEnd(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  protected emitChangeEvent(): void {}
 
-    if (!this.flatpickrInstance) {
-      console.warn('Cannot clear end: Flatpickr instance not available');
-      return;
-    }
+  protected getAriaLabel(): string {
+    return 'Date range picker';
+  }
 
-    this._isClearing = true;
+  protected getPickerIcon(): string {
+    return calendarIcon;
+  }
 
-    try {
-      this.value = [this.value[0], null];
+  protected getPickerClasses(): Record<string, boolean> {
+    return {
+      'date-range-picker': true,
+      'date-range-picker__enable-time': this._enableTime,
+      'date-range-picker__disabled': this.disabled,
+      'date-range-picker__single-month': this.showSingleMonth,
+      'date-range-picker__multi-input': this.multiInput,
+      'date-range-picker__multi-input--with-time':
+        this.multiInput && this._enableTime,
+    };
+  }
 
-      if (this.value[0]) {
-        this.flatpickrInstance.setDate([this.value[0]], false);
-      } else {
-        this.flatpickrInstance.clear();
-      }
+  public override async initializeFlatpickr() {
+    injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
+    if (this.multiInput) {
+      this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
+        inputEl: this._inputEl,
+        endinputEl: this._endInputEl,
+        getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
+        setCalendarAttributes: (instance) => {
+          const isWideScreen = window.innerWidth >= 767;
+          const shouldShowSingleMonth = !isWideScreen || this.showSingleMonth;
 
-      this.updateFormValue();
-      this.invalidText = '';
-
-      emitValue(this, 'on-change', {
-        dates: this.value.map((d) => d?.toISOString() || null),
-        dateString: this.value[0]
-          ? flatpickr.formatDate(this.value[0], this.dateFormat)
-          : '',
-        source: 'clear-end',
+          if (shouldShowSingleMonth && instance.calendarContainer) {
+            instance.calendarContainer.classList.add(
+              'flatpickr-calendar-single-month'
+            );
+          }
+          setCalendarAttributes(instance, false);
+        },
+        setInitialDates: (inst) => this.setInitialDates(inst),
       });
-
-      this._validate(true, false);
-      this.requestUpdate();
-    } catch (error) {
-      console.error('Error clearing end date:', error);
-    } finally {
-      this._isClearing = false;
+    } else {
+      await super.initializeFlatpickr();
     }
   }
+
+  private _handleClearStart = (e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this._clearDateAt(0, 'clear-start');
+  };
+
+  private _handleClearEnd = (e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this._clearDateAt(1, 'clear-end');
+  };
 }
 
 declare global {
