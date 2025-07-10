@@ -51,11 +51,6 @@ interface SingleFlatpickrContext extends BaseFlatpickrContext {
   inputEl: HTMLElement;
 }
 
-interface RangeFlatpickrContext extends BaseFlatpickrContext {
-  inputEl: HTMLElement;
-  endinputEl?: HTMLElement;
-}
-
 const DATE_FORMAT_OPTIONS = {
   'Y-m-d': 'yyyy-mm-dd',
   'm-d-Y': 'mm-dd-yyyy',
