@@ -30,6 +30,27 @@ export default {
           height: 100%;
           border-radius: 4px;
         }
+
+        .fake-local-nav {
+          display: none;
+          position: fixed;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: var(--kd-local-nav-width);
+          background: var(--kd-color-background-menu-state-default);
+          box-shadow: var(--kd-elevation-level-2);
+        }
+
+        @media (min-width: 42rem) {
+          .fake-local-nav {
+            display: block;
+          }
+
+          .with-local-nav {
+            margin-left: 56px;
+          }
+        }
       </style>
       ${story()}
     `,
@@ -39,175 +60,185 @@ export default {
 const args = {
   gridstackConfig: Config,
   layout: sampleLayout,
+  withLocalNav: false,
 };
 
 export const Gridstack = {
   args,
   render: (args) => {
     return html`
-      <kyn-widget-gridstack
-        .layout=${args.layout}
-        .gridstackConfig=${args.gridstackConfig}
-        @on-grid-save=${(e) => action(e.type)(e)}
-      >
-        <div class="grid-stack">
-          <div gs-id="w1" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 1" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w2" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 2" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w3" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 3" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w4" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 4" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w5" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 5" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
-            </div>
-          </div>
-
-          <div gs-id="w6" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget>
-                <kd-chart
-                  type="bar"
-                  chartTitle="Widget 6"
-                  description="Widget Subtitle"
-                  hideCaptions
-                  .labels=${[
-                    'Red',
-                    'Blue',
-                    'Yellow',
-                    'Green',
-                    'Purple',
-                    'Orange',
-                  ]}
-                  .datasets=${[
-                    {
-                      label: 'Dataset 1',
-                      data: [12, 19, 3, 5, 2, 3],
-                    },
-                    {
-                      label: 'Dataset 2',
-                      data: [8, 15, 7, 9, 6, 13],
-                    },
-                  ]}
-                  .options=${{
-                    maintainAspectRatio: false, // disable chart aspect ratio so it scales with widget instead
-                    scales: {
-                      x: {
-                        title: {
-                          text: 'Color',
-                        },
-                      },
-                      y: {
-                        title: {
-                          text: 'Votes',
-                        },
-                      },
-                    },
-                  }}
-                >
+      ${args.withLocalNav ? html`<div class="fake-local-nav"></div>` : ''}
+      <div class="${args.withLocalNav ? 'with-local-nav' : ''}">
+        <kyn-widget-gridstack
+          .layout=${args.layout}
+          .gridstackConfig=${args.gridstackConfig}
+          @on-grid-save=${(e) => action(e.type)(e)}
+        >
+          <div class="grid-stack">
+            <div gs-id="w1" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget widgetTitle="Widget 1" subTitle="Widget Subtitle">
                   <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                </kd-chart>
-              </kyn-widget>
+                  <div class="test">Widget Content</div>
+                </kyn-widget>
+              </div>
             </div>
-          </div>
 
-          <div gs-id="w7" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget>
-                <kd-chart
-                  type="doughnut"
-                  chartTitle="Widget 7"
-                  description="Widget Subtitle"
-                  hideCaptions
-                  .labels=${[
-                    'Blue',
-                    'Red',
-                    'Orange',
-                    'Yellow',
-                    'Green',
-                    'Purple',
-                  ]}
-                  .datasets=${[
-                    {
-                      label: 'Dataset 1',
-                      data: [120, 190, 300, 500, 200, 300],
-                    },
-                  ]}
-                  .options=${{
-                    maintainAspectRatio: false, // disable chart aspect ratio so it scales with widget instead
-                    scales: {
-                      x: {
-                        title: {
-                          text: 'Color',
-                        },
-                      },
-                      y: {
-                        title: {
-                          text: 'Votes',
-                        },
-                      },
-                    },
-                  }}
-                >
+            <div gs-id="w2" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget widgetTitle="Widget 2" subTitle="Widget Subtitle">
                   <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                </kd-chart>
-              </kyn-widget>
+                  <div class="test">Widget Content</div>
+                </kyn-widget>
+              </div>
             </div>
-          </div>
 
-          <div gs-id="w8" class="grid-stack-item">
-            <div class="grid-stack-item-content">
-              <kyn-widget widgetTitle="Widget 8" subTitle="Widget Subtitle">
-                <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                <div class="test">Widget Content</div>
-              </kyn-widget>
+            <div gs-id="w3" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget widgetTitle="Widget 3" subTitle="Widget Subtitle">
+                  <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                  <div class="test">Widget Content</div>
+                </kyn-widget>
+              </div>
+            </div>
+
+            <div gs-id="w4" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget widgetTitle="Widget 4" subTitle="Widget Subtitle">
+                  <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                  <div class="test">Widget Content</div>
+                </kyn-widget>
+              </div>
+            </div>
+
+            <div gs-id="w5" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget widgetTitle="Widget 5" subTitle="Widget Subtitle">
+                  <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                  <div class="test">Widget Content</div>
+                </kyn-widget>
+              </div>
+            </div>
+
+            <div gs-id="w6" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget>
+                  <kd-chart
+                    type="bar"
+                    chartTitle="Widget 6"
+                    description="Widget Subtitle"
+                    hideCaptions
+                    .labels=${[
+                      'Red',
+                      'Blue',
+                      'Yellow',
+                      'Green',
+                      'Purple',
+                      'Orange',
+                    ]}
+                    .datasets=${[
+                      {
+                        label: 'Dataset 1',
+                        data: [12, 19, 3, 5, 2, 3],
+                      },
+                      {
+                        label: 'Dataset 2',
+                        data: [8, 15, 7, 9, 6, 13],
+                      },
+                    ]}
+                    .options=${{
+                      maintainAspectRatio: false, // disable chart aspect ratio so it scales with widget instead
+                      scales: {
+                        x: {
+                          title: {
+                            text: 'Color',
+                          },
+                        },
+                        y: {
+                          title: {
+                            text: 'Votes',
+                          },
+                        },
+                      },
+                    }}
+                  >
+                    <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                  </kd-chart>
+                </kyn-widget>
+              </div>
+            </div>
+
+            <div gs-id="w7" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget>
+                  <kd-chart
+                    type="doughnut"
+                    chartTitle="Widget 7"
+                    description="Widget Subtitle"
+                    hideCaptions
+                    .labels=${[
+                      'Blue',
+                      'Red',
+                      'Orange',
+                      'Yellow',
+                      'Green',
+                      'Purple',
+                    ]}
+                    .datasets=${[
+                      {
+                        label: 'Dataset 1',
+                        data: [120, 190, 300, 500, 200, 300],
+                      },
+                    ]}
+                    .options=${{
+                      maintainAspectRatio: false, // disable chart aspect ratio so it scales with widget instead
+                      scales: {
+                        x: {
+                          title: {
+                            text: 'Color',
+                          },
+                        },
+                        y: {
+                          title: {
+                            text: 'Votes',
+                          },
+                        },
+                      },
+                    }}
+                  >
+                    <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                  </kd-chart>
+                </kyn-widget>
+              </div>
+            </div>
+
+            <div gs-id="w8" class="grid-stack-item">
+              <div class="grid-stack-item-content">
+                <kyn-widget widgetTitle="Widget 8" subTitle="Widget Subtitle">
+                  <kyn-widget-drag-handle></kyn-widget-drag-handle>
+                  <div class="test">Widget Content</div>
+                </kyn-widget>
+              </div>
             </div>
           </div>
-        </div>
-      </kyn-widget-gridstack>
+        </kyn-widget-gridstack>
+      </div>
     `;
   },
 };
 
 export const AddWidget = {
-  render: () => {
+  args: {
+    withLocalNav: false,
+  },
+  render: (args) => {
     return html`
-      <new-widget-sample
-        @on-click=${(e) => action(e.type)(e)}
-      ></new-widget-sample>
+      ${args.withLocalNav ? html`<div class="fake-local-nav"></div>` : ''}
+      <div class="${args.withLocalNav ? 'with-local-nav' : ''}">
+        <new-widget-sample
+          @on-click=${(e) => action(e.type)(e)}
+        ></new-widget-sample>
+      </div>
     `;
   },
 };

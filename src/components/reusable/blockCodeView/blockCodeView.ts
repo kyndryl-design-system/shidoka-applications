@@ -259,13 +259,13 @@ export class BlockCodeView extends LitElement {
     return html`
       <kyn-button
         class="code-view__expand-button"
-        kind="tertiary"
+        kind="ghost"
         size="small"
         iconPosition="left"
         outlineOnly
         description=${this.codeExpanded
-          ? this._textStrings.expanded
-          : this._textStrings.collapsed}
+          ? this._textStrings.collapsed
+          : this._textStrings.expanded}
         @click=${this.expandCodeView}
       >
         <span slot="icon" class="expand-icon">${unsafeSVG(chevronDown)}</span>

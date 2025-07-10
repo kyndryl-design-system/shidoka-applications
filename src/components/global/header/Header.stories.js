@@ -250,14 +250,14 @@ export const WithNotificationPanel = {
         >
           <kyn-button
             slot="menu-slot"
-            kind="tertiary"
+            kind="secondary"
             @click=${(e) => selectAllNotificationsAsRead(e)}
           >
             Mark all as Read
           </kyn-button>
           <kyn-button
             slot="menu-slot"
-            kind="tertiary"
+            kind="outline"
             @click=${(e) => console.log(e)}
           >
             <span slot="icon">${unsafeSVG(settingsIcon)}</span>
