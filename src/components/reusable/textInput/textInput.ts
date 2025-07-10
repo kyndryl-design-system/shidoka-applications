@@ -100,7 +100,7 @@ export class TextInput extends FormMixin(LitElement) {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
-  /** AutoComplete state */
+  /** Toggles native browser autocomplete suggestions */
   @property({ type: Boolean })
   accessor autoComplete = false;
 

@@ -28,6 +28,7 @@ export default {
     pattern: { control: 'text' },
     textStrings: { control: 'object' },
     customSuggestions: { control: 'array' },
+    autoComplete: { control: 'boolean' },
     value: {
       control: 'text',
       table: { category: 'attributes' },
@@ -54,6 +55,7 @@ const Template = (args) => html`
     ?readonly=${args.readonly}
     ?hideLabel=${args.hideLabel}
     ?hideIcon=${args.hideIcon}
+    ?autoComplete=${args.autoComplete}
     name=${args.name}
     pattern=${ifDefined(args.pattern)}
     maxItems=${ifDefined(args.maxItems)}
@@ -80,6 +82,7 @@ DefaultMultiInput.args = {
   name: 'invite',
   pattern: undefined,
   maxItems: undefined,
+  autoComplete: false,
   textStrings: {
     ...defaultTextStrings,
   },
@@ -95,6 +98,7 @@ EmailMultiInput.args = {
   validationsDisabled: false,
   autoSuggestionDisabled: false,
   maxItems: 10,
+  autoComplete: false,
   customSuggestions: [
     'alice@example.com',
     'bob.smith@example.com',
@@ -118,6 +122,7 @@ InvalidEmailFormat.args = {
   autoSuggestionDisabled: false,
   validationsDisabled: false,
   placeholder: 'Add email addresses and press Enter...',
+  autoComplete: false,
   textStrings: {
     invalidFormatError: 'Please enter a valid email address format.',
   },
@@ -133,6 +138,7 @@ MaxEmailsExceeded.args = {
   autoSuggestionDisabled: false,
   validationsDisabled: false,
   maxItems: 2,
+  autoComplete: false,
   placeholder: 'Add email addresses and press Enter...',
   textStrings: {
     maxExceededError: 'You cannot add more than 2 email addresses.',
@@ -148,6 +154,7 @@ DuplicateEmail.args = {
   hideIcon: false,
   autoSuggestionDisabled: false,
   validationsDisabled: false,
+  autoComplete: false,
   placeholder: 'Add email addresses and press Enter...',
   textStrings: {
     duplicateError: 'This email address has already been added.',
@@ -163,6 +170,7 @@ CustomEmailPattern.args = {
   hideIcon: false,
   autoSuggestionDisabled: false,
   validationsDisabled: false,
+  autoComplete: false,
   pattern: '[a-zA-Z0-9._%+-]+@example\\.com$',
   customSuggestions: [
     'test@example.com',
@@ -189,6 +197,7 @@ SuggestionValidationDisabled.args = {
   caption:
     'No validations, no suggestions. Whatever the user types is accepted and converted to a tag.',
   maxItems: 10,
+  autoComplete: false,
 };
 
 export const CustomSuggestions = Template.bind({});
@@ -201,6 +210,7 @@ CustomSuggestions.args = {
   hideIcon: false,
   autoSuggestionDisabled: false,
   validationsDisabled: false,
+  autoComplete: false,
   customSuggestions: [
     'custom1@company.com',
     'custom2@company.com',
@@ -226,6 +236,7 @@ export const WithCustomIcon = (args) => html`
     ?readonly=${args.readonly}
     ?hideLabel=${args.hideLabel}
     ?hideIcon=${args.hideIcon}
+    ?autoComplete=${args.autoComplete}
     name=${args.name}
     pattern=${ifDefined(args.pattern)}
     maxItems=${ifDefined(args.maxItems)}
@@ -238,4 +249,5 @@ WithCustomIcon.args = {
   ...DefaultMultiInput.args,
   hideIcon: false,
   placeholder: `Add attachments and press 'Enter'…`,
+  autoComplete: false,
 };

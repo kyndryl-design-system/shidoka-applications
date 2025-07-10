@@ -54,6 +54,7 @@ export class Search extends LitElement {
   @property({ type: Array })
   accessor suggestions: Array<string> = [];
 
+  /** Auto-suggest history array of strings. Update this array externally after on-input. */
   @property({ type: Array })
   accessor searchHistory: Array<string> = [];
 
@@ -69,7 +70,7 @@ export class Search extends LitElement {
   @property({ type: Boolean })
   accessor enableSearchHistory = false;
 
-  /** AutoComplete state */
+  /** Toggles native browser autocomplete suggestions */
   @property({ type: Boolean })
   accessor autoComplete = false;
 
