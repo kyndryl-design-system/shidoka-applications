@@ -43,7 +43,7 @@ export default {
 const args = {
   label: 'Tag Example',
   tagSize: 'md',
-  tagColor: 'spruce',
+  tagColor: 'default',
   clickable: false,
   filter: false,
   noTruncation: false,

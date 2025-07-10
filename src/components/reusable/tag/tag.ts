@@ -55,10 +55,11 @@ export class Tag extends LitElement {
   accessor clickable = false;
 
   /**
-   * Color variants. Default `'spruce'`.
+   * Color variants.
    */
   @property({ type: String })
-  accessor tagColor = 'spruce';
+  accessor tagColor: 'default' | 'spruce' | 'sea' | 'lilac' | 'ai' | 'red' =
+    'default';
 
   /**
    * Clear Tag Text to improve accessibility
