@@ -52,9 +52,11 @@ input {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
+  align-items: flex-end;
 
   .input-group {
     flex: 1;
+    min-width: 200px;
 
     .input-label {
       display: block;
@@ -73,6 +75,19 @@ input {
   @media (max-width: 767px) {
     flex-direction: column;
     gap: 12px;
+    align-items: stretch;
+
+    .input-group {
+      min-width: unset;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    gap: 16px;
+
+    .input-group {
+      min-width: 180px;
+    }
   }
 }
 
@@ -80,13 +95,71 @@ input {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
+  align-items: flex-end;
 
   .input-group {
     flex: 1;
+    min-width: 200px;
   }
 
   @media (max-width: 767px) {
     flex-direction: column;
     gap: 12px;
+    align-items: stretch;
+
+    .input-group {
+      min-width: unset;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    gap: 16px;
+
+    .input-group {
+      min-width: 180px;
+    }
+  }
+}
+
+// Single month calendar styles
+:global(.flatpickr-calendar-single-month) {
+  .flatpickr-months {
+    width: 100% !important;
+  }
+
+  .flatpickr-innerContainer {
+    width: 100% !important;
+  }
+
+  .flatpickr-days {
+    width: 100% !important;
+  }
+
+  // Hide the second month if it exists
+  .flatpickr-month:nth-child(2),
+  .dayContainer:nth-child(2) {
+    display: none !important;
+  }
+}
+
+// Responsive calendar positioning
+:global(.flatpickr-calendar) {
+  max-width: calc(100vw - 20px);
+
+  @media (max-width: 767px) {
+    width: calc(100vw - 20px) !important;
+    left: 10px !important;
+    right: 10px !important;
+    transform: none !important;
+
+    &.arrowTop:before,
+    &.arrowTop:after {
+      left: 50% !important;
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    max-width: 90vw;
   }
 }

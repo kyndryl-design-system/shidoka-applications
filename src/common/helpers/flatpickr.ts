@@ -542,11 +542,135 @@ export function setCalendarAttributes(
   modalDetected = false
 ): void {
   if (!instance || !instance.config) {
+    console.warn('setCalendarAttributes: Invalid instance or config');
     return;
   }
 
   const container = instance.calendarContainer;
-  if (!container) return;
+  if (!container) {
+    console.warn('setCalendarAttributes: No calendar container found');
+    return;
+  }
+
+  const updateCalendarLayout = () => {
+    const isRangeMode = instance.config.mode === 'range';
+    const isWideScreen = window.innerWidth >= 767;
+
+    let showSingleMonth = container.classList.contains(
+      'flatpickr-calendar-single-month'
+    );
+
+    if (isRangeMode) {
+      if (!isWideScreen) {
+        showSingleMonth = true;
+        container.classList.add('flatpickr-calendar-single-month');
+      } else {
+        showSingleMonth = container.classList.contains(
+          'flatpickr-calendar-single-month'
+        );
+      }
+    }
+
+    let targetWidth = '323.875px';
+    if (isRangeMode && !showSingleMonth && isWideScreen) {
+      targetWidth = '625px';
+    }
+
+    container.style.width = targetWidth;
+    container.style.minWidth = targetWidth;
+    container.style.maxWidth = targetWidth;
+    container.style.setProperty('--flatpickr-calendar-width', targetWidth);
+
+    const daysContainer = container.querySelector('.flatpickr-days');
+    if (daysContainer) {
+      if (isRangeMode && !showSingleMonth && isWideScreen) {
+        (daysContainer as HTMLElement).style.width = '100%';
+
+        const dayContainers = container.querySelectorAll('.dayContainer');
+        dayContainers.forEach((dayContainer, index) => {
+          const element = dayContainer as HTMLElement;
+          element.style.width = '50.25%';
+          element.style.minWidth = 'auto';
+          element.style.maxWidth = 'none';
+          element.style.flex = '0 0 50.25%';
+
+          if (index === 0) {
+            element.style.paddingRight = '2px';
+          } else if (index === 1) {
+            element.style.paddingLeft = '3px';
+          }
+        });
+
+        const innerContainer = container.querySelector(
+          '.flatpickr-innerContainer'
+        );
+        if (innerContainer) {
+          (innerContainer as HTMLElement).style.display = 'flex';
+          (innerContainer as HTMLElement).style.justifyContent =
+            'space-between';
+        }
+      } else {
+        (daysContainer as HTMLElement).style.width = '316px';
+
+        const dayContainers = container.querySelectorAll('.dayContainer');
+        dayContainers.forEach((dayContainer) => {
+          const element = dayContainer as HTMLElement;
+          element.style.width = '';
+          element.style.minWidth = '';
+          element.style.maxWidth = '';
+          element.style.flex = '';
+          element.style.paddingRight = '';
+          element.style.paddingLeft = '';
+        });
+
+        const innerContainer = container.querySelector(
+          '.flatpickr-innerContainer'
+        );
+        if (innerContainer) {
+          (innerContainer as HTMLElement).style.display = '';
+          (innerContainer as HTMLElement).style.justifyContent = '';
+        }
+      }
+    }
+  };
+
+  updateCalendarLayout();
+
+  const resizeHandler = () => updateCalendarLayout();
+  window.addEventListener('resize', resizeHandler);
+
+  const observer = new MutationObserver(() => {
+    const isRangeMode = instance.config.mode === 'range';
+    const isWideScreen = window.innerWidth >= 767;
+    const showSingleMonth = container.classList.contains(
+      'flatpickr-calendar-single-month'
+    );
+
+    let targetWidth = '323.875px';
+    if (isRangeMode && !showSingleMonth && isWideScreen) {
+      targetWidth = '625px';
+    }
+
+    if (container.style.width !== targetWidth) {
+      container.style.width = targetWidth;
+      container.style.minWidth = targetWidth;
+      container.style.maxWidth = targetWidth;
+    }
+  });
+
+  observer.observe(container, {
+    attributes: true,
+    attributeFilter: ['style'],
+  });
+
+  const originalDestroy = instance.destroy;
+  instance.destroy = function () {
+    observer.disconnect();
+    window.removeEventListener('resize', resizeHandler);
+    return originalDestroy.call(this);
+  };
+
+  (instance as any).updateLayout = updateCalendarLayout;
 
   const { minDate, maxDate } = instance.config;
   if (minDate && maxDate) {
@@ -782,7 +906,6 @@ export function setCalendarAttributes(
 }
 
 export function hideEmptyYear(): void {
-  // force year input to always be visible - don't hide it even when min === max
   document.querySelectorAll('.numInputWrapper').forEach((wrapper) => {
     const yearInput = wrapper.querySelector(
       '.numInput.cur-year'

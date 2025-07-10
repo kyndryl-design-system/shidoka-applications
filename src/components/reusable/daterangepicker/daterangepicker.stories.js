@@ -265,7 +265,7 @@ InvalidDefaultDates.args = {
   name: 'invalid-default-dates-picker',
   label: 'Invalid Default Dates',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2025-13-01', '2023-06-01'],
+  defaultDate: ['2024-12-01', '2024-06-01'],
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
   caption: 'Invalid default dates will trigger validation errors..',

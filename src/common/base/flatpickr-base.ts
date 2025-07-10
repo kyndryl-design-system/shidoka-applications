@@ -229,7 +229,7 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
   @state()
   protected accessor _processedDisableDates: (string | number | Date)[] = [];
 
-  /** Configuration for this picker type */
+  /** Configuration for picker type */
   protected abstract config: FlatpickrConfig;
 
   protected debounce<T extends (...args: any[]) => any>(
@@ -632,9 +632,10 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
     if (cfg.minDate && cfg.maxDate) {
       const minY = new Date(cfg.minDate as any).getFullYear();
       const maxY = new Date(cfg.maxDate as any).getFullYear();
+      const currentY = new Date().getFullYear();
       this.flatpickrInstance!.calendarContainer.classList.toggle(
         'single-year',
-        minY === maxY
+        minY === maxY && minY === currentY
       );
     }
 

@@ -469,7 +469,7 @@ export const CustomWidthExample = (args) => {
           .label=${'Full Width'}
           .dateFormat=${args.dateFormat}
           .mode=${args.mode}
-          .caption=${'This picker takes full width of its container'}
+          .caption=${'DatePicker takes full width of its container'}
         ></kyn-date-picker>
       </div>
 
@@ -482,7 +482,7 @@ export const CustomWidthExample = (args) => {
           .label=${'Fixed 500px Width'}
           .dateFormat=${args.dateFormat}
           .mode=${args.mode}
-          .caption=${'This picker has a fixed 300px width'}
+          .caption=${'DatePicker has a fixed 300px width'}
         ></kyn-date-picker>
       </div>
 
@@ -495,7 +495,7 @@ export const CustomWidthExample = (args) => {
           .label=${'50% Width'}
           .dateFormat=${args.dateFormat}
           .mode=${args.mode}
-          .caption=${'This picker takes 50% of container width'}
+          .caption=${'DatePicker takes 50% of container width'}
         ></kyn-date-picker>
       </div>
 
@@ -508,7 +508,7 @@ export const CustomWidthExample = (args) => {
           .label=${'Narrow Width'}
           .dateFormat=${args.dateFormat}
           .mode=${args.mode}
-          .caption=${'This picker demonstrates very narrow width'}
+          .caption=${'DatePicker demonstrates very narrow width'}
         ></kyn-date-picker>
       </div>
     </div>
