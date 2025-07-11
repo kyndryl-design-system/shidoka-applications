@@ -6,9 +6,9 @@ import {
   state,
 } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import './button';
-import type { Button } from './button';
-import { BUTTON_KINDS } from './defs';
+import '../button/button';
+import type { Button } from '../button/button';
+import { BUTTON_KINDS } from '../button/defs';
 
 import ButtonGroupStyles from './buttonGroup.scss?inline';
 
@@ -270,11 +270,19 @@ export class ButtonGroup extends LitElement {
     );
   }
 
+  private _boundHandlers = new Map<Button, () => void>();
+
   private _attachClickListeners() {
     if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) return;
     this._buttons.forEach((btn, idx) => {
-      btn.removeEventListener('click', this._onButtonClick as any);
-      btn.addEventListener('click', () => this._onButtonClick(idx));
+      const existingHandler = this._boundHandlers.get(btn);
+      if (existingHandler) {
+        btn.removeEventListener('click', existingHandler);
+      }
+
+      const handler = () => this._onButtonClick(idx);
+      this._boundHandlers.set(btn, handler);
+      btn.addEventListener('click', handler);
     });
   }
 
@@ -285,10 +293,10 @@ export class ButtonGroup extends LitElement {
           this.kind === BUTTON_GROUP_KINDS.ICONS
             ? BUTTON_KINDS.SECONDARY
             : BUTTON_KINDS.PRIMARY;
-        btn.removeEventListener('click', this._onButtonClick as any);
-        btn.addEventListener('click', () => this._onButtonClick(idx));
       });
       this._syncSelection();
+
+      this._attachClickListeners();
     });
   }
 
@@ -327,6 +335,14 @@ export class ButtonGroup extends LitElement {
         detail: { value },
       })
     );
+  }
+
+  override disconnectedCallback() {
+    this._boundHandlers.forEach((handler, btn) => {
+      btn.removeEventListener('click', handler);
+    });
+    this._boundHandlers.clear();
+    super.disconnectedCallback();
   }
 }
 

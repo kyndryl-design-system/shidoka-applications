@@ -3,7 +3,7 @@ import { useArgs } from 'storybook/preview-api';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 
-import './button';
+import '../button/button';
 import './buttonGroup';
 
 import { BUTTON_GROUP_KINDS } from './buttonGroup';
@@ -17,13 +17,8 @@ import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/monochro
 import consoleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/console.svg';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
 
-/**
- * @typedef { import('@storybook/web-components-vite').Meta } Meta
- */
-
-/** @type {Meta} */
 export default {
-  title: 'Components/Button/Button Group',
+  title: 'Components/Button Group',
   component: 'kyn-button-group',
   parameters: {
     controls: {
