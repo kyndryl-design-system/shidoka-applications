@@ -9,7 +9,7 @@ import Styles from './widget.scss?inline';
  * Widget.
  * @fires on-select - Emits the widget selected state .
  * @slot unnamed - Slot for widget content.
- * @slot action - Slot for action buttons.
+ * @slot actions - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
  * @slot footer - Slot for footer content.
