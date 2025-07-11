@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import Styles from './widgetGridstack.scss?inline';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 import { debounce } from '../../../common/helpers/helpers';
-import { Config } from '../../../common/helpers/gridstack';
+import { GetConfig } from '../../../common/helpers/gridstack';
 import { GridStack } from 'gridstack';
 
 /**
@@ -20,9 +20,14 @@ export class WidgetGridstack extends LitElement {
   @property({ type: Object })
   accessor layout: any = {};
 
-  /** GridStack config. */
+  /** Custom GridStack config. */
   @property({ type: Object })
-  accessor gridstackConfig: any = Config;
+  accessor gridstackConfig!: any;
+
+  /** Final config passed to gridstack.
+   * @internal */
+  @state()
+  accessor _gridstackConfig!: any;
 
   /** GridStack instance. */
   @property({ attribute: false })
@@ -31,6 +36,14 @@ export class WidgetGridstack extends LitElement {
   /** GridStack grid instance. */
   @property({ attribute: false })
   accessor grid!: any;
+
+  /** Use compact grid config. Ignored in case of custom gridstackConfig. */
+  @property({ type: Boolean })
+  accessor compact = false;
+
+  /** Make entire widget draggable. Ignored in case of custom gridstackConfig. */
+  @property({ type: Boolean })
+  accessor wholeWidgetDraggable = false;
 
   /** Current breakpoint.
    * @internal
@@ -48,10 +61,79 @@ export class WidgetGridstack extends LitElement {
 
   override firstUpdated() {
     this._setBreakpoint();
+  }
+
+  override willUpdate(changedProps: any) {
+    /* This part of the code is checking if the properties `compact` or `wholeWidgetDraggable` have
+    changed. If either of these properties has changed, it updates the `_gridstackConfig` property
+    based on the current values of `compact` and `wholeWidgetDraggable`. */
+    if (
+      changedProps.has('compact') ||
+      changedProps.has('wholeWidgetDraggable')
+    ) {
+      this._gridstackConfig = GetConfig(
+        this.compact,
+        this.wholeWidgetDraggable
+      );
+    }
+
+    /* This part of the code is checking if the properties `layout` and `_breakpoint` are truthy and if
+    either `_breakpoint` or `layout` properties have changed. If these conditions are met, it calls
+    the `_updateLayout()` method to update the gridstack size and position of each widget when there
+    is a change in the breakpoint or layout. */
+    if (
+      this.layout &&
+      this._breakpoint &&
+      (changedProps.has('_breakpoint') || changedProps.has('layout'))
+    ) {
+      // update the gridstack size/position of each widget when breakpoint or layout changes
+      this._updateLayout();
+    }
+  }
+
+  /**
+   * The private `_saveLayout` function saves the grid layout by updating each widget's properties and
+   * emitting a custom event with the new layout.
+   */
+  private _saveLayout() {
+    // get new grid layout
+    let NewLayout = this.grid.save(false);
+
+    // manually update each widget's properties because GridStack drops "w" or "h" if they match their respective min values and freezes the browser
+    NewLayout = NewLayout.map((Widget: any) => {
+      return {
+        ...Widget,
+        w: Widget.w || Widget.minW,
+        h: Widget.h || Widget.minH,
+      };
+    });
+
+    // update layout for current breakpoint
+    this.layout[this._breakpoint] = NewLayout;
+
+    // emit save event with new layout in detail
+    const event = new CustomEvent('on-grid-save', {
+      detail: { layout: this.layout },
+    });
+    this.dispatchEvent(event);
+  }
+
+  /**
+   * The function `_initGridstack` initializes a GridStack layout with event listeners for drag, resize,
+   * and saving layout changes.
+   */
+  private _initGridstack() {
+    // destory grid if already exists
+    if (this.grid) {
+      this.grid.destroy(false);
+    }
 
     // initialize the GridStack with Shidoka default options
     const GridstackEl: any = this.querySelector('.grid-stack');
-    this.grid = this.gridStack.init(this.gridstackConfig, GridstackEl);
+    this.grid = this.gridStack.init(
+      this.gridstackConfig || this._gridstackConfig,
+      GridstackEl
+    );
 
     // set widget drag state on dragstart
     this.grid.on('dragstart', (e: Event) => {
@@ -81,38 +163,10 @@ export class WidgetGridstack extends LitElement {
     this.dispatchEvent(event);
   }
 
-  override willUpdate(changedProps: any) {
-    if (
-      this.layout &&
-      this._breakpoint &&
-      (changedProps.has('_breakpoint') || changedProps.has('layout'))
-    ) {
-      // update the gridstack size/position of each widget when breakpoint or layout changes
-      this._updateLayout();
+  override updated(changedProps: any) {
+    if (changedProps.has('_gridstackConfig')) {
+      this._initGridstack();
     }
-  }
-
-  private _saveLayout() {
-    // get new grid layout
-    let NewLayout = this.grid.save(false);
-
-    // manually update each widget's properties because GridStack drops "w" or "h" if they match their respective min values and freezes the browser
-    NewLayout = NewLayout.map((Widget: any) => {
-      return {
-        ...Widget,
-        w: Widget.w || Widget.minW,
-        h: Widget.h || Widget.minH,
-      };
-    });
-
-    // update layout for current breakpoint
-    this.layout[this._breakpoint] = NewLayout;
-
-    // emit save event with new layout in detail
-    const event = new CustomEvent('on-grid-save', {
-      detail: { layout: this.layout },
-    });
-    this.dispatchEvent(event);
   }
 
   private _updateLayout() {
@@ -145,6 +199,10 @@ export class WidgetGridstack extends LitElement {
     super.disconnectedCallback();
   }
 
+  /**
+   * The function `_setBreakpoint` retrieves and sets the current breakpoint value from the CSS custom
+   * property `--kd-current-breakpoint`.
+   */
   private _setBreakpoint() {
     // get and set current breakpoint variable
     this._breakpoint = getComputedStyle(
