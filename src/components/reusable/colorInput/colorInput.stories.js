@@ -16,7 +16,7 @@ const args = {
   readonly: false,
   hideLabel: false,
   invalidText: '',
-  autoComplete: false,
+  autoComplete: 'off',
   textStrings: {
     errorText: 'Error',
     pleaseSelectColor: 'Please select a color',
@@ -37,7 +37,7 @@ export const Default = {
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
-        ?autoComplete=${args.autoComplete}
+        autoComplete=${args.autoComplete}
         label=${args.label}
         @on-input=${(e) => action(e.type)(e)}
       >
