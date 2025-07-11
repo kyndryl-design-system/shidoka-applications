@@ -67,6 +67,8 @@ const args = {
   dragActive: false,
   selectable: false,
   selected: false,
+  compact: false,
+  removeHeader: false,
 };
 
 const getExampleContent = () => html`
@@ -94,6 +96,8 @@ export const Widget = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
@@ -126,6 +130,8 @@ export const SelectableWidget = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
@@ -149,6 +155,8 @@ export const WithActions = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             <kyn-button
@@ -194,6 +202,8 @@ export const WithFooter = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
@@ -221,6 +231,8 @@ export const WithFooter = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
@@ -244,6 +256,7 @@ export const WithFooter = {
           </kyn-widget>
         </div>
       </div>
+
       <style>
         .footer-content {
           width: 85%;
@@ -274,6 +287,8 @@ export const WithChart = {
           ?dragActive=${args.dragActive}
           ?selectable=${args.selectable}
           ?selected=${args.selected}
+          ?compact=${args.compact}
+          ?removeHeader=${args.removeHeader}
           @on-select=${(e) => action(e.type)(e)}
         >
           <kd-chart
