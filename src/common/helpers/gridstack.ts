@@ -11,6 +11,14 @@ export const Config = {
   },
 };
 
+export const GetConfig = (compact: false, wholeWidgetDraggable: false) => {
+  return {
+    ...Config,
+    margin: compact ? 8 : Config.margin,
+    handle: wholeWidgetDraggable ? '.grid-stack-item-content' : Config.handle,
+  };
+};
+
 export const WidgetSizes = {
   pill: {
     max: {

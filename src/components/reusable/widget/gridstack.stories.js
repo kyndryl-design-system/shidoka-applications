@@ -61,6 +61,8 @@ const args = {
   gridstackConfig: Config,
   layout: sampleLayout,
   withLocalNav: false,
+  compact: false,
+  wholeWidgetDraggable: false,
 };
 
 export const Gridstack = {
@@ -71,8 +73,10 @@ export const Gridstack = {
       <div class="${args.withLocalNav ? 'with-local-nav' : ''}">
         <kyn-widget-gridstack
           .layout=${args.layout}
-          .gridstackConfig=${args.gridstackConfig}
-          @on-grid-save=${(e) => action(e.type)(e)}
+          ?compact=${args.compact}
+          ?wholeWidgetDraggable=${args.wholeWidgetDraggable}
+          @on-grid-save=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          @on-grid-init=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <div class="grid-stack">
             <div gs-id="w1" class="grid-stack-item">

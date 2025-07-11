@@ -9,7 +9,7 @@ import Styles from './widget.scss?inline';
  * Widget.
  * @fires on-select - Emits the widget selected state .
  * @slot unnamed - Slot for widget content.
- * @slot action - Slot for action buttons.
+ * @slot actions - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
  * @slot footer - Slot for footer content.
@@ -42,6 +42,14 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   accessor selected = false;
 
+  /** Widget compact state, reduced padding. */
+  @property({ type: Boolean })
+  accessor compact = false;
+
+  /** Removes the widget header. */
+  @property({ type: Boolean })
+  accessor removeHeader = false;
+
   /** Slotted chart element.
    * @internal
    */
@@ -56,6 +64,7 @@ export class Widget extends LitElement {
       disabled: this.disabled,
       selectable: this.selectable,
       selected: this.selected,
+      compact: this.compact,
     };
 
     return html`
@@ -67,22 +76,29 @@ export class Widget extends LitElement {
         @keydown=${this._handleKeyDown}
         tabindex=${this.selectable && !this.disabled ? 0 : -1}
       >
-        <div class="widget-header">
-          <slot name="draghandle"></slot>
+        ${!this.removeHeader
+          ? html`
+              <div class="widget-header">
+                <slot name="draghandle"></slot>
 
-          <div class="title-desc">
-            <div class="title">
-              ${this.widgetTitle}
-              <slot name="tooltip"></slot>
-            </div>
+                <div class="title-desc">
+                  <div class="title">
+                    ${this.widgetTitle}
+                    <slot name="tooltip"></slot>
+                  </div>
 
-            <div class="description">${this.subTitle}</div>
-          </div>
+                  <div class="description">${this.subTitle}</div>
+                </div>
 
-          <div class="actions">
-            <slot name="actions" tabindex=${this.selectable ? -1 : 0}></slot>
-          </div>
-        </div>
+                <div class="actions">
+                  <slot
+                    name="actions"
+                    tabindex=${this.selectable ? -1 : 0}
+                  ></slot>
+                </div>
+              </div>
+            `
+          : null}
 
         <div class="widget-content">
           <div class="widget-body">
