@@ -53,7 +53,7 @@ export class WidgetGridstack extends LitElement {
 
   override render() {
     return html`
-      <div class="grid-wrapper">
+      <div class="grid-wrapper ${this.compact ? 'compact' : ''}">
         <slot></slot>
       </div>
     `;
