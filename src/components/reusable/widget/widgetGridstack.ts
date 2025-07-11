@@ -167,6 +167,20 @@ export class WidgetGridstack extends LitElement {
     if (changedProps.has('_gridstackConfig')) {
       this._initGridstack();
     }
+
+    if (changedProps.has('compact')) {
+      this._updateWidgetsDensity();
+    }
+  }
+
+  /**
+   * The function `_updateWidgetsDensity` iterates through all `kyn-widget` elements and sets their
+   * `compact` property based on the parent element's `compact` property.
+   */
+  private _updateWidgetsDensity() {
+    this.querySelectorAll('kyn-widget').forEach((widget: any) => {
+      widget.compact = this.compact;
+    });
   }
 
   private _updateLayout() {
