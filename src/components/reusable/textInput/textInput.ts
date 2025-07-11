@@ -100,6 +100,10 @@ export class TextInput extends FormMixin(LitElement) {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
+  /** Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.*/
+  @property({ type: String })
+  accessor autoComplete: string = 'off';
+
   /** Internal text strings.
    * @internal
    */
@@ -191,6 +195,7 @@ export class TextInput extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
+            autocomplete=${this.autoComplete}
           />
           ${this.type === 'password' && !this.readonly
             ? html`

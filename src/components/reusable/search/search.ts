@@ -54,6 +54,7 @@ export class Search extends LitElement {
   @property({ type: Array })
   accessor suggestions: Array<string> = [];
 
+  /** Auto-suggest history array of strings. Update this array externally after on-input. */
   @property({ type: Array })
   accessor searchHistory: Array<string> = [];
 
@@ -132,6 +133,7 @@ export class Search extends LitElement {
           ?disabled=${this.disabled}
           @on-input=${(e: CustomEvent) => this._handleInput(e)}
           @focus=${this._handleFocus}
+          autoComplete="off"
           @keydown=${(e: any) => this.handleSearchKeydown(e)}
         >
           ${this.label}
