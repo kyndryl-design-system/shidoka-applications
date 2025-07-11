@@ -70,10 +70,6 @@ export class Search extends LitElement {
   @property({ type: Boolean })
   accessor enableSearchHistory = false;
 
-  /** Toggles native browser autocomplete suggestions */
-  @property({ type: Boolean })
-  accessor autoComplete = false;
-
   /**
    * Internal assistive text strings.
    * @internal
@@ -137,7 +133,7 @@ export class Search extends LitElement {
           ?disabled=${this.disabled}
           @on-input=${(e: CustomEvent) => this._handleInput(e)}
           @focus=${this._handleFocus}
-          ?autoComplete=${this.autoComplete}
+          autoComplete="off"
           @keydown=${(e: any) => this.handleSearchKeydown(e)}
         >
           ${this.label}

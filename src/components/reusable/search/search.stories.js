@@ -25,7 +25,6 @@ const args = {
   value: '',
   label: 'Search...',
   size: 'md',
-  autoComplete: false,
   suggestions: [
     'Component',
     'Component search',
@@ -54,7 +53,6 @@ export const Search = {
         ?disabled=${args.disabled}
         size=${args.size}
         .suggestions=${args.suggestions}
-        ?autoComplete=${args.autoComplete}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         .assistiveTextStrings=${args.assistiveTextStrings}
         @on-input=${(e) => action(e.type)(e)}
@@ -87,7 +85,6 @@ export const SearchHistory = {
         value=${args.value}
         ?expandable=${args.expandable}
         ?disabled=${args.disabled}
-        ?autoComplete=${args.autoComplete}
         size=${args.size}
         ?enableSearchHistory=${true}
         .searchHistory=${args.searchHistory}
@@ -120,7 +117,6 @@ export const TypeAheadSuggestions = {
         ?expandable=${args.expandable}
         ?disabled=${args.disabled}
         size=${args.size}
-        ?autoComplete=${args.autoComplete}
         .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         .assistiveTextStrings=${args.assistiveTextStrings}

@@ -91,10 +91,6 @@ export class MultiInputField extends FormMixin(LitElement) {
   @property({ type: String })
   accessor pattern: string | undefined = undefined;
 
-  /** Toggles native browser autocomplete suggestions */
-  @property({ type: Boolean })
-  accessor autoComplete = false;
-
   /** Merged internal text strings.
    * @internal
    */
@@ -263,7 +259,7 @@ export class MultiInputField extends FormMixin(LitElement) {
           this._validateAllTags();
           this._handleBlur();
         }}
-        autocomplete=${this.autoComplete ? 'on' : 'off'}
+        autocomplete="off"
         @input=${(e: InputEvent) => this.handleInput(e)}
         @paste=${(e: ClipboardEvent) => this.handlePaste(e)}
         @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
