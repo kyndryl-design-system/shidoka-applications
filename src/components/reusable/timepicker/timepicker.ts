@@ -327,6 +327,7 @@ export class TimePicker extends FormMixin(LitElement) {
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-labelledby=${`label-${anchorId}`}
+            autocomplete="off"
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />

@@ -345,6 +345,7 @@ export class DatePicker extends FormMixin(LitElement) {
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
             aria-labelledby=${`label-${anchorId}`}
+            autocomplete="off"
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
           />
