@@ -11,7 +11,10 @@ export const Config = {
   },
 };
 
-export const GetConfig = (compact: false, wholeWidgetDraggable: false) => {
+export const GetConfig = (
+  compact: Boolean = false,
+  wholeWidgetDraggable: Boolean = false
+) => {
   return {
     ...Config,
     margin: compact ? 8 : Config.margin,

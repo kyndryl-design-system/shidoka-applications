@@ -71,10 +71,9 @@ export class WidgetGridstack extends LitElement {
       changedProps.has('compact') ||
       changedProps.has('wholeWidgetDraggable')
     ) {
-      this._gridstackConfig = GetConfig(
-        this.compact,
-        this.wholeWidgetDraggable
-      );
+      this._gridstackConfig =
+        this.gridstackConfig ||
+        GetConfig(this.compact, this.wholeWidgetDraggable);
     }
 
     /* This part of the code is checking if the properties `layout` and `_breakpoint` are truthy and if
@@ -130,10 +129,7 @@ export class WidgetGridstack extends LitElement {
 
     // initialize the GridStack with Shidoka default options
     const GridstackEl: any = this.querySelector('.grid-stack');
-    this.grid = this.gridStack.init(
-      this.gridstackConfig || this._gridstackConfig,
-      GridstackEl
-    );
+    this.grid = this.gridStack.init(this._gridstackConfig, GridstackEl);
 
     // set widget drag state on dragstart
     this.grid.on('dragstart', (e: Event) => {
