@@ -164,7 +164,10 @@ export class WidgetGridstack extends LitElement {
   }
 
   override updated(changedProps: any) {
-    if (changedProps.has('_gridstackConfig')) {
+    if (
+      changedProps.has('gridstackConfig') ||
+      changedProps.has('_gridstackConfig')
+    ) {
       this._initGridstack();
     }
 
