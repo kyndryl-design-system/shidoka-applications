@@ -221,18 +221,19 @@ export class NewWidgetSample extends LitElement {
     selected: false,
   }));
 
-  override render() {
-    const modifiedConfig = {
-      ...Config,
-      acceptWidgets: (el: any) => {
-        const widgetId = el.getAttribute('gs-id');
-        const exists = this.grid?.engine.nodes.some(
-          (node) => node.id === widgetId // limit duplicate id's being added
-        );
-        return !exists;
-      },
-    };
+  @state()
+  accessor modifiedConfig = {
+    ...Config,
+    acceptWidgets: (el: any) => {
+      const widgetId = el.getAttribute('gs-id');
+      const exists = this.grid?.engine.nodes.some(
+        (node) => node.id === widgetId // limit duplicate id's being added
+      );
+      return !exists;
+    },
+  };
 
+  override render() {
     const submitBtnText =
       this.selectedTabId === 'widgets' && this.showFilter
         ? 'Apply(1)'
@@ -460,7 +461,7 @@ export class NewWidgetSample extends LitElement {
       <br />
       <kyn-widget-gridstack
         .layout=${this.updateLayout}
-        .gridstackConfig=${modifiedConfig}
+        .gridstackConfig=${this.modifiedConfig}
         @on-grid-init=${(e: any) => this._handleInit(e)}
         @on-grid-save=${(e: any) => action(e.type)(e)}
       >
