@@ -259,6 +259,7 @@ export class MultiInputField extends FormMixin(LitElement) {
           this._validateAllTags();
           this._handleBlur();
         }}
+        autocomplete="off"
         @input=${(e: InputEvent) => this.handleInput(e)}
         @paste=${(e: ClipboardEvent) => this.handlePaste(e)}
         @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}
