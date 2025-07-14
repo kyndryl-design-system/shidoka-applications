@@ -87,6 +87,10 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
+  /** Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.*/
+  @property({ type: String })
+  accessor autoComplete: string = 'off';
+
   /** Internal text strings.
    * @internal
    */
@@ -145,6 +149,7 @@ export class TextArea extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
+            autocomplete=${this.autoComplete}
             @input=${(e: any) => this.handleInput(e)}
           >
 ${this.value}</textarea

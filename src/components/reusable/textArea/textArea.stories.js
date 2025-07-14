@@ -36,6 +36,7 @@ const args = {
   minLength: undefined,
   maxLength: undefined,
   rows: undefined,
+  autoComplete: 'off',
   textStrings: {
     requiredText: 'Required',
     errorText: 'Error',
@@ -61,6 +62,7 @@ const Template = (args) => {
       ?aiConnected=${args.aiConnected}
       ?notResizeable=${args.notResizeable}
       maxRowsVisible=${args.maxRowsVisible}
+      autoComplete=${args.autoComplete}
       @on-input=${(e) => action(e.type)(e)}
       @keydown=${(e) => e.stopPropagation()}
       label=${args.label}
