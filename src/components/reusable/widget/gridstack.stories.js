@@ -26,7 +26,8 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--kd-color-background-container-soft);
+          background: var(--kd-color-background-container-subtle);
+          border: 1px dashed var(--kd-color-utility-variant-border);
           height: 100%;
           border-radius: 4px;
         }

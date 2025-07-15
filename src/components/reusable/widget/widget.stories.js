@@ -49,6 +49,7 @@ export default {
           border: 1px dashed var(--kd-color-utility-variant-border);
           height: 100%;
           border-radius: 4px;
+
           svg {
             height: 52px;
             width: 52px;
