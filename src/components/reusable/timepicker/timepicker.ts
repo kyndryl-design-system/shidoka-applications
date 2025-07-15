@@ -7,10 +7,7 @@ import { BaseOptions } from 'flatpickr/dist/types/options';
 import {
   FlatpickrBase,
   FlatpickrConfig,
-  defaultTextStrings as baseTextStrings,
-  FlatpickrTextStrings,
 } from '../../../common/base/flatpickr-base';
-import { langsArray } from '../../../common/flatpickrLangs';
 import {
   emitValue,
   getPlaceholder,
@@ -33,98 +30,23 @@ export class TimePicker extends FlatpickrBase {
     unsafeCSS(ShidokaFlatpickrTheme),
   ];
 
-  /** Label text. */
-  @property({ type: String })
-  override accessor label = '';
-
-  /** Locale setting. */
-  @property({ type: String })
-  override accessor locale: (typeof langsArray)[number] | string = 'en';
-
-  /** Bound time value. */
+  /**
+   * Bound time value.
+   * @type {Date | null}
+   */
   override value: Date | null = null;
 
-  /** Display formatted time in the input box. */
-  @property({ type: String })
-  override accessor dateFormat = 'H:i';
-
-  /** Initial hour. */
+  /** Initial hour (0-23). */
   @property({ type: Number })
   accessor defaultHour: number | null = null;
 
-  /** Initial minute. */
+  /** Initial minute (0-59). */
   @property({ type: Number })
   accessor defaultMinute: number | null = null;
 
-  /** Default error message. */
-  @property({ type: String })
-  override accessor defaultErrorMessage = '';
-
-  /** Warning message. */
-  @property({ type: String })
-  override accessor warnText = '';
-
-  /** Caption under picker. */
-  @property({ type: String })
-  override accessor caption = '';
-
-  /** Required flag. */
-  @property({ type: Boolean })
-  override accessor required = false;
-
-  /** Input size. */
-  @property({ type: String })
-  override accessor size = 'md';
-
-  /** Disabled toggle. */
-  @property({ type: Boolean })
-  override accessor disabled = false;
-
-  /** Disabled timepicker import toggle. */
+  /** Sets entire timepicker form element to enabled/disabled. */
   @property({ type: Boolean })
   accessor timePickerDisabled = false;
-
-  /** Readonly toggle. */
-  @property({ type: Boolean })
-  override accessor readonly = false;
-
-  /** Force 24h format. */
-  @property({ type: Boolean })
-  override accessor twentyFourHourFormat: boolean | null = null;
-
-  /** Min time boundary. */
-  @property({ type: String })
-  override accessor minTime: string | number | Date = '';
-
-  /** Max time boundary. */
-  @property({ type: String })
-  override accessor maxTime: string | number | Date = '';
-
-  /** aria-label for error. */
-  @property({ type: String })
-  override accessor errorAriaLabel = '';
-
-  /** title for error. */
-  @property({ type: String })
-  override accessor errorTitle = '';
-
-  /** aria-label for warning. */
-  @property({ type: String })
-  override accessor warningAriaLabel = '';
-
-  /** title for warning. */
-  @property({ type: String })
-  override accessor warningTitle = '';
-
-  /** Static calendar positioning. */
-  @property({ type: Boolean })
-  override accessor staticPosition = false;
-
-  /** Custom text overrides. */
-  @property({ type: Object })
-  override accessor textStrings: Partial<FlatpickrTextStrings> = {
-    ...baseTextStrings,
-  };
 
   override render(): TemplateResult {
     const anchorId = this.name || this.generateRandomId('time-picker');
@@ -134,27 +56,44 @@ export class TimePicker extends FlatpickrBase {
     return this.renderBaseStructure(anchorId, placeholder, true);
   }
 
-  protected config: FlatpickrConfig = {
-    mode: 'time',
-    enableTime: true,
-    noCalendar: true,
-  };
+  protected get config(): FlatpickrConfig {
+    return {
+      mode: 'time',
+      enableTime: true,
+      noCalendar: true,
+    };
+  }
 
   override async firstUpdated(changedProps: PropertyValues): Promise<void> {
+    this.updateTimeFormat();
+
     await super.firstUpdated(changedProps);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-    if (
-      this.flatpickrInstance &&
-      !this.value &&
-      (this.defaultHour != null || this.defaultMinute != null)
-    ) {
-      const d = new Date();
-      if (this.defaultHour != null) d.setHours(this.defaultHour);
-      if (this.defaultMinute != null) d.setMinutes(this.defaultMinute);
-      d.setSeconds(0);
-      d.setMilliseconds(0);
-      this.flatpickrInstance.setDate(d, true);
+  }
+
+  private createDefaultTime(): Date {
+    const d = new Date();
+    if (this.defaultHour != null) {
+      if (this.defaultHour < 0 || this.defaultHour > 23) {
+        console.warn(`Invalid defaultHour: ${this.defaultHour}. Must be 0-23.`);
+        d.setHours(0);
+      } else {
+        d.setHours(this.defaultHour);
+      }
     }
+    if (this.defaultMinute != null) {
+      if (this.defaultMinute < 0 || this.defaultMinute > 59) {
+        console.warn(
+          `Invalid defaultMinute: ${this.defaultMinute}. Must be 0-59.`
+        );
+        d.setMinutes(0);
+      } else {
+        d.setMinutes(this.defaultMinute);
+      }
+    }
+    d.setSeconds(0);
+    d.setMilliseconds(0);
+    return d;
   }
 
   override updated(changedProperties: PropertyValues): void {
@@ -165,8 +104,10 @@ export class TimePicker extends FlatpickrBase {
     }
 
     if (changedProperties.has('twentyFourHourFormat')) {
-      this.dateFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
-      this.updateFlatpickrOptions();
+      this.updateTimeFormat();
+      if (this.flatpickrInstance && this._initialized) {
+        this.debouncedUpdate();
+      }
     }
 
     if (
@@ -175,8 +116,15 @@ export class TimePicker extends FlatpickrBase {
       changedProperties.has('minTime') ||
       changedProperties.has('maxTime')
     ) {
-      this.updateFlatpickrOptions();
+      if (this.flatpickrInstance && this._initialized) {
+        this.debouncedUpdate();
+      }
     }
+  }
+
+  private updateTimeFormat(): void {
+    const is24Hour = this.twentyFourHourFormat ?? false;
+    this.dateFormat = is24Hour ? 'H:i' : 'h:i K';
   }
 
   protected setInitialDates(instance: flatpickr.Instance): void {
@@ -185,12 +133,7 @@ export class TimePicker extends FlatpickrBase {
       return;
     }
     if (this.defaultHour != null || this.defaultMinute != null) {
-      const d = new Date();
-      if (this.defaultHour != null) d.setHours(this.defaultHour);
-      if (this.defaultMinute != null) d.setMinutes(this.defaultMinute);
-      d.setSeconds(0);
-      d.setMilliseconds(0);
-      instance.setDate(d, true);
+      instance.setDate(this.createDefaultTime(), true);
     }
   }
 
@@ -223,7 +166,9 @@ export class TimePicker extends FlatpickrBase {
     opts.noCalendar = true;
     opts.enableTime = true;
     opts.allowInput = true;
-    opts.time_24hr = this.twentyFourHourFormat ?? opts.time_24hr;
+
+    const is24Hour = this.twentyFourHourFormat ?? false;
+    opts.time_24hr = is24Hour;
 
     if (this.defaultHour != null) opts.defaultHour = this.defaultHour;
     if (this.defaultMinute != null) opts.defaultMinute = this.defaultMinute;

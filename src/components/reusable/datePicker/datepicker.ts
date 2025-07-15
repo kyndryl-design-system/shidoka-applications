@@ -7,13 +7,9 @@ import { BaseOptions } from 'flatpickr/dist/types/options';
 import {
   FlatpickrBase,
   FlatpickrConfig,
-  defaultTextStrings as baseTextStrings,
-  FlatpickrTextStrings,
 } from '../../../common/base/flatpickr-base';
-import { langsArray } from '../../../common/flatpickrLangs';
 import {
   getPlaceholder,
-  emitValue,
   injectFlatpickrStyles,
 } from '../../../common/helpers/flatpickr';
 import DatePickerStyles from './datepicker.scss?inline';
@@ -33,129 +29,51 @@ export class DatePicker extends FlatpickrBase {
     unsafeCSS(ShidokaFlatpickrTheme),
   ];
 
-  /** Label text. */
-  @property({ type: String })
-  override accessor label = '';
-
   /** Sets entire datepicker form element to enabled/disabled. */
   @property({ type: Boolean })
   accessor datePickerDisabled = false;
 
-  /** Locale setting. */
-  @property({ type: String })
-  override accessor locale: (typeof langsArray)[number] | string = 'en';
-
-  /** Display format (e.g. `Y-m-d H:i`). */
-  @property({ type: String })
-  override accessor dateFormat = 'Y-m-d';
-
-  /** Bound value(s). */
+  /**
+   * Bound value - single Date for 'single' mode, Date array for 'multiple' mode.
+   * @type {Date | Date[] | null}
+   */
   override value: Date | Date[] | null = null;
 
-  /** single (default) or multiple. */
+  /**
+   * Selection mode: 'single' allows one date, 'multiple' allows multiple dates.
+   * @type {'single' | 'multiple'}
+   */
   @property({ type: String })
   accessor mode: 'single' | 'multiple' = 'single';
 
-  /** Default error message. */
-  @property({ type: String })
-  override accessor defaultErrorMessage = '';
-
-  /** Warning message. */
-  @property({ type: String })
-  override accessor warnText = '';
-
-  /** Disable specific dates. */
-  @property({ type: Array })
-  override accessor disable: (string | number | Date)[] = [];
-
-  /** Enable specific dates. */
-  @property({ type: Array })
-  override accessor enable: (string | number | Date)[] = [];
-
-  /** Caption under picker. */
-  @property({ type: String })
-  override accessor caption = '';
-
-  /** Required flag. */
-  @property({ type: Boolean })
-  override accessor required = false;
-
-  /** Input size. */
-  @property({ type: String })
-  override accessor size = 'md';
-
-  /** Disabled toggle. */
-  @property({ type: Boolean })
-  override accessor disabled = false;
-
-  /** Readonly toggle. */
-  @property({ type: Boolean })
-  override accessor readonly = false;
-
-  /** Force 24h format. */
-  @property({ type: Boolean })
-  override accessor twentyFourHourFormat: boolean | null = null;
-
-  /** Min date boundary. */
-  @property({ type: String })
-  override accessor minDate: string | number | Date = '';
-
-  /** Max date boundary. */
-  @property({ type: String })
-  override accessor maxDate: string | number | Date = '';
-
-  /** Min time boundary. */
-  @property({ type: String })
-  override accessor minTime: string | number | Date = '';
-
-  /** Max time boundary. */
-  @property({ type: String })
-  override accessor maxTime: string | number | Date = '';
-
-  /** aria-label for error. */
-  @property({ type: String })
-  override accessor errorAriaLabel = '';
-
-  /** title for error. */
-  @property({ type: String })
-  override accessor errorTitle = '';
-
-  /** aria-label for warning. */
-  @property({ type: String })
-  override accessor warningAriaLabel = '';
-
-  /** title for warning. */
-  @property({ type: String })
-  override accessor warningTitle = '';
-
-  /** Static calendar positioning. */
-  @property({ type: Boolean })
-  override accessor staticPosition = false;
-
-  /** Custom text overrides. */
-  @property({ type: Object })
-  override accessor textStrings: Partial<FlatpickrTextStrings> = {
-    ...baseTextStrings,
-  };
-
-  protected config: FlatpickrConfig = {
-    mode: this.mode,
-  };
-
-  protected _instance?: flatpickr.Instance;
+  protected get config(): FlatpickrConfig {
+    return {
+      mode: this.mode,
+    };
+  }
 
   protected hasValue(): boolean {
+    if (this.mode === 'multiple') {
+      return Array.isArray(this.value) && this.value.length > 0;
+    }
     return !!(this._inputEl?.value || this.value);
   }
 
   protected updateFormValue(): void {
-    this._internals.setFormValue((this._inputEl as HTMLInputElement).value);
+    let formValue = '';
+    if (this.mode === 'multiple' && Array.isArray(this.value)) {
+      formValue = this.value.map((date) => date.toISOString()).join(',');
+    } else if (this._inputEl) {
+      formValue = (this._inputEl as HTMLInputElement).value;
+    }
+    this._internals.setFormValue(formValue);
   }
 
   protected async getComponentFlatpickrOptions(): Promise<
     Partial<BaseOptions>
   > {
     const opts = await this.getBaseFlatpickrOptions();
+    opts.mode = this.mode;
     if (this.defaultDate != null) opts.defaultDate = this.defaultDate;
     return opts;
   }
@@ -173,7 +91,13 @@ export class DatePicker extends FlatpickrBase {
   ): Promise<void> {
     if (this._isClearing) return;
     this._hasInteracted = true;
-    this.value = selectedDates[0] || null;
+
+    if (this.mode === 'multiple') {
+      this.value = selectedDates.length > 0 ? selectedDates : [];
+    } else {
+      this.value = selectedDates[0] || null;
+    }
+
     this._validate(true, false);
     await this.updateComplete;
     this.updateFormValue();
@@ -217,8 +141,8 @@ export class DatePicker extends FlatpickrBase {
 
     const dateStr = (this._inputEl as HTMLInputElement)?.value || '';
 
-    if (this._instance) {
-      this.emitFlatpickrChange(this._instance, selectedDates, dateStr, {
+    if (this.flatpickrInstance) {
+      this.emitFlatpickrChange(this.flatpickrInstance, selectedDates, dateStr, {
         type: source ?? 'manual',
       } as Event);
     }
@@ -229,6 +153,14 @@ export class DatePicker extends FlatpickrBase {
 
     if (changedProperties.has('datePickerDisabled')) {
       this.disabled = this.datePickerDisabled;
+    }
+
+    if (changedProperties.has('mode')) {
+      this.value = this.mode === 'multiple' ? [] : null;
+
+      if (this.flatpickrInstance && this._initialized) {
+        this.debouncedUpdate();
+      }
     }
   }
 

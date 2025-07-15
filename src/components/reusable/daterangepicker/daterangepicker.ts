@@ -9,7 +9,6 @@ import {
   FlatpickrConfig,
   FlatpickrTextStrings,
 } from '../../../common/base/flatpickr-base';
-import { langsArray } from '../../../common/flatpickrLangs';
 import {
   getPlaceholder,
   injectFlatpickrStyles,
@@ -27,6 +26,9 @@ import DateRangePickerStyles from './daterangepicker.scss?inline';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss?inline';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+
+const VIEWPORT_BREAKPOINT = 767;
+const COMPONENT_ID_PREFIX = 'date-range';
 
 /**
  * Default text strings for the date-range picker.
@@ -65,115 +67,36 @@ export class DateRangePicker extends FlatpickrBase {
   private _initialValueSet = false;
   private _initialValue: [Date | null, Date | null] = [null, null];
 
-  /** Label text. */
-  @property({ type: String })
-  override accessor label = '';
-
-  /** Locale setting. */
-  @property({ type: String })
-  override accessor locale: (typeof langsArray)[number] | string = 'en';
-
-  /** Date format for input/display. */
-  @property({ type: String })
-  override accessor dateFormat = 'Y-m-d';
+  /**
+   * Controlled value for the date range.
+   * @type {[Date | null, Date | null]}
+   */
+  override value: [Date | null, Date | null] = [null, null];
 
   /** Editable parts of the date range. */
   @property({ type: String })
   accessor rangeEditMode: DateRangeEditableMode = DateRangeEditableMode.BOTH;
 
-  /** Default error message. */
-  @property({ type: String })
-  override accessor defaultErrorMessage = '';
-
-  /** Controlled value for the date range. */
-  override value: [Date | null, Date | null] = [null, null];
-
-  /** Validation warning messaging. */
-  @property({ type: String })
-  override accessor warnText = '';
-
-  /** Dates to disable. */
-  @property({ type: Array })
-  override accessor disable: (string | number | Date)[] = [];
-
-  /** Dates to enable. */
-  @property({ type: Array })
-  override accessor enable: (string | number | Date)[] = [];
-
-  /** Caption displayed under the picker. */
-  @property({ type: String })
-  override accessor caption = '';
-
-  /** Required flag. */
-  @property({ type: Boolean })
-  override accessor required = false;
-
-  /** Input size. */
-  @property({ type: String })
-  override accessor size = 'md';
-
-  /** Disabled toggle. */
-  @property({ type: Boolean })
-  override accessor disabled = false;
-
-  /** Readonly toggle. */
-  @property({ type: Boolean })
-  override accessor readonly = false;
-
   /** Sets entire date range picker form element to enabled/disabled. */
   @property({ type: Boolean })
   accessor dateRangePickerDisabled = false;
 
-  /** 24-hour format toggle. */
-  @property({ type: Boolean })
-  override accessor twentyFourHourFormat: boolean | null = null;
-
-  /** Min date boundary. */
-  @property({ type: String })
-  override accessor minDate: string | number | Date = '';
-
-  /** Max date boundary. */
-  @property({ type: String })
-  override accessor maxDate: string | number | Date = '';
-
-  /** Aria-label for error. */
-  @property({ type: String })
-  override accessor errorAriaLabel = '';
-
-  /** Title for error. */
-  @property({ type: String })
-  override accessor errorTitle = '';
-
-  /** Aria-label for warning. */
-  @property({ type: String })
-  override accessor warningAriaLabel = '';
-
-  /** Title for warning. */
-  @property({ type: String })
-  override accessor warningTitle = '';
-
-  /** Static calendar positioning. */
-  @property({ type: Boolean })
-  override accessor staticPosition = false;
-
   /** Close on selection. */
   @property({ type: Boolean })
   accessor closeOnSelection = false;
-
-  /** Multi-input toggle. */
-  @property({ type: Boolean, reflect: true })
-  override accessor multiInput = false;
 
   /** Custom text overrides. */
   @property({ type: Object })
   override accessor textStrings: Partial<FlatpickrTextStrings> =
     _defaultTextStrings;
 
-  protected config: FlatpickrConfig = {
-    mode: 'range',
-    enableTime: false,
-    noCalendar: false,
-  };
+  protected get config(): FlatpickrConfig {
+    return {
+      mode: 'range',
+      enableTime: false,
+      noCalendar: false,
+    };
+  }
 
   @query('input[data-end-input]')
   protected accessor _endInputEl!: HTMLInputElement;
@@ -184,7 +107,8 @@ export class DateRangePicker extends FlatpickrBase {
 
   override render(): TemplateResult {
     const anchorId =
-      this.name || `date-range-${Math.random().toString(36).slice(2)}`;
+      this.name ||
+      `${COMPONENT_ID_PREFIX}-${Math.random().toString(36).slice(2)}`;
     const placeholder = getPlaceholder(this.dateFormat, true);
     const showClear = this.hasValue() && !this.readonly && !this.disabled;
 
@@ -222,7 +146,7 @@ export class DateRangePicker extends FlatpickrBase {
               ?readonly=${this.readonly}
             />
             ${this.value[0] && showClear
-              ? html` <kyn-button
+              ? html`<kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
                   class="clear-button"
                   kind="ghost"
@@ -234,7 +158,7 @@ export class DateRangePicker extends FlatpickrBase {
                     ${unsafeSVG(clearIcon)}
                   </span>
                 </kyn-button>`
-              : html` <span class="input-icon" aria-hidden="true">
+              : html`<span class="input-icon" aria-hidden="true">
                   ${unsafeSVG(calendarIcon)}
                 </span>`}
           </div>
@@ -255,7 +179,7 @@ export class DateRangePicker extends FlatpickrBase {
               ?readonly=${this.readonly}
             />
             ${this.value[1] && showClear
-              ? html` <kyn-button
+              ? html`<kyn-button
                   ?disabled=${this.dateRangePickerDisabled}
                   class="clear-button"
                   kind="ghost"
@@ -267,7 +191,7 @@ export class DateRangePicker extends FlatpickrBase {
                     ${unsafeSVG(clearIcon)}
                   </span>
                 </kyn-button>`
-              : html` <span class="input-icon" aria-hidden="true">
+              : html`<span class="input-icon" aria-hidden="true">
                   ${unsafeSVG(calendarIcon)}
                 </span>`}
           </div>
@@ -282,6 +206,14 @@ export class DateRangePicker extends FlatpickrBase {
     await super.firstUpdated(changedProps);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
     await this.initializeFlatpickr();
+  }
+
+  override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('dateRangePickerDisabled')) {
+      this.disabled = this.dateRangePickerDisabled;
+    }
   }
 
   protected updateFormValue(): void {
@@ -302,7 +234,7 @@ export class DateRangePicker extends FlatpickrBase {
     opts.mode = 'range';
     opts.closeOnSelect = this.closeOnSelection;
 
-    const isWideScreen = window.innerWidth >= 767;
+    const isWideScreen = window.innerWidth >= VIEWPORT_BREAKPOINT;
     opts.showMonths = isWideScreen ? (this.showSingleMonth ? 1 : 2) : 1;
 
     const originalOnOpen = opts.onOpen;
@@ -434,7 +366,17 @@ export class DateRangePicker extends FlatpickrBase {
     }
   }
 
-  protected emitChangeEvent(): void {}
+  protected override emitChangeEvent(source?: string): void {
+    if (this.flatpickrInstance) {
+      const dateStr = (this._inputEl as HTMLInputElement)?.value || '';
+      const selectedDates = this.value.filter(
+        (date): date is Date => date !== null
+      );
+      this.emitFlatpickrChange(this.flatpickrInstance, selectedDates, dateStr, {
+        type: source ?? 'manual',
+      } as Event);
+    }
+  }
 
   protected getAriaLabel(): string {
     return 'Date range picker';
@@ -467,7 +409,7 @@ export class DateRangePicker extends FlatpickrBase {
         onChange: (selectedDates, dateStr, instance, event) =>
           this.handleDateChange(selectedDates, dateStr, instance, event),
         onReady: (_, __, instance) => {
-          const isWideScreen = window.innerWidth >= 767;
+          const isWideScreen = window.innerWidth >= VIEWPORT_BREAKPOINT;
           const shouldShowSingleMonth = !isWideScreen || this.showSingleMonth;
 
           if (shouldShowSingleMonth && instance.calendarContainer) {
