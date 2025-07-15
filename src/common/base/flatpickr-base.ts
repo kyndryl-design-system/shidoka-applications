@@ -425,6 +425,7 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
             ?disabled=${this.disabled}
             ?readonly=${this.readonly}
             ?required=${this.required}
+            autocomplete="off"
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
             aria-labelledby=${`label-${anchorId}`}
