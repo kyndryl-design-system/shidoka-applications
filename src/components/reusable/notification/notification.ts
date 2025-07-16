@@ -19,7 +19,7 @@ import '../badge';
  * Notification component.
  * @slot unnamed - Slot for notification message body.
  * @slot actions - Slot for menu.
- * @slot icons - Slot for custom icon.
+ * @slot icon - Slot for an icon.
  * @fires on-notification-click - Emit event for clickable notification.
  * @fires on-close - Emits when an inline/toast notification closes.
  */
@@ -179,14 +179,14 @@ export class Notification extends LitElement {
       <div class="notification-title-wrap">
         <div class="notification-head">
           ${this.type === 'inline' || this.type === 'toast'
-            ? html` <slot name="icons">
-                <span
-                  class="notification-state-icon ${this.tagStatus}"
-                  role="img"
-                  aria-label=${`${this.textStrings[this.tagStatus]} icon`}
-                  >${unsafeSVG(notificationIcon[this.tagStatus])}</span
-                >
-              </slot>`
+            ? html` <span
+                class="notification-state-icon ${this.tagStatus}"
+                role="img"
+                aria-label=${`${this.textStrings[this.tagStatus]} icon`}
+                ><slot name="icon"
+                  >${unsafeSVG(notificationIcon[this.tagStatus])}
+                </slot></span
+              >`
             : null}
 
           <div class="notification-title">${this.notificationTitle}</div>

@@ -156,8 +156,8 @@ export const Inline = {
         @on-close=${(e) => action(e.type)(e)}
       >
         <span
-          slot="icons"
-          style="display: flex; padding-right: 8px;color: var(--kd-color-status-informational-foreground);"
+          slot="icon"
+          style="color: var(--kd-color-status-informational-foreground);"
           aria-labelledby="document task icon"
           aria-hidden="true"
           >${unsafeSVG(documentTaskIcon)}</span
