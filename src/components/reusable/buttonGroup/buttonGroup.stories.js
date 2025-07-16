@@ -89,8 +89,8 @@ const Template = (args) => {
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
-      @on-click=${(e) => {
-        action('on-click')(e);
+      @on-change=${(e) => {
+        action('on-change')(e);
         if (e.detail.selectedIndex !== undefined) {
           updateArgs({
             selectedIndex: e.detail.selectedIndex,
@@ -115,13 +115,11 @@ const IconTemplate = (args) => {
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
-      @on-click=${(e) => {
-        action('on-click')(e);
-        if (e.detail.selectedIndex !== undefined) {
-          updateArgs({
-            selectedIndex: e.detail.selectedIndex,
-          });
-        }
+      @on-change=${(e) => {
+        action('on-change')(e);
+        updateArgs({
+          selectedIndex: e.detail.selectedIndex,
+        });
       }}
     >
       ${renderButtonsFromArray(iconButtonConfigs)}
@@ -143,13 +141,11 @@ const CustomIconTemplate = (args) => {
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
-      @on-click=${(e) => {
-        action('on-click')(e);
-        if (e.detail.selectedIndex !== undefined) {
-          updateArgs({
-            selectedIndex: e.detail.selectedIndex,
-          });
-        }
+      @on-change=${(e) => {
+        action('on-change')(e);
+        updateArgs({
+          selectedIndex: e.detail.selectedIndex,
+        });
       }}
     >
       ${renderButtonsFromArray(customButtons)}
@@ -202,8 +198,8 @@ export const PaginationExample = {
         .totalPages=${args.totalPages}
         .maxVisible=${args.maxVisible}
         .clickIncrementBy=${args.clickIncrementBy}
-        @on-click=${(e) => {
-          action('on-click')(e);
+        @on-change=${(e) => {
+          action('on-change')(e);
           updateArgs({
             selectedIndex: e.detail.selectedIndex,
             visibleStart: e.detail.visibleStart,
