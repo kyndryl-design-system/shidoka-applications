@@ -108,6 +108,12 @@ export class Notification extends LitElement {
   @property({ type: Number })
   accessor timeout = 8;
 
+  /** Track if slot has content to conditionally render description div
+   * @internal
+   */
+  @state()
+  accessor _hasSlotContent = false;
+
   override render() {
     const cardBgClasses = {
       'notification-normal': this.type === 'normal',
@@ -129,6 +135,7 @@ export class Notification extends LitElement {
       'notification-default':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'default',
+      'notification-no-description': !this._hasSlotContent,
     };
 
     return html`
@@ -222,9 +229,14 @@ export class Notification extends LitElement {
         </div>
       </div>
 
-      <div class="notification-description">
-        <slot @slotchange="${this._handleSlotChange}"></slot>
-      </div>
+      ${this._hasSlotContent
+        ? html`<div class="notification-description">
+            <slot @slotchange="${this._handleSlotChange}"></slot>
+          </div>`
+        : html`<slot
+            @slotchange="${this._handleSlotChange}"
+            style="display: none;"
+          ></slot>`}
 
       <div class="notification-content-wrapper">
         <div class="status-tag">
@@ -261,6 +273,10 @@ export class Notification extends LitElement {
     }
   }
 
+  override firstUpdated() {
+    this._checkSlotContent();
+  }
+
   // Remove toast from DOM
   private _close() {
     const animation = this.animate([{ opacity: '1' }, { opacity: '0' }], {
@@ -289,21 +305,36 @@ export class Notification extends LitElement {
   }
 
   private _handleSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    const hasContent = slot
-      .assignedNodes()
-      .some(
-        (node) =>
-          node.nodeType === Node.ELEMENT_NODE ||
-          (node.nodeType === Node.TEXT_NODE && node.textContent?.trim() !== '')
-      );
+    this._checkSlotContent();
+  }
 
-    const descriptionDiv = this.shadowRoot?.querySelector(
-      '.notification-description'
-    ) as HTMLElement;
-    if (descriptionDiv) {
-      descriptionDiv.style.display = hasContent ? 'block' : 'none';
+  private _checkSlotContent() {
+    const slot = this.shadowRoot?.querySelector(
+      'slot:not([name])'
+    ) as HTMLSlotElement;
+    if (!slot) {
+      this._hasSlotContent = false;
+      return;
     }
+
+    const assignedNodes = slot.assignedNodes();
+
+    const hasContent = assignedNodes.some((node) => {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        return true;
+      }
+      if (node.nodeType === Node.TEXT_NODE) {
+        const textContent = node.textContent;
+        return (
+          textContent !== null &&
+          textContent !== undefined &&
+          textContent.trim() !== ''
+        );
+      }
+      return false;
+    });
+
+    this._hasSlotContent = hasContent;
   }
 }
 
