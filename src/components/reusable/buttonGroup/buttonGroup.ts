@@ -37,7 +37,7 @@ export interface ButtonConfig {
 const _defaultTextStrings = {
   prevButtonDescription: 'Previous Page',
   nextButtonDescription: 'Next Page',
-  paginationButtonDescription: '',
+  indivGroupItemDescription: '',
 };
 
 /**
@@ -200,8 +200,8 @@ export class ButtonGroup extends LitElement {
           (p, i) => html`
             <kyn-button
               kind="tertiary"
-              description=${this.textStrings.paginationButtonDescription ||
-              `Page ${p}`}
+              description=${this.textStrings.indivGroupItemDescription ||
+              `Page ${p} of ${this.totalPages}`}
               class="kd-btn--group-middle"
               ?selected=${i === rel}
               @click=${() => this._onPage(p)}

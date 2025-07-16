@@ -87,6 +87,7 @@ const Template = (args) => {
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
       .totalPages=${args.totalPages}
+      .textStrings=${args.textStrings}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
@@ -113,6 +114,7 @@ const IconTemplate = (args) => {
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
       .totalPages=${args.totalPages}
+      .textStrings=${args.textStrings}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
@@ -139,6 +141,7 @@ const CustomIconTemplate = (args) => {
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
       .totalPages=${args.totalPages}
+      .textStrings=${args.textStrings}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
@@ -161,6 +164,9 @@ export const Default = {
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
+    textStrings: {
+      indivGroupItemDescription: '',
+    },
   },
 };
 
@@ -172,6 +178,9 @@ export const Icons = {
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
+    textStrings: {
+      indivGroupItemDescription: '',
+    },
   },
 };
 
@@ -184,6 +193,11 @@ export const PaginationExample = {
     clickIncrementBy: 3,
     visibleStart: 1,
     visibleEnd: 5,
+    textStrings: {
+      prevButtonDescription: 'Previous Page',
+      nextButtonDescription: 'Next Page',
+      indivGroupItemDescription: '',
+    },
   },
   render: (args) => {
     const [, updateArgs] = useArgs();
@@ -198,6 +212,7 @@ export const PaginationExample = {
         .totalPages=${args.totalPages}
         .maxVisible=${args.maxVisible}
         .clickIncrementBy=${args.clickIncrementBy}
+        .textStrings=${args.textStrings}
         @on-change=${(e) => {
           action('on-change')(e);
           updateArgs({
@@ -229,5 +244,8 @@ export const CustomIconArray = {
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
+    textStrings: {
+      indivGroupItemDescription: '',
+    },
   },
 };
