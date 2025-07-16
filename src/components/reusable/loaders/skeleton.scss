@@ -20,21 +20,20 @@
 :host {
   display: block;
   width: 100%;
-  height: auto;
 }
 
-:host(.skeleton-item) {
-  margin-bottom: 16px;
-}
-
-:host(.last-item) {
-  margin-bottom: 0;
-  margin-right: 0;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 :host([inline]) {
   display: inline-block;
-  width: 100%;
+
+  & .container {
+    flex-direction: row;
+  }
 }
 
 .skeleton {
@@ -48,6 +47,7 @@
 
   &.ai-Skeleton {
     background: var(--kd-color-background-gradients-ai-loader-start-gradient);
+
     &::after {
       background: linear-gradient(
         90deg,
