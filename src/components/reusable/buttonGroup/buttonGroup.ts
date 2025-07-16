@@ -265,7 +265,6 @@ export class ButtonGroup extends LitElement {
   private _boundHandlers = new Map<Button, (event: Event) => void>();
 
   private _attachClickListeners() {
-    // Clear existing handlers
     this._boundHandlers.forEach((handler, btn) => {
       btn.removeEventListener('click', handler);
     });
