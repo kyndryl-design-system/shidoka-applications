@@ -249,6 +249,18 @@ export const Toast = {
         </kyn-notification>
 
         <kyn-notification
+          notificationTitle="No description example"
+          assistiveNotificationTypeText="Info toast"
+          notificationRole=${args.notificationRole}
+          type="toast"
+          tagStatus="info"
+          ?hideCloseButton=${args.hideCloseButton}
+          @on-close=${(e) => action(e.type)(e)}
+          timeout=${0}
+        >
+        </kyn-notification>
+
+        <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveNotificationTypeText="AI toast"
           notificationRole=${args.notificationRole}
