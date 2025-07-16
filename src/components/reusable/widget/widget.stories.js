@@ -49,6 +49,7 @@ export default {
           border: 1px dashed var(--kd-color-utility-variant-border);
           height: 100%;
           border-radius: 4px;
+
           svg {
             height: 52px;
             width: 52px;
@@ -67,6 +68,8 @@ const args = {
   dragActive: false,
   selectable: false,
   selected: false,
+  compact: false,
+  removeHeader: false,
 };
 
 const getExampleContent = () => html`
@@ -94,6 +97,8 @@ export const Widget = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
@@ -126,6 +131,8 @@ export const SelectableWidget = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
@@ -149,6 +156,8 @@ export const WithActions = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             <kyn-button
@@ -194,6 +203,8 @@ export const WithFooter = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
@@ -221,43 +232,44 @@ export const WithFooter = {
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
             ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
-            <div
-              slot="footer"
-              style="display: flex; gap: 8px; justify-content: space-between; width: 100%;"
-            >
-              <div class="footer-content">
-                <div
-                  class="cube-icon"
-                  style="color:var(--kd-color-icon-brand);"
-                >
-                  ${unsafeSVG(smCube)}
-                </div>
-                Footer Slot
+
+            <div slot="footer" class="footer-example">
+              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+                ${unsafeSVG(smCube)}
               </div>
-              <kyn-button kind="secondary" size="small" style="display:flex">
-                CTA
-              </kyn-button>
+              Footer Slot
             </div>
+
+            <kyn-button slot="footer" kind="secondary" size="small">
+              CTA
+            </kyn-button>
           </kyn-widget>
         </div>
       </div>
+
       <style>
-        .footer-content {
-          width: 85%;
+        .footer-example {
+          flex-grow: 1;
           display: flex;
           align-items: center;
           font-size: 16px;
           gap: 4px;
           justify-content: center;
-          height: 30px;
+          height: 32px;
           border-radius: 4px;
           font-weight: 500;
           padding: 0 16px;
           background: var(--kd-color-background-container-subtle);
           border: 1px dashed var(--kd-color-utility-variant-border);
+        }
+
+        .cube-icon svg {
+          display: block;
         }
       </style>
     `;
@@ -274,6 +286,8 @@ export const WithChart = {
           ?dragActive=${args.dragActive}
           ?selectable=${args.selectable}
           ?selected=${args.selected}
+          ?compact=${args.compact}
+          ?removeHeader=${args.removeHeader}
           @on-select=${(e) => action(e.type)(e)}
         >
           <kd-chart
