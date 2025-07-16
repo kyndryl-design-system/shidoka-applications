@@ -24,6 +24,7 @@ export enum BUTTON_SIZES {
   LARGE = 'large',
   MEDIUM = 'medium',
   SMALL = 'small',
+  EXTRA_SMALL = 'extra-small',
 }
 
 export enum BUTTON_ICON_POSITION {
