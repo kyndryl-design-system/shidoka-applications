@@ -112,7 +112,7 @@ export class Notification extends LitElement {
    * @internal
    */
   @state()
-  accessor _hasSlotContent = false;
+  accessor _hasDescriptionSlotContent = false;
 
   override render() {
     const cardBgClasses = {
@@ -135,7 +135,7 @@ export class Notification extends LitElement {
       'notification-default':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'default',
-      'notification-no-description': !this._hasSlotContent,
+      'notification-no-description': !this._hasDescriptionSlotContent,
     };
 
     return html`
@@ -229,7 +229,7 @@ export class Notification extends LitElement {
         </div>
       </div>
 
-      ${this._hasSlotContent
+      ${this._hasDescriptionSlotContent
         ? html`<div class="notification-description">
             <slot @slotchange="${this._handleSlotChange}"></slot>
           </div>`
@@ -313,7 +313,7 @@ export class Notification extends LitElement {
       'slot:not([name])'
     ) as HTMLSlotElement;
     if (!slot) {
-      this._hasSlotContent = false;
+      this._hasDescriptionSlotContent = false;
       return;
     }
 
@@ -334,7 +334,7 @@ export class Notification extends LitElement {
       return false;
     });
 
-    this._hasSlotContent = hasContent;
+    this._hasDescriptionSlotContent = hasContent;
   }
 }
 
