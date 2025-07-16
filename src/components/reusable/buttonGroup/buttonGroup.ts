@@ -59,8 +59,6 @@ export class ButtonGroup extends LitElement {
   @property({ type: Number })
   accessor selectedIndex = -1;
 
-  // ─── pagination-only props ─────────────────────────────────────────
-
   /**
    * @category pagination
    * @remarks only used when `kind === BUTTON_GROUP_KINDS.PAGINATION (`pagination`)`
@@ -288,7 +286,7 @@ export class ButtonGroup extends LitElement {
 
   private _handleSlotChange() {
     requestAnimationFrame(() => {
-      this._buttons.forEach((btn, idx) => {
+      this._buttons.forEach((btn) => {
         btn.kind =
           this.kind === BUTTON_GROUP_KINDS.ICONS
             ? BUTTON_KINDS.SECONDARY
