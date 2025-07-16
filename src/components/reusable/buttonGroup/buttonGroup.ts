@@ -50,9 +50,10 @@ const _defaultTextStrings = {
 export class ButtonGroup extends LitElement {
   static override styles = unsafeCSS(ButtonGroupStyles);
 
-  /** Button group kind */
+  /** Button group kind. Valid values: 'default', 'pagination', 'icons' */
   @property({ type: String })
-  accessor kind: BUTTON_GROUP_KINDS = BUTTON_GROUP_KINDS.DEFAULT;
+  accessor kind: 'default' | 'pagination' | 'icons' =
+    BUTTON_GROUP_KINDS.DEFAULT;
 
   /** zero-based: default button index; for pagination, page-1 */
   @property({ type: Number })
