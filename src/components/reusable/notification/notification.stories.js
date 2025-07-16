@@ -249,7 +249,7 @@ export const Toast = {
         </kyn-notification>
 
         <kyn-notification
-          notificationTitle="No description Example"
+          notificationTitle="No description example"
           assistiveNotificationTypeText="Info toast"
           notificationRole=${args.notificationRole}
           type="toast"
