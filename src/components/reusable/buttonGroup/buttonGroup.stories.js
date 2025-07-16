@@ -8,7 +8,7 @@ import './buttonGroup';
 
 import { BUTTON_GROUP_KINDS } from './buttonGroup';
 
-// Example for icons example
+// Example for icons variant
 import coreServicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/core-services.svg';
 import cubeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
 import collabDriveIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/collab-drive.svg';
@@ -89,11 +89,13 @@ const Template = (args) => {
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
-      @on-change=${(e) => {
-        action('on-change')(e);
-        updateArgs({
-          selectedIndex: e.detail.selectedIndex,
-        });
+      @on-click=${(e) => {
+        action('on-click')(e);
+        if (e.detail.selectedIndex !== undefined) {
+          updateArgs({
+            selectedIndex: e.detail.selectedIndex,
+          });
+        }
       }}
     >
       <kyn-button value="1">Button 1</kyn-button>
@@ -113,11 +115,13 @@ const IconTemplate = (args) => {
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
-      @on-change=${(e) => {
-        action('on-change')(e);
-        updateArgs({
-          selectedIndex: e.detail.selectedIndex,
-        });
+      @on-click=${(e) => {
+        action('on-click')(e);
+        if (e.detail.selectedIndex !== undefined) {
+          updateArgs({
+            selectedIndex: e.detail.selectedIndex,
+          });
+        }
       }}
     >
       ${renderButtonsFromArray(iconButtonConfigs)}
@@ -139,11 +143,13 @@ const CustomIconTemplate = (args) => {
       .totalPages=${args.totalPages}
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
-      @on-change=${(e) => {
-        action('on-change')(e);
-        updateArgs({
-          selectedIndex: e.detail.selectedIndex,
-        });
+      @on-click=${(e) => {
+        action('on-click')(e);
+        if (e.detail.selectedIndex !== undefined) {
+          updateArgs({
+            selectedIndex: e.detail.selectedIndex,
+          });
+        }
       }}
     >
       ${renderButtonsFromArray(customButtons)}
@@ -196,8 +202,8 @@ export const PaginationExample = {
         .totalPages=${args.totalPages}
         .maxVisible=${args.maxVisible}
         .clickIncrementBy=${args.clickIncrementBy}
-        @on-change=${(e) => {
-          action('on-change')(e);
+        @on-click=${(e) => {
+          action('on-click')(e);
           updateArgs({
             selectedIndex: e.detail.selectedIndex,
             visibleStart: e.detail.visibleStart,

@@ -44,7 +44,7 @@ const _defaultTextStrings = {
  * ButtonGroup component.
  *
  * @slot unnamed - Slot for <kyn-button> elements.
- * @fires on-change - Captures the click event button selection in button group.
+ * @fires on-click - Captures the click event on any button in the group with comprehensive event data.
  */
 @customElement('kyn-button-group')
 export class ButtonGroup extends LitElement {
@@ -144,6 +144,9 @@ export class ButtonGroup extends LitElement {
       ) {
         this._updateWindow();
       }
+      requestAnimationFrame(() => {
+        this._attachClickListeners();
+      });
     } else {
       if (changed.has('selectedIndex')) {
         this._syncSelection();
@@ -194,7 +197,7 @@ export class ButtonGroup extends LitElement {
           class="kd-btn--group-first"
           description=${this.textStrings.prevButtonDescription ||
           `Previous Page`}
-          @click=${() => this._onPage('prev')}
+          data-action="prev"
         >
           ${unsafeSVG(chevronLeftIcon)}
         </kyn-button>
@@ -207,7 +210,8 @@ export class ButtonGroup extends LitElement {
               `Page ${p}`}
               class="kd-btn--group-middle"
               ?selected=${i === rel}
-              @click=${() => this._onPage(p)}
+              data-action="page"
+              data-page=${p}
             >
               ${p}
             </kyn-button>
@@ -218,7 +222,7 @@ export class ButtonGroup extends LitElement {
           kind="tertiary"
           class="kd-btn--group-last"
           description=${this.textStrings.nextButtonDescription || `Next Page`}
-          @click=${() => this._onPage('next')}
+          data-action="next"
         >
           ${unsafeSVG(chevronRightIcon)}
         </kyn-button>
@@ -256,35 +260,54 @@ export class ButtonGroup extends LitElement {
       this.selectedIndex = cmd - 1;
       this._updateWindow();
     }
-
-    this.dispatchEvent(
-      new CustomEvent('on-change', {
-        bubbles: true,
-        composed: true,
-        detail: {
-          value: typeof cmd === 'number' ? cmd : null,
-          selectedIndex: this.selectedIndex,
-          visibleStart: this.visibleStart,
-          visibleEnd: this.visibleEnd,
-        },
-      })
-    );
   }
 
-  private _boundHandlers = new Map<Button, () => void>();
+  private _boundHandlers = new Map<Button, (event: Event) => void>();
 
   private _attachClickListeners() {
-    if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) return;
-    this._buttons.forEach((btn, idx) => {
-      const existingHandler = this._boundHandlers.get(btn);
-      if (existingHandler) {
-        btn.removeEventListener('click', existingHandler);
-      }
-
-      const handler = () => this._onButtonClick(idx);
-      this._boundHandlers.set(btn, handler);
-      btn.addEventListener('click', handler);
+    // Clear existing handlers
+    this._boundHandlers.forEach((handler, btn) => {
+      btn.removeEventListener('click', handler);
     });
+    this._boundHandlers.clear();
+
+    if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) {
+      const paginationButtons = this.shadowRoot?.querySelectorAll(
+        'kyn-button'
+      ) as NodeListOf<Button>;
+      paginationButtons?.forEach((btn) => {
+        const handler = (event: Event) =>
+          this._onPaginationButtonClick(event, btn);
+        this._boundHandlers.set(btn, handler);
+        btn.addEventListener('click', handler);
+      });
+    } else {
+      this._buttons.forEach((btn, idx) => {
+        const handler = (event: Event) => this._onButtonClick(event, idx);
+        this._boundHandlers.set(btn, handler);
+        btn.addEventListener('click', handler);
+      });
+    }
+  }
+
+  private _onPaginationButtonClick(event: Event, button: Button) {
+    const action = button.getAttribute('data-action');
+    let value: string | number | null = null;
+
+    if (action === 'page') {
+      value = Number(button.getAttribute('data-page'));
+    }
+
+    this._emitClick(event, button, action, value);
+
+    if (action === 'prev') {
+      this._onPage('prev');
+    } else if (action === 'next') {
+      this._onPage('next');
+    } else if (action === 'page') {
+      const page = Number(button.getAttribute('data-page'));
+      this._onPage(page);
+    }
   }
 
   private _handleSlotChange() {
@@ -301,14 +324,45 @@ export class ButtonGroup extends LitElement {
     });
   }
 
-  private _onButtonClick(idx: number) {
+  private _onButtonClick(event: Event, idx: number) {
+    if (this.kind !== BUTTON_GROUP_KINDS.PAGINATION) {
+      this._emitClick(
+        event,
+        this._buttons[idx],
+        null,
+        this._buttons[idx].value
+      );
+    }
+
     if (this.kind === BUTTON_GROUP_KINDS.PAGINATION) {
       const raw = this._buttons[idx].value;
       return this._onPage(typeof raw === 'string' ? Number(raw) : raw);
     }
     this.selectedIndex = idx;
-    this._emitChange(this._buttons[idx].value);
     this._syncSelection();
+  }
+
+  private _emitClick(
+    event: Event,
+    button: Element,
+    action: string | null,
+    value?: unknown
+  ) {
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          originalEvent: event,
+          button: button,
+          action: action,
+          value: value || null,
+          selectedIndex: this.selectedIndex,
+          visibleStart: this.visibleStart,
+          visibleEnd: this.visibleEnd,
+        },
+      })
+    );
   }
 
   private _syncSelection() {
@@ -326,16 +380,6 @@ export class ButtonGroup extends LitElement {
       else if (idx === total - 1) btn.classList.add('kd-btn--group-last');
       else btn.classList.add('kd-btn--group-middle');
     });
-  }
-
-  private _emitChange(value: unknown) {
-    this.dispatchEvent(
-      new CustomEvent('on-change', {
-        bubbles: true,
-        composed: true,
-        detail: { value },
-      })
-    );
   }
 
   override disconnectedCallback() {
