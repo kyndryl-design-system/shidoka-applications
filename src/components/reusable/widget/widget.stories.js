@@ -237,41 +237,39 @@ export const WithFooter = {
             @on-select=${(e) => action(e.type)(e)}
           >
             ${getExampleContent()}
-            <div
-              slot="footer"
-              style="display: flex; gap: 8px; justify-content: space-between; width: 100%;"
-            >
-              <div class="footer-content">
-                <div
-                  class="cube-icon"
-                  style="color:var(--kd-color-icon-brand);"
-                >
-                  ${unsafeSVG(smCube)}
-                </div>
-                Footer Slot
+
+            <div slot="footer" class="footer-example">
+              <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+                ${unsafeSVG(smCube)}
               </div>
-              <kyn-button kind="secondary" size="small" style="display:flex">
-                CTA
-              </kyn-button>
+              Footer Slot
             </div>
+
+            <kyn-button slot="footer" kind="secondary" size="small">
+              CTA
+            </kyn-button>
           </kyn-widget>
         </div>
       </div>
 
       <style>
-        .footer-content {
-          width: 85%;
+        .footer-example {
+          flex-grow: 1;
           display: flex;
           align-items: center;
           font-size: 16px;
           gap: 4px;
           justify-content: center;
-          height: 30px;
+          height: 32px;
           border-radius: 4px;
           font-weight: 500;
           padding: 0 16px;
           background: var(--kd-color-background-container-subtle);
           border: 1px dashed var(--kd-color-utility-variant-border);
+        }
+
+        .cube-icon svg {
+          display: block;
         }
       </style>
     `;
