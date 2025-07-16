@@ -273,10 +273,6 @@ export class Notification extends LitElement {
     }
   }
 
-  override firstUpdated() {
-    this._checkSlotContent();
-  }
-
   // Remove toast from DOM
   private _close() {
     const animation = this.animate([{ opacity: '1' }, { opacity: '0' }], {
