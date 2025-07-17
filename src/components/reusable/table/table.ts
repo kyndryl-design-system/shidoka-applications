@@ -30,28 +30,25 @@ export class Table extends LitElement {
    * checkboxSelection: Boolean indicating whether rows should be
    * selectable using checkboxes.
    * @type {boolean}
-   * @default false
    */
   @property({ type: Boolean })
-  accessor checkboxSelection: boolean | undefined;
+  accessor checkboxSelection = false;
 
   /**
    * striped: Boolean indicating whether rows should have alternate
    * coloring.
    * @type {boolean}
-   * @default false
    */
   @property({ type: Boolean })
-  accessor striped: boolean | undefined;
+  accessor striped = false;
 
   /**
    * stickyHeader: Boolean indicating whether the table header should be sticky.
    * Must also set a height or max-height on kyn-table-container.
    * @type {boolean}
-   * @default false
    */
   @property({ type: Boolean })
-  accessor stickyHeader: boolean | undefined;
+  accessor stickyHeader = false;
 
   /**
    * dense: Boolean indicating whether the table should be displayed
@@ -60,7 +57,7 @@ export class Table extends LitElement {
    * @default false
    */
   @property({ type: Boolean })
-  accessor dense: boolean | undefined;
+  accessor dense = false;
 
   /**
    * fixedLayout: Boolean indicating whether the table should have a fixed layout.
@@ -68,10 +65,9 @@ export class Table extends LitElement {
    * will be determined by the width of the columns and not by the content of the cells.
    * This can be useful when you want to have a consistent column width across multiple tables.
    * @type {boolean}
-   * @default false
    * */
   @property({ type: Boolean })
-  accessor fixedLayout: boolean | undefined;
+  accessor fixedLayout = false;
 
   /**
    * _provider: Context provider for the table.
@@ -87,19 +83,21 @@ export class Table extends LitElement {
   override updated(changedProperties: PropertyValues) {
     super.updated(changedProperties);
 
-    // Create an object to hold the new values
-    const newValues: Partial<any> = {};
+    if (
+      changedProperties.has('dense') ||
+      changedProperties.has('striped') ||
+      changedProperties.has('checkboxSelection') ||
+      changedProperties.has('stickyHeader')
+    ) {
+      const newValues: Partial<any> = {
+        dense: this.dense,
+        striped: this.striped,
+        checkboxSelection: this.checkboxSelection,
+        stickyHeader: this.stickyHeader,
+      };
 
-    // Check each property in _propsToCheck and add it to newValues if it has really changed
-    if (changedProperties.has('dense')) newValues.dense = this.dense;
-    if (changedProperties.has('striped')) newValues.striped = this.striped;
-    if (changedProperties.has('checkboxSelection'))
-      newValues.checkboxSelection = this.checkboxSelection;
-    if (changedProperties.has('stickyHeader'))
-      newValues.stickyHeader = this.stickyHeader;
-
-    // Update the context provider with the new values
-    this._provider.setValue(newValues);
+      this._provider.setValue(newValues);
+    }
   }
 
   /**
