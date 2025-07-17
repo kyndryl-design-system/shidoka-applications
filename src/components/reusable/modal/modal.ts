@@ -129,6 +129,7 @@ export class Modal extends LitElement {
       <dialog
         class="${classMap(classes)}"
         aria-labelledby="dialogLabel"
+        tabindex="-1"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
         <form method="dialog">
