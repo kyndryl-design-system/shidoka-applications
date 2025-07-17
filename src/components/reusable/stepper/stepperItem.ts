@@ -256,6 +256,7 @@ export class StepperItem extends LitElement {
                       href=${this.stepLink}
                       kind="primary"
                       ?disabled=${this.disabled}
+                      standalone
                       @on-click=${(e: Event) => this._handleStepClick(e)}
                     >
                       ${this.stepTitle}
@@ -333,6 +334,7 @@ export class StepperItem extends LitElement {
                       href=${this.stepLink}
                       kind="primary"
                       ?disabled=${this.disabled}
+                      standalone
                       @on-click=${(e: Event) => this._handleStepClick(e)}
                     >
                       ${this.stepTitle}

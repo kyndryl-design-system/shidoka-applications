@@ -93,6 +93,7 @@ export class StepperItemChild extends LitElement {
                   href=${this.childLink}
                   kind="primary"
                   ?disabled=${this.disabled}
+                  standalone
                   @on-click=${(e: any) => this._handleChildStepClick(e)}
                 >
                   ${this.childTitle}

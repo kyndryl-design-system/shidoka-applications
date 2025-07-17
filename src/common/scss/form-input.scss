@@ -3,8 +3,9 @@
 @use '../../common/scss/mixins.scss';
 
 .label-text {
+  @include typography.type-ui-02;
   color: var(--kd-color-text-forms-label-primary);
-  font-weight: 500;
+  font-weight: var(--kd-font-weight-medium);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -20,8 +21,6 @@
   [disabled] & {
     color: var(--kd-color-text-level-disabled);
   }
-
-  @include typography.type-ui-02;
 }
 
 .required {
@@ -50,15 +49,16 @@
 }
 
 .options-text {
+  @include typography.type-ui-03;
   margin: 0;
   color: var(--kd-color-text-forms-label-secondary);
-  @include typography.type-ui-03;
 }
 
 input,
 .input-custom,
 .flatpickr-input,
 textarea {
+  @include typography.type-body-02;
   pointer-events: auto;
 
   border-color: var(--kd-color-border-forms-default);
@@ -138,8 +138,6 @@ textarea {
   &:not([disabled])[invalid] {
     border-color: var(--kd-color-border-variants-destructive);
   }
-
-  @include typography.type-body-02;
 }
 
 .error {
@@ -216,14 +214,13 @@ textarea {
   gap: 1rem;
 
   .count {
+    @include typography.type-ui-02;
     color: var(--kd-color-text-forms-label-secondary);
     margin-top: 13px;
 
     [disabled] & {
       color: var(--kd-color-text-level-disabled);
     }
-
-    @include typography.type-ui-02;
   }
 }
 
@@ -244,7 +241,7 @@ textarea {
   cursor: default;
 
   &.warn-text {
-    font-size: 16px;
+    @include typography.type-body-02;
   }
 
   [disabled] & {
@@ -259,6 +256,7 @@ textarea {
 }
 
 .description-text {
+  @include typography.type-body-02;
   color: var(--kd-color-text-level-primary);
   margin-top: -4px;
   margin-bottom: 8px;
@@ -266,6 +264,4 @@ textarea {
   [disabled] & {
     color: var(--kd-color-text-level-disabled);
   }
-
-  @include typography.type-body-02;
 }
