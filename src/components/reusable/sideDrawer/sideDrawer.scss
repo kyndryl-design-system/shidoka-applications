@@ -36,6 +36,7 @@ dialog {
   height: 100vh;
   max-height: 100vh;
   overflow: hidden;
+  outline: none;
   z-index: var(--kd-z-overlay);
 
   &.ai-connected {
@@ -109,6 +110,13 @@ form {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  outline: 2px solid transparent;
+  transition: outline 150ms ease-out;
+
+  &:focus-visible {
+    border-radius: 2px;
+    outline-color: var(--kd-color-border-variants-focus);
+  }
 }
 
 .header-label-title {
