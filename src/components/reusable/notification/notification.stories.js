@@ -155,11 +155,7 @@ export const Inline = {
         ?hideCloseButton=${args.hideCloseButton}
         @on-close=${(e) => action(e.type)(e)}
       >
-        <span
-          slot="icon"
-          style="color: var(--kd-color-status-informational-foreground);"
-          aria-labelledby="document task icon"
-          aria-hidden="true"
+        <span slot="icon" style="display:flex"
           >${unsafeSVG(documentTaskIcon)}</span
         >
         <div>${notificationBodyMsg}</div>

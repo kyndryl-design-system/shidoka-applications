@@ -132,7 +132,9 @@ export class Notification extends LitElement {
       'notification-info':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'info',
-      'notification-ai': this.type === 'toast' && this.tagStatus === 'ai',
+      'notification-ai':
+        (this.type === 'inline' || this.type === 'toast') &&
+        this.tagStatus === 'ai',
       'notification-default':
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'default',
@@ -190,10 +192,11 @@ export class Notification extends LitElement {
                 class="notification-state-icon ${this.tagStatus}"
                 role="img"
                 aria-label=${`${this.textStrings[this.tagStatus]} icon`}
-                ><slot name="icon"
-                  >${unsafeSVG(notificationIcon[this.tagStatus])}
-                </slot></span
-              >`
+              >
+                <slot name="icon">
+                  ${unsafeSVG(notificationIcon[this.tagStatus])}
+                </slot>
+              </span>`
             : null}
 
           <div class="notification-title">${this.notificationTitle}</div>
