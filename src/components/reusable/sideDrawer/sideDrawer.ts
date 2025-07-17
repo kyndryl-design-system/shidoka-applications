@@ -177,6 +177,7 @@ export class SideDrawer extends LitElement {
             class="body"
             role="region"
             aria-label="${this.titleText} content"
+            tabindex="0"
           >
             <slot></slot>
           </div>
