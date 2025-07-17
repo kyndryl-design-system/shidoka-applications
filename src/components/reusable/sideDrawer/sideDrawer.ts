@@ -146,6 +146,7 @@ export class SideDrawer extends LitElement {
       <dialog
         class="${classMap(classes)}"
         aria-labelledby="dialogLabel"
+        tabindex="-1"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >
         <form method="dialog">
@@ -174,9 +175,9 @@ export class SideDrawer extends LitElement {
           <!-- Body -->
           <div
             class="body"
-            tabindex="0"
             role="region"
             aria-label="${this.titleText} content"
+            tabindex="0"
           >
             <slot></slot>
           </div>

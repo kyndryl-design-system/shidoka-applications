@@ -17,6 +17,7 @@ dialog {
   max-width: calc(100% - 32px);
   max-height: calc(100% - 32px);
   overflow: hidden;
+  outline: none;
 
   &[open] {
     display: flex;
@@ -163,9 +164,17 @@ slot[name='footer']::slotted(*) {
   margin: -4px;
   padding: 4px 16px 4px 4px;
   min-height: 0;
+  outline: none;
 
   &:not(.disableScroll) {
     overflow-y: auto;
     overscroll-behavior: contain;
+    outline: 2px solid transparent;
+    transition: outline 150ms ease-out;
+
+    &:focus-visible {
+      border-radius: 2px;
+      outline-color: var(--kd-color-border-variants-focus);
+    }
   }
 }
