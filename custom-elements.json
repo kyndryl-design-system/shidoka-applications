@@ -4287,6 +4287,313 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/buttonGroup/buttonGroup.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "BUTTON_GROUP_KINDS",
+          "type": {
+            "text": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
+          },
+          "default": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
+        },
+        {
+          "kind": "class",
+          "description": "ButtonGroup component.",
+          "name": "ButtonGroup",
+          "slots": [
+            {
+              "description": "Slot for <kyn-button> elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "attribute": "selectedIndex"
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "totalPages"
+            },
+            {
+              "kind": "field",
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "attribute": "maxVisible"
+            },
+            {
+              "kind": "field",
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "clickIncrementBy"
+            },
+            {
+              "kind": "field",
+              "name": "_visibleStart",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "1",
+              "description": "Starting page for the visible range (internal state)"
+            },
+            {
+              "kind": "field",
+              "name": "visibleStart",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current first page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "visibleEnd",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current last page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  prevButtonDescription: 'Previous Page',\n  nextButtonDescription: 'Next Page',\n  indivGroupItemDescription: '',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_buttons",
+              "type": {
+                "text": "Button[]"
+              },
+              "privacy": "private",
+              "description": "Target <kyn-button> children"
+            },
+            {
+              "kind": "method",
+              "name": "_renderDefault",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderIcons",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderPagination",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateWindow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onPage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "cmd",
+                  "type": {
+                    "text": "'prev' | 'next' | number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_boundHandlers",
+              "privacy": "private",
+              "default": "new Map<Button, () => void>()"
+            },
+            {
+              "kind": "method",
+              "name": "_attachClickListeners",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onButtonClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "idx",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "unknown"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_syncSelection",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event button selection in button group."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "fieldName": "kind"
+            },
+            {
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "fieldName": "selectedIndex"
+            },
+            {
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "totalPages"
+            },
+            {
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "fieldName": "maxVisible"
+            },
+            {
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "clickIncrementBy"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BUTTON_GROUP_KINDS",
+          "declaration": {
+            "name": "BUTTON_GROUP_KINDS",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ButtonGroup",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button-group",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/buttonGroup/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ButtonGroup",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "../buttonGroup/buttonGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/card/card.ts",
       "declarations": [
         {
@@ -10902,6 +11209,445 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/notification/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "./notification"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "./notificationContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notification.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification component.",
+          "name": "Notification",
+          "slots": [
+            {
+              "description": "Slot for notification message body.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot for an icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "attribute": "notificationTitle"
+            },
+            {
+              "kind": "field",
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "attribute": "notificationSubtitle"
+            },
+            {
+              "kind": "field",
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "attribute": "timeStamp"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "attribute": "tagStatus"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "attribute": "closeBtnDescription"
+            },
+            {
+              "kind": "field",
+              "name": "assistiveNotificationTypeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "attribute": "assistiveNotificationTypeText"
+            },
+            {
+              "kind": "field",
+              "name": "notificationRole",
+              "type": {
+                "text": "'alert' | 'log' | 'status' | undefined"
+              },
+              "description": "Notification role (Required to support accessibility).",
+              "attribute": "notificationRole"
+            },
+            {
+              "kind": "field",
+              "name": "statusLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Status'",
+              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "attribute": "statusLabel"
+            },
+            {
+              "kind": "field",
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "attribute": "unRead",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "attribute": "hideCloseButton"
+            },
+            {
+              "kind": "field",
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "attribute": "timeout"
+            },
+            {
+              "kind": "method",
+              "name": "renderInnerUI",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_close",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCardClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_checkSlotContent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emit event for clickable notification.",
+              "name": "on-notification-click"
+            },
+            {
+              "description": "Emits when an inline/toast notification closes.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "fieldName": "notificationTitle"
+            },
+            {
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "fieldName": "notificationSubtitle"
+            },
+            {
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "fieldName": "timeStamp"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link",
+              "fieldName": "href"
+            },
+            {
+              "name": "tagStatus",
+              "type": {
+                "text": "string"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "fieldName": "tagStatus"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "fieldName": "type"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "any"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "fieldName": "closeBtnDescription"
+            },
+            {
+              "name": "assistiveNotificationTypeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "fieldName": "assistiveNotificationTypeText"
+            },
+            {
+              "name": "notificationRole",
+              "type": {
+                "text": "'alert' | 'log' | 'status' | undefined"
+              },
+              "description": "Notification role (Required to support accessibility).",
+              "fieldName": "notificationRole"
+            },
+            {
+              "name": "statusLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Status'",
+              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "fieldName": "statusLabel"
+            },
+            {
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "fieldName": "unRead"
+            },
+            {
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "fieldName": "hideCloseButton"
+            },
+            {
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "fieldName": "timeout"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notificationContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "name": "NotificationContainer",
+          "slots": [
+            {
+              "description": "Slot for <kyn-notification type=\"toast\"> component.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification-container",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/numberInput/index.ts",
       "declarations": [],
       "exports": [
@@ -11272,440 +12018,6 @@
           "declaration": {
             "name": "NumberInput",
             "module": "src/components/reusable/numberInput/numberInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "./notification"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "./notificationContainer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notification.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification component.",
-          "name": "Notification",
-          "slots": [
-            {
-              "description": "Slot for notification message body.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot for an icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "attribute": "notificationTitle"
-            },
-            {
-              "kind": "field",
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "attribute": "notificationSubtitle"
-            },
-            {
-              "kind": "field",
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
-              "attribute": "timeStamp"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "attribute": "tagStatus"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "attribute": "closeBtnDescription"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveNotificationTypeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
-              "attribute": "assistiveNotificationTypeText"
-            },
-            {
-              "kind": "field",
-              "name": "notificationRole",
-              "type": {
-                "text": "'alert' | 'log' | 'status' | undefined"
-              },
-              "description": "Notification role (Required to support accessibility).",
-              "attribute": "notificationRole"
-            },
-            {
-              "kind": "field",
-              "name": "statusLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
-              "attribute": "statusLabel"
-            },
-            {
-              "kind": "field",
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "attribute": "unRead",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "attribute": "hideCloseButton"
-            },
-            {
-              "kind": "field",
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "attribute": "timeout"
-            },
-            {
-              "kind": "method",
-              "name": "renderInnerUI",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_close",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleCardClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emit event for clickable notification.",
-              "name": "on-notification-click"
-            },
-            {
-              "description": "Emits when an inline/toast notification closes.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "fieldName": "notificationTitle"
-            },
-            {
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "fieldName": "notificationSubtitle"
-            },
-            {
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
-              "fieldName": "timeStamp"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link",
-              "fieldName": "href"
-            },
-            {
-              "name": "tagStatus",
-              "type": {
-                "text": "string"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "fieldName": "tagStatus"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "fieldName": "type"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "any"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "fieldName": "closeBtnDescription"
-            },
-            {
-              "name": "assistiveNotificationTypeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
-              "fieldName": "assistiveNotificationTypeText"
-            },
-            {
-              "name": "notificationRole",
-              "type": {
-                "text": "'alert' | 'log' | 'status' | undefined"
-              },
-              "description": "Notification role (Required to support accessibility).",
-              "fieldName": "notificationRole"
-            },
-            {
-              "name": "statusLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
-              "fieldName": "statusLabel"
-            },
-            {
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "fieldName": "unRead"
-            },
-            {
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "fieldName": "hideCloseButton"
-            },
-            {
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "fieldName": "timeout"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notificationContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
-          "name": "NotificationContainer",
-          "slots": [
-            {
-              "description": "Slot for <kyn-notification type=\"toast\"> component.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification-container",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
           }
         }
       ]
@@ -13019,359 +13331,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "./progressBar"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/progressBar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
-          "name": "ProgressBar",
-          "slots": [
-            {
-              "description": "Slot for tooltip text content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "attribute": "showInlineLoadStatus"
-            },
-            {
-              "kind": "field",
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "attribute": "showActiveHelperText"
-            },
-            {
-              "kind": "field",
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "attribute": "progressBarId"
-            },
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "attribute": "status"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "attribute": "helperText"
-            },
-            {
-              "kind": "field",
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "attribute": "unit"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBar",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBarLabel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderStatusIconOrLoader",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressBarClasses",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "status",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getHelperText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getCurrentStatus",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "ProgressStatus"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "startProgress",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "cancelAnimation",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "fieldName": "showInlineLoadStatus"
-            },
-            {
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "fieldName": "showActiveHelperText"
-            },
-            {
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "fieldName": "progressBarId"
-            },
-            {
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "fieldName": "status"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "fieldName": "value"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "fieldName": "max"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "fieldName": "label"
-            },
-            {
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "fieldName": "helperText"
-            },
-            {
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "fieldName": "unit"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-progress-bar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-progress-bar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/popover/index.ts",
       "declarations": [],
       "exports": [
@@ -14032,6 +13991,359 @@
           "declaration": {
             "name": "Popover",
             "module": "src/components/reusable/popover/popover.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "./progressBar"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/progressBar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
+          "name": "ProgressBar",
+          "slots": [
+            {
+              "description": "Slot for tooltip text content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "attribute": "showInlineLoadStatus"
+            },
+            {
+              "kind": "field",
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "attribute": "showActiveHelperText"
+            },
+            {
+              "kind": "field",
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "attribute": "progressBarId"
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "attribute": "status"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "attribute": "helperText"
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "attribute": "unit"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBar",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBarLabel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderStatusIconOrLoader",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressBarClasses",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "status",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getHelperText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getCurrentStatus",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "ProgressStatus"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "startProgress",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "cancelAnimation",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "fieldName": "showInlineLoadStatus"
+            },
+            {
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "fieldName": "showActiveHelperText"
+            },
+            {
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "fieldName": "progressBarId"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "fieldName": "status"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "fieldName": "max"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "fieldName": "helperText"
+            },
+            {
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "fieldName": "unit"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-progress-bar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-progress-bar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
           }
         }
       ]
@@ -22510,7 +22822,7 @@
             },
             {
               "description": "Slot for action buttons.",
-              "name": "action"
+              "name": "actions"
             },
             {
               "description": "Slot for tooltip in header.",
@@ -22585,6 +22897,26 @@
               "default": "false",
               "description": "Widget selected state.",
               "attribute": "selected"
+            },
+            {
+              "kind": "field",
+              "name": "compact",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget compact state, reduced padding.",
+              "attribute": "compact"
+            },
+            {
+              "kind": "field",
+              "name": "removeHeader",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes the widget header.",
+              "attribute": "removeHeader"
             },
             {
               "kind": "method",
@@ -22678,6 +23010,24 @@
               "default": "false",
               "description": "Widget selected state.",
               "fieldName": "selected"
+            },
+            {
+              "name": "compact",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Widget compact state, reduced padding.",
+              "fieldName": "compact"
+            },
+            {
+              "name": "removeHeader",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes the widget header.",
+              "fieldName": "removeHeader"
             }
           ],
           "superclass": {
@@ -22797,8 +23147,7 @@
               "type": {
                 "text": "any"
               },
-              "default": "Config",
-              "description": "GridStack config.",
+              "description": "Custom GridStack config.",
               "attribute": "gridstackConfig"
             },
             {
@@ -22819,9 +23168,42 @@
               "description": "GridStack grid instance."
             },
             {
+              "kind": "field",
+              "name": "compact",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use compact grid config. Ignored in case of custom gridstackConfig.",
+              "attribute": "compact"
+            },
+            {
+              "kind": "field",
+              "name": "wholeWidgetDraggable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Make entire widget draggable. Ignored in case of custom gridstackConfig.",
+              "attribute": "wholeWidgetDraggable"
+            },
+            {
               "kind": "method",
               "name": "_saveLayout",
-              "privacy": "private"
+              "privacy": "private",
+              "description": "The private `_saveLayout` function saves the grid layout by updating each widget's properties and\nemitting a custom event with the new layout."
+            },
+            {
+              "kind": "method",
+              "name": "_initGridstack",
+              "privacy": "private",
+              "description": "The function `_initGridstack` initializes a GridStack layout with event listeners for drag, resize,\nand saving layout changes."
+            },
+            {
+              "kind": "method",
+              "name": "_updateWidgetsDensity",
+              "privacy": "private",
+              "description": "The function `_updateWidgetsDensity` iterates through all `kyn-widget` elements and sets their\n`compact` property based on the parent element's `compact` property."
             },
             {
               "kind": "method",
@@ -22831,7 +23213,8 @@
             {
               "kind": "method",
               "name": "_setBreakpoint",
-              "privacy": "private"
+              "privacy": "private",
+              "description": "The function `_setBreakpoint` retrieves and sets the current breakpoint value from the CSS custom\nproperty `--kd-current-breakpoint`."
             }
           ],
           "events": [
@@ -22859,9 +23242,26 @@
               "type": {
                 "text": "any"
               },
-              "default": "Config",
-              "description": "GridStack config.",
+              "description": "Custom GridStack config.",
               "fieldName": "gridstackConfig"
+            },
+            {
+              "name": "compact",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Use compact grid config. Ignored in case of custom gridstackConfig.",
+              "fieldName": "compact"
+            },
+            {
+              "name": "wholeWidgetDraggable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Make entire widget draggable. Ignored in case of custom gridstackConfig.",
+              "fieldName": "wholeWidgetDraggable"
             }
           ],
           "superclass": {
