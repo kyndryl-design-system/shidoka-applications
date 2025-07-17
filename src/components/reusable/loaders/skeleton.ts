@@ -75,7 +75,7 @@ export class Skeleton extends LitElement {
       `
     );
 
-    return html` ${skeletonLines} `;
+    return html` <div class="container">${skeletonLines}</div> `;
   }
 }
 

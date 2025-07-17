@@ -7,6 +7,47 @@
 
 :host {
   display: inline-block;
+  --btn-radius: 6px;
+}
+
+/* single button in a group */
+:host(.kd-btn--group-single) .kd-btn {
+  border-radius: var(--btn-radius);
+}
+
+/* first button in a group */
+:host(.kd-btn--group-first) .kd-btn {
+  border-radius: var(--btn-radius) 0 0 var(--btn-radius);
+}
+
+/* middle buttons in a group */
+:host(.kd-btn--group-middle) .kd-btn {
+  border-radius: 0;
+}
+
+/* last button in a group */
+:host(.kd-btn--group-last) .kd-btn {
+  border-radius: 0 var(--btn-radius) var(--btn-radius) 0;
+}
+
+:host([class*='kd-btn--group-']) .kd-btn {
+  &:focus-visible {
+    outline-offset: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  &--primary:focus-visible {
+    outline-color: var(--kd-color-border-button-web-focused);
+  }
+
+  &--secondary:focus-visible {
+    outline-color: var(--kd-color-border-button-web-focused);
+  }
+
+  &--tertiary:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
 }
 
 // Base Button Styles
@@ -41,6 +82,11 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
+  }
+
+  &--extra-small {
+    height: 26px;
+    padding: 4px;
   }
 
   &--small {

@@ -178,7 +178,7 @@ InvalidDefaultDates.args = {
   defaultDate: ['2025-13-01', '2023-06-01'],
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
-  caption: 'Invaolid default dates will trigger validation errors..',
+  caption: 'Invalid default dates will trigger validation errors..',
   invalidText: '',
   defaultErrorMessage: '',
   required: false,

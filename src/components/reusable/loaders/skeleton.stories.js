@@ -29,39 +29,17 @@ export default {
 };
 
 const Template = (args) => {
-  const skeletons = Array(args.lines)
-    .fill(null)
-    .map((_, index) => {
-      const isLast = index === args.lines - 1;
-      return html`
-        <div
-          style="${args.inline
-            ? `flex: 1; margin-right: ${isLast ? '0' : '8px'};`
-            : ''}"
-        >
-          <kyn-skeleton
-            class="${args.inline ? 'inline' : 'skeleton-item'} ${isLast
-              ? 'last-item'
-              : ''}"
-            shape=${args.shape}
-            size=${args.size || ''}
-            ?inline=${args.inline}
-            width=${args.width || ''}
-            height=${args.height || ''}
-            ?aiConnected=${args.aiConnected}
-          ></kyn-skeleton>
-        </div>
-      `;
-    });
-
   return html`
-    <div
-      style="${args.inline
-        ? 'display: flex; width: 100%; flex-wrap: wrap; gap: 8px;'
-        : ''}"
-    >
-      ${skeletons}
-    </div>
+    <kyn-skeleton
+      class="${args.inline ? 'inline' : 'skeleton-item'}"
+      shape=${args.shape}
+      size=${args.size || ''}
+      lines=${args.lines}
+      ?inline=${args.inline}
+      width=${args.width || ''}
+      height=${args.height || ''}
+      ?aiConnected=${args.aiConnected}
+    ></kyn-skeleton>
   `;
 };
 
