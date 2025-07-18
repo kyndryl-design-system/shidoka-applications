@@ -9,7 +9,6 @@ import {
   FlatpickrConfig,
 } from '../../../common/base/flatpickr-base';
 import {
-  emitValue,
   getPlaceholder,
   injectFlatpickrStyles,
 } from '../../../common/helpers/flatpickr';
@@ -49,7 +48,8 @@ export class TimePicker extends FlatpickrBase {
   accessor timePickerDisabled = false;
 
   override render(): TemplateResult {
-    const anchorId = this.name || this.generateRandomId('time-picker');
+    const anchorId =
+      this.name || `time-picker-${Math.random().toString(36).slice(2)}`;
     const placeholder =
       this._textStrings.timepickerPlaceholder ??
       getPlaceholder(this.dateFormat);
@@ -106,7 +106,7 @@ export class TimePicker extends FlatpickrBase {
     if (changedProperties.has('twentyFourHourFormat')) {
       this.updateTimeFormat();
       if (this.flatpickrInstance && this._initialized) {
-        this.debouncedUpdate();
+        this.initializeFlatpickr();
       }
     }
 
@@ -117,14 +117,20 @@ export class TimePicker extends FlatpickrBase {
       changedProperties.has('maxTime')
     ) {
       if (this.flatpickrInstance && this._initialized) {
-        this.debouncedUpdate();
+        this.initializeFlatpickr();
       }
     }
   }
 
   private updateTimeFormat(): void {
-    const is24Hour = this.twentyFourHourFormat ?? false;
+    const is24Hour =
+      this.twentyFourHourFormat === true ||
+      (this.twentyFourHourFormat === null && this.shouldDefault24Hour());
     this.dateFormat = is24Hour ? 'H:i' : 'h:i K';
+  }
+
+  private shouldDefault24Hour(): boolean {
+    return false;
   }
 
   protected setInitialDates(instance: flatpickr.Instance): void {
@@ -142,9 +148,15 @@ export class TimePicker extends FlatpickrBase {
     const dateStr = (this._inputEl as HTMLInputElement)?.value || '';
 
     if (this.flatpickrInstance && date) {
-      this.emitFlatpickrChange(this.flatpickrInstance, [date], dateStr, {
-        type: 'manual',
-      } as Event);
+      const customEvent = new CustomEvent('on-change', {
+        detail: { source: 'manual' },
+      });
+      this.emitFlatpickrChange(
+        this.flatpickrInstance,
+        [date],
+        dateStr,
+        customEvent
+      );
     }
   }
 
@@ -153,13 +165,19 @@ export class TimePicker extends FlatpickrBase {
   }
 
   protected updateFormValue(): void {
-    this._internals.setFormValue((this._inputEl as HTMLInputElement).value);
+    let formValue = '';
+    if (this.value instanceof Date) {
+      formValue = this.value.toISOString();
+    } else if (this._inputEl) {
+      formValue = (this._inputEl as HTMLInputElement).value;
+    }
+    this._internals.setFormValue(formValue);
   }
 
   protected async getComponentFlatpickrOptions(): Promise<
     Partial<BaseOptions>
   > {
-    const opts = await this.getBaseFlatpickrOptions();
+    const opts = await this.getBaseFlatpickrOptions(false);
 
     opts.dateFormat = this.dateFormat;
     delete (opts as any).defaultDate;
@@ -167,7 +185,9 @@ export class TimePicker extends FlatpickrBase {
     opts.enableTime = true;
     opts.allowInput = true;
 
-    const is24Hour = this.twentyFourHourFormat ?? false;
+    const is24Hour =
+      this.twentyFourHourFormat === true ||
+      (this.twentyFourHourFormat === null && this.shouldDefault24Hour());
     opts.time_24hr = is24Hour;
 
     if (this.defaultHour != null) opts.defaultHour = this.defaultHour;
@@ -180,18 +200,25 @@ export class TimePicker extends FlatpickrBase {
 
   protected async handleDateChange(
     selectedDates: Date[],
-    dateStr: string
+    dateStr: string,
+    instance: flatpickr.Instance,
+    event?: Event
   ): Promise<void> {
     if (this._isClearing) return;
-    this._hasInteracted = true;
-    this.value = selectedDates[0] || null;
-    emitValue(this, 'on-change', {
-      time: dateStr,
-      source: this.value ? undefined : 'clear',
-    });
-    this._validate(true, false);
-    await this.updateComplete;
-    this.updateFormValue();
+
+    try {
+      this._hasInteracted = true;
+      this.value = selectedDates[0] || null;
+
+      this._validate(true, false);
+      await this.updateComplete;
+      this.updateFormValue();
+
+      this.emitFlatpickrChange(instance, selectedDates, dateStr, event);
+    } catch (error) {
+      console.error('Error handling time change:', error);
+      this._validate(true, false);
+    }
   }
 
   protected getPickerIcon(): string {

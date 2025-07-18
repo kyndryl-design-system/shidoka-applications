@@ -66,6 +66,7 @@ export class DateRangePicker extends FlatpickrBase {
 
   private _initialValueSet = false;
   private _initialValue: [Date | null, Date | null] = [null, null];
+  private _resizeListener?: () => void;
 
   /**
    * Controlled value for the date range.
@@ -102,7 +103,10 @@ export class DateRangePicker extends FlatpickrBase {
   protected accessor _endInputEl!: HTMLInputElement;
 
   protected hasValue(): boolean {
-    return Boolean(this._inputEl?.value) || this.value.some((d) => d !== null);
+    return (
+      this.value.some((d) => d instanceof Date) ||
+      Boolean(this._inputEl?.value?.trim())
+    );
   }
 
   override render(): TemplateResult {
@@ -112,11 +116,9 @@ export class DateRangePicker extends FlatpickrBase {
     const placeholder = getPlaceholder(this.dateFormat, true);
     const showClear = this.hasValue() && !this.readonly && !this.disabled;
 
-    if (this.multiInput) {
-      return this.renderMultiInputStructure(anchorId, placeholder, showClear);
-    }
-
-    return this.renderBaseStructure(anchorId, placeholder, showClear);
+    return this.multiInput
+      ? this.renderMultiInputStructure(anchorId, placeholder, showClear)
+      : this.renderBaseStructure(anchorId, placeholder, showClear);
   }
 
   protected renderMultiInputStructure(
@@ -125,7 +127,6 @@ export class DateRangePicker extends FlatpickrBase {
     showClear: boolean
   ): TemplateResult {
     const fmt = (d: Date) => flatpickr.formatDate(d, this.dateFormat);
-
     const startId = `${anchorId}-start`;
     const endId = `${anchorId}-end`;
 
@@ -202,76 +203,79 @@ export class DateRangePicker extends FlatpickrBase {
     `;
   }
 
-  override async firstUpdated(changedProps: PropertyValues): Promise<void> {
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this._resizeListener = () => this._checkAndUpdateForViewportChange();
+    window.addEventListener('resize', this._resizeListener);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    window.removeEventListener('resize', this._resizeListener!);
+  }
+
+  override async firstUpdated(changedProps: PropertyValues) {
     await super.firstUpdated(changedProps);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
     await this.initializeFlatpickr();
+    this._checkAndUpdateForViewportChange();
   }
 
   override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-
     if (changedProperties.has('dateRangePickerDisabled')) {
       this.disabled = this.dateRangePickerDisabled;
+    }
+    if (changedProperties.has('showSingleMonth') && this.flatpickrInstance) {
+      this._checkAndUpdateForViewportChange();
     }
   }
 
   protected updateFormValue(): void {
     if (this._internals && this._inputEl) {
-      const val = this.value
-        .filter(Boolean)
-        .map((d) => (d as Date).toISOString())
-        .join(',');
-      this._internals.setFormValue(val);
-      this._inputEl.setAttribute('value', val);
+      const formValue = JSON.stringify([
+        this.value[0]?.toISOString() || null,
+        this.value[1]?.toISOString() || null,
+      ]);
+      this._internals.setFormValue(formValue);
+      this._inputEl.setAttribute('value', formValue);
     }
   }
 
   protected async getComponentFlatpickrOptions(): Promise<
     Partial<BaseOptions>
   > {
-    const opts = await this.getBaseFlatpickrOptions();
+    let opts = await this.getBaseFlatpickrOptions(false);
+    const isWideScreen = window.innerWidth >= VIEWPORT_BREAKPOINT;
+    opts.showMonths = this.showSingleMonth || !isWideScreen ? 1 : 2;
     opts.mode = 'range';
     opts.closeOnSelect = this.closeOnSelection;
 
-    const isWideScreen = window.innerWidth >= VIEWPORT_BREAKPOINT;
-    opts.showMonths = isWideScreen ? (this.showSingleMonth ? 1 : 2) : 1;
-
     const originalOnOpen = opts.onOpen;
-    opts.onOpen = (selectedDates, dateStr, instance) => {
-      this._checkAndUpdateForViewportChange();
-
+    opts.onOpen = (sel, str, inst) => {
       if (!this.multiInput && originalOnOpen) {
-        if (typeof originalOnOpen === 'function') {
-          originalOnOpen(selectedDates, dateStr, instance);
-        } else if (Array.isArray(originalOnOpen)) {
-          originalOnOpen.forEach((hook) =>
-            hook(selectedDates, dateStr, instance)
-          );
-        }
+        Array.isArray(originalOnOpen)
+          ? originalOnOpen.forEach((fn) => fn(sel, str, inst))
+          : originalOnOpen(sel, str, inst);
       }
     };
 
     if (this.defaultDate && Array.isArray(this.defaultDate)) {
-      const validatedDates = this._validateAndFilterDefaultDates(
+      const validated = this._validateAndFilterDefaultDates(
         this.defaultDate,
         this.dateFormat,
         this.minDate,
         this.maxDate
       );
-
-      if (validatedDates.validDates.length > 0) {
-        opts.defaultDate = validatedDates.validDates;
-      }
-
-      if (validatedDates.hasErrors) {
+      if (validated.validDates.length) opts.defaultDate = validated.validDates;
+      if (validated.hasErrors) {
         this._hasInteracted = true;
-        this.invalidText = validatedDates.errorMessage;
+        this.invalidText = validated.errorMessage;
       }
     }
 
     if (this.rangeEditMode !== DateRangeEditableMode.BOTH) {
-      return applyDateRangeEditingRestrictions(
+      opts = applyDateRangeEditingRestrictions(
         opts,
         this.rangeEditMode,
         this._initialValue,
@@ -283,6 +287,7 @@ export class DateRangePicker extends FlatpickrBase {
           dateInSelectedRange: this._textStrings.dateInSelectedRange,
         }
       );
+      opts.mode = 'range';
     }
 
     return opts;
@@ -314,78 +319,85 @@ export class DateRangePicker extends FlatpickrBase {
     event?: Event
   ): Promise<void> {
     if (this._isClearing) return;
-
     this._hasInteracted = true;
 
     const [start, end] = selectedDates;
-
-    const current = this.value ?? [null, null];
-    const bothSelected = start instanceof Date && end instanceof Date;
     const isProgrammatic = event?.type === 'input' || event?.type === 'change';
 
-    const valueChanged =
-      current[0]?.getTime() !== start?.getTime() ||
-      current[1]?.getTime() !== end?.getTime();
+    if (
+      this.multiInput &&
+      selectedDates.length === 1 &&
+      start instanceof Date
+    ) {
+      instance.setDate([start], false);
+      this.value = [start, null];
+      this.updateFormValue();
+      await this.updateComplete;
+      this.emitFlatpickrChange(instance, [start], dateStr, event);
+      return;
+    }
 
-    if (bothSelected && valueChanged && !isProgrammatic) {
+    const bothSelected = start instanceof Date && end instanceof Date;
+
+    if (bothSelected && !isProgrammatic) {
       this.value = [start, end];
       this.updateFormValue();
       await this.updateComplete;
     }
 
-    this.emitFlatpickrChange(
-      instance,
-      [start ?? null, end ?? null],
-      dateStr,
-      event
+    if (this.multiInput && event?.target) {
+      if (event.target === this._inputEl && start instanceof Date) {
+        instance.set('minDate', start);
+      }
+      if (event.target === this._endInputEl && end instanceof Date) {
+        instance.set('maxDate', end);
+      }
+    }
+
+    const emitDates: Date[] = selectedDates.filter(
+      (d): d is Date => d instanceof Date
     );
+    this.emitFlatpickrChange(instance, emitDates, dateStr, event);
   }
 
   protected override async _handleClear(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-
-    if (!this.flatpickrInstance) {
-      console.warn('Cannot clear: Flatpickr instance not available');
-      return;
-    }
+    if (!this.flatpickrInstance) return;
 
     this._isClearing = true;
-
     try {
       await this.clearValue();
       this.flatpickrInstance.clear();
+      this.flatpickrInstance.set('minDate', this.minDate || null);
+      this.flatpickrInstance.set('maxDate', this.maxDate || null);
       this.invalidText = '';
       this.emitChangeEvent();
       this._validate(true, false);
       this.requestUpdate();
-    } catch (error) {
-      console.error('Error clearing picker:', error);
     } finally {
       this._isClearing = false;
     }
   }
 
   protected override emitChangeEvent(source?: string): void {
-    if (this.flatpickrInstance) {
-      const dateStr = (this._inputEl as HTMLInputElement)?.value || '';
-      const selectedDates = this.value.filter(
-        (date): date is Date => date !== null
-      );
-      this.emitFlatpickrChange(this.flatpickrInstance, selectedDates, dateStr, {
-        type: source ?? 'manual',
-      } as Event);
-    }
+    if (!this.flatpickrInstance) return;
+    const dateStr = (this._inputEl as HTMLInputElement).value || '';
+    const selected = this.value.filter((d): d is Date => d !== null);
+    this.emitFlatpickrChange(
+      this.flatpickrInstance,
+      selected,
+      dateStr,
+      new CustomEvent('on-change', { detail: { source } })
+    );
   }
 
-  protected getAriaLabel(): string {
+  protected getAriaLabel() {
     return 'Date range picker';
   }
-
-  protected getPickerIcon(): string {
+  protected getPickerIcon() {
     return calendarIcon;
   }
-
   protected getPickerClasses(): Record<string, boolean> {
     return {
       'date-range-picker': true,
@@ -398,33 +410,62 @@ export class DateRangePicker extends FlatpickrBase {
     };
   }
 
-  public override async initializeFlatpickr() {
+  override async initializeFlatpickr() {
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
 
     if (this.multiInput) {
+      const config = await this.getComponentFlatpickrOptions();
       this.flatpickrInstance = await initializeMultiAnchorFlatpickr({
         inputEl: this._inputEl,
         endinputEl: this._endInputEl,
-        config: await this.getComponentFlatpickrOptions(),
-        onChange: (selectedDates, dateStr, instance, event) =>
-          this.handleDateChange(selectedDates, dateStr, instance, event),
-        onReady: (_, __, instance) => {
-          const isWideScreen = window.innerWidth >= VIEWPORT_BREAKPOINT;
-          const shouldShowSingleMonth = !isWideScreen || this.showSingleMonth;
-
-          if (shouldShowSingleMonth && instance.calendarContainer) {
-            instance.calendarContainer.classList.add(
+        config,
+        onChange: (d, s, i, e) => this.handleDateChange(d, s, i, e),
+        onReady: (_, __, inst) => {
+          if (inst.calendarContainer && config.showMonths === 1) {
+            inst.calendarContainer.classList.add(
               'flatpickr-calendar-single-month'
             );
           }
-
-          setCalendarAttributes(instance, false);
+          setCalendarAttributes(inst, false);
         },
-        setInitialDates: (instance) => this.setInitialDates(instance),
+        setInitialDates: (inst) => this.setInitialDates(inst),
       });
     } else {
       await super.initializeFlatpickr();
     }
+  }
+
+  protected override async _checkAndUpdateForViewportChange(): Promise<void> {
+    if (!this.flatpickrInstance) return;
+    const isWide = window.innerWidth >= VIEWPORT_BREAKPOINT;
+    const single = !isWide || this.showSingleMonth;
+    if (this.flatpickrInstance.calendarContainer) {
+      this.flatpickrInstance.set('showMonths', single ? 1 : 2);
+      const c = this.flatpickrInstance.calendarContainer;
+      c.classList.toggle('flatpickr-calendar-single-month', single);
+      const upd = (this.flatpickrInstance as any).updateLayout;
+      if (typeof upd === 'function') upd();
+    }
+  }
+
+  protected override async _clearDateAt(
+    index: 0 | 1,
+    source: string
+  ): Promise<void> {
+    if (!this.flatpickrInstance) return;
+    const newVal: [Date | null, Date | null] = [...this.value];
+    newVal[index] = null;
+    this.value = newVal;
+    this.updateFormValue();
+    this._validate(true, false);
+
+    const emitDates: Date[] = this.value.filter((d): d is Date => d !== null);
+    this.emitFlatpickrChange(
+      this.flatpickrInstance,
+      emitDates,
+      (this._inputEl as HTMLInputElement).value,
+      new CustomEvent('on-change', { detail: { source } })
+    );
   }
 
   private _handleClearStart = (e: Event) => {

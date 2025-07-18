@@ -540,27 +540,19 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!this.flatpickrInstance) {
-      console.warn('Cannot clear: Flatpickr instance not available');
-      return;
-    }
-
+    if (!this.flatpickrInstance) return;
     this._isClearing = true;
 
     try {
       await this.clearValue();
+      this.flatpickrInstance.clear();
 
-      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
-        this.updateFormValue();
-      });
+      this.flatpickrInstance.set('minDate', this.minDate || null);
+      this.flatpickrInstance.set('maxDate', this.maxDate || null);
 
-      this.emitChangeEvent('clear');
+      this.invalidText = '';
+      this.emitChangeEvent();
       this._validate(true, false);
-      await this.updateComplete;
-      await this.initializeFlatpickr();
-      this.requestUpdate();
-    } catch (error) {
-      console.error('Error clearing picker:', error);
     } finally {
       this._isClearing = false;
     }
@@ -757,36 +749,32 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
   protected async _clearDateAt(index: 0 | 1, source: string): Promise<void> {
     if (!this.flatpickrInstance) return;
 
-    this._isClearing = true;
-    try {
-      const newValue: [Date | null, Date | null] = [
-        this.value[0] ?? null,
-        this.value[1] ?? null,
-      ];
-      newValue[index] = null;
-      this.value = newValue;
+    const newVal = [...this.value] as [Date | null, Date | null];
 
-      const other = this.value[index === 0 ? 1 : 0];
-      if (other) {
-        this.flatpickrInstance.setDate([other], false);
-      } else {
-        this.flatpickrInstance.clear();
-      }
+    newVal[index] = null;
+    this.value = newVal;
 
-      this.updateFormValue();
-      this.invalidText = '';
+    // recalc what the flatpickr should show
+    const other = newVal[index === 0 ? 1 : 0];
+    const datesToSet: Date[] = other ? [other] : [];
+    this.flatpickrInstance.setDate(datesToSet, false);
 
-      emitValue(this, 'on-change', {
-        dates: this.value.map((d: Date | null) => d?.toISOString() || null),
-        dateString: other ? flatpickr.formatDate(other, this.dateFormat) : '',
-        source,
-      });
-
-      this._validate(true, false);
-      this.requestUpdate();
-    } finally {
-      this._isClearing = false;
+    // reset min/max for the other input
+    if (index === 0) {
+      this.flatpickrInstance.set('minDate', this.minDate || null);
+    } else {
+      this.flatpickrInstance.set('maxDate', this.maxDate || null);
     }
+
+    // form + events
+    this.updateFormValue();
+    emitValue(this, 'on-change', {
+      dates: newVal.map((d) => d?.toISOString() || null),
+      dateString: this._inputEl.value,
+      source,
+    });
+    this._validate(true, false);
+    this.requestUpdate();
   }
 
   protected _validateAndFilterDefaultDates(
@@ -863,29 +851,36 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
   }
 
   protected async _checkAndUpdateForViewportChange(): Promise<void> {
-    if (!this.flatpickrInstance || this._isClearing) return;
+    if (!this.flatpickrInstance || !this.flatpickrInstance.calendarContainer)
+      return;
 
     const isWideScreen = window.innerWidth >= 767;
-    const currentShowMonths = this.flatpickrInstance.config.showMonths || 1;
-    const expected = isWideScreen && !this.showSingleMonth ? 2 : 1;
+    const shouldShowSingleMonth = !isWideScreen || this.showSingleMonth;
 
-    if (currentShowMonths !== expected) {
-      const currentDates = this.flatpickrInstance.selectedDates;
-      this.flatpickrInstance.destroy();
-      this.flatpickrInstance = undefined;
+    // Update flatpickr config (not reactive by itself)
+    this.flatpickrInstance.set('showMonths', shouldShowSingleMonth ? 1 : 2);
 
-      await this.initializeFlatpickr();
+    // Force calendar class toggle
+    const container = this.flatpickrInstance.calendarContainer;
+    container.classList.toggle(
+      'flatpickr-calendar-single-month',
+      shouldShowSingleMonth
+    );
 
-      if (currentDates.length) {
-        (this as any).value = [...currentDates];
-        this.requestUpdate();
-      }
+    // Force re-layout using internal helper
+    const updateLayout = (this.flatpickrInstance as any).updateLayout;
+    if (typeof updateLayout === 'function') {
+      updateLayout();
     }
   }
 
-  protected async getBaseFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+  protected async getBaseFlatpickrOptions(
+    forceSingleMonth = false
+  ): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
     const currentMode = (this as any).mode || this.config.mode;
+    const isWideScreen = window.innerWidth >= 767;
+
     return getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
@@ -907,6 +902,12 @@ export abstract class FlatpickrBase extends FormMixin(LitElement) {
       appendTo: container,
       noCalendar: this.config.noCalendar || false,
       static: this.staticPosition,
+      showMonths:
+        currentMode === 'range'
+          ? this.showSingleMonth || !isWideScreen || forceSingleMonth
+            ? 1
+            : 2
+          : 1,
     });
   }
 }

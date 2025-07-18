@@ -56,13 +56,15 @@ export class DatePicker extends FlatpickrBase {
     if (this.mode === 'multiple') {
       return Array.isArray(this.value) && this.value.length > 0;
     }
-    return !!(this._inputEl?.value || this.value);
+    return this.value instanceof Date || !!this._inputEl?.value;
   }
 
   protected updateFormValue(): void {
     let formValue = '';
     if (this.mode === 'multiple' && Array.isArray(this.value)) {
-      formValue = this.value.map((date) => date.toISOString()).join(',');
+      formValue = JSON.stringify(this.value.map((date) => date.toISOString()));
+    } else if (this.value instanceof Date) {
+      formValue = this.value.toISOString();
     } else if (this._inputEl) {
       formValue = (this._inputEl as HTMLInputElement).value;
     }
@@ -72,7 +74,7 @@ export class DatePicker extends FlatpickrBase {
   protected async getComponentFlatpickrOptions(): Promise<
     Partial<BaseOptions>
   > {
-    const opts = await this.getBaseFlatpickrOptions();
+    const opts = await this.getBaseFlatpickrOptions(false);
     opts.mode = this.mode;
     if (this.defaultDate != null) opts.defaultDate = this.defaultDate;
     return opts;
@@ -90,19 +92,25 @@ export class DatePicker extends FlatpickrBase {
     event?: Event
   ): Promise<void> {
     if (this._isClearing) return;
-    this._hasInteracted = true;
 
-    if (this.mode === 'multiple') {
-      this.value = selectedDates.length > 0 ? selectedDates : [];
-    } else {
-      this.value = selectedDates[0] || null;
+    try {
+      this._hasInteracted = true;
+
+      if (this.mode === 'multiple') {
+        this.value = [...selectedDates];
+      } else {
+        this.value = selectedDates[0] || null;
+      }
+
+      this._validate(true, false);
+      await this.updateComplete;
+      this.updateFormValue();
+
+      this.emitFlatpickrChange(instance, selectedDates, dateStr, event);
+    } catch (error) {
+      console.error('Error handling date change:', error);
+      this._validate(true, false);
     }
-
-    this._validate(true, false);
-    await this.updateComplete;
-    this.updateFormValue();
-
-    this.emitFlatpickrChange(instance, selectedDates, dateStr, event);
   }
 
   protected getPickerIcon(): string {
@@ -129,7 +137,9 @@ export class DatePicker extends FlatpickrBase {
   }
 
   protected getAriaLabel(): string {
-    return 'Date picker';
+    return this.mode === 'multiple'
+      ? 'Date picker, multiple selection'
+      : 'Date picker, single selection';
   }
 
   protected override emitChangeEvent(source?: string): void {
@@ -142,9 +152,15 @@ export class DatePicker extends FlatpickrBase {
     const dateStr = (this._inputEl as HTMLInputElement)?.value || '';
 
     if (this.flatpickrInstance) {
-      this.emitFlatpickrChange(this.flatpickrInstance, selectedDates, dateStr, {
-        type: source ?? 'manual',
-      } as Event);
+      const customEvent = new CustomEvent('on-change', {
+        detail: { source: source ?? 'manual' },
+      });
+      this.emitFlatpickrChange(
+        this.flatpickrInstance,
+        selectedDates,
+        dateStr,
+        customEvent
+      );
     }
   }
 
@@ -159,7 +175,7 @@ export class DatePicker extends FlatpickrBase {
       this.value = this.mode === 'multiple' ? [] : null;
 
       if (this.flatpickrInstance && this._initialized) {
-        this.debouncedUpdate();
+        this.initializeFlatpickr();
       }
     }
   }
@@ -171,7 +187,8 @@ export class DatePicker extends FlatpickrBase {
 
   override render(): TemplateResult {
     const placeholder = getPlaceholder(this.dateFormat) || '';
-    const anchorId = this.name || this.generateRandomId('date-picker');
+    const anchorId =
+      this.name || `date-picker-${Math.random().toString(36).slice(2)}`;
     return this.renderBaseStructure(anchorId, placeholder, true);
   }
 }
