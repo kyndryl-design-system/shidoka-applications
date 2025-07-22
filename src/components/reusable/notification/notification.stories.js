@@ -6,6 +6,9 @@ import '../link';
 
 import '../overflowMenu';
 
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import documentTaskIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/document-task.svg';
+
 const notificationBodyMsg =
   'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.';
 
@@ -71,7 +74,6 @@ export const Notification = {
             <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
           </kyn-overflow-menu>`
         : null}
-
       <div>${notificationBodyMsg}</div>
     </kyn-notification>`;
   },
@@ -139,6 +141,24 @@ export const Inline = {
             </kyn-link>
           </div>
         </div>
+      </kyn-notification>
+      <br />
+      <p class="kd-type--body-01">With Custom Icon</p>
+      <br />
+      <kyn-notification
+        notificationTitle=${args.notificationTitle}
+        assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
+        notificationRole=${args.notificationRole}
+        closeBtnDescription=${args.closeBtnDescription}
+        type=${args.type}
+        tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
+        @on-close=${(e) => action(e.type)(e)}
+      >
+        <span slot="icon" style="display:flex"
+          >${unsafeSVG(documentTaskIcon)}</span
+        >
+        <div>${notificationBodyMsg}</div>
       </kyn-notification> `;
   },
 };
