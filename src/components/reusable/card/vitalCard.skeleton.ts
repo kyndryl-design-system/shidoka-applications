@@ -20,14 +20,22 @@ export class VitalCardSkeleton extends LitElement {
         margin: 0 0 4px;
       }
       .vital-card-title-div {
-        margin: 16px 0;
+        margin: 16px 8px 16px 0;
       }
-      .vital-card-cat-subcat-text {
-        margin: 0 0 18px;
-      }
-
       .vital-card-content-wrapper kyn-skeleton {
         width: 100%;
+      }
+
+      .vital-card-title-div kyn-skeleton {
+        height: 16px;
+        width: 100px;
+      }
+
+      @media (min-width: 42rem) {
+        .vital-card-title-div kyn-skeleton {
+          height: 16px;
+          width: 150px;
+        }
       }
     `,
   ];
@@ -45,7 +53,7 @@ export class VitalCardSkeleton extends LitElement {
         <div class="vital-card-content-wrapper">
           <div class="vital-card-mobile-wrapper-subdiv">
             <div class="vital-card-title-div">
-              <kyn-skeleton width="150px" height="16px"></kyn-skeleton>
+              <kyn-skeleton height="16px"></kyn-skeleton>
             </div>
             <div class="vital-card-cat-subcat-text">
               <kyn-skeleton width="100px" height="16px"></kyn-skeleton>
