@@ -1,0 +1,40 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.empty-state-container {
+  align-self: center;
+  display: grid;
+  place-items: center;
+
+  .empty-state-title {
+    p {
+      @include typography.type-headline-01;
+      font-weight: var(--kd-font-weight-bold);
+      color: var(--kd-color-text-variant-brand);
+      text-align: center;
+    }
+  }
+
+  .empty-state-description {
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .empty-state-action-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    @media (max-width: calc(42rem - 0.001px)) {
+      kyn-button {
+        width: 100%;
+        flex-grow: 1;
+      }
+    }
+  }
+}
