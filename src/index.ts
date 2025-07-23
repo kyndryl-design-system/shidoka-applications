@@ -33,6 +33,7 @@ export { ToggleButton } from './components/reusable/toggleButton';
 export {
   Dropdown,
   DropdownOption,
+  EnhancedDropdownOption,
   DropdownCategory,
 } from './components/reusable/dropdown';
 export { DatePicker } from './components/reusable/datePicker';

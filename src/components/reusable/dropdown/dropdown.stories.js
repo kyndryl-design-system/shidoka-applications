@@ -7,11 +7,17 @@ import { action } from 'storybook/actions';
 import '../tooltip';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
+import actionableInsightsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/actionable-insights.svg';
+import aiOpsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/AIOps-docs.svg';
+import boxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/box.svg';
+import branchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/branch.svg';
+
 export default {
   title: 'Components/Dropdown',
   component: 'kyn-dropdown',
   subcomponents: {
     DropdownOption: 'kyn-dropdown-option',
+    EnhancedDropdownOption: 'kyn-enhanced-dropdown-option',
   },
   argTypes: {
     size: {
@@ -106,6 +112,229 @@ export const Single = {
         <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
         <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
         <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const Enhanced = {
+  args: {
+    ...args,
+    label: 'AI Model Selection',
+    placeholder: 'Choose an AI model...',
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 20rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-enhanced-dropdown-option value="option-1">
+          <span slot="icon">${unsafeSVG(actionableInsightsIcon)}</span>
+          <span slot="title">Option 1</span>
+          <span slot="description"
+            >This is a description for the Option 1 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-2">
+          <span slot="icon">${unsafeSVG(aiOpsIcon)}</span>
+          <span slot="title">Option 2</span>
+          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-3">
+          <span slot="icon">${unsafeSVG(boxIcon)}</span>
+          <span slot="title">Option 3</span>
+          <span slot="description"
+            >This is a description for the Option 3 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-4">
+          <span slot="icon">${unsafeSVG(branchIcon)}</span>
+          <span slot="title">Option 4</span>
+          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <span slot="description"
+            >This is a description for the Option 4 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const EnhancedMultiSelect = {
+  args: {
+    ...args,
+    label: 'Development Frameworks',
+    placeholder: 'Select frameworks...',
+    value: ['option-1', 'option-2'],
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 20rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        multiple
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        ?hideTags=${args.hideTags}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        .value=${args.value}
+        @on-change=${(e) => {
+          const selectedValues = e.detail.value;
+          args.value = selectedValues;
+          action(e.type)(e);
+        }}
+      >
+        <kyn-enhanced-dropdown-option value="option-1">
+          <span slot="title">Option 1</span>
+          <span slot="description"
+            >This is a description for the Option 1 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-2">
+          <span slot="title">Option 2</span>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-3">
+          <span slot="title">Option 3</span>
+          <span slot="description"
+            >This is a description for the Option 3 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-4">
+          <span slot="title">Option 4</span>
+          <span slot="description"
+            >This is a description for the Option 4 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const EnhancedSearchable = {
+  args: {
+    ...args,
+    label: 'Programming Languages',
+    placeholder: 'Search languages...',
+    filterSearch: true,
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 20rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        searchable
+        ?filterSearch=${args.filterSearch}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        @on-change=${(e) => action(e.type)(e)}
+        @on-search=${(e) => action(e.type)(e)}
+      >
+        <kyn-enhanced-dropdown-option value="javascript">
+          <span slot="title">JavaScript</span>
+          <span slot="description"
+            >Dynamic programming language for web development</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="typescript">
+          <span slot="title">TypeScript</span>
+          <span slot="description"
+            >Typed superset of JavaScript that compiles to plain
+            JavaScript</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="python">
+          <span slot="title">Python</span>
+          <span slot="description"
+            >High-level programming language with readable syntax</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="rust">
+          <span slot="title">Rust</span>
+          <span slot="description"
+            >Systems programming language focused on safety and
+            performance</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="go">
+          <span slot="title">Go</span>
+          <span slot="description"
+            >Open source programming language that makes it easy to build
+            simple, reliable, and efficient software</span
+          >
+        </kyn-enhanced-dropdown-option>
       </kyn-dropdown>
     `;
   },

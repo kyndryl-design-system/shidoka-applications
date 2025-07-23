@@ -13,6 +13,7 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 
 import './dropdownOption';
+import './enhancedDropdownOption';
 import '../tag';
 import '../button';
 
@@ -39,7 +40,7 @@ const KEY = {
 } as const;
 
 /**
- * Dropdown, single select.
+ * Dropdown, single-/multi-select.
  * @fires on-change - Captures the input event and emits the selected value and original event details.
  * @fires on-search - Capture the search input event and emits the search text.
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
@@ -140,6 +141,10 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor allowAddOption = false;
 
+  /** Enables enhanced mode with rich content support. */
+  @property({ type: Boolean })
+  accessor enhanced = false;
+
   /** Internal text strings.
    * @internal
    */
@@ -177,14 +182,19 @@ export class Dropdown extends FormMixin(LitElement) {
    * Queries any slotted options.
    * @ignore
    */
-  @queryAssignedElements({ selector: 'kyn-dropdown-option' })
+  @queryAssignedElements({
+    selector: 'kyn-dropdown-option, kyn-enhanced-dropdown-option',
+  })
   accessor options!: Array<any>;
 
   /**
    * Queries any slotted selected options.
    * @ignore
    */
-  @queryAssignedElements({ selector: 'kyn-dropdown-option[selected]' })
+  @queryAssignedElements({
+    selector:
+      'kyn-dropdown-option[selected], kyn-enhanced-dropdown-option[selected]',
+  })
   accessor selectedOptions!: Array<any>;
 
   /**
@@ -557,13 +567,16 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private updateChildOptions() {
-    // Get all slotted kyn-dropdown-option elements
+    // Get all slotted dropdown option elements
     const slot = this.shadowRoot?.querySelector('#children') as HTMLSlotElement;
     const options = slot.assignedElements({ flatten: true }) as HTMLElement[];
 
-    // Pass allowAddOption to each kyn-dropdown-option
+    // Pass allowAddOption to each dropdown option
     options.forEach((option) => {
-      if (option.tagName === 'KYN-DROPDOWN-OPTION') {
+      if (
+        option.tagName === 'KYN-DROPDOWN-OPTION' ||
+        option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION'
+      ) {
         (option as any).allowAddOption = this.allowAddOption;
       }
     });
@@ -1195,7 +1208,9 @@ export class Dropdown extends FormMixin(LitElement) {
   private _updateTags() {
     if (this.multiple) {
       const Options: any = Array.from(
-        this.querySelectorAll('kyn-dropdown-option')
+        this.querySelectorAll(
+          'kyn-dropdown-option, kyn-enhanced-dropdown-option'
+        )
       );
       const Tags: Array<object> = [];
 
@@ -1204,7 +1219,7 @@ export class Dropdown extends FormMixin(LitElement) {
           if (option.selected) {
             Tags.push({
               value: option.value,
-              text: option.textContent,
+              text: option.text || option.textContent,
               disabled: option.disabled,
             });
           }
@@ -1217,7 +1232,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private _updateOptions() {
     const Options: any = Array.from(
-      this.querySelectorAll('kyn-dropdown-option')
+      this.querySelectorAll('kyn-dropdown-option, kyn-enhanced-dropdown-option')
     );
 
     Options.forEach((option: any) => {
@@ -1250,7 +1265,7 @@ export class Dropdown extends FormMixin(LitElement) {
   private _updateSelectedText() {
     // update selected option text
     const AllOptions: any = Array.from(
-      this.querySelectorAll('kyn-dropdown-option')
+      this.querySelectorAll('kyn-dropdown-option, kyn-enhanced-dropdown-option')
     );
 
     if (!this.multiple) {
@@ -1259,7 +1274,7 @@ export class Dropdown extends FormMixin(LitElement) {
           (option: any) => option.value === this.value
         );
         if (option) {
-          this.text = option.textContent.trim();
+          this.text = option.text || option.textContent.trim();
         } else {
           this.text = '';
           console.warn(`No dropdown option found with value: ${this.value}`);
