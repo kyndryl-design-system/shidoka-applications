@@ -19,9 +19,11 @@ import emptyStateLargeIcon from './emtpyStateLarge.svg';
 export class EmptyStateSampleComponent extends LitElement {
   static override styles = unsafeCSS(emptyStateScss);
 
+  /** Empty state size. */
   @property({ type: String })
   accessor size: 'small' | 'medium' | 'large' | 'full' = 'medium';
 
+  /** Empty state orientation -- only applicable when size is `'full'`. */
   @property({ type: String })
   accessor orientation: 'horizontal' | 'vertical' = 'vertical';
 
