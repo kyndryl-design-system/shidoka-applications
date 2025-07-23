@@ -1,0 +1,119 @@
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../common/scss/mixins.scss';
+
+.empty-state {
+  &--wrapper {
+    display: flex;
+  }
+  &--small {
+    align-items: center;
+    .empty-state--icon-wrapper {
+      color: var(--kd-color-icon-disabled);
+    }
+
+    .empty-state--description-text {
+      p {
+        color: var(--kd-color-text-level-primary);
+      }
+    }
+  }
+  &--medium {
+    align-items: center;
+    .empty-state--icon-wrapper {
+      color: var(--kd-color-icon-disabled);
+      width: 108px;
+      height: 108px;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .empty-state--description-text {
+      p {
+        color: var(--kd-color-text-level-secondary);
+      }
+    }
+  }
+  &--large {
+    align-items: center;
+    .empty-state--content {
+      margin-top: 24px;
+    }
+
+    .empty-state--link-wrapper {
+      margin-top: 24px;
+    }
+
+    &.empty-state--horizontal {
+      gap: 24px;
+    }
+
+    .empty-state--description-text {
+      p {
+        color: var(--kd-color-text-level-secondary);
+      }
+    }
+  }
+  &--full {
+    .empty-state--icon-wrapper {
+      margin-right: 24px;
+    }
+    .empty-state--description-text {
+      p {
+        color: var(--kd-color-text-level-secondary);
+      }
+    }
+  }
+  &--horizontal {
+    flex-direction: row;
+  }
+  &--vertical {
+    flex-direction: column;
+  }
+  &--content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &--title-div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    h1 {
+      @include typography.type-body-01;
+      font-weight: 500;
+      color: var(--kd-color-text-level-primary);
+      margin-bottom: 8px;
+    }
+  }
+  &--description-text {
+    margin: 0;
+    padding: 0;
+    p {
+      @include typography.type-body-02;
+      color: var(--kd-color-text-level-secondary);
+      margin-top: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      padding: 0;
+    }
+  }
+  &--action-wrapper {
+    display: flex;
+    margin-top: 24px;
+    gap: 16px;
+  }
+
+  &--action-button {
+    .empty-state--action-button-icon {
+      padding-left: 8px;
+    }
+  }
+
+  &--secondary-action-button {
+    margin-left: 8px;
+  }
+}
