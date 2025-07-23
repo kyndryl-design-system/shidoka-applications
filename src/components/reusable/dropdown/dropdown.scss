@@ -26,62 +26,6 @@ slot[name='icon']::slotted(*) {
   }
 }
 
-.select {
-  display: flex;
-  align-items: center;
-  -webkit-appearance: none;
-  appearance: none;
-  border: 1px solid var(--kd-color-border-forms-default);
-  border-radius: 4px;
-  height: 48px;
-  padding: 0 48px 0 16px;
-  cursor: pointer;
-  font-weight: var(--kd-font-weight-regular);
-  white-space: nowrap;
-
-  [searchable] & {
-    padding-right: 80px;
-  }
-
-  &:hover:not[disabled] {
-    border-color: var(--kd-color-border-ui-hover);
-  }
-
-  span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &.size--sm {
-    height: 32px;
-  }
-
-  &.size--lg {
-    height: 56px;
-  }
-
-  &[invalid] {
-    padding-right: 80px;
-  }
-
-  .dropdown:focus-visible & {
-    outline-color: var(--kd-color-border-variants-focus);
-  }
-
-  &.inline {
-    border-color: transparent;
-    background-color: transparent;
-
-    &:hover {
-      border-color: var(--kd-color-border-ui-hover);
-
-      [disabled] & {
-        border-color: transparent;
-      }
-    }
-  }
-}
-
 .arrow-icon {
   position: absolute;
   top: 55%;
@@ -155,53 +99,6 @@ slot[name='icon']::slotted(*) {
 
 .select-all {
   font-weight: var(--kd-font-weight-medium);
-}
-
-.search {
-  border: none;
-  background: none;
-  outline: none;
-  display: block;
-  width: 100%;
-  height: 100%;
-  margin-left: -16px;
-  padding-left: 16px;
-
-  &::placeholder {
-    color: var(--kd-color-text-variant-placeholder);
-  }
-}
-
-.clear-multiple {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  border: none;
-  width: 48px;
-  height: 24px;
-  padding: 8px;
-  border-radius: 4px;
-  margin-right: 8px;
-  cursor: pointer;
-  background: var(--kd-color-background-container-soft);
-  color: var(--kd-color-text-level-primary);
-
-  span {
-    display: flex;
-
-    svg {
-      width: 14px;
-      height: 14px;
-    }
-  }
-
-  &[disabled] {
-    background-color: var(--kd-color-tags-background-disabled);
-    color: var(--kd-color-text-level-disabled);
-    cursor: not-allowed;
-  }
-
-  @include typography.type-ui-03;
 }
 
 kyn-tag-group {

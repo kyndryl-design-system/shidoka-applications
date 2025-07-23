@@ -14,10 +14,10 @@ import { deepmerge } from 'deepmerge-ts';
 
 import './dropdownOption';
 import './enhancedDropdownOption';
+import './dropdownAnchor';
 import '../tag';
 import '../button';
 
-import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
 
@@ -145,6 +145,14 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor enhanced = false;
 
+  /** Dropdown anchor type. */
+  @property({ type: String })
+  accessor dropdownAnchor: 'input' | 'button' = 'input';
+
+  /** Button text when dropdownAnchor is 'button'. */
+  @property({ type: String })
+  accessor buttonText = '';
+
   /** Internal text strings.
    * @internal
    */
@@ -196,6 +204,13 @@ export class Dropdown extends FormMixin(LitElement) {
       'kyn-dropdown-option[selected], kyn-enhanced-dropdown-option[selected]',
   })
   accessor selectedOptions!: Array<any>;
+
+  /**
+   * Queries the dropdown anchor component.
+   * @ignore
+   */
+  @query('kyn-dropdown-anchor')
+  accessor dropdownAnchorEl!: any;
 
   /**
    * Queries the .search DOM element.
@@ -292,82 +307,32 @@ export class Dropdown extends FormMixin(LitElement) {
           })}
         >
           <div class="custom">
-            <div
-              class="${classMap({
-                select: true,
-                'input-custom': true,
-                'size--sm': this.size === 'sm',
-                'size--lg': this.size === 'lg',
-                inline: this.inline,
-              })}"
-              aria-labelledby="label-${this.name}"
-              aria-expanded=${this.open}
-              aria-controls="options"
-              role="combobox"
-              id=${this.name}
-              name=${this.name}
-              title=${this._textStrings.title}
-              ?required=${this.required}
-              ?disabled=${this.disabled}
-              ?invalid=${this._isInvalid}
-              tabindex=${this.disabled ? '' : '0'}
-              @click=${() => this.handleClick()}
-              @keydown=${(e: any) => this.handleButtonKeydown(e)}
-              @mousedown=${(e: any) => {
-                if (!this.searchable) {
-                  e.preventDefault();
-                }
-              }}
-              @blur=${(e: any) => e.stopPropagation()}
-            >
-              ${this.multiple && this.value.length
-                ? html`
-                    <button
-                      class="clear-multiple"
-                      aria-label="${this.value
-                        .length} items selected. Clear selections"
-                      ?disabled=${this.disabled}
-                      title=${this._textStrings.clear}
-                      @click=${(e: Event) => this.handleClearMultiple(e)}
-                    >
-                      ${this.value.length}
-                      <span style="display:flex;" slot="icon"
-                        >${unsafeSVG(clearIcon)}</span
-                      >
-                    </button>
-                  `
-                : null}
-              ${this.searchable
-                ? html`
-                    <input
-                      class="search"
-                      type="text"
-                      placeholder=${this.placeholder}
-                      value=${this.searchText}
-                      ?disabled=${this.disabled}
-                      aria-disabled=${this.disabled}
-                      @keydown=${(e: any) => this.handleSearchKeydown(e)}
-                      @input=${(e: any) => this.handleSearchInput(e)}
-                      @blur=${(e: any) => e.stopPropagation()}
-                      @click=${(e: any) => this.handleSearchClick(e)}
-                    />
-                  `
-                : html`
-                    <span
-                      class="${classMap({
-                        'placeholder-text': this.text === '',
-                      })}"
-                    >
-                      ${this.multiple
-                        ? this.placeholder
-                        : this.value === ''
-                        ? this.placeholder
-                        : this.text}
-                    </span>
-                  `}
-
-              <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
-            </div>
+            <kyn-dropdown-anchor
+              class="dropdown-anchor"
+              .anchorType=${this.dropdownAnchor}
+              .size=${this.size}
+              .inline=${this.inline}
+              .placeholder=${this.placeholder}
+              .open=${this.open}
+              .searchable=${this.searchable}
+              .multiple=${this.multiple}
+              .disabled=${this.disabled}
+              .name=${this.name}
+              .searchText=${this.searchText}
+              .text=${this.text}
+              .value=${this.value}
+              .required=${this.required}
+              .invalid=${this._isInvalid}
+              .title=${this._textStrings.title}
+              .clearText=${this._textStrings.clear}
+              .buttonText=${this.buttonText}
+              @anchor-click=${() => this.handleClick()}
+              @anchor-keydown=${(e: any) => this.handleButtonKeydown(e)}
+              @search-input=${(e: any) => this.handleSearchInput(e)}
+              @search-keydown=${(e: any) => this.handleSearchKeydown(e)}
+              @search-click=${(e: any) => this.handleSearchClick(e)}
+              @clear-multiple=${(e: any) => this.handleClearMultiple(e)}
+            ></kyn-dropdown-anchor>
 
             <div
               id="options"
@@ -586,11 +551,9 @@ export class Dropdown extends FormMixin(LitElement) {
     if (!this.disabled) {
       this.open = !this.open;
 
-      // focus search input if searchable
-      if (this.searchable) {
-        this.searchEl.focus();
-      } else {
-        this.buttonEl.focus();
+      // focus the dropdown anchor
+      if (this.dropdownAnchorEl) {
+        this.dropdownAnchorEl.onFocus();
       }
     }
   }
@@ -599,10 +562,9 @@ export class Dropdown extends FormMixin(LitElement) {
     if (!this.disabled) {
       this.open = !this.open;
 
-      if (this.searchable) {
-        this.searchEl.focus();
-      } else {
-        this.buttonEl.focus();
+      // focus the dropdown anchor
+      if (this.dropdownAnchorEl) {
+        this.dropdownAnchorEl.onFocus();
       }
     }
   }
@@ -989,11 +951,14 @@ export class Dropdown extends FormMixin(LitElement) {
       this.assistiveText = e.detail.selected
         ? `Selected ${e.detail.value}`
         : `Deselected ${e.detail.value}`;
+
+      if (!this.multiple && e.detail.selected) {
+        this.open = false;
+      }
     }
 
     this._updateSelectedOptions();
 
-    // close listbox
     if (!this.multiple) {
       this.open = false;
     }
@@ -1067,6 +1032,9 @@ export class Dropdown extends FormMixin(LitElement) {
       this.value = values;
     } else {
       this.value = value;
+      if (selected) {
+        this.open = false;
+      }
     }
 
     this._validate(true, false);
@@ -1098,15 +1066,16 @@ export class Dropdown extends FormMixin(LitElement) {
     const ValidationMessage =
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
-    // set validity on custom element, anchor to buttonEl
-    this._internals.setValidity(Validity, ValidationMessage, this.buttonEl);
+    // set validity on custom element, anchor to dropdownAnchor validation element
+    const validationAnchor =
+      this.dropdownAnchorEl?.getValidationAnchor() || this.buttonEl;
+    this._internals.setValidity(Validity, ValidationMessage, validationAnchor);
 
     // set internal validation message if value was changed by user input
     if (interacted) {
       this._internalValidationMsg = InternalMsg;
     }
 
-    // focus the buttonEl to show validity
     if (report) {
       this._internals.reportValidity();
     }

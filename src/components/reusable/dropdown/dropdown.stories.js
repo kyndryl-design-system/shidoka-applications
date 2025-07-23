@@ -7,7 +7,7 @@ import { action } from 'storybook/actions';
 import '../tooltip';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
-import businessConsultIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/business-consulting.svg';
+import businessConsultIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/business-consulting.svg';
 import aiOpsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/AIOps-docs.svg';
 import boxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/box.svg';
 import branchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/branch.svg';
@@ -26,6 +26,10 @@ export default {
     },
     openDirection: {
       options: ['auto', 'up', 'down'],
+      control: { type: 'select' },
+    },
+    anchorType: {
+      options: ['input', 'button'],
       control: { type: 'select' },
     },
   },
@@ -49,12 +53,15 @@ const args = {
   hideTags: false,
   hideLabel: false,
   selectAll: false,
+  anchorType: 'input',
   selectAllText: 'Select all',
   invalidText: '',
   caption: '',
   searchText: '',
   value: '',
   menuMinWidth: 'initial',
+  dropdownAnchor: 'input',
+  buttonText: '',
   textStrings: {
     required: 'Required',
     error: 'Error',
@@ -120,8 +127,8 @@ export const Single = {
 export const Enhanced = {
   args: {
     ...args,
-    label: 'AI Model Selection',
-    placeholder: 'Choose an AI model...',
+    label: 'Enhanced Dropdown Options',
+    placeholder: 'Choose an option...',
   },
   parameters: {
     a11y: {
@@ -191,11 +198,89 @@ export const Enhanced = {
   },
 };
 
+export const EnhancedButtonAnchor = {
+  args: {
+    ...args,
+    label: 'Enhanced Dropdown Options',
+    placeholder: 'Choose an option...',
+    dropdownAnchor: 'button',
+    buttonText: 'Select Option',
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 20rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        dropdownAnchor=${args.dropdownAnchor}
+        buttonText=${args.buttonText}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        @on-change=${(e) => action(e.type)(e)}
+      >
+        <kyn-enhanced-dropdown-option value="option-1">
+          <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
+          <span slot="title">Option 1</span>
+          <span slot="description"
+            >This is a description for the Option 1 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-2">
+          <span slot="icon">${unsafeSVG(aiOpsIcon)}</span>
+          <span slot="title">Option 2</span>
+          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-3">
+          <span slot="icon">${unsafeSVG(boxIcon)}</span>
+          <span slot="title">Option 3</span>
+          <span slot="description"
+            >This is a description for the Option 3 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="option-4">
+          <span slot="icon">${unsafeSVG(branchIcon)}</span>
+          <span slot="title">Option 4</span>
+          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <span slot="description"
+            >This is a description for the Option 4 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
 export const EnhancedMultiSelect = {
   args: {
     ...args,
-    label: 'Development Frameworks',
-    placeholder: 'Select frameworks...',
+    label: 'Enhanced Dropdown Options',
+    placeholder: 'Select options...',
     value: ['option-1', 'option-2'],
   },
   parameters: {
@@ -271,8 +356,8 @@ export const EnhancedMultiSelect = {
 export const EnhancedSearchable = {
   args: {
     ...args,
-    label: 'Programming Languages',
-    placeholder: 'Search languages...',
+    label: 'Enhanced Searchable Options',
+    placeholder: 'Search options...',
     filterSearch: true,
   },
   render: (args) => {
