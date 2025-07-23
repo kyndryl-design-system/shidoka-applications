@@ -7,7 +7,7 @@ import { action } from 'storybook/actions';
 import '../tooltip';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
-import actionableInsightsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/actionable-insights.svg';
+import businessConsultIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/business-consulting.svg';
 import aiOpsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/AIOps-docs.svg';
 import boxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/box.svg';
 import branchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/branch.svg';
@@ -153,7 +153,7 @@ export const Enhanced = {
         @on-change=${(e) => action(e.type)(e)}
       >
         <kyn-enhanced-dropdown-option value="option-1">
-          <span slot="icon">${unsafeSVG(actionableInsightsIcon)}</span>
+          <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
           <span slot="title">Option 1</span>
           <span slot="description"
             >This is a description for the Option 1 enhanced dropdown
