@@ -35,6 +35,7 @@ export {
   DropdownOption,
   EnhancedDropdownOption,
   DropdownCategory,
+  DropdownAnchor,
 } from './components/reusable/dropdown';
 export { DatePicker } from './components/reusable/datePicker';
 export { DateRangePicker } from './components/reusable/daterangepicker';
