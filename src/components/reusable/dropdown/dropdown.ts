@@ -316,6 +316,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 @search-keydown=${(e: any) => this.handleSearchKeydown(e)}
                 @search-click=${(e: any) => this.handleSearchClick(e)}
                 @clear-multiple=${(e: any) => this.handleClearMultiple(e)}
+                @clear-selection=${(e: any) => this.handleClearSelection(e)}
               ></kyn-dropdown-anchor>
             </div>
 
@@ -752,10 +753,28 @@ export class Dropdown extends FormMixin(LitElement) {
     this.emitValue();
   }
 
+  private handleClearSelection(e: any) {
+    e.stopPropagation();
+
+    if (!this.multiple) {
+      this.value = '';
+      this.text = '';
+      this.searchText = '';
+
+      if (this.dropdownAnchorEl && this.dropdownAnchorEl.clearSearch) {
+        this.dropdownAnchorEl.clearSearch();
+      }
+
+      this._validate(true, false);
+      this._updateSelectedOptions();
+      this.emitValue();
+      this._emitSearch();
+    }
+  }
+
   private handleClear(e: any) {
     e.stopPropagation();
 
-    // reset search input text
     this.text = '';
     this.searchText = '';
 
@@ -865,12 +884,19 @@ export class Dropdown extends FormMixin(LitElement) {
   private handleSearchInput(e: any) {
     this.searchText = e.detail.value;
     this.open = true;
+
+    if (!this.multiple && this.text && this.searchText !== this.text) {
+      this.value = '';
+      this.text = '';
+      this._updateSelectedOptions();
+      this.emitValue();
+    }
+
     this._emitSearch();
     this._applySearch();
   }
 
   private _updateSelectedOptions() {
-    // set selected state for each option
     this.options.forEach((option: any) => {
       if (this.multiple) {
         option.selected = this.value.includes(option.value);

@@ -178,21 +178,23 @@ export class DropdownAnchor extends LitElement {
           >
             ${this.multiple && this.value.length
               ? html`
-                  <kyn-button
+                  <button
+                    class="clear-multiple"
+                    aria-label="${this.value
+                      .length} items selected. Clear selections"
                     ?disabled=${this.disabled}
-                    class="clear-button dropdown-clear"
-                    kind="ghost"
-                    size="small"
-                    description=${this.textStrings.clearAll}
+                    title=${this.clearText}
                     @click=${this._handleClearMultiple}
                   >
+                    ${this.value.length}
                     <span style="display:flex;" slot="icon"
                       >${unsafeSVG(clearIcon)}</span
                     >
-                  </kyn-button>
+                  </button>
                 `
               : null}
-            ${this.searchable && this.searchText
+            ${this.searchable &&
+            (this.searchText || (!this.multiple && this.text))
               ? html`
                   <kyn-button
                     ?disabled=${this.disabled}
@@ -200,13 +202,7 @@ export class DropdownAnchor extends LitElement {
                     kind="ghost"
                     size="small"
                     description=${this.textStrings.clearAll}
-                    @click=${() => {
-                      this.clearSearch();
-                      this._emitEvent('search-input', {
-                        value: '',
-                        originalEvent: null,
-                      });
-                    }}
+                    @click=${this._handleClearButtonClick}
                   >
                     <span style="display:flex;" slot="icon"
                       >${unsafeSVG(clearIcon)}</span
@@ -243,6 +239,7 @@ export class DropdownAnchor extends LitElement {
           class="search"
           type="text"
           placeholder=${this.placeholder}
+          .value=${!this.multiple && this.text ? this.text : this.searchText}
           ?disabled=${this.disabled}
           aria-disabled=${this.disabled}
           @keydown=${this._handleSearchKeydown}
@@ -325,6 +322,20 @@ export class DropdownAnchor extends LitElement {
   private _handleClearMultiple(e: Event) {
     e.stopPropagation();
     this._emitEvent('clear-multiple', { originalEvent: e });
+  }
+
+  private _handleClearButtonClick(e: Event) {
+    e.stopPropagation();
+
+    if (!this.multiple && this.text) {
+      this._emitEvent('clear-selection', { originalEvent: e });
+    } else if (this.searchText) {
+      this.clearSearch();
+      this._emitEvent('search-input', {
+        value: '',
+        originalEvent: e,
+      });
+    }
   }
 
   private _emitEvent(eventName: string, detail: any) {
