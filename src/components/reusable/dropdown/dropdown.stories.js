@@ -128,20 +128,16 @@ export const Enhanced = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
-    placeholder: 'Choose an option...',
+    placeholder: 'Select an option',
   },
   parameters: {
-    a11y: {
-      disable: true,
+    backgrounds: {
+      default: 'white',
+      values: [{ name: 'white', value: '#ffffff' }],
     },
   },
   render: (args) => {
     return html`
-      <style>
-        kyn-dropdown {
-          min-width: 20rem;
-        }
-      </style>
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -202,9 +198,9 @@ export const EnhancedButtonAnchor = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
-    placeholder: 'Choose an option...',
+    placeholder: 'Select an option',
     dropdownAnchor: 'button',
-    buttonText: 'Select Option',
+    buttonText: 'Options',
   },
   parameters: {
     a11y: {
@@ -215,7 +211,11 @@ export const EnhancedButtonAnchor = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 20rem;
+          min-width: 240px;
+        }
+
+        label {
+          display: block;
         }
       </style>
       <kyn-dropdown
@@ -290,11 +290,6 @@ export const EnhancedMultiSelect = {
   },
   render: (args) => {
     return html`
-      <style>
-        kyn-dropdown {
-          min-width: 20rem;
-        }
-      </style>
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}

@@ -122,6 +122,7 @@ export class DropdownAnchor extends LitElement {
     return html`
       ${this.anchorType === 'button'
         ? html`<kyn-button
+            class="dropdown-anchor-button"
             kind="secondary-ai"
             size="small"
             ?disabled=${this.disabled}

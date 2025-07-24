@@ -1066,10 +1066,18 @@ export class Dropdown extends FormMixin(LitElement) {
     const ValidationMessage =
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
-    // set validity on custom element, anchor to dropdownAnchor validation element
     const validationAnchor =
       this.dropdownAnchorEl?.getValidationAnchor() || this.buttonEl;
-    this._internals.setValidity(Validity, ValidationMessage, validationAnchor);
+
+    if (validationAnchor instanceof HTMLElement) {
+      this._internals.setValidity(
+        Validity,
+        ValidationMessage,
+        validationAnchor
+      );
+    } else {
+      this._internals.setValidity(Validity, ValidationMessage);
+    }
 
     // set internal validation message if value was changed by user input
     if (interacted) {

@@ -12,7 +12,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  -webkit-appearance: none;
   appearance: none;
   border: 1px solid var(--kd-color-border-forms-default);
   border-radius: 4px;
@@ -21,6 +20,7 @@
   cursor: pointer;
   font-weight: var(--kd-font-weight-regular);
   white-space: nowrap;
+  min-width: 240px;
 
   [searchable] & {
     padding-right: 80px;
@@ -126,18 +126,22 @@
 }
 
 .clear-multiple {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  border: none;
-  width: 48px;
-  height: 24px;
-  padding: 8px;
-  border-radius: 4px;
-  margin-right: 8px;
-  cursor: pointer;
-  background: var(--kd-color-background-container-soft);
-  color: var(--kd-color-text-level-primary);
+  @include typography.type-ui-03;
+
+  & {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    width: 48px;
+    height: 24px;
+    padding: 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    cursor: pointer;
+    background: var(--kd-color-background-container-soft);
+    color: var(--kd-color-text-level-primary);
+  }
 
   span {
     display: flex;
@@ -153,14 +157,10 @@
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
   }
-
-  @include typography.type-ui-03;
 }
 
-.placeholder-text {
+.select .placeholder-text {
   color: var(--kd-color-text-variant-placeholder);
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .button-text {
