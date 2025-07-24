@@ -14,7 +14,7 @@ import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 
 /**
  * Link component for use in the global Side Navigation component.
- * @fires on-click - Captures the click event and emits the original event, level, and if default was prevented.
+ * @fires on-click - Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`
  * @slot unnamed - The default slot, for the link text.
  * @slot icon - Slot for an icon. Use 16px size. Required for level 1.
  * @slot links - Slot for the next level of links, supports three levels.

@@ -91,7 +91,7 @@ const Template = (args) => {
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
-        action('on-change')(e);
+        action('on-change')({ ...e, detail: e.detail });
         if (e.detail.selectedIndex !== undefined) {
           updateArgs({
             selectedIndex: e.detail.selectedIndex,
@@ -118,7 +118,7 @@ const IconTemplate = (args) => {
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
-        action('on-change')(e);
+        action('on-change')({ ...e, detail: e.detail });
         updateArgs({
           selectedIndex: e.detail.selectedIndex,
         });
@@ -145,7 +145,7 @@ const CustomIconTemplate = (args) => {
       .maxVisible=${args.maxVisible}
       .clickIncrementBy=${args.clickIncrementBy}
       @on-change=${(e) => {
-        action('on-change')(e);
+        action('on-change')({ ...e, detail: e.detail });
         updateArgs({
           selectedIndex: e.detail.selectedIndex,
         });
@@ -214,7 +214,7 @@ export const PaginationExample = {
         .clickIncrementBy=${args.clickIncrementBy}
         .textStrings=${args.textStrings}
         @on-change=${(e) => {
-          action('on-change')(e);
+          action('on-change')({ ...e, detail: e.detail });
           updateArgs({
             selectedIndex: e.detail.selectedIndex,
             visibleStart: e.detail.visibleStart,

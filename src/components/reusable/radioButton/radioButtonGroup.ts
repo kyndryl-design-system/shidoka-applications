@@ -18,7 +18,7 @@ const _defaultTextStrings = {
 
 /**
  * Radio button group container.
- * @fires on-radio-group-change - Captures the change event and emits the selected value.
+ * @fires on-radio-group-change - Captures the change event and emits the selected value.`detail:{ value: string }`
  * @slot unnamed - Slot for individual radio buttons.
  * @slot description - Slot for description text.
  * @slot tooltip - Slot for tooltip.

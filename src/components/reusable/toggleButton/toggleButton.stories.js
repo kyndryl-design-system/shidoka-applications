@@ -42,7 +42,7 @@ export const ToggleButton = {
         ?hideLabel=${args.hideLabel}
         checkedText=${args.checkedText}
         uncheckedText=${args.uncheckedText}
-        @on-change=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>

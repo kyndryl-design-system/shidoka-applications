@@ -241,7 +241,7 @@ export const AddWidget = {
       ${args.withLocalNav ? html`<div class="fake-local-nav"></div>` : ''}
       <div class="${args.withLocalNav ? 'with-local-nav' : ''}">
         <new-widget-sample
-          @on-click=${(e) => action(e.type)(e)}
+          @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
         ></new-widget-sample>
       </div>
     `;

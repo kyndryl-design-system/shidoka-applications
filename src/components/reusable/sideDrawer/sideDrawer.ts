@@ -13,7 +13,7 @@ import SideDrawerScss from './sideDrawer.scss?inline';
  * Side Drawer.
  * @slot unnamed - Slot for drawer body content.
  * @slot anchor - Slot for the anchor button content.
- * @fires on-close - Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).
+ * @fires on-close - Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`
  * @fires on-open - Emits the drawer open event.
  */
 

@@ -28,8 +28,8 @@ export const Inline = {
     return html`
       <kyn-loader-inline
         status=${args.status}
-        @on-start=${(e) => action(e.type)(e)}
-        @on-stop=${(e) => action(e.type)(e)}
+        @on-start=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-stop=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
       </kyn-loader-inline>

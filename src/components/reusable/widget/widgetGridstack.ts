@@ -8,8 +8,8 @@ import { GridStack } from 'gridstack';
 
 /**
  * GridStack wrapper that includes Shidoka default config and styles.
- * @fires on-grid-init - Emits after GridStack initializes.
- * @fires on-grid-save - Emits the GridStack save() method results (new layout) on dragstop and resizestop.
+ * @fires on-grid-init - Emits after GridStack initializes. `detail:{ layout : Object }`
+ * @fires on-grid-save - Emits the GridStack save() method results (new layout) on dragstop and resizestop. `detail:{ layout : Object }`
  * @slot unnamed - Slot for .grid-stack container element.
  */
 @customElement('kyn-widget-gridstack')

@@ -4,7 +4,7 @@ import HeaderPanelLinkScss from './headerPanelLink.scss?inline';
 
 /**
  * Header fly-out panel link.
- * @fires on-click - Captures the click event and emits the original event details.
+ * @fires on-click - Captures the click event and emits the original event details. `detail:{ origEvent: Event }`
  * @slot unnamed - Slot for link text/content.
  */
 @customElement('kyn-header-panel-link')

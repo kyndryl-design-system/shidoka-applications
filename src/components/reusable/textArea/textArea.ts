@@ -17,7 +17,7 @@ const _defaultTextStrings = {
 
 /**
  * Text area.
- * @fires on-input - Captures the input event and emits the selected value and original event details.
+ * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot tooltip - Slot for tooltip.

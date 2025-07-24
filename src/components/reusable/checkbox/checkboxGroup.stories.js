@@ -60,9 +60,10 @@ export const CheckboxGroup = {
         ?limitCheckboxes=${args.limitCheckboxes}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
-        @on-checkbox-group-change=${(e) => action(e.type)(e)}
-        @on-search=${(e) => action(e.type)(e)}
-        @on-limit-toggle=${(e) => action(e.type)(e)}
+        @on-checkbox-group-change=${(e) =>
+          action(e.type)({ ...e, detail: e.detail })}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-limit-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
@@ -97,9 +98,10 @@ export const CheckboxSubgroups = {
         ?limitCheckboxes=${args.limitCheckboxes}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
-        @on-checkbox-group-change=${(e) => action(e.type)(e)}
-        @on-search=${(e) => action(e.type)(e)}
-        @on-limit-toggle=${(e) => action(e.type)(e)}
+        @on-checkbox-group-change=${(e) =>
+          action(e.type)({ ...e, detail: e.detail })}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-limit-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>

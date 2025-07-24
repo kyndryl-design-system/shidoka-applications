@@ -62,8 +62,8 @@ export const Tag = {
         ?filter=${args.filter}
         ?clickable=${args.clickable}
         ?noTruncation=${args.noTruncation}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       /></kyn-tag>
     `;
   },
@@ -81,8 +81,8 @@ export const TagWithIcon = {
         ?filter=${args.filter}
         ?clickable=${args.clickable}
         ?noTruncation=${args.noTruncation}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       />
       <span style="display: flex;" aria-label="User icon" aria-hidden="true">
         ${unsafeSVG(userIcon)}

@@ -22,7 +22,7 @@ const _defaultTextStrings = {
 
 /**
  * Slider Input.
- * @fires on-input - Captures the input event and emits the selected value and original event details.
+ * @fires on-input - Captures the input event and emits the selected value and original event details.`detail:{ origEvent: Event,value: number }`
  * @prop {number} min - The minimum value.
  * @prop {number} max - The maximum value.
  * @prop {number} step - The step between values.

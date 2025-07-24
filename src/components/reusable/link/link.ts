@@ -7,7 +7,7 @@ import LinkStyles from './link.scss?inline';
 
 /**
  * Component for navigation links.
- * @fires on-click - Captures the click event and emits the original event details.
+ * @fires on-click - Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent,href: string, otherattributes }`
  * @slot unnamed - Slot for link text.
  * @slot icon - Slot for an icon.
  */

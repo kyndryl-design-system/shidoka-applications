@@ -75,7 +75,7 @@ export const NumberInput = {
         max=${ifDefined(args.max)}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-number-input>
     `;

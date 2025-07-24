@@ -5,7 +5,7 @@ import ToggleButtonScss from './toggleButton.scss?inline';
 
 /**
  * Toggle Button.
- * @fires on-change - Captures the change event and emits the selected value and original event details.
+ * @fires on-change - Emits the change event. `detail:{ origEvent: Event, checked: boolean, value: string }`
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-toggle-button')

@@ -79,7 +79,7 @@ export const Default = {
         name=${args.name}
         label=${args.label}
         menuMinWidth=${args.menuMinWidth}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-splitbutton-option value="1">Option 1</kyn-splitbutton-option>
         <kyn-splitbutton-option value="2" disabled
@@ -105,7 +105,7 @@ export const WithIcon = {
         label=${args.label}
         iconPosition=${args.iconPosition}
         menuMinWidth=${args.menuMinWidth}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-splitbutton-option value="1">Option 1</kyn-splitbutton-option>
         <kyn-splitbutton-option value="2">Option 2</kyn-splitbutton-option>

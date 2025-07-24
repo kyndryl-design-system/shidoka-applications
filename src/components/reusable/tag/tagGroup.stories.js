@@ -41,16 +41,46 @@ export const TagGroup = {
         tagSize=${args.tagSize}
         .textStrings=${args.textStrings}
       >
-        <kyn-tag label="Tag 1" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 2" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 3" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 4" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 5" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 6" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 7" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 8" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 9" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
-        <kyn-tag label="Tag 10" @on-close=${(e) => action(e.type)(e)}></kyn-tag>
+        <kyn-tag
+          label="Tag 1"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 2"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 3"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 4"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 5"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 6"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 7"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 8"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 9"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
+        <kyn-tag
+          label="Tag 10"
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        ></kyn-tag>
       </kyn-tag-group>
     `;
   },

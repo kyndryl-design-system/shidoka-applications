@@ -5,7 +5,7 @@ import '../../reusable/link';
 
 /**
  * Header user profile.
- * @fires on-profile-link-click - Captures the view profile link click event and emits the original event details.
+ * @fires on-profile-link-click - Captures the view profile link click event and emits the original event details. `detail:{ origEvent: Event }`
  * @slot unnamed - Slot for the profile picture img.
  */
 @customElement('kyn-header-user-profile')

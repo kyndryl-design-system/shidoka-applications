@@ -21,7 +21,7 @@ const _defaultTextStrings = {
 
 /**
  * Number input.
- * @fires on-input - Captures the input event and emits the value and original event details.
+ * @fires on-input - Captures the input event and emits the value and original event details.`detail:{ value: number }`
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-number-input')

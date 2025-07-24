@@ -28,7 +28,7 @@ export const Checkbox = {
         ?checked=${args.checked}
         ?disabled=${args.disabled}
         ?indeterminate=${args.indeterminate}
-        @on-checkbox-change=${(e) => action(e.type)(e)}
+        @on-checkbox-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
       </kyn-checkbox>

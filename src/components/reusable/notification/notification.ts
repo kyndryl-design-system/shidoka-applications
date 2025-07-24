@@ -20,7 +20,7 @@ import '../badge';
  * @slot unnamed - Slot for notification message body.
  * @slot actions - Slot for menu.
  * @slot icon - Slot for an icon.
- * @fires on-notification-click - Emit event for clickable notification.
+ * @fires on-notification-click - Emit event for clickable notification.`detail:{ origEvent: PointerEvent }`
  * @fires on-close - Emits when an inline/toast notification closes.
  */
 

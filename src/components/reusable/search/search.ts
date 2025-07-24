@@ -20,7 +20,7 @@ const _defaultTextStrings = {
 
 /**
  * Search
- * @fires on-input - Emits the value on text input/clear.
+ * @fires on-input - Emits the value on text input/clear.`detail:{ origEvent: InputEvent,value: string }`
  */
 @customElement('kyn-search')
 export class Search extends LitElement {
