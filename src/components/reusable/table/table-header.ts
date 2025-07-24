@@ -23,7 +23,7 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
  * Represents a custom table header cell (`<th>`) for Shidoka's design system tables.
  * Provides sorting functionality when enabled and allows alignment customization.
  *
- * @fires on-sort-changed - Dispatched when the sort direction is changed.
+ * @fires on-sort-changed - Dispatched when the sort direction is changed. `detail: {sortDirection: string, sortKey: string } `
  * @slot unnamed - The content slot for adding header text or content.
  */
 @customElement('kyn-th')

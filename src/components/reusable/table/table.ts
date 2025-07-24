@@ -12,8 +12,8 @@ import styles from './table.scss?inline';
  * `kyn-table` Web Component.
  * This component provides a table with sorting, pagination, and selection capabilities.
  * It is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.
- * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled.
- * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled.
+ * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled. `detail: { selectedRow: TableRow, selectedRows: Array<TableRow> }`
+ * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled. `detail:{ selectedRows: Array<TableRow> }`
  */
 
 @customElement('kyn-table')
