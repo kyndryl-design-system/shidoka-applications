@@ -311,14 +311,14 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Emits when thumbs-up or thumbs-down button is deselected."
+              "description": "Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`"
             },
             {
               "name": "on-toggle",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Emits the `opened` state when the panel item opens/closes."
+              "description": "Emits the `opened` state when the panel item opens/closes. `detail:{ sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string }`"
             }
           ],
           "attributes": [
@@ -484,7 +484,7 @@
           ],
           "events": [
             {
-              "description": "Captures the logo link click event and emits the original event.",
+              "description": "Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`",
               "name": "on-root-link-click"
             }
           ],
@@ -546,6 +546,477 @@
           "declaration": {
             "name": "Footer",
             "module": "./footer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -644,11 +1115,11 @@
           ],
           "events": [
             {
-              "description": "Captures the menu toggle click event and emits the menu open state in the detail.",
+              "description": "Captures the menu toggle click event and emits the menu open state in the detail. `detail:{ origEvent: Event}`",
               "name": "on-menu-toggle"
             },
             {
-              "description": "Captures the logo link click event and emits the original event details.",
+              "description": "Captures the logo link click event and emits the original event details. `detail:{ origEvent: Event}`",
               "name": "on-root-link-click"
             }
           ],
@@ -1375,7 +1846,7 @@
           ],
           "events": [
             {
-              "description": "Captures the click event and emits the original event details.",
+              "description": "Captures the click event and emits the original event details. `detail:{ origEvent: Event ,defaultPrevented: boolean}`",
               "name": "on-click"
             }
           ],
@@ -1651,7 +2122,7 @@
           ],
           "events": [
             {
-              "description": "Emits the panel footer button event.",
+              "description": "Emits the panel footer button event. `detail:{ origEvent: Event }`",
               "name": "on-footer-btn-click"
             }
           ],
@@ -1772,7 +2243,7 @@
           ],
           "events": [
             {
-              "description": "Captures the click event and emits the original event details.",
+              "description": "Captures the click event and emits the original event details. `detail:{ origEvent: Event }`",
               "name": "on-click"
             }
           ],
@@ -1913,7 +2384,7 @@
           ],
           "events": [
             {
-              "description": "Captures the view profile link click event and emits the original event details.",
+              "description": "Captures the view profile link click event and emits the original event details. `detail:{ origEvent: Event }`",
               "name": "on-profile-link-click"
             }
           ],
@@ -2074,477 +2545,6 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details.",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -2956,7 +2956,7 @@
           ],
           "events": [
             {
-              "description": "Emits the `opened` state when the accordion item opens/closes.",
+              "description": "Emits the `opened` state when the accordion item opens/closes. `detail:{ opened: boolean }`.",
               "name": "on-toggle"
             }
           ],
@@ -4067,7 +4067,7 @@
           ],
           "events": [
             {
-              "description": "Emits the original click event.",
+              "description": "Emits the original click event. `detail:{ origEvent: Event }`",
               "name": "on-click"
             }
           ],
@@ -4490,7 +4490,7 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Captures the click event button selection in button group."
+              "description": "Captures the click event button selection in button group. `detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }`"
             }
           ],
           "attributes": [
@@ -4699,7 +4699,7 @@
           ],
           "events": [
             {
-              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event.",
+              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
               "name": "on-card-click"
             }
           ],
@@ -5352,15 +5352,15 @@
           ],
           "events": [
             {
-              "description": "Captures the change event and emits the selected values.",
+              "description": "Captures the change event and emits the selected values. `detail:{ value: Array }`",
               "name": "on-checkbox-group-change"
             },
             {
-              "description": "Captures the search input event and emits the search term.",
+              "description": "Captures the search input event and emits the search term. `detail:{ searchTerm: string }`",
               "name": "on-search"
             },
             {
-              "description": "Captures the show more/less click and emits the expanded state.",
+              "description": "Captures the show more/less click and emits the expanded state. `detail:{ expanded: boolean }`",
               "name": "on-limit-toggle"
             }
           ],
@@ -5733,7 +5733,7 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ value: string, origEvent: Event }`",
               "name": "on-input"
             }
           ],
@@ -6385,7 +6385,7 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ dataString: string, dates: date, source: string }`",
               "name": "on-change"
             }
           ],
@@ -7205,7 +7205,7 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ dataString: string,dates:[],source:string}`",
               "name": "on-change"
             }
           ],
@@ -8006,18 +8006,18 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Captures the add button click and emits the newly added option."
+              "description": "Captures the add button click and emits the newly added option. `detail:{ value: string }`"
             },
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ value: array }`",
               "name": "on-change"
             },
             {
-              "description": "Capture the search input event and emits the search text.",
+              "description": "Capture the search input event and emits the search text.`detail:{ searchText: string }`",
               "name": "on-search"
             },
             {
-              "description": "Captures the the multi-select clear all button click event and emits the value.",
+              "description": "Captures the the multi-select clear all button click event and emits the value. `detail:{ value: string }`",
               "name": "on-clear-all"
             }
           ],
@@ -8420,11 +8420,11 @@
           ],
           "events": [
             {
-              "description": "Emits the option details to the parent dropdown.",
+              "description": "Emits the option details to the parent dropdown. `detail:{ selected: boolean, value: string, origEvent: PointerEvent }`",
               "name": "on-click"
             },
             {
-              "description": "Emits the option that is removed.",
+              "description": "Emits the option that is removed. `detail:{ value: string }`",
               "name": "on-remove-option"
             }
           ],
@@ -8851,7 +8851,7 @@
           ],
           "events": [
             {
-              "description": "Emits the uploaded files.",
+              "description": "Emits the uploaded files.`detail:{ validFiles: Array, invalidFiles: Array }`",
               "name": "selected-files"
             }
           ],
@@ -9386,7 +9386,7 @@
           ],
           "events": [
             {
-              "description": "Dispatched when the confirm button is clicked.",
+              "description": "Dispatched when the confirm button is clicked.`detail:{ origEvent: PointerEvent }`",
               "name": "on-confirm"
             }
           ],
@@ -9604,7 +9604,7 @@
           ],
           "events": [
             {
-              "description": "Captures the click event and emits the original event details.",
+              "description": "Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent,href: string, otherattributes }`",
               "name": "on-click"
             }
           ],
@@ -9776,11 +9776,11 @@
           ],
           "events": [
             {
-              "description": "Emits when the loader been started.",
+              "description": "Emits when the loader been started. `detail: null`",
               "name": "on-start"
             },
             {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "description": "Emits when the loader has been stopped and all animations have completed. `detail: null`",
               "name": "on-stop"
             }
           ],
@@ -9864,11 +9864,11 @@
           ],
           "events": [
             {
-              "description": "Emits when the loader been started.",
+              "description": "Emits when the loader been started.`detail: null`",
               "name": "on-start"
             },
             {
-              "description": "Emits when the loader has been stopped and all animations have completed.",
+              "description": "Emits when the loader has been stopped and all animations have completed.`detail:null`",
               "name": "on-stop"
             }
           ],
@@ -10338,7 +10338,7 @@
           ],
           "events": [
             {
-              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "description": "Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`",
               "name": "on-close"
             },
             {
@@ -11030,14 +11030,14 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "– emits { value, origEvent } on every keystroke"
+              "description": "– emits { value, origEvent } on every keystroke. `detail:{ origEvent: Event,value: string }`"
             },
             {
               "name": "on-change",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "– emits string[] after tags are added/removed"
+              "description": "– emits string[] after tags are added/removed. `detail:{ value: string[] }`"
             }
           ],
           "attributes": [
@@ -11442,7 +11442,7 @@
           ],
           "events": [
             {
-              "description": "Emit event for clickable notification.",
+              "description": "Emit event for clickable notification.`detail:{ origEvent: PointerEvent }`",
               "name": "on-notification-click"
             },
             {
@@ -11880,7 +11880,7 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the value and original event details.",
+              "description": "Captures the input event and emits the value and original event details.`detail:{ value: number }`",
               "name": "on-input"
             }
           ],
@@ -12175,7 +12175,7 @@
           ],
           "events": [
             {
-              "description": "Capture the open/close event and emits the new state.",
+              "description": "Capture the open/close event and emits the new state.`detail:{ open: boolean }`",
               "name": "on-toggle"
             }
           ],
@@ -12342,7 +12342,7 @@
           ],
           "events": [
             {
-              "description": "Captures the click event and emits the original event details.",
+              "description": "Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent }`",
               "name": "on-click"
             }
           ],
@@ -12714,11 +12714,11 @@
           ],
           "events": [
             {
-              "description": "Dispatched when the page size changes.",
+              "description": "Dispatched when the page size changes.`detail:{ value: number }`",
               "name": "on-page-size-change"
             },
             {
-              "description": "Dispatched when the currently active page changes.",
+              "description": "Dispatched when the currently active page changes.`detail:{ value: number }`",
               "name": "on-page-number-change"
             }
           ],
@@ -13706,11 +13706,11 @@
           ],
           "events": [
             {
-              "description": "Emitted when any action closes the popover",
+              "description": "Emitted when any action closes the popover.`detail:{ action: string }`",
               "name": "on-close"
             },
             {
-              "description": "Emitted when popover opens",
+              "description": "Emitted when popover opens. `detail:{ origEvent: Event }`",
               "name": "on-open"
             }
           ],
@@ -14422,7 +14422,7 @@
           ],
           "events": [
             {
-              "description": "Captures the change event and emits the selected value and original event details.",
+              "description": "Captures the change event and emits the selected value and original event details.`detail:{ checked: boolean,origEvent: Event,value: string }`",
               "name": "on-radio-change"
             }
           ],
@@ -14591,7 +14591,7 @@
           ],
           "events": [
             {
-              "description": "Captures the change event and emits the selected value.",
+              "description": "Captures the change event and emits the selected value.`detail:{ value: string }`",
               "name": "on-radio-group-change"
             }
           ],
@@ -14983,7 +14983,7 @@
           ],
           "events": [
             {
-              "description": "Emits the value on text input/clear.",
+              "description": "Emits the value on text input/clear.`detail:{ origEvent: InputEvent,value: string }`",
               "name": "on-input"
             }
           ],
@@ -15349,7 +15349,7 @@
           ],
           "events": [
             {
-              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).",
+              "description": "Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`",
               "name": "on-close"
             },
             {
@@ -15517,6 +15517,493 @@
           "declaration": {
             "name": "SideDrawer",
             "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sliderInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SliderInput",
+          "declaration": {
+            "name": "SliderInput",
+            "module": "./sliderInput"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sliderInput/sliderInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Slider Input.",
+          "name": "SliderInput",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for left button icon.",
+              "name": "leftBtnIcon"
+            },
+            {
+              "description": "Slot for right button icon.",
+              "name": "rightBtnIcon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Input value."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "The maximum value.",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "The minimum value.",
+              "attribute": "min"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "The step between values.",
+              "attribute": "step"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "enableTickMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tick Marker on slider.",
+              "attribute": "enableTickMarker"
+            },
+            {
+              "kind": "field",
+              "name": "enableScaleMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Scale Marker below slider",
+              "attribute": "enableScaleMarker"
+            },
+            {
+              "kind": "field",
+              "name": "editableInput",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
+              "attribute": "editableInput"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  error: 'Error',\n  decrease: 'Decrease',\n  increase: 'Increase',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "customLabels",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Custom Labels",
+              "attribute": "customLabels"
+            },
+            {
+              "kind": "field",
+              "name": "enableTooltip",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tooltip.",
+              "attribute": "enableTooltip"
+            },
+            {
+              "kind": "field",
+              "name": "enableButtonControls",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for button controls.",
+              "attribute": "enableButtonControls"
+            },
+            {
+              "kind": "method",
+              "name": "_renderTickMarker",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "tickCount",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleDecrease",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleIncrease",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderCustomLabel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderScaleMarker",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "tickCount",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderEditableInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_showTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_hideTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNumberInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_getTooltipPosition",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateTooltipPosition",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "showTickMark",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.`detail:{ origEvent: Event,value: number }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "The maximum value.",
+              "fieldName": "max"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "The minimum value.",
+              "fieldName": "min"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "The step between values.",
+              "fieldName": "step"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "enableTickMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tick Marker on slider.",
+              "fieldName": "enableTickMarker"
+            },
+            {
+              "name": "enableScaleMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Scale Marker below slider",
+              "fieldName": "enableScaleMarker"
+            },
+            {
+              "name": "editableInput",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
+              "fieldName": "editableInput"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "customLabels",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Custom Labels",
+              "fieldName": "customLabels"
+            },
+            {
+              "name": "enableTooltip",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tooltip.",
+              "fieldName": "enableTooltip"
+            },
+            {
+              "name": "enableButtonControls",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for button controls.",
+              "fieldName": "enableButtonControls"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-slider-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SliderInput",
+          "declaration": {
+            "name": "SliderInput",
+            "module": "src/components/reusable/sliderInput/sliderInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-slider-input",
+          "declaration": {
+            "name": "SliderInput",
+            "module": "src/components/reusable/sliderInput/sliderInput.ts"
           }
         }
       ]
@@ -16023,7 +16510,7 @@
           ],
           "events": [
             {
-              "description": "Emits the option details to the parent split button.",
+              "description": "Emits the option details to the parent split button. `detail:{ origEvent: CustomEvent,value: string, text: string,otherattributes }`",
               "name": "on-action-click"
             }
           ],
@@ -16079,493 +16566,6 @@
           "declaration": {
             "name": "SplitButtonOption",
             "module": "src/components/reusable/splitButton/splitButtonOption.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sliderInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SliderInput",
-          "declaration": {
-            "name": "SliderInput",
-            "module": "./sliderInput"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sliderInput/sliderInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Slider Input.",
-          "name": "SliderInput",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Slot for left button icon.",
-              "name": "leftBtnIcon"
-            },
-            {
-              "description": "Slot for right button icon.",
-              "name": "rightBtnIcon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Input value."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "The maximum value.",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "The minimum value.",
-              "attribute": "min"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "The step between values.",
-              "attribute": "step"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "enableTickMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tick Marker on slider.",
-              "attribute": "enableTickMarker"
-            },
-            {
-              "kind": "field",
-              "name": "enableScaleMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Scale Marker below slider",
-              "attribute": "enableScaleMarker"
-            },
-            {
-              "kind": "field",
-              "name": "editableInput",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
-              "attribute": "editableInput"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  error: 'Error',\n  decrease: 'Decrease',\n  increase: 'Increase',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "customLabels",
-              "type": {
-                "text": "string[]"
-              },
-              "default": "[]",
-              "description": "Custom Labels",
-              "attribute": "customLabels"
-            },
-            {
-              "kind": "field",
-              "name": "enableTooltip",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tooltip.",
-              "attribute": "enableTooltip"
-            },
-            {
-              "kind": "field",
-              "name": "enableButtonControls",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for button controls.",
-              "attribute": "enableButtonControls"
-            },
-            {
-              "kind": "method",
-              "name": "_renderTickMarker",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "tickCount",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleDecrease",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleIncrease",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderCustomLabel",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderScaleMarker",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "tickCount",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_renderTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderEditableInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_showTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_hideTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleNumberInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getTooltipPosition",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateTooltipPosition",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "showTickMark",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "The maximum value.",
-              "fieldName": "max"
-            },
-            {
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "The minimum value.",
-              "fieldName": "min"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "The step between values.",
-              "fieldName": "step"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "enableTickMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tick Marker on slider.",
-              "fieldName": "enableTickMarker"
-            },
-            {
-              "name": "enableScaleMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Scale Marker below slider",
-              "fieldName": "enableScaleMarker"
-            },
-            {
-              "name": "editableInput",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
-              "fieldName": "editableInput"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "customLabels",
-              "type": {
-                "text": "string[]"
-              },
-              "default": "[]",
-              "description": "Custom Labels",
-              "fieldName": "customLabels"
-            },
-            {
-              "name": "enableTooltip",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tooltip.",
-              "fieldName": "enableTooltip"
-            },
-            {
-              "name": "enableButtonControls",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for button controls.",
-              "fieldName": "enableButtonControls"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-slider-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SliderInput",
-          "declaration": {
-            "name": "SliderInput",
-            "module": "src/components/reusable/sliderInput/sliderInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-slider-input",
-          "declaration": {
-            "name": "SliderInput",
-            "module": "src/components/reusable/sliderInput/sliderInput.ts"
           }
         }
       ]
@@ -16900,7 +16900,7 @@
           ],
           "events": [
             {
-              "description": "Emits the step details to the parent stepper component when click on step title.",
+              "description": "Emits the step details to the parent stepper component when click on step title.`detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`",
               "name": "on-step-click"
             }
           ],
@@ -17086,7 +17086,7 @@
           ],
           "events": [
             {
-              "description": "Emits event on child click. Only for vertical mode.",
+              "description": "Emits event on child click. Only for vertical mode. `detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`",
               "name": "on-child-click"
             }
           ],
@@ -18613,7 +18613,7 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Dispatched when the sort direction is changed."
+              "description": "Dispatched when the sort direction is changed. `detail: {sortDirection: string, sortKey: string } `"
             }
           ],
           "attributes": [
@@ -19606,14 +19606,14 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Dispatched when the selection state of a row is toggled."
+              "description": "Dispatched when the selection state of a row is toggled. `detail: { selectedRow: TableRow, selectedRows: Array<TableRow> }`"
             },
             {
               "name": "on-all-rows-selection-change",
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Dispatched when the selection state of all rows is toggled."
+              "description": "Dispatched when the selection state of all rows is toggled. `detail:{ selectedRows: Array<TableRow> }`"
             }
           ],
           "attributes": [
@@ -20229,7 +20229,7 @@
           ],
           "events": [
             {
-              "description": "Emits the new selected Tab ID when switching tabs.",
+              "description": "Emits the new selected Tab ID when switching tabs. `detail:{ origEvent: PointerEvent,selectedTabId: string }`",
               "name": "on-change"
             }
           ],
@@ -20580,11 +20580,11 @@
           ],
           "events": [
             {
-              "description": "Captures the close event and emits the Tag value. Works with filterable tags.",
+              "description": "Captures the close event and emits the Tag value. Works with filterable tags. `detail:{ origEvent: PointerEvent,value: string }`",
               "name": "on-close"
             },
             {
-              "description": "Captures the click event and emits the Tag value. Works with clickable tags.",
+              "description": "Captures the click event and emits the Tag value. Works with clickable tags. `detail:{ origEvent: PointerEvent,value: string }`",
               "name": "on-click"
             }
           ],
@@ -21050,7 +21050,7 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`",
               "name": "on-input"
             }
           ],
@@ -21483,7 +21483,7 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected value and original event details.`detail:{ origEvent: InputEvent, value: string }`",
               "name": "on-input"
             }
           ],
@@ -22177,7 +22177,7 @@
           ],
           "events": [
             {
-              "description": "Captures the input event and emits the selected value and original event details.",
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: Event, value: string }`",
               "name": "on-change"
             }
           ],
@@ -22538,7 +22538,7 @@
           ],
           "events": [
             {
-              "description": "Captures the change event and emits the selected value and original event details.",
+              "description": "Emits the change event. `detail:{ origEvent: Event, checked: boolean, value: string }`",
               "name": "on-change"
             }
           ],
@@ -22734,7 +22734,7 @@
           ],
           "events": [
             {
-              "description": "Emits the open state of the tooltip on open/close.",
+              "description": "Emits the open state of the tooltip on open/close. `detail:{ open: boolean }`",
               "name": "on-tooltip-toggle"
             }
           ],
@@ -22953,7 +22953,7 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Emits the widget selected state ."
+              "description": "Emits the widget selected state .`detail:{ selected: boolean }`"
             }
           ],
           "attributes": [
@@ -23215,15 +23215,21 @@
               "name": "_setBreakpoint",
               "privacy": "private",
               "description": "The function `_setBreakpoint` retrieves and sets the current breakpoint value from the CSS custom\nproperty `--kd-current-breakpoint`."
+            },
+            {
+              "kind": "method",
+              "name": "_setMargin",
+              "privacy": "private",
+              "description": "The private `_setMargin` function adjusts the margin of a grid based on a breakpoint value."
             }
           ],
           "events": [
             {
-              "description": "Emits after GridStack initializes.",
+              "description": "Emits after GridStack initializes. `detail:{ layout : Object }`",
               "name": "on-grid-init"
             },
             {
-              "description": "Emits the GridStack save() method results (new layout) on dragstop and resizestop.",
+              "description": "Emits the GridStack save() method results (new layout) on dragstop and resizestop. `detail:{ layout : Object }`",
               "name": "on-grid-save"
             }
           ],

@@ -53,7 +53,7 @@ export const Default = {
         .textStrings=${args.textStrings}
         .maxFileSize=${args.maxFileSize}
         ?disabled=${args.disabled}
-        @selected-files=${(e) => action(e.type)(e)}
+        @selected-files=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-file-uploader>
     `;

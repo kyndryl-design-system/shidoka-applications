@@ -76,8 +76,9 @@ export const AISourcesFeedback = {
         ?revealAllSources=${args.revealAllSources}
         closeText=${args.closeText}
         .textStrings=${args.textStrings}
-        @on-toggle=${(e) => action(e.type)(e)}
-        @on-feedback-deselected=${(e) => action(e.type)(e)}
+        @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-feedback-deselected=${(e) =>
+          action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
           slot="copy"
@@ -85,7 +86,7 @@ export const AISourcesFeedback = {
           size="small"
           iconPosition="left"
           description="Copy"
-          @on-click=${(e) => action(e.type)(e)}
+          @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <span class="copy-button-text">${args.copy}</span>
           <span slot="icon" class="copy-icon">${unsafeSVG(copyIcon)}</span>
@@ -123,7 +124,7 @@ const SourcesContent = () => html`
         ?hideBorder=${args.hideBorder}
         role="link"
         aria-label="Clickable card"
-        @on-card-click=${(e) => action(e.type)(e)}
+        @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <div class="card-description">
           <span slot="icon" class="source-icon">${unsafeSVG(sourceIcon)}</span>
@@ -223,7 +224,7 @@ const feedbackFormContent = () => html`
 `;
 
 const handleCancelClick = (e) => {
-  action(e.type)(e);
+  action(e.type)({ ...e, detail: e.detail });
   console.log('Cancel button clicked');
   // Cancel button click logic here to close the feedback form
   // this.feedbackOpened = false;

@@ -8,7 +8,7 @@ import HeaderNotificationPanelScss from './headerNotificationPanel.scss?inline';
  * Component for notification panel within the Header.
  * @slot menu-slot - Slot for panel menu
  * @slot unnamed - Slot for notification content.
- * @fires on-footer-btn-click - Emits the panel footer button event.
+ * @fires on-footer-btn-click - Emits the panel footer button event. `detail:{ origEvent: Event }`
  */
 
 @customElement('kyn-header-notification-panel')

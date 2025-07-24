@@ -52,8 +52,8 @@ export const SideDrawer = {
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor">Open Drawer</kyn-button>
 
@@ -103,8 +103,8 @@ export const BeforeClose = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor">Open Drawer</kyn-button>
 
@@ -162,8 +162,8 @@ export const NoBackdrop = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         noBackdrop
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor">Open Drawer</kyn-button>
 
@@ -213,8 +213,8 @@ export const AIConnected = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor" kind="primary-ai">Open Drawer</kyn-button>
 

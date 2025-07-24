@@ -10,8 +10,8 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 
 /**
  * Inline Loader.
- * @fires on-start - Emits when the loader been started.
- * @fires on-stop - Emits when the loader has been stopped and all animations have completed.
+ * @fires on-start - Emits when the loader been started. `detail: null`
+ * @fires on-stop - Emits when the loader has been stopped and all animations have completed. `detail: null`
  * @slot unnamed - Slot for text/description.
  */
 @customElement('kyn-loader-inline')

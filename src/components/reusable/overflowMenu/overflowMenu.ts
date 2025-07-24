@@ -8,7 +8,7 @@ import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 /**
  * Overflow Menu.
  * @slot unnamed - Slot for overflow menu items.
- * @fires on-toggle - Capture the open/close event and emits the new state.
+ * @fires on-toggle - Capture the open/close event and emits the new state.`detail:{ open: boolean }`
  */
 @customElement('kyn-overflow-menu')
 export class OverflowMenu extends LitElement {

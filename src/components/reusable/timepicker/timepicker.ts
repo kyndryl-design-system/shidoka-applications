@@ -51,7 +51,7 @@ const _defaultTextStrings = {
 
 /**
  * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
- * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: Event, value: string }`
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-time-picker')

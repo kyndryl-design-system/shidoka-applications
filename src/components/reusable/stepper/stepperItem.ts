@@ -34,7 +34,7 @@ import warningFilled16 from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 import './stepperItemChild';
 
 /** Stepper Item.
- * @fires on-step-click - Emits the step details to the parent stepper component when click on step title.
+ * @fires on-step-click - Emits the step details to the parent stepper component when click on step title.`detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`
  * @slot tooltip - Slot for tooltip.
  * @slot child - Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.
  * @slot unnamed - Optional slot for content in vertical stepper. Visible only when step state is active.

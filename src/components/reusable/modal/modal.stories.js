@@ -65,8 +65,8 @@ export const Modal = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
           slot="anchor"
@@ -102,8 +102,8 @@ export const ActionButtons = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
           slot="anchor"
@@ -140,8 +140,8 @@ export const BeforeClose = {
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
         .beforeClose=${(returnValue) => handleBeforeClose(returnValue)}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
           slot="anchor"
@@ -186,8 +186,8 @@ export const WithForm = {
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
         .beforeClose=${(returnValue) => handleBeforeCloseSubmit(returnValue)}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
           slot="anchor"
@@ -232,8 +232,8 @@ export const AIConnected = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
           slot="anchor"

@@ -12,7 +12,7 @@ import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/ch
  * InlineConfirm component.
  * @slot unnamed - Slot for anchor button icon.
  * @slot confirmIcon - Slot for confirm icon button, will be a check icon by default if none provided.
- * @fires on-confirm - Dispatched when the confirm button is clicked.
+ * @fires on-confirm - Dispatched when the confirm button is clicked.`detail:{ origEvent: PointerEvent }`
  */
 @customElement('kyn-inline-confirm')
 export class InlineConfirm extends LitElement {

@@ -69,7 +69,7 @@ export const FileUploaderWithForm = {
           .maxFileSize=${args.maxFileSize}
           ?disabled=${args.disabled}
           @selected-files=${(e) => {
-            action(e.type)(e);
+            action(e.type)({ ...e, detail: e.detail });
             validFiles = e.detail.validFiles;
           }}
         >

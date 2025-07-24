@@ -5,7 +5,7 @@ import SplitButtonOptionScss from './splitButtonOption.scss?inline';
 
 /**
  * Split button option.
- * @fires on-action-click - Emits the option details to the parent split button.
+ * @fires on-action-click - Emits the option details to the parent split button. `detail:{ origEvent: CustomEvent,value: string, text: string,otherattributes }`
  * @slot unnamed - Slot for option text.
  */
 

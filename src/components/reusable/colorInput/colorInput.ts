@@ -16,7 +16,7 @@ const _defaultTextStrings = {
 
 /**
  * Color input.
- * @fires on-input - Captures the input event and emits the selected value and original event details.
+ * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ value: string, origEvent: Event }`
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-color-input')

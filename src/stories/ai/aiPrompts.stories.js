@@ -153,5 +153,5 @@ const handleCardClick = (e) => {
   //   });
   // }, 300);
 
-  action(e.type)(e);
+  action(e.type)({ ...e, detail: e.detail });
 };

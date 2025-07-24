@@ -12,8 +12,8 @@ import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-l
 
 /**
  * The global Header component.
- * @fires on-menu-toggle - Captures the menu toggle click event and emits the menu open state in the detail.
- * @fires on-root-link-click - Captures the logo link click event and emits the original event details.
+ * @fires on-menu-toggle - Captures the menu toggle click event and emits the menu open state in the detail. `detail:{ origEvent: Event}`
+ * @fires on-root-link-click - Captures the logo link click event and emits the original event details. `detail:{ origEvent: Event}`
  * @slot unnamed - The default slot for all empty space right of the logo/title.
  * @slot logo - Slot for the logo, will overwrite the default logo.
  * @slot left - Slot left of the logo, intended for the header nav.

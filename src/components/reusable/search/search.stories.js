@@ -55,7 +55,7 @@ export const Search = {
         .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         .assistiveTextStrings=${args.assistiveTextStrings}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       ></kyn-search>
     `;
   },
@@ -91,7 +91,7 @@ export const SearchHistory = {
         .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         .assistiveTextStrings=${args.assistiveTextStrings}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       ></kyn-search>
     `;
   },
@@ -120,7 +120,7 @@ export const TypeAheadSuggestions = {
         .suggestions=${args.suggestions}
         expandableSearchBtnDescription=${args.expandableSearchBtnDescription}
         .assistiveTextStrings=${args.assistiveTextStrings}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       ></kyn-search>
     `;
   },

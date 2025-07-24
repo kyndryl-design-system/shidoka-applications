@@ -6,7 +6,7 @@ import '../tooltip';
 
 /**
  * Overflow Menu.
- * @fires on-click - Captures the click event and emits the original event details.
+ * @fires on-click - Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent }`
  * @slot unnamed - Slot for item text.
  */
 @customElement('kyn-overflow-menu-item')

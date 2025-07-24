@@ -63,7 +63,7 @@ const Template = (args) => {
       ?notResizeable=${args.notResizeable}
       maxRowsVisible=${args.maxRowsVisible}
       autoComplete=${args.autoComplete}
-      @on-input=${(e) => action(e.type)(e)}
+      @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       @keydown=${(e) => e.stopPropagation()}
       label=${args.label}
     >

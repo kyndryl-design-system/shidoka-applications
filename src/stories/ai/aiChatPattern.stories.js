@@ -42,8 +42,8 @@ export const ChatModal = {
         aiConnected
         disableScroll
         ?hideFooter=${selectedTabId === 'history'}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button-float-container slot="anchor">
           <kyn-ai-launch-btn

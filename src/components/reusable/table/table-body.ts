@@ -60,7 +60,7 @@ export class TableBody extends LitElement {
   /**
    * Handles the slot change event and dispatches a custom event with the updated rows.
    * @param {Event} e - The slot change event.
-   * @fires on-rows-change - Dispatched when the rows in the table body change.
+   * @fires on-rows-change - Dispatched when the rows in the table body change. `detail: { rows: Array<TableRow> }`
    * @private
    * @ignore
    */
