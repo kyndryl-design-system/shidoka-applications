@@ -40,7 +40,7 @@ const KEY = {
 } as const;
 
 /**
- * Dropdown, single select.
+ * Dropdown, single-/multi-select.
  * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ value: array }`
  * @fires on-search - Capture the search input event and emits the search text.`detail:{ searchText: string }`
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value. `detail:{ value: string }`
@@ -151,6 +151,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Button text when dropdownAnchor is 'button'. */
   @property({ type: String })
   accessor buttonText = '';
+
+  /** Controls whether checkboxes are visible in multi-select mode for Enhanced Dropdown only. */
+  @property({ type: Boolean })
+  accessor checkboxVisible = false;
 
   /** Internal text strings.
    * @internal
@@ -1134,6 +1138,17 @@ export class Dropdown extends FormMixin(LitElement) {
 
     if (changedProps.has('allowAddOption')) {
       this.updateChildOptions();
+    }
+
+    if (changedProps.has('checkboxVisible')) {
+      const enhancedOptions = Array.from(
+        this.querySelectorAll('kyn-enhanced-dropdown-option')
+      );
+      enhancedOptions.forEach((option: any) => {
+        option.checkboxVisible = this.checkboxVisible;
+
+        option.requestUpdate();
+      });
     }
   }
 

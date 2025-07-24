@@ -3,6 +3,7 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import '../button';
+import '../checkbox';
 import '../tag';
 
 import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/check.svg';
@@ -89,6 +90,10 @@ export class EnhancedDropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor indeterminate = false;
 
+  /** Controls whether checkboxes are visible in multi-select mode. */
+  @property({ type: Boolean })
+  accessor checkboxVisible = false;
+
   @property({ type: String, reflect: true })
   override accessor role = 'option';
 
@@ -109,6 +114,20 @@ export class EnhancedDropdownOption extends LitElement {
         @blur=${(e: any) => this.handleBlur(e)}
       >
         <div class="content">
+          ${this.multiple && this.checkboxVisible
+            ? html`
+                <kyn-checkbox
+                  type="checkbox"
+                  value=${this.value}
+                  .checked=${this.selected}
+                  ?checked=${this.selected}
+                  ?disabled=${this.disabled}
+                  notFocusable
+                  .indeterminate=${this.indeterminate}
+                >
+                </kyn-checkbox>
+              `
+            : null}
           ${this.hasIcon
             ? html`
                 <div class="icon-container">
