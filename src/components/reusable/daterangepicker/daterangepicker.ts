@@ -58,7 +58,7 @@ const _defaultTextStrings = {
 
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
- * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dataString: string,dates:[],source:string}`
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-date-range-picker')

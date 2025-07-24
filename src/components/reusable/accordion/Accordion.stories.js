@@ -45,7 +45,10 @@ export const Accordion = {
         expandLabel="${args.expandLabel}"
         collapseLabel="${args.collapseLabel}"
       >
-        <kyn-accordion-item opened @on-toggle=${(e) => action(e.type)(e)}>
+        <kyn-accordion-item
+          opened
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
           <span slot="title"> Accordion Title 1 </span>
           <span slot="subtitle"> Accordion subtitle 1 </span>
           <div slot="body">
@@ -54,7 +57,9 @@ export const Accordion = {
           </div>
         </kyn-accordion-item>
 
-        <kyn-accordion-item @on-toggle=${(e) => action(e.type)(e)}>
+        <kyn-accordion-item
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
           <span slot="title"> Accordion Title 2 </span>
           <span slot="subtitle"> Accordion subtitle 2 </span>
           <div slot="body">
@@ -63,7 +68,10 @@ export const Accordion = {
           </div>
         </kyn-accordion-item>
 
-        <kyn-accordion-item disabled @on-toggle=${(e) => action(e.type)(e)}>
+        <kyn-accordion-item
+          disabled
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
           <span slot="title"> Accordion Title 3 </span>
           <span slot="subtitle"> Accordion subtitle 3 </span>
           <div slot="body">
@@ -88,14 +96,10 @@ export const AccordionWithIcons = {
         expandLabel="${args.expandLabel}"
         collapseLabel="${args.collapseLabel}"
       >
-        <kyn-accordion-item opened @on-toggle=${(e) => action(e.type)(e)}>
-          <!-- <kd-icon
-            slot="icon"
-            .icon=${circleDashIcon}
-            role="img"
-            aria-label="in progress"
-            fill="var(--kd-color-text-placeholder)"
-          ></kd-icon> -->
+        <kyn-accordion-item
+          opened
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
           <span
             class="inProgress"
             slot="icon"
@@ -111,15 +115,9 @@ export const AccordionWithIcons = {
           </div>
         </kyn-accordion-item>
 
-        <kyn-accordion-item @on-toggle=${(e) => action(e.type)(e)}>
-          <!-- <kd-icon
-            slot="icon"
-            .icon=${checkmarkOutlineIcon}
-            role="img"
-            aria-label="complete"
-            fill="var(--kd-color-text-success)"
-          >
-          </kd-icon> -->
+        <kyn-accordion-item
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
           <span class="complete" slot="icon" role="img" aria-label="complete"
             >${unsafeSVG(checkmarkOutlineIcon)}</span
           >
@@ -131,14 +129,9 @@ export const AccordionWithIcons = {
           </div>
         </kyn-accordion-item>
 
-        <kyn-accordion-item @on-toggle=${(e) => action(e.type)(e)}>
-          <!-- <kd-icon
-            slot="icon"
-            .icon=${errorFilledIcon}
-            role="img"
-            aria-label="error"
-            fill="var(--kd-color-text-destructive)"
-          ></kd-icon> -->
+        <kyn-accordion-item
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
           <span class="error" slot="icon" role="img" aria-label="error"
             >${unsafeSVG(errorFilledIcon)}</span
           >

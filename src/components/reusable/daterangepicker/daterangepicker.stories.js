@@ -129,7 +129,7 @@ const Template = (args) => {
       .warningTitle=${args.warningTitle}
       .startDateLabel=${args.startDateLabel}
       .endDateLabel=${args.endDateLabel}
-      @on-change=${(e) => action(e.type)(e)}
+      @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
     </kyn-date-range-picker>
   `;
@@ -299,8 +299,8 @@ export const InModal = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
 
@@ -330,7 +330,7 @@ export const InModal = {
           .warningTitle=${args.warningTitle}
           .startDateLabel=${args.startDateLabel}
           .endDateLabel=${args.endDateLabel}
-          @on-change=${(e) => action(e.type)(e)}
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
         </kyn-date-range-picker>
       </kyn-modal>
@@ -380,8 +380,8 @@ export const DateRangePickerInAccordionInModal = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
 
@@ -393,7 +393,10 @@ export const DateRangePickerInAccordionInModal = {
           expandLabel="${args.expandLabel}"
           collapseLabel="${args.collapseLabel}"
         >
-          <kyn-accordion-item opened @on-toggle=${(e) => action(e.type)(e)}>
+          <kyn-accordion-item
+            opened
+            @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
             <span slot="title"> Accordion Title 1 </span>
             <span slot="subtitle"> Accordion subtitle 1 </span>
             <div slot="body">
@@ -423,13 +426,15 @@ export const DateRangePickerInAccordionInModal = {
                 .warningTitle=${args.warningTitle}
                 .startDateLabel=${args.startDateLabel}
                 .endDateLabel=${args.endDateLabel}
-                @on-change=${(e) => action(e.type)(e)}
+                @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
               >
               </kyn-date-range-picker>
             </div>
           </kyn-accordion-item>
 
-          <kyn-accordion-item @on-toggle=${(e) => action(e.type)(e)}>
+          <kyn-accordion-item
+            @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
             <span slot="title"> Accordion Title 2 </span>
             <span slot="subtitle"> Accordion subtitle 2 </span>
             <div slot="body">
@@ -438,7 +443,10 @@ export const DateRangePickerInAccordionInModal = {
             </div>
           </kyn-accordion-item>
 
-          <kyn-accordion-item disabled @on-toggle=${(e) => action(e.type)(e)}>
+          <kyn-accordion-item
+            disabled
+            @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
             <span slot="title"> Accordion Title 3 </span>
             <span slot="subtitle"> Accordion subtitle 3 </span>
             <div slot="body">

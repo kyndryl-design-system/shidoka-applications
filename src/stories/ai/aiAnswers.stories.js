@@ -122,5 +122,5 @@ const handleClick = (e) => {
   //   });
   // }, 400);
 
-  action(e.type)(e);
+  action(e.type)({ ...e, detail: e.detail });
 };

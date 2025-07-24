@@ -39,7 +39,7 @@ export const Default = {
         .textStrings=${args.textStrings}
         autoComplete=${args.autoComplete}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-color-input>
     `;

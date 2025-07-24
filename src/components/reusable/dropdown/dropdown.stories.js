@@ -100,7 +100,7 @@ export const Single = {
         .textStrings=${args.textStrings}
         value=${args.value}
         openDirection=${args.openDirection}
-        @on-change=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
@@ -442,8 +442,8 @@ export const SingleSearchable = {
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
         value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
-        @on-search=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
@@ -497,7 +497,7 @@ export const MultiSelect = {
         @on-change=${(e) => {
           const selectedValues = e.detail.value;
           args.value = selectedValues;
-          action(e.type)(e);
+          action(e.type)({ ...e, detail: e.detail });
         }}
       >
         <kyn-tooltip slot="tooltip">
@@ -550,9 +550,9 @@ export const MultiSelectSearchable = {
         @on-change=${(e) => {
           const selectedValues = e.detail.value;
           args.value = selectedValues;
-          action(e.type)(e);
+          action(e.type)({ ...e, detail: e.detail });
         }}
-        @on-search=${(e) => action(e.type)(e)}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
@@ -599,7 +599,7 @@ export const Grouped = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
@@ -659,7 +659,7 @@ export const DataDrivenOptions = {
       updateArgs({
         value: e.detail.value,
       });
-      action(e.type)(e);
+      action(e.type)({ ...e, detail: e.detail });
     };
 
     return html`
@@ -739,7 +739,7 @@ export const DirectionalControl = {
             name="auto-direction"
             openDirection="auto"
             .textStrings=${args.textStrings}
-            @on-change=${(e) => action(e.type)(e)}
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
             <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -753,7 +753,7 @@ export const DirectionalControl = {
             name="up-direction"
             openDirection="up"
             .textStrings=${args.textStrings}
-            @on-change=${(e) => action(e.type)(e)}
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
             <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -767,7 +767,7 @@ export const DirectionalControl = {
             name="down-direction"
             openDirection="down"
             .textStrings=${args.textStrings}
-            @on-change=${(e) => action(e.type)(e)}
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
             <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -799,7 +799,7 @@ export const AddNewOption = {
       updateArgs({
         value: e.detail.value,
       });
-      action(e.type)(e);
+      action(e.type)({ ...e, detail: e.detail });
     };
 
     const handleAddOption = (e, dropdownItems) => {
@@ -818,7 +818,7 @@ export const AddNewOption = {
         dropdownItems: newItems,
       });
 
-      action(e.type)(e);
+      action(e.type)({ ...e, detail: e.detail });
     };
 
     const handleRemoveOption = (e, dropdownItems) => {
@@ -833,7 +833,7 @@ export const AddNewOption = {
         value: newValue, // remove value if removed item was selected
       });
 
-      action(e.type)(e);
+      action(e.type)({ ...e, detail: e.detail });
     };
     return html`
       <style>

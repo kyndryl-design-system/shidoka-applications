@@ -135,7 +135,7 @@ export const Horizontal = {
     return html` <kyn-stepper
       stepperType=${args.stepperType}
       stepperSize=${args.stepperSize}
-      @on-click=${(e) => action(e.type)(e)}
+      @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       ${steps.map(
         (step) => html`
@@ -161,7 +161,7 @@ export const Vertical = {
         stepperType=${args.stepperType}
         stepperSize=${args.stepperSize}
         ?vertical=${true}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-stepper-item
           stepName="Step 1"
@@ -224,7 +224,7 @@ export const NestedSteps = {
         stepperType="procedure"
         stepperSize=${args.stepperSize}
         ?vertical=${true}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-stepper-item
           stepName="Step 1"
@@ -250,7 +250,7 @@ export const NestedSteps = {
             childState="completed"
             childLink="javascript:void(0)"
             childSubTitle="Optional subtitle"
-            @on-child-click=${(e) => action(e.type)(e)}
+            @on-child-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
           </kyn-stepper-item-child>
           <kyn-stepper-item-child
@@ -258,7 +258,7 @@ export const NestedSteps = {
             childTitle="Nested Step Title"
             childState="completed"
             childLink="javascript:void(0)"
-            @on-child-click=${(e) => action(e.type)(e)}
+            @on-child-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
           ></kyn-stepper-item-child>
         </kyn-stepper-item>
         <kyn-stepper-item
@@ -273,13 +273,13 @@ export const NestedSteps = {
             childState="active"
             childLink="javascript:void(0)"
             childSubTitle="Optional subtitle"
-            @on-child-click=${(e) => action(e.type)(e)}
+            @on-child-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
           </kyn-stepper-item-child>
           <kyn-stepper-item-child
             slot="child"
             childTitle="Nested Step Title"
-            @on-child-click=${(e) => action(e.type)(e)}
+            @on-child-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
           ></kyn-stepper-item-child>
         </kyn-stepper-item>
         <kyn-stepper-item

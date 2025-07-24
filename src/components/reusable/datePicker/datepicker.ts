@@ -52,7 +52,7 @@ const _defaultTextStrings = {
 
 /**
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
- * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dataString: string, dates: date, source: string }`
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-date-picker')

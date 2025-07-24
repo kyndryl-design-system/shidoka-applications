@@ -94,7 +94,7 @@ export const Button = {
         name=${args.name}
         value=${args.value}
         ?selected=${args.selected}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
       </kyn-button>
@@ -127,7 +127,7 @@ export const ButtonWithIcon = {
         name=${args.name}
         value=${args.value}
         ?selected=${args.selected}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
         <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
@@ -159,7 +159,7 @@ export const ButtonWithIconSplitLayout = {
         name=${args.name}
         value=${args.value}
         ?selected=${args.selected}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
         <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
@@ -190,7 +190,7 @@ export const IconOnly = {
         name=${args.name}
         value=${args.value}
         ?selected=${args.selected}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span style="display:flex;" slot="icon"
           >${unsafeSVG(chevronRightIcon)}</span

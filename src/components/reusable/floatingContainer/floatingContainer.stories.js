@@ -27,7 +27,7 @@ export const Default = {
         iconposition="left"
         description="Button 1"
         ?isFloating=${true}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >Button 1
         <span slot="icon">${unsafeSVG(chevronUpIcon)}</span>
       </kyn-button>
@@ -60,7 +60,7 @@ export const WithSecondaryButton = {
         iconposition="left"
         description="Button 1"
         ?isFloating=${true}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span class="test">Button 1</span>
         <span class="_icon" slot="icon">${unsafeSVG(chevronUpIcon)}</span>
@@ -71,7 +71,7 @@ export const WithSecondaryButton = {
         iconposition="left"
         description="Button 2"
         ?isFloating=${true}
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span class="test">Button 2</span>
         <span class="_icon" slot="icon">${unsafeSVG(chatIcon)}</span>
@@ -152,7 +152,7 @@ export const WithScroll = {
         ?isFloating=${true}
         ?showOnScroll=${true}
         description="Button 1"
-        @on-click=${(e) => action(e.type)(e)}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         Button 1
         <span slot="icon">${unsafeSVG(chevronUpIcon)}</span>

@@ -15,8 +15,8 @@ import './pagination-navigation-buttons';
  * navigate through large datasets by splitting them into discrete chunks.
  * Integrates with other utility components like items range display, page size dropdown,
  * and navigation buttons.
- * @fires on-page-size-change - Dispatched when the page size changes.
- * @fires on-page-number-change - Dispatched when the currently active page changes.
+ * @fires on-page-size-change - Dispatched when the page size changes.`detail:{ value: number }`
+ * @fires on-page-number-change - Dispatched when the currently active page changes.`detail:{ value: number }`
  *
  */
 @customElement('kyn-pagination')

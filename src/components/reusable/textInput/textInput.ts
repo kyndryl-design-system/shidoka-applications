@@ -31,7 +31,7 @@ const _defaultTextStrings = {
 
 /**
  * Text input.
- * @fires on-input - Captures the input event and emits the selected value and original event details.
+ * @fires on-input - Captures the input event and emits the selected value and original event details.`detail:{ origEvent: InputEvent, value: string }`
  * @prop {string} pattern - RegEx pattern to validate.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
