@@ -227,18 +227,14 @@ export class DropdownAnchor extends LitElement {
     }
 
     return html`
-      <span
-        class="${classMap({
-          'placeholder-text': this.text === '',
-        })}"
-      >
-        ${this.multiple
-          ? this.placeholder
-          : this.value === '' ||
-            (Array.isArray(this.value) && !this.value.length)
-          ? this.placeholder
-          : this.text}
-      </span>
+      <input
+        class="select-placeholder"
+        type="text"
+        placeholder=${this.placeholder}
+        readonly
+        tabindex="-1"
+        aria-readonly="true"
+      />
     `;
   }
 

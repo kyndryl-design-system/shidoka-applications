@@ -128,7 +128,6 @@ export const Enhanced = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
-    placeholder: 'Select an option',
   },
   parameters: {
     backgrounds: {
@@ -280,7 +279,6 @@ export const EnhancedMultiSelect = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
-    placeholder: 'Select options...',
     value: ['option-1', 'option-2'],
   },
   parameters: {
@@ -292,7 +290,6 @@ export const EnhancedMultiSelect = {
     return html`
       <kyn-dropdown
         label=${args.label}
-        placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
         name=${args.name}
@@ -352,7 +349,6 @@ export const EnhancedSearchable = {
   args: {
     ...args,
     label: 'Enhanced Searchable Options',
-    placeholder: 'Search options...',
     filterSearch: true,
   },
   render: (args) => {
@@ -364,7 +360,6 @@ export const EnhancedSearchable = {
       </style>
       <kyn-dropdown
         label=${args.label}
-        placeholder=${args.placeholder}
         size=${args.size}
         ?inline=${args.inline}
         name=${args.name}
