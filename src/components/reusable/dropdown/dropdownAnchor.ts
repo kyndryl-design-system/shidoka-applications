@@ -136,7 +136,10 @@ export class DropdownAnchor extends LitElement {
             @keydown=${this._handleKeydown}
             @blur=${this._handleBlur}
           >
-            ${this.buttonText || this.placeholder || 'Select option'}
+            ${this.buttonText ||
+            this.text ||
+            this.placeholder ||
+            'Select option'}
             <span
               slot="icon"
               style="transform: ${this.open
@@ -231,6 +234,7 @@ export class DropdownAnchor extends LitElement {
         class="select-placeholder"
         type="text"
         placeholder=${this.placeholder}
+        value=${this.text || ''}
         readonly
         tabindex="-1"
         aria-readonly="true"

@@ -72,11 +72,6 @@ export const Single = {
   args: {
     ...args,
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
   render: (args) => {
     return html`
       <style>
@@ -128,12 +123,6 @@ export const Enhanced = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
-  },
-  parameters: {
-    backgrounds: {
-      default: 'white',
-      values: [{ name: 'white', value: '#ffffff' }],
-    },
   },
   render: (args) => {
     return html`
@@ -201,22 +190,8 @@ export const EnhancedButtonAnchor = {
     dropdownAnchor: 'button',
     buttonText: 'Options',
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
   render: (args) => {
     return html`
-      <style>
-        kyn-dropdown {
-          min-width: 240px;
-        }
-
-        label {
-          display: block;
-        }
-      </style>
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -280,11 +255,6 @@ export const EnhancedMultiSelect = {
     ...args,
     label: 'Enhanced Dropdown Options',
     value: ['option-1', 'option-2'],
-  },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
   },
   render: (args) => {
     return html`
@@ -463,11 +433,6 @@ export const SingleSearchable = {
 
 export const MultiSelect = {
   args: { ...args, value: ['1', '3'] },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -572,11 +537,6 @@ export const MultiSelectSearchable = {
 
 export const Grouped = {
   args: args,
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -642,11 +602,6 @@ const items = [
 
 export const DataDrivenOptions = {
   args: { ...args, value: ['option2'] },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
   render: (args) => {
     const [{ value }, updateArgs] = useArgs();
 
@@ -701,11 +656,6 @@ export const DirectionalControl = {
     label: 'Open Direction Control',
     placeholder: 'Choose direction',
     openDirection: 'auto',
-  },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
   },
   render: (args) => {
     return html`
@@ -781,11 +731,6 @@ export const AddNewOption = {
     allowAddOption: true,
     items: items,
     dropdownItems: items,
-  },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
   },
   render: (args) => {
     const [{ dropdownItems, value }, updateArgs] = useArgs();
