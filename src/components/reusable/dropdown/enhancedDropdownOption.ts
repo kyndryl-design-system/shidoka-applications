@@ -18,6 +18,7 @@ import EnhancedDropdownOptionScss from './enhancedDropdownOption.scss?inline';
  * @slot title - Slot for option title text.
  * @slot tag - Slot for inline tag appended to title.
  * @slot description - Slot for option description text.
+ * @slot optionType - Slot for option type label.
  * @slot unnamed - Fallback slot for simple text content.
  */
 @customElement('kyn-enhanced-dropdown-option')
@@ -79,6 +80,10 @@ export class EnhancedDropdownOption extends LitElement {
   /** Track if tag slot has content */
   @state()
   accessor hasTag = false;
+
+  /** Track if optionType slot has content */
+  @state()
+  accessor hasOptionType = false;
 
   /** Determines whether the checkbox is in an indeterminate state. */
   @property({ type: Boolean, reflect: true })
@@ -189,6 +194,24 @@ export class EnhancedDropdownOption extends LitElement {
                     style="display: none;"
                   ></slot>
                 `}
+            ${this.hasOptionType
+              ? html`
+                  <div class="option-type">
+                    <slot
+                      name="optionType"
+                      @slotchange=${(e: any) =>
+                        this.handleOptionTypeSlotChange(e)}
+                    ></slot>
+                  </div>
+                `
+              : html`
+                  <slot
+                    name="optionType"
+                    @slotchange=${(e: any) =>
+                      this.handleOptionTypeSlotChange(e)}
+                    style="display: none;"
+                  ></slot>
+                `}
           </div>
         </div>
 
@@ -266,6 +289,17 @@ export class EnhancedDropdownOption extends LitElement {
   private handleTagSlotChange(e: any) {
     const nodes = e.target.assignedNodes({ flatten: true });
     this.hasTag =
+      nodes.length > 0 &&
+      nodes.some(
+        (node: Node) =>
+          node.nodeType === Node.ELEMENT_NODE ||
+          (node.nodeType === Node.TEXT_NODE && node.textContent?.trim())
+      );
+  }
+
+  private handleOptionTypeSlotChange(e: any) {
+    const nodes = e.target.assignedNodes({ flatten: true });
+    this.hasOptionType =
       nodes.length > 0 &&
       nodes.some(
         (node: Node) =>

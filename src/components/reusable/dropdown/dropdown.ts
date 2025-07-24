@@ -212,32 +212,11 @@ export class Dropdown extends FormMixin(LitElement) {
   accessor dropdownAnchorEl!: any;
 
   /**
-   * Queries the .search DOM element.
-   * @ignore
-   */
-  @query('.search')
-  accessor searchEl!: HTMLInputElement;
-
-  /**
-   * Queries the .select DOM element.
-   * @ignore
-   */
-  @query('.select')
-  accessor buttonEl!: HTMLElement;
-
-  /**
    * Queries the .options DOM element.
    * @ignore
    */
   @query('.options')
   accessor listboxEl!: HTMLElement;
-
-  /**
-   * Queries the .clear-multiple DOM element.
-   * @ignore
-   */
-  @query('.clear-multiple')
-  accessor clearMultipleEl!: HTMLElement;
 
   /**
    * Queries the .add-option-input DOM element.
@@ -423,7 +402,7 @@ export class Dropdown extends FormMixin(LitElement) {
       case KEY.Escape:
         this.newOptionValue = '';
         this.open = false;
-        this.buttonEl.focus();
+        this.dropdownAnchorEl?._handleFocus();
         break;
       case KEY.ArrowDown:
         this.handleKeyboard(e, 40, 'addOption');
@@ -617,7 +596,7 @@ export class Dropdown extends FormMixin(LitElement) {
       (option: any) => option.highlighted
     );
     const selectedEl = visibleOptions.find((option: any) => option.selected);
-    let highlightedIndex = highlightedEl
+    const highlightedIndex = highlightedEl
       ? visibleOptions.indexOf(highlightedEl)
       : visibleOptions.find((option: any) => option.selected)
       ? visibleOptions.indexOf(selectedEl)
@@ -631,20 +610,11 @@ export class Dropdown extends FormMixin(LitElement) {
     const isListboxElOpened = this.open;
     // open the listbox
     if (target === 'button' || target === 'addOption') {
-      let openDropdown =
+      const openDropdown =
         SPACEBAR_KEY_CODE.includes(keyCode) ||
         keyCode === ENTER_KEY_CODE ||
         keyCode == DOWN_ARROW_KEY_CODE ||
         keyCode == UP_ARROW_KEY_CODE;
-
-      if (e.target === this.clearMultipleEl && keyCode === ENTER_KEY_CODE) {
-        openDropdown = false;
-        visibleOptions[highlightedIndex].highlighted = false;
-        visibleOptions[highlightedIndex].selected =
-          !visibleOptions[highlightedIndex].selected;
-        highlightedIndex = 0;
-        if (keyCode !== ENTER_KEY_CODE) return;
-      }
 
       if (openDropdown) {
         this.open = true;
@@ -658,7 +628,6 @@ export class Dropdown extends FormMixin(LitElement) {
             this.addOptionInputEl?.focus();
           }, 100);
         } else {
-          // scroll to highlighted option
           if (!this.multiple && this.value !== '') {
             visibleOptions[highlightedIndex].scrollIntoView({
               block: 'nearest',
@@ -671,7 +640,6 @@ export class Dropdown extends FormMixin(LitElement) {
       case 0:
       case 32:
       case ENTER_KEY_CODE: {
-        // select highlighted option
         visibleOptions[highlightedIndex].highlighted = true;
         if (isListboxElOpened) {
           if (this.multiple) {
@@ -744,12 +712,8 @@ export class Dropdown extends FormMixin(LitElement) {
         // close listbox
         this.open = false;
 
-        // restore focus
-        if (this.searchable) {
-          this.searchEl.focus();
-        } else {
-          this.buttonEl.focus();
-        }
+        // restore focus to dropdown anchor
+        this.dropdownAnchorEl?._handleFocus();
 
         this.assistiveText = 'Dropdown menu options.';
         return;
@@ -803,7 +767,6 @@ export class Dropdown extends FormMixin(LitElement) {
     // reset search input text
     this.text = '';
     this.searchText = '';
-    this.searchEl.value = '';
 
     this._emitSearch();
 
@@ -867,7 +830,7 @@ export class Dropdown extends FormMixin(LitElement) {
     // close listbox
     if (e.keyCode === ESCAPE_KEY_CODE) {
       this.open = false;
-      this.buttonEl.focus();
+      this.dropdownAnchorEl?._handleFocus();
     }
   }
 
@@ -1040,11 +1003,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // reset focus
     if (!this.multiple) {
-      if (this.searchable) {
-        this.searchEl.focus();
-      } else {
-        this.buttonEl.focus();
-      }
+      this.dropdownAnchorEl?._handleFocus();
     }
   }
 
@@ -1065,8 +1024,7 @@ export class Dropdown extends FormMixin(LitElement) {
     const ValidationMessage =
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
-    const validationAnchor =
-      this.dropdownAnchorEl?.getValidationAnchor() || this.buttonEl;
+    const validationAnchor = this.dropdownAnchorEl?.getValidationAnchor();
 
     if (validationAnchor instanceof HTMLElement) {
       this._internals.setValidity(
@@ -1152,9 +1110,12 @@ export class Dropdown extends FormMixin(LitElement) {
         this._openUpwards = false;
       } else if (this.open) {
         const openThreshold = 0.6;
-        this._openUpwards =
-          this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * openThreshold;
+        const anchorElement = this.dropdownAnchorEl?.getValidationAnchor();
+        if (anchorElement) {
+          this._openUpwards =
+            anchorElement.getBoundingClientRect().top >
+            window.innerHeight * openThreshold;
+        }
       }
 
       if (this.open && !this.multiple) {
@@ -1169,10 +1130,6 @@ export class Dropdown extends FormMixin(LitElement) {
       this.options.forEach((option: any) => {
         option.multiple = this.multiple;
       });
-    }
-
-    if (changedProps.has('searchText') && this.searchEl) {
-      this.searchEl.value = this.searchText;
     }
 
     if (changedProps.has('allowAddOption')) {
@@ -1193,9 +1150,35 @@ export class Dropdown extends FormMixin(LitElement) {
       if (Options) {
         Options.forEach((option: any) => {
           if (option.selected) {
+            let tagText = '';
+
+            if (option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION') {
+              tagText = option.text || '';
+
+              if (!tagText) {
+                const titleSlot = option.querySelector('[slot="title"]');
+                if (titleSlot) {
+                  tagText = titleSlot.textContent?.trim() || '';
+                } else {
+                  const textNodes = Array.from(option.childNodes).filter(
+                    (node: any) =>
+                      node.nodeType === Node.TEXT_NODE ||
+                      (node.nodeType === Node.ELEMENT_NODE &&
+                        !node.hasAttribute('slot'))
+                  );
+                  tagText = textNodes
+                    .map((node: any) => node.textContent?.trim() || '')
+                    .join('')
+                    .trim();
+                }
+              }
+            } else {
+              tagText = option.textContent?.trim() || '';
+            }
+
             Tags.push({
               value: option.value,
-              text: option.text || option.textContent,
+              text: tagText,
               disabled: option.disabled,
             });
           }
@@ -1234,7 +1217,7 @@ export class Dropdown extends FormMixin(LitElement) {
     this.assistiveText = 'MY option removed ';
     setTimeout(() => {
       this.open = false;
-      this.buttonEl.focus();
+      this.dropdownAnchorEl?._handleFocus();
     }, 100);
   }
 
@@ -1257,10 +1240,9 @@ export class Dropdown extends FormMixin(LitElement) {
         }
       }
 
-      // set search input value
+      // Note: search input value is now handled by dropdownAnchor
       if (this.searchable && this.text) {
         this.searchText = this.text === this.placeholder ? '' : this.text;
-        this.searchEl.value = this.searchText;
       }
     }
   }

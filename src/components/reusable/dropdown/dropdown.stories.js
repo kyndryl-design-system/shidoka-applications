@@ -143,15 +143,16 @@ export const Enhanced = {
         value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-enhanced-dropdown-option value="option-1">
+        <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
           <span slot="title">Option 1</span>
           <span slot="description"
             >This is a description for the Option 1 enhanced dropdown
             option.</span
           >
+          <span slot="optionType">Type: Global</span>
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-2">
+        <kyn-enhanced-dropdown-option value="2">
           <span slot="icon">${unsafeSVG(aiOpsIcon)}</span>
           <span slot="title">Option 2</span>
           <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
@@ -159,16 +160,18 @@ export const Enhanced = {
             >This is a description for the Option 2 enhanced dropdown
             option.</span
           >
+          <span slot="optionType">Type: Private</span>
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-3">
+        <kyn-enhanced-dropdown-option value="3">
           <span slot="icon">${unsafeSVG(boxIcon)}</span>
           <span slot="title">Option 3</span>
           <span slot="description"
             >This is a description for the Option 3 enhanced dropdown
             option.</span
           >
+          <span slot="optionType">Type: Global</span>
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-4">
+        <kyn-enhanced-dropdown-option value="4">
           <span slot="icon">${unsafeSVG(branchIcon)}</span>
           <span slot="title">Option 4</span>
           <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
@@ -176,6 +179,7 @@ export const Enhanced = {
             >This is a description for the Option 4 enhanced dropdown
             option.</span
           >
+          <span slot="optionType">Type: Global</span>
         </kyn-enhanced-dropdown-option>
       </kyn-dropdown>
     `;
@@ -211,7 +215,7 @@ export const EnhancedButtonAnchor = {
         value=${args.value}
         @on-change=${(e) => action(e.type)(e)}
       >
-        <kyn-enhanced-dropdown-option value="option-1">
+        <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
           <span slot="title">Option 1</span>
           <span slot="description"
@@ -219,7 +223,7 @@ export const EnhancedButtonAnchor = {
             option.</span
           >
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-2">
+        <kyn-enhanced-dropdown-option value="2">
           <span slot="icon">${unsafeSVG(aiOpsIcon)}</span>
           <span slot="title">Option 2</span>
           <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
@@ -228,7 +232,7 @@ export const EnhancedButtonAnchor = {
             option.</span
           >
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-3">
+        <kyn-enhanced-dropdown-option value="3">
           <span slot="icon">${unsafeSVG(boxIcon)}</span>
           <span slot="title">Option 3</span>
           <span slot="description"
@@ -236,7 +240,7 @@ export const EnhancedButtonAnchor = {
             option.</span
           >
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-4">
+        <kyn-enhanced-dropdown-option value="4">
           <span slot="icon">${unsafeSVG(branchIcon)}</span>
           <span slot="title">Option 4</span>
           <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
@@ -254,7 +258,7 @@ export const EnhancedMultiSelect = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
-    value: ['option-1', 'option-2'],
+    value: ['1', '2'],
   },
   render: (args) => {
     return html`
@@ -282,28 +286,28 @@ export const EnhancedMultiSelect = {
           action(e.type)(e);
         }}
       >
-        <kyn-enhanced-dropdown-option value="option-1">
+        <kyn-enhanced-dropdown-option value="1">
           <span slot="title">Option 1</span>
           <span slot="description"
             >This is a description for the Option 1 enhanced dropdown
             option.</span
           >
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-2">
+        <kyn-enhanced-dropdown-option value="2">
           <span slot="title">Option 2</span>
           <span slot="description"
             >This is a description for the Option 2 enhanced dropdown
             option.</span
           >
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-3">
+        <kyn-enhanced-dropdown-option value="3">
           <span slot="title">Option 3</span>
           <span slot="description"
             >This is a description for the Option 3 enhanced dropdown
             option.</span
           >
         </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="option-4">
+        <kyn-enhanced-dropdown-option value="4">
           <span slot="title">Option 4</span>
           <span slot="description"
             >This is a description for the Option 4 enhanced dropdown
