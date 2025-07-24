@@ -48,7 +48,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-540521&p=f&m=dev',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=13361-476952&m=dev',
     },
   },
 };
@@ -110,7 +110,7 @@ export const EnhancedDefault = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-enhanced-dropdown-option value="1">
           <span slot="title">Option 1</span>
@@ -177,7 +177,7 @@ export const EnhancedWithIcons = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
@@ -253,7 +253,7 @@ export const EnhancedButtonAnchor = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
@@ -300,6 +300,81 @@ export const EnhancedMultiSelect = {
     label: 'Enhanced Dropdown Options',
     value: ['1', '2'],
     multiple: true,
+    checkboxVisible: false,
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 300px;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?multiple=${args.multiple}
+        ?searchable=${args.searchable}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        ?hideTags=${args.hideTags}
+        ?filterSearch=${args.filterSearch}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        ?checkboxVisible=${args.checkboxVisible}
+        .textStrings=${args.textStrings}
+        .value=${args.value}
+        @on-change=${(e) => {
+          const selectedValues = e.detail.value;
+          args.value = selectedValues;
+          action(e.type)({ ...e, detail: e.detail });
+        }}
+      >
+        <kyn-enhanced-dropdown-option value="1">
+          <span slot="title">Option 1</span>
+          <span slot="description"
+            >This is a description for the Option 1 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="2">
+          <span slot="title">Option 2</span>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="3">
+          <span slot="title">Option 3</span>
+          <span slot="description"
+            >This is a description for the Option 3 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="4">
+          <span slot="title">Option 4</span>
+          <span slot="description"
+            >This is a description for the Option 4 enhanced dropdown
+            option.</span
+          >
+        </kyn-enhanced-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const EnhancedCheckboxMultiSelect = {
+  args: {
+    ...args,
+    label: 'Enhanced Dropdown Options',
+    value: ['1', '2'],
+    multiple: true,
     checkboxVisible: true,
   },
   render: (args) => {
@@ -333,7 +408,7 @@ export const EnhancedMultiSelect = {
         @on-change=${(e) => {
           const selectedValues = e.detail.value;
           args.value = selectedValues;
-          action(e.type)(e);
+          action(e.type)({ ...e, detail: e.detail });
         }}
       >
         <kyn-enhanced-dropdown-option value="1">
@@ -374,6 +449,7 @@ export const EnhancedSearchable = {
     ...args,
     label: 'Enhanced Searchable Options',
     filterSearch: true,
+    searchable: true,
   },
   render: (args) => {
     return html`
@@ -388,7 +464,7 @@ export const EnhancedSearchable = {
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
-        searchable
+        ?searchable=${args.searchable}
         ?filterSearch=${args.filterSearch}
         ?required=${args.required}
         ?disabled=${args.disabled}
@@ -398,8 +474,81 @@ export const EnhancedSearchable = {
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
         value=${args.value}
-        @on-change=${(e) => action(e.type)(e)}
-        @on-search=${(e) => action(e.type)(e)}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-enhanced-dropdown-option value="javascript">
+          <span slot="title">JavaScript</span>
+          <span slot="description"
+            >Dynamic programming language for web development</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="typescript">
+          <span slot="title">TypeScript</span>
+          <span slot="description"
+            >Typed superset of JavaScript that compiles to plain
+            JavaScript</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="python">
+          <span slot="title">Python</span>
+          <span slot="description"
+            >High-level programming language with readable syntax</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="rust">
+          <span slot="title">Rust</span>
+          <span slot="description"
+            >Systems programming language focused on safety and
+            performance</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="go">
+          <span slot="title">Go</span>
+          <span slot="description"
+            >Open source programming language that makes it easy to build
+            simple, reliable, and efficient software</span
+          >
+        </kyn-enhanced-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const EnhancedSearchableMultiSelect = {
+  args: {
+    ...args,
+    label: 'Enhanced Searchable Options',
+    filterSearch: true,
+    searchable: true,
+    multiple: true,
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 20rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?searchable=${args.searchable}
+        ?multiple=${args.multiple}
+        ?filterSearch=${args.filterSearch}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-enhanced-dropdown-option value="javascript">
           <span slot="title">JavaScript</span>

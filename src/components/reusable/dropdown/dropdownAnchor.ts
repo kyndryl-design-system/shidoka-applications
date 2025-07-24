@@ -90,6 +90,10 @@ export class DropdownAnchor extends LitElement {
   @property({ type: String })
   accessor buttonText = '';
 
+  /** Text strings for internationalization. */
+  @property({ type: Object })
+  accessor textStrings: any = {};
+
   /**
    * Queries the .search DOM element.
    * @ignore
@@ -174,19 +178,40 @@ export class DropdownAnchor extends LitElement {
           >
             ${this.multiple && this.value.length
               ? html`
-                  <button
-                    class="clear-multiple"
-                    aria-label="${this.value
-                      .length} items selected. Clear selections"
+                  <kyn-button
                     ?disabled=${this.disabled}
-                    title=${this.clearText}
+                    class="clear-button dropdown-clear"
+                    kind="ghost"
+                    size="small"
+                    description=${this.textStrings.clearAll}
                     @click=${this._handleClearMultiple}
                   >
-                    ${this.value.length}
                     <span style="display:flex;" slot="icon"
                       >${unsafeSVG(clearIcon)}</span
                     >
-                  </button>
+                  </kyn-button>
+                `
+              : null}
+            ${this.searchable && this.searchText
+              ? html`
+                  <kyn-button
+                    ?disabled=${this.disabled}
+                    class="clear-button dropdown-clear"
+                    kind="ghost"
+                    size="small"
+                    description=${this.textStrings.clearAll}
+                    @click=${() => {
+                      this.clearSearch();
+                      this._emitEvent('search-input', {
+                        value: '',
+                        originalEvent: null,
+                      });
+                    }}
+                  >
+                    <span style="display:flex;" slot="icon"
+                      >${unsafeSVG(clearIcon)}</span
+                    >
+                  </kyn-button>
                 `
               : null}
             ${this._renderAnchorContent()}
@@ -218,7 +243,6 @@ export class DropdownAnchor extends LitElement {
           class="search"
           type="text"
           placeholder=${this.placeholder}
-          value=${this.searchText}
           ?disabled=${this.disabled}
           aria-disabled=${this.disabled}
           @keydown=${this._handleSearchKeydown}
@@ -274,6 +298,13 @@ export class DropdownAnchor extends LitElement {
       value: target.value,
       originalEvent: e,
     });
+  }
+
+  clearSearch() {
+    if (this.searchEl) {
+      this.searchEl.value = '';
+      this.searchText = '';
+    }
   }
 
   private _handleSearchBlur(e: FocusEvent) {

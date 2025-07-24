@@ -13,7 +13,7 @@ import EnhancedDropdownOptionScss from './enhancedDropdownOption.scss?inline';
 
 /**
  * Enhanced Dropdown option with rich content support.
- * @fires on-click - Emits the option details to the parent dropdown.
+ * @fires on-click - Emits the option details to the parent dropdown. `detail:{ selected: boolean, value: string, origEvent: PointerEvent }`
  * @fires on-remove-option - Emits the option that is removed.
  * @slot icon - Slot for option icon. Icon size should be 16px only.
  * @slot title - Slot for option title text.
@@ -235,7 +235,7 @@ export class EnhancedDropdownOption extends LitElement {
         </div>
 
         <div class="status-icons">
-          ${this.selected
+          ${this.selected && !(this.multiple && this.checkboxVisible)
             ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
             : null}
           ${this.allowAddOption && this.removable
@@ -292,6 +292,8 @@ export class EnhancedDropdownOption extends LitElement {
     if (text) {
       this.text = text;
     }
+
+    this.updateTextContent();
   }
 
   private handleDescriptionSlotChange(e: any) {
@@ -343,6 +345,19 @@ export class EnhancedDropdownOption extends LitElement {
 
       this.text = text;
     }
+    this.updateTextContent();
+  }
+
+  /**
+   * @private
+   */
+  private updateTextContent() {
+    requestAnimationFrame(() => {
+      Object.defineProperty(this, 'textContent', {
+        get: () => this.text,
+        configurable: true,
+      });
+    });
   }
 
   private handleRemoveClick(e: Event) {

@@ -24,8 +24,7 @@ export default {
       control: { type: 'select' },
     },
     anchorType: {
-      options: ['input', 'button'],
-      control: { type: 'select' },
+      table: { disable: true },
     },
     checkboxVisible: {
       table: { disable: true },
