@@ -31,15 +31,12 @@ const _defaultTextStrings = {
 
 /**
  * Text input.
- * @fires on-input - Captures the input event and emits the selected value and validation state.`detail:{ origEvent: InputEvent, value: string, isValid: boolean, validity: ValidityState, validationMessage: string }`
+ * @fires on-input - Captures the input event and emits the selected value and original event details.`detail:{ origEvent: InputEvent, value: string }`
  * @prop {string} pattern - RegEx pattern to validate.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot icon - Slot for contextual icon.
  * @slot tooltip - Slot for tooltip.
- * @attr {string} [value=''] - The value of the input.
- * @attr {string} [name=''] - The name of the input, used for form submission.
- * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  *
  */
 @customElement('kyn-text-input')
@@ -198,7 +195,7 @@ export class TextInput extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
-            autocomplete=${this.autoComplete as any}
+            autocomplete=${this.autoComplete}
           />
           ${this.type === 'password' && !this.readonly
             ? html`
@@ -293,10 +290,6 @@ export class TextInput extends FormMixin(LitElement) {
   private _emitValue(e?: any) {
     const Detail: any = {
       value: this.value,
-      isValid: !this._isInvalid,
-      validity: this._inputEl.validity,
-      validationMessage:
-        this._internalValidationMsg || this._inputEl.validationMessage,
     };
     if (e) {
       Detail.origEvent = e;

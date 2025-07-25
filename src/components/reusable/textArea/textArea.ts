@@ -17,13 +17,10 @@ const _defaultTextStrings = {
 
 /**
  * Text area.
- * @fires on-input - Captures the input event and emits the selected value and validation state. `detail:{ origEvent: InputEvent, value: string, isValid: boolean, validity: ValidityState, validationMessage: string }`
+ * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot tooltip - Slot for tooltip.
- * @attr {string} [value=''] - The value of the input.
- * @attr {string} [name=''] - The name of the input, used for form submission.
- * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-text-area')
 export class TextArea extends FormMixin(LitElement) {
@@ -152,7 +149,7 @@ export class TextArea extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
-            autocomplete=${this.autoComplete as any}
+            autocomplete=${this.autoComplete}
             @input=${(e: any) => this.handleInput(e)}
           >
 ${this.value}</textarea
@@ -211,10 +208,6 @@ ${this.value}</textarea
     const event = new CustomEvent('on-input', {
       detail: {
         value: e.target.value,
-        isValid: !this._isInvalid,
-        validity: this.textareaEl.validity,
-        validationMessage:
-          this._internalValidationMsg || this.textareaEl.validationMessage,
         origEvent: e,
       },
     });
