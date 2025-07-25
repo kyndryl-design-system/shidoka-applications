@@ -18,9 +18,12 @@ const _defaultTextStrings = {
 /**
  * Text area.
  * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`
- * @prop {number} minLength - Minimum number of characters.
+ @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [value=''] - The value of the input.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-text-area')
 export class TextArea extends FormMixin(LitElement) {
