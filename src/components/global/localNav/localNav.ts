@@ -26,7 +26,7 @@ const _defaultTextStrings = {
  * The global Side Navigation component.
  * @slot unnamed - The default slot, for local nav links.
  * @slot search - Slot for a search input
- * @fires on-toggle - Captures the click event and emits the pinned state and original event details.
+ * @fires on-toggle - Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`
  */
 @customElement('kyn-local-nav')
 export class LocalNav extends LitElement {

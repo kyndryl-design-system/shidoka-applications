@@ -7,8 +7,8 @@ import TagScss from './tag.scss?inline';
 
 /**
  * Tag.
- * @fires on-close - Captures the close event and emits the Tag value. Works with filterable tags.
- * @fires on-click - Captures the click event and emits the Tag value. Works with clickable tags.
+ * @fires on-close - Captures the close event and emits the Tag value. Works with filterable tags. `detail:{ origEvent: PointerEvent,value: string }`
+ * @fires on-click - Captures the click event and emits the Tag value. Works with clickable tags. `detail:{ origEvent: PointerEvent,value: string }`
  * @slot unnamed - Slot for icon.
  */
 

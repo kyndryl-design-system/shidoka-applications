@@ -65,7 +65,7 @@ export const Continuous = {
         ?editableInput=${args.editableInput}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
     `;
@@ -91,7 +91,7 @@ export const Discrete = {
         ?editableInput=${args.editableInput}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
 
@@ -111,7 +111,7 @@ export const Discrete = {
         ?enableTickMarker=${true}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
       <div class="heading kd-type--headline-06">With Scale Marker</div>
@@ -130,7 +130,7 @@ export const Discrete = {
         ?enableScaleMarker=${true}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
     `;
@@ -156,7 +156,7 @@ export const WithButtonControls = {
         .textStrings=${args.textStrings}
         label=${args.label}
         ?enableButtonControls=${true}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
     `;
@@ -181,7 +181,7 @@ export const WithNumberInput = {
         ?editableInput=${args.editableInput}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
     `;
@@ -200,7 +200,7 @@ export const CustomLabels = {
         ?enableTooltip=${true}
         ?enableScaleMarker=${true}
         label="Label"
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
     `;
@@ -220,7 +220,7 @@ export const Disabled = {
         ?enableTickMarker=${true}
         ?enableScaleMarker=${true}
         label="Label"
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-slider-input>
     `;

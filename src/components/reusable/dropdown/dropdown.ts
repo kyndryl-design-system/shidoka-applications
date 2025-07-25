@@ -40,13 +40,15 @@ const KEY = {
 
 /**
  * Dropdown, single select.
- * @fires on-change - Captures the input event and emits the selected value and original event details.
- * @fires on-search - Capture the search input event and emits the search text.
- * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
- * @fires on-add-option - Captures the add button click and emits the newly added option.
- * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value.
+ * @fires on-change - Captures the dropdown change event and emits the selected value and original event details. `detail:{ value: string/array }`
+ * @fires on-search - Capture the search input event and emits the search text.`detail:{ searchText: string }`
+ * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value. `detail:{ value: array }`
+ * @fires on-add-option - Captures the add button click and emits the newly added option. `detail:{ value: string }`
  * @slot unnamed - Slot for dropdown options.
  * @slot tooltip - Slot for tooltip.
+ * @attr {string/array} [value=''/[]] - The selected value(s) of the input. For single select, it is a string. For multi-select, it is an array of strings.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {

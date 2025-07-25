@@ -99,7 +99,7 @@ export const Widget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            @on-select=${(e) => action(e.type)(e)}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
           </kyn-widget>
@@ -133,7 +133,7 @@ export const SelectableWidget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            @on-select=${(e) => action(e.type)(e)}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
           </kyn-widget>
@@ -158,7 +158,7 @@ export const WithActions = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            @on-select=${(e) => action(e.type)(e)}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
               slot="actions"
@@ -205,7 +205,7 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            @on-select=${(e) => action(e.type)(e)}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
 
@@ -234,7 +234,7 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            @on-select=${(e) => action(e.type)(e)}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
 
@@ -288,7 +288,7 @@ export const WithChart = {
           ?selected=${args.selected}
           ?compact=${args.compact}
           ?removeHeader=${args.removeHeader}
-          @on-select=${(e) => action(e.type)(e)}
+          @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kd-chart
             type="bar"

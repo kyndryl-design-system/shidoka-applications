@@ -7,7 +7,7 @@ import FooterScss from './footer.scss?inline';
 
 /**
  * The global Footer component.
- * @fires on-root-link-click - Captures the logo link click event and emits the original event.
+ * @fires on-root-link-click - Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`
  * @slot unnamed - Default slot, for links.
  * @slot logo - Slot for the logo, will overwrite the default logo.
  * @slot copyright - Slot for the copyright text.

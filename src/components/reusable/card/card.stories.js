@@ -107,7 +107,7 @@ export const Clickable = {
         ?highlight=${args.highlight}
         role="link"
         aria-label="Clickable card"
-        @on-card-click=${(e) => action(e.type)(e)}
+        @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <sample-card-component>
           <div slot="title">This is a card title</div>

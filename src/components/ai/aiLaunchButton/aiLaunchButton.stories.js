@@ -43,7 +43,7 @@ export const Default = {
     <kyn-button-float-container>
       <kyn-ai-launch-btn
         ?disabled="${args.disabled}"
-        @on-click=${() => action('on-click')()}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       ></kyn-ai-launch-btn>
     </kyn-button-float-container>
   `,
@@ -72,7 +72,7 @@ export const Disabled = {
     <kyn-button-float-container>
       <kyn-ai-launch-btn
         ?disabled="${args.disabled}"
-        @on-click=${() => action('on-click')()}
+        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       ></kyn-ai-launch-btn>
     </kyn-button-float-container>
   `,

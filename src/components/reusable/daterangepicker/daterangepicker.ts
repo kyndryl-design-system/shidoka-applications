@@ -58,8 +58,10 @@ const _defaultTextStrings = {
 
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
- * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dataString: string,dates:[],source:string}`
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-date-range-picker')
 export class DateRangePicker extends FormMixin(LitElement) {

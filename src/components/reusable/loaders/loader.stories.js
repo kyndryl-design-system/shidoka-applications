@@ -21,8 +21,8 @@ export const Block = {
     return html`
       <kyn-loader
         ?stopped=${args.stopped}
-        @on-start=${(e) => action(e.type)(e)}
-        @on-stop=${(e) => action(e.type)(e)}
+        @on-start=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-stop=${(e) => action(e.type)({ ...e, detail: e.detail })}
       ></kyn-loader>
     `;
   },
@@ -37,8 +37,8 @@ export const Overlay = {
       <kyn-loader
         overlay
         ?stopped=${args.stopped}
-        @on-start=${(e) => action(e.type)(e)}
-        @on-stop=${(e) => action(e.type)(e)}
+        @on-start=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-stop=${(e) => action(e.type)({ ...e, detail: e.detail })}
       ></kyn-loader>
     `;
   },

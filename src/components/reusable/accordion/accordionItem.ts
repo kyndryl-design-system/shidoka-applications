@@ -11,7 +11,7 @@ import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/
 
 /**
  * AccordionItem component. *
- * @fires on-toggle - Emits the `opened` state when the accordion item opens/closes.
+ * @fires on-toggle - Emits the `opened` state when the accordion item opens/closes. `detail:{ opened: boolean }`.
  * @slot icon - Optional leading icon
  * @slot body - Body of the accordion item
  * @slot title - Title of the accordion item

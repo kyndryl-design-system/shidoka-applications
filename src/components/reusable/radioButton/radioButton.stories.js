@@ -27,7 +27,7 @@ export const RadioButton = {
         .checked=${args.checked}
         ?checked=${args.checked}
         ?disabled=${args.disabled}
-        @on-radio-change=${(e) => action(e.type)(e)}
+        @on-radio-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
       </kyn-radio-button>

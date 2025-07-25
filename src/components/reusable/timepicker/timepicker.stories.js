@@ -69,7 +69,7 @@ const Template = (args) => {
       ?timepickerDisabled=${args.timepickerDisabled}
       ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
-      @on-change=${(e) => action(e.type)(e)}
+      @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
     </kyn-time-picker>
   `;
@@ -178,8 +178,8 @@ export const InModal = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor" kind="primary"> Open Modal </kyn-button>
         <kyn-time-picker
@@ -204,7 +204,7 @@ export const InModal = {
           ?timepickerDisabled=${args.timepickerDisabled}
           ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
-          @on-change=${(e) => action(e.type)(e)}
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
         </kyn-time-picker>
       </kyn-modal>

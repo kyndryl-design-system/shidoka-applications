@@ -43,14 +43,14 @@ export const OverflowMenu = {
       >
         <kyn-overflow-menu-item
           @on-click=${(e) => {
-            action(e.type)(e);
+            action(e.type)({ ...e, detail: e.detail });
           }}
           >Option 1</kyn-overflow-menu-item
         >
         <kyn-overflow-menu-item
           href="javascript:void(0);"
           @on-click=${(e) => {
-            action(e.type)(e);
+            action(e.type)({ ...e, detail: e.detail });
           }}
         >
           Option 2
@@ -58,14 +58,14 @@ export const OverflowMenu = {
         <kyn-overflow-menu-item disabled>Option 3</kyn-overflow-menu-item>
         <kyn-overflow-menu-item
           @on-click=${(e) => {
-            action(e.type)(e);
+            action(e.type)({ ...e, detail: e.detail });
           }}
         >
           Option 4
         </kyn-overflow-menu-item>
         <kyn-overflow-menu-item
           @on-click=${(e) => {
-            action(e.type)(e);
+            action(e.type)({ ...e, detail: e.detail });
           }}
           >Longer Text Option example
         </kyn-overflow-menu-item>
@@ -73,7 +73,7 @@ export const OverflowMenu = {
           destructive
           description="Destructive Action"
           @on-click=${(e) => {
-            action(e.type)(e);
+            action(e.type)({ ...e, detail: e.detail });
           }}
           >Option 5
         </kyn-overflow-menu-item>

@@ -4,7 +4,7 @@ import RadioButtonScss from './radioButton.scss?inline';
 
 /**
  * Radio button.
- * @fires on-radio-change - Captures the change event and emits the selected value and original event details.
+ * @fires on-radio-change - Captures the change event and emits the selected value and original event details.`detail:{ checked: boolean,origEvent: Event,value: string }`
  * @slot unnamed - Slot for label text.
  */
 @customElement('kyn-radio-button')

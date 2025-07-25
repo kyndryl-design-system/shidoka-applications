@@ -7,7 +7,7 @@ import Styles from './widget.scss?inline';
 
 /**
  * Widget.
- * @fires on-select - Emits the widget selected state .
+ * @fires on-select - Emits the widget selected state .`detail:{ selected: boolean }`
  * @slot unnamed - Slot for widget content.
  * @slot actions - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.

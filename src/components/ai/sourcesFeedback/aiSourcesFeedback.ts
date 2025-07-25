@@ -37,8 +37,8 @@ const _defaultTextStrings = {
  * @slot copy - copy button
  * @slot sources - source cards in source panel.
  * @slot feedback-form - Positive feedback form.
- * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
- * @fires on-feedback-deselected - Emits when thumbs-up or thumbs-down button is deselected.
+ * @fires on-toggle - Emits the `opened` state when the panel item opens/closes. `detail:{ sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string }`
+ * @fires on-feedback-deselected - Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`
  */
 
 @customElement('kyn-ai-sources-feedback')
@@ -266,7 +266,6 @@ export class AISourcesFeedback extends LitElement {
             description=${this.closeText}
             @on-click=${(e: Event) =>
               this._handleClick(e, 'feedback', this._selectedFeedbackType)}
-            }}
             kind="ghost"
             size="small"
           >

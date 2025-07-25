@@ -22,13 +22,16 @@ const _defaultTextStrings = {
 
 /**
  * Slider Input.
- * @fires on-input - Captures the input event and emits the selected value and original event details.
+ * @fires on-input - Captures the input event and emits the selected value and original event details.`detail:{ origEvent: Event,value: number }`
  * @prop {number} min - The minimum value.
  * @prop {number} max - The maximum value.
  * @prop {number} step - The step between values.
  * @slot tooltip - Slot for tooltip.
  * @slot leftBtnIcon - Slot for left button icon.
  * @slot rightBtnIcon - Slot for right button icon.
+ * @attr {number} [value=0] - The value of the input.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  *
  */
 @customElement('kyn-slider-input')
