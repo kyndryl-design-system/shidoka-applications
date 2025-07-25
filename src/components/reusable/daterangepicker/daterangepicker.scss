@@ -4,8 +4,21 @@
 
 @include mixins.picker-base;
 
+:host {
+  display: inline-block;
+  width: auto;
+  max-width: var(--kyn-date-range-picker-max-width, 425px);
+}
+
 input {
   padding: 0 50px 0 16px;
+}
+
+.input-wrapper,
+.flatpickr-wrapper,
+input {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .input-wrapper {
@@ -37,7 +50,6 @@ input {
 
 .date-range-picker {
   width: inherit;
-  overflow: visible;
 
   &__disabled {
     @include mixins.picker-disabled;

@@ -330,6 +330,7 @@ export const InModal = {
           .warningTitle=${args.warningTitle}
           .startDateLabel=${args.startDateLabel}
           .endDateLabel=${args.endDateLabel}
+          style="width: 300px;"
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
         </kyn-date-range-picker>
@@ -426,6 +427,7 @@ export const DateRangePickerInAccordionInModal = {
                 .warningTitle=${args.warningTitle}
                 .startDateLabel=${args.startDateLabel}
                 .endDateLabel=${args.endDateLabel}
+                style="width: 300px;"
                 @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
               >
               </kyn-date-range-picker>
@@ -460,4 +462,4 @@ export const DateRangePickerInAccordionInModal = {
   },
 };
 DateRangePickerInAccordionInModal.storyName =
-  'Static Position In Nested Acccordion';
+  'Static Position In Nested Accordion';

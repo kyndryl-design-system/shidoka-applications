@@ -4,19 +4,27 @@
 
 @include mixins.picker-base;
 
+:host {
+  display: inline-block;
+  width: 100%;
+  max-width: var(--kyn-date-range-picker-max-width, 200px);
+}
+
 input {
   padding: 0 40px 0 16px;
   cursor: default;
 }
 
+.input-wrapper,
+.flatpickr-wrapper,
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .input-wrapper {
   position: relative;
   display: inline-block;
-  width: 100%;
-
-  .flatpickr-wrapper {
-    width: 100%;
-  }
 
   .input-icon,
   .clear-icon {
