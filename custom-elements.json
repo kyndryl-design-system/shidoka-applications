@@ -177,7 +177,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
+              "default": "{\r\n  sourcesText: 'Sources',\r\n  foundSources: 'Found sources',\r\n  showMore: 'Show more',\r\n  showLess: 'Show less',\r\n  positiveFeedback: 'Share what you liked',\r\n  negativeFeedback: 'Help us improve',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -421,602 +421,6 @@
           "declaration": {
             "name": "AISourcesFeedback",
             "module": "./aiSourcesFeedback"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/footer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Footer component.",
-          "name": "Footer",
-          "slots": [
-            {
-              "description": "Default slot, for links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the logo, will overwrite the default logo.",
-              "name": "logo"
-            },
-            {
-              "description": "Slot for the copyright text.",
-              "name": "copyright"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "field",
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "attribute": "logoAriaLabel"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`",
-              "name": "on-root-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "fieldName": "rootUrl"
-            },
-            {
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "fieldName": "logoAriaLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-footer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "./footer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -1379,7 +783,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
               "attribute": "assistiveText"
             },
             {
@@ -1492,7 +896,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
               "fieldName": "assistiveText"
             },
             {
@@ -2551,6 +1955,602 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/footer/footer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Footer component.",
+          "name": "Footer",
+          "slots": [
+            {
+              "description": "Default slot, for links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the logo, will overwrite the default logo.",
+              "name": "logo"
+            },
+            {
+              "description": "Slot for the copyright text.",
+              "name": "copyright"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "field",
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "attribute": "logoAriaLabel"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`",
+              "name": "on-root-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            },
+            {
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "fieldName": "logoAriaLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "./footer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  pin: 'Pin',\r\n  unpin: 'Unpin',\r\n  toggleMenu: 'Toggle Menu',\r\n  collapse: 'Collapse',\r\n  menu: 'Menu',\r\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
@@ -3429,7 +3429,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  collapsed: 'Collapsed',\n  expanded: 'Expanded',\n}",
+              "default": "{\r\n  collapsed: 'Collapsed',\r\n  expanded: 'Expanded',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -3821,57 +3821,307 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
+      "path": "src/components/reusable/buttonGroup/buttonGroup.ts",
       "declarations": [
         {
+          "kind": "variable",
+          "name": "BUTTON_GROUP_KINDS",
+          "type": {
+            "text": "{\r\n  DEFAULT: 'default',\r\n  PAGINATION: 'pagination',\r\n  ICONS: 'icons',\r\n}"
+          },
+          "default": "{\r\n  DEFAULT: 'default',\r\n  PAGINATION: 'pagination',\r\n  ICONS: 'icons',\r\n}"
+        },
+        {
           "kind": "class",
-          "description": "Breadcrumbs Component.",
-          "name": "Breadcrumbs",
+          "description": "ButtonGroup component.",
+          "name": "ButtonGroup",
           "slots": [
             {
-              "description": "Slot for inserting links.",
+              "description": "Slot for <kyn-button> elements.",
               "name": "unnamed"
             }
           ],
-          "members": [],
+          "members": [
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "attribute": "selectedIndex"
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "totalPages"
+            },
+            {
+              "kind": "field",
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "attribute": "maxVisible"
+            },
+            {
+              "kind": "field",
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "clickIncrementBy"
+            },
+            {
+              "kind": "field",
+              "name": "_visibleStart",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "1",
+              "description": "Starting page for the visible range (internal state)"
+            },
+            {
+              "kind": "field",
+              "name": "visibleStart",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current first page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "visibleEnd",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current last page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  prevButtonDescription: 'Previous Page',\r\n  nextButtonDescription: 'Next Page',\r\n  indivGroupItemDescription: '',\r\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_buttons",
+              "type": {
+                "text": "Button[]"
+              },
+              "privacy": "private",
+              "description": "Target <kyn-button> children"
+            },
+            {
+              "kind": "method",
+              "name": "_renderDefault",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderIcons",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderPagination",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateWindow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onPage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "cmd",
+                  "type": {
+                    "text": "'prev' | 'next' | number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_boundHandlers",
+              "privacy": "private",
+              "default": "new Map<Button, () => void>()"
+            },
+            {
+              "kind": "method",
+              "name": "_attachClickListeners",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onButtonClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "idx",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "unknown"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_syncSelection",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event button selection in button group. `detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "fieldName": "kind"
+            },
+            {
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "fieldName": "selectedIndex"
+            },
+            {
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "totalPages"
+            },
+            {
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "fieldName": "maxVisible"
+            },
+            {
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "clickIncrementBy"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-breadcrumbs",
+          "tagName": "kyn-button-group",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Breadcrumbs",
+          "name": "BUTTON_GROUP_KINDS",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+            "name": "BUTTON_GROUP_KINDS",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ButtonGroup",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-breadcrumbs",
+          "name": "kyn-button-group",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/index.ts",
+      "path": "src/components/reusable/buttonGroup/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Breadcrumbs",
+          "name": "ButtonGroup",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "./breadcrumbs"
+            "name": "ButtonGroup",
+            "module": "../buttonGroup/buttonGroup"
           }
         }
       ]
@@ -4287,307 +4537,57 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/buttonGroup/buttonGroup.ts",
+      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
       "declarations": [
         {
-          "kind": "variable",
-          "name": "BUTTON_GROUP_KINDS",
-          "type": {
-            "text": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
-          },
-          "default": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
-        },
-        {
           "kind": "class",
-          "description": "ButtonGroup component.",
-          "name": "ButtonGroup",
+          "description": "Breadcrumbs Component.",
+          "name": "Breadcrumbs",
           "slots": [
             {
-              "description": "Slot for <kyn-button> elements.",
+              "description": "Slot for inserting links.",
               "name": "unnamed"
             }
           ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "'default' | 'pagination' | 'icons'"
-              },
-              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "selectedIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "-1",
-              "description": "zero-based: default button index; for pagination, page-1",
-              "attribute": "selectedIndex"
-            },
-            {
-              "kind": "field",
-              "name": "totalPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "totalPages"
-            },
-            {
-              "kind": "field",
-              "name": "maxVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "attribute": "maxVisible"
-            },
-            {
-              "kind": "field",
-              "name": "clickIncrementBy",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "clickIncrementBy"
-            },
-            {
-              "kind": "field",
-              "name": "_visibleStart",
-              "type": {
-                "text": "number"
-              },
-              "privacy": "private",
-              "default": "1",
-              "description": "Starting page for the visible range (internal state)"
-            },
-            {
-              "kind": "field",
-              "name": "visibleStart",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Current first page in the visible window (read-only)",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "visibleEnd",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Current last page in the visible window (read-only)",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  prevButtonDescription: 'Previous Page',\n  nextButtonDescription: 'Next Page',\n  indivGroupItemDescription: '',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "_buttons",
-              "type": {
-                "text": "Button[]"
-              },
-              "privacy": "private",
-              "description": "Target <kyn-button> children"
-            },
-            {
-              "kind": "method",
-              "name": "_renderDefault",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderIcons",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderPagination",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateWindow",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_onPage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "cmd",
-                  "type": {
-                    "text": "'prev' | 'next' | number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "_boundHandlers",
-              "privacy": "private",
-              "default": "new Map<Button, () => void>()"
-            },
-            {
-              "kind": "method",
-              "name": "_attachClickListeners",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_onButtonClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "idx",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "unknown"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_syncSelection",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "name": "on-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event button selection in button group. `detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "kind",
-              "type": {
-                "text": "'default' | 'pagination' | 'icons'"
-              },
-              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
-              "fieldName": "kind"
-            },
-            {
-              "name": "selectedIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "-1",
-              "description": "zero-based: default button index; for pagination, page-1",
-              "fieldName": "selectedIndex"
-            },
-            {
-              "name": "totalPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "totalPages"
-            },
-            {
-              "name": "maxVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "fieldName": "maxVisible"
-            },
-            {
-              "name": "clickIncrementBy",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "clickIncrementBy"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
+          "members": [],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-button-group",
+          "tagName": "kyn-breadcrumbs",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "BUTTON_GROUP_KINDS",
+          "name": "Breadcrumbs",
           "declaration": {
-            "name": "BUTTON_GROUP_KINDS",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ButtonGroup",
-          "declaration": {
-            "name": "ButtonGroup",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-button-group",
+          "name": "kyn-breadcrumbs",
           "declaration": {
-            "name": "ButtonGroup",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/buttonGroup/index.ts",
+      "path": "src/components/reusable/breadcrumbs/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "ButtonGroup",
+          "name": "Breadcrumbs",
           "declaration": {
-            "name": "ButtonGroup",
-            "module": "../buttonGroup/buttonGroup"
+            "name": "Breadcrumbs",
+            "module": "./breadcrumbs"
           }
         }
       ]
@@ -4832,7 +4832,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-info-card-skeleton` Web Component.\nA skeleton loading state for the informational card component that mirrors its structure.",
+          "description": "`kyn-info-card-skeleton` Web Component.\r\nA skeleton loading state for the informational card component that mirrors its structure.",
           "name": "InformationalCardSkeleton",
           "members": [
             {
@@ -4909,7 +4909,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-vital-card-skeleton` Web Component.\nA skeleton loading state for the vital card component that mirrors its structure.",
+          "description": "`kyn-vital-card-skeleton` Web Component.\r\nA skeleton loading state for the vital card component that mirrors its structure.",
           "name": "VitalCardSkeleton",
           "members": [
             {
@@ -5013,7 +5013,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes.",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
               "attribute": "visiblyHidden"
             },
             {
@@ -5080,7 +5080,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the label should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes.",
+              "description": "Determines whether the label should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes.",
               "fieldName": "visiblyHidden"
             },
             {
@@ -5235,7 +5235,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  selectAll: 'Select all',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  search: 'Search',\n  required: 'Required',\n  error: 'Error',\n}",
+              "default": "{\r\n  selectAll: 'Select all',\r\n  showMore: 'Show more',\r\n  showLess: 'Show less',\r\n  search: 'Search',\r\n  required: 'Required',\r\n  error: 'Error',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -5365,6 +5365,30 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "array"
+              },
+              "description": "The selected values of the checkbox group.",
+              "name": "value",
+              "default": "[]"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "required",
               "type": {
@@ -5654,7 +5678,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  errorText: 'Error',\n  pleaseSelectColor: 'Please select a color',\n  invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',\n  colorTextInput: 'Color text input',\n}",
+              "default": "{\r\n  errorText: 'Error',\r\n  pleaseSelectColor: 'Please select a color',\r\n  invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',\r\n  colorTextInput: 'Color text input',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -6018,7 +6042,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
               "attribute": "twentyFourHourFormat"
             },
             {
@@ -6094,7 +6118,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  noDateSelected: 'No date selected',\n  pleaseSelectValidDate: 'Please select a valid date',\n  invalidDateFormat: 'Invalid date format provided',\n  errorProcessing: 'Error processing date',\n\n  lockedStartDate: 'Start date is locked',\n  lockedEndDate: 'End date is locked',\n  dateLocked: 'Date is locked',\n  dateNotAvailable: 'Date is not available',\n  dateInSelectedRange: 'Date is in selected range',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n  pleaseSelectDate: 'Please select a date',\r\n  noDateSelected: 'No date selected',\r\n  pleaseSelectValidDate: 'Please select a valid date',\r\n  invalidDateFormat: 'Invalid date format provided',\r\n  errorProcessing: 'Error processing date',\r\n\r\n  lockedStartDate: 'Start date is locked',\r\n  lockedEndDate: 'End date is locked',\r\n  dateLocked: 'Date is locked',\r\n  dateNotAvailable: 'Date is not available',\r\n  dateInSelectedRange: 'Date is in selected range',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -6391,6 +6415,22 @@
           ],
           "attributes": [
             {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
               "name": "label",
               "type": {
                 "text": "string"
@@ -6521,7 +6561,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24 hour formatting true/false.\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
+              "description": "Sets 24 hour formatting true/false.\r\nDefaults to 12H for all `en-*` locales and 24H for all other locales.",
               "fieldName": "twentyFourHourFormat"
             },
             {
@@ -6703,7 +6743,7 @@
               "type": {
                 "text": "DateRangeEditableMode"
               },
-              "description": "Controls which parts of the date range are editable.\nPossible values:\n- \"both\" (default): Both start and end dates can be edited\n- \"start\": Only the start date can be edited, end date is locked once set\n- \"end\": Only the end date can be edited, start date is locked once set\n- \"none\": Neither date can be edited once set (similar to readonly)",
+              "description": "Controls which parts of the date range are editable.\r\nPossible values:\r\n- \"both\" (default): Both start and end dates can be edited\r\n- \"start\": Only the start date can be edited, end date is locked once set\r\n- \"end\": Only the end date can be edited, start date is locked once set\r\n- \"none\": Neither date can be edited once set (similar to readonly)",
               "attribute": "rangeEditMode"
             },
             {
@@ -6813,7 +6853,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "description": "Sets 24-hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
               "attribute": "twentyFourHourFormat"
             },
             {
@@ -6889,7 +6929,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n  pleaseSelectBothDates: 'Please select a start and end date.',\n  dateRange: 'Date range',\n  noDateSelected: 'No dates selected',\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\n  invalidDateRange:\n    'Invalid date range: End date cannot be earlier than start date',\n  dateRangeSelected: 'Selected date range: {0} to {1}',\n\n  lockedStartDate: 'Start date is locked',\n  lockedEndDate: 'End date is locked',\n  dateLocked: 'Date is locked',\n  dateNotAvailable: 'Date is not available',\n  dateInSelectedRange: 'Date is in selected range',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n  pleaseSelectDate: 'Please select a date',\r\n  pleaseSelectValidDate: 'Please select a valid date',\r\n  pleaseSelectBothDates: 'Please select a start and end date.',\r\n  dateRange: 'Date range',\r\n  noDateSelected: 'No dates selected',\r\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\r\n  invalidDateRange:\r\n    'Invalid date range: End date cannot be earlier than start date',\r\n  dateRangeSelected: 'Selected date range: {0} to {1}',\r\n\r\n  lockedStartDate: 'Start date is locked',\r\n  lockedEndDate: 'End date is locked',\r\n  dateLocked: 'Date is locked',\r\n  dateNotAvailable: 'Date is not available',\r\n  dateInSelectedRange: 'Date is in selected range',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -7211,6 +7251,22 @@
           ],
           "attributes": [
             {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
               "name": "label",
               "type": {
                 "text": "string"
@@ -7251,7 +7307,7 @@
               "type": {
                 "text": "DateRangeEditableMode"
               },
-              "description": "Controls which parts of the date range are editable.\nPossible values:\n- \"both\" (default): Both start and end dates can be edited\n- \"start\": Only the start date can be edited, end date is locked once set\n- \"end\": Only the end date can be edited, start date is locked once set\n- \"none\": Neither date can be edited once set (similar to readonly)",
+              "description": "Controls which parts of the date range are editable.\r\nPossible values:\r\n- \"both\" (default): Both start and end dates can be edited\r\n- \"start\": Only the start date can be edited, end date is locked once set\r\n- \"end\": Only the end date can be edited, start date is locked once set\r\n- \"none\": Neither date can be edited once set (similar to readonly)",
               "fieldName": "rangeEditMode"
             },
             {
@@ -7341,7 +7397,7 @@
                 "text": "boolean | null"
               },
               "default": "null",
-              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "description": "Sets 24-hour formatting true/false.\r\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
               "fieldName": "twentyFourHourFormat"
             },
             {
@@ -7654,7 +7710,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  title: 'Dropdown',\n  selectedOptions: 'List of selected options',\n  requiredText: 'Required',\n  errorText: 'Error',\n  clearAll: 'Clear all',\n  clear: 'Clear',\n  addItem: 'Add item...',\n  add: 'Add',\n}",
+              "default": "{\r\n  title: 'Dropdown',\r\n  selectedOptions: 'List of selected options',\r\n  requiredText: 'Required',\r\n  errorText: 'Error',\r\n  clearAll: 'Clear all',\r\n  clear: 'Clear',\r\n  addItem: 'Add item...',\r\n  add: 'Add',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -8009,7 +8065,7 @@
               "description": "Captures the add button click and emits the newly added option. `detail:{ value: string }`"
             },
             {
-              "description": "Captures the input event and emits the selected value and original event details. `detail:{ value: array }`",
+              "description": "Captures the dropdown change event and emits the selected value and original event details. `detail:{ value: string/array }`",
               "name": "on-change"
             },
             {
@@ -8017,11 +8073,35 @@
               "name": "on-search"
             },
             {
-              "description": "Captures the the multi-select clear all button click event and emits the value. `detail:{ value: string }`",
+              "description": "Captures the the multi-select clear all button click event and emits the value. `detail:{ value: array }`",
               "name": "on-clear-all"
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "string/array"
+              },
+              "description": "The selected value(s) of the input. For single select, it is a string. For multi-select, it is an array of strings.",
+              "name": "value",
+              "default": "''/[]"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -8674,7 +8754,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  dragAndDropText: 'Drag files here to upload',\n  separatorText: 'or',\n  buttonText: 'Browse files',\n  maxFileSizeText: 'Max file size',\n  supportedFileTypeText: 'Supported file type: ',\n  fileTypeDisplyText: 'Any file type',\n  invalidFileListLabel: 'Some files could not be added:',\n  validFileListLabel: 'Files added:',\n  clearListText: 'Clear list',\n  fileTypeErrorText: 'Invaild file type',\n  fileSizeErrorText: 'Max file size exceeded',\n  customFileErrorText: 'Custom file error',\n  inlineConfirmAnchorText: 'Delete',\n  inlineConfirmConfirmText: 'Confirm',\n  inlineConfirmCancelText: 'Cancel',\n  validationNotificationTitle: 'Multiple files not allowed',\n  validationNotificationMessage: 'Please select only one file.',\n}",
+              "default": "{\r\n  dragAndDropText: 'Drag files here to upload',\r\n  separatorText: 'or',\r\n  buttonText: 'Browse files',\r\n  maxFileSizeText: 'Max file size',\r\n  supportedFileTypeText: 'Supported file type: ',\r\n  fileTypeDisplyText: 'Any file type',\r\n  invalidFileListLabel: 'Some files could not be added:',\r\n  validFileListLabel: 'Files added:',\r\n  clearListText: 'Clear list',\r\n  fileTypeErrorText: 'Invaild file type',\r\n  fileSizeErrorText: 'Max file size exceeded',\r\n  customFileErrorText: 'Custom file error',\r\n  inlineConfirmAnchorText: 'Delete',\r\n  inlineConfirmConfirmText: 'Confirm',\r\n  inlineConfirmCancelText: 'Cancel',\r\n  validationNotificationTitle: 'Multiple files not allowed',\r\n  validationNotificationMessage: 'Please select only one file.',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -8705,7 +8785,7 @@
               "kind": "field",
               "name": "validFiles",
               "type": {
-                "text": "{\n    id: string;\n    file: File;\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\n  }[]"
+                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\r\n  }[]"
               },
               "default": "[]",
               "description": "Valid files. This property is used to set the initial or updated state of the valid files.",
@@ -8715,7 +8795,7 @@
               "kind": "field",
               "name": "invalidFiles",
               "type": {
-                "text": "{\n    id: string;\n    file: File;\n    status: 'sizeError' | 'typeError' | 'unknownError';\n    customErrorMsg?: string;\n  }[]"
+                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'sizeError' | 'typeError' | 'unknownError';\r\n    customErrorMsg?: string;\r\n  }[]"
               },
               "default": "[]",
               "description": "Invalid files. This property is used to set the initial state of the invalid files.",
@@ -8901,7 +8981,7 @@
             {
               "name": "validFiles",
               "type": {
-                "text": "{\n    id: string;\n    file: File;\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\n  }[]"
+                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\r\n  }[]"
               },
               "default": "[]",
               "description": "Valid files. This property is used to set the initial or updated state of the valid files.",
@@ -8910,7 +8990,7 @@
             {
               "name": "invalidFiles",
               "type": {
-                "text": "{\n    id: string;\n    file: File;\n    status: 'sizeError' | 'typeError' | 'unknownError';\n    customErrorMsg?: string;\n  }[]"
+                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'sizeError' | 'typeError' | 'unknownError';\r\n    customErrorMsg?: string;\r\n  }[]"
               },
               "default": "[]",
               "description": "Invalid files. This property is used to set the initial state of the invalid files.",
@@ -10656,7 +10736,7 @@
                 "text": "string[]"
               },
               "default": "[]",
-              "description": "Optional array of custom suggestions to use instead of the default mock data",
+              "description": "Optional array of custom suggestions to use instead of the default mock data.",
               "attribute": "customSuggestions"
             },
             {
@@ -11042,6 +11122,14 @@
           ],
           "attributes": [
             {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
               "name": "label",
               "type": {
                 "text": "string"
@@ -11137,7 +11225,7 @@
                 "text": "string[]"
               },
               "default": "[]",
-              "description": "Optional array of custom suggestions to use instead of the default mock data",
+              "description": "Optional array of custom suggestions to use instead of the default mock data.",
               "fieldName": "customSuggestions"
             },
             {
@@ -11280,7 +11368,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "description": "Timestamp of notification.\r\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
               "attribute": "timeStamp"
             },
             {
@@ -11319,7 +11407,7 @@
               "type": {
                 "text": "any"
               },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
+              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Information',\r\n    error: 'Error',\r\n  }",
               "description": "Customizable text strings.",
               "attribute": "textStrings"
             },
@@ -11340,7 +11428,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "description": "Assistive text for notification type.\r\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
               "attribute": "assistiveNotificationTypeText"
             },
             {
@@ -11359,7 +11447,7 @@
                 "text": "string"
               },
               "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "description": "Status label (Required to support accessibility).\r\nAssign the localized string value for the word **Status**.",
               "attribute": "statusLabel"
             },
             {
@@ -11475,7 +11563,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "description": "Timestamp of notification.\r\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
               "fieldName": "timeStamp"
             },
             {
@@ -11510,7 +11598,7 @@
               "type": {
                 "text": "any"
               },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
+              "default": "{\r\n    success: 'Success',\r\n    warning: 'Warning',\r\n    info: 'Information',\r\n    error: 'Error',\r\n  }",
               "description": "Customizable text strings.",
               "fieldName": "textStrings"
             },
@@ -11529,7 +11617,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "description": "Assistive text for notification type.\r\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
               "fieldName": "assistiveNotificationTypeText"
             },
             {
@@ -11546,7 +11634,7 @@
                 "text": "string"
               },
               "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "description": "Status label (Required to support accessibility).\r\nAssign the localized string value for the word **Status**.",
               "fieldName": "statusLabel"
             },
             {
@@ -11610,7 +11698,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "description": "Notification container component for Toast notification.\r\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
           "name": "NotificationContainer",
           "slots": [
             {
@@ -11796,7 +11884,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  subtract: 'Subtract',\n  add: 'Add',\n  error: 'Error',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  subtract: 'Subtract',\r\n  add: 'Add',\r\n  error: 'Error',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -11885,6 +11973,22 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -12018,6 +12122,161 @@
           "declaration": {
             "name": "NumberInput",
             "module": "src/components/reusable/numberInput/numberInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "./pageTitle"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/pageTitle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Page Title",
+          "name": "PageTitle",
+          "slots": [
+            {
+              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "attribute": "headLine"
+            },
+            {
+              "kind": "field",
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "attribute": "pageTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "fieldName": "headLine"
+            },
+            {
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "fieldName": "pageTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
+              "fieldName": "type"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-page-title",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-page-title",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
           }
         }
       ]
@@ -12413,430 +12672,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "./pageTitle"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/pageTitle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Page Title",
-          "name": "PageTitle",
-          "slots": [
-            {
-              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "attribute": "headLine"
-            },
-            {
-              "kind": "field",
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "attribute": "pageTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "fieldName": "headLine"
-            },
-            {
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "fieldName": "pageTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
-              "fieldName": "type"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-page-title",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-page-title",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/Pagination.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-pagination` Web Component.\n\nA component that provides pagination functionality, enabling the user to\nnavigate through large datasets by splitting them into discrete chunks.\nIntegrates with other utility components like items range display, page size dropdown,\nand navigation buttons.",
-          "name": "Pagination",
-          "members": [
-            {
-              "kind": "field",
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "attribute": "count",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current active page number.",
-              "attribute": "pageNumber",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "attribute": "pageSize",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSizeOptions",
-              "type": {
-                "text": "number[]"
-              },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "attribute": "pageSizeOptions"
-            },
-            {
-              "kind": "field",
-              "name": "_numberOfPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Number of pages."
-            },
-            {
-              "kind": "field",
-              "name": "pageSizeDropdownLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "attribute": "pageSizeDropdownLabel"
-            },
-            {
-              "kind": "field",
-              "name": "pageNumberLabel",
-              "default": "PAGE_NUMBER_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "attribute": "pageNumberLabel"
-            },
-            {
-              "kind": "field",
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "attribute": "hideItemsRange"
-            },
-            {
-              "kind": "field",
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "attribute": "hidePageSizeDropdown"
-            },
-            {
-              "kind": "field",
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "attribute": "hideNavigationButtons"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
-              "description": "Customizable text strings",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "method",
-              "name": "handlePageSizeChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page size."
-                }
-              ],
-              "description": "Handler for the event when the page size is changed by the user.\nUpdates the `pageSize` and resets the `pageNumber` to 1."
-            },
-            {
-              "kind": "method",
-              "name": "handlePageNumberChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page number."
-                }
-              ],
-              "description": "Handler for the event when the page number is changed by the user.\nUpdates the `pageNumber`."
-            }
-          ],
-          "events": [
-            {
-              "description": "Dispatched when the page size changes.`detail:{ value: number }`",
-              "name": "on-page-size-change"
-            },
-            {
-              "description": "Dispatched when the currently active page changes.`detail:{ value: number }`",
-              "name": "on-page-number-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "fieldName": "count"
-            },
-            {
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current active page number.",
-              "fieldName": "pageNumber"
-            },
-            {
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "fieldName": "pageSize"
-            },
-            {
-              "name": "pageSizeOptions",
-              "type": {
-                "text": "number[]"
-              },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "fieldName": "pageSizeOptions"
-            },
-            {
-              "name": "pageSizeDropdownLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "fieldName": "pageSizeDropdownLabel"
-            },
-            {
-              "name": "pageNumberLabel",
-              "default": "PAGE_NUMBER_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "fieldName": "pageNumberLabel"
-            },
-            {
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "fieldName": "hideItemsRange"
-            },
-            {
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "fieldName": "hidePageSizeDropdown"
-            },
-            {
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "fieldName": "hideNavigationButtons"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
-              "description": "Customizable text strings",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-pagination",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Pagination",
-          "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-pagination",
-          "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/pagination/index.ts",
       "declarations": [],
       "exports": [
@@ -12888,7 +12723,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-items-range` Web Component.\n\nThis component is responsible for displaying the range of items being displayed\nin the context of pagination. It shows which items (by number) are currently visible\nand the total number of items.",
+          "description": "`kyn-pagination-items-range` Web Component.\r\n\r\nThis component is responsible for displaying the range of items being displayed\r\nin the context of pagination. It shows which items (by number) are currently visible\r\nand the total number of items.",
           "name": "PaginationItemsRange",
           "members": [
             {
@@ -13005,7 +12840,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-navigation-buttons` Web Component.\n\nThis component provides navigational controls for pagination.\nIt includes back and next buttons, along with displaying the current page and total pages.",
+          "description": "`kyn-pagination-navigation-buttons` Web Component.\r\n\r\nThis component provides navigational controls for pagination.\r\nIt includes back and next buttons, along with displaying the current page and total pages.",
           "name": "PaginationNavigationButtons",
           "members": [
             {
@@ -13137,7 +12972,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-pagination-page-size-dropdown` Web Component.\n\nThis component provides a dropdown to select the page size for pagination.\nIt emits events when the selected page size changes.",
+          "description": "`kyn-pagination-page-size-dropdown` Web Component.\r\n\r\nThis component provides a dropdown to select the page size for pagination.\r\nIt emits events when the selected page size changes.",
           "name": "PaginationPageSizeDropdown",
           "members": [
             {
@@ -13331,6 +13166,275 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/Pagination.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination` Web Component.\r\n\r\nA component that provides pagination functionality, enabling the user to\r\nnavigate through large datasets by splitting them into discrete chunks.\r\nIntegrates with other utility components like items range display, page size dropdown,\r\nand navigation buttons.",
+          "name": "Pagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "attribute": "count",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "attribute": "pageNumber",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "attribute": "pageSize",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "attribute": "pageSizeOptions"
+            },
+            {
+              "kind": "field",
+              "name": "_numberOfPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Number of pages."
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "attribute": "pageSizeDropdownLabel"
+            },
+            {
+              "kind": "field",
+              "name": "pageNumberLabel",
+              "default": "PAGE_NUMBER_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "attribute": "pageNumberLabel"
+            },
+            {
+              "kind": "field",
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "attribute": "hideItemsRange"
+            },
+            {
+              "kind": "field",
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "attribute": "hidePageSizeDropdown"
+            },
+            {
+              "kind": "field",
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "attribute": "hideNavigationButtons"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    showing: 'Showing',\r\n    of: 'of',\r\n    items: 'items',\r\n    pages: 'pages',\r\n    itemsPerPage: 'Items per page:',\r\n    previousPage: 'Previous page',\r\n    nextPage: 'Next page',\r\n  }",
+              "description": "Customizable text strings",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "method",
+              "name": "handlePageSizeChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page size."
+                }
+              ],
+              "description": "Handler for the event when the page size is changed by the user.\r\nUpdates the `pageSize` and resets the `pageNumber` to 1."
+            },
+            {
+              "kind": "method",
+              "name": "handlePageNumberChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page number."
+                }
+              ],
+              "description": "Handler for the event when the page number is changed by the user.\r\nUpdates the `pageNumber`."
+            }
+          ],
+          "events": [
+            {
+              "description": "Dispatched when the page size changes.`detail:{ value: number }`",
+              "name": "on-page-size-change"
+            },
+            {
+              "description": "Dispatched when the currently active page changes.`detail:{ value: number }`",
+              "name": "on-page-number-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "fieldName": "count"
+            },
+            {
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "fieldName": "pageNumber"
+            },
+            {
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "fieldName": "pageSize"
+            },
+            {
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "fieldName": "pageSizeOptions"
+            },
+            {
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "fieldName": "pageSizeDropdownLabel"
+            },
+            {
+              "name": "pageNumberLabel",
+              "default": "PAGE_NUMBER_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "fieldName": "pageNumberLabel"
+            },
+            {
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "fieldName": "hideItemsRange"
+            },
+            {
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "fieldName": "hidePageSizeDropdown"
+            },
+            {
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "fieldName": "hideNavigationButtons"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\r\n    showing: 'Showing',\r\n    of: 'of',\r\n    items: 'items',\r\n    pages: 'pages',\r\n    itemsPerPage: 'Items per page:',\r\n    previousPage: 'Previous page',\r\n    nextPage: 'Next page',\r\n  }",
+              "description": "Customizable text strings",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/popover/index.ts",
       "declarations": [],
       "exports": [
@@ -13350,7 +13454,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Popover component.\n\nTwo positioning modes are available:\n- anchor: positioned relative to an anchor slot element\n- floating: manually positioned via top/left/bottom/right properties\n\nFor anchor mode, the popover will be positioned relative to the anchor element\nbased on the direction property. The position can be fixed or absolute.\n\nFor floating (manual) mode, set triggerType=\"none\" and use top/left/bottom/right\nproperties to position the popover.",
+          "description": "Popover component.\r\n\r\nTwo positioning modes are available:\r\n- anchor: positioned relative to an anchor slot element\r\n- floating: manually positioned via top/left/bottom/right properties\r\n\r\nFor anchor mode, the popover will be positioned relative to the anchor element\r\nbased on the direction property. The position can be fixed or absolute.\r\n\r\nFor floating (manual) mode, set triggerType=\"none\" and use top/left/bottom/right\r\nproperties to position the popover.",
           "name": "Popover",
           "slots": [
             {
@@ -13385,7 +13489,7 @@
                 "text": "PositionType"
               },
               "default": "'fixed'",
-              "description": "Position type: fixed (default) or absolute\n- fixed: positions relative to the viewport\n- absolute: positions relative to the nearest positioned ancestor",
+              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
               "attribute": "positionType"
             },
             {
@@ -13404,7 +13508,7 @@
               "type": {
                 "text": "number | undefined"
               },
-              "description": "Distance between anchor and popover (px)\nControls how far the popover is positioned from its anchor element",
+              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
               "attribute": "offsetDistance",
               "reflects": true
             },
@@ -13435,7 +13539,7 @@
               "type": {
                 "text": "string | undefined"
               },
-              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\nWhen set, this will override the automatic arrow positioning.",
+              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
               "attribute": "arrowPosition",
               "reflects": true
             },
@@ -13575,7 +13679,7 @@
                 "text": "string"
               },
               "default": "'Popover'",
-              "description": "Accessible name for the popover dialog\nUsed as aria-label when no title is present",
+              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
               "attribute": "popoverAriaLabel"
             },
             {
@@ -13645,7 +13749,7 @@
                 "text": "'_self' | '_blank' | '_parent' | '_top'"
               },
               "default": "'_self'",
-              "description": "Target for the footer link (ex: \"_blank\" for new tab).\nIf empty, defaults to same tab.",
+              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
               "attribute": "footerLinkTarget"
             },
             {
@@ -13730,7 +13834,7 @@
                 "text": "PositionType"
               },
               "default": "'fixed'",
-              "description": "Position type: fixed (default) or absolute\n- fixed: positions relative to the viewport\n- absolute: positions relative to the nearest positioned ancestor",
+              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
               "fieldName": "positionType"
             },
             {
@@ -13747,7 +13851,7 @@
               "type": {
                 "text": "number | undefined"
               },
-              "description": "Distance between anchor and popover (px)\nControls how far the popover is positioned from its anchor element",
+              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
               "fieldName": "offsetDistance"
             },
             {
@@ -13772,7 +13876,7 @@
               "type": {
                 "text": "string | undefined"
               },
-              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\nWhen set, this will override the automatic arrow positioning.",
+              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
               "fieldName": "arrowPosition"
             },
             {
@@ -13892,7 +13996,7 @@
                 "text": "string"
               },
               "default": "'Popover'",
-              "description": "Accessible name for the popover dialog\nUsed as aria-label when no title is present",
+              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
               "fieldName": "popoverAriaLabel"
             },
             {
@@ -13955,7 +14059,7 @@
                 "text": "'_self' | '_blank' | '_parent' | '_top'"
               },
               "default": "'_self'",
-              "description": "Target for the footer link (ex: \"_blank\" for new tab).\nIf empty, defaults to same tab.",
+              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
               "fieldName": "footerLinkTarget"
             },
             {
@@ -14539,7 +14643,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
+              "default": "{\r\n  required: 'Required',\r\n  error: 'Error',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -14596,6 +14700,30 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The selected value of the radio group.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -14789,7 +14917,7 @@
             {
               "kind": "field",
               "name": "assistiveTextStrings",
-              "default": "{\n  searchSuggestions: 'Search suggestions.',\n  noMatches: 'No matches found for',\n  selected: 'Selected',\n  found: 'Found',\n  recentSearches: 'Recent searches',\n}",
+              "default": "{\r\n  searchSuggestions: 'Search suggestions.',\r\n  noMatches: 'No matches found for',\r\n  selected: 'Selected',\r\n  found: 'Found',\r\n  recentSearches: 'Recent searches',\r\n}",
               "description": "Assistive text strings.",
               "attribute": "assistiveTextStrings",
               "type": {
@@ -15671,7 +15799,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  error: 'Error',\n  decrease: 'Decrease',\n  increase: 'Increase',\n}",
+              "default": "{\r\n  error: 'Error',\r\n  decrease: 'Decrease',\r\n  increase: 'Increase',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -15851,6 +15979,30 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "0"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -16623,7 +16775,7 @@
                 "text": "string"
               },
               "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
               "attribute": "stepperType"
             },
             {
@@ -16698,7 +16850,7 @@
                 "text": "string"
               },
               "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\n\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\n\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\n\nNote: Read the stepper guidelines for more info.",
+              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
               "fieldName": "stepperType"
             },
             {
@@ -16836,7 +16988,7 @@
                 "text": "string"
               },
               "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
               "attribute": "stepState"
             },
             {
@@ -16956,7 +17108,7 @@
                 "text": "string"
               },
               "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\n\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
               "fieldName": "stepState"
             },
             {
@@ -17294,7 +17446,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tbody` Web Component.\n\nRepresents the body section of Shidoka's design system tables. Designed to provide\na consistent look and feel, and can offer striped rows for enhanced readability.",
+          "description": "`kyn-tbody` Web Component.\r\n\r\nRepresents the body section of Shidoka's design system tables. Designed to provide\r\na consistent look and feel, and can offer striped rows for enhanced readability.",
           "name": "TableBody",
           "slots": [
             {
@@ -17382,7 +17534,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-td` Web Component.\n\nRepresents a table cell (data cell) within Shidoka's design system tables.\nAllows customization of alignment and can reflect the sort direction when\nused within sortable columns.",
+          "description": "`kyn-td` Web Component.\r\n\r\nRepresents a table cell (data cell) within Shidoka's design system tables.\r\nAllows customization of alignment and can reflect the sort direction when\r\nused within sortable columns.",
           "name": "TableCell",
           "slots": [
             {
@@ -17418,7 +17570,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "width",
               "reflects": true
             },
@@ -17429,7 +17581,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -17440,7 +17592,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "minWidth",
               "reflects": true
             },
@@ -17504,7 +17656,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "width"
             },
             {
@@ -17513,7 +17665,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -17522,7 +17674,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "minWidth"
             },
             {
@@ -17577,7 +17729,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-container` Web Component.\n\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\nand apply styles uniformly across the table elements.",
+          "description": "`kyn-table-container` Web Component.\r\n\r\nProvides a container for Shidoka's design system tables. It's designed to encapsulate\r\nand apply styles uniformly across the table elements.",
           "name": "TableContainer",
           "slots": [
             {
@@ -17660,7 +17812,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "\n`kyn-expanded-tr` Web Component.\n\nDesigned to display additional details for a row in a table.\nThe row is expandable and can be expanded/collapsed by toggling the plus/minus icons.",
+          "description": "\r\n`kyn-expanded-tr` Web Component.\r\n\r\nDesigned to display additional details for a row in a table.\r\nThe row is expandable and can be expanded/collapsed by toggling the plus/minus icons.",
           "name": "TableExpandedRow",
           "slots": [
             {
@@ -17676,7 +17828,7 @@
                 "text": "number"
               },
               "default": "1",
-              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
+              "description": "The number of columns that the expanded row should span.\r\nReflects the `colspan` attribute.",
               "attribute": "colspan"
             },
             {
@@ -17698,7 +17850,7 @@
                 "text": "number"
               },
               "default": "1",
-              "description": "The number of columns that the expanded row should span.\nReflects the `colspan` attribute.",
+              "description": "The number of columns that the expanded row should span.\r\nReflects the `colspan` attribute.",
               "fieldName": "colSpan"
             },
             {
@@ -17744,7 +17896,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tfoot` Web Component.\n\nRepresents a custom table foot (`<tfoot>`) for Shidoka's design system tables.\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
+          "description": "`kyn-tfoot` Web Component.\r\n\r\nRepresents a custom table foot (`<tfoot>`) for Shidoka's design system tables.\r\nDesigned to contain and style table footer rows (`<tr>`) and footer cells (`<td>`).",
           "name": "TableFoot",
           "slots": [
             {
@@ -17786,7 +17938,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Table Footer\n\nIntended to contain Legend and Pagination.",
+          "description": "Table Footer\r\n\r\nIntended to contain Legend and Pagination.",
           "name": "TableFooter",
           "slots": [
             {
@@ -17828,7 +17980,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-thead` Web Component.\n\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
+          "description": "`kyn-thead` Web Component.\r\n\r\nRepresents a custom table head (`<thead>`) for Shidoka's design system tables.\r\nDesigned to contain and style table header rows (`<tr>`) and header cells (`<th>`).",
           "name": "TableHead",
           "slots": [
             {
@@ -17918,7 +18070,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-header-tr` Web Component.\n\nThe `<kyn-header-tr>` component is designed to function as the\nheader row within a table that's part of Shidoka's design system.",
+          "description": "`kyn-header-tr` Web Component.\r\n\r\nThe `<kyn-header-tr>` component is designed to function as the\r\nheader row within a table that's part of Shidoka's design system.",
           "name": "TableHeaderRow",
           "members": [
             {
@@ -17971,7 +18123,7 @@
                   }
                 }
               ],
-              "description": "Updates the state of the header checkbox based on the number of\nselected rows."
+              "description": "Updates the state of the header checkbox based on the number of\r\nselected rows."
             },
             {
               "kind": "field",
@@ -17995,7 +18147,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "attribute": "selected",
               "reflects": true,
               "inheritedFrom": {
@@ -18010,7 +18162,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "attribute": "checkboxSelection",
               "reflects": true,
               "inheritedFrom": {
@@ -18025,7 +18177,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "attribute": "dense",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -18053,7 +18205,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "locked",
               "reflects": true,
               "inheritedFrom": {
@@ -18098,7 +18250,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "disabled",
               "reflects": true,
               "inheritedFrom": {
@@ -18128,7 +18280,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "attribute": "dimmed",
               "reflects": true,
               "inheritedFrom": {
@@ -18139,7 +18291,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  expanded: 'Expanded',\n  collapsed: 'Collapsed',\n}",
+              "default": "{\r\n  expanded: 'Expanded',\r\n  collapsed: 'Collapsed',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -18285,7 +18437,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "fieldName": "selected",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -18298,7 +18450,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "fieldName": "checkboxSelection",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -18311,7 +18463,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "fieldName": "dense",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -18337,7 +18489,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "locked",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -18376,7 +18528,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "disabled",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -18402,7 +18554,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "fieldName": "dimmed",
               "inheritedFrom": {
                 "name": "TableRow",
@@ -18463,7 +18615,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-th` Web Component.\n\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\nProvides sorting functionality when enabled and allows alignment customization.",
+          "description": "`kyn-th` Web Component.\r\n\r\nRepresents a custom table header cell (`<th>`) for Shidoka's design system tables.\r\nProvides sorting functionality when enabled and allows alignment customization.",
           "name": "TableHeader",
           "slots": [
             {
@@ -18503,7 +18655,7 @@
               "type": {
                 "text": "TABLE_CELL_ALIGN"
               },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
+              "description": "Specifies the alignment of the content within the table header.\r\nOptions: 'left', 'center', 'right'",
               "attribute": "align",
               "reflects": true
             },
@@ -18514,7 +18666,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
+              "description": "Specifies if the column is sortable.\r\nIf set to true, an arrow icon will be displayed unpon hover,\r\nallowing the user to toggle sort directions.",
               "attribute": "sortable",
               "reflects": true
             },
@@ -18535,7 +18687,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
+              "description": "The textual content associated with this component.\r\nRepresents the primary content or label that will be displayed.",
               "attribute": "headerLabel"
             },
             {
@@ -18545,7 +18697,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
+              "description": "The unique identifier representing this column header.\r\nUsed to distinguish between different sortable columns and\r\nto ensure that only one column is sorted at a time.",
               "attribute": "sortKey"
             },
             {
@@ -18555,7 +18707,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
+              "description": "Determines whether the content should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes. When set to `true`, the content\r\nwill not be visibly shown, but its content can still be read by screen readers.\r\nThis is especially useful for providing additional context or information to\r\nassistive technologies without cluttering the visual UI.",
               "attribute": "visiblyHidden"
             },
             {
@@ -18565,7 +18717,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "width",
               "reflects": true
             },
@@ -18576,7 +18728,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "maxWidth",
               "reflects": true
             },
@@ -18587,20 +18739,20 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "attribute": "minWidth",
               "reflects": true
             },
             {
               "kind": "method",
               "name": "resetSort",
-              "description": "Resets the sorting direction of the component to its default state.\nUseful for initializing or clearing any applied sorting on the element."
+              "description": "Resets the sorting direction of the component to its default state.\r\nUseful for initializing or clearing any applied sorting on the element."
             },
             {
               "kind": "method",
               "name": "toggleSortDirection",
               "privacy": "private",
-              "description": "Toggles the sort direction between ascending, descending, and default states.\nIt also dispatches an event to notify parent components of the sorting change."
+              "description": "Toggles the sort direction between ascending, descending, and default states.\r\nIt also dispatches an event to notify parent components of the sorting change."
             },
             {
               "kind": "method",
@@ -18631,7 +18783,7 @@
               "type": {
                 "text": "TABLE_CELL_ALIGN"
               },
-              "description": "Specifies the alignment of the content within the table header.\nOptions: 'left', 'center', 'right'",
+              "description": "Specifies the alignment of the content within the table header.\r\nOptions: 'left', 'center', 'right'",
               "fieldName": "align"
             },
             {
@@ -18640,7 +18792,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Specifies if the column is sortable.\nIf set to true, an arrow icon will be displayed unpon hover,\nallowing the user to toggle sort directions.",
+              "description": "Specifies if the column is sortable.\r\nIf set to true, an arrow icon will be displayed unpon hover,\r\nallowing the user to toggle sort directions.",
               "fieldName": "sortable"
             },
             {
@@ -18657,7 +18809,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The textual content associated with this component.\nRepresents the primary content or label that will be displayed.",
+              "description": "The textual content associated with this component.\r\nRepresents the primary content or label that will be displayed.",
               "fieldName": "headerLabel"
             },
             {
@@ -18666,7 +18818,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "The unique identifier representing this column header.\nUsed to distinguish between different sortable columns and\nto ensure that only one column is sorted at a time.",
+              "description": "The unique identifier representing this column header.\r\nUsed to distinguish between different sortable columns and\r\nto ensure that only one column is sorted at a time.",
               "fieldName": "sortKey"
             },
             {
@@ -18675,7 +18827,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determines whether the content should be hidden from visual view but remain accessible\nto screen readers for accessibility purposes. When set to `true`, the content\nwill not be visibly shown, but its content can still be read by screen readers.\nThis is especially useful for providing additional context or information to\nassistive technologies without cluttering the visual UI.",
+              "description": "Determines whether the content should be hidden from visual view but remain accessible\r\nto screen readers for accessibility purposes. When set to `true`, the content\r\nwill not be visibly shown, but its content can still be read by screen readers.\r\nThis is especially useful for providing additional context or information to\r\nassistive technologies without cluttering the visual UI.",
               "fieldName": "visiblyHidden"
             },
             {
@@ -18684,7 +18836,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a fixed width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a fixed width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "width"
             },
             {
@@ -18693,7 +18845,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a maximum width for the cell.\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a maximum width for the cell.\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "maxWidth"
             },
             {
@@ -18702,7 +18854,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
+              "description": "Sets a minimum width for the cell;\r\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "minWidth"
             }
           ],
@@ -18823,7 +18975,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-tr` Web Component.\n\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
+          "description": "`kyn-tr` Web Component.\r\n\r\nRepresents a table row (`<tr>`) equivalent for custom tables created with Shidoka's design system.\r\nIt primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.",
           "name": "TableRow",
           "slots": [
             {
@@ -18850,7 +19002,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "attribute": "selected",
               "reflects": true
             },
@@ -18861,7 +19013,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "attribute": "checkboxSelection",
               "reflects": true
             },
@@ -18872,7 +19024,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "attribute": "dense"
             },
             {
@@ -18892,7 +19044,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "locked",
               "reflects": true
             },
@@ -18925,7 +19077,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "attribute": "disabled",
               "reflects": true
             },
@@ -18947,14 +19099,14 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "attribute": "dimmed",
               "reflects": true
             },
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  expanded: 'Expanded',\n  collapsed: 'Collapsed',\n}",
+              "default": "{\r\n  expanded: 'Expanded',\r\n  collapsed: 'Collapsed',\r\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
@@ -19040,7 +19192,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "selected: Boolean indicating whether the row is selected.\nReflects the `selected` attribute.",
+              "description": "selected: Boolean indicating whether the row is selected.\r\nReflects the `selected` attribute.",
               "fieldName": "selected"
             },
             {
@@ -19049,7 +19201,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "fieldName": "checkboxSelection"
             },
             {
@@ -19058,7 +19210,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "fieldName": "dense"
             },
             {
@@ -19076,7 +19228,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "locked: Boolean indicating whether the row is locked.\nIf a row is selected before it is locked, it remains selected even after being locked.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "locked: Boolean indicating whether the row is locked.\r\nIf a row is selected before it is locked, it remains selected even after being locked.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "locked"
             },
             {
@@ -19103,7 +19255,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "disabled: Boolean indicating whether the row is disabled.\nA disabled row is not allowed to have any user interactions.\nA row can be selected and disabled/locked simultaneously.",
+              "description": "disabled: Boolean indicating whether the row is disabled.\r\nA disabled row is not allowed to have any user interactions.\r\nA row can be selected and disabled/locked simultaneously.",
               "fieldName": "disabled"
             },
             {
@@ -19121,7 +19273,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dimmed: Boolean indicating whether the row is dimmed.\nA row should not be selected and dimmed simultaneously.",
+              "description": "dimmed: Boolean indicating whether the row is dimmed.\r\nA row should not be selected and dimmed simultaneously.",
               "fieldName": "dimmed"
             },
             {
@@ -19164,7 +19316,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-toolbar` Web Component.\n\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
+          "description": "`kyn-table-toolbar` Web Component.\r\n\r\nThis component provides a toolbar for tables, primarily featuring a title and additional content.\r\nThe title is rendered prominently, while the slot can be used for controls, buttons, or other interactive elements.",
           "name": "TableToolbar",
           "slots": [
             {
@@ -19247,7 +19399,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table-skeleton` Web Component.\nA skeleton loading state for the table component that mirrors its structure.",
+          "description": "`kyn-table-skeleton` Web Component.\r\nA skeleton loading state for the table component that mirrors its structure.",
           "name": "TableSkeleton",
           "members": [
             {
@@ -19470,7 +19622,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "`kyn-table` Web Component.\nThis component provides a table with sorting, pagination, and selection capabilities.\nIt is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.",
+          "description": "`kyn-table` Web Component.\r\nThis component provides a table with sorting, pagination, and selection capabilities.\r\nIt is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.",
           "name": "Table",
           "members": [
             {
@@ -19480,7 +19632,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "attribute": "checkboxSelection"
             },
             {
@@ -19490,7 +19642,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "striped: Boolean indicating whether rows should have alternate\ncoloring.",
+              "description": "striped: Boolean indicating whether rows should have alternate\r\ncoloring.",
               "attribute": "striped"
             },
             {
@@ -19500,7 +19652,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\nMust also set a height or max-height on kyn-table-container.",
+              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\r\nMust also set a height or max-height on kyn-table-container.",
               "attribute": "stickyHeader"
             },
             {
@@ -19510,7 +19662,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "attribute": "dense"
             },
             {
@@ -19520,14 +19672,14 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
+              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\r\nThis will set the table's layout to fixed, which means the table and column widths\r\nwill be determined by the width of the columns and not by the content of the cells.\r\nThis can be useful when you want to have a consistent column width across multiple tables.",
               "attribute": "fixedLayout"
             },
             {
               "kind": "method",
               "name": "_updateHeaderCheckbox",
               "privacy": "private",
-              "description": "Updates the state of the header checkbox based on the number of\nselected rows."
+              "description": "Updates the state of the header checkbox based on the number of\r\nselected rows."
             },
             {
               "kind": "method",
@@ -19561,7 +19713,7 @@
               "kind": "method",
               "name": "updateAfterExternalChanges",
               "privacy": "public",
-              "description": "Resets the selection state of all rows in the table.\nThis method is called when the table is reset or cleared.",
+              "description": "Resets the selection state of all rows in the table.\r\nThis method is called when the table is reset or cleared.",
               "return": {
                 "type": {
                   "text": ""
@@ -19623,7 +19775,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "checkboxSelection: Boolean indicating whether rows should be\nselectable using checkboxes.",
+              "description": "checkboxSelection: Boolean indicating whether rows should be\r\nselectable using checkboxes.",
               "fieldName": "checkboxSelection"
             },
             {
@@ -19632,7 +19784,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "striped: Boolean indicating whether rows should have alternate\ncoloring.",
+              "description": "striped: Boolean indicating whether rows should have alternate\r\ncoloring.",
               "fieldName": "striped"
             },
             {
@@ -19641,7 +19793,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\nMust also set a height or max-height on kyn-table-container.",
+              "description": "stickyHeader: Boolean indicating whether the table header should be sticky.\r\nMust also set a height or max-height on kyn-table-container.",
               "fieldName": "stickyHeader"
             },
             {
@@ -19650,7 +19802,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "dense: Boolean indicating whether the table should be displayed\nin dense mode.",
+              "description": "dense: Boolean indicating whether the table should be displayed\r\nin dense mode.",
               "fieldName": "dense"
             },
             {
@@ -19659,7 +19811,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\nThis will set the table's layout to fixed, which means the table and column widths\nwill be determined by the width of the columns and not by the content of the cells.\nThis can be useful when you want to have a consistent column width across multiple tables.",
+              "description": "fixedLayout: Boolean indicating whether the table should have a fixed layout.\r\nThis will set the table's layout to fixed, which means the table and column widths\r\nwill be determined by the width of the columns and not by the content of the cells.\r\nThis can be useful when you want to have a consistent column width across multiple tables.",
               "fieldName": "fixedLayout"
             }
           ],
@@ -20160,10 +20312,10 @@
                   "type": {
                     "text": "any"
                   },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                  "description": "The parameter \"e\" is an event object that contains information about the event\r\nthat triggered the handleChange function."
                 }
               ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+              "description": "Updates children and emits a change event based on the provided\r\nevent details when a child kyn-tab is clicked."
             },
             {
               "kind": "method",
@@ -20175,14 +20327,14 @@
                   "type": {
                     "text": "string"
                   },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                  "description": "The selectedTabId parameter is a string that represents the ID of\r\nthe tab that is currently selected."
                 },
                 {
                   "name": "updatePanel",
                   "default": "true"
                 }
               ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+              "description": "Updates the selected property of tabs and the visible property of tab panels based on\r\nthe selected tab ID."
             },
             {
               "kind": "method",
@@ -20194,17 +20346,17 @@
                   "type": {
                     "text": "any"
                   },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
+                  "description": "The origEvent parameter is the original event object that triggered the\r\nchange event. It could be any type of event object, such as a click event or a keydown event."
                 },
                 {
                   "name": "selectedTabId",
                   "type": {
                     "text": "string"
                   },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+                  "description": "The selectedTabId parameter is a string that represents the ID of\r\nthe selected tab."
                 }
               ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\r\nselected tab ID as details."
             },
             {
               "kind": "method",
@@ -20216,7 +20368,7 @@
                   "type": {
                     "text": "any"
                   },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                  "description": "The parameter `e` is an event object that represents the keyboard event. It\r\ncontains information about the keyboard event, such as the key code of the pressed key."
                 }
               ],
               "description": "Handles keyboard events for navigating between tabs.",
@@ -20468,7 +20620,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
+              "description": "Determine if Tag is clickable(applicable for old tags only).\r\n<br>\r\n**NOTE**: New tags are **clickable** by **default**.",
               "attribute": "clickable"
             },
             {
@@ -20640,7 +20792,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Determine if Tag is clickable(applicable for old tags only).\n<br>\n**NOTE**: New tags are **clickable** by **default**.",
+              "description": "Determine if Tag is clickable(applicable for old tags only).\r\n<br>\r\n**NOTE**: New tags are **clickable** by **default**.",
               "fieldName": "clickable"
             },
             {
@@ -20710,7 +20862,7 @@
               "type": {
                 "text": "object"
               },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "default": "{\r\n    showAll: 'Show all',\r\n    showLess: 'Show less',\r\n  }",
               "description": "Text string customization.",
               "attribute": "textStrings"
             },
@@ -20774,7 +20926,7 @@
               "type": {
                 "text": "object"
               },
-              "default": "{\n    showAll: 'Show all',\n    showLess: 'Show less',\n  }",
+              "default": "{\r\n    showAll: 'Show all',\r\n    showLess: 'Show less',\r\n  }",
               "description": "Text string customization.",
               "fieldName": "textStrings"
             },
@@ -20967,7 +21119,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
+              "description": "textarea rows attribute. The number of visible text lines.\r\n**Required** when `aiConnected` is set to `true`.",
               "attribute": "rows"
             },
             {
@@ -20987,13 +21139,13 @@
                 "text": "number"
               },
               "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\r\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\r\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
               "attribute": "maxRowsVisible"
             },
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  errorText: 'Error',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -21055,6 +21207,30 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -21148,7 +21324,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
+              "description": "textarea rows attribute. The number of visible text lines.\r\n**Required** when `aiConnected` is set to `true`.",
               "fieldName": "rows"
             },
             {
@@ -21166,7 +21342,7 @@
                 "text": "number"
               },
               "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\r\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\r\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
               "fieldName": "maxRowsVisible"
             },
             {
@@ -21382,7 +21558,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear all',\n  errorText: 'Error',\n  showPassword: 'Show password',\n  hidePassword: 'Hide password',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear all',\r\n  errorText: 'Error',\r\n  showPassword: 'Show password',\r\n  hidePassword: 'Hide password',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -21488,6 +21664,30 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -21874,7 +22074,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  noTimeSelected: 'No time selected',\n  pleaseSelectValidDate: 'Please select a valid date',\n\n  lockedStartDate: 'Start date is locked',\n  lockedEndDate: 'End date is locked',\n  dateLocked: 'Date is locked',\n  dateNotAvailable: 'Date is not available',\n  dateInSelectedRange: 'Date is in selected range',\n}",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear',\r\n  pleaseSelectDate: 'Please select a date',\r\n  noTimeSelected: 'No time selected',\r\n  pleaseSelectValidDate: 'Please select a valid date',\r\n\r\n  lockedStartDate: 'Start date is locked',\r\n  lockedEndDate: 'End date is locked',\r\n  dateLocked: 'Date is locked',\r\n  dateNotAvailable: 'Date is not available',\r\n  dateInSelectedRange: 'Date is in selected range',\r\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -21954,7 +22154,7 @@
                   }
                 }
               ],
-              "description": "Parses a time string (e.g. \"14:30\") or Date/number into a Date object\nanchored to today, or returns null if invalid."
+              "description": "Parses a time string (e.g. \"14:30\") or Date/number into a Date object\r\nanchored to today, or returns null if invalid."
             },
             {
               "kind": "method",
@@ -22182,6 +22382,22 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -22543,6 +22759,22 @@
             }
           ],
           "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
             {
               "name": "label",
               "type": {
@@ -23191,19 +23423,19 @@
               "kind": "method",
               "name": "_saveLayout",
               "privacy": "private",
-              "description": "The private `_saveLayout` function saves the grid layout by updating each widget's properties and\nemitting a custom event with the new layout."
+              "description": "The private `_saveLayout` function saves the grid layout by updating each widget's properties and\r\nemitting a custom event with the new layout."
             },
             {
               "kind": "method",
               "name": "_initGridstack",
               "privacy": "private",
-              "description": "The function `_initGridstack` initializes a GridStack layout with event listeners for drag, resize,\nand saving layout changes."
+              "description": "The function `_initGridstack` initializes a GridStack layout with event listeners for drag, resize,\r\nand saving layout changes."
             },
             {
               "kind": "method",
               "name": "_updateWidgetsDensity",
               "privacy": "private",
-              "description": "The function `_updateWidgetsDensity` iterates through all `kyn-widget` elements and sets their\n`compact` property based on the parent element's `compact` property."
+              "description": "The function `_updateWidgetsDensity` iterates through all `kyn-widget` elements and sets their\r\n`compact` property based on the parent element's `compact` property."
             },
             {
               "kind": "method",
@@ -23214,7 +23446,7 @@
               "kind": "method",
               "name": "_setBreakpoint",
               "privacy": "private",
-              "description": "The function `_setBreakpoint` retrieves and sets the current breakpoint value from the CSS custom\nproperty `--kd-current-breakpoint`."
+              "description": "The function `_setBreakpoint` retrieves and sets the current breakpoint value from the CSS custom\r\nproperty `--kd-current-breakpoint`."
             },
             {
               "kind": "method",

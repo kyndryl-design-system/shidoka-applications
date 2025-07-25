@@ -37,6 +37,9 @@ const _defaultTextStrings = {
  * @prop {number} maxLength - Maximum number of characters.
  * @slot icon - Slot for contextual icon.
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [value=''] - The value of the input.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  *
  */
 @customElement('kyn-text-input')

@@ -24,7 +24,8 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
  * @slot unnamed - Slot for tag icon.
  * @fires on-input – emits { value, origEvent } on every keystroke. `detail:{ origEvent: Event,value: string }`
  * @fires on-change – emits string[] after tags are added/removed. `detail:{ value: string[] }`
- * @prop {string[]} customSuggestions - Optional array of custom suggestions to use instead of the default mock data
+ * @prop {string[]} customSuggestions - Optional array of custom suggestions to use instead of the default mock data.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
  */
 
 @customElement('kyn-multi-input-field')
