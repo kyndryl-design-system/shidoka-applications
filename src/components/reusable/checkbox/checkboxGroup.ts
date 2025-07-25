@@ -26,6 +26,9 @@ const _defaultTextStrings = {
  * @slot unnamed - Slot for individual checkboxes.
  * @slot tooltip - Slot for tooltip.
  * @slot description - Slot for description text.
+ * @attr {array} [value=[]] - The selected values of the checkbox group.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends FormMixin(LitElement) {

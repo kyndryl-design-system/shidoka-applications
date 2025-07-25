@@ -23,6 +23,8 @@ const _defaultTextStrings = {
  * Number input.
  * @fires on-input - Captures the input event and emits the value and validation state.`detail:{ origEvent: InputEvent, value: number, isValid: boolean, validity: ValidityState, validationMessage: string }`
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {
