@@ -31,7 +31,7 @@ const _defaultTextStrings = {
 
 /**
  * Text input.
- * @fires on-input - Captures the input event and emits the selected value and original event details.`detail:{ origEvent: InputEvent, value: string }`
+ * @fires on-input - Captures the input event and emits the selected value and validation state.`detail:{ origEvent: InputEvent, value: string, isValid: boolean, validity: ValidityState, validationMessage: string }`
  * @prop {string} pattern - RegEx pattern to validate.
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
@@ -195,7 +195,7 @@ export class TextInput extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
-            autocomplete=${this.autoComplete}
+            autocomplete=${this.autoComplete as any}
           />
           ${this.type === 'password' && !this.readonly
             ? html`
@@ -290,6 +290,10 @@ export class TextInput extends FormMixin(LitElement) {
   private _emitValue(e?: any) {
     const Detail: any = {
       value: this.value,
+      isValid: !this._isInvalid,
+      validity: this._inputEl.validity,
+      validationMessage:
+        this._internalValidationMsg || this._inputEl.validationMessage,
     };
     if (e) {
       Detail.origEvent = e;

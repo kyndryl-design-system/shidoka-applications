@@ -21,7 +21,7 @@ const _defaultTextStrings = {
 
 /**
  * Number input.
- * @fires on-input - Captures the input event and emits the value and original event details.`detail:{ value: number }`
+ * @fires on-input - Captures the input event and emits the value and validation state.`detail:{ origEvent: InputEvent, value: number, isValid: boolean, validity: ValidityState, validationMessage: string }`
  * @slot tooltip - Slot for tooltip.
  */
 @customElement('kyn-number-input')
@@ -237,6 +237,10 @@ export class NumberInput extends FormMixin(LitElement) {
   private _emitValue(e?: any) {
     const Detail: any = {
       value: this.value,
+      isValid: !this._isInvalid,
+      validity: this._inputEl.validity,
+      validationMessage:
+        this._internalValidationMsg || this._inputEl.validationMessage,
     };
     if (e) {
       Detail.origEvent = e;

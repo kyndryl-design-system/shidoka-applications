@@ -17,7 +17,7 @@ const _defaultTextStrings = {
 
 /**
  * Text area.
- * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`
+ * @fires on-input - Captures the input event and emits the selected value and validation state. `detail:{ origEvent: InputEvent, value: string, isValid: boolean, validity: ValidityState, validationMessage: string }`
  * @prop {number} minLength - Minimum number of characters.
  * @prop {number} maxLength - Maximum number of characters.
  * @slot tooltip - Slot for tooltip.
@@ -149,7 +149,7 @@ export class TextArea extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
-            autocomplete=${this.autoComplete}
+            autocomplete=${this.autoComplete as any}
             @input=${(e: any) => this.handleInput(e)}
           >
 ${this.value}</textarea
@@ -208,6 +208,10 @@ ${this.value}</textarea
     const event = new CustomEvent('on-input', {
       detail: {
         value: e.target.value,
+        isValid: !this._isInvalid,
+        validity: this.textareaEl.validity,
+        validationMessage:
+          this._internalValidationMsg || this.textareaEl.validationMessage,
         origEvent: e,
       },
     });
