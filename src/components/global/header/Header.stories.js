@@ -84,11 +84,11 @@ const selectAllNotificationsAsRead = (e) => {
     // unRead is notification prop
     notification.unRead = false;
   });
-  action(e.type)(e);
+  action(e.type)({ ...e, detail: e.detail });
 };
 
 const handleOverflowClick = (e) => {
-  action(e.type)(e);
+  action(e.type)({ ...e, detail: e.detail });
   // overflow link click logic here to mark as unread
 };
 
@@ -246,7 +246,8 @@ export const WithNotificationPanel = {
           panelTitle=${notificationPanelArgs.panelTitle}
           panelFooterBtnText=${notificationPanelArgs.panelFooterBtnText}
           ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
-          @on-footer-btn-click=${(e) => action(e.type)(e)}
+          @on-footer-btn-click=${(e) =>
+            action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-button
             slot="menu-slot"
@@ -274,7 +275,8 @@ export const WithNotificationPanel = {
                 type="clickable"
                 tagStatus=${ele.tagStatus}
                 unRead
-                @on-notification-click=${(e) => action(e.type)(e)}
+                @on-notification-click=${(e) =>
+                  action(e.type)({ ...e, detail: e.detail })}
               >
                 <kyn-overflow-menu
                   slot="actions"

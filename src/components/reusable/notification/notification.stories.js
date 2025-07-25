@@ -6,6 +6,9 @@ import '../link';
 
 import '../overflowMenu';
 
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import documentTaskIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/document-task.svg';
+
 const notificationBodyMsg =
   'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.';
 
@@ -53,7 +56,8 @@ export const Notification = {
       type=${args.type}
       tagStatus=${args.tagStatus}
       ?unRead=${args.unRead}
-      @on-notification-click=${(e) => action(e.type)(e)}
+      @on-notification-click=${(e) =>
+        action(e.type)({ ...e, detail: e.detail })}
     >
       ${args.type === 'normal' || args.type === 'clickable'
         ? html` <kyn-overflow-menu
@@ -65,13 +69,13 @@ export const Notification = {
               e.stopPropagation();
             }}
           >
-            <kyn-overflow-menu-item @on-click=${(e) => action(e.type)(e)}
+            <kyn-overflow-menu-item
+              @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
               >Mark as Read</kyn-overflow-menu-item
             >
             <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
           </kyn-overflow-menu>`
         : null}
-
       <div>${notificationBodyMsg}</div>
     </kyn-notification>`;
   },
@@ -96,7 +100,7 @@ export const Inline = {
         tagStatus=${args.tagStatus}
         closeBtnDescription=${args.closeBtnDescription}
         ?hideCloseButton=${args.hideCloseButton}
-        @on-close=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <div>${notificationBodyMsg}</div>
       </kyn-notification>
@@ -111,7 +115,7 @@ export const Inline = {
         tagStatus=${args.tagStatus}
         closeBtnDescription=${args.closeBtnDescription}
         ?hideCloseButton=${args.hideCloseButton}
-        @on-close=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-notification>
       <br />
@@ -125,7 +129,7 @@ export const Inline = {
         type=${args.type}
         tagStatus=${args.tagStatus}
         ?hideCloseButton=${args.hideCloseButton}
-        @on-close=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <div>
           ${notificationBodyMsg}
@@ -139,6 +143,24 @@ export const Inline = {
             </kyn-link>
           </div>
         </div>
+      </kyn-notification>
+      <br />
+      <p class="kd-type--body-01">With Custom Icon</p>
+      <br />
+      <kyn-notification
+        notificationTitle=${args.notificationTitle}
+        assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
+        notificationRole=${args.notificationRole}
+        closeBtnDescription=${args.closeBtnDescription}
+        type=${args.type}
+        tagStatus=${args.tagStatus}
+        ?hideCloseButton=${args.hideCloseButton}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <span slot="icon" style="display:flex"
+          >${unsafeSVG(documentTaskIcon)}</span
+        >
+        <div>${notificationBodyMsg}</div>
       </kyn-notification> `;
   },
 };
@@ -188,7 +210,7 @@ export const Toast = {
           tagStatus=${args.tagStatus}
           timeout=${args.timeout}
           ?hideCloseButton=${args.hideCloseButton}
-          @on-close=${(e) => action(e.type)(e)}
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <div>
             I will disappear as requested, after
@@ -204,7 +226,7 @@ export const Toast = {
           tagStatus="default"
           timeout=${8}
           ?hideCloseButton=${args.hideCloseButton}
-          @on-close=${(e) => action(e.type)(e)}
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <div>I will disappear after (default) <code>8</code> seconds.</div>
         </kyn-notification>
@@ -216,7 +238,7 @@ export const Toast = {
           type="toast"
           tagStatus="warning"
           ?hideCloseButton=${args.hideCloseButton}
-          @on-close=${(e) => action(e.type)(e)}
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
           timeout=${12}
         >
           <div>I will disappear after <code>10</code> seconds.</div>
@@ -229,7 +251,7 @@ export const Toast = {
           type="toast"
           tagStatus="success"
           ?hideCloseButton=${args.hideCloseButton}
-          @on-close=${(e) => action(e.type)(e)}
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
           timeout=${12}
         >
           <div>I will disappear after <code>12</code> seconds.</div>
@@ -242,7 +264,7 @@ export const Toast = {
           type="toast"
           tagStatus="error"
           ?hideCloseButton=${args.hideCloseButton}
-          @on-close=${(e) => action(e.type)(e)}
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
           timeout=${0}
         >
           <div>I will remain untill you click on <code>X</code> icon.</div>
@@ -255,7 +277,7 @@ export const Toast = {
           type="toast"
           tagStatus="info"
           ?hideCloseButton=${args.hideCloseButton}
-          @on-close=${(e) => action(e.type)(e)}
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
           timeout=${0}
         >
         </kyn-notification>
@@ -268,7 +290,7 @@ export const Toast = {
           tagStatus="ai"
           timeout=${14}
           ?hideCloseButton=${args.hideCloseButton}
-          @on-close=${(e) => action(e.type)(e)}
+          @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <div>I will disappear after <code>14</code> seconds.</div>
         </kyn-notification>

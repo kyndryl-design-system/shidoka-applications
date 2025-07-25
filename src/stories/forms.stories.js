@@ -52,7 +52,8 @@ export const Default = {
       >
         <kyn-radio-button-group
           name="radio"
-          @on-radio-group-change=${(e) => action(e.type)(e)}
+          @on-radio-group-change=${(e) =>
+            action(e.type)({ ...e, detail: e.detail })}
           label="Radio buttons"
         >
           <kyn-tooltip slot="tooltip">
@@ -69,7 +70,8 @@ export const Default = {
         <kyn-checkbox-group
           name="checkbox"
           label="Checkboxes"
-          @on-checkbox-group-change=${(e) => action(e.type)(e)}
+          @on-checkbox-group-change=${(e) =>
+            action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
           <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
@@ -82,7 +84,7 @@ export const Default = {
           label="Toggle button"
           name="toggle"
           value="example"
-          @on-change=${(e) => action(e.type)(e)}
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
         </kyn-toggle-button>
 
@@ -94,7 +96,7 @@ export const Default = {
           openDirection="down"
           value="1"
           caption="Dropdown example"
-          @on-change=${(e) => action(e.type)(e)}
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -121,7 +123,7 @@ export const Default = {
           multiple
           searchable
           caption="Searchable Multi-Select Dropdown example"
-          @on-change=${(e) => action(e.type)(e)}
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
           <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -143,7 +145,7 @@ export const Default = {
           multiple
           searchable
           caption="Searchable Multi-Select Dropdown example"
-          @on-change=${(e) => action(e.type)(e)}
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-dropdown-option value="1">Option 1</kyn-dropdown-option>
           <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
@@ -164,7 +166,7 @@ export const Default = {
           placeholder="Placeholder text"
           caption="Text input example"
           label="Text input"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -178,7 +180,7 @@ export const Default = {
           placeholder="Placeholder text"
           caption="Text area example"
           label="Text area"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           @keydown=${(e) => e.stopPropagation()}
         >
           <kyn-tooltip slot="tooltip">
@@ -197,7 +199,7 @@ export const Default = {
           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
           caption="Password must contain at least 8 characters, including uppercase, lowercase, and numbers"
           style="width: 95%; max-width: 350px;"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -210,7 +212,7 @@ export const Default = {
           name="numberInput"
           caption="Number input example"
           label="Number input"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -227,7 +229,7 @@ export const Default = {
           caption="Time picker example"
           ?twentyFourHourFormat=${true}
           defaultErrorMessage="A time value is required"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
@@ -244,8 +246,8 @@ export const Default = {
           label="Date Picker"
           dateFormat="Y-m-d"
           caption="Date picker example"
-          defaultErrorMessage="A date value is required."
-          @on-input=${(e) => action(e.type)(e)}
+          defaultErrorMessage="A date value is required"
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
 
@@ -258,8 +260,8 @@ export const Default = {
           dateFormat="Y-m-d"
           mode="multiple"
           caption="Date picker example"
-          defaultErrorMessage="A date value is required."
-          @on-input=${(e) => action(e.type)(e)}
+          defaultErrorMessage="A date value is required"
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
 
@@ -272,8 +274,8 @@ export const Default = {
           dateFormat="Y-m-d h:i K"
           caption="Date time picker example"
           ?twentyFourHourFormat=${false}
-          defaultErrorMessage="A date value is required."
-          @on-input=${(e) => action(e.type)(e)}
+          defaultErrorMessage="A date value is required"
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
@@ -291,7 +293,7 @@ export const Default = {
           dateFormat="Y-m-d"
           caption="Date range picker example"
           defaultErrorMessage="Both start and end dates are required"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
@@ -310,7 +312,7 @@ export const Default = {
           caption="Date time range picker example"
           ?twentyFourHourFormat=${false}
           defaultErrorMessage="Both start and end dates are required"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
@@ -337,7 +339,7 @@ export const Default = {
           defaultErrorMessage="A time value is required"
           defaultMinute=${30}
           defaultHour=${12}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
@@ -356,8 +358,8 @@ export const Default = {
           mode="multiple"
           caption="Date picker example (multi, pre-selected)"
           .defaultDate=${'2022-01-03T00:00:00Z'}
-          defaultErrorMessage="A date value is required."
-          @on-input=${(e) => action(e.type)(e)}
+          defaultErrorMessage="A date value is required"
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
 
@@ -371,8 +373,8 @@ export const Default = {
           mode="multiple"
           caption="Date picker example (multi, pre-selected)"
           .defaultDate=${['2022-01-02', '2022-01-03']}
-          defaultErrorMessage="A date value is required."
-          @on-input=${(e) => action(e.type)(e)}
+          defaultErrorMessage="A date value is required"
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
 
@@ -387,7 +389,7 @@ export const Default = {
           ?twentyFourHourFormat=${false}
           .defaultDate=${['2025-01-02T00:00:00Z', '2025-01-13T00:00:00Z']}
           defaultErrorMessage="Both start and end dates are required"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
@@ -407,7 +409,7 @@ export const Default = {
           max="100"
           ?enableTooltip=${true}
           ?enableTickMarker=${false}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -426,7 +428,7 @@ export const Default = {
           max="100"
           ?enableTooltip=${true}
           ?enableTickMarker=${true}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -445,7 +447,7 @@ export const Default = {
           max="100"
           .customLabels=${['Low', 'Medium', 'High']}
           ?enableTooltip=${true}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -463,7 +465,7 @@ export const Default = {
           max="100"
           ?editableInput=${true}
           ?enableTooltip=${true}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -483,7 +485,7 @@ export const Default = {
           ?editableInput=${true}
           ?enableTooltip=${false}
           ?enableTickMarker=${true}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -504,7 +506,7 @@ export const Default = {
           max="100"
           value="30"
           ?editableInput=${true}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -524,7 +526,7 @@ export const Default = {
           ?editableInput=${true}
           ?enableTooltip=${false}
           ?enableTickMarker=${true}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
@@ -538,7 +540,7 @@ export const Default = {
           value=""
           caption="Color input example"
           label="Color input"
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip" anchorPosition="start">
             <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>

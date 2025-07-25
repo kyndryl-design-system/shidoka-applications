@@ -38,7 +38,7 @@ const _defaultTextStrings = {
 
 /**
  * File Uploader
- * @fires selected-files - Emits the uploaded files.
+ * @fires selected-files - Emits the uploaded files.`detail:{ validFiles: Array, invalidFiles: Array }`
  * @slot upload-status - Slot for upload status/notification.
  */
 @customElement('kyn-file-uploader')

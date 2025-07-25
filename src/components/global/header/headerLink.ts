@@ -16,7 +16,7 @@ import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/s
 
 /**
  * Component for navigation links within the Header.
- * @fires on-click - Captures the click event and emits the original event details.
+ * @fires on-click - Captures the click event and emits the original event details. `detail:{ origEvent: Event ,defaultPrevented: boolean}`
  * @slot unnamed - Slot for link text/content.
  * @slot links - Slot for sublinks (up to two levels).
  * @slot icon - Slot for icon.

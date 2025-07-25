@@ -18,9 +18,11 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 
 /**
- * Datepicker: uses Flatpickr's datetime picker library — https://flatpickr.js.org
- * @fires on-change - Captures the input event and emits the selected value and original event details.
+ * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
+ * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dataString: string, dates: date, source: string }`
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FlatpickrBase {

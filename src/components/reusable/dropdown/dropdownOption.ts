@@ -12,8 +12,8 @@ import DropdownOptionScss from './dropdownOption.scss?inline';
 
 /**
  * Dropdown option.
- * @fires on-click - Emits the option details to the parent dropdown.
- * @fires on-remove-option - Emits the option that is removed.
+ * @fires on-click - Emits the option details to the parent dropdown. `detail:{ selected: boolean, value: string, origEvent: PointerEvent }`
+ * @fires on-remove-option - Emits the option that is removed. `detail:{ value: string }`
  * @slot unnamed - Slot for option text.
  * @slot icon - Slot for option icon. Icon size should be 16px only.
  */

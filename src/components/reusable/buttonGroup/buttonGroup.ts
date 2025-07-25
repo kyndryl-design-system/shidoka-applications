@@ -44,7 +44,7 @@ const _defaultTextStrings = {
  * ButtonGroup component.
  *
  * @slot unnamed - Slot for <kyn-button> elements.
- * @fires on-change - Captures the click event button selection in button group.
+ * @fires on-change - Captures the click event button selection in button group. `detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }`
  */
 @customElement('kyn-button-group')
 export class ButtonGroup extends LitElement {

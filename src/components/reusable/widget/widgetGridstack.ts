@@ -8,8 +8,8 @@ import { GridStack } from 'gridstack';
 
 /**
  * GridStack wrapper that includes Shidoka default config and styles.
- * @fires on-grid-init - Emits after GridStack initializes.
- * @fires on-grid-save - Emits the GridStack save() method results (new layout) on dragstop and resizestop.
+ * @fires on-grid-init - Emits after GridStack initializes. `detail:{ layout : Object }`
+ * @fires on-grid-save - Emits the GridStack save() method results (new layout) on dragstop and resizestop. `detail:{ layout : Object }`
  * @slot unnamed - Slot for .grid-stack container element.
  */
 @customElement('kyn-widget-gridstack')
@@ -131,6 +131,9 @@ export class WidgetGridstack extends LitElement {
     const GridstackEl: any = this.querySelector('.grid-stack');
     this.grid = this.gridStack.init(this._gridstackConfig, GridstackEl);
 
+    // set the grid's margin based on breakpoint
+    this._setMargin();
+
     // set widget drag state on dragstart
     this.grid.on('dragstart', (e: Event) => {
       const El: any = e.target;
@@ -198,6 +201,7 @@ export class WidgetGridstack extends LitElement {
   /** @internal */
   private _debounceResize = debounce(() => {
     this._setBreakpoint();
+    this._setMargin();
   });
 
   override connectedCallback() {
@@ -221,6 +225,19 @@ export class WidgetGridstack extends LitElement {
     this._breakpoint = getComputedStyle(
       document.documentElement
     ).getPropertyValue('--kd-current-breakpoint');
+  }
+
+  /**
+   * The private `_setMargin` function adjusts the margin of a grid based on a breakpoint value.
+   */
+  private _setMargin() {
+    if (!this.gridstackConfig && !this.compact) {
+      if (this._breakpoint === 'sm') {
+        this.grid.margin('8');
+      } else {
+        this.grid.margin('16');
+      }
+    }
   }
 }
 

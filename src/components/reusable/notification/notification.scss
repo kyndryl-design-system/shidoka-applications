@@ -32,26 +32,32 @@ kyn-card.notification-toast::part(card-wrapper) {
 
 kyn-card.notification-error::part(card-wrapper) {
   background-color: var(--kd-color-status-error-accent);
+  color: var(--kd-color-status-error-foreground);
 }
 
 kyn-card.notification-success::part(card-wrapper) {
   background-color: var(--kd-color-status-success-accent);
+  color: var(--kd-color-status-success-foreground);
 }
 
 kyn-card.notification-warning::part(card-wrapper) {
   background-color: var(--kd-color-status-warning-accent);
+  color: var(--kd-color-status-warning-foreground---dark);
 }
 
 kyn-card.notification-info::part(card-wrapper) {
   background-color: var(--kd-color-status-informational-accent);
+  color: var(--kd-color-status-informational-foreground);
 }
 
 kyn-card.notification-ai::part(card-wrapper) {
   background-color: var(--kd-color-background-container-ai-default);
+  color: var(--kd-color-icon-ai);
 }
 
 kyn-card.notification-default::part(card-wrapper) {
   background-color: var(--kd-color-status-neutral-light);
+  color: var(--kd-color-status-neutral-foreground);
 }
 
 kyn-card.notification-normal::part(card-wrapper) {
@@ -98,13 +104,14 @@ kyn-link::part(link) {
 
   &-title {
     @include typography.type-ui-02;
-    font-weight: 500;
+    font-weight: var(--kd-font-weight-medium);
     color: var(--kd-color-text-level-primary);
     margin: 0;
   }
 
   &-subtitle {
     @include typography.type-ui-02;
+    margin-top: 2px;
     color: var(--kd-color-text-level-primary);
   }
 
@@ -125,7 +132,7 @@ kyn-link::part(link) {
 
     &-close-btn {
       span {
-        color: var(--kd-color-icon-primary); // Close icon color
+        color: var(--kd-color-icon-primary);
       }
       position: absolute;
       top: 5px;
@@ -145,7 +152,7 @@ kyn-link::part(link) {
 .notification-toast.notification-default {
   .notification-toast-close-btn {
     span {
-      color: var(--kd-color-icon-primary); // Close icon color
+      color: var(--kd-color-icon-primary);
     }
   }
 }
@@ -183,8 +190,9 @@ kyn-link::part(link) {
 
 .notification-description {
   @include typography.type-ui-03;
+  margin-top: 8px;
   color: var(--kd-color-text-level-primary);
-  font-weight: 400;
+  font-weight: var(--kd-font-weight-regular);
   line-height: 16px;
 }
 
@@ -232,7 +240,7 @@ kyn-link::part(link) {
   &-text {
     @include typography.type-ui-02;
     color: var(--kd-color-text-level-primary);
-    font-weight: 500;
+    font-weight: var(--kd-font-weight-medium);
   }
 }
 
@@ -266,34 +274,4 @@ kyn-link::part(link) {
 
 #notificationType {
   @include visibility.sr-only;
-}
-
-.info svg {
-  fill: var(--kd-color-status-informational-foreground);
-  display: flex;
-}
-
-.success svg {
-  fill: var(--kd-color-status-success-foreground);
-  display: flex;
-}
-
-.default svg {
-  fill: var(--kd-color-status-neutral-foreground);
-  display: flex;
-}
-
-.warning svg {
-  fill: var(--kd-color-status-warning-foreground---dark);
-  display: flex;
-}
-
-.error svg {
-  fill: var(--kd-color-status-error-foreground);
-  display: flex;
-}
-
-.ai svg {
-  fill: var(--kd-color-icon-ai);
-  display: flex;
 }

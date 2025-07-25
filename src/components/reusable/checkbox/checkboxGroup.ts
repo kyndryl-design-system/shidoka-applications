@@ -20,12 +20,15 @@ const _defaultTextStrings = {
 
 /**
  * Checkbox group container.
- * @fires on-checkbox-group-change - Captures the change event and emits the selected values.
- * @fires on-search - Captures the search input event and emits the search term.
- * @fires on-limit-toggle - Captures the show more/less click and emits the expanded state.
+ * @fires on-checkbox-group-change - Captures the change event and emits the selected values. `detail:{ value: Array }`
+ * @fires on-search - Captures the search input event and emits the search term. `detail:{ searchTerm: string }`
+ * @fires on-limit-toggle - Captures the show more/less click and emits the expanded state. `detail:{ expanded: boolean }`
  * @slot unnamed - Slot for individual checkboxes.
  * @slot tooltip - Slot for tooltip.
  * @slot description - Slot for description text.
+ * @attr {array} [value=[]] - The selected values of the checkbox group.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends FormMixin(LitElement) {

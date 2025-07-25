@@ -31,7 +31,7 @@ import stylesheet from './button.scss?inline';
  *
  * @slot unnamed - Slot for button text.
  * @slot icon - Slot for an icon.
- * @fires on-click - Emits the original click event.
+ * @fires on-click - Emits the original click event. `detail:{ origEvent: Event }`
  */
 @customElement('kyn-button')
 export class Button extends LitElement {

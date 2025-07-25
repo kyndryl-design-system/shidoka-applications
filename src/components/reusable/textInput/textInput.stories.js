@@ -76,7 +76,7 @@ export const TextInput = {
         maxLength=${ifDefined(args.maxLength)}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-text-input>
     `;
@@ -118,7 +118,7 @@ export const WithIcon = {
         maxLength=${ifDefined(args.maxLength)}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="icon" role="img" aria-label="Currency" title="Currency"
           >${unsafeSVG(currencyIcon)}</span
@@ -156,7 +156,7 @@ export const PasswordInput = {
         maxLength=${ifDefined(args.maxLength)}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-input=${(e) => action(e.type)(e)}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         style="min-width: 350px;"
       >
       </kyn-text-input>
@@ -196,7 +196,7 @@ export const PasswordInputWithValidation = {
           maxLength=${ifDefined(args.maxLength)}
           .textStrings=${args.textStrings}
           label=${args.label}
-          @on-input=${(e) => action(e.type)(e)}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 350px;"
         >
         </kyn-text-input>

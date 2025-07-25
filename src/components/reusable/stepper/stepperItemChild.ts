@@ -8,7 +8,7 @@ import StepChildCss from './stepperItemChild.scss?inline';
 /**
  * Stepper Item child.
  * @slot unnamed - Slot for other elements.
- * @fires on-child-click - Emits event on child click. Only for vertical mode.
+ * @fires on-child-click - Emits event on child click. Only for vertical mode. `detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`
  */
 @customElement('kyn-stepper-item-child')
 export class StepperItemChild extends LitElement {
@@ -93,6 +93,7 @@ export class StepperItemChild extends LitElement {
                   href=${this.childLink}
                   kind="primary"
                   ?disabled=${this.disabled}
+                  standalone
                   @on-click=${(e: any) => this._handleChildStepClick(e)}
                 >
                   ${this.childTitle}

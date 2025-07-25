@@ -89,7 +89,7 @@ const Template = (args) => {
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
-      @on-change=${(e) => action(e.type)(e)}
+      @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
     </kyn-date-picker>
   `;
@@ -229,8 +229,8 @@ export const InModal = {
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor" kind=${'primary'}> Open Modal </kyn-button>
 
@@ -259,7 +259,8 @@ export const InModal = {
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
-          @on-change=${(e) => action(e.type)(e)}
+          style="width: 225px;"
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
         </kyn-date-picker>
       </kyn-modal>
@@ -405,8 +406,8 @@ export const InSideDrawer = {
         ?showSecondaryButton=${sideDrawerProps.showSecondaryButton}
         secondaryButtonText=${sideDrawerProps.secondaryButtonText}
         ?hideCancelButton=${sideDrawerProps.hideCancelButton}
-        @on-close=${(e) => action(e.type)(e)}
-        @on-open=${(e) => action(e.type)(e)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor">Open Drawer</kyn-button>
 
@@ -440,8 +441,8 @@ export const InSideDrawer = {
           ?twentyFourHourFormat=${datePickerProps.twentyFourHourFormat}
           .minDate=${datePickerProps.minDate}
           .maxDate=${datePickerProps.maxDate}
-          @on-change=${(e) => action(e.type)(e)}
-          style="margin-left: 4px;"
+          @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          style="margin-left: 4px; width: 225px;"
         >
         </kyn-date-picker>
 

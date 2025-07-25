@@ -42,7 +42,8 @@ export const RadioButtonGroup = {
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         label=${args.label}
-        @on-radio-group-change=${(e) => action(e.type)(e)}
+        @on-radio-group-change=${(e) =>
+          action(e.type)({ ...e, detail: e.detail })}
       >
         <div slot="description">${args.description}</div>
         <kyn-radio-button value="1"> Option 1 </kyn-radio-button>

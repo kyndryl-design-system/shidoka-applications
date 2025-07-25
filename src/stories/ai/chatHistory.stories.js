@@ -31,7 +31,7 @@ export const ChatHistory = {
             name="search"
             label="Search..."
             size="md"
-            @on-input=${(e) => action(e.type)(e)}
+            @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           ></kyn-search>
           <div class="chat-section">
             <label class="kd-type--ui-02 kd-type--weight-medium"
@@ -42,7 +42,10 @@ export const ChatHistory = {
             })}
           </div>
         </div>
-        <kyn-link standalone kind="ai" @on-click=${(e) => action(e.type)(e)}
+        <kyn-link
+          standalone
+          kind="ai"
+          @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >Show older
           <span style="display:flex;" slot="icon"
             >${unsafeSVG(chevronDownIcon)}</span
@@ -82,7 +85,11 @@ export const ChatHistoryDetails = {
       >
       </kyn-page-title>
       <div class="chat_details">
-        <kyn-link kind="ai" standalone @on-click=${(e) => action(e.type)(e)}>
+        <kyn-link
+          kind="ai"
+          standalone
+          @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
           Back
         </kyn-link>
         <kyn-page-title type="tertiary" pagetitle="Page Title" aiConnected>

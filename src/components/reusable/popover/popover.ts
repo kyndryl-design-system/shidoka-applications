@@ -37,8 +37,8 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
  * @slot anchor - The trigger element (icon, button, link, etc.)
  * @slot footerLink - Optional link to be displayed in the footer
  *
- * @fires on-close - Emitted when any action closes the popover
- * @fires on-open - Emitted when popover opens
+ * @fires on-close - Emitted when any action closes the popover.`detail:{ action: string }`
+ * @fires on-open - Emitted when popover opens. `detail:{ origEvent: Event }`
  */
 @customElement('kyn-popover')
 export class Popover extends LitElement {

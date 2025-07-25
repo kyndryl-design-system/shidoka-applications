@@ -5,8 +5,10 @@ import ToggleButtonScss from './toggleButton.scss?inline';
 
 /**
  * Toggle Button.
- * @fires on-change - Captures the change event and emits the selected value and original event details.
+ * @fires on-change - Emits the change event. `detail:{ origEvent: Event, checked: boolean, value: string }`
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [value=''] - The value of the input.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
  */
 @customElement('kyn-toggle-button')
 export class ToggleButton extends FormMixin(LitElement) {

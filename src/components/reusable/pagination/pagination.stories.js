@@ -53,8 +53,10 @@ export const Pagination = {
         ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
         ?hideNavigationButtons=${args.hideNavigationButtons}
         .textStrings=${args.textStrings}
-        @on-page-size-change=${(e) => action(e.type)(e)}
-        @on-page-number-change=${(e) => action(e.type)(e)}
+        @on-page-size-change=${(e) =>
+          action(e.type)({ ...e, detail: e.detail })}
+        @on-page-number-change=${(e) =>
+          action(e.type)({ ...e, detail: e.detail })}
       ></kyn-pagination>
     `;
   },

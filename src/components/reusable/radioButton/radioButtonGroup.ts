@@ -18,10 +18,13 @@ const _defaultTextStrings = {
 
 /**
  * Radio button group container.
- * @fires on-radio-group-change - Captures the change event and emits the selected value.
+ * @fires on-radio-group-change - Captures the change event and emits the selected value.`detail:{ value: string }`
  * @slot unnamed - Slot for individual radio buttons.
  * @slot description - Slot for description text.
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [value=''] - The selected value of the radio group.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends FormMixin(LitElement) {

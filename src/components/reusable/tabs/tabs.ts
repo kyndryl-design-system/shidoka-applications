@@ -11,7 +11,7 @@ import TabsScss from './tabs.scss?inline';
  * Tabs.
  * @slot unnamed - Slot for kyn-tab-panel components.
  * @slot tabs - Slot for kyn-tab components.
- * @fires on-change - Emits the new selected Tab ID when switching tabs.
+ * @fires on-change - Emits the new selected Tab ID when switching tabs. `detail:{ origEvent: PointerEvent,selectedTabId: string }`
  */
 @customElement('kyn-tabs')
 export class Tabs extends LitElement {
