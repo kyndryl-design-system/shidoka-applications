@@ -259,6 +259,7 @@ export const InModal = {
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
+          style="width: 225px;"
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
         </kyn-date-picker>
@@ -441,7 +442,7 @@ export const InSideDrawer = {
           .minDate=${datePickerProps.minDate}
           .maxDate=${datePickerProps.maxDate}
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-          style="margin-left: 4px;"
+          style="margin-left: 4px; width: 225px;"
         >
         </kyn-date-picker>
 
