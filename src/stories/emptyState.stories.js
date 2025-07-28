@@ -8,9 +8,9 @@ import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/
 import chartComboIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/chart-combo.svg';
 import selectIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/upload.svg';
 
-import emptyStateLargeIcon from './sampleEmptyStateComponents/no_data-dynamic.svg';
-import dataVizIcon from './sampleEmptyStateComponents/data_viz-dynamic.svg';
-import noSeachIcon from './sampleEmptyStateComponents/no_search-dynamic.svg';
+import noDataIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/emptyState/empty-state-no-data.svg';
+import dataVizIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/emptyState/empty-state-data-viz.svg';
+import noSearchIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/emptyState/empty-state-no-search.svg';
 
 export default {
   title: 'Patterns/Empty State',
@@ -27,7 +27,7 @@ export const LargeNoData = {
   render: () => {
     return html`
       <empty-state-sample-component size="large" rel="" target="_self">
-        <div slot="icon">${unsafeSVG(emptyStateLargeIcon)}</div>
+        <div slot="icon">${unsafeSVG(noDataIcon)}</div>
         <span slot="title">No data found.</span>
         <span slot="description"
           >There is nothing here yet. You can start by importing the data or
@@ -55,7 +55,7 @@ export const LargeNoSearchResults = {
   render: () => {
     return html`
       <empty-state-sample-component size="large" rel="" target="_self">
-        <span slot="icon">${unsafeSVG(noSeachIcon)}</span>
+        <span slot="icon">${unsafeSVG(noSearchIcon)}</span>
         <span slot="title">No search results found.</span>
         <span slot="description"
           >There is nothing here yet. You can start by importing the data or
