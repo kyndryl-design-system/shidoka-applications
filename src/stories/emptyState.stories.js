@@ -14,7 +14,6 @@ import noSearchIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/e
 
 export default {
   title: 'Patterns/Empty State',
-  component: 'empty-state-sample-component',
   parameters: {
     design: {
       type: 'figma',
