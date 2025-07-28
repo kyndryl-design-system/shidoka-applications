@@ -66,6 +66,42 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     @state()
     accessor _isInvalid = false;
 
+    /**
+     * Checks the validity of the element and returns true if valid.
+     * Delegates to ElementInternals.checkValidity().
+     * @returns {boolean} True if the element is valid; otherwise, false.
+     */
+    checkValidity() {
+      return this._internals.checkValidity();
+    }
+
+    /**
+     * Checks the validity of the element and reports validation errors to the user.
+     * Delegates to ElementInternals.reportValidity().
+     * @returns {boolean} True if the element is valid; otherwise, false.
+     */
+    reportValidity() {
+      return this._internals.reportValidity();
+    }
+
+    /**
+     * Returns the ValidityState object for the element.
+     * Delegates to ElementInternals.validity.
+     * @returns {ValidityState} The validity state of the element.
+     */
+    public get validity() {
+      return this._internals.validity;
+    }
+
+    /**
+     * Returns the current validation message for the element.
+     * Delegates to ElementInternals.validationMessage.
+     * @returns {string} The validation message.
+     */
+    public get validationMessage() {
+      return this._internals.validationMessage;
+    }
+
     // /** Handles the form element formdata event and appends the name/value. Alternative solution to internals.setFormValue.
     //  * @internal
     // */

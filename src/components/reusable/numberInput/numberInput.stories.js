@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
   title: 'Components/Number Input',
@@ -23,6 +24,7 @@ export default {
     max: {
       control: { type: 'number' },
     },
+    ...ValidationArgs,
   },
   parameters: {
     design: {

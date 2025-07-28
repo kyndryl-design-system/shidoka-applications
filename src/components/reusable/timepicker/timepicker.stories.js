@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import { useEffect } from 'storybook/preview-api';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
 import '../modal';
@@ -31,6 +32,7 @@ export default {
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    ...ValidationArgs,
   },
 };
 
