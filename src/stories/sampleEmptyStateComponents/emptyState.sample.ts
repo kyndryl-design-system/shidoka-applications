@@ -1,108 +1,152 @@
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html, LitElement, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import '../../components/reusable/button';
 import '../../components/reusable/link';
 
-import emptyStateScss from './sampleEmptyStateComponents.scss?inline';
+import emptyStateScss from './sampleEmptyState.scss?inline';
 
-import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
-import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/warning.svg';
-import chartComboIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/chart-combo.svg';
-import emptyStateIcon from './emptyState-icon.svg';
-import emptyStateLargeIcon from './emtpyStateLarge.svg';
-
-/**  Sample Lit component to show vital card pattern. */
+/**  Empty State Sample component -- sample Lit component to show vital card pattern. */
 @customElement('empty-state-sample-component')
 export class EmptyStateSampleComponent extends LitElement {
   static override styles = unsafeCSS(emptyStateScss);
 
   /** Empty state size. */
   @property({ type: String })
-  accessor size: 'small' | 'medium' | 'large' | 'full' = 'medium';
+  accessor size: 'small' | 'medium' | 'large' = 'medium';
 
-  /** Empty state orientation -- only applicable when size is `'full'`. */
-  @property({ type: String })
-  accessor orientation: 'horizontal' | 'vertical' = 'vertical';
+  /** Track if slots have title content
+   * @internal
+   */
+  @state()
+  private accessor hasTitle = false;
+
+  /** Track if slots have description content
+   * @internal
+   */
+  @state()
+  private accessor hasDescription = false;
+
+  /** Track if slots have action buttons and/or links
+   * @internal
+   */
+  @state()
+  private accessor hasActions = false;
 
   override render() {
     const classes = classMap({
       'empty-state--wrapper': true,
-      'empty-state--horizontal':
-        this.size === 'full' && this.orientation === 'horizontal',
-      'empty-state--vertical': this.orientation === 'vertical',
       'empty-state--small': this.size === 'small',
       'empty-state--medium': this.size === 'medium',
       'empty-state--large': this.size === 'large',
-      'empty-state--full': this.size === 'full',
     });
     return html`
       <div class=${classes}>
-        ${this.size === 'full'
-          ? html`<div class="empty-state--icon-wrapper">
-              ${unsafeSVG(emptyStateIcon)}
-            </div>`
-          : ''}
-        ${this.size === 'small'
-          ? html`<div class="empty-state--icon-wrapper">
-              ${unsafeSVG(warningIcon)}
-            </div>`
-          : ''}
-        ${this.size === 'medium'
-          ? html`<div class="empty-state--icon-wrapper">
-              ${unsafeSVG(chartComboIcon)}
-            </div>`
-          : ''}
-        ${this.size === 'large'
-          ? html`<div class="empty-state--icon-wrapper">
-              ${unsafeSVG(emptyStateLargeIcon)}
-            </div>`
-          : ''}
+        <div class="empty-state--icon-wrapper">
+          <slot name="icon"></slot>
+        </div>
         <div class="empty-state--content">
           <div class="empty-state-content-wrapper">
-            ${this.size !== 'small'
-              ? html`<div class="empty-state--title-div">
-                  <h1>Main Title</h1>
-                </div>`
-              : ''}
-            <div class="empty-state--description-text">
-              <p>This is an example of an empty state.</p>
+            <div
+              class="empty-state--title-div"
+              style=${this.size !== 'small' && this.hasTitle
+                ? ''
+                : 'display: none;'}
+            >
+              <h1>
+                <slot name="title" @slotchange=${this.handleSlotChange}></slot>
+              </h1>
+            </div>
+            <div
+              class="empty-state--description-text"
+              style=${this.hasDescription ? '' : 'display: none;'}
+            >
+              <p>
+                <slot
+                  name="description"
+                  @slotchange=${this.handleSlotChange}
+                ></slot>
+              </p>
             </div>
           </div>
-          ${this.size === 'full'
-            ? html`<div class="empty-state--action-wrapper">
-                <kyn-button
-                  class="empty-state--action-button"
-                  @on-click=${(e: Event) => e.preventDefault()}
-                >
-                  <span class="empty-state--action-button-text"
-                    >Primary Action</span
-                  >
-                  <span slot="icon" class="empty-state--action-button-icon"
-                    >${unsafeSVG(chevronRightIcon)}</span
-                  >
-                </kyn-button>
-                <kyn-button
-                  class="empty-state-secondary-action-button"
-                  kind="secondary"
-                  @on-click=${(e: Event) => e.preventDefault()}
-                >
-                  <span class="empty-state--secondary-action-button-text"
-                    >Secondary Action</span
-                  >
-                </kyn-button>
-              </div>`
-            : ''}
-          ${this.size === 'large'
-            ? html`<div class="empty-state--link-wrapper">
-                <kyn-link href="#" standalone>Link</kyn-link>
-              </div>`
-            : ''}
+          <div
+            class="empty-state--action-wrapper"
+            style=${this.hasActions ? '' : 'display: none;'}
+          >
+            <slot name="actions" @slotchange=${this.handleSlotChange}></slot>
+          </div>
         </div>
       </div>
     `;
+  }
+
+  private handleSlotChange(event: Event) {
+    const slot = event.target as HTMLSlotElement;
+    const slotName = slot.name;
+    const hasContent = slot.assignedNodes().length > 0;
+
+    switch (slotName) {
+      case 'title':
+        this.hasTitle = hasContent;
+        break;
+      case 'description':
+        this.hasDescription = hasContent;
+        break;
+      case 'actions':
+        this.hasActions = hasContent;
+        break;
+    }
+  }
+
+  private checkSlotContent() {
+    const titleSlot = this.shadowRoot?.querySelector(
+      'slot[name="title"]'
+    ) as HTMLSlotElement;
+    const descriptionSlot = this.shadowRoot?.querySelector(
+      'slot[name="description"]'
+    ) as HTMLSlotElement;
+    const actionsSlot = this.shadowRoot?.querySelector(
+      'slot[name="actions"]'
+    ) as HTMLSlotElement;
+
+    if (titleSlot) {
+      this.hasTitle = titleSlot.assignedNodes().length > 0;
+    }
+    if (descriptionSlot) {
+      this.hasDescription = descriptionSlot.assignedNodes().length > 0;
+    }
+    if (actionsSlot) {
+      this.hasActions = actionsSlot.assignedNodes().length > 0;
+    }
+  }
+
+  override firstUpdated() {
+    setTimeout(() => {
+      this.checkSlotContent();
+    });
+
+    const iconSlot = this.shadowRoot?.querySelector(
+      'slot[name="icon"]'
+    ) as HTMLSlotElement | null;
+
+    const patchSVG = () => {
+      const nodes = iconSlot?.assignedNodes({ flatten: true }) ?? [];
+      for (const node of nodes) {
+        if (node.nodeType === Node.ELEMENT_NODE && node.nodeName === 'SPAN') {
+          const svg = (node as HTMLElement).querySelector('svg');
+          if (svg) {
+            svg.removeAttribute('width');
+            svg.removeAttribute('height');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '100%');
+          }
+        }
+      }
+    };
+
+    iconSlot?.addEventListener('slotchange', patchSVG);
+    patchSVG();
   }
 }
 
