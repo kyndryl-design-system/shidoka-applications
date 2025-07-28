@@ -4,7 +4,7 @@ import './multiInputField';
 import { action } from 'storybook/actions';
 import { defaultTextStrings } from '../../../common/helpers/multiInputValidationsHelper';
 import { ifDefined } from 'lit/directives/if-defined.js';
-
+import { ValidationArgs } from '../../../common/helpers/helpers';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 
@@ -35,6 +35,7 @@ export default {
       description:
         'Comma-separated list of email addresses. For proper tag creation, include @ symbol or commas.',
     },
+    ...ValidationArgs,
   },
 };
 

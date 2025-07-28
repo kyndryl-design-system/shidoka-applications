@@ -5,6 +5,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import '../tooltip';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
@@ -32,6 +33,7 @@ export default {
     enhanced: {
       table: { disable: true },
     },
+    ...ValidationArgs,
   },
   parameters: {
     design: {

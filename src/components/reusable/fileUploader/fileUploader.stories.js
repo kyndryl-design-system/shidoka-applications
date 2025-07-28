@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 import '../button';
 import './index';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
   title: 'Components/File Uploader',
@@ -14,6 +15,9 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/rC5XdRnXVbDmu3vPN8tJ4q/2.1-Edinburgh?node-id=4253-31509&t=IEdMJk3IbVS8A5JL-0',
     },
+  },
+  argTypes: {
+    ...ValidationArgs,
   },
 };
 

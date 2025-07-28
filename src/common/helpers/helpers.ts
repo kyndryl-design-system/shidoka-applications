@@ -99,3 +99,42 @@ export const filterLocalNavLinks = (
     return result;
   }, []);
 };
+
+export const ValidationArgs = {
+  'checkValidity()': {
+    description:
+      'Checks the validity of the element and returns true if valid. Delegates to `ElementInternals.checkValidity()`. @returns {boolean} `true` if the element is valid; otherwise, `false`.',
+    table: {
+      category: 'Methods',
+    },
+    type: 'Function',
+    control: false,
+  },
+  'reportValidity()': {
+    description:
+      'Checks the validity of the element and reports validation errors to the user. Delegates to `ElementInternals.reportValidity()`. @returns {boolean} `true` if the element is valid; otherwise, `false`.',
+    table: {
+      category: 'Methods',
+    },
+    type: 'Function',
+    control: false,
+  },
+  validity: {
+    description:
+      'Returns the `ValidityState` object for the element. Delegates to `ElementInternals.validity`. Read-only getter.',
+    table: {
+      category: 'Getters',
+    },
+    type: 'ValidityState',
+    control: false,
+  },
+  validationMessage: {
+    description:
+      'Returns the current validation message for the element. Delegates to `ElementInternals.validationMessage`. Read-only getter.',
+    table: {
+      category: 'Getters',
+    },
+    type: 'string',
+    control: false,
+  },
+};
