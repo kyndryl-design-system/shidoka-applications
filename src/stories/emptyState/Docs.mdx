@@ -1,0 +1,271 @@
+import {
+  Meta,
+  Title,
+  Description,
+  Canvas,
+  Story,
+  Controls,
+  Source,
+} from '@storybook/addon-docs/blocks';
+import * as EmptyStateStories from '../emptyState.stories.js';
+import AnatomyImg from './emptyState-anatomy.png';
+
+<Meta of={EmptyStateStories} />
+
+<Title />
+
+<Description>
+  The Empty State pattern is used to indicate no available data or first-time
+  usage. It helps orient users and suggest next steps.
+</Description>
+
+## When to Use
+
+Empty states should be used when:
+
+- A page, section, or component has no data to display
+- Search results return no matches
+- A user hasn't added any content yet
+- Data is temporarily unavailable
+- An error prevents content from loading
+
+## Variants
+
+### Large Empty State
+
+Use the large variant for:
+
+- Full page empty states
+- Primary content areas
+- Dashboard sections with significant importance
+- First-time user experiences
+
+### Small Empty State
+
+Use the small variant for:
+
+- Widget or card-sized containers
+- Secondary content areas
+- Table cells or list items
+
+## Anatomy
+
+<img src={AnatomyImg} alt="Empty State Anatomy" width="240" />
+
+1. **Icon** (Required): Visual representation of the empty state
+2. **Title** (Optional): Brief headline explaining the situation
+3. **Description** (Optional): Clear explanation of why content is missing
+4. **Actions** (Optional): Primary and secondary actions to resolve the empty state
+
+## Installation & Usage
+
+### Import the Pattern
+
+```javascript
+// Import the main skeleton function
+import { EmptyStateSkeleton } from '@kyndryl-design-system/shidoka-applications/stories/emptyState/emptyState.skeleton';
+
+// Optional: Import helper functions for specific scenarios
+import {
+  LargeNoDataEmptyState,
+  LargeNoSearchResultsEmptyState,
+  SmallWidgetEmptyState,
+} from '@kyndryl-design-system/shidoka-applications/stories/emptyState/emptyState.skeleton';
+```
+
+### Import the Shidoka styles for Empty State (globally)
+
+```css
+@import '@kyndryl-design-system/shidoka-applications/dist/stories/emptyState/emptyState.css';
+```
+
+Or in your build process:
+
+```javascript
+import '@kyndryl-design-system/shidoka-applications/dist/stories/emptyState/emptyState.css';
+```
+
+### Basic Usage
+
+```javascript
+const emptyState = EmptyStateSkeleton({
+  size: 'large',
+  icon: html`<span>${unsafeSVG(yourIcon)}</span>`,
+  title: 'No data found',
+  description: 'There is nothing here yet. Start by adding some content.',
+  actions: html`<button>Add Content</button>`,
+});
+```
+
+### Using Helper Functions
+
+For common scenarios, use the provided helper functions:
+
+```javascript
+// Large no data scenario
+const noDataState = LargeNoDataEmptyState({
+  icon: html`<span>${unsafeSVG(noDataIcon)}</span>`,
+  title: 'No data found',
+  description: 'Start by importing data or creating new items.',
+  actions: html`<button>Add Data</button>`,
+});
+
+// Small widget scenario
+const widgetState = SmallWidgetEmptyState({
+  icon: html`<span>${unsafeSVG(warningIcon)}</span>`,
+  description: 'No data available for this widget.',
+  maxWidth: '255px',
+});
+```
+
+### Extend the Default Configuration
+
+You can extend the default configuration for specific use cases:
+
+```javascript
+import { EmptyStateDefaults } from './emptyState.skeleton';
+
+// Custom configuration for error states
+const ErrorConfig = {
+  ...EmptyStateDefaults,
+  role: 'alert',
+  ariaLive: 'assertive',
+  classes: 'error-state',
+};
+
+const errorState = EmptyStateSkeleton({
+  ...ErrorConfig,
+  title: 'Something went wrong',
+  description: 'Please try again later.',
+});
+```
+
+## API Reference
+
+### EmptyStateSkeleton Parameters
+
+| Parameter     | Type                      | Default     | Description                                 |
+| ------------- | ------------------------- | ----------- | ------------------------------------------- |
+| `icon`        | `unknown`                 | `undefined` | Icon element or HTML to display             |
+| `title`       | `string`                  | `undefined` | Optional heading text                       |
+| `description` | `string`                  | `undefined` | Main explanatory text                       |
+| `actions`     | `unknown`                 | `undefined` | Action buttons or links                     |
+| `size`        | `'small' \| 'large'`      | `'large'`   | Size variant of the empty state             |
+| `maxWidth`    | `string`                  | `undefined` | Custom maximum width (CSS value)            |
+| `classes`     | `string`                  | `undefined` | Additional CSS classes                      |
+| `role`        | `'status' \| 'alert'`     | `'status'`  | ARIA role for accessibility                 |
+| `ariaLive`    | `'polite' \| 'assertive'` | `'polite'`  | ARIA live region setting for screen readers |
+
+## Framework Examples
+
+### Vanilla HTML
+
+```html
+<div class="empty-state--wrapper empty-state--large">
+  <div class="empty-state--icon-wrapper">
+    <svg><!-- your icon --></svg>
+  </div>
+  <div class="empty-state--content">
+    <div class="empty-state-content-wrapper">
+      <div class="empty-state--title-div">
+        <h1>No data found</h1>
+      </div>
+      <div class="empty-state--description-text">
+        <p>There is nothing here yet. Start by adding some content.</p>
+      </div>
+    </div>
+    <div class="empty-state--action-wrapper">
+      <button>Add Content</button>
+    </div>
+  </div>
+</div>
+```
+
+## Accessibility Guidelines
+
+### Required Attributes
+
+- Use semantic HTML elements (`h1` for titles, `p` for descriptions)
+- Ensure proper heading hierarchy (don't skip heading levels)
+- Add `role="status"` or `role="alert"` for dynamic empty states
+- Include `aria-live="polite"` for content that updates
+
+## Best Practices
+
+### Do's ✅
+
+- Keep descriptions concise but informative
+- Provide clear next steps when possible
+- Use appropriate icons that relate to the context
+- Maintain consistent tone and voice
+- Test with screen readers
+- Consider loading states before showing empty states
+
+### Don'ts ❌
+
+- Don't use generic "No results" without context
+- Avoid overly technical error messages
+- Don't overwhelm with too many action options
+- Avoid using empty states for actual errors
+- Don't forget about mobile responsiveness
+- Don't use placeholder content instead of true empty states
+
+## Pattern Markup
+
+<Source
+  language="html"
+  code={`
+  <div class="empty-state--wrapper empty-state--large">
+    <div class="empty-state--icon-wrapper">
+      <!-- icon goes here -->
+    </div>
+    <div class="empty-state--content">
+      <div class="empty-state-content-wrapper">
+        <div class="empty-state--title-div">
+          <h1>
+          <!-- main title here -->
+          </h1>
+        </div>
+        <div class="empty-state--description-text">
+          <p>
+            <!-- description here -->
+          </p>
+        </div>
+      </div>
+      <div class="empty-state--action-wrapper">
+        <!-- buttons or links -->
+      </div>
+    </div>
+  </div>
+`.trim()}
+/>
+
+## Large (No Data)
+
+<Canvas of={EmptyStateStories.LargeNoData}>
+  <Story of={EmptyStateStories.LargeNoData} />
+</Canvas>
+
+## Large (No Search Results)
+
+<Canvas of={EmptyStateStories.LargeNoSearchResults}>
+  <Story of={EmptyStateStories.LargeNoSearchResults} />
+</Canvas>
+
+## Large (Data Visualization)
+
+<Canvas of={EmptyStateStories.LargeDataVizOne}>
+  <Story of={EmptyStateStories.LargeDataVizOne} />
+</Canvas>
+
+## Small (No Data)
+
+<Canvas of={EmptyStateStories.SmallWidgetNoData}>
+  <Story of={EmptyStateStories.SmallWidgetNoData} />
+</Canvas>
+
+## Small (Data Visualization)
+
+<Canvas of={EmptyStateStories.SmallDataDataViz}>
+  <Story of={EmptyStateStories.SmallDataDataViz} />
+</Canvas>

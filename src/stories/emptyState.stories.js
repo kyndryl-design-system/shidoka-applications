@@ -1,7 +1,9 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { EmptyStateSkeleton } from './emptyState/emptyState.skeleton';
 
-import './sampleEmptyStateComponents/emptyState.sample.ts';
+import '../components/reusable/button/button';
+import '../components/reusable/link/link';
 
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/warning.svg';
@@ -15,136 +17,106 @@ import noSearchIcon from '@kyndryl-design-system/shidoka-foundation/assets/svg/e
 export default {
   title: 'Patterns/Empty State',
   parameters: {
+    docs: {
+      page: null,
+      description: {
+        component: `
+The Empty State pattern is used to indicate no available data or first‑time
+usage. It helps orient users and suggest next steps.
+        `,
+      },
+    },
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/your-url-here',
     },
   },
 };
 
 export const LargeNoData = {
-  render: () => {
-    return html`
-      <empty-state-sample-component size="large" rel="" target="_self">
-        <div slot="icon">${unsafeSVG(noDataIcon)}</div>
-        <span slot="title">No data found.</span>
-        <span slot="description"
-          >There is nothing here yet. You can start by importing the data or
-          create your own items.</span
-        >
-        <div slot="actions">
-          <kyn-button
-            iconPosition="right"
-            @on-click=${(e) => e.preventDefault()}
-          >
-            <span>Primary Button</span>
-            <span slot="icon"> ${unsafeSVG(chevronRightIcon)} </span>
-          </kyn-button>
-          <kyn-link style="margin-left: 24px;" href="#" standalone
-            >Link</kyn-link
-          >
-        </div>
-      </empty-state-sample-component>
-    `;
-  },
+  render: () =>
+    EmptyStateSkeleton({
+      size: 'large',
+      icon: html`<span>${unsafeSVG(noDataIcon)}</span>`,
+      title: 'No data found.',
+      description:
+        'There is nothing here yet. You can start by importing the data or create your own items.',
+      actions: html`
+        <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
+          <span>Primary Button</span>
+          <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
+        </kyn-button>
+        <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
+      `,
+    }),
 };
 LargeNoData.storyName = 'Large (No Data)';
 
 export const LargeNoSearchResults = {
-  render: () => {
-    return html`
-      <empty-state-sample-component size="large" rel="" target="_self">
-        <span slot="icon">${unsafeSVG(noSearchIcon)}</span>
-        <span slot="title">No search results found.</span>
-        <span slot="description"
-          >There is nothing here yet. You can start by importing the data or
-          create your own items.</span
-        >
-        <div slot="actions">
-          <kyn-button
-            iconPosition="right"
-            @on-click=${(e) => e.preventDefault()}
-          >
-            <span>Primary Button</span>
-            <span slot="icon"> ${unsafeSVG(chevronRightIcon)} </span>
-          </kyn-button>
-          <kyn-link style="margin-left: 24px;" href="#" standalone
-            >Link</kyn-link
-          >
-        </div>
-      </empty-state-sample-component>
-    `;
-  },
+  render: () =>
+    EmptyStateSkeleton({
+      size: 'large',
+      icon: html`<span>${unsafeSVG(noSearchIcon)}</span>`,
+      title: 'No search results found.',
+      description:
+        'There is nothing here yet. You can start by importing the data or create your own items.',
+      actions: html`
+        <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
+          <span>Primary Button</span>
+          <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
+        </kyn-button>
+        <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
+      `,
+    }),
 };
 LargeNoSearchResults.storyName = 'Large (No Search Results)';
 
-export const LargeDataViz = {
-  render: () => {
-    return html`
-      <empty-state-sample-component size="large" rel="" target="_self">
-        <span slot="icon">${unsafeSVG(dataVizIcon)}</span>
-        <span slot="title">Data Visualization</span>
-        <span slot="description"
-          >There's no data available to display at this time.</span
-        >
-        <div slot="actions">
-          <kyn-button
-            iconPosition="right"
-            @on-click=${(e) => e.preventDefault()}
-          >
-            <span>Primary Action</span>
-            <span slot="icon"> ${unsafeSVG(chevronRightIcon)} </span>
-          </kyn-button>
-          <kyn-link style="margin-left: 24px;" href="#" standalone
-            >Link</kyn-link
-          >
-        </div>
-      </empty-state-sample-component>
-    `;
-  },
+export const LargeDataVizOne = {
+  render: () =>
+    EmptyStateSkeleton({
+      size: 'large',
+      icon: html`<span>${unsafeSVG(dataVizIcon)}</span>`,
+      title: 'Data Visualization',
+      description: "There's no data available to display at this time.",
+      actions: html`
+        <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
+          <span>Primary Action</span>
+          <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
+        </kyn-button>
+        <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
+      `,
+    }),
 };
-LargeDataViz.storyName = 'Large (Data Visualization)';
+LargeDataVizOne.storyName = 'Large (Data Visualization)';
 
 export const SmallWidgetNoData = {
-  render: () => {
-    return html`
-      <div style="width: 100%; max-width: 255px;">
-        <empty-state-sample-component size="small" rel="" target="_self">
-          <span slot="icon" style="width: 48px; height: 48px;"
-            >${unsafeSVG(warningIcon)}</span
-          >
-          <span slot="description">This is a small widget empty state.</span>
-        </empty-state-sample-component>
-      </div>
-    `;
-  },
+  render: () =>
+    EmptyStateSkeleton({
+      size: 'small',
+      maxWidth: '255px',
+      icon: html`<span style="width: 48px; height: 48px;"
+        >${unsafeSVG(warningIcon)}</span
+      >`,
+      description: 'This is a small widget empty state.',
+    }),
 };
 SmallWidgetNoData.storyName = 'Small (No Data)';
 
 export const SmallDataDataViz = {
-  render: () => {
-    return html`
-      <div style="width: 100%; max-width: 400px;">
-        <empty-state-sample-component size="small" rel="" target="_self">
-          <span slot="icon" style="width: 48px; height: 48px;"
-            >${unsafeSVG(chartComboIcon)}</span
-          >
-          <span slot="description"
-            >There is nothing here yet. You can start by importing the data or
-            create your own items.</span
-          >
-          <div slot="actions">
-            <kyn-button
-              iconPosition="right"
-              @on-click=${(e) => e.preventDefault()}
-            >
-              <span>Import Data</span>
-              <span slot="icon"> ${unsafeSVG(selectIcon)} </span>
-            </kyn-button>
-          </div>
-        </empty-state-sample-component>
-      </div>
-    `;
-  },
+  render: () =>
+    EmptyStateSkeleton({
+      size: 'small',
+      icon: html`<span style="width: 48px; height: 48px;"
+        >${unsafeSVG(chartComboIcon)}</span
+      >`,
+      description:
+        'There is nothing here yet. You can start by importing the data or create your own items.',
+      actions: html`
+        <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
+          <span>Import Data</span>
+          <span slot="icon">${unsafeSVG(selectIcon)}</span>
+        </kyn-button>
+      `,
+    }),
 };
 SmallDataDataViz.storyName = 'Small (Data Visualization)';
