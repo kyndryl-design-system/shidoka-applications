@@ -19,7 +19,6 @@ import '../tag';
 import '../button';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
 
 const _defaultTextStrings = {
   title: 'Dropdown',
@@ -505,11 +504,9 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private updateChildOptions() {
-    // Get all slotted dropdown option elements
     const slot = this.shadowRoot?.querySelector('#children') as HTMLSlotElement;
     const options = slot.assignedElements({ flatten: true }) as HTMLElement[];
 
-    // Pass allowAddOption to each dropdown option
     options.forEach((option) => {
       if (
         option.tagName === 'KYN-DROPDOWN-OPTION' ||
@@ -524,7 +521,6 @@ export class Dropdown extends FormMixin(LitElement) {
     if (!this.disabled) {
       this.open = !this.open;
 
-      // focus the dropdown anchor
       if (this.dropdownAnchorEl) {
         this.dropdownAnchorEl._handleFocus();
       }
@@ -535,7 +531,6 @@ export class Dropdown extends FormMixin(LitElement) {
     if (!this.disabled) {
       this.open = !this.open;
 
-      // focus the dropdown anchor
       if (this.dropdownAnchorEl) {
         this.dropdownAnchorEl._handleFocus();
       }
@@ -707,7 +702,6 @@ export class Dropdown extends FormMixin(LitElement) {
         // close listbox
         this.open = false;
 
-        // restore focus to dropdown anchor
         this.dropdownAnchorEl?._handleFocus();
 
         this.assistiveText = 'Dropdown menu options.';
@@ -775,35 +769,6 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  private handleClear(e: any) {
-    e.stopPropagation();
-
-    this.text = '';
-    this.searchText = '';
-
-    if (this.dropdownAnchorEl && this.dropdownAnchorEl.clearSearch) {
-      this.dropdownAnchorEl.clearSearch();
-    }
-
-    this._emitSearch();
-
-    if (this.filterSearch) {
-      // reveal all options by removing hidden attribute
-      this.options.map((option: any) => {
-        option.hidden = false;
-        option.style.display = '';
-      });
-    }
-
-    // clear selection for single select
-    if (!this.multiple) {
-      this.value = '';
-      this._validate(true, false);
-      this._updateSelectedOptions();
-      this.emitValue();
-    }
-  }
-
   private handleSearchClick(e: any) {
     e.stopPropagation();
     this.open = true;
@@ -855,7 +820,6 @@ export class Dropdown extends FormMixin(LitElement) {
   private _applySearch() {
     const q = this.searchText.trim().toLowerCase();
 
-    // show/hide & clear highlights
     this.options.forEach((opt) => {
       const txt = (opt.text || opt.textContent || '').toLowerCase();
       const visible = !q || (this.filterSearch ? txt.includes(q) : true);
@@ -863,13 +827,11 @@ export class Dropdown extends FormMixin(LitElement) {
       opt.highlighted = false;
     });
 
-    // find first match for highlighting
     let match: any;
     if (this.filterSearch) {
       const visible = this.options.filter((o) => !o.hidden);
       match = visible[0];
     } else {
-      // default searchable: includes rather than startsWith
       match = this.options.find((o) =>
         (o.text || o.textContent).toLowerCase().includes(q)
       );
