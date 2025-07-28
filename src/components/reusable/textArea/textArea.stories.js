@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
   title: 'Components/Text Area',
@@ -19,6 +20,7 @@ export default {
     maxLength: {
       control: { type: 'number' },
     },
+    ...ValidationArgs,
   },
 };
 

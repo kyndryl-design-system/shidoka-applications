@@ -1,10 +1,14 @@
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 import './index';
 
 export default {
   title: 'Components/Color Input',
   component: 'kyn-color-input',
+  argTypes: {
+    ...ValidationArgs,
+  },
 };
 
 const args = {
