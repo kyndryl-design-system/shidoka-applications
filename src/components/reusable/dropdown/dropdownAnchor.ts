@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownAnchorScss from './dropdownAnchor.scss?inline';
@@ -125,33 +125,38 @@ export class DropdownAnchor extends LitElement {
   override render() {
     return html`
       ${this.anchorType === 'button'
-        ? html`<kyn-button
-            class="dropdown-anchor-button"
-            kind="secondary-ai"
-            size="small"
-            ?disabled=${this.disabled}
-            aria-expanded=${this.open}
-            aria-controls="options"
-            role="combobox"
-            iconPosition="right"
-            name=${this.name}
-            title=${this.title}
-            @on-click=${this._handleButtonClick}
-            @keydown=${this._handleKeydown}
-            @blur=${this._handleBlur}
-          >
-            ${this.buttonText ||
-            this.text ||
-            this.placeholder ||
-            'Select option'}
-            <span
-              slot="icon"
-              style="transform: ${this.open
-                ? 'rotate(180deg)'
-                : 'rotate(0deg)'}; transition: transform 0.2s ease-in-out;"
-              >${unsafeSVG(downIcon)}</span
-            >
-          </kyn-button>`
+        ? html`<div class="button-anchor-wrapper">
+            <slot name="button" @slotchange=${this._handleButtonSlotChange}>
+              <!-- Fallback button in case the anchorType is set to button, but no button is provided. -->
+              <kyn-button
+                class="dropdown-anchor-button"
+                kind="secondary-ai"
+                size="small"
+                ?disabled=${this.disabled}
+                aria-expanded=${this.open}
+                aria-controls="options"
+                role="combobox"
+                iconPosition="right"
+                name=${this.name}
+                title=${this.title}
+                @on-click=${this._handleButtonClick}
+                @keydown=${this._handleKeydown}
+                @blur=${this._handleBlur}
+              >
+                ${this.buttonText ||
+                this.text ||
+                this.placeholder ||
+                'Select option'}
+                <span
+                  slot="icon"
+                  style="transform: ${this.open
+                    ? 'rotate(180deg)'
+                    : 'rotate(0deg)'}; transition: transform 0.2s ease-in-out;"
+                  >${unsafeSVG(downIcon)}</span
+                >
+              </kyn-button>
+            </slot>
+          </div>`
         : html`<div
             class="${classMap({
               select: true,
@@ -338,6 +343,43 @@ export class DropdownAnchor extends LitElement {
     }
   }
 
+  private _handleButtonSlotChange() {
+    const buttonSlot = this.shadowRoot?.querySelector(
+      'slot[name="button"]'
+    ) as HTMLSlotElement;
+    if (buttonSlot) {
+      const slottedElements = buttonSlot.assignedElements();
+      slottedElements.forEach((element) => {
+        if (element.tagName === 'kyn-button') {
+          element.setAttribute('aria-expanded', this.open.toString());
+          element.setAttribute('aria-controls', 'options');
+          element.setAttribute('role', 'combobox');
+          element.setAttribute('name', this.name);
+          element.setAttribute('title', this.title);
+
+          if (this.disabled) {
+            element.setAttribute('disabled', '');
+          } else {
+            element.removeAttribute('disabled');
+          }
+
+          if (!element.hasAttribute('data-events-added')) {
+            element.addEventListener('on-click', ((e: Event) => {
+              this._handleButtonClick(e as CustomEvent);
+            }) as EventListener);
+            element.addEventListener('keydown', ((e: Event) => {
+              this._handleKeydown(e as KeyboardEvent);
+            }) as EventListener);
+            element.addEventListener('blur', ((e: Event) => {
+              this._handleBlur(e as FocusEvent);
+            }) as EventListener);
+            element.setAttribute('data-events-added', 'true');
+          }
+        }
+      });
+    }
+  }
+
   private _emitEvent(eventName: string, detail: any) {
     const event = new CustomEvent(eventName, {
       detail,
@@ -345,6 +387,20 @@ export class DropdownAnchor extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+  }
+
+  override updated(changedProps: PropertyValues) {
+    super.updated(changedProps);
+
+    if (
+      this.anchorType === 'button' &&
+      (changedProps.has('open') ||
+        changedProps.has('disabled') ||
+        changedProps.has('name') ||
+        changedProps.has('title'))
+    ) {
+      this._handleButtonSlotChange();
+    }
   }
 
   _handleFocus() {

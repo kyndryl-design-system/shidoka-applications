@@ -8,6 +8,7 @@ import businessConsultIcon from '@kyndryl-design-system/shidoka-icons/svg/monoch
 import aiOpsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/AIOps-docs.svg';
 import boxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/box.svg';
 import branchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/branch.svg';
+import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
 
 export default {
   title: 'Components/Dropdown/Enhanced Dropdown',
@@ -241,7 +242,6 @@ export const EnhancedButtonAnchor = {
         label=${args.label}
         placeholder=${args.placeholder}
         dropdownAnchor=${args.dropdownAnchor}
-        buttonText=${args.buttonText}
         size=${args.size}
         ?inline=${args.inline}
         name=${args.name}
@@ -256,6 +256,18 @@ export const EnhancedButtonAnchor = {
         value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
+        <kyn-button
+          slot="button"
+          class="dropdown-anchor-button"
+          kind="secondary-ai"
+          size="small"
+          iconPosition="right"
+        >
+          ${args.buttonText || args.placeholder || 'Select option'}
+          <span slot="icon" style="transition: transform 0.2s ease-in-out;"
+            >${unsafeSVG(downIcon)}</span
+          >
+        </kyn-button>
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
           <span slot="title">Option 1</span>
