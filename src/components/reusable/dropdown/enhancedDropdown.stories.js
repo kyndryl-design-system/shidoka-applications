@@ -135,6 +135,7 @@ export const EnhancedDefault = {
             >This is a description for the Option 3 enhanced dropdown
             option.</span
           >
+          <span slot="optionType">Type: Private</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="4">
           <span slot="title">Option 4</span>
