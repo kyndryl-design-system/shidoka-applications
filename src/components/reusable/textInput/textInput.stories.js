@@ -3,6 +3,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 import currencyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cost.svg';
 
 export default {
@@ -26,6 +27,7 @@ export default {
     maxLength: {
       control: { type: 'number' },
     },
+    ...ValidationArgs,
   },
 };
 

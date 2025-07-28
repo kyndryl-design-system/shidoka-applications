@@ -3,6 +3,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import '../tooltip';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
@@ -13,6 +14,9 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-421519&p=f&m=dev',
     },
+  },
+  argTypes: {
+    ...ValidationArgs,
   },
 };
 
