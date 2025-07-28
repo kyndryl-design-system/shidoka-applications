@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { EmptyStateSkeleton } from './emptyState/emptyState.skeleton';
+import './emptyState/emptyState.skeleton';
 
 import '../components/reusable/button/button';
 import '../components/reusable/link/link';
@@ -35,88 +35,85 @@ usage. It helps orient users and suggest next steps.
 
 export const LargeNoData = {
   render: () =>
-    EmptyStateSkeleton({
-      size: 'large',
-      icon: html`<span>${unsafeSVG(noDataIcon)}</span>`,
-      title: 'No data found.',
-      description:
-        'There is nothing here yet. You can start by importing the data or create your own items.',
-      actions: html`
+    html`<kyn-empty-state-skeleton
+      size="large"
+      emptyTitle="No data found."
+      description="There is nothing here yet. You can start by importing the data or create your own items."
+      .icon=${html`<span>${unsafeSVG(noDataIcon)}</span>`}
+      .actions=${html`
         <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
           <span>Primary Button</span>
           <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
         </kyn-button>
         <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
-      `,
-    }),
+      `}
+    ></kyn-empty-state-skeleton>`,
 };
 LargeNoData.storyName = 'Large (No Data)';
 
 export const LargeNoSearchResults = {
   render: () =>
-    EmptyStateSkeleton({
-      size: 'large',
-      icon: html`<span>${unsafeSVG(noSearchIcon)}</span>`,
-      title: 'No search results found.',
-      description:
-        'There is nothing here yet. You can start by importing the data or create your own items.',
-      actions: html`
+    html`<kyn-empty-state-skeleton
+      size="large"
+      emptyTitle="No search results found."
+      description="There is nothing here yet. You can start by importing the data or create your own items."
+      .icon=${html`<span>${unsafeSVG(noSearchIcon)}</span>`}
+      .actions=${html`
         <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
           <span>Primary Button</span>
           <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
         </kyn-button>
         <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
-      `,
-    }),
+      `}
+    ></kyn-empty-state-skeleton>`,
 };
 LargeNoSearchResults.storyName = 'Large (No Search Results)';
 
 export const LargeDataVizOne = {
   render: () =>
-    EmptyStateSkeleton({
-      size: 'large',
-      icon: html`<span>${unsafeSVG(dataVizIcon)}</span>`,
-      title: 'Data Visualization',
-      description: "There's no data available to display at this time.",
-      actions: html`
+    html`<kyn-empty-state-skeleton
+      size="large"
+      emptyTitle="Data Visualization"
+      description="There's no data available to display at this time."
+      .icon=${html`<span>${unsafeSVG(dataVizIcon)}</span>`}
+      .actions=${html`
         <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
           <span>Primary Action</span>
           <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
         </kyn-button>
         <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
-      `,
-    }),
+      `}
+    ></kyn-empty-state-skeleton>`,
 };
 LargeDataVizOne.storyName = 'Large (Data Visualization)';
 
 export const SmallWidgetNoData = {
   render: () =>
-    EmptyStateSkeleton({
-      size: 'small',
-      maxWidth: '255px',
-      icon: html`<span style="width: 48px; height: 48px;"
+    html`<kyn-empty-state-skeleton
+      size="small"
+      maxWidth="255px"
+      description="This is a small widget empty state."
+      .icon=${html`<span style="width: 48px; height: 48px;"
         >${unsafeSVG(warningIcon)}</span
-      >`,
-      description: 'This is a small widget empty state.',
-    }),
+      >`}
+    ></kyn-empty-state-skeleton>`,
 };
 SmallWidgetNoData.storyName = 'Small (No Data)';
 
 export const SmallDataDataViz = {
   render: () =>
-    EmptyStateSkeleton({
-      size: 'small',
-      icon: html`<span style="width: 48px; height: 48px;"
+    html`<kyn-empty-state-skeleton
+      size="small"
+      description="There is nothing here yet. You can start by importing the data or create your own items."
+      .icon=${html`<span style="width: 48px; height: 48px;"
         >${unsafeSVG(chartComboIcon)}</span
-      >`,
-      description:
-        'There is nothing here yet. You can start by importing the data or create your own items.',
-      actions: html`
+      >`}
+      .actions=${html`
         <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
           <span>Import Data</span>
           <span slot="icon">${unsafeSVG(selectIcon)}</span>
         </kyn-button>
-      `,
-    }),
+      `}
+    ></kyn-empty-state-skeleton>`,
 };
 SmallDataDataViz.storyName = 'Small (Data Visualization)';
