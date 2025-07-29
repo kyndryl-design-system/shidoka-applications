@@ -48,7 +48,9 @@ import AnatomyImg from './emptyState-anatomy.png';
 
 ```html
 <div class="empty-state--wrapper empty-state--large">
-   <div class="empty-state--icon-wrapper">${unsafeSVG({ICON_HERE})}</div>
+   <div class="empty-state--icon-wrapper">
+     <!-- ${unsafeSVG({EMPTY_STATE_ICON_HERE})} -->
+   </div>
    <div class="empty-state--content">
      <div class="empty-state-content-wrapper">
        <div class="empty-state--title-div">
@@ -58,7 +60,7 @@ import AnatomyImg from './emptyState-anatomy.png';
        </div>
        <div class="empty-state--description-text">
          <p>
-           <!-- Your empty state dsecription here. -->
+           <!-- Your empty state description here. -->
          </p>
        </div>
      </div>
@@ -71,7 +73,9 @@ import AnatomyImg from './emptyState-anatomy.png';
           <!-- Text for optional primary action button -->
          </span>
          <span class="empty-state--action-button-icon"
-           >${unsafeSVG(chevronRightIcon)}</span
+           >
+            <!-- ${unsafeSVG({ACTION_ICON_HERE})} -->
+           </span
          >
        </kyn-button>
        <kyn-link
@@ -92,14 +96,13 @@ import AnatomyImg from './emptyState-anatomy.png';
 ```html
 <div class="empty-state--wrapper empty-state--small">
   <div class="empty-state--icon-wrapper">
-    ${unsafeSVG(chartComboIcon)}
+     <!-- ${unsafeSVG({MONOCHROMATIC_EMPTY_STATE_ICON_HERE})} -->
   </div>
   <div class="empty-state--content">
     <div class="empty-state-content-wrapper">
       <div class="empty-state--description-text">
         <p>
-          There is nothing here yet. You can start by importing the data or
-          create your own items.
+          <!-- Your empty state description here. -->
         </p>
       </div>
     </div>
@@ -108,9 +111,11 @@ import AnatomyImg from './emptyState-anatomy.png';
         class="empty-state--action-button"
         @click=${(e) => e.preventDefault()}
       >
-        <span>Import Data</span>
+            <span>
+          <!-- Text for optional primary action button -->
+         </span>
         <span class="empty-state--action-button-icon">
-          ${unsafeSVG(selectIcon)}
+          <!-- ${unsafeSVG({ACTION_ICON_HERE})} -->
         </span>
       </kyn-button>
     </div>
