@@ -1,4 +1,3 @@
-// emptyState.stories.js
 import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
