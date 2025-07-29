@@ -1,20 +1,18 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
-import {
-  customElement,
-  property,
-  state,
-  query,
-  queryAssignedElements,
-} from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 
 import './dropdownOption';
+import './enhancedDropdownOption';
 import '../tag';
 import '../button';
+
+import { DropdownOption } from './dropdownOption';
+import { EnhancedDropdownOption } from './enhancedDropdownOption';
 
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
@@ -81,6 +79,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Makes the dropdown searchable. */
   @property({ type: Boolean })
   accessor searchable = false;
+
+  /** Makes the dropdown enhanced. */
+  @property({ type: Boolean })
+  accessor enhanced = false;
 
   /** Searchable variant filters results. */
   @property({ type: Boolean })
@@ -176,18 +178,26 @@ export class Dropdown extends FormMixin(LitElement) {
   accessor assistiveText = 'Dropdown menu options.';
 
   /**
-   * Queries any slotted options.
+   * Queries any slotted options, default or enhanced.
    * @ignore
    */
-  @queryAssignedElements({ selector: 'kyn-dropdown-option' })
-  accessor options!: Array<any>;
+  protected get options(): Array<DropdownOption | EnhancedDropdownOption> {
+    return [
+      ...this.querySelectorAll<DropdownOption | EnhancedDropdownOption>(
+        'kyn-dropdown-option, kyn-enhanced-dropdown-option'
+      ),
+    ];
+  }
 
   /**
    * Queries any slotted selected options.
    * @ignore
    */
-  @queryAssignedElements({ selector: 'kyn-dropdown-option[selected]' })
-  accessor selectedOptions!: Array<any>;
+  protected get selectedOptions(): Array<
+    DropdownOption | EnhancedDropdownOption
+  > {
+    return this.options.filter((opt) => opt.hasAttribute('selected'));
+  }
 
   /**
    * Queries the .search DOM element.
@@ -400,16 +410,31 @@ export class Dropdown extends FormMixin(LitElement) {
               <div role="listbox" aria-labelledby="label-${this.name}">
                 ${this.multiple && this.selectAll
                   ? html`
-                      <kyn-dropdown-option
-                        class="select-all"
-                        value="selectAll"
-                        multiple
-                        ?selected=${this.selectAllChecked}
-                        ?indeterminate=${this.selectAllIndeterminate}
-                        ?disabled=${this.disabled}
-                      >
-                        ${this.selectAllText}
-                      </kyn-dropdown-option>
+                      ${this.enhanced
+                        ? html`
+                            <kyn-enhanced-dropdown-option
+                              class="select-all"
+                              value="selectAll"
+                              multiple
+                              ?selected=${this.selectAllChecked}
+                              ?indeterminate=${this.selectAllIndeterminate}
+                              ?disabled=${this.disabled}
+                            >
+                              ${this.selectAllText}
+                            </kyn-enhanced-dropdown-option>
+                          `
+                        : html`
+                            <kyn-dropdown-option
+                              class="select-all"
+                              value="selectAll"
+                              multiple
+                              ?selected=${this.selectAllChecked}
+                              ?indeterminate=${this.selectAllIndeterminate}
+                              ?disabled=${this.disabled}
+                            >
+                              ${this.selectAllText}
+                            </kyn-dropdown-option>
+                          `}
                     `
                   : null}
 
@@ -565,7 +590,10 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // Pass allowAddOption to each kyn-dropdown-option
     options.forEach((option) => {
-      if (option.tagName === 'KYN-DROPDOWN-OPTION') {
+      if (
+        option.tagName === 'KYN-DROPDOWN-OPTION' ||
+        option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION'
+      ) {
         (option as any).allowAddOption = this.allowAddOption;
       }
     });
@@ -617,6 +645,7 @@ export class Dropdown extends FormMixin(LitElement) {
     if (
       target &&
       (target.closest('kyn-dropdown-option') ||
+        target.closest('kyn-enhanced-dropdown-option') ||
         target.classList.contains('search') ||
         target.closest('.add-option'))
     ) {
@@ -635,10 +664,13 @@ export class Dropdown extends FormMixin(LitElement) {
     const ESCAPE_KEY_CODE = 27;
 
     // get highlighted element + index and selected element
-    const visibleOptions = [
-      ...Array.from(this.shadowRoot?.querySelectorAll('.select-all') || []),
-      ...this.options.filter((option: any) => option.style.display !== 'none'),
-    ];
+    const selectAllOptions = Array.from(
+      this.shadowRoot?.querySelectorAll('.select-all') || []
+    ) as any[];
+    const filteredOptions = this.options.filter(
+      (option: any) => option.style.display !== 'none'
+    );
+    const visibleOptions = [...selectAllOptions, ...filteredOptions] as any[];
     // visibleOptions.forEach((e) => (e.tabIndex = 0));
 
     const highlightedEl = visibleOptions.find(
@@ -647,7 +679,7 @@ export class Dropdown extends FormMixin(LitElement) {
     const selectedEl = visibleOptions.find((option: any) => option.selected);
     let highlightedIndex = highlightedEl
       ? visibleOptions.indexOf(highlightedEl)
-      : visibleOptions.find((option: any) => option.selected)
+      : selectedEl
       ? visibleOptions.indexOf(selectedEl)
       : 0;
 
@@ -997,6 +1029,7 @@ export class Dropdown extends FormMixin(LitElement) {
     if (
       !relatedTarget ||
       (relatedTarget?.localName !== 'kyn-dropdown-option' &&
+        relatedTarget?.localName !== 'kyn-enhanced-dropdown-option' &&
         relatedTarget.localName !== 'kyn-dropdown')
     ) {
       this.open = false;
@@ -1197,7 +1230,9 @@ export class Dropdown extends FormMixin(LitElement) {
   private _updateTags() {
     if (this.multiple) {
       const Options: any = Array.from(
-        this.querySelectorAll('kyn-dropdown-option')
+        this.querySelectorAll(
+          'kyn-dropdown-option, kyn-enhanced-dropdown-option'
+        )
       );
       const Tags: Array<object> = [];
 
@@ -1219,7 +1254,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private _updateOptions() {
     const Options: any = Array.from(
-      this.querySelectorAll('kyn-dropdown-option')
+      this.querySelectorAll('kyn-dropdown-option, kyn-enhanced-dropdown-option')
     );
 
     Options.forEach((option: any) => {
@@ -1252,7 +1287,7 @@ export class Dropdown extends FormMixin(LitElement) {
   private _updateSelectedText() {
     // update selected option text
     const AllOptions: any = Array.from(
-      this.querySelectorAll('kyn-dropdown-option')
+      this.querySelectorAll('kyn-dropdown-option, kyn-enhanced-dropdown-option')
     );
 
     if (!this.multiple) {
