@@ -45,7 +45,7 @@ export const LargeNoData = {
           <span>Primary Button</span>
           <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
         </kyn-button>
-        <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
+        <kyn-link href="#" standalone>Link</kyn-link>
       `}
     ></kyn-empty-state-skeleton>`,
 };
@@ -63,7 +63,7 @@ export const LargeNoSearchResults = {
           <span>Primary Button</span>
           <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
         </kyn-button>
-        <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
+        <kyn-link href="#" standalone>Link</kyn-link>
       `}
     ></kyn-empty-state-skeleton>`,
 };
@@ -81,7 +81,7 @@ export const LargeDataVizOne = {
           <span>Primary Action</span>
           <span slot="icon">${unsafeSVG(chevronRightIcon)}</span>
         </kyn-button>
-        <kyn-link style="margin-left: 24px;" href="#" standalone>Link</kyn-link>
+        <kyn-link href="#" standalone>Link</kyn-link>
       `}
     ></kyn-empty-state-skeleton>`,
 };
@@ -93,9 +93,7 @@ export const SmallWidgetNoData = {
       size="small"
       maxWidth="255px"
       description="This is a small widget empty state."
-      .icon=${html`<span style="width: 48px; height: 48px;"
-        >${unsafeSVG(warningIcon)}</span
-      >`}
+      .icon=${html`<span>${unsafeSVG(warningIcon)}</span>`}
     ></kyn-empty-state-skeleton>`,
 };
 SmallWidgetNoData.storyName = 'Small (No Data)';
@@ -105,9 +103,7 @@ export const SmallDataDataViz = {
     html`<kyn-empty-state-skeleton
       size="small"
       description="There is nothing here yet. You can start by importing the data or create your own items."
-      .icon=${html`<span style="width: 48px; height: 48px;"
-        >${unsafeSVG(chartComboIcon)}</span
-      >`}
+      .icon=${html`<span>${unsafeSVG(chartComboIcon)}</span>`}
       .actions=${html`
         <kyn-button iconPosition="right" @on-click=${(e) => e.preventDefault()}>
           <span>Import Data</span>

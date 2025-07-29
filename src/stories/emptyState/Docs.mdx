@@ -62,15 +62,8 @@ Use the small variant for:
 ### Import the Pattern
 
 ```javascript
-// Import the main skeleton function
-import { EmptyStateSkeleton } from '@kyndryl-design-system/shidoka-applications/stories/emptyState/emptyState.skeleton';
-
-// Optional: Import helper functions for specific scenarios
-import {
-  LargeNoDataEmptyState,
-  LargeNoSearchResultsEmptyState,
-  SmallWidgetEmptyState,
-} from '@kyndryl-design-system/shidoka-applications/stories/emptyState/emptyState.skeleton';
+// Import the custom element
+import '@kyndryl-design-system/shidoka-applications/stories/emptyState/emptyState.skeleton';
 ```
 
 ### Import the Shidoka styles for Empty State (globally)
@@ -87,78 +80,87 @@ import '@kyndryl-design-system/shidoka-applications/dist/stories/emptyState/empt
 
 ### Basic Usage
 
-```javascript
-const emptyState = EmptyStateSkeleton({
-  size: 'large',
-  icon: html`<span>${unsafeSVG(yourIcon)}</span>`,
-  title: 'No data found',
-  description: 'There is nothing here yet. Start by adding some content.',
-  actions: html`<button>Add Content</button>`,
-});
+```html
+<kyn-empty-state-skeleton
+  size="large"
+  emptyTitle="No data found"
+  description="There is nothing here yet. Start by adding some content."
+  .icon=${html`<span>${unsafeSVG(yourIcon)}</span>`}
+  .actions=${html`<button>Add Content</button>`}
+></kyn-empty-state-skeleton>
 ```
 
-### Using Helper Functions
+### Common Usage Patterns
 
-For common scenarios, use the provided helper functions:
+Examples for different scenarios:
 
-```javascript
-// Large no data scenario
-const noDataState = LargeNoDataEmptyState({
-  icon: html`<span>${unsafeSVG(noDataIcon)}</span>`,
-  title: 'No data found',
-  description: 'Start by importing data or creating new items.',
-  actions: html`<button>Add Data</button>`,
-});
+```html
+<!-- Large empty state scenario -->
+<kyn-empty-state-skeleton
+  size="large"
+  emptyTitle="No data found"
+  description="Start by importing data or creating new items."
+  .icon=${html`<span>${unsafeSVG(noDataIcon)}</span>`}
+  .actions=${html`<button>Add Data</button>`}
+></kyn-empty-state-skeleton>
 
-// Small widget scenario
-const widgetState = SmallWidgetEmptyState({
-  icon: html`<span>${unsafeSVG(warningIcon)}</span>`,
-  description: 'No data available for this widget.',
-  maxWidth: '255px',
-});
+<!-- Small widget scenario -->
+<kyn-empty-state-skeleton
+  size="small"
+  maxWidth="255px"
+  description="No data available for this widget."
+  .icon=${html`<span>${unsafeSVG(warningIcon)}</span>`}
+></kyn-empty-state-skeleton>
 ```
 
-### Extend the Default Configuration
+### Custom Configuration
 
-You can extend the default configuration for specific use cases:
+You can customize the component for specific use cases:
 
-```javascript
-import { EmptyStateDefaults } from './emptyState.skeleton';
-
-// Custom configuration for error states
-const ErrorConfig = {
-  ...EmptyStateDefaults,
-  role: 'alert',
-  ariaLive: 'assertive',
-  classes: 'error-state',
-};
-
-const errorState = EmptyStateSkeleton({
-  ...ErrorConfig,
-  title: 'Something went wrong',
-  description: 'Please try again later.',
-});
+```html
+<!-- Error state example -->
+<kyn-empty-state-skeleton
+  size="large"
+  emptyTitle="Something went wrong"
+  description="Please try again later."
+  role="alert"
+  ariaLive="assertive"
+  classes="error-state"
+  .icon=${html`<span>${unsafeSVG(errorIcon)}</span>`}
+></kyn-empty-state-skeleton>
 ```
 
 ## API Reference
 
-### EmptyStateSkeleton Parameters
+### kyn-empty-state-skeleton Properties
 
-| Parameter     | Type                      | Default     | Description                                 |
-| ------------- | ------------------------- | ----------- | ------------------------------------------- |
-| `icon`        | `unknown`                 | `undefined` | Icon element or HTML to display             |
-| `title`       | `string`                  | `undefined` | Optional heading text                       |
-| `description` | `string`                  | `undefined` | Main explanatory text                       |
-| `actions`     | `unknown`                 | `undefined` | Action buttons or links                     |
-| `size`        | `'small' \| 'large'`      | `'large'`   | Size variant of the empty state             |
-| `maxWidth`    | `string`                  | `undefined` | Custom maximum width (CSS value)            |
-| `classes`     | `string`                  | `undefined` | Additional CSS classes                      |
-| `role`        | `'status' \| 'alert'`     | `'status'`  | ARIA role for accessibility                 |
-| `ariaLive`    | `'polite' \| 'assertive'` | `'polite'`  | ARIA live region setting for screen readers |
+| Property      | Type                      | Default    | Description                                 |
+| ------------- | ------------------------- | ---------- | ------------------------------------------- |
+| `icon`        | `unknown`                 | `''`       | Icon element or HTML to display             |
+| `emptyTitle`  | `string`                  | `''`       | Optional heading text                       |
+| `description` | `string`                  | `''`       | Main explanatory text                       |
+| `actions`     | `unknown`                 | `''`       | Action buttons or links                     |
+| `size`        | `'small' \| 'large'`      | `'large'`  | Size variant of the empty state             |
+| `maxWidth`    | `string`                  | `''`       | Custom maximum width (CSS value)            |
+| `classes`     | `string`                  | `''`       | Additional CSS classes                      |
+| `role`        | `'status' \| 'alert'`     | `'status'` | ARIA role for accessibility                 |
+| `ariaLive`    | `'polite' \| 'assertive'` | `'polite'` | ARIA live region setting for screen readers |
 
 ## Framework Examples
 
-### Vanilla HTML
+### Lit/Web Components
+
+```html
+<kyn-empty-state-skeleton
+  size="large"
+  emptyTitle="No data found"
+  description="There is nothing here yet. Start by adding some content."
+  .icon=${html`<span>${unsafeSVG(yourIcon)}</span>`}
+  .actions=${html`<button>Add Content</button>`}
+></kyn-empty-state-skeleton>
+```
+
+### Vanilla HTML (Rendered Output)
 
 ```html
 <div class="empty-state--wrapper empty-state--large">
@@ -215,28 +217,13 @@ const errorState = EmptyStateSkeleton({
 <Source
   language="html"
   code={`
-  <div class="empty-state--wrapper empty-state--large">
-    <div class="empty-state--icon-wrapper">
-      <!-- icon goes here -->
-    </div>
-    <div class="empty-state--content">
-      <div class="empty-state-content-wrapper">
-        <div class="empty-state--title-div">
-          <h1>
-          <!-- main title here -->
-          </h1>
-        </div>
-        <div class="empty-state--description-text">
-          <p>
-            <!-- description here -->
-          </p>
-        </div>
-      </div>
-      <div class="empty-state--action-wrapper">
-        <!-- buttons or links -->
-      </div>
-    </div>
-  </div>
+  <kyn-empty-state-skeleton
+    size="large"
+    emptyTitle="Your title here"
+    description="Your description here"
+    .icon=\${html\`<span>\${unsafeSVG(yourIcon)}</span>\`}
+    .actions=\${html\`<button>Your Action</button>\`}
+  ></kyn-empty-state-skeleton>
 `.trim()}
 />
 
