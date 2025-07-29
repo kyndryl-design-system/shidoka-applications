@@ -42,13 +42,6 @@ export class EnhancedDropdownOption extends LitElement {
   @property({ type: Boolean })
   accessor allowAddOption = false;
 
-  /**
-   * Option highlighted state for keyboard navigation, automatically derived.
-   * @ignore
-   */
-  @state()
-  accessor highlighted = false;
-
   /** Multi-select state, derived from parent.
    * @ignore
    */
@@ -76,17 +69,28 @@ export class EnhancedDropdownOption extends LitElement {
   override accessor ariaSelected = 'false';
 
   /**
+   * Option highlighted state for keyboard navigation, automatically derived.
+   * @ignore
+   */
+  @state()
+  accessor highlighted = false;
+
+  /**
    * Option text, automatically derived from title or fallback content.
    * @ignore
    */
   @state()
   accessor text: any = '';
 
-  /** Track if icon slot has content */
+  /** Track if icon slot has content
+   * @internal
+   */
   @state()
   accessor hasIcon = false;
 
-  /** Track if title slot has content */
+  /** Track if title slot has content
+   * @internal
+   */
   @state()
   accessor hasTitle = false;
 
@@ -94,11 +98,15 @@ export class EnhancedDropdownOption extends LitElement {
   @state()
   accessor hasDescription = false;
 
-  /** Track if tag slot has content */
+  /** Track if tag slot has content
+   * @internal
+   */
   @state()
   accessor hasTag = false;
 
-  /** Track if optionType slot has content */
+  /** Track if optionType slot has content
+   * @internal
+   */
   @state()
   accessor hasOptionType = false;
 
