@@ -59,6 +59,22 @@ export class EnhancedDropdownOption extends LitElement {
   @property({ type: Boolean })
   accessor removable = false;
 
+  /** Determines whether the checkbox is in an indeterminate state. */
+  @property({ type: Boolean, reflect: true })
+  accessor indeterminate = false;
+
+  /**
+   * The ARIA role of this element.
+   */
+  @property({ type: String, reflect: true })
+  override accessor role = 'option';
+
+  /**
+   * Indicates whether this option is selected.
+   */
+  @property({ type: String, reflect: true, attribute: 'aria-selected' })
+  override accessor ariaSelected = 'false';
+
   /**
    * Option text, automatically derived from title or fallback content.
    * @ignore
@@ -86,16 +102,6 @@ export class EnhancedDropdownOption extends LitElement {
   @state()
   accessor hasOptionType = false;
 
-  /** Determines whether the checkbox is in an indeterminate state. */
-  @property({ type: Boolean, reflect: true })
-  accessor indeterminate = false;
-
-  @property({ type: String, reflect: true })
-  override accessor role = 'option';
-
-  @property({ type: String, reflect: true, attribute: 'aria-selected' })
-  override accessor ariaSelected = 'false';
-
   override render() {
     return html`
       <div
@@ -103,303 +109,145 @@ export class EnhancedDropdownOption extends LitElement {
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
-        ?multiple=${this.multiple}
         title=${this.text}
-        @pointerup=${(e: any) => this.handleClick(e)}
-        @blur=${(e: any) => this.handleBlur(e)}
+        role="option"
+        aria-selected=${this.selected}
+        @pointerup=${this.handleClick}
+        @blur=${this.handleBlur}
       >
-        <div class="content">
-          ${this.multiple
-            ? html`
-                <kyn-checkbox
-                  type="checkbox"
-                  value=${this.value}
-                  .checked=${this.selected}
-                  ?checked=${this.selected}
-                  ?disabled=${this.disabled}
-                  notFocusable
-                  .indeterminate=${this.indeterminate}
-                >
-                </kyn-checkbox>
-              `
-            : null}
-          ${this.hasIcon
-            ? html`
-                <div class="icon-container">
-                  <slot
-                    name="icon"
-                    @slotchange=${(e: any) => this.handleIconSlotChange(e)}
-                  ></slot>
-                </div>
-              `
-            : html`
-                <slot
-                  name="icon"
-                  @slotchange=${(e: any) => this.handleIconSlotChange(e)}
-                  style="display: none;"
-                ></slot>
-              `}
+        ${this.multiple
+          ? html`<kyn-checkbox
+              .checked=${this.selected}
+              .indeterminate=${this.indeterminate}
+              ?disabled=${this.disabled}
+              notFocusable
+            ></kyn-checkbox>`
+          : null}
 
-          <div class="text-content">
-            ${this.hasTitle || this.text
-              ? html`
-                  <div class="title">
-                    <div class="title-content">
-                      <slot
-                        name="title"
-                        @slotchange=${(e: any) => this.handleTitleSlotChange(e)}
-                      ></slot>
-                      <slot
-                        @slotchange=${(e: any) =>
-                          this.handleFallbackSlotChange(e)}
-                      ></slot>
-                      ${this.hasTag
-                        ? html`
-                            <div class="tag-container">
-                              <slot
-                                name="tag"
-                                @slotchange=${(e: any) =>
-                                  this.handleTagSlotChange(e)}
-                              ></slot>
-                            </div>
-                          `
-                        : html`
-                            <slot
-                              name="tag"
-                              @slotchange=${(e: any) =>
-                                this.handleTagSlotChange(e)}
-                              style="display: none;"
-                            ></slot>
-                          `}
-                    </div>
-                  </div>
-                `
-              : html`
-                  <slot
-                    name="title"
-                    @slotchange=${(e: any) => this.handleTitleSlotChange(e)}
-                    style="display: none;"
-                  ></slot>
-                  <slot
-                    @slotchange=${(e: any) => this.handleFallbackSlotChange(e)}
-                    style="display: none;"
-                  ></slot>
-                  <slot
-                    name="tag"
-                    @slotchange=${(e: any) => this.handleTagSlotChange(e)}
-                    style="display: none;"
-                  ></slot>
-                `}
-            ${this.hasDescription
-              ? html`
-                  <div class="description">
-                    <slot
-                      name="description"
-                      @slotchange=${(e: any) =>
-                        this.handleDescriptionSlotChange(e)}
-                    ></slot>
-                  </div>
-                `
-              : html`
-                  <slot
-                    name="description"
-                    @slotchange=${(e: any) =>
-                      this.handleDescriptionSlotChange(e)}
-                    style="display: none;"
-                  ></slot>
-                `}
-            ${this.hasOptionType
-              ? html`
-                  <div class="option-type">
-                    <slot
-                      name="optionType"
-                      @slotchange=${(e: any) =>
-                        this.handleOptionTypeSlotChange(e)}
-                    ></slot>
-                  </div>
-                `
-              : html`
-                  <slot
-                    name="optionType"
-                    @slotchange=${(e: any) =>
-                      this.handleOptionTypeSlotChange(e)}
-                    style="display: none;"
-                  ></slot>
-                `}
+        <div class="icon-container" ?hidden=${!this.hasIcon}>
+          <slot name="icon" @slotchange=${this.updateIconState}></slot>
+        </div>
+
+        <div class="text-content">
+          <div class="title-container">
+            <slot
+              name="title"
+              class="kd-type--weight-regular"
+              @slotchange=${this.updateTitleState}
+            ></slot>
+            <slot @slotchange=${this.updateFallbackState}></slot>
+            <span class="tag-container">
+              <slot name="tag" @slotchange=${this.updateTagState}></slot>
+            </span>
+          </div>
+
+          <div
+            class="description-container kd-type--weight-regular"
+            ?hidden=${!this.hasDescription}
+          >
+            <slot
+              name="description"
+              @slotchange=${this.updateDescriptionState}
+            ></slot>
+          </div>
+
+          <div
+            class="option-type-container kd-type-weight-medium"
+            ?hidden=${!this.hasOptionType}
+          >
+            <slot
+              name="optionType"
+              @slotchange=${this.updateOptionTypeState}
+            ></slot>
           </div>
         </div>
 
         <div class="status-icons">
-          ${this.selected && !this.multiple
-            ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
+          ${!this.multiple && this.selected
+            ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
             : null}
-          ${this.allowAddOption && this.removable
-            ? html`
-                <kyn-button
-                  class="remove-option"
-                  kind="ghost"
-                  size="small"
-                  aria-label="Delete ${this.value}"
-                  description="Delete ${this.value}"
-                  ?disabled=${this.disabled}
-                  @click=${(e: Event) => this.handleRemoveClick(e)}
-                  @mousedown=${(e: Event) => e.stopPropagation()}
-                  @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
-                  @focus=${(e: KeyboardEvent) => e.stopPropagation()}
-                >
-                  <span slot="icon" class="clear-icon">
-                    ${unsafeSVG(clearIcon)}
-                  </span>
-                </kyn-button>
-              `
+          ${this.removable && this.allowAddOption
+            ? html`<kyn-button
+                class="remove-option"
+                kind="ghost"
+                size="small"
+                aria-label="Remove ${this.value}"
+                @click=${this.handleRemoveClick}
+              >
+                ${unsafeSVG(clearIcon)}
+              </kyn-button>`
             : null}
         </div>
       </div>
     `;
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('selected')) {
-      this.ariaSelected = this.selected.toString();
-    }
+  private updateIconState(e: any) {
+    this.hasIcon = !!e.target.assignedNodes().length;
   }
 
-  private handleIconSlotChange(e: any) {
-    const nodes = e.target.assignedNodes({ flatten: true });
-    this.hasIcon =
-      nodes.length > 0 &&
-      nodes.some(
-        (node: Node) =>
-          node.nodeType === Node.ELEMENT_NODE ||
-          (node.nodeType === Node.TEXT_NODE && node.textContent?.trim())
-      );
+  private updateTitleState(e: any) {
+    const text = e.target
+      .assignedNodes()
+      .map((n: any) => n.textContent?.trim())
+      .join('');
+    this.hasTitle = !!text;
+    if (text) this.text = text;
   }
 
-  private handleTitleSlotChange(e: any) {
-    const nodes = e.target.assignedNodes({ flatten: true });
-    let text = '';
-
-    for (let i = 0; i < nodes.length; i++) {
-      text += nodes[i].textContent?.trim() || '';
-    }
-
-    this.hasTitle = text.length > 0;
-    if (text) {
+  private updateFallbackState(e: any) {
+    if (!this.hasTitle) {
+      const text = e.target
+        .assignedNodes()
+        .map((n: any) => n.textContent?.trim())
+        .join('');
       this.text = text;
     }
-
-    this.updateTextContent();
   }
 
-  private handleDescriptionSlotChange(e: any) {
-    const nodes = e.target.assignedNodes({ flatten: true });
-    this.hasDescription =
-      nodes.length > 0 &&
-      nodes.some(
-        (node: Node) =>
-          node.nodeType === Node.ELEMENT_NODE ||
-          (node.nodeType === Node.TEXT_NODE && node.textContent?.trim())
-      );
+  private updateTagState(e: any) {
+    this.hasTag = !!e.target.assignedNodes().length;
   }
 
-  private handleTagSlotChange(e: any) {
-    const nodes = e.target.assignedNodes({ flatten: true });
-    this.hasTag =
-      nodes.length > 0 &&
-      nodes.some(
-        (node: Node) =>
-          node.nodeType === Node.ELEMENT_NODE ||
-          (node.nodeType === Node.TEXT_NODE && node.textContent?.trim())
-      );
+  private updateDescriptionState(e: any) {
+    this.hasDescription = !!e.target.assignedNodes().length;
   }
 
-  private handleOptionTypeSlotChange(e: any) {
-    const nodes = e.target.assignedNodes({ flatten: true });
-    this.hasOptionType =
-      nodes.length > 0 &&
-      nodes.some(
-        (node: Node) =>
-          node.nodeType === Node.ELEMENT_NODE ||
-          (node.nodeType === Node.TEXT_NODE && node.textContent?.trim())
-      );
+  private updateOptionTypeState(e: any) {
+    this.hasOptionType = !!e.target.assignedNodes().length;
   }
 
-  private handleFallbackSlotChange(e: any) {
-    const titleSlot = this.shadowRoot?.querySelector(
-      'slot[name="title"]'
-    ) as HTMLSlotElement;
-    const titleNodes = titleSlot?.assignedNodes({ flatten: true }) || [];
-
-    if (titleNodes.length === 0) {
-      const nodes = e.target.assignedNodes({ flatten: true });
-      let text = '';
-
-      for (let i = 0; i < nodes.length; i++) {
-        text += nodes[i].textContent?.trim() || '';
-      }
-
-      this.text = text;
-    }
-    this.updateTextContent();
+  private handleClick(e: PointerEvent) {
+    if (this.disabled) return;
+    this.selected = this.multiple ? !this.selected : true;
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        detail: { selected: this.selected, value: this.value, origEvent: e },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
-  /**
-   * @private
-   */
-  private updateTextContent() {
-    requestAnimationFrame(() => {
-      Object.defineProperty(this, 'textContent', {
-        get: () => this.text,
-        configurable: true,
-      });
-    });
+  private handleBlur(e: FocusEvent) {
+    this.dispatchEvent(
+      new CustomEvent('on-blur', {
+        detail: { origEvent: e },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
-  private handleRemoveClick(e: Event) {
+  private handleRemoveClick(e: MouseEvent) {
     e.stopPropagation();
-    const event = new CustomEvent('on-remove-option', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        value: this.value,
-      },
-    });
-    this.dispatchEvent(event);
-  }
-
-  private handleClick(e: Event) {
-    if (this.disabled) {
-      return;
-    }
-
-    if (this.multiple) {
-      this.selected = !this.selected;
-    } else {
-      this.selected = true;
-    }
-
-    const event = new CustomEvent('on-click', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        selected: this.selected,
-        value: this.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
-  }
-
-  private handleBlur(e: any) {
-    const event = new CustomEvent('on-blur', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+    this.dispatchEvent(
+      new CustomEvent('on-remove-option', {
+        detail: { value: this.value },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }
 

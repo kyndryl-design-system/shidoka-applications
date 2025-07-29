@@ -1,7 +1,9 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
-import './index';
 import { action } from 'storybook/actions';
+
+import './index';
+
 import '../tooltip';
 
 import businessConsultIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/business-consulting.svg';
@@ -86,11 +88,6 @@ export const EnhancedDefault = {
   },
   render: (args) => {
     return html`
-      <style>
-        kyn-dropdown {
-          min-width: 300px;
-        }
-      </style>
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -302,6 +299,77 @@ export const EnhancedButtonAnchor = {
   },
 };
 
+export const EnhancedSearchable = {
+  args: {
+    ...args,
+    label: 'Enhanced Searchable Options',
+    filterSearch: true,
+    searchable: true,
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 20rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        size=${args.size}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?searchable=${args.searchable}
+        ?filterSearch=${args.filterSearch}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-enhanced-dropdown-option value="javascript">
+          <span slot="title">JavaScript</span>
+          <span slot="description"
+            >Dynamic programming language for web development</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="typescript">
+          <span slot="title">TypeScript</span>
+          <span slot="description"
+            >Typed superset of JavaScript that compiles to plain
+            JavaScript</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="python">
+          <span slot="title">Python</span>
+          <span slot="description"
+            >High-level programming language with readable syntax</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="rust">
+          <span slot="title">Rust</span>
+          <span slot="description"
+            >Systems programming language focused on safety and
+            performance</span
+          >
+        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="go">
+          <span slot="title">Go</span>
+          <span slot="description"
+            >Open source programming language that makes it easy to build
+            simple, reliable, and efficient software</span
+          >
+        </kyn-enhanced-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
 export const EnhancedMultiSelect = {
   args: {
     ...args,
@@ -368,77 +436,6 @@ export const EnhancedMultiSelect = {
           <span slot="description"
             >This is a description for the Option 4 enhanced dropdown
             option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-      </kyn-dropdown>
-    `;
-  },
-};
-
-export const EnhancedSearchable = {
-  args: {
-    ...args,
-    label: 'Enhanced Searchable Options',
-    filterSearch: true,
-    searchable: true,
-  },
-  render: (args) => {
-    return html`
-      <style>
-        kyn-dropdown {
-          min-width: 20rem;
-        }
-      </style>
-      <kyn-dropdown
-        label=${args.label}
-        size=${args.size}
-        ?inline=${args.inline}
-        name=${args.name}
-        ?open=${args.open}
-        ?searchable=${args.searchable}
-        ?filterSearch=${args.filterSearch}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        ?hideLabel=${args.hideLabel}
-        invalidText=${args.invalidText}
-        caption=${args.caption}
-        menuMinWidth=${args.menuMinWidth}
-        .textStrings=${args.textStrings}
-        value=${args.value}
-        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        <kyn-enhanced-dropdown-option value="javascript">
-          <span slot="title">JavaScript</span>
-          <span slot="description"
-            >Dynamic programming language for web development</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="typescript">
-          <span slot="title">TypeScript</span>
-          <span slot="description"
-            >Typed superset of JavaScript that compiles to plain
-            JavaScript</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="python">
-          <span slot="title">Python</span>
-          <span slot="description"
-            >High-level programming language with readable syntax</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="rust">
-          <span slot="title">Rust</span>
-          <span slot="description"
-            >Systems programming language focused on safety and
-            performance</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="go">
-          <span slot="title">Go</span>
-          <span slot="description"
-            >Open source programming language that makes it easy to build
-            simple, reliable, and efficient software</span
           >
         </kyn-enhanced-dropdown-option>
       </kyn-dropdown>

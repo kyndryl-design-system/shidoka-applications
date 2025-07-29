@@ -5,7 +5,6 @@
 .enhanced-option {
   position: relative;
   display: flex;
-  align-items: center;
   gap: 12px;
   padding: 16px;
   cursor: pointer;
@@ -45,14 +44,19 @@
 
   .icon-container {
     flex-shrink: 0;
+    align-self: flex-start;
     width: 16px;
     height: 16px;
-    margin-top: 0;
+    margin-top: 2px;
 
     ::slotted(*) {
       width: 16px;
       height: 16px;
       display: block;
+    }
+
+    &:empty {
+      display: none;
     }
   }
 
@@ -63,18 +67,10 @@
 
   .title {
     @include typography.type-body-02;
-
-    & {
-      font-weight: 400;
-      line-height: 16px;
-      color: var(--kd-color-text-level-primary);
-      margin-bottom: 4px;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
+    color: var(--kd-color-text-level-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     .title-content {
       display: flex;
       align-items: center;
@@ -84,18 +80,22 @@
 
     .tag-container {
       flex-shrink: 0;
-
-      ::slotted(kyn-tag) {
-        display: inline-flex;
-        pointer-events: none;
-      }
+      margin-bottom: 4px;
     }
   }
 
-  .description {
+  ::slotted(kyn-tag) {
+    margin-top: -3px;
+    margin-left: 8px;
+    vertical-align: middle;
+    display: inline-flex;
+    pointer-events: none;
+  }
+
+  .description-container {
     @include typography.type-ui-03;
-    font-weight: 400;
     line-height: 16px;
+    margin-top: 4px;
     color: var(--kd-color-text-level-primary);
 
     overflow: hidden;
@@ -106,9 +106,8 @@
     }
   }
 
-  .option-type {
+  .option-type-container {
     @include typography.type-ui-03;
-    font-weight: 500;
     line-height: 16px;
     color: var(--kd-color-text-level-primary);
     margin-top: 8px;
@@ -131,6 +130,7 @@
 
   .check-icon {
     display: flex;
+    align-self: center;
     width: 16px;
     height: 16px;
     color: var(--kd-color-icon-primary);
@@ -150,6 +150,17 @@
   .icon-container,
   .status-icons {
     margin-top: 0;
+  }
+}
+
+.enhanced-option[multiple] {
+  .content {
+    align-items: flex-start;
+  }
+
+  ::slotted(kyn-checkbox) {
+    align-self: flex-start;
+    margin-top: 1px;
   }
 }
 
