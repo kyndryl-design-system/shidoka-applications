@@ -1,0 +1,105 @@
+import { Meta, Title, Description, Canvas } from '@storybook/addon-docs/blocks';
+import * as EmptyStateStories from './emptyState.stories.js';
+import AnatomyImg from './emptyState-anatomy.png';
+
+<Meta of={EmptyStateStories} title="Patterns/Empty State" />
+
+<Title>Empty State Pattern</Title>
+
+<Description>
+  Use when a page, section, or widget has no content to show: - No data
+  available - Search returned zero results - First-time user experiences -
+  Temporary loading or error states (use `role="alert"` +
+  `aria-live="assertive"`)
+</Description>
+
+## Anatomy
+
+<img src={AnatomyImg} alt="Empty State Anatomy" width="300" />
+
+1. Icon
+2. Title (optional)
+3. Description (optional)
+4. Actions (optional buttons or links)
+
+## Usage
+
+### Default Large Variant HTML Structure
+
+```html
+<div class="empty-state--wrapper empty-state--large">
+   <div class="empty-state--icon-wrapper">
+     <!-- ${unsafeSVG({EMPTY_STATE_ICON_HERE})} -->
+   </div>
+   <div class="empty-state--content">
+     <div class="empty-state-content-wrapper">
+       <div class="empty-state--title-div">
+         <h1>
+          <!-- Your empty state title here. -->
+         </h1>
+       </div>
+       <div class="empty-state--description-text">
+         <p>
+           <!-- Your empty state description here. -->
+         </p>
+       </div>
+     </div>
+     <div class="empty-state--action-wrapper">
+       <kyn-button
+         class="empty-state--action-button"
+         @click=${(e) => e.preventDefault()}
+       >
+         <span>
+          <!-- Text for optional primary action button -->
+         </span>
+         <span class="empty-state--action-button-icon"
+           >
+            <!-- ${unsafeSVG({ACTION_ICON_HERE})} -->
+           </span
+         >
+       </kyn-button>
+       <kyn-link
+         href="#"
+         standalone
+         class="empty-state--action-link"
+         @click=${(e) => e.preventDefault()}
+       >
+        <!-- Text for optional link -->
+       </kyn-link>
+     </div>
+   </div>
+ </div>
+```
+
+### Small Variant HTML Structure
+
+```html
+<div class="empty-state--wrapper empty-state--small">
+  <div class="empty-state--icon-wrapper">
+     <!-- ${unsafeSVG({MONOCHROMATIC_EMPTY_STATE_ICON_HERE})} -->
+  </div>
+  <div class="empty-state--content">
+    <div class="empty-state-content-wrapper">
+      <div class="empty-state--description-text">
+        <p>
+          <!-- Your empty state description here. -->
+        </p>
+      </div>
+    </div>
+    <div class="empty-state--action-wrapper">
+      <kyn-button
+        class="empty-state--action-button"
+        @click=${(e) => e.preventDefault()}
+      >
+            <span>
+          <!-- Text for optional primary action button -->
+         </span>
+        <span class="empty-state--action-button-icon">
+          <!-- ${unsafeSVG({ACTION_ICON_HERE})} -->
+        </span>
+      </kyn-button>
+    </div>
+  </div>
+</div>
+
+```
