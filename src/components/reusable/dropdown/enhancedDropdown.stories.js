@@ -41,10 +41,6 @@ export default {
       control: { type: 'boolean' },
       if: { arg: 'searchable', truthy: true },
     },
-    checkboxVisible: {
-      control: { type: 'boolean' },
-      if: { arg: 'multiple', truthy: true },
-    },
   },
   parameters: {
     design: {
@@ -77,7 +73,6 @@ const args = {
   multiple: false,
   filterSearch: false,
   searchable: false,
-  checkboxVisible: false,
   textStrings: {
     required: 'Required',
     error: 'Error',
@@ -313,7 +308,6 @@ export const EnhancedMultiSelect = {
     label: 'Enhanced Dropdown Options',
     value: ['1', '2'],
     multiple: true,
-    checkboxVisible: false,
   },
   render: (args) => {
     return html`
@@ -340,82 +334,6 @@ export const EnhancedMultiSelect = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
-        ?checkboxVisible=${args.checkboxVisible}
-        .textStrings=${args.textStrings}
-        .value=${args.value}
-        @on-change=${(e) => {
-          const selectedValues = e.detail.value;
-          args.value = selectedValues;
-          action(e.type)({ ...e, detail: e.detail });
-        }}
-      >
-        <kyn-enhanced-dropdown-option value="1">
-          <span slot="title">Option 1</span>
-          <span slot="description"
-            >This is a description for the Option 1 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="2">
-          <span slot="title">Option 2</span>
-          <span slot="description"
-            >This is a description for the Option 2 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="3">
-          <span slot="title">Option 3</span>
-          <span slot="description"
-            >This is a description for the Option 3 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="4">
-          <span slot="title">Option 4</span>
-          <span slot="description"
-            >This is a description for the Option 4 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-      </kyn-dropdown>
-    `;
-  },
-};
-
-export const EnhancedCheckboxMultiSelect = {
-  args: {
-    ...args,
-    label: 'Enhanced Dropdown Options',
-    value: ['1', '2'],
-    multiple: true,
-    checkboxVisible: true,
-  },
-  render: (args) => {
-    return html`
-      <style>
-        kyn-dropdown {
-          min-width: 300px;
-        }
-      </style>
-      <kyn-dropdown
-        label=${args.label}
-        size=${args.size}
-        ?inline=${args.inline}
-        name=${args.name}
-        ?open=${args.open}
-        ?multiple=${args.multiple}
-        ?searchable=${args.searchable}
-        ?required=${args.required}
-        ?disabled=${args.disabled}
-        ?hideLabel=${args.hideLabel}
-        ?hideTags=${args.hideTags}
-        ?filterSearch=${args.filterSearch}
-        ?selectAll=${args.selectAll}
-        selectAllText=${args.selectAllText}
-        invalidText=${args.invalidText}
-        caption=${args.caption}
-        menuMinWidth=${args.menuMinWidth}
-        ?checkboxVisible=${args.checkboxVisible}
         .textStrings=${args.textStrings}
         .value=${args.value}
         @on-change=${(e) => {

@@ -90,10 +90,6 @@ export class EnhancedDropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor indeterminate = false;
 
-  /** Controls whether checkboxes are visible in multi-select mode. */
-  @property({ type: Boolean })
-  accessor checkboxVisible = false;
-
   @property({ type: String, reflect: true })
   override accessor role = 'option';
 
@@ -114,7 +110,7 @@ export class EnhancedDropdownOption extends LitElement {
         @blur=${(e: any) => this.handleBlur(e)}
       >
         <div class="content">
-          ${this.multiple && this.checkboxVisible
+          ${this.multiple
             ? html`
                 <kyn-checkbox
                   type="checkbox"
@@ -235,7 +231,7 @@ export class EnhancedDropdownOption extends LitElement {
         </div>
 
         <div class="status-icons">
-          ${this.selected && !(this.multiple && this.checkboxVisible)
+          ${this.selected && !this.multiple
             ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
             : null}
           ${this.allowAddOption && this.removable
