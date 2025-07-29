@@ -19,6 +19,16 @@ export default {
       disable: true,
     },
   },
+  argTypes: {
+    localNav: {
+      control: { type: 'select' },
+      options: ['none', 'collapsed', 'pinned'],
+      description: 'Simulate Local Nav presence.',
+      table: {
+        defaultValue: { summary: false },
+      },
+    },
+  },
   decorators: [
     (story) => html`
       <style>
@@ -41,6 +51,10 @@ export default {
           width: var(--kd-local-nav-width);
           background: var(--kd-color-background-menu-state-default);
           box-shadow: var(--kd-elevation-level-2);
+
+          &.pinned {
+            width: var(--kd-local-nav-width-expanded);
+          }
         }
 
         @media (min-width: 42rem) {
@@ -49,7 +63,11 @@ export default {
           }
 
           .with-local-nav {
-            margin-left: 56px;
+            margin-left: var(--kd-local-nav-width);
+
+            &.pinned {
+              margin-left: var(--kd-local-nav-width-expanded);
+            }
           }
         }
       </style>
@@ -61,17 +79,23 @@ export default {
 const args = {
   gridstackConfig: Config,
   layout: sampleLayout,
-  withLocalNav: false,
   compact: false,
   wholeWidgetDraggable: false,
+  localNav: 'none',
 };
 
 export const Gridstack = {
   args,
   render: (args) => {
     return html`
-      ${args.withLocalNav ? html`<div class="fake-local-nav"></div>` : ''}
-      <div class="${args.withLocalNav ? 'with-local-nav' : ''}">
+      ${args.localNav !== 'none'
+        ? html`<div class="fake-local-nav ${args.localNav}"></div>`
+        : ''}
+      <div
+        class="${args.localNav !== 'none'
+          ? `with-local-nav ${args.localNav}`
+          : ''}"
+      >
         <kyn-widget-gridstack
           .layout=${args.layout}
           ?compact=${args.compact}
@@ -234,12 +258,18 @@ export const Gridstack = {
 
 export const AddWidget = {
   args: {
-    withLocalNav: false,
+    localNav: 'none',
   },
   render: (args) => {
     return html`
-      ${args.withLocalNav ? html`<div class="fake-local-nav"></div>` : ''}
-      <div class="${args.withLocalNav ? 'with-local-nav' : ''}">
+      ${args.localNav !== 'none'
+        ? html`<div class="fake-local-nav ${args.localNav}"></div>`
+        : ''}
+      <div
+        class="${args.localNav !== 'none'
+          ? `with-local-nav ${args.localNav}`
+          : ''}"
+      >
         <new-widget-sample
           @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
         ></new-widget-sample>
