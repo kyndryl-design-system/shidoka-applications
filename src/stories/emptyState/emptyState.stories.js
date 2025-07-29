@@ -475,9 +475,12 @@ export const SmallWidgetNoData = {
         text-align: left;
       }
 
-      -specific styles .empty-state--wrapper {
+      /* small variant specific styles */
+      .empty-state--wrapper {
         width: 100%;
         display: flex;
+        max-width: 255px;
+        gap: 24px;
         flex-direction: column;
       }
       .empty-state--small {
@@ -500,10 +503,7 @@ export const SmallWidgetNoData = {
         text-align: left;
       }
     </style>
-    <div
-      class="empty-state--wrapper empty-state--small"
-      style="max-width: 255px;"
-    >
+    <div class="empty-state--wrapper empty-state--small">
       <div class="empty-state--icon-wrapper">${unsafeSVG(warningIcon)}</div>
       <div class="empty-state--content">
         <div class="empty-state--description-text">
