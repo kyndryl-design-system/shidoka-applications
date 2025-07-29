@@ -1,258 +1,120 @@
-import {
-  Meta,
-  Title,
-  Description,
-  Canvas,
-  Story,
-  Controls,
-  Source,
-} from '@storybook/addon-docs/blocks';
+import { Meta, Title, Description, Canvas } from '@storybook/addon-docs/blocks';
 import * as EmptyStateStories from '../emptyState.stories.js';
 import AnatomyImg from './emptyState-anatomy.png';
 
-<Meta of={EmptyStateStories} />
+<Meta of={EmptyStateStories} title="Patterns/Empty State" />
 
-<Title />
+<Title>Empty State Pattern</Title>
 
 <Description>
-  The Empty State pattern is used to indicate no available data or first-time
-  usage. It helps orient users and suggest next steps.
+  Use when a page, section, or widget has no content to show: - No data
+  available - Search returned zero results - First-time user experiences -
+  Temporary loading or error states (use `role="alert"` +
+  `aria-live="assertive"`)
 </Description>
-
-## When to Use
-
-Empty states should be used when:
-
-- A page, section, or component has no data to display
-- Search results return no matches
-- A user hasn't added any content yet
-- Data is temporarily unavailable
-- An error prevents content from loading
-
-## Variants
-
-### Large Empty State
-
-Use the large variant for:
-
-- Full page empty states
-- Primary content areas
-- Dashboard sections with significant importance
-- First-time user experiences
-
-### Small Empty State
-
-Use the small variant for:
-
-- Widget or card-sized containers
-- Secondary content areas
-- Table cells or list items
 
 ## Anatomy
 
 <img src={AnatomyImg} alt="Empty State Anatomy" width="240" />
 
-1. **Icon** (Required): Visual representation of the empty state
-2. **Title** (Optional): Brief headline explaining the situation
-3. **Description** (Optional): Clear explanation of why content is missing
-4. **Actions** (Optional): Primary and secondary actions to resolve the empty state
+1. Icon
+2. Title (optional)
+3. Description (optional)
+4. Actions (optional buttons or links)
 
-## Installation & Usage
+## Variants
 
-### Import the Pattern
+### Large Variant (Default)
 
-```javascript
-// Import the custom element
-import '@kyndryl-design-system/shidoka-applications/stories/emptyState/emptyState.skeleton';
-```
+#### Full Page empty states, primary content areas, dashboard sections, first-time user experiences
 
-### Import the Shidoka styles for Empty State (globally)
+<Canvas of={EmptyStateStories.LargeNoData} />
 
-```css
-@import '@kyndryl-design-system/shidoka-applications/dist/stories/emptyState/emptyState.css';
-```
+<Canvas of={EmptyStateStories.LargeNoSearchResults} />
 
-Or in your build process:
+<Canvas of={EmptyStateStories.LargeDataVizOne} />
 
-```javascript
-import '@kyndryl-design-system/shidoka-applications/dist/stories/emptyState/emptyState.css';
-```
+### Small Variants
 
-### Basic Usage
+#### Widgets, data tables, secondary content areas
 
-```html
-<kyn-empty-state-skeleton
-  size="large"
-  emptyTitle="No data found"
-  description="There is nothing here yet. Start by adding some content."
-  .icon=${html`<span>${unsafeSVG(yourIcon)}</span>`}
-  .actions=${html`<button>Add Content</button>`}
-></kyn-empty-state-skeleton>
-```
+<Canvas of={EmptyStateStories.SmallWidgetNoData} />
 
-### Common Usage Patterns
+<Canvas of={EmptyStateStories.SmallDataDataViz} />
 
-Examples for different scenarios:
+## Usage
 
-```html
-<!-- Large empty state scenario -->
-<kyn-empty-state-skeleton
-  size="large"
-  emptyTitle="No data found"
-  description="Start by importing data or creating new items."
-  .icon=${html`<span>${unsafeSVG(noDataIcon)}</span>`}
-  .actions=${html`<button>Add Data</button>`}
-></kyn-empty-state-skeleton>
-
-<!-- Small widget scenario -->
-<kyn-empty-state-skeleton
-  size="small"
-  maxWidth="255px"
-  description="No data available for this widget."
-  .icon=${html`<span>${unsafeSVG(warningIcon)}</span>`}
-></kyn-empty-state-skeleton>
-```
-
-### Custom Configuration
-
-You can customize the component for specific use cases:
-
-```html
-<!-- Error state example -->
-<kyn-empty-state-skeleton
-  size="large"
-  emptyTitle="Something went wrong"
-  description="Please try again later."
-  role="alert"
-  ariaLive="assertive"
-  classes="error-state"
-  .icon=${html`<span>${unsafeSVG(errorIcon)}</span>`}
-></kyn-empty-state-skeleton>
-```
-
-## API Reference
-
-### kyn-empty-state-skeleton Properties
-
-| Property      | Type                      | Default    | Description                                 |
-| ------------- | ------------------------- | ---------- | ------------------------------------------- |
-| `icon`        | `unknown`                 | `''`       | Icon element or HTML to display             |
-| `emptyTitle`  | `string`                  | `''`       | Optional heading text                       |
-| `description` | `string`                  | `''`       | Main explanatory text                       |
-| `actions`     | `unknown`                 | `''`       | Action buttons or links                     |
-| `size`        | `'small' \| 'large'`      | `'large'`  | Size variant of the empty state             |
-| `maxWidth`    | `string`                  | `''`       | Custom maximum width (CSS value)            |
-| `classes`     | `string`                  | `''`       | Additional CSS classes                      |
-| `role`        | `'status' \| 'alert'`     | `'status'` | ARIA role for accessibility                 |
-| `ariaLive`    | `'polite' \| 'assertive'` | `'polite'` | ARIA live region setting for screen readers |
-
-## Framework Examples
-
-### Lit/Web Components
-
-```html
-<kyn-empty-state-skeleton
-  size="large"
-  emptyTitle="No data found"
-  description="There is nothing here yet. Start by adding some content."
-  .icon=${html`<span>${unsafeSVG(yourIcon)}</span>`}
-  .actions=${html`<button>Add Content</button>`}
-></kyn-empty-state-skeleton>
-```
-
-### Vanilla HTML (Rendered Output)
+### Default Large Variant HTML Structure
 
 ```html
 <div class="empty-state--wrapper empty-state--large">
+   <div class="empty-state--icon-wrapper">${unsafeSVG({ICON_HERE})}</div>
+   <div class="empty-state--content">
+     <div class="empty-state-content-wrapper">
+       <div class="empty-state--title-div">
+         <h1>
+          <!-- Your empty state title here. -->
+         </h1>
+       </div>
+       <div class="empty-state--description-text">
+         <p>
+           <!-- Your empty state dsecription here. -->
+         </p>
+       </div>
+     </div>
+     <div class="empty-state--action-wrapper">
+       <kyn-button
+         class="empty-state--action-button"
+         @click=${(e) => e.preventDefault()}
+       >
+         <span>
+          <!-- Text for optional primary action button -->
+         </span>
+         <span class="empty-state--action-button-icon"
+           >${unsafeSVG(chevronRightIcon)}</span
+         >
+       </kyn-button>
+       <kyn-link
+         href="#"
+         standalone
+         class="empty-state--action-link"
+         @click=${(e) => e.preventDefault()}
+       >
+        <!-- Text for optional link -->
+       </kyn-link>
+     </div>
+   </div>
+ </div>
+```
+
+### Small Variant HTML Structure
+
+```html
+<div class="empty-state--wrapper empty-state--small">
   <div class="empty-state--icon-wrapper">
-    <svg><!-- your icon --></svg>
+    ${unsafeSVG(chartComboIcon)}
   </div>
   <div class="empty-state--content">
     <div class="empty-state-content-wrapper">
-      <div class="empty-state--title-div">
-        <h1>No data found</h1>
-      </div>
       <div class="empty-state--description-text">
-        <p>There is nothing here yet. Start by adding some content.</p>
+        <p>
+          There is nothing here yet. You can start by importing the data or
+          create your own items.
+        </p>
       </div>
     </div>
     <div class="empty-state--action-wrapper">
-      <button>Add Content</button>
+      <kyn-button
+        class="empty-state--action-button"
+        @click=${(e) => e.preventDefault()}
+      >
+        <span>Import Data</span>
+        <span class="empty-state--action-button-icon">
+          ${unsafeSVG(selectIcon)}
+        </span>
+      </kyn-button>
     </div>
   </div>
 </div>
+
 ```
-
-## Accessibility Guidelines
-
-### Required Attributes
-
-- Use semantic HTML elements (`h1` for titles, `p` for descriptions)
-- Ensure proper heading hierarchy (don't skip heading levels)
-- Add `role="status"` or `role="alert"` for dynamic empty states
-- Include `aria-live="polite"` for content that updates
-
-## Best Practices
-
-### Do's ✅
-
-- Keep descriptions concise but informative
-- Provide clear next steps when possible
-- Use appropriate icons that relate to the context
-- Maintain consistent tone and voice
-- Test with screen readers
-- Consider loading states before showing empty states
-
-### Don'ts ❌
-
-- Don't use generic "No results" without context
-- Avoid overly technical error messages
-- Don't overwhelm with too many action options
-- Avoid using empty states for actual errors
-- Don't forget about mobile responsiveness
-- Don't use placeholder content instead of true empty states
-
-## Pattern Markup
-
-<Source
-  language="html"
-  code={`
-  <kyn-empty-state-skeleton
-    size="large"
-    emptyTitle="Your title here"
-    description="Your description here"
-    .icon=\${html\`<span>\${unsafeSVG(yourIcon)}</span>\`}
-    .actions=\${html\`<button>Your Action</button>\`}
-  ></kyn-empty-state-skeleton>
-`.trim()}
-/>
-
-## Large (No Data)
-
-<Canvas of={EmptyStateStories.LargeNoData}>
-  <Story of={EmptyStateStories.LargeNoData} />
-</Canvas>
-
-## Large (No Search Results)
-
-<Canvas of={EmptyStateStories.LargeNoSearchResults}>
-  <Story of={EmptyStateStories.LargeNoSearchResults} />
-</Canvas>
-
-## Large (Data Visualization)
-
-<Canvas of={EmptyStateStories.LargeDataVizOne}>
-  <Story of={EmptyStateStories.LargeDataVizOne} />
-</Canvas>
-
-## Small (No Data)
-
-<Canvas of={EmptyStateStories.SmallWidgetNoData}>
-  <Story of={EmptyStateStories.SmallWidgetNoData} />
-</Canvas>
-
-## Small (Data Visualization)
-
-<Canvas of={EmptyStateStories.SmallDataDataViz}>
-  <Story of={EmptyStateStories.SmallDataDataViz} />
-</Canvas>
