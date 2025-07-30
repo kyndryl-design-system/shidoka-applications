@@ -160,7 +160,7 @@ export const Default = {
   render: Template,
   args: {
     kind: BUTTON_GROUP_KINDS.DEFAULT,
-    selectedIndex: -1,
+    selectedIndex: 0,
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,

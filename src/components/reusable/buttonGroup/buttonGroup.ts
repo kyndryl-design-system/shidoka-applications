@@ -57,7 +57,7 @@ export class ButtonGroup extends LitElement {
 
   /** zero-based: default button index; for pagination, page-1 */
   @property({ type: Number })
-  accessor selectedIndex = -1;
+  accessor selectedIndex = 0;
 
   /**
    * @category pagination
