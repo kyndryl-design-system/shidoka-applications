@@ -32,7 +32,7 @@ export class EnhancedDropdownOption extends LitElement {
   /** Internal text strings.
    * @internal
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor selected = false;
 
   /** Option disabled state. */
@@ -60,6 +60,18 @@ export class EnhancedDropdownOption extends LitElement {
   @property({ type: Boolean })
   accessor removable = false;
 
+  /** Determines whether the checkbox is in an indeterminate state. */
+  @property({ type: Boolean, reflect: true })
+  accessor indeterminate = false;
+
+  /** ARIA role for the option, defaults to 'option'. */
+  @property({ type: String, reflect: true })
+  override accessor role = 'option';
+
+  /** ARIA selected must mirror `selected`. */
+  @property({ type: String, reflect: true, attribute: 'aria-selected' })
+  override accessor ariaSelected = 'option';
+
   /**
    * Option text, automatically derived.
    * @ignore
@@ -81,16 +93,6 @@ export class EnhancedDropdownOption extends LitElement {
   @state()
   accessor hasIcon = false;
 
-  /** Determines whether the checkbox is in an indeterminate state. */
-  @property({ type: Boolean, reflect: true })
-  accessor indeterminate = false;
-
-  @property({ type: String, reflect: true })
-  override accessor role = 'option';
-
-  @property({ type: String, reflect: true, attribute: 'aria-selected' })
-  override accessor ariaSelected = 'option';
-
   override render() {
     return html`
       <div
@@ -101,64 +103,37 @@ export class EnhancedDropdownOption extends LitElement {
         aria-disabled=${this.disabled}
         ?multiple=${this.multiple}
         title=${this.text}
-        @pointerup=${(e: any) => this.handleClick(e)}
-        @blur=${(e: any) => this.handleBlur(e)}
+        @pointerup=${this.onClick}
+        @blur=${this.onBlur}
       >
         ${this.multiple
           ? html`
               <kyn-checkbox
-                type="checkbox"
-                value=${this.value}
                 .checked=${this.selected}
-                ?checked=${this.selected}
+                .indeterminate=${this.indeterminate}
                 ?disabled=${this.disabled}
                 notFocusable
-                .indeterminate=${this.indeterminate}
-              >
-              </kyn-checkbox>
+                value=${this.value}
+              ></kyn-checkbox>
             `
           : null}
 
         <div class="content">
-          ${this.hasIcon
-            ? html`
-                <div class="icon-container">
-                  <slot
-                    name="icon"
-                    @slotchange=${this.handleIconSlotChange}
-                  ></slot>
-                </div>
-              `
-            : html`
-                <div style="display: none;">
-                  <slot
-                    name="icon"
-                    @slotchange=${this.handleIconSlotChange}
-                  ></slot>
-                </div>
-              `}
+          <div
+            class="icon-container"
+            style=${this.hasIcon ? '' : 'display:none'}
+          >
+            <slot name="icon" @slotchange=${this.onIconSlotChange}></slot>
+          </div>
 
           <div class="text-content">
-            <div class="title">
-              <div class="title-content">
-                <slot
-                  name="title"
-                  @slotchange=${(e: any) => this.handleTitleSlotChange(e)}
-                >
-                  <slot
-                    @slotchange=${(e: any) => this.handleSlotChange(e)}
-                  ></slot>
-                </slot>
-                <div class="tag-container">
-                  <slot name="tag"></slot>
-                </div>
-              </div>
+            <div class="title-content">
+              <slot name="title" @slotchange=${this.onTitleSlotChange}></slot>
+              <span class="tag-container"><slot name="tag"></slot></span>
             </div>
-
             <div class="description-container">
               <slot name="description"></slot>
             </div>
-
             <div class="option-type-container">
               <slot name="optionType"></slot>
             </div>
@@ -166,25 +141,18 @@ export class EnhancedDropdownOption extends LitElement {
         </div>
 
         <div class="status-icons">
-          ${this.selected && !this.multiple
-            ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
+          ${!this.multiple && this.selected
+            ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
             : this.allowAddOption && this.removable
             ? html`
                 <kyn-button
-                  class="remove-option"
                   kind="ghost"
                   size="small"
                   aria-label="Delete ${this.value}"
-                  description="Delete ${this.value}"
-                  ?disabled=${this.disabled}
-                  @click=${(e: Event) => this.handleRemoveClick(e)}
+                  @click=${this.onRemove}
                   @mousedown=${(e: Event) => e.stopPropagation()}
-                  @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
-                  @focus=${(e: KeyboardEvent) => e.stopPropagation()}
                 >
-                  <span slot="icon" class="clear-icon">
-                    ${unsafeSVG(clearIcon)}
-                  </span>
+                  <span slot="icon">${unsafeSVG(clearIcon)}</span>
                 </kyn-button>
               `
             : null}
@@ -194,93 +162,65 @@ export class EnhancedDropdownOption extends LitElement {
   }
 
   override firstUpdated() {
-    const iconSlot = this.shadowRoot?.querySelector(
-      'slot[name="icon"]'
-    ) as HTMLSlotElement;
-    if (iconSlot) {
-      const nodes = iconSlot.assignedNodes({ flatten: true });
-      this.hasIcon = nodes.length > 0;
-    }
+    this.hasIcon = this.iconSlot.assignedNodes({ flatten: true }).length > 0;
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('selected')) {
+  private onIconSlotChange() {
+    this.hasIcon = this.iconSlot.assignedNodes({ flatten: true }).length > 0;
+  }
+
+  override willUpdate(changed: Map<string, unknown>) {
+    if (changed.has('selected')) {
       this.ariaSelected = this.selected.toString();
     }
   }
 
-  private handleRemoveClick(e: Event) {
-    e.stopPropagation();
-    const event = new CustomEvent('on-remove-option', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        value: this.value,
-      },
-    });
-    this.dispatchEvent(event);
+  private get iconSlot(): HTMLSlotElement {
+    return this.shadowRoot!.querySelector(
+      'slot[name="icon"]'
+    )! as HTMLSlotElement;
   }
 
-  private handleSlotChange(e: any) {
-    const nodes = e.target.assignedNodes({ flatten: true });
-    let text = '';
-
-    for (let i = 0; i < nodes.length; i++) {
-      text += nodes[i].textContent.trim();
-    }
-
-    this.text = text;
-  }
-
-  private handleTitleSlotChange(e: any) {
-    const nodes = e.target.assignedNodes({ flatten: true });
-    let titleText = '';
-
-    for (let i = 0; i < nodes.length; i++) {
-      titleText += nodes[i].textContent.trim();
-    }
-
+  private onTitleSlotChange(e: Event) {
+    const titleText = (e.target as HTMLSlotElement)
+      .assignedNodes({ flatten: true })
+      .map((n) => n.textContent?.trim() ?? '')
+      .join(' ');
     this.displayText = titleText;
+    this.text = titleText;
   }
 
-  private handleIconSlotChange = (e: Event) => {
-    const slot = e.target as HTMLSlotElement;
-    const nodes = slot.assignedNodes({ flatten: true });
-    this.hasIcon = nodes.length > 0;
-  };
-
-  private handleClick(e: Event) {
-    if (this.disabled) {
-      return;
-    }
-
-    if (this.multiple) {
-      this.selected = !this.selected;
-    } else {
-      this.selected = true;
-    }
-
-    const event = new CustomEvent('on-click', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        selected: this.selected,
-        value: this.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+  private onClick(e: PointerEvent) {
+    if (this.disabled) return;
+    this.selected = this.multiple ? !this.selected : true;
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        bubbles: true,
+        composed: true,
+        detail: { selected: this.selected, value: this.value, origEvent: e },
+      })
+    );
   }
 
-  private handleBlur(e: any) {
-    const event = new CustomEvent('on-blur', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+  private onRemove(e: Event) {
+    e.stopPropagation();
+    this.dispatchEvent(
+      new CustomEvent('on-remove-option', {
+        bubbles: true,
+        composed: true,
+        detail: { value: this.value },
+      })
+    );
+  }
+
+  private onBlur(e: FocusEvent) {
+    this.dispatchEvent(
+      new CustomEvent('on-blur', {
+        bubbles: true,
+        composed: true,
+        detail: { origEvent: e },
+      })
+    );
   }
 }
 
