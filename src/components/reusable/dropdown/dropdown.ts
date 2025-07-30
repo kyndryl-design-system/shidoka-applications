@@ -1296,14 +1296,22 @@ export class Dropdown extends FormMixin(LitElement) {
           (option: any) => option.value === this.value
         );
         if (option) {
-          this.text = option.textContent.trim();
+          if (option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION') {
+            const titleSlot = option.querySelector('[slot="title"]');
+            if (titleSlot && titleSlot.textContent.trim()) {
+              this.text = titleSlot.textContent.trim();
+            } else {
+              this.text = option.displayText || this.value;
+            }
+          } else {
+            this.text = option.textContent.trim();
+          }
         } else {
           this.text = '';
           console.warn(`No dropdown option found with value: ${this.value}`);
         }
       }
 
-      // set search input value
       if (this.searchable && this.text) {
         this.searchText = this.text === this.placeholder ? '' : this.text;
         this.searchEl.value = this.searchText;

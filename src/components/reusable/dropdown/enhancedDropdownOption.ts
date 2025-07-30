@@ -68,6 +68,13 @@ export class EnhancedDropdownOption extends LitElement {
   accessor text: any = '';
 
   /**
+   * Title text for display purposes, automatically derived.
+   * @ignore
+   */
+  @state()
+  accessor displayText: any = '';
+
+  /**
    * Whether the icon slot has content.
    * @ignore
    */
@@ -134,7 +141,10 @@ export class EnhancedDropdownOption extends LitElement {
           <div class="text-content">
             <div class="title">
               <div class="title-content">
-                <slot name="title">
+                <slot
+                  name="title"
+                  @slotchange=${(e: any) => this.handleTitleSlotChange(e)}
+                >
                   <slot
                     @slotchange=${(e: any) => this.handleSlotChange(e)}
                   ></slot>
@@ -220,6 +230,17 @@ export class EnhancedDropdownOption extends LitElement {
     }
 
     this.text = text;
+  }
+
+  private handleTitleSlotChange(e: any) {
+    const nodes = e.target.assignedNodes({ flatten: true });
+    let titleText = '';
+
+    for (let i = 0; i < nodes.length; i++) {
+      titleText += nodes[i].textContent.trim();
+    }
+
+    this.displayText = titleText;
   }
 
   private handleIconSlotChange = (e: Event) => {
