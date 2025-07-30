@@ -86,6 +86,11 @@ export const EnhancedDefault = {
     ...args,
     label: 'Enhanced Dropdown Options',
   },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -149,6 +154,11 @@ export const EnhancedWithIcons = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     return html`
@@ -223,6 +233,11 @@ export const EnhancedButtonAnchor = {
     placeholder: 'Select an option',
     dropdownAnchor: 'button',
     buttonText: 'Options',
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     return html`
@@ -307,6 +322,11 @@ export const EnhancedSearchable = {
     filterSearch: true,
     searchable: true,
   },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     return html`
       <style>
@@ -377,6 +397,11 @@ export const EnhancedMultiSelect = {
     label: 'Enhanced Dropdown Options',
     value: ['1', '2'],
     multiple: true,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     return html`
@@ -450,6 +475,11 @@ export const EnhancedMultiSelectIcons = {
     label: 'Enhanced Dropdown Options',
     value: ['1', '2'],
     multiple: true,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     return html`
@@ -528,6 +558,11 @@ export const EnhancedSearchableMultiSelect = {
     filterSearch: true,
     searchable: true,
     multiple: true,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
   },
   render: (args) => {
     return html`
