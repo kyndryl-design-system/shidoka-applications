@@ -1078,14 +1078,6 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  private _handleLabelKeyDown(e: KeyboardEvent): void {
-    if (this.disabled) return;
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this._handleLabelClick();
-    }
-  }
-
   override connectedCallback() {
     super.connectedCallback();
 
