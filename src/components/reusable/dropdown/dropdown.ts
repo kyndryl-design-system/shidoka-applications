@@ -278,11 +278,6 @@ export class Dropdown extends FormMixin(LitElement) {
           id="label-${this.name}"
           class="label-text ${this.hideLabel || this.inline ? 'sr-only' : ''}"
           for=${this.name}
-          aria-disabled=${this.disabled}
-          tabindex=${this.disabled ? '-1' : '0'}
-          role="button"
-          @click=${this._handleLabelClick}
-          @keydown=${this._handleLabelKeyDown}
         >
           ${this.required
             ? html`<abbr
@@ -1169,15 +1164,22 @@ export class Dropdown extends FormMixin(LitElement) {
     const ValidationMessage =
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
-    // set validity on custom element, anchor to buttonEl
-    this._internals.setValidity(Validity, ValidationMessage, this.buttonEl);
+    const validationAnchor = this.buttonEl || this.listboxEl;
 
-    // set internal validation message if value was changed by user input
+    if (validationAnchor) {
+      this._internals.setValidity(
+        Validity,
+        ValidationMessage,
+        validationAnchor
+      );
+    } else {
+      this._internals.setValidity(Validity, ValidationMessage);
+    }
+
     if (interacted) {
       this._internalValidationMsg = InternalMsg;
     }
 
-    // focus the buttonEl to show validity
     if (report) {
       this._internals.reportValidity();
     }
