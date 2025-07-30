@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss?inline';
@@ -73,7 +73,7 @@ export class Dropdown extends FormMixin(LitElement) {
   accessor placeholder = '';
 
   /** Listbox/drawer open state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor open = false;
 
   /** Makes the dropdown searchable. */
@@ -123,6 +123,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Controls direction that dropdown opens. */
   @property({ type: String })
   accessor openDirection: 'auto' | 'up' | 'down' = 'auto';
+
+  /** Controls the dropdown anchor type. */
+  @property({ type: String })
+  accessor dropdownAnchor: 'input' | 'button' = 'input';
 
   /** Is "Select All" box checked.
    * @internal
@@ -300,82 +304,93 @@ export class Dropdown extends FormMixin(LitElement) {
           })}
         >
           <div class="custom">
-            <div
-              class="${classMap({
-                select: true,
-                'input-custom': true,
-                'size--sm': this.size === 'sm',
-                'size--lg': this.size === 'lg',
-                inline: this.inline,
-              })}"
-              aria-labelledby="label-${this.name}"
-              aria-expanded=${this.open}
-              aria-controls="options"
-              role="combobox"
-              id=${this.name}
-              name=${this.name}
-              title=${this._textStrings.title}
-              ?required=${this.required}
-              ?disabled=${this.disabled}
-              ?invalid=${this._isInvalid}
-              tabindex=${this.disabled ? '' : '0'}
-              @click=${() => this.handleClick()}
-              @keydown=${(e: any) => this.handleButtonKeydown(e)}
-              @mousedown=${(e: any) => {
-                if (!this.searchable) {
-                  e.preventDefault();
-                }
-              }}
-              @blur=${(e: any) => e.stopPropagation()}
-            >
-              ${this.multiple && this.value.length
-                ? html`
-                    <button
-                      class="clear-multiple"
-                      aria-label="${this.value
-                        .length} items selected. Clear selections"
-                      ?disabled=${this.disabled}
-                      title=${this._textStrings.clear}
-                      @click=${(e: Event) => this.handleClearMultiple(e)}
-                    >
-                      ${this.value.length}
-                      <span style="display:flex;" slot="icon"
-                        >${unsafeSVG(clearIcon)}</span
-                      >
-                    </button>
-                  `
-                : null}
-              ${this.searchable
-                ? html`
-                    <input
-                      class="search"
-                      type="text"
-                      placeholder=${this.placeholder}
-                      value=${this.searchText}
-                      ?disabled=${this.disabled}
-                      aria-disabled=${this.disabled}
-                      @keydown=${(e: any) => this.handleSearchKeydown(e)}
-                      @input=${(e: any) => this.handleSearchInput(e)}
-                      @blur=${(e: any) => e.stopPropagation()}
-                      @click=${(e: any) => this.handleSearchClick(e)}
-                    />
-                  `
-                : html`
-                    <span
-                      class="${classMap({
-                        'placeholder-text': this.text === '',
-                      })}"
-                    >
-                      ${this.multiple
-                        ? this.placeholder
-                        : this.value === ''
-                        ? this.placeholder
-                        : this.text}
-                    </span>
-                  `}
+            ${this.dropdownAnchor === 'button'
+              ? html`
+                  <slot
+                    name="button"
+                    class="dropdown-anchor-button"
+                    @click=${() => this.handleClick()}
+                    @keydown=${(e: any) => this.handleButtonKeydown(e)}
+                  ></slot>
+                `
+              : html`
+                  <div
+                    class="${classMap({
+                      select: true,
+                      'input-custom': true,
+                      'size--sm': this.size === 'sm',
+                      'size--lg': this.size === 'lg',
+                      inline: this.inline,
+                    })}"
+                    aria-labelledby="label-${this.name}"
+                    aria-expanded=${this.open}
+                    aria-controls="options"
+                    role="combobox"
+                    id=${this.name}
+                    name=${this.name}
+                    title=${this._textStrings.title}
+                    ?required=${this.required}
+                    ?disabled=${this.disabled}
+                    ?invalid=${this._isInvalid}
+                    tabindex=${this.disabled ? '' : '0'}
+                    @click=${() => this.handleClick()}
+                    @keydown=${(e: any) => this.handleButtonKeydown(e)}
+                    @mousedown=${(e: any) => {
+                      if (!this.searchable) {
+                        e.preventDefault();
+                      }
+                    }}
+                    @blur=${(e: any) => e.stopPropagation()}
+                  >
+                    ${this.multiple && this.value.length
+                      ? html`
+                          <button
+                            class="clear-multiple"
+                            aria-label="${this.value
+                              .length} items selected. Clear selections"
+                            ?disabled=${this.disabled}
+                            title=${this._textStrings.clear}
+                            @click=${(e: Event) => this.handleClearMultiple(e)}
+                          >
+                            ${this.value.length}
+                            <span style="display:flex;" slot="icon"
+                              >${unsafeSVG(clearIcon)}</span
+                            >
+                          </button>
+                        `
+                      : null}
+                    ${this.searchable
+                      ? html`
+                          <input
+                            class="search"
+                            type="text"
+                            placeholder=${this.placeholder}
+                            value=${this.searchText}
+                            ?disabled=${this.disabled}
+                            aria-disabled=${this.disabled}
+                            @keydown=${(e: any) => this.handleSearchKeydown(e)}
+                            @input=${(e: any) => this.handleSearchInput(e)}
+                            @blur=${(e: any) => e.stopPropagation()}
+                            @click=${(e: any) => this.handleSearchClick(e)}
+                          />
+                        `
+                      : html`
+                          <span
+                            class="${classMap({
+                              'placeholder-text': this.text === '',
+                            })}"
+                          >
+                            ${this.multiple
+                              ? this.placeholder
+                              : this.value === ''
+                              ? this.placeholder
+                              : this.text}
+                          </span>
+                        `}
 
-              <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
-            </div>
+                    <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
+                  </div>
+                `}
 
             <div
               id="options"
@@ -1192,35 +1207,48 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  override updated(changedProps: any) {
-    // preserve FormMixin updated function
+  override updated(changedProps: PropertyValues) {
+    super.updated(changedProps);
+
+    const root = this.shadowRoot;
+    if (!root) return;
+
+    if (changedProps.has('open')) {
+      const slot = root.querySelector<HTMLSlotElement>('slot[name="button"]');
+      const assigned = slot?.assignedElements({ flatten: true }) as
+        | HTMLElement[]
+        | undefined;
+      const btn = assigned?.[0];
+      const icon = btn?.querySelector<HTMLElement>('span[slot="icon"]');
+      if (icon) {
+        icon.style.transition = 'transform 0.2s ease-in-out';
+        icon.style.transform = this.open ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    }
+
     this._onUpdated(changedProps);
 
     if (changedProps.has('value')) {
       this._updateOptions();
 
-      const Slot: any = this.shadowRoot?.querySelector('slot#children');
-      const Options: Array<any> = Slot.assignedElements().filter(
-        (option: any) => !option.disabled
-      );
-      const SelectedOptions: Array<any> = Options.filter(
-        (option: any) => option.selected
-      );
+      const childrenSlot = root.querySelector<HTMLSlotElement>('slot#children');
+      const options = childrenSlot
+        ? childrenSlot
+            .assignedElements()
+            .filter((o): o is HTMLElement => !o.hasAttribute('disabled'))
+        : [];
+      const selected = options.filter((o) => o.hasAttribute('selected'));
 
-      // sync "Select All" checkbox state
-      this.selectAllChecked = SelectedOptions.length === Options.length;
-
-      // sync "Select All" indeterminate state
+      this.selectAllChecked = selected.length === options.length;
       this.selectAllIndeterminate =
-        SelectedOptions.length < Options.length && SelectedOptions.length > 0;
+        selected.length > 0 && selected.length < options.length;
 
       this._updateTags();
       this._updateSelectedText();
     }
 
     if (changedProps.has('open') || changedProps.has('openDirection')) {
-      if (this.open && !this.searchable) {
-        // focus listbox if not searchable
+      if (this.open && !this.searchable && this.listboxEl) {
         this.listboxEl.focus({ preventScroll: true });
         this.assistiveText =
           'Selecting items. Use up and down arrow keys to navigate.';
@@ -1231,24 +1259,18 @@ export class Dropdown extends FormMixin(LitElement) {
       } else if (this.openDirection === 'down') {
         this._openUpwards = false;
       } else if (this.open) {
-        const openThreshold = 0.6;
-        this._openUpwards =
-          this.buttonEl.getBoundingClientRect().top >
-          window.innerHeight * openThreshold;
+        const rect = this.buttonEl.getBoundingClientRect();
+        this._openUpwards = rect.top > window.innerHeight * 0.6;
       }
 
       if (this.open && !this.multiple) {
-        this.options
-          .find((option) => option.selected)
-          ?.scrollIntoView({ block: 'nearest' });
+        const firstSelected = this.options.find((o) => o.selected);
+        firstSelected?.scrollIntoView({ block: 'nearest' });
       }
     }
 
     if (changedProps.has('multiple')) {
-      // set multiple for each option
-      this.options.forEach((option: any) => {
-        option.multiple = this.multiple;
-      });
+      this.options.forEach((opt) => (opt.multiple = this.multiple));
     }
 
     if (changedProps.has('searchText') && this.searchEl) {
