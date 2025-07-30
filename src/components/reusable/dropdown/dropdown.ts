@@ -182,11 +182,11 @@ export class Dropdown extends FormMixin(LitElement) {
    * @ignore
    */
   protected get options(): Array<DropdownOption | EnhancedDropdownOption> {
-    return [
-      ...this.querySelectorAll<DropdownOption | EnhancedDropdownOption>(
+    return Array.from(
+      this.querySelectorAll<DropdownOption | EnhancedDropdownOption>(
         'kyn-dropdown-option, kyn-enhanced-dropdown-option'
-      ),
-    ];
+      )
+    );
   }
 
   /**
@@ -196,7 +196,10 @@ export class Dropdown extends FormMixin(LitElement) {
   protected get selectedOptions(): Array<
     DropdownOption | EnhancedDropdownOption
   > {
-    return this.options.filter((opt) => opt.hasAttribute('selected'));
+    return this.options.filter(
+      (opt): opt is DropdownOption | EnhancedDropdownOption =>
+        opt.hasAttribute('selected')
+    );
   }
 
   /**
@@ -941,8 +944,18 @@ export class Dropdown extends FormMixin(LitElement) {
     if (this.filterSearch) {
       // hide items that don't match
       this.options.map((option: any) => {
-        const text = option.text;
-        if (text.toLowerCase().includes(value.toLowerCase())) {
+        let searchText = option.text;
+
+        if (option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION') {
+          const titleSlot = option.querySelector('[slot="title"]');
+          if (titleSlot && titleSlot.textContent.trim()) {
+            searchText = titleSlot.textContent.trim();
+          } else {
+            searchText = option.displayText || option.value;
+          }
+        }
+
+        if (searchText.toLowerCase().includes(value.toLowerCase())) {
           option.style.display = 'block';
         } else {
           option.style.display = 'none';
@@ -951,8 +964,18 @@ export class Dropdown extends FormMixin(LitElement) {
     } else {
       // find matches
       const options = this.options.filter((option: any) => {
-        const text = option.text;
-        return text.toLowerCase().startsWith(value.toLowerCase());
+        let searchText = option.text;
+
+        if (option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION') {
+          const titleSlot = option.querySelector('[slot="title"]');
+          if (titleSlot && titleSlot.textContent.trim()) {
+            searchText = titleSlot.textContent.trim();
+          } else {
+            searchText = option.displayText || option.value;
+          }
+        }
+
+        return searchText.toLowerCase().startsWith(value.toLowerCase());
       });
 
       // reset options highlighted state
