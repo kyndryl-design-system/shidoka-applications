@@ -13,7 +13,7 @@ import EnhancedDropdownOptionScss from './enhancedDropdownOption.scss?inline';
 /**
  * Enhanced Dropdown option with rich content support.
  * @fires on-click - Emits the option details to the parent dropdown. `detail:{ selected: boolean, value: string, origEvent: PointerEvent }`
- * @fires on-remove-option - Emits the option that is removed.
+ * @fires on-remove-option - Emits the option that is removed. `detail:{ selected: boolean, value: string, origEvent: PointerEvent }`
  * @slot icon - Slot for option icon. Icon size should be 16px only.
  * @slot title - Slot for option title text.
  * @slot tag - Slot for inline tag appended to title.

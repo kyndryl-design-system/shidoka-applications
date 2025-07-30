@@ -1,6 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import './index';
 
@@ -27,10 +28,6 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
-    dropdownAnchor: {
-      options: ['input', 'button'],
-      control: { type: 'select' },
-    },
     multiple: { control: { type: 'boolean' } },
     enhanced: {
       table: { disable: true },
@@ -50,6 +47,7 @@ export default {
       url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=13361-476952&m=dev',
     },
   },
+  ...ValidationArgs,
 };
 
 const args = {
@@ -70,7 +68,6 @@ const args = {
   searchText: '',
   value: '',
   menuMinWidth: 'initial',
-  dropdownAnchor: 'input',
   buttonText: '',
   multiple: false,
   filterSearch: false,
@@ -103,6 +100,8 @@ export const EnhancedDefault = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideLabel=${args.hideLabel}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -177,6 +176,8 @@ export const EnhancedWithIcons = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideLabel=${args.hideLabel}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -231,7 +232,6 @@ export const EnhancedButtonAnchor = {
     ...args,
     label: 'Enhanced Dropdown Options',
     placeholder: 'Select an option',
-    dropdownAnchor: 'button',
     buttonText: 'Options',
   },
   parameters: {
@@ -249,7 +249,6 @@ export const EnhancedButtonAnchor = {
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
-        dropdownAnchor=${args.dropdownAnchor}
         size=${args.size}
         ?inline=${args.inline}
         name=${args.name}
@@ -257,6 +256,8 @@ export const EnhancedButtonAnchor = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideLabel=${args.hideLabel}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -265,7 +266,7 @@ export const EnhancedButtonAnchor = {
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
-          slot="button"
+          slot="anchor"
           class="dropdown-anchor-button"
           kind="secondary-ai"
           size="small"
@@ -345,6 +346,8 @@ export const EnhancedSearchable = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideLabel=${args.hideLabel}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -583,6 +586,8 @@ export const EnhancedSearchableMultiSelect = {
         ?required=${args.required}
         ?disabled=${args.disabled}
         ?hideLabel=${args.hideLabel}
+        ?selectAll=${args.selectAll}
+        selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}

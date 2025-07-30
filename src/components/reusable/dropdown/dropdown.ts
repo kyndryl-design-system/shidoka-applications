@@ -44,6 +44,7 @@ const KEY = {
  * @fires on-add-option - Captures the add button click and emits the newly added option. `detail:{ value: string }`
  * @slot unnamed - Slot for dropdown options.
  * @slot tooltip - Slot for tooltip.
+ * @slot anchor - Slot for custom dropdown anchor element. If not provided, defaults to standard input-style anchor.
  * @attr {string/array} [value=''/[]] - The selected value(s) of the input. For single select, it is a string. For multi-select, it is an array of strings.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
@@ -123,10 +124,6 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Controls direction that dropdown opens. */
   @property({ type: String })
   accessor openDirection: 'auto' | 'up' | 'down' = 'auto';
-
-  /** Controls the dropdown anchor type. */
-  @property({ type: String })
-  accessor dropdownAnchor: 'input' | 'button' = 'input';
 
   /** Is "Select All" box checked.
    * @internal
@@ -298,94 +295,87 @@ export class Dropdown extends FormMixin(LitElement) {
             open: this.open,
           })}
         >
-          <div class="custom">
-            ${this.dropdownAnchor === 'button'
-              ? html`
-                  <slot
-                    name="button"
-                    class="dropdown-anchor-button"
-                    @click=${() => this.handleClick()}
-                    @keydown=${(e: any) => this.handleButtonKeydown(e)}
-                  ></slot>
-                `
-              : html`
-                  <div
-                    class="${classMap({
-                      select: true,
-                      'input-custom': true,
-                      'size--sm': this.size === 'sm',
-                      'size--lg': this.size === 'lg',
-                      inline: this.inline,
-                    })}"
-                    aria-labelledby="label-${this.name}"
-                    aria-expanded=${this.open}
-                    aria-controls="options"
-                    role="combobox"
-                    id=${this.name}
-                    name=${this.name}
-                    title=${this._textStrings.title}
-                    ?required=${this.required}
-                    ?disabled=${this.disabled}
-                    ?invalid=${this._isInvalid}
-                    tabindex=${this.disabled ? '' : '0'}
-                    @click=${() => this.handleClick()}
-                    @keydown=${(e: any) => this.handleButtonKeydown(e)}
-                    @mousedown=${(e: any) => {
-                      if (!this.searchable) {
-                        e.preventDefault();
-                      }
-                    }}
-                    @blur=${(e: any) => e.stopPropagation()}
-                  >
-                    ${this.multiple && this.value.length
-                      ? html`
-                          <button
-                            class="clear-multiple"
-                            aria-label="${this.value
-                              .length} items selected. Clear selections"
-                            ?disabled=${this.disabled}
-                            title=${this._textStrings.clear}
-                            @click=${(e: Event) => this.handleClearMultiple(e)}
-                          >
-                            ${this.value.length}
-                            <span style="display:flex;" slot="icon"
-                              >${unsafeSVG(clearIcon)}</span
-                            >
-                          </button>
-                        `
-                      : null}
-                    ${this.searchable
-                      ? html`
-                          <input
-                            class="search"
-                            type="text"
-                            placeholder=${this.placeholder}
-                            value=${this.searchText}
-                            ?disabled=${this.disabled}
-                            aria-disabled=${this.disabled}
-                            @keydown=${(e: any) => this.handleSearchKeydown(e)}
-                            @input=${(e: any) => this.handleSearchInput(e)}
-                            @blur=${(e: any) => e.stopPropagation()}
-                            @click=${(e: any) => this.handleSearchClick(e)}
-                          />
-                        `
-                      : html`
-                          <span
-                            class="${classMap({
-                              'placeholder-text': this.text === '',
-                            })}"
-                          >
-                            ${this.multiple
-                              ? this.placeholder
-                              : this.value === ''
-                              ? this.placeholder
-                              : this.text}
-                          </span>
-                        `}
+          <div
+            class="custom"
+            @click=${() => this.handleAnchorClick()}
+            @keydown=${(e: any) => this.handleAnchorKeydown(e)}
+          >
+            <slot name="anchor">
+              <div
+                class="${classMap({
+                  select: true,
+                  'input-custom': true,
+                  'size--sm': this.size === 'sm',
+                  'size--lg': this.size === 'lg',
+                  inline: this.inline,
+                })}"
+                aria-labelledby="label-${this.name}"
+                aria-expanded=${this.open}
+                aria-controls="options"
+                role="combobox"
+                id=${this.name}
+                name=${this.name}
+                title=${this._textStrings.title}
+                ?required=${this.required}
+                ?disabled=${this.disabled}
+                ?invalid=${this._isInvalid}
+                tabindex=${this.disabled ? '' : '0'}
+                @mousedown=${(e: any) => {
+                  if (!this.searchable) {
+                    e.preventDefault();
+                  }
+                }}
+                @blur=${(e: any) => e.stopPropagation()}
+              >
+                ${this.multiple && this.value.length
+                  ? html`
+                      <button
+                        class="clear-multiple"
+                        aria-label="${this.value
+                          .length} items selected. Clear selections"
+                        ?disabled=${this.disabled}
+                        title=${this._textStrings.clear}
+                        @click=${(e: Event) => this.handleClearMultiple(e)}
+                      >
+                        ${this.value.length}
+                        <span style="display:flex;" slot="icon"
+                          >${unsafeSVG(clearIcon)}</span
+                        >
+                      </button>
+                    `
+                  : null}
+                ${this.searchable
+                  ? html`
+                      <input
+                        class="search"
+                        type="text"
+                        placeholder=${this.placeholder}
+                        value=${this.searchText}
+                        ?disabled=${this.disabled}
+                        aria-disabled=${this.disabled}
+                        @keydown=${(e: any) => this.handleSearchKeydown(e)}
+                        @input=${(e: any) => this.handleSearchInput(e)}
+                        @blur=${(e: any) => e.stopPropagation()}
+                        @click=${(e: any) => this.handleSearchClick(e)}
+                      />
+                    `
+                  : html`
+                      <span
+                        class="${classMap({
+                          'placeholder-text': this.text === '',
+                        })}"
+                      >
+                        ${this.multiple
+                          ? this.placeholder
+                          : this.value === ''
+                          ? this.placeholder
+                          : this.text}
+                      </span>
+                    `}
 
-                    <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
-                  </div>
-                `}
+                <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
+              </div>
+            </slot>
 
             <div
               id="options"
@@ -505,6 +495,14 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private _onAddOptionInputFocus() {
     this.assistiveText = 'Add new option input';
+  }
+
+  private handleAnchorClick() {
+    this.handleClick();
+  }
+
+  private handleAnchorKeydown(e: any) {
+    this.handleButtonKeydown(e);
   }
 
   private _handleAddOption() {
@@ -643,6 +641,10 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleListBlur(e: FocusEvent): void {
+    if (this.multiple) {
+      return;
+    }
+
     this.options.forEach((o) => (o.highlighted = false));
     const target = e.relatedTarget as HTMLElement | null;
 
@@ -1038,8 +1040,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     this._updateSelectedOptions();
 
-    // close listbox
-    if (!this.multiple) {
+    if (this.multiple) {
       this.open = false;
     }
 
@@ -1277,9 +1278,22 @@ export class Dropdown extends FormMixin(LitElement) {
       if (Options) {
         Options.forEach((option: any) => {
           if (option.selected) {
+            let text = option.textContent;
+
+            if (option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION') {
+              const titleSlot = option.querySelector('[slot="title"]');
+              if (titleSlot && titleSlot.textContent.trim()) {
+                text = titleSlot.textContent.trim();
+              } else {
+                text = option.displayText || option.value;
+              }
+            } else {
+              text = option.textContent.trim();
+            }
+
             Tags.push({
               value: option.value,
-              text: option.textContent,
+              text: text,
               disabled: option.disabled,
             });
           }
