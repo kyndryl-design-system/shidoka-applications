@@ -628,18 +628,6 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  private _handleLabelClick() {
-    if (!this.disabled) {
-      this.open = !this.open;
-
-      if (this.searchable) {
-        this.searchEl.focus();
-      } else {
-        this.buttonEl.focus();
-      }
-    }
-  }
-
   private handleButtonKeydown(e: any) {
     this.handleKeyboard(e, e.keyCode, 'button');
   }
