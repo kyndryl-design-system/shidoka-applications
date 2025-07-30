@@ -275,7 +275,10 @@ export class Dropdown extends FormMixin(LitElement) {
           class="label-text ${this.hideLabel || this.inline ? 'sr-only' : ''}"
           for=${this.name}
           aria-disabled=${this.disabled}
-          @click=${() => this._handleLabelClick()}
+          tabindex=${this.disabled ? '-1' : '0'}
+          role="button"
+          @click=${this._handleLabelClick}
+          @keydown=${this._handleLabelKeyDown}
         >
           ${this.required
             ? html`<abbr
@@ -1062,6 +1065,14 @@ export class Dropdown extends FormMixin(LitElement) {
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.open = false;
+    }
+  }
+
+  private _handleLabelKeyDown(e: KeyboardEvent): void {
+    if (this.disabled) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this._handleLabelClick();
     }
   }
 
