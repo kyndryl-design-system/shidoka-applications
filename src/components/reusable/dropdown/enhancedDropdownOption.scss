@@ -16,7 +16,7 @@
   padding: 16px;
   cursor: pointer;
   border: none;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease-out;
   min-height: 74px;
   background-color: var(--kd-color-background-ui-hollow-default);
 
@@ -38,25 +38,23 @@
     background-color: var(--kd-color-background-accent-subtle);
 
     &:hover {
-      background-color: var(--kd-color-background-ui-hollow-hover);
+      background-color: var(--kd-color-background-accent-subtle);
     }
   }
 
   &[disabled] {
     color: var(--kd-color-text-link-level-disabled);
+    cursor: not-allowed;
 
     &:hover {
       cursor: not-allowed;
+      background-color: var(--kd-color-background-container-default);
     }
 
     kyn-checkbox {
       &:hover {
         cursor: not-allowed;
       }
-    }
-
-    &:hover {
-      background-color: var(--kd-color-background-container-default);
     }
   }
 
@@ -68,11 +66,6 @@
     div {
       outline-color: transparent;
     }
-  }
-
-  &[disabled] {
-    cursor: not-allowed;
-    opacity: 0.5;
   }
 
   .content {
