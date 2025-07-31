@@ -78,7 +78,7 @@ const args = {
   },
 };
 
-export const EnhancedDefault = {
+export const Default = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
@@ -149,7 +149,7 @@ export const EnhancedDefault = {
   },
 };
 
-export const EnhancedWithIcons = {
+export const WithIcons = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
@@ -227,7 +227,7 @@ export const EnhancedWithIcons = {
   },
 };
 
-export const EnhancedButtonAnchor = {
+export const ButtonAnchor = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
@@ -316,7 +316,7 @@ export const EnhancedButtonAnchor = {
   },
 };
 
-export const EnhancedSearchable = {
+export const Searchable = {
   args: {
     ...args,
     label: 'Enhanced Searchable Options',
@@ -394,7 +394,7 @@ export const EnhancedSearchable = {
   },
 };
 
-export const EnhancedMultiSelect = {
+export const MutliSelect = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
@@ -472,7 +472,7 @@ export const EnhancedMultiSelect = {
   },
 };
 
-export const EnhancedMultiSelectIcons = {
+export const MultiSelectIcons = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
@@ -554,7 +554,7 @@ export const EnhancedMultiSelectIcons = {
   },
 };
 
-export const EnhancedSearchableMultiSelect = {
+export const SearchableMultiSelect = {
   args: {
     ...args,
     label: 'Enhanced Searchable Options',
