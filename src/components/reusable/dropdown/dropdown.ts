@@ -752,6 +752,9 @@ export class Dropdown extends FormMixin(LitElement) {
           } else {
             visibleOptions.forEach((e) => (e.selected = false));
             visibleOptions[highlightedIndex].selected = true;
+            this.updateValue(visibleOptions[highlightedIndex].value, true);
+            this.emitValue();
+
             this.open = false;
             this.assistiveText = `Selected ${visibleOptions[highlightedIndex].value}`;
           }

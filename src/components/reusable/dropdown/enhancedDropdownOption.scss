@@ -18,18 +18,20 @@
   border: none;
   transition: background-color 150ms ease;
   min-height: 74px;
-  background-color: var(--kd-color-background-accent-light);
+  background-color: var(--kd-color-background-ui-hollow-default);
 
-  &:focus &:active:not([disabled]) {
+  &:hover,
+  &[highlighted] {
     background-color: var(--kd-color-background-accent-subtle);
-  }
 
-  &:hover:not([disabled]) {
-    background-color: var(--kd-color-background-ui-hollow-hover);
-  }
+    &:focus &:active:not([disabled]) {
+      background-color: var(--kd-color-background-accent-subtle);
+    }
 
-  &[highlighted]:not([disabled]) {
-    background-color: var(--kd-color-background-accent-subtle);
+    &:focus-within,
+    &:focus-visible {
+      background-color: var(--kd-color-background-accent-subtle);
+    }
   }
 
   &[selected]:not([disabled]) {
@@ -40,9 +42,22 @@
     }
   }
 
-  &:focus-within,
-  &:focus-visible {
-    background-color: var(--kd-color-background-accent-subtle);
+  &[disabled] {
+    color: var(--kd-color-text-link-level-disabled);
+
+    &:hover {
+      cursor: not-allowed;
+    }
+
+    kyn-checkbox {
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+
+    &:hover {
+      background-color: var(--kd-color-background-container-default);
+    }
   }
 
   kyn-checkbox {
