@@ -221,7 +221,7 @@ export class ColorInput extends FormMixin(LitElement) {
       validationMessage = this._textStrings.pleaseSelectColor;
     }
 
-    if (!hexPattern.test(value)) {
+    if (value != '' && !hexPattern.test(value)) {
       validityFlags.patternMismatch = true;
       validityFlags.valid = false;
       validationMessage = this._textStrings.invalidFormat;
