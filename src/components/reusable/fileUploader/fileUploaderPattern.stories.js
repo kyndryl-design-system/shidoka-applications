@@ -9,6 +9,7 @@ export default {
 };
 
 const args = {
+  name: 'file-uploader',
   accept: ['image/jpeg', 'image/png'],
   multiple: true,
   textStrings: {
@@ -62,7 +63,7 @@ export const FileUploaderWithForm = {
         }}
       >
         <kyn-file-uploader
-          name="file-Uploader"
+          name=${args.name}
           .accept=${args.accept}
           .multiple=${args.multiple}
           .textStrings=${args.textStrings}

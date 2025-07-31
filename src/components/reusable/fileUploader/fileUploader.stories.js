@@ -22,6 +22,7 @@ export default {
 };
 
 const args = {
+  name: 'file-uploader',
   accept: ['image/jpeg', 'image/png'],
   multiple: true,
   textStrings: {
@@ -52,6 +53,7 @@ export const Default = {
   render: (args) => {
     return html`
       <kyn-file-uploader
+        name=${args.name}
         .accept=${args.accept}
         .multiple=${args.multiple}
         .textStrings=${args.textStrings}

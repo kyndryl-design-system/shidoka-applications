@@ -40,10 +40,14 @@ const _defaultTextStrings = {
  * File Uploader
  * @fires selected-files - Emits the uploaded files.`detail:{ validFiles: Array, invalidFiles: Array }`
  * @slot upload-status - Slot for upload status/notification.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
  */
 @customElement('kyn-file-uploader')
 export class FileUploader extends FormMixin(LitElement) {
   static override styles = unsafeCSS(FileUploaderScss);
+
+  /** @internal */
+  override value!: FormData;
 
   /**
    * Set the file types that the component accepts. By default, it accepts all file types.
@@ -151,20 +155,12 @@ export class FileUploader extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
-    if (changedProps.has('validFiles')) {
-      this._validFiles = this.validFiles;
-      this._setFormValue();
-    }
-    if (changedProps.has('invalidFiles')) {
-      this._invalidFiles = this.invalidFiles;
-    }
-  }
 
-  override updated(changedProps: any) {
     if (changedProps.has('validFiles')) {
       this._validFiles = this.validFiles;
       this._setFormValue();
     }
+
     if (changedProps.has('invalidFiles')) {
       this._invalidFiles = this.invalidFiles;
     }
@@ -510,7 +506,8 @@ export class FileUploader extends FormMixin(LitElement) {
       const { file } = fileObj;
       formData.append(this.name, file);
     });
-    this._internals.setFormValue(formData);
+
+    this.value = formData;
   }
 
   private _displayActions(file: any) {

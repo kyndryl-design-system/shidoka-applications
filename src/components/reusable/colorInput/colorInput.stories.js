@@ -17,11 +17,13 @@ const args = {
   caption: '',
   label: 'Label',
   disabled: false,
+  required: false,
   readonly: false,
   hideLabel: false,
   invalidText: '',
   autoComplete: 'off',
   textStrings: {
+    requiredText: 'Required',
     errorText: 'Error',
     pleaseSelectColor: 'Please select a color',
     invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',
@@ -37,6 +39,7 @@ export const Default = {
         value=${args.value}
         caption=${args.caption}
         ?disabled=${args.disabled}
+        ?required=${args.required}
         ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}

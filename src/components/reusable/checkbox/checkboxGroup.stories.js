@@ -35,6 +35,7 @@ const args = {
   hideLegend: false,
   filterable: false,
   limitCheckboxes: false,
+  limitCount: 4,
   invalidText: '',
   description: 'Description',
   textStrings: {
@@ -62,6 +63,7 @@ export const CheckboxGroup = {
         ?hideLegend=${args.hideLegend}
         ?filterable=${args.filterable}
         ?limitCheckboxes=${args.limitCheckboxes}
+        .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         @on-checkbox-group-change=${(e) =>
@@ -100,6 +102,7 @@ export const CheckboxSubgroups = {
         ?hideLegend=${args.hideLegend}
         ?filterable=${args.filterable}
         ?limitCheckboxes=${args.limitCheckboxes}
+        .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         @on-checkbox-group-change=${(e) =>
