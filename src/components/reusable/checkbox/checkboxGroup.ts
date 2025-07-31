@@ -87,11 +87,9 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor limitCheckboxes = false;
 
-  /** Number of checkboxes visible when limited.
-   * @internal
-   */
-  @state()
-  accessor _limitCount = 4;
+  /** Number of checkboxes visible when limited. */
+  @property({ type: Number })
+  accessor limitCount = 4;
 
   /** Checkbox limit visibility.
    * @internal
@@ -197,7 +195,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
             <slot @slotchange=${this._handleSlotChange}></slot>
 
             ${this.limitCheckboxes &&
-            this.filteredCheckboxes.length > this._limitCount
+            this.filteredCheckboxes.length > this.limitCount
               ? html`
                   <button
                     class="reveal-toggle"
@@ -265,6 +263,13 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       changedProps.get('limitCheckboxes') !== undefined
     ) {
       this._toggleRevealed(false);
+    }
+
+    if (
+      changedProps.has('limitCount') &&
+      changedProps.get('limitCount') !== undefined
+    ) {
+      this._toggleRevealed(this.limitRevealed);
     }
   }
 
@@ -373,7 +378,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       if (this.limitCheckboxes && !this.limitRevealed) {
         if (
           checkboxText.includes(this.searchTerm) &&
-          visibleCount < this._limitCount
+          visibleCount < this.limitCount
         ) {
           checkboxEl.style.display = 'block';
           visibleCount++;
@@ -402,7 +407,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       if (!this.limitCheckboxes || this.limitRevealed) {
         checkboxEl.style.display = 'block';
       } else {
-        if (index < this._limitCount) {
+        if (index < this.limitCount) {
           checkboxEl.style.display = 'block';
         } else {
           checkboxEl.style.display = 'none';

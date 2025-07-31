@@ -3032,85 +3032,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/avatar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "User avatar.",
-          "name": "Avatar",
-          "slots": [
-            {
-              "description": "Slot for the profile picture img.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "attribute": "initials"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "fieldName": "initials"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-avatar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "./avatar"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/badge/badge.ts",
       "declarations": [
         {
@@ -3815,6 +3736,85 @@
           "declaration": {
             "name": "BlockCodeView",
             "module": "./blockCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/avatar/avatar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "User avatar.",
+          "name": "Avatar",
+          "slots": [
+            {
+              "description": "Slot for the profile picture img.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "initials",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "attribute": "initials"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "initials",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "fieldName": "initials"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-avatar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/avatar/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "./avatar"
           }
         }
       ]
@@ -5234,6 +5234,16 @@
             },
             {
               "kind": "field",
+              "name": "limitCount",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Number of checkboxes visible when limited.",
+              "attribute": "limitCount"
+            },
+            {
+              "kind": "field",
               "name": "textStrings",
               "default": "{\n  selectAll: 'Select all',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  search: 'Search',\n  required: 'Required',\n  error: 'Error',\n}",
               "description": "Text string customization.",
@@ -5460,6 +5470,15 @@
               "default": "false",
               "description": "Limits visible checkboxes behind a \"Show all\" button.",
               "fieldName": "limitCheckboxes"
+            },
+            {
+              "name": "limitCount",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Number of checkboxes visible when limited.",
+              "fieldName": "limitCount"
             },
             {
               "name": "textStrings",
@@ -8797,7 +8816,7 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\r\n  dragAndDropText: 'Drag files here to upload',\r\n  separatorText: 'or',\r\n  buttonText: 'Browse files',\r\n  maxFileSizeText: 'Max file size',\r\n  supportedFileTypeText: 'Supported file type: ',\r\n  fileTypeDisplyText: 'Any file type',\r\n  invalidFileListLabel: 'Some files could not be added:',\r\n  validFileListLabel: 'Files added:',\r\n  clearListText: 'Clear list',\r\n  fileTypeErrorText: 'Invaild file type',\r\n  fileSizeErrorText: 'Max file size exceeded',\r\n  customFileErrorText: 'Custom file error',\r\n  inlineConfirmAnchorText: 'Delete',\r\n  inlineConfirmConfirmText: 'Confirm',\r\n  inlineConfirmCancelText: 'Cancel',\r\n  validationNotificationTitle: 'Multiple files not allowed',\r\n  validationNotificationMessage: 'Please select only one file.',\r\n}",
+              "default": "{\n  dragAndDropText: 'Drag files here to upload',\n  separatorText: 'or',\n  buttonText: 'Browse files',\n  maxFileSizeText: 'Max file size',\n  supportedFileTypeText: 'Supported file type: ',\n  fileTypeDisplyText: 'Any file type',\n  invalidFileListLabel: 'Some files could not be added:',\n  validFileListLabel: 'Files added:',\n  clearListText: 'Clear list',\n  fileTypeErrorText: 'Invaild file type',\n  fileSizeErrorText: 'Max file size exceeded',\n  customFileErrorText: 'Custom file error',\n  inlineConfirmAnchorText: 'Delete',\n  inlineConfirmConfirmText: 'Confirm',\n  inlineConfirmCancelText: 'Cancel',\n  validationNotificationTitle: 'Multiple files not allowed',\n  validationNotificationMessage: 'Please select only one file.',\n}",
               "description": "Customizable text strings.",
               "attribute": "textStrings",
               "type": {
@@ -8828,7 +8847,7 @@
               "kind": "field",
               "name": "validFiles",
               "type": {
-                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\r\n  }[]"
+                "text": "{\n    id: string;\n    file: File;\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\n  }[]"
               },
               "default": "[]",
               "description": "Valid files. This property is used to set the initial or updated state of the valid files.",
@@ -8838,7 +8857,7 @@
               "kind": "field",
               "name": "invalidFiles",
               "type": {
-                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'sizeError' | 'typeError' | 'unknownError';\r\n    customErrorMsg?: string;\r\n  }[]"
+                "text": "{\n    id: string;\n    file: File;\n    status: 'sizeError' | 'typeError' | 'unknownError';\n    customErrorMsg?: string;\n  }[]"
               },
               "default": "[]",
               "description": "Invalid files. This property is used to set the initial state of the invalid files.",
@@ -9032,7 +9051,7 @@
             {
               "name": "validFiles",
               "type": {
-                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\r\n  }[]"
+                "text": "{\n    id: string;\n    file: File;\n    status: 'new' | 'uploading' | 'uploaded' | 'error';\n  }[]"
               },
               "default": "[]",
               "description": "Valid files. This property is used to set the initial or updated state of the valid files.",
@@ -9041,7 +9060,7 @@
             {
               "name": "invalidFiles",
               "type": {
-                "text": "{\r\n    id: string;\r\n    file: File;\r\n    status: 'sizeError' | 'typeError' | 'unknownError';\r\n    customErrorMsg?: string;\r\n  }[]"
+                "text": "{\n    id: string;\n    file: File;\n    status: 'sizeError' | 'typeError' | 'unknownError';\n    customErrorMsg?: string;\n  }[]"
               },
               "default": "[]",
               "description": "Invalid files. This property is used to set the initial state of the invalid files.",
@@ -13486,6 +13505,359 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "./progressBar"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/progressBar/progressBar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
+          "name": "ProgressBar",
+          "slots": [
+            {
+              "description": "Slot for tooltip text content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "attribute": "showInlineLoadStatus"
+            },
+            {
+              "kind": "field",
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "attribute": "showActiveHelperText"
+            },
+            {
+              "kind": "field",
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "attribute": "progressBarId"
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "attribute": "status"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "attribute": "helperText"
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "attribute": "unit"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBar",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderProgressBarLabel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderStatusIconOrLoader",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "currentStatus",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                },
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressBarClasses",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "status",
+                  "type": {
+                    "text": "ProgressStatus"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getHelperText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getCurrentStatus",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "ProgressStatus"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "currentValue",
+                  "type": {
+                    "text": "number | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "startProgress",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "cancelAnimation",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "showInlineLoadStatus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets visibility of optional inline load status spinner.",
+              "fieldName": "showInlineLoadStatus"
+            },
+            {
+              "name": "showActiveHelperText",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether to show default helper text for active state.",
+              "fieldName": "showActiveHelperText"
+            },
+            {
+              "name": "progressBarId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
+              "fieldName": "progressBarId"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "'active' | 'success' | 'error'"
+              },
+              "default": "'active'",
+              "description": "Sets progress bar status mode.",
+              "fieldName": "status"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Sets initial progress bar value (optionally hard-coded).",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "Sets manual max value (default = 100).",
+              "fieldName": "max"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional progress bar label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "helperText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets optional helper text that appears underneath progress bar element.",
+              "fieldName": "helperText"
+            },
+            {
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
+              "fieldName": "unit"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-progress-bar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ProgressBar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-progress-bar",
+          "declaration": {
+            "name": "ProgressBar",
+            "module": "src/components/reusable/progressBar/progressBar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/popover/index.ts",
       "declarations": [],
       "exports": [
@@ -14146,359 +14518,6 @@
           "declaration": {
             "name": "Popover",
             "module": "src/components/reusable/popover/popover.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "./progressBar"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/progressBar/progressBar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-progress-bar>` -- progress bar status indicator component.",
-          "name": "ProgressBar",
-          "slots": [
-            {
-              "description": "Slot for tooltip text content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "attribute": "showInlineLoadStatus"
-            },
-            {
-              "kind": "field",
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "attribute": "showActiveHelperText"
-            },
-            {
-              "kind": "field",
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "attribute": "progressBarId"
-            },
-            {
-              "kind": "field",
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "attribute": "status"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "attribute": "helperText"
-            },
-            {
-              "kind": "field",
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "attribute": "unit"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBar",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderProgressBarLabel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderStatusIconOrLoader",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "currentStatus",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                },
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressBarClasses",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "status",
-                  "type": {
-                    "text": "ProgressStatus"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getHelperText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getCurrentStatus",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "ProgressStatus"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "currentValue",
-                  "type": {
-                    "text": "number | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "startProgress",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "cancelAnimation",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "showInlineLoadStatus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets visibility of optional inline load status spinner.",
-              "fieldName": "showInlineLoadStatus"
-            },
-            {
-              "name": "showActiveHelperText",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Controls whether to show default helper text for active state.",
-              "fieldName": "showActiveHelperText"
-            },
-            {
-              "name": "progressBarId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets progress bar html id property for accessibility (ex: `example-progress-bar`).",
-              "fieldName": "progressBarId"
-            },
-            {
-              "name": "status",
-              "type": {
-                "text": "'active' | 'success' | 'error'"
-              },
-              "default": "'active'",
-              "description": "Sets progress bar status mode.",
-              "fieldName": "status"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Sets initial progress bar value (optionally hard-coded).",
-              "fieldName": "value"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "Sets manual max value (default = 100).",
-              "fieldName": "max"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional progress bar label.",
-              "fieldName": "label"
-            },
-            {
-              "name": "helperText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets optional helper text that appears underneath progress bar element.",
-              "fieldName": "helperText"
-            },
-            {
-              "name": "unit",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets the unit for progress measurement (ex: 'MB', 'GB', '%')",
-              "fieldName": "unit"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-progress-bar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ProgressBar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-progress-bar",
-          "declaration": {
-            "name": "ProgressBar",
-            "module": "src/components/reusable/progressBar/progressBar.ts"
           }
         }
       ]
