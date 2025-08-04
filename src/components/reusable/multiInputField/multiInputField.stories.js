@@ -259,9 +259,14 @@ CustomInvalidText.args = {
 };
 
 export const ServerValidatedEmails = () => {
-  const emails = ['validated@example.com', 'error@example.com'];
+  const emails = [
+    'validated@example.com',
+    'default@example.com',
+    'error@example.com',
+  ];
   const statusMap = {
     'validated@example.com': 'success',
+    'default@example.com': 'default',
     'error@example.com': 'error',
   };
 
@@ -271,7 +276,7 @@ export const ServerValidatedEmails = () => {
       .inputType=${'email'}
       .itemStatusMap=${statusMap}
       label="Server-Validated Emails"
-      caption="Shows different validation states: success (spruce), default (neutral), and error (red)."
+      caption="Shows different validation states: success (spruce), default (default), and error (red)."
       placeholder="Emails from server"
       @on-change=${(e) => action('on-change')(e.detail)}
     >

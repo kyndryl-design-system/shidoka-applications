@@ -222,7 +222,7 @@ export class MultiInputField extends FormMixin(LitElement) {
     } else if (explicit === 'success') {
       return this._renderTagWithColor(item, index, 'spruce');
     } else if (explicit === 'default') {
-      return this._renderTagWithColor(item, index, 'spruce');
+      return this._renderTagWithColor(item, index, 'default');
     }
 
     const isInvalid =
@@ -245,7 +245,7 @@ export class MultiInputField extends FormMixin(LitElement) {
   private _renderTagWithColor(
     item: string,
     index: number,
-    tagColor: 'red' | 'spruce'
+    tagColor: 'red' | 'spruce' | 'default'
   ) {
     const showIcon =
       !this.hideIcon && (this._useIcon || this.inputType === 'email');
