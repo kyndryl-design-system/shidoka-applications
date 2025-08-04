@@ -27,6 +27,15 @@ export default {
     responsivePosition: { control: 'text' },
     footerLinkText: { control: 'text' },
     footerLinkHref: { control: 'text' },
+    launchBehavior: {
+      control: 'select',
+      options: ['default', 'hover', 'link'],
+    },
+    linkHref: { control: 'text' },
+    linkTarget: {
+      control: 'select',
+      options: ['_self', '_blank', '_parent', '_top'],
+    },
     triggerType: {
       control: 'select',
       options: ['icon', 'link', 'button', 'none'],
@@ -46,6 +55,9 @@ const baseArgs = {
   offsetDistance: undefined,
   shiftPadding: undefined,
   arrowPosition: undefined,
+  launchBehavior: 'default',
+  linkHref: 'https://www.example.com',
+  linkTarget: '_blank',
   okText: 'Primary Button',
   secondaryButtonText: 'Secondary Button',
   titleText: 'Popover Title',
@@ -91,6 +103,9 @@ const Template = (args) => html`
     .offsetDistance=${args.offsetDistance}
     .shiftPadding=${args.shiftPadding}
     positionType=${args.positionType}
+    launchBehavior=${args.launchBehavior}
+    linkHref=${args.linkHref}
+    linkTarget=${args.linkTarget}
     z-index=${args['z-index']}
     footerLinkText=${args.footerLinkText}
     footerLinkHref=${args.footerLinkHref}
@@ -108,8 +123,9 @@ const Template = (args) => html`
           style="height:24px;width:24px;"
           kind="primary"
           size="small"
-          >1</kyn-button
-        >`}
+        >
+          ${args.anchorLabel}
+        </kyn-button>`}
     ${args.size === 'mini'
       ? html`
           <div
@@ -173,12 +189,21 @@ const Template = (args) => html`
             </p>
           </div>
         `}
+
+    <kyn-link
+      slot="footerLink"
+      href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
+      class="footer-link"
+      target="_blank"
+    >
+      Link
+    </kyn-link>
   </kyn-popover>
 `;
 
 export const DefaultAuto = {
   render: Template,
-  args: { ...baseArgs },
+  args: { ...baseArgs, anchorLabel: '1' },
 };
 
 export const CustomSpacingBodySlotOnly = {
@@ -186,6 +211,7 @@ export const CustomSpacingBodySlotOnly = {
   args: {
     ...baseArgs,
     open: true,
+    anchorLabel: '1',
     direction: 'right',
     size: 'mini',
     shiftPadding: 170,
@@ -210,6 +236,7 @@ export const ManualBottomWide = {
   args: {
     ...baseArgs,
     direction: 'bottom',
+    anchorLabel: '1',
     size: 'wide',
   },
 };
@@ -249,6 +276,7 @@ export const FloatingUpperNoHeader = {
     titleText: '',
     labelText: '',
     size: 'narrow',
+    anchorLabel: '1',
     direction: 'left',
     top: '5%',
     right: '1%',
@@ -260,6 +288,7 @@ export const WideFloatingLower = {
   render: Template,
   args: {
     ...baseArgs,
+    anchorLabel: '1',
     triggerType: 'none',
     size: 'wide',
     direction: 'left',
@@ -273,6 +302,7 @@ export const ManualArrowPosition = {
   args: {
     ...baseArgs,
     direction: 'bottom',
+    anchorLabel: '1',
     size: 'narrow',
     arrowPosition: '50%',
     titleText: 'Arrow Offset Demo',
@@ -293,6 +323,7 @@ export const CenteredButtonAutoMini = {
     ...baseArgs,
     direction: 'auto',
     size: 'mini',
+    anchorLabel: '1',
     triggerType: 'button',
     arrowPosition: '50%',
   },
@@ -313,6 +344,7 @@ export const DirectionLeftButtonRight = {
     ...baseArgs,
     direction: 'left',
     shiftPadding: 38,
+    anchorLabel: '1',
     arrowPosition: '28px',
   },
   decorators: [
@@ -467,6 +499,7 @@ export const MobileFullScreen = {
     ...baseArgs,
     direction: 'bottom',
     size: 'wide',
+    anchorLabel: '1',
     titleText: 'Mobile Fullscreen Mode',
     labelText: 'Resize window to mobile size (under 480px) to see effect',
     showTertiaryButton: true,
@@ -482,6 +515,7 @@ export const AbsolutePositioning = {
     positionType: 'absolute',
     size: 'narrow',
     top: '35px',
+    anchorLabel: '1',
     left: '0px',
     titleText: 'Absolute Positioning',
     labelText: 'This popover uses position: absolute relative to its container',
@@ -564,5 +598,63 @@ export const MiniWithCustomText = {
         </p>
       </div>
     </kyn-popover>
+  `,
+};
+
+export const LaunchBehavior = {
+  render: () => html`
+    <div
+      style="display: flex; flex-direction: column; gap: 40px; padding: 40px;"
+    >
+      <div>
+        <h3 style="margin-bottom: 20px; font-size: 16px;">Default (Click)</h3>
+        ${Template({
+          ...baseArgs,
+          anchorLabel: '1',
+          launchBehavior: 'default',
+          titleText: 'Default Click Behavior',
+          labelText: 'Click the citation to toggle the popover',
+          size: 'mini',
+          direction: 'right',
+          hideFooter: true,
+          arrowPosition: '40%',
+          top: '5px',
+        })}
+      </div>
+      <div>
+        <h3 style="margin-bottom: 20px; font-size: 16px;">Hover</h3>
+        ${Template({
+          ...baseArgs,
+          anchorLabel: '2',
+          launchBehavior: 'hover',
+          titleText: 'Hover Behavior',
+          labelText: 'Hover over the citation to see the popover',
+          size: 'mini',
+          direction: 'right',
+          hideFooter: true,
+          arrowPosition: '40%',
+          top: '5px',
+        })}
+      </div>
+      <div>
+        <h3 style="margin-bottom: 20px; font-size: 16px;">
+          Link (Click + Hover)
+        </h3>
+        ${Template({
+          ...baseArgs,
+          anchorLabel: '3',
+          launchBehavior: 'link',
+          linkHref: 'https://www.kyndryl.com',
+          linkTarget: '_blank',
+          titleText: 'Link Behavior',
+          labelText: 'Click to navigate, hover to preview',
+          size: 'mini',
+          direction: 'right',
+          hideFooter: true,
+          arrowPosition: '40%',
+          top: '5px',
+        })}
+      </div>
+    </div>
   `,
 };
