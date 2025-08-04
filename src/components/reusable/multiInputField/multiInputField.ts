@@ -92,6 +92,13 @@ export class MultiInputField extends FormMixin(LitElement) {
   @property({ type: String })
   accessor pattern: string | undefined = undefined;
 
+  /**
+   * Consumer-driven status map, e.g.
+   * { "foo@ex.com": "error", "bar@ex.com": "success" }
+   */
+  @property({ type: Object })
+  accessor itemStatusMap: Record<string, 'error' | 'success'> = {};
+
   /** Merged internal text strings.
    * @internal
    */
@@ -208,6 +215,13 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private renderTag(item: string, index: number) {
+    const explicit = this.itemStatusMap[item];
+    if (explicit === 'error') {
+      return this._renderTagWithColor(item, index, 'red');
+    } else if (explicit === 'success') {
+      return this._renderTagWithColor(item, index, 'spruce');
+    }
+
     const isInvalid =
       !this.validationsDisabled &&
       !isValidInput(item, this.inputType, this.pattern);
@@ -222,6 +236,14 @@ export class MultiInputField extends FormMixin(LitElement) {
 
     const tagColor = isInvalid || isOverLimit || isDuplicate ? 'red' : 'spruce';
 
+    return this._renderTagWithColor(item, index, tagColor);
+  }
+
+  private _renderTagWithColor(
+    item: string,
+    index: number,
+    tagColor: 'red' | 'spruce'
+  ) {
     const showIcon =
       !this.hideIcon && (this._useIcon || this.inputType === 'email');
     const iconSvg = this._iconSvg || userIcon;

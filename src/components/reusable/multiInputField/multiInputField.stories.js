@@ -35,6 +35,12 @@ export default {
       description:
         'Comma-separated list of email addresses. For proper tag creation, include @ symbol or commas.',
     },
+    // expose our new API for docs/controls if desired:
+    itemStatusMap: {
+      control: 'object',
+      description:
+        'Map of existing emails → "error" | "success" to drive per-tag coloring',
+    },
     ...ValidationArgs,
   },
 };
@@ -58,6 +64,7 @@ const Template = (args) => html`
     name=${args.name}
     pattern=${ifDefined(args.pattern)}
     maxItems=${ifDefined(args.maxItems)}
+    .itemStatusMap=${args.itemStatusMap}
     @on-change=${(e) => action('on-change')(e.detail)}
   >
     ${unsafeSVG(userIcon)}
@@ -84,6 +91,7 @@ DefaultMultiInput.args = {
   textStrings: {
     ...defaultTextStrings,
   },
+  itemStatusMap: {},
 };
 
 export const EmailMultiInput = Template.bind({});
@@ -128,7 +136,7 @@ export const MaxEmailsExceeded = Template.bind({});
 MaxEmailsExceeded.args = {
   ...DefaultMultiInput.args,
   inputType: 'email',
-  value: 'john.doe@email.com, example@email.com, suzy.example@email.com',
+  value: 'john.doe@email.com, example@email.com, suzy@example@email.com',
   caption: 'Shows error when maximum number of emails is exceeded.',
   hideIcon: false,
   autoSuggestionDisabled: false,
@@ -240,3 +248,28 @@ WithCustomIcon.args = {
   hideIcon: false,
   placeholder: `Add attachments and press 'Enter'…`,
 };
+
+export const ServerValidatedEmails = () => {
+  const emails = ['test@google.com', 'foo@example.com', 'hello@world.com'];
+  const statusMap = {
+    'test@google.com': 'error',
+    'foo@example.com': 'success',
+    'hello@world.com': 'success',
+  };
+
+  return html`
+    <kyn-multi-input-field
+      .value=${emails.join(',')}
+      .inputType=${'email'}
+      .itemStatusMap=${statusMap}
+      label="Server-Validated Emails"
+      caption="Red
+      tags already exist. Spruce tags are new."
+      placeholder="Emails from server"
+      @on-change=${(e) => action('on-change')(e.detail)}
+    >
+      ${unsafeSVG(userIcon)}
+    </kyn-multi-input-field>
+  `;
+};
+ServerValidatedEmails.storyName = 'Server-Validated Emails';
