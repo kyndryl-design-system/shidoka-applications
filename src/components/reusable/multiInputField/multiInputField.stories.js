@@ -32,15 +32,8 @@ export default {
       control: 'text',
       table: { category: 'attributes' },
       defaultValue: '',
-      description:
-        'Comma-separated list of email addresses. For proper tag creation, include @ symbol or commas.',
     },
-    // expose our new API for docs/controls if desired:
-    itemStatusMap: {
-      control: 'object',
-      description:
-        'Map of existing emails → "error" | "success" to drive per-tag coloring',
-    },
+    itemStatusMap: { control: 'object' },
     ...ValidationArgs,
   },
 };
