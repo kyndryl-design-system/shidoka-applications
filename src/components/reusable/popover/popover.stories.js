@@ -638,7 +638,7 @@ export const LaunchBehavior = {
       </div>
       <div>
         <h3 style="margin-bottom: 20px; font-size: 16px;">
-          Link (Click + Hover)
+          Link (Click for external link, hover to open)
         </h3>
         ${Template({
           ...baseArgs,
