@@ -28,13 +28,13 @@ export default {
     pattern: { control: 'text' },
     textStrings: { control: 'object' },
     customSuggestions: { control: 'array' },
+    invalidText: { control: 'text' },
     value: {
       control: 'text',
       table: { category: 'attributes' },
       defaultValue: '',
-      description:
-        'Comma-separated list of email addresses. For proper tag creation, include @ symbol or commas.',
     },
+    itemStatusMap: { control: 'object' },
     ...ValidationArgs,
   },
 };
@@ -58,6 +58,8 @@ const Template = (args) => html`
     name=${args.name}
     pattern=${ifDefined(args.pattern)}
     maxItems=${ifDefined(args.maxItems)}
+    invalidText=${ifDefined(args.invalidText)}
+    .itemStatusMap=${args.itemStatusMap}
     @on-change=${(e) => action('on-change')(e.detail)}
   >
     ${unsafeSVG(userIcon)}
@@ -84,6 +86,7 @@ DefaultMultiInput.args = {
   textStrings: {
     ...defaultTextStrings,
   },
+  itemStatusMap: {},
 };
 
 export const EmailMultiInput = Template.bind({});
@@ -128,7 +131,7 @@ export const MaxEmailsExceeded = Template.bind({});
 MaxEmailsExceeded.args = {
   ...DefaultMultiInput.args,
   inputType: 'email',
-  value: 'john.doe@email.com, example@email.com, suzy.example@email.com',
+  value: 'john.doe@email.com, example@email.com, suzy@example@email.com',
   caption: 'Shows error when maximum number of emails is exceeded.',
   hideIcon: false,
   autoSuggestionDisabled: false,
@@ -240,3 +243,110 @@ WithCustomIcon.args = {
   hideIcon: false,
   placeholder: `Add attachments and press 'Enter'…`,
 };
+
+export const CustomInvalidText = Template.bind({});
+CustomInvalidText.args = {
+  ...DefaultMultiInput.args,
+  inputType: 'email',
+  value: 'valid@example.com, invalid-email',
+  label: 'Email Addresses',
+  caption: 'Example showing custom error message using invalidText prop.',
+  validationsDisabled: false,
+  autoSuggestionDisabled: false,
+  hideIcon: false,
+  placeholder: 'Add email addresses and press Enter...',
+  invalidText: 'Please review your email addresses - some entries are invalid.',
+};
+
+export const ServerValidatedEmails = () => {
+  const emails = [
+    'validated@example.com',
+    'default@example.com',
+    'error@example.com',
+  ];
+  const statusMap = {
+    'validated@example.com': 'success',
+    'default@example.com': 'default',
+    'error@example.com': 'error',
+  };
+
+  return html`
+    <kyn-multi-input-field
+      .value=${emails.join(',')}
+      .inputType=${'email'}
+      .itemStatusMap=${statusMap}
+      label="Server-Validated Emails"
+      caption="Shows different validation states: success (spruce), default (default), and error (red)."
+      placeholder="Emails from server"
+      @on-change=${(e) => action('on-change')(e.detail)}
+    >
+      ${unsafeSVG(userIcon)}
+    </kyn-multi-input-field>
+  `;
+};
+ServerValidatedEmails.storyName = 'Server-Validated Emails';
+
+export const ValidationStatesDemo = () => {
+  return html`
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <div>
+        <h3>1. Valid State (no errors)</h3>
+        <kyn-multi-input-field
+          .value=${'valid@example.com'}
+          .inputType=${'email'}
+          .itemStatusMap=${{ 'valid@example.com': 'success' }}
+          label="Valid State"
+          caption="Component shows as valid - no error border or message"
+          @on-change=${(e) => action('on-change')(e.detail)}
+        >
+          ${unsafeSVG(userIcon)}
+        </kyn-multi-input-field>
+      </div>
+
+      <div>
+        <h3>2. External Error via itemStatusMap</h3>
+        <kyn-multi-input-field
+          .value=${'external-error@example.com'}
+          .inputType=${'email'}
+          .itemStatusMap=${{ 'external-error@example.com': 'error' }}
+          label="External Error"
+          caption="Component shows as invalid due to 'error' status in itemStatusMap - red border and error message"
+          @on-change=${(e) => action('on-change')(e.detail)}
+        >
+          ${unsafeSVG(userIcon)}
+        </kyn-multi-input-field>
+      </div>
+
+      <div>
+        <h3>3. Custom Error via invalidText</h3>
+        <kyn-multi-input-field
+          .value=${'custom@example.com'}
+          .inputType=${'email'}
+          .itemStatusMap=${{ 'custom@example.com': 'success' }}
+          invalidText="This is a custom validation error message"
+          label="Custom Error"
+          caption="Component shows as invalid due to invalidText prop - overrides success status"
+          @on-change=${(e) => action('on-change')(e.detail)}
+        >
+          ${unsafeSVG(userIcon)}
+        </kyn-multi-input-field>
+      </div>
+
+      <div>
+        <h3>4. Combined: External Success + Internal Error</h3>
+        <kyn-multi-input-field
+          .value=${'success@example.com, invalid-format'}
+          .inputType=${'email'}
+          .itemStatusMap=${{ 'success@example.com': 'success' }}
+          ?validationsDisabled=${false}
+          label="Mixed Validation"
+          caption="Shows invalid due to internal validation error despite external success status"
+          @on-change=${(e) => action('on-change')(e.detail)}
+        >
+          ${unsafeSVG(userIcon)}
+        </kyn-multi-input-field>
+      </div>
+    </div>
+  `;
+};
+ValidationStatesDemo.storyName = 'Validation States Demo';
