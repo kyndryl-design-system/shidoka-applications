@@ -26,6 +26,7 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
  * @fires on-change – emits string[] after tags are added/removed. `detail:{ value: string[] }`
  * @prop {string[]} customSuggestions - Optional array of custom suggestions to use instead of the default mock data.
  * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 
 @customElement('kyn-multi-input-field')
@@ -94,10 +95,10 @@ export class MultiInputField extends FormMixin(LitElement) {
 
   /**
    * Consumer-driven status map, e.g.
-   * { "foo@ex.com": "error", "bar@ex.com": "success" }
+   * { "foo@boo.com": "error", "bar@ex.com": "success", "example@test.com": "default" }
    */
   @property({ type: Object })
-  accessor itemStatusMap: Record<string, 'error' | 'success'> = {};
+  accessor itemStatusMap: Record<string, 'error' | 'success' | 'default'> = {};
 
   /** Merged internal text strings.
    * @internal
@@ -219,6 +220,8 @@ export class MultiInputField extends FormMixin(LitElement) {
     if (explicit === 'error') {
       return this._renderTagWithColor(item, index, 'red');
     } else if (explicit === 'success') {
+      return this._renderTagWithColor(item, index, 'spruce');
+    } else if (explicit === 'default') {
       return this._renderTagWithColor(item, index, 'spruce');
     }
 
@@ -347,6 +350,9 @@ export class MultiInputField extends FormMixin(LitElement) {
   }
 
   private renderCaptionAndError(error: boolean, validCount: number) {
+    const errorMessage = this.invalidText || this._validationMessage;
+    const showError = error && errorMessage.trim() !== '';
+
     return html`
       <div class="caption-count-container">
         <div>
@@ -355,12 +361,12 @@ export class MultiInputField extends FormMixin(LitElement) {
                 ${this.caption}
               </div>`
             : null}
-          ${error
+          ${showError
             ? html`<div id="error" class="error">
                 <span role="img" class="error-icon" aria-label="error">
                   ${unsafeSVG(errorIcon)}
                 </span>
-                ${this._validationMessage}
+                ${errorMessage}
               </div>`
             : null}
         </div>
@@ -832,19 +838,32 @@ export class MultiInputField extends FormMixin(LitElement) {
       this.pattern
     );
 
-    const state = { ...this._internals.validity, ...validationResult.state };
+    const hasExternalError = Object.values(this.itemStatusMap).some(
+      (status) => status === 'error'
+    );
+
+    const hasCustomError = this.invalidText !== '';
+    const hasValidationError = validationResult.hasError || hasExternalError;
+
+    const state = hasCustomError
+      ? {
+          ...this._internals.validity,
+          ...validationResult.state,
+          customError: true,
+        }
+      : { ...this._internals.validity, ...validationResult.state };
+
+    const validationMessage = hasCustomError
+      ? this.invalidText
+      : validationResult.message;
 
     this._validationMessage = validationResult.message;
-    this._isInvalid = validationResult.hasError;
+    this._isInvalid = hasValidationError || hasCustomError;
 
     if (this.inputEl) {
-      this._internals.setValidity(
-        state,
-        validationResult.message,
-        this.inputEl
-      );
+      this._internals.setValidity(state, validationMessage, this.inputEl);
     } else {
-      this._internals.setValidity(state, validationResult.message);
+      this._internals.setValidity(state, validationMessage);
     }
   }
 
