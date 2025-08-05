@@ -59,6 +59,27 @@ export class Popover extends LitElement {
   accessor positionType: PositionType = 'fixed';
 
   /**
+   * Popover launch behavior.
+   * - default: click to launch/open popover
+   * - hover: opens on hover and closes on mouse leave
+   * - link: click to navigate to an externally linked URL + hover to open
+   */
+  @property({ type: String })
+  accessor launchBehavior: 'default' | 'hover' | 'link' = 'default';
+
+  /**
+   * URL for link behavior (when launchBehavior is 'link')
+   */
+  @property({ type: String })
+  accessor linkHref = '';
+
+  /**
+   * Target for link behavior (when launchBehavior is 'link')
+   */
+  @property({ type: String })
+  accessor linkTarget: '_self' | '_blank' | '_parent' | '_top' = '_self';
+
+  /**
    * Size variants for the popover.
    */
   @property({ type: String })
@@ -112,22 +133,30 @@ export class Popover extends LitElement {
     this.requestUpdate('open', old);
 
     if (value && !old) {
-      const anchorHost = this.shadowRoot!.querySelector(
+      const anchorHost = this.shadowRoot?.querySelector(
         '.anchor'
       ) as HTMLElement;
-      const slotted = (
-        anchorHost.querySelector('slot[name="anchor"]') as HTMLSlotElement
-      )?.assignedElements();
+
+      if (!anchorHost) return;
+
+      const slot = anchorHost.querySelector(
+        'slot[name="anchor"]'
+      ) as HTMLSlotElement;
+      const slotted = slot?.assignedElements();
       const anchorEl = (
         slotted?.length ? slotted[0] : anchorHost
       ) as HTMLElement;
-      this._prevFocused = anchorEl;
+
+      if (!anchorEl) return;
 
       this.dispatchEvent(new CustomEvent('on-open'));
 
       const panel = this.shadowRoot!.querySelector(
         '.popover-inner'
       ) as HTMLElement;
+
+      if (!panel) return;
+
       this._autoUpdateCleanup = autoUpdate(anchorEl, panel, () =>
         this._position()
       );
@@ -140,8 +169,6 @@ export class Popover extends LitElement {
         this._autoUpdateCleanup();
         this._autoUpdateCleanup = null;
       }
-
-      this._prevFocused = null;
     }
   }
 
@@ -304,12 +331,6 @@ export class Popover extends LitElement {
   private _keyboardListener: ((e: Event) => void) | null = null;
 
   /**
-   * Previously focused element before the popover opened, so it can be restored on close.
-   * @internal
-   */
-  private _prevFocused: HTMLElement | null = null;
-
-  /**
    * Cleanup callback for any automatic update routines.
    * @internal
    */
@@ -321,7 +342,21 @@ export class Popover extends LitElement {
    */
   private _open = false;
 
-  override render() {
+  /**
+   * Timer for delayed hover close to prevent flickering
+   * @internal
+   */
+  private _hoverCloseTimer: number | null = null;
+
+  /**
+   * Flag to track if mouse is over the popover area (anchor or panel)
+   * @internal
+   */
+  private _isMouseOverPopover = false;
+
+  override render(): TemplateResult {
+    const isLinkMode = this.launchBehavior === 'link';
+    const isHoverMode = this.launchBehavior === 'hover';
     const hasHeader = !!(this.titleText || this.labelText);
     const dir =
       this.direction === 'auto' ? this._calculatedDirection : this.direction;
@@ -342,37 +377,62 @@ export class Popover extends LitElement {
     };
 
     const panelStyles = this._getPanelStyle();
-
     const overlayStyles = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: transparent;
-      z-index: ${this.zIndex ? this.zIndex - 1 : 999};
-    `;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: ${this.zIndex ? this.zIndex - 1 : 999};
+    pointer-events: none;
+  `;
 
     return html`
       <div class="popover">
-        <span
-          class="anchor ${this.triggerType}-anchor"
-          tabindex="0"
-          aria-haspopup="dialog"
-          @click=${this._toggle}
-          @keydown=${this._handleAnchorKeydown}
-        >
-          <slot name="anchor"></slot>
-        </span>
-
+        ${isLinkMode
+          ? html`
+              <a
+                class="anchor ${this.triggerType}-anchor launch-behavior-link"
+                href=${this.linkHref}
+                target=${this.linkTarget}
+                tabindex="0"
+                aria-haspopup="dialog"
+                @mouseenter=${this._handleMouseEnter}
+                @mouseleave=${this._handleMouseLeave}
+                style="text-decoration: none; color: inherit; display: inline-block; cursor: pointer !important;"
+              >
+                <slot name="anchor"></slot>
+              </a>
+            `
+          : html`
+              <span
+                class="anchor ${this.triggerType}-anchor launch-behavior-${this
+                  .launchBehavior}"
+                tabindex="0"
+                aria-haspopup="dialog"
+                @click=${this._handleAnchorClick}
+                @keydown=${this._handleAnchorKeydown}
+                @mouseenter=${this._handleMouseEnter}
+                @mouseleave=${this._handleMouseLeave}
+                style="${this.launchBehavior === 'hover'
+                  ? 'cursor: pointer !important;'
+                  : ''}"
+              >
+                <slot name="anchor"></slot>
+              </span>
+            `}
         ${this.open
           ? html`
-              <div
-                class="popover-overlay"
-                style=${overlayStyles}
-                @click=${this._close}
-              ></div>
-
+              ${!isLinkMode && !isHoverMode
+                ? html`
+                    <div
+                      class="popover-overlay"
+                      style=${overlayStyles}
+                      @click=${this._close}
+                    ></div>
+                  `
+                : ''}
               <div
                 id="popover-panel"
                 part="panel"
@@ -387,6 +447,8 @@ export class Popover extends LitElement {
                 title="${this.size === 'mini' ? this.popoverAriaLabel : ''}"
                 class=${classMap(panelClasses)}
                 style=${panelStyles}
+                @mouseenter=${this._handlePanelMouseEnter}
+                @mouseleave=${this._handlePanelMouseLeave}
               >
                 <div part="arrow" class="arrow"></div>
                 ${this.size === 'mini'
@@ -513,6 +575,12 @@ export class Popover extends LitElement {
       this._autoUpdateCleanup = null;
     }
 
+    if (this._hoverCloseTimer) {
+      clearTimeout(this._hoverCloseTimer);
+      this._hoverCloseTimer = null;
+    }
+
+    this._isMouseOverPopover = false;
     this._removeFocusListener();
   }
 
@@ -585,10 +653,86 @@ export class Popover extends LitElement {
   /**
    * @internal
    */
+  private _handleAnchorClick(e: MouseEvent) {
+    if (this.launchBehavior === 'default') {
+      this._toggle();
+    }
+  }
+
+  /**
+   * @internal
+   */
+  private _handleMouseEnter() {
+    if (this.launchBehavior === 'hover' || this.launchBehavior === 'link') {
+      this._isMouseOverPopover = true;
+      if (this._hoverCloseTimer) {
+        clearTimeout(this._hoverCloseTimer);
+        this._hoverCloseTimer = null;
+      }
+      this.open = true;
+    }
+  }
+
+  /**
+   * @internal
+   */
+  private _handleMouseLeave() {
+    if (this.launchBehavior === 'hover' || this.launchBehavior === 'link') {
+      this._isMouseOverPopover = false;
+      this._hoverCloseTimer = setTimeout(() => {
+        if (!this._isMouseOverPopover) {
+          this.open = false;
+          this._hoverCloseTimer = null;
+        }
+      }, 300) as unknown as number;
+    }
+  }
+
+  /**
+   * @internal
+   */
+  private _handlePanelMouseEnter() {
+    if (this.launchBehavior === 'hover' || this.launchBehavior === 'link') {
+      this._isMouseOverPopover = true;
+      if (this._hoverCloseTimer) {
+        clearTimeout(this._hoverCloseTimer);
+        this._hoverCloseTimer = null;
+      }
+    }
+  }
+
+  /**
+   * @internal
+   */
+  private _handlePanelMouseLeave() {
+    if (this.launchBehavior === 'hover' || this.launchBehavior === 'link') {
+      this._isMouseOverPopover = false;
+      this._hoverCloseTimer = setTimeout(() => {
+        if (!this._isMouseOverPopover) {
+          this.open = false;
+          this._hoverCloseTimer = null;
+        }
+      }, 300) as unknown as number;
+    }
+  }
+
+  /**
+   * @internal
+   */
   private _handleAnchorKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
       e.preventDefault();
-      this._toggle();
+      if (this.launchBehavior === 'link' && this.linkHref) {
+        if (this.linkTarget === '_blank') {
+          window.open(this.linkHref, '_blank');
+        } else {
+          window.location.href = this.linkHref;
+        }
+      } else if (this.launchBehavior === 'default') {
+        this._toggle();
+      } else if (this.launchBehavior === 'hover') {
+        this._toggle();
+      }
     }
   }
 
@@ -598,7 +742,6 @@ export class Popover extends LitElement {
     ) as HTMLElement;
     if (!panel) return;
     const res = handleFocusKeyboardEvents(panel);
-    this._prevFocused = res.previouslyFocusedElement;
     this._keyboardListener = res.keyboardListener;
   }
 
@@ -608,7 +751,6 @@ export class Popover extends LitElement {
     ) as HTMLElement;
     removeFocusListener(panel, this._keyboardListener, null);
     this._keyboardListener = null;
-    this._prevFocused = null;
   }
 
   private async _position() {
