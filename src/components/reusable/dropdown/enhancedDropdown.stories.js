@@ -245,14 +245,6 @@ export const ButtonAnchor = {
         kyn-dropdown {
           min-width: 300px;
         }
-
-        kyn-dropdown[open] .dropdown-anchor-button [slot='icon'] {
-          transform: rotate(180deg);
-        }
-
-        .dropdown-anchor-button [slot='icon'] {
-          transition: transform 0.2s ease-in-out;
-        }
       </style>
       <kyn-dropdown
         label=${args.label}
@@ -281,7 +273,6 @@ export const ButtonAnchor = {
           iconPosition="right"
         >
           ${args.buttonText || args.placeholder || 'Select option'}
-          <span class="_icon" slot="icon">${unsafeSVG(downIcon)}</span>
         </kyn-button>
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
