@@ -65,7 +65,7 @@ export class Popover extends LitElement {
    * - link: click to navigate to an externally linked URL + hover to open
    */
   @property({ type: String })
-  accessor launchBehavior = 'default';
+  accessor launchBehavior: 'default' | 'hover' | 'link' = 'default';
 
   /**
    * URL for link behavior (when launchBehavior is 'link')
@@ -684,7 +684,7 @@ export class Popover extends LitElement {
           this.open = false;
           this._hoverCloseTimer = null;
         }
-      }, 100) as unknown as number;
+      }, 300) as unknown as number;
     }
   }
 
