@@ -1200,7 +1200,7 @@ export class Dropdown extends FormMixin(LitElement) {
     if (!root) return;
 
     if (changedProps.has('open')) {
-      const slot = root.querySelector<HTMLSlotElement>('slot[name="button"]');
+      const slot = root.querySelector<HTMLSlotElement>('slot[name="anchor"]');
       const assigned = slot?.assignedElements({ flatten: true }) as
         | HTMLElement[]
         | undefined;

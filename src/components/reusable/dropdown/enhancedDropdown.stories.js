@@ -273,6 +273,7 @@ export const ButtonAnchor = {
           iconPosition="right"
         >
           ${args.buttonText || args.placeholder || 'Select option'}
+          <span slot="icon">${unsafeSVG(downIcon)}</span>
         </kyn-button>
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
