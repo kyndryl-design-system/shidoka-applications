@@ -11,7 +11,7 @@ import businessConsultIcon from '@kyndryl-design-system/shidoka-icons/svg/monoch
 import aiOpsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/AIOps-docs.svg';
 import boxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/box.svg';
 import branchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/branch.svg';
-import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
+import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 export default {
   title: 'Components/Dropdown/Enhanced Dropdown',
@@ -245,6 +245,14 @@ export const ButtonAnchor = {
         kyn-dropdown {
           min-width: 300px;
         }
+
+        kyn-dropdown[open] .dropdown-anchor-button [slot='icon'] {
+          transform: rotate(180deg);
+        }
+
+        .dropdown-anchor-button [slot='icon'] {
+          transition: transform 0.2s ease-in-out;
+        }
       </style>
       <kyn-dropdown
         label=${args.label}
@@ -273,9 +281,7 @@ export const ButtonAnchor = {
           iconPosition="right"
         >
           ${args.buttonText || args.placeholder || 'Select option'}
-          <span slot="icon" style="transition: transform 0.2s ease-in-out;"
-            >${unsafeSVG(downIcon)}</span
-          >
+          <span class="_icon" slot="icon">${unsafeSVG(downIcon)}</span>
         </kyn-button>
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
