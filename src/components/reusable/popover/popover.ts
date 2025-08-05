@@ -712,7 +712,7 @@ export class Popover extends LitElement {
           this.open = false;
           this._hoverCloseTimer = null;
         }
-      }, 100) as unknown as number;
+      }, 300) as unknown as number;
     }
   }
 
