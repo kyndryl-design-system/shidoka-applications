@@ -2,6 +2,10 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
+import analyticsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/analytics.svg';
+import consultationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/consultation-2.svg';
+import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
+import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 import { action } from 'storybook/actions';
 import { useArgs } from 'storybook/preview-api';
 
@@ -10,8 +14,12 @@ import '../../components/reusable/modal';
 import '../../components/ai/aiLaunchButton';
 import '../../components/reusable/floatingContainer';
 
+import '../../components/reusable/textArea';
+import '../../components/reusable/button';
+import '../../components/reusable/dropdown';
+import '../../components/reusable/tag';
+
 import { ChatMessages } from './chatMessages.stories.js';
-import { Default as InputQuery } from './inputQuery.stories.js';
 import { ChatHistory } from './chatHistory.stories.js';
 
 export default {
@@ -27,12 +35,46 @@ export default {
 export const ChatModal = {
   args: {
     selectedTabId: 'chat',
+    value1: 'Option 1',
+    value2: 'Option 2',
+    selectedIcon: analyticsIcon,
   },
-  render: () => {
+  parameters: {
+    controls: { disable: true },
+    a11y: { disable: true },
+  },
+  render: (args) => {
     const [{ selectedTabId }, updateArgs] = useArgs();
 
     const handleTabChange = (e) => {
       updateArgs({ selectedTabId: e.detail.selectedTabId });
+    };
+
+    const dropdownOptions = {
+      'Option 1': {
+        icon: analyticsIcon,
+      },
+      'Option 2': {
+        icon: consultationIcon,
+      },
+    };
+
+    const handleChange = (e) => {
+      let selectedValue = e.detail.value;
+      const option = dropdownOptions[selectedValue];
+      updateArgs({
+        value1: selectedValue,
+        selectedIcon: option.icon,
+      });
+      action(e.type)({ ...e, detail: e.detail });
+    };
+
+    const handleOtherDropdownChange = (e) => {
+      let selectedValue = e.detail.value;
+      updateArgs({
+        value2: selectedValue,
+      });
+      action(e.type)({ ...e, detail: e.detail });
     };
 
     return html`
@@ -74,12 +116,123 @@ export const ChatModal = {
         </kyn-tabs>
 
         <div slot="footer">
-          ${InputQuery.render(InputQuery.args)}
+          <form
+            class="ai-input-query"
+            @submit=${(e) => {
+              e.preventDefault();
+              action('submit')(e);
+              const formData = new FormData(e.target);
+              console.log(...formData);
+            }}
+          >
+            <div class="input-row">
+              <kyn-text-area
+                name="ai-query"
+                rows="2"
+                placeholder="Type your message..."
+                maxRowsVisible="3"
+                label="AI Prompt Query"
+                hideLabel
+                aiConnected
+                notResizeable
+              ></kyn-text-area>
+
+              <kyn-button type="submit" kind="primary-ai" description="Submit">
+                <span slot="icon">${unsafeSVG(sendIcon)}</span>
+              </kyn-button>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <kyn-dropdown
+                style="margin-right:-150px;"
+                ?hideLabel=${true}
+                value=${args.value1}
+                openDirection="up"
+                @on-change=${handleChange}
+              >
+                <kyn-button
+                  slot="anchor"
+                  class="dropdown-anchor-button"
+                  kind="secondary-ai"
+                  size="small"
+                  iconPosition="right"
+                >
+                  <span style="display:inline-flex;margin-right: 8px;">
+                    ${unsafeSVG(args.selectedIcon)}
+                  </span>
+                  ${args.value1}
+                  <span slot="icon">${unsafeSVG(downIcon)}</span>
+                </kyn-button>
+                <kyn-enhanced-dropdown-option value="Option 1">
+                  <span slot="icon">${unsafeSVG(analyticsIcon)}</span>
+                  <span slot="title">Option 1</span>
+                  <span slot="description">Description for the Option 1</span>
+                </kyn-enhanced-dropdown-option>
+                <kyn-enhanced-dropdown-option value="Option 2">
+                  <span slot="icon">${unsafeSVG(consultationIcon)}</span>
+                  <span slot="title">Option 2</span>
+                  <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+                  <span slot="description">Description for the Option 2</span>
+                </kyn-enhanced-dropdown-option>
+              </kyn-dropdown>
+              <kyn-dropdown
+                ?hideLabel=${true}
+                value=${args.value2}
+                openDirection="up"
+                @on-change=${handleOtherDropdownChange}
+              >
+                <kyn-button
+                  slot="anchor"
+                  class="dropdown-anchor-button"
+                  kind="secondary-ai"
+                  size="small"
+                  iconPosition="right"
+                >
+                  ${args.value2}
+                  <span slot="icon">${unsafeSVG(downIcon)}</span>
+                </kyn-button>
+                <kyn-enhanced-dropdown-option value="Option 1">
+                  <span slot="title">Option 1</span>
+                  <span slot="description">Description for the Option 1</span>
+                </kyn-enhanced-dropdown-option>
+                <kyn-enhanced-dropdown-option value="Option 2">
+                  <span slot="title">Option 2</span>
+                  <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+                  <span slot="description">Description for the Option 2</span>
+                </kyn-enhanced-dropdown-option>
+              </kyn-dropdown>
+            </div>
+          </form>
           <div class="disclaimer kd-type--ui-02">Optional text here</div>
         </div>
       </kyn-modal>
 
       <style>
+        kyn-dropdown {
+          min-width: 300px;
+        }
+        .ai-input-query {
+          margin-top: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 10px;
+          background-color: var(--kd-color-background-container-ai-level-2);
+          border-radius: 8px;
+        }
+
+        .ai-input-query.floating {
+          box-shadow: var(--kd-elevation-level-3-ai);
+        }
+
+        .ai-input-query .input-row {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+
+        .ai-input-query kyn-text-area {
+          flex-grow: 1;
+        }
         .disclaimer {
           padding: var(--kd-spacing-4) var(--kd-spacing-16) var(--kd-spacing-0);
           color: var(--kd-color-text-level-secondary);
