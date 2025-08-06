@@ -129,7 +129,11 @@ export class EnhancedDropdownOption extends LitElement {
           <div class="text-content">
             <div class="title-content">
               <slot name="title" @slotchange=${this.onTitleSlotChange}></slot>
-              <span class="tag-container"><slot name="tag"></slot></span>
+              ${!this.selected
+                ? html`<span class="tag-container"
+                    ><slot name="tag"></slot
+                  ></span>`
+                : null}
             </div>
             <div class="description-container">
               <slot name="description"></slot>
