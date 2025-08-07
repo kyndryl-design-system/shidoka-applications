@@ -11,6 +11,7 @@
 
   .text,
   .icon-container,
+  .icon,
   .expand-icon {
     color: var(--kd-color-text-level-primary);
   }
@@ -19,10 +20,15 @@
   &:active:not([disabled]),
   &:focus-within,
   &:focus-visible {
-    background-color: var(--kd-color-background-accent-subtle);
+    background: var(--kd-color-background-menu-state-open);
+
+    .text {
+      color: var(--kd-color-text-level-light);
+    }
   }
 
-  &[selected]:not([disabled]) {
+  &[selected]:not([disabled]),
+  &[highlighted] {
     background: var(--kd-color-background-menu-state-open);
 
     .text,
@@ -43,6 +49,7 @@
 
     .text,
     .icon-container,
+    .icon,
     .expand-icon {
       color: var(--kd-color-text-level-light);
     }
