@@ -9,6 +9,7 @@ import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit-html/directives/class-map.js';
 
 import stylesheet from './aiSourcesFeedback.scss?inline';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -24,7 +25,7 @@ import '../../reusable/button';
 
 const _defaultTextStrings = {
   sourcesText: 'Sources',
-  foundSources: 'Found sources',
+  foundSources: 'Found {count} sources:',
   showMore: 'Show more',
   showLess: 'Show less',
   positiveFeedback: 'Share what you liked',
@@ -217,7 +218,6 @@ export class AISourcesFeedback extends LitElement {
           <kyn-button
             class="close"
             @on-click=${(e: Event) => this._handleClick(e, 'sources')}
-            }}
             kind="ghost"
             size="small"
             description=${this.closeText}
@@ -227,7 +227,12 @@ export class AISourcesFeedback extends LitElement {
         </div>
 
         <div class="found-sources">
-          ${this._textStrings.foundSources} (${this._sourceEls.length}) :
+          ${unsafeHTML(
+            this._textStrings.foundSources.replace(
+              '{count}',
+              `<b>${this._sourceEls.length}</b>`
+            )
+          )}
         </div>
         <div class="card-container">
           <slot name="sources" @slotchange=${this._handleSlotChange}></slot>

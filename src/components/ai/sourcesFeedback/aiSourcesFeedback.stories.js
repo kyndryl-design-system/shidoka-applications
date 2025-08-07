@@ -3,10 +3,12 @@ import { action } from 'storybook/actions';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
 import sourceIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/earth.svg';
+import pdfIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/document-pdf.svg';
 import './index';
 import '../../reusable/checkbox';
 import '../../reusable/card/card.sample';
 import '../../reusable/textArea/textArea';
+import '../../reusable/link/link';
 
 export default {
   title: 'AI / Components / AI Sources Feedback',
@@ -21,22 +23,28 @@ export default {
 
 const sourcesData = [
   {
-    description: 'Source Link 1',
+    description: 'String Value',
+    icon: unsafeSVG(pdfIcon),
   },
   {
-    description: 'Source Link 2',
+    description: 'String Value',
+    icon: unsafeSVG(sourceIcon),
   },
   {
-    description: 'Source Link 3',
+    description: 'String Value',
+    icon: unsafeSVG(pdfIcon),
   },
   {
-    description: 'Source Link 4',
+    description: 'String Value',
+    icon: unsafeSVG(sourceIcon),
   },
   {
-    description: 'Source Link 5',
+    description: 'String Value',
+    icon: unsafeSVG(sourceIcon),
   },
   {
-    description: 'Source Link 6',
+    description: 'String Value',
+    icon: unsafeSVG(sourceIcon),
   },
 ];
 
@@ -56,7 +64,7 @@ const args = {
   closeText: 'Close',
   textStrings: {
     sourcesText: 'Sources',
-    foundSources: 'Found sources',
+    foundSources: 'Found {count} sources:',
     showMore: 'Show more',
     showLess: 'Show less',
     positiveFeedback: 'Share what you liked',
@@ -113,23 +121,19 @@ export const AISourcesFeedback = {
 
 const SourcesContent = () => html`
   ${sourcesData.map(
-    (card) => html`
+    (card, i) => html`
       <kyn-card
         slot="sources"
         aiConnected
-        type="clickable"
-        href="#"
-        rel="noopener"
-        target="_blank"
-        ?hideBorder=${args.hideBorder}
-        role="link"
-        aria-label="Clickable card"
+        aria-label="Card"
         @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <div class="card-description">
-          <span slot="icon" class="source-icon">${unsafeSVG(sourceIcon)}</span>
-          <div class="separator" aria-hidden="true"></div>
-          <span class="card-description">${card.description}</span>
+          <div class="card-content">
+            <span>${i + 1}</span>
+            <span class="source-icon">${card.icon}</span>
+          </div>
+          <div class="source-value">${card.description}</div>
         </div>
       </kyn-card>
     `
@@ -141,22 +145,26 @@ const SourcesContent = () => html`
     .card-description {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 0px 8px;
+      gap: 4px;
+    }
+    .card-content {
+      display: flex;
+      padding-left: 8px;
+      align-items: center;
+      gap: 5px;
     }
 
     .source-icon {
       display: flex;
+      padding-left: 8px;
       align-items: center;
-      justify-content: center;
+      border-left: 1px solid var(--kd-color-border-accent-secondary);
     }
 
-    .separator {
-      width: 1px;
-      height: 16px;
-      background-color: var(--color-border, #ccc);
-      margin: 0 4px;
-      flex-shrink: 0;
+    .source-value {
+      display: flex;
+      padding: 0 8px;
+      align-items: center;
     }
     .card-description {
       /* to avoid text overflow for long textStrings */
@@ -226,6 +234,4 @@ const feedbackFormContent = () => html`
 const handleCancelClick = (e) => {
   action(e.type)({ ...e, detail: e.detail });
   console.log('Cancel button clicked');
-  // Cancel button click logic here to close the feedback form
-  // this.feedbackOpened = false;
 };
