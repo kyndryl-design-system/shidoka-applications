@@ -25,7 +25,7 @@ import '../../reusable/button';
 
 const _defaultTextStrings = {
   sourcesText: 'Sources',
-  foundSources: 'Found {count} sources:',
+  foundSources: 'Found sources',
   showMore: 'Show more',
   showLess: 'Show less',
   positiveFeedback: 'Share what you liked',
@@ -227,12 +227,7 @@ export class AISourcesFeedback extends LitElement {
         </div>
 
         <div class="found-sources">
-          ${unsafeHTML(
-            this._textStrings.foundSources.replace(
-              '{count}',
-              `<b>${this._sourceEls.length}</b>`
-            )
-          )}
+          ${this._textStrings.foundSources} (${this._sourceEls.length}):
         </div>
         <div class="card-container">
           <slot name="sources" @slotchange=${this._handleSlotChange}></slot>

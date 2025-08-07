@@ -63,8 +63,8 @@ const args = {
   revealAllSources: false,
   closeText: 'Close',
   textStrings: {
-    sourcesText: 'Sources',
-    foundSources: 'Found {count} sources:',
+    sourcesText: 'Sources used',
+    foundSources: 'Found sources',
     showMore: 'Show more',
     showLess: 'Show less',
     positiveFeedback: 'Share what you liked',
