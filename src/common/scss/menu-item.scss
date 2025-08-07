@@ -2,60 +2,78 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
+$menu-inner-elements: '.text', '.icon-container', '.icon', '.check-icon',
+  '.expand-icon';
+
+$menu-item-default-background: var(--kd-color-background-menu-state-default);
+$menu-item-hover-background: var(--kd-color-background-menu-state-hover);
+$menu-item-open-background: var(--kd-color-background-menu-state-open);
+$menu-item-pressed-background: var(--kd-color-background-menu-state-pressed);
+$menu-item-color-default: var(--kd-color-text-level-primary);
+$menu-item-color-light: var(--kd-color-text-level-light);
+$menu-item-color-disabled: var(--kd-color-text-link-level-disabled);
+$menu-item-color-destructive: var(--kd-color-text-variant-destructive);
+$menu-item-divider-color: var(--kd-color-border-level-tertiary);
+$menu-item-error-hover-bg: var(--kd-color-status-error-light);
+
 :host([highlighted]) {
   outline: 1px solid var(--kd-color-border-variants-focus);
 }
 
 .menu-item {
-  background: var(--kd-color-background-menu-state-default);
+  background: $menu-item-default-background;
 
-  .text,
-  .icon-container,
-  .icon,
-  .check-icon,
-  .expand-icon {
-    color: var(--kd-color-text-level-primary);
+  @each $el in $menu-inner-elements {
+    #{$el} {
+      color: $menu-item-color-default;
+    }
+  }
+
+  &:hover {
+    background-color: $menu-item-hover-background;
+
+    @each $el in $menu-inner-elements {
+      #{$el} {
+        color: $menu-item-color-light;
+      }
+    }
   }
 
   &:focus,
-  &:active:not([disabled]),
   &:focus-within,
   &:focus-visible {
-    background: var(--kd-color-background-menu-state-open);
+    background-color: $menu-item-open-background;
 
     .text {
-      color: var(--kd-color-text-level-light);
+      color: $menu-item-color-light;
+    }
+  }
+
+  &:active:not([disabled]) {
+    background: $menu-item-pressed-background;
+
+    @each $el in $menu-inner-elements {
+      #{$el} {
+        color: $menu-item-color-light;
+      }
     }
   }
 
   &[selected]:not([disabled]),
   &[highlighted] {
-    background: var(--kd-color-background-menu-state-open);
+    background: $menu-item-open-background;
 
     &:hover,
     &[highlighted] {
-      background-color: var(--kd-color-background-menu-state-hover);
-    }
-  }
-
-  &:hover,
-  &[highlighted] {
-    background-color: var(--kd-color-background-menu-state-hover);
-
-    .text,
-    .icon-container,
-    .icon,
-    .check-icon,
-    .expand-icon {
-      color: var(--kd-color-text-level-light);
+      background-color: $menu-item-hover-background;
     }
   }
 
   &[disabled] {
-    color: var(--kd-color-text-link-level-disabled);
+    color: $menu-item-color-disabled;
 
     .text {
-      color: var(--kd-color-text-link-level-disabled);
+      color: $menu-item-color-disabled;
     }
 
     &:hover {
@@ -69,15 +87,15 @@
   }
 
   &.destructive {
-    color: var(--kd-color-text-variant-destructive);
-    border-top: 1px solid var(--kd-color-border-level-tertiary);
+    color: $menu-item-color-destructive;
+    border-top: 1px solid $menu-item-divider-color;
 
     &:hover {
-      background: var(--kd-color-status-error-light);
+      background: $menu-item-error-hover-bg;
     }
 
     .text {
-      color: var(--kd-color-text-variant-destructive);
+      color: $menu-item-color-destructive;
     }
   }
 }
