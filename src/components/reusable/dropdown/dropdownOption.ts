@@ -111,7 +111,7 @@ export class DropdownOption extends LitElement {
               `}
         </span>
 
-        <slot name="icon" style="display:flex"></slot>
+        <span class="icon"><slot name="icon" style="display:flex"></slot></span>
         ${this.selected && !this.multiple
           ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
           : this.allowAddOption && this.removable
