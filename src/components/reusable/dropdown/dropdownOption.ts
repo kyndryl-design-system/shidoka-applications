@@ -76,7 +76,7 @@ export class DropdownOption extends LitElement {
   override render() {
     return html`
       <div
-        class="option"
+        class="option menu-item"
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}

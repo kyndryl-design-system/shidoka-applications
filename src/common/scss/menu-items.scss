@@ -1,0 +1,80 @@
+@use './global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host([highlighted]) {
+  outline: 1px solid var(--kd-color-border-variants-focus);
+}
+
+.menu-item {
+  background: var(--kd-color-background-menu-state-default);
+
+  .text {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  .icon-container {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  &:focus &:active:not([disabled]) {
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &:focus-within,
+  &:focus-visible {
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &[selected]:not([disabled]) {
+    background: var(--kd-color-background-menu-state-open);
+
+    .text {
+      color: var(--kd-color-text-level-light);
+    }
+
+    .icon-container {
+      color: var(--kd-color-icon-light);
+    }
+
+    .check-icon {
+      color: var(--kd-color-icon-light);
+    }
+
+    &:hover,
+    &[highlighted] {
+      background-color: var(--kd-color-background-menu-state-hover);
+    }
+  }
+
+  &:hover,
+  &[highlighted] {
+    background-color: var(--kd-color-background-menu-state-hover);
+
+    .icon-container {
+      color: var(--kd-color-text-level-light);
+    }
+
+    .text {
+      color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &[disabled] {
+    color: var(--kd-color-text-link-level-disabled);
+
+    &:hover {
+      cursor: not-allowed;
+    }
+
+    kyn-checkbox {
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+
+    &:hover {
+      background-color: var(--kd-color-background-container-default);
+    }
+  }
+}

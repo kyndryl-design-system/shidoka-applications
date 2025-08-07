@@ -1,11 +1,11 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/menu-items.scss';
 
 :host {
   display: block;
 }
 
 .option {
-  background-color: var(--kd-color-background-ui-hollow-default);
   cursor: default;
   padding: 8px 16px;
   height: 48px;
@@ -17,30 +17,6 @@
   &[selected] {
     display: flex;
     align-items: center;
-    background-color: var(--kd-color-background-accent-subtle);
-  }
-
-  &:hover,
-  &[highlighted] {
-    background-color: var(--kd-color-background-accent-subtle);
-  }
-
-  &[disabled] {
-    color: var(--kd-color-text-link-level-disabled);
-
-    &:hover {
-      cursor: not-allowed;
-    }
-
-    kyn-checkbox {
-      &:hover {
-        cursor: not-allowed;
-      }
-    }
-
-    &:hover {
-      background-color: var(--kd-color-background-container-default);
-    }
   }
 
   span {
@@ -50,15 +26,10 @@
     text-overflow: ellipsis;
   }
 
-  // span.text {
-  //   flex-shrink: 0;
-  // }
-
   span.check-icon {
     display: flex;
     margin-left: auto;
     padding: 0.5rem 0.5rem 0.5rem 0;
-    color: var(--kd-color-icon-accent);
   }
 
   slot[name='icon']::slotted(span) {
