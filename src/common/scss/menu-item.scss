@@ -9,18 +9,14 @@
 .menu-item {
   background: var(--kd-color-background-menu-state-default);
 
-  .text {
+  .text,
+  .icon-container,
+  .expand-icon {
     color: var(--kd-color-text-level-primary);
   }
 
-  .icon-container {
-    color: var(--kd-color-text-level-primary);
-  }
-
-  &:focus &:active:not([disabled]) {
-    background-color: var(--kd-color-background-accent-subtle);
-  }
-
+  &:focus,
+  &:active:not([disabled]),
   &:focus-within,
   &:focus-visible {
     background-color: var(--kd-color-background-accent-subtle);
@@ -29,14 +25,8 @@
   &[selected]:not([disabled]) {
     background: var(--kd-color-background-menu-state-open);
 
-    .text {
-      color: var(--kd-color-text-level-light);
-    }
-
-    .icon-container {
-      color: var(--kd-color-icon-light);
-    }
-
+    .text,
+    .icon-container,
     .check-icon {
       color: var(--kd-color-icon-light);
     }
@@ -51,11 +41,9 @@
   &[highlighted] {
     background-color: var(--kd-color-background-menu-state-hover);
 
-    .icon-container {
-      color: var(--kd-color-text-level-light);
-    }
-
-    .text {
+    .text,
+    .icon-container,
+    .expand-icon {
       color: var(--kd-color-text-level-light);
     }
   }
@@ -63,18 +51,30 @@
   &[disabled] {
     color: var(--kd-color-text-link-level-disabled);
 
+    .text {
+      color: var(--kd-color-text-link-level-disabled);
+    }
+
     &:hover {
       cursor: not-allowed;
+      background-color: var(--kd-color-background-container-default);
     }
 
-    kyn-checkbox {
-      &:hover {
-        cursor: not-allowed;
-      }
+    kyn-checkbox:hover {
+      cursor: not-allowed;
     }
+  }
+
+  &.destructive {
+    color: var(--kd-color-text-variant-destructive);
+    border-top: 1px solid var(--kd-color-border-level-tertiary);
 
     &:hover {
-      background-color: var(--kd-color-background-container-default);
+      background: var(--kd-color-status-error-light);
+    }
+
+    .text {
+      color: var(--kd-color-text-variant-destructive);
     }
   }
 }
