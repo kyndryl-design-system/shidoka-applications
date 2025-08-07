@@ -16,7 +16,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300053&p=f&m=dev',
+      url: 'https://www.figma.com/design/STWRRCgjIeXAZlIrIOJeTF/Ai-Component-Library?node-id=26610-251300&p=f&m=dev',
     },
   },
 };
