@@ -3,7 +3,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
 import analyticsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/analytics.svg';
-import consultationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/consultation-2.svg';
+import customerEngagementIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/customer-engagement.svg';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 import { action } from 'storybook/actions';
@@ -55,7 +55,7 @@ export const ChatModal = {
         icon: analyticsIcon,
       },
       'Option 2': {
-        icon: consultationIcon,
+        icon: customerEngagementIcon,
       },
     };
 
@@ -168,7 +168,7 @@ export const ChatModal = {
                   <span slot="description">Description for the Option 1</span>
                 </kyn-enhanced-dropdown-option>
                 <kyn-enhanced-dropdown-option value="Option 2">
-                  <span slot="icon">${unsafeSVG(consultationIcon)}</span>
+                  <span slot="icon">${unsafeSVG(customerEngagementIcon)}</span>
                   <span slot="title">Option 2</span>
                   <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
                   <span slot="description">Description for the Option 2</span>
