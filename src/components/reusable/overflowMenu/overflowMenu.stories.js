@@ -20,10 +20,22 @@ export default {
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-551887&p=f&m=dev',
     },
   },
+  argTypes: {
+    open: { control: 'boolean' },
+    kind: {
+      control: 'select',
+      options: ['default', 'ai'],
+    },
+    anchorRight: { control: 'boolean' },
+    verticalDots: { control: 'boolean' },
+    fixed: { control: 'boolean' },
+    assistiveText: { control: 'text' },
+  },
 };
 
 const args = {
   open: false,
+  kind: 'default',
   anchorRight: false,
   verticalDots: false,
   fixed: false,
@@ -38,6 +50,7 @@ export const OverflowMenu = {
         ?open=${args.open}
         ?anchorRight=${args.anchorRight}
         ?verticalDots=${args.verticalDots}
+        kind=${args.kind}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
       >

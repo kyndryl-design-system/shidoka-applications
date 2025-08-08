@@ -19,6 +19,10 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    kind: {
+      options: ['default', 'ai'],
+      control: { type: 'select' },
+    },
     openDirection: {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
@@ -37,6 +41,7 @@ const args = {
   label: 'Label',
   placeholder: '',
   size: 'md',
+  kind: 'default',
   inline: false,
   name: 'example',
   open: false,
@@ -77,6 +82,7 @@ export const Single = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -121,6 +127,7 @@ export const SingleSearchable = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -172,6 +179,7 @@ export const MultiSelect = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -222,6 +230,7 @@ export const MultiSelectSearchable = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -281,6 +290,7 @@ export const Grouped = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -361,6 +371,7 @@ export const DataDrivenOptions = {
         multiple
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         ?hideTags=${args.hideTags}
         name=${args.name}
@@ -429,6 +440,7 @@ export const DirectionalControl = {
             label="Auto (default)"
             placeholder="Auto detection"
             size=${args.size}
+            kind=${args.kind}
             name="auto-direction"
             openDirection="auto"
             .textStrings=${args.textStrings}
@@ -540,6 +552,7 @@ export const AddNewOption = {
         multiple
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         ?hideTags=${args.hideTags}
         name=${args.name}

@@ -16,6 +16,13 @@ $menu-item-color-destructive: var(--kd-color-text-variant-destructive);
 $menu-item-divider-color: var(--kd-color-border-level-tertiary);
 $menu-item-error-hover-bg: var(--kd-color-status-error-light);
 
+$menu-item-ai-background: var(--kd-color-background-menu-state-ai-default);
+$menu-item-ai-hover-background: var(--kd-color-background-menu-state-ai-hover);
+$menu-item-ai-open-background: var(--kd-color-background-menu-state-ai-open);
+$menu-item-ai-pressed-background: var(
+  --kd-color-background-menu-state-ai-pressed
+);
+
 :host([highlighted]) {
   outline: 1px solid var(--kd-color-border-variants-focus);
 }
@@ -72,8 +79,10 @@ $menu-item-error-hover-bg: var(--kd-color-status-error-light);
   &[disabled] {
     color: $menu-item-color-disabled;
 
-    .text {
-      color: $menu-item-color-disabled;
+    @each $el in $menu-inner-elements {
+      #{$el} {
+        color: $menu-item-color-disabled;
+      }
     }
 
     &:hover {
@@ -96,6 +105,88 @@ $menu-item-error-hover-bg: var(--kd-color-status-error-light);
 
     .text {
       color: $menu-item-color-destructive;
+    }
+  }
+
+  &.ai-connected-true {
+    background: $menu-item-ai-background;
+
+    @each $el in $menu-inner-elements {
+      #{$el} {
+        color: $menu-item-color-default;
+      }
+    }
+
+    &:hover {
+      background-color: $menu-item-ai-hover-background;
+
+      @each $el in $menu-inner-elements {
+        #{$el} {
+          color: $menu-item-color-light;
+        }
+      }
+    }
+
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      background-color: $menu-item-ai-open-background;
+
+      .text {
+        color: $menu-item-color-light;
+      }
+    }
+
+    &:active:not([disabled]) {
+      background: $menu-item-ai-pressed-background;
+
+      @each $el in $menu-inner-elements {
+        #{$el} {
+          color: $menu-item-color-light;
+        }
+      }
+    }
+
+    &[selected]:not([disabled]),
+    &[highlighted] {
+      background: $menu-item-ai-open-background;
+
+      &:hover,
+      &[highlighted] {
+        background-color: $menu-item-ai-hover-background;
+      }
+    }
+
+    &[disabled] {
+      color: $menu-item-color-disabled;
+
+      @each $el in $menu-inner-elements {
+        #{$el} {
+          color: $menu-item-color-disabled;
+        }
+      }
+
+      &:hover {
+        cursor: not-allowed;
+        background-color: $menu-item-ai-background;
+      }
+
+      kyn-checkbox:hover {
+        cursor: not-allowed;
+      }
+    }
+
+    &.destructive {
+      color: $menu-item-color-destructive;
+      border-top: 1px solid $menu-item-divider-color;
+
+      &:hover {
+        background: $menu-item-error-hover-bg;
+      }
+
+      .text {
+        color: $menu-item-color-destructive;
+      }
     }
   }
 }

@@ -18,6 +18,18 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   accessor open = false;
 
+  /** Menu kind. */
+  @property({ type: String })
+  set kind(value: 'ai' | 'default') {
+    const old = this._kind;
+    this._kind = value;
+    this.requestUpdate('kind', old);
+  }
+  get kind() {
+    return this._kind;
+  }
+  private _kind: 'ai' | 'default' = 'default';
+
   /** Anchors the menu to the right of the button. */
   @property({ type: Boolean })
   accessor anchorRight = false;
@@ -66,6 +78,7 @@ export class OverflowMenu extends LitElement {
       right: this.anchorRight,
       fixed: this.fixed,
       upwards: this._openUpwards,
+      ['ai-connected']: this.kind === 'ai',
     };
 
     return html`
@@ -136,6 +149,16 @@ export class OverflowMenu extends LitElement {
   }
 
   override updated(changedProps: any) {
+    if (changedProps.has('kind')) {
+      this.dispatchEvent(
+        new CustomEvent('kind-changed', {
+          detail: this.kind,
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
+
     if (changedProps.has('open')) {
       if (this.open) {
         // open dropdown upwards if closer to bottom of viewport

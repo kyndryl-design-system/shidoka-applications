@@ -61,6 +61,18 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   accessor size = 'md';
 
+  /** Dropdown kind. */
+  @property({ type: String })
+  set kind(value: 'ai' | 'default') {
+    const old = this._kind;
+    this._kind = value;
+    this.requestUpdate('kind', old);
+  }
+  get kind() {
+    return this._kind;
+  }
+  private _kind: 'ai' | 'default' = 'default';
+
   /** Dropdown inline style type. */
   @property({ type: Boolean })
   accessor inline = false;
@@ -263,9 +275,14 @@ export class Dropdown extends FormMixin(LitElement) {
   prevSearchKeydownIndex = -1;
 
   override render() {
+    const mainDropdownClasses = {
+      dropdown: true,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
+    };
+
     return html`
       <div
-        class="dropdown"
+        class=${classMap(mainDropdownClasses)}
         ?disabled=${this.disabled}
         ?open=${this.open}
         ?inline=${this.inline}
@@ -1195,6 +1212,16 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override updated(changedProps: PropertyValues) {
     super.updated(changedProps);
+
+    if (changedProps.has('kind')) {
+      this.dispatchEvent(
+        new CustomEvent('kind-changed', {
+          detail: this.kind,
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
 
     const root = this.shadowRoot;
     if (!root) return;

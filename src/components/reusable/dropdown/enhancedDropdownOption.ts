@@ -1,6 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import '../checkbox';
 import '../button';
@@ -93,10 +94,20 @@ export class EnhancedDropdownOption extends LitElement {
   @state()
   accessor hasIcon = false;
 
+  /** Kind of the item, derived from parent. */
+  @state()
+  accessor kind: 'ai' | 'default' = 'default';
+
   override render() {
+    const classes = {
+      'enhanced-option': true,
+      'menu-item': true,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
+    };
+
     return html`
       <div
-        class="enhanced-option menu-item"
+        class=${classMap(classes)}
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
@@ -166,7 +177,17 @@ export class EnhancedDropdownOption extends LitElement {
   }
 
   override firstUpdated() {
+    // derive whether icon slot has content
     this.hasIcon = this.iconSlot.assignedNodes({ flatten: true }).length > 0;
+
+    // sync kind from parent and listen for changes
+    const parent = this.closest('kyn-dropdown') as any;
+    if (parent) {
+      this.kind = parent.kind;
+      parent.addEventListener('kind-changed', (e: Event) => {
+        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
+      });
+    }
   }
 
   private onIconSlotChange() {

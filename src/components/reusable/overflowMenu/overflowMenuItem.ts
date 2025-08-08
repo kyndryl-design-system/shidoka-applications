@@ -56,10 +56,17 @@ export class OverflowMenuItem extends LitElement {
   @state()
   accessor tooltipText = '';
 
+  /** Kind of the item, derived from parent.
+   * @ignore
+   */
+  @state()
+  accessor kind: 'ai' | 'default' = 'default';
+
   override render() {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
       destructive: this.destructive,
     };
 
@@ -97,6 +104,23 @@ export class OverflowMenuItem extends LitElement {
         </button>
       `;
     }
+  }
+
+  override firstUpdated() {
+    const parent = this.closest('kyn-overflow-menu');
+    if (parent) {
+      this._menuItems = parent.getMenuItems();
+      this._menu = parent.getMenu();
+      this.kind = parent.kind;
+
+      parent.addEventListener('kind-changed', (e: Event) => {
+        const customEvent = e as CustomEvent<'ai' | 'default'>;
+        requestAnimationFrame(() => {
+          this.kind = customEvent.detail;
+        });
+      });
+    }
+    this.checkOverflow();
   }
 
   private handleClick(e: Event) {
@@ -144,16 +168,6 @@ export class OverflowMenuItem extends LitElement {
         return;
       }
     }
-  }
-
-  override firstUpdated() {
-    // Access the parent component
-    const parent = this.closest('kyn-overflow-menu');
-    if (parent) {
-      this._menuItems = parent.getMenuItems();
-      this._menu = parent.getMenu();
-    }
-    this.checkOverflow();
   }
 
   private checkOverflow() {

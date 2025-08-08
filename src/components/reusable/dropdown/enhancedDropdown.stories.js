@@ -24,6 +24,10 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    kind: {
+      options: ['default', 'ai'],
+      control: { type: 'select' },
+    },
     openDirection: {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
@@ -54,6 +58,7 @@ const args = {
   label: 'Label',
   placeholder: '',
   size: 'md',
+  kind: 'default',
   inline: false,
   name: 'example',
   open: false,
@@ -94,6 +99,7 @@ export const Default = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -120,7 +126,12 @@ export const Default = {
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="2">
           <span slot="title">Option 2</span>
-          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <kyn-tag
+            slot="tag"
+            label="New chat"
+            tagSize="sm"
+            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+          ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 2 enhanced dropdown
             option.</span
@@ -137,7 +148,12 @@ export const Default = {
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="4">
           <span slot="title">Option 4</span>
-          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <kyn-tag
+            slot="tag"
+            label="New chat"
+            tagSize="sm"
+            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+          ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 4 enhanced dropdown
             option.</span
@@ -170,6 +186,7 @@ export const WithIcons = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -197,7 +214,12 @@ export const WithIcons = {
         <kyn-enhanced-dropdown-option value="2">
           <span slot="icon">${unsafeSVG(aiOpsIcon)}</span>
           <span slot="title">Option 2</span>
-          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <kyn-tag
+            slot="tag"
+            label="New chat"
+            tagSize="sm"
+            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+          ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 2 enhanced dropdown
             option.</span
@@ -215,7 +237,12 @@ export const WithIcons = {
         <kyn-enhanced-dropdown-option value="4">
           <span slot="icon">${unsafeSVG(branchIcon)}</span>
           <span slot="title">Option 4</span>
-          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <kyn-tag
+            slot="tag"
+            label="New chat"
+            tagSize="sm"
+            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+          ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 4 enhanced dropdown
             option.</span
@@ -250,6 +277,7 @@ export const ButtonAnchor = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -287,7 +315,12 @@ export const ButtonAnchor = {
         <kyn-enhanced-dropdown-option value="2">
           <span slot="icon">${unsafeSVG(aiOpsIcon)}</span>
           <span slot="title">Option 2</span>
-          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <kyn-tag
+            slot="tag"
+            label="New chat"
+            tagSize="sm"
+            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+          ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 2 enhanced dropdown
             option.</span
@@ -304,7 +337,12 @@ export const ButtonAnchor = {
         <kyn-enhanced-dropdown-option value="4">
           <span slot="icon">${unsafeSVG(branchIcon)}</span>
           <span slot="title">Option 4</span>
-          <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+          <kyn-tag
+            slot="tag"
+            label="New chat"
+            tagSize="sm"
+            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+          ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 4 enhanced dropdown
             option.</span
@@ -337,6 +375,7 @@ export const Searchable = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -415,6 +454,7 @@ export const MutliSelect = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -493,6 +533,7 @@ export const MultiSelectIcons = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -576,6 +617,7 @@ export const SearchableMultiSelect = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
