@@ -306,7 +306,7 @@ export class Notification extends LitElement {
 
   private _handleCardClick(e: any) {
     const event = new CustomEvent('on-notification-click', {
-      detail: e.detail.origEvent,
+      detail: { origEvent: e.detail.origEvent },
     });
     this.dispatchEvent(event);
   }
