@@ -72,8 +72,10 @@ $menu-item-error-hover-bg: var(--kd-color-status-error-light);
   &[disabled] {
     color: $menu-item-color-disabled;
 
-    .text {
-      color: $menu-item-color-disabled;
+    @each $el in $menu-inner-elements {
+      #{$el} {
+        color: $menu-item-color-disabled;
+      }
     }
 
     &:hover {
