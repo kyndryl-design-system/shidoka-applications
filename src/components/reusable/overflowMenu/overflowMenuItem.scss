@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/menu-item.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 
@@ -24,26 +25,8 @@
   outline-offset: -2px;
   transition: background-color 0.15s ease-out, outline-color 0.15s ease-out;
 
-  &:hover {
-    background: var(--kd-color-background-ui-hollow-hover);
-  }
-
   &:focus-visible {
     outline-color: var(--kd-color-border-variants-focus);
-  }
-
-  &.destructive {
-    color: var(--kd-color-text-variant-destructive);
-    border-top: 1px solid var(--kd-color-border-level-tertiary);
-    &:hover {
-      background: var(--kd-color-status-error-light);
-    }
-  }
-
-  &[disabled] {
-    color: var(--kd-color-text-link-level-disabled);
-    background: none;
-    cursor: not-allowed;
   }
 }
 .sr-only {
