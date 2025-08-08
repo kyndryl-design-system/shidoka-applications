@@ -8,7 +8,9 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
+
 import '../../reusable/button';
+
 import LocalNavScss from './localNav.scss?inline';
 
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -35,6 +37,18 @@ export class LocalNav extends LitElement {
   /** Local nav pinned state. */
   @property({ type: Boolean })
   accessor pinned = false;
+
+  /** Dropdown kind. */
+  @property({ type: String })
+  set kind(value: 'ai' | 'default') {
+    const old = this._kind;
+    this._kind = value;
+    this.requestUpdate('kind', old);
+  }
+  get kind() {
+    return this._kind;
+  }
+  private _kind: 'ai' | 'default' = 'default';
 
   /** Text string customization. */
   @property({ type: Object })
@@ -93,6 +107,7 @@ export class LocalNav extends LitElement {
         class=${classMap({
           'nav--expanded': this._expanded || this.pinned,
           'nav--expanded-mobile': this._mobileExpanded,
+          [`ai-connected-${this.kind === 'ai'}`]: true,
           pinned: this.pinned,
         })}
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
@@ -134,6 +149,18 @@ export class LocalNav extends LitElement {
 
       <div class="overlay ${this.pinned ? 'pinned' : ''}"></div>
     `;
+  }
+
+  override updated(changedProps: Map<string | number | symbol, unknown>) {
+    if (changedProps.has('kind')) {
+      this.dispatchEvent(
+        new CustomEvent('kind-changed', {
+          detail: this.kind,
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 
   private _handleNavToggle(e: Event) {

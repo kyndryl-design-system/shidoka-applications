@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -71,6 +71,12 @@ export class LocalNavLink extends LitElement {
   @state()
   accessor _text = '';
 
+  /** Kind of the item, derived from parent.
+   * @ignore
+   */
+  @state()
+  accessor kind: 'ai' | 'default' = 'default';
+
   /**
    * Queries slotted links.
    * @ignore
@@ -104,15 +110,14 @@ export class LocalNavLink extends LitElement {
       'has-links': this._navLinks.length,
       'has-icon': this._icon.length,
       'left-padding': this.leftPadding && this._level > 1,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
     };
 
     return html`
       <div class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           ${this._navLinks.length
-            ? html`
-                <span class="expand-icon"> ${unsafeSVG(chevronIcon)} </span>
-              `
+            ? html`<span class="expand-icon">${unsafeSVG(chevronIcon)}</span>`
             : null}
 
           <div class="icon">
@@ -134,11 +139,23 @@ export class LocalNavLink extends LitElement {
             : null}
 
           <div class="category">${this._text}</div>
-
           <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
         </div>
       </div>
     `;
+  }
+
+  override firstUpdated(changedProps: PropertyValues) {
+    super.firstUpdated(changedProps);
+
+    // initialize kind from parent <kyn-local-nav>
+    const parent = this.closest('kyn-local-nav') as any;
+    if (parent) {
+      this.kind = parent.kind;
+      parent.addEventListener('kind-changed', (e: Event) => {
+        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
+      });
+    }
   }
 
   override willUpdate(changedProps: any) {
@@ -150,15 +167,13 @@ export class LocalNavLink extends LitElement {
   override updated(changedProps: any) {
     if (changedProps.has('active') && this.active) {
       this._getSlotText();
-
-      const event = new CustomEvent('on-link-active', {
-        composed: true,
-        bubbles: true,
-        detail: {
-          text: this._text,
-        },
-      });
-      this.dispatchEvent(event);
+      this.dispatchEvent(
+        new CustomEvent('on-link-active', {
+          composed: true,
+          bubbles: true,
+          detail: { text: this._text },
+        })
+      );
     }
   }
 
@@ -168,18 +183,13 @@ export class LocalNavLink extends LitElement {
   }
 
   private _getSlotText() {
-    const Slot: any = this.shadowRoot?.querySelector('.text slot');
-    let text = '';
-
-    const nodes = Slot.assignedNodes({
-      flatten: true,
-    });
-
-    for (let i = 0; i < nodes.length; i++) {
-      text += nodes[i].textContent.trim();
-    }
-
-    this._text = text;
+    const slotEl = this.shadowRoot!.querySelector(
+      '.text slot'
+    ) as HTMLSlotElement;
+    this._text = slotEl
+      .assignedNodes({ flatten: true })
+      .map((n) => n.textContent?.trim() ?? '')
+      .join(' ');
   }
 
   private _handleLinksSlotChange() {
@@ -192,9 +202,8 @@ export class LocalNavLink extends LitElement {
       link._level = this._level + 1;
       link._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
-
-    this._dividers.forEach((divider: any) => {
-      divider._navExpanded = this._navExpanded || this._navExpandedMobile;
+    this._dividers.forEach((div: any) => {
+      div._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
   }
 
@@ -203,31 +212,19 @@ export class LocalNavLink extends LitElement {
   }
 
   private handleClick(e: Event) {
-    let preventDefault = false;
-
-    if (this.disabled) {
-      preventDefault = true;
-    }
-
-    if (this._navLinks.length) {
-      preventDefault = true;
-      this.expanded = !this.expanded;
-    }
-
-    if (preventDefault) {
-      e.preventDefault();
-    }
-
+    const preventDefault = this.disabled || this._navLinks.length > 0;
+    if (this._navLinks.length) this.expanded = !this.expanded;
+    if (preventDefault) e.preventDefault();
     this.requestUpdate();
-
-    const event = new CustomEvent('on-click', {
-      detail: {
-        origEvent: e,
-        level: this._level,
-        defaultPrevented: preventDefault,
-      },
-    });
-    this.dispatchEvent(event);
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        detail: {
+          origEvent: e,
+          level: this._level,
+          defaultPrevented: preventDefault,
+        },
+      })
+    );
   }
 }
 
