@@ -76,7 +76,7 @@ export class DropdownOption extends LitElement {
   override render() {
     return html`
       <div
-        class="option"
+        class="option menu-item"
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
@@ -111,7 +111,7 @@ export class DropdownOption extends LitElement {
               `}
         </span>
 
-        <slot name="icon" style="display:flex"></slot>
+        <span class="icon"><slot name="icon" style="display:flex"></slot></span>
         ${this.selected && !this.multiple
           ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
           : this.allowAddOption && this.removable

@@ -59,6 +59,7 @@ export class OverflowMenuItem extends LitElement {
   override render() {
     const classes = {
       'overflow-menu-item': true,
+      'menu-item': true,
       destructive: this.destructive,
     };
 
@@ -74,7 +75,7 @@ export class OverflowMenuItem extends LitElement {
           @keydown=${(e: Event) => this.handleKeyDown(e)}
           title=${itemText}
         >
-          <slot></slot>
+          <span class="text"><slot></slot></span>
           ${this.destructive
             ? html`<span class="sr-only">${this.description}</span>`
             : null}
@@ -89,7 +90,7 @@ export class OverflowMenuItem extends LitElement {
           @keydown=${(e: Event) => this.handleKeyDown(e)}
           title=${itemText}
         >
-          <slot></slot>
+          <span class="text"><slot></slot></span>
           ${this.destructive
             ? html`<span class="sr-only">${this.description}</span>`
             : null}

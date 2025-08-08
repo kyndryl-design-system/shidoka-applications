@@ -1,13 +1,9 @@
 @use '../../../common/scss/global.scss';
-@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/menu-item.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
-}
-
-:host([highlighted]) {
-  outline: 1px solid var(--kd-color-border-variants-focus);
 }
 
 .enhanced-option {
@@ -18,45 +14,6 @@
   border: none;
   transition: background-color 150ms ease-out;
   min-height: 74px;
-  background-color: var(--kd-color-background-ui-hollow-default);
-
-  &:hover,
-  &[highlighted] {
-    background-color: var(--kd-color-background-accent-subtle);
-
-    &:focus &:active:not([disabled]) {
-      background-color: var(--kd-color-background-accent-subtle);
-    }
-
-    &:focus-within,
-    &:focus-visible {
-      background-color: var(--kd-color-background-accent-subtle);
-    }
-  }
-
-  &[selected]:not([disabled]) {
-    background-color: var(--kd-color-background-accent-subtle);
-
-    &:hover {
-      background-color: var(--kd-color-background-accent-subtle);
-    }
-  }
-
-  &[disabled] {
-    color: var(--kd-color-text-link-level-disabled);
-    cursor: not-allowed;
-
-    &:hover {
-      cursor: not-allowed;
-      background-color: var(--kd-color-background-container-default);
-    }
-
-    kyn-checkbox {
-      &:hover {
-        cursor: not-allowed;
-      }
-    }
-  }
 
   kyn-checkbox {
     margin: 0 2px;
@@ -101,10 +58,10 @@
 
   .title {
     @include typography.type-body-02;
-    color: var(--kd-color-text-level-primary);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-bottom: 0;
     .title-content {
       display: flex;
       align-items: center;
@@ -131,7 +88,6 @@
     @include typography.type-ui-03;
     line-height: 16px;
     margin-top: 4px;
-    color: var(--kd-color-text-level-primary);
     overflow: hidden;
     display: -webkit-box;
 
@@ -143,7 +99,6 @@
   .option-type-container {
     @include typography.type-ui-03;
     line-height: 16px;
-    color: var(--kd-color-text-level-primary);
     margin-top: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -167,7 +122,6 @@
     align-self: center;
     width: 16px;
     height: 16px;
-    color: var(--kd-color-icon-primary);
   }
 
   .remove-option {
@@ -190,23 +144,5 @@
 .enhanced-option[multiple] {
   .content {
     align-items: flex-start;
-  }
-}
-
-.enhanced-option.compact {
-  min-height: 36px;
-  padding: 8px 16px;
-
-  .content {
-    gap: 8px;
-  }
-
-  .title {
-    font-size: var(--kyn-font-size-body-02);
-    margin-bottom: 0;
-  }
-
-  .description {
-    font-size: var(--kyn-font-size-caption-01);
   }
 }
