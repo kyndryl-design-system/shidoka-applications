@@ -311,7 +311,7 @@ export class Notification extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private _handleSlotChange(e: Event) {
+  private _handleSlotChange() {
     this._checkSlotContent();
   }
 

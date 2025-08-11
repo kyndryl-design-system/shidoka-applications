@@ -76,7 +76,7 @@ export class DropdownOption extends LitElement {
   override render() {
     return html`
       <div
-        class="option"
+        class="option menu-item"
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
@@ -86,7 +86,7 @@ export class DropdownOption extends LitElement {
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
-        <span class="text">
+        <span class="menu-item-inner-el text">
           ${this.multiple
             ? html`
                 <kyn-checkbox
@@ -111,9 +111,15 @@ export class DropdownOption extends LitElement {
               `}
         </span>
 
-        <slot name="icon" style="display:flex"></slot>
+        <span class="menu-item-inner-el icon"
+          ><slot name="icon" style="display:flex"></slot
+        ></span>
         ${this.selected && !this.multiple
-          ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
+          ? html`
+              <span class="menu-item-inner-el check-icon"
+                >${unsafeSVG(checkIcon)}</span
+              >
+            `
           : this.allowAddOption && this.removable
           ? html`
               <kyn-button
