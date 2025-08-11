@@ -451,7 +451,7 @@ export class Dropdown extends FormMixin(LitElement) {
               </div>
             </div>
           </div>
-          ${this.searchText !== ''
+          ${this.hasSearch && this.open
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled}
@@ -1266,6 +1266,10 @@ export class Dropdown extends FormMixin(LitElement) {
     if (changedProps.has('allowAddOption')) {
       this.updateChildOptions();
     }
+  }
+
+  private get hasSearch(): boolean {
+    return (this.searchText ?? '').trim().length > 0;
   }
 
   // add selected options to Tags array
