@@ -355,7 +355,10 @@ export class Dropdown extends FormMixin(LitElement) {
                         @click=${(e: Event) => this.handleClearMultiple(e)}
                       >
                         ${this.value.length}
-                        <span style="display:flex;" slot="icon"
+                        <span
+                          style="display:flex;"
+                          slot="icon"
+                          class="clear-multiple-icon"
                           >${unsafeSVG(clearIcon)}</span
                         >
                       </button>
@@ -1231,7 +1234,9 @@ export class Dropdown extends FormMixin(LitElement) {
       const assigned = slot?.assignedElements({ flatten: true }) as
         | HTMLElement[]
         | undefined;
-      const btn = assigned?.[0];
+      const btn = assigned?.find(
+        (el) => !el.querySelector('.clear-multiple-icon')
+      );
       const icon = btn?.querySelector<HTMLElement>('span[slot="icon"]');
       if (icon) {
         icon.style.transition = 'transform 0.2s ease-in-out';
