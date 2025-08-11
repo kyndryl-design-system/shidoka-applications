@@ -131,13 +131,13 @@ export class EnhancedDropdownOption extends LitElement {
 
         <div class="content">
           <div
-            class="icon-container"
+            class="menu-item-inner-el icon-container"
             style=${this.hasIcon ? '' : 'display:none'}
           >
             <slot name="icon" @slotchange=${this.onIconSlotChange}></slot>
           </div>
 
-          <div class="text">
+          <div class="menu-item-inner-el text">
             <div class="title-content">
               <slot name="title" @slotchange=${this.onTitleSlotChange}></slot>
               ${!this.selected
@@ -157,7 +157,9 @@ export class EnhancedDropdownOption extends LitElement {
 
         <div class="status-icons">
           ${!this.multiple && this.selected
-            ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
+            ? html`<span class="menu-item-inner-el check-icon"
+                >${unsafeSVG(checkIcon)}</span
+              >`
             : this.allowAddOption && this.removable
             ? html`
                 <kyn-button

@@ -99,7 +99,7 @@ export class DropdownOption extends LitElement {
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
-        <span class="text">
+        <span class="menu-item-inner-el text">
           ${this.multiple
             ? html`
                 <kyn-checkbox
@@ -124,9 +124,15 @@ export class DropdownOption extends LitElement {
               `}
         </span>
 
-        <span class="icon"><slot name="icon" style="display:flex"></slot></span>
+        <span class="menu-item-inner-el icon"
+          ><slot name="icon" style="display:flex"></slot
+        ></span>
         ${this.selected && !this.multiple
-          ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
+          ? html`
+              <span class="menu-item-inner-el check-icon"
+                >${unsafeSVG(checkIcon)}</span
+              >
+            `
           : this.allowAddOption && this.removable
           ? html`
               <kyn-button

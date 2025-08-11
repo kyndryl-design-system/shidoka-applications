@@ -117,14 +117,18 @@ export class LocalNavLink extends LitElement {
       <div class=${classMap(classes)}>
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           ${this._navLinks.length
-            ? html`<span class="expand-icon">${unsafeSVG(chevronIcon)}</span>`
+            ? html`
+                <span class="menu-item-inner-el expand-icon">
+                  ${unsafeSVG(chevronIcon)}
+                </span>
+              `
             : null}
 
-          <div class="icon">
+          <div class="menu-item-inner-el icon">
             <slot name="icon"></slot>
           </div>
 
-          <span class="text">
+          <span class="menu-item-inner-el text">
             <slot @slotchange=${this._handleTextSlotChange}></slot>
           </span>
         </a>
