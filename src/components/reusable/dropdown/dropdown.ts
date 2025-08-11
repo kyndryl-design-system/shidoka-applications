@@ -16,7 +16,7 @@ import { EnhancedDropdownOption } from './enhancedDropdownOption';
 
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
-import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/close-simple.svg';
+import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
 const _defaultTextStrings = {
   title: 'Dropdown',
@@ -319,7 +319,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 ?required=${this.required}
                 ?disabled=${this.disabled}
                 ?invalid=${this._isInvalid}
-                tabindex=${this.disabled ? '' : '0'}
+                tabindex=${this.disabled ? '' : this.searchable ? '-1' : '0'}
                 @mousedown=${(e: any) => {
                   if (!this.searchable) {
                     e.preventDefault();
@@ -338,10 +338,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         @click=${(e: Event) => this.handleClearMultiple(e)}
                       >
                         ${this.value.length}
-                        <span
-                          style="display:flex;"
-                          slot="icon"
-                          class="clear-multiple-icon"
+                        <span style="display:flex;" class="clear-multiple-icon"
                           >${unsafeSVG(clearIcon)}</span
                         >
                       </button>
@@ -464,9 +461,7 @@ export class Dropdown extends FormMixin(LitElement) {
                   description=${this._textStrings.clearAll}
                   @click=${(e: Event) => this.handleClear(e)}
                 >
-                  <span style="display:flex;" slot="icon"
-                    >${unsafeSVG(clearIcon)}</span
-                  >
+                  <span style="display:flex;">${unsafeSVG(clearIcon)}</span>
                 </kyn-button>
               `
             : null}

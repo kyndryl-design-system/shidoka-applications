@@ -5,19 +5,6 @@
 $menu-inner-elements: '.text', '.icon-container', '.icon', '.check-icon',
   '.expand-icon';
 
-$bg-default: var(--kd-color-background-menu-state-default);
-$bg-hover: var(--kd-color-background-menu-state-hover);
-$bg-open: var(--kd-color-background-menu-state-open);
-$bg-pressed: var(--kd-color-background-menu-state-pressed);
-
-$fg-default: var(--kd-color-text-level-primary);
-$fg-light: var(--kd-color-text-level-light);
-$fg-disabled: var(--kd-color-text-link-level-disabled);
-$fg-destructive: var(--kd-color-text-variant-destructive);
-
-$divider: var(--kd-color-border-level-tertiary);
-$error-hover: var(--kd-color-status-error-light);
-
 @mixin inner-color($c) {
   @each $el in $menu-inner-elements {
     #{$el} {
@@ -31,54 +18,54 @@ $error-hover: var(--kd-color-status-error-light);
 }
 
 .menu-item {
-  background: $bg-default;
-  @include inner-color($fg-default);
+  background: var(--kd-color-background-menu-state-default);
+  @include inner-color(var(--kd-color-text-level-primary));
   transition: background-color 150ms ease-out, color 150ms ease-out;
 
   &:hover {
-    background-color: $bg-hover;
-    @include inner-color($fg-light);
+    background-color: var(--kd-color-background-menu-state-hover);
+    @include inner-color(var(--kd-color-text-level-light));
   }
 
   &:focus,
   &:focus-within,
   &:focus-visible {
-    background-color: $bg-open;
-    @include inner-color($fg-default);
+    background-color: var(--kd-color-background-menu-state-open);
+    @include inner-color(var(--kd-color-text-level-primary));
   }
 
   &:active:not([disabled]) {
-    background: $bg-pressed;
-    @include inner-color($fg-light);
+    background: var(--kd-color-background-menu-state-pressed);
+    @include inner-color(var(--kd-color-text-level-light));
   }
 
   &[selected]:not([disabled]) {
-    background: $bg-open;
+    background: var(--kd-color-background-menu-state-open);
 
     &:hover {
-      background-color: $bg-hover;
-      @include inner-color($fg-light);
+      background-color: var(--kd-color-background-menu-state-hover);
+      @include inner-color(var(--kd-color-text-level-light));
     }
   }
 
   &[highlighted]:not([disabled]) {
-    background-color: $bg-hover;
-    @include inner-color($fg-light);
+    background-color: var(--kd-color-background-menu-state-hover);
+    @include inner-color(var(--kd-color-text-level-light));
   }
 
   &[selected][highlighted]:not([disabled]) {
-    background-color: $bg-hover;
-    @include inner-color($fg-light);
+    background-color: var(--kd-color-background-menu-state-hover);
+    @include inner-color(var(--kd-color-text-level-light));
   }
 
   &[highlighted]:is(:focus, :focus-within, :focus-visible) {
-    background-color: $bg-hover;
-    @include inner-color($fg-light);
+    background-color: var(--kd-color-background-menu-state-hover);
+    @include inner-color(var(--kd-color-text-level-light));
   }
 
   &[disabled] {
-    color: $fg-disabled;
-    @include inner-color($fg-disabled);
+    color: var(--kd-color-text-link-level-disabled);
+    @include inner-color(var(--kd-color-text-link-level-disabled));
 
     &:hover {
       cursor: not-allowed;
@@ -91,15 +78,15 @@ $error-hover: var(--kd-color-status-error-light);
   }
 
   &.destructive {
-    color: $fg-destructive;
-    border-top: 1px solid $divider;
+    color: var(--kd-color-text-variant-destructive);
+    border-top: 1px solid var(--kd-color-border-level-tertiary);
 
     &:hover {
-      background: $error-hover;
+      background: var(--kd-color-status-error-light);
     }
 
     .text {
-      color: $fg-destructive;
+      color: var(--kd-color-text-variant-destructive);
     }
   }
 }
