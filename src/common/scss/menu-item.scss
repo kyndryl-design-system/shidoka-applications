@@ -5,78 +5,80 @@
 $menu-inner-elements: '.text', '.icon-container', '.icon', '.check-icon',
   '.expand-icon';
 
-$menu-item-default-background: var(--kd-color-background-menu-state-default);
-$menu-item-hover-background: var(--kd-color-background-menu-state-hover);
-$menu-item-open-background: var(--kd-color-background-menu-state-open);
-$menu-item-pressed-background: var(--kd-color-background-menu-state-pressed);
-$menu-item-color-default: var(--kd-color-text-level-primary);
-$menu-item-color-light: var(--kd-color-text-level-light);
-$menu-item-color-disabled: var(--kd-color-text-link-level-disabled);
-$menu-item-color-destructive: var(--kd-color-text-variant-destructive);
-$menu-item-divider-color: var(--kd-color-border-level-tertiary);
-$menu-item-error-hover-bg: var(--kd-color-status-error-light);
+$bg-default: var(--kd-color-background-menu-state-default);
+$bg-hover: var(--kd-color-background-menu-state-hover);
+$bg-open: var(--kd-color-background-menu-state-open);
+$bg-pressed: var(--kd-color-background-menu-state-pressed);
+
+$fg-default: var(--kd-color-text-level-primary);
+$fg-light: var(--kd-color-text-level-light);
+$fg-disabled: var(--kd-color-text-link-level-disabled);
+$fg-destructive: var(--kd-color-text-variant-destructive);
+
+$divider: var(--kd-color-border-level-tertiary);
+$error-hover: var(--kd-color-status-error-light);
+
+@mixin inner-color($c) {
+  @each $el in $menu-inner-elements {
+    #{$el} {
+      color: $c;
+    }
+  }
+}
 
 :host([highlighted]) {
   outline: 1px solid var(--kd-color-border-variants-focus);
 }
 
 .menu-item {
-  background: $menu-item-default-background;
-
-  @each $el in $menu-inner-elements {
-    #{$el} {
-      color: $menu-item-color-default;
-    }
-  }
+  background: $bg-default;
+  @include inner-color($fg-default);
+  transition: background-color 150ms ease-out, color 150ms ease-out;
 
   &:hover {
-    background-color: $menu-item-hover-background;
-
-    @each $el in $menu-inner-elements {
-      #{$el} {
-        color: $menu-item-color-light;
-      }
-    }
+    background-color: $bg-hover;
+    @include inner-color($fg-light);
   }
 
   &:focus,
   &:focus-within,
   &:focus-visible {
-    background-color: $menu-item-open-background;
-
-    .text {
-      color: $menu-item-color-light;
-    }
+    background-color: $bg-open;
+    @include inner-color($fg-default);
   }
 
   &:active:not([disabled]) {
-    background: $menu-item-pressed-background;
+    background: $bg-pressed;
+    @include inner-color($fg-light);
+  }
 
-    @each $el in $menu-inner-elements {
-      #{$el} {
-        color: $menu-item-color-light;
-      }
+  &[selected]:not([disabled]) {
+    background: $bg-open;
+
+    &:hover {
+      background-color: $bg-hover;
+      @include inner-color($fg-light);
     }
   }
 
-  &[selected]:not([disabled]),
-  &[highlighted] {
-    background: $menu-item-open-background;
+  &[highlighted]:not([disabled]) {
+    background-color: $bg-hover;
+    @include inner-color($fg-light);
+  }
 
-    &:hover,
-    &[highlighted] {
-      background-color: $menu-item-hover-background;
-    }
+  &[selected][highlighted]:not([disabled]) {
+    background-color: $bg-hover;
+    @include inner-color($fg-light);
+  }
+
+  &[highlighted]:is(:focus, :focus-within, :focus-visible) {
+    background-color: $bg-hover;
+    @include inner-color($fg-light);
   }
 
   &[disabled] {
-    color: $menu-item-color-disabled;
-
-    @each $el in $menu-inner-elements {
-      #{$el} {
-        color: $menu-item-color-disabled;
-      }
-    }
+    color: $fg-disabled;
+    @include inner-color($fg-disabled);
 
     &:hover {
       cursor: not-allowed;
@@ -89,15 +91,15 @@ $menu-item-error-hover-bg: var(--kd-color-status-error-light);
   }
 
   &.destructive {
-    color: $menu-item-color-destructive;
-    border-top: 1px solid $menu-item-divider-color;
+    color: $fg-destructive;
+    border-top: 1px solid $divider;
 
     &:hover {
-      background: $menu-item-error-hover-bg;
+      background: $error-hover;
     }
 
     .text {
-      color: $menu-item-color-destructive;
+      color: $fg-destructive;
     }
   }
 }
