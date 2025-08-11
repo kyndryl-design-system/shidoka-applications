@@ -268,7 +268,7 @@ export const ButtonAnchor = {
         <kyn-button
           slot="anchor"
           class="dropdown-anchor-button"
-          kind="secondary-ai"
+          kind="primary"
           size="small"
           iconPosition="right"
           style="margin-top: 8px;"
