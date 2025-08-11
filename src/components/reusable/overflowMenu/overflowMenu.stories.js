@@ -30,6 +30,10 @@ export default {
     verticalDots: { control: 'boolean' },
     fixed: { control: 'boolean' },
     assistiveText: { control: 'text' },
+    'kind-changed': {
+      table: { disable: true },
+      control: false,
+    },
   },
 };
 

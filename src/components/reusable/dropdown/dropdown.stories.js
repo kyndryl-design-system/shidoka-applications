@@ -27,6 +27,10 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
+    'kind-changed': {
+      table: { disable: true },
+      control: false,
+    },
     ...ValidationArgs,
   },
   parameters: {

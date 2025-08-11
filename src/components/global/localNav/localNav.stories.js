@@ -41,6 +41,10 @@ export default {
       control: 'select',
       options: ['default', 'ai'],
     },
+    'kind-changed': {
+      table: { disable: true },
+      control: false,
+    },
   },
 };
 

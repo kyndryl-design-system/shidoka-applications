@@ -40,15 +40,7 @@ export class LocalNav extends LitElement {
 
   /** Dropdown kind. */
   @property({ type: String })
-  set kind(value: 'ai' | 'default') {
-    const old = this._kind;
-    this._kind = value;
-    this.requestUpdate('kind', old);
-  }
-  get kind() {
-    return this._kind;
-  }
-  private _kind: 'ai' | 'default' = 'default';
+  accessor kind: 'ai' | 'default' = 'default';
 
   /** Text string customization. */
   @property({ type: Object })
@@ -151,13 +143,17 @@ export class LocalNav extends LitElement {
     `;
   }
 
+  /**
+   * Fires when the kind property changes.
+   * @internal
+   */
   override updated(changedProps: Map<string | number | symbol, unknown>) {
     if (changedProps.has('kind')) {
       this.dispatchEvent(
         new CustomEvent('kind-changed', {
           detail: this.kind,
-          bubbles: true,
-          composed: true,
+          bubbles: false,
+          composed: false,
         })
       );
     }

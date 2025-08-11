@@ -20,15 +20,7 @@ export class OverflowMenu extends LitElement {
 
   /** Menu kind. */
   @property({ type: String })
-  set kind(value: 'ai' | 'default') {
-    const old = this._kind;
-    this._kind = value;
-    this.requestUpdate('kind', old);
-  }
-  get kind() {
-    return this._kind;
-  }
-  private _kind: 'ai' | 'default' = 'default';
+  accessor kind: 'ai' | 'default' = 'default';
 
   /** Anchors the menu to the right of the button. */
   @property({ type: Boolean })
@@ -70,6 +62,7 @@ export class OverflowMenu extends LitElement {
       btn: true,
       open: this.open,
       horizontal: !this.verticalDots,
+      ['ai-connected']: this.kind === 'ai',
     };
 
     const menuClasses = {

@@ -44,6 +44,10 @@ export default {
       control: { type: 'boolean' },
       if: { arg: 'searchable', truthy: true },
     },
+    'kind-changed': {
+      table: { disable: true },
+      control: false,
+    },
   },
   parameters: {
     design: {

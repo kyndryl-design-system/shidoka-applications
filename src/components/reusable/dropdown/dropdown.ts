@@ -62,16 +62,8 @@ export class Dropdown extends FormMixin(LitElement) {
   accessor size = 'md';
 
   /** Dropdown kind. */
-  @property({ type: String })
-  set kind(value: 'ai' | 'default') {
-    const old = this._kind;
-    this._kind = value;
-    this.requestUpdate('kind', old);
-  }
-  get kind() {
-    return this._kind;
-  }
-  private _kind: 'ai' | 'default' = 'default';
+  @property({ type: String, attribute: 'kind' })
+  accessor kind: 'ai' | 'default' = 'default';
 
   /** Dropdown inline style type. */
   @property({ type: Boolean })
