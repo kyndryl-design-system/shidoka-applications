@@ -893,6 +893,7 @@ export class Dropdown extends FormMixin(LitElement) {
   private handleSearchClick(e: any) {
     e.stopPropagation();
     this.open = true;
+    if ((this.searchText ?? '').trim() === '') this.searchText = '';
   }
 
   private handleSearchKeydown(e: any) {
