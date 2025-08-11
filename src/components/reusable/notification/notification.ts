@@ -43,9 +43,13 @@ export class Notification extends LitElement {
   @property({ type: String })
   accessor timeStamp = '';
 
-  /** Card href link */
+  /** Card href link. */
   @property({ type: String })
   accessor href = '';
+
+  /** Card link target. */
+  @property({ type: String })
+  accessor target = '';
 
   /** Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`. */
   @property({ type: String })
@@ -147,9 +151,11 @@ export class Notification extends LitElement {
             class="notification-clickable"
             ?highlight=${this.unRead}
             type=${this.type}
-            href=${this.href}
-            target="_blank"
-            rel="noopener"
+            href=${ifDefined(this.href || undefined)}
+            target=${ifDefined(this.target || undefined)}
+            rel=${ifDefined(
+              this.target === '_blank' ? 'noopener noreferrer' : undefined
+            )}
             @on-card-click=${(e: any) => this._handleCardClick(e)}
             hideBorder
             role=${ifDefined(this.notificationRole)}
@@ -300,7 +306,7 @@ export class Notification extends LitElement {
 
   private _handleCardClick(e: any) {
     const event = new CustomEvent('on-notification-click', {
-      detail: e.detail.origEvent,
+      detail: { origEvent: e.detail.origEvent },
     });
     this.dispatchEvent(event);
   }
