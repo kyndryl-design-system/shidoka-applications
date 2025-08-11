@@ -2,70 +2,77 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
-$menu-inner-elements: '.text', '.icon-container', '.icon', '.check-icon',
-  '.expand-icon';
-
-@mixin inner-color($c) {
-  @each $el in $menu-inner-elements {
-    #{$el} {
-      color: $c;
-    }
-  }
-}
-
 :host([highlighted]) {
   outline: 1px solid var(--kd-color-border-variants-focus);
 }
 
 .menu-item {
-  background: var(--kd-color-background-menu-state-default);
-  @include inner-color(var(--kd-color-text-level-primary));
+  background-color: var(--kd-color-background-menu-state-default);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-primary);
+  }
   transition: background-color 150ms ease-out, color 150ms ease-out;
 
   &:hover {
     background-color: var(--kd-color-background-menu-state-hover);
-    @include inner-color(var(--kd-color-text-level-light));
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
+    }
   }
 
   &:focus,
   &:focus-within,
   &:focus-visible {
     background-color: var(--kd-color-background-menu-state-open);
-    @include inner-color(var(--kd-color-text-level-primary));
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-primary);
+    }
   }
 
   &:active:not([disabled]) {
-    background: var(--kd-color-background-menu-state-pressed);
-    @include inner-color(var(--kd-color-text-level-light));
+    background-color: var(--kd-color-background-menu-state-pressed);
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
+    }
   }
 
   &[selected]:not([disabled]) {
-    background: var(--kd-color-background-menu-state-open);
+    background-color: var(--kd-color-background-menu-state-open);
 
     &:hover {
       background-color: var(--kd-color-background-menu-state-hover);
-      @include inner-color(var(--kd-color-text-level-light));
+      .menu-item-inner-el {
+        color: var(--kd-color-text-level-light);
+      }
     }
   }
 
   &[highlighted]:not([disabled]) {
     background-color: var(--kd-color-background-menu-state-hover);
-    @include inner-color(var(--kd-color-text-level-light));
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
+    }
   }
 
   &[selected][highlighted]:not([disabled]) {
     background-color: var(--kd-color-background-menu-state-hover);
-    @include inner-color(var(--kd-color-text-level-light));
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
+    }
   }
 
   &[highlighted]:is(:focus, :focus-within, :focus-visible) {
     background-color: var(--kd-color-background-menu-state-hover);
-    @include inner-color(var(--kd-color-text-level-light));
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
+    }
   }
 
   &[disabled] {
     color: var(--kd-color-text-link-level-disabled);
-    @include inner-color(var(--kd-color-text-link-level-disabled));
+    .menu-item-inner-el {
+      color: var(--kd-color-text-link-level-disabled);
+    }
 
     &:hover {
       cursor: not-allowed;
@@ -82,11 +89,25 @@ $menu-inner-elements: '.text', '.icon-container', '.icon', '.check-icon',
     border-top: 1px solid var(--kd-color-border-level-tertiary);
 
     &:hover {
-      background: var(--kd-color-status-error-light);
+      background-color: var(--kd-color-status-error-light);
     }
 
-    .text {
+    .menu-item-inner-el {
       color: var(--kd-color-text-variant-destructive);
+    }
+  }
+
+  &:active:not([disabled]),
+  &:has(:active):not([disabled]),
+  &[selected]:active:not([disabled]),
+  &[selected]:has(:active):not([disabled]),
+  &[highlighted]:active:not([disabled]),
+  &[highlighted]:has(:active):not([disabled]),
+  &[selected][highlighted]:active:not([disabled]),
+  &[selected][highlighted]:has(:active):not([disabled]) {
+    background-color: var(--kd-color-background-menu-state-pressed);
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
     }
   }
 }

@@ -75,7 +75,7 @@ export class OverflowMenuItem extends LitElement {
           @keydown=${(e: Event) => this.handleKeyDown(e)}
           title=${itemText}
         >
-          <span class="text"><slot></slot></span>
+          <span class="menu-item-inner-el text"><slot></slot></span>
           ${this.destructive
             ? html`<span class="sr-only">${this.description}</span>`
             : null}
@@ -90,7 +90,7 @@ export class OverflowMenuItem extends LitElement {
           @keydown=${(e: Event) => this.handleKeyDown(e)}
           title=${itemText}
         >
-          <span class="text"><slot></slot></span>
+          <span class="menu-item-inner-el text"><slot></slot></span>
           ${this.destructive
             ? html`<span class="sr-only">${this.description}</span>`
             : null}
