@@ -264,6 +264,7 @@ export const ButtonAnchor = {
     label: 'Enhanced Dropdown Options',
     placeholder: 'Select an option',
     buttonText: 'Options',
+    kind: 'ai',
   },
   parameters: {
     a11y: {
@@ -300,7 +301,7 @@ export const ButtonAnchor = {
         <kyn-button
           slot="anchor"
           class="dropdown-anchor-button"
-          kind="primary"
+          kind="secondary-ai"
           size="small"
           iconPosition="right"
           style="margin-top: 8px;"
@@ -356,6 +357,7 @@ export const ButtonAnchor = {
     `;
   },
 };
+ButtonAnchor.storyName = 'Button Anchor (AI Kind)';
 
 export const Searchable = {
   args: {
