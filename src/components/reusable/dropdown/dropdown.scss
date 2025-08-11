@@ -64,8 +64,12 @@ slot[name='icon']::slotted(*) {
     padding-right: 80px;
   }
 
-  .dropdown:focus-visible & {
+  .dropdown.ai-connected-false:focus-visible & {
     outline-color: var(--kd-color-border-variants-focus);
+  }
+
+  .dropdown.ai-connected-true:focus-visible & {
+    outline-color: var(--kd-color-background-button-secondary-ai-focused);
   }
 
   &.inline {
@@ -243,4 +247,12 @@ kyn-tag-group {
 
 .placeholder-text {
   color: var(--kd-color-text-variant-placeholder);
+}
+
+.dropdown.ai-connected-true {
+  .select:focus-visible,
+  .options:focus-visible,
+  [searchable] .options:focus-visible {
+    outline-color: var(--kd-color-background-button-secondary-ai-focused);
+  }
 }
