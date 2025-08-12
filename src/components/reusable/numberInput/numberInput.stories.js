@@ -57,8 +57,12 @@ const args = {
   },
 };
 
-export const NumberInput = {
-  args,
+export const DefaultFullWidth = {
+  args: {
+    ...args,
+    label:
+      'Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Extra Long Label',
+  },
   render: (args) => {
     return html`
       <kyn-number-input
@@ -78,7 +82,35 @@ export const NumberInput = {
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        style="max-width: 275px"
+        style="width: 100%; --kyn-number-input-inner-max-width: 100%;"
+      >
+      </kyn-number-input>
+    `;
+  },
+};
+
+export const ContrainedMaxWidth = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-number-input
+        size=${args.size}
+        name=${args.name}
+        value=${args.value}
+        placeholder=${args.placeholder}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        step=${ifDefined(args.step)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        style="max-width: 300px"
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
       </kyn-number-input>
     `;
@@ -117,7 +149,7 @@ export const LongLabelContrainedInput = {
   },
 };
 
-export const LongTruncatedLabel = {
+export const LongWrappingLabel = {
   args: {
     ...args,
     label:

@@ -3,19 +3,18 @@
 
 :host {
   display: inline-block;
-  width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 
   --kyn-number-input-inner-max-width: 200px;
-  --kyn-number-input-inner-min-width: 100px;
+  --kyn-number-input-inner-min-width: 0px;
 }
 
 .label-text {
   display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
   width: 100%;
   margin-bottom: 8px;
 }
@@ -38,9 +37,9 @@ input {
   appearance: none;
   display: block;
 
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-width: var(--kyn-number-input-inner-min-width);
-  width: auto;
+  width: 100%;
   max-width: var(--kyn-number-input-inner-max-width);
 
   border-width: 1px;
