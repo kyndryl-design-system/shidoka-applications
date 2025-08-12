@@ -57,7 +57,7 @@ const args = {
   },
 };
 
-export const DefaultFullWidth = {
+export const FullWidth = {
   args: {
     ...args,
     label:
@@ -89,7 +89,7 @@ export const DefaultFullWidth = {
   },
 };
 
-export const ContrainedMaxWidth = {
+export const ConstrainedMaxWidth = {
   args,
   render: (args) => {
     return html`
