@@ -57,6 +57,14 @@ export class OverflowMenu extends LitElement {
   @state()
   accessor _openUpwards = false;
 
+  private _onDocClick = (e: Event) => this.handleClickOut(e);
+  private _onDocKeydown = (e: KeyboardEvent) => this.handleEscapePress(e);
+  private _onItemClick = () => {
+    this.open = false;
+    this._emitToggleEvent();
+    this._btnEl?.focus();
+  };
+
   override render() {
     const buttonClasses = {
       btn: true,
@@ -224,17 +232,15 @@ export class OverflowMenu extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('click', (e) => this.handleClickOut(e));
-    document.addEventListener('keydown', (e) => {
-      this.handleEscapePress(e);
-    });
+    document.addEventListener('click', this._onDocClick);
+    document.addEventListener('keydown', this._onDocKeydown);
+    this.addEventListener('on-click', this._onItemClick);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this.handleClickOut(e));
-    document.removeEventListener('keydown', (e) => {
-      this.handleEscapePress(e);
-    });
+    document.removeEventListener('click', this._onDocClick);
+    document.removeEventListener('keydown', this._onDocKeydown);
+    this.removeEventListener('on-click', this._onItemClick);
 
     super.disconnectedCallback();
   }

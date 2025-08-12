@@ -136,8 +136,12 @@ export class OverflowMenuItem extends LitElement {
 
     const menuItemsLength = this._menuItems.length;
 
-    const activeEl = document.activeElement;
-    const activeIndex = this._menuItems.indexOf(activeEl);
+    const activeEl = document.activeElement as Element | null;
+    const activeIndex = this._menuItems.findIndex(
+      (item: any) =>
+        item === activeEl ||
+        (item.shadowRoot && activeEl && item.shadowRoot.contains(activeEl))
+    );
 
     switch (e.keyCode) {
       case DOWN_ARROW_KEY_CODE: {
