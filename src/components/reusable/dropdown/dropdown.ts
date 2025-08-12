@@ -401,6 +401,7 @@ export class Dropdown extends FormMixin(LitElement) {
               aria-hidden=${!this.open}
               @keydown=${this.handleListKeydown}
               @blur=${this.handleListBlur}
+              @focus=${this._handleListFocus}
             >
               ${this.allowAddOption
                 ? html`
@@ -651,6 +652,28 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     this.handleKeyboard(e, e.keyCode, 'list');
+  }
+
+  private _handleListFocus() {
+    const selectAllOptions = Array.from(
+      this.shadowRoot?.querySelectorAll('.select-all') || []
+    ) as any[];
+    const filteredOptions = this.options.filter(
+      (option: any) => option.style.display !== 'none'
+    );
+    const visibleOptions = [...selectAllOptions, ...filteredOptions] as any[];
+
+    const firstEnabled = visibleOptions.find((o: any) => !o.disabled) as any;
+    if (!firstEnabled) return;
+
+    visibleOptions.forEach((o: any) => (o.highlighted = false));
+
+    if (!('tabIndex' in firstEnabled) || firstEnabled.tabIndex < 0) {
+      firstEnabled.tabIndex = 0;
+    }
+    firstEnabled.focus();
+    firstEnabled.scrollIntoView({ block: 'nearest' });
+    this.assistiveText = firstEnabled.text || 'Option';
   }
 
   private handleListBlur(e: FocusEvent): void {
@@ -1258,10 +1281,8 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     if (changedProps.has('open') || changedProps.has('openDirection')) {
-      if (this.open && !this.searchable && this.listboxEl) {
-        this.listboxEl.focus({ preventScroll: true });
-        this.assistiveText =
-          'Selecting items. Use up and down arrow keys to navigate.';
+      if (this.open) {
+        this.options.forEach((o) => (o.highlighted = false));
       }
 
       if (this.openDirection === 'up') {
