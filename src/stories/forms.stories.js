@@ -211,6 +211,7 @@ export const Default = {
           name="numberInput"
           caption="Number input example"
           label="Number input"
+          style="max-width: 300px"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip">

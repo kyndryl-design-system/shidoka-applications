@@ -78,6 +78,7 @@ export const NumberInput = {
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        style="max-width: 275px"
       >
       </kyn-number-input>
     `;
