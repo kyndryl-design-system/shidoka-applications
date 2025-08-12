@@ -27,8 +27,8 @@ const _defaultTextStrings = {
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  *
- * @cssprop {length} --kyn-number-input-inner-max-width - Maximum width of the number input inner container. Default: `200px`.
- * @cssprop {length} --kyn-number-input-inner-min-width - Minimum width of the number input inner container. Default: `0px`.
+ * @cssprop --kyn-number-input-inner-max-width - Maximum width of the number input inner container. Default: `200px`.
+ * @cssprop --kyn-number-input-inner-min-width - Minimum width of the number input inner container. Default: `0px`.
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {

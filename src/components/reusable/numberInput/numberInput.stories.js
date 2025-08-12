@@ -24,6 +24,16 @@ export default {
     max: {
       control: { type: 'number' },
     },
+    '--kyn-number-input-inner-max-width': {
+      control: { type: 'text' },
+      table: { category: 'CSS Custom Properties' },
+      defaultValue: '200px',
+    },
+    '--kyn-number-input-inner-min-width': {
+      control: { type: 'text' },
+      table: { category: 'CSS Custom Properties' },
+      defaultValue: '0px',
+    },
     ...ValidationArgs,
   },
   parameters: {
