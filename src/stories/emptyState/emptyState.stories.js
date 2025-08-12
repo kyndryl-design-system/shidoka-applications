@@ -276,7 +276,7 @@ export const LargeNoSearchResults = {
   `,
 };
 
-export const LargeDataVizOne = {
+export const LargeDataViz = {
   render: () => html`
     <style>
       .empty-state--wrapper {
