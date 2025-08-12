@@ -266,6 +266,11 @@ export class Dropdown extends FormMixin(LitElement) {
    */
   prevSearchKeydownIndex = -1;
 
+  private _onDocumentClick = (e: Event) => this._handleClickOut(e);
+  private _onChildClick = (e: Event) => this._handleClick(e as any);
+  private _onChildRemove = (_e: Event) => this._handleRemoveOption();
+  private _onChildBlur = (e: Event) => this._handleBlur(e as any);
+
   override render() {
     const mainDropdownClasses = {
       dropdown: true,
@@ -509,6 +514,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleAnchorKeydown(e: any) {
+    if (this.disabled) return;
     this.handleButtonKeydown(e);
   }
 
@@ -1030,9 +1036,7 @@ export class Dropdown extends FormMixin(LitElement) {
           .filter(
             (option) => !option.disabled || (option.disabled && option.selected)
           )
-          .map((option) => {
-            return option.value;
-          });
+          .map((option) => option.value);
         this.assistiveText = 'Selected all items.';
       } else {
         this.value = DisabledSelectedOptions.length
@@ -1051,7 +1055,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     this._updateSelectedOptions();
 
-    if (this.multiple) {
+    if (!this.multiple) {
       this.open = false;
     }
 
@@ -1098,12 +1102,10 @@ export class Dropdown extends FormMixin(LitElement) {
     // preserve FormMixin disconnectedCallback function
     this._onDisconnected();
 
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
-    this.removeEventListener('on-click', (e: any) => this._handleClick(e));
-    this.removeEventListener('on-remove-option', () =>
-      this._handleRemoveOption()
-    );
-    this.removeEventListener('on-blur', (e: any) => this._handleBlur(e));
+    document.removeEventListener('click', this._onDocumentClick);
+    this.removeEventListener('on-click', this._onChildClick);
+    this.removeEventListener('on-remove-option', this._onChildRemove);
+    this.removeEventListener('on-blur', this._onChildBlur);
 
     super.disconnectedCallback();
   }
