@@ -311,8 +311,8 @@ export class Dropdown extends FormMixin(LitElement) {
         >
           <div
             class="custom"
-            @click=${() => this.handleAnchorClick()}
-            @keydown=${(e: any) => this.handleAnchorKeydown(e)}
+            @click=${(e: MouseEvent) => this.handleAnchorClick(e)}
+            @keydown=${(e: KeyboardEvent) => this.handleAnchorKeydown(e)}
           >
             <slot name="anchor">
               <div
@@ -510,10 +510,20 @@ export class Dropdown extends FormMixin(LitElement) {
     this.assistiveText = 'Add new option input';
   }
 
-  private handleAnchorClick() {
+  private handleAnchorClick(e: MouseEvent) {
+    if (this.disabled) return;
+
+    const path = (e.composedPath?.() || []) as Array<EventTarget>;
+    const isInOptions =
+      path.some((t) => (t as HTMLElement)?.classList?.contains('options')) ||
+      (e.target as HTMLElement)?.closest?.(
+        'kyn-dropdown-option, kyn-enhanced-dropdown-option, .add-option'
+      );
+
+    if (isInOptions) return;
+
     this.handleClick();
   }
-
   private handleAnchorKeydown(e: any) {
     if (this.disabled) return;
     this.handleButtonKeydown(e);
@@ -1107,22 +1117,16 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override connectedCallback() {
     super.connectedCallback();
-
-    // preserve FormMixin connectedCallback function
     this._onConnected();
 
-    document.addEventListener('click', (e) => this._handleClickOut(e));
+    document.addEventListener('click', this._onDocumentClick);
 
-    // capture child options click event
-    this.addEventListener('on-click', (e: any) => this._handleClick(e));
-    this.addEventListener('on-remove-option', () => this._handleRemoveOption());
-
-    // capture child options blur event
-    this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
+    this.addEventListener('on-click', this._onChildClick);
+    this.addEventListener('on-remove-option', this._onChildRemove);
+    this.addEventListener('on-blur', this._onChildBlur);
   }
 
   override disconnectedCallback() {
-    // preserve FormMixin disconnectedCallback function
     this._onDisconnected();
 
     document.removeEventListener('click', this._onDocumentClick);
@@ -1283,6 +1287,12 @@ export class Dropdown extends FormMixin(LitElement) {
     if (changedProps.has('open') || changedProps.has('openDirection')) {
       if (this.open) {
         this.options.forEach((o) => (o.highlighted = false));
+
+        if (!this.searchable && this.listboxEl) {
+          this.listboxEl.focus({ preventScroll: true });
+          this.assistiveText =
+            'Selecting items. Use up and down arrow keys to navigate.';
+        }
       }
 
       if (this.openDirection === 'up') {
