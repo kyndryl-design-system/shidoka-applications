@@ -4,26 +4,51 @@
 :host {
   display: inline-block;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  --kyn-number-input-inner-max-width: 200px;
+  --kyn-number-input-inner-min-width: 100px;
+}
+
+.label-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  margin-bottom: 8px;
 }
 
 .input-wrapper {
+  display: flex;
+  align-items: center;
   gap: 8px;
-
   width: 100%;
   min-width: 0;
+  justify-content: flex-start;
+}
+
+kyn-button {
+  flex: 0 0 auto;
 }
 
 input {
   -webkit-appearance: none;
   appearance: none;
   display: block;
-  flex-grow: 1;
-  width: 100%;
+
+  flex: 0 1 auto;
+  min-width: var(--kyn-number-input-inner-min-width);
+  width: auto;
+  max-width: var(--kyn-number-input-inner-max-width);
+
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
   height: 48px;
   padding: 0 16px;
+  box-sizing: border-box;
 
   &:focus-visible {
     outline-color: var(--kd-color-border-variants-focus);
