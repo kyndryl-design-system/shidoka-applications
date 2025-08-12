@@ -82,21 +82,21 @@ export class LocalNavLink extends LitElement {
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
-  accessor _navLinks!: Array<any>;
+  accessor _navLinks!: Array<HTMLElement>;
 
   /**
    * Queries slotted dividers.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-divider' })
-  accessor _dividers!: Array<any>;
+  accessor _dividers!: Array<HTMLElement>;
 
   /**
    * Queries slotted icon.
    * @ignore
    */
   @queryAssignedElements({ slot: 'icon' })
-  accessor _icon!: Array<any>;
+  accessor _icon!: Array<HTMLElement>;
 
   override render() {
     const classes = {
@@ -152,7 +152,6 @@ export class LocalNavLink extends LitElement {
   override firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
 
-    // initialize kind from parent <kyn-local-nav>
     const parent = this.closest('kyn-local-nav') as any;
     if (parent) {
       this.kind = parent.kind;
@@ -162,13 +161,13 @@ export class LocalNavLink extends LitElement {
     }
   }
 
-  override willUpdate(changedProps: any) {
+  override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
     if (changedProps.has('_navExpanded')) {
       this.updateChildren();
     }
   }
 
-  override updated(changedProps: any) {
+  override updated(changedProps: Map<string | number | symbol, unknown>) {
     if (changedProps.has('active') && this.active) {
       this._getSlotText();
       this.dispatchEvent(
@@ -202,12 +201,12 @@ export class LocalNavLink extends LitElement {
   }
 
   private updateChildren() {
-    this._navLinks.forEach((link: any) => {
-      link._level = this._level + 1;
-      link._navExpanded = this._navExpanded || this._navExpandedMobile;
+    (this._navLinks ?? []).forEach((link: HTMLElement) => {
+      (link as any)._level = this._level + 1;
+      (link as any)._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
-    this._dividers.forEach((div: any) => {
-      div._navExpanded = this._navExpanded || this._navExpandedMobile;
+    (this._dividers ?? []).forEach((div: HTMLElement) => {
+      (div as any)._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
   }
 

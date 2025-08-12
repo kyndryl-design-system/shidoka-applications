@@ -74,24 +74,28 @@ export class LocalNav extends LitElement {
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
-  accessor _navLinks!: any;
+  accessor _navLinks!: Array<HTMLElement>;
 
   /** Queries top-level slotted dividers.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-divider' })
-  accessor _dividers!: any;
+  accessor _dividers!: Array<HTMLElement>;
 
   /** Timeout function to delay flyout open.
    * @internal
    */
-  _enterTimer: any;
+  private _enterTimer: number | null = null;
 
   /** Timeout function to delay flyout close.
    * @internal
    */
   @state()
-  accessor _leaveTimer: any;
+  accessor _leaveTimer: number | null = null;
+
+  private _onDocumentClick = (e: Event) => this._handleClickOut(e);
+  private _onLinkActive = (e: Event) =>
+    this._handleLinkActive(e as CustomEvent<{ text: string }>);
 
   override render() {
     return html`
@@ -174,9 +178,9 @@ export class LocalNav extends LitElement {
 
   private handlePointerEnter(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
-      clearTimeout(this._leaveTimer);
+      if (this._leaveTimer !== null) clearTimeout(this._leaveTimer);
 
-      this._enterTimer = setTimeout(() => {
+      this._enterTimer = window.setTimeout(() => {
         this._expanded = true;
       }, 150);
     }
@@ -184,22 +188,22 @@ export class LocalNav extends LitElement {
 
   private handlePointerLeave(e: PointerEvent) {
     if (e.pointerType === 'mouse') {
-      clearTimeout(this._enterTimer);
+      if (this._enterTimer !== null) clearTimeout(this._enterTimer);
 
-      this._leaveTimer = setTimeout(() => {
+      this._leaveTimer = window.setTimeout(() => {
         this._expanded = false;
       }, 150);
     }
   }
 
   private _updateChildren() {
-    this._navLinks.forEach((link: any) => {
-      link._navExpanded = this._expanded || this.pinned;
-      link._navExpandedMobile = this._mobileExpanded;
+    (this._navLinks ?? []).forEach((link: HTMLElement) => {
+      (link as any)._navExpanded = this._expanded || this.pinned;
+      (link as any)._navExpandedMobile = this._mobileExpanded;
     });
 
-    this._dividers.forEach((divider: any) => {
-      divider._navExpanded =
+    (this._dividers ?? []).forEach((divider: HTMLElement) => {
+      (divider as any)._navExpanded =
         this._expanded || this.pinned || this._mobileExpanded;
     });
   }
@@ -209,11 +213,11 @@ export class LocalNav extends LitElement {
     this.requestUpdate();
   }
 
-  private _handleLinkActive(e: any) {
+  private _handleLinkActive(e: CustomEvent<{ text: string }>) {
     this._activeLinkText = e.detail.text;
   }
 
-  override willUpdate(changedProps: any) {
+  override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
     if (
       changedProps.has('_expanded') ||
       changedProps.has('pinned') ||
@@ -235,17 +239,13 @@ export class LocalNav extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-
-    document.addEventListener('click', (e) => this._handleClickOut(e));
-    this.addEventListener('on-link-active', (e) => this._handleLinkActive(e));
+    document.addEventListener('click', this._onDocumentClick);
+    this.addEventListener('on-link-active', this._onLinkActive);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
-    this.removeEventListener('on-link-active', (e) =>
-      this._handleLinkActive(e)
-    );
-
+    document.removeEventListener('click', this._onDocumentClick);
+    this.removeEventListener('on-link-active', this._onLinkActive);
     super.disconnectedCallback();
   }
 }
