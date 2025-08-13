@@ -71,12 +71,6 @@ export class LocalNavLink extends LitElement {
   @state()
   accessor _text = '';
 
-  /** Kind of the item, derived from parent.
-   * @ignore
-   */
-  @state()
-  accessor kind: 'ai' | 'default' = 'default';
-
   /**
    * Queries slotted links.
    * @ignore
@@ -110,7 +104,6 @@ export class LocalNavLink extends LitElement {
       'has-links': this._navLinks.length,
       'has-icon': this._icon.length,
       'left-padding': this.leftPadding && this._level > 1,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
     };
 
     return html`
@@ -147,18 +140,6 @@ export class LocalNavLink extends LitElement {
         </div>
       </div>
     `;
-  }
-
-  override firstUpdated(changedProps: PropertyValues) {
-    super.firstUpdated(changedProps);
-
-    const parent = this.closest('kyn-local-nav') as any;
-    if (parent) {
-      this.kind = parent.kind;
-      parent.addEventListener('kind-changed', (e: Event) => {
-        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
-      });
-    }
   }
 
   override willUpdate(changedProps: Map<string | number | symbol, unknown>) {

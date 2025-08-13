@@ -35,22 +35,10 @@ export default {
       disable: true,
     },
   },
-  argTypes: {
-    pinned: { control: 'boolean' },
-    kind: {
-      control: 'select',
-      options: ['default', 'ai'],
-    },
-    'kind-changed': {
-      table: { disable: true },
-      control: false,
-    },
-  },
 };
 
 const args = {
   pinned: false,
-  kind: 'default',
   textStrings: {
     pin: 'Pin',
     unpin: 'Unpin',
@@ -64,65 +52,7 @@ export const LocalNav = {
   args,
   render: (args) => {
     return html`
-      <kyn-local-nav
-        ?pinned=${args.pinned}
-        kind=${args.kind}
-        .textStrings=${args.textStrings}
-      >
-        <kyn-local-nav-link href="javascript:void(0)" active>
-          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-          Link 1
-        </kyn-local-nav-link>
-
-        <kyn-local-nav-link href="javascript:void(0)">
-          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-          Link 2
-
-          <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-            L2 Link 1
-          </kyn-local-nav-link>
-          <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-            L2 Link 2
-          </kyn-local-nav-link>
-        </kyn-local-nav-link>
-
-        <kyn-local-nav-link href="javascript:void(0)">
-          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-          Link 3
-
-          <kyn-local-nav-link slot="links" href="javascript:void(0)">
-            <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-            L2 Link 1
-
-            <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-              L3 Link 1
-            </kyn-local-nav-link>
-            <kyn-local-nav-link slot="links" href="javascript:void(0)">
-              <span slot="icon">${unsafeSVG(sampleIcon)}</span>
-              L3 Link 2
-            </kyn-local-nav-link>
-          </kyn-local-nav-link>
-        </kyn-local-nav-link>
-      </kyn-local-nav>
-    `;
-  },
-};
-
-export const AIVariant = {
-  args: {
-    ...args,
-    kind: 'ai',
-  },
-  render: (args) => {
-    return html`
-      <kyn-local-nav
-        ?pinned=${args.pinned}
-        kind=${args.kind}
-        .textStrings=${args.textStrings}
-      >
+      <kyn-local-nav ?pinned=${args.pinned} .textStrings=${args.textStrings}>
         <kyn-local-nav-link href="javascript:void(0)" active>
           <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 1
@@ -171,7 +101,6 @@ export const WithDivider = {
     return html`
       <kyn-local-nav
         ?pinned=${args.pinned}
-        kind=${args.kind}
         pinText=${args.pinText}
         unpinText=${args.unpinText}
         .textStrings=${args.textStrings}
@@ -279,7 +208,6 @@ export const WithSearch = {
     return html`
       <kyn-local-nav
         ?pinned=${args.pinned}
-        kind=${args.kind}
         pinText=${args.pinText}
         unpinText=${args.unpinText}
         .textStrings=${args.textStrings}

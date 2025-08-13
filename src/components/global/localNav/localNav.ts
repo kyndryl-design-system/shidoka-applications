@@ -38,10 +38,6 @@ export class LocalNav extends LitElement {
   @property({ type: Boolean })
   accessor pinned = false;
 
-  /** Dropdown kind. */
-  @property({ type: String })
-  accessor kind: 'ai' | 'default' = 'default';
-
   /** Text string customization. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -74,13 +70,13 @@ export class LocalNav extends LitElement {
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-link' })
-  accessor _navLinks!: Array<HTMLElement>;
+  accessor _navLinks!: HTMLElement[];
 
   /** Queries top-level slotted dividers.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-local-nav-divider' })
-  accessor _dividers!: Array<HTMLElement>;
+  accessor _dividers!: HTMLElement[];
 
   /** Timeout function to delay flyout open.
    * @internal
@@ -103,7 +99,6 @@ export class LocalNav extends LitElement {
         class=${classMap({
           'nav--expanded': this._expanded || this.pinned,
           'nav--expanded-mobile': this._mobileExpanded,
-          [`ai-connected-${this.kind === 'ai'}`]: true,
           pinned: this.pinned,
         })}
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
@@ -145,22 +140,6 @@ export class LocalNav extends LitElement {
 
       <div class="overlay ${this.pinned ? 'pinned' : ''}"></div>
     `;
-  }
-
-  /**
-   * Fires when the kind property changes.
-   * @internal
-   */
-  override updated(changedProps: Map<string | number | symbol, unknown>) {
-    if (changedProps.has('kind')) {
-      this.dispatchEvent(
-        new CustomEvent('kind-changed', {
-          detail: this.kind,
-          bubbles: false,
-          composed: false,
-        })
-      );
-    }
   }
 
   private _handleNavToggle(e: Event) {
