@@ -56,10 +56,17 @@ export class OverflowMenuItem extends LitElement {
   @state()
   accessor tooltipText = '';
 
+  /** Kind of the item, derived from parent.
+   * @ignore
+   */
+  @state()
+  accessor kind: 'ai' | 'default' = 'default';
+
   override render() {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
       destructive: this.destructive,
     };
 
@@ -99,6 +106,23 @@ export class OverflowMenuItem extends LitElement {
     }
   }
 
+  override firstUpdated() {
+    const parent = this.closest('kyn-overflow-menu');
+    if (parent) {
+      this._menuItems = parent.getMenuItems();
+      this._menu = parent.getMenu();
+      this.kind = parent.kind;
+
+      parent.addEventListener('kind-changed', (e: Event) => {
+        const customEvent = e as CustomEvent<'ai' | 'default'>;
+        requestAnimationFrame(() => {
+          this.kind = customEvent.detail;
+        });
+      });
+    }
+    this.checkOverflow();
+  }
+
   private handleClick(e: Event) {
     const event = new CustomEvent('on-click', {
       detail: { origEvent: e },
@@ -112,8 +136,12 @@ export class OverflowMenuItem extends LitElement {
 
     const menuItemsLength = this._menuItems.length;
 
-    const activeEl = document.activeElement;
-    const activeIndex = this._menuItems.indexOf(activeEl);
+    const activeEl = document.activeElement as Element | null;
+    const activeIndex = this._menuItems.findIndex(
+      (item: any) =>
+        item === activeEl ||
+        (item.shadowRoot && activeEl && item.shadowRoot.contains(activeEl))
+    );
 
     switch (e.keyCode) {
       case DOWN_ARROW_KEY_CODE: {
@@ -144,16 +172,6 @@ export class OverflowMenuItem extends LitElement {
         return;
       }
     }
-  }
-
-  override firstUpdated() {
-    // Access the parent component
-    const parent = this.closest('kyn-overflow-menu');
-    if (parent) {
-      this._menuItems = parent.getMenuItems();
-      this._menu = parent.getMenu();
-    }
-    this.checkOverflow();
   }
 
   private checkOverflow() {

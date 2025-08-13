@@ -61,6 +61,10 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   accessor size = 'md';
 
+  /** Dropdown kind. */
+  @property({ type: String, attribute: 'kind' })
+  accessor kind: 'ai' | 'default' = 'default';
+
   /** Dropdown inline style type. */
   @property({ type: Boolean })
   accessor inline = false;
@@ -262,10 +266,20 @@ export class Dropdown extends FormMixin(LitElement) {
    */
   prevSearchKeydownIndex = -1;
 
+  private _onDocumentClick = (e: Event) => this._handleClickOut(e);
+  private _onChildClick = (e: Event) => this._handleClick(e as any);
+  private _onChildRemove = (_e: Event) => this._handleRemoveOption();
+  private _onChildBlur = (e: Event) => this._handleBlur(e as any);
+
   override render() {
+    const mainDropdownClasses = {
+      dropdown: true,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
+    };
+
     return html`
       <div
-        class="dropdown"
+        class=${classMap(mainDropdownClasses)}
         ?disabled=${this.disabled}
         ?open=${this.open}
         ?inline=${this.inline}
@@ -297,8 +311,8 @@ export class Dropdown extends FormMixin(LitElement) {
         >
           <div
             class="custom"
-            @click=${() => this.handleAnchorClick()}
-            @keydown=${(e: any) => this.handleAnchorKeydown(e)}
+            @click=${(e: MouseEvent) => this.handleAnchorClick(e)}
+            @keydown=${(e: KeyboardEvent) => this.handleAnchorKeydown(e)}
           >
             <slot name="anchor">
               <div
@@ -387,6 +401,7 @@ export class Dropdown extends FormMixin(LitElement) {
               aria-hidden=${!this.open}
               @keydown=${this.handleListKeydown}
               @blur=${this.handleListBlur}
+              @focus=${this._handleListFocus}
             >
               ${this.allowAddOption
                 ? html`
@@ -495,11 +510,22 @@ export class Dropdown extends FormMixin(LitElement) {
     this.assistiveText = 'Add new option input';
   }
 
-  private handleAnchorClick() {
+  private handleAnchorClick(e: MouseEvent) {
+    if (this.disabled) return;
+
+    const path = (e.composedPath?.() || []) as Array<EventTarget>;
+    const isInOptions =
+      path.some((t) => (t as HTMLElement)?.classList?.contains('options')) ||
+      (e.target as HTMLElement)?.closest?.(
+        'kyn-dropdown-option, kyn-enhanced-dropdown-option, .add-option'
+      );
+
+    if (isInOptions) return;
+
     this.handleClick();
   }
-
   private handleAnchorKeydown(e: any) {
+    if (this.disabled) return;
     this.handleButtonKeydown(e);
   }
 
@@ -636,6 +662,28 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     this.handleKeyboard(e, e.keyCode, 'list');
+  }
+
+  private _handleListFocus() {
+    const selectAllOptions = Array.from(
+      this.shadowRoot?.querySelectorAll('.select-all') || []
+    ) as any[];
+    const filteredOptions = this.options.filter(
+      (option: any) => option.style.display !== 'none'
+    );
+    const visibleOptions = [...selectAllOptions, ...filteredOptions] as any[];
+
+    const firstEnabled = visibleOptions.find((o: any) => !o.disabled) as any;
+    if (!firstEnabled) return;
+
+    visibleOptions.forEach((o: any) => (o.highlighted = false));
+
+    if (!('tabIndex' in firstEnabled) || firstEnabled.tabIndex < 0) {
+      firstEnabled.tabIndex = 0;
+    }
+    firstEnabled.focus();
+    firstEnabled.scrollIntoView({ block: 'nearest' });
+    this.assistiveText = firstEnabled.text || 'Option';
   }
 
   private handleListBlur(e: FocusEvent): void {
@@ -1021,9 +1069,7 @@ export class Dropdown extends FormMixin(LitElement) {
           .filter(
             (option) => !option.disabled || (option.disabled && option.selected)
           )
-          .map((option) => {
-            return option.value;
-          });
+          .map((option) => option.value);
         this.assistiveText = 'Selected all items.';
       } else {
         this.value = DisabledSelectedOptions.length
@@ -1042,7 +1088,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     this._updateSelectedOptions();
 
-    if (this.multiple) {
+    if (!this.multiple) {
       this.open = false;
     }
 
@@ -1071,30 +1117,22 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override connectedCallback() {
     super.connectedCallback();
-
-    // preserve FormMixin connectedCallback function
     this._onConnected();
 
-    document.addEventListener('click', (e) => this._handleClickOut(e));
+    document.addEventListener('click', this._onDocumentClick);
 
-    // capture child options click event
-    this.addEventListener('on-click', (e: any) => this._handleClick(e));
-    this.addEventListener('on-remove-option', () => this._handleRemoveOption());
-
-    // capture child options blur event
-    this.addEventListener('on-blur', (e: any) => this._handleBlur(e));
+    this.addEventListener('on-click', this._onChildClick);
+    this.addEventListener('on-remove-option', this._onChildRemove);
+    this.addEventListener('on-blur', this._onChildBlur);
   }
 
   override disconnectedCallback() {
-    // preserve FormMixin disconnectedCallback function
     this._onDisconnected();
 
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
-    this.removeEventListener('on-click', (e: any) => this._handleClick(e));
-    this.removeEventListener('on-remove-option', () =>
-      this._handleRemoveOption()
-    );
-    this.removeEventListener('on-blur', (e: any) => this._handleBlur(e));
+    document.removeEventListener('click', this._onDocumentClick);
+    this.removeEventListener('on-click', this._onChildClick);
+    this.removeEventListener('on-remove-option', this._onChildRemove);
+    this.removeEventListener('on-blur', this._onChildBlur);
 
     super.disconnectedCallback();
   }
@@ -1195,6 +1233,18 @@ export class Dropdown extends FormMixin(LitElement) {
   override updated(changedProps: PropertyValues) {
     super.updated(changedProps);
 
+    if (changedProps.has('kind')) {
+      this.dispatchEvent(
+        new CustomEvent('kind-changed', {
+          detail: this.kind,
+          bubbles: true,
+          composed: true,
+        })
+      );
+
+      this.classList.toggle('ai-connected-true', this.kind === 'ai');
+    }
+
     const root = this.shadowRoot;
     if (!root) return;
 
@@ -1235,10 +1285,14 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     if (changedProps.has('open') || changedProps.has('openDirection')) {
-      if (this.open && !this.searchable && this.listboxEl) {
-        this.listboxEl.focus({ preventScroll: true });
-        this.assistiveText =
-          'Selecting items. Use up and down arrow keys to navigate.';
+      if (this.open) {
+        this.options.forEach((o) => (o.highlighted = false));
+
+        if (!this.searchable && this.listboxEl) {
+          this.listboxEl.focus({ preventScroll: true });
+          this.assistiveText =
+            'Selecting items. Use up and down arrow keys to navigate.';
+        }
       }
 
       if (this.openDirection === 'up') {
