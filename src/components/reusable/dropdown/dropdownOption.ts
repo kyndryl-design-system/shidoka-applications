@@ -1,6 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import '../checkbox';
 import '../button';
@@ -67,6 +68,12 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor indeterminate = false;
 
+  /** Kind of the item, derived from parent.
+   * @ignore
+   */
+  @state()
+  accessor kind: 'ai' | 'default' = 'default';
+
   @property({ type: String, reflect: true })
   override accessor role = 'option';
 
@@ -74,9 +81,15 @@ export class DropdownOption extends LitElement {
   override accessor ariaSelected = 'option';
 
   override render() {
+    const classes = {
+      option: true,
+      'menu-item': true,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
+    };
+
     return html`
       <div
-        class="option"
+        class=${classMap(classes)}
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
@@ -86,7 +99,7 @@ export class DropdownOption extends LitElement {
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
       >
-        <span class="text">
+        <span class="menu-item-inner-el text">
           ${this.multiple
             ? html`
                 <kyn-checkbox
@@ -111,9 +124,15 @@ export class DropdownOption extends LitElement {
               `}
         </span>
 
-        <slot name="icon" style="display:flex"></slot>
+        <span class="menu-item-inner-el icon"
+          ><slot name="icon" style="display:flex"></slot
+        ></span>
         ${this.selected && !this.multiple
-          ? html` <span class="check-icon">${unsafeSVG(checkIcon)}</span> `
+          ? html`
+              <span class="menu-item-inner-el check-icon"
+                >${unsafeSVG(checkIcon)}</span
+              >
+            `
           : this.allowAddOption && this.removable
           ? html`
               <kyn-button
@@ -136,6 +155,17 @@ export class DropdownOption extends LitElement {
           : null}
       </div>
     `;
+  }
+
+  override firstUpdated() {
+    const parent = this.closest('kyn-dropdown') as any;
+    if (parent) {
+      this.kind = parent.kind;
+
+      parent.addEventListener('kind-changed', (e: Event) => {
+        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
+      });
+    }
   }
 
   override willUpdate(changedProps: any) {

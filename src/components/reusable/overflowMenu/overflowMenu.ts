@@ -18,6 +18,10 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   accessor open = false;
 
+  /** Menu kind. */
+  @property({ type: String })
+  accessor kind: 'ai' | 'default' = 'default';
+
   /** Anchors the menu to the right of the button. */
   @property({ type: Boolean })
   accessor anchorRight = false;
@@ -53,11 +57,20 @@ export class OverflowMenu extends LitElement {
   @state()
   accessor _openUpwards = false;
 
+  private _onDocClick = (e: Event) => this.handleClickOut(e);
+  private _onDocKeydown = (e: KeyboardEvent) => this.handleEscapePress(e);
+  private _onItemClick = () => {
+    this.open = false;
+    this._emitToggleEvent();
+    this._btnEl?.focus();
+  };
+
   override render() {
     const buttonClasses = {
       btn: true,
       open: this.open,
       horizontal: !this.verticalDots,
+      ['ai-connected']: this.kind === 'ai',
     };
 
     const menuClasses = {
@@ -66,6 +79,7 @@ export class OverflowMenu extends LitElement {
       right: this.anchorRight,
       fixed: this.fixed,
       upwards: this._openUpwards,
+      ['ai-connected']: this.kind === 'ai',
     };
 
     return html`
@@ -136,6 +150,16 @@ export class OverflowMenu extends LitElement {
   }
 
   override updated(changedProps: any) {
+    if (changedProps.has('kind')) {
+      this.dispatchEvent(
+        new CustomEvent('kind-changed', {
+          detail: this.kind,
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
+
     if (changedProps.has('open')) {
       if (this.open) {
         // open dropdown upwards if closer to bottom of viewport
@@ -208,17 +232,15 @@ export class OverflowMenu extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('click', (e) => this.handleClickOut(e));
-    document.addEventListener('keydown', (e) => {
-      this.handleEscapePress(e);
-    });
+    document.addEventListener('click', this._onDocClick);
+    document.addEventListener('keydown', this._onDocKeydown);
+    this.addEventListener('on-click', this._onItemClick);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this.handleClickOut(e));
-    document.removeEventListener('keydown', (e) => {
-      this.handleEscapePress(e);
-    });
+    document.removeEventListener('click', this._onDocClick);
+    document.removeEventListener('keydown', this._onDocKeydown);
+    this.removeEventListener('on-click', this._onItemClick);
 
     super.disconnectedCallback();
   }

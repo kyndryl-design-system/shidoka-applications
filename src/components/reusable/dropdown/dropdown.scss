@@ -43,7 +43,7 @@ slot[name='icon']::slotted(*) {
     padding-right: 80px;
   }
 
-  &:hover:not[disabled] {
+  &:hover:not([disabled]) {
     border-color: var(--kd-color-border-ui-hover);
   }
 
@@ -63,30 +63,29 @@ slot[name='icon']::slotted(*) {
   &[invalid] {
     padding-right: 80px;
   }
+}
 
-  .dropdown:focus-visible & {
-    outline-color: var(--kd-color-border-variants-focus);
-  }
+/* Default focus */
+.select:focus-within {
+  outline: 1px solid var(--kd-color-border-variants-focus);
+  outline-offset: 0;
+  border-color: var(--kd-color-border-variants-focus);
+}
 
-  &.inline {
-    border-color: transparent;
-    background-color: transparent;
-
-    &:hover {
-      border-color: var(--kd-color-border-ui-hover);
-
-      [disabled] & {
-        border-color: transparent;
-      }
-    }
-  }
+.select:focus-within {
+  outline: 1px solid var(--kd-color-border-variants-focus);
+  outline-offset: 0;
+  border-color: var(--kd-color-border-variants-focus);
 }
 
 .arrow-icon {
   position: absolute;
-  top: 55%;
+  top: 50%;
   right: 16px;
-  transform: translateY(-50%);
+  transform: translateY(-45%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   .open & {
     transform: translateY(-70%) rotate(180deg);
@@ -177,7 +176,7 @@ slot[name='icon']::slotted(*) {
   align-items: center;
   justify-content: space-between;
   border: none;
-  width: 48px;
+  width: 24px;
   height: 24px;
   padding: 8px;
   border-radius: 4px;
@@ -240,4 +239,22 @@ kyn-tag-group {
 
 .placeholder-text {
   color: var(--kd-color-text-variant-placeholder);
+}
+
+.dropdown.ai-connected-true .select:is(:focus-visible, :focus-within) {
+  outline: 1px solid var(--kd-color-background-button-secondary-ai-focused);
+  outline-offset: 0;
+  border-color: var(--kd-color-background-button-secondary-ai-focused);
+}
+
+.dropdown.ai-connected-true .options:focus-visible,
+.dropdown.ai-connected-true [searchable] .options:focus-visible {
+  outline-color: var(--kd-color-background-button-secondary-ai-focused);
+}
+
+.dropdown.ai-connected-true ::slotted(kyn-tooltip),
+.dropdown.ai-connected-true ::slotted(.tooltip) {
+  --kd-color-border-variants-focus: var(
+    --kd-color-background-button-secondary-ai-focused
+  );
 }

@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -76,21 +76,21 @@ export class LocalNavLink extends LitElement {
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-link' })
-  accessor _navLinks!: Array<any>;
+  accessor _navLinks!: Array<HTMLElement>;
 
   /**
    * Queries slotted dividers.
    * @ignore
    */
   @queryAssignedElements({ slot: 'links', selector: 'kyn-local-nav-divider' })
-  accessor _dividers!: Array<any>;
+  accessor _dividers!: Array<HTMLElement>;
 
   /**
    * Queries slotted icon.
    * @ignore
    */
   @queryAssignedElements({ slot: 'icon' })
-  accessor _icon!: Array<any>;
+  accessor _icon!: Array<HTMLElement>;
 
   override render() {
     const classes = {
@@ -111,15 +111,17 @@ export class LocalNavLink extends LitElement {
         <a href=${this.href} @click=${(e: Event) => this.handleClick(e)}>
           ${this._navLinks.length
             ? html`
-                <span class="expand-icon"> ${unsafeSVG(chevronIcon)} </span>
+                <span class="menu-item-inner-el expand-icon">
+                  ${unsafeSVG(chevronIcon)}
+                </span>
               `
             : null}
 
-          <div class="icon">
+          <div class="menu-item-inner-el icon">
             <slot name="icon"></slot>
           </div>
 
-          <span class="text">
+          <span class="menu-item-inner-el text">
             <slot @slotchange=${this._handleTextSlotChange}></slot>
           </span>
         </a>
@@ -134,31 +136,28 @@ export class LocalNavLink extends LitElement {
             : null}
 
           <div class="category">${this._text}</div>
-
           <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
         </div>
       </div>
     `;
   }
 
-  override willUpdate(changedProps: any) {
+  override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
     if (changedProps.has('_navExpanded')) {
       this.updateChildren();
     }
   }
 
-  override updated(changedProps: any) {
+  override updated(changedProps: Map<string | number | symbol, unknown>) {
     if (changedProps.has('active') && this.active) {
       this._getSlotText();
-
-      const event = new CustomEvent('on-link-active', {
-        composed: true,
-        bubbles: true,
-        detail: {
-          text: this._text,
-        },
-      });
-      this.dispatchEvent(event);
+      this.dispatchEvent(
+        new CustomEvent('on-link-active', {
+          composed: true,
+          bubbles: true,
+          detail: { text: this._text },
+        })
+      );
     }
   }
 
@@ -168,18 +167,13 @@ export class LocalNavLink extends LitElement {
   }
 
   private _getSlotText() {
-    const Slot: any = this.shadowRoot?.querySelector('.text slot');
-    let text = '';
-
-    const nodes = Slot.assignedNodes({
-      flatten: true,
-    });
-
-    for (let i = 0; i < nodes.length; i++) {
-      text += nodes[i].textContent.trim();
-    }
-
-    this._text = text;
+    const slotEl = this.shadowRoot!.querySelector(
+      '.text slot'
+    ) as HTMLSlotElement;
+    this._text = slotEl
+      .assignedNodes({ flatten: true })
+      .map((n) => n.textContent?.trim() ?? '')
+      .join(' ');
   }
 
   private _handleLinksSlotChange() {
@@ -188,13 +182,12 @@ export class LocalNavLink extends LitElement {
   }
 
   private updateChildren() {
-    this._navLinks.forEach((link: any) => {
-      link._level = this._level + 1;
-      link._navExpanded = this._navExpanded || this._navExpandedMobile;
+    (this._navLinks ?? []).forEach((link: HTMLElement) => {
+      (link as any)._level = this._level + 1;
+      (link as any)._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
-
-    this._dividers.forEach((divider: any) => {
-      divider._navExpanded = this._navExpanded || this._navExpandedMobile;
+    (this._dividers ?? []).forEach((div: HTMLElement) => {
+      (div as any)._navExpanded = this._navExpanded || this._navExpandedMobile;
     });
   }
 
@@ -203,31 +196,19 @@ export class LocalNavLink extends LitElement {
   }
 
   private handleClick(e: Event) {
-    let preventDefault = false;
-
-    if (this.disabled) {
-      preventDefault = true;
-    }
-
-    if (this._navLinks.length) {
-      preventDefault = true;
-      this.expanded = !this.expanded;
-    }
-
-    if (preventDefault) {
-      e.preventDefault();
-    }
-
+    const preventDefault = this.disabled || this._navLinks.length > 0;
+    if (this._navLinks.length) this.expanded = !this.expanded;
+    if (preventDefault) e.preventDefault();
     this.requestUpdate();
-
-    const event = new CustomEvent('on-click', {
-      detail: {
-        origEvent: e,
-        level: this._level,
-        defaultPrevented: preventDefault,
-      },
-    });
-    this.dispatchEvent(event);
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        detail: {
+          origEvent: e,
+          level: this._level,
+          defaultPrevented: preventDefault,
+        },
+      })
+    );
   }
 }
 

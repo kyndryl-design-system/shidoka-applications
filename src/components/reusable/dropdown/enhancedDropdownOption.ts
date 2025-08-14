@@ -1,6 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import '../checkbox';
 import '../button';
@@ -93,10 +94,20 @@ export class EnhancedDropdownOption extends LitElement {
   @state()
   accessor hasIcon = false;
 
+  /** Kind of the item, derived from parent. */
+  @state()
+  accessor kind: 'ai' | 'default' = 'default';
+
   override render() {
+    const classes = {
+      'enhanced-option': true,
+      'menu-item': true,
+      [`ai-connected-${this.kind === 'ai'}`]: true,
+    };
+
     return html`
       <div
-        class="enhanced-option"
+        class=${classMap(classes)}
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
@@ -120,16 +131,20 @@ export class EnhancedDropdownOption extends LitElement {
 
         <div class="content">
           <div
-            class="icon-container"
+            class="menu-item-inner-el icon-container"
             style=${this.hasIcon ? '' : 'display:none'}
           >
             <slot name="icon" @slotchange=${this.onIconSlotChange}></slot>
           </div>
 
-          <div class="text-content">
+          <div class="menu-item-inner-el text">
             <div class="title-content">
               <slot name="title" @slotchange=${this.onTitleSlotChange}></slot>
-              <span class="tag-container"><slot name="tag"></slot></span>
+              ${!this.selected
+                ? html`<span class="tag-container"
+                    ><slot name="tag"></slot
+                  ></span>`
+                : null}
             </div>
             <div class="description-container">
               <slot name="description"></slot>
@@ -142,7 +157,9 @@ export class EnhancedDropdownOption extends LitElement {
 
         <div class="status-icons">
           ${!this.multiple && this.selected
-            ? html`<span class="check-icon">${unsafeSVG(checkIcon)}</span>`
+            ? html`<span class="menu-item-inner-el check-icon"
+                >${unsafeSVG(checkIcon)}</span
+              >`
             : this.allowAddOption && this.removable
             ? html`
                 <kyn-button
@@ -162,7 +179,17 @@ export class EnhancedDropdownOption extends LitElement {
   }
 
   override firstUpdated() {
+    // derive whether icon slot has content
     this.hasIcon = this.iconSlot.assignedNodes({ flatten: true }).length > 0;
+
+    // sync kind from parent and listen for changes
+    const parent = this.closest('kyn-dropdown') as any;
+    if (parent) {
+      this.kind = parent.kind;
+      parent.addEventListener('kind-changed', (e: Event) => {
+        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
+      });
+    }
   }
 
   private onIconSlotChange() {
