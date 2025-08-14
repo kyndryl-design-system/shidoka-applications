@@ -10,7 +10,6 @@ import databaseIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import flowDataIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/flow-data.svg';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { useArgs } from 'storybook/preview-api';
 import '../../components/reusable/notification';
 import '../../components/reusable/dropdown';
 import '../../components/reusable/tag';
@@ -109,43 +108,6 @@ export const Footer = {
     controls: { disable: true },
   },
   render: (args) => {
-    const [, updateArgs] = useArgs();
-
-    const firstDropdownOptions = {
-      'Option 1': {
-        icon: databaseIcon,
-      },
-      'Option 2': {
-        icon: analyticsIcon,
-      },
-    };
-
-    const secondDropdownOptions = {
-      'Option 1': {
-        icon: customerEngagementIcon,
-      },
-      'Option 2': {
-        icon: flowDataIcon,
-      },
-    };
-
-    const handleChange = (e) => {
-      let selectedValue = e.detail.value;
-      updateArgs({
-        firstDropDownValue: selectedValue,
-        firstDropDownIcon: firstDropdownOptions[selectedValue]?.icon,
-      });
-      action(e.type)({ ...e, detail: e.detail });
-    };
-
-    const handleOtherDropdownChange = (e) => {
-      let selectedValue = e.detail.value;
-      updateArgs({
-        secondDropDownValue: selectedValue,
-        secondDropDownIcon: secondDropdownOptions[selectedValue]?.icon,
-      });
-      action(e.type)({ ...e, detail: e.detail });
-    };
     return html`
       <form
         class="ai-input-query query-footer ${args.floating ? 'floating' : ''}"
@@ -178,7 +140,7 @@ export const Footer = {
             ?hideLabel=${true}
             value=${args.firstDropDownValue}
             kind="ai"
-            @on-change=${handleChange}
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
               slot="anchor"
@@ -214,7 +176,7 @@ export const Footer = {
             ?hideLabel=${true}
             value=${args.secondDropDownValue}
             kind="ai"
-            @on-change=${handleOtherDropdownChange}
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
               slot="anchor"
@@ -272,7 +234,7 @@ export const Footer = {
           align-items: flex-start;
           gap: 10px;
           align-self: stretch;
-          @media (min-width: 42rem) {
+          @media (min-width: 321px) {
             flex-direction: row;
           }
         }
