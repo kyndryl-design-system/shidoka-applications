@@ -177,6 +177,7 @@ export const Footer = {
             style="margin-right:-130px;"
             ?hideLabel=${true}
             value=${args.firstDropDownValue}
+            kind="ai"
             @on-change=${handleChange}
           >
             <kyn-button
@@ -200,13 +201,19 @@ export const Footer = {
             <kyn-enhanced-dropdown-option value="Option 2">
               <span slot="icon">${unsafeSVG(analyticsIcon)}</span>
               <span slot="title">Option 2</span>
-              <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+              <kyn-tag
+                slot="tag"
+                label="New chat"
+                tagSize="sm"
+                tagColor="ai"
+              ></kyn-tag>
               <span slot="description">Description for the Option 2</span>
             </kyn-enhanced-dropdown-option>
           </kyn-dropdown>
           <kyn-dropdown
             ?hideLabel=${true}
             value=${args.secondDropDownValue}
+            kind="ai"
             @on-change=${handleOtherDropdownChange}
           >
             <kyn-button
@@ -230,7 +237,12 @@ export const Footer = {
             <kyn-enhanced-dropdown-option value="Option 2">
               <span slot="icon">${unsafeSVG(customerEngagementIcon)}</span>
               <span slot="title">Option 2</span>
-              <kyn-tag slot="tag" label="New chat" tagSize="sm"></kyn-tag>
+              <kyn-tag
+                slot="tag"
+                label="New chat"
+                tagSize="sm"
+                tagColor="ai"
+              ></kyn-tag>
               <span slot="description">Description for the Option 2</span>
             </kyn-enhanced-dropdown-option>
           </kyn-dropdown>
