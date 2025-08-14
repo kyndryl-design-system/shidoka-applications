@@ -136,7 +136,6 @@ export const Footer = {
         </div>
         <div class="footer-content">
           <kyn-dropdown
-            style="margin-right:-130px;"
             ?hideLabel=${true}
             value=${args.firstDropDownValue}
             kind="ai"
@@ -213,9 +212,6 @@ export const Footer = {
 
       ${sharedStyles}
       <style>
-        kyn-dropdown {
-          min-width: 280px;
-        }
         .query-footer {
           margin-top: auto;
           display: flex;
@@ -230,13 +226,11 @@ export const Footer = {
         .footer-content {
           display: flex;
           padding: 0 2px;
-          flex-direction: column;
+          flex-direction: row;
           align-items: flex-start;
           gap: 10px;
+          flex-wrap: wrap;
           align-self: stretch;
-          @media (min-width: 321px) {
-            flex-direction: row;
-          }
         }
       </style>
     `;
