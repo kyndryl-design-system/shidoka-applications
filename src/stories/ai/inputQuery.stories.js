@@ -139,6 +139,7 @@ export const Footer = {
             ?hideLabel=${true}
             value=${args.firstDropDownValue}
             kind="ai"
+            menuMinWidth="280px"
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
@@ -175,6 +176,7 @@ export const Footer = {
             ?hideLabel=${true}
             value=${args.secondDropDownValue}
             kind="ai"
+            menuMinWidth="280px"
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
