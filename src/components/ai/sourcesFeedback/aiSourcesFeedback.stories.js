@@ -123,6 +123,7 @@ const SourcesContent = () => html`
   ${sourcesData.map(
     (card, i) => html`
       <kyn-card
+        id="source-feedback-card"
         slot="sources"
         aiConnected
         aria-label="Card"
@@ -139,7 +140,7 @@ const SourcesContent = () => html`
     `
   )}
   <style>
-    kyn-card::part(card-wrapper) {
+    kyn-card#source-feedback-card::part(card-wrapper) {
       padding: 8px 4px;
     }
     .card-description {
