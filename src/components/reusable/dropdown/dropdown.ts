@@ -398,6 +398,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 open: this.open,
                 upwards: this._openUpwards,
               })}
+              style="min-width: ${this.menuMinWidth};"
               aria-hidden=${!this.open}
               @keydown=${this.handleListKeydown}
               @blur=${this.handleListBlur}
