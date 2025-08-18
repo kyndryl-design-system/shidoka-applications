@@ -15,7 +15,7 @@
   border-radius: inherit;
 
   &.filled-header {
-    .kyn-accordion-item-title {
+    .kyn-accordion-item-wrapper {
       background-color: var(--kd-color-background-container-subtle);
 
       &:hover {
@@ -52,12 +52,18 @@
 }
 
 .expand-icon {
-  display: flex;
-  margin-left: auto;
   transition: transform 150ms ease-out;
 
   .opened & {
     transform: rotate(-180deg);
+  }
+
+  &.right {
+    margin-left: auto;
+  }
+
+  &.left {
+    order: -1;
   }
 }
 
@@ -69,19 +75,11 @@
   align-items: center;
   background: none;
   position: relative;
-  font-weight: var(--kd-font-weight-medium);
+
   padding: 24px 16px;
-  outline: 2px solid transparent;
-  transition: background-color 150ms ease-out, outline-color 150ms ease-out;
-  outline-offset: -1px;
 
-  &:hover {
-    background-color: var(--kd-color-background-accent-subtle);
-  }
-
-  &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
-  }
+  gap: 8px;
+  flex-grow: 2;
 
   .number,
   .icon {
@@ -109,12 +107,6 @@
     align-self: auto;
     order: 0;
   }
-
-  .disabled & {
-    color: var(--kd-color-text-link-level-disabled);
-    background-color: var(--kd-color-background-page-default);
-    outline: none;
-  }
 }
 
 .kyn-accordion-item-subtitle {
@@ -129,4 +121,38 @@
 
 .disabled .kyn-accordion-item-body {
   color: var(--kd-color-text-link-level-disabled);
+}
+
+.kyn-accordion-item-overflow-menu {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 5;
+  margin-left: auto;
+  display: flex;
+  gap: 5px;
+}
+
+.kyn-accordion-item-wrapper {
+  display: flex;
+  align-items: center;
+  font-weight: var(--kd-font-weight-medium);
+  outline: 2px solid transparent;
+  transition: background-color 150ms ease-out, outline-color 150ms ease-out;
+  outline-offset: -1px;
+
+  .disabled & {
+    color: var(--kd-color-text-link-level-disabled);
+    background-color: var(--kd-color-background-page-default);
+    outline: none;
+  }
+
+  &:hover {
+    background-color: var(--kd-color-background-accent-subtle);
+  }
+
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
 }

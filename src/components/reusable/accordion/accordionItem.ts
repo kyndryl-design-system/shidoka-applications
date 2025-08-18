@@ -16,8 +16,11 @@ import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/
  * @slot body - Body of the accordion item
  * @slot title - Title of the accordion item
  * @slot subtitle - Optional subtitle of the accordion item
- *
+ * @slot overflowmenu - Optional overflow menu for actions
  */
+
+export type TogglePosition = 'left' | 'right';
+export const allowedTogglePositions: TogglePosition[] = ['left', 'right'];
 @customElement('kyn-accordion-item')
 export class AccordionItem extends LitElement {
   static override styles = unsafeCSS(stylesheet);
@@ -54,6 +57,12 @@ export class AccordionItem extends LitElement {
    */
   @state() private accessor _compact = false;
 
+  /**
+   * The position of the toggle icon. Passed from the Accordion.
+   * @ignore
+   */
+  @state() private accessor _togglePosition: TogglePosition = 'right';
+
   setIndex(index: number) {
     this._index = index;
   }
@@ -68,6 +77,10 @@ export class AccordionItem extends LitElement {
 
   setCompact(value: boolean) {
     this._compact = value;
+  }
+
+  setTogglePosition(value: TogglePosition) {
+    this._togglePosition = value;
   }
 
   open() {
@@ -103,6 +116,10 @@ export class AccordionItem extends LitElement {
       detail: { opened: this.opened },
     });
     this.dispatchEvent(event);
+  }
+
+  private _overflowMenuClick(e: Event) {
+    e.stopPropagation();
   }
 
   /**
@@ -145,6 +162,37 @@ export class AccordionItem extends LitElement {
     }
   }
 
+  get expandIconTemplate() {
+    return html`<div class="expand-icon ${this._togglePosition}">
+      ${unsafeSVG(chevronIcon)}
+    </div>`;
+  }
+
+  get overflowMenuTemplate() {
+    if (this.querySelector('[slot="overflowmenu"]')) {
+      return html`
+        <div
+          class="kyn-accordion-item-overflow-menu"
+          @click="${(e: Event) => this._overflowMenuClick(e)}"
+        >
+          <slot name="overflowmenu"></slot>
+        </div>
+      `;
+    } else {
+      return '';
+    }
+  }
+
+  get actionsTemplate() {
+    return html`
+      ${this._togglePosition === 'left' ? this.expandIconTemplate : ''}
+      <div class="kyn-accordion-item-actions">
+        ${this.overflowMenuTemplate}
+        ${this._togglePosition === 'right' ? this.expandIconTemplate : ''}
+      </div>
+    `;
+  }
+
   override render() {
     const classes: any = classMap({
       'kyn-accordion-item': true,
@@ -156,28 +204,32 @@ export class AccordionItem extends LitElement {
 
     return html`
       <div class="${classes}">
-        <div
-          class="kyn-accordion-item-title"
-          aria-controls="kyn-accordion-item-body-${this._index}"
-          aria-expanded=${this.opened}
-          aria-disabled=${this.disabled}
-          tabindex="0"
-          role="button"
-          @click="${(e: Event) => this._handleClick(e)}"
-          @keypress="${(e: KeyboardEvent) => this._handleKeypress(e)}"
-          id="kyn-accordion-item-title-${this._index}"
-        >
-          ${this.iconTemplate} ${this.numberTemplate}
+        <div class="kyn-accordion-item-wrapper">
+          <div
+            class="kyn-accordion-item-title"
+            aria-controls="kyn-accordion-item-body-${this._index}"
+            aria-expanded=${this.opened}
+            aria-disabled=${this.disabled}
+            tabindex="0"
+            role="button"
+            @click="${(e: Event) => this._handleClick(e)}"
+            @keypress="${(e: KeyboardEvent) => this._handleKeypress(e)}"
+            id="kyn-accordion-item-title-${this._index}"
+          >
+            ${this.iconTemplate} ${this.numberTemplate}
 
-          <div>
-            <div class="title">
-              <slot name="title"></slot>
+            <div>
+              <div class="title">
+                <slot name="title"></slot>
+              </div>
+
+              ${this.subtitleTemplate}
             </div>
 
-            ${this.subtitleTemplate}
+            ${this.expandIconTemplate}
           </div>
 
-          <div class="expand-icon">${unsafeSVG(chevronIcon)}</div>
+          ${this.overflowMenuTemplate}
         </div>
 
         <div

@@ -10,6 +10,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import stylesheet from './accordion.scss?inline';
+import { TogglePosition, allowedTogglePositions } from './accordionItem';
 
 /**
  * Accordion component.
@@ -46,6 +47,12 @@ export class Accordion extends LitElement {
   accessor collapseLabel = 'Collapse all items';
 
   /**
+   * Whether the expand icon should be positioned to the right or left. Defaults to 'right'.
+   */
+  @property({ type: String })
+  accessor togglePosition: TogglePosition = 'right';
+
+  /**
    * The state of the toggle controlling the "expand all" functionality
    * @ignore
    */
@@ -63,11 +70,17 @@ export class Accordion extends LitElement {
   }
 
   override willUpdate(changedProps: any) {
+    if (changedProps.has('togglePosition')) {
+      if (!allowedTogglePositions.includes(this.togglePosition)) {
+        this.togglePosition = 'right';
+      }
+    }
     if (
       changedProps.has('filledHeaders') ||
       changedProps.has('compact') ||
       changedProps.has('startNumber') ||
-      changedProps.has('showNumbers')
+      changedProps.has('showNumbers') ||
+      changedProps.has('togglePosition')
     ) {
       this._updateChildren();
     }
@@ -79,6 +92,7 @@ export class Accordion extends LitElement {
       item.setCompact(this.compact);
       item.setIndex(this.startNumber + index);
       item.setShowNumbers(this.showNumbers);
+      item.setTogglePosition(this.togglePosition);
     });
   }
 

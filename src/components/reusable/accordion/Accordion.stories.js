@@ -7,6 +7,7 @@ import { action } from 'storybook/actions';
 
 import './accordion';
 import './accordionItem';
+import '../overflowMenu';
 import circleDashIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/circle-stroke.svg';
 import checkmarkOutlineIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/checkmark.svg';
 import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/close-filled.svg';
@@ -31,6 +32,7 @@ const args = {
   startNumber: 1,
   expandLabel: 'Expand all items',
   collapseLabel: 'Collapse all items',
+  togglePosition: 'left',
 };
 
 export const Accordion = {
@@ -44,6 +46,7 @@ export const Accordion = {
         startNumber="${args.startNumber}"
         expandLabel="${args.expandLabel}"
         collapseLabel="${args.collapseLabel}"
+        togglePosition="${args.togglePosition}"
       >
         <kyn-accordion-item
           opened
@@ -160,6 +163,82 @@ export const AccordionWithIcons = {
           }
         }
       </style>
+    `;
+  },
+};
+
+export const AccordionWithActions = {
+  args: args,
+  render: (args) => {
+    return html`
+      <kyn-accordion
+        ?filledHeaders="${args.filledHeaders}"
+        ?compact="${args.compact}"
+        ?showNumbers="${args.showNumbers}"
+        startNumber="${args.startNumber}"
+        expandLabel="${args.expandLabel}"
+        collapseLabel="${args.collapseLabel}"
+        togglePosition="${args.togglePosition}"
+      >
+        <kyn-accordion-item
+          opened
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <span slot="title"> Accordion Title 1 </span>
+          <span slot="subtitle"> Accordion subtitle 1 </span>
+          <div slot="overflowmenu">
+            <kyn-overflow-menu anchorRight>
+              <kyn-overflow-menu-item
+                @on-click=${(e) => console.log('Action 1 clicked')}
+                >Action 1</kyn-overflow-menu-item
+              >
+              <kyn-overflow-menu-item
+                @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+                >Action 2</kyn-overflow-menu-item
+              >
+            </kyn-overflow-menu>
+          </div>
+          <div slot="body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </div>
+        </kyn-accordion-item>
+
+        <kyn-accordion-item
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <span slot="title"> Accordion Title 2 </span>
+          <span slot="subtitle"> Accordion subtitle 2 </span>
+          <div slot="body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </div>
+        </kyn-accordion-item>
+
+        <kyn-accordion-item
+          disabled
+          @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <span slot="title"> Accordion Title 3 </span>
+          <span slot="subtitle"> Accordion subtitle 3 </span>
+          <div slot="overflowmenu">
+            <kyn-overflow-menu anchorRight disabled>
+              <kyn-overflow-menu-item
+                @on-click=${(e) => console.log('Action 1 clicked')}
+                >Action 1</kyn-overflow-menu-item
+              >
+              <kyn-overflow-menu-item
+                @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+                >Action 2</kyn-overflow-menu-item
+              >
+            </kyn-overflow-menu>
+          </div>
+          <div slot="body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </div>
+        </kyn-accordion-item>
+      </kyn-accordion>
     `;
   },
 };
