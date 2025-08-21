@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { action } from 'storybook/actions';
 import '../button';
 import './index';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
   title: 'Components/File Uploader',
@@ -15,9 +16,13 @@ export default {
       url: 'https://www.figma.com/design/rC5XdRnXVbDmu3vPN8tJ4q/2.1-Edinburgh?node-id=4253-31509&t=IEdMJk3IbVS8A5JL-0',
     },
   },
+  argTypes: {
+    ...ValidationArgs,
+  },
 };
 
 const args = {
+  name: 'file-uploader',
   accept: ['image/jpeg', 'image/png'],
   multiple: true,
   textStrings: {
@@ -48,6 +53,7 @@ export const Default = {
   render: (args) => {
     return html`
       <kyn-file-uploader
+        name=${args.name}
         .accept=${args.accept}
         .multiple=${args.multiple}
         .textStrings=${args.textStrings}

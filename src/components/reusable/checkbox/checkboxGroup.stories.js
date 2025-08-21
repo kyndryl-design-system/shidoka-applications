@@ -3,6 +3,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import '../tooltip';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
@@ -18,6 +19,9 @@ export default {
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-370464&m=dev',
     },
   },
+  argTypes: {
+    ...ValidationArgs,
+  },
 };
 
 const args = {
@@ -31,6 +35,7 @@ const args = {
   hideLegend: false,
   filterable: false,
   limitCheckboxes: false,
+  limitCount: 4,
   invalidText: '',
   description: 'Description',
   textStrings: {
@@ -58,6 +63,7 @@ export const CheckboxGroup = {
         ?hideLegend=${args.hideLegend}
         ?filterable=${args.filterable}
         ?limitCheckboxes=${args.limitCheckboxes}
+        .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         @on-checkbox-group-change=${(e) =>
@@ -96,6 +102,7 @@ export const CheckboxSubgroups = {
         ?hideLegend=${args.hideLegend}
         ?filterable=${args.filterable}
         ?limitCheckboxes=${args.limitCheckboxes}
+        .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
         @on-checkbox-group-change=${(e) =>

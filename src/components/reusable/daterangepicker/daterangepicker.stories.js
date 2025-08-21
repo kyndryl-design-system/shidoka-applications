@@ -2,6 +2,7 @@ import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import { useEffect } from 'storybook/preview-api';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
 import '../modal';
@@ -55,6 +56,7 @@ export default {
     multiInput: { control: { type: 'boolean' } },
     showSingleMonth: { control: { type: 'boolean' } },
     closeOnSelection: { control: { type: 'boolean' } },
+    ...ValidationArgs,
   },
 };
 

@@ -20,6 +20,10 @@ export default {
       options: ['normal', 'clickable', 'inline', 'toast'],
       control: { type: 'select' },
     },
+    target: {
+      options: ['_self', '_blank'],
+      control: { type: 'select' },
+    },
     tagStatus: {
       options: ['default', 'info', 'warning', 'success', 'error', 'ai'],
       control: { type: 'select' },
@@ -40,6 +44,7 @@ export const Notification = {
     timeStamp: 'Updated 2 mins ago',
     notificationRole: 'status',
     href: '#',
+    target: '_self',
     type: 'normal',
     tagStatus: 'default',
     assistiveNotificationTypeText: 'Clickable notification',
@@ -53,6 +58,7 @@ export const Notification = {
       notificationRole=${args.notificationRole}
       assistiveNotificationTypeText=${args.assistiveNotificationTypeText}
       href=${args.href}
+      target=${args.target}
       type=${args.type}
       tagStatus=${args.tagStatus}
       ?unRead=${args.unRead}

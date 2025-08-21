@@ -8,6 +8,7 @@ import Styles from './colorInput.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 
 const _defaultTextStrings = {
+  requiredText: 'Required',
   errorText: 'Error',
   pleaseSelectColor: 'Please select a color',
   invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',
@@ -18,6 +19,9 @@ const _defaultTextStrings = {
  * Color input.
  * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ value: string, origEvent: Event }`
  * @slot tooltip - Slot for tooltip.
+ * @attr {string} [value=''] - The value of the input.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-color-input')
 export class ColorInput extends FormMixin(LitElement) {
@@ -34,6 +38,10 @@ export class ColorInput extends FormMixin(LitElement) {
   /** Input disabled state. */
   @property({ type: Boolean })
   accessor disabled = false;
+
+  /** Input required state. */
+  @property({ type: Boolean })
+  accessor required = false;
 
   /** Visually hide the label. */
   @property({ type: Boolean })
@@ -88,6 +96,17 @@ export class ColorInput extends FormMixin(LitElement) {
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
           for=${this.name}
         >
+          ${
+            this.required
+              ? html`<abbr
+                  class="required"
+                  title=${this._textStrings.requiredText}
+                  role="img"
+                  aria-label=${this._textStrings?.requiredText || 'Required'}
+                  >*</abbr
+                >`
+              : null
+          }
           ${this.label}
           <slot name="tooltip"></slot>
         </label>
@@ -196,11 +215,13 @@ export class ColorInput extends FormMixin(LitElement) {
 
     let validationMessage = '';
 
-    if (!value) {
+    if (this.required && !value) {
       validityFlags.valueMissing = true;
       validityFlags.valid = false;
       validationMessage = this._textStrings.pleaseSelectColor;
-    } else if (!hexPattern.test(value)) {
+    }
+
+    if (value != '' && !hexPattern.test(value)) {
       validityFlags.patternMismatch = true;
       validityFlags.valid = false;
       validationMessage = this._textStrings.invalidFormat;

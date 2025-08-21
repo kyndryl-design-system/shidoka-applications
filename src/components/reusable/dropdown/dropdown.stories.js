@@ -5,6 +5,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import '../tooltip';
+import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
@@ -18,10 +19,19 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
+    kind: {
+      options: ['default', 'ai'],
+      control: { type: 'select' },
+    },
     openDirection: {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
+    'kind-changed': {
+      table: { disable: true },
+      control: false,
+    },
+    ...ValidationArgs,
   },
   parameters: {
     design: {
@@ -35,6 +45,7 @@ const args = {
   label: 'Label',
   placeholder: '',
   size: 'md',
+  kind: 'default',
   inline: false,
   name: 'example',
   open: false,
@@ -75,6 +86,65 @@ export const Single = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        openDirection=${args.openDirection}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
+        <kyn-dropdown-option value="1">
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Option 1
+        </kyn-dropdown-option>
+        <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+        <kyn-dropdown-option value="3" disabled>
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Disabled Option
+        </kyn-dropdown-option>
+        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+        <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const AI = {
+  args: {
+    ...args,
+    kind: 'ai',
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -119,6 +189,7 @@ export const SingleSearchable = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -170,6 +241,7 @@ export const MultiSelect = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -220,6 +292,7 @@ export const MultiSelectSearchable = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -279,6 +352,7 @@ export const Grouped = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -359,6 +433,7 @@ export const DataDrivenOptions = {
         multiple
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         ?hideTags=${args.hideTags}
         name=${args.name}
@@ -427,6 +502,7 @@ export const DirectionalControl = {
             label="Auto (default)"
             placeholder="Auto detection"
             size=${args.size}
+            kind=${args.kind}
             name="auto-direction"
             openDirection="auto"
             .textStrings=${args.textStrings}
@@ -538,6 +614,7 @@ export const AddNewOption = {
         multiple
         placeholder=${args.placeholder}
         size=${args.size}
+        kind=${args.kind}
         ?inline=${args.inline}
         ?hideTags=${args.hideTags}
         name=${args.name}

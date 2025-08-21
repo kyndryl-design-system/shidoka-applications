@@ -161,7 +161,6 @@ export const Default = {
         <br /><br />
 
         <kyn-text-input
-          required
           name="textInput"
           placeholder="Placeholder text"
           caption="Text input example"
@@ -212,6 +211,7 @@ export const Default = {
           name="numberInput"
           caption="Number input example"
           label="Number input"
+          style="max-width: 300px"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kyn-tooltip slot="tooltip">
@@ -224,11 +224,9 @@ export const Default = {
         <kyn-time-picker
           name="time-picker"
           label="Time Picker"
-          required
           dateFormat="H:i"
           caption="Time picker example"
           ?twentyFourHourFormat=${true}
-          defaultErrorMessage="A time value is required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
@@ -241,12 +239,10 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          required
           name="date-picker"
           label="Date Picker"
           dateFormat="Y-m-d"
           caption="Date picker example"
-          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
@@ -254,13 +250,11 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          required
           name="date-picker"
           label="Multi-Date Picker"
           dateFormat="Y-m-d"
           mode="multiple"
           caption="Date picker example"
-          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
@@ -268,13 +262,11 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          required
           name="date-time-picker"
           label="Date + Time Picker"
           dateFormat="Y-m-d h:i K"
           caption="Date time picker example"
           ?twentyFourHourFormat=${false}
-          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
@@ -287,12 +279,10 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
-          required
           label="Date Range Picker"
           name="date-range"
           dateFormat="Y-m-d"
           caption="Date range picker example"
-          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
@@ -305,13 +295,11 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
-          required
           name="date-time-range"
           label="Date + Time Range Picker"
           dateFormat="Y-m-d h:i K"
           caption="Date time range picker example"
           ?twentyFourHourFormat=${false}
-          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
@@ -330,13 +318,11 @@ export const Default = {
         <br />
 
         <kyn-time-picker
-          required
           name="time-picker-pre-selected"
           label="Time Picker"
           dateFormat="H:i"
           caption="Time picker example (pre-selected)"
           ?twentyFourHourFormat=${true}
-          defaultErrorMessage="A time value is required"
           defaultMinute=${30}
           defaultHour=${12}
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -351,14 +337,12 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          required
           name="date-picker-pre-selected"
           label="Multi-Date Picker"
           dateFormat="Y-m-d"
           mode="multiple"
           caption="Date picker example (multi, pre-selected)"
           .defaultDate=${'2022-01-03T00:00:00Z'}
-          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
@@ -366,14 +350,12 @@ export const Default = {
         <br /><br />
 
         <kyn-date-picker
-          required
           name="date-picker-pre-selected-1"
           label="Multi-Date Picker"
           dateFormat="Y-m-d"
           mode="multiple"
           caption="Date picker example (multi, pre-selected)"
           .defaultDate=${['2022-01-02', '2022-01-03']}
-          defaultErrorMessage="A date value is required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         ></kyn-date-picker>
@@ -381,14 +363,12 @@ export const Default = {
         <br /><br />
 
         <kyn-date-range-picker
-          required
           name="date-time-range--pre-selected"
           label="Date + Time Range Picker"
           dateFormat="Y-m-d h:i K"
           caption="Date time range picker example"
           ?twentyFourHourFormat=${false}
           .defaultDate=${['2025-01-02T00:00:00Z', '2025-01-13T00:00:00Z']}
-          defaultErrorMessage="Both start and end dates are required"
           @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="min-width: 425px;"
         >
@@ -562,7 +542,9 @@ export const Default = {
             Enter multiple email addresses
           </kyn-tooltip>
         </kyn-multi-input-field>
+
         <br /><br />
+
         <kyn-file-uploader
           name="file-uploader"
           .accept=${['image/jpeg', 'image/png']}
