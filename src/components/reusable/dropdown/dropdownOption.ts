@@ -74,6 +74,12 @@ export class DropdownOption extends LitElement {
   @state()
   accessor kind: 'ai' | 'default' = 'default';
 
+  /** slotted icon added state.
+   * @ignore
+   */
+  @state()
+  accessor hasIcon = false;
+
   @property({ type: String, reflect: true })
   override accessor role = 'option';
 
@@ -124,9 +130,21 @@ export class DropdownOption extends LitElement {
               `}
         </span>
 
-        <span class="menu-item-inner-el icon"
-          ><slot name="icon" style="display:flex"></slot
-        ></span>
+        ${this.hasIcon
+          ? html`<span class="menu-item-inner-el icon"
+              ><slot
+                name="icon"
+                style="display:flex"
+                @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+              ></slot
+            ></span>`
+          : html`
+              <slot
+                name="icon"
+                style="display:none"
+                @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+              ></slot>
+            `}
         ${this.selected && !this.multiple
           ? html`
               <span class="menu-item-inner-el check-icon"
@@ -234,6 +252,11 @@ export class DropdownOption extends LitElement {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  private handleIconSlotChange(e: any) {
+    const nodes = e.target.assignedNodes({ flatten: true });
+    this.hasIcon = nodes.length > 0;
   }
 }
 
