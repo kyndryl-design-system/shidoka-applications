@@ -32,7 +32,7 @@ export class Table extends LitElement {
    * @type {boolean}
    */
   @property({ type: Boolean })
-  accessor checkboxSelection = false;
+  accessor checkboxSelection: boolean | undefined;
 
   /**
    * striped: Boolean indicating whether rows should have alternate
