@@ -213,7 +213,11 @@ class StoryColumSetting extends LitElement {
       </kyn-global-filter>
       <div class="seperator-div"></div>
       <div>
-        <kyn-table stickyHeader class="${lockedRow ? 'first-row-locked' : ''}">
+        <kyn-table
+          .checkboxSelection=${undefined}
+          stickyHeader
+          class="${lockedRow ? 'first-row-locked' : ''}"
+        >
           <kyn-thead class="t-head">
             <kyn-header-tr>
               <kyn-th .align=${'center'} class="min-max-width-th-100">
