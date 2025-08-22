@@ -23,6 +23,9 @@ export default {
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-346870&p=f&m=dev',
     },
   },
+  argTypes: {
+    togglePosition: { control: 'select', options: ['left', 'right'] },
+  },
 };
 
 const args = {
