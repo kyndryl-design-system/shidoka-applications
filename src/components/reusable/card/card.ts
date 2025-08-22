@@ -79,14 +79,14 @@ export class Card extends LitElement {
   }
 
   private handleClick(e: Event) {
-    const custom = new CustomEvent('on-card-click', {
+    const event = new CustomEvent('on-card-click', {
       detail: { origEvent: e },
       bubbles: true,
       composed: true,
       cancelable: true,
     });
-    const dispatchResult = this.dispatchEvent(custom);
-    if (!dispatchResult || custom.defaultPrevented) {
+    const dispatchResult = this.dispatchEvent(event);
+    if (!dispatchResult || event.defaultPrevented) {
       e.preventDefault();
     }
   }
