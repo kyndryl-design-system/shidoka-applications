@@ -129,15 +129,12 @@ export class DropdownOption extends LitElement {
                 ></slot>
               `}
         </span>
-
         ${this.hasIcon
-          ? html`<span class="menu-item-inner-el icon"
-              ><slot
-                name="icon"
-                style="display:flex"
-                @slotchange=${(e: any) => this.handleIconSlotChange(e)}
-              ></slot
-            ></span>`
+          ? html`<slot
+              name="icon"
+              style="display:flex"
+              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+            ></slot>`
           : html`
               <slot
                 name="icon"
