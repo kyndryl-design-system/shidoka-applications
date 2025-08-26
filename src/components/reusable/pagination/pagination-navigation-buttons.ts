@@ -105,6 +105,7 @@ export class PaginationNavigationButtons extends LitElement {
       <span class="page-range" role="status" aria-live="polite">
         <kyn-dropdown
           name="page-number"
+          class="pagination-dropdown"
           label="${this.pageNumberLabel}"
           ?hideLabel=${true}
           inline

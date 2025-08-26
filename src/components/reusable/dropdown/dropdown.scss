@@ -8,6 +8,10 @@
   display: inline-block;
 }
 
+:host(.pagination-dropdown) .select {
+  border: 1px solid transparent;
+}
+
 .wrapper {
   position: relative;
 }
@@ -67,15 +71,12 @@ slot[name='icon']::slotted(*) {
 
 /* Default focus */
 .select:focus-within {
-  outline: 1px solid var(--kd-color-border-variants-focus);
+  outline: 2px solid var(--kd-color-border-variants-focus);
   outline-offset: 0;
-  border-color: var(--kd-color-border-variants-focus);
-}
 
-.select:focus-within {
-  outline: 1px solid var(--kd-color-border-variants-focus);
-  outline-offset: 0;
-  border-color: var(--kd-color-border-variants-focus);
+  &:hover {
+    border-color: transparent;
+  }
 }
 
 .arrow-icon {
