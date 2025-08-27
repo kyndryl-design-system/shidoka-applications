@@ -250,6 +250,13 @@ pre.line-numbers {
   pointer-events: auto;
 }
 
+/* also show copy when copy action is active (persist while copied) */
+.code-view__container.copy-active .code-view__copy-button {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
 .code-view__copy-button {
   opacity: 0;
   visibility: hidden;
@@ -268,6 +275,11 @@ pre.line-numbers {
 }
 
 .code-view__container:hover .code-view__copy-button .copy-text {
+  opacity: 1;
+}
+
+/* ensure copy text also shows when copy action is active */
+.code-view__container.copy-active .code-view__copy-button .copy-text {
   opacity: 1;
 }
 

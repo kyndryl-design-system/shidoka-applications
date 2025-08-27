@@ -223,6 +223,7 @@ export class BlockCodeView extends LitElement {
       'shidoka-syntax-theme--light': this.darkTheme === 'light',
       'expanded-code-view': this.codeExpanded,
       'has-overflow': this.hasOverflow,
+      'copy-active': this._copyState?.copied,
     });
   }
 
