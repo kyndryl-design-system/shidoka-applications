@@ -235,11 +235,98 @@ export const AIConnected = {
           consectetur adipiscing elit. Proin cursus, purus vitae egestas mollis,
           augue augue interdum quam, sit amet volutpat justo magna quis justo.
           Aliquam dapibus mi a arcu consequat, sed placerat metus bibendum.
-          Suspendisse pretium nibh Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Proin cursus, purus vitae egestas mollis, augue augue
-          interdum quam, sit amet volutpat justo magna quis justo. Aliquam
-          dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse
-          pretium nibh
+          Suspendisse pretium nibh
+        </div>
+      </kyn-side-drawer>
+    `;
+  },
+};
+
+let __editMode = false;
+
+const fakeSave = () =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(true), 800);
+  });
+
+const handleEditBeforeClose = (returnValue) => {
+  const drawer = document.querySelector('#edit-drawer');
+  if (returnValue === 'ok') {
+    if (!__editMode) {
+      __editMode = true;
+      if (drawer) {
+        drawer.submitBtnText = 'Update';
+        drawer.cancelBtnText = 'Cancel';
+      }
+      return false;
+    }
+
+    if (drawer) {
+      drawer.submitBtnDisabled = true;
+    }
+    fakeSave()
+      .then((success) => {
+        if (success && drawer) {
+          __editMode = false;
+          drawer.submitBtnDisabled = false;
+          drawer.submitBtnText = 'Edit';
+          drawer.open = false;
+        } else if (drawer) {
+          drawer.submitBtnDisabled = false;
+        }
+      })
+      .catch(() => {
+        if (drawer) drawer.submitBtnDisabled = false;
+      });
+
+    return false;
+  }
+
+  return true;
+};
+
+export const EditUpdateFlow = {
+  args: { ...args, submitBtnText: 'Edit' },
+  render: (args) => {
+    return html`
+      <kyn-side-drawer
+        id="edit-drawer"
+        ?open=${args.open}
+        size=${args.size}
+        titleText="Insights Added"
+        labelText=${args.labelText}
+        submitBtnText=${args.submitBtnText}
+        cancelBtnText=${args.cancelBtnText}
+        ?submitBtnDisabled=${args.submitBtnDisabled}
+        ?hideFooter=${args.hideFooter}
+        ?destructive=${args.destructive}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?hideCancelButton=${args.hideCancelButton}
+        .beforeClose=${(returnValue) => handleEditBeforeClose(returnValue)}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-button slot="anchor">Open Drawer</kyn-button>
+
+        <div>
+          <p><strong>Insights Added</strong></p>
+          <p>Total Score: 10</p>
+        </div>
+
+        <div style="margin-top: 16px;">
+          ${__editMode
+            ? html`<div>
+                <label>Insight name</label>
+                <input placeholder="name" />
+                <label style="margin-left: 20px;">Propensity score</label>
+                <input placeholder="1" style="width: 60px; margin-left: 8px" />
+              </div>`
+            : html`<div>
+                <div>name — 1</div>
+                <div>name — 4</div>
+                <div>name — 5</div>
+              </div>`}
         </div>
       </kyn-side-drawer>
     `;
