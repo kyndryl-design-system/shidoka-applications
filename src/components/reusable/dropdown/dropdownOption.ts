@@ -44,7 +44,7 @@ export class DropdownOption extends LitElement {
    * Option highlighted state for keyboard navigation, automatically derived.
    * @ignore
    */
-  @state()
+  @property({ type: Boolean, reflect: true })
   accessor highlighted = false;
 
   /** Multi-select state, derived from parent.
@@ -96,7 +96,6 @@ export class DropdownOption extends LitElement {
     return html`
       <div
         class=${classMap(classes)}
-        ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
         aria-disabled=${this.disabled}

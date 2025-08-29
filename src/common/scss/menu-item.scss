@@ -195,3 +195,44 @@
     }
   }
 }
+
+:host([highlighted]):not([disabled]) .menu-item {
+  background-color: var(--kd-color-background-menu-state-hover);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
+  }
+}
+
+:host(:is(:focus, :focus-visible)):not([disabled]) .menu-item {
+  background-color: var(--kd-color-background-menu-state-open);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-primary);
+  }
+}
+
+:host(:active):not([disabled]) .menu-item {
+  background-color: var(--kd-color-background-menu-state-pressed);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
+  }
+}
+
+:host(.ai-connected-true)[highlighted]:not([disabled]) .menu-item {
+  background-color: var(--kd-color-background-menu-state-ai-open);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
+  }
+}
+:host(.ai-connected-true:is(:focus, :focus-visible)):not([disabled])
+  .menu-item {
+  background-color: var(--kd-color-background-menu-state-ai-open);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-primary);
+  }
+}
+:host(.ai-connected-true:active):not([disabled]) .menu-item {
+  background-color: var(--kd-color-background-menu-state-ai-pressed);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
+  }
+}
