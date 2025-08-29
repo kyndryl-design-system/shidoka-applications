@@ -8,6 +8,7 @@
 
 .menu-item {
   background-color: var(--kd-color-background-menu-state-default);
+  transition: background-color 150ms ease-out;
 
   .menu-item-inner-el {
     color: var(--kd-color-text-level-primary);
@@ -18,13 +19,15 @@
     }
   }
 
-  transition: background-color 150ms ease-out, color 150ms ease-out;
-
   &:hover:not([disabled]) {
     background-color: var(--kd-color-background-menu-state-hover);
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-light);
+    }
+
+    slot[name='icon']::slotted(span) {
+      color: var(--kd-color-icon-light);
     }
   }
 
@@ -33,14 +36,6 @@
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-primary);
-    }
-  }
-
-  &:active:not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-pressed);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
     }
   }
 
@@ -160,8 +155,7 @@
     &[highlighted]:not([disabled]) {
       background-color: var(--kd-color-background-menu-state-ai-open);
 
-      &:hover,
-      &[highlighted] {
+      &:hover {
         background-color: var(--kd-color-background-menu-state-ai-hover);
 
         .menu-item-inner-el {
