@@ -41,8 +41,10 @@ export class DropdownOption extends LitElement {
   accessor allowAddOption = false;
 
   /**
-   * Option highlighted state for keyboard navigation, automatically derived.
-   * @ignore
+   * Option highlighted state.
+   * Reflected as a DOM attribute so styles can apply.
+   * Not intended to be set by consuming devs.
+   * @internal
    */
   @property({ type: Boolean, reflect: true })
   accessor highlighted = false;
