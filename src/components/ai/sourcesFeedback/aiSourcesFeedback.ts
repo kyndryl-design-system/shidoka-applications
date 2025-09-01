@@ -9,7 +9,6 @@ import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit-html/directives/class-map.js';
 
 import stylesheet from './aiSourcesFeedback.scss?inline';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';

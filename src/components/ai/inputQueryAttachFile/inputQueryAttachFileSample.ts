@@ -8,10 +8,6 @@ import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/sen
 
 @customElement('sample-attach-file')
 export class SampleAttachFile extends LitElement {
-  /**
-   * Internal valid files.
-   * @internal
-   */
   @state()
   accessor _files: any[] = [];
 
@@ -32,8 +28,7 @@ export class SampleAttachFile extends LitElement {
           .floating=${false}
           .files=${this._files}
           @selected-files=${(e: any) => {
-            this._handleFiles(e);
-            action(e.type)(e);
+            action(e.type)({ ...e, detail: e.detail }), this._handleFiles(e);
           }}
           @on-input=${(e: any) => action(e.type)({ ...e, detail: e.detail })}
         >

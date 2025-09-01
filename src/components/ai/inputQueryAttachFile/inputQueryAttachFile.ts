@@ -20,11 +20,12 @@ import docPptXIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import docXlsxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/document-xlsx.svg';
 
 /**
- * InputQueryAttachFile Component.
- * @fires selected-files - Emits the uploaded files.`detail:{ Files: Array}`
+ * InputQueryAttachFile
+ * @fires selected-files - Emits the uploaded files.`detail:{ validFiles: Array, invalidFiles: Array }`
  * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`
  * @slot footer - Slot for footer content.
  * @slot unnamed - Slot for button icon.
+ * @attr {string} [name=''] - The name of the input, used for form submission.
  */
 @customElement('kyn-input-query-attach-file')
 export class InputQueryAttachFile extends FormMixin(LitElement) {
@@ -56,7 +57,7 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
   accessor textareaEl!: HTMLTextAreaElement;
 
   /**
-   * Internal valid files.
+   * Internal Files Object.
    * @internal
    */
   @state()
