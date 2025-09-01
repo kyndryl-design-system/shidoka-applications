@@ -1,0 +1,113 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+input[type='file'] {
+  display: none;
+}
+
+.chat-input {
+  background-color: var(--kd-color-background-container-ai-level-2);
+  padding: 10px;
+  border-radius: 8px;
+  gap: 10px;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &.floating {
+    box-shadow: var(--kd-elevation-level-3-ai);
+  }
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.input-query {
+  flex: 1;
+  border: 1px solid var(--kd-color-border-forms-default);
+  border-color: var(--kd-color-border-variants-ai);
+  background: var(--kd-color-background-forms-ai-default);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  flex-direction: column;
+
+  &.has-files {
+    gap: 24px;
+  }
+
+  &:focus-within {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
+  }
+}
+
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  background: var(--kd-color-background-forms-ai-default);
+
+  color: var(--kd-color-text-forms-input-field-text);
+  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+    outline-color 150ms ease-out;
+  width: 100%;
+  border: none;
+  resize: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+textarea.compact {
+  height: 24px;
+  max-height: 48px;
+  overflow-y: hidden;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--kd-color-background-opacity-8---dark);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.overlay-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.footer-content {
+  display: flex;
+  padding: 0 2px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-self: stretch;
+}

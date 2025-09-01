@@ -1,0 +1,1 @@
+export { InputQueryAttachFile } from './inputQueryAttachFile';
