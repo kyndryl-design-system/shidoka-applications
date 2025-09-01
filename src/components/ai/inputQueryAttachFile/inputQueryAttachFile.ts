@@ -34,7 +34,7 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
   @property({ type: String })
   accessor placeholder = '';
 
-  /** Floating state*/
+  /** Floating state. */
   @property({ type: Boolean })
   accessor floating = false;
 
