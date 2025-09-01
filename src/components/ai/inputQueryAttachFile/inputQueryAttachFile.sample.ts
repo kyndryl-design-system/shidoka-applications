@@ -6,6 +6,8 @@ import './index';
 import '../../reusable/button';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 
+/** This is just a sample component for AI chat input with file attachment */
+
 @customElement('sample-attach-file')
 export class SampleAttachFile extends LitElement {
   @state()
