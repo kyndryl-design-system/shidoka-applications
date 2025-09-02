@@ -1,6 +1,7 @@
 backend:
   name: git-gateway
   branch: decap-cms # Branch to update (optional; defaults to master)
+  squash_merges: true
   commit_messages:
     create: 'docs: Create {{collection}} “{{slug}}”'
     update: 'docs: Update {{collection}} “{{slug}}”'
@@ -24,7 +25,7 @@ collections:
     extension: mdx
     slug: '{{title}}' # Filename template, e.g., title.stories.mdx
     format: yaml-frontmatter
-    frontmatter_delimiter: ['<!--', '-->']
+    frontmatter_delimiter: ['{/*', '*/}']
     identifier_field: title
     fields: # The fields for each document, usually in front matter
       - { label: 'Title', name: 'title', widget: 'string' }
