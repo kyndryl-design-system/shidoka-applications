@@ -43,7 +43,7 @@ export class InputQuery extends FormMixin(LitElement) {
   accessor enableFileUpload = false;
 
   /**
-   * Files Object.
+   * This property is used to set the initial or updated state of the files.
    */
   @property({ type: Array })
   accessor files: {
