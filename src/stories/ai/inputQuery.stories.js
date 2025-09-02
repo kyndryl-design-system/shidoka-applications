@@ -13,7 +13,8 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import '../../components/reusable/notification';
 import '../../components/reusable/dropdown';
 import '../../components/reusable/tag';
-import '../../components/ai/inputQueryAttachFile';
+import '../../components/ai/inputQuery';
+import '../../components/ai/inputQuery/inputQueryAttachFile.sample';
 
 export default {
   title: 'AI/Patterns/Input Query',
@@ -25,38 +26,18 @@ export default {
   },
 };
 
-export const Default = {
-  args: {
-    floating: false,
-  },
-  render: (args) => {
-    return html`
-      <form
-        @submit=${(e) => {
-          e.preventDefault();
-          action('submit')(e);
-          const formData = new FormData(e.target);
-          console.log(...formData);
-        }}
+export const AttachFile = {
+  render: () => {
+    return html`<div>
+        <sample-attach-file></sample-attach-file> <br /><br />
+      </div>
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/components/ai/inputQueryAttachFile/inputQueryAttachFile.sample.ts"
+        target="_blank"
+        rel="noopener"
       >
-        <kyn-input-query-attach-file
-          name="attach-file"
-          placeholder="Type your message..."
-          .floating=${args.floating}
-          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        >
-          <kyn-button
-            type="submit"
-            name="test"
-            kind="primary-ai"
-            description="Submit"
-            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-          >
-            <span slot="icon">${unsafeSVG(sendIcon)}</span>
-          </kyn-button>
-        </kyn-input-query-attach-file>
-      </form>
-    `;
+        See the full example component code here.
+      </a>`;
   },
 };
 
@@ -74,7 +55,7 @@ export const Thinking = {
           console.log(...formData);
         }}
       >
-        <kyn-input-query-attach-file
+        <kyn-input-query
           name="attach-file"
           placeholder="Type your message..."
           .floating=${args.floating}
@@ -89,7 +70,7 @@ export const Thinking = {
           >
             <span slot="icon">${unsafeSVG(stopIcon)}</span>
           </kyn-button>
-        </kyn-input-query-attach-file>
+        </kyn-input-query>
       </form>
     `;
   },
@@ -116,7 +97,7 @@ export const Footer = {
           console.log(...formData);
         }}
       >
-        <kyn-input-query-attach-file
+        <kyn-input-query
           name="attach-file"
           placeholder="Type your message..."
           .floating=${args.floating}
@@ -207,7 +188,7 @@ export const Footer = {
               <span slot="description">Description for the Option 2</span>
             </kyn-enhanced-dropdown-option>
           </kyn-dropdown>
-        </kyn-input-query-attach-file>
+        </kyn-input-query>
       </form>
     `;
   },

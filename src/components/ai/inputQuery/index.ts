@@ -1,0 +1,1 @@
+export { InputQuery } from './inputQuery';

@@ -24,7 +24,7 @@ export class SampleAttachFile extends LitElement {
           return false;
         }}
       >
-        <kyn-input-query-attach-file
+        <kyn-input-query
           name="attach-file"
           placeholder="Type your message..."
           .floating=${false}
@@ -44,7 +44,7 @@ export class SampleAttachFile extends LitElement {
           >
             <span slot="icon">${unsafeSVG(sendIcon)}</span>
           </kyn-button>
-        </kyn-input-query-attach-file>
+        </kyn-input-query>
       </form>
     `;
   }

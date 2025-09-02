@@ -1,7 +1,7 @@
 import { html, LitElement, unsafeCSS } from 'lit';
 import { customElement, query, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import stylesheet from './inputQueryAttachFile.scss?inline';
+import stylesheet from './inputQuery.scss?inline';
 import { classMap } from 'lit-html/directives/class-map.js';
 import '../../reusable/button';
 import '../../reusable/tag';
@@ -20,22 +20,21 @@ import docPptXIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import docXlsxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/document-xlsx.svg';
 
 /**
- * InputQueryAttachFile
+ * InputQuery
  * @fires selected-files - Emits the uploaded files.`detail:{ validFiles: Array, invalidFiles: Array }`
  * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`
  * @slot footer - Slot for footer content.
  * @slot unnamed - Slot for button icon.
- * @attr {string} [name=''] - The name of the input, used for form submission.
  */
-@customElement('kyn-input-query-attach-file')
-export class InputQueryAttachFile extends FormMixin(LitElement) {
+@customElement('kyn-input-query')
+export class InputQuery extends FormMixin(LitElement) {
   static override styles = unsafeCSS(stylesheet);
 
   /** Input placeholder. */
   @property({ type: String })
   accessor placeholder = '';
 
-  /** Floating state. */
+  /** Toggle Floating */
   @property({ type: Boolean })
   accessor floating = false;
 
@@ -77,42 +76,8 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
               'has-files': this.enableFileUpload && this._files.length > 0,
             })}
           >
-            ${this.enableFileUpload
-              ? html`
-                  <div class="tags">
-                    ${this._files.map(
-                      (file: any) => html`
-                        <div class="tag-wrapper">
-                          <kyn-tag
-                            .label=${file?.file?.name ?? file?.id}
-                            tagSize="md"
-                            tagColor="ai"
-                            ?clickable=${false}
-                            @on-close=${(e: any) =>
-                              this.handleClear(e, file.id)}
-                            ?filter=${file.status === 'uploaded'}
-                          >
-                            <span style="display: flex;">
-                              ${unsafeSVG(this._getFileIcon(file?.file?.name))}
-                            </span>
-                          </kyn-tag>
-                          ${file.status === 'uploading'
-                            ? html`
-                                <div class="overlay">
-                                  <kyn-loader-inline
-                                    class="overlay-loader"
-                                    status="active"
-                                  >
-                                  </kyn-loader-inline>
-                                </div>
-                              `
-                            : null}
-                        </div>
-                      `
-                    )}
-                  </div>
-                `
-              : null}
+            ${this._renderTagsContent()}
+
             <textarea
               class=${classMap({
                 compact: this.enableFileUpload && this._files.length > 0,
@@ -125,31 +90,7 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
           </div>
           <slot></slot>
         </div>
-        <div class="footer-content">
-          ${this.enableFileUpload
-            ? html`
-                <kyn-button
-                  type="button"
-                  kind="outline-ai"
-                  description="Submit"
-                  size="small"
-                  @on-click=${this._triggerFileSelect}
-                >
-                  <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
-                </kyn-button>
-                <input
-                  id="fileInput"
-                  type="file"
-                  name="attachments"
-                  multiple
-                  hidden
-                  @change=${this._handleFileSelected}
-                />
-              `
-            : null}
-
-          <slot name="footer"></slot>
-        </div>
+        ${this._renderFooterContent()}
       </div>
     `;
   }
@@ -169,6 +110,78 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
         textarea.style.overflowY = '';
       }
     }
+  }
+
+  private _renderTagsContent() {
+    return html` ${this.enableFileUpload
+      ? html`<div class="tags">
+          ${this._files.map(
+            (file: any) => html`
+              <div class="tag-wrapper">
+                <kyn-tag
+                  .label=${file?.file?.name ?? file?.id}
+                  tagSize="md"
+                  tagColor="ai"
+                  ?clickable=${false}
+                  @on-close=${(e: any) => this.handleClear(e, file.id)}
+                  ?filter=${file.status === 'uploaded'}
+                >
+                  <span style="display: flex;">
+                    ${unsafeSVG(this._getFileIcon(file?.file?.name))}
+                  </span>
+                </kyn-tag>
+                ${file.status === 'uploading'
+                  ? html`
+                      <div class="overlay">
+                        <kyn-loader-inline
+                          class="overlay-loader"
+                          status="active"
+                        >
+                        </kyn-loader-inline>
+                      </div>
+                    `
+                  : null}
+              </div>
+            `
+          )}
+        </div>`
+      : ''}`;
+  }
+
+  private _renderFooterContent() {
+    const hasFooterSlot = !!this.querySelector('[slot="footer"]');
+
+    return html`
+      ${this.enableFileUpload || hasFooterSlot
+        ? html`
+            <div class="footer-content">
+              ${this.enableFileUpload
+                ? html`
+                    <kyn-button
+                      type="button"
+                      kind="outline-ai"
+                      description="Submit"
+                      size="small"
+                      @on-click=${this._triggerFileSelect}
+                    >
+                      <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
+                    </kyn-button>
+                    <input
+                      id="fileInput"
+                      type="file"
+                      name="attachments"
+                      multiple
+                      hidden
+                      @change=${this._handleFileSelected}
+                    />
+                  `
+                : null}
+
+              <slot name="footer"></slot>
+            </div>
+          `
+        : null}
+    `;
   }
 
   private _handleInput(e: Event) {
