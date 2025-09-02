@@ -28,6 +28,7 @@ export class SampleAttachFile extends LitElement {
           name="attach-file"
           placeholder="Type your message..."
           .floating=${false}
+          .enableFileUpload=${true}
           .files=${this._files}
           @selected-files=${(e: any) => {
             action(e.type)({ ...e, detail: e.detail }), this._handleFiles(e);

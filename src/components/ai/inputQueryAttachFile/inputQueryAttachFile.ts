@@ -39,6 +39,10 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor floating = false;
 
+  /** Toggle file upload */
+  @property({ type: Boolean })
+  accessor enableFileUpload = false;
+
   /**
    * Files Object.
    */
@@ -70,43 +74,48 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
           <div
             class=${classMap({
               'input-query': true,
-              'has-files': this._files.length > 0,
+              'has-files': this.enableFileUpload && this._files.length > 0,
             })}
           >
-            <div class="tags">
-              ${this._files.map(
-                (file: any) => html`
-                  <div class="tag-wrapper">
-                    <kyn-tag
-                      .label=${file?.file?.name ?? file?.id}
-                      tagSize="md"
-                      tagColor="ai"
-                      ?clickable=${false}
-                      @on-close=${(e: any) => this.handleClear(e, file.id)}
-                      ?filter=${file.status === 'uploaded'}
-                    >
-                      <span style="display: flex;">
-                        ${unsafeSVG(this._getFileIcon(file?.file?.name))}
-                      </span>
-                    </kyn-tag>
-                    ${file.status === 'uploading'
-                      ? html`
-                          <div class="overlay">
-                            <kyn-loader-inline
-                              class="overlay-loader"
-                              status="active"
-                            >
-                            </kyn-loader-inline>
-                          </div>
-                        `
-                      : null}
+            ${this.enableFileUpload
+              ? html`
+                  <div class="tags">
+                    ${this._files.map(
+                      (file: any) => html`
+                        <div class="tag-wrapper">
+                          <kyn-tag
+                            .label=${file?.file?.name ?? file?.id}
+                            tagSize="md"
+                            tagColor="ai"
+                            ?clickable=${false}
+                            @on-close=${(e: any) =>
+                              this.handleClear(e, file.id)}
+                            ?filter=${file.status === 'uploaded'}
+                          >
+                            <span style="display: flex;">
+                              ${unsafeSVG(this._getFileIcon(file?.file?.name))}
+                            </span>
+                          </kyn-tag>
+                          ${file.status === 'uploading'
+                            ? html`
+                                <div class="overlay">
+                                  <kyn-loader-inline
+                                    class="overlay-loader"
+                                    status="active"
+                                  >
+                                  </kyn-loader-inline>
+                                </div>
+                              `
+                            : null}
+                        </div>
+                      `
+                    )}
                   </div>
                 `
-              )}
-            </div>
+              : null}
             <textarea
               class=${classMap({
-                compact: this._files.length > 0,
+                compact: this.enableFileUpload && this._files.length > 0,
               })}
               name="textInput"
               placeholder=${this.placeholder}
@@ -117,23 +126,28 @@ export class InputQueryAttachFile extends FormMixin(LitElement) {
           <slot></slot>
         </div>
         <div class="footer-content">
-          <kyn-button
-            type="button"
-            kind="outline-ai"
-            description="Submit"
-            size="small"
-            @on-click=${this._triggerFileSelect}
-          >
-            <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
-          </kyn-button>
-          <input
-            id="fileInput"
-            type="file"
-            name="attachments"
-            multiple
-            hidden
-            @change=${this._handleFileSelected}
-          />
+          ${this.enableFileUpload
+            ? html`
+                <kyn-button
+                  type="button"
+                  kind="outline-ai"
+                  description="Submit"
+                  size="small"
+                  @on-click=${this._triggerFileSelect}
+                >
+                  <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
+                </kyn-button>
+                <input
+                  id="fileInput"
+                  type="file"
+                  name="attachments"
+                  multiple
+                  hidden
+                  @change=${this._handleFileSelected}
+                />
+              `
+            : null}
+
           <slot name="footer"></slot>
         </div>
       </div>
