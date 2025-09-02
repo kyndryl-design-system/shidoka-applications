@@ -21,7 +21,7 @@ import docXlsxIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 
 /**
  * InputQuery
- * @fires selected-files - Emits the uploaded files.`detail:{ validFiles: Array, invalidFiles: Array }`
+ * @fires selected-files - Emits the uploaded files.`detail:{ files: Array }`
  * @fires on-input - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`
  * @slot footer - Slot for footer content.
  * @slot unnamed - Slot for button icon.
@@ -49,7 +49,7 @@ export class InputQuery extends FormMixin(LitElement) {
   accessor files: {
     id: string;
     file: File;
-    status: 'new' | 'uploading' | 'uploaded';
+    status: 'new' | 'uploading' | 'uploaded' | 'error';
   }[] = [];
 
   /**
@@ -121,7 +121,7 @@ export class InputQuery extends FormMixin(LitElement) {
                 <kyn-tag
                   .label=${file?.file?.name ?? file?.id}
                   tagSize="md"
-                  tagColor="ai"
+                  tagColor=${file.status === 'error' ? 'red' : 'ai'}
                   ?clickable=${false}
                   @on-close=${(e: any) => this.handleClear(e, file.id)}
                   ?filter=${file.status === 'uploaded'}
