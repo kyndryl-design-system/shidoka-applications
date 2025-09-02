@@ -13,6 +13,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import '../../components/reusable/notification';
 import '../../components/reusable/dropdown';
 import '../../components/reusable/tag';
+import '../../components/ai/inputQueryAttachFile';
 
 export default {
   title: 'AI/Patterns/Input Query',
@@ -31,7 +32,6 @@ export const Default = {
   render: (args) => {
     return html`
       <form
-        class="ai-input-query ${args.floating ? 'floating' : ''}"
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
@@ -39,23 +39,23 @@ export const Default = {
           console.log(...formData);
         }}
       >
-        <kyn-text-area
-          name="ai-query"
-          rows="2"
+        <kyn-input-query-attach-file
+          name="attach-file"
           placeholder="Type your message..."
-          maxRowsVisible="3"
-          label="AI Prompt Query"
-          hideLabel
-          aiConnected
-          notResizeable
-        ></kyn-text-area>
-
-        <kyn-button type="submit" kind="primary-ai" description="Submit">
-          <span slot="icon">${unsafeSVG(sendIcon)}</span>
-        </kyn-button>
+          .floating=${args.floating}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <kyn-button
+            type="submit"
+            name="test"
+            kind="primary-ai"
+            description="Submit"
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            <span slot="icon">${unsafeSVG(sendIcon)}</span>
+          </kyn-button>
+        </kyn-input-query-attach-file>
       </form>
-
-      ${sharedStyles}
     `;
   },
 };
@@ -67,7 +67,6 @@ export const Thinking = {
   render: (args) => {
     return html`
       <form
-        class="ai-input-query ${args.floating ? 'floating' : ''}"
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
@@ -75,23 +74,23 @@ export const Thinking = {
           console.log(...formData);
         }}
       >
-        <kyn-text-area
-          name="ai-query"
-          rows="2"
+        <kyn-input-query-attach-file
+          name="attach-file"
           placeholder="Type your message..."
-          maxRowsVisible="3"
-          label="AI Prompt Query"
-          hideLabel
-          aiConnected
-          notResizeable
-        ></kyn-text-area>
-
-        <kyn-button type="submit" kind="primary-ai" description="Submit">
-          <span slot="icon">${unsafeSVG(stopIcon)}</span>
-        </kyn-button>
+          .floating=${args.floating}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <kyn-button
+            type="submit"
+            name="test"
+            kind="primary-ai"
+            description="Submit"
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            <span slot="icon">${unsafeSVG(stopIcon)}</span>
+          </kyn-button>
+        </kyn-input-query-attach-file>
       </form>
-
-      ${sharedStyles}
     `;
   },
 };
@@ -110,7 +109,6 @@ export const Footer = {
   render: (args) => {
     return html`
       <form
-        class="ai-input-query query-footer ${args.floating ? 'floating' : ''}"
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
@@ -118,24 +116,23 @@ export const Footer = {
           console.log(...formData);
         }}
       >
-        <div class="message-content">
-          <kyn-text-area
-            name="ai-query"
-            rows="2"
-            placeholder="Type your message..."
-            maxRowsVisible="3"
-            label="AI Prompt Query"
-            hideLabel
-            aiConnected
-            notResizeable
-          ></kyn-text-area>
-
-          <kyn-button type="submit" kind="primary-ai" description="Submit">
+        <kyn-input-query-attach-file
+          name="attach-file"
+          placeholder="Type your message..."
+          .floating=${args.floating}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <kyn-button
+            type="submit"
+            name="test"
+            kind="primary-ai"
+            description="Submit"
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
             <span slot="icon">${unsafeSVG(sendIcon)}</span>
           </kyn-button>
-        </div>
-        <div class="footer-content">
           <kyn-dropdown
+            slot="footer"
             ?hideLabel=${true}
             value=${args.firstDropDownValue}
             kind="ai"
@@ -173,6 +170,7 @@ export const Footer = {
             </kyn-enhanced-dropdown-option>
           </kyn-dropdown>
           <kyn-dropdown
+            slot="footer"
             ?hideLabel=${true}
             value=${args.secondDropDownValue}
             kind="ai"
@@ -209,54 +207,8 @@ export const Footer = {
               <span slot="description">Description for the Option 2</span>
             </kyn-enhanced-dropdown-option>
           </kyn-dropdown>
-        </div>
+        </kyn-input-query-attach-file>
       </form>
-
-      ${sharedStyles}
-      <style>
-        .query-footer {
-          margin-top: auto;
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-        }
-        .message-content {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-        }
-        .footer-content {
-          display: flex;
-          padding: 0 2px;
-          flex-direction: row;
-          align-items: flex-start;
-          gap: 10px;
-          flex-wrap: wrap;
-          align-self: stretch;
-        }
-      </style>
     `;
   },
 };
-
-const sharedStyles = html`
-  <style>
-    .ai-input-query {
-      margin-top: auto;
-      display: flex;
-      gap: 10px;
-      padding: 10px;
-      align-items: center;
-      background-color: var(--kd-color-background-container-ai-level-2);
-      border-radius: 8px;
-    }
-
-    .ai-input-query.floating {
-      box-shadow: var(--kd-elevation-level-3-ai);
-    }
-
-    .ai-input-query kyn-text-area {
-      flex-grow: 1;
-    }
-  </style>
-`;
