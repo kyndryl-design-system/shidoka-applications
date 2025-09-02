@@ -7,8 +7,8 @@ import Styles from './loader.scss?inline';
 
 /**
  * Loader.
- * @fires on-start - Emits when the loader been started.`detail: null`
- * @fires on-stop - Emits when the loader has been stopped and all animations have completed.`detail:null`
+ * @fires on-start - Emits when the loader been started.`detail: {}`
+ * @fires on-stop - Emits when the loader has been stopped and all animations have completed.`detail: {}`
  */
 @customElement('kyn-loader')
 export class Loader extends LitElement {

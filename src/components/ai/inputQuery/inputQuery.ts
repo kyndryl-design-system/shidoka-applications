@@ -133,10 +133,7 @@ export class InputQuery extends FormMixin(LitElement) {
                 ${file.status === 'uploading'
                   ? html`
                       <div class="overlay">
-                        <kyn-loader-inline
-                          class="overlay-loader"
-                          status="active"
-                        >
+                        <kyn-loader-inline class="overlay-loader" status="ai">
                         </kyn-loader-inline>
                       </div>
                     `

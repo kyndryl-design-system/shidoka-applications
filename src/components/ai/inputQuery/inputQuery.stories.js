@@ -4,7 +4,6 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import './index';
 import './inputQueryAttachFile.sample';
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
-import { Placeholder } from 'storybook/internal/components';
 
 export default {
   title: 'AI /Components/AI Input Query',

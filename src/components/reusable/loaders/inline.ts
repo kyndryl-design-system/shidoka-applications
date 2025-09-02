@@ -4,21 +4,22 @@ import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import lottie from 'lottie-web';
 import animationData from './json/indeterminate.json';
+import aiAnimationData from './json/aiLoader.json';
 import Styles from './inline.scss?inline';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 /**
  * Inline Loader.
- * @fires on-start - Emits when the loader been started. `detail: null`
- * @fires on-stop - Emits when the loader has been stopped and all animations have completed. `detail: null`
+ * @fires on-start - Emits when the loader been started. `detail: {}`
+ * @fires on-stop - Emits when the loader has been stopped and all animations have completed. `detail: {}`
  * @slot unnamed - Slot for text/description.
  */
 @customElement('kyn-loader-inline')
 export class LoaderInline extends LitElement {
   static override styles = unsafeCSS(Styles);
 
-  /** Status. Can be `active`, `inactive`, `success`, `error`. */
+  /** Status. Can be `active`, `ai`, `inactive`, `success`, `error`.  */
   @property({ type: String })
   accessor status = 'active';
 
@@ -46,11 +47,11 @@ export class LoaderInline extends LitElement {
   @query('.container')
   private accessor _containerEl!: any;
 
-  // /** Animation instance
-  //  * @internal
-  //  */
-  // @state()
-  // private _animation!: any;
+  /** Animation instance
+   * @internal
+   */
+  @state()
+  private accessor _animation!: any;
 
   override render() {
     const Classes = {
@@ -80,13 +81,16 @@ export class LoaderInline extends LitElement {
     this._hidden = this._stopped;
 
     // initialize the animation
-    lottie.loadAnimation({
-      container: this._containerEl, // the dom element that will contain the animation
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      animationData: animationData,
-    });
+
+    // lottie.loadAnimation({
+    //   container: this._containerEl, // the dom element that will contain the animation
+    //   renderer: 'svg',
+    //   loop: true,
+    //   autoplay: true,
+    //   animationData: animationData,
+    // });
+
+    this._loadAnimation();
 
     // stop the animation at the end of the loop
     // this._animation.addEventListener('loopComplete', () => {
@@ -105,13 +109,30 @@ export class LoaderInline extends LitElement {
     });
   }
 
+  private _loadAnimation() {
+    if (this._animation) {
+      this._animation.destroy(); // clean up previous animation
+    }
+
+    const data = this.status === 'ai' ? aiAnimationData : animationData;
+
+    this._animation = lottie.loadAnimation({
+      container: this._containerEl, // the dom element that will contain the animation
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      animationData: data,
+    });
+  }
+
   override updated(changedProps: any) {
     if (changedProps.has('status')) {
       // play the animation if stopped prop changes to false
-      if (this.status === 'active') {
+      if (this.status === 'active' || this.status === 'ai') {
         // this._animation.play();
         this._stopped = false;
         this._hidden = false;
+        this._loadAnimation();
         this._emitStart();
       } else {
         // this._animation.pause();
