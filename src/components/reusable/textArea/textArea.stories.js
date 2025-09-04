@@ -39,6 +39,8 @@ const args = {
   maxLength: undefined,
   rows: undefined,
   autoComplete: 'off',
+  hideBorder: false,
+  noPadding: false,
   textStrings: {
     requiredText: 'Required',
     errorText: 'Error',
@@ -65,6 +67,8 @@ const Template = (args) => {
       ?notResizeable=${args.notResizeable}
       maxRowsVisible=${args.maxRowsVisible}
       autoComplete=${args.autoComplete}
+      ?hideBorder=${args.hideBorder}
+      ?noPadding=${args.noPadding}
       @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       @keydown=${(e) => e.stopPropagation()}
       label=${args.label}
