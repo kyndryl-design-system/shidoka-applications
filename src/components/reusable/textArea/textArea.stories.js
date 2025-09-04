@@ -39,6 +39,8 @@ const args = {
   maxLength: undefined,
   rows: undefined,
   autoComplete: 'off',
+  hideBorder: false,
+  noPadding: false,
   textStrings: {
     requiredText: 'Required',
     errorText: 'Error',

@@ -56,11 +56,16 @@ export const Default = {
             action(e.type)({ ...e, detail: e.detail })}
           label="Radio buttons"
         >
-          <kyn-tooltip slot="tooltip">
-            <span slot="anchor" class="info-icon">${unsafeSVG(infoIcon)}</span>
-            Tooltip example.
-          </kyn-tooltip>
-          <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
+          <kyn-radio-button value="1">
+            Option 1
+
+            <kyn-tooltip slot="tooltip">
+              <span slot="anchor" class="info-icon"
+                >${unsafeSVG(infoIcon)}</span
+              >
+              Tooltip example.
+            </kyn-tooltip>
+          </kyn-radio-button>
           <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
           <kyn-radio-button value="3"> Option 3 </kyn-radio-button>
         </kyn-radio-button-group>

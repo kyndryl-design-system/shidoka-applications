@@ -94,6 +94,14 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: String })
   accessor autoComplete: string = 'off';
 
+  /** Hide textarea border. Useful when textarea used inside container. */
+  @property({ type: Boolean })
+  accessor hideBorder = false;
+
+  /** Remove textarea padding */
+  @property({ type: Boolean })
+  accessor noPadding = false;
+
   /** Internal text strings.
    * @internal
    */
@@ -136,6 +144,8 @@ export class TextArea extends FormMixin(LitElement) {
             'input-wrapper': true,
             'ai-connected': this.aiConnected,
             'no-resize': this.notResizeable,
+            'hide-border': this.hideBorder,
+            'no-padding': this.noPadding,
           })}
         >
           <textarea
@@ -221,9 +231,9 @@ ${this.value}</textarea
     const textarea = this.shadowRoot?.querySelector('textarea');
     if (textarea) {
       textarea.style.height = 'auto';
-      textarea.style.minHeight = `${this.rows * 24 + 32}px`; // 24 -> line height, 32px -> text area padding
+      textarea.style.minHeight = `${this.rows * 24}px`; // 24 -> line height, 32px -> text area padding
       textarea.style.height = `${textarea.scrollHeight + 2}px`; // 2px -> minor adjustment
-      textarea.style.maxHeight = `${this.maxRowsVisible * 24 + 32}px`; // 24 -> line height, 32px -> text area padding
+      textarea.style.maxHeight = `${this.maxRowsVisible * 24 + 32}px`; // 24 -> line height, 16px -> text area padding
     }
   }
 
