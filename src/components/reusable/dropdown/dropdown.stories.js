@@ -27,6 +27,7 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
+    readonly: { control: { type: 'boolean' } }, // <-- NEW
     'kind-changed': {
       table: { disable: true },
       control: false,
@@ -51,6 +52,7 @@ const args = {
   open: false,
   required: false,
   disabled: false,
+  readonly: false, // <-- NEW
   hideTags: false,
   hideLabel: false,
   selectAll: false,
@@ -655,6 +657,64 @@ export const AddNewOption = {
             </kyn-dropdown-option>
           `
         )}
+      </kyn-dropdown>
+    `;
+  },
+};
+
+export const Readonly = {
+  args: {
+    ...args,
+    readonly: true,
+    value: '2',
+  },
+  parameters: {
+    a11y: { disable: true },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 15rem;
+        }
+      </style>
+      <kyn-dropdown
+        label=${args.label}
+        placeholder=${args.placeholder}
+        size=${args.size}
+        kind=${args.kind}
+        ?inline=${args.inline}
+        name=${args.name}
+        ?open=${args.open}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
+        ?hideLabel=${args.hideLabel}
+        invalidText=${args.invalidText}
+        caption=${args.caption}
+        menuMinWidth=${args.menuMinWidth}
+        .textStrings=${args.textStrings}
+        value=${args.value}
+        openDirection=${args.openDirection}
+        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-tooltip slot="tooltip">
+          <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
+          tooltip
+        </kyn-tooltip>
+        <kyn-dropdown-option value="1">
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Option 1
+        </kyn-dropdown-option>
+        <kyn-dropdown-option value="2">Option 2</kyn-dropdown-option>
+        <kyn-dropdown-option value="3" disabled>
+          <span slot="icon">${unsafeSVG(infoIcon)}</span>
+          Disabled Option
+        </kyn-dropdown-option>
+        <kyn-dropdown-option value="4">Option 4</kyn-dropdown-option>
+        <kyn-dropdown-option value="5">Option 5</kyn-dropdown-option>
+        <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
+        <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
       </kyn-dropdown>
     `;
   },

@@ -89,6 +89,10 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor enhanced = false;
 
+  /** Dropdown read-only state (focusable but not interactive). */
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false;
+
   /** Searchable variant filters results. */
   @property({ type: Boolean })
   accessor filterSearch = false;
@@ -281,6 +285,7 @@ export class Dropdown extends FormMixin(LitElement) {
       <div
         class=${classMap(mainDropdownClasses)}
         ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this.searchable}
@@ -318,6 +323,7 @@ export class Dropdown extends FormMixin(LitElement) {
               <div
                 class="${classMap({
                   select: true,
+                  'is-readonly': this.readonly,
                   'input-custom': true,
                   'size--sm': this.size === 'sm',
                   'size--lg': this.size === 'lg',
@@ -326,6 +332,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 aria-labelledby="label-${this.name}"
                 aria-expanded=${this.open}
                 aria-controls="options"
+                aria-readonly=${this.readonly ? 'true' : 'false'}
                 role="combobox"
                 id=${this.name}
                 name=${this.name}
@@ -347,7 +354,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         class="clear-multiple"
                         aria-label="${this.value
                           .length} items selected. Clear selections"
-                        ?disabled=${this.disabled}
+                        ?disabled=${this.disabled || this.readonly}
                         title=${this._textStrings.clear}
                         @click=${(e: Event) => this.handleClearMultiple(e)}
                       >
@@ -366,7 +373,9 @@ export class Dropdown extends FormMixin(LitElement) {
                         placeholder=${this.placeholder}
                         value=${this.searchText}
                         ?disabled=${this.disabled}
+                        .readOnly=${this.readonly}
                         aria-disabled=${this.disabled}
+                        aria-readonly=${this.readonly ? 'true' : 'false'}
                         @keydown=${(e: any) => this.handleSearchKeydown(e)}
                         @input=${(e: any) => this.handleSearchInput(e)}
                         @blur=${(e: any) => e.stopPropagation()}
@@ -386,7 +395,6 @@ export class Dropdown extends FormMixin(LitElement) {
                           : this.text}
                       </span>
                     `}
-
                 <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
               </div>
             </slot>
@@ -413,6 +421,8 @@ export class Dropdown extends FormMixin(LitElement) {
                         placeholder=${this._textStrings.addItem}
                         .value=${this.newOptionValue}
                         aria-label="Add new option"
+                        ?disabled=${this.disabled || this.readonly}
+                        .readOnly=${this.readonly}
                         @input=${this._handleInputNewOption}
                         @keydown=${this._onAddOptionInputKeydown}
                         @focus=${this._onAddOptionInputFocus}
@@ -421,6 +431,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         type="button"
                         size="small"
                         kind="secondary"
+                        ?disabled=${this.disabled || this.readonly}
                         @on-click=${this._handleAddOption}
                       >
                         ${this._textStrings.add}
@@ -440,7 +451,7 @@ export class Dropdown extends FormMixin(LitElement) {
                               multiple
                               ?selected=${this.selectAllChecked}
                               ?indeterminate=${this.selectAllIndeterminate}
-                              ?disabled=${this.disabled}
+                              ?disabled=${this.disabled || this.readonly}
                             >
                               ${this.selectAllText}
                             </kyn-enhanced-dropdown-option>
@@ -452,7 +463,7 @@ export class Dropdown extends FormMixin(LitElement) {
                               multiple
                               ?selected=${this.selectAllChecked}
                               ?indeterminate=${this.selectAllIndeterminate}
-                              ?disabled=${this.disabled}
+                              ?disabled=${this.disabled || this.readonly}
                             >
                               ${this.selectAllText}
                             </kyn-dropdown-option>
@@ -470,7 +481,7 @@ export class Dropdown extends FormMixin(LitElement) {
           ${this.hasSearch && this.open
             ? html`
                 <kyn-button
-                  ?disabled=${this.disabled}
+                  ?disabled=${this.disabled || this.readonly}
                   class="clear-button dropdown-clear"
                   kind="ghost"
                   size="small"
@@ -488,6 +499,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _onAddOptionInputKeydown(e: KeyboardEvent) {
+    if (this.readonly) return;
+
     e.stopPropagation();
     switch (e.key) {
       case KEY.Enter:
@@ -512,7 +525,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleAnchorClick(e: MouseEvent) {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) return;
 
     const path = (e.composedPath?.() || []) as Array<EventTarget>;
     const isInOptions =
@@ -526,11 +539,13 @@ export class Dropdown extends FormMixin(LitElement) {
     this.handleClick();
   }
   private handleAnchorKeydown(e: any) {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) return;
     this.handleButtonKeydown(e);
   }
 
   private _handleAddOption() {
+    if (this.readonly) return;
+
     const v = this.newOptionValue.trim();
     if (!v) return;
     this.dispatchEvent(
@@ -639,23 +654,21 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleClick() {
-    if (!this.disabled) {
-      this.open = !this.open;
-
-      // focus search input if searchable
-      if (this.searchable) {
-        this.searchEl.focus();
-      } else {
-        this.buttonEl.focus();
-      }
-    }
+    if (this.disabled || this.readonly) return;
+    this.open = !this.open;
+    // focus search input if searchable
+    if (this.searchable) this.searchEl.focus();
+    else this.buttonEl.focus();
   }
 
   private handleButtonKeydown(e: any) {
+    if (this.readonly) return;
     this.handleKeyboard(e, e.keyCode, 'button');
   }
 
   private handleListKeydown(e: any) {
+    if (this.readonly) return;
+
     const TAB_KEY_CODE = 9;
 
     if (e.keyCode !== TAB_KEY_CODE) {
@@ -877,6 +890,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleClearMultiple(e: any) {
+    if (this.readonly) return;
+
     e.stopPropagation();
 
     // clear values
@@ -907,6 +922,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleTagClear(tag: any) {
+    if (this.readonly) return;
     // remove value
     this.updateValue(tag.value, false);
     this._updateSelectedOptions();
@@ -914,6 +930,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleClear(e: any) {
+    if (this.readonly) return;
+
     e.stopPropagation();
 
     // reset search input text
@@ -940,12 +958,16 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSearchClick(e: any) {
+    if (this.readonly) return;
+
     e.stopPropagation();
     this.open = true;
     if ((this.searchText ?? '').trim() === '') this.searchText = '';
   }
 
   private handleSearchKeydown(e: any) {
+    if (this.readonly) return;
+
     e.stopPropagation();
 
     const ENTER_KEY_CODE = 13;
@@ -989,6 +1011,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSearchInput(e: any) {
+    if (this.readonly) return;
+
     const value = e.target.value;
     this.searchText = value;
     this.open = true;
@@ -1056,6 +1080,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _handleClick(e: any) {
+    if (this.readonly) return;
+
     if (e.detail.value === 'selectAll') {
       this.selectAllChecked = e.detail.selected;
 
@@ -1139,6 +1165,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private updateValue(value: string, selected = false) {
+    if (this.readonly) return;
+
     // set value
     if (this.multiple) {
       const values =
@@ -1175,6 +1203,7 @@ export class Dropdown extends FormMixin(LitElement) {
       customError: this.invalidText !== '',
       valueMissing:
         this.required &&
+        !this.readonly &&
         (!this.value ||
           (this.multiple && !this.value.length) ||
           (!this.multiple && this.value === '')),

@@ -68,6 +68,32 @@ slot[name='icon']::slotted(*) {
   &[invalid] {
     padding-right: 80px;
   }
+
+  &.is-readonly {
+    background: var(--kd-color-background-forms-disabled);
+    border-color: var(--kd-color-border-variants-light);
+    cursor: default;
+
+    .arrow-icon {
+      color: var(--kd-color-icon-disabled);
+    }
+
+    &:hover {
+      border-color: var(--kd-color-border-variants-light);
+    }
+
+    &::placeholder {
+      color: var(--kd-color-text-forms-input-field-text);
+    }
+
+    &:-ms-input-placeholder {
+      color: var(--kd-color-text-forms-input-field-text);
+    }
+
+    &::-ms-input-placeholder {
+      color: var(--kd-color-text-forms-input-field-text);
+    }
+  }
 }
 
 /* Default focus */
