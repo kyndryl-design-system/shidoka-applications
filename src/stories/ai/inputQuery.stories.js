@@ -394,6 +394,9 @@ export const WithTags = {
           outline-offset: -2px;
           flex-direction: column;
           gap: 16px;
+          &:focus-within {
+            outline-color: var(--kd-color-border-variants-focus);
+          }
           &:hover {
             border-color: var(--kd-color-border-ui-hover);
           }
