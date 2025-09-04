@@ -19,7 +19,7 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 export class LoaderInline extends LitElement {
   static override styles = unsafeCSS(Styles);
 
-  /** Status. Can be `active`, `inactive`, `success`, `error`. `ai` */
+  /** Status. Can be `active`, `inactive`, `success`, `error`. `ai-active` */
   @property({ type: String })
   accessor status = 'active';
 
@@ -105,7 +105,7 @@ export class LoaderInline extends LitElement {
       this._animation.destroy(); // clean up previous animation
     }
 
-    const data = this.status === 'ai' ? aiAnimationData : animationData;
+    const data = this.status === 'ai-active' ? aiAnimationData : animationData;
 
     this._animation = lottie.loadAnimation({
       container: this._containerEl, // the dom element that will contain the animation
@@ -119,10 +119,11 @@ export class LoaderInline extends LitElement {
   override updated(changedProps: any) {
     if (changedProps.has('status')) {
       // play the animation if stopped prop changes to false
-      if (this.status === 'active' || this.status === 'ai') {
+      if (this.status === 'active' || this.status === 'ai-active') {
         // this._animation.play();
         this._stopped = false;
         this._hidden = false;
+        this._loadAnimation();
         this._emitStart();
       } else {
         // this._animation.pause();

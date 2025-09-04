@@ -13,7 +13,7 @@ export default {
   },
   argTypes: {
     status: {
-      options: ['active', 'inactive', 'success', 'error', 'ai'],
+      options: ['active', 'inactive', 'success', 'error', 'ai-active'],
       control: { type: 'select' },
     },
   },
