@@ -40,6 +40,10 @@ export class EnhancedDropdownOption extends LitElement {
   @property({ type: Boolean })
   accessor disabled = false;
 
+  /** Readonly state (from parent). Option stays focusable but not selectable. */
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false;
+
   /** Allow Add Option state, derived from parent. */
   @property({ type: Boolean })
   accessor allowAddOption = false;
@@ -102,6 +106,7 @@ export class EnhancedDropdownOption extends LitElement {
     const classes = {
       'enhanced-option': true,
       'menu-item': true,
+      'option-is-readonly': this.readonly,
       [`ai-connected-${this.kind === 'ai'}`]: true,
     };
 
@@ -111,8 +116,8 @@ export class EnhancedDropdownOption extends LitElement {
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
-        ?multiple=${this.multiple}
+        ?readonly=${this.readonly}
+        aria-disabled=${this.disabled || this.readonly ? 'true' : 'false'}
         title=${this.text}
         @pointerup=${this.onClick}
         @blur=${this.onBlur}
@@ -122,7 +127,7 @@ export class EnhancedDropdownOption extends LitElement {
               <kyn-checkbox
                 .checked=${this.selected}
                 .indeterminate=${this.indeterminate}
-                ?disabled=${this.disabled}
+                ?disabled=${this.disabled || this.readonly}
                 notFocusable
                 value=${this.value}
               ></kyn-checkbox>
@@ -166,6 +171,7 @@ export class EnhancedDropdownOption extends LitElement {
                   kind="ghost"
                   size="small"
                   aria-label="Delete ${this.value}"
+                  ?disabled=${this.disabled || this.readonly}
                   @click=${this.onRemove}
                   @mousedown=${(e: Event) => e.stopPropagation()}
                 >
@@ -218,7 +224,10 @@ export class EnhancedDropdownOption extends LitElement {
   }
 
   private onClick(e: PointerEvent) {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) {
+      e.stopPropagation();
+      return;
+    }
     this.selected = this.multiple ? !this.selected : true;
     this.dispatchEvent(
       new CustomEvent('on-click', {

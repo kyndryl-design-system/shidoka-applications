@@ -68,6 +68,10 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor indeterminate = false;
 
+  /** Readonly state (from parent). Option stays focusable but not selectable. */
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false;
+
   /** Kind of the item, derived from parent.
    * @ignore
    */
@@ -90,6 +94,7 @@ export class DropdownOption extends LitElement {
     const classes = {
       option: true,
       'menu-item': true,
+      'option-is-readonly': this.readonly,
       [`ai-connected-${this.kind === 'ai'}`]: true,
     };
 
@@ -99,8 +104,8 @@ export class DropdownOption extends LitElement {
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
-        ?multiple=${this.multiple}
+        ?readonly=${this.readonly}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
         title=${this.text}
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
@@ -113,41 +118,34 @@ export class DropdownOption extends LitElement {
                   value=${this.value}
                   .checked=${this.selected}
                   ?checked=${this.selected}
-                  ?disabled=${this.disabled}
+                  ?disabled=${this.disabled || this.readonly}
                   notFocusable
                   .indeterminate=${this.indeterminate}
-                >
-                </kyn-checkbox>
-
+                ></kyn-checkbox>
                 <slot
                   @slotchange=${(e: any) => this.handleSlotChange(e)}
                 ></slot>
               `
-            : html`
-                <slot
-                  @slotchange=${(e: any) => this.handleSlotChange(e)}
-                ></slot>
-              `}
+            : html`<slot
+                @slotchange=${(e: any) => this.handleSlotChange(e)}
+              ></slot>`}
         </span>
+
         ${this.hasIcon
           ? html`<slot
               name="icon"
               style="display:flex"
               @slotchange=${(e: any) => this.handleIconSlotChange(e)}
             ></slot>`
-          : html`
-              <slot
-                name="icon"
-                style="display:none"
-                @slotchange=${(e: any) => this.handleIconSlotChange(e)}
-              ></slot>
-            `}
+          : html`<slot
+              name="icon"
+              style="display:none"
+              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+            ></slot>`}
         ${this.selected && !this.multiple
-          ? html`
-              <span class="menu-item-inner-el check-icon"
-                >${unsafeSVG(checkIcon)}</span
-              >
-            `
+          ? html`<span class="menu-item-inner-el check-icon"
+              >${unsafeSVG(checkIcon)}</span
+            >`
           : this.allowAddOption && this.removable
           ? html`
               <kyn-button
@@ -156,15 +154,15 @@ export class DropdownOption extends LitElement {
                 size="small"
                 aria-label="Delete ${this.value}"
                 description="Delete ${this.value}"
-                ?disabled=${this.disabled}
+                ?disabled=${this.disabled || this.readonly}
                 @click=${(e: Event) => this.handleRemoveClick(e)}
                 @mousedown=${(e: Event) => e.stopPropagation()}
                 @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
                 @focus=${(e: KeyboardEvent) => e.stopPropagation()}
               >
-                <span slot="icon" class="clear-icon">
-                  ${unsafeSVG(clearIcon)}
-                </span>
+                <span slot="icon" class="clear-icon"
+                  >${unsafeSVG(clearIcon)}</span
+                >
               </kyn-button>
             `
           : null}
@@ -214,29 +212,25 @@ export class DropdownOption extends LitElement {
   }
 
   private handleClick(e: Event) {
-    // prevent click if disabled
-    if (this.disabled) {
+    // block interaction when disabled or readonly
+    if (this.disabled || this.readonly) {
+      e.stopPropagation();
       return;
     }
 
-    // update selected state
     if (this.multiple) {
       this.selected = !this.selected;
     } else {
       this.selected = true;
     }
 
-    // emit selected value, bubble so it can be captured by the parent dropdown
-    const event = new CustomEvent('on-click', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        selected: this.selected,
-        value: this.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        bubbles: true,
+        composed: true,
+        detail: { selected: this.selected, value: this.value, origEvent: e },
+      })
+    );
   }
 
   private handleBlur(e: any) {
