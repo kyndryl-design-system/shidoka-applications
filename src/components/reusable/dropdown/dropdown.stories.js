@@ -27,7 +27,7 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
-    readonly: { control: { type: 'boolean' } }, // <-- NEW
+    readonly: { control: { type: 'boolean' } },
     'kind-changed': {
       table: { disable: true },
       control: false,
@@ -52,7 +52,7 @@ const args = {
   open: false,
   required: false,
   disabled: false,
-  readonly: false, // <-- NEW
+  readonly: false,
   hideTags: false,
   hideLabel: false,
   selectAll: false,

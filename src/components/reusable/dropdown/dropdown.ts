@@ -525,7 +525,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleAnchorClick(e: MouseEvent) {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled) return;
 
     const path = (e.composedPath?.() || []) as Array<EventTarget>;
     const isInOptions =
@@ -538,9 +538,20 @@ export class Dropdown extends FormMixin(LitElement) {
 
     this.handleClick();
   }
-  private handleAnchorKeydown(e: any) {
-    if (this.disabled || this.readonly) return;
-    this.handleButtonKeydown(e);
+  private handleAnchorKeydown(e: KeyboardEvent) {
+    if (this.disabled) return;
+
+    if (this.readonly) {
+      const keys = [' ', 'Enter', 'ArrowDown', 'ArrowUp'];
+      if (keys.includes(e.key)) {
+        e.preventDefault();
+        this.open = true;
+        this.listboxEl?.focus?.({ preventScroll: true });
+      }
+      return;
+    }
+
+    this.handleButtonKeydown(e as any);
   }
 
   private _handleAddOption() {
@@ -644,17 +655,20 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // Pass allowAddOption to each kyn-dropdown-option
     options.forEach((option) => {
+      const tag = option.tagName;
       if (
-        option.tagName === 'KYN-DROPDOWN-OPTION' ||
-        option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION'
+        tag === 'KYN-DROPDOWN-OPTION' ||
+        tag === 'KYN-ENHANCED-DROPDOWN-OPTION'
       ) {
         (option as any).allowAddOption = this.allowAddOption;
+        (option as any).multiple = this.multiple;
+        (option as any).readonly = this.readonly;
       }
     });
   }
 
   private handleClick() {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled) return;
     this.open = !this.open;
     // focus search input if searchable
     if (this.searchable) this.searchEl.focus();
@@ -662,12 +676,24 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleButtonKeydown(e: any) {
-    if (this.readonly) return;
+    if (this.readonly) {
+      if (e.key === 'Escape') {
+        this.open = false;
+        this.buttonEl?.focus();
+      }
+      return;
+    }
     this.handleKeyboard(e, e.keyCode, 'button');
   }
-
   private handleListKeydown(e: any) {
-    if (this.readonly) return;
+    if (this.readonly) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        this.open = false;
+        this.buttonEl?.focus();
+      }
+      return;
+    }
 
     const TAB_KEY_CODE = 9;
 
@@ -749,9 +775,54 @@ export class Dropdown extends FormMixin(LitElement) {
       ? visibleOptions.indexOf(selectedEl)
       : 0;
 
-    // prevent page scroll on spacebar press
     if (SPACEBAR_KEY_CODE.includes(keyCode)) {
       e.preventDefault();
+    }
+
+    if (this.readonly) {
+      if (keyCode === DOWN_ARROW_KEY_CODE || keyCode === UP_ARROW_KEY_CODE) {
+        e.preventDefault();
+        let nextIndex =
+          keyCode === DOWN_ARROW_KEY_CODE
+            ? (highlightedIndex + 1) % visibleOptions.length
+            : (highlightedIndex - 1 + visibleOptions.length) %
+              visibleOptions.length;
+
+        let guard = 0;
+        while (
+          visibleOptions[nextIndex]?.disabled &&
+          guard++ < visibleOptions.length
+        ) {
+          nextIndex =
+            keyCode === DOWN_ARROW_KEY_CODE
+              ? (nextIndex + 1) % visibleOptions.length
+              : (nextIndex - 1 + visibleOptions.length) % visibleOptions.length;
+        }
+
+        if (visibleOptions[nextIndex]) {
+          visibleOptions[highlightedIndex] &&
+            (visibleOptions[highlightedIndex].highlighted = false);
+          visibleOptions[nextIndex].focus();
+          visibleOptions[nextIndex].highlighted = true;
+          visibleOptions[nextIndex].scrollIntoView?.({ block: 'nearest' });
+          this.assistiveText = visibleOptions[nextIndex].text || 'Option';
+        }
+        return;
+      }
+
+      if (SPACEBAR_KEY_CODE.includes(keyCode) || keyCode === ENTER_KEY_CODE) {
+        e.preventDefault();
+        return;
+      }
+
+      if (keyCode === ESCAPE_KEY_CODE) {
+        this.open = false;
+        (this.searchable ? this.searchEl : this.buttonEl)?.focus();
+        this.assistiveText = 'Dropdown menu options.';
+        return;
+      }
+
+      return;
     }
 
     const isListboxElOpened = this.open;
@@ -822,7 +893,6 @@ export class Dropdown extends FormMixin(LitElement) {
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
-        // go to next option
         let nextIndex =
           !highlightedEl && !selectedEl
             ? 0
@@ -839,10 +909,7 @@ export class Dropdown extends FormMixin(LitElement) {
         visibleOptions[nextIndex].focus();
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
-
-        // scroll to option
         visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
-
         this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
@@ -862,24 +929,17 @@ export class Dropdown extends FormMixin(LitElement) {
         visibleOptions[nextIndex].focus();
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
-
-        // scroll to option
         visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
-
         this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
       case ESCAPE_KEY_CODE: {
-        // close listbox
         this.open = false;
-
-        // restore focus
         if (this.searchable) {
           this.searchEl.focus();
         } else {
           this.buttonEl.focus();
         }
-
         this.assistiveText = 'Dropdown menu options.';
         return;
       }
@@ -966,7 +1026,15 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSearchKeydown(e: any) {
-    if (this.readonly) return;
+    if (this.readonly) {
+      if (e.key === 'Escape') {
+        this.open = false;
+        this.buttonEl.focus();
+      }
+      e.stopPropagation();
+      e.preventDefault();
+      return;
+    }
 
     e.stopPropagation();
 
@@ -1348,8 +1416,16 @@ export class Dropdown extends FormMixin(LitElement) {
       this.searchEl.value = this.searchText;
     }
 
-    if (changedProps.has('allowAddOption')) {
+    if (
+      changedProps.has('multiple') ||
+      changedProps.has('allowAddOption') ||
+      changedProps.has('readonly')
+    ) {
       this.updateChildOptions();
+    }
+
+    if (changedProps.has('open') && this.open && !this.searchable) {
+      this.listboxEl?.focus({ preventScroll: true });
     }
   }
 
