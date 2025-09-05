@@ -2,12 +2,13 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
-:host([highlighted]) {
+.menu-item[highlighted] {
   outline: 1px solid var(--kd-color-border-variants-focus);
 }
 
 .menu-item {
   background-color: var(--kd-color-background-menu-state-default);
+  transition: background-color 150ms ease-out;
 
   .menu-item-inner-el {
     color: var(--kd-color-text-level-primary);
@@ -18,13 +19,15 @@
     }
   }
 
-  transition: background-color 150ms ease-out, color 150ms ease-out;
-
   &:hover:not([disabled]) {
     background-color: var(--kd-color-background-menu-state-hover);
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-light);
+    }
+
+    slot[name='icon']::slotted(span) {
+      color: var(--kd-color-icon-light);
     }
   }
 
@@ -33,14 +36,6 @@
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-primary);
-    }
-  }
-
-  &:active:not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-pressed);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
     }
   }
 
@@ -160,8 +155,7 @@
     &[highlighted]:not([disabled]) {
       background-color: var(--kd-color-background-menu-state-ai-open);
 
-      &:hover,
-      &[highlighted] {
+      &:hover {
         background-color: var(--kd-color-background-menu-state-ai-hover);
 
         .menu-item-inner-el {
@@ -199,5 +193,45 @@
         color: var(--kd-color-text-variant-destructive);
       }
     }
+  }
+}
+
+.menu-item[highlighted]:not([disabled]) {
+  background-color: var(--kd-color-background-menu-state-hover);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
+  }
+}
+
+.menu-item:is(:focus, :focus-visible):not([disabled]) {
+  background-color: var(--kd-color-background-menu-state-open);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-primary);
+  }
+}
+
+.menu-item:active:not([disabled]) {
+  background-color: var(--kd-color-background-menu-state-pressed);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
+  }
+}
+
+.menu-item.ai-connected-true[highlighted]:not([disabled]) {
+  background-color: var(--kd-color-background-menu-state-ai-open);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
+  }
+}
+.menu-item.ai-connected-true:is(:focus, :focus-visible):not([disabled]) {
+  background-color: var(--kd-color-background-menu-state-ai-open);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-primary);
+  }
+}
+.menu-item.ai-connected-true:active:not([disabled]) {
+  background-color: var(--kd-color-background-menu-state-ai-pressed);
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-light);
   }
 }
