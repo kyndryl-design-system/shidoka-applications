@@ -351,7 +351,10 @@ export class Dropdown extends FormMixin(LitElement) {
                 ${this.multiple && this.value.length
                   ? html`
                       <button
-                        class="clear-multiple"
+                        class=${classMap({
+                          'clear-multiple': true,
+                          readonly: this.readonly,
+                        })}
                         aria-label="${this.value
                           .length} items selected. Clear selections"
                         ?disabled=${this.disabled || this.readonly}
@@ -580,7 +583,9 @@ export class Dropdown extends FormMixin(LitElement) {
                       <kyn-tag
                         role="listitem"
                         label=${tag.text}
-                        ?disabled=${this.disabled || tag.disabled}
+                        ?disabled=${this.disabled ||
+                        tag.disabled ||
+                        this.readonly}
                         @on-close=${() => this.handleTagClear(tag)}
                       ></kyn-tag>
                     `;
