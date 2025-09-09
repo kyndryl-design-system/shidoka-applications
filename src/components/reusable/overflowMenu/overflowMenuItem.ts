@@ -247,28 +247,6 @@ export class OverflowMenuItem extends LitElement {
       .filter((el): el is HTMLElement => !!el);
   }
 
-  private _activeIndex(items: HTMLElement[]): number {
-    let ae: Element | null = document.activeElement as Element | null;
-
-    let last: Element | null = null;
-    while (ae && ae.shadowRoot && (ae.shadowRoot as ShadowRoot).activeElement) {
-      if (ae === last) break;
-      last = ae;
-      ae = (ae.shadowRoot as ShadowRoot).activeElement as Element | null;
-    }
-
-    if (!ae) return 0;
-
-    const idx = items.findIndex(
-      (el) =>
-        el === ae ||
-        el.contains(ae) ||
-        (!!el.shadowRoot && (el.shadowRoot as ShadowRoot).activeElement === ae)
-    );
-
-    return idx >= 0 ? idx : 0;
-  }
-
   private _focus(el: HTMLElement) {
     el.focus();
   }

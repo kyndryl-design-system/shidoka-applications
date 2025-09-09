@@ -30,6 +30,10 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   accessor verticalDots = false;
 
+  /** If true, nested width mirrors `width` (overrides nestedWidth). */
+  @property({ type: Boolean, reflect: true })
+  accessor linkWidths = false;
+
   /** Use fixed instead of absolute position. Useful when placed within elements with overflow scroll. */
   @property({ type: Boolean })
   accessor fixed = false;
@@ -42,13 +46,13 @@ export class OverflowMenu extends LitElement {
    * @internal
    */
   @query('.btn')
-  accessor _btnEl!: any;
+  accessor _btnEl!: HTMLButtonElement;
 
   /** Menu element
    * @internal
    */
   @query('.menu')
-  accessor _menuEl!: any;
+  accessor _menuEl!: HTMLDivElement;
 
   /**
    * Open drawer upwards.
@@ -57,10 +61,30 @@ export class OverflowMenu extends LitElement {
   @state()
   accessor _openUpwards = false;
 
+  /**
+   * Explicit nested width.
+   * - number/'px'/'rem'/etc => fixed width
+   * - 'match-parent' => inherit parent computed width
+   * - 'auto'/null => content width (or CSS var fallback)
+   */
+  @property({ type: String, reflect: true })
+  accessor nestedWidth: string | null = 'match-parent';
+
+  /** Explicit parent width. Examples: 280, '280px', '22rem', 'auto'. */
+  @property({ type: String, reflect: true })
+  accessor width: string | null = null;
+
   private _onDocClick = (e: Event) => this.handleClickOut(e);
   private _onDocKeydown = (e: KeyboardEvent) => this.handleEscapePress(e);
+
   private _nestedMenuEl: HTMLDivElement | null = null;
+  private _nestedAnchor: HTMLElement | null = null;
   private _suppressDocClick = false;
+
+  private _onViewportChange = () => {
+    this._positionMenu();
+    this._repositionSubmenu();
+  };
 
   private _onItemClick = (
     e: CustomEvent<{ nested?: boolean; host?: HTMLElement }>
@@ -68,10 +92,13 @@ export class OverflowMenu extends LitElement {
     const detail = e?.detail || {};
     if (detail.nested && detail.host) {
       this._suppressDocClick = true;
-      this._openSubmenuForItem(detail.host);
+      if (this._nestedMenuEl && this._nestedAnchor === detail.host) {
+        this._closeSubmenu();
+      } else {
+        this._openSubmenuForItem(detail.host);
+      }
       return;
     }
-
     this._closeSubmenu();
     this.open = false;
     this._emitToggleEvent();
@@ -81,12 +108,19 @@ export class OverflowMenu extends LitElement {
   private _openSubmenuForItem(host: HTMLElement) {
     this._closeSubmenu();
 
-    const hostRect = host.getBoundingClientRect();
+    const container = this.shadowRoot?.querySelector(
+      '.overflow-menu'
+    ) as HTMLDivElement | null;
+    if (!container) return;
+    if (getComputedStyle(container).position === 'static') {
+      container.style.position = 'relative';
+    }
+
     const parentMenuRect = this._menuEl.getBoundingClientRect();
 
     const submenu = document.createElement('div');
     submenu.className = 'menu open nested';
-    submenu.style.position = 'fixed';
+    submenu.style.position = 'absolute';
     submenu.style.background =
       'var(--kd-color-background-container-default, #ffffff)';
     submenu.style.borderRadius = '4px';
@@ -95,16 +129,10 @@ export class OverflowMenu extends LitElement {
     submenu.style.margin = '8px 0';
     submenu.style.display = 'flex';
     submenu.style.flexDirection = 'column';
-
-    const topOffset = hostRect.top - 5;
-    submenu.style.top = `${topOffset}px`;
-
-    const gapBetweenMenus = 8;
-    submenu.style.left = `${parentMenuRect.right + gapBetweenMenus}px`;
-
-    submenu.style.width =
-      this._menuEl.style.width || `${parentMenuRect.width}px`;
     submenu.style.zIndex = '30';
+
+    const nestedW = this._resolveNestedWidth(parentMenuRect.width);
+    if (nestedW) submenu.style.width = nestedW;
 
     const items = ['Sub Option 1', 'Sub Option 2', 'Sub Option 3'];
     items.forEach((text) => {
@@ -128,11 +156,40 @@ export class OverflowMenu extends LitElement {
       submenu.appendChild(itemEl);
     });
 
-    document.body.appendChild(submenu);
+    container.appendChild(submenu);
     this._nestedMenuEl = submenu;
+    this._nestedAnchor = host;
+
+    this._repositionSubmenu();
 
     const first = this._firstFocusableIn(submenu);
     first?.focus();
+  }
+
+  private _repositionSubmenu() {
+    if (!this._nestedMenuEl || !this._nestedAnchor) return;
+
+    const container = this.shadowRoot?.querySelector(
+      '.overflow-menu'
+    ) as HTMLDivElement | null;
+    if (!container) return;
+
+    const contRect = container.getBoundingClientRect();
+    const hostRect = this._nestedAnchor.getBoundingClientRect();
+    const parentMenuRect = this._menuEl.getBoundingClientRect();
+
+    const nestedW = this._resolveNestedWidth(parentMenuRect.width);
+    if (nestedW) this._nestedMenuEl.style.width = nestedW;
+    else this._nestedMenuEl.style.removeProperty('width');
+
+    const topGap = 8;
+    const top = hostRect.top - contRect.top - topGap;
+
+    const gapBetweenMenus = 8;
+    const left = parentMenuRect.right - contRect.left + gapBetweenMenus;
+
+    this._nestedMenuEl.style.top = `${Math.max(top, 0)}px`;
+    this._nestedMenuEl.style.left = `${Math.max(left, 0)}px`;
   }
 
   private _closeSubmenu() {
@@ -143,6 +200,7 @@ export class OverflowMenu extends LitElement {
         /* ignore */
       }
       this._nestedMenuEl = null;
+      this._nestedAnchor = null;
     }
   }
 
@@ -198,40 +256,86 @@ export class OverflowMenu extends LitElement {
     this._emitToggleEvent();
   }
 
-  private _positionMenu() {
-    if (this.open) {
-      if (this.fixed) {
-        const BtnBounds = this._btnEl.getBoundingClientRect();
-        const Top = BtnBounds.top + BtnBounds.height;
-        const MenuHeight =
-          this.querySelectorAll('kyn-overflow-menu-item').length * 48;
-
-        if (this._openUpwards) {
-          this._menuEl.style.top = BtnBounds.top - MenuHeight - 18 + 'px';
-          this._menuEl.style.bottom = 'initial';
-        } else {
-          this._menuEl.style.top = Top + 'px';
-          this._menuEl.style.bottom = 'initial';
-        }
-
-        if (this.fixed) {
-          if (this.anchorRight) {
-            this._menuEl.style.left = 'initial';
-            this._menuEl.style.right =
-              window.innerWidth - BtnBounds.right + 'px';
-          } else {
-            this._menuEl.style.right = 'initial';
-            this._menuEl.style.left = BtnBounds.left + 'px';
-          }
-        }
-      } else {
-        this._menuEl.style.top = 'initial';
-      }
-    }
+  private _toCssSize(v: string | number | null | undefined): string | null {
+    if (v === null || v === undefined) return null;
+    if (typeof v === 'number') return `${v}px`;
+    const s = String(v).trim();
+    if (!s || s === 'auto') return null;
+    if (/^\d+(\.\d+)?(px|rem|em|ch|vw|vh|%|vmin|vmax)$/.test(s)) return s;
+    if (/^\d+(\.\d+)?$/.test(s)) return `${s}px`;
+    return s;
   }
 
-  override updated(changedProps: Map<string, unknown>) {
-    if (changedProps.has('kind')) {
+  private _resolveParentWidth(): string | null {
+    const propW = this._toCssSize(this.width);
+    if (propW) return propW;
+
+    const varW =
+      getComputedStyle(this)
+        .getPropertyValue('--kyn-overflow-menu-width')
+        ?.trim() || '';
+    return varW || null;
+  }
+
+  private _resolveNestedWidth(parentPixelWidth: number): string | null {
+    if (this.linkWidths) {
+      return `${Math.max(parentPixelWidth, 0)}px`;
+    }
+
+    const nw = (this.nestedWidth ?? '').trim();
+    if (nw === 'match-parent') return `${Math.max(parentPixelWidth, 0)}px`;
+
+    const coerced = this._toCssSize(nw || null);
+    if (coerced) return coerced;
+
+    const varW =
+      getComputedStyle(this)
+        .getPropertyValue('--kyn-overflow-submenu-width')
+        ?.trim() || '';
+    return varW || null;
+  }
+
+  private _positionMenu() {
+    if (!this.open) return;
+
+    this._applyParentWidth();
+
+    if (this.fixed) {
+      const BtnBounds = this._btnEl.getBoundingClientRect();
+      const Top = BtnBounds.top + BtnBounds.height;
+      const MenuHeight =
+        this.querySelectorAll('kyn-overflow-menu-item').length * 48;
+
+      if (this._openUpwards) {
+        this._menuEl.style.top = `${BtnBounds.top - MenuHeight - 18}px`;
+        this._menuEl.style.bottom = 'initial';
+      } else {
+        this._menuEl.style.top = `${Top}px`;
+        this._menuEl.style.bottom = 'initial';
+      }
+
+      if (this.anchorRight) {
+        this._menuEl.style.left = 'initial';
+        this._menuEl.style.right = window.innerWidth - BtnBounds.right + 'px';
+      } else {
+        this._menuEl.style.right = 'initial';
+        this._menuEl.style.left = `${BtnBounds.left}px`;
+      }
+    } else {
+      this._menuEl.style.top = 'initial';
+    }
+
+    this._repositionSubmenu();
+  }
+
+  private _applyParentWidth() {
+    const w = this._resolveParentWidth();
+    if (w) this._menuEl.style.width = w;
+    else this._menuEl.style.removeProperty('width');
+  }
+
+  override updated(changed: Map<string, unknown>) {
+    if (changed.has('kind')) {
       this.dispatchEvent(
         new CustomEvent('kind-changed', {
           detail: this.kind,
@@ -241,16 +345,22 @@ export class OverflowMenu extends LitElement {
       );
     }
 
-    if (changedProps.has('open')) {
+    if (
+      changed.has('width') ||
+      changed.has('nestedWidth') ||
+      changed.has('linkWidths')
+    ) {
       if (this.open) {
-        if (
-          this._btnEl.getBoundingClientRect().top >
-          window.innerHeight * 0.6
-        ) {
-          this._openUpwards = true;
-        } else {
-          this._openUpwards = false;
-        }
+        this._applyParentWidth();
+        this._repositionSubmenu();
+      }
+    }
+
+    if (changed.has('open')) {
+      if (this.open) {
+        this._openUpwards =
+          this._btnEl.getBoundingClientRect().top > window.innerHeight * 0.6;
+        this._applyParentWidth();
       } else {
         this._closeSubmenu();
       }
@@ -348,93 +458,6 @@ export class OverflowMenu extends LitElement {
     return focusables;
   }
 
-  private onMenuKeydown = (e: KeyboardEvent) => {
-    const k = e.key;
-
-    if (k !== 'ArrowDown' && k !== 'ArrowUp' && k !== 'Home' && k !== 'End')
-      return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const container = e.currentTarget as HTMLElement | null;
-    if (!container) return;
-
-    let hosts: HTMLElement[] = [];
-    const slot = container.querySelector('slot') as HTMLSlotElement | null;
-    if (slot) {
-      hosts = slot
-        .assignedElements({ flatten: true })
-        .filter(
-          (el): el is HTMLElement =>
-            el instanceof HTMLElement &&
-            el.tagName.toLowerCase() === 'kyn-overflow-menu-item' &&
-            !el.hasAttribute('disabled')
-        );
-    } else {
-      hosts = Array.from(
-        container.querySelectorAll<HTMLElement>('kyn-overflow-menu-item')
-      ).filter((el) => !el.hasAttribute('disabled'));
-    }
-
-    const items: HTMLElement[] = hosts
-      .map(
-        (el) =>
-          (el.shadowRoot?.querySelector('button, a') as HTMLElement | null) ??
-          (el.querySelector('button, a') as HTMLElement | null) ??
-          el
-      )
-      .filter((el): el is HTMLElement => !!el);
-
-    if (items.length === 0) return;
-
-    const rawActive =
-      (container.getRootNode() as Document | ShadowRoot) instanceof ShadowRoot
-        ? (container.getRootNode() as ShadowRoot).activeElement
-        : document.activeElement;
-
-    let i = items.findIndex((it) =>
-      rawActive
-        ? it === rawActive ||
-          it.contains(rawActive) ||
-          it.shadowRoot?.activeElement === rawActive
-        : false
-    );
-
-    if (i < 0) {
-      const activeHost =
-        rawActive instanceof Element &&
-        rawActive.getRootNode() instanceof ShadowRoot
-          ? ((rawActive.getRootNode() as ShadowRoot).host as Element)
-          : (rawActive as Element | null);
-
-      i = hosts.findIndex(
-        (h) => h === activeHost || (activeHost && h.contains(activeHost))
-      );
-    }
-
-    if (i < 0) i = 0;
-
-    const last = items.length - 1;
-
-    if (k === 'ArrowDown') {
-      items[i >= last ? 0 : i + 1].focus();
-      return;
-    }
-    if (k === 'ArrowUp') {
-      items[i <= 0 ? last : i - 1].focus();
-      return;
-    }
-    if (k === 'Home') {
-      items[0].focus();
-      return;
-    }
-    if (k === 'End') {
-      items[last].focus();
-      return;
-    }
-  };
-
   getMenuItems(): HTMLElement[] {
     return Array.from(
       this.querySelectorAll<HTMLElement>('kyn-overflow-menu-item') || []
@@ -453,11 +476,16 @@ export class OverflowMenu extends LitElement {
         n.tagName.toLowerCase() === 'kyn-overflow-menu-item'
     ) as HTMLElement | undefined;
     if (!host) return;
+
     if (host.hasAttribute('nested')) {
       e.preventDefault();
       e.stopPropagation();
       this._suppressDocClick = true;
-      this._openSubmenuForItem(host);
+      if (this._nestedMenuEl && this._nestedAnchor === host) {
+        this._closeSubmenu();
+      } else {
+        this._openSubmenuForItem(host);
+      }
     }
   };
 
@@ -470,6 +498,14 @@ export class OverflowMenu extends LitElement {
       'on-click',
       this._onItemClick as unknown as EventListener
     );
+
+    window.addEventListener('resize', this._onViewportChange, {
+      passive: true,
+    });
+    window.addEventListener('scroll', this._onViewportChange, {
+      capture: true,
+      passive: true,
+    });
   }
 
   override disconnectedCallback() {
@@ -483,6 +519,10 @@ export class OverflowMenu extends LitElement {
       'on-click',
       this._onItemClick as unknown as EventListener
     );
+
+    window.removeEventListener('resize', this._onViewportChange);
+    window.removeEventListener('scroll', this._onViewportChange, true);
+
     super.disconnectedCallback();
   }
 

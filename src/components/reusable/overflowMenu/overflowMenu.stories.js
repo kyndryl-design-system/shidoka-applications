@@ -26,6 +26,12 @@ export default {
       control: 'select',
       options: ['default', 'ai'],
     },
+    width: { control: 'text' },
+    nestedWidth: {
+      control: 'text',
+      description: "Use 'match-parent', a number (px), or any CSS length.",
+    },
+    linkWidths: { control: 'boolean' },
     anchorRight: { control: 'boolean' },
     verticalDots: { control: 'boolean' },
     fixed: { control: 'boolean' },
@@ -44,6 +50,9 @@ const args = {
   verticalDots: false,
   fixed: false,
   assistiveText: 'Toggle Menu',
+  width: '', // e.g., '280', '22rem', 'auto'
+  nestedWidth: 'match-parent', // 'match-parent' | '' | CSS length
+  linkWidths: false,
 };
 
 export const Default = {
@@ -57,6 +66,9 @@ export const Default = {
         kind=${args.kind}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
+        width=${args.width}
+        nestedWidth=${args.nestedWidth}
+        ?linkWidths=${args.linkWidths}
       >
         <kyn-overflow-menu-item
           @on-click=${(e) => {
@@ -216,4 +228,43 @@ export const NestedMenuItem = {
       </kyn-overflow-menu>
     `;
   },
+};
+
+export const ParentWidthLinked = {
+  args: { ...args, width: '200px', linkWidths: true },
+  render: (args) => html`
+    <kyn-overflow-menu
+      ?open=${args.open}
+      ?anchorRight=${args.anchorRight}
+      ?verticalDots=${args.verticalDots}
+      kind=${args.kind}
+      ?fixed=${args.fixed}
+      assistiveText=${args.assistiveText}
+      width=${args.width}
+      nestedWidth=${args.nestedWidth}
+      ?linkWidths=${args.linkWidths}
+    >
+      <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+      <kyn-overflow-menu-item nested>Nested Option</kyn-overflow-menu-item>
+    </kyn-overflow-menu>
+  `,
+};
+export const SeparateWidths = {
+  args: { ...args, width: '200px', nestedWidth: '150px' },
+  render: (args) => html`
+    <kyn-overflow-menu
+      ?open=${args.open}
+      ?anchorRight=${args.anchorRight}
+      ?verticalDots=${args.verticalDots}
+      kind=${args.kind}
+      ?fixed=${args.fixed}
+      assistiveText=${args.assistiveText}
+      width=${args.width}
+      nestedWidth=${args.nestedWidth}
+      ?linkWidths=${args.linkWidths}
+    >
+      <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+      <kyn-overflow-menu-item nested>Nested Option</kyn-overflow-menu-item>
+    </kyn-overflow-menu>
+  `,
 };
