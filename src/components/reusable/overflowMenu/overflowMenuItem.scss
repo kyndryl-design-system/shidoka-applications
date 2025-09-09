@@ -25,14 +25,48 @@
   outline-offset: -2px;
   transition: background-color 0.15s ease-out, outline-color 0.15s ease-out;
 
+  &:hover:not([disabled]) {
+    color: var(--kd-color-text-level-light);
+  }
+
+  &:is(:focus, :focus-within, :focus-visible):not([disabled]) {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  &:active:not([disabled]) {
+    color: var(--kd-color-text-level-light);
+  }
+
   &:focus-visible {
     outline-color: var(--kd-color-border-variants-focus);
   }
 
-  &.destructive:focus-visible {
-    background-color: var(--kd-color-status-error-light);
-    outline-color: var(--kd-color-status-error-default);
+  &.destructive {
+    color: var(--kd-color-text-variant-destructive);
+
+    &:focus-visible {
+      background-color: var(--kd-color-status-error-light);
+      outline-color: var(--kd-color-status-error-default);
+    }
   }
+
+  &.nested {
+    padding-right: 40px;
+    position: relative;
+  }
+}
+
+.menu-item-inner-el.nested-icon,
+.nested-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: var(--kd-color-text-muted);
+  pointer-events: none;
 }
 
 .sr-only {

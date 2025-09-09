@@ -154,3 +154,66 @@ export const AIVariant = {
     `;
   },
 };
+
+export const NestedMenuItem = {
+  args: args,
+  render: (args) => {
+    return html`
+      <kyn-overflow-menu
+        ?open=${args.open}
+        ?anchorRight=${args.anchorRight}
+        ?verticalDots=${args.verticalDots}
+        kind=${args.kind}
+        ?fixed=${args.fixed}
+        assistiveText=${args.assistiveText}
+      >
+        <kyn-overflow-menu-item
+          @on-click=${(e) => {
+            action(e.type)({ ...e, detail: e.detail });
+          }}
+          >Option 1</kyn-overflow-menu-item
+        >
+        <kyn-overflow-menu-item
+          href="javascript:void(0);"
+          @on-click=${(e) => {
+            action(e.type)({ ...e, detail: e.detail });
+          }}
+        >
+          Option 2
+        </kyn-overflow-menu-item>
+        <kyn-overflow-menu-item disabled>Option 3</kyn-overflow-menu-item>
+        <kyn-overflow-menu-item
+          @on-click=${(e) => {
+            action(e.type)({ ...e, detail: e.detail });
+          }}
+        >
+          Option 4
+        </kyn-overflow-menu-item>
+        <kyn-overflow-menu-item
+          @on-click=${(e) => {
+            action(e.type)({ ...e, detail: e.detail });
+          }}
+          >Longer Text Option example
+        </kyn-overflow-menu-item>
+
+        <kyn-overflow-menu-item
+          nested
+          @on-click=${(e) => {
+            action(e.type)({ ...e, detail: e.detail });
+          }}
+        >
+          Nested Option
+        </kyn-overflow-menu-item>
+
+        <kyn-overflow-menu-item
+          destructive
+          description="Destructive Action"
+          @on-click=${(e) => {
+            action(e.type)({ ...e, detail: e.detail });
+          }}
+          >Option 5
+        </kyn-overflow-menu-item>
+      </kyn-overflow-menu>
+    `;
+  },
+};
