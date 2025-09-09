@@ -230,7 +230,7 @@ export const NestedMenuItem = {
   },
 };
 
-export const ParentWidthLinked = {
+export const NestedWidthEqualMainWidth = {
   args: { ...args, width: '200px', linkWidths: true },
   render: (args) => html`
     <kyn-overflow-menu
@@ -249,6 +249,8 @@ export const ParentWidthLinked = {
     </kyn-overflow-menu>
   `,
 };
+NestedWidthEqualMainWidth.storyName = 'Nested Width = Main Width';
+
 export const SeparateWidths = {
   args: { ...args, width: '200px', nestedWidth: '150px' },
   render: (args) => html`
@@ -268,3 +270,4 @@ export const SeparateWidths = {
     </kyn-overflow-menu>
   `,
 };
+SeparateWidths.storyName = 'Nested Width ≠ Main Width';

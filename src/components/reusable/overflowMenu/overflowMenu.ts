@@ -63,9 +63,9 @@ export class OverflowMenu extends LitElement {
 
   /**
    * Explicit nested width.
-   * - number/'px'/'rem'/etc => fixed width
-   * - 'match-parent' => inherit parent computed width
-   * - 'auto'/null => content width (or CSS var fallback)
+   * - number/'px'/'rem'/'%'/... => fixed width (e.g., '280', '22rem', '60%')
+   * - 'match-parent' => mirror the parent menu's *computed* pixel width
+   * - 'auto'/null => intrinsic/content width (or CSS var fallback)
    */
   @property({ type: String, reflect: true })
   accessor nestedWidth: string | null = 'match-parent';
