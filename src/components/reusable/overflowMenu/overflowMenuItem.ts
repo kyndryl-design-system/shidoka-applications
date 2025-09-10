@@ -74,6 +74,8 @@ export class OverflowMenuItem extends LitElement {
       'overflow-menu-item': true,
       'menu-item': true,
       'ai-connected': this.kind === 'ai',
+      'ai-connected-true': this.kind === 'ai',
+      'ai-connected-false': this.kind !== 'ai',
       destructive: this.destructive,
       nested: this.nested,
     };
@@ -255,15 +257,17 @@ export class OverflowMenuItem extends LitElement {
 
   private _getFocusableItemsIn(container: HTMLElement | null): HTMLElement[] {
     const scope: ParentNode = container ?? document;
+
     const hosts = Array.from(
       (scope as Document | Element).querySelectorAll?.(
         'kyn-overflow-menu-item'
       ) ?? []
     ) as HTMLElement[];
 
-    const inScope = container
-      ? hosts.filter((el) => container.contains(el))
-      : hosts;
+    const inScope = (
+      container ? hosts.filter((el) => container.contains(el)) : hosts
+    ).filter((el) => !el.closest('[slot="submenu"]'));
+
     const enabled = inScope.filter((el) => !el.hasAttribute('disabled'));
 
     return enabled

@@ -137,6 +137,7 @@ export class OverflowMenu extends LitElement {
     submenu.style.flexDirection = 'column';
     submenu.style.zIndex = '30';
     submenu.setAttribute('role', 'menu');
+    submenu.setAttribute('aria-orientation', 'vertical');
 
     const nestedW = this._resolveNestedWidth(parentMenuRect.width);
     if (nestedW) submenu.style.width = nestedW;
@@ -153,8 +154,8 @@ export class OverflowMenu extends LitElement {
 
     submenu.addEventListener(
       'on-click',
-      (ev: Event) => {
-        const ce = ev as CustomEvent<{ nested?: boolean }>;
+      (e: Event) => {
+        const ce = e as CustomEvent<{ nested?: boolean }>;
         if (ce.detail?.nested) return;
         this._closeSubmenu();
         this.open = false;
@@ -229,6 +230,8 @@ export class OverflowMenu extends LitElement {
       open: this.open,
       horizontal: !this.verticalDots,
       ['ai-connected']: this.kind === 'ai',
+      ['ai-connected-true']: this.kind === 'ai',
+      ['ai-connected-false']: this.kind !== 'ai',
     };
 
     const menuClasses = {
@@ -238,6 +241,8 @@ export class OverflowMenu extends LitElement {
       fixed: this.fixed,
       upwards: this._openUpwards,
       ['ai-connected']: this.kind === 'ai',
+      ['ai-connected-true']: this.kind === 'ai',
+      ['ai-connected-false']: this.kind !== 'ai',
     };
 
     return html`
@@ -245,7 +250,6 @@ export class OverflowMenu extends LitElement {
         <button
           class=${classMap(buttonClasses)}
           @click=${this.toggleMenu}
-          aria-controls="menu"
           aria-expanded=${this.open}
           aria-haspopup="menu"
           title=${this.assistiveText}
@@ -255,7 +259,11 @@ export class OverflowMenu extends LitElement {
           <span>${unsafeSVG(overflowIcon)}</span>
         </button>
 
-        <div id="menu" class=${classMap(menuClasses)}>
+        <div
+          class=${classMap(menuClasses)}
+          role="menu"
+          aria-orientation="vertical"
+        >
           <slot></slot>
         </div>
       </div>
@@ -480,12 +488,13 @@ export class OverflowMenu extends LitElement {
       ) ?? []
     ) as HTMLElement[];
 
-    const inScope = container
-      ? hosts.filter((el) => container.contains(el))
-      : hosts;
+    const inScope = (
+      container ? hosts.filter((el) => container.contains(el)) : hosts
+    ).filter((el) => !el.closest('[slot="submenu"]'));
+
     const enabled = inScope.filter((el) => !el.hasAttribute('disabled'));
 
-    const focusables = enabled
+    return enabled
       .map(
         (el) =>
           (el.shadowRoot?.querySelector('button, a') as HTMLElement | null) ??
@@ -493,8 +502,6 @@ export class OverflowMenu extends LitElement {
           el
       )
       .filter((el): el is HTMLElement => !!el);
-
-    return focusables;
   }
 
   getMenuItems(): HTMLElement[] {
