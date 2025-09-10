@@ -27,10 +27,7 @@ export default {
       options: ['default', 'ai'],
     },
     width: { control: 'text' },
-    nestedWidth: {
-      control: 'text',
-      description: "Use 'match-parent', a number (px), or any CSS length.",
-    },
+    nestedWidth: { control: 'text' },
     linkWidths: { control: 'boolean' },
     anchorRight: { control: 'boolean' },
     verticalDots: { control: 'boolean' },
@@ -50,8 +47,8 @@ const args = {
   verticalDots: false,
   fixed: false,
   assistiveText: 'Toggle Menu',
-  width: '', // e.g., '280', '22rem', 'auto'
-  nestedWidth: 'match-parent', // 'match-parent' | '' | CSS length
+  width: '',
+  nestedWidth: 'match-parent',
   linkWidths: false,
 };
 
