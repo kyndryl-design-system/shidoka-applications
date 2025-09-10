@@ -37,6 +37,20 @@ export class OverflowMenuItem extends LitElement {
   accessor nested = false;
 
   /**
+   * Has the menu items in the current oveflow menu.
+   * @ignore
+   */
+  @state()
+  accessor _menuItems: any;
+
+  /**
+   * Has the current oveflow menu.
+   * @ignore
+   */
+  @state()
+  accessor _menu: any;
+
+  /**
    * Tracks if the item content is overflowing and needs a tooltip.
    * @ignore
    */
@@ -55,25 +69,10 @@ export class OverflowMenuItem extends LitElement {
   @state()
   accessor kind: 'ai' | 'default' = 'default';
 
-  /**
-   * Has the menu items in the current oveflow menu.
-   * @ignore
-   */
-  @state()
-  accessor _menuItems: HTMLElement[] = [];
-
-  /**
-   * Has the current oveflow menu.
-   * @ignore
-   */
-  @state()
-  accessor _menu: HTMLElement | null = null;
-
   override render() {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
-      'ai-connected': this.kind === 'ai',
       'ai-connected-true': this.kind === 'ai',
       'ai-connected-false': this.kind !== 'ai',
       destructive: this.destructive,

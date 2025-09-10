@@ -164,7 +164,7 @@ export const AIVariant = {
   },
 };
 
-export const NestedCustomContent = {
+export const Nested = {
   args,
   render: (args) => html`
     <kyn-overflow-menu

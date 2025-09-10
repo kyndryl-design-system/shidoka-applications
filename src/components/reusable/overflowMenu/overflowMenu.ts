@@ -229,7 +229,6 @@ export class OverflowMenu extends LitElement {
       btn: true,
       open: this.open,
       horizontal: !this.verticalDots,
-      ['ai-connected']: this.kind === 'ai',
       ['ai-connected-true']: this.kind === 'ai',
       ['ai-connected-false']: this.kind !== 'ai',
     };
@@ -240,7 +239,6 @@ export class OverflowMenu extends LitElement {
       right: this.anchorRight,
       fixed: this.fixed,
       upwards: this._openUpwards,
-      ['ai-connected']: this.kind === 'ai',
       ['ai-connected-true']: this.kind === 'ai',
       ['ai-connected-false']: this.kind !== 'ai',
     };
@@ -259,11 +257,7 @@ export class OverflowMenu extends LitElement {
           <span>${unsafeSVG(overflowIcon)}</span>
         </button>
 
-        <div
-          class=${classMap(menuClasses)}
-          role="menu"
-          aria-orientation="vertical"
-        >
+        <div class=${classMap(menuClasses)} role="menu">
           <slot></slot>
         </div>
       </div>
@@ -284,6 +278,7 @@ export class OverflowMenu extends LitElement {
     this._emitToggleEvent();
   }
 
+  //normalize width values
   private _toCssSize(v: string | number | null | undefined): string | null {
     if (v === null || v === undefined) return null;
     if (typeof v === 'number') return `${v}px`;
@@ -360,10 +355,10 @@ export class OverflowMenu extends LitElement {
     else this._menuEl.style.removeProperty('width');
   }
 
-  override updated(changed: Map<string, unknown>) {
-    if (changed.has('kind')) {
+  override updated(changedProps: Map<string, unknown>) {
+    if (changedProps.has('kind')) {
       this.dispatchEvent(
-        new CustomEvent('kind-changed', {
+        new CustomEvent('kind-changedProps', {
           detail: this.kind,
           bubbles: true,
           composed: true,
@@ -372,9 +367,9 @@ export class OverflowMenu extends LitElement {
     }
 
     if (
-      changed.has('width') ||
-      changed.has('nestedWidth') ||
-      changed.has('linkWidths')
+      changedProps.has('width') ||
+      changedProps.has('nestedWidth') ||
+      changedProps.has('linkWidths')
     ) {
       if (this.open) {
         this._applyParentWidth();
@@ -382,7 +377,7 @@ export class OverflowMenu extends LitElement {
       }
     }
 
-    if (changed.has('open')) {
+    if (changedProps.has('open')) {
       if (this.open) {
         this._openUpwards =
           this._btnEl.getBoundingClientRect().top > window.innerHeight * 0.6;
