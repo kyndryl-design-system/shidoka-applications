@@ -30,10 +30,6 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   accessor verticalDots = false;
 
-  /** If true, nested width mirrors `width` (overrides nestedWidth). */
-  @property({ type: Boolean, reflect: true })
-  accessor linkWidths = false;
-
   /** Use fixed instead of absolute position. Useful when placed within elements with overflow scroll. */
   @property({ type: Boolean })
   accessor fixed = false;
@@ -301,10 +297,6 @@ export class OverflowMenu extends LitElement {
   }
 
   private _resolveNestedWidth(parentPixelWidth: number): string | null {
-    if (this.linkWidths) {
-      return `${Math.max(parentPixelWidth, 0)}px`;
-    }
-
     const nw = (this.nestedWidth ?? '').trim();
     if (nw === 'match-parent') return `${Math.max(parentPixelWidth, 0)}px`;
 
@@ -358,7 +350,7 @@ export class OverflowMenu extends LitElement {
   override updated(changedProps: Map<string, unknown>) {
     if (changedProps.has('kind')) {
       this.dispatchEvent(
-        new CustomEvent('kind-changedProps', {
+        new CustomEvent('kind-changed', {
           detail: this.kind,
           bubbles: true,
           composed: true,
@@ -366,11 +358,7 @@ export class OverflowMenu extends LitElement {
       );
     }
 
-    if (
-      changedProps.has('width') ||
-      changedProps.has('nestedWidth') ||
-      changedProps.has('linkWidths')
-    ) {
+    if (changedProps.has('width') || changedProps.has('nestedWidth')) {
       if (this.open) {
         this._applyParentWidth();
         this._repositionSubmenu();

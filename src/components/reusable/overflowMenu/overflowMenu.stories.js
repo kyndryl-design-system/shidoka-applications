@@ -28,7 +28,6 @@ export default {
     },
     width: { control: 'text' },
     nestedWidth: { control: 'text' },
-    linkWidths: { control: 'boolean' },
     anchorRight: { control: 'boolean' },
     verticalDots: { control: 'boolean' },
     fixed: { control: 'boolean' },
@@ -49,7 +48,6 @@ const args = {
   assistiveText: 'Toggle Menu',
   width: '',
   nestedWidth: 'match-parent',
-  linkWidths: false,
 };
 
 export const Default = {
@@ -65,7 +63,6 @@ export const Default = {
         assistiveText=${args.assistiveText}
         width=${args.width}
         nestedWidth=${args.nestedWidth}
-        ?linkWidths=${args.linkWidths}
       >
         <kyn-overflow-menu-item
           @on-click=${(e) => {
@@ -176,7 +173,6 @@ export const Nested = {
       assistiveText=${args.assistiveText}
       width=${args.width}
       nestedWidth=${args.nestedWidth}
-      ?linkWidths=${args.linkWidths}
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
 
@@ -206,7 +202,7 @@ export const Nested = {
 };
 
 export const NestedWidthEqualMainWidth = {
-  args: { ...args, width: '200px', linkWidths: true },
+  args: { ...args, width: '200px' },
   render: (args) => html`
     <kyn-overflow-menu
       ?open=${args.open}
@@ -217,7 +213,6 @@ export const NestedWidthEqualMainWidth = {
       assistiveText=${args.assistiveText}
       width=${args.width}
       nestedWidth=${args.nestedWidth}
-      ?linkWidths=${args.linkWidths}
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
 
@@ -255,7 +250,6 @@ export const SeparateWidths = {
       assistiveText=${args.assistiveText}
       width=${args.width}
       nestedWidth=${args.nestedWidth}
-      ?linkWidths=${args.linkWidths}
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
 
