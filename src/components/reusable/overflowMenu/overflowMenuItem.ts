@@ -72,6 +72,11 @@ export class OverflowMenuItem extends LitElement {
   @state()
   accessor kind: 'ai' | 'default' = 'default';
 
+  private _actionableElement: HTMLElement | null = null;
+  private _hoverHandlersAttached = false;
+  private _boundRequestOpen: (e?: Event) => void = () => {};
+  private _boundHandleResize: () => void = () => {};
+
   override render() {
     const classes = {
       'overflow-menu-item': true,
@@ -172,7 +177,9 @@ export class OverflowMenuItem extends LitElement {
       (this.querySelector('button, a') as HTMLElement | null);
 
     if (actionable && this.nested && parent) {
-      const requestOpen = () =>
+      this._actionableElement = actionable;
+
+      this._boundRequestOpen = () =>
         parent.dispatchEvent(
           new CustomEvent('on-click', {
             detail: { nested: true, host: this },
@@ -181,14 +188,71 @@ export class OverflowMenuItem extends LitElement {
           })
         );
 
-      actionable.addEventListener('focus', requestOpen, { passive: true });
-      actionable.addEventListener('pointerover', requestOpen, {
-        passive: true,
-      });
-      actionable.addEventListener('pointerdown', requestOpen, {
+      this._boundHandleResize = this._handleResize.bind(this);
+
+      this._handleResize();
+      window.addEventListener('resize', this._boundHandleResize, {
         passive: true,
       });
     }
+  }
+
+  private _attachHoverHandlers() {
+    if (this._hoverHandlersAttached) return;
+    const el = this._actionableElement;
+    if (!el) return;
+
+    el.addEventListener('focus', this._boundRequestOpen as EventListener, {
+      passive: true,
+    });
+    el.addEventListener(
+      'pointerover',
+      this._boundRequestOpen as EventListener,
+      {
+        passive: true,
+      }
+    );
+    el.addEventListener(
+      'pointerdown',
+      this._boundRequestOpen as EventListener,
+      {
+        passive: true,
+      }
+    );
+
+    this._hoverHandlersAttached = true;
+  }
+
+  private _detachHoverHandlers() {
+    if (!this._hoverHandlersAttached) return;
+    const el = this._actionableElement;
+    if (!el) return;
+
+    el.removeEventListener('focus', this._boundRequestOpen as EventListener);
+    el.removeEventListener(
+      'pointerover',
+      this._boundRequestOpen as EventListener
+    );
+    el.removeEventListener(
+      'pointerdown',
+      this._boundRequestOpen as EventListener
+    );
+
+    this._hoverHandlersAttached = false;
+  }
+
+  private _handleResize() {
+    if (window.innerWidth >= 767) {
+      this._attachHoverHandlers();
+    } else {
+      this._detachHoverHandlers();
+    }
+  }
+
+  override disconnectedCallback() {
+    window.removeEventListener('resize', this._boundHandleResize);
+    this._detachHoverHandlers();
+    super.disconnectedCallback();
   }
 
   private handleClick(e: Event) {

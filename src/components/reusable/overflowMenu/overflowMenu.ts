@@ -4,6 +4,7 @@ import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import SCSS from './overflowMenu.scss?inline';
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
+import arrowLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 /**
  * Overflow Menu.
@@ -201,21 +202,12 @@ export class OverflowMenu extends LitElement {
         this._previousMenuContent.appendChild(this._menuEl.firstChild);
       }
 
-      const backBtn = document.createElement('button');
+      const backBtn = document.createElement('kyn-overflow-menu-item');
       backBtn.className = 'nested-back-btn';
-      backBtn.type = 'button';
-      backBtn.textContent = '← Back';
+      backBtn.innerHTML = `<span style="margin-right: 4px; vertical-align: sub;">${arrowLeft}</span> Back`;
       backBtn.setAttribute('aria-label', 'Back to parent menu');
-      backBtn.style.display = 'block';
-      backBtn.style.width = '100%';
-      backBtn.style.boxSizing = 'border-box';
-      backBtn.style.padding = '8px 12px';
-      backBtn.style.border = 'none';
-      backBtn.style.background = 'transparent';
-      backBtn.style.textAlign = 'left';
-      backBtn.style.cursor = 'pointer';
-      backBtn.style.fontSize = '14px';
-      backBtn.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+      backBtn.style.borderBottom =
+        '1px solid var(--kd-color-border-card-default)';
 
       backBtn.addEventListener('click', (ev: Event) => {
         this._suppressDocClick = true;
