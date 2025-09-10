@@ -55,7 +55,7 @@ const args = {
 };
 
 export const Default = {
-  args: args,
+  args,
   render: (args) => {
     return html`
       <kyn-overflow-menu
@@ -76,14 +76,17 @@ export const Default = {
           >Option 1</kyn-overflow-menu-item
         >
         <kyn-overflow-menu-item
-          href="javascript:void(0);"
+          href="https://example.com/"
+          target="_blank"
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
         >
-          Option 2
+          Visit example.com
         </kyn-overflow-menu-item>
+
         <kyn-overflow-menu-item disabled>Option 3</kyn-overflow-menu-item>
+
         <kyn-overflow-menu-item
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
@@ -91,30 +94,29 @@ export const Default = {
         >
           Option 4
         </kyn-overflow-menu-item>
+
         <kyn-overflow-menu-item
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
-          >Longer Text Option example
-        </kyn-overflow-menu-item>
+          >Longer Text Option example</kyn-overflow-menu-item
+        >
+
         <kyn-overflow-menu-item
           destructive
           description="Destructive Action"
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
-          >Option 5
-        </kyn-overflow-menu-item>
+          >Option 5</kyn-overflow-menu-item
+        >
       </kyn-overflow-menu>
     `;
   },
 };
 
 export const AIVariant = {
-  args: {
-    ...args,
-    kind: 'ai',
-  },
+  args: { ...args, kind: 'ai' },
   render: (args) => {
     return html`
       <kyn-overflow-menu
@@ -133,12 +135,13 @@ export const AIVariant = {
           >Option 1</kyn-overflow-menu-item
         >
         <kyn-overflow-menu-item
-          href="javascript:void(0);"
+          href="https://example.com/"
+          target="_blank"
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
         >
-          Option 2
+          Visit example.com
         </kyn-overflow-menu-item>
         <kyn-overflow-menu-item disabled>Option 3</kyn-overflow-menu-item>
         <kyn-overflow-menu-item
@@ -152,16 +155,16 @@ export const AIVariant = {
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
-          >Longer Text Option example
-        </kyn-overflow-menu-item>
+          >Longer Text Option example</kyn-overflow-menu-item
+        >
         <kyn-overflow-menu-item
           destructive
           description="Destructive Action"
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
-          >Option 5
-        </kyn-overflow-menu-item>
+          >Option 5</kyn-overflow-menu-item
+        >
       </kyn-overflow-menu>
     `;
   },

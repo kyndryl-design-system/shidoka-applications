@@ -20,6 +20,9 @@ export class OverflowMenuItem extends LitElement {
   @property({ type: String })
   accessor href: string | null = null;
 
+  /** Sets the target for linked item (e.g. _blank). */
+  @property({ type: String }) accessor target: string | null = null;
+
   /** Adds destructive styles. */
   @property({ type: Boolean })
   accessor destructive = false;
@@ -89,6 +92,7 @@ export class OverflowMenuItem extends LitElement {
     const renderAsLink = hasHref && !this.disabled;
 
     if (renderAsLink) {
+      const rel = this.target === '_blank' ? 'noopener noreferrer' : null;
       return html`
         <a
           class=${classMap(classes)}
@@ -98,6 +102,8 @@ export class OverflowMenuItem extends LitElement {
           aria-disabled="false"
           tabindex="0"
           title=${itemText}
+          target=${this.target ?? ''}
+          rel=${rel ?? ''}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
         >
@@ -191,6 +197,7 @@ export class OverflowMenuItem extends LitElement {
       e.stopPropagation();
       return;
     }
+
     this.dispatchEvent(
       new CustomEvent('on-click', {
         detail: { origEvent: e, nested: this.nested, host: this },
