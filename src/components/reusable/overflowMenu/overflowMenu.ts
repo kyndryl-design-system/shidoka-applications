@@ -77,6 +77,9 @@ export class OverflowMenu extends LitElement {
   private _nestedAnchor: HTMLElement | null = null;
   private _suppressDocClick = false;
 
+  private _previousMenuContent: DocumentFragment | null = null;
+  private _mainReplaced = false;
+
   override render() {
     const buttonClasses = {
       btn: true,
@@ -189,6 +192,66 @@ export class OverflowMenu extends LitElement {
         | HTMLTemplateElement
         | null) ?? null;
     if (!provided) return;
+
+    const isMobileViewport = window.innerWidth < 767;
+
+    if (isMobileViewport) {
+      this._previousMenuContent = document.createDocumentFragment();
+      while (this._menuEl.firstChild) {
+        this._previousMenuContent.appendChild(this._menuEl.firstChild);
+      }
+
+      const backBtn = document.createElement('button');
+      backBtn.className = 'nested-back-btn';
+      backBtn.type = 'button';
+      backBtn.textContent = '← Back';
+      backBtn.setAttribute('aria-label', 'Back to parent menu');
+      backBtn.style.display = 'block';
+      backBtn.style.width = '100%';
+      backBtn.style.boxSizing = 'border-box';
+      backBtn.style.padding = '8px 12px';
+      backBtn.style.border = 'none';
+      backBtn.style.background = 'transparent';
+      backBtn.style.textAlign = 'left';
+      backBtn.style.cursor = 'pointer';
+      backBtn.style.fontSize = '14px';
+      backBtn.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+
+      backBtn.addEventListener('click', (ev: Event) => {
+        this._suppressDocClick = true;
+        requestAnimationFrame(() => (this._suppressDocClick = false));
+        this._restoreMainMenu();
+
+        const focusTarget =
+          this._firstFocusableIn(this._menuEl as HTMLElement) ?? host;
+        focusTarget?.focus();
+        ev.stopPropagation();
+        ev.preventDefault();
+      });
+
+      this._menuEl.appendChild(backBtn);
+
+      if (provided instanceof HTMLTemplateElement) {
+        this._menuEl.appendChild(provided.content.cloneNode(true));
+      } else {
+        const clones = Array.from(provided.childNodes).map((n) =>
+          n.cloneNode(true)
+        );
+        this._menuEl.append(...clones);
+      }
+
+      this._mainReplaced = true;
+      this._nestedMenuEl = null;
+      this._nestedAnchor = host;
+      host.setAttribute('aria-expanded', 'true');
+
+      this._repositionSubmenu();
+      requestAnimationFrame(() => {
+        this._menuEl.classList.add('nested-mobile');
+      });
+
+      return;
+    }
 
     const submenu = document.createElement('div');
     submenu.className = 'menu nested';
@@ -312,7 +375,10 @@ export class OverflowMenu extends LitElement {
       this._nestedMenuEl.classList.remove('right');
     }
 
+    const isNarrow = window.innerWidth < 767;
+
     const forceOverlay =
+      isNarrow ||
       window.innerWidth <= 480 ||
       (wouldOverflowRight && !this.anchorRight) ||
       (wouldOverflowLeft && this.anchorRight);
@@ -322,11 +388,20 @@ export class OverflowMenu extends LitElement {
 
       const overlayWidth = Math.max(parentMenuRect.width, submenuWidth);
 
-      const overlayLeft = this.anchorRight
-        ? parentMenuRect.left - contRect.left - overlayWidth - gap
-        : parentMenuRect.left - contRect.left;
+      let overlayLeft: number;
+      let overlayTop: number;
 
-      const overlayTop = Math.max(hostRect.top - contRect.top - 8, 0);
+      if (isNarrow) {
+        overlayLeft = parentMenuRect.left - contRect.left;
+        overlayTop = parentMenuRect.top - contRect.top;
+      } else {
+        overlayLeft = this.anchorRight
+          ? parentMenuRect.left - contRect.left - overlayWidth - gap
+          : parentMenuRect.left - contRect.left;
+
+        overlayTop = Math.max(hostRect.top - contRect.top - 8, 0);
+      }
+
       this._nestedMenuEl.style.left = `${overlayLeft}px`;
       this._nestedMenuEl.style.top = `${overlayTop}px`;
       this._nestedMenuEl.style.width = `${overlayWidth}px`;
@@ -347,10 +422,33 @@ export class OverflowMenu extends LitElement {
       }
       this._nestedMenuEl = null;
     }
+
+    if (this._mainReplaced) {
+      this._restoreMainMenu();
+    }
+
     if (this._nestedAnchor) {
       this._nestedAnchor.removeAttribute('aria-expanded');
       this._nestedAnchor = null;
     }
+  }
+
+  private _restoreMainMenu() {
+    if (!this._mainReplaced) return;
+
+    while (this._menuEl.firstChild) {
+      this._menuEl.removeChild(this._menuEl.firstChild);
+    }
+
+    if (this._previousMenuContent) {
+      this._menuEl.appendChild(this._previousMenuContent);
+    }
+
+    this._previousMenuContent = null;
+    this._mainReplaced = false;
+
+    this.open = true;
+    this._emitToggleEvent();
   }
 
   private _resolveParentWidth(): string | null {
@@ -566,6 +664,17 @@ export class OverflowMenu extends LitElement {
 
   private _onMenuClickCapture = (e: MouseEvent) => {
     const path = e.composedPath() as Array<EventTarget>;
+
+    if (this._nestedMenuEl && path.includes(this._nestedMenuEl)) {
+      return;
+    }
+
+    if (this._suppressDocClick) {
+      e.stopPropagation();
+      e.preventDefault();
+      return;
+    }
+
     const host = path.find(
       (n) =>
         n instanceof HTMLElement &&
