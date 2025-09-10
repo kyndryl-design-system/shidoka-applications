@@ -73,7 +73,7 @@ export class OverflowMenuItem extends LitElement {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      'ai-connected': this.kind === 'ai',
       destructive: this.destructive,
       nested: this.nested,
     };
@@ -85,40 +85,53 @@ export class OverflowMenuItem extends LitElement {
         >`
       : null;
 
-    if (this.href !== '') {
+    if (this.href) {
       return html`
         <a
           class=${classMap(classes)}
-          href=${this.href}
-          ?disabled=${this.disabled}
+          href=${this.disabled ? 'javascript:void(0);' : this.href}
+          role="menuitem"
+          aria-haspopup=${this.nested ? 'menu' : 'false'}
+          aria-disabled=${this.disabled ? 'true' : 'false'}
+          tabindex=${this.disabled ? -1 : 0}
+          title=${itemText}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
-          title=${itemText}
         >
           <span class="menu-item-inner-el text"><slot></slot></span>
           ${nestedIcon}
           ${this.destructive
             ? html`<span class="sr-only">${this.description}</span>`
+            : null}
+          ${this.nested
+            ? html`<slot name="submenu" hidden aria-hidden="true"></slot>`
             : null}
         </a>
       `;
-    } else {
-      return html`
-        <button
-          class=${classMap(classes)}
-          ?disabled=${this.disabled}
-          @click=${(e: Event) => this.handleClick(e)}
-          @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
-          title=${itemText}
-        >
-          <span class="menu-item-inner-el text"><slot></slot></span>
-          ${nestedIcon}
-          ${this.destructive
-            ? html`<span class="sr-only">${this.description}</span>`
-            : null}
-        </button>
-      `;
     }
+
+    return html`
+      <button
+        class=${classMap(classes)}
+        role="menuitem"
+        aria-haspopup=${this.nested ? 'menu' : 'false'}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
+        ?disabled=${this.disabled}
+        tabindex=${this.disabled ? -1 : 0}
+        title=${itemText}
+        @click=${(e: Event) => this.handleClick(e)}
+        @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
+      >
+        <span class="menu-item-inner-el text"><slot></slot></span>
+        ${nestedIcon}
+        ${this.destructive
+          ? html`<span class="sr-only">${this.description}</span>`
+          : null}
+        ${this.nested
+          ? html`<slot name="submenu" hidden aria-hidden="true"></slot>`
+          : null}
+      </button>
+    `;
   }
 
   override firstUpdated() {
@@ -143,23 +156,33 @@ export class OverflowMenuItem extends LitElement {
   }
 
   private handleClick(e: Event) {
-    const event = new CustomEvent('on-click', {
-      detail: { origEvent: e, nested: this.nested, host: this },
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(event);
+    if (this.disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        detail: { origEvent: e, nested: this.nested, host: this },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private handleKeyDown(e: KeyboardEvent) {
     const k = e.key;
     if (
-      k !== 'ArrowDown' &&
-      k !== 'ArrowUp' &&
-      k !== 'Home' &&
-      k !== 'End' &&
-      k !== 'Enter' &&
-      k !== ' '
+      ![
+        'ArrowDown',
+        'ArrowUp',
+        'Home',
+        'End',
+        'Enter',
+        ' ',
+        'ArrowRight',
+        'ArrowLeft',
+      ].includes(k)
     )
       return;
 
@@ -170,47 +193,53 @@ export class OverflowMenuItem extends LitElement {
     const items = this._getFocusableItemsIn(container);
     if (items.length === 0) return;
 
-    const actionableForThis =
+    const actionable =
       (this.shadowRoot?.querySelector('button, a') as HTMLElement | null) ??
       (this.querySelector('button, a') as HTMLElement | null) ??
       (this as unknown as HTMLElement);
 
     const i = items.findIndex(
-      (el) => el === actionableForThis || el.contains(actionableForThis)
+      (el) => el === actionable || el.contains(actionable)
     );
     const last = items.length - 1;
 
-    if (k === 'ArrowDown') {
-      this._focus(items[i >= last ? 0 : i + 1]);
+    if (k === 'ArrowDown') return this._focus(items[i >= last ? 0 : i + 1]);
+    if (k === 'ArrowUp') return this._focus(items[i <= 0 ? last : i - 1]);
+    if (k === 'Home') return this._focus(items[0]);
+    if (k === 'End') return this._focus(items[last]);
+
+    if (k === 'ArrowRight' && this.nested) {
+      this.dispatchEvent(
+        new CustomEvent('on-click', {
+          detail: { origEvent: e, nested: true, host: this },
+          bubbles: true,
+          composed: true,
+        })
+      );
       return;
     }
-    if (k === 'ArrowUp') {
-      this._focus(items[i <= 0 ? last : i - 1]);
-      return;
-    }
-    if (k === 'Home') {
-      this._focus(items[0]);
-      return;
-    }
-    if (k === 'End') {
-      this._focus(items[last]);
+    if (k === 'ArrowLeft') {
+      this.dispatchEvent(
+        new CustomEvent('on-click', {
+          detail: { origEvent: e, nested: false, host: this },
+          bubbles: true,
+          composed: true,
+        })
+      );
       return;
     }
 
-    if (k === 'Enter' || k === ' ') {
-      if (this.nested) {
-        this.dispatchEvent(
-          new CustomEvent('on-click', {
-            detail: { origEvent: e, nested: true, host: this },
-            bubbles: true,
-            composed: true,
-          })
-        );
-        return;
-      }
-      const target = items[i];
-      target?.click();
+    if ((k === 'Enter' || k === ' ') && this.nested) {
+      this.dispatchEvent(
+        new CustomEvent('on-click', {
+          detail: { origEvent: e, nested: true, host: this },
+          bubbles: true,
+          composed: true,
+        })
+      );
+      return;
     }
+    if (k === 'Enter' || k === ' ') items[i]?.click();
   }
 
   private _getContainer(): HTMLElement | null {

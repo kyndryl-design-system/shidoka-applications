@@ -112,11 +112,17 @@ export class OverflowMenu extends LitElement {
       '.overflow-menu'
     ) as HTMLDivElement | null;
     if (!container) return;
-    if (getComputedStyle(container).position === 'static') {
+    if (getComputedStyle(container).position === 'static')
       container.style.position = 'relative';
-    }
 
     const parentMenuRect = this._menuEl.getBoundingClientRect();
+
+    const provided =
+      (host.querySelector('[slot="submenu"]') as
+        | HTMLElement
+        | HTMLTemplateElement
+        | null) ?? null;
+    if (!provided) return;
 
     const submenu = document.createElement('div');
     submenu.className = 'menu open nested';
@@ -130,35 +136,38 @@ export class OverflowMenu extends LitElement {
     submenu.style.display = 'flex';
     submenu.style.flexDirection = 'column';
     submenu.style.zIndex = '30';
+    submenu.setAttribute('role', 'menu');
 
     const nestedW = this._resolveNestedWidth(parentMenuRect.width);
     if (nestedW) submenu.style.width = nestedW;
 
-    const items = ['Sub Option 1', 'Sub Option 2', 'Sub Option 3'];
-    items.forEach((text) => {
-      const itemEl = document.createElement(
-        'kyn-overflow-menu-item'
-      ) as HTMLElement;
-      itemEl.textContent = text;
-
-      itemEl.addEventListener(
-        'on-click',
-        (ev: Event) => {
-          ev.stopPropagation();
-          this._closeSubmenu();
-          this.open = false;
-          this._emitToggleEvent();
-          this._btnEl?.focus();
-        },
-        { once: true }
+    if (provided instanceof HTMLTemplateElement) {
+      submenu.appendChild(provided.content.cloneNode(true));
+    } else {
+      const frag = document.createDocumentFragment();
+      Array.from(provided.childNodes).forEach((n) =>
+        frag.appendChild(n.cloneNode(true))
       );
+      submenu.appendChild(frag);
+    }
 
-      submenu.appendChild(itemEl);
-    });
+    submenu.addEventListener(
+      'on-click',
+      (ev: Event) => {
+        const ce = ev as CustomEvent<{ nested?: boolean }>;
+        if (ce.detail?.nested) return;
+        this._closeSubmenu();
+        this.open = false;
+        this._emitToggleEvent();
+        this._btnEl?.focus();
+      },
+      { capture: true }
+    );
 
     container.appendChild(submenu);
     this._nestedMenuEl = submenu;
     this._nestedAnchor = host;
+    host.setAttribute('aria-expanded', 'true');
 
     this._repositionSubmenu();
 
@@ -182,13 +191,20 @@ export class OverflowMenu extends LitElement {
     if (nestedW) this._nestedMenuEl.style.width = nestedW;
     else this._nestedMenuEl.style.removeProperty('width');
 
-    const topGap = 8;
-    const top = hostRect.top - contRect.top - topGap;
+    const gap = 8;
+    const top = Math.max(hostRect.top - contRect.top - 8, 0);
 
-    const gapBetweenMenus = 8;
-    const left = parentMenuRect.right - contRect.left + gapBetweenMenus;
+    const desiredLeft = parentMenuRect.right - contRect.left + gap;
+    const submenuWidth =
+      this._nestedMenuEl.getBoundingClientRect().width ||
+      parseFloat(nestedW || '0');
+    const wouldOverflowRight =
+      desiredLeft + submenuWidth > window.innerWidth - 8;
+    const left = wouldOverflowRight
+      ? parentMenuRect.left - contRect.left - gap - submenuWidth
+      : desiredLeft;
 
-    this._nestedMenuEl.style.top = `${Math.max(top, 0)}px`;
+    this._nestedMenuEl.style.top = `${top}px`;
     this._nestedMenuEl.style.left = `${Math.max(left, 0)}px`;
   }
 
@@ -197,9 +213,12 @@ export class OverflowMenu extends LitElement {
       try {
         this._nestedMenuEl.remove();
       } catch {
-        /* ignore */
+        /* no op */
       }
       this._nestedMenuEl = null;
+    }
+    if (this._nestedAnchor) {
+      this._nestedAnchor.removeAttribute('aria-expanded');
       this._nestedAnchor = null;
     }
   }
@@ -228,6 +247,7 @@ export class OverflowMenu extends LitElement {
           @click=${this.toggleMenu}
           aria-controls="menu"
           aria-expanded=${this.open}
+          aria-haspopup="menu"
           title=${this.assistiveText}
           aria-label=${this.assistiveText}
           @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
@@ -301,25 +321,23 @@ export class OverflowMenu extends LitElement {
     this._applyParentWidth();
 
     if (this.fixed) {
-      const BtnBounds = this._btnEl.getBoundingClientRect();
-      const Top = BtnBounds.top + BtnBounds.height;
-      const MenuHeight =
-        this.querySelectorAll('kyn-overflow-menu-item').length * 48;
+      const btnBounds = this._btnEl.getBoundingClientRect();
+      const menuRect = this._menuEl.getBoundingClientRect();
 
       if (this._openUpwards) {
-        this._menuEl.style.top = `${BtnBounds.top - MenuHeight - 18}px`;
+        this._menuEl.style.top = `${btnBounds.top - menuRect.height - 18}px`;
         this._menuEl.style.bottom = 'initial';
       } else {
-        this._menuEl.style.top = `${Top}px`;
+        this._menuEl.style.top = `${btnBounds.bottom}px`;
         this._menuEl.style.bottom = 'initial';
       }
 
       if (this.anchorRight) {
         this._menuEl.style.left = 'initial';
-        this._menuEl.style.right = window.innerWidth - BtnBounds.right + 'px';
+        this._menuEl.style.right = window.innerWidth - btnBounds.right + 'px';
       } else {
         this._menuEl.style.right = 'initial';
-        this._menuEl.style.left = `${BtnBounds.left}px`;
+        this._menuEl.style.left = `${btnBounds.left}px`;
       }
     } else {
       this._menuEl.style.top = 'initial';
@@ -387,24 +405,47 @@ export class OverflowMenu extends LitElement {
   }
 
   private handleEscapePress(e: KeyboardEvent) {
-    if (e.key === 'Escape') {
-      this._closeSubmenu();
-      this.open = false;
-      this._emitToggleEvent();
-      this._btnEl.focus();
+    if (e.key !== 'Escape' && e.key !== 'ArrowLeft') return;
+    const focusInSub =
+      !!this._nestedMenuEl &&
+      !!this._nestedMenuEl.contains(
+        (this.getRootNode() as Document | ShadowRoot).activeElement as Node
+      );
+
+    if (focusInSub || e.key === 'ArrowLeft') {
+      if (this._nestedMenuEl) {
+        this._closeSubmenu();
+        const anchorActionable =
+          this._nestedAnchor?.shadowRoot?.querySelector<HTMLElement>(
+            'button, a'
+          ) ??
+          this._nestedAnchor?.querySelector<HTMLElement>('button, a') ??
+          this._nestedAnchor;
+        anchorActionable?.focus();
+        return;
+      }
     }
+
+    if (!this.open) return;
+
+    this.open = false;
+    this._emitToggleEvent();
+    this._btnEl.focus();
   }
 
   private handleKeyDown(e: KeyboardEvent) {
     const k = e.key;
-    if (k !== 'Enter' && k !== ' ' && k !== 'ArrowDown') return;
+    if (k !== 'Enter' && k !== ' ' && k !== 'ArrowDown' && k !== 'ArrowUp')
+      return;
 
     e.preventDefault();
     e.stopPropagation();
 
-    const focusFirst = () => {
-      const first = this._firstFocusableIn(this._menuEl as HTMLElement);
-      first?.focus();
+    const focusFirst = () =>
+      this._firstFocusableIn(this._menuEl as HTMLElement)?.focus();
+    const focusLast = () => {
+      const items = this._getFocusableItems(this._menuEl);
+      items[items.length - 1]?.focus();
     };
 
     if (k === 'Enter' || k === ' ') {
@@ -413,14 +454,12 @@ export class OverflowMenu extends LitElement {
       return;
     }
 
-    if (k === 'ArrowDown') {
-      if (!this.open) {
-        this.open = true;
-        this._emitToggleEvent();
-        requestAnimationFrame(focusFirst);
-      } else {
-        focusFirst();
-      }
+    if (!this.open) {
+      this.open = true;
+      this._emitToggleEvent();
+      requestAnimationFrame(k === 'ArrowUp' ? focusLast : focusFirst);
+    } else {
+      (k === 'ArrowUp' ? focusLast : focusFirst)();
     }
   }
 

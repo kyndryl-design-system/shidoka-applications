@@ -164,67 +164,45 @@ export const AIVariant = {
   },
 };
 
-export const NestedMenuItem = {
-  args: args,
-  render: (args) => {
-    return html`
-      <kyn-overflow-menu
-        ?open=${args.open}
-        ?anchorRight=${args.anchorRight}
-        ?verticalDots=${args.verticalDots}
-        kind=${args.kind}
-        ?fixed=${args.fixed}
-        assistiveText=${args.assistiveText}
-      >
-        <kyn-overflow-menu-item
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-          >Option 1</kyn-overflow-menu-item
-        >
-        <kyn-overflow-menu-item
-          href="javascript:void(0);"
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-        >
-          Option 2
-        </kyn-overflow-menu-item>
-        <kyn-overflow-menu-item disabled>Option 3</kyn-overflow-menu-item>
-        <kyn-overflow-menu-item
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-        >
-          Option 4
-        </kyn-overflow-menu-item>
-        <kyn-overflow-menu-item
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-          >Longer Text Option example
-        </kyn-overflow-menu-item>
+export const NestedCustomContent = {
+  args,
+  render: (args) => html`
+    <kyn-overflow-menu
+      ?open=${args.open}
+      ?anchorRight=${args.anchorRight}
+      ?verticalDots=${args.verticalDots}
+      kind=${args.kind}
+      ?fixed=${args.fixed}
+      assistiveText=${args.assistiveText}
+      width=${args.width}
+      nestedWidth=${args.nestedWidth}
+      ?linkWidths=${args.linkWidths}
+    >
+      <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
 
-        <kyn-overflow-menu-item
-          nested
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-        >
-          Nested Option
-        </kyn-overflow-menu-item>
+      <kyn-overflow-menu-item nested>
+        More actions
+        <div slot="submenu">
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Sub A</kyn-overflow-menu-item
+          >
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Sub B</kyn-overflow-menu-item
+          >
+          <kyn-overflow-menu-item
+            destructive
+            description="Destructive"
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Sub C</kyn-overflow-menu-item
+          >
+        </div>
+      </kyn-overflow-menu-item>
 
-        <kyn-overflow-menu-item
-          destructive
-          description="Destructive Action"
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-          >Option 5
-        </kyn-overflow-menu-item>
-      </kyn-overflow-menu>
-    `;
-  },
+      <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+    </kyn-overflow-menu>
+  `,
 };
 
 export const NestedWidthEqualMainWidth = {
@@ -242,7 +220,24 @@ export const NestedWidthEqualMainWidth = {
       ?linkWidths=${args.linkWidths}
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-      <kyn-overflow-menu-item nested>Nested Option</kyn-overflow-menu-item>
+
+      <kyn-overflow-menu-item nested>
+        Nested Option
+        <div slot="submenu">
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Option A</kyn-overflow-menu-item
+          >
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Option B</kyn-overflow-menu-item
+          >
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Option C</kyn-overflow-menu-item
+          >
+        </div>
+      </kyn-overflow-menu-item>
     </kyn-overflow-menu>
   `,
 };
@@ -263,7 +258,26 @@ export const SeparateWidths = {
       ?linkWidths=${args.linkWidths}
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-      <kyn-overflow-menu-item nested>Nested Option</kyn-overflow-menu-item>
+
+      <kyn-overflow-menu-item nested>
+        Nested Option
+        <div slot="submenu">
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Nested Option 1</kyn-overflow-menu-item
+          >
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Nested Option 2</kyn-overflow-menu-item
+          >
+          <kyn-overflow-menu-item
+            destructive
+            description="Destructive"
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Nested Option 3</kyn-overflow-menu-item
+          >
+        </div>
+      </kyn-overflow-menu-item>
     </kyn-overflow-menu>
   `,
 };
