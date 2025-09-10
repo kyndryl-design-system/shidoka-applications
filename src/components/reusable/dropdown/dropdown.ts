@@ -1243,7 +1243,7 @@ export class Dropdown extends FormMixin(LitElement) {
         })
       );
 
-      this.classList.toggle('ai-connected-true', this.kind === 'ai');
+      this.classList.toggle('ai-connected', this.kind === 'ai');
     }
 
     const root = this.shadowRoot;

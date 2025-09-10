@@ -32,6 +32,10 @@ export default {
     verticalDots: { control: 'boolean' },
     fixed: { control: 'boolean' },
     assistiveText: { control: 'text' },
+    nested: {
+      table: { disable: true },
+      control: false,
+    },
     'kind-changed': {
       table: { disable: true },
       control: false,
@@ -55,6 +59,7 @@ export const Default = {
   render: (args) => {
     return html`
       <kyn-overflow-menu
+        @on-click=${(e) => action('on-click')({ ...e, detail: e.detail })}
         ?open=${args.open}
         ?anchorRight=${args.anchorRight}
         ?verticalDots=${args.verticalDots}
@@ -113,6 +118,7 @@ export const AIVariant = {
   render: (args) => {
     return html`
       <kyn-overflow-menu
+        @on-click=${(e) => action('on-click')({ ...e, detail: e.detail })}
         ?open=${args.open}
         ?anchorRight=${args.anchorRight}
         ?verticalDots=${args.verticalDots}
@@ -165,6 +171,7 @@ export const Nested = {
   args,
   render: (args) => html`
     <kyn-overflow-menu
+      @on-click=${(e) => action('on-click')({ ...e, detail: e.detail })}
       ?open=${args.open}
       ?anchorRight=${args.anchorRight}
       ?verticalDots=${args.verticalDots}
@@ -176,7 +183,7 @@ export const Nested = {
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
 
-      <kyn-overflow-menu-item nested>
+      <kyn-overflow-menu-item>
         More actions
         <div slot="submenu">
           <kyn-overflow-menu-item
@@ -205,6 +212,7 @@ export const NestedWidthEqualMainWidth = {
   args: { ...args, width: '200px' },
   render: (args) => html`
     <kyn-overflow-menu
+      @on-click=${(e) => action('on-click')({ ...e, detail: e.detail })}
       ?open=${args.open}
       ?anchorRight=${args.anchorRight}
       ?verticalDots=${args.verticalDots}
@@ -216,7 +224,7 @@ export const NestedWidthEqualMainWidth = {
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
 
-      <kyn-overflow-menu-item nested>
+      <kyn-overflow-menu-item>
         Nested Option
         <div slot="submenu">
           <kyn-overflow-menu-item
@@ -242,6 +250,7 @@ export const SeparateWidths = {
   args: { ...args, width: '200px', nestedWidth: '150px' },
   render: (args) => html`
     <kyn-overflow-menu
+      @on-click=${(e) => action('on-click')({ ...e, detail: e.detail })}
       ?open=${args.open}
       ?anchorRight=${args.anchorRight}
       ?verticalDots=${args.verticalDots}
@@ -253,7 +262,7 @@ export const SeparateWidths = {
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
 
-      <kyn-overflow-menu-item nested>
+      <kyn-overflow-menu-item>
         Nested Option
         <div slot="submenu">
           <kyn-overflow-menu-item

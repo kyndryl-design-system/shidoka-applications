@@ -18,7 +18,7 @@ export class OverflowMenuItem extends LitElement {
 
   /** Makes the item a link. */
   @property({ type: String })
-  accessor href = '';
+  accessor href: string | null = null;
 
   /** Adds destructive styles. */
   @property({ type: Boolean })
@@ -33,7 +33,7 @@ export class OverflowMenuItem extends LitElement {
   accessor description = '';
 
   /** Item contains a nested overflow */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor nested = false;
 
   /**
@@ -73,8 +73,7 @@ export class OverflowMenuItem extends LitElement {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
-      'ai-connected-true': this.kind === 'ai',
-      'ai-connected-false': this.kind !== 'ai',
+      'ai-connected': this.kind === 'ai',
       destructive: this.destructive,
       nested: this.nested,
     };
@@ -86,15 +85,18 @@ export class OverflowMenuItem extends LitElement {
         >`
       : null;
 
-    if (this.href) {
+    const hasHref = !!this.href?.trim();
+    const renderAsLink = hasHref && !this.disabled;
+
+    if (renderAsLink) {
       return html`
         <a
           class=${classMap(classes)}
-          href=${this.disabled ? 'javascript:void(0);' : this.href}
+          href=${this.href!}
           role="menuitem"
           aria-haspopup=${this.nested ? 'menu' : 'false'}
-          aria-disabled=${this.disabled ? 'true' : 'false'}
-          tabindex=${this.disabled ? -1 : 0}
+          aria-disabled="false"
+          tabindex="0"
           title=${itemText}
           @click=${(e: Event) => this.handleClick(e)}
           @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
@@ -137,6 +139,7 @@ export class OverflowMenuItem extends LitElement {
 
   override firstUpdated() {
     const parent = this.closest('kyn-overflow-menu') as any;
+
     if (parent) {
       this._menuItems = parent.getMenuItems?.() ?? [];
       this._menu = parent.getMenu?.() ?? null;
@@ -144,16 +147,42 @@ export class OverflowMenuItem extends LitElement {
 
       parent.addEventListener('kind-changed', (e: Event) => {
         const ce = e as CustomEvent<'ai' | 'default'>;
-        requestAnimationFrame(() => {
-          this.kind = ce.detail;
-        });
+        requestAnimationFrame(() => (this.kind = ce.detail));
       });
     } else {
       const container = this._getContainer();
       this._menuItems = this._getFocusableItemsIn(container);
       this._menu = container;
     }
+
+    if (!this.hasAttribute('nested')) {
+      this.nested = !!this.querySelector('[slot="submenu"]');
+    }
+
     this.checkOverflow();
+
+    const actionable =
+      (this.shadowRoot?.querySelector('button, a') as HTMLElement | null) ??
+      (this.querySelector('button, a') as HTMLElement | null);
+
+    if (actionable && this.nested && parent) {
+      const requestOpen = () =>
+        parent.dispatchEvent(
+          new CustomEvent('on-click', {
+            detail: { nested: true, host: this },
+            bubbles: true,
+            composed: true,
+          })
+        );
+
+      actionable.addEventListener('focus', requestOpen, { passive: true });
+      actionable.addEventListener('pointerover', requestOpen, {
+        passive: true,
+      });
+      actionable.addEventListener('pointerdown', requestOpen, {
+        passive: true,
+      });
+    }
   }
 
   private handleClick(e: Event) {
