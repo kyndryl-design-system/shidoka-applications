@@ -31,6 +31,10 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   accessor verticalDots = false;
 
+  /** Text for the mobile nested back button. */
+  @property({ type: String })
+  accessor backButtonText = 'Back';
+
   /** Use fixed instead of absolute position. Useful when placed within elements with overflow scroll. */
   @property({ type: Boolean })
   accessor fixed = false;
@@ -204,7 +208,15 @@ export class OverflowMenu extends LitElement {
 
       const backBtn = document.createElement('kyn-overflow-menu-item');
       backBtn.className = 'nested-back-btn';
-      backBtn.innerHTML = `<span style="margin-right: 4px; vertical-align: sub;">${arrowLeft}</span> Back`;
+
+      const iconWrap = document.createElement('span');
+      iconWrap.style.marginRight = '4px';
+      iconWrap.style.verticalAlign = 'text-top';
+      iconWrap.innerHTML = arrowLeft;
+
+      backBtn.appendChild(iconWrap);
+      backBtn.appendChild(document.createTextNode(` ${this.backButtonText}`));
+
       backBtn.setAttribute('aria-label', 'Back to parent menu');
       backBtn.style.borderBottom =
         '1px solid var(--kd-color-border-card-default)';

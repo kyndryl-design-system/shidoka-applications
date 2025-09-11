@@ -15,6 +15,7 @@ export default {
       `,
   ],
   parameters: {
+    decorators: [],
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-551887&p=f&m=dev',
@@ -32,6 +33,7 @@ export default {
     verticalDots: { control: 'boolean' },
     fixed: { control: 'boolean' },
     assistiveText: { control: 'text' },
+    backButtonText: { control: 'text', name: 'backButtonText' },
     nested: {
       table: { disable: true },
       control: false,
@@ -50,6 +52,7 @@ const args = {
   verticalDots: false,
   fixed: false,
   assistiveText: 'Toggle Menu',
+  backButtonText: 'Back',
   width: '',
   nestedWidth: 'match-parent',
 };
@@ -66,6 +69,7 @@ export const Default = {
         kind=${args.kind}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
+        .backButtonText=${args.backButtonText}
         width=${args.width}
         nestedWidth=${args.nestedWidth}
       >
@@ -127,6 +131,7 @@ export const AIVariant = {
         kind=${args.kind}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
+        .backButtonText=${args.backButtonText}
       >
         <kyn-overflow-menu-item
           @on-click=${(e) => {
@@ -181,6 +186,7 @@ export const Nested = {
       kind=${args.kind}
       ?fixed=${args.fixed}
       assistiveText=${args.assistiveText}
+      .backButtonText=${args.backButtonText}
       width=${args.width}
       nestedWidth=${args.nestedWidth}
     >
@@ -222,6 +228,7 @@ export const NestedWidthEqualMainWidth = {
       kind=${args.kind}
       ?fixed=${args.fixed}
       assistiveText=${args.assistiveText}
+      .backButtonText=${args.backButtonText}
       width=${args.width}
       nestedWidth=${args.nestedWidth}
     >
@@ -239,6 +246,8 @@ export const NestedWidthEqualMainWidth = {
             >Option B</kyn-overflow-menu-item
           >
           <kyn-overflow-menu-item
+            destructive
+            description="Destructive"
             @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
             >Option C</kyn-overflow-menu-item
           >
@@ -260,6 +269,7 @@ export const SeparateWidths = {
       kind=${args.kind}
       ?fixed=${args.fixed}
       assistiveText=${args.assistiveText}
+      .backButtonText=${args.backButtonText}
       width=${args.width}
       nestedWidth=${args.nestedWidth}
     >
