@@ -195,7 +195,8 @@ export class OverflowMenuItem extends LitElement {
     if (actionable && this.nested && parent) {
       this._actionableElement = actionable;
 
-      this._boundRequestOpen = () =>
+      this._boundRequestOpen = () => {
+        if (this.disabled) return;
         parent.dispatchEvent(
           new CustomEvent('on-click', {
             detail: { nested: true, host: this },
@@ -203,6 +204,7 @@ export class OverflowMenuItem extends LitElement {
             composed: true,
           })
         );
+      };
 
       this._boundHandleResize = this._handleResize.bind(this);
 
@@ -228,13 +230,6 @@ export class OverflowMenuItem extends LitElement {
         passive: true,
       }
     );
-    el.addEventListener(
-      'pointerdown',
-      this._boundRequestOpen as EventListener,
-      {
-        passive: true,
-      }
-    );
 
     this._hoverHandlersAttached = true;
   }
@@ -247,10 +242,6 @@ export class OverflowMenuItem extends LitElement {
     el.removeEventListener('focus', this._boundRequestOpen as EventListener);
     el.removeEventListener(
       'pointerover',
-      this._boundRequestOpen as EventListener
-    );
-    el.removeEventListener(
-      'pointerdown',
       this._boundRequestOpen as EventListener
     );
 

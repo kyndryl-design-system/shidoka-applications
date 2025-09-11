@@ -2,10 +2,120 @@
 
 :host {
   display: inline-block;
+  --kyn-overflow-gap-right: 8px;
+  --kyn-overflow-gap-left: 8px;
 }
 
 .overflow-menu {
   position: relative;
+
+  .menu.nested {
+    position: absolute;
+    top: var(--submenu-top, auto);
+    left: var(--submenu-left, auto);
+    margin: 0;
+    min-width: 208px;
+  }
+
+  & .menu.overlay + .menu.nested,
+  & .menu.overlay .menu.nested {
+    position: absolute;
+    top: var(--submenu-overlay-top, 0);
+    left: var(--submenu-overlay-left, 0);
+    width: var(--submenu-overlay-width, auto);
+    margin: 0;
+  }
+}
+
+.menu,
+.menu.nested {
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  background: var(--kd-color-background-container-default);
+  border: 1px solid var(--kd-color-border-card-default);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  opacity: 0;
+  pointer-events: none; /* prevent hover churn while hidden */
+  transform: translateY(4px);
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
+  will-change: opacity, transform;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}
+
+.menu {
+  position: absolute;
+  width: 208px;
+  margin: 8px 0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+  z-index: 20;
+
+  &.upwards {
+    top: auto;
+    bottom: 100%;
+  }
+  &.fixed {
+    position: fixed;
+  }
+}
+
+.menu::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -12px;
+  width: 12px;
+  pointer-events: auto;
+  background: transparent;
+}
+
+:host([anchorRight]) .menu::after,
+.menu.submenu-left::after {
+  right: auto;
+  left: -12px;
+}
+
+@media (min-width: 768px) {
+  :host([anchorRight]) .menu {
+    left: auto;
+    right: 0;
+  }
+}
+
+.menu.submenu-left + .menu.nested,
+.menu.submenu-left ~ .menu.nested,
+.menu.submenu-left .menu.nested {
+  transform-origin: top left;
+}
+
+.menu.submenu-right + .menu.nested,
+.menu.submenu-right ~ .menu.nested,
+.menu.submenu-right .menu.nested {
+  transform-origin: top right;
+}
+
+@media (min-width: 768px) {
+  :host([anchorRight]) .menu.submenu-left + .menu.nested,
+  :host([anchorRight]) .menu.submenu-left ~ .menu.nested,
+  :host([anchorRight]) .menu.submenu-left .menu.nested {
+    transform-origin: top left;
+  }
+
+  :host([anchorRight]) .menu.submenu-right + .menu.nested,
+  :host([anchorRight]) .menu.submenu-right ~ .menu.nested,
+  :host([anchorRight]) .menu.submenu-right .menu.nested {
+    transform-origin: top right;
+  }
 }
 
 button {
@@ -40,46 +150,94 @@ button {
   }
 }
 
-.menu {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  width: 208px;
-  margin: 8px 0;
-  border-radius: 4px;
-  background: var(--kd-color-background-container-default);
-  overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
-  z-index: 20;
-  transition: transform 150ms ease-out, opacity 150ms ease-out,
-    visibility 150ms ease-out;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0);
-  transform-origin: top left;
+// .menu {
+//   display: flex;
+//   flex-direction: column;
+//   position: absolute;
+//   width: 208px;
+//   margin: 8px 0;
+//   border-radius: 4px;
+//   background: var(--kd-color-background-container-default);
+//   overflow: hidden;
+//   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+//   z-index: 20;
+//   transition: transform 150ms ease-out, opacity 150ms ease-out,
+//     visibility 150ms ease-out;
+//   opacity: 0;
+//   visibility: hidden;
+//   transform: scale(0);
+//   transform-origin: top left;
 
-  &.open {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-  }
+//   &.open {
+//     opacity: 1;
+//     visibility: visible;
+//     transform: none;
+//   }
 
-  &.upwards {
-    transform-origin: bottom left;
-    top: auto;
-    bottom: 100%;
-  }
+//   &.upwards {
+//     transform-origin: bottom left;
+//     top: auto;
+//     bottom: 100%;
+//   }
 
-  &.fixed {
-    position: fixed;
-  }
+//   &.fixed {
+//     position: fixed;
+//   }
+// }
 
-  &.right {
-    right: 0;
-    transform-origin: top right;
+// @media (min-width: 768px) {
+//   :host([anchorRight]) .menu {
+//     left: auto;
+//     right: 0;
+//     transform-origin: top right;
+//     &.upwards {
+//       transform-origin: bottom right;
+//     }
+//   }
+// }
 
-    &.upwards {
-      transform-origin: bottom right;
-    }
-  }
-}
+// .menu.submenu-left + .menu.nested,
+// .menu.submenu-left ~ .menu.nested,
+// .menu.submenu-left .menu.nested {
+//   transform-origin: top left;
+// }
+// .menu.submenu-left + .menu.nested.upwards,
+// .menu.submenu-left ~ .menu.nested.upwards,
+// .menu.submenu-left .menu.nested.upwards {
+//   transform-origin: bottom left;
+// }
+
+// .menu.submenu-right + .menu.nested,
+// .menu.submenu-right ~ .menu.nested,
+// .menu.submenu-right .menu.nested {
+//   transform-origin: top right;
+// }
+// .menu.submenu-right + .menu.nested.upwards,
+// .menu.submenu-right ~ .menu.nested.upwards,
+// .menu.submenu-right .menu.nested.upwards {
+//   transform-origin: bottom right;
+// }
+
+// @media (min-width: 768px) {
+//   :host([anchorRight]) .menu.submenu-left + .menu.nested,
+//   :host([anchorRight]) .menu.submenu-left ~ .menu.nested,
+//   :host([anchorRight]) .menu.submenu-left .menu.nested {
+//     transform-origin: top left;
+//   }
+//   :host([anchorRight]) .menu.submenu-left + .menu.nested.upwards,
+//   :host([anchorRight]) .menu.submenu-left ~ .menu.nested.upwards,
+//   :host([anchorRight]) .menu.submenu-left .menu.nested.upwards {
+//     transform-origin: bottom left;
+//   }
+
+//   :host([anchorRight]) .menu.submenu-right + .menu.nested,
+//   :host([anchorRight]) .menu.submenu-right ~ .menu.nested,
+//   :host([anchorRight]) .menu.submenu-right .menu.nested {
+//     transform-origin: top right;
+//   }
+//   :host([anchorRight]) .menu.submenu-right + .menu.nested.upwards,
+//   :host([anchorRight]) .menu.submenu-right ~ .menu.nested.upwards,
+//   :host([anchorRight]) .menu.submenu-right .menu.nested.upwards {
+//     transform-origin: bottom right;
+//   }
+// }

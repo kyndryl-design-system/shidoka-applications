@@ -42,6 +42,9 @@ export default {
       table: { disable: true },
       control: false,
     },
+    textStrings: {
+      backButtonAriaLabel: 'Back to parent menu',
+    },
   },
 };
 
@@ -71,6 +74,7 @@ export const Default = {
         assistiveText=${args.assistiveText}
         .backButtonText=${args.backButtonText}
         width=${args.width}
+        .textStrings=${args.textStrings}
         nestedWidth=${args.nestedWidth}
       >
         <kyn-overflow-menu-item
@@ -131,6 +135,7 @@ export const AIVariant = {
         kind=${args.kind}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
+        .textStrings=${args.textStrings}
         .backButtonText=${args.backButtonText}
       >
         <kyn-overflow-menu-item
@@ -188,6 +193,7 @@ export const Nested = {
       assistiveText=${args.assistiveText}
       .backButtonText=${args.backButtonText}
       width=${args.width}
+      .textStrings=${args.textStrings}
       nestedWidth=${args.nestedWidth}
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
@@ -271,6 +277,7 @@ export const SeparateWidths = {
       assistiveText=${args.assistiveText}
       .backButtonText=${args.backButtonText}
       width=${args.width}
+      .textStrings=${args.textStrings}
       nestedWidth=${args.nestedWidth}
     >
       <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
@@ -298,3 +305,56 @@ export const SeparateWidths = {
   `,
 };
 SeparateWidths.storyName = 'Nested Width ≠ Main Width';
+
+export const TwoNestedMenus = {
+  args: { ...args },
+  render: (args) => html`
+    <kyn-overflow-menu
+      @on-click=${(e) => action('on-click')({ ...e, detail: e.detail })}
+      ?open=${args.open}
+      ?anchorRight=${args.anchorRight}
+      ?verticalDots=${args.verticalDots}
+      kind=${args.kind}
+      ?fixed=${args.fixed}
+      assistiveText=${args.assistiveText}
+      .backButtonText=${args.backButtonText}
+      width=${args.width}
+      .textStrings=${args.textStrings}
+      nestedWidth=${args.nestedWidth}
+    >
+      <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+
+      <kyn-overflow-menu-item>
+        Outer Submenu
+        <div slot="submenu">
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Sub Outer 1</kyn-overflow-menu-item
+          >
+
+          <kyn-overflow-menu-item>
+            Inner Submenu Trigger
+            <div slot="submenu">
+              <kyn-overflow-menu-item
+                @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+                >Inner A</kyn-overflow-menu-item
+              >
+              <kyn-overflow-menu-item
+                @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+                >Inner B</kyn-overflow-menu-item
+              >
+            </div>
+          </kyn-overflow-menu-item>
+
+          <kyn-overflow-menu-item
+            @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            >Sub Outer 2</kyn-overflow-menu-item
+          >
+        </div>
+      </kyn-overflow-menu-item>
+
+      <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+    </kyn-overflow-menu>
+  `,
+};
+TwoNestedMenus.storyName = 'Multiple Nested Overflow Menus';
