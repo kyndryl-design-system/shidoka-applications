@@ -73,6 +73,7 @@ export class OverflowMenuItem extends LitElement {
   accessor kind: 'ai' | 'default' = 'default';
 
   private _actionableElement: HTMLElement | null = null;
+  private _menuClassObserver: MutationObserver | null = null;
   private _hoverHandlersAttached = false;
   private _boundRequestOpen: (e?: Event) => void = () => {};
   private _boundHandleResize: () => void = () => {};
@@ -166,6 +167,21 @@ export class OverflowMenuItem extends LitElement {
       this._menu = container;
     }
 
+    const menuParent = this.closest('.menu') as HTMLElement | null;
+    if (menuParent && menuParent.classList.contains('ai-connected')) {
+      this.kind = 'ai';
+    }
+    if (menuParent) {
+      this._menuClassObserver = new MutationObserver(() => {
+        const isAi = menuParent.classList.contains('ai-connected');
+        requestAnimationFrame(() => (this.kind = isAi ? 'ai' : 'default'));
+      });
+      this._menuClassObserver.observe(menuParent, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    }
+
     if (!this.hasAttribute('nested')) {
       this.nested = !!this.querySelector('[slot="submenu"]');
     }
@@ -252,6 +268,10 @@ export class OverflowMenuItem extends LitElement {
   override disconnectedCallback() {
     window.removeEventListener('resize', this._boundHandleResize);
     this._detachHoverHandlers();
+    if (this._menuClassObserver) {
+      this._menuClassObserver.disconnect();
+      this._menuClassObserver = null;
+    }
     super.disconnectedCallback();
   }
 
@@ -390,8 +410,38 @@ export class OverflowMenuItem extends LitElement {
         contentElement.scrollWidth > contentElement.offsetWidth;
       if (this.isTruncated) {
         let text = '';
-        text += this.textContent?.trim();
+
+        const slot = this.shadowRoot?.querySelector(
+          'slot:not([name])'
+        ) as HTMLSlotElement | null;
+
+        if (slot) {
+          const nodes = slot.assignedNodes({ flatten: true });
+          text = nodes
+            .map((n) => {
+              if (n.nodeType === Node.TEXT_NODE) return n.textContent ?? '';
+              if (n instanceof HTMLElement) return n.textContent ?? '';
+              return '';
+            })
+            .join('')
+            .trim();
+        } else {
+          text = Array.from(this.childNodes)
+            .filter((n) => {
+              if (n.nodeType === Node.TEXT_NODE) return true;
+              if (n instanceof HTMLElement) {
+                return n.getAttribute('slot') !== 'submenu';
+              }
+              return false;
+            })
+            .map((n) => n.textContent ?? '')
+            .join('')
+            .trim();
+        }
+
         this.tooltipText = text;
+      } else {
+        this.tooltipText = '';
       }
     }
   }

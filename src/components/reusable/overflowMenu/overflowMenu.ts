@@ -247,6 +247,7 @@ export class OverflowMenu extends LitElement {
 
     const submenu = document.createElement('div');
     submenu.className = 'menu nested';
+    if (this.kind === 'ai') submenu.classList.add('ai-connected');
     submenu.style.position = 'absolute';
     submenu.style.background = 'var(--kd-color-background-container-default)';
     submenu.style.borderRadius = '4px';
