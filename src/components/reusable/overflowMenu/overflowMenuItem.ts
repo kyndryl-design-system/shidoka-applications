@@ -1,13 +1,17 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import SCSS from './overflowMenuItem.scss?inline';
 import '../tooltip';
+import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
 /**
- * Overflow Menu.
+ * Overflow Menu Item.
  * @fires on-click - Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent }`
- * @slot unnamed - Slot for item text.
+ * @slot unnamed - Slot for menu item text.
+ * @slot submenu - Provide a nested submenu's markup here (light DOM). Presence auto-detects nesting.
+ * @prop {'ai'|'default'|string} kind - Visual variant inherited from parent menu.
  */
 @customElement('kyn-overflow-menu-item')
 export class OverflowMenuItem extends LitElement {
@@ -25,7 +29,7 @@ export class OverflowMenuItem extends LitElement {
   @property({ type: Boolean })
   accessor disabled = false;
 
-  /** Item description text for screen reader's */
+  /** Item description text for screen readers. */
   @property({ type: String })
   accessor description = '';
 
@@ -34,14 +38,14 @@ export class OverflowMenuItem extends LitElement {
    * @ignore
    */
   @state()
-  accessor _menuItems: any;
+  accessor _menuItems: HTMLElement[] = [];
 
   /**
    * Has the current oveflow menu.
    * @ignore
    */
   @state()
-  accessor _menu: any;
+  accessor _menu: HTMLElement | null = null;
 
   /**
    * Tracks if the item content is overflowing and needs a tooltip.
@@ -59,14 +63,46 @@ export class OverflowMenuItem extends LitElement {
   /** Kind of the item, derived from parent.
    * @ignore
    */
+  @property({ type: String, reflect: true })
+  accessor kind: 'ai' | 'default' | (string & {}) = 'default';
+
+  /**
+   * Timer id used to debounce opening of nested submenu on hover/focus.
+   * @ignore
+   */
   @state()
-  accessor kind: 'ai' | 'default' = 'default';
+  accessor _submenuOpenTimer: number | undefined;
+
+  private _mo: MutationObserver | null = null;
+
+  /** True when a light-DOM submenu exists. */
+  private get hasSubmenu(): boolean {
+    return !!this.querySelector<HTMLElement>('[slot="submenu"]');
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Observe for submenu add/remove or slot attr changes and re-render.
+    this._mo = new MutationObserver(() => this.requestUpdate());
+    this._mo.observe(this, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['slot'],
+    });
+  }
+
+  override disconnectedCallback(): void {
+    this._mo?.disconnect();
+    this._mo = null;
+    super.disconnectedCallback();
+  }
 
   override render() {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      ['ai-connected']: this.kind === 'ai',
       destructive: this.destructive,
     };
 
@@ -79,110 +115,210 @@ export class OverflowMenuItem extends LitElement {
           href=${this.href}
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
-          @keydown=${(e: Event) => this.handleKeyDown(e)}
+          @mouseenter=${() => this._getHoverEffect() && this.startOpenSubmenu()}
+          @mouseleave=${() => this.cancelOpenSubmenu()}
+          @focus=${() => this.startOpenSubmenu()}
+          @blur=${() => this.cancelOpenSubmenu()}
+          @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
           title=${itemText}
         >
           <span class="menu-item-inner-el text"><slot></slot></span>
           ${this.destructive
             ? html`<span class="sr-only">${this.description}</span>`
+            : null}
+          ${this.hasSubmenu
+            ? html`<span
+                class="menu-item-inner-el submenu-arrow"
+                aria-hidden="true"
+              >
+                ${unsafeSVG(chevronRightIcon)}
+              </span>`
             : null}
         </a>
       `;
-    } else {
-      return html`
-        <button
-          class=${classMap(classes)}
-          ?disabled=${this.disabled}
-          @click=${(e: Event) => this.handleClick(e)}
-          @keydown=${(e: Event) => this.handleKeyDown(e)}
-          title=${itemText}
-        >
-          <span class="menu-item-inner-el text"><slot></slot></span>
-          ${this.destructive
-            ? html`<span class="sr-only">${this.description}</span>`
-            : null}
-        </button>
-      `;
     }
+
+    return html`
+      <button
+        class=${classMap(classes)}
+        ?disabled=${this.disabled}
+        @click=${(e: Event) => this.handleClick(e)}
+        @mouseenter=${() => this._getHoverEffect() && this.startOpenSubmenu()}
+        @mouseleave=${() => this.cancelOpenSubmenu()}
+        @focus=${() => this.startOpenSubmenu()}
+        @blur=${() => this.cancelOpenSubmenu()}
+        @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
+        title=${itemText}
+      >
+        <span class="menu-item-inner-el text"><slot></slot></span>
+        ${this.destructive
+          ? html`<span class="sr-only">${this.description}</span>`
+          : null}
+        ${this.hasSubmenu
+          ? html`<span
+              class="menu-item-inner-el submenu-arrow"
+              aria-hidden="true"
+            >
+              ${unsafeSVG(chevronRightIcon)}
+            </span>`
+          : null}
+      </button>
+    `;
   }
 
   override firstUpdated() {
-    const parent = this.closest('kyn-overflow-menu');
+    const parent = this.closest('kyn-overflow-menu') as
+      | (HTMLElement & {
+          getMenuItems?: () => HTMLElement[];
+          getMenu?: () => HTMLElement;
+          kind?: string;
+          deactivateHover?: boolean;
+        })
+      | null;
+
     if (parent) {
-      this._menuItems = parent.getMenuItems();
-      this._menu = parent.getMenu();
-      this.kind = parent.kind;
+      this._menuItems = parent.getMenuItems ? parent.getMenuItems() : [];
+      this._menu = parent.getMenu ? parent.getMenu() : null;
+      if (typeof parent.kind === 'string') this.kind = parent.kind as any;
 
       parent.addEventListener('kind-changed', (e: Event) => {
-        const customEvent = e as CustomEvent<'ai' | 'default'>;
+        const customEvent = e as CustomEvent<'ai' | 'default' | (string & {})>;
         requestAnimationFrame(() => {
           this.kind = customEvent.detail;
         });
       });
     }
+
     this.checkOverflow();
   }
 
-  private handleClick(e: Event) {
-    const event = new CustomEvent('on-click', {
-      detail: { origEvent: e },
-    });
-    this.dispatchEvent(event);
+  private _getHoverEffect(): boolean {
+    const find = (node: Node | null): boolean => {
+      if (!node) return true;
+
+      if (
+        node instanceof Element &&
+        node.tagName.toLowerCase() === 'kyn-overflow-menu'
+      ) {
+        const menuEl = node as HTMLElement & { deactivateHover?: boolean };
+        return !(menuEl.deactivateHover ?? false);
+      }
+
+      if (node.parentNode) {
+        return find(node.parentNode);
+      } else {
+        const root: Document | ShadowRoot | null = (node as any).getRootNode
+          ? (node as any).getRootNode()
+          : null;
+        const next = root && (root as any).host ? (root as any).host : null;
+        return find(next);
+      }
+    };
+
+    return find(this);
   }
 
-  private handleKeyDown(e: any) {
-    const DOWN_ARROW_KEY_CODE = 40;
-    const UP_ARROW_KEY_CODE = 38;
+  private handleClick(e: Event) {
+    const submenuEl = this.querySelector<HTMLElement>('[slot="submenu"]');
+    if (this.hasSubmenu && submenuEl) {
+      e.stopPropagation();
+      this.dispatchEvent(
+        new CustomEvent('open-submenu', {
+          detail: { html: submenuEl.innerHTML },
+          bubbles: true,
+          composed: true,
+        })
+      );
+      return;
+    }
 
-    const menuItemsLength = this._menuItems.length;
-
-    const activeEl = document.activeElement as Element | null;
-    const activeIndex = this._menuItems.findIndex(
-      (item: any) =>
-        item === activeEl ||
-        (item.shadowRoot && activeEl && item.shadowRoot.contains(activeEl))
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        detail: { origEvent: e },
+        bubbles: true,
+        composed: true,
+      })
     );
+  }
+
+  private openSubmenu() {
+    const submenuEl = this.querySelector<HTMLElement>('[slot="submenu"]');
+    if (this.hasSubmenu && submenuEl) {
+      this.dispatchEvent(
+        new CustomEvent('open-submenu', {
+          detail: { html: submenuEl.innerHTML },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
+  }
+
+  private startOpenSubmenu(delay = 600) {
+    this.cancelOpenSubmenu();
+    this._submenuOpenTimer = window.setTimeout(() => {
+      this.openSubmenu();
+      this._submenuOpenTimer = undefined;
+    }, delay);
+  }
+
+  private cancelOpenSubmenu() {
+    if (this._submenuOpenTimer !== undefined) {
+      window.clearTimeout(this._submenuOpenTimer);
+      this._submenuOpenTimer = undefined;
+    }
+  }
+
+  private handleKeyDown(e: KeyboardEvent) {
+    const DOWN = 40;
+    const UP = 38;
+
+    const items = this._menuItems;
+    const activeEl = (this.getRootNode() as Document | ShadowRoot)
+      .activeElement as Element | null;
+
+    const idx = items.findIndex((item) => {
+      if (item === activeEl) return true;
+      const sr = (item as HTMLElement).shadowRoot;
+      return !!(sr && activeEl && sr.contains(activeEl));
+    });
 
     switch (e.keyCode) {
-      case DOWN_ARROW_KEY_CODE: {
-        if (activeIndex < menuItemsLength - 1) {
-          const nextItem = this._menuItems[activeIndex + 1];
-          if (nextItem) {
-            nextItem.shadowRoot?.querySelector('button')
-              ? nextItem.shadowRoot?.querySelector('button')?.focus()
-              : nextItem.shadowRoot?.querySelector('a')?.focus();
-          }
+      case DOWN: {
+        if (idx < items.length - 1 && idx >= 0) {
+          const next = items[idx + 1];
+          const btn =
+            next.shadowRoot?.querySelector<HTMLButtonElement>('button');
+          const anchor = next.shadowRoot?.querySelector<HTMLAnchorElement>('a');
+          (btn ?? anchor)?.focus();
         }
         return;
       }
-      case UP_ARROW_KEY_CODE: {
-        if (activeIndex > 0) {
-          const prevItem = this._menuItems[activeIndex - 1];
-          if (prevItem) {
-            prevItem.shadowRoot?.querySelector('button')
-              ? prevItem.shadowRoot?.querySelector('button')?.focus()
-              : prevItem.shadowRoot?.querySelector('a')?.focus();
-          }
-        } else if (activeIndex === 0) {
-          this._menu?.querySelector('button')?.focus();
+      case UP: {
+        if (idx > 0) {
+          const prev = items[idx - 1];
+          const btn =
+            prev.shadowRoot?.querySelector<HTMLButtonElement>('button');
+          const anchor = prev.shadowRoot?.querySelector<HTMLAnchorElement>('a');
+          (btn ?? anchor)?.focus();
+        } else if (idx === 0) {
+          this._menu?.querySelector<HTMLButtonElement>('button')?.focus();
         }
         return;
       }
-      default: {
+      default:
         return;
-      }
     }
   }
 
   private checkOverflow() {
-    const contentElement = this.shadowRoot?.querySelector('button, a');
-    if (contentElement instanceof HTMLElement) {
+    const contentElement =
+      this.shadowRoot?.querySelector<HTMLElement>('button, a');
+    if (contentElement) {
       this.isTruncated =
         contentElement.scrollWidth > contentElement.offsetWidth;
       if (this.isTruncated) {
-        let text = '';
-        text += this.textContent?.trim();
-        this.tooltipText = text;
+        this.tooltipText = (this.textContent ?? '').trim();
       }
     }
   }
