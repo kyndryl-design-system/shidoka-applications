@@ -8,6 +8,10 @@
   display: inline-block;
 }
 
+:host(.pagination-dropdown) .select {
+  border: 1px solid transparent;
+}
+
 .wrapper {
   position: relative;
 }
@@ -34,6 +38,7 @@ slot[name='icon']::slotted(*) {
   border: 1px solid var(--kd-color-border-forms-default);
   border-radius: 4px;
   height: 48px;
+  min-width: 95px;
   padding: 0 48px 0 16px;
   cursor: pointer;
   font-weight: var(--kd-font-weight-regular);
@@ -67,15 +72,12 @@ slot[name='icon']::slotted(*) {
 
 /* Default focus */
 .select:focus-within {
-  outline: 1px solid var(--kd-color-border-variants-focus);
+  outline: 2px solid var(--kd-color-border-variants-focus);
   outline-offset: 0;
-  border-color: var(--kd-color-border-variants-focus);
-}
 
-.select:focus-within {
-  outline: 1px solid var(--kd-color-border-variants-focus);
-  outline-offset: 0;
-  border-color: var(--kd-color-border-variants-focus);
+  &:hover {
+    border-color: transparent;
+  }
 }
 
 .arrow-icon {
@@ -175,8 +177,9 @@ slot[name='icon']::slotted(*) {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
+  gap: 2px;
   border: none;
-  width: 24px;
+  min-width: 24px;
   height: 24px;
   padding: 8px;
   border-radius: 4px;
