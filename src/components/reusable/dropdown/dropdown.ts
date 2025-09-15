@@ -5,6 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
+import { nothing } from 'lit';
 
 import './dropdownOption';
 import './enhancedDropdownOption';
@@ -353,19 +354,17 @@ export class Dropdown extends FormMixin(LitElement) {
                       <button
                         class=${classMap({
                           'clear-multiple': true,
-                          readonly: this.readonly,
                         })}
                         aria-label="${this.value
                           .length} items selected. Clear selections"
-                        ?disabled=${this.disabled}
-                        ?readonly=${this.readonly}
+                        ?disabled=${this.disabled || this.readonly}
                         title=${this._textStrings.clear}
                         @click=${(e: Event) => this.handleClearMultiple(e)}
                       >
                         ${this.value.length}
-                        <span style="display:flex;" class="clear-multiple-icon"
-                          >${unsafeSVG(clearIcon)}</span
-                        >
+                        <span style="display:flex;" class="clear-multiple-icon">
+                          ${unsafeSVG(clearIcon)}
+                        </span>
                       </button>
                     `
                   : null}
@@ -444,7 +443,11 @@ export class Dropdown extends FormMixin(LitElement) {
                   `
                 : null}
 
-              <div role="listbox" aria-labelledby="label-${this.name}">
+              <div
+                role="listbox"
+                aria-labelledby="label-${this.name}"
+                class="dropdown-listbox"
+              >
                 ${this.multiple && this.selectAll
                   ? html`
                       ${this.enhanced
@@ -485,7 +488,7 @@ export class Dropdown extends FormMixin(LitElement) {
           ${this.hasSearch && this.open
             ? html`
                 <kyn-button
-                  ?disabled=${this.disabled}
+                  ?disabled=${this.disabled || this.readonly}
                   class="clear-button dropdown-clear"
                   kind="ghost"
                   size="small"
@@ -578,6 +581,7 @@ export class Dropdown extends FormMixin(LitElement) {
                   filter
                   role="list"
                   aria-label=${this._textStrings.selectedOptions}
+                  data-readonly=${this.readonly ? '' : nothing}
                 >
                   ${this._tags.map((tag: any) => {
                     return html`
@@ -1336,6 +1340,11 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override updated(changedProps: PropertyValues) {
     super.updated(changedProps);
+
+    if (changedProps.has('readonly')) {
+      this.clearMultipleEl?.classList.toggle('is-readonly', this.readonly);
+      this.clearMultipleEl?.toggleAttribute('data-readonly', this.readonly);
+    }
 
     if (changedProps.has('kind')) {
       this.dispatchEvent(

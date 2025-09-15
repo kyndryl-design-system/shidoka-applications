@@ -110,6 +110,9 @@ export class DropdownOption extends LitElement {
         ?readonly=${this.readonly}
         title=${this.text}
         tabindex=${this.disabled || this.readonly ? -1 : 0}
+        @mousedown=${(e: MouseEvent) => {
+          if (this.readonly) e.preventDefault();
+        }}
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
         @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
@@ -123,6 +126,7 @@ export class DropdownOption extends LitElement {
                   .checked=${this.selected}
                   ?checked=${this.selected}
                   ?disabled=${this.disabled}
+                  ?readonly=${this.readonly}
                   notFocusable
                   .indeterminate=${this.indeterminate}
                 ></kyn-checkbox>

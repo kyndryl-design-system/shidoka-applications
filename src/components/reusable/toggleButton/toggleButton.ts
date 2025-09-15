@@ -67,7 +67,6 @@ export class ToggleButton extends FormMixin(LitElement) {
         class="toggle-button"
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
-        aria-readonly=${this.readonly ? 'true' : 'false'}
         aria-disabled=${this.disabled ? 'true' : 'false'}
       >
         <label class="label-text ${this.hideLabel ? 'sr-only' : ''}" for=${id}>
@@ -75,36 +74,34 @@ export class ToggleButton extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
 
-          <input
-            id=${id}
-            class=${this.small ? 'size--sm' : ''}
-            type="checkbox"
-            name=${this.name}
-            role="switch"
-            aria-checked=${this.checked}
-            aria-describedby=${statusId}
-            aria-readonly=${this.readonly ? 'true' : 'false'}
-            aria-disabled=${this.disabled ? 'true' : 'false'}
-            value=${this.value}
-            .checked=${this.checked}
-            ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
-            data-readonly=${ifDefined(this.readonly ? '' : undefined)}
-            tabindex=${this.disabled ? -1 : 0}
-            @change=${this.handleChange}
-            @keydown=${this.handleKeyDown}
-            @click=${this.handleClick}
-          />
-          />
+        <input
+          id=${id}
+          class=${this.small ? 'size--sm' : ''}
+          type="checkbox"
+          name=${this.name}
+          role="switch"
+          aria-checked=${this.checked}
+          aria-describedby=${statusId}
+          aria-readonly=${this.readonly ? 'true' : 'false'}
+          aria-disabled=${this.disabled ? 'true' : 'false'}
+          value=${this.value}
+          .checked=${this.checked}
+          ?disabled=${this.disabled}
+          ?readonly=${this.readonly}
+          data-readonly=${ifDefined(this.readonly ? '' : undefined)}
+          tabindex=${this.disabled ? -1 : 0}
+          @change=${this.handleChange}
+          @keydown=${this.handleKeyDown}
+          @click=${this.handleClick}
+        />
 
-          <span id=${statusId} class="label-text sr-only">
-            ${this.checked ? this.checkedText : this.uncheckedText}
-          </span>
+        <span id=${statusId} class="label-text sr-only">
+          ${this.checked ? this.checkedText : this.uncheckedText}
+        </span>
 
-          <span aria-hidden="true" class="status-text">
-            ${this.checked ? this.checkedText : this.uncheckedText}
-          </span>
-        </div>
+        <span aria-hidden="true" class="status-text">
+          ${this.checked ? this.checkedText : this.uncheckedText}
+        </span>
       </div>
     `;
   }

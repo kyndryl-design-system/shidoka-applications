@@ -27,7 +27,6 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
-    readonly: { control: { type: 'boolean' } },
     'kind-changed': {
       table: { disable: true },
       control: false,
@@ -94,6 +93,7 @@ export const Single = {
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         caption=${args.caption}
@@ -152,6 +152,7 @@ export const AI = {
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         caption=${args.caption}
@@ -200,6 +201,7 @@ export const SingleSearchable = {
         ?filterSearch=${args.filterSearch}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -257,6 +259,7 @@ export const MultiSelect = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideTags=${args.hideTags}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -310,6 +313,7 @@ export const MultiSelectSearchable = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideTags=${args.hideTags}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -373,6 +377,7 @@ export const Grouped = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -455,6 +460,7 @@ export const DataDrivenOptions = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
@@ -519,6 +525,8 @@ export const DirectionalControl = {
             kind=${args.kind}
             name="auto-direction"
             openDirection="auto"
+            ?disabled=${args.disabled}
+            ?readonly=${args.readonly}
             .textStrings=${args.textStrings}
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
@@ -533,6 +541,8 @@ export const DirectionalControl = {
             size=${args.size}
             name="up-direction"
             openDirection="up"
+            ?disabled=${args.disabled}
+            ?readonly=${args.readonly}
             .textStrings=${args.textStrings}
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
@@ -547,6 +557,8 @@ export const DirectionalControl = {
             size=${args.size}
             name="down-direction"
             openDirection="down"
+            ?disabled=${args.disabled}
+            ?readonly=${args.readonly}
             .textStrings=${args.textStrings}
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
@@ -636,6 +648,7 @@ export const AddNewOption = {
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}

@@ -73,16 +73,16 @@
   }
 
   // readonly
-  &.option-is-readonly {
-    background: var(--kd-color-background-forms-default);
+  &[readonly] {
     border: none;
     cursor: default;
+    background-color: var(--kd-color-background-menu-state-default);
 
     &:hover,
     &:active:not([disabled]),
     &:active,
     &:focus-visible {
-      background: var(--kd-color-background-forms-default);
+      background-color: var(--kd-color-background-menu-state-default);
       border: none;
       outline: none;
 
@@ -104,8 +104,6 @@
       @include disabled-common(var(--kd-color-background-forms-default));
 
       &:hover {
-        background: var(--kd-color-background-forms-default);
-
         .menu-item-inner-el {
           color: var(--kd-color-text-level-disabled);
         }
@@ -122,7 +120,7 @@
 
     // selected + readonly
     &[selected]:not([disabled]) {
-      background: var(--kd-color-background-forms-default);
+      background-color: var(--kd-color-background-forms-default);
 
       &:hover {
         background: var(--kd-color-background-forms-default);
