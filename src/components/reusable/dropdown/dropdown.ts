@@ -446,7 +446,10 @@ export class Dropdown extends FormMixin(LitElement) {
               <div
                 role="listbox"
                 aria-labelledby="label-${this.name}"
-                class="dropdown-listbox"
+                class=${classMap({
+                  'dropdown-listbox': true,
+                  'ai-connected': this.kind === 'ai',
+                })}
               >
                 ${this.multiple && this.selectAll
                   ? html`
