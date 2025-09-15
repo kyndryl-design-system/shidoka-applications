@@ -59,7 +59,7 @@ input {
     transform: scale(0);
   }
 
-  &:not(.disabled) {
+  &:not(.disabled):not(.readonly) {
     &:active {
       background: var(--kd-color-background-button-primary-pressed);
       border-color: var(--kd-color-background-ui-hollow-pressed);
@@ -84,7 +84,7 @@ input {
     }
   }
 
-  &:not(.disabled):checked {
+  &:not(.disabled):not(.readonly):checked {
     background: $main-checkbox-background;
     border-color: transparent;
 
@@ -123,6 +123,54 @@ input {
     }
   }
 
+  /* READONLY (non-modifiable but focusable) */
+  &.readonly,
+  &[readonly],
+  &[data-readonly] {
+    cursor: default;
+    background: transparent;
+    border-color: var(--kd-color-icon-disabled);
+
+    &:hover {
+      border-color: var(--kd-color-icon-disabled);
+      outline-color: transparent;
+    }
+
+    &:focus-visible {
+      /* keep focus affordance even when readonly */
+      outline-color: var(--kd-color-border-variants-focus);
+      outline-offset: 2px;
+      border-color: var(--kd-color-icon-disabled);
+    }
+
+    &:active {
+      border-color: var(--kd-color-icon-disabled);
+      outline-color: transparent;
+    }
+
+    &.disabled {
+      border-color: var(--kd-color-icon-disabled);
+    }
+
+    &:checked {
+      border-color: var(--kd-color-icon-disabled);
+
+      &::before {
+        transform: scale(1);
+        background: var(--kd-color-icon-primary);
+        mask: $checkbox-mask;
+        -webkit-mask: $checkbox-mask;
+        mask-size: contain;
+        -webkit-mask-size: contain;
+        mask-repeat: no-repeat;
+        -webkit-mask-repeat: no-repeat;
+        mask-position: center;
+        -webkit-mask-position: center;
+      }
+    }
+  }
+
+  /* DISABLED (fully inert) */
   &.disabled {
     background: var(--kd-color-background-forms-disabled);
     border-color: var(--kd-color-border-ui-disabled);
@@ -147,8 +195,9 @@ input {
   }
 }
 
+/* INDETERMINATE */
 input[type='checkbox']:indeterminate {
-  &:not(.disabled) {
+  &:not(.disabled):not(.readonly) {
     background: $main-checkbox-background;
     border-color: transparent;
 
@@ -187,6 +236,33 @@ input[type='checkbox']:indeterminate {
   }
 }
 
+input[type='checkbox']:indeterminate.readonly,
+input[type='checkbox'][readonly]:indeterminate,
+input[type='checkbox'][data-readonly]:indeterminate {
+  background: transparent;
+  border-color: var(--kd-color-icon-disabled);
+
+  &::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    transform: scale(1);
+    background: var(--kd-color-icon-primary);
+    mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
+    -webkit-mask: linear-gradient(
+      transparent 3px,
+      #000 3px 5px,
+      transparent 5px
+    );
+  }
+
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+    outline-offset: 2px;
+  }
+}
+
 input[type='checkbox']:indeterminate.disabled {
   background: var(--kd-color-background-ui-default-disabled);
   border-color: transparent;
@@ -207,10 +283,11 @@ input[type='checkbox']:indeterminate.disabled {
   }
 }
 
+/* INVALID */
 input[type='checkbox'][invalid] {
   border-color: $invalid-checkbox-background;
 
-  &:not(.disabled) {
+  &:not(.disabled):not(.readonly) {
     &:checked,
     &:indeterminate {
       background: $invalid-checkbox-background;
@@ -257,6 +334,33 @@ input[type='checkbox'][invalid] {
     &:focus-visible {
       background-color: transparent;
       border-color: var(--kd-color-border-ui-disabled);
+      outline-color: transparent;
+    }
+  }
+
+  &[readonly],
+  &.readonly,
+  &[data-readonly] {
+    border-color: var(--kd-color-icon-disabled);
+    background-color: transparent;
+
+    &:hover {
+      border-color: var(--kd-color-icon-disabled);
+    }
+
+    &[checked] {
+      border-color: var(--kd-color-icon-disabled);
+
+      &:hover {
+        border-color: var(--kd-color-icon-disabled);
+        background: transparent;
+      }
+    }
+
+    &:active,
+    &:focus-visible {
+      background-color: transparent;
+      border-color: var(--kd-color-icon-disabled);
       outline-color: transparent;
     }
   }

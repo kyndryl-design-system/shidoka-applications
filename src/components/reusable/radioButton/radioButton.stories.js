@@ -18,6 +18,7 @@ export const RadioButton = {
     unnamed: 'Label',
     checked: false,
     disabled: false,
+    readonly: false,
     value: 'example',
   },
   render: (args) => {
@@ -27,6 +28,7 @@ export const RadioButton = {
         .checked=${args.checked}
         ?checked=${args.checked}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         @on-radio-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}

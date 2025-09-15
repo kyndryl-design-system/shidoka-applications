@@ -2,6 +2,7 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import CheckboxScss from './checkbox.scss?inline';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * Checkbox.
@@ -50,6 +51,12 @@ export class Checkbox extends LitElement {
   accessor disabled = false;
 
   /**
+   * Checkbox readonly state, inherited from the parent group.
+   */
+  @property({ type: Boolean })
+  accessor readonly = false;
+
+  /**
    * Prevent checkbox from being focusable. Disables it functionally but not visually.
    */
   @property({ type: Boolean })
@@ -74,45 +81,84 @@ export class Checkbox extends LitElement {
   accessor indeterminate = false;
 
   override render() {
+    const classes = {
+      disabled: this.disabled,
+      readonly: this.readonly,
+      'label-hidden': this.visiblyHidden,
+    };
+
     return html`
       <label
         ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
         ?invalid=${this.invalid}
-        class="${this.visiblyHidden ? 'label-hidden' : ''}"
+        class=${classMap(classes)}
       >
         <span class=${classMap({ 'sr-only': this.visiblyHidden })}>
           <slot></slot>
         </span>
 
         <input
-          class=${this.disabled ? 'disabled' : ''}
+          class=${classMap(classes)}
           type="checkbox"
           name=${this.name}
           value=${this.value}
           .checked=${this.checked}
-          ?checked=${this.checked}
           ?required=${this.required}
           ?disabled=${this.disabled || this.notFocusable}
-          ?invalid=${this.invalid}
-          @change=${(e: any) => this.handleChange(e)}
+          ?readonly=${this.readonly}
+          data-readonly=${ifDefined(this.readonly ? '' : undefined)}
+          aria-readonly=${this.readonly ? 'true' : 'false'}
+          aria-invalid=${this.invalid ? 'true' : 'false'}
+          tabindex=${this.disabled || this.notFocusable ? -1 : 0}
+          @change=${this.handleChange}
+          @click=${this.blockIfReadonly}
+          @keydown=${this.blockToggleIfReadonly}
           .indeterminate=${this.indeterminate}
         />
       </label>
     `;
   }
 
-  private handleChange(e: any) {
-    // emit selected value, bubble so it can be captured by the checkbox group
-    const event = new CustomEvent('on-checkbox-change', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        checked: e.target.checked,
-        value: e.target.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+  private blockIfReadonly = (e: Event) => {
+    if (!this.readonly) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const input = e.currentTarget as HTMLInputElement;
+    input.checked = this.checked;
+  };
+
+  private blockToggleIfReadonly = (e: KeyboardEvent) => {
+    if (!this.readonly) return;
+    if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  };
+
+  private handleChange(e: Event) {
+    const input = e.target as HTMLInputElement;
+
+    if (this.readonly) {
+      // block model mutation
+      e.preventDefault();
+      input.checked = this.checked;
+      return;
+    }
+
+    this.checked = input.checked;
+
+    this.dispatchEvent(
+      new CustomEvent('on-checkbox-change', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          checked: this.checked,
+          value: this.value,
+          origEvent: e,
+        },
+      })
+    );
   }
 }
 

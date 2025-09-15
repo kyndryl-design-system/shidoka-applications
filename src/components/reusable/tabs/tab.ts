@@ -61,7 +61,7 @@ export class Tab extends LitElement {
       vertical: this._vertical,
       selected: this.selected,
       disabled: this.disabled,
-      [`ai-connected--${this.aiConnected}`]: true,
+      'ai-connected': this.aiConnected,
     };
 
     return html`

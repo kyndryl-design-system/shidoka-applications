@@ -191,6 +191,7 @@ export class TextInput extends FormMixin(LitElement) {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?readonly=${this.readonly}
+            aria-readonly=${this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
@@ -198,7 +199,7 @@ export class TextInput extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             @input=${(e: any) => this._handleInput(e)}
-            autocomplete=${this.autoComplete}
+            .autocomplete=${this.autoComplete}
           />
           ${this.type === 'password' && !this.readonly
             ? html`

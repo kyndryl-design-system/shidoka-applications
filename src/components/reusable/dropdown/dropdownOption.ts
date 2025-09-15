@@ -88,27 +88,31 @@ export class DropdownOption extends LitElement {
   override accessor role = 'option';
 
   @property({ type: String, reflect: true, attribute: 'aria-selected' })
-  override accessor ariaSelected = 'option';
+  override accessor ariaSelected = 'false';
 
   override render() {
     const classes = {
       option: true,
       'menu-item': true,
       'option-is-readonly': this.readonly,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`
       <div
         class=${classMap(classes)}
+        role="option"
+        aria-selected=${this.selected ? 'true' : 'false'}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
-        aria-disabled=${this.disabled ? 'true' : 'false'}
         title=${this.text}
+        tabindex=${this.disabled || this.readonly ? -1 : 0}
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
+        @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
       >
         <span class="menu-item-inner-el text">
           ${this.multiple
@@ -118,7 +122,7 @@ export class DropdownOption extends LitElement {
                   value=${this.value}
                   .checked=${this.selected}
                   ?checked=${this.selected}
-                  ?disabled=${this.disabled || this.readonly}
+                  ?disabled=${this.disabled}
                   notFocusable
                   .indeterminate=${this.indeterminate}
                 ></kyn-checkbox>
@@ -154,7 +158,7 @@ export class DropdownOption extends LitElement {
                 size="small"
                 aria-label="Delete ${this.value}"
                 description="Delete ${this.value}"
-                ?disabled=${this.disabled || this.readonly}
+                ?disabled=${this.disabled}
                 @click=${(e: Event) => this.handleRemoveClick(e)}
                 @mousedown=${(e: Event) => e.stopPropagation()}
                 @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
@@ -181,9 +185,79 @@ export class DropdownOption extends LitElement {
     }
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('selected')) {
+  override willUpdate(changed: Map<string, unknown>) {
+    if (changed.has('selected')) {
       this.ariaSelected = this.selected.toString();
+    }
+    if (changed.has('disabled') || changed.has('readonly')) {
+      const el = this.shadowRoot?.querySelector(
+        '.menu-item'
+      ) as HTMLElement | null;
+      if (el) el.tabIndex = this.disabled || this.readonly ? -1 : 0;
+    }
+  }
+
+  private handleKeyDown(e: KeyboardEvent) {
+    if (this.disabled || this.readonly) return;
+
+    switch (e.key) {
+      case 'Enter':
+      case ' ': {
+        e.preventDefault();
+        this.handleClick(e);
+        break;
+      }
+      case 'ArrowDown': {
+        e.preventDefault();
+        this.moveFocus(1);
+        break;
+      }
+      case 'ArrowUp': {
+        e.preventDefault();
+        this.moveFocus(-1);
+        break;
+      }
+      case 'Home': {
+        e.preventDefault();
+        this.moveToEdge('start');
+        break;
+      }
+      case 'End': {
+        e.preventDefault();
+        this.moveToEdge('end');
+        break;
+      }
+    }
+  }
+
+  private moveFocus(delta: number) {
+    let node: Element | null =
+      delta > 0 ? this.nextElementSibling : this.previousElementSibling;
+    while (node) {
+      if (node.tagName.toLowerCase() === 'kyn-dropdown-option') {
+        const opt = node as DropdownOption;
+        if (!opt.disabled && !opt.readonly) {
+          const target = opt.shadowRoot?.querySelector(
+            '.menu-item'
+          ) as HTMLElement | null;
+          target?.focus();
+          break;
+        }
+      }
+      node = delta > 0 ? node.nextElementSibling : node.previousElementSibling;
+    }
+  }
+
+  private moveToEdge(where: 'start' | 'end') {
+    const all =
+      this.parentElement?.querySelectorAll('kyn-dropdown-option') ?? [];
+    const list = Array.from(all) as DropdownOption[];
+    const candidate = where === 'start' ? list[0] : list[list.length - 1];
+    if (candidate && !candidate.disabled && !candidate.readonly) {
+      const target = candidate.shadowRoot?.querySelector(
+        '.menu-item'
+      ) as HTMLElement | null;
+      target?.focus();
     }
   }
 

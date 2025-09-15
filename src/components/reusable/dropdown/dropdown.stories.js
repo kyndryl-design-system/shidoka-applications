@@ -81,7 +81,7 @@ export const Single = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 15rem;
+          min-width: 250px;
         }
       </style>
       <kyn-dropdown
@@ -139,7 +139,7 @@ export const AI = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 15rem;
+          min-width: 250px;
         }
       </style>
       <kyn-dropdown
@@ -239,6 +239,12 @@ export const MultiSelect = {
   },
   render: (args) => {
     return html`
+      <style>
+        kyn-dropdown {
+          min-width: 250px;
+        }
+      </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -350,6 +356,12 @@ export const Grouped = {
   },
   render: (args) => {
     return html`
+      <style>
+        kyn-dropdown {
+          min-width: 250px;
+        }
+      </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -495,7 +507,7 @@ export const DirectionalControl = {
           gap: 20px;
         }
         kyn-dropdown {
-          min-width: 15rem;
+          min-width: 250px;
         }
       </style>
       <div class="dropdown-container">
@@ -607,7 +619,7 @@ export const AddNewOption = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 15rem;
+          min-width: 250px;
         }
       </style>
 
@@ -675,7 +687,7 @@ export const Readonly = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 15rem;
+          min-width: 250px;
         }
       </style>
       <kyn-dropdown

@@ -70,7 +70,7 @@ export class OverflowMenu extends LitElement {
       btn: true,
       open: this.open,
       horizontal: !this.verticalDots,
-      ['ai-connected']: this.kind === 'ai',
+      'ai-connected': this.kind === 'ai',
     };
 
     const menuClasses = {
@@ -79,7 +79,7 @@ export class OverflowMenu extends LitElement {
       right: this.anchorRight,
       fixed: this.fixed,
       upwards: this._openUpwards,
-      ['ai-connected']: this.kind === 'ai',
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`

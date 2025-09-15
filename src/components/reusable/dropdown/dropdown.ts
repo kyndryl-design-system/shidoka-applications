@@ -278,7 +278,7 @@ export class Dropdown extends FormMixin(LitElement) {
   override render() {
     const mainDropdownClasses = {
       dropdown: true,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`
@@ -332,7 +332,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 aria-labelledby="label-${this.name}"
                 aria-expanded=${this.open}
                 aria-controls="options"
-                aria-readonly=${this.readonly ? 'true' : 'false'}
+                aria-readonly=${this.readonly}
                 role="combobox"
                 id=${this.name}
                 name=${this.name}
@@ -357,7 +357,8 @@ export class Dropdown extends FormMixin(LitElement) {
                         })}
                         aria-label="${this.value
                           .length} items selected. Clear selections"
-                        ?disabled=${this.disabled || this.readonly}
+                        ?disabled=${this.disabled}
+                        ?readonly=${this.readonly}
                         title=${this._textStrings.clear}
                         @click=${(e: Event) => this.handleClearMultiple(e)}
                       >
@@ -424,7 +425,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         placeholder=${this._textStrings.addItem}
                         .value=${this.newOptionValue}
                         aria-label="Add new option"
-                        ?disabled=${this.disabled || this.readonly}
+                        ?disabled=${this.disabled}
                         .readOnly=${this.readonly}
                         @input=${this._handleInputNewOption}
                         @keydown=${this._onAddOptionInputKeydown}
@@ -434,7 +435,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         type="button"
                         size="small"
                         kind="secondary"
-                        ?disabled=${this.disabled || this.readonly}
+                        ?disabled=${this.disabled}
                         @on-click=${this._handleAddOption}
                       >
                         ${this._textStrings.add}
@@ -454,7 +455,7 @@ export class Dropdown extends FormMixin(LitElement) {
                               multiple
                               ?selected=${this.selectAllChecked}
                               ?indeterminate=${this.selectAllIndeterminate}
-                              ?disabled=${this.disabled || this.readonly}
+                              ?disabled=${this.disabled}
                             >
                               ${this.selectAllText}
                             </kyn-enhanced-dropdown-option>
@@ -466,7 +467,7 @@ export class Dropdown extends FormMixin(LitElement) {
                               multiple
                               ?selected=${this.selectAllChecked}
                               ?indeterminate=${this.selectAllIndeterminate}
-                              ?disabled=${this.disabled || this.readonly}
+                              ?disabled=${this.disabled}
                             >
                               ${this.selectAllText}
                             </kyn-dropdown-option>
@@ -484,7 +485,7 @@ export class Dropdown extends FormMixin(LitElement) {
           ${this.hasSearch && this.open
             ? html`
                 <kyn-button
-                  ?disabled=${this.disabled || this.readonly}
+                  ?disabled=${this.disabled}
                   class="clear-button dropdown-clear"
                   kind="ghost"
                   size="small"
@@ -1345,7 +1346,7 @@ export class Dropdown extends FormMixin(LitElement) {
         })
       );
 
-      this.classList.toggle('ai-connected-true', this.kind === 'ai');
+      this.classList.toggle('ai-connected', this.kind === 'ai');
     }
 
     const root = this.shadowRoot;

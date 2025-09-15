@@ -1,4 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property, query } from 'lit/decorators.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import ToggleButtonScss from './toggleButton.scss?inline';
@@ -38,6 +39,10 @@ export class ToggleButton extends FormMixin(LitElement) {
   @property({ type: Boolean, reflect: true })
   accessor disabled = false;
 
+  /** Toggle read-only state (non-modifiable but focusable). */
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false;
+
   /** Reverse UI element order, label on the left. */
   @property({ type: Boolean })
   accessor reverse = false;
@@ -58,13 +63,18 @@ export class ToggleButton extends FormMixin(LitElement) {
     const statusId = `${id}-status`;
 
     return html`
-      <div class="toggle-button" ?disabled=${this.disabled}>
+      <div
+        class="toggle-button"
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+        aria-readonly=${this.readonly ? 'true' : 'false'}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
+      >
         <label class="label-text ${this.hideLabel ? 'sr-only' : ''}" for=${id}>
           ${this.label}
           <slot name="tooltip"></slot>
         </label>
 
-        <div class="wrapper ${this.reverse ? 'reverse' : ''}">
           <input
             id=${id}
             class=${this.small ? 'size--sm' : ''}
@@ -73,11 +83,18 @@ export class ToggleButton extends FormMixin(LitElement) {
             role="switch"
             aria-checked=${this.checked}
             aria-describedby=${statusId}
+            aria-readonly=${this.readonly ? 'true' : 'false'}
+            aria-disabled=${this.disabled ? 'true' : 'false'}
             value=${this.value}
             .checked=${this.checked}
             ?disabled=${this.disabled}
+            ?readonly=${this.readonly}
+            data-readonly=${ifDefined(this.readonly ? '' : undefined)}
+            tabindex=${this.disabled ? -1 : 0}
             @change=${this.handleChange}
             @keydown=${this.handleKeyDown}
+            @click=${this.handleClick}
+          />
           />
 
           <span id=${statusId} class="label-text sr-only">
@@ -92,7 +109,20 @@ export class ToggleButton extends FormMixin(LitElement) {
     `;
   }
 
-  private handleChange = (e: Event): void => {
+  private handleClick = (e: MouseEvent) => {
+    if (this.readonly) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      this._inputEl.checked = this.checked;
+    }
+  };
+
+  private handleChange = (e: Event) => {
+    if (this.readonly) {
+      e.preventDefault();
+      (e.target as HTMLInputElement).checked = this.checked;
+      return;
+    }
     const input = e.target as HTMLInputElement;
     this.checked = input.checked;
     this._internals.setFormValue(this.checked ? this.value : null);
@@ -105,10 +135,15 @@ export class ToggleButton extends FormMixin(LitElement) {
     );
   };
 
-  private handleKeyDown = (e: KeyboardEvent): void => {
-    if (e.code === 'Space' || e.key === ' ') {
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (this.readonly && (e.key === ' ' || e.code === 'Space')) {
+      e.preventDefault();
+      return;
+    }
+    if (e.key === ' ' || e.code === 'Space') {
       e.preventDefault();
       this.checked = !this.checked;
+      this._inputEl.checked = this.checked;
       this._internals.setFormValue(this.checked ? this.value : null);
       this.dispatchEvent(
         new CustomEvent('on-change', {
@@ -120,11 +155,9 @@ export class ToggleButton extends FormMixin(LitElement) {
     }
   };
 
-  override updated(changedProps: any) {
+  override updated(changedProps: Map<string, unknown>) {
     this._onUpdated(changedProps);
-
     if (changedProps.has('checked')) {
-      // set form data value
       this._internals.setFormValue(this.checked ? this.value : null);
     }
   }

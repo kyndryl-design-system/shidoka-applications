@@ -20,6 +20,10 @@
   &.sr-only {
     @include visibility.sr-only;
   }
+
+  [readonly] & {
+    color: var(--kd-color-text-level-disabled);
+  }
 }
 
 slot[name='icon']::slotted(*) {
@@ -70,7 +74,7 @@ slot[name='icon']::slotted(*) {
   }
 
   &.is-readonly {
-    background: var(--kd-color-background-forms-disabled);
+    background: var(--kd-color-background-forms-default);
     border-color: var(--kd-color-border-variants-light);
     cursor: default;
 
@@ -224,15 +228,19 @@ slot[name='icon']::slotted(*) {
   }
 
   &[disabled] {
-    background-color: var(--kd-color-tags-background-disabled);
+    background-color: var(--kd-color-tag-background-disabled);
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
+  }
 
-    &.readonly {
-      background-color: var(--kd-color-tags-background-disabled);
-      color: var(--kd-color-text-level-primary);
-      border: 1px solid var(--kd-color-border-ui-disabled);
-      cursor: not-allowed;
+  &[readonly] {
+    background-color: var(--kd-color-tag-background-disabled);
+    color: var(--kd-color-tag-text-default);
+    border: 1px solid var(--kd-color-tag-border-disabled);
+    cursor: default;
+
+    .clear-multiple-icon {
+      color: var(--kd-color-icon-disabled);
     }
   }
 
@@ -277,19 +285,19 @@ kyn-tag-group {
   color: var(--kd-color-text-variant-placeholder);
 }
 
-.dropdown.ai-connected-true .select:is(:focus-visible, :focus-within) {
+.dropdown.ai-connected .select:is(:focus-visible, :focus-within) {
   outline: 1px solid var(--kd-color-background-button-secondary-ai-focused);
   outline-offset: 0;
   border-color: var(--kd-color-background-button-secondary-ai-focused);
 }
 
-.dropdown.ai-connected-true .options:focus-visible,
-.dropdown.ai-connected-true [searchable] .options:focus-visible {
+.dropdown.ai-connected .options:focus-visible,
+.dropdown.ai-connected [searchable] .options:focus-visible {
   outline-color: var(--kd-color-background-button-secondary-ai-focused);
 }
 
-.dropdown.ai-connected-true ::slotted(kyn-tooltip),
-.dropdown.ai-connected-true ::slotted(.tooltip) {
+.dropdown.ai-connected ::slotted(kyn-tooltip),
+.dropdown.ai-connected ::slotted(.tooltip) {
   --kd-color-border-variants-focus: var(
     --kd-color-background-button-secondary-ai-focused
   );

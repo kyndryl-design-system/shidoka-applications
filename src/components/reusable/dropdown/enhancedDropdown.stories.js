@@ -103,6 +103,12 @@ export const Default = {
   parameters: { a11y: { disable: true } },
   render: (args) => {
     return html`
+      <style>
+        kyn-dropdown {
+          min-width: 250px;
+        }
+      </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -171,9 +177,10 @@ export const WithIcons = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 300px;
+          min-width: 250px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -250,9 +257,10 @@ export const ButtonAnchor = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 300px;
+          min-width: 250px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
@@ -350,9 +358,10 @@ export const Searchable = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 20rem;
+          min-width: 300px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
@@ -431,6 +440,7 @@ export const MultiSelect = {
           min-width: 300px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
@@ -493,6 +503,7 @@ export const MultiSelectIcons = {
           min-width: 325px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
@@ -573,9 +584,10 @@ export const SearchableMultiSelect = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 20rem;
+          min-width: 250px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}

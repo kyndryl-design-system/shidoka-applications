@@ -27,6 +27,7 @@ export const RadioButtonGroup = {
     value: '1',
     required: false,
     disabled: false,
+    readonly: false,
     horizontal: false,
     invalidText: '',
     description: 'Description',
@@ -42,6 +43,7 @@ export const RadioButtonGroup = {
         value=${args.value}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?horizontal=${args.horizontal}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}

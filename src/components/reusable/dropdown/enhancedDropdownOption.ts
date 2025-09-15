@@ -107,7 +107,7 @@ export class EnhancedDropdownOption extends LitElement {
       'enhanced-option': true,
       'menu-item': true,
       'option-is-readonly': this.readonly,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`
@@ -127,7 +127,7 @@ export class EnhancedDropdownOption extends LitElement {
               <kyn-checkbox
                 .checked=${this.selected}
                 .indeterminate=${this.indeterminate}
-                ?disabled=${this.disabled || this.readonly}
+                ?disabled=${this.disabled}
                 notFocusable
                 value=${this.value}
               ></kyn-checkbox>
@@ -171,7 +171,7 @@ export class EnhancedDropdownOption extends LitElement {
                   kind="ghost"
                   size="small"
                   aria-label="Delete ${this.value}"
-                  ?disabled=${this.disabled || this.readonly}
+                  ?disabled=${this.disabled}
                   @click=${this.onRemove}
                   @mousedown=${(e: Event) => e.stopPropagation()}
                 >

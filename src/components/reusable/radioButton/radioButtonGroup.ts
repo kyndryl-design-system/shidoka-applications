@@ -42,6 +42,10 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor disabled = false;
 
+  /** Radio button group readonly state. */
+  @property({ type: Boolean })
+  accessor readonly = false;
+
   /** Radio button group horizontal layout. */
   @property({ type: Boolean })
   accessor horizontal = false;
@@ -65,26 +69,28 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <fieldset ?disabled=${this.disabled}>
+      <fieldset
+        ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
+        role="radiogroup"
+        aria-readonly=${this.readonly ? 'true' : 'false'}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
+      >
         <legend class="label-text">
           ${this.required
-            ? html`
-                <abbr
-                  class="required"
-                  title=${this._textStrings.required}
-                  aria-label=${this._textStrings.required}
-                >
-                  *
-                </abbr>
-              `
+            ? html`<abbr
+                class="required"
+                title=${this._textStrings.required}
+                aria-label=${this._textStrings.required}
+                >*</abbr
+              >`
             : null}
-
           <span>${this.label}</span>
           <slot name="tooltip"></slot>
         </legend>
-        <div class="description-text">
-          <slot name="description"></slot>
-        </div>
+
+        <div class="description-text"><slot name="description"></slot></div>
+
         ${this._isInvalid
           ? html`
               <div class="error">
@@ -92,8 +98,9 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
                   class="error-icon"
                   title=${this._textStrings.error}
                   aria-label=${this._textStrings.error}
-                  >${unsafeSVG(errorIcon)}</span
                 >
+                  ${unsafeSVG(errorIcon)}
+                </span>
                 ${this.invalidText || this._internalValidationMsg}
               </div>
             `
@@ -113,6 +120,7 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   private _updateChildren() {
     this.radioButtons.forEach((radio) => {
       radio.disabled = radio.hasAttribute('disabled') || this.disabled;
+      radio.readonly = radio.hasAttribute('readonly') || this.readonly;
       radio.checked = radio.value === this.value;
       radio.name = this.name;
       radio.required = this.required;
@@ -128,12 +136,12 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
   override updated(changedProps: any) {
     this._onUpdated(changedProps);
-
     if (
       changedProps.has('value') ||
       changedProps.has('name') ||
       changedProps.has('required') ||
       changedProps.has('disabled') ||
+      changedProps.has('readonly') ||
       changedProps.has('invalidText') ||
       changedProps.has('internalValidationMsg')
     ) {
@@ -142,69 +150,56 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   }
 
   private _validate(interacted: Boolean, report: Boolean) {
-    // set validity flags
     const Validity = {
       customError: this.invalidText !== '',
       valueMissing: this.required && this.value === '',
     };
-
-    // set validationMessage
     const InternalMsg =
       this.required && this.value === '' ? 'A selection is required.' : '';
     const ValidationMessage =
       this.invalidText !== '' ? this.invalidText : InternalMsg;
-
-    // set validity on custom element, anchor to first radio
     this._internals.setValidity(
       Validity,
       ValidationMessage,
-      this.radioButtons[0]
+      this.radioButtons?.[0]
     );
-
-    // set internal validation message if value was changed by user input
-    if (interacted) {
-      this._internalValidationMsg = InternalMsg;
-    }
-
-    // focus the first checkbox to show validity
-    if (report) {
-      this._internals.reportValidity();
-    }
+    if (interacted) this._internalValidationMsg = InternalMsg;
+    if (report) this._internals.reportValidity();
   }
 
-  private _handleRadioChange(e: any) {
-    // set selected value
+  private _handleRadioChange(
+    e: CustomEvent<{ value: string; checked: boolean }>
+  ) {
+    if (this.readonly || this.disabled) {
+      e.stopPropagation();
+
+      this.radioButtons.forEach((rb) => (rb.checked = rb.value === this.value));
+      return;
+    }
+
     this.value = e.detail.value;
+    this._validate(true, false);
 
-    this._validate(false, false);
-
-    // emit selected value
-    const event = new CustomEvent('on-radio-group-change', {
-      detail: { value: e.detail.value },
-    });
-    this.dispatchEvent(event);
+    this.dispatchEvent(
+      new CustomEvent('on-radio-group-change', {
+        detail: { value: this.value },
+      })
+    );
   }
 
   override connectedCallback() {
     super.connectedCallback();
-
-    // preserve FormMixin connectedCallback function
     this._onConnected();
-
-    // capture child radio buttons change event
     this.addEventListener('on-radio-change', (e: any) =>
       this._handleRadioChange(e)
     );
   }
 
-  override disconnectedCallback(): void {
-    // preserve FormMixin disconnectedCallback function
+  override disconnectedCallback() {
     this._onDisconnected();
-
     this.removeEventListener('on-radio-change', (e: any) =>
       this._handleRadioChange(e)
     );
-
     super.disconnectedCallback();
   }
 }

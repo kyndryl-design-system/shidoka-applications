@@ -152,7 +152,8 @@ export class TextArea extends FormMixin(LitElement) {
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
-            autocomplete=${this.autoComplete}
+            aria-readonly=${this.readonly}
+            .autocomplete=${this.autoComplete}
             @input=${(e: any) => this.handleInput(e)}
           >
 ${this.value}</textarea

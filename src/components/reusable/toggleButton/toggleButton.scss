@@ -15,6 +15,10 @@ input[type='checkbox'][role='switch']:focus-visible + .status-text {
   outline-offset: 2px;
 }
 
+input[readonly] {
+  cursor: default;
+}
+
 input:focus-visible:not(:hover),
 input:focus-visible:hover {
   outline: 3px solid var(--kd-color-border-variants-focus);
@@ -34,6 +38,10 @@ input:focus-visible:hover {
 .status-text {
   [disabled] & {
     color: var(--kd-color-text-link-level-disabled);
+  }
+
+  [readonly] & {
+    color: var(--kd-color-text-link-level-primary);
   }
 }
 
@@ -119,6 +127,17 @@ input {
 
     &:before {
       background-color: var(--kd-color-background-ui-hollow-default);
+    }
+  }
+
+  &[readonly],
+  &[readonly]:hover,
+  &[readonly]:active {
+    outline: 1px solid var(--kd-color-icon-disabled);
+    background: transparent;
+
+    &:before {
+      background: var(--kd-color-icon-primary);
     }
   }
 
