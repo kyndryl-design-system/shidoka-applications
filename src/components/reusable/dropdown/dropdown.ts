@@ -333,7 +333,6 @@ export class Dropdown extends FormMixin(LitElement) {
                 aria-labelledby="label-${this.name}"
                 aria-expanded=${this.open}
                 aria-controls="options"
-                aria-readonly=${!this.disabled && this.readonly}
                 role="combobox"
                 id=${this.name}
                 name=${this.name}
