@@ -35,7 +35,7 @@ input {
   margin-top: 2px;
   width: 18px;
   height: 18px;
-  border: 2px solid var(--kd-color-border-forms-default);
+  border: 2px solid var(--kd-color-icon-primary);
   border-radius: 50%;
   background: var(--kd-color-background-ui-hollow-default);
   outline: 2px solid transparent;
@@ -48,7 +48,7 @@ input {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--kd-color-background-container-default);
+    background: var(--kd-color-background-ui-hollow-default);
     transition: background-color 150ms ease-out, border-color 150ms ease-out,
       150ms transform ease-out;
     transform: scale(0);
@@ -57,12 +57,12 @@ input {
   /* interactive (NOT disabled/readonly) */
   &:not([disabled]):not([readonly]):not(.readonly):not([data-readonly]) {
     &[checked] {
-      border-color: var(--kd-color-border-forms-default);
+      border-color: var(--kd-color-icon-primary);
       border-width: 3px;
 
       &::before {
         transform: scale(1);
-        background: var(--kd-color-border-forms-default);
+        background: var(--kd-color-icon-primary);
       }
 
       &:hover {
@@ -100,7 +100,7 @@ input {
 
       &:not([checked]) {
         &::before {
-          background: var(--kd-color-background-container-default);
+          background: var(--kd-color-background-ui-hollow-default);
         }
       }
     }
@@ -110,10 +110,10 @@ input {
     }
 
     &[invalid] {
-      border-color: var(--kd-color-status-error-dark);
+      border-color: var(--kd-color-icon-destructive);
 
       &::before {
-        background: var(--kd-color-status-error-dark);
+        background: var(--kd-color-icon-destructive);
       }
 
       &:hover {
@@ -125,7 +125,7 @@ input {
       }
 
       &:focus-visible {
-        outline-color: var(--kd-color-status-error-dark);
+        outline-color: var(--kd-color-icon-destructive);
       }
 
       &:active {
@@ -154,7 +154,6 @@ input {
     }
 
     &:focus-visible {
-      // outline-color: var(--kd-color-border-ui-disabled);
       outline-offset: 2px;
       border-color: var(--kd-color-border-ui-disabled);
       background: transparent;
@@ -192,7 +191,7 @@ input {
 
     &[checked] {
       border-width: 2px;
-      border-color: var(--kd-color-border-ui-disabled);
+      border-color: var(--kd-color-icon-disabled);
 
       &::before {
         transform: scale(1);
