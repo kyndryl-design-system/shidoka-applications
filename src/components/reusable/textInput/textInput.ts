@@ -191,7 +191,7 @@ export class TextInput extends FormMixin(LitElement) {
             ?required=${this.required}
             ?disabled=${this.disabled}
             ?readonly=${this.readonly}
-            aria-readonly=${this.readonly}
+            aria-readonly=${this.readonly ? 'true' : 'false'}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
