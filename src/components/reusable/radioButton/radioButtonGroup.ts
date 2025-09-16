@@ -71,7 +71,7 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
     return html`
       <fieldset
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
         role="radiogroup"
         aria-readonly=${this.readonly ? 'true' : 'false'}
         aria-disabled=${this.disabled ? 'true' : 'false'}

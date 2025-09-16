@@ -90,7 +90,7 @@ export class Checkbox extends LitElement {
     return html`
       <label
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
         ?invalid=${this.invalid}
         class=${classMap(classes)}
       >
@@ -106,9 +106,8 @@ export class Checkbox extends LitElement {
           .checked=${this.checked}
           ?required=${this.required}
           ?disabled=${this.disabled || this.notFocusable}
-          ?readonly=${this.readonly}
+          ?readonly=${!this.disabled && this.readonly}
           data-readonly=${ifDefined(this.readonly ? '' : undefined)}
-          aria-readonly=${this.readonly ? 'true' : 'false'}
           aria-invalid=${this.invalid ? 'true' : 'false'}
           tabindex=${this.disabled || this.notFocusable ? -1 : 0}
           @change=${this.handleChange}

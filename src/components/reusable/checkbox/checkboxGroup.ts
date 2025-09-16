@@ -137,7 +137,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                 hideLabel
                 value=${this.searchTerm}
                 ?disabled=${this.disabled}
-                ?readonly=${this.readonly}
+                ?readonly=${!this.disabled && this.readonly}
                 @on-input=${(e: Event) => this._handleFilter(e)}
               >
                 ${this._textStrings.search}
@@ -145,7 +145,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
             `
           : null}
 
-        <fieldset ?disabled=${this.disabled} ?readonly=${this.readonly}>
+        <fieldset
+          ?disabled=${this.disabled}
+          ?readonly=${!this.disabled && this.readonly}
+        >
           <legend class="label-text ${this.hideLegend ? 'sr-only' : ''}">
             ${this.required
               ? html`
@@ -189,7 +192,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                     ?indeterminate=${this.selectAllIndeterminate}
                     ?required=${this.required}
                     ?disabled=${this.disabled}
-                    ?readonly=${this.readonly}
+                    ?readonly=${!this.disabled && this.readonly}
                     ?invalid=${this.invalidText !== '' ||
                     this._internalValidationMsg !== ''}
                   >

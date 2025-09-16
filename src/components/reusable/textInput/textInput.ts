@@ -145,7 +145,7 @@ export class TextInput extends FormMixin(LitElement) {
       <div
         class="text-input"
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
       >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
@@ -190,8 +190,7 @@ export class TextInput extends FormMixin(LitElement) {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
-            aria-readonly=${this.readonly ? 'true' : 'false'}
+            ?readonly=${!this.disabled && this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}

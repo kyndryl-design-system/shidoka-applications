@@ -65,7 +65,7 @@ export class RadioButton extends LitElement {
     return html`
       <label
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
         ?invalid=${this.invalid}
       >
         <span><slot></slot></span>
@@ -77,7 +77,7 @@ export class RadioButton extends LitElement {
           ?checked=${this.checked}
           ?required=${this.required}
           ?disabled=${this.disabled}
-          ?readonly=${this.readonly}
+          ?readonly=${!this.disabled && this.readonly}
           ?invalid=${this.invalid}
           @change=${(e: any) => this.handleChange(e)}
         />

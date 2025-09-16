@@ -286,7 +286,7 @@ export class Dropdown extends FormMixin(LitElement) {
       <div
         class=${classMap(mainDropdownClasses)}
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this.searchable}
@@ -324,7 +324,7 @@ export class Dropdown extends FormMixin(LitElement) {
               <div
                 class="${classMap({
                   select: true,
-                  'is-readonly': this.readonly,
+                  'is-readonly': !this.disabled && this.readonly,
                   'input-custom': true,
                   'size--sm': this.size === 'sm',
                   'size--lg': this.size === 'lg',
@@ -333,7 +333,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 aria-labelledby="label-${this.name}"
                 aria-expanded=${this.open}
                 aria-controls="options"
-                aria-readonly=${this.readonly ? 'true' : 'false'}
+                aria-readonly=${!this.disabled && this.readonly}
                 role="combobox"
                 id=${this.name}
                 name=${this.name}
@@ -343,9 +343,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 ?invalid=${this._isInvalid}
                 tabindex=${this.disabled ? '' : this.searchable ? '-1' : '0'}
                 @mousedown=${(e: any) => {
-                  if (!this.searchable) {
-                    e.preventDefault();
-                  }
+                  if (!this.searchable) e.preventDefault();
                 }}
                 @blur=${(e: any) => e.stopPropagation()}
               >
@@ -376,9 +374,8 @@ export class Dropdown extends FormMixin(LitElement) {
                         placeholder=${this.placeholder}
                         value=${this.searchText}
                         ?disabled=${this.disabled}
-                        .readOnly=${this.readonly}
+                        ?readonly=${!this.disabled && this.readonly}
                         aria-disabled=${this.disabled}
-                        aria-readonly=${this.readonly ? 'true' : 'false'}
                         @keydown=${(e: any) => this.handleSearchKeydown(e)}
                         @input=${(e: any) => this.handleSearchInput(e)}
                         @blur=${(e: any) => e.stopPropagation()}
@@ -425,7 +422,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         .value=${this.newOptionValue}
                         aria-label="Add new option"
                         ?disabled=${this.disabled}
-                        .readOnly=${this.readonly}
+                        ?readonly=${!this.disabled && this.readonly}
                         @input=${this._handleInputNewOption}
                         @keydown=${this._onAddOptionInputKeydown}
                         @focus=${this._onAddOptionInputFocus}

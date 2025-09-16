@@ -258,7 +258,7 @@ export class MultiInputField extends FormMixin(LitElement) {
         noTruncation
         ?clickable=${!this.readonly && !this.disabled}
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
         @on-close=${() => this.removeAt(index)}
       >
         ${showIcon ? html`${unsafeSVG(iconSvg)}` : ''}
@@ -275,7 +275,7 @@ export class MultiInputField extends FormMixin(LitElement) {
         })}"
         type=${this.inputType === 'email' ? 'email' : 'text'}
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
         name=${ifDefined(this.name || undefined)}
         id=${ifDefined(this.name || undefined)}
         placeholder=${ifDefined(placeholderText)}
@@ -404,7 +404,10 @@ export class MultiInputField extends FormMixin(LitElement) {
         <slot></slot>
       </div>
 
-      <div ?disabled=${this.disabled} ?readonly=${this.readonly}>
+      <div
+        ?disabled=${this.disabled}
+        ?readonly=${!this.disabled && this.readonly}
+      >
         ${this.renderLabel()}
         ${this.renderTagsAndInput(stateMgmtClasses, placeholderText)}
         ${this.renderCaptionAndError(error, validCount)}

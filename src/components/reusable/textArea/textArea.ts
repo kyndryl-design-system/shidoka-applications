@@ -112,7 +112,7 @@ export class TextArea extends FormMixin(LitElement) {
       <div
         class="text-area"
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
       >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
@@ -145,14 +145,13 @@ export class TextArea extends FormMixin(LitElement) {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.disabled && this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             rows=${this.rows}
-            aria-readonly=${this.readonly ? 'true' : 'false'}
             .autocomplete=${this.autoComplete}
             @input=${(e: any) => this.handleInput(e)}
           >

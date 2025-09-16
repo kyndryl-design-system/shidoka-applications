@@ -116,7 +116,7 @@ export class EnhancedDropdownOption extends LitElement {
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
         aria-disabled=${this.disabled || this.readonly ? 'true' : 'false'}
         title=${this.text}
         @pointerup=${this.onClick}

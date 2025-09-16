@@ -66,8 +66,7 @@ export class ToggleButton extends FormMixin(LitElement) {
       <div
         class="toggle-button"
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
-        aria-disabled=${this.disabled ? 'true' : 'false'}
+        ?readonly=${!this.disabled && this.readonly}
       >
         <label class="label-text ${this.hideLabel ? 'sr-only' : ''}" for=${id}>
           ${this.label}
@@ -82,12 +81,10 @@ export class ToggleButton extends FormMixin(LitElement) {
             role="switch"
             aria-checked=${this.checked}
             aria-describedby=${statusId}
-            aria-readonly=${this.readonly ? 'true' : 'false'}
-            aria-disabled=${this.disabled ? 'true' : 'false'}
             value=${this.value}
             .checked=${this.checked}
             ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.disabled && this.readonly}
             data-readonly=${ifDefined(this.readonly ? '' : undefined)}
             tabindex=${this.disabled ? -1 : 0}
             @change=${this.handleChange}
