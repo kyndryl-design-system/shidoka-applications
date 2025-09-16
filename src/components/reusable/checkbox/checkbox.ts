@@ -140,7 +140,6 @@ export class Checkbox extends LitElement {
     const input = e.target as HTMLInputElement;
 
     if (this.readonly) {
-      // block model mutation
       e.preventDefault();
       input.checked = this.checked;
       return;
