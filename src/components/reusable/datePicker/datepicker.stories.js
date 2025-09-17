@@ -273,7 +273,6 @@ export const InModal = {
 export const InSideDrawer = {
   args: {
     ...DatePickerDefault.args,
-    // Side Drawer args
     open: false,
     size: 'md',
     titleText: 'Select Date',
@@ -286,7 +285,6 @@ export const InSideDrawer = {
     showSecondaryButton: true,
     secondaryButtonText: 'Secondary',
     hideCancelButton: false,
-    // Date Picker args
     locale: 'en',
     name: 'date-picker-in-side-drawer',
     dateFormat: 'Y-m-d',
@@ -296,7 +294,6 @@ export const InSideDrawer = {
     label: 'Date',
     defaultErrorMessage: '',
     required: false,
-
     warnText: '',
     invalidText: '',
     disable: false,
@@ -326,7 +323,6 @@ export const InSideDrawer = {
       showSecondaryButton,
       secondaryButtonText,
       hideCancelButton,
-      // DatePicker args
       name,
       locale,
       label,
@@ -457,6 +453,180 @@ export const InSideDrawer = {
           sed placerat metus bibendum. Suspendisse pretium nibh.
         </div>
       </kyn-side-drawer>
+    `;
+  },
+};
+
+export const InModalScrollablePage = {
+  args: {
+    ...DatePickerDefault.args,
+    locale: 'en',
+    name: 'date-picker-in-modal-scroll-page',
+    dateFormat: 'Y-m-d',
+    staticPosition: false,
+    defaultDate: '',
+    caption: 'Scroll the page under the modal, then open the calendar.',
+    label: 'Date',
+    open: false,
+    size: 'lg',
+    titleText: 'Select Date',
+    labelText: '',
+    okText: 'OK',
+    cancelText: 'Cancel',
+    closeText: 'Close',
+    destructive: false,
+    okDisabled: false,
+    hideFooter: false,
+    showSecondaryButton: false,
+    hideCancelButton: false,
+    aiConnected: false,
+    disableScroll: false,
+  },
+  render: (args) => {
+    return html`
+      <div style="height: 1400px;"></div>
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-button slot="anchor" kind="primary">Open Modal</kyn-button>
+
+        <div style="line-height: 1.6">
+          <p>Scroll down the page first, then open the date picker.</p>
+          <kyn-date-picker
+            .name=${args.name}
+            .locale=${args.locale}
+            .label=${args.label}
+            .dateFormat=${args.dateFormat}
+            .defaultDate=${args.defaultDate}
+            ?staticPosition=${args.staticPosition}
+            .defaultErrorMessage=${args.defaultErrorMessage}
+            ?required=${args.required}
+            .size=${args.size}
+            .warnText=${args.warnText}
+            .invalidText=${args.invalidText}
+            .disable=${args.disable}
+            .enable=${args.enable}
+            .mode=${args.mode}
+            .caption=${args.caption}
+            .errorAriaLabel=${args.errorAriaLabel}
+            .errorTitle=${args.errorTitle}
+            .warningAriaLabel=${args.warningAriaLabel}
+            .warningTitle=${args.warningTitle}
+            ?datePickerDisabled=${args.datePickerDisabled}
+            ?readonly=${args.readonly}
+            ?twentyFourHourFormat=${args.twentyFourHourFormat}
+            .minDate=${args.minDate}
+            .maxDate=${args.maxDate}
+            style="width: 225px;"
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+          </kyn-date-picker>
+        </div>
+      </kyn-modal>
+      <div style="height: 1600px;"></div>
+    `;
+  },
+};
+
+export const InModalScrollableContent = {
+  args: {
+    ...DatePickerDefault.args,
+    locale: 'en',
+    name: 'date-picker-in-modal-scroll-content',
+    dateFormat: 'Y-m-d',
+    staticPosition: false,
+    defaultDate: '',
+    caption: 'Scroll inside the modal content, then open the calendar.',
+    label: 'Date',
+    open: false,
+    size: 'lg',
+    titleText: 'Select Date',
+    labelText: '',
+    okText: 'OK',
+    cancelText: 'Cancel',
+    closeText: 'Close',
+    destructive: false,
+    okDisabled: false,
+    hideFooter: false,
+    showSecondaryButton: false,
+    hideCancelButton: false,
+    aiConnected: false,
+    disableScroll: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        ?hideFooter=${args.hideFooter}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-button slot="anchor" kind="primary">Open Modal</kyn-button>
+
+        <div style="max-height: 60vh; overflow: auto; padding-right: 8px;">
+          <p>
+            Scroll this content, then open the date picker at various offsets.
+          </p>
+          <kyn-date-picker
+            .name=${args.name}
+            .locale=${args.locale}
+            .label=${args.label}
+            .dateFormat=${args.dateFormat}
+            .defaultDate=${args.defaultDate}
+            ?staticPosition=${args.staticPosition}
+            .defaultErrorMessage=${args.defaultErrorMessage}
+            ?required=${args.required}
+            .size=${args.size}
+            .warnText=${args.warnText}
+            .invalidText=${args.invalidText}
+            .disable=${args.disable}
+            .enable=${args.enable}
+            .mode=${args.mode}
+            .caption=${args.caption}
+            .errorAriaLabel=${args.errorAriaLabel}
+            .errorTitle=${args.errorTitle}
+            .warningAriaLabel=${args.warningAriaLabel}
+            .warningTitle=${args.warningTitle}
+            ?datePickerDisabled=${args.datePickerDisabled}
+            ?readonly=${args.readonly}
+            ?twentyFourHourFormat=${args.twentyFourHourFormat}
+            .minDate=${args.minDate}
+            .maxDate=${args.maxDate}
+            style="width: 225px;"
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+          </kyn-date-picker>
+
+          <div style="height: 1200px;"></div>
+        </div>
+      </kyn-modal>
     `;
   },
 };
