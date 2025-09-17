@@ -6,6 +6,8 @@ import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/l10n/default.js';
 import { loadLocale as loadLocaleFromLangs } from '../flatpickrLangs';
 
+import { fixedOverlayPositionPlugin } from '../helpers/flatpickrOverlayPosition';
+
 let flatpickrStylesInjected = false;
 
 export const _defaultCalendarTooltipStrings = {
@@ -402,13 +404,17 @@ export async function getFlatpickrOptions(
   }
 
   const baseLocale = locale.split('-')[0].toLowerCase();
-  const isEnglishOr12HourLocale = ['en', 'es'].includes(baseLocale);
+  const is12hDefault = baseLocale === 'en';
 
-  const isWideScreen = window.innerWidth >= 767;
+  const isWideScreen =
+    typeof window !== 'undefined' && window.innerWidth >= 767;
 
   const effectiveDateFormat =
     dateFormat ||
     (mode === 'time' ? (twentyFourHourFormat ? 'H:i' : 'h:i K') : 'Y-m-d');
+
+  const modalContainer = getModalContainer(context.inputEl);
+  const inOverlay = modalContainer !== document.body;
 
   const options: Partial<BaseOptions> = {
     dateFormat: effectiveDateFormat,
@@ -422,7 +428,7 @@ export async function getFlatpickrOptions(
     time_24hr:
       typeof twentyFourHourFormat === 'boolean'
         ? twentyFourHourFormat
-        : !isEnglishOr12HourLocale,
+        : !is12hDefault,
     weekNumbers: false,
     static: context.static ?? false,
     wrap,
@@ -448,6 +454,18 @@ export async function getFlatpickrOptions(
       onOpen && onOpen(selectedDates, dateStr, instance);
     },
   };
+
+  if (inOverlay) {
+    options.appendTo = modalContainer;
+    options.static = false;
+    (options.plugins ||= []).push(
+      fixedOverlayPositionPlugin({
+        offset: 6,
+        minViewportMargin: 8,
+        preferTop: false,
+      }) as any
+    );
+  }
 
   if (mode === 'range') {
     options.onReady = (_, __, instance) => {
