@@ -404,7 +404,7 @@ export async function getFlatpickrOptions(
   }
 
   const baseLocale = locale.split('-')[0].toLowerCase();
-  const is12hDefault = baseLocale === 'en';
+  const isEnglishOr12HourLocale = ['en', 'es'].includes(baseLocale);
 
   const isWideScreen =
     typeof window !== 'undefined' && window.innerWidth >= 767;
@@ -428,7 +428,7 @@ export async function getFlatpickrOptions(
     time_24hr:
       typeof twentyFourHourFormat === 'boolean'
         ? twentyFourHourFormat
-        : !is12hDefault,
+        : !isEnglishOr12HourLocale,
     weekNumbers: false,
     static: context.static ?? false,
     wrap,
