@@ -199,7 +199,7 @@ export class OverflowMenu extends LitElement {
     }
   }
 
-  override updated(changedProps: any) {
+  override updated(changedProps: Map<string, unknown>) {
     if (changedProps.has('kind')) {
       this.dispatchEvent(
         new CustomEvent('kind-changed', {
@@ -221,6 +221,10 @@ export class OverflowMenu extends LitElement {
         } else {
           this._openUpwards = false;
         }
+      } else {
+        this._menuHistory = [];
+        this._currentMenuHtml = null;
+        this._openUpwards = false;
       }
 
       this._positionMenu();
