@@ -76,8 +76,13 @@ export class OverflowMenuItem extends LitElement {
   private _mo: MutationObserver | null = null;
 
   /** True when a light-DOM submenu exists. */
+  private get submenuEls(): HTMLElement[] {
+    return Array.from(
+      this.querySelectorAll<HTMLElement>(':scope > [slot="submenu"]')
+    );
+  }
   private get hasSubmenu(): boolean {
-    return !!this.querySelector<HTMLElement>('[slot="submenu"]');
+    return this.submenuEls.length > 0;
   }
 
   override connectedCallback(): void {
@@ -115,10 +120,6 @@ export class OverflowMenuItem extends LitElement {
           href=${this.href}
           ?disabled=${this.disabled}
           @click=${(e: Event) => this.handleClick(e)}
-          @mouseenter=${() => this._getHoverEffect() && this.startOpenSubmenu()}
-          @mouseleave=${() => this.cancelOpenSubmenu()}
-          @focus=${() => this.startOpenSubmenu()}
-          @blur=${() => this.cancelOpenSubmenu()}
           @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
           title=${itemText}
         >
@@ -143,10 +144,6 @@ export class OverflowMenuItem extends LitElement {
         class=${classMap(classes)}
         ?disabled=${this.disabled}
         @click=${(e: Event) => this.handleClick(e)}
-        @mouseenter=${() => this._getHoverEffect() && this.startOpenSubmenu()}
-        @mouseleave=${() => this.cancelOpenSubmenu()}
-        @focus=${() => this.startOpenSubmenu()}
-        @blur=${() => this.cancelOpenSubmenu()}
         @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
         title=${itemText}
       >
@@ -172,7 +169,6 @@ export class OverflowMenuItem extends LitElement {
           getMenuItems?: () => HTMLElement[];
           getMenu?: () => HTMLElement;
           kind?: string;
-          deactivateHover?: boolean;
         })
       | null;
 
@@ -192,39 +188,23 @@ export class OverflowMenuItem extends LitElement {
     this.checkOverflow();
   }
 
-  private _getHoverEffect(): boolean {
-    const find = (node: Node | null): boolean => {
-      if (!node) return true;
-
-      if (
-        node instanceof Element &&
-        node.tagName.toLowerCase() === 'kyn-overflow-menu'
-      ) {
-        const menuEl = node as HTMLElement & { deactivateHover?: boolean };
-        return !(menuEl.deactivateHover ?? false);
-      }
-
-      if (node.parentNode) {
-        return find(node.parentNode);
-      } else {
-        const root: Document | ShadowRoot | null = (node as any).getRootNode
-          ? (node as any).getRootNode()
-          : null;
-        const next = root && (root as any).host ? (root as any).host : null;
-        return find(next);
-      }
-    };
-
-    return find(this);
-  }
-
   private handleClick(e: Event) {
-    const submenuEl = this.querySelector<HTMLElement>('[slot="submenu"]');
-    if (this.hasSubmenu && submenuEl) {
+    const wrapper = this.querySelector<HTMLElement>(
+      ':scope > [slot="submenu"]:not(kyn-overflow-menu-item)'
+    );
+    const directItems = Array.from(
+      this.querySelectorAll<HTMLElement>(
+        ':scope > kyn-overflow-menu-item[slot="submenu"]'
+      )
+    );
+
+    if (this.hasSubmenu) {
       e.stopPropagation();
+      const html =
+        wrapper?.innerHTML ?? directItems.map((el) => el.outerHTML).join('');
       this.dispatchEvent(
         new CustomEvent('open-submenu', {
-          detail: { html: submenuEl.innerHTML },
+          detail: { html },
           bubbles: true,
           composed: true,
         })
@@ -239,34 +219,6 @@ export class OverflowMenuItem extends LitElement {
         composed: true,
       })
     );
-  }
-
-  private openSubmenu() {
-    const submenuEl = this.querySelector<HTMLElement>('[slot="submenu"]');
-    if (this.hasSubmenu && submenuEl) {
-      this.dispatchEvent(
-        new CustomEvent('open-submenu', {
-          detail: { html: submenuEl.innerHTML },
-          bubbles: true,
-          composed: true,
-        })
-      );
-    }
-  }
-
-  private startOpenSubmenu(delay = 600) {
-    this.cancelOpenSubmenu();
-    this._submenuOpenTimer = window.setTimeout(() => {
-      this.openSubmenu();
-      this._submenuOpenTimer = undefined;
-    }, delay);
-  }
-
-  private cancelOpenSubmenu() {
-    if (this._submenuOpenTimer !== undefined) {
-      window.clearTimeout(this._submenuOpenTimer);
-      this._submenuOpenTimer = undefined;
-    }
   }
 
   private handleKeyDown(e: KeyboardEvent) {

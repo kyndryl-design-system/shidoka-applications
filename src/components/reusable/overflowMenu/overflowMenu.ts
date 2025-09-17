@@ -51,19 +51,6 @@ export class OverflowMenu extends LitElement {
   @property({ type: String })
   accessor assistiveText = 'Toggle Menu';
 
-  /**
-   * When true, disables opening nested submenus via hover. When true, only focus/click
-   * will navigate to nested submenu. This property overrides item-level behavior.
-   */
-  @property({
-    type: Boolean,
-    converter: {
-      fromAttribute: (value: string | null) =>
-        value === null ? false : value === '' ? true : value === 'true',
-    },
-  })
-  accessor deactivateHover = false;
-
   /** Button element
    * @internal
    */
@@ -217,16 +204,6 @@ export class OverflowMenu extends LitElement {
       this.dispatchEvent(
         new CustomEvent('kind-changed', {
           detail: this.kind,
-          bubbles: true,
-          composed: true,
-        })
-      );
-    }
-
-    if (changedProps.has('deactivateHover')) {
-      this.dispatchEvent(
-        new CustomEvent('deactivatehover-changed', {
-          detail: this.deactivateHover,
           bubbles: true,
           composed: true,
         })
