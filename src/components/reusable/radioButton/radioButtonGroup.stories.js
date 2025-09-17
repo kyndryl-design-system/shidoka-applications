@@ -52,9 +52,15 @@ export const RadioButtonGroup = {
           action(e.type)({ ...e, detail: e.detail })}
       >
         <div slot="description">${args.description}</div>
-        <kyn-radio-button value="1"> Option 1 </kyn-radio-button>
-        <kyn-radio-button value="2"> Option 2 </kyn-radio-button>
-        <kyn-radio-button value="3"> Option 3 </kyn-radio-button>
+        <kyn-radio-button value="1" name="radio-button-1">
+          Option 1
+        </kyn-radio-button>
+        <kyn-radio-button value="2" name="radio-button-2">
+          Option 2
+        </kyn-radio-button>
+        <kyn-radio-button value="3" name="radio-button-3">
+          Option 3
+        </kyn-radio-button>
       </kyn-radio-button-group>
     `;
   },

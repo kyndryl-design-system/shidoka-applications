@@ -26,6 +26,7 @@ export const RadioButton = {
       <kyn-radio-button
         value=${args.value}
         .checked=${args.checked}
+        name="radio-button-1"
         ?checked=${args.checked}
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
