@@ -285,6 +285,7 @@ export const InSideDrawer = {
     showSecondaryButton: true,
     secondaryButtonText: 'Secondary',
     hideCancelButton: false,
+    // DatePicker args
     locale: 'en',
     name: 'date-picker-in-side-drawer',
     dateFormat: 'Y-m-d',
@@ -323,6 +324,7 @@ export const InSideDrawer = {
       showSecondaryButton,
       secondaryButtonText,
       hideCancelButton,
+      // DatePicker args
       name,
       locale,
       label,
