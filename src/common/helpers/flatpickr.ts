@@ -446,6 +446,31 @@ export async function getFlatpickrOptions(
     },
     onOpen: (selectedDates, dateStr, instance) => {
       onOpen && onOpen(selectedDates, dateStr, instance);
+
+      // custom positioning when within a modal
+      const container = getModalContainer(instance.input);
+      const IsInModal = container !== document.body;
+
+      if (IsInModal) {
+        setTimeout(function () {
+          const InputBounds = instance.input.getBoundingClientRect();
+          const CalendarBounds =
+            instance.calendarContainer.getBoundingClientRect();
+          const Threshold = 0.6;
+          let top;
+
+          if (InputBounds.top > window.innerHeight * Threshold) {
+            // open upwards
+            top = InputBounds.top - 2 - CalendarBounds.height;
+          } else {
+            // open downwards
+            top = InputBounds.bottom + 2;
+          }
+
+          // set top style
+          instance.calendarContainer.style.top = top + 'px';
+        }, 0);
+      }
     },
   };
 
