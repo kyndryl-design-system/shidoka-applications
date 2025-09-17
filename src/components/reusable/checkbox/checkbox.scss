@@ -101,6 +101,14 @@ input {
       -webkit-mask-position: center;
     }
 
+    &:hover {
+      background: var(--kd-color-background-ui-default-hover);
+      outline-color: transparent;
+      &::before {
+        background: var(--kd-color-background-container-default);
+      }
+    }
+
     &:focus-visible {
       border-color: transparent;
       outline-color: var(--kd-color-border-variants-focus);
@@ -159,6 +167,14 @@ input[type='checkbox']:indeterminate {
       );
     }
 
+    &:hover {
+      background: var(--kd-color-background-ui-default-hover);
+      outline-color: transparent;
+      &::before {
+        background: var(--kd-color-background-container-default);
+      }
+    }
+
     &:active {
       background: $main-checkbox-background;
       border-color: transparent;
@@ -199,6 +215,13 @@ input[type='checkbox'][invalid] {
       background: $invalid-checkbox-background;
       border-color: transparent;
 
+      &:hover {
+        background: var(--kd-color-background-button-primary-destructive-hover);
+        border-color: var(
+          --kd-color-background-button-primary-destructive-hover
+        );
+      }
+
       &:active {
         background: var(
           --kd-color-background-button-primary-destructive-pressed
@@ -229,13 +252,9 @@ input[type='checkbox'][invalid] {
   }
 
   &:not(.disabled) {
-    &:not(:checked):not(:indeterminate) {
-      &:hover {
-        background: transparent;
-        border-color: var(
-          --kd-color-background-button-primary-destructive-hover
-        );
-      }
+    &:hover {
+      background: transparent;
+      border-color: var(--kd-color-background-button-primary-destructive-hover);
     }
   }
 
