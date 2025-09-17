@@ -28,6 +28,7 @@ export const ToggleButton = {
     value: 'example',
     small: false,
     disabled: false,
+    readonly: false,
     reverse: false,
     hideLabel: false,
     checkedText: 'On',
@@ -42,6 +43,7 @@ export const ToggleButton = {
         value=${args.value}
         ?small=${args.small}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?reverse=${args.reverse}
         ?hideLabel=${args.hideLabel}
         checkedText=${args.checkedText}

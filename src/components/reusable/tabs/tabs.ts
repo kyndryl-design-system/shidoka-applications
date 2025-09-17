@@ -54,12 +54,12 @@ export class Tabs extends LitElement {
       wrapper: true,
       vertical: this.vertical,
       scrollable: this.scrollablePanels,
-      [`ai-connected--${this.aiConnected}`]: true,
+      'ai-connected': this.aiConnected,
     };
 
     const tabsClasses = {
       tabs: true,
-      [`ai-connected--${this.aiConnected}`]: true,
+      'ai-connected': this.aiConnected,
     };
 
     return html`

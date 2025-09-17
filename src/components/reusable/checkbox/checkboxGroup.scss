@@ -46,11 +46,17 @@ fieldset {
     cursor: default;
   }
 
+  [readonly] & {
+    color: var(--kd-color-text-link-level-disabled);
+    cursor: default;
+  }
+
   &:hover {
     text-decoration: underline;
     color: var(--kd-color-text-link-hover);
 
-    [disabled] & {
+    [disabled] &,
+    [readonly] & {
       text-decoration: none;
       color: var(--kd-color-text-link-level-disabled);
     }

@@ -324,7 +324,7 @@ export class TimePicker extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.disabled && this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}

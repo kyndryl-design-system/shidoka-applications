@@ -148,7 +148,7 @@ export class NumberInput extends FormMixin(LitElement) {
             placeholder=${this.placeholder}
             ?required=${this.required}
             ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.disabled && this.readonly}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}

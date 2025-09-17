@@ -424,7 +424,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.dateRangePickerDisabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.disabled && this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
