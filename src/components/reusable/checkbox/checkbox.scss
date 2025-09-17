@@ -228,16 +228,21 @@ input[type='checkbox'][invalid] {
     }
   }
 
-  // &:hover {. // Need to check with UX
-  //   background: transparent;
-  //   border-color: var(--kd-color-background-button-primary-destructive-hover);
-  // }
+  &:not(.disabled) {
+    &:not(:checked):not(:indeterminate) {
+      &:hover {
+        background: transparent;
+        border-color: var(
+          --kd-color-background-button-primary-destructive-hover
+        );
+      }
+    }
+  }
 
   &:focus-visible {
     border-color: $invalid-checkbox-background;
     outline-color: $invalid-checkbox-background;
   }
-  // Need to check with UX for error pressed state
   &:active {
     background: var(--kd-color-background-button-primary-destructive-pressed);
     border-color: var(--kd-color-background-button-primary-destructive-pressed);
