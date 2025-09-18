@@ -1,0 +1,45 @@
+// infoCard.scss
+@use '../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../common/scss/gradients.scss' as gradient;
+
+kyn-card {
+  @include gradient.border-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 8px,
+    $width: 1px,
+    $surface: var(--kd-color-background-ui-hollow-default)
+  );
+}
+
+.info-card-container {
+  display: flex;
+  align-items: center;
+  gap: var(--kd-spacing-12);
+}
+
+.info-card-content-wrapper {
+  flex: 1 0 0;
+  word-wrap: anywhere;
+}
+
+.info-card-title-text {
+  color: var(--kd-color-text-title-ai-tertiary);
+}
+
+.info-card-rightIcon,
+.info-card-leftIcon {
+  display: flex;
+}
+
+.info-card-leftIcon {
+  svg {
+    fill: var(--kd-color-icon-ai-spruce);
+  }
+}
+
+.info-card-rightIcon {
+  svg {
+    fill: var(--kd-color-icon-primary);
+  }
+}

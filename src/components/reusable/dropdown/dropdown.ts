@@ -322,6 +322,7 @@ export class Dropdown extends FormMixin(LitElement) {
                   'size--sm': this.size === 'sm',
                   'size--lg': this.size === 'lg',
                   inline: this.inline,
+                  'ai-connected': this.kind === 'ai',
                 })}"
                 aria-labelledby="label-${this.name}"
                 aria-expanded=${this.open}

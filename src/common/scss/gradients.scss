@@ -1,15 +1,33 @@
+$ai-gradient-default: var(
+  --kd-gradient-border-ai-default,
+  linear-gradient(
+    to bottom,
+    var(--kd-color-border-ai-default-gradient-start),
+    var(--kd-color-border-ai-default-gradient-end)
+  )
+);
+
 @mixin border-gradient-ai(
   $gradient,
-  $radius: 6px,
+  $radius: 8px,
   $width: 1px,
-  $surface: var(--kd-color-background-forms-default)
+  $surface: var(--kd-color-background-ui-hollow-default)
 ) {
+  box-sizing: border-box;
   border-radius: $radius;
   border: $width solid transparent;
+
   background: linear-gradient(#{$surface}, #{$surface}) padding-box,
     #{$gradient} border-box;
+
+  background-clip: padding-box, border-box;
+  background-origin: border-box, border-box;
+
+  background-size: calc(100% + 2px) calc(100% + 2px), cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .g-border-ai {
-  @include border-gradient-ai($gradient: var(--kd-gradient-border-ai-default));
+  @include border-gradient-ai($gradient: $ai-gradient-default);
 }
