@@ -1,10 +1,17 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
   width: 264px;
+}
+
+:host([aiConnected]:hover) {
+  --_title-color: var(--kd-color-text-title-ai-secondary);
+  --_subtitle-color: var(--kd-color-text-level-primary);
+  --_description-color: var(--kd-color-text-level-primary);
 }
 
 .card {
@@ -16,7 +23,7 @@
     border-radius: 8px;
     height: 100%;
 
-    &.ai-Connected {
+    &.ai-connected {
       background-color: var(--kd-color-background-ui-hollow-default);
       border: 1px solid var(--kd-color-border-variants-light);
     }
@@ -53,12 +60,45 @@
       outline-color: var(--kd-color-border-variants-focus);
     }
 
-    &.ai-Connected {
+    &.ai-connected {
       background-color: var(--kd-color-background-ui-hollow-default);
 
       &:hover {
-        border-color: var(--kd-color-border-button-ai-state-hover);
-        @include elevation.shadow(2, true);
+        @include gradient.border-gradient-ai(
+          $gradient:
+            var(
+              --kd-gradient-border-ai-default,
+              linear-gradient(
+                to bottom,
+                light-dark(
+                  var(
+                    --kd-color-border-ai-default-gradient-start-light,
+                    #ff6b57
+                  ),
+                  var(--kd-color-border-ai-default-gradient-start-dark, #ff6b57)
+                ),
+                light-dark(
+                  var(--kd-color-border-ai-default-gradient-end-light, #79d2df),
+                  var(--kd-color-border-ai-default-gradient-end-dark, #79d2df)
+                )
+              )
+            ),
+          $radius: 8px,
+          $width: 1px,
+          $surface: var(--kd-color-background-button-primary-ai-hover)
+        );
+
+        box-shadow: none;
+
+        ::slotted(.card-title) {
+          color: var(--_title-color);
+        }
+        ::slotted(.card-subtitle) {
+          color: var(--_subtitle-color);
+        }
+        ::slotted(.card-description) {
+          color: var(--_description-color);
+        }
       }
 
       &:focus-visible {
@@ -67,15 +107,40 @@
     }
 
     &.ai-highlight {
-      background: var(--kd-color-background-container-ai-default);
+      @include gradient.border-gradient-ai(
+        $gradient:
+          var(
+            --kd-gradient-border-ai-default,
+            linear-gradient(
+              to bottom,
+              light-dark(
+                var(--kd-color-border-ai-default-gradient-start-light, #ff6b57),
+                var(--kd-color-border-ai-default-gradient-start-dark, #ff6b57)
+              ),
+              light-dark(
+                var(--kd-color-border-ai-default-gradient-end-light, #79d2df),
+                var(--kd-color-border-ai-default-gradient-end-dark, #79d2df)
+              )
+            )
+          ),
+        $radius: 8px,
+        $width: 1px,
+        $surface: var(--kd-color-background-button-primary-ai-hover)
+      );
 
-      &:hover {
-        border-color: var(--kd-color-border-button-ai-state-hover);
-        @include elevation.shadow(2, true);
+      border-color: transparent;
+      background: var(--kd-color-background-container-ai-default);
+      box-shadow: 0 2px 12px 0 var(--kd-color-utility-elevation-ai-l3);
+
+      &:hover,
+      &:focus-visible {
+        border-color: transparent;
+        border-image-source: inherit;
+        border-image-slice: inherit;
       }
 
-      &:focus-visible {
-        border-color: var(--kd-color-border-button-ai-state-hover);
+      &.card-border {
+        border-color: transparent;
       }
     }
   }
@@ -87,7 +152,7 @@
       border: 1px solid var(--kd-color-background-highlight-border);
     }
 
-    &.ai-Connected {
+    &.ai-connected {
       border: 1px solid var(--kd-color-border-button-ai-state-default);
     }
 
