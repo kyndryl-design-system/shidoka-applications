@@ -1,5 +1,5 @@
 @use '../../../common/scss/global.scss';
-@use '../../../common/scss/gradients.scss' as g;
+@use '../../../common/scss/gradients.scss' as gradient;
 @use '../../../common/scss/mixins.scss';
 @use '../../../common/scss/form-input.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
@@ -45,8 +45,22 @@ slot[name='icon']::slotted(*) {
   font-weight: var(--kd-font-weight-regular);
   white-space: nowrap;
 
-  &.ai-connected {
-    @include g.gradient-border();
+  &.ai-connected-true {
+    @include gradient.gradient-border(); // sets border-color: transparent
+
+    /* preserve gradient across states */
+    &:hover,
+    &:focus-visible,
+    &:focus-within {
+      border-color: transparent; // DO NOT paint the border
+      background: linear-gradient(var(--g-angle), var(--g-start), var(--g-end))
+          border-box,
+        linear-gradient(
+            var(--kd-color-background-forms-default),
+            var(--kd-color-background-forms-default)
+          )
+          padding-box;
+    }
   }
 
   [searchable] & {
