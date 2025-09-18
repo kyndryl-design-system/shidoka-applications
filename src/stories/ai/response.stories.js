@@ -22,7 +22,6 @@ export const User = {
     return html`
       <div class="response_wrapper">
         <div class="response_title">
-          <kyn-avatar initials="A"></kyn-avatar>
           <kyn-card
             role="region"
             aria-label="User message"
@@ -32,6 +31,7 @@ export const User = {
             User response here...Lorem ipsum dolor sit amet, consectetur
             adipiscing elit
           </kyn-card>
+          <kyn-avatar initials="A"></kyn-avatar>
         </div>
       </div>
 
