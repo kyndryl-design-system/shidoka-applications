@@ -20,7 +20,7 @@ export default {
 export const User = {
   render: () => {
     return html`
-      <div class="response_wrapper">
+      <div class="response_wrapper user-response">
         <div class="response_title">
           <kyn-card
             role="region"
@@ -39,10 +39,16 @@ export const User = {
         .response_wrapper {
           display: flex;
           gap: var(--kd-spacing-16);
+
           .response_title {
             display: flex;
             gap: var(--kd-spacing-16);
           }
+        }
+
+        .response_wrapper.user-response {
+          margin-inline-start: auto;
+          flex-direction: row-reverse;
         }
       </style>
     `;

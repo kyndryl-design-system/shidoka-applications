@@ -26,10 +26,6 @@ export const ChatMessages = {
           gap: 16px;
           /* Adjust the margin as needed */
         }
-
-        .response_wrapper {
-          padding: 0px 16px;
-        }
       </style>
     `;
   },
