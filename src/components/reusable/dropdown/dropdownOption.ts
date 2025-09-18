@@ -90,7 +90,7 @@ export class DropdownOption extends LitElement {
     const classes = {
       option: true,
       'menu-item': true,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      ['ai-connected']: this.kind === 'ai',
     };
 
     return html`
