@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { User, AI } from './response.stories.js';
-import { Default as infoCard } from './infoCard.stories.js';
+import { Default as infoCard } from '../infoCard/infoCard.stories.js';
 
 export default {
   title: 'AI/Patterns/Chat',
