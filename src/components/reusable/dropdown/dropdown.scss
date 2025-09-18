@@ -69,7 +69,7 @@ slot[name='icon']::slotted(*) {
   }
 }
 
-/* AI variant: true gradient ON THE BORDER via border-image */
+/* AI variant */
 :host(.ai-connected) .select,
 .dropdown.ai-connected .select {
   @include gradient.border-gradient-ai(
@@ -91,13 +91,11 @@ slot[name='icon']::slotted(*) {
   );
 }
 
-/* keep gradient on hover for AI */
 :host(.ai-connected) .select:hover,
 .dropdown.ai-connected .select:hover {
   border-color: transparent;
 }
 
-/* default focus (non-AI) */
 .select:focus-within {
   outline: 2px solid var(--kd-color-border-variants-focus);
   outline-offset: 0;
@@ -106,7 +104,6 @@ slot[name='icon']::slotted(*) {
   }
 }
 
-/* AI focus glow without painting border-color */
 :host(.ai-connected) .select:is(:focus-visible, :focus-within),
 .dropdown.ai-connected .select:is(:focus-visible, :focus-within) {
   outline: 2px solid var(--kd-color-background-button-secondary-ai-focused);
