@@ -49,6 +49,10 @@ export default {
     _openUpwards: { table: { disable: true }, control: false },
     _btnEl: { table: { disable: true }, control: false },
     _menuEl: { table: { disable: true }, control: false },
+    _onDocClick: { table: { disable: true }, control: false },
+    _onDocKeydown: { table: { disable: true }, control: false },
+    _onItemClick: { table: { disable: true }, control: false },
+    _onOpenSubmenu: { table: { disable: true }, control: false },
   },
 };
 
