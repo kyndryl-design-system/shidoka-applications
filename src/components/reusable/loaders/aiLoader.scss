@@ -1,0 +1,88 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transition: opacity 500ms ease-out;
+
+  &.overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--kd-color-background-opacity-4);
+    backdrop-filter: var(--kd-background-blur-medium);
+    z-index: var(--kd-z-overlay);
+  }
+}
+/* ===== AI-Connected Variant (Pure CSS) ===== */
+.wrapper.ai-connected {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  --ai-size: 100px;
+  --ai-stroke: 12px;
+  --ai-track: var(--kd-color-background-loader-bar-primary);
+  --ai-arc: var(--kd-color-opacity-ai-warm-red-90);
+
+  &.size-mini {
+    width: 20px;
+    height: 20px;
+    --ai-size: 18px;
+    --ai-stroke: 12px;
+  }
+}
+
+.ai-spinner-svg {
+  width: var(--ai-size);
+  height: var(--ai-size);
+}
+
+.ai-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  animation: ai-rotate 1.25s linear infinite;
+}
+
+/* Track circle */
+.ai-track {
+  fill: none;
+  stroke: var(--ai-track);
+  stroke-width: var(--ai-stroke);
+}
+
+/* Arc circle */
+.ai-arc {
+  fill: none;
+  stroke: var(--ai-arc);
+  stroke-width: var(--ai-stroke);
+  stroke-linecap: round;
+  transform-origin: 50% 50%;
+  --circumference: 276.4601535;
+  stroke-dasharray: calc(var(--circumference) * 0.17) var(--circumference);
+  stroke-dashoffset: 0;
+}
+
+@keyframes ai-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
