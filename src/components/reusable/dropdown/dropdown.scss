@@ -1,4 +1,5 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/gradients.scss' as g;
 @use '../../../common/scss/mixins.scss';
 @use '../../../common/scss/form-input.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
@@ -43,6 +44,10 @@ slot[name='icon']::slotted(*) {
   cursor: pointer;
   font-weight: var(--kd-font-weight-regular);
   white-space: nowrap;
+
+  &.ai-connected {
+    @include g.gradient-border();
+  }
 
   [searchable] & {
     padding-right: 80px;
