@@ -1,12 +1,13 @@
 @use '../../../common/scss/global.scss';
-@use '../../../common/scss/gradients.scss' as gradient;
 @use '../../../common/scss/mixins.scss';
 @use '../../../common/scss/form-input.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
+  color-scheme: light dark;
 }
 
 :host(.pagination-dropdown) .select {
@@ -25,7 +26,6 @@
 
 slot[name='icon']::slotted(*) {
   display: block;
-
   [disabled] & {
     color: var(--kd-color-icon-disabled);
   }
@@ -34,7 +34,6 @@ slot[name='icon']::slotted(*) {
 .select {
   display: flex;
   align-items: center;
-  -webkit-appearance: none;
   appearance: none;
   border: 1px solid var(--kd-color-border-forms-default);
   border-radius: 4px;
@@ -44,24 +43,6 @@ slot[name='icon']::slotted(*) {
   cursor: pointer;
   font-weight: var(--kd-font-weight-regular);
   white-space: nowrap;
-
-  &.ai-connected-true {
-    @include gradient.gradient-border(); // sets border-color: transparent
-
-    /* preserve gradient across states */
-    &:hover,
-    &:focus-visible,
-    &:focus-within {
-      border-color: transparent; // DO NOT paint the border
-      background: linear-gradient(var(--g-angle), var(--g-start), var(--g-end))
-          border-box,
-        linear-gradient(
-            var(--kd-color-background-forms-default),
-            var(--kd-color-background-forms-default)
-          )
-          padding-box;
-    }
-  }
 
   [searchable] & {
     padding-right: 80px;
@@ -79,7 +60,6 @@ slot[name='icon']::slotted(*) {
   &.size--sm {
     height: 32px;
   }
-
   &.size--lg {
     height: 56px;
   }
@@ -89,14 +69,54 @@ slot[name='icon']::slotted(*) {
   }
 }
 
-/* Default focus */
+/* AI variant: true gradient ON THE BORDER via border-image */
+:host(.ai-connected) .select,
+.dropdown.ai-connected .select {
+  @include gradient.border-gradient-ai(
+    $gradient:
+      var(
+        --kd-gradient-border-ai-default,
+        linear-gradient(
+          to bottom,
+          light-dark(
+            var(--kd-color-border-ai-default-gradient-start-light, #ff6b57),
+            var(--kd-color-border-ai-default-gradient-start-dark, #ff6b57)
+          ),
+          light-dark(
+            var(--kd-color-border-ai-default-gradient-end-light, #79d2df),
+            var(--kd-color-border-ai-default-gradient-end-dark, #79d2df)
+          )
+        )
+      )
+  );
+}
+
+/* keep gradient on hover for AI */
+:host(.ai-connected) .select:hover,
+.dropdown.ai-connected .select:hover {
+  border-color: transparent;
+}
+
+/* default focus (non-AI) */
 .select:focus-within {
   outline: 2px solid var(--kd-color-border-variants-focus);
   outline-offset: 0;
-
   &:hover {
     border-color: transparent;
   }
+}
+
+/* AI focus glow without painting border-color */
+:host(.ai-connected) .select:is(:focus-visible, :focus-within),
+.dropdown.ai-connected .select:is(:focus-visible, :focus-within) {
+  outline: 2px solid var(--kd-color-background-button-secondary-ai-focused);
+  outline-offset: 0;
+  box-shadow: 0 0 0 2px
+    color-mix(
+      in oklab,
+      var(--kd-color-background-button-secondary-ai-focused) 24%,
+      transparent
+    );
 }
 
 .arrow-icon {
@@ -162,17 +182,14 @@ slot[name='icon']::slotted(*) {
     margin-left: 16px;
   }
 }
-
 .caption {
   [inline] & {
     margin-left: 16px;
   }
 }
-
 .assistive-text {
   @include mixins.visually-hidden;
 }
-
 .select-all {
   font-weight: var(--kd-font-weight-medium);
 }
@@ -209,7 +226,6 @@ slot[name='icon']::slotted(*) {
 
   span {
     display: flex;
-
     svg {
       width: 14px;
       height: 14px;
@@ -228,7 +244,6 @@ slot[name='icon']::slotted(*) {
 kyn-tag-group {
   margin-top: 8px;
 }
-
 .kd-visibility--sr-only {
   @include visibility.sr-only;
 }
@@ -261,12 +276,6 @@ kyn-tag-group {
 
 .placeholder-text {
   color: var(--kd-color-text-variant-placeholder);
-}
-
-.dropdown.ai-connected .select:is(:focus-visible, :focus-within) {
-  outline: 1px solid var(--kd-color-background-button-secondary-ai-focused);
-  outline-offset: 0;
-  border-color: var(--kd-color-background-button-secondary-ai-focused);
 }
 
 .dropdown.ai-connected .options:focus-visible,

@@ -1,73 +1,15 @@
-:root {
-  --g-angle: 135deg;
-  --g-surface: var(--kd-color-background-container-default);
-  --g-start: var(
-    --kd-color-border-ai-default-gradient-start,
-    var(--Border-Default, #ff6b57)
-  );
-  --g-end: var(
-    --kd-color-border-ai-default-gradient-end,
-    var(--Border-Default, #ff6b57)
-  );
-
-  --g-top-left: var(--Top-Left, 6px);
-  --g-top-right: var(--Top-Right, 6px);
-  --g-bottom-right: var(--Bottom-Right, 6px);
-  --g-bottom-left: var(--Bottom-Left, 6px);
-
-  --g-bt: var(--Border-Top, 1px);
-  --g-br: var(--Border-right, 1px);
-  --g-bb: var(--Border-Bottom, 1px);
-  --g-bl: var(--Border-Left, 1px);
-}
-
-@mixin gradient-border(
-  $start: var(--g-start),
-  $end: var(--g-end),
-  $bt: var(--g-bt),
-  $br: var(--g-br),
-  $bb: var(--g-bb),
-  $bl: var(--g-bl),
-  $tl: var(--g-top-left),
-  $tr: var(--g-top-right),
-  $brad: var(--g-bottom-right),
-  $blft: var(--g-bottom-left),
-  $angle: var(--g-angle),
-  $surface: var(--g-surface)
+@mixin border-gradient-ai(
+  $gradient,
+  $radius: 6px,
+  $width: 1px,
+  $surface: var(--kd-color-background-forms-default)
 ) {
-  border-style: solid;
-  border-color: transparent;
-  border-width: $bt $br $bb $bl;
-  border-radius: $tl $tr $brad $blft;
-  background: linear-gradient($angle, $start, $end) border-box,
-    linear-gradient($surface, $surface) padding-box;
+  border-radius: $radius;
+  border: $width solid transparent;
+  background: linear-gradient(#{$surface}, #{$surface}) padding-box,
+    #{$gradient} border-box;
 }
 
-.g-border {
-  border-style: solid;
-  border-color: transparent;
-  border-width: var(--g-bt) var(--g-br) var(--g-bb) var(--g-bl);
-  border-radius: var(--g-top-left) var(--g-top-right) var(--g-bottom-right)
-    var(--g-bottom-left);
-  background: linear-gradient(var(--g-angle), var(--g-start), var(--g-end))
-      border-box,
-    linear-gradient(var(--g-surface), var(--g-surface)) padding-box;
+.g-border-ai {
+  @include border-gradient-ai($gradient: var(--kd-gradient-border-ai-default));
 }
-
-.g-border--ai-default {
-  --g-start: var(
-    --kd-color-border-ai-default-gradient-start,
-    var(--Border-Default, #ff6b57)
-  );
-  --g-end: var(
-    --kd-color-border-ai-default-gradient-end,
-    var(--Border-Default, #ff6b57)
-  );
-}
-
-// Example usage:
-// @use '@foundation/scss/gradients/gradients' as g;
-
-// .kyn-card {
-// 	@include g.gradient-border();
-// }
