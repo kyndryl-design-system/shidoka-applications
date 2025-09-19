@@ -1,0 +1,66 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.meta-container {
+  display: flex;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  background: var(--kd-color-background-container-subtle);
+  min-width: 0;
+}
+.meta-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  &.vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+.meta-icon {
+  display: flex;
+  padding-left: 4px;
+  align-items: flex-start;
+  align-self: stretch;
+  &.v-align {
+    align-items: anchor-center;
+  }
+}
+
+.meta-label {
+  @include typography.type-ui-02;
+  font-weight: 600;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &.h-align {
+    width: 60px;
+    max-width: 120px;
+  }
+}
+
+.spacer {
+  display: flex;
+  width: 1px;
+  align-items: center;
+  align-self: stretch;
+  background: var(--kd-color-background-opacity-4);
+}
