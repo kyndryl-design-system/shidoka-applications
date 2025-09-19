@@ -19,6 +19,15 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-551887&p=f&m=dev',
     },
+    controls: {
+      exclude: [
+        '_menuHistory',
+        '_currentMenuHtml',
+        '_openUpwards',
+        '_btnEl',
+        '_menuEl',
+      ],
+    },
   },
   argTypes: {
     open: { control: 'boolean' },
@@ -30,10 +39,20 @@ export default {
     verticalDots: { control: 'boolean' },
     fixed: { control: 'boolean' },
     assistiveText: { control: 'text' },
+    backButtonText: { control: 'text' },
     'kind-changed': {
       table: { disable: true },
       control: false,
     },
+    _menuHistory: { table: { disable: true }, control: false },
+    _currentMenuHtml: { table: { disable: true }, control: false },
+    _openUpwards: { table: { disable: true }, control: false },
+    _btnEl: { table: { disable: true }, control: false },
+    _menuEl: { table: { disable: true }, control: false },
+    _onDocClick: { table: { disable: true }, control: false },
+    _onDocKeydown: { table: { disable: true }, control: false },
+    _onItemClick: { table: { disable: true }, control: false },
+    _onOpenSubmenu: { table: { disable: true }, control: false },
   },
 };
 
@@ -42,6 +61,7 @@ const args = {
   kind: 'default',
   anchorRight: false,
   verticalDots: false,
+  backButtonText: 'Back',
   fixed: false,
   assistiveText: 'Toggle Menu',
 };
@@ -55,6 +75,7 @@ export const Default = {
         ?anchorRight=${args.anchorRight}
         ?verticalDots=${args.verticalDots}
         kind=${args.kind}
+        backButtonText=${args.backButtonText}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
       >
@@ -99,17 +120,15 @@ export const Default = {
   },
 };
 
-export const AIVariant = {
-  args: {
-    ...args,
-    kind: 'ai',
-  },
+export const Nested = {
+  args: args,
   render: (args) => {
     return html`
       <kyn-overflow-menu
         ?open=${args.open}
         ?anchorRight=${args.anchorRight}
         ?verticalDots=${args.verticalDots}
+        backButtonText=${args.backButtonText}
         kind=${args.kind}
         ?fixed=${args.fixed}
         assistiveText=${args.assistiveText}
@@ -118,38 +137,57 @@ export const AIVariant = {
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
-          >Option 1</kyn-overflow-menu-item
+          >Top Option</kyn-overflow-menu-item
         >
-        <kyn-overflow-menu-item
-          href="javascript:void(0);"
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-        >
-          Option 2
+
+        <kyn-overflow-menu-item nested>
+          More actions
+
+          <kyn-overflow-menu-item
+            slot="submenu"
+            @on-click=${(e) => {
+              action(e.type)({ ...e, detail: e.detail });
+            }}
+            >Sub action 1</kyn-overflow-menu-item
+          >
+
+          <kyn-overflow-menu-item
+            slot="submenu"
+            @on-click=${(e) => {
+              action(e.type)({ ...e, detail: e.detail });
+            }}
+            >Sub action 2</kyn-overflow-menu-item
+          >
+
+          <kyn-overflow-menu-item slot="submenu" nested>
+            Deeper
+
+            <kyn-overflow-menu-item
+              slot="submenu"
+              @on-click=${(e) => {
+                action(e.type)({ ...e, detail: e.detail });
+              }}
+              >Deeper a</kyn-overflow-menu-item
+            >
+
+            <kyn-overflow-menu-item
+              slot="submenu"
+              @on-click=${(e) => {
+                action(e.type)({ ...e, detail: e.detail });
+              }}
+              >Deeper b</kyn-overflow-menu-item
+            >
+          </kyn-overflow-menu-item>
         </kyn-overflow-menu-item>
-        <kyn-overflow-menu-item disabled>Option 3</kyn-overflow-menu-item>
-        <kyn-overflow-menu-item
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-        >
-          Option 4
-        </kyn-overflow-menu-item>
-        <kyn-overflow-menu-item
-          @on-click=${(e) => {
-            action(e.type)({ ...e, detail: e.detail });
-          }}
-          >Longer Text Option example
-        </kyn-overflow-menu-item>
+
         <kyn-overflow-menu-item
           destructive
           description="Destructive Action"
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
-          >Option 5
-        </kyn-overflow-menu-item>
+          >Delete</kyn-overflow-menu-item
+        >
       </kyn-overflow-menu>
     `;
   },

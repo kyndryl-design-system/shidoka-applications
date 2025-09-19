@@ -274,7 +274,7 @@ export class Dropdown extends FormMixin(LitElement) {
   override render() {
     const mainDropdownClasses = {
       dropdown: true,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      ['ai-connected']: this.kind === 'ai',
     };
 
     return html`
@@ -1243,7 +1243,7 @@ export class Dropdown extends FormMixin(LitElement) {
         })
       );
 
-      this.classList.toggle('ai-connected-true', this.kind === 'ai');
+      this.classList.toggle('ai-connected', this.kind === 'ai');
     }
 
     const root = this.shadowRoot;
