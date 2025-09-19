@@ -1269,13 +1269,12 @@ export class Dropdown extends FormMixin(LitElement) {
     if (changedProps.has('value')) {
       this._updateOptions();
 
-      const childrenSlot = root.querySelector<HTMLSlotElement>('slot#children');
+      const childrenSlot: any =
+        root.querySelector<HTMLSlotElement>('slot#children');
       const options = childrenSlot
-        ? childrenSlot
-            .assignedElements()
-            .filter((o): o is HTMLElement => !o.hasAttribute('disabled'))
-        : [];
-      const selected = options.filter((o) => o.hasAttribute('selected'));
+        .assignedElements()
+        .filter((o: any): o is HTMLElement => !o.disabled);
+      const selected = options.filter((o: any) => o.selected);
 
       this.selectAllChecked = selected.length === options.length;
       this.selectAllIndeterminate =
