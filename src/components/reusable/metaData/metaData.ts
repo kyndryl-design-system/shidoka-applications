@@ -51,7 +51,7 @@ export class MetaData extends LitElement {
   override render() {
     const metaIcon = {
       'meta-icon': true,
-      'v-align': !this.horizontal,
+      'vertical-icon-align': !this.horizontal,
     };
     const metaWrapper = {
       'meta-wrapper': true,
@@ -59,7 +59,7 @@ export class MetaData extends LitElement {
     };
     const metaLabel = {
       'meta-label': true,
-      'h-align': this.horizontal,
+      'horizontal-label-align': this.horizontal,
     };
     const metaValue = {
       'meta-value': true,
