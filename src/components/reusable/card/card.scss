@@ -8,20 +8,26 @@
   width: 264px;
 }
 
-:host([aiConnected]:hover) {
+:host(.ai-connected-hover) {
   --_title-color: var(--kd-color-text-title-ai-secondary);
   --_subtitle-color: var(--kd-color-text-level-primary);
   --_description-color: var(--kd-color-text-level-primary);
 }
 
 .card {
-  &-wrapper {
+  &-wrapper,
+  &-wrapper-clickable {
     position: relative;
+    display: block;
+    width: 100%;
     padding: 16px;
-    background-color: var(--kd-color-background-container-default);
-    border: 1px solid var(--kd-color-border-card-default);
     border-radius: 8px;
     height: 100%;
+  }
+
+  &-wrapper {
+    background-color: var(--kd-color-background-container-default);
+    border: 1px solid var(--kd-color-border-card-default);
 
     &.ai-connected {
       background-color: var(--kd-color-background-ui-hollow-default);
@@ -36,22 +42,16 @@
   }
 
   &-wrapper-clickable {
-    position: relative;
-    display: inline-block;
     color: unset;
-    width: inherit;
     text-decoration: none;
     background-color: var(--kd-color-background-container-default);
-    border-radius: 8px;
-    height: 100%;
-    padding: 16px;
     border: 1px solid transparent;
     outline: 2px solid transparent;
     outline-offset: 2px;
     transition: border-color 150ms ease-out, box-shadow 150ms ease-out,
       outline-color 150ms ease-out;
 
-    &:not(.ai-connected):hover {
+    &:not(.ai-connected).is-hover {
       border-color: var(--kd-color-border-ui-hover);
       @include elevation.shadow(2);
     }
@@ -63,71 +63,77 @@
     &.ai-connected {
       background-color: var(--kd-color-background-container-ai-subtle);
       border-color: transparent;
-      border-image: none;
       box-shadow: none;
 
-      &:hover {
-        border-color: transparent;
-        border-image: none;
-        @include gradient.border-gradient-ai(
-          $gradient: gradient.$ai-gradient-default,
-          $radius: 8px,
-          $width: 1px,
-          $surface: var(--kd-color-background-button-primary-ai-hover)
-        );
-        box-shadow: none;
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        opacity: 0;
+        transition: opacity 120ms linear;
+        padding: 1px;
+        background: gradient.$ai-gradient-default;
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+      }
 
+      &.is-hover::after {
+        opacity: 1;
+      }
+
+      &.is-hover {
         ::slotted(.card-title) {
           color: var(--_title-color);
         }
-        ::slotted(.card-subtitle) {
-          color: var(--_subtitle-color);
-        }
+        ::slotted(.card-subtitle),
         ::slotted(.card-description) {
-          color: var(--_description-color);
+          color: var(--_subtitle-color);
         }
       }
 
       &:focus-visible {
-        border-color: var(--kd-color-border-button-ai-state-hover);
+        outline-color: var(--kd-color-border-button-ai-state-hover);
       }
     }
 
     &.ai-highlight {
-      @include gradient.border-gradient-ai(
-        $gradient: gradient.$ai-gradient-default,
-        $radius: 8px,
-        $width: 1px,
-        $surface: var(--kd-color-background-button-primary-ai-hover)
-      );
-      border-color: transparent;
       background: var(--kd-color-background-container-ai-default);
       box-shadow: 0 2px 12px 0 var(--kd-color-utility-elevation-ai-l3);
+      border-color: transparent;
 
-      &:hover,
-      &:focus-visible {
-        border-color: transparent;
-        border-image: none;
-      }
-
-      &.card-border {
-        border-color: transparent;
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        padding: 1px;
+        background: gradient.$ai-gradient-default;
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        opacity: 1;
       }
     }
   }
 
   &-border {
     border: 1px solid var(--kd-color-border-card-clickable);
+    @include elevation.shadow(1);
 
     &-highlight {
       border: 1px solid var(--kd-color-background-highlight-border);
     }
-
     &.ai-connected {
       border-color: transparent;
     }
-
-    @include elevation.shadow(1);
   }
 
   &-highlight {

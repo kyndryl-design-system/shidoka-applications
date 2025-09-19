@@ -31,7 +31,6 @@ export const User = {
             User response here...Lorem ipsum dolor sit amet, consectetur
             adipiscing elit
           </kyn-card>
-          <kyn-avatar initials="A"></kyn-avatar>
         </div>
       </div>
 

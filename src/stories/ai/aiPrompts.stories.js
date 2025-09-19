@@ -29,7 +29,7 @@ export const Default = {
       >
         <kyn-card
           type="clickable"
-          aiConnected
+          .aiConnected=${true}
           href="javascript:void(0)"
           @on-card-click=${handleCardClick}
           class="kd-type--ui-02"
@@ -49,7 +49,7 @@ export const Default = {
 
         <kyn-card
           type="clickable"
-          aiConnected
+          .aiConnected=${true}
           href="javascript:void(0)"
           @on-card-click=${handleCardClick}
           class="kd-type--ui-02"
@@ -69,7 +69,7 @@ export const Default = {
 
         <kyn-card
           type="clickable"
-          aiConnected
+          .aiConnected=${true}
           href="javascript:void(0)"
           @on-card-click=${handleCardClick}
           class="kd-type--ui-02"
