@@ -8,6 +8,7 @@ import analyticsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/1
 import customerEngagementIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/customer-engagement.svg';
 import databaseIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/database.svg';
 import flowDataIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/flow-data.svg';
+import plusIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import '../../components/reusable/notification';
@@ -98,14 +99,14 @@ export const Thinking = {
 
 export const Footer = {
   args: {
-    floating: false,
+    floating: true,
     firstDropDownValue: 'Option 1',
     secondDropDownValue: 'Option 1',
     firstDropDownIcon: databaseIcon,
     secondDropDownIcon: customerEngagementIcon,
   },
   parameters: {
-    controls: { disable: true },
+    controls: { include: ['floating'] },
   },
   render: (args) => {
     return html`
@@ -135,6 +136,9 @@ export const Footer = {
           </kyn-button>
         </div>
         <div class="footer-content">
+          <kyn-button kind="tertiary" size="small" iconPosition="right">
+            ${unsafeSVG(plusIcon)}
+          </kyn-button>
           <kyn-dropdown
             ?hideLabel=${true}
             value=${args.firstDropDownValue}
@@ -145,7 +149,7 @@ export const Footer = {
             <kyn-button
               slot="anchor"
               class="dropdown-anchor-button"
-              kind="secondary-ai"
+              kind="tertiary"
               size="small"
               iconPosition="right"
             >
@@ -182,7 +186,7 @@ export const Footer = {
             <kyn-button
               slot="anchor"
               class="dropdown-anchor-button"
-              kind="secondary-ai"
+              kind="tertiary"
               size="small"
               iconPosition="right"
             >
@@ -249,6 +253,7 @@ const sharedStyles = html`
       align-items: center;
       background-color: var(--kd-color-background-container-ai-level-2);
       border-radius: 8px;
+      border-color: var(--kd-color-border-forms-default);
     }
 
     .ai-input-query.floating {

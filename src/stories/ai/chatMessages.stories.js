@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { User, AI } from './response.stories.js';
-import { Default as infoCard } from './infoCard.stories.js';
+import { Default as infoCard } from '../infoCard/infoCard.stories.js';
 
 export default {
   title: 'AI/Patterns/Chat',
@@ -25,10 +25,6 @@ export const ChatMessages = {
           flex-direction: column;
           gap: 16px;
           /* Adjust the margin as needed */
-        }
-
-        .response_wrapper {
-          padding: 0px 16px;
         }
       </style>
     `;
