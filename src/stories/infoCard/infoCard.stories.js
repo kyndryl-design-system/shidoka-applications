@@ -21,7 +21,7 @@ export default {
 export const Default = {
   render: () => {
     return html`
-      <kyn-card style="width:100%" type="normal" aiConnected>
+      <kyn-card class="info-card kyn-card-hover" type="normal" aiConnected>
         <div class="info-card-container">
           <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
 
@@ -41,7 +41,7 @@ export const Default = {
 export const WithRightIconAndDescription = {
   render: () => {
     return html`
-      <kyn-card style="width:100%" type="normal" aiConnected>
+      <kyn-card class="info-card kyn-card-hover" type="normal" aiConnected>
         <div class="info-card-container">
           <div class="info-card-content-wrapper">This is the description</div>
 
