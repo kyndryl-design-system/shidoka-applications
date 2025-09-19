@@ -3,6 +3,7 @@
 
 :host {
   display: block;
+  height: 100%;
 }
 
 .meta-container {
@@ -13,22 +14,63 @@
   align-self: stretch;
   background: var(--kd-color-background-container-subtle);
   min-width: 0;
+  height: 100%;
 }
 .meta-wrapper {
   display: flex;
-  flex-direction: row;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
   flex: 1 1 auto;
   min-width: 0;
   max-width: 100%;
-  &.vertical {
+  min-height: 0;
+  height: 100%;
+  &.horizontal-align {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    flex-direction: row;
+    gap: 8px;
     flex: 1 1 auto;
     min-width: 0;
     max-width: 100%;
+    min-height: 0;
+    height: 100%;
+  }
+  .meta-label {
+    @include typography.type-ui-02;
+    font-weight: 600;
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: auto;
+    &.h-align {
+      max-width: 60px;
+    }
+  }
+  .meta-value {
+    width: 100%;
+    &.scrollable {
+      flex: 1 1 auto;
+      min-height: 0;
+      height: 100%;
+      overflow-y: auto;
+    }
+    &.truncate {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
   }
 }
 
@@ -39,21 +81,6 @@
   align-self: stretch;
   &.v-align {
     align-items: anchor-center;
-  }
-}
-
-.meta-label {
-  @include typography.type-ui-02;
-  font-weight: 600;
-  flex: 1 1 auto;
-  min-width: 0;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  &.h-align {
-    width: 60px;
-    max-width: 120px;
   }
 }
 
