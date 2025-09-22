@@ -4,16 +4,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import Styles from './metaData.scss?inline';
 /**
  * MetaData component.
- * @slot unnamed - Slot for other content.
  * @slot icon - Slot for icon.
+ * @slot label - Slot for label.
+ * @slot unnamed - Slot for other content.
  */
 @customElement('kyn-meta-data')
 export class MetaData extends LitElement {
   static override styles = unsafeCSS(Styles);
-
-  /** Label text. */
-  @property({ type: String })
-  accessor labelText = '';
 
   /** Horizontal orientation. Default is `false` */
   @property({ type: Boolean })
@@ -33,6 +30,12 @@ export class MetaData extends LitElement {
   @state()
   private accessor hasIcon = false;
 
+  /** Determine the label slot has content.
+   * @internal
+   */
+  @state()
+  private accessor hasLabel = false;
+
   override render() {
     const metaContainer = {
       'meta-container': true,
@@ -41,6 +44,7 @@ export class MetaData extends LitElement {
     const metaIcon = {
       'meta-icon': true,
       'vertical-icon-align': !this.horizontal,
+      displayEle: !this.hasIcon,
     };
     const metaWrapper = {
       'meta-wrapper': true,
@@ -48,6 +52,7 @@ export class MetaData extends LitElement {
     };
     const metaLabel = {
       'meta-label': true,
+      displayEle: !this.hasLabel,
     };
     const metaValue = {
       'meta-value': true,
@@ -55,19 +60,17 @@ export class MetaData extends LitElement {
     };
     return html`
       <div class="${classMap(metaContainer)}">
-        <div
-          class="${classMap(metaIcon)}"
-          style=${!this.hasIcon ? 'display: none;' : ''}
-        >
+        <div class="${classMap(metaIcon)}">
           <slot name="icon" @slotchange=${() => this.onIconSlotChange()}></slot>
         </div>
         ${this.hasIcon ? html` <div class="spacer"></div> ` : null}
         <div class="${classMap(metaWrapper)}">
-          ${this.labelText !== '' || this.iconSlot?.assignedElements().length
-            ? html`
-                <div class="${classMap(metaLabel)}">${this.labelText}</div>
-              `
-            : null}
+          <div class="${classMap(metaLabel)}">
+            <slot
+              name="label"
+              @slotchange=${() => this.onLabelSlotChange()}
+            ></slot>
+          </div>
           <div
             class="${classMap(metaValue)}"
             tabindex=${this.scrollableContent ? '0' : '-1'}
@@ -82,6 +85,8 @@ export class MetaData extends LitElement {
   override firstUpdated() {
     this.hasIcon =
       this.iconSlot?.assignedElements({ flatten: true }).length > 0;
+    this.hasLabel =
+      this.labelSlot?.assignedElements({ flatten: true }).length > 0;
   }
 
   private onIconSlotChange() {
@@ -89,9 +94,26 @@ export class MetaData extends LitElement {
       this.iconSlot?.assignedElements({ flatten: true }).length > 0;
   }
 
+  private onLabelSlotChange() {
+    this.hasLabel =
+      this.labelSlot?.assignedElements({ flatten: true }).length > 0;
+  }
+
+  /** Determine the icon slot content.
+   * @ignore
+   */
   private get iconSlot(): HTMLSlotElement {
     return this.shadowRoot!.querySelector(
       'slot[name="icon"]'
+    )! as HTMLSlotElement;
+  }
+
+  /** Determine the label slot content.
+   * @ignore
+   */
+  private get labelSlot(): HTMLSlotElement {
+    return this.shadowRoot!.querySelector(
+      'slot[name="label"]'
     )! as HTMLSlotElement;
   }
 }

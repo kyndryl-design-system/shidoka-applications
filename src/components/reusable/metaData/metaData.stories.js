@@ -69,7 +69,6 @@ export default {
 };
 
 const args = {
-  labelText: 'Label',
   horizontal: false,
   noBackground: false,
 };
@@ -81,9 +80,9 @@ export const MetaData = {
       <div style="max-width: 300px;">
         <kyn-meta-data
           ?horizontal=${args.horizontal}
-          labelText=${args.labelText}
           ?noBackground=${args.noBackground}
         >
+          <div slot="label">Label</div>
           <div slot="icon">${unsafeSVG(testingIcon)}</div>
           <div class="example">
             <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
@@ -104,9 +103,9 @@ export const WithText = {
       <div style="max-width: 300px;">
         <kyn-meta-data
           ?horizontal=${args.horizontal}
-          labelText=${args.labelText}
           ?noBackground=${args.noBackground}
         >
+          <div slot="label">Label</div>
           <div
             style="color: var(--kd-color-text-level-secondary);"
             class="example-content line_height"
@@ -128,9 +127,9 @@ export const WithLink = {
       <div style="max-width: 300px;">
         <kyn-meta-data
           ?horizontal=${args.horizontal}
-          labelText=${args.labelText}
           ?noBackground=${args.noBackground}
         >
+          <div slot="label">Label</div>
           <div class="line_height">
             ${Link.render({ standalone: true, ...Link.args })}
           </div>
@@ -147,9 +146,9 @@ export const WithDate = {
       <div style="max-width: 300px;">
         <kyn-meta-data
           ?horizontal=${args.horizontal}
-          labelText=${args.labelText}
           ?noBackground=${args.noBackground}
         >
+          <div slot="label">Label</div>
           <div class="line_height">09/18/2025</div>
         </kyn-meta-data>
       </div>
@@ -164,9 +163,9 @@ export const WithBadge = {
       <div style="max-width: 300px;">
         <kyn-meta-data
           ?horizontal=${args.horizontal}
-          labelText=${args.labelText}
           ?noBackground=${args.noBackground}
         >
+          <div slot="label">Label</div>
           <div style="line-height: 18px;">
             ${Badge.render({
               ...Badge.args,
@@ -184,61 +183,63 @@ export const WithTable = {
   args,
   render: (args) => {
     return html`
-      <h4>With Table</h4>
-      <br />
-      <kyn-meta-data
-        ?horizontal=${args.horizontal}
-        labelText=${args.labelText}
-        ?noBackground=${args.noBackground}
-      >
-        <div slot="icon">${unsafeSVG(testingIcon)}</div>
-        <table style="background: var(--kd-color-background-table-row);">
-          <tr>
-            <td>First Name</td>
-            <td>Arya</td>
-          </tr>
-          <tr>
-            <td>Last Name</td>
-            <td>Stark</td>
-          </tr>
-          <tr>
-            <td>Birthday</td>
-            <td>February 15</td>
-          </tr>
-          <tr>
-            <td>Age</td>
-            <td>15</td>
-          </tr>
-          <tr>
-            <td>Full Name</td>
-            <td>Arya Stark</td>
-          </tr>
-          <tr>
-            <td>Gender</td>
-            <td>Female</td>
-          </tr>
-          <tr>
-            <td>Email</td>
-            <td>arya.stark@winterfell.com</td>
-          </tr>
-        </table>
-      </kyn-meta-data>
+      <div style="max-width: 100%">
+        <h4>With Table</h4>
+        <br />
+        <kyn-meta-data
+          ?horizontal=${args.horizontal}
+          ?noBackground=${args.noBackground}
+        >
+          <div slot="label">Label</div>
+          <div slot="icon">${unsafeSVG(testingIcon)}</div>
+          <table style="background: var(--kd-color-background-table-row);">
+            <tr>
+              <td>First Name</td>
+              <td>Arya</td>
+            </tr>
+            <tr>
+              <td>Last Name</td>
+              <td>Stark</td>
+            </tr>
+            <tr>
+              <td>Birthday</td>
+              <td>February 15</td>
+            </tr>
+            <tr>
+              <td>Age</td>
+              <td>15</td>
+            </tr>
+            <tr>
+              <td>Full Name</td>
+              <td>Arya Stark</td>
+            </tr>
+            <tr>
+              <td>Gender</td>
+              <td>Female</td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td>arya.stark@winterfell.com</td>
+            </tr>
+          </table>
+        </kyn-meta-data>
+      </div>
     `;
   },
 };
 
 export const ScrollableContent = {
-  args: { ...args, labelText: 'Label' },
+  args,
   render: (args) => {
     return html`
       <div style="max-width: 500px;">
         <kyn-meta-data
           ?horizontal=${args.horizontal}
-          labelText=${args.labelText}
-          ?showIcon=${args.showIcon}
+          ?noBackground=${args.noBackground}
           scrollableContent
           style="height: 150px;"
         >
+          <div slot="label">Label</div>
           <div
             style="color: var(--kd-color-text-level-secondary);line-height: 18px;"
             class="example-content"
