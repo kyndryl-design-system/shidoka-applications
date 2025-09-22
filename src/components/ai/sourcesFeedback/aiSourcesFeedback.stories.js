@@ -208,7 +208,7 @@ const feedbackFormContent = () => html`
         >Submit</kyn-button
       >
       <kyn-button
-        kind="outline-ai"
+        kind="secondary"
         size="small"
         @on-click=${(e) => handleCancelClick(e)}
         >Cancel</kyn-button

@@ -224,8 +224,6 @@ export const Gallery = {
         <div>
           <div class="heading kd-type--headline-06 heading-text">AI</div>
           <kyn-button kind="primary-ai">Primary AI</kyn-button>
-          <!-- <kyn-button kind="secondary-ai">Secondary AI</kyn-button>
-          <kyn-button kind="outline-ai">Outline AI</kyn-button> -->
           <kyn-button kind="ghost-ai">Ghost AI</kyn-button>
         </div>
         <div>
