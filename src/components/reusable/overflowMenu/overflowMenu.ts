@@ -2,13 +2,20 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
+import './overflowMenuItem';
+
 import SCSS from './overflowMenu.scss?inline';
+
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/overflow.svg';
+import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 /**
  * Overflow Menu.
  * @slot unnamed - Slot for overflow menu items.
  * @fires on-toggle - Capture the open/close event and emits the new state.`detail:{ open: boolean }`
+ * @prop {'ai'|'default'|string} kind
  */
 @customElement('kyn-overflow-menu')
 export class OverflowMenu extends LitElement {
@@ -18,13 +25,19 @@ export class OverflowMenu extends LitElement {
   @property({ type: Boolean })
   accessor open = false;
 
-  /** Menu kind. */
+  /** Menu kind.
+   *  @prop {'ai'|'default'|string} kind
+   **/
   @property({ type: String })
-  accessor kind: 'ai' | 'default' = 'default';
+  accessor kind: 'ai' | 'default' | (string & {}) = 'default';
 
   /** Anchors the menu to the right of the button. */
   @property({ type: Boolean })
   accessor anchorRight = false;
+
+  /** Text displayed in nested menu back button. */
+  @property({ type: String })
+  accessor backButtonText = '';
 
   /** 3 dots vertical orientation. */
   @property({ type: Boolean })
@@ -57,13 +70,33 @@ export class OverflowMenu extends LitElement {
   @state()
   accessor _openUpwards = false;
 
+  /**
+   * History of previous menus for back navigation.
+   * Each entry is either 'root' (slot) or a string of HTML for a submenu.
+   * @ignore
+   */
+  @state()
+  accessor _menuHistory: string[] = [];
+
+  /**
+   * Current submenu HTML when viewing a submenu. Null when viewing root slot.
+   * @ignore
+   */
+  @state()
+  accessor _currentMenuHtml: string | null = null;
+
   private _onDocClick = (e: Event) => this.handleClickOut(e);
   private _onDocKeydown = (e: KeyboardEvent) => this.handleEscapePress(e);
   private _onItemClick = () => {
     this.open = false;
+    this._menuHistory = [];
+    this._currentMenuHtml = null;
     this._emitToggleEvent();
     this._btnEl?.focus();
   };
+
+  private _onOpenSubmenu = (e: Event) =>
+    this.handleOpenSubmenu(e as CustomEvent);
 
   override render() {
     const buttonClasses = {
@@ -97,7 +130,24 @@ export class OverflowMenu extends LitElement {
         </button>
 
         <div id="menu" class=${classMap(menuClasses)}>
-          <slot></slot>
+          ${this._menuHistory.length > 0
+            ? html`
+                <kyn-overflow-menu-item
+                  .kind=${this.kind}
+                  class="menu-item-inner-el submenu-back-item"
+                  @on-click=${(e: Event) => {
+                    e.stopPropagation();
+                    this.goBack();
+                  }}
+                >
+                  <span class="back-button-icon">${unsafeSVG(backIcon)}</span>
+                  <span class="back-button-txt">${this.backButtonText}</span>
+                </kyn-overflow-menu-item>
+                <div class="submenu-contents">
+                  ${unsafeHTML(this._currentMenuHtml || '')}
+                </div>
+              `
+            : html`<slot></slot>`}
         </div>
       </div>
     `;
@@ -149,7 +199,7 @@ export class OverflowMenu extends LitElement {
     }
   }
 
-  override updated(changedProps: any) {
+  override updated(changedProps: Map<string, unknown>) {
     if (changedProps.has('kind')) {
       this.dispatchEvent(
         new CustomEvent('kind-changed', {
@@ -171,6 +221,10 @@ export class OverflowMenu extends LitElement {
         } else {
           this._openUpwards = false;
         }
+      } else {
+        this._menuHistory = [];
+        this._currentMenuHtml = null;
+        this._openUpwards = false;
       }
 
       this._positionMenu();
@@ -235,14 +289,152 @@ export class OverflowMenu extends LitElement {
     document.addEventListener('click', this._onDocClick);
     document.addEventListener('keydown', this._onDocKeydown);
     this.addEventListener('on-click', this._onItemClick);
+    this.addEventListener('open-submenu', this._onOpenSubmenu);
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', this._onDocClick);
     document.removeEventListener('keydown', this._onDocKeydown);
     this.removeEventListener('on-click', this._onItemClick);
+    this.removeEventListener('open-submenu', this._onOpenSubmenu);
 
     super.disconnectedCallback();
+  }
+
+  private handleOpenSubmenu(e: CustomEvent) {
+    e.stopPropagation();
+    const submenuHtml = (e.detail && e.detail.html) || '';
+
+    if (this._currentMenuHtml === null) {
+      this._menuHistory = [...this._menuHistory, 'root'];
+    } else {
+      this._menuHistory = [...this._menuHistory, this._currentMenuHtml];
+    }
+
+    this._currentMenuHtml = submenuHtml;
+
+    requestAnimationFrame(() => {
+      const contents = this._menuEl?.querySelector('.submenu-contents');
+      const items = contents
+        ? Array.from(contents.querySelectorAll('kyn-overflow-menu-item'))
+        : [];
+
+      items.forEach((it: any) => {
+        try {
+          it.kind = this.kind;
+        } catch (err) {
+          /* no op */
+        }
+      });
+
+      if (
+        typeof (customElements as any) !== 'undefined' &&
+        (customElements as any).whenDefined
+      ) {
+        (customElements as any)
+          .whenDefined('kyn-overflow-menu-item')
+          .then(() => {
+            setTimeout(() => {
+              const upgradedItems = contents
+                ? Array.from(
+                    contents.querySelectorAll('kyn-overflow-menu-item')
+                  )
+                : [];
+              upgradedItems.forEach((it: any) => {
+                try {
+                  it.kind = this.kind;
+                } catch (err) {
+                  /* no op */
+                }
+              });
+            }, 0);
+          })
+          .catch(() => {
+            /* no op */
+          });
+      }
+      this._menuEl?.querySelector('button, a')?.focus();
+    });
+  }
+
+  private goBack() {
+    const last = this._menuHistory.pop();
+
+    this._menuHistory = [...this._menuHistory];
+    if (last === 'root') {
+      this._currentMenuHtml = null;
+
+      requestAnimationFrame(() => {
+        const menuItems: any = this.getMenuItems();
+
+        menuItems.forEach((it: any) => {
+          try {
+            it.kind = this.kind;
+          } catch (err) {
+            /* no op */
+          }
+        });
+
+        if (menuItems.length > 0) {
+          menuItems[0].shadowRoot?.querySelector('button')
+            ? menuItems[0].shadowRoot?.querySelector('button')?.focus()
+            : menuItems[0].shadowRoot?.querySelector('a')?.focus();
+        } else {
+          this._btnEl?.focus();
+        }
+      });
+    } else {
+      this._currentMenuHtml = last || null;
+      requestAnimationFrame(() => {
+        const contents = this._menuEl?.querySelector('.submenu-contents');
+        const items = contents
+          ? Array.from(contents.querySelectorAll('kyn-overflow-menu-item'))
+          : [];
+
+        items.forEach((it: any) => {
+          try {
+            it.kind = this.kind;
+          } catch (err) {
+            /* no op */
+          }
+        });
+
+        if (
+          typeof (customElements as any) !== 'undefined' &&
+          (customElements as any).whenDefined
+        ) {
+          (customElements as any)
+            .whenDefined('kyn-overflow-menu-item')
+            .then(() => {
+              setTimeout(() => {
+                const upgradedItems = contents
+                  ? Array.from(
+                      contents.querySelectorAll('kyn-overflow-menu-item')
+                    )
+                  : [];
+                upgradedItems.forEach((it: any) => {
+                  try {
+                    it.kind = this.kind;
+                  } catch (err) {
+                    /* no op */
+                  }
+                });
+              }, 0);
+            })
+            .catch(() => {
+              /* no op */
+            });
+        }
+
+        this._menuEl?.querySelector('button, a')?.focus();
+      });
+    }
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'kyn-overflow-menu': OverflowMenu;
   }
 }
 
