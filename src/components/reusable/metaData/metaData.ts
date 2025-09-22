@@ -43,7 +43,6 @@ export class MetaData extends LitElement {
     };
     const metaIcon = {
       'meta-icon': true,
-      'vertical-icon-align': !this.horizontal,
       displayEle: !this.hasIcon,
     };
     const metaWrapper = {
