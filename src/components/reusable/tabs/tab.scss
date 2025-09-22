@@ -34,6 +34,9 @@
   text-align: center;
   border-radius: 4px 4px 0 0;
   border-bottom: 1px solid var(--kd-color-border-accent-secondary);
+  border: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent;
   transition: border-color 150ms ease-out, background-color 150ms ease-out,
     color 150ms ease-out;
 
@@ -96,33 +99,22 @@
 
   &.tab.ai-connected:not(.disabled) {
     color: var(--kd-color-text-button-ai-default);
+    border-color: transparent;
 
     &.selected {
-      border-color: var(--kd-color-border-button-ai-state-focused);
+      border-bottom-color: var(--kd-color-border-button-ai-state-focused);
     }
 
     &:hover,
     &.selected:hover {
+      border-color: transparent;
       color: var(--kd-color-text-level-light);
-      @include gradient.border-gradient-ai(
+      @include gradient.outline-gradient-ai(
         $gradient: gradient.$ai-gradient-default,
         $radius: 4px 4px 0 0,
-        $width: 1px,
+        $width: 2px,
         $surface: var(--kd-color-background-button-primary-ai-hover)
       );
-    }
-
-    &.size--sm {
-      &:hover,
-      &.selected:hover {
-        color: var(--kd-color-text-level-light);
-        @include gradient.border-gradient-ai(
-          $gradient: gradient.$ai-gradient-default,
-          $radius: 4px 4px 0 0,
-          $width: 2px,
-          $surface: var(--kd-color-background-button-primary-ai-hover)
-        );
-      }
     }
 
     &:active,
