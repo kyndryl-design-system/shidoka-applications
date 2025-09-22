@@ -9,12 +9,16 @@
 .meta-container {
   display: flex;
   padding: 16px;
+  border-radius: 4px;
   align-items: flex-start;
   gap: 8px;
   align-self: stretch;
-  background: var(--kd-color-background-container-subtle);
+  background: var(--kd-color-background-opacity-1);
   min-width: 0;
   height: 100%;
+  &.no-background {
+    background: none;
+  }
 }
 .meta-wrapper {
   display: flex;
@@ -38,17 +42,7 @@
   }
   .meta-label {
     @include typography.type-ui-02;
-    font-weight: 600;
-    flex: 0 0 auto;
-    min-width: 0;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: auto;
-    &.horizontal-label-align {
-      max-width: 60px;
-    }
+    font-weight: var(--kd-font-weight-medium);
   }
   .meta-value {
     width: 100%;
@@ -57,15 +51,6 @@
       min-height: 0;
       height: 100%;
       overflow-y: auto;
-    }
-    &.truncate {
-      flex: 1 1 auto;
-      min-width: 0;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      display: block;
     }
 
     &:focus-visible {
@@ -79,13 +64,14 @@
   padding-left: 4px;
   align-items: flex-start;
   align-self: stretch;
+  gap: 8px;
   &.vertical-icon-align {
     align-items: anchor-center;
   }
 }
 
 .spacer {
-  display: flex;
+  display: block;
   width: 1px;
   align-items: center;
   align-self: stretch;
