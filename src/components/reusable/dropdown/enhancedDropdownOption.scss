@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/menu-item.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: block;
@@ -14,6 +15,17 @@
   border: none;
   transition: background-color 150ms ease-out;
   min-height: 74px;
+
+  &.ai-connected {
+    &:not([disabled]):hover {
+      @include gradient.border-gradient-ai(
+        $gradient: gradient.$ai-gradient-default,
+        $radius: 0,
+        $width: 1px,
+        $surface: var(--kd-color-background-menu-state-ai-hover)
+      );
+    }
+  }
 
   kyn-checkbox {
     margin: 0 2px;

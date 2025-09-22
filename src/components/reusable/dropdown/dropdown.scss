@@ -7,7 +7,6 @@
 
 :host {
   display: inline-block;
-  color-scheme: light dark;
 }
 
 :host(.pagination-dropdown) .select {
@@ -36,7 +35,7 @@ slot[name='icon']::slotted(*) {
   align-items: center;
   appearance: none;
   border: 1px solid var(--kd-color-border-forms-default);
-  border-radius: 4px;
+  border-radius: 0;
   height: 48px;
   min-width: 95px;
   padding: 0 48px 0 16px;
@@ -72,13 +71,26 @@ slot[name='icon']::slotted(*) {
     border: 1px solid transparent;
     background: var(--kd-color-background-menu-state-ai-default);
 
+    .arrow-icon {
+      color: var(--kd-color-icon-primary);
+    }
+
     &:hover {
       @include gradient.border-gradient-ai(
         $gradient: gradient.$ai-gradient-default,
         $radius: 0,
         $width: 1px,
-        $surface: var(--kd-color-background-menu-state-ai-hover)
+        $surface: var(--kd-color-background-menu-state-ai-default)
       );
+    }
+
+    &:active {
+      background: var(--kd-color-background-menu-state-ai-pressed);
+      color: var(--kd-color-text-level-light);
+
+      .placeholder-text {
+        color: var(--kd-color-text-level-light);
+      }
     }
   }
 }
