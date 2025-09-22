@@ -217,7 +217,7 @@ export class AISourcesFeedback extends LitElement {
           <kyn-button
             class="close"
             @on-click=${(e: Event) => this._handleClick(e, 'sources')}
-            kind="tertiary"
+            kind="ghost"
             size="small"
             description=${this.closeText}
           >
@@ -265,7 +265,7 @@ export class AISourcesFeedback extends LitElement {
             description=${this.closeText}
             @on-click=${(e: Event) =>
               this._handleClick(e, 'feedback', this._selectedFeedbackType)}
-            kind="tertiary"
+            kind="ghost"
             size="small"
           >
             <span slot="icon">${unsafeSVG(closeIcon)}</span>
