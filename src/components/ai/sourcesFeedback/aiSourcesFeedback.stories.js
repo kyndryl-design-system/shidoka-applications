@@ -204,9 +204,7 @@ const feedbackFormContent = () => html`
     ></kyn-text-area>
 
     <div class="footer">
-      <kyn-button type="submit" kind="primary-ai" size="small"
-        >Submit</kyn-button
-      >
+      <kyn-button type="submit" kind="primary" size="small">Submit</kyn-button>
       <kyn-button
         kind="secondary"
         size="small"
