@@ -90,7 +90,7 @@ export const AISourcesFeedback = {
       >
         <kyn-button
           slot="copy"
-          kind="ghost"
+          kind="tertiary"
           size="small"
           iconPosition="left"
           description="Copy"

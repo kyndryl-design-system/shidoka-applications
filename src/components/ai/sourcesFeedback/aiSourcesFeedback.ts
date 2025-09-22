@@ -9,7 +9,6 @@ import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit-html/directives/class-map.js';
 
 import stylesheet from './aiSourcesFeedback.scss?inline';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -138,7 +137,7 @@ export class AISourcesFeedback extends LitElement {
 
           <div class="${classesSources}">
             <kyn-button
-              kind="ghost"
+              kind="tertiary"
               size="small"
               class="kyn-sources-title"
               iconPosition="right"
@@ -159,7 +158,7 @@ export class AISourcesFeedback extends LitElement {
         <div class="right-div">
           <div class="${classesFeedback1}">
             <kyn-button
-              kind="ghost"
+              kind="tertiary"
               size="small"
               id="kyn-feedback-title-positive"
               class="kyn-feedback-title"
@@ -182,7 +181,7 @@ export class AISourcesFeedback extends LitElement {
 
           <div class="${classesFeedback2}">
             <kyn-button
-              kind="ghost"
+              kind="tertiary"
               size="small"
               id="kyn-feedback-title-negative"
               class="kyn-feedback-title"
@@ -218,7 +217,7 @@ export class AISourcesFeedback extends LitElement {
           <kyn-button
             class="close"
             @on-click=${(e: Event) => this._handleClick(e, 'sources')}
-            kind="ghost"
+            kind="tertiary"
             size="small"
             description=${this.closeText}
           >
@@ -235,7 +234,7 @@ export class AISourcesFeedback extends LitElement {
             ? html`
                 <kyn-button
                   class="reveal-toggle"
-                  kind="ghost"
+                  kind="tertiary"
                   size="small"
                   @on-click=${() =>
                     this._toggleLimitRevealed(!this.limitRevealed)}
@@ -266,7 +265,7 @@ export class AISourcesFeedback extends LitElement {
             description=${this.closeText}
             @on-click=${(e: Event) =>
               this._handleClick(e, 'feedback', this._selectedFeedbackType)}
-            kind="ghost"
+            kind="tertiary"
             size="small"
           >
             <span slot="icon">${unsafeSVG(closeIcon)}</span>
