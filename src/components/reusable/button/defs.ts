@@ -16,6 +16,7 @@ export enum BUTTON_KINDS {
   OUTLINE_AI = 'outline-ai',
   OUTLINE_DESTRUCTIVE = 'outline-destructive',
   GHOST = 'ghost',
+  GHOST_AI = 'ghost-ai',
   GHOST_DESTRUCTIVE = 'ghost-destructive',
   CONTENT = 'content',
 }

@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: block;
@@ -74,7 +75,6 @@
     color: var(--kd-color-text-level-primary);
 
     &.selected {
-      // background: var(--kd-color-background-button-tertiary-state-default);
       border-color: var(--kd-color-border-button-primary-state-default);
       color: var(--kd-color-text-link-level-default);
     }
@@ -96,24 +96,39 @@
 
   &.tab.ai-connected:not(.disabled) {
     color: var(--kd-color-text-button-ai-default);
-    border-color: var(--kd-color-border-button-ai-state-default);
 
     &.selected {
-      // background: var(--kd-color-background-button-secondary-ai-default);
       border-color: var(--kd-color-border-button-ai-state-focused);
     }
 
     &:hover,
     &.selected:hover {
-      background: var(--kd-color-background-button-secondary-ai-hover);
-      border-color: var(--kd-color-border-button-secondary-ai-hover);
       color: var(--kd-color-text-level-light);
+      @include gradient.border-gradient-ai(
+        $gradient: gradient.$ai-gradient-default,
+        $radius: 4px 4px 0 0,
+        $width: 1px,
+        $surface: var(--kd-color-background-button-primary-ai-hover)
+      );
+    }
+
+    &.size--sm {
+      &:hover,
+      &.selected:hover {
+        color: var(--kd-color-text-level-light);
+        @include gradient.border-gradient-ai(
+          $gradient: gradient.$ai-gradient-default,
+          $radius: 4px 4px 0 0,
+          $width: 2px,
+          $surface: var(--kd-color-background-button-primary-ai-hover)
+        );
+      }
     }
 
     &:active,
     &.selected:active {
-      background: var(--kd-color-background-button-primary-ai-hover);
-      border-color: var(--kd-color-border-button-secondary-ai-hover);
+      background: var(--kd-color-background-button-primary-ai-pressed);
+      border-color: transparent;
       color: var(--kd-color-text-button-dark-primary);
     }
   }

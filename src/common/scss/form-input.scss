@@ -1,6 +1,7 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '../../common/scss/mixins.scss';
+@use '../../common/scss/gradients.scss' as gradient;
 
 .label-text {
   @include typography.type-ui-02;
@@ -70,8 +71,16 @@ textarea {
   outline-offset: -2px;
 
   .ai-connected & {
-    border-color: var(--kd-color-border-forms-default);
     background: var(--kd-color-background-forms-ai-default);
+
+    &:not([disabled]) {
+      @include gradient.border-gradient-ai(
+        $gradient: gradient.$ai-gradient-default,
+        $radius: 4px,
+        $width: 1px,
+        $surface: var(--kd-color-background-container-ai-level-2)
+      );
+    }
   }
 
   &:hover {
