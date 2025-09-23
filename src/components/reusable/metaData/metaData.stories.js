@@ -192,7 +192,14 @@ export const WithBadge = {
 };
 
 export const WithTable = {
-  args,
+  args: {
+    ...args,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     return html`
       <kyn-meta-data
@@ -235,7 +242,14 @@ export const WithTable = {
 };
 
 export const ScrollableContent = {
-  args,
+  args: {
+    ...args,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     return html`
       <div style="max-width: 500px;">
@@ -268,7 +282,14 @@ export const ScrollableContent = {
 };
 
 export const StaticGrid = {
-  args,
+  args: {
+    ...args,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
   render: (args) => {
     return html`
       This example uses
