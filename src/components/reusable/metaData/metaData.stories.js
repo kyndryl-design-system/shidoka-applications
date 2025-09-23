@@ -5,6 +5,9 @@ import testingIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import './index';
 import { LinkWithIcon as Link } from '../link/Link.stories.js';
 import { Badge } from '../badge/badge.stories.js';
+import '../table';
+import { repeat } from 'lit/directives/repeat.js';
+import { characters } from '../table/story-helpers/ultils.sample';
 
 export default {
   title: 'Components/Meta Data',
@@ -49,7 +52,8 @@ export default {
         .line_height {
           line-height: 18px;
         }
-        table {
+
+        .meta-content {
           width: 100%;
           border-collapse: collapse;
           background: var(--kd-color-background-table-row);
@@ -58,15 +62,6 @@ export default {
             width: 100%;
             overflow-x: auto;
           }
-        }
-
-        td {
-          padding: 16px;
-          text-align: left;
-        }
-
-        tr:not(:first-child) td {
-          border-top: 1px solid var(--kd-color-border-level-tertiary);
         }
       </style>
       ${story()}
@@ -79,7 +74,29 @@ const args = {
   noBackground: false,
 };
 
-export const MetaData = {
+export const Default = {
+  args,
+  render: (args) => {
+    return html`
+      <div style="max-width: 300px;">
+        <kyn-meta-data
+          ?horizontal=${args.horizontal}
+          ?noBackground=${args.noBackground}
+        >
+          <div slot="label">Label</div>
+          <div class="example">
+            <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+              ${unsafeSVG(smCube)}
+            </div>
+            <span class="kd-type--ui-02 kd-type--weight-medium">Slot</span>
+          </div>
+        </kyn-meta-data>
+      </div>
+    `;
+  },
+};
+
+export const WithIcon = {
   args,
   render: (args) => {
     return html`
@@ -195,36 +212,39 @@ export const WithTable = {
       >
         <div slot="label">Label</div>
         <div slot="icon">${unsafeSVG(testingIcon)}</div>
-        <table>
-          <tr>
-            <td>First Name</td>
-            <td>Arya</td>
-          </tr>
-          <tr>
-            <td>Last Name</td>
-            <td>Stark</td>
-          </tr>
-          <tr>
-            <td>Birthday</td>
-            <td>February 15</td>
-          </tr>
-          <tr>
-            <td>Age</td>
-            <td>15</td>
-          </tr>
-          <tr>
-            <td>Full Name</td>
-            <td>Arya Stark</td>
-          </tr>
-          <tr>
-            <td>Gender</td>
-            <td>Female</td>
-          </tr>
-          <tr>
-            <td>Email</td>
-            <td>arya.stark@winterfell.com</td>
-          </tr>
-        </table>
+        <kyn-table class="meta-content">
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th .align=${'center'}>ID</kyn-th>
+              <kyn-th>First Name</kyn-th>
+              <kyn-th>Last Name</kyn-th>
+              <kyn-th>Birthday</kyn-th>
+              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th>Full Name</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row) => row.id,
+              (row) => html`
+                <kyn-tr
+                  .rowId=${String(row.id)}
+                  key="row-${row.id}"
+                  ?disabled=${row.id == 1 || row.id == 3 ? true : false}
+                  ?selected=${row.id == 2 ? true : false}
+                >
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
       </kyn-meta-data>
     `;
   },
@@ -264,7 +284,8 @@ export const ScrollableContent = {
 };
 
 export const StaticGrid = {
-  render: () => {
+  args,
+  render: (args) => {
     return html`
       This example uses
       <a
