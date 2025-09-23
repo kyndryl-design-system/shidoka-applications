@@ -530,8 +530,14 @@ export class Dropdown extends FormMixin(LitElement) {
     this.assistiveText = 'Add new option input';
   }
 
+  private canOpen(): boolean {
+    return (
+      !this.disabled && (!this.readonly || (this.readonly && this.multiple))
+    );
+  }
+
   private handleAnchorClick(e: MouseEvent) {
-    if (this.disabled) return;
+    if (!this.canOpen()) return;
 
     const path = (e.composedPath?.() || []) as Array<EventTarget>;
     const isInOptions =
@@ -544,12 +550,13 @@ export class Dropdown extends FormMixin(LitElement) {
 
     this.handleClick();
   }
-  private handleAnchorKeydown(e: KeyboardEvent) {
-    if (this.disabled) return;
 
-    if (this.readonly) {
-      const keys = [' ', 'Enter', 'ArrowDown', 'ArrowUp'];
-      if (keys.includes(e.key)) {
+  private handleAnchorKeydown(e: KeyboardEvent) {
+    if (!this.canOpen()) return;
+
+    if (this.readonly && this.multiple) {
+      const openKeys = [' ', 'Enter', 'ArrowDown', 'ArrowUp'];
+      if (openKeys.includes(e.key)) {
         e.preventDefault();
         this.open = true;
         this.listboxEl?.focus?.({ preventScroll: true });
@@ -557,7 +564,9 @@ export class Dropdown extends FormMixin(LitElement) {
       return;
     }
 
-    this.handleButtonKeydown(e as any);
+    this.handleButtonKeydown(
+      e as unknown as KeyboardEvent & { keyCode: number }
+    );
   }
 
   private _handleAddOption() {
@@ -677,9 +686,9 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleClick() {
-    if (this.disabled) return;
+    if (!this.canOpen()) return;
+
     this.open = !this.open;
-    // focus search input if searchable
     if (this.searchable) this.searchEl.focus();
     else this.buttonEl.focus();
   }
@@ -1026,8 +1035,8 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  private handleSearchClick(e: any) {
-    if (this.readonly) return;
+  private handleSearchClick(e: MouseEvent) {
+    if (this.readonly && !this.multiple) return;
 
     e.stopPropagation();
     this.open = true;

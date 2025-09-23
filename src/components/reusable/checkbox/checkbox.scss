@@ -3,8 +3,8 @@
 
 $checkbox-mask: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEwIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTMuNSA1Ljg1NTQ3TDkgLTIuMDMwNjNlLTA2TDEwIDEuMDY0NjNMMy40ODU2NiA4TDAgNC4yODkwNkwxLjAxNDM0IDMuMjA5MTZMMy41IDUuODU1NDdaIiBmaWxsPSIjMDAwIi8+DQo8L3N2Zz4=');
 
-$main-checkbox-background: var(--kd-color-background-ui-default-secondary);
-$invalid-checkbox-background: var(--kd-color-status-error-dark);
+$main-checkbox-background: var(--kd-color-icon-primary);
+$invalid-checkbox-background: var(--kd-color-icon-destructive);
 
 :host {
   display: block;
@@ -43,7 +43,7 @@ input {
   margin-top: 4px;
   width: 16px;
   height: 16px;
-  border: 2px solid var(--kd-color-border-forms-default);
+  border: 2px solid var(--kd-color-icon-primary);
   border-radius: 2px;
   background: var(--kd-color-background-ui-hollow-default);
   outline: 2px solid transparent;
@@ -61,8 +61,8 @@ input {
 
   &:not(.disabled):not(.readonly) {
     &:active {
-      background: var(--kd-color-background-button-primary-pressed);
-      border-color: var(--kd-color-background-ui-hollow-pressed);
+      background: var(--kd-color-background-ui-hollow-default);
+      border-color: var(--kd-color-icon-primary);
     }
 
     &:hover {
@@ -71,15 +71,15 @@ input {
     }
 
     &:focus-visible {
-      border-color: var(--kd-color-border-forms-default);
+      border-color: var(--kd-color-icon-primary);
       outline-color: var(--kd-color-border-variants-focus);
       background: var(--kd-color-background-ui-hollow-default);
       outline-offset: 2px;
     }
 
     &:active {
-      background: var(--kd-color-background-ui-hollow-pressed);
-      border-color: var(--kd-color-border-ui-pressed);
+      background: var(--kd-color-background-ui-hollow-default);
+      border-color: var(--kd-color-icon-primary);
       outline-color: transparent;
     }
   }
@@ -102,10 +102,10 @@ input {
     }
 
     &:hover {
+      background: var(--kd-color-background-ui-default-hover);
       outline-color: transparent;
-
       &::before {
-        background: var(--kd-color-background-ui-hollow-hover);
+        background: var(--kd-color-background-container-default);
       }
     }
 
@@ -118,7 +118,7 @@ input {
       border-color: transparent;
 
       &::before {
-        background: var(--kd-color-background-ui-hollow-pressed);
+        background: var(--kd-color-background-container-default);
       }
     }
   }
@@ -128,8 +128,9 @@ input {
   &[readonly],
   &[data-readonly] {
     cursor: default;
-    background: transparent;
+    background: var(--kd-color-border-ui-disabled);
     border-color: var(--kd-color-border-ui-disabled);
+    cursor: default;
 
     &:hover {
       border-color: var(--kd-color-border-ui-disabled);
@@ -171,16 +172,17 @@ input {
 
   /* DISABLED (fully inert) */
   &.disabled {
-    background: var(--kd-color-background-forms-disabled);
+    background: var(--kd-color-border-ui-disabled);
     border-color: var(--kd-color-border-ui-disabled);
+    cursor: not-allowed;
 
     &:checked {
-      background: var(--kd-color-background-forms-disabled);
+      background: var(--kd-color-border-ui-disabled);
       border-color: transparent;
 
       &::before {
         transform: scale(1);
-        background: var(--kd-color-icon-disabled);
+        background: var(--kd-color-background-container-default);
         mask: $checkbox-mask;
         -webkit-mask: $checkbox-mask;
         mask-size: contain;
@@ -216,11 +218,10 @@ input[type='checkbox']:indeterminate {
     }
 
     &:hover {
-      background: $main-checkbox-background;
-      border-color: transparent;
-
+      background: var(--kd-color-background-ui-default-hover);
+      outline-color: transparent;
       &::before {
-        background: var(--kd-color-background-ui-hollow-hover);
+        background: var(--kd-color-background-container-default);
       }
     }
 
@@ -229,7 +230,7 @@ input[type='checkbox']:indeterminate {
       border-color: transparent;
 
       &::before {
-        background: var(--kd-color-background-ui-hollow-pressed);
+        background: var(--kd-color-background-container-default);
       }
     }
   }
@@ -263,7 +264,7 @@ input[type='checkbox'][data-readonly]:indeterminate {
 }
 
 input[type='checkbox']:indeterminate.disabled {
-  background: var(--kd-color-background-ui-default-disabled);
+  background: var(--kd-color-border-ui-disabled);
   border-color: transparent;
 
   &::before {
@@ -272,7 +273,7 @@ input[type='checkbox']:indeterminate.disabled {
     width: 10px;
     height: 8px;
     transform: scale(1);
-    background: var(--kd-color-icon-disabled);
+    background: var(--kd-color-background-container-default);
     mask: linear-gradient(transparent 3px, #000 3px 5px, transparent 5px);
     -webkit-mask: linear-gradient(
       transparent 3px,
@@ -293,7 +294,7 @@ input[type='checkbox'][invalid] {
       border-color: transparent;
 
       &:hover {
-        background: var(--kd-color-background-button-primary-destructive-hover);
+        background: transparent;
         border-color: var(
           --kd-color-background-button-primary-destructive-hover
         );
@@ -315,18 +316,10 @@ input[type='checkbox'][invalid] {
 
   &.disabled {
     border-color: var(--kd-color-border-ui-disabled);
+    cursor: not-allowed;
 
     &:hover {
       border-color: var(--kd-color-border-ui-disabled);
-    }
-
-    &[checked] {
-      border-color: transparent;
-
-      &:hover {
-        border-color: transparent;
-        background: var(--kd-color-background-ui-default-disabled);
-      }
     }
 
     &:active,
@@ -373,7 +366,6 @@ input[type='checkbox'][invalid] {
     border-color: $invalid-checkbox-background;
     outline-color: $invalid-checkbox-background;
   }
-
   &:active {
     background: var(--kd-color-background-button-primary-destructive-pressed);
     border-color: var(--kd-color-background-button-primary-destructive-pressed);

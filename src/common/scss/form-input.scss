@@ -103,8 +103,16 @@ textarea {
   }
 
   &.is-readonly {
+    background: var(--kd-color-background-forms-disabled);
     border-color: var(--kd-color-border-ui-disabled);
-    cursor: default;
+
+    .arrow-icon {
+      color: var(--kd-color-icon-disabled);
+    }
+
+    &:hover {
+      border-color: var(--kd-color-border-ui-disabled);
+    }
 
     &::placeholder {
       color: var(--kd-color-text-forms-input-field-text);
@@ -124,6 +132,10 @@ textarea {
     border: none;
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
+
+    .arrow-icon {
+      color: var(--kd-color-icon-disabled);
+    }
 
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
