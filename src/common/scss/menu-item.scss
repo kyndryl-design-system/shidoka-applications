@@ -1,9 +1,44 @@
 @use './global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../common/scss/gradients.scss' as gradient;
+
+:host,
+:host(:focus),
+:host(:focus-visible) {
+  outline: none;
+}
+
+.menu-item.ai-connected:is(:focus, :focus-visible):not([disabled]) {
+  background: none;
+}
 
 .menu-item[highlighted] {
   outline: 1px solid var(--kd-color-border-variants-focus);
+}
+
+@mixin border-gradient-ai(
+  $gradient,
+  $radius: 4px,
+  $width: 1px,
+  $surface: transparent
+) {
+  box-sizing: border-box;
+  border: $width solid transparent;
+  border-radius: $radius;
+  background: linear-gradient(#{$surface}, #{$surface}) padding-box,
+    #{$gradient} border-box;
+  background-clip: padding-box, border-box;
+}
+
+.menu-item.ai-connected[highlighted] {
+  outline: none;
+  @include border-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 4px,
+    $width: 1px,
+    $surface: var(--kd-color-background-menu-state-ai-focused)
+  );
 }
 
 .menu-item {
@@ -131,7 +166,11 @@
       background-color: var(--kd-color-background-menu-state-ai-hover);
 
       .menu-item-inner-el {
-        color: var(--kd-color-text-level-light);
+        color: var(--kd-color-text-level-primary);
+      }
+
+      slot[name='icon']::slotted(span) {
+        color: var(--kd-color-icon-primary);
       }
     }
 
@@ -223,12 +262,14 @@
     color: var(--kd-color-text-level-light);
   }
 }
+
 .menu-item.ai-connected:is(:focus, :focus-visible):not([disabled]) {
   background-color: var(--kd-color-background-menu-state-ai-open);
   .menu-item-inner-el {
     color: var(--kd-color-text-level-primary);
   }
 }
+
 .menu-item.ai-connected:active:not([disabled]) {
   background-color: var(--kd-color-background-menu-state-ai-pressed);
   .menu-item-inner-el {

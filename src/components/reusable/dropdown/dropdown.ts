@@ -401,6 +401,7 @@ export class Dropdown extends FormMixin(LitElement) {
               })}
               style="min-width: ${this.menuMinWidth};"
               aria-hidden=${!this.open}
+              tabindex="-1"
               @keydown=${this.handleListKeydown}
               @blur=${this.handleListBlur}
               @focus=${this._handleListFocus}
@@ -526,8 +527,20 @@ export class Dropdown extends FormMixin(LitElement) {
 
     this.handleClick();
   }
+
   private handleAnchorKeydown(e: any) {
     if (this.disabled) return;
+    const path = (e.composedPath?.() || []) as EventTarget[];
+    if (
+      path.some((t) => (t as HTMLElement)?.id === 'options') ||
+      path.some((t) =>
+        (t as HTMLElement)?.closest?.(
+          'kyn-dropdown-option, kyn-enhanced-dropdown-option'
+        )
+      )
+    ) {
+      return;
+    }
     this.handleButtonKeydown(e);
   }
 
@@ -658,11 +671,14 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private handleListKeydown(e: any) {
     const TAB_KEY_CODE = 9;
-
-    if (e.keyCode !== TAB_KEY_CODE) {
+    if (e.keyCode === TAB_KEY_CODE) {
       e.preventDefault();
+      e.stopPropagation();
+      this.handleKeyboard(e, e.shiftKey ? 38 : 40, 'list');
+      return;
     }
-
+    e.preventDefault();
+    e.stopPropagation();
     this.handleKeyboard(e, e.keyCode, 'list');
   }
 
@@ -678,11 +694,12 @@ export class Dropdown extends FormMixin(LitElement) {
     const firstEnabled = visibleOptions.find((o: any) => !o.disabled) as any;
     if (!firstEnabled) return;
 
-    visibleOptions.forEach((o: any) => (o.highlighted = false));
+    visibleOptions.forEach((o: any) => {
+      o.highlighted = false;
+      o.tabIndex = -1;
+    });
 
-    if (!('tabIndex' in firstEnabled) || firstEnabled.tabIndex < 0) {
-      firstEnabled.tabIndex = 0;
-    }
+    firstEnabled.tabIndex = 0;
     firstEnabled.focus();
     firstEnabled.scrollIntoView({ block: 'nearest' });
     this.assistiveText = firstEnabled.text || 'Option';
@@ -717,7 +734,6 @@ export class Dropdown extends FormMixin(LitElement) {
     const UP_ARROW_KEY_CODE = 38;
     const ESCAPE_KEY_CODE = 27;
 
-    // get highlighted element + index and selected element
     const selectAllOptions = Array.from(
       this.shadowRoot?.querySelectorAll('.select-all') || []
     ) as any[];
@@ -725,25 +741,30 @@ export class Dropdown extends FormMixin(LitElement) {
       (option: any) => option.style.display !== 'none'
     );
     const visibleOptions = [...selectAllOptions, ...filteredOptions] as any[];
-    // visibleOptions.forEach((e) => (e.tabIndex = 0));
 
-    const highlightedEl = visibleOptions.find(
-      (option: any) => option.highlighted
-    );
-    const selectedEl = visibleOptions.find((option: any) => option.selected);
+    const highlightedEl = visibleOptions.find((o: any) => o.highlighted);
+    const selectedEl = visibleOptions.find((o: any) => o.selected);
+
+    const activeInShadow = (this.shadowRoot as any)?.activeElement as
+      | any
+      | null;
+    const focusedIndex = activeInShadow
+      ? visibleOptions.indexOf(activeInShadow)
+      : -1;
+
     let highlightedIndex = highlightedEl
       ? visibleOptions.indexOf(highlightedEl)
       : selectedEl
       ? visibleOptions.indexOf(selectedEl)
-      : 0;
+      : focusedIndex >= 0
+      ? focusedIndex
+      : -1;
 
-    // prevent page scroll on spacebar press
     if (SPACEBAR_KEY_CODE.includes(keyCode)) {
       e.preventDefault();
     }
 
     const isListboxElOpened = this.open;
-    // open the listbox
     if (target === 'button' || target === 'addOption') {
       let openDropdown =
         SPACEBAR_KEY_CODE.includes(keyCode) ||
@@ -753,6 +774,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
       if (e.target === this.clearMultipleEl && keyCode === ENTER_KEY_CODE) {
         openDropdown = false;
+        if (highlightedIndex < 0) highlightedIndex = 0;
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[highlightedIndex].selected =
           !visibleOptions[highlightedIndex].selected;
@@ -771,21 +793,21 @@ export class Dropdown extends FormMixin(LitElement) {
           setTimeout(() => {
             this.addOptionInputEl?.focus();
           }, 100);
-        } else {
-          // scroll to highlighted option
-          if (!this.multiple && this.value !== '') {
-            visibleOptions[highlightedIndex].scrollIntoView({
-              block: 'nearest',
-            });
-          }
+        } else if (
+          !this.multiple &&
+          this.value !== '' &&
+          highlightedIndex >= 0
+        ) {
+          visibleOptions[highlightedIndex].scrollIntoView({ block: 'nearest' });
         }
       }
     }
+
     switch (keyCode) {
       case 0:
       case 32:
       case ENTER_KEY_CODE: {
-        // select highlighted option
+        if (highlightedIndex < 0) highlightedIndex = 0;
         visibleOptions[highlightedIndex].highlighted = true;
         if (isListboxElOpened) {
           if (this.multiple) {
@@ -798,11 +820,10 @@ export class Dropdown extends FormMixin(LitElement) {
               },
             });
           } else {
-            visibleOptions.forEach((e) => (e.selected = false));
+            visibleOptions.forEach((x: any) => (x.selected = false));
             visibleOptions[highlightedIndex].selected = true;
             this.updateValue(visibleOptions[highlightedIndex].value, true);
             this.emitValue();
-
             this.open = false;
             this.assistiveText = `Selected ${visibleOptions[highlightedIndex].value}`;
           }
@@ -810,64 +831,72 @@ export class Dropdown extends FormMixin(LitElement) {
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
-        // go to next option
+        const fromIndex =
+          highlightedIndex >= 0
+            ? highlightedIndex
+            : focusedIndex >= 0
+            ? focusedIndex
+            : -1;
         let nextIndex =
-          !highlightedEl && !selectedEl
+          fromIndex < 0
             ? 0
-            : highlightedIndex === visibleOptions.length - 1
+            : fromIndex === visibleOptions.length - 1
             ? 0
-            : highlightedIndex + 1;
+            : fromIndex + 1;
 
-        // skip disabled options
         if (visibleOptions[nextIndex].disabled) {
           nextIndex =
             nextIndex === visibleOptions.length - 1 ? 0 : nextIndex + 1;
         }
 
+        if (fromIndex >= 0) {
+          visibleOptions[fromIndex].tabIndex = -1;
+          visibleOptions[fromIndex].highlighted = false;
+        }
+        visibleOptions[nextIndex].tabIndex = 0;
         visibleOptions[nextIndex].focus();
-        visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
-
-        // scroll to option
         visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
-
         this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
       case UP_ARROW_KEY_CODE: {
-        // go to previous option
+        const fromIndex =
+          highlightedIndex >= 0
+            ? highlightedIndex
+            : focusedIndex >= 0
+            ? focusedIndex
+            : -1;
         let nextIndex =
-          highlightedIndex === 0
+          fromIndex < 0
+            ? 0
+            : fromIndex === 0
             ? visibleOptions.length - 1
-            : highlightedIndex - 1;
+            : fromIndex - 1;
 
-        // skip disabled options
         if (visibleOptions[nextIndex].disabled) {
           nextIndex =
             nextIndex === 0 ? visibleOptions.length - 1 : nextIndex - 1;
         }
 
+        if (fromIndex >= 0) {
+          visibleOptions[fromIndex].tabIndex = -1;
+          visibleOptions[fromIndex].highlighted = false;
+        }
+        visibleOptions[nextIndex].tabIndex = 0;
         visibleOptions[nextIndex].focus();
-        visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
-
-        // scroll to option
         visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
-
         this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
       case ESCAPE_KEY_CODE: {
-        // close listbox
         this.open = false;
-
-        // restore focus
         if (this.searchable) {
           this.searchEl.focus();
         } else {
           this.buttonEl.focus();
         }
-
         this.assistiveText = 'Dropdown menu options.';
         return;
       }

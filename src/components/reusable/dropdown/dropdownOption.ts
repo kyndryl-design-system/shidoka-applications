@@ -83,8 +83,11 @@ export class DropdownOption extends LitElement {
   @property({ type: String, reflect: true })
   override accessor role = 'option';
 
+  @property({ type: Number, reflect: true })
+  override accessor tabIndex = -1;
+
   @property({ type: String, reflect: true, attribute: 'aria-selected' })
-  override accessor ariaSelected = 'option';
+  override accessor ariaSelected = 'false';
 
   override render() {
     const classes = {
