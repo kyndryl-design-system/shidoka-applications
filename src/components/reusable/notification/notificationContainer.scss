@@ -5,15 +5,30 @@
 }
 .notification-container {
   position: fixed;
-  top: calc(var(--kd-header-height) + 10px);
-  right: 10px;
+  top: calc(var(--kd-header-height) + 16px);
+  right: 16px;
   width: auto;
   min-width: 440px;
   overflow-y: auto;
   max-height: calc(100vh - var(--kd-header-height) - 32px);
   z-index: 999999;
-  padding: 15px;
+
+  &.bottom {
+    top: auto;
+    bottom: 16px;
+
+    @media (min-width: 42rem) {
+      bottom: 32px;
+    }
+  }
+
+  @media (min-width: 42rem) {
+    bottom: 32px;
+    right: 32px;
+    max-height: calc(100vh - var(--kd-header-height) - 64px);
+  }
 }
+
 .notification-container ::slotted(kyn-notification) {
-  padding-bottom: 20px;
+  margin-bottom: 16px;
 }
