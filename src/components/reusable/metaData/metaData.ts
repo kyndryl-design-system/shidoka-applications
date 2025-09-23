@@ -87,10 +87,7 @@ export class MetaData extends LitElement {
               @slotchange=${() => this.onLabelSlotChange()}
             ></slot>
           </div>
-          <div
-            class="${classMap(metaValue)}"
-            tabindex=${this.scrollableContent ? '0' : '-1'}
-          >
+          <div class="${classMap(metaValue)}">
             <slot></slot>
           </div>
         </div>

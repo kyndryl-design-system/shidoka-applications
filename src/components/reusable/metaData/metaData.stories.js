@@ -52,6 +52,10 @@ export default {
         .line_height {
           line-height: 18px;
         }
+        .meta-content {
+          width: 100%;
+          overflow-x: auto;
+        }
       </style>
       ${story()}
     `,
@@ -208,34 +212,36 @@ export const WithTable = {
       >
         <div slot="label">Label</div>
         <div slot="icon">${unsafeSVG(testingIcon)}</div>
-        <kyn-table>
-          <kyn-thead>
-            <kyn-header-tr>
-              <kyn-th .align=${'center'}>ID</kyn-th>
-              <kyn-th>First Name</kyn-th>
-              <kyn-th>Last Name</kyn-th>
-              <kyn-th>Birthday</kyn-th>
-              <kyn-th .align=${'right'}>Age</kyn-th>
-              <kyn-th>Full Name</kyn-th>
-            </kyn-header-tr>
-          </kyn-thead>
-          <kyn-tbody>
-            ${repeat(
-              characters,
-              (row) => row.id,
-              (row) => html`
-                <kyn-tr .rowId=${String(row.id)} key="row-${row.id}">
-                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
-                  <kyn-td>${row.firstName}</kyn-td>
-                  <kyn-td>${row.lastName}</kyn-td>
-                  <kyn-td>${row.birthday}</kyn-td>
-                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
-                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                </kyn-tr>
-              `
-            )}
-          </kyn-tbody>
-        </kyn-table>
+        <div class="meta-content">
+          <kyn-table>
+            <kyn-thead>
+              <kyn-header-tr>
+                <kyn-th .align=${'center'}>ID</kyn-th>
+                <kyn-th>First Name</kyn-th>
+                <kyn-th>Last Name</kyn-th>
+                <kyn-th>Birthday</kyn-th>
+                <kyn-th .align=${'right'}>Age</kyn-th>
+                <kyn-th>Full Name</kyn-th>
+              </kyn-header-tr>
+            </kyn-thead>
+            <kyn-tbody>
+              ${repeat(
+                characters,
+                (row) => row.id,
+                (row) => html`
+                  <kyn-tr .rowId=${String(row.id)} key="row-${row.id}">
+                    <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                    <kyn-td>${row.firstName}</kyn-td>
+                    <kyn-td>${row.lastName}</kyn-td>
+                    <kyn-td>${row.birthday}</kyn-td>
+                    <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                    <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                  </kyn-tr>
+                `
+              )}
+            </kyn-tbody>
+          </kyn-table>
+        </div>
       </kyn-meta-data>
     `;
   },
@@ -479,11 +485,17 @@ export const StaticGrid = {
 
       <div class="kd-grid" style="margin-top: 32px;">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
-          ${WithTable.render({ ...WithTable.args, horizontal: true })}
+          ${WithTable.render({
+            ...WithTable.args,
+            horizontal: args.horizontal,
+          })}
         </div>
 
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
-          ${WithTable.render({ ...WithTable.args, horizontal: true })}
+          ${WithTable.render({
+            ...WithTable.args,
+            horizontal: args.horizontal,
+          })}
         </div>
       </div>
     `;
