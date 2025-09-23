@@ -52,17 +52,6 @@ export default {
         .line_height {
           line-height: 18px;
         }
-
-        .meta-content {
-          width: 100%;
-          border-collapse: collapse;
-          background: var(--kd-color-background-table-row);
-          @media (max-width: calc(42rem - 0.001px)) {
-            display: block;
-            width: 100%;
-            overflow-x: auto;
-          }
-        }
       </style>
       ${story()}
     `,
@@ -212,7 +201,7 @@ export const WithTable = {
       >
         <div slot="label">Label</div>
         <div slot="icon">${unsafeSVG(testingIcon)}</div>
-        <kyn-table class="meta-content">
+        <kyn-table>
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th .align=${'center'}>ID</kyn-th>
@@ -228,12 +217,7 @@ export const WithTable = {
               characters,
               (row) => row.id,
               (row) => html`
-                <kyn-tr
-                  .rowId=${String(row.id)}
-                  key="row-${row.id}"
-                  ?disabled=${row.id == 1 || row.id == 3 ? true : false}
-                  ?selected=${row.id == 2 ? true : false}
-                >
+                <kyn-tr .rowId=${String(row.id)} key="row-${row.id}">
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td>${row.firstName}</kyn-td>
                   <kyn-td>${row.lastName}</kyn-td>
