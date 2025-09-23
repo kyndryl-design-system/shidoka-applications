@@ -136,7 +136,12 @@ export const Footer = {
           </kyn-button>
         </div>
         <div class="footer-content">
-          <kyn-button kind="tertiary" size="small" iconPosition="right">
+          <kyn-button
+            kind="tertiary"
+            size="small"
+            iconPosition="right"
+            description="Additional"
+          >
             ${unsafeSVG(plusIcon)}
           </kyn-button>
           <kyn-dropdown

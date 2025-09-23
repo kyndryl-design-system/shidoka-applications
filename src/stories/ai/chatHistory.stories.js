@@ -22,7 +22,7 @@ export const ChatHistory = {
   render: () => {
     return html`
       <div class="chat_list">
-        <kyn-page-title type="tertiary" pagetitle="Chat History" aiConnected>
+        <kyn-page-title type="tertiary" pagetitle="Chat History">
         </kyn-page-title>
 
         <div class="chat_content">
@@ -81,7 +81,6 @@ export const ChatHistoryDetails = {
         style="margin-bottom: 4px"
         type="tertiary"
         pagetitle="Chat History"
-        aiConnected
       >
       </kyn-page-title>
       <div class="chat_details">
@@ -92,7 +91,7 @@ export const ChatHistoryDetails = {
         >
           Back
         </kyn-link>
-        <kyn-page-title type="tertiary" pagetitle="Page Title" aiConnected>
+        <kyn-page-title type="tertiary" pagetitle="Page Title">
         </kyn-page-title>
         <div style="width:100%">${ChatMessages.render()}</div>
       </div>
