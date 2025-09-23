@@ -52,6 +52,12 @@ export default {
         table {
           width: 100%;
           border-collapse: collapse;
+          background: var(--kd-color-background-table-row);
+          @media (max-width: calc(42rem - 0.001px)) {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+          }
         }
 
         td {
@@ -183,47 +189,43 @@ export const WithTable = {
   args,
   render: (args) => {
     return html`
-      <div style="max-width: 100%">
-        <h4>With Table</h4>
-        <br />
-        <kyn-meta-data
-          ?horizontal=${args.horizontal}
-          ?noBackground=${args.noBackground}
-        >
-          <div slot="label">Label</div>
-          <div slot="icon">${unsafeSVG(testingIcon)}</div>
-          <table style="background: var(--kd-color-background-table-row);">
-            <tr>
-              <td>First Name</td>
-              <td>Arya</td>
-            </tr>
-            <tr>
-              <td>Last Name</td>
-              <td>Stark</td>
-            </tr>
-            <tr>
-              <td>Birthday</td>
-              <td>February 15</td>
-            </tr>
-            <tr>
-              <td>Age</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>Full Name</td>
-              <td>Arya Stark</td>
-            </tr>
-            <tr>
-              <td>Gender</td>
-              <td>Female</td>
-            </tr>
-            <tr>
-              <td>Email</td>
-              <td>arya.stark@winterfell.com</td>
-            </tr>
-          </table>
-        </kyn-meta-data>
-      </div>
+      <kyn-meta-data
+        ?horizontal=${args.horizontal}
+        ?noBackground=${args.noBackground}
+      >
+        <div slot="label">Label</div>
+        <div slot="icon">${unsafeSVG(testingIcon)}</div>
+        <table>
+          <tr>
+            <td>First Name</td>
+            <td>Arya</td>
+          </tr>
+          <tr>
+            <td>Last Name</td>
+            <td>Stark</td>
+          </tr>
+          <tr>
+            <td>Birthday</td>
+            <td>February 15</td>
+          </tr>
+          <tr>
+            <td>Age</td>
+            <td>15</td>
+          </tr>
+          <tr>
+            <td>Full Name</td>
+            <td>Arya Stark</td>
+          </tr>
+          <tr>
+            <td>Gender</td>
+            <td>Female</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>arya.stark@winterfell.com</td>
+          </tr>
+        </table>
+      </kyn-meta-data>
     `;
   },
 };
@@ -256,6 +258,207 @@ export const ScrollableContent = {
             esse cillum
           </div>
         </kyn-meta-data>
+      </div>
+    `;
+  },
+};
+
+export const StaticGrid = {
+  render: () => {
+    return html`
+      This example uses
+      <a
+        href="https://shidoka-foundation.netlify.app/?path=/docs/foundation-grid--docs"
+        target="_blank"
+        rel="noopener"
+      >
+        Shidoka Foundation Grid
+      </a>
+      for a static dashboard layout.
+      <br /><br />
+
+      <div class="kd-grid">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+      </div>
+
+      <div class="kd-grid" style="margin-top: 32px;">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-3">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div class="line_height">
+              ${Link.render({ standalone: true, ...Link.args })}
+            </div>
+          </kyn-meta-data>
+        </div>
+      </div>
+
+      <div class="kd-grid" style="margin-top: 32px;">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+            scrollableContent
+            style="height: 150px;"
+          >
+            <div slot="label">Label</div>
+            <div
+              style="color: var(--kd-color-text-level-secondary);line-height: 18px;"
+              class="example-content"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum Lorem ipsum dolor sit
+              amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+              voluptate velit esse cillum
+            </div>
+          </kyn-meta-data>
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+            scrollableContent
+            style="height: 150px;"
+          >
+            <div slot="label">Label</div>
+            <div
+              style="color: var(--kd-color-text-level-secondary);line-height: 18px;"
+              class="example-content"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum Lorem ipsum dolor sit
+              amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+              voluptate velit esse cillum
+            </div>
+          </kyn-meta-data>
+        </div>
+      </div>
+
+      <div class="kd-grid" style="margin-top: 32px;">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-12">
+          <kyn-meta-data
+            ?horizontal=${args.horizontal}
+            ?noBackground=${args.noBackground}
+          >
+            <div slot="label">Label</div>
+            <div
+              class="line_height"
+              style="color: var(--kd-color-text-level-secondary);font-size: 14px;
+          border-radius: 4px;"
+            >
+              Mauris aliquet elementum dui, a mattis ligula feugiat eu. Ut
+              ullamcorper orci lacus, ac efficitur quam tincidunt sit amet.
+              Aenean magna ante, pretium non iaculis.
+            </div>
+          </kyn-meta-data>
+        </div>
+      </div>
+
+      <div class="kd-grid" style="margin-top: 32px;">
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+          ${WithTable.render({ ...WithTable.args, horizontal: true })}
+        </div>
+
+        <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6">
+          ${WithTable.render({ ...WithTable.args, horizontal: true })}
+        </div>
       </div>
     `;
   },
