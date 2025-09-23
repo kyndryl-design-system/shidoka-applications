@@ -34,9 +34,9 @@ export const ChatHistory = {
             @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           ></kyn-search>
           <div class="chat-section">
-            <label class="kd-type--ui-02 kd-type--weight-medium"
-              >Day, Date & Time Stamp</label
-            >
+            <p class="kd-type--ui-02 kd-type--weight-medium"></p>
+              Day, Date & Time Stamp
+            </p>
             ${Array.from({ length: 3 }, () => {
               return html` ${WithRightIconAndDescription.render()} `;
             })}

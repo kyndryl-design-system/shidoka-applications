@@ -14,6 +14,17 @@
   --_description-color: var(--kd-color-text-level-primary);
 }
 
+:host(.info-card) {
+  width: 100%;
+
+  @include gradient.border-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 4px,
+    $width: 1px,
+    $surface: var(--kd-color-background-container-ai-level-2)
+  );
+}
+
 .card {
   &-wrapper,
   &-wrapper-clickable {
@@ -31,7 +42,6 @@
 
     &.ai-connected {
       background-color: var(--kd-color-background-ui-hollow-default);
-      border: 1px solid var(--kd-color-border-variants-light);
     }
 
     &.ai-highlight {

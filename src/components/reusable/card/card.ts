@@ -13,22 +13,36 @@ import CardScss from './card.scss?inline';
 export class Card extends LitElement {
   static override styles = unsafeCSS(CardScss);
 
-  /** Card Type. `'normal'` & `'clickable'` */
+  /** Card Type. `'normal'` &
+   * `'clickable'` */
   @property({ type: String }) accessor type = 'normal';
-  /** Card link url for clickable cards. */
-  @property({ type: String }) accessor href = '';
-  /** Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship. */
-  @property({ type: String }) accessor rel = '';
-  /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'` */
-  @property({ type: String }) accessor target: any = '_self';
-  /** Hide card border. Useful when clickable card use inside `<kyn-notification>` component. */
-  @property({ type: Boolean }) accessor hideBorder = false;
-  /** AI theme toggle — reflect so :host([ai-connected]) is reliable */
-  @property({ type: Boolean }) accessor aiConnected = false;
-  /** Set this to `true` for highlight */
-  @property({ type: Boolean }) accessor highlight = false;
 
-  @state() private accessor _hover = false;
+  /** Card link url for clickable cards. */
+  @property({ type: String })
+  accessor href = '';
+
+  /** Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship. */
+  @property({ type: String })
+  accessor rel = '';
+
+  /** Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'` */
+  @property({ type: String })
+  accessor target: any = '_self';
+
+  /** Hide card border. Useful when clickable card use inside `<kyn-notification>` component. */
+  @property({ type: Boolean })
+  accessor hideBorder = false;
+
+  /** AI theme toggle — reflect so :host([ai-connected]) is reliable */
+  @property({ type: Boolean })
+  accessor aiConnected = false;
+
+  /** Set this to `true` for highlight */
+  @property({ type: Boolean })
+  accessor highlight = false;
+
+  @state()
+  private accessor _hover = false;
 
   override render() {
     const clickable = {
