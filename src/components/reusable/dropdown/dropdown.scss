@@ -52,9 +52,16 @@ slot[name='icon']::slotted(*) {
   height: 48px;
   min-width: 95px;
   padding: 0 48px 0 16px;
-  cursor: pointer;
   font-weight: var(--kd-font-weight-regular);
   white-space: nowrap;
+
+  &:not(.is-readonly):not([disabled]) {
+    cursor: pointer;
+  }
+
+  &.is-readonly:not([disabled]) {
+    cursor: default;
+  }
 
   [searchable] & {
     padding-right: 80px;
