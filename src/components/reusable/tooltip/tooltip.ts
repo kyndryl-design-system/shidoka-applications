@@ -73,6 +73,7 @@ export class Tooltip extends LitElement {
       <div class="tooltip">
         <button
           class="anchor"
+          part="anchor"
           aria-label=${this.assistiveText}
           title=${this.assistiveText}
           aria-describedby="tooltip"

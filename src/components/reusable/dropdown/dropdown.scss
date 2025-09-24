@@ -96,7 +96,7 @@ slot[name='icon']::slotted(*) {
     padding-right: 80px;
   }
 
-  &.ai-connected {
+  &.ai-connected:not([disabled], [readonly], .is-readonly) {
     border: 1px solid transparent;
     background: var(--kd-color-background-menu-state-ai-default);
 
@@ -319,9 +319,21 @@ kyn-tag-group {
   outline-color: var(--kd-color-background-button-secondary-ai-focused);
 }
 
-.dropdown.ai-connected ::slotted(kyn-tooltip),
-.dropdown.ai-connected ::slotted(.tooltip) {
-  --kd-color-border-variants-focus: var(
-    --kd-color-background-button-secondary-ai-focused
+:host(.ai-connected) slot[name='tooltip']::slotted(kyn-tooltip),
+.dropdown.ai-connected slot[name='tooltip']::slotted(kyn-tooltip) {
+  --kyn-tooltip-ai-active: 1; /* on */
+  --kyn-tooltip-outline-gradient: var(
+    --kd-gradient-border-ai-default,
+    linear-gradient(
+      to bottom,
+      var(--kd-color-border-ai-default-gradient-start),
+      var(--kd-color-border-ai-default-gradient-end)
+    )
   );
+  --kyn-tooltip-outline-surface: var(
+    --kd-color-background-button-primary-ai-focused
+  );
+  --kyn-tooltip-outline-width: 1px;
+  --kyn-tooltip-outline-radius: 4px;
+  --kyn-tooltip-focus-outline-color: transparent;
 }

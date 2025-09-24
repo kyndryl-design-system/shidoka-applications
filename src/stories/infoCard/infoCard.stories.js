@@ -43,7 +43,15 @@ export const WithRightIconAndDescription = {
     return html`
       <kyn-card class="info-card kyn-card-hover" type="normal" aiConnected>
         <div class="info-card-container">
-          <div class="info-card-content-wrapper">This is the description</div>
+          <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
+
+          <div class="info-card-content-wrapper">
+            <div class="info-card-title-text kd-type--ui-03">
+              This is the title
+            </div>
+
+            This is the description
+          </div>
 
           <kyn-inline-confirm
             class="info-card-rightIcon"

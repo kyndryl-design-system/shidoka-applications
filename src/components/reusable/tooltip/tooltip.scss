@@ -14,7 +14,7 @@ button {
   display: block;
   appearance: none;
   background: none;
-  border: none;
+  border: none; /* this must come BEFORE anchor overrides below */
   color: inherit;
   font: inherit;
   padding: 0;
@@ -23,9 +23,42 @@ button {
   outline: 2px solid transparent;
   transition: outline-color 150ms ease-out;
 
+  /* default solid ring when AI vars aren't provided */
   &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
+    outline-color: var(
+      --kyn-tooltip-focus-outline-color,
+      var(--kd-color-border-variants-focus)
+    );
   }
+}
+
+button.anchor {
+  /* will be toggled on focus via custom prop */
+  border: var(--_aiRingW, 0) solid transparent;
+  border-radius: var(--kyn-tooltip-outline-radius, 4px);
+
+  background: linear-gradient(
+        var(--kyn-tooltip-outline-surface, transparent),
+        var(--kyn-tooltip-outline-surface, transparent)
+      )
+      padding-box,
+    var(
+        --kyn-tooltip-outline-gradient,
+        linear-gradient(transparent, transparent)
+      )
+      border-box;
+
+  background-clip: padding-box, border-box;
+  background-origin: border-box, border-box;
+  background-size: calc(100% + 2px) calc(100% + 2px), cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+button.anchor:focus-visible {
+  --_aiRingW: calc(
+    var(--kyn-tooltip-ai-active, 0) * var(--kyn-tooltip-outline-width, 1px)
+  );
 }
 
 .info-icon,
