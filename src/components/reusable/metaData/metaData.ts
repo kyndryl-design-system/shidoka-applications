@@ -11,7 +11,7 @@ import Styles from './metaData.scss?inline';
  * MetaData component.
  * @slot icon - Slot for icon.
  * @slot label - Slot for label.
- * @slot unnamed - Slot for other content.
+ * @slot unnamed - Slot for body/other content.
  */
 @customElement('kyn-meta-data')
 export class MetaData extends LitElement {
