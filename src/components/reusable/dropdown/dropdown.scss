@@ -104,7 +104,7 @@ slot[name='icon']::slotted(*) {
       color: var(--kd-color-icon-primary);
     }
 
-    &:hover {
+    &:hover:not(:is(:focus-visible, :focus-within)) {
       @include gradient.border-gradient-ai(
         $gradient: gradient.$ai-gradient-default,
         $radius: 0,
@@ -113,19 +113,21 @@ slot[name='icon']::slotted(*) {
       );
     }
 
+    &:is(:focus-visible, :focus-within):hover {
+      background: var(--kd-color-background-menu-state-ai-default);
+      border: 1px solid transparent;
+
+      background-clip: border-box;
+      background-origin: border-box;
+      background-size: auto;
+    }
+
     &:active {
       background: var(--kd-color-background-menu-state-ai-pressed);
       color: var(--kd-color-text-level-light);
 
       .placeholder-text {
         color: var(--kd-color-text-level-light);
-      }
-    }
-
-    &:focus-within,
-    &:focus-visible {
-      &:hover {
-        border-color: transparent !important;
       }
     }
   }
