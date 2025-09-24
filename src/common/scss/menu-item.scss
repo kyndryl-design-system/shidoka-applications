@@ -131,15 +131,7 @@
   }
 
   // 3) active / pressed (non-disabled, non-readonly)
-  &:is(:active, :has(:active)):not([disabled]):not([readonly]),
-  &[selected]:is(:active, :has(:active)):not([disabled]):not([readonly]),
-  &[highlighted]:is(:active, :has(:active)):not([disabled]):not([readonly]) {
-    @include state-colors(
-      var(--kd-color-background-menu-state-pressed),
-      var(--kd-color-text-level-light)
-    );
-    outline: none;
-  }
+  // (intentionally handled later for AI + non-AI to ensure precedence)
 
   // 4) focus/open (non-disabled, non-readonly)
   &:is(:focus, :focus-within, :focus-visible):not([disabled]):not([readonly]) {
@@ -205,7 +197,10 @@
     }
 
     // hover — text must be primary (not disabled/readonly)
-    &:hover:not([disabled]):not([readonly]):not(.option-is-readonly) {
+    // (do NOT show gradient while pressed)
+    &:hover:not([disabled]):not([readonly]):not(.option-is-readonly):not(
+        [data-pressed]
+      ):not(:active) {
       background-color: var(--kd-color-background-menu-state-ai-hover);
 
       .menu-item-inner-el {
@@ -217,16 +212,15 @@
       }
     }
 
-    // active/pressed — correct pressed visuals (not disabled/readonly)
-    &:active:not([disabled]):not([readonly]),
-    &:has(:active):not([disabled]):not([readonly]) {
-      @include state-colors(
-        var(--kd-color-background-menu-state-ai-pressed),
-        var(--kd-color-text-level-primary)
-      ); // keep text readable on AI pressed bg
+    // active/pressed — replace entire background so it overrides any gradient layers
+    &:is(:active, [data-pressed]):not([disabled]):not([readonly]) {
+      background: var(--kd-color-background-menu-state-ai-pressed);
       outline: none;
       border: none;
 
+      .menu-item-inner-el {
+        color: var(--kd-color-text-level-primary);
+      }
       slot[name='icon']::slotted(span),
       .check-icon {
         color: var(--kd-color-icon-primary);
@@ -276,4 +270,44 @@
   &.destructive {
     @include destructive-common;
   }
+}
+
+// ---- pressed states (non-AI) ----
+.menu-item:is(:active, [data-pressed]):not(:hover):not([disabled]):not(
+    [readonly]
+  ),
+.menu-item:is(:active, [data-pressed]):hover:not([disabled]):not([readonly]),
+.menu-item[selected]:is(:active, [data-pressed]):hover:not([disabled]):not(
+    [readonly]
+  ),
+.menu-item[highlighted]:is(:active, [data-pressed]):hover:not([disabled]):not(
+    [readonly]
+  ) {
+  @include state-colors(
+    var(--kd-color-background-menu-state-pressed),
+    var(--kd-color-text-level-light)
+  );
+  outline: none;
+}
+
+// ---- pressed states (AI) ----
+// ensure we beat the AI hover rule and remove any gradient background layers
+.menu-item.ai-connected:is(:active, [data-pressed]):not([readonly]):not(
+    [disabled]
+  ) {
+  background: var(--kd-color-background-menu-state-ai-pressed);
+  outline: none;
+  border: none;
+
+  .menu-item-inner-el {
+    color: var(--kd-color-text-density-darker);
+  }
+  slot[name='icon']::slotted(span),
+  .check-icon {
+    color: var(--kd-color-icon-primary);
+  }
+}
+
+.menu-item:is(:focus, :focus-within, :focus-visible) {
+  outline: none;
 }

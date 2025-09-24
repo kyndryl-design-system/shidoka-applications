@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
@@ -44,11 +45,10 @@ dialog {
     @include elevation.shadow('3', true);
     border: none;
     background: var(--kd-color-background-container-ai-default);
-    // background: linear-gradient(
-    //   180deg,
-    //   var(--kd-color-background-gradients-ai-linear-top-gradient-1) 0%,
-    //   var(--kd-color-background-gradients-ai-linear-bottom-gradient-1) 70.5%
-    // );
+
+    &.gradient-bkg {
+      @extend .gradient-bkg;
+    }
   }
 }
 

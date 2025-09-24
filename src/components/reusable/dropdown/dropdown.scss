@@ -121,32 +121,25 @@ slot[name='icon']::slotted(*) {
         color: var(--kd-color-text-level-light);
       }
     }
+
+    &:focus-within,
+    &:focus-visible {
+      &:hover {
+        border-color: transparent !important;
+      }
+    }
   }
 }
 
 .select:focus-within {
   outline: 2px solid var(--kd-color-border-variants-focus);
   outline-offset: 0;
-  &:hover {
-    border-color: transparent;
-  }
 }
 
 :host(.ai-connected) .select:is(:focus-visible, :focus-within),
 .dropdown.ai-connected .select:is(:focus-visible, :focus-within) {
-  @include gradient.outline-gradient-ai(
-    $gradient: gradient.$ai-gradient-default,
-    $radius: 0,
-    $width: 1px,
-    $surface: var(--kd-color-background-button-primary-ai-focused)
-  );
-  outline-offset: 2px;
-  // box-shadow: 0 0 0 2px
-  //   color-mix(
-  //     in oklab,
-  //     var(--kd-color-background-button-secondary-ai-focused) 24%,
-  //     transparent
-  //   );
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: 0;
 }
 
 .arrow-icon {
@@ -317,23 +310,4 @@ kyn-tag-group {
 .dropdown.ai-connected .options:focus-visible,
 .dropdown.ai-connected [searchable] .options:focus-visible {
   outline-color: var(--kd-color-background-button-secondary-ai-focused);
-}
-
-:host(.ai-connected) slot[name='tooltip']::slotted(kyn-tooltip),
-.dropdown.ai-connected slot[name='tooltip']::slotted(kyn-tooltip) {
-  --kyn-tooltip-ai-active: 1; /* on */
-  --kyn-tooltip-outline-gradient: var(
-    --kd-gradient-border-ai-default,
-    linear-gradient(
-      to bottom,
-      var(--kd-color-border-ai-default-gradient-start),
-      var(--kd-color-border-ai-default-gradient-end)
-    )
-  );
-  --kyn-tooltip-outline-surface: var(
-    --kd-color-background-button-primary-ai-focused
-  );
-  --kyn-tooltip-outline-width: 1px;
-  --kyn-tooltip-outline-radius: 4px;
-  --kyn-tooltip-focus-outline-color: transparent;
 }

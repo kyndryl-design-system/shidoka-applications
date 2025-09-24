@@ -14,7 +14,7 @@ button {
   display: block;
   appearance: none;
   background: none;
-  border: none; /* this must come BEFORE anchor overrides below */
+  border: none;
   color: inherit;
   font: inherit;
   padding: 0;
@@ -23,7 +23,6 @@ button {
   outline: 2px solid transparent;
   transition: outline-color 150ms ease-out;
 
-  /* default solid ring when AI vars aren't provided */
   &:focus-visible {
     outline-color: var(
       --kyn-tooltip-focus-outline-color,
@@ -33,7 +32,6 @@ button {
 }
 
 button.anchor {
-  /* will be toggled on focus via custom prop */
   border: var(--_aiRingW, 0) solid transparent;
   border-radius: var(--kyn-tooltip-outline-radius, 4px);
 

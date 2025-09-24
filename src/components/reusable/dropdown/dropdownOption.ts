@@ -113,12 +113,28 @@ export class DropdownOption extends LitElement {
         ?readonly=${!this.disabled && this.readonly}
         title=${this.text}
         tabindex=${this.disabled || this.readonly ? -1 : 0}
-        @mousedown=${(e: MouseEvent) => {
-          if (this.readonly) e.preventDefault();
+        @pointerdown=${(e: PointerEvent) => {
+          if (this.disabled || this.readonly) return;
+          this.setPressed(true);
         }}
-        @pointerup=${(e: any) => this.handleClick(e)}
-        @blur=${(e: any) => this.handleBlur(e)}
-        @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
+        @pointerup=${(e: PointerEvent) => {
+          this.setPressed(false);
+          if (!this.disabled && !this.readonly) this.handleClick(e);
+        }}
+        @pointercancel=${() => this.setPressed(false)}
+        @pointerleave=${() => this.setPressed(false)}
+        @keydown=${(e: KeyboardEvent) => {
+          if (this.disabled || this.readonly) return;
+          if (e.key === ' ' || e.key === 'Enter') this.setPressed(true);
+          this.handleKeyDown(e);
+        }}
+        @keyup=${(e: KeyboardEvent) => {
+          if (e.key === ' ' || e.key === 'Enter') this.setPressed(false);
+        }}
+        @blur=${(e: FocusEvent) => {
+          this.setPressed(false);
+          this.handleBlur(e);
+        }}
       >
         <span class="menu-item-inner-el text">
           ${this.multiple
@@ -161,7 +177,7 @@ export class DropdownOption extends LitElement {
           ? html`
               <kyn-button
                 class="remove-option"
-                kind="ghost"
+                kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
                 size="small"
                 aria-label="Delete ${this.value}"
                 description="Delete ${this.value}"
@@ -190,6 +206,15 @@ export class DropdownOption extends LitElement {
         this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
       });
     }
+  }
+
+  private setPressed(on: boolean) {
+    const el = this.shadowRoot?.querySelector(
+      '.menu-item'
+    ) as HTMLElement | null;
+    if (!el) return;
+    if (on) el.setAttribute('data-pressed', '');
+    else el.removeAttribute('data-pressed');
   }
 
   override willUpdate(changed: Map<string, unknown>) {
