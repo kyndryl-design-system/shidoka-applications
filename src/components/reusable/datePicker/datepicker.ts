@@ -313,6 +313,7 @@ export class DatePicker extends FormMixin(LitElement) {
         <div
           class="label-text"
           @mousedown=${this.preventFlatpickrOpen}
+          ?readonly=${this.readonly}
           @click=${this.preventFlatpickrOpen}
           ?disabled=${this.datePickerDisabled}
           id=${`label-${anchorId}`}
@@ -342,7 +343,7 @@ export class DatePicker extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.datePickerDisabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.datePickerDisabled && this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}

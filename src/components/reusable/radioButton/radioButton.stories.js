@@ -18,6 +18,7 @@ export const RadioButton = {
     unnamed: 'Label',
     checked: false,
     disabled: false,
+    readonly: false,
     value: 'example',
   },
   render: (args) => {
@@ -25,8 +26,10 @@ export const RadioButton = {
       <kyn-radio-button
         value=${args.value}
         .checked=${args.checked}
+        name="radio-button-1"
         ?checked=${args.checked}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         @on-radio-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}

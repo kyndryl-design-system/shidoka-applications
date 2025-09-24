@@ -20,6 +20,10 @@
   &.sr-only {
     @include visibility.sr-only;
   }
+
+  [readonly] & {
+    color: var(--kd-color-text-level-disabled);
+  }
 }
 
 slot[name='icon']::slotted(*) {
@@ -27,6 +31,14 @@ slot[name='icon']::slotted(*) {
 
   [disabled] & {
     color: var(--kd-color-icon-disabled);
+  }
+}
+
+.dropdown-listbox {
+  background: var(--kd-color-background-menu-state-default);
+
+  &.ai-connected {
+    background: var(--kd-color-background-menu-state-ai-default);
   }
 }
 
@@ -40,16 +52,33 @@ slot[name='icon']::slotted(*) {
   height: 48px;
   min-width: 95px;
   padding: 0 48px 0 16px;
-  cursor: pointer;
   font-weight: var(--kd-font-weight-regular);
   white-space: nowrap;
+
+  &:not(.is-readonly):not([disabled]) {
+    cursor: pointer;
+  }
+
+  &.is-readonly:not([disabled]) {
+    cursor: default;
+
+    .arrow-icon {
+      color: var(--kd-color-icon-disabled);
+    }
+  }
 
   [searchable] & {
     padding-right: 80px;
   }
 
-  &:hover:not([disabled]) {
+  &:hover:not([disabled]):not([readonly]):not(.is-readonly) {
     border-color: var(--kd-color-border-ui-hover);
+  }
+
+  &.is-readonly {
+    input {
+      cursor: default;
+    }
   }
 
   span {
@@ -197,10 +226,16 @@ slot[name='icon']::slotted(*) {
     }
   }
 
-  &[disabled] {
-    background-color: var(--kd-color-tags-background-disabled);
+  &[disabled]:not(.readonly) {
+    background-color: var(--kd-color-tag-background-disabled);
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
+  }
+
+  &.is-readonly {
+    background-color: var(--kd-color-tag-background-disabled);
+    color: var(--kd-color-tag-text-default);
+    cursor: default;
   }
 
   @include typography.type-ui-03;
