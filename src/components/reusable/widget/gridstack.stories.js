@@ -4,8 +4,10 @@ import './sample/gridstack.newWidget.sample';
 import { Config } from '../../../common/helpers/gridstack';
 import sampleLayout from './layout.sample';
 import { action } from 'storybook/actions';
+import allData from './../../reusable/table/story-helpers/table-data.json';
 
 import '@kyndryl-design-system/shidoka-charts/components/chart';
+import '../../reusable/table';
 
 export default {
   title: 'Components/Widget/Gridstack',
@@ -87,6 +89,8 @@ const args = {
 export const Gridstack = {
   args,
   render: (args) => {
+    const data = allData.slice(0, 5);
+
     return html`
       ${args.localNav !== 'none'
         ? html`<div class="fake-local-nav ${args.localNav}"></div>`
@@ -135,7 +139,39 @@ export const Gridstack = {
               <div class="grid-stack-item-content">
                 <kyn-widget widgetTitle="Widget 4" subTitle="Widget Subtitle">
                   <kyn-widget-drag-handle></kyn-widget-drag-handle>
-                  <div class="test">Widget Content</div>
+
+                  <kyn-table-container>
+                    <kyn-table>
+                      <kyn-thead>
+                        <kyn-tr>
+                          <kyn-th>ID</kyn-th>
+                          <kyn-th>First Name</kyn-th>
+                          <kyn-th>Last Name</kyn-th>
+                          <kyn-th>Birthday</kyn-th>
+                          <kyn-th .align=${'right'}>Age</kyn-th>
+                          <kyn-th>Full Name</kyn-th>
+                        </kyn-tr>
+                      </kyn-thead>
+                      <kyn-tbody>
+                        ${data.map(
+                          ({
+                            id,
+                            firstName,
+                            lastName,
+                            birthday,
+                            age,
+                          }) => html`<kyn-tr>
+                            <kyn-td>${id}</kyn-td>
+                            <kyn-td>${firstName}</kyn-td>
+                            <kyn-td>${lastName}</kyn-td>
+                            <kyn-td>${birthday}</kyn-td>
+                            <kyn-td .align=${'right'}>${age}</kyn-td>
+                            <kyn-td>${firstName} ${lastName}</kyn-td>
+                          </kyn-tr>`
+                        )}
+                      </kyn-tbody>
+                    </kyn-table>
+                  </kyn-table-container>
                 </kyn-widget>
               </div>
             </div>
