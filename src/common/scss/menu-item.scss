@@ -79,7 +79,7 @@
   outline: none;
   @include border-gradient-ai(
     $gradient: gradient.$ai-gradient-default,
-    $radius: 4px,
+    $radius: 0,
     $width: 1px,
     $surface: var(--kd-color-background-menu-state-ai-focused)
   );
@@ -250,11 +250,6 @@
 
   // AI variant
   &.ai-connected:not(.option-is-readonly) {
-    @include state-colors(
-      var(--kd-color-background-menu-state-ai-pressed),
-      var(--kd-color-text-level-light)
-    );
-
     &:hover:not([disabled]) {
       background-color: var(--kd-color-background-menu-state-ai-hover);
 
@@ -272,7 +267,7 @@
         var(--kd-color-background-menu-state-ai-open),
         var(--kd-color-text-level-primary)
       );
-      outline: 2px solid var(--kd-color-border-button-ai-state-focused) !important;
+      outline: 2px solid var(--kd-color-border-button-ai-state-focused);
       outline-offset: -2px !important;
     }
 
@@ -281,6 +276,8 @@
         var(--kd-color-background-menu-state-ai-pressed),
         var(--kd-color-text-level-light)
       );
+      outline: none;
+      border: none;
     }
 
     &[selected]:not([disabled]),
