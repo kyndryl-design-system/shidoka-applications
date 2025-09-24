@@ -915,27 +915,38 @@ export class Dropdown extends FormMixin(LitElement) {
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
-        let nextIndex =
-          fromIndex < 0
-            ? 0
-            : fromIndex === visibleOptions.length - 1
-            ? 0
-            : fromIndex + 1;
+        const fromIndex =
+          highlightedIndex >= 0
+            ? highlightedIndex
+            : focusedIndex >= 0
+            ? focusedIndex
+            : -1;
 
-        if (visibleOptions[nextIndex].disabled) {
-          nextIndex =
-            nextIndex === visibleOptions.length - 1 ? 0 : nextIndex + 1;
+        let nextIndex =
+          fromIndex < 0 ? 0 : (fromIndex + 1) % visibleOptions.length;
+
+        let guard = 0;
+        while (
+          visibleOptions[nextIndex]?.disabled &&
+          guard++ < visibleOptions.length
+        ) {
+          nextIndex = (nextIndex + 1) % visibleOptions.length;
         }
 
         if (fromIndex >= 0) {
           visibleOptions[fromIndex].tabIndex = -1;
           visibleOptions[fromIndex].highlighted = false;
         }
-        visibleOptions[nextIndex].tabIndex = 0;
-        visibleOptions[nextIndex].focus();
-        visibleOptions[nextIndex].highlighted = true;
-        visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
-        this.assistiveText = visibleOptions[nextIndex].text;
+
+        const next = visibleOptions[nextIndex];
+        if (next) {
+          next.tabIndex = 0;
+          next.focus();
+          next.highlighted = true;
+          next.scrollIntoView?.({ block: 'nearest' });
+          this.assistiveText = next.text || 'Option';
+        }
+
         return;
       }
       case UP_ARROW_KEY_CODE: {
