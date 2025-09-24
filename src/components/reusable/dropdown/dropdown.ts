@@ -325,6 +325,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 class="${classMap({
                   select: true,
                   'is-readonly': !this.disabled && this.readonly,
+                  multiple: this.multiple,
                   'input-custom': true,
                   'size--sm': this.size === 'sm',
                   'size--lg': this.size === 'lg',

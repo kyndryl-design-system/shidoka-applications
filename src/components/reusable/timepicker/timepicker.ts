@@ -298,6 +298,7 @@ export class TimePicker extends FormMixin(LitElement) {
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
           ?disabled=${this.timepickerDisabled}
+          ?readonly=${this.readonly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -324,7 +325,7 @@ export class TimePicker extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.timepickerDisabled}
-            ?readonly=${!this.disabled && this.readonly}
+            ?readonly=${!this.timepickerDisabled && this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid}
