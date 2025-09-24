@@ -552,496 +552,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  pin: 'Pin',\r\n  unpin: 'Unpin',\r\n  toggleMenu: 'Toggle Menu',\r\n  collapse: 'Collapse',\r\n  menu: 'Menu',\r\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "_onDocumentClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_onLinkActive",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ text: string }>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-link-active",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "on-click",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -2570,6 +2080,496 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  pin: 'Pin',\r\n  unpin: 'Unpin',\r\n  toggleMenu: 'Toggle Menu',\r\n  collapse: 'Collapse',\r\n  menu: 'Menu',\r\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_onDocumentClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onLinkActive",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ text: string }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-link-active",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "on-click",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
@@ -2627,85 +2627,6 @@
           "declaration": {
             "name": "UiShell",
             "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/avatar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "User avatar.",
-          "name": "Avatar",
-          "slots": [
-            {
-              "description": "Slot for the profile picture img.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "attribute": "initials"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "fieldName": "initials"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-avatar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "./avatar"
           }
         }
       ]
@@ -3130,512 +3051,79 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
+      "path": "src/components/reusable/avatar/avatar.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "`<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.",
-          "name": "BlockCodeView",
+          "description": "User avatar.",
+          "name": "Avatar",
+          "slots": [
+            {
+              "description": "Slot for the profile picture img.",
+              "name": "unnamed"
+            }
+          ],
           "members": [
             {
               "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "language",
+              "name": "initials",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
-              "attribute": "language"
-            },
-            {
-              "kind": "field",
-              "name": "lineNumbers",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display line numbers.",
-              "attribute": "lineNumbers"
-            },
-            {
-              "kind": "field",
-              "name": "startLineNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Sets the starting line number when lineNumbers is true. Must be a positive integer.",
-              "attribute": "startLineNumber"
-            },
-            {
-              "kind": "field",
-              "name": "maxHeight",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Customizable max-height setting for code snippet container.",
-              "attribute": "maxHeight"
-            },
-            {
-              "kind": "field",
-              "name": "codeViewLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optionally displayed label above code snippet container.",
-              "attribute": "codeViewLabel"
-            },
-            {
-              "kind": "field",
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to copy code snippet.",
-              "attribute": "copyOptionVisible"
-            },
-            {
-              "kind": "field",
-              "name": "codeViewExpandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to expand code snippet container.",
-              "attribute": "codeViewExpandable"
-            },
-            {
-              "kind": "field",
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy code button text (optional).",
-              "attribute": "copyButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "copyButtonDescriptionAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy button description attr value.",
-              "attribute": "copyButtonDescriptionAttr"
-            },
-            {
-              "kind": "field",
-              "name": "codeSnippet",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
-              "attribute": "codeSnippet"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  collapsed: 'Collapsed',\r\n  expanded: 'Expanded',\r\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "getContainerClasses",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderCopyButton",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderExpandButton",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "highlightCode",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "addLineNumbers",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "preEl",
-                  "type": {
-                    "text": "HTMLElement"
-                  }
-                },
-                {
-                  "name": "codeEl",
-                  "type": {
-                    "text": "HTMLElement"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "detectLanguage",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "calculateRelevance",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "tokens",
-                  "type": {
-                    "text": "(string | Prism.Token)[]"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getTokenRelevance",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "token",
-                  "type": {
-                    "text": "Prism.Token"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "isLanguageSpecificToken",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "token",
-                  "type": {
-                    "text": "Prism.Token"
-                  }
-                },
-                {
-                  "name": "language",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "determineMarkupLanguage",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "checkOverflow",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "removeLeadingWhitespace",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "formatExampleCode",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "code",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "copyCode",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getContainerStyle",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "expandCodeView",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleKeypress",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-copy",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when the copy button is clicked."
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "attribute": "initials"
             }
           ],
           "attributes": [
             {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "language",
+              "name": "initials",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
-              "fieldName": "language"
-            },
-            {
-              "name": "lineNumbers",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display line numbers.",
-              "fieldName": "lineNumbers"
-            },
-            {
-              "name": "startLineNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Sets the starting line number when lineNumbers is true. Must be a positive integer.",
-              "fieldName": "startLineNumber"
-            },
-            {
-              "name": "maxHeight",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "Customizable max-height setting for code snippet container.",
-              "fieldName": "maxHeight"
-            },
-            {
-              "name": "codeViewLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optionally displayed label above code snippet container.",
-              "fieldName": "codeViewLabel"
-            },
-            {
-              "name": "copyOptionVisible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to copy code snippet.",
-              "fieldName": "copyOptionVisible"
-            },
-            {
-              "name": "codeViewExpandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optionally display button to expand code snippet container.",
-              "fieldName": "codeViewExpandable"
-            },
-            {
-              "name": "copyButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy code button text (optional).",
-              "fieldName": "copyButtonText"
-            },
-            {
-              "name": "copyButtonDescriptionAttr",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets copy button description attr value.",
-              "fieldName": "copyButtonDescriptionAttr"
-            },
-            {
-              "name": "codeSnippet",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
-              "fieldName": "codeSnippet"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "fieldName": "initials"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-block-code-view",
+          "tagName": "kyn-avatar",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "BlockCodeView",
+          "name": "Avatar",
           "declaration": {
-            "name": "BlockCodeView",
-            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-block-code-view",
+          "name": "kyn-avatar",
           "declaration": {
-            "name": "BlockCodeView",
-            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/blockCodeView/index.ts",
+      "path": "src/components/reusable/avatar/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "BlockCodeView",
+          "name": "Avatar",
           "declaration": {
-            "name": "BlockCodeView",
-            "module": "./blockCodeView"
+            "name": "Avatar",
+            "module": "./avatar"
           }
         }
       ]
@@ -4300,6 +3788,518 @@
           "declaration": {
             "name": "Button",
             "module": "./button"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-block-code-view>` component to display `<code>` snippets as standalone single-/multi-line block elements.",
+          "name": "BlockCodeView",
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
+              "attribute": "language"
+            },
+            {
+              "kind": "field",
+              "name": "lineNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display line numbers.",
+              "attribute": "lineNumbers"
+            },
+            {
+              "kind": "field",
+              "name": "startLineNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the starting line number when lineNumbers is true. Must be a positive integer.",
+              "attribute": "startLineNumber"
+            },
+            {
+              "kind": "field",
+              "name": "maxHeight",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Customizable max-height setting for code snippet container.",
+              "attribute": "maxHeight"
+            },
+            {
+              "kind": "field",
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optionally displayed label above code snippet container.",
+              "attribute": "codeViewLabel"
+            },
+            {
+              "kind": "field",
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to copy code snippet.",
+              "attribute": "copyOptionVisible"
+            },
+            {
+              "kind": "field",
+              "name": "codeViewExpandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to expand code snippet container.",
+              "attribute": "codeViewExpandable"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy code button text (optional).",
+              "attribute": "copyButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy button description attr value.",
+              "attribute": "copyButtonDescriptionAttr"
+            },
+            {
+              "kind": "field",
+              "name": "codeSnippet",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
+              "attribute": "codeSnippet"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  collapsed: 'Collapsed',\r\n  expanded: 'Expanded',\r\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getContainerClasses",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderCopyButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderExpandButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "highlightCode",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "addLineNumbers",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "preEl",
+                  "type": {
+                    "text": "HTMLElement"
+                  }
+                },
+                {
+                  "name": "codeEl",
+                  "type": {
+                    "text": "HTMLElement"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "detectLanguage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "calculateRelevance",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "tokens",
+                  "type": {
+                    "text": "(string | Prism.Token)[]"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getTokenRelevance",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": {
+                    "text": "Prism.Token"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "isLanguageSpecificToken",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": {
+                    "text": "Prism.Token"
+                  }
+                },
+                {
+                  "name": "language",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineMarkupLanguage",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "checkOverflow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "removeLeadingWhitespace",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "formatExampleCode",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "code",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "copyCode",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getContainerStyle",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "expandCodeView",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleKeypress",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-copy",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the copy button is clicked."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "If empty string, attempt language syntax auto-detection. Setting a value will override auto-detection and manually configure desired language.",
+              "fieldName": "language"
+            },
+            {
+              "name": "lineNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display line numbers.",
+              "fieldName": "lineNumbers"
+            },
+            {
+              "name": "startLineNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Sets the starting line number when lineNumbers is true. Must be a positive integer.",
+              "fieldName": "startLineNumber"
+            },
+            {
+              "name": "maxHeight",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Customizable max-height setting for code snippet container.",
+              "fieldName": "maxHeight"
+            },
+            {
+              "name": "codeViewLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optionally displayed label above code snippet container.",
+              "fieldName": "codeViewLabel"
+            },
+            {
+              "name": "copyOptionVisible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to copy code snippet.",
+              "fieldName": "copyOptionVisible"
+            },
+            {
+              "name": "codeViewExpandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optionally display button to expand code snippet container.",
+              "fieldName": "codeViewExpandable"
+            },
+            {
+              "name": "copyButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy code button text (optional).",
+              "fieldName": "copyButtonText"
+            },
+            {
+              "name": "copyButtonDescriptionAttr",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets copy button description attr value.",
+              "fieldName": "copyButtonDescriptionAttr"
+            },
+            {
+              "name": "codeSnippet",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets code snippet for display -- NOTE: original formatting is preserved.",
+              "fieldName": "codeSnippet"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-block-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-block-code-view",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "src/components/reusable/blockCodeView/blockCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/blockCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BlockCodeView",
+          "declaration": {
+            "name": "BlockCodeView",
+            "module": "./blockCodeView"
           }
         }
       ]
@@ -5017,6 +5017,16 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox readonly state, inherited from the parent group.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
               "name": "notFocusable",
               "type": {
                 "text": "boolean"
@@ -5046,6 +5056,16 @@
               "attribute": "indeterminate"
             },
             {
+              "kind": "field",
+              "name": "blockIfReadonly",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "blockToggleIfReadonly",
+              "privacy": "private"
+            },
+            {
               "kind": "method",
               "name": "handleChange",
               "privacy": "private",
@@ -5053,7 +5073,7 @@
                 {
                   "name": "e",
                   "type": {
-                    "text": "any"
+                    "text": "Event"
                   }
                 }
               ]
@@ -5061,8 +5081,11 @@
           ],
           "events": [
             {
-              "description": "Captures the change event and emits the selected value and original event details.",
-              "name": "on-checkbox-change"
+              "name": "on-checkbox-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the change event and emits the selected value and original event details."
             }
           ],
           "attributes": [
@@ -5083,6 +5106,15 @@
               "default": "false",
               "description": "Checkbox disabled state, inherited from the parent group.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox readonly state, inherited from the parent group.",
+              "fieldName": "readonly"
             },
             {
               "name": "notFocusable",
@@ -5190,6 +5222,16 @@
               "default": "false",
               "description": "Checkbox group disabled state.",
               "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group readonly state.",
+              "attribute": "readonly"
             },
             {
               "kind": "field",
@@ -5319,7 +5361,7 @@
                 {
                   "name": "e",
                   "type": {
-                    "text": "any"
+                    "text": "CustomEvent<{ value: string; checked: boolean }>"
                   }
                 }
               ]
@@ -5435,6 +5477,15 @@
               "default": "false",
               "description": "Checkbox group disabled state.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox group readonly state.",
+              "fieldName": "readonly"
             },
             {
               "name": "horizontal",
@@ -7715,6 +7766,17 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Dropdown read-only state (focusable but not interactive).",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "filterSearch",
               "type": {
                 "text": "boolean"
@@ -7883,6 +7945,16 @@
             },
             {
               "kind": "method",
+              "name": "canOpen",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
               "name": "handleAnchorClick",
               "privacy": "private",
               "parameters": [
@@ -7902,7 +7974,7 @@
                 {
                   "name": "e",
                   "type": {
-                    "text": "any"
+                    "text": "KeyboardEvent"
                   }
                 }
               ]
@@ -8053,7 +8125,7 @@
                 {
                   "name": "e",
                   "type": {
-                    "text": "any"
+                    "text": "MouseEvent"
                   }
                 }
               ]
@@ -8351,6 +8423,15 @@
               "fieldName": "enhanced"
             },
             {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Dropdown read-only state (focusable but not interactive).",
+              "fieldName": "readonly"
+            },
+            {
               "name": "filterSearch",
               "type": {
                 "text": "boolean"
@@ -8612,6 +8693,17 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Readonly state (from parent). Option stays focusable but not selectable.",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "role",
               "type": {
                 "text": "string"
@@ -8626,9 +8718,48 @@
               "type": {
                 "text": "string"
               },
-              "default": "'option'",
+              "default": "'false'",
               "attribute": "aria-selected",
               "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "moveFocus",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "delta",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "moveToEdge",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "where",
+                  "type": {
+                    "text": "'start' | 'end'"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -8698,8 +8829,11 @@
           ],
           "events": [
             {
-              "description": "Emits the option details to the parent dropdown. `detail:{ selected: boolean, value: string, origEvent: PointerEvent }`",
-              "name": "on-click"
+              "name": "on-click",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits the option details to the parent dropdown. `detail:{ selected: boolean, value: string, origEvent: PointerEvent }`"
             },
             {
               "description": "Emits the option that is removed. `detail:{ value: string }`",
@@ -8753,6 +8887,15 @@
               "fieldName": "indeterminate"
             },
             {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Readonly state (from parent). Option stays focusable but not selectable.",
+              "fieldName": "readonly"
+            },
+            {
               "name": "role",
               "type": {
                 "text": "string"
@@ -8765,7 +8908,7 @@
               "type": {
                 "text": "string"
               },
-              "default": "'option'",
+              "default": "'false'",
               "fieldName": "ariaSelected"
             }
           ],
@@ -8850,6 +8993,17 @@
               "default": "false",
               "description": "Option disabled state.",
               "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Readonly state (from parent). Option stays focusable but not selectable.",
+              "attribute": "readonly",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -9020,6 +9174,15 @@
               "default": "false",
               "description": "Option disabled state.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Readonly state (from parent). Option stays focusable but not selectable.",
+              "fieldName": "readonly"
             },
             {
               "name": "allowAddOption",
@@ -9883,6 +10046,181 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/inlineConfirm/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineConfirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "./inlineConfirm"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineConfirm/inlineConfirm.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "InlineConfirm component.",
+          "name": "InlineConfirm",
+          "slots": [
+            {
+              "description": "Slot for anchor button icon.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for confirm icon button, will be a check icon by default if none provided.",
+              "name": "confirmIcon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "anchorText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Anchor button text.",
+              "attribute": "anchorText"
+            },
+            {
+              "kind": "field",
+              "name": "confirmText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Confirm'",
+              "description": "Confirm button text.",
+              "attribute": "confirmText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "openRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Open to the right.",
+              "attribute": "openRight"
+            },
+            {
+              "kind": "method",
+              "name": "_handleToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleConfirm",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Dispatched when the confirm button is clicked.`detail:{ origEvent: PointerEvent }`",
+              "name": "on-confirm"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "anchorText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Anchor button text.",
+              "fieldName": "anchorText"
+            },
+            {
+              "name": "confirmText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Confirm'",
+              "description": "Confirm button text.",
+              "fieldName": "confirmText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "openRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Open to the right.",
+              "fieldName": "openRight"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-confirm",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineConfirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-confirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/link/defs.ts",
       "declarations": [],
       "exports": []
@@ -10120,181 +10458,6 @@
           "declaration": {
             "name": "Link",
             "module": "src/components/reusable/link/link.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineConfirm/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineConfirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "./inlineConfirm"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineConfirm/inlineConfirm.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "InlineConfirm component.",
-          "name": "InlineConfirm",
-          "slots": [
-            {
-              "description": "Slot for anchor button icon.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for confirm icon button, will be a check icon by default if none provided.",
-              "name": "confirmIcon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "anchorText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Anchor button text.",
-              "attribute": "anchorText"
-            },
-            {
-              "kind": "field",
-              "name": "confirmText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Confirm'",
-              "description": "Confirm button text.",
-              "attribute": "confirmText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "openRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Open to the right.",
-              "attribute": "openRight"
-            },
-            {
-              "kind": "method",
-              "name": "_handleToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleConfirm",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Dispatched when the confirm button is clicked.`detail:{ origEvent: PointerEvent }`",
-              "name": "on-confirm"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "anchorText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Anchor button text.",
-              "fieldName": "anchorText"
-            },
-            {
-              "name": "confirmText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Confirm'",
-              "description": "Confirm button text.",
-              "fieldName": "confirmText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "openRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Open to the right.",
-              "fieldName": "openRight"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-confirm",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineConfirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-confirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
           }
         }
       ]
@@ -15318,6 +15481,16 @@
               "attribute": "disabled"
             },
             {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button readonly state, inherited from the parent group.",
+              "attribute": "readonly"
+            },
+            {
               "kind": "method",
               "name": "handleChange",
               "privacy": "private",
@@ -15355,6 +15528,15 @@
               "default": "false",
               "description": "Radio button disabled state, inherited from the parent group.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button readonly state, inherited from the parent group.",
+              "fieldName": "readonly"
             }
           ],
           "superclass": {
@@ -15439,6 +15621,16 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
               "name": "horizontal",
               "type": {
                 "text": "boolean"
@@ -15494,7 +15686,7 @@
                 {
                   "name": "e",
                   "type": {
-                    "text": "any"
+                    "text": "CustomEvent<{ value: string; checked: boolean }>"
                   }
                 }
               ]
@@ -15502,8 +15694,11 @@
           ],
           "events": [
             {
-              "description": "Captures the change event and emits the selected value.`detail:{ value: string }`",
-              "name": "on-radio-group-change"
+              "name": "on-radio-group-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the change event and emits the selected value.`detail:{ value: string }`"
             }
           ],
           "attributes": [
@@ -15557,6 +15752,15 @@
               "default": "false",
               "description": "Radio button group disabled state.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group readonly state.",
+              "fieldName": "readonly"
             },
             {
               "name": "horizontal",
@@ -23509,6 +23713,17 @@
             },
             {
               "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Toggle read-only state (non-modifiable but focusable).",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "reverse",
               "type": {
                 "text": "boolean"
@@ -23526,6 +23741,11 @@
               "default": "false",
               "description": "Hides the label visually.",
               "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "handleClick",
+              "privacy": "private"
             },
             {
               "kind": "field",
@@ -23633,6 +23853,15 @@
               "default": "false",
               "description": "Checkbox disabled state.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Toggle read-only state (non-modifiable but focusable).",
+              "fieldName": "readonly"
             },
             {
               "name": "reverse",
