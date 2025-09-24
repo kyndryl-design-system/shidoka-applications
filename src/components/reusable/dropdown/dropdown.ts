@@ -587,7 +587,7 @@ export class Dropdown extends FormMixin(LitElement) {
           this.multiple && !this.hideTags && this._tags.length
             ? html`
                 <kyn-tag-group
-                  filter
+                  ?filter=${this.disabled || this.readonly ? false : true}
                   role="list"
                   aria-label=${this._textStrings.selectedOptions}
                   data-readonly=${this.readonly ? '' : nothing}
