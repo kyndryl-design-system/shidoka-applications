@@ -342,9 +342,10 @@ export class Dropdown extends FormMixin(LitElement) {
                 ?disabled=${this.disabled}
                 ?invalid=${this._isInvalid}
                 tabindex=${this.disabled ? '' : this.searchable ? '-1' : '0'}
-                @mousedown=${(e: any) => {
-                  if (!this.searchable) e.preventDefault();
+                @mousedown=${(e: MouseEvent) => {
+                  if (!this.searchable && !this.readonly) e.preventDefault();
                 }}
+                aria-readonly=${this.readonly}
                 @blur=${(e: any) => e.stopPropagation()}
               >
                 ${this.multiple && this.value.length
@@ -532,9 +533,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private canOpen(): boolean {
-    return (
-      !this.disabled && (!this.readonly || (this.readonly && this.multiple))
-    );
+    return !this.disabled && !this.readonly;
   }
 
   private handleAnchorClick(e: MouseEvent) {
@@ -553,15 +552,9 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleAnchorKeydown(e: KeyboardEvent) {
-    if (!this.canOpen()) return;
-
-    if (this.readonly && this.multiple) {
+    if (!this.canOpen()) {
       const openKeys = [' ', 'Enter', 'ArrowDown', 'ArrowUp'];
-      if (openKeys.includes(e.key)) {
-        e.preventDefault();
-        this.open = true;
-        this.listboxEl?.focus?.({ preventScroll: true });
-      }
+      if (openKeys.includes(e.key)) e.preventDefault();
       return;
     }
 
@@ -668,11 +661,9 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private updateChildOptions() {
-    // Get all slotted kyn-dropdown-option elements
     const slot = this.shadowRoot?.querySelector('#children') as HTMLSlotElement;
     const options = slot.assignedElements({ flatten: true }) as HTMLElement[];
 
-    // Pass allowAddOption to each kyn-dropdown-option
     options.forEach((option) => {
       const tag = option.tagName;
       if (
@@ -704,6 +695,7 @@ export class Dropdown extends FormMixin(LitElement) {
     }
     this.handleKeyboard(e, e.keyCode, 'button');
   }
+
   private handleListKeydown(e: any) {
     if (this.readonly) {
       if (e.key === 'Escape') {
@@ -1037,8 +1029,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSearchClick(e: MouseEvent) {
-    if (this.readonly && !this.multiple) return;
-
+    if (this.readonly) return;
     e.stopPropagation();
     this.open = true;
     if ((this.searchText ?? '').trim() === '') this.searchText = '';
