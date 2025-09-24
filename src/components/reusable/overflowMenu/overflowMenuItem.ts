@@ -107,7 +107,7 @@ export class OverflowMenuItem extends LitElement {
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
-      ['ai-connected']: this.kind === 'ai',
+      'ai-connected': this.kind === 'ai',
       destructive: this.destructive,
     };
 

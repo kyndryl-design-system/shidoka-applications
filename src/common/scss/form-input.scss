@@ -22,6 +22,14 @@
   [disabled] & {
     color: var(--kd-color-text-level-disabled);
   }
+
+  [readonly] & {
+    color: var(--kd-color-text-level-disabled);
+  }
+
+  &[readonly] {
+    color: var(--kd-color-text-level-disabled);
+  }
 }
 
 .required {
@@ -72,6 +80,10 @@ textarea {
 
   .ai-connected & {
     background: var(--kd-color-background-forms-ai-default);
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-variants-ai);
+    }
   }
 
   &:hover {
@@ -96,19 +108,22 @@ textarea {
 
   &.is-readonly {
     background: var(--kd-color-background-forms-disabled);
-    border-color: var(--kd-color-border-variants-light);
-    cursor: default;
+    border-color: var(--kd-color-border-ui-disabled);
+
+    &:hover {
+      border-color: var(--kd-color-border-ui-disabled);
+    }
 
     &::placeholder {
-      color: var(--kd-color-text-forms-input-field-text);
+      color: var(--kd-color-text-variant-placeholder);
     }
 
     &:-ms-input-placeholder {
-      color: var(--kd-color-text-forms-input-field-text);
+      color: var(--kd-color-text-variant-placeholder);
     }
 
     &::-ms-input-placeholder {
-      color: var(--kd-color-text-forms-input-field-text);
+      color: var(--kd-color-text-variant-placeholder);
     }
   }
 
@@ -117,6 +132,10 @@ textarea {
     border: none;
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
+
+    .arrow-icon {
+      color: var(--kd-color-icon-disabled);
+    }
 
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
@@ -189,7 +208,8 @@ textarea {
   cursor: default;
   color: var(--kd-color-text-forms-input-field-text);
 
-  [disabled] & {
+  [disabled] &,
+  [readonly] & {
     color: var(--kd-color-text-level-disabled);
   }
 }

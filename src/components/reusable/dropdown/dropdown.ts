@@ -5,6 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import DropdownScss from './dropdown.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
+import { nothing } from 'lit';
 
 import './dropdownOption';
 import './enhancedDropdownOption';
@@ -88,6 +89,10 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Makes the dropdown enhanced. */
   @property({ type: Boolean })
   accessor enhanced = false;
+
+  /** Dropdown read-only state (focusable but not interactive). */
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false;
 
   /** Searchable variant filters results. */
   @property({ type: Boolean })
@@ -274,13 +279,14 @@ export class Dropdown extends FormMixin(LitElement) {
   override render() {
     const mainDropdownClasses = {
       dropdown: true,
-      ['ai-connected']: this.kind === 'ai',
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`
       <div
         class=${classMap(mainDropdownClasses)}
         ?disabled=${this.disabled}
+        ?readonly=${!this.disabled && this.readonly}
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this.searchable}
@@ -318,6 +324,8 @@ export class Dropdown extends FormMixin(LitElement) {
               <div
                 class="${classMap({
                   select: true,
+                  'is-readonly': !this.disabled && this.readonly,
+                  multiple: this.multiple,
                   'input-custom': true,
                   'size--sm': this.size === 'sm',
                   'size--lg': this.size === 'lg',
@@ -335,27 +343,28 @@ export class Dropdown extends FormMixin(LitElement) {
                 ?disabled=${this.disabled}
                 ?invalid=${this._isInvalid}
                 tabindex=${this.disabled ? '' : this.searchable ? '-1' : '0'}
-                @mousedown=${(e: any) => {
-                  if (!this.searchable) {
-                    e.preventDefault();
-                  }
+                @mousedown=${(e: MouseEvent) => {
+                  if (!this.searchable && !this.readonly) e.preventDefault();
                 }}
+                aria-readonly=${this.readonly}
                 @blur=${(e: any) => e.stopPropagation()}
               >
                 ${this.multiple && this.value.length
                   ? html`
                       <button
-                        class="clear-multiple"
+                        class=${classMap({
+                          'clear-multiple': true,
+                        })}
                         aria-label="${this.value
                           .length} items selected. Clear selections"
-                        ?disabled=${this.disabled}
+                        ?disabled=${this.disabled || this.readonly}
                         title=${this._textStrings.clear}
                         @click=${(e: Event) => this.handleClearMultiple(e)}
                       >
                         ${this.value.length}
-                        <span style="display:flex;" class="clear-multiple-icon"
-                          >${unsafeSVG(clearIcon)}</span
-                        >
+                        <span style="display:flex;" class="clear-multiple-icon">
+                          ${unsafeSVG(clearIcon)}
+                        </span>
                       </button>
                     `
                   : null}
@@ -367,6 +376,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         placeholder=${this.placeholder}
                         value=${this.searchText}
                         ?disabled=${this.disabled}
+                        ?readonly=${!this.disabled && this.readonly}
                         aria-disabled=${this.disabled}
                         @keydown=${(e: any) => this.handleSearchKeydown(e)}
                         @input=${(e: any) => this.handleSearchInput(e)}
@@ -387,7 +397,6 @@ export class Dropdown extends FormMixin(LitElement) {
                           : this.text}
                       </span>
                     `}
-
                 <span class="arrow-icon">${unsafeSVG(downIcon)}</span>
               </div>
             </slot>
@@ -415,6 +424,8 @@ export class Dropdown extends FormMixin(LitElement) {
                         placeholder=${this._textStrings.addItem}
                         .value=${this.newOptionValue}
                         aria-label="Add new option"
+                        ?disabled=${this.disabled}
+                        ?readonly=${!this.disabled && this.readonly}
                         @input=${this._handleInputNewOption}
                         @keydown=${this._onAddOptionInputKeydown}
                         @focus=${this._onAddOptionInputFocus}
@@ -423,6 +434,7 @@ export class Dropdown extends FormMixin(LitElement) {
                         type="button"
                         size="small"
                         kind="secondary"
+                        ?disabled=${this.disabled}
                         @on-click=${this._handleAddOption}
                       >
                         ${this._textStrings.add}
@@ -431,7 +443,14 @@ export class Dropdown extends FormMixin(LitElement) {
                   `
                 : null}
 
-              <div role="listbox" aria-labelledby="label-${this.name}">
+              <div
+                role="listbox"
+                aria-labelledby="label-${this.name}"
+                class=${classMap({
+                  'dropdown-listbox': true,
+                  'ai-connected': this.kind === 'ai',
+                })}
+              >
                 ${this.multiple && this.selectAll
                   ? html`
                       ${this.enhanced
@@ -472,7 +491,7 @@ export class Dropdown extends FormMixin(LitElement) {
           ${this.hasSearch && this.open
             ? html`
                 <kyn-button
-                  ?disabled=${this.disabled}
+                  ?disabled=${this.disabled || this.readonly}
                   class="clear-button dropdown-clear"
                   kind="ghost"
                   size="small"
@@ -490,6 +509,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _onAddOptionInputKeydown(e: KeyboardEvent) {
+    if (this.readonly) return;
+
     e.stopPropagation();
     switch (e.key) {
       case KEY.Enter:
@@ -513,8 +534,12 @@ export class Dropdown extends FormMixin(LitElement) {
     this.assistiveText = 'Add new option input';
   }
 
+  private canOpen(): boolean {
+    return !this.disabled && !this.readonly;
+  }
+
   private handleAnchorClick(e: MouseEvent) {
-    if (this.disabled) return;
+    if (!this.canOpen()) return;
 
     const path = (e.composedPath?.() || []) as Array<EventTarget>;
     const isInOptions =
@@ -528,23 +553,21 @@ export class Dropdown extends FormMixin(LitElement) {
     this.handleClick();
   }
 
-  private handleAnchorKeydown(e: any) {
-    if (this.disabled) return;
-    const path = (e.composedPath?.() || []) as EventTarget[];
-    if (
-      path.some((t) => (t as HTMLElement)?.id === 'options') ||
-      path.some((t) =>
-        (t as HTMLElement)?.closest?.(
-          'kyn-dropdown-option, kyn-enhanced-dropdown-option'
-        )
-      )
-    ) {
+  private handleAnchorKeydown(e: KeyboardEvent) {
+    if (!this.canOpen()) {
+      const openKeys = [' ', 'Enter', 'ArrowDown', 'ArrowUp'];
+      if (openKeys.includes(e.key)) e.preventDefault();
       return;
     }
-    this.handleButtonKeydown(e);
+
+    this.handleButtonKeydown(
+      e as unknown as KeyboardEvent & { keyCode: number }
+    );
   }
 
   private _handleAddOption() {
+    if (this.readonly) return;
+
     const v = this.newOptionValue.trim();
     if (!v) return;
     this.dispatchEvent(
@@ -559,16 +582,19 @@ export class Dropdown extends FormMixin(LitElement) {
           this.multiple && !this.hideTags && this._tags.length
             ? html`
                 <kyn-tag-group
-                  filter
+                  ?filter=${this.disabled || this.readonly ? false : true}
                   role="list"
                   aria-label=${this._textStrings.selectedOptions}
+                  data-readonly=${this.readonly ? '' : nothing}
                 >
                   ${this._tags.map((tag: any) => {
                     return html`
                       <kyn-tag
                         role="listitem"
                         label=${tag.text}
-                        ?disabled=${this.disabled || tag.disabled}
+                        ?disabled=${this.disabled ||
+                        tag.disabled ||
+                        this.readonly}
                         @on-close=${() => this.handleTagClear(tag)}
                       ></kyn-tag>
                     `;
@@ -637,39 +663,51 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private updateChildOptions() {
-    // Get all slotted kyn-dropdown-option elements
     const slot = this.shadowRoot?.querySelector('#children') as HTMLSlotElement;
     const options = slot.assignedElements({ flatten: true }) as HTMLElement[];
 
-    // Pass allowAddOption to each kyn-dropdown-option
     options.forEach((option) => {
+      const tag = option.tagName;
       if (
-        option.tagName === 'KYN-DROPDOWN-OPTION' ||
-        option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION'
+        tag === 'KYN-DROPDOWN-OPTION' ||
+        tag === 'KYN-ENHANCED-DROPDOWN-OPTION'
       ) {
         (option as any).allowAddOption = this.allowAddOption;
+        (option as any).multiple = this.multiple;
+        (option as any).readonly = this.readonly;
       }
     });
   }
 
   private handleClick() {
-    if (!this.disabled) {
-      this.open = !this.open;
+    if (!this.canOpen()) return;
 
-      // focus search input if searchable
-      if (this.searchable) {
-        this.searchEl.focus();
-      } else {
-        this.buttonEl.focus();
-      }
-    }
+    this.open = !this.open;
+    if (this.searchable) this.searchEl.focus();
+    else this.buttonEl.focus();
   }
 
   private handleButtonKeydown(e: any) {
+    if (this.readonly) {
+      if (e.key === 'Escape') {
+        this.open = false;
+        this.buttonEl?.focus();
+      }
+      return;
+    }
     this.handleKeyboard(e, e.keyCode, 'button');
   }
 
   private handleListKeydown(e: any) {
+    if (this.readonly) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        this.open = false;
+        this.buttonEl?.focus();
+      }
+      return;
+    }
+
     const TAB_KEY_CODE = 9;
     if (e.keyCode === TAB_KEY_CODE) {
       e.preventDefault();
@@ -764,6 +802,52 @@ export class Dropdown extends FormMixin(LitElement) {
       e.preventDefault();
     }
 
+    if (this.readonly) {
+      if (keyCode === DOWN_ARROW_KEY_CODE || keyCode === UP_ARROW_KEY_CODE) {
+        e.preventDefault();
+        let nextIndex =
+          keyCode === DOWN_ARROW_KEY_CODE
+            ? (highlightedIndex + 1) % visibleOptions.length
+            : (highlightedIndex - 1 + visibleOptions.length) %
+              visibleOptions.length;
+
+        let guard = 0;
+        while (
+          visibleOptions[nextIndex]?.disabled &&
+          guard++ < visibleOptions.length
+        ) {
+          nextIndex =
+            keyCode === DOWN_ARROW_KEY_CODE
+              ? (nextIndex + 1) % visibleOptions.length
+              : (nextIndex - 1 + visibleOptions.length) % visibleOptions.length;
+        }
+
+        if (visibleOptions[nextIndex]) {
+          visibleOptions[highlightedIndex] &&
+            (visibleOptions[highlightedIndex].highlighted = false);
+          visibleOptions[nextIndex].focus();
+          visibleOptions[nextIndex].highlighted = true;
+          visibleOptions[nextIndex].scrollIntoView?.({ block: 'nearest' });
+          this.assistiveText = visibleOptions[nextIndex].text || 'Option';
+        }
+        return;
+      }
+
+      if (SPACEBAR_KEY_CODE.includes(keyCode) || keyCode === ENTER_KEY_CODE) {
+        e.preventDefault();
+        return;
+      }
+
+      if (keyCode === ESCAPE_KEY_CODE) {
+        this.open = false;
+        (this.searchable ? this.searchEl : this.buttonEl)?.focus();
+        this.assistiveText = 'Dropdown menu options.';
+        return;
+      }
+
+      return;
+    }
+
     const isListboxElOpened = this.open;
     if (target === 'button' || target === 'addOption') {
       let openDropdown =
@@ -831,12 +915,6 @@ export class Dropdown extends FormMixin(LitElement) {
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
-        const fromIndex =
-          highlightedIndex >= 0
-            ? highlightedIndex
-            : focusedIndex >= 0
-            ? focusedIndex
-            : -1;
         let nextIndex =
           fromIndex < 0
             ? 0
@@ -907,6 +985,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleClearMultiple(e: any) {
+    if (this.readonly) return;
+
     e.stopPropagation();
 
     // clear values
@@ -937,6 +1017,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleTagClear(tag: any) {
+    if (this.readonly) return;
     // remove value
     this.updateValue(tag.value, false);
     this._updateSelectedOptions();
@@ -944,6 +1025,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleClear(e: any) {
+    if (this.readonly) return;
+
     e.stopPropagation();
 
     // reset search input text
@@ -969,13 +1052,24 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  private handleSearchClick(e: any) {
+  private handleSearchClick(e: MouseEvent) {
+    if (this.readonly) return;
     e.stopPropagation();
     this.open = true;
     if ((this.searchText ?? '').trim() === '') this.searchText = '';
   }
 
   private handleSearchKeydown(e: any) {
+    if (this.readonly) {
+      if (e.key === 'Escape') {
+        this.open = false;
+        this.buttonEl.focus();
+      }
+      e.stopPropagation();
+      e.preventDefault();
+      return;
+    }
+
     e.stopPropagation();
 
     const ENTER_KEY_CODE = 13;
@@ -1019,6 +1113,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private handleSearchInput(e: any) {
+    if (this.readonly) return;
+
     const value = e.target.value;
     this.searchText = value;
     this.open = true;
@@ -1086,6 +1182,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _handleClick(e: any) {
+    if (this.readonly) return;
+
     if (e.detail.value === 'selectAll') {
       this.selectAllChecked = e.detail.selected;
 
@@ -1169,6 +1267,8 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private updateValue(value: string, selected = false) {
+    if (this.readonly) return;
+
     // set value
     if (this.multiple) {
       const values =
@@ -1205,6 +1305,7 @@ export class Dropdown extends FormMixin(LitElement) {
       customError: this.invalidText !== '',
       valueMissing:
         this.required &&
+        !this.readonly &&
         (!this.value ||
           (this.multiple && !this.value.length) ||
           (!this.multiple && this.value === '')),
@@ -1263,6 +1364,11 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override updated(changedProps: PropertyValues) {
     super.updated(changedProps);
+
+    if (changedProps.has('readonly')) {
+      this.clearMultipleEl?.classList.toggle('is-readonly', this.readonly);
+      this.clearMultipleEl?.toggleAttribute('data-readonly', this.readonly);
+    }
 
     if (changedProps.has('kind')) {
       this.dispatchEvent(
@@ -1348,8 +1454,16 @@ export class Dropdown extends FormMixin(LitElement) {
       this.searchEl.value = this.searchText;
     }
 
-    if (changedProps.has('allowAddOption')) {
+    if (
+      changedProps.has('multiple') ||
+      changedProps.has('allowAddOption') ||
+      changedProps.has('readonly')
+    ) {
       this.updateChildOptions();
+    }
+
+    if (changedProps.has('open') && this.open && !this.searchable) {
+      this.listboxEl?.focus({ preventScroll: true });
     }
   }
 
