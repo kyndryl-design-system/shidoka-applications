@@ -228,12 +228,17 @@
 
     &:focus-visible {
       outline-color: var(--kd-color-border-button-ai-state-focused);
+
+      &:before {
+        background-color: var(--kd-color-background-button-primary-ai-focused);
+        color: var(--kd-color-text-button-ai-default);
+      }
     }
 
     &:active {
       &:before {
         background-color: var(--kd-color-background-button-primary-ai-pressed);
-        color: var(--);
+        color: var(--kd-color-text-density-darker);
       }
       @include elevation.shadow(3, true);
     }
@@ -522,7 +527,7 @@
     }
 
     &:focus-visible {
-      border: 2px solid var(--kd-color-border-variants-ai);
+      outline-color: var(--kd-color-border-button-ai-state-focused);
       background-color: var(--kd-color-background-button-ghost-ai-focused);
     }
 
@@ -541,7 +546,7 @@
     }
 
     &.selected {
-      background-color: var(--kd-color-background-button-primary-ai-selected);
+      background-color: var(--kd-color-background-button-ghost-ai-selected);
       color: var(--kd-color-text-link-level-default);
     }
   }

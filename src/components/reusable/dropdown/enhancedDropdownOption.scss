@@ -18,13 +18,9 @@
   border: 1px solid transparent;
 
   &.ai-connected {
-    &:not([disabled]):hover {
-      @include gradient.border-gradient-ai(
-        $gradient: gradient.$ai-gradient-default,
-        $radius: 0,
-        $width: 1px,
-        $surface: var(--kd-color-background-menu-state-ai-hover)
-      );
+    background: var(--kd-color-background-menu-state-ai-default);
+    &:not([disabled]):not([readonly]):hover {
+      background: var(--kd-color-background-menu-state-ai-hover);
     }
   }
 

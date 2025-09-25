@@ -589,6 +589,7 @@ export class Dropdown extends FormMixin(LitElement) {
                     return html`
                       <kyn-tag
                         role="listitem"
+                        tagColor=${this.kind === 'ai' ? 'ai' : 'default'}
                         label=${tag.text}
                         ?disabled=${this.disabled ||
                         tag.disabled ||

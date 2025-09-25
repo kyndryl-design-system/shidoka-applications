@@ -27,6 +27,13 @@
   }
 }
 
+:host(:focus-visible) {
+  .ai-connected.card-wrapper-clickable {
+    outline-color: var(--kd-color-border-variants-focus);
+    outline-offset: -2px;
+  }
+}
+
 .card {
   &-wrapper,
   &-wrapper-clickable {
@@ -94,11 +101,14 @@
         mask-composite: exclude;
       }
 
-      &.is-hover::after {
+      &.is-hover::after,
+      &:hover::after {
         opacity: 1;
       }
 
-      &.is-hover {
+      &.is-hover,
+      &:hover {
+        background: var(--kd-color-background-button-primary-ai-hover);
         ::slotted(.card-title) {
           color: var(--_title-color);
         }
@@ -106,10 +116,6 @@
         ::slotted(.card-description) {
           color: var(--_subtitle-color);
         }
-      }
-
-      &:focus-visible {
-        outline-color: var(--kd-color-border-button-ai-state-hover);
       }
     }
 

@@ -69,6 +69,37 @@
   background-clip: padding-box, border-box;
 }
 
+// Centralized pressed mixin to avoid drift between variants.
+// $layered=true uses `background` (not `background-color`) to overwrite any gradient layers.
+// $important=true adds `!important` to the background to beat prior hover/outline-gradient compositions.
+@mixin pressed($bg, $text, $icon, $layered: true, $important: true) {
+  @if $layered {
+    @if $important {
+      background: $bg !important;
+    } @else {
+      background: $bg;
+    }
+  } @else {
+    @if $important {
+      background-color: $bg !important;
+    } @else {
+      background-color: $bg;
+    }
+  }
+
+  outline: none;
+  border: 1px solid transparent;
+
+  .menu-item-inner-el {
+    color: $text;
+  }
+
+  slot[name='icon']::slotted(span),
+  .check-icon {
+    color: $icon;
+  }
+}
+
 // ==== defaults ====
 .menu-item {
   background-color: var(--kd-color-background-menu-state-default);
@@ -130,10 +161,7 @@
     }
   }
 
-  // 3) active / pressed (non-disabled, non-readonly)
-  // (intentionally handled later for AI + non-AI to ensure precedence)
-
-  // 4) focus/open (non-disabled, non-readonly)
+  // 3) focus/open (non-disabled, non-readonly)
   &:is(:focus, :focus-within, :focus-visible):not([disabled]):not([readonly]) {
     @include state-colors(
       var(--kd-color-background-menu-state-open),
@@ -143,7 +171,7 @@
     outline-offset: -2px;
   }
 
-  // 5) hover (non-disabled, non-readonly, non-AI)
+  // 4) hover (non-disabled, non-readonly, non-AI)
   &:hover:not([disabled]):not([readonly]):not(.ai-connected) {
     @include state-colors(
       var(--kd-color-background-menu-state-hover),
@@ -152,7 +180,7 @@
     );
   }
 
-  // 6) selected (non-disabled)
+  // 5) selected (non-disabled)
   &[selected]:not([disabled]) {
     @include state-colors(
       var(--kd-color-background-menu-state-open),
@@ -167,19 +195,17 @@
     }
   }
 
-  // 7) highlighted (non-disabled)
+  // 6) highlighted (non-disabled)
   &[highlighted]:not([disabled]) {
     @include state-colors(
       var(--kd-color-background-menu-state-hover),
       var(--kd-color-text-level-light)
     );
-    // default focus ring for non-AI
+    // default (non-AI) focus ring
     outline: 1px solid var(--kd-color-border-variants-focus);
   }
 
-  // ---- modifiers ----
-
-  // AI variant (base)
+  // ----- AI variant -----
   &.ai-connected {
     background-color: var(--kd-color-background-menu-state-ai-default);
     color: var(--kd-color-text-level-primary);
@@ -196,8 +222,7 @@
       outline-offset: -2px !important;
     }
 
-    // hover — text must be primary (not disabled/readonly)
-    // (do NOT show gradient while pressed)
+    // hover (non-pressed)
     &:hover:not([disabled]):not([readonly]):not(.option-is-readonly):not(
         [data-pressed]
       ):not(:active) {
@@ -212,30 +237,20 @@
       }
     }
 
-    // active/pressed — replace entire background so it overrides any gradient layers
-    &:is(:active, [data-pressed]):not([disabled]):not([readonly]) {
-      background: var(--kd-color-background-menu-state-ai-pressed);
+    // highlighted
+    &[highlighted]:not([disabled]):not([readonly]):not(:active):not(
+        [data-pressed]
+      ) {
       outline: none;
-      border: none;
-
-      .menu-item-inner-el {
-        color: var(--kd-color-text-level-primary);
-      }
-      slot[name='icon']::slotted(span),
-      .check-icon {
-        color: var(--kd-color-icon-primary);
-      }
-    }
-
-    // selected / highlighted base
-    &:is([selected], [highlighted]):not([disabled]):not([readonly]) {
-      @include state-colors(
-        var(--kd-color-background-menu-state-ai-open),
-        var(--kd-color-text-level-primary)
+      @include border-gradient-ai(
+        $gradient: gradient.$ai-gradient-default,
+        $radius: 0,
+        $width: 1px,
+        $surface: var(--kd-color-background-menu-state-ai-focused)
       );
     }
 
-    // selected/highlighted + hover — keep text primary (no downgrade to light)
+    // selected/highlighted + hover — keep text primary
     &:is([selected], [highlighted]):hover:not([disabled]):not([readonly]) {
       @include state-colors(
         var(--kd-color-background-menu-state-ai-hover),
@@ -247,14 +262,15 @@
       }
     }
 
-    // gradient border only when highlighted
-    &[highlighted]:not([disabled]):not([readonly]) {
-      outline: none;
-      @include border-gradient-ai(
-        $gradient: gradient.$ai-gradient-default,
-        $radius: 0,
-        $width: 1px,
-        $surface: var(--kd-color-background-menu-state-ai-focused)
+    // PRESSED (AI)
+    &:is(:active, [data-pressed]):not([disabled]):not([readonly]),
+    &:hover:is(:active, [data-pressed]):not([disabled]):not([readonly]) {
+      @include pressed(
+        var(--kd-color-background-menu-state-ai-pressed),
+        var(--kd-color-text-level-primary),
+        var(--kd-color-icon-primary),
+        $layered: true,
+        $important: true
       );
     }
 
@@ -273,41 +289,35 @@
 }
 
 // ---- pressed states (non-AI) ----
-.menu-item:is(:active, [data-pressed]):not(:hover):not([disabled]):not(
+.menu-item:not(.ai-connected):is(:active, [data-pressed]):not([disabled]):not(
     [readonly]
   ),
-.menu-item:is(:active, [data-pressed]):hover:not([disabled]):not([readonly]),
-.menu-item[selected]:is(:active, [data-pressed]):hover:not([disabled]):not(
-    [readonly]
-  ),
-.menu-item[highlighted]:is(:active, [data-pressed]):hover:not([disabled]):not(
-    [readonly]
-  ) {
-  @include state-colors(
-    var(--kd-color-background-menu-state-pressed),
-    var(--kd-color-text-level-light)
-  );
-  outline: none;
-}
-
-// ---- pressed states (AI) ----
-// ensure we beat the AI hover rule and remove any gradient background layers
-.menu-item.ai-connected:is(:active, [data-pressed]):not([readonly]):not(
+.menu-item:not(.ai-connected):hover:is(:active, [data-pressed]):not(
     [disabled]
-  ) {
-  background: var(--kd-color-background-menu-state-ai-pressed);
-  outline: none;
-  border: none;
-
-  .menu-item-inner-el {
-    color: var(--kd-color-text-density-darker);
-  }
-  slot[name='icon']::slotted(span),
-  .check-icon {
-    color: var(--kd-color-icon-primary);
-  }
+  ):not([readonly]),
+.menu-item:not(.ai-connected)[selected]:is(:active, [data-pressed]):not(
+    [disabled]
+  ):not([readonly]),
+.menu-item:not(.ai-connected)[selected]:hover:is(:active, [data-pressed]):not(
+    [disabled]
+  ):not([readonly]),
+.menu-item:not(.ai-connected)[highlighted]:is(:active, [data-pressed]):not(
+    [disabled]
+  ):not([readonly]),
+.menu-item:not(.ai-connected)[highlighted]:hover:is(
+    :active,
+    [data-pressed]
+  ):not([disabled]):not([readonly]) {
+  @include pressed(
+    var(--kd-color-background-menu-state-pressed),
+    var(--kd-color-text-level-light),
+    var(--kd-color-icon-light),
+    $layered: true,
+    $important: true
+  );
 }
 
+// Normalize outline removal when focused (component manages its own rings)
 .menu-item:is(:focus, :focus-within, :focus-visible) {
   outline: none;
 }

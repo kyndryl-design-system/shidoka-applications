@@ -33,6 +33,7 @@ const args = {
   destructive: false,
   okDisabled: false,
   hideFooter: false,
+  gradientBkg: false,
   showSecondaryButton: true,
   secondaryButtonText: 'Secondary',
   secondaryDisabled: false,
@@ -62,6 +63,7 @@ export const Modal = {
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
+        ?gradientBkg=${args.gradientBkg}
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
@@ -96,6 +98,7 @@ export const ActionButtons = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
+        ?gradientBkg=${args.gradientBkg}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
@@ -134,6 +137,7 @@ export const BeforeClose = {
         ?okDisabled=${args.okDisabled}
         ?hideCancelButton=${args.hideCancelButton}
         ?hideFooter=${args.hideFooter}
+        ?gradientBkg=${args.gradientBkg}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
@@ -179,6 +183,7 @@ export const WithForm = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
+        ?gradientBkg=${args.gradientBkg}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
@@ -212,7 +217,14 @@ export const WithForm = {
 };
 
 export const AIConnected = {
-  args: { ...args, showSecondaryButton: false, aiConnected: true },
+  args: {
+    ...args,
+    showSecondaryButton: false,
+    aiConnected: true,
+    gradientBkg: true,
+    okText: 'Primary Button',
+    cancelText: 'Secondary Button',
+  },
   render: (args) => {
     return html`
       <kyn-modal
@@ -229,6 +241,7 @@ export const AIConnected = {
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
+        ?gradientBkg=${args.gradientBkg}
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}

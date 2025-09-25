@@ -34,18 +34,24 @@ $ai-gradient-default: var(
   $width: 1px,
   $surface: var(--kd-color-background-ui-hollow-default)
 ) {
-  box-sizing: border-box;
-  outline: $width solid transparent;
+  position: relative;
 
-  background: linear-gradient(#{$surface}, #{$surface}) padding-box,
-    #{$gradient} border-box;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -#{$width};
+    border-radius: $radius;
+    pointer-events: none;
 
-  background-clip: padding-box, border-box;
-  background-origin: border-box, border-box;
+    background: #{$gradient};
 
-  background-size: calc(100% + 2px) calc(100% + 2px), cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
+    padding: #{$width};
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
 }
 
 .g-border-ai {

@@ -8,7 +8,7 @@ import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/inf
 
 /**
  * Tooltip.
- * @fires on-tooltip-toggle - Emits the open state of the tooltip on open/close. `detail:{ open: boolean }`
+ * @fires on-tooltip-toggle - Emits the open state of the tooltip on open/close.
  * @slot unnamed - Slot for tooltip content.
  * @slot anchor - Slot for custom anchor button content.
  */
@@ -73,7 +73,6 @@ export class Tooltip extends LitElement {
       <div class="tooltip">
         <button
           class="anchor"
-          part="anchor"
           aria-label=${this.assistiveText}
           title=${this.assistiveText}
           aria-describedby="tooltip"
