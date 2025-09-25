@@ -82,6 +82,10 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor submitBtnDisabled = false;
 
+  /** Apply gradient to modal background */
+  @property({ type: Boolean })
+  accessor gradientBkg = false;
+
   /** Determine whether needs footer */
   @property({ type: Boolean })
   accessor hideFooter = false;
@@ -126,6 +130,7 @@ export class SideDrawer extends LitElement {
       'no-backdrop': this.noBackdrop,
       [`size--${this.size}`]: this.size,
       'ai-connected': this.aiConnected,
+      'gradient-bkg': this.aiConnected && this.gradientBkg,
     };
 
     const dialogFooterClasses = {

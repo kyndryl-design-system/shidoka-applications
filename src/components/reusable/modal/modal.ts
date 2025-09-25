@@ -123,7 +123,7 @@ export class Modal extends LitElement {
       'size--lg': this.size === 'lg',
       'size--xl': this.size === 'xl',
       'ai-connected': this.aiConnected,
-      'gradient-bkg': this.gradientBkg,
+      'gradient-bkg': this.aiConnected && this.gradientBkg,
     };
 
     return html`
