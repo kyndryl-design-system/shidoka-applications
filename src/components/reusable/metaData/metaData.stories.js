@@ -67,7 +67,7 @@ export default {
         }
         .label-center {
           display: inline-flex;
-          align-items: end;
+          align-items: center;
         }
       </style>
       ${story()}
