@@ -58,13 +58,16 @@ $ai-gradient-default: var(
 
 /// Gradient Backgrounds for AI-connected components
 :root {
-  --ai-radial-strength: 10%;
-  --ai-radial-outer: 10%;
+  --ai-radial-strength: 14%; /* start token intensity */
+  --ai-radial-outer: 75%;
+
+  --ai-right-strength: 6%; /* end token subtlety */
+  --ai-right-spread: 55%; /* how far the right glow extends */
 }
 
 .gradient-bkg {
   background: radial-gradient(
-      circle at 12% 12%,
+      circle at 0% 0%,
       color-mix(
           in oklab,
           var(--kd-color-border-ai-default-gradient-start)
@@ -72,7 +75,18 @@ $ai-gradient-default: var(
           transparent
         )
         0%,
-      transparent var(--ai-radial-outer)
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 100% 50%,
+      color-mix(
+          in oklab,
+          var(--kd-color-border-ai-default-gradient-end)
+            var(--ai-right-strength),
+          transparent
+        )
+        0%,
+      transparent var(--ai-right-spread)
     ),
     var(--kd-color-background-container-ai-default);
 }
