@@ -8,22 +8,25 @@
 .file-uploader-list-container {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .file-uploader-list-container__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @include typography.type-body-02;
-  height: 32px;
   margin-bottom: 8px;
 }
 
 .file-uploader-list-container__items {
-  max-height: 193px; // 64px * 3 + 1px for border
+  max-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
   border-bottom: 1px solid var(--kd-color-border-accent-secondary);
+
+  &.expanded {
+    max-height: none;
+  }
 }
 
 .shadow-bottom {
@@ -39,3 +42,13 @@
 // .file-uploader-list-container__footer {
 //   margin-top: 8px;
 // }
+
+.expand-btn {
+  position: absolute;
+  top: -4px;
+  right: 16px;
+
+  &.expanded {
+    transform: rotate(180deg);
+  }
+}

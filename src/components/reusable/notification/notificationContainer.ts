@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import NotificationContainerScss from './notificationContainer.scss?inline';
 
 /**
@@ -11,10 +11,17 @@ import NotificationContainerScss from './notificationContainer.scss?inline';
 @customElement('kyn-notification-container')
 export class NotificationContainer extends LitElement {
   static override styles = unsafeCSS(NotificationContainerScss);
+
+  /** Position at bottom instead of top of screen. */
+  @property({ type: Boolean })
+  accessor bottom = false;
+
   override render() {
-    return html`<div class="notification-container">
-      <slot></slot>
-    </div>`;
+    return html`
+      <div class="notification-container ${this.bottom ? 'bottom' : ''}">
+        <slot></slot>
+      </div>
+    `;
   }
 }
 declare global {

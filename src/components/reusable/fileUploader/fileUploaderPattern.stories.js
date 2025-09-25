@@ -31,7 +31,7 @@ const args = {
     validationNotificationTitle: 'Multiple files not allowed',
     validationNotificationMessage: 'Please select only one file.',
   },
-  maxFileSize: 1048576,
+  maxFileSize: 10485760, // 10MB
   disabled: false,
 };
 
@@ -112,3 +112,10 @@ export const FileUploaderMultiple = {
   },
 };
 FileUploaderMultiple.storyName = 'Simulated upload - multiple files';
+
+export const FileUploaderImmediate = {
+  render: () => {
+    return html` <sample-file-uploader immediate></sample-file-uploader> `;
+  },
+};
+FileUploaderImmediate.storyName = 'Simulated upload - immediate - single file';

@@ -5,6 +5,18 @@
   display: block;
 }
 
+.drag-drop-explanation {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+
+  @media (pointer: fine) {
+    display: flex;
+  }
+}
+
 .file-uploader-container {
   display: flex;
   flex-direction: column;
@@ -17,16 +29,19 @@
   }
 
   .drag-drop-container {
-    padding: 32px;
-    display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     text-align: center;
     gap: 6px;
-    border: 1px dashed var(--kd-color-border-accent-secondary);
-    border-radius: 16px;
-    background-color: var(--kd-color-background-accent-subtle);
+
+    @media (pointer: fine) {
+      display: flex;
+      padding: 32px;
+      border: 1px dashed var(--kd-color-border-accent-secondary);
+      border-radius: 16px;
+      background-color: var(--kd-color-background-accent-subtle);
+    }
 
     &.dragging {
       background-color: var(--kd-color-background-highlight-fill);
@@ -156,10 +171,8 @@
   }
 
   .file-uploader-item-container {
-    height: 64px;
     padding: 8px 16px 8px 0;
     display: flex;
-    flex-wrap: wrap;
   }
 
   .actions {
