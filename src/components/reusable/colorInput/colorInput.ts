@@ -90,7 +90,7 @@ export class ColorInput extends FormMixin(LitElement) {
       <div
         class="text-input"
         ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${!this.disabled && this.readonly}
       >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
@@ -132,7 +132,7 @@ export class ColorInput extends FormMixin(LitElement) {
             name=${this.name}
             .value=${this.value}
             ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.disabled && this.readonly}
             ?invalid=${this._isInvalid}
             aria-label=${this._textStrings.colorTextInput}
             aria-invalid=${this._isInvalid}

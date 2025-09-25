@@ -394,6 +394,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
           class="label-text"
+          ?readonly=${this.readonly}
           @mousedown=${this.preventFlatpickrOpen}
           @click=${this.preventFlatpickrOpen}
           aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
@@ -424,7 +425,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
             name=${this.name}
             placeholder=${placeholder}
             ?disabled=${this.dateRangePickerDisabled}
-            ?readonly=${this.readonly}
+            ?readonly=${!this.dateRangePickerDisabled && this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
             aria-invalid=${this._isInvalid ? 'true' : 'false'}
