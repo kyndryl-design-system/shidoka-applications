@@ -18,14 +18,6 @@ export default {
       url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library?node-id=39511-307374&m=dev',
     },
   },
-  argTypes: {
-    labelPosition: {
-      control: { type: 'select' },
-      table: {
-        defaultValue: { summary: 'top' },
-      },
-    },
-  },
   decorators: [
     (story) => html`
       <style>
@@ -81,16 +73,15 @@ const args = {
 };
 
 export const Default = {
-  args: { ...args, labelPosition: 'center' },
+  args: { ...args },
   render: (args) => {
     return html`
       <div style="max-width: 300px;">
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
-          labelPosition=${args.labelPosition}
         >
-          <div slot="label">Label</div>
+          <div slot="label" class="label-center">Label</div>
           <div class="example">
             <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
               ${unsafeSVG(smCube)}
@@ -112,7 +103,7 @@ export const WithIcon = {
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
         >
-          <div slot="label" class="label-center">Label</div>
+          <div slot="label">Label</div>
           <div slot="icon">${unsafeSVG(testingIcon)}</div>
           <div class="example">
             <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
@@ -134,7 +125,6 @@ export const WithText = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
-          labelPosition=${args.labelPosition}
         >
           <div slot="label">Label</div>
           <div
@@ -159,7 +149,6 @@ export const WithLink = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
-          labelPosition=${args.labelPosition}
         >
           <div slot="label">Label</div>
           <div class="line_height">
@@ -179,7 +168,6 @@ export const WithDate = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
-          labelPosition=${args.labelPosition}
         >
           <div slot="label">Label</div>
           <div class="line_height">09/18/2025</div>
@@ -226,7 +214,6 @@ export const WithTable = {
       <kyn-meta-data
         ?horizontal=${args.horizontal}
         ?noBackground=${args.noBackground}
-        labelPosition=${args.labelPosition}
       >
         <div slot="label">Label</div>
         <div slot="icon">${unsafeSVG(testingIcon)}</div>
@@ -280,7 +267,6 @@ export const ScrollableContent = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
-          labelPosition=${args.labelPosition}
           scrollableContent
           style="height: 150px;"
         >
@@ -334,7 +320,6 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
-            labelPosition=${args.labelPosition}
           >
             <div slot="label">Label</div>
             <div class="line_height">
@@ -461,7 +446,6 @@ export const StaticGrid = {
           <kyn-meta-data
             ?horizontal=${args.horizontal}
             ?noBackground=${args.noBackground}
-            labelPosition=${args.labelPosition}
             scrollableContent
             style="height: 150px;"
           >
