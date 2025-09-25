@@ -112,7 +112,7 @@ export class DropdownOption extends LitElement {
         ?readonly=${!this.disabled && this.readonly}
         title=${this.text}
         tabindex=${this.disabled || this.readonly ? -1 : 0}
-        @pointerdown=${(e: PointerEvent) => {
+        @pointerdown=${() => {
           if (this.disabled || this.readonly) return;
           this.setPressed(true);
         }}
