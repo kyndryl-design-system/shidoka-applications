@@ -62,9 +62,12 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   accessor size = 'md';
 
-  /** Dropdown kind. */
+  /**
+   * @deprecated `kind="ai"` is ignored and renders as default.
+   * The `kind` property itself will be removed in a future release.
+   */
   @property({ type: String, attribute: 'kind' })
-  accessor kind: 'ai' | 'default' = 'default';
+  accessor kind: 'default' | 'ai' = 'default';
 
   /** Dropdown inline style type. */
   @property({ type: Boolean })
@@ -275,11 +278,11 @@ export class Dropdown extends FormMixin(LitElement) {
   private _onChildClick = (e: Event) => this._handleClick(e as any);
   private _onChildRemove = (_e: Event) => this._handleRemoveOption();
   private _onChildBlur = (e: Event) => this._handleBlur(e as any);
+  private _kindWarned = false;
 
   override render() {
     const mainDropdownClasses = {
       dropdown: true,
-      'ai-connected': this.kind === 'ai',
     };
 
     return html`
@@ -309,12 +312,7 @@ export class Dropdown extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
 
-        <div
-          class=${classMap({
-            wrapper: true,
-            open: this.open,
-          })}
-        >
+        <div class=${classMap({ wrapper: true, open: this.open })}>
           <div
             class="custom"
             @click=${(e: MouseEvent) => this.handleAnchorClick(e)}
@@ -330,7 +328,6 @@ export class Dropdown extends FormMixin(LitElement) {
                   'size--sm': this.size === 'sm',
                   'size--lg': this.size === 'lg',
                   inline: this.inline,
-                  'ai-connected': this.kind === 'ai',
                 })}"
                 aria-labelledby="label-${this.name}"
                 aria-expanded=${this.open}
@@ -342,19 +339,17 @@ export class Dropdown extends FormMixin(LitElement) {
                 ?required=${this.required}
                 ?disabled=${this.disabled}
                 ?invalid=${this._isInvalid}
-                tabindex=${this.disabled ? '' : this.searchable ? '-1' : '0'}
+                tabindex=${this.disabled ? nothing : this.searchable ? -1 : 0}
+                aria-readonly=${this.readonly}
                 @mousedown=${(e: MouseEvent) => {
                   if (!this.searchable && !this.readonly) e.preventDefault();
                 }}
-                aria-readonly=${this.readonly}
                 @blur=${(e: any) => e.stopPropagation()}
               >
                 ${this.multiple && this.value.length
                   ? html`
                       <button
-                        class=${classMap({
-                          'clear-multiple': true,
-                        })}
+                        class=${classMap({ 'clear-multiple': true })}
                         aria-label="${this.value
                           .length} items selected. Clear selections"
                         ?disabled=${this.disabled || this.readonly}
@@ -448,7 +443,6 @@ export class Dropdown extends FormMixin(LitElement) {
                 aria-labelledby="label-${this.name}"
                 class=${classMap({
                   'dropdown-listbox': true,
-                  'ai-connected': this.kind === 'ai',
                 })}
               >
                 ${this.multiple && this.selectAll
@@ -488,12 +482,13 @@ export class Dropdown extends FormMixin(LitElement) {
               </div>
             </div>
           </div>
+
           ${this.hasSearch && this.open
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled || this.readonly}
                   class="clear-button dropdown-clear"
-                  kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
+                  kind="ghost"
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${(e: Event) => this.handleClear(e)}
@@ -503,9 +498,20 @@ export class Dropdown extends FormMixin(LitElement) {
               `
             : null}
         </div>
+
         ${this.renderHelperContent()}
       </div>
     `;
+  }
+
+  private _warnIfDeprecatedKind() {
+    if (this.kind === 'ai' && !this._kindWarned) {
+      console.warn(
+        '[kyn-dropdown] The `ai` kind is deprecated and now renders as the default style. ' +
+          'Please remove `kind="ai"`; the `kind` prop will be removed in a future release.'
+      );
+      this._kindWarned = true;
+    }
   }
 
   private _onAddOptionInputKeydown(e: KeyboardEvent) {
@@ -1261,6 +1267,8 @@ export class Dropdown extends FormMixin(LitElement) {
 
     document.addEventListener('click', this._onDocumentClick);
 
+    this._warnIfDeprecatedKind();
+
     this.addEventListener('on-click', this._onChildClick);
     this.addEventListener('on-remove-option', this._onChildRemove);
     this.addEventListener('on-blur', this._onChildBlur);
@@ -1282,17 +1290,10 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // set value
     if (this.multiple) {
-      const values =
-        this.value === '' ? [] : JSON.parse(JSON.stringify(this.value));
-
-      // update array
-      if (selected) {
-        values.push(value);
-      } else {
-        const index = values.indexOf(value);
-        values.splice(index, 1);
-      }
-
+      const values = Array.isArray(this.value) ? [...this.value] : [];
+      const i = values.indexOf(value);
+      if (selected && i === -1) values.push(value);
+      if (!selected && i !== -1) values.splice(i, 1);
       this.value = values;
     } else {
       this.value = value;
@@ -1310,7 +1311,7 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  private _validate(interacted: Boolean, report: Boolean) {
+  private _validate(interacted: boolean, report: boolean) {
     // set validity flags
     const Validity = {
       customError: this.invalidText !== '',
@@ -1382,15 +1383,17 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     if (changedProps.has('kind')) {
+      // warn on change
+      this._warnIfDeprecatedKind();
+
       this.dispatchEvent(
         new CustomEvent('kind-changed', {
-          detail: this.kind,
+          detail: 'default',
           bubbles: true,
           composed: true,
         })
       );
-
-      this.classList.toggle('ai-connected', this.kind === 'ai');
+      this.classList.remove('ai-connected');
     }
 
     const root = this.shadowRoot;
@@ -1546,7 +1549,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _handleRemoveOption() {
-    this.assistiveText = 'MY option removed ';
+    this.assistiveText = 'Option removed.';
     setTimeout(() => {
       this.open = false;
       this.buttonEl.focus();

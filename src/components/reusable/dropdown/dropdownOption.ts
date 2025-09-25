@@ -72,11 +72,11 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor readonly = false;
 
-  /** Kind of the item, derived from parent.
-   * @ignore
+  /**
+   * @deprecated Ignored. Always treated as default.
+   * Kept temporarily so external code passing it doesn't break.
    */
-  @state()
-  accessor kind: 'ai' | 'default' = 'default';
+  @state() accessor kind: 'default' | 'ai' = 'default';
 
   /** slotted icon added state.
    * @ignore
@@ -94,16 +94,15 @@ export class DropdownOption extends LitElement {
   override accessor ariaSelected = 'false';
 
   override render() {
-    const classes = {
+    const menuClasses = {
       option: true,
       'menu-item': true,
       'option-is-readonly': this.readonly,
-      'ai-connected': this.kind === 'ai',
     };
 
     return html`
       <div
-        class=${classMap(classes)}
+        class=${classMap(menuClasses)}
         role="option"
         aria-selected=${this.selected ? 'true' : 'false'}
         aria-disabled=${this.disabled ? 'true' : 'false'}
@@ -158,17 +157,12 @@ export class DropdownOption extends LitElement {
               ></slot>`}
         </span>
 
-        ${this.hasIcon
-          ? html`<slot
-              name="icon"
-              style="display:flex"
-              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
-            ></slot>`
-          : html`<slot
-              name="icon"
-              style="display:none"
-              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
-            ></slot>`}
+        <slot
+          name="icon"
+          style="display:none"
+          @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+        ></slot>
+
         ${this.selected && !this.multiple
           ? html`<span class="menu-item-inner-el check-icon"
               >${unsafeSVG(checkIcon)}</span
@@ -177,7 +171,7 @@ export class DropdownOption extends LitElement {
           ? html`
               <kyn-button
                 class="remove-option"
-                kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
+                kind="ghost"
                 size="small"
                 aria-label="Delete ${this.value}"
                 description="Delete ${this.value}"
@@ -198,12 +192,10 @@ export class DropdownOption extends LitElement {
   }
 
   override firstUpdated() {
-    const parent = this.closest('kyn-dropdown') as any;
+    const parent = this.closest('kyn-dropdown') as HTMLElement | null;
     if (parent) {
-      this.kind = parent.kind;
-
-      parent.addEventListener('kind-changed', (e: Event) => {
-        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
+      parent.addEventListener('kind-changed', () => {
+        this.kind = 'default';
       });
     }
   }

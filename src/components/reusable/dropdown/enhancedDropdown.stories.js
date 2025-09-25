@@ -24,23 +24,17 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    kind: {
-      options: ['default', 'ai'],
-      control: { type: 'select' },
-    },
-    openDirection: {
-      options: ['auto', 'up', 'down'],
-      control: { type: 'select' },
-    },
     multiple: { control: { type: 'boolean' } },
     enhanced: {
       table: { disable: true },
     },
     readonly: { control: { type: 'boolean' } },
-    'kind-changed': {
-      table: { disable: true },
-      control: false,
+    kind: { table: { disable: true }, control: false },
+    openDirection: {
+      options: ['auto', 'up', 'down'],
+      control: { type: 'select' },
     },
+    'kind-changed': { table: { disable: true }, control: false },
     allowAddOption: {
       table: { disable: true },
     },
@@ -63,7 +57,6 @@ const args = {
   label: 'Label',
   placeholder: '',
   size: 'md',
-  kind: 'default',
   inline: false,
   name: 'example',
   open: false,
@@ -113,7 +106,6 @@ export const Default = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
-        kind=${args.kind}
         openDirection=${args.openDirection}
         ?enhanced=${true}
         ?inline=${args.inline}
@@ -144,7 +136,7 @@ export const Default = {
             slot="tag"
             label="New chat"
             tagSize="sm"
-            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+            tagColor="default"
           ></kyn-tag>
           <span slot="description">This is a description for Option 2.</span>
           <span slot="optionType">Type: Private</span>
@@ -160,7 +152,7 @@ export const Default = {
             slot="tag"
             label="New chat"
             tagSize="sm"
-            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+            tagColor="default"
           ></kyn-tag>
           <span slot="description">This is a description for Option 4.</span>
           <span slot="optionType">Type: Global</span>
@@ -185,7 +177,6 @@ export const WithIcons = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
-        kind=${args.kind}
         openDirection=${args.openDirection}
         ?enhanced=${true}
         ?inline=${args.inline}
@@ -217,7 +208,7 @@ export const WithIcons = {
             slot="tag"
             label="New chat"
             tagSize="sm"
-            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+            tagColor="default"
           ></kyn-tag>
           <span slot="description">This is a description for Option 2.</span>
           <span slot="optionType">Type: Private</span>
@@ -234,7 +225,7 @@ export const WithIcons = {
             slot="tag"
             label="New chat"
             tagSize="sm"
-            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+            tagColor="default"
           ></kyn-tag>
           <span slot="description">This is a description for Option 4.</span>
           <span slot="optionType">Type: Global</span>
@@ -265,7 +256,6 @@ export const ButtonAnchor = {
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
-        kind=${args.kind}
         openDirection=${args.openDirection}
         ?enhanced=${true}
         ?inline=${args.inline}
@@ -307,7 +297,7 @@ export const ButtonAnchor = {
             slot="tag"
             label="New chat"
             tagSize="sm"
-            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+            tagColor="default"
           ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 2 enhanced dropdown
@@ -329,7 +319,7 @@ export const ButtonAnchor = {
             slot="tag"
             label="New chat"
             tagSize="sm"
-            tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
+            tagColor="default"
           ></kyn-tag>
           <span slot="description"
             >This is a description for the Option 4 enhanced dropdown
@@ -365,7 +355,6 @@ export const Searchable = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
-        kind=${args.kind}
         openDirection=${args.openDirection}
         ?enhanced=${true}
         ?inline=${args.inline}
@@ -444,7 +433,6 @@ export const MultiSelect = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
-        kind=${args.kind}
         openDirection=${args.openDirection}
         ?enhanced=${true}
         ?inline=${args.inline}
@@ -507,7 +495,6 @@ export const MultiSelectIcons = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
-        kind=${args.kind}
         openDirection=${args.openDirection}
         ?enhanced=${true}
         ?inline=${args.inline}
@@ -591,7 +578,6 @@ export const SearchableMultiSelect = {
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
-        kind=${args.kind}
         openDirection=${args.openDirection}
         ?enhanced=${true}
         ?inline=${args.inline}

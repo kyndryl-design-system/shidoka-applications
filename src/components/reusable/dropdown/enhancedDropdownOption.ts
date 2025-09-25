@@ -98,16 +98,17 @@ export class EnhancedDropdownOption extends LitElement {
   @state()
   accessor hasIcon = false;
 
-  /** Kind of the item, derived from parent. */
-  @state()
-  accessor kind: 'ai' | 'default' = 'default';
+  /**
+   * @deprecated Ignored. Always treated as default.
+   * Kept temporarily so external code passing it doesn't break.
+   */
+  @state() accessor kind: 'default' | 'ai' = 'default';
 
   override render() {
     const classes = {
       'enhanced-option': true,
       'menu-item': true,
       'option-is-readonly': this.readonly,
-      'ai-connected': this.kind === 'ai',
     };
 
     return html`
@@ -168,7 +169,7 @@ export class EnhancedDropdownOption extends LitElement {
             : this.allowAddOption && this.removable
             ? html`
                 <kyn-button
-                  kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
+                  kind="ghost"
                   size="small"
                   aria-label="Delete ${this.value}"
                   ?disabled=${this.disabled}
@@ -188,12 +189,10 @@ export class EnhancedDropdownOption extends LitElement {
     // derive whether icon slot has content
     this.hasIcon = this.iconSlot.assignedNodes({ flatten: true }).length > 0;
 
-    // sync kind from parent and listen for changes
-    const parent = this.closest('kyn-dropdown') as any;
+    const parent = this.closest('kyn-dropdown') as HTMLElement | null;
     if (parent) {
-      this.kind = parent.kind;
-      parent.addEventListener('kind-changed', (e: Event) => {
-        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
+      parent.addEventListener('kind-changed', () => {
+        this.kind = 'default';
       });
     }
   }
