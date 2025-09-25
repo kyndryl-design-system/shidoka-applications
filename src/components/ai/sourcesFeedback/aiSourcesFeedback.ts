@@ -217,7 +217,7 @@ export class AISourcesFeedback extends LitElement {
           <kyn-button
             class="close"
             @on-click=${(e: Event) => this._handleClick(e, 'sources')}
-            kind="ghost"
+            kind="ghost-ai"
             size="small"
             description=${this.closeText}
           >

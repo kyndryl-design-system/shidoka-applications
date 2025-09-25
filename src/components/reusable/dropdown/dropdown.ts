@@ -62,12 +62,9 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   accessor size = 'md';
 
-  /**
-   * @deprecated `kind="ai"` is ignored and renders as default.
-   * The `kind` property itself will be removed in a future release.
-   */
+  /** Dropdown kind. */
   @property({ type: String, attribute: 'kind' })
-  accessor kind: 'default' | 'ai' = 'default';
+  accessor kind: 'ai' | 'default' = 'default';
 
   /** Dropdown inline style type. */
   @property({ type: Boolean })
@@ -278,11 +275,11 @@ export class Dropdown extends FormMixin(LitElement) {
   private _onChildClick = (e: Event) => this._handleClick(e as any);
   private _onChildRemove = (_e: Event) => this._handleRemoveOption();
   private _onChildBlur = (e: Event) => this._handleBlur(e as any);
-  private _kindWarned = false;
 
   override render() {
     const mainDropdownClasses = {
       dropdown: true,
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`
@@ -312,7 +309,12 @@ export class Dropdown extends FormMixin(LitElement) {
           <slot name="tooltip"></slot>
         </label>
 
-        <div class=${classMap({ wrapper: true, open: this.open })}>
+        <div
+          class=${classMap({
+            wrapper: true,
+            open: this.open,
+          })}
+        >
           <div
             class="custom"
             @click=${(e: MouseEvent) => this.handleAnchorClick(e)}
@@ -339,17 +341,19 @@ export class Dropdown extends FormMixin(LitElement) {
                 ?required=${this.required}
                 ?disabled=${this.disabled}
                 ?invalid=${this._isInvalid}
-                tabindex=${this.disabled ? nothing : this.searchable ? -1 : 0}
-                aria-readonly=${this.readonly}
+                tabindex=${this.disabled ? '' : this.searchable ? '-1' : '0'}
                 @mousedown=${(e: MouseEvent) => {
                   if (!this.searchable && !this.readonly) e.preventDefault();
                 }}
+                aria-readonly=${this.readonly}
                 @blur=${(e: any) => e.stopPropagation()}
               >
                 ${this.multiple && this.value.length
                   ? html`
                       <button
-                        class=${classMap({ 'clear-multiple': true })}
+                        class=${classMap({
+                          'clear-multiple': true,
+                        })}
                         aria-label="${this.value
                           .length} items selected. Clear selections"
                         ?disabled=${this.disabled || this.readonly}
@@ -405,7 +409,6 @@ export class Dropdown extends FormMixin(LitElement) {
               })}
               style="min-width: ${this.menuMinWidth};"
               aria-hidden=${!this.open}
-              tabindex="-1"
               @keydown=${this.handleListKeydown}
               @blur=${this.handleListBlur}
               @focus=${this._handleListFocus}
@@ -443,6 +446,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 aria-labelledby="label-${this.name}"
                 class=${classMap({
                   'dropdown-listbox': true,
+                  'ai-connected': this.kind === 'ai',
                 })}
               >
                 ${this.multiple && this.selectAll
@@ -482,13 +486,12 @@ export class Dropdown extends FormMixin(LitElement) {
               </div>
             </div>
           </div>
-
           ${this.hasSearch && this.open
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled || this.readonly}
                   class="clear-button dropdown-clear"
-                  kind="ghost"
+                  kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${(e: Event) => this.handleClear(e)}
@@ -498,20 +501,9 @@ export class Dropdown extends FormMixin(LitElement) {
               `
             : null}
         </div>
-
         ${this.renderHelperContent()}
       </div>
     `;
-  }
-
-  private _warnIfDeprecatedKind() {
-    if (this.kind === 'ai' && !this._kindWarned) {
-      console.warn(
-        '[kyn-dropdown] The `ai` kind is deprecated and now renders as the default style. ' +
-          'Please remove `kind="ai"`; the `kind` prop will be removed in a future release.'
-      );
-      this._kindWarned = true;
-    }
   }
 
   private _onAddOptionInputKeydown(e: KeyboardEvent) {
@@ -715,14 +707,11 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     const TAB_KEY_CODE = 9;
-    if (e.keyCode === TAB_KEY_CODE) {
+
+    if (e.keyCode !== TAB_KEY_CODE) {
       e.preventDefault();
-      e.stopPropagation();
-      this.handleKeyboard(e, e.shiftKey ? 38 : 40, 'list');
-      return;
     }
-    e.preventDefault();
-    e.stopPropagation();
+
     this.handleKeyboard(e, e.keyCode, 'list');
   }
 
@@ -738,12 +727,11 @@ export class Dropdown extends FormMixin(LitElement) {
     const firstEnabled = visibleOptions.find((o: any) => !o.disabled) as any;
     if (!firstEnabled) return;
 
-    visibleOptions.forEach((o: any) => {
-      o.highlighted = false;
-      o.tabIndex = -1;
-    });
+    visibleOptions.forEach((o: any) => (o.highlighted = false));
 
-    firstEnabled.tabIndex = 0;
+    if (!('tabIndex' in firstEnabled) || firstEnabled.tabIndex < 0) {
+      firstEnabled.tabIndex = 0;
+    }
     firstEnabled.focus();
     firstEnabled.scrollIntoView({ block: 'nearest' });
     this.assistiveText = firstEnabled.text || 'Option';
@@ -778,6 +766,7 @@ export class Dropdown extends FormMixin(LitElement) {
     const UP_ARROW_KEY_CODE = 38;
     const ESCAPE_KEY_CODE = 27;
 
+    // get highlighted element + index and selected element
     const selectAllOptions = Array.from(
       this.shadowRoot?.querySelectorAll('.select-all') || []
     ) as any[];
@@ -785,24 +774,17 @@ export class Dropdown extends FormMixin(LitElement) {
       (option: any) => option.style.display !== 'none'
     );
     const visibleOptions = [...selectAllOptions, ...filteredOptions] as any[];
+    // visibleOptions.forEach((e) => (e.tabIndex = 0));
 
-    const highlightedEl = visibleOptions.find((o: any) => o.highlighted);
-    const selectedEl = visibleOptions.find((o: any) => o.selected);
-
-    const activeInShadow = (this.shadowRoot as any)?.activeElement as
-      | any
-      | null;
-    const focusedIndex = activeInShadow
-      ? visibleOptions.indexOf(activeInShadow)
-      : -1;
-
+    const highlightedEl = visibleOptions.find(
+      (option: any) => option.highlighted
+    );
+    const selectedEl = visibleOptions.find((option: any) => option.selected);
     let highlightedIndex = highlightedEl
       ? visibleOptions.indexOf(highlightedEl)
       : selectedEl
       ? visibleOptions.indexOf(selectedEl)
-      : focusedIndex >= 0
-      ? focusedIndex
-      : -1;
+      : 0;
 
     if (SPACEBAR_KEY_CODE.includes(keyCode)) {
       e.preventDefault();
@@ -855,6 +837,7 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     const isListboxElOpened = this.open;
+    // open the listbox
     if (target === 'button' || target === 'addOption') {
       let openDropdown =
         SPACEBAR_KEY_CODE.includes(keyCode) ||
@@ -864,7 +847,6 @@ export class Dropdown extends FormMixin(LitElement) {
 
       if (e.target === this.clearMultipleEl && keyCode === ENTER_KEY_CODE) {
         openDropdown = false;
-        if (highlightedIndex < 0) highlightedIndex = 0;
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[highlightedIndex].selected =
           !visibleOptions[highlightedIndex].selected;
@@ -883,21 +865,21 @@ export class Dropdown extends FormMixin(LitElement) {
           setTimeout(() => {
             this.addOptionInputEl?.focus();
           }, 100);
-        } else if (
-          !this.multiple &&
-          this.value !== '' &&
-          highlightedIndex >= 0
-        ) {
-          visibleOptions[highlightedIndex].scrollIntoView({ block: 'nearest' });
+        } else {
+          // scroll to highlighted option
+          if (!this.multiple && this.value !== '') {
+            visibleOptions[highlightedIndex].scrollIntoView({
+              block: 'nearest',
+            });
+          }
         }
       }
     }
-
     switch (keyCode) {
       case 0:
       case 32:
       case ENTER_KEY_CODE: {
-        if (highlightedIndex < 0) highlightedIndex = 0;
+        // select highlighted option
         visibleOptions[highlightedIndex].highlighted = true;
         if (isListboxElOpened) {
           if (this.multiple) {
@@ -910,10 +892,11 @@ export class Dropdown extends FormMixin(LitElement) {
               },
             });
           } else {
-            visibleOptions.forEach((x: any) => (x.selected = false));
+            visibleOptions.forEach((e) => (e.selected = false));
             visibleOptions[highlightedIndex].selected = true;
             this.updateValue(visibleOptions[highlightedIndex].value, true);
             this.emitValue();
+
             this.open = false;
             this.assistiveText = `Selected ${visibleOptions[highlightedIndex].value}`;
           }
@@ -921,65 +904,41 @@ export class Dropdown extends FormMixin(LitElement) {
         return;
       }
       case DOWN_ARROW_KEY_CODE: {
-        const fromIndex =
-          highlightedIndex >= 0
-            ? highlightedIndex
-            : focusedIndex >= 0
-            ? focusedIndex
-            : -1;
-
         let nextIndex =
-          fromIndex < 0 ? 0 : (fromIndex + 1) % visibleOptions.length;
+          !highlightedEl && !selectedEl
+            ? 0
+            : highlightedIndex === visibleOptions.length - 1
+            ? 0
+            : highlightedIndex + 1;
 
-        let guard = 0;
-        while (
-          visibleOptions[nextIndex]?.disabled &&
-          guard++ < visibleOptions.length
-        ) {
-          nextIndex = (nextIndex + 1) % visibleOptions.length;
+        // skip disabled options
+        if (visibleOptions[nextIndex].disabled) {
+          nextIndex =
+            nextIndex === visibleOptions.length - 1 ? 0 : nextIndex + 1;
         }
 
-        if (fromIndex >= 0) {
-          visibleOptions[fromIndex].tabIndex = -1;
-          visibleOptions[fromIndex].highlighted = false;
-        }
-
-        const next = visibleOptions[nextIndex];
-        if (next) {
-          next.tabIndex = 0;
-          next.focus();
-          next.highlighted = true;
-          next.scrollIntoView?.({ block: 'nearest' });
-          this.assistiveText = next.text || 'Option';
-        }
-
+        visibleOptions[nextIndex].focus();
+        visibleOptions[highlightedIndex].highlighted = false;
+        visibleOptions[nextIndex].highlighted = true;
+        visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
+        this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
       case UP_ARROW_KEY_CODE: {
-        const fromIndex =
-          highlightedIndex >= 0
-            ? highlightedIndex
-            : focusedIndex >= 0
-            ? focusedIndex
-            : -1;
+        // go to previous option
         let nextIndex =
-          fromIndex < 0
-            ? 0
-            : fromIndex === 0
+          highlightedIndex === 0
             ? visibleOptions.length - 1
-            : fromIndex - 1;
+            : highlightedIndex - 1;
 
+        // skip disabled options
         if (visibleOptions[nextIndex].disabled) {
           nextIndex =
             nextIndex === 0 ? visibleOptions.length - 1 : nextIndex - 1;
         }
 
-        if (fromIndex >= 0) {
-          visibleOptions[fromIndex].tabIndex = -1;
-          visibleOptions[fromIndex].highlighted = false;
-        }
-        visibleOptions[nextIndex].tabIndex = 0;
         visibleOptions[nextIndex].focus();
+        visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
         visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
         this.assistiveText = visibleOptions[nextIndex].text;
@@ -1267,8 +1226,6 @@ export class Dropdown extends FormMixin(LitElement) {
 
     document.addEventListener('click', this._onDocumentClick);
 
-    this._warnIfDeprecatedKind();
-
     this.addEventListener('on-click', this._onChildClick);
     this.addEventListener('on-remove-option', this._onChildRemove);
     this.addEventListener('on-blur', this._onChildBlur);
@@ -1290,10 +1247,17 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // set value
     if (this.multiple) {
-      const values = Array.isArray(this.value) ? [...this.value] : [];
-      const i = values.indexOf(value);
-      if (selected && i === -1) values.push(value);
-      if (!selected && i !== -1) values.splice(i, 1);
+      const values =
+        this.value === '' ? [] : JSON.parse(JSON.stringify(this.value));
+
+      // update array
+      if (selected) {
+        values.push(value);
+      } else {
+        const index = values.indexOf(value);
+        values.splice(index, 1);
+      }
+
       this.value = values;
     } else {
       this.value = value;
@@ -1311,7 +1275,7 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  private _validate(interacted: boolean, report: boolean) {
+  private _validate(interacted: Boolean, report: Boolean) {
     // set validity flags
     const Validity = {
       customError: this.invalidText !== '',
@@ -1383,17 +1347,15 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     if (changedProps.has('kind')) {
-      // warn on change
-      this._warnIfDeprecatedKind();
-
       this.dispatchEvent(
         new CustomEvent('kind-changed', {
-          detail: 'default',
+          detail: this.kind,
           bubbles: true,
           composed: true,
         })
       );
-      this.classList.remove('ai-connected');
+
+      this.classList.toggle('ai-connected', this.kind === 'ai');
     }
 
     const root = this.shadowRoot;
@@ -1549,7 +1511,7 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _handleRemoveOption() {
-    this.assistiveText = 'Option removed.';
+    this.assistiveText = 'MY option removed ';
     setTimeout(() => {
       this.open = false;
       this.buttonEl.focus();

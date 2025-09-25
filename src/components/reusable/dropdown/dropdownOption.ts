@@ -72,11 +72,11 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor readonly = false;
 
-  /**
-   * @deprecated Ignored. Always treated as default.
-   * Kept temporarily so external code passing it doesn't break.
+  /** Kind of the item, derived from parent.
+   * @ignore
    */
-  @state() accessor kind: 'default' | 'ai' = 'default';
+  @state()
+  accessor kind: 'ai' | 'default' = 'default';
 
   /** slotted icon added state.
    * @ignore
@@ -87,22 +87,20 @@ export class DropdownOption extends LitElement {
   @property({ type: String, reflect: true })
   override accessor role = 'option';
 
-  @property({ type: Number, reflect: true })
-  override accessor tabIndex = -1;
-
   @property({ type: String, reflect: true, attribute: 'aria-selected' })
   override accessor ariaSelected = 'false';
 
   override render() {
-    const menuClasses = {
+    const classes = {
       option: true,
       'menu-item': true,
       'option-is-readonly': this.readonly,
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`
       <div
-        class=${classMap(menuClasses)}
+        class=${classMap(classes)}
         role="option"
         aria-selected=${this.selected ? 'true' : 'false'}
         aria-disabled=${this.disabled ? 'true' : 'false'}
@@ -112,28 +110,12 @@ export class DropdownOption extends LitElement {
         ?readonly=${!this.disabled && this.readonly}
         title=${this.text}
         tabindex=${this.disabled || this.readonly ? -1 : 0}
-        @pointerdown=${() => {
-          if (this.disabled || this.readonly) return;
-          this.setPressed(true);
+        @mousedown=${(e: MouseEvent) => {
+          if (this.readonly) e.preventDefault();
         }}
-        @pointerup=${(e: PointerEvent) => {
-          this.setPressed(false);
-          if (!this.disabled && !this.readonly) this.handleClick(e);
-        }}
-        @pointercancel=${() => this.setPressed(false)}
-        @pointerleave=${() => this.setPressed(false)}
-        @keydown=${(e: KeyboardEvent) => {
-          if (this.disabled || this.readonly) return;
-          if (e.key === ' ' || e.key === 'Enter') this.setPressed(true);
-          this.handleKeyDown(e);
-        }}
-        @keyup=${(e: KeyboardEvent) => {
-          if (e.key === ' ' || e.key === 'Enter') this.setPressed(false);
-        }}
-        @blur=${(e: FocusEvent) => {
-          this.setPressed(false);
-          this.handleBlur(e);
-        }}
+        @pointerup=${(e: any) => this.handleClick(e)}
+        @blur=${(e: any) => this.handleBlur(e)}
+        @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
       >
         <span class="menu-item-inner-el text">
           ${this.multiple
@@ -157,12 +139,17 @@ export class DropdownOption extends LitElement {
               ></slot>`}
         </span>
 
-        <slot
-          name="icon"
-          style="display:none"
-          @slotchange=${(e: any) => this.handleIconSlotChange(e)}
-        ></slot>
-
+        ${this.hasIcon
+          ? html`<slot
+              name="icon"
+              style="display:flex"
+              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+            ></slot>`
+          : html`<slot
+              name="icon"
+              style="display:none"
+              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+            ></slot>`}
         ${this.selected && !this.multiple
           ? html`<span class="menu-item-inner-el check-icon"
               >${unsafeSVG(checkIcon)}</span
@@ -171,7 +158,7 @@ export class DropdownOption extends LitElement {
           ? html`
               <kyn-button
                 class="remove-option"
-                kind="ghost"
+                kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
                 size="small"
                 aria-label="Delete ${this.value}"
                 description="Delete ${this.value}"
@@ -192,21 +179,14 @@ export class DropdownOption extends LitElement {
   }
 
   override firstUpdated() {
-    const parent = this.closest('kyn-dropdown') as HTMLElement | null;
+    const parent = this.closest('kyn-dropdown') as any;
     if (parent) {
-      parent.addEventListener('kind-changed', () => {
-        this.kind = 'default';
+      this.kind = parent.kind;
+
+      parent.addEventListener('kind-changed', (e: Event) => {
+        this.kind = (e as CustomEvent<'ai' | 'default'>).detail;
       });
     }
-  }
-
-  private setPressed(on: boolean) {
-    const el = this.shadowRoot?.querySelector(
-      '.menu-item'
-    ) as HTMLElement | null;
-    if (!el) return;
-    if (on) el.setAttribute('data-pressed', '');
-    else el.removeAttribute('data-pressed');
   }
 
   override willUpdate(changed: Map<string, unknown>) {
