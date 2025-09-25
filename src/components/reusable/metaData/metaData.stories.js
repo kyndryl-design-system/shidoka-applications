@@ -20,7 +20,6 @@ export default {
   },
   argTypes: {
     labelPosition: {
-      options: ['top', 'center', 'bottom'],
       control: { type: 'select' },
       table: {
         defaultValue: { summary: 'top' },
@@ -66,6 +65,10 @@ export default {
           width: 100%;
           overflow-x: auto;
         }
+        .label-center {
+          display: inline-flex;
+          align-items: end;
+        }
       </style>
       ${story()}
     `,
@@ -75,7 +78,6 @@ export default {
 const args = {
   horizontal: false,
   noBackground: false,
-  labelPosition: 'top',
 };
 
 export const Default = {
@@ -109,9 +111,8 @@ export const WithIcon = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
-          labelPosition=${args.labelPosition}
         >
-          <div slot="label">Label</div>
+          <div slot="label" class="label-center">Label</div>
           <div slot="icon">${unsafeSVG(testingIcon)}</div>
           <div class="example">
             <div class="cube-icon" style="color:var(--kd-color-icon-brand);">

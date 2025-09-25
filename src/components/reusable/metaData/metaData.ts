@@ -35,10 +35,6 @@ export class MetaData extends LitElement {
   @property({ type: Boolean })
   accessor scrollableContent = false;
 
-  /** Specifies the position of the label relative to the slot content. `Note:` Only Applicable for horizontal orientation */
-  @property({ type: String })
-  accessor labelPosition: LABEL_POSITION = LABEL_POSITION.TOP;
-
   /** Determine the icon slot has content.
    * @ignore
    */
@@ -79,15 +75,6 @@ export class MetaData extends LitElement {
     };
     const metaLabel = {
       'meta-label': true,
-      'top-align': this.hasLabel && this.labelPosition === LABEL_POSITION.TOP,
-      'center-align':
-        this.hasLabel &&
-        this.horizontal &&
-        this.labelPosition === LABEL_POSITION.CENTER,
-      'bottom-align':
-        this.hasLabel &&
-        this.horizontal &&
-        this.labelPosition === LABEL_POSITION.BOTTOM,
       displayEle: !this.hasLabel,
     };
     const metaValue = {
