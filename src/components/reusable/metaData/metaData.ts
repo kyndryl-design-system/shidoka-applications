@@ -7,6 +7,12 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import Styles from './metaData.scss?inline';
+
+export enum LABEL_POSITION {
+  TOP = 'top',
+  CENTER = 'center',
+  BOTTOM = 'bottom',
+}
 /**
  * MetaData component.
  * @slot icon - Slot for icon.
@@ -28,6 +34,10 @@ export class MetaData extends LitElement {
   /** Adds scrollable overflow to the slot content. */
   @property({ type: Boolean })
   accessor scrollableContent = false;
+
+  /** Specifies the position of the label relative to the slot content. `Note:` Only Applicable for horizontal orientation */
+  @property({ type: String })
+  accessor labelPosition: LABEL_POSITION = LABEL_POSITION.TOP;
 
   /** Determine the icon slot has content.
    * @ignore
@@ -60,6 +70,7 @@ export class MetaData extends LitElement {
     };
     const metaIcon = {
       'meta-icon': true,
+      'horizontal-align': this.horizontal,
       displayEle: !this.hasIcon,
     };
     const metaWrapper = {
@@ -68,6 +79,15 @@ export class MetaData extends LitElement {
     };
     const metaLabel = {
       'meta-label': true,
+      'top-align': this.hasLabel && this.labelPosition === LABEL_POSITION.TOP,
+      'center-align':
+        this.hasLabel &&
+        this.horizontal &&
+        this.labelPosition === LABEL_POSITION.CENTER,
+      'bottom-align':
+        this.hasLabel &&
+        this.horizontal &&
+        this.labelPosition === LABEL_POSITION.BOTTOM,
       displayEle: !this.hasLabel,
     };
     const metaValue = {
