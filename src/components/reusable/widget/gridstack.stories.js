@@ -140,38 +140,36 @@ export const Gridstack = {
                 <kyn-widget widgetTitle="Widget 4" subTitle="Widget Subtitle">
                   <kyn-widget-drag-handle></kyn-widget-drag-handle>
 
-                  <kyn-table-container>
-                    <kyn-table>
-                      <kyn-thead>
-                        <kyn-tr>
-                          <kyn-th>ID</kyn-th>
-                          <kyn-th>First Name</kyn-th>
-                          <kyn-th>Last Name</kyn-th>
-                          <kyn-th>Birthday</kyn-th>
-                          <kyn-th .align=${'right'}>Age</kyn-th>
-                          <kyn-th>Full Name</kyn-th>
-                        </kyn-tr>
-                      </kyn-thead>
-                      <kyn-tbody>
-                        ${data.map(
-                          ({
-                            id,
-                            firstName,
-                            lastName,
-                            birthday,
-                            age,
-                          }) => html`<kyn-tr>
-                            <kyn-td>${id}</kyn-td>
-                            <kyn-td>${firstName}</kyn-td>
-                            <kyn-td>${lastName}</kyn-td>
-                            <kyn-td>${birthday}</kyn-td>
-                            <kyn-td .align=${'right'}>${age}</kyn-td>
-                            <kyn-td>${firstName} ${lastName}</kyn-td>
-                          </kyn-tr>`
-                        )}
-                      </kyn-tbody>
-                    </kyn-table>
-                  </kyn-table-container>
+                  <kyn-table>
+                    <kyn-thead>
+                      <kyn-tr>
+                        <kyn-th>ID</kyn-th>
+                        <kyn-th>First Name</kyn-th>
+                        <kyn-th>Last Name</kyn-th>
+                        <kyn-th>Birthday</kyn-th>
+                        <kyn-th .align=${'right'}>Age</kyn-th>
+                        <kyn-th>Full Name</kyn-th>
+                      </kyn-tr>
+                    </kyn-thead>
+                    <kyn-tbody>
+                      ${data.map(
+                        ({
+                          id,
+                          firstName,
+                          lastName,
+                          birthday,
+                          age,
+                        }) => html`<kyn-tr>
+                          <kyn-td>${id}</kyn-td>
+                          <kyn-td>${firstName}</kyn-td>
+                          <kyn-td>${lastName}</kyn-td>
+                          <kyn-td>${birthday}</kyn-td>
+                          <kyn-td .align=${'right'}>${age}</kyn-td>
+                          <kyn-td>${firstName} ${lastName}</kyn-td>
+                        </kyn-tr>`
+                      )}
+                    </kyn-tbody>
+                  </kyn-table>
                 </kyn-widget>
               </div>
             </div>
