@@ -28,9 +28,13 @@
 }
 
 .skeleton {
+  width: var(--skeleton-base-width);
+  height: var(--skeleton-base-height);
+
   position: relative;
   overflow: hidden;
   background: var(--skeleton-background);
+  border-radius: var(--skeleton-border-radius);
 
   &::after {
     content: '';
@@ -61,6 +65,7 @@
     border-radius: 50%;
     aspect-ratio: 1;
   }
+
   &.size-small {
     width: 32px;
     height: 32px;
@@ -75,7 +80,7 @@
   }
 }
 
-/* ==== CLASS-DRIVEN AI VARIANT ==== */
+/* AI variant */
 .skeleton.ai-connected {
   background: linear-gradient(
     90deg,
@@ -83,18 +88,9 @@
     var(--kd-color-background-gradients-ai-loader-end-gradient) 100%
   );
 }
-
 .skeleton.ai-connected::after {
   --_ai-band: color-mix(in oklab, gray 55%, transparent);
-
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-
   mix-blend-mode: screen;
-
   background-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -104,7 +100,6 @@
   background-repeat: no-repeat;
   background-size: 200% 100%;
   background-position: -100% 0;
-
   animation: shimmer var(--skeleton-shimmer-duration)
     cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }

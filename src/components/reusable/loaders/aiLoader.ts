@@ -1,48 +1,23 @@
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
-import Styles from './aiLoader.scss?inline';
-
-type LoaderSize = 'default' | 'mini';
+import './spinner';
 
 /**
  * AI Loader (pure CSS/SVG).
  */
 @customElement('kyn-ai-loader')
-export class AiLoader extends LitElement {
-  static override styles = unsafeCSS(Styles);
-
-  /** Size for AI loader */
+export class AiLoaderWrapper extends LitElement {
+  /** Size for AI loader. */
   @property({ type: String })
-  accessor size: LoaderSize = 'default';
+  accessor size: 'default' | 'mini' = 'default';
 
   override render() {
-    const Classes = {
-      wrapper: true,
-      'ai-connected': true,
-      [`size-${this.size}`]: true,
-    };
-
-    return html`
-      <div class="${classMap(Classes)}">
-        <div
-          class="ai-spinner-svg"
-          role="status"
-          aria-live="polite"
-          aria-label="Loading"
-        >
-          <svg viewBox="0 0 100 100" class="ai-svg" aria-hidden="true">
-            <circle class="ai-track" cx="50" cy="50" r="44" />
-            <circle class="ai-arc" cx="50" cy="50" r="44" />
-          </svg>
-        </div>
-      </div>
-    `;
+    return html`<kyn-spinner variant="ai" .size=${this.size}></kyn-spinner>`;
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-ai-loader': AiLoader;
+    'kyn-ai-loader': AiLoaderWrapper;
   }
 }
