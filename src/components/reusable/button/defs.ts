@@ -9,13 +9,12 @@ export enum BUTTON_KINDS {
   PRIMARY_AI = 'primary-ai',
   PRIMARY_DESTRUCTIVE = 'primary-destructive',
   SECONDARY = 'secondary',
-  SECONDARY_AI = 'secondary-ai',
   SECONDARY_DESTRUCTIVE = 'secondary-destructive',
   TERTIARY = 'tertiary',
   OUTLINE = 'outline',
-  OUTLINE_AI = 'outline-ai',
   OUTLINE_DESTRUCTIVE = 'outline-destructive',
   GHOST = 'ghost',
+  GHOST_AI = 'ghost-ai',
   GHOST_DESTRUCTIVE = 'ghost-destructive',
   CONTENT = 'content',
 }
@@ -38,7 +37,6 @@ export const BUTTON_KINDS_SOLID = [
   BUTTON_KINDS.PRIMARY_AI,
   BUTTON_KINDS.PRIMARY_DESTRUCTIVE,
   BUTTON_KINDS.SECONDARY,
-  BUTTON_KINDS.SECONDARY_AI,
   BUTTON_KINDS.SECONDARY_DESTRUCTIVE,
   BUTTON_KINDS.TERTIARY,
   BUTTON_KINDS.CONTENT,
@@ -46,6 +44,5 @@ export const BUTTON_KINDS_SOLID = [
 
 export const BUTTON_KINDS_OUTLINE = [
   BUTTON_KINDS.OUTLINE,
-  BUTTON_KINDS.OUTLINE_AI,
   BUTTON_KINDS.OUTLINE_DESTRUCTIVE,
 ];

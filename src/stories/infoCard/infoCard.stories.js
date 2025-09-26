@@ -6,6 +6,7 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/d
 import '../../components/reusable/button';
 import '../../components/reusable/inlineConfirm/inlineConfirm';
 import { action } from 'storybook/actions';
+import './infoCard.scss';
 
 export default {
   title: 'AI/Patterns/Info',
@@ -17,40 +18,10 @@ export default {
   },
 };
 
-const Styles = html`
-  <style>
-    .info-card-container {
-      display: flex;
-      align-items: center;
-      gap: var(--kd-spacing-12);
-    }
-
-    .info-card-content-wrapper {
-      flex: 1 0 0;
-      word-wrap: anywhere;
-    }
-
-    .info-card-title-text {
-      color: var(--kd-color-text-title-ai-tertiary);
-    }
-
-    .info-card-rightIcon,
-    .info-card-leftIcon {
-      display: flex;
-    }
-
-    .info-card-leftIcon {
-      svg {
-        fill: var(--kd-color-icon-ai);
-      }
-    }
-  </style>
-`;
-
 export const Default = {
   render: () => {
     return html`
-      <kyn-card style="width:100%" type="normal" aiConnected>
+      <kyn-card class="info-card kyn-card-hover" type="normal" aiConnected>
         <div class="info-card-container">
           <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
 
@@ -63,8 +34,6 @@ export const Default = {
           </div>
         </div>
       </kyn-card>
-
-      ${Styles}
     `;
   },
 };
@@ -72,11 +41,20 @@ export const Default = {
 export const WithRightIconAndDescription = {
   render: () => {
     return html`
-      <kyn-card style="width:100%" type="normal" aiConnected>
+      <kyn-card class="info-card kyn-card-hover" type="normal" aiConnected>
         <div class="info-card-container">
-          <div class="info-card-content-wrapper">This is the description</div>
+          <div class="info-card-leftIcon">${unsafeSVG(policeIcon)}</div>
+
+          <div class="info-card-content-wrapper">
+            <div class="info-card-title-text kd-type--ui-03">
+              This is the title
+            </div>
+
+            This is the description
+          </div>
 
           <kyn-inline-confirm
+            class="info-card-rightIcon"
             ?destructive=${true}
             .anchorText=${'Delete'}
             .confirmText=${'Confirm'}
@@ -88,8 +66,6 @@ export const WithRightIconAndDescription = {
           </kyn-inline-confirm>
         </div>
       </kyn-card>
-
-      ${Styles}
     `;
   },
 };

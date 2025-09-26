@@ -1,7 +1,6 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-
 import CardScss from './card.scss?inline';
 
 /**
@@ -9,16 +8,13 @@ import CardScss from './card.scss?inline';
  * @fires on-card-click - Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`
  * @slot unnamed - Slot for card contents.
  * @part card-wrapper - The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)
-
  */
-
 @customElement('kyn-card')
 export class Card extends LitElement {
   static override styles = unsafeCSS(CardScss);
 
   /** Card Type. `'normal'` & `'clickable'` */
-  @property({ type: String })
-  accessor type = 'normal';
+  @property({ type: String }) accessor type = 'normal';
 
   /** Card link url for clickable cards. */
   @property({ type: String })
@@ -36,47 +32,86 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor hideBorder = false;
 
-  /** Set this to `true` for AI theme. */
+  /** AI theme toggle */
   @property({ type: Boolean })
   accessor aiConnected = false;
+
   /** Set this to `true` for highlight */
   @property({ type: Boolean })
   accessor highlight = false;
 
+  @state()
+  private accessor _hover = false;
+
   override render() {
-    const cardWrapperClasses = {
+    const clickable = {
       'card-wrapper-clickable': true,
-      'card-border': this.hideBorder === false,
-      'ai-Connected': this.aiConnected,
+      'card-border':
+        this.hideBorder === false && !this.aiConnected && !this.highlight,
+      'ai-connected': this.aiConnected,
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
+      'is-hover': this._hover,
+      'info-card': this.classList.contains('info-card'),
     };
 
     const cardWrapperDefaultClasses = {
       'card-wrapper': true,
-      'ai-Connected': this.aiConnected,
+      'ai-connected': this.aiConnected,
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
+      'info-card': this.classList.contains('info-card'),
     };
 
-    return html`${this.type === 'clickable'
-      ? html`<a
-          part="card-wrapper"
-          class="${classMap(cardWrapperClasses)}"
-          href=${this.href}
-          target=${this.target}
-          rel=${this.rel}
-          @click=${(e: Event) => this.handleClick(e)}
-        >
-          <slot></slot>
-        </a>`
-      : html`<div
-          part="card-wrapper"
-          class="${classMap(cardWrapperDefaultClasses)}"
-        >
-          <slot></slot>
-        </div>`} `;
+    return this.type === 'clickable'
+      ? html`
+          <a
+            part="card-wrapper"
+            class="${classMap(clickable)}"
+            href=${this.href}
+            target=${this.target}
+            rel=${this.rel}
+            @pointerenter=${this._onEnter}
+            @pointerleave=${this._onLeave}
+            @click=${(e: Event) => this.handleClick(e)}
+          >
+            <slot></slot>
+          </a>
+        `
+      : html`
+          <div
+            part="card-wrapper"
+            class="${classMap(cardWrapperDefaultClasses)}"
+            @pointerenter=${this._onEnter}
+            @pointerleave=${this._onLeave}
+          >
+            <slot></slot>
+          </div>
+        `;
   }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this._hover = false;
+  }
+
+  override updated(changed: Map<string, unknown>) {
+    if (changed.has('aiConnected') || changed.has('highlight')) {
+      this._hover = false;
+    }
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._hover = false;
+  }
+
+  private _onEnter = () => {
+    this._hover = true;
+  };
+  private _onLeave = () => {
+    this._hover = false;
+  };
 
   private handleClick(e: Event) {
     const event = new CustomEvent('on-card-click', {
@@ -85,10 +120,8 @@ export class Card extends LitElement {
       composed: true,
       cancelable: true,
     });
-    const dispatchResult = this.dispatchEvent(event);
-    if (!dispatchResult || event.defaultPrevented) {
+    if (!this.dispatchEvent(event) || event.defaultPrevented)
       e.preventDefault();
-    }
   }
 }
 declare global {

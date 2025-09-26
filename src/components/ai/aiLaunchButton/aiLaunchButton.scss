@@ -1,5 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: block;
@@ -14,30 +15,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid transparent;
-  outline: 2px solid transparent;
-  background: var(--kd-color-background-container-ai-subtle);
+  border: 1px solid var(--kd-color-border-level-secondary);
+  outline: 1px solid transparent;
+  background: var(--kd-color-background-container-ai-level-2);
   transition: all 150ms ease-in-out;
 
   &:hover {
-    border-color: var(--kd-color-border-variants-ai);
+    background: var(--kd-color-background-container-ai-level-2);
+    @include gradient.border-gradient-ai(
+      $gradient: gradient.$ai-gradient-default,
+      $radius: 50%,
+      $width: 1px,
+      $surface: var(--kd-color-background-container-ai-level-2)
+    );
   }
 
   &:focus-visible {
-    outline-color: var(--kd-color-border-button-primary-state-focused);
+    outline-color: var(--kd-color-border-variants-focus);
     outline-offset: -2px;
   }
 
   &:active {
-    border: 4px solid var(--kd-color-border-button-ai-state-pressed);
     background: var(--kd-color-background-container-ai-default);
+    border: 4px solid var(--kd-color-border-button-ai-state-pressed);
     outline-color: transparent;
   }
 
   &.disabled {
+    background: var(--kd-color-background-container-ai-subtle);
     box-shadow: none;
     cursor: not-allowed;
-    opacity: 0.5;
     pointer-events: none;
     border: 1px solid var(--kd-color-border-ui-disabled);
   }
@@ -49,11 +56,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   border: 2px solid transparent;
   border-radius: 50px;
-  width: 37px;
-  height: 37px;
+  width: 48px;
+  height: 48px;
 }
 
 svg {

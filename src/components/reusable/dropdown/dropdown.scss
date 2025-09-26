@@ -3,12 +3,13 @@
 @use '../../../common/scss/form-input.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
 }
 
-:host(.pagination-dropdown) .select {
+.dropdown.pagination-dropdown .select {
   border: 1px solid transparent;
 }
 
@@ -28,7 +29,6 @@
 
 slot[name='icon']::slotted(*) {
   display: block;
-
   [disabled] & {
     color: var(--kd-color-icon-disabled);
   }
@@ -45,7 +45,6 @@ slot[name='icon']::slotted(*) {
 .select {
   display: flex;
   align-items: center;
-  -webkit-appearance: none;
   appearance: none;
   border: 1px solid var(--kd-color-border-forms-default);
   border-radius: 4px;
@@ -71,7 +70,7 @@ slot[name='icon']::slotted(*) {
     padding-right: 80px;
   }
 
-  &:hover:not([disabled]):not([readonly]):not(.is-readonly) {
+  &:hover:not(:is([disabled], [readonly], .is-readonly, .ai-connected)) {
     border-color: var(--kd-color-border-ui-hover);
   }
 
@@ -89,7 +88,6 @@ slot[name='icon']::slotted(*) {
   &.size--sm {
     height: 32px;
   }
-
   &.size--lg {
     height: 56px;
   }
@@ -97,16 +95,52 @@ slot[name='icon']::slotted(*) {
   &[invalid] {
     padding-right: 80px;
   }
+
+  &.ai-connected:not([disabled], [readonly], .is-readonly) {
+    border: 1px solid transparent;
+    background: var(--kd-color-background-menu-state-ai-default);
+
+    .arrow-icon {
+      color: var(--kd-color-icon-primary);
+    }
+
+    &:hover:not(:is(:focus-visible, :focus-within)) {
+      @include gradient.border-gradient-ai(
+        $gradient: gradient.$ai-gradient-default,
+        $radius: 0,
+        $width: 1px,
+        $surface: var(--kd-color-background-menu-state-ai-default)
+      );
+    }
+
+    &:is(:focus-visible, :focus-within):hover {
+      background: var(--kd-color-background-menu-state-ai-default);
+      border: 1px solid transparent;
+
+      background-clip: border-box;
+      background-origin: border-box;
+      background-size: auto;
+    }
+
+    &:active {
+      background: var(--kd-color-background-menu-state-ai-pressed);
+      color: var(--kd-color-text-level-light);
+
+      .placeholder-text {
+        color: var(--kd-color-text-level-light);
+      }
+    }
+  }
 }
 
-/* Default focus */
 .select:focus-within {
   outline: 2px solid var(--kd-color-border-variants-focus);
   outline-offset: 0;
+}
 
-  &:hover {
-    border-color: transparent;
-  }
+.dropdown.ai-connected .select:is(:focus-visible, :focus-within) {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: 0;
 }
 
 .arrow-icon {
@@ -172,17 +206,14 @@ slot[name='icon']::slotted(*) {
     margin-left: 16px;
   }
 }
-
 .caption {
   [inline] & {
     margin-left: 16px;
   }
 }
-
 .assistive-text {
   @include mixins.visually-hidden;
 }
-
 .select-all {
   font-weight: var(--kd-font-weight-medium);
 }
@@ -219,7 +250,6 @@ slot[name='icon']::slotted(*) {
 
   span {
     display: flex;
-
     svg {
       width: 14px;
       height: 14px;
@@ -244,7 +274,6 @@ slot[name='icon']::slotted(*) {
 kyn-tag-group {
   margin-top: 8px;
 }
-
 .kd-visibility--sr-only {
   @include visibility.sr-only;
 }
@@ -279,20 +308,7 @@ kyn-tag-group {
   color: var(--kd-color-text-variant-placeholder);
 }
 
-.dropdown.ai-connected .select:is(:focus-visible, :focus-within) {
-  outline: 1px solid var(--kd-color-background-button-secondary-ai-focused);
-  outline-offset: 0;
-  border-color: var(--kd-color-background-button-secondary-ai-focused);
-}
-
 .dropdown.ai-connected .options:focus-visible,
 .dropdown.ai-connected [searchable] .options:focus-visible {
   outline-color: var(--kd-color-background-button-secondary-ai-focused);
-}
-
-.dropdown.ai-connected ::slotted(kyn-tooltip),
-.dropdown.ai-connected ::slotted(.tooltip) {
-  --kd-color-border-variants-focus: var(
-    --kd-color-background-button-secondary-ai-focused
-  );
 }

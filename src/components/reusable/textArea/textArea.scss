@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/form-input.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
@@ -18,8 +19,20 @@ textarea {
   margin: 0;
   padding: 16px;
 
+  .ai-connected & {
+    &:not([disabled]):hover {
+      @include gradient.border-gradient-ai(
+        $gradient: gradient.$ai-gradient-default,
+        $radius: 4px,
+        $width: 1px,
+        $surface: var(--kd-color-background-container-ai-level-2)
+      );
+    }
+  }
+
   &.is-readonly {
     cursor: text;
+    border: transparent;
   }
 }
 

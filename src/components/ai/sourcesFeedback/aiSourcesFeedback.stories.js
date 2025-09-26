@@ -90,7 +90,7 @@ export const AISourcesFeedback = {
       >
         <kyn-button
           slot="copy"
-          kind="ghost"
+          kind="tertiary"
           size="small"
           iconPosition="left"
           description="Copy"
@@ -126,6 +126,7 @@ const SourcesContent = () => html`
         id="source-feedback-card"
         slot="sources"
         aiConnected
+        type="clickable"
         aria-label="Card"
         @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -204,11 +205,9 @@ const feedbackFormContent = () => html`
     ></kyn-text-area>
 
     <div class="footer">
-      <kyn-button type="submit" kind="primary-ai" size="small"
-        >Submit</kyn-button
-      >
+      <kyn-button type="submit" kind="primary" size="small">Submit</kyn-button>
       <kyn-button
-        kind="outline-ai"
+        kind="secondary"
         size="small"
         @on-click=${(e) => handleCancelClick(e)}
         >Cancel</kyn-button

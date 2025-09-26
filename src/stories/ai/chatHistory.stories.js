@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import { WithRightIconAndDescription } from './infoCard.stories.js';
+import { WithRightIconAndDescription } from '../infoCard/infoCard.stories.js';
 import { ChatMessages } from './chatMessages.stories.js';
 
 import '../../components/reusable/pagetitle';
@@ -22,7 +22,7 @@ export const ChatHistory = {
   render: () => {
     return html`
       <div class="chat_list">
-        <kyn-page-title type="tertiary" pagetitle="Chat History" aiConnected>
+        <kyn-page-title type="tertiary" pagetitle="Chat History">
         </kyn-page-title>
 
         <div class="chat_content">
@@ -34,9 +34,9 @@ export const ChatHistory = {
             @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           ></kyn-search>
           <div class="chat-section">
-            <label class="kd-type--ui-02 kd-type--weight-medium"
-              >Day, Date & Time Stamp</label
-            >
+            <p class="kd-type--ui-02 kd-type--weight-medium"></p>
+              Day, Date & Time Stamp
+            </p>
             ${Array.from({ length: 3 }, () => {
               return html` ${WithRightIconAndDescription.render()} `;
             })}
@@ -81,7 +81,6 @@ export const ChatHistoryDetails = {
         style="margin-bottom: 4px"
         type="tertiary"
         pagetitle="Chat History"
-        aiConnected
       >
       </kyn-page-title>
       <div class="chat_details">
@@ -92,7 +91,7 @@ export const ChatHistoryDetails = {
         >
           Back
         </kyn-link>
-        <kyn-page-title type="tertiary" pagetitle="Page Title" aiConnected>
+        <kyn-page-title type="tertiary" pagetitle="Page Title">
         </kyn-page-title>
         <div style="width:100%">${ChatMessages.render()}</div>
       </div>

@@ -17,6 +17,8 @@ import TabsScss from './tabs.scss?inline';
 export class Tabs extends LitElement {
   static override styles = unsafeCSS(TabsScss);
 
+  private _keydownCapture = (e: any) => this._handleKeyboard(e);
+
   /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
   @property({ type: String })
   accessor tabSize = 'md';
@@ -64,11 +66,7 @@ export class Tabs extends LitElement {
 
     return html`
       <div class=${classMap(wrapperClasses)}>
-        <div
-          class=${classMap(tabsClasses)}
-          role="tablist"
-          @keydown=${(e: any) => this._handleKeyboard(e)}
-        >
+        <div class=${classMap(tabsClasses)} role="tablist">
           <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
@@ -82,10 +80,12 @@ export class Tabs extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('tab-activated', (e) => this._handleChange(e));
+    this.addEventListener('keydown', this._keydownCapture, true);
   }
 
   override disconnectedCallback() {
     this.removeEventListener('tab-activated', (e) => this._handleChange(e));
+    this.removeEventListener('keydown', this._keydownCapture, true);
     super.disconnectedCallback();
   }
 
@@ -175,6 +175,7 @@ export class Tabs extends LitElement {
     const DOWN_ARROW_KEY_CODE = 40;
     const ENTER_KEY_CODE = 13;
     const SPACE_KEY_CODE = 32;
+    const TAB_KEY_CODE = 9;
     const TabCount = this._tabs.length;
     const SelectedTabIndex = this._tabs.findIndex((tab: any) => tab.selected);
 
@@ -187,6 +188,41 @@ export class Tabs extends LitElement {
         );
         return;
       }
+
+      case TAB_KEY_CODE: {
+        e.preventDefault();
+        const forward = !e.shiftKey;
+        let targetIndex = forward
+          ? SelectedTabIndex === TabCount - 1
+            ? 0
+            : SelectedTabIndex + 1
+          : SelectedTabIndex === 0
+          ? TabCount - 1
+          : SelectedTabIndex - 1;
+        let targetTab = this._tabs[targetIndex];
+
+        while (targetTab && targetTab.disabled) {
+          targetIndex = forward
+            ? targetIndex === TabCount - 1
+              ? 0
+              : targetIndex + 1
+            : targetIndex === 0
+            ? TabCount - 1
+            : targetIndex - 1;
+          targetTab = this._tabs[targetIndex];
+        }
+
+        if (targetTab) {
+          targetTab.focus();
+          this._updateChildrenSelection(
+            targetTab.id,
+            !this.disableAutoFocusUpdate
+          );
+          this._emitChangeEvent(e, targetTab.id);
+        }
+        return;
+      }
+
       case LEFT_ARROW_KEY_CODE:
       case UP_ARROW_KEY_CODE: {
         // activate previous tab

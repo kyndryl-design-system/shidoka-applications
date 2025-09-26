@@ -1,5 +1,4 @@
 import { html } from 'lit';
-
 import './index';
 
 export default {
@@ -12,13 +11,10 @@ export default {
     },
   },
   argTypes: {
-    shape: {
-      control: 'select',
-      options: ['rectangle', 'circle'],
-    },
+    shape: { control: 'select', options: ['rectangle', 'circle'] },
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: ['small', 'medium', 'large', undefined],
     },
     lines: { control: 'number' },
     inline: { control: 'boolean' },
@@ -28,20 +24,18 @@ export default {
   },
 };
 
-const Template = (args) => {
-  return html`
-    <kyn-skeleton
-      class="${args.inline ? 'inline' : 'skeleton-item'}"
-      shape=${args.shape}
-      size=${args.size || ''}
-      lines=${args.lines}
-      ?inline=${args.inline}
-      width=${args.width || ''}
-      height=${args.height || ''}
-      ?aiConnected=${args.aiConnected}
-    ></kyn-skeleton>
-  `;
-};
+const Template = (args) => html`
+  <kyn-skeleton
+    class=${args.inline ? 'inline' : ''}
+    .shape=${args.shape}
+    .size=${args.size}
+    .lines=${args.lines}
+    .inline=${args.inline}
+    .width=${args.width}
+    .height=${args.height}
+    .aiConnected=${args.aiConnected}
+  ></kyn-skeleton>
+`;
 
 export const Block = Template.bind({});
 Block.args = {
@@ -50,13 +44,11 @@ Block.args = {
   inline: false,
   aiConnected: false,
   width: '100%',
+  size: undefined,
 };
 
 export const Inline = Template.bind({});
-Inline.args = {
-  ...Block.args,
-  inline: true,
-};
+Inline.args = { ...Block.args, inline: true };
 
 export const MultiBlock = Template.bind({});
 MultiBlock.args = {
@@ -65,6 +57,7 @@ MultiBlock.args = {
   inline: false,
   height: '128px',
   aiConnected: false,
+  size: undefined,
 };
 
 export const MultiInline = Template.bind({});
@@ -81,93 +74,90 @@ const CustomTemplate = () => html`
   <div style="display:flex;gap:45px">
     <div>
       <div class="heading kd-type--headline-04">Default</div>
+
       <h3>Custom Button</h3>
       <kyn-skeleton
-        style="margin: 8px 0 16px"
-        width="120px"
-        height="48px"
+        style="margin:8px 0 16px"
+        .width=${'120px'}
+        .height=${'48px'}
       ></kyn-skeleton>
 
       <h3>Custom Title</h3>
       <kyn-skeleton
-        style="margin: 8px 0 16px"
-        width="200px"
-        height="24px"
+        style="margin:8px 0 16px"
+        .width=${'200px'}
+        .height=${'24px'}
       ></kyn-skeleton>
 
       <h3>Custom Thumbnail</h3>
       <kyn-skeleton
-        style="margin: 8px 0 16px"
-        width="200px"
-        height="120px"
+        style="margin:8px 0 16px"
+        .width=${'200px'}
+        .height=${'120px'}
       ></kyn-skeleton>
 
       <h3>Custom Logo</h3>
       <kyn-skeleton
-        style="margin: 8px 0 0"
+        style="margin:8px 0 0"
         shape="circle"
-        width="54px"
-        height="54px"
+        .width=${'54px'}
+        .height=${'54px'}
       ></kyn-skeleton>
     </div>
+
     <div>
       <div class="heading kd-type--headline-04">AI</div>
+
       <h3>Custom Button AI</h3>
       <kyn-skeleton
-        style="margin: 8px 0 16px"
-        width="120px"
-        height="48px"
+        style="margin:8px 0 16px"
+        .width=${'120px'}
+        .height=${'48px'}
         aiConnected
       ></kyn-skeleton>
 
       <h3>Custom Title AI</h3>
       <kyn-skeleton
-        style="margin: 8px 0 16px"
-        width="200px"
-        height="24px"
+        style="margin:8px 0 16px"
+        .width=${'200px'}
+        .height=${'24px'}
         aiConnected
       ></kyn-skeleton>
 
       <h3>Custom Thumbnail AI</h3>
       <kyn-skeleton
-        style="margin: 8px 0 16px"
-        width="200px"
-        height="120px"
+        style="margin:8px 0 16px"
+        .width=${'200px'}
+        .height=${'120px'}
         aiConnected
       ></kyn-skeleton>
 
       <h3>Custom Logo AI</h3>
       <kyn-skeleton
-        style="margin: 8px 0 0"
+        style="margin:8px 0 0"
         shape="circle"
-        width="54px"
-        height="54px"
+        .width=${'54px'}
+        .height=${'54px'}
         aiConnected
       ></kyn-skeleton>
     </div>
   </div>
 `;
-
 export const Gallery = CustomTemplate.bind({});
 
 const SizesTemplate = () => html`
-  <div style="display: flex; gap: 16px; align-items: top;">
+  <div style="display:flex;gap:16px;align-items:top;">
     <kyn-skeleton shape="rectangle" size="small"></kyn-skeleton>
     <kyn-skeleton shape="rectangle" size="medium"></kyn-skeleton>
     <kyn-skeleton shape="rectangle" size="large"></kyn-skeleton>
   </div>
-  <div style="display: flex; gap: 16px; align-items: top; margin-top: 24px;">
+  <div style="display:flex;gap:16px;align-items:top;margin-top:24px;">
     <kyn-skeleton shape="circle" size="small"></kyn-skeleton>
     <kyn-skeleton shape="circle" size="medium"></kyn-skeleton>
     <kyn-skeleton shape="circle" size="large"></kyn-skeleton>
   </div>
 `;
-
 export const Sizes = SizesTemplate.bind({});
 
 export const AIConnected = Template.bind({});
-AIConnected.args = {
-  ...Block.args,
-  inline: true,
-  aiConnected: true,
-};
+AIConnected.args = { ...Block.args, inline: true, aiConnected: true };

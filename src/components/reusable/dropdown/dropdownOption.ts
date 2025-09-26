@@ -158,7 +158,7 @@ export class DropdownOption extends LitElement {
           ? html`
               <kyn-button
                 class="remove-option"
-                kind="ghost"
+                kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
                 size="small"
                 aria-label="Delete ${this.value}"
                 description="Delete ${this.value}"
