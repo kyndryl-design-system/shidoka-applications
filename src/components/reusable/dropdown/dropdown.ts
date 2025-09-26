@@ -128,7 +128,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
   /** Menu CSS min-width value. */
   @property({ type: String })
-  accessor menuMinWidth = 'initial';
+  accessor menuMinWidth = '120px';
 
   /** Controls direction that dropdown opens. */
   @property({ type: String })
