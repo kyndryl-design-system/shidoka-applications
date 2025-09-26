@@ -5,21 +5,11 @@
 
 :host {
   display: block;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  transition: outline-color 150ms ease-out;
   border-radius: 4px 4px 0 0;
 }
 
-:host(:focus-visible) {
-  outline-color: transparent;
-}
-:host([data-aiconnected='true']:focus-visible) {
-  outline-color: transparent;
-}
-
 @media (min-width: breakpoints.$bp-md) {
-  :host([vertical]) {
+  .tab.vertical {
     border-radius: 0 4px 4px 0;
   }
 }
@@ -32,10 +22,13 @@
   white-space: nowrap;
   text-align: center;
   border-radius: 4px 4px 0 0;
-  border-bottom: 1px solid var(--kd-color-border-accent-secondary);
-  border: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-left: 1px solid transparent;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 150ms ease-out;
+  border-style: solid;
+  border-width: 2px;
+  border-color: transparent;
+  border-bottom-color: var(--kd-color-border-accent-secondary);
   transition: border-color 150ms ease-out, background-color 150ms ease-out,
     color 150ms ease-out;
 
@@ -56,14 +49,9 @@
 
   &.selected {
     font-weight: var(--kd-font-weight-medium);
-    border-width: 2px;
   }
 
   &.vertical {
-    &.selected {
-      border-width: 2px;
-    }
-
     @media (min-width: breakpoints.$bp-md) {
       border-radius: 0 4px 4px 0;
       border-bottom: none;
@@ -129,12 +117,11 @@
       );
     }
 
-    /* Pressed */
     &:active,
     &:hover:active {
       background: var(--kd-color-background-button-primary-ai-pressed);
-      border: 1px solid transparent;
-      outline: 1px solid transparent;
+      border-color: transparent;
+      outline-color: transparent;
       color: var(--kd-color-text-button-dark-primary);
       background-image: none;
     }
@@ -142,8 +129,8 @@
     &:hover:active,
     &.selected:hover:active {
       background: var(--kd-color-background-button-primary-ai-pressed);
-      border: 2px solid transparent;
-      outline: 2px solid transparent;
+      border-color: transparent;
+      outline-color: transparent;
       color: var(--kd-color-text-button-dark-primary);
       background-image: none;
     }
@@ -158,12 +145,20 @@
 }
 
 .tab:focus-visible {
-  outline: none;
-  border-bottom: 2px solid var(--kd-color-border-variants-focus);
+  outline-color: transparent;
+  border-bottom: 1px solid var(--kd-color-border-variants-focus);
+
+  &.selected {
+    border-bottom: 2px solid var(--kd-color-border-variants-focus);
+  }
 }
 .tab.ai-connected:focus-visible {
-  outline: none;
-  border-bottom: 2px solid var(--kd-color-border-button-ai-state-focused);
+  outline-color: transparent;
+  border-bottom: 1px solid var(--kd-color-border-button-ai-state-focused);
+
+  &.selected {
+    border-bottom: 2px solid var(--kd-color-border-button-ai-state-focused);
+  }
 }
 
 .tab.disabled {

@@ -22,7 +22,6 @@ export class Tab extends LitElement {
   @property({ type: Boolean, reflect: true, attribute: 'vertical' })
   accessor vertical = false;
 
-  // Keep private state for backward compatibility
   private get _vertical(): boolean {
     return this.vertical;
   }
@@ -65,7 +64,10 @@ export class Tab extends LitElement {
     };
 
     return html`
-      <div class=${classMap(classes)}>
+      <div
+        class=${classMap(classes)}
+        tabindex="${this.disabled ? -1 : this.tabIndex}"
+      >
         <slot></slot>
       </div>
     `;
@@ -74,11 +76,33 @@ export class Tab extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', this._handleClick);
+
+    this.addEventListener(
+      'focus',
+      this._handleHostFocus as EventListener,
+      true
+    );
   }
 
   override disconnectedCallback() {
     this.removeEventListener('click', this._handleClick);
+    this.removeEventListener(
+      'focus',
+      this._handleHostFocus as EventListener,
+      true
+    );
     super.disconnectedCallback();
+  }
+
+  public override focus(): void {
+    const inner = (this.renderRoot as ShadowRoot | null)?.querySelector(
+      '.tab'
+    ) as HTMLElement | null;
+    if (inner) {
+      inner.focus();
+    } else {
+      super.focus();
+    }
   }
 
   override willUpdate(changedProps: Map<string, unknown>) {
@@ -88,11 +112,14 @@ export class Tab extends LitElement {
 
     if (changedProps.has('selected')) {
       this['aria-selected'] = this.selected.toString();
-      this.tabIndex = this.selected ? 0 : -1;
+
+      this.tabIndex = this.disabled ? -1 : 0;
     }
 
     if (changedProps.has('disabled')) {
       this['aria-disabled'] = this.disabled.toString();
+
+      this.tabIndex = this.disabled ? -1 : 0;
     }
   }
 
@@ -104,6 +131,15 @@ export class Tab extends LitElement {
         detail: { origEvent: e, tabId: this.id },
       });
       this.dispatchEvent(event);
+    }
+  };
+
+  private _handleHostFocus = (e: FocusEvent) => {
+    const inner = (this.renderRoot as ShadowRoot | null)?.querySelector(
+      '.tab'
+    ) as HTMLElement | null;
+    if (inner && !this.disabled) {
+      inner.focus();
     }
   };
 }
