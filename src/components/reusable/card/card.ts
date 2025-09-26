@@ -13,8 +13,7 @@ import CardScss from './card.scss?inline';
 export class Card extends LitElement {
   static override styles = unsafeCSS(CardScss);
 
-  /** Card Type. `'normal'` &
-   * `'clickable'` */
+  /** Card Type. `'normal'` & `'clickable'` */
   @property({ type: String }) accessor type = 'normal';
 
   /** Card link url for clickable cards. */
@@ -33,7 +32,7 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor hideBorder = false;
 
-  /** AI theme toggle — reflect so :host([ai-connected]) is reliable */
+  /** AI theme toggle */
   @property({ type: Boolean })
   accessor aiConnected = false;
 
@@ -55,7 +54,7 @@ export class Card extends LitElement {
       'is-hover': this._hover,
     };
 
-    const normal = {
+    const cardWrapperDefaultClasses = {
       'card-wrapper': true,
       'ai-connected': this.aiConnected,
       'card-highlight': this.highlight,
@@ -83,7 +82,7 @@ export class Card extends LitElement {
       : html`
           <div
             part="card-wrapper"
-            class="${classMap(normal)}"
+            class="${classMap(cardWrapperDefaultClasses)}"
             @pointerenter=${this._onEnter}
             @pointerleave=${this._onLeave}
           >

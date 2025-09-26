@@ -113,7 +113,7 @@ const CustomTemplate = () => html`
         style="margin:8px 0 16px"
         .width=${'120px'}
         .height=${'48px'}
-        .aiConnected=${true}
+        aiConnected
       ></kyn-skeleton>
 
       <h3>Custom Title AI</h3>
@@ -121,7 +121,7 @@ const CustomTemplate = () => html`
         style="margin:8px 0 16px"
         .width=${'200px'}
         .height=${'24px'}
-        .aiConnected=${true}
+        aiConnected
       ></kyn-skeleton>
 
       <h3>Custom Thumbnail AI</h3>
@@ -129,7 +129,7 @@ const CustomTemplate = () => html`
         style="margin:8px 0 16px"
         .width=${'200px'}
         .height=${'120px'}
-        .aiConnected=${true}
+        aiConnected
       ></kyn-skeleton>
 
       <h3>Custom Logo AI</h3>
@@ -138,7 +138,7 @@ const CustomTemplate = () => html`
         shape="circle"
         .width=${'54px'}
         .height=${'54px'}
-        .aiConnected=${true}
+        aiConnected
       ></kyn-skeleton>
     </div>
   </div>

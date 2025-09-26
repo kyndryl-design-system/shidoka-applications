@@ -8,7 +8,7 @@ import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/inf
 
 /**
  * Tooltip.
- * @fires on-tooltip-toggle - Emits the open state of the tooltip on open/close.
+ * @fires on-tooltip-toggle - Emits the open state of the tooltip on open/close. `detail:{ open: boolean }`
  * @slot unnamed - Slot for tooltip content.
  * @slot anchor - Slot for custom anchor button content.
  */
