@@ -234,7 +234,7 @@ export class AISourcesFeedback extends LitElement {
             ? html`
                 <kyn-button
                   class="reveal-toggle"
-                  kind="tertiary"
+                  kind="ghost-ai"
                   size="small"
                   @on-click=${() =>
                     this._toggleLimitRevealed(!this.limitRevealed)}

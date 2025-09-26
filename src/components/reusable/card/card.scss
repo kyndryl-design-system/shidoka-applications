@@ -8,30 +8,25 @@
   width: 264px;
 }
 
-:host(.ai-connected-hover) {
+.card-wrapper.ai-connected.is-hover,
+.card-wrapper.ai-connected:hover {
   --_title-color: var(--kd-color-text-title-ai-secondary);
   --_subtitle-color: var(--kd-color-text-level-primary);
   --_description-color: var(--kd-color-text-level-primary);
 }
 
-:host(.info-card) {
-  width: 100%;
-
-  .card-wrapper {
-    @include gradient.border-gradient-ai(
-      $gradient: gradient.$ai-gradient-default,
-      $radius: 8px,
-      $width: 1px,
-      $surface: var(--kd-color-background-ui-hollow-default)
-    );
-  }
+.card-wrapper.info-card.ai-connected {
+  @include gradient.border-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 8px,
+    $width: 1px,
+    $surface: var(--kd-color-background-ui-hollow-default)
+  );
 }
 
-:host(:focus-visible) {
-  .ai-connected.card-wrapper-clickable {
-    outline-color: var(--kd-color-border-variants-focus);
-    outline-offset: -2px;
-  }
+.ai-connected.card-wrapper-clickable:focus-visible {
+  outline-color: var(--kd-color-border-variants-focus);
+  outline-offset: -2px;
 }
 
 .card {
@@ -43,6 +38,11 @@
     padding: 16px;
     border-radius: 8px;
     height: 100%;
+
+    &.card-border {
+      border: 1px solid var(--kd-color-border-card-clickable);
+      box-shadow: var(--kd-elevation-level-1);
+    }
   }
 
   &-wrapper {
@@ -117,6 +117,11 @@
           color: var(--_subtitle-color);
         }
       }
+
+      &:active {
+        @include elevation.shadow(4);
+        box-shadow: var(--kd-elevation-level-2-overflow-ai);
+      }
     }
 
     &.ai-highlight {
@@ -142,16 +147,20 @@
     }
   }
 
-  &-border {
+  .card-wrapper.card-border,
+  .card-wrapper-clickable.card-border {
     border: 1px solid var(--kd-color-border-card-clickable);
     @include elevation.shadow(1);
+  }
 
-    &-highlight {
-      border: 1px solid var(--kd-color-background-highlight-border);
-    }
-    &.ai-connected {
-      border-color: transparent;
-    }
+  .card-wrapper.card-border-highlight,
+  .card-wrapper-clickable.card-border-highlight {
+    border: 1px solid var(--kd-color-background-highlight-border);
+  }
+
+  .card-wrapper.card-border.ai-connected,
+  .card-wrapper-clickable.card-border.ai-connected {
+    border-color: transparent;
   }
 
   &-highlight {

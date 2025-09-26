@@ -52,6 +52,7 @@ export class Card extends LitElement {
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
       'is-hover': this._hover,
+      'info-card': this.classList.contains('info-card'),
     };
 
     const cardWrapperDefaultClasses = {
@@ -59,9 +60,7 @@ export class Card extends LitElement {
       'ai-connected': this.aiConnected,
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
-      'card-border':
-        this.hideBorder === false && !this.aiConnected && !this.highlight,
-      'is-hover': this._hover,
+      'info-card': this.classList.contains('info-card'),
     };
 
     return this.type === 'clickable'

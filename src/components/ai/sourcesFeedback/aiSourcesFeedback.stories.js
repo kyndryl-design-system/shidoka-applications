@@ -126,6 +126,7 @@ const SourcesContent = () => html`
         id="source-feedback-card"
         slot="sources"
         aiConnected
+        type="clickable"
         aria-label="Card"
         @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
