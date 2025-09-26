@@ -48,7 +48,7 @@ export class Skeleton extends LitElement {
    * This adds the `.ai-connected` class and reflects the host attribute,
    * allowing shidoka-scoped CSS variables to resolve.
    */
-  @property({ type: Boolean, reflect: true, attribute: 'ai-connected' })
+  @property({ type: Boolean, reflect: true })
   accessor aiConnected = false;
 
   override render() {
