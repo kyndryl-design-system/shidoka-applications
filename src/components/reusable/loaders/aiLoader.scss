@@ -58,6 +58,8 @@
   display: block;
   width: 100%;
   height: 100%;
+  /* Required for Firefox to respect transform-origin on SVG elements */
+  transform-box: fill-box;
   transform-origin: 50% 50%;
   animation: ai-rotate 1.25s linear infinite;
 }
@@ -76,8 +78,7 @@
   stroke-width: var(--ai-stroke);
   stroke-linecap: round;
   transform-origin: 50% 50%;
-  --circumference: 276.4601535;
-  stroke-dasharray: calc(var(--circumference) * 0.17) var(--circumference);
+  stroke-dasharray: 47 276.4601535;
   stroke-dashoffset: 0;
 }
 
