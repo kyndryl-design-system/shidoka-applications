@@ -131,23 +131,28 @@
 
     /* Pressed */
     &:active,
-    &.selected:active,
-    &:hover:active,
-    &.selected:hover:active {
-      background: var(
-        --kd-color-background-button-primary-ai-pressed
-      ) !important;
+    &:hover:active {
+      background: var(--kd-color-background-button-primary-ai-pressed);
       border: 1px solid transparent;
       outline: 1px solid transparent;
       color: var(--kd-color-text-button-dark-primary);
-      background-image: none !important; /* kills gradient layer */
+      background-image: none;
+    }
+
+    &:hover:active,
+    &.selected:hover:active {
+      background: var(--kd-color-background-button-primary-ai-pressed);
+      border: 2px solid transparent;
+      outline: 2px solid transparent;
+      color: var(--kd-color-text-button-dark-primary);
+      background-image: none;
     }
 
     &:active::after,
     &.selected:active::after,
     &:hover:active::after,
     &.selected:hover:active::after {
-      content: none !important; /* kills pseudo-element ring if used */
+      content: none;
     }
   }
 }
