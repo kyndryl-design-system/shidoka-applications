@@ -264,12 +264,12 @@ const sharedStyles = html`
       gap: 10px;
       padding: 10px;
       align-items: center;
-      background-color: var(--kd-color-background-container-ai-level-2);
       border-radius: 8px;
-      border-color: var(--kd-color-border-forms-default);
     }
 
     .ai-input-query.floating {
+      background-color: var(--kd-color-background-container-ai-level-2);
+      border-color: var(--kd-color-border-forms-default);
       box-shadow: var(--kd-elevation-level-3-ai);
     }
 
