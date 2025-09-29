@@ -99,7 +99,7 @@ export const Thinking = {
 
 export const Footer = {
   args: {
-    floating: true,
+    floating: false,
     firstDropDownValue: 'Option 1',
     secondDropDownValue: 'Option 1',
     firstDropDownIcon: databaseIcon,
@@ -136,13 +136,21 @@ export const Footer = {
           </kyn-button>
         </div>
         <div class="footer-content">
+          <input
+            id="ai-file-input"
+            type="file"
+            name="ai-attachments"
+            style="display: none;"
+            @change=${(e) => action('files-selected')(e)}
+          />
           <kyn-button
             kind="tertiary"
             size="small"
             iconPosition="right"
             description="Additional"
+            @click=${() => document.getElementById('ai-file-input')?.click()}
           >
-            ${unsafeSVG(plusIcon)}
+            <span slot="icon">${unsafeSVG(plusIcon)}</span>
           </kyn-button>
           <kyn-dropdown
             ?hideLabel=${true}
@@ -158,9 +166,9 @@ export const Footer = {
               size="small"
               iconPosition="right"
             >
-              <span style="display:inline-flex;margin-right: 8px;">
-                ${unsafeSVG(args.firstDropDownIcon)}
-              </span>
+              <span slot="icon" style="display:inline-flex;margin-right: 8px;"
+                >${unsafeSVG(args.firstDropDownIcon)}</span
+              >
               ${args.firstDropDownValue}
               <span slot="icon">${unsafeSVG(downIcon)}</span>
             </kyn-button>
@@ -195,9 +203,9 @@ export const Footer = {
               size="small"
               iconPosition="right"
             >
-              <span style="display:inline-flex;margin-right: 8px;">
-                ${unsafeSVG(args.secondDropDownIcon)}
-              </span>
+              <span slot="icon" style="display:inline-flex;margin-right: 8px;"
+                >${unsafeSVG(args.secondDropDownIcon)}</span
+              >
               ${args.secondDropDownValue}
               <span slot="icon">${unsafeSVG(downIcon)}</span>
             </kyn-button>

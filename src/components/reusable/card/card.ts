@@ -44,8 +44,9 @@ export class Card extends LitElement {
   private accessor _hover = false;
 
   override render() {
-    const clickable = {
-      'card-wrapper-clickable': true,
+    const baseClasses = {
+      'card-wrapper': this.type !== 'clickable',
+      'card-wrapper-clickable': this.type === 'clickable',
       'card-border':
         this.hideBorder === false && !this.aiConnected && !this.highlight,
       'ai-connected': this.aiConnected,
@@ -55,19 +56,11 @@ export class Card extends LitElement {
       'info-card': this.classList.contains('info-card'),
     };
 
-    const cardWrapperDefaultClasses = {
-      'card-wrapper': true,
-      'ai-connected': this.aiConnected,
-      'card-highlight': this.highlight,
-      'ai-highlight': this.aiConnected && this.highlight,
-      'info-card': this.classList.contains('info-card'),
-    };
-
     return this.type === 'clickable'
       ? html`
           <a
             part="card-wrapper"
-            class="${classMap(clickable)}"
+            class="${classMap(baseClasses)}"
             href=${this.href}
             target=${this.target}
             rel=${this.rel}
@@ -81,7 +74,7 @@ export class Card extends LitElement {
       : html`
           <div
             part="card-wrapper"
-            class="${classMap(cardWrapperDefaultClasses)}"
+            class="${classMap(baseClasses)}"
             @pointerenter=${this._onEnter}
             @pointerleave=${this._onLeave}
           >

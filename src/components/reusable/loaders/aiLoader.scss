@@ -44,8 +44,14 @@
   &.size-mini {
     width: 20px;
     height: 20px;
-    --ai-size: 18px;
-    --ai-stroke: 12px;
+    --ai-size: 16px;
+    --ai-stroke: 2px;
+
+    --ai-track: var(
+      --loader-track,
+      var(--kd-color-background-loader-bar-primary)
+    );
+    --ai-arc: var(--loader-secondary, var(--kd-color-opacity-ai-warm-red-90));
   }
 }
 
@@ -61,13 +67,12 @@
   display: block;
   width: 100%;
   height: 100%;
-  /* Required for Firefox to respect transform-origin on SVG elements */
   transform-box: fill-box;
   transform-origin: 50% 50%;
   animation: ai-rotate 1.25s linear infinite;
 }
 
-/* Track circle */
+/* Track */
 .ai-track {
   fill: none;
   stroke: var(--ai-track);
@@ -76,7 +81,7 @@
   vector-effect: non-scaling-stroke;
 }
 
-/* Arc circle */
+/* Arc */
 .ai-arc {
   fill: none;
   stroke: var(--ai-arc);
@@ -88,6 +93,19 @@
   stroke-dashoffset: 0;
   stroke-opacity: 1;
   vector-effect: non-scaling-stroke;
+}
+
+.wrapper.ai-connected.size-mini {
+  --ai-track: var(
+    --loader-track,
+    var(--kd-color-background-loader-bar-primary)
+  );
+  --ai-arc: var(--loader-secondary, var(--kd-color-opacity-ai-warm-red-90));
+}
+.wrapper.ai-connected.size-mini .ai-arc {
+  stroke: var(--ai-arc);
+  stroke-dasharray: 12 276.4601535;
+  stroke-opacity: 1;
 }
 
 @keyframes ai-rotate {

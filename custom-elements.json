@@ -9434,7 +9434,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Accept multiple files. Default value is `false`.",
+              "description": "Accept multiple files.",
               "attribute": "multiple"
             },
             {
@@ -9453,8 +9453,8 @@
               "type": {
                 "text": "number"
               },
-              "default": "1048576",
-              "description": "Set the maximum file size in bytes. Default value is `1048576` (1MB).",
+              "default": "10485760",
+              "description": "Set the maximum file size in bytes.",
               "attribute": "maxFileSize"
             },
             {
@@ -9464,7 +9464,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Disable the file uploader. Default value is `false`.",
+              "description": "Disable the file uploader.",
               "attribute": "disabled"
             },
             {
@@ -9645,7 +9645,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Accept multiple files. Default value is `false`.",
+              "description": "Accept multiple files.",
               "fieldName": "multiple"
             },
             {
@@ -9659,8 +9659,8 @@
               "type": {
                 "text": "number"
               },
-              "default": "1048576",
-              "description": "Set the maximum file size in bytes. Default value is `1048576` (1MB).",
+              "default": "10485760",
+              "description": "Set the maximum file size in bytes.",
               "fieldName": "maxFileSize"
             },
             {
@@ -9669,7 +9669,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Disable the file uploader. Default value is `false`.",
+              "description": "Disable the file uploader.",
               "fieldName": "disabled"
             },
             {
@@ -9754,6 +9754,16 @@
               "attribute": "titleText"
             },
             {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  expand: 'Expand',\n  collapse: 'Collapse',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
               "kind": "method",
               "name": "_handleSlotChange",
               "privacy": "private"
@@ -9791,6 +9801,12 @@
               "default": "'File details'",
               "description": "File details container title.",
               "fieldName": "titleText"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
             }
           ],
           "superclass": {
@@ -10821,7 +10837,7 @@
               },
               "default": "false",
               "description": "Set to `true` for AI theme.\nThis adds the `.ai-connected` class and reflects the host attribute,\nallowing shidoka-scoped CSS variables to resolve.",
-              "attribute": "ai-connected",
+              "attribute": "aiConnected",
               "reflects": true
             }
           ],
@@ -10878,7 +10894,7 @@
               "fieldName": "inline"
             },
             {
-              "name": "ai-connected",
+              "name": "aiConnected",
               "type": {
                 "text": "boolean"
               },
@@ -12866,7 +12882,29 @@
               "name": "unnamed"
             }
           ],
-          "members": [],
+          "members": [
+            {
+              "kind": "field",
+              "name": "bottom",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Position at bottom instead of top of screen.",
+              "attribute": "bottom"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bottom",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Position at bottom instead of top of screen.",
+              "fieldName": "bottom"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
