@@ -61,7 +61,7 @@ export class FileUploader extends FormMixin(LitElement) {
   accessor accept: string[] = [];
 
   /**
-   * Accept multiple files..
+   * Accept multiple files.
    */
   @property({ type: Boolean })
   accessor multiple = false;
@@ -73,7 +73,7 @@ export class FileUploader extends FormMixin(LitElement) {
   accessor textStrings = _defaultTextStrings;
 
   /**
-   * Set the maximum file size in bytes..
+   * Set the maximum file size in bytes.
    * @example
    * 1048576 // 1MB
    * 5242880 // 5MB
