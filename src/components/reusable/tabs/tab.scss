@@ -42,8 +42,44 @@
   }
 
   &.selected {
-    border-bottom-width: 2px;
     font-weight: var(--kd-font-weight-medium);
+  }
+
+  &.selected:not(.vertical)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--kd-color-border-button-primary-state-default);
+    border-radius: 2px 2px 0 0;
+  }
+
+  &.selected.vertical::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--kd-color-border-button-primary-state-default);
+    border-radius: 0 2px 2px 0;
+  }
+
+  &.selected.ai-connected:not(.vertical)::after {
+    background: var(--kd-color-border-button-ai-state-focused);
+  }
+
+  &.selected.vertical.ai-connected::after {
+    background: var(--kd-color-border-button-ai-state-focused);
+  }
+
+  &:hover::after,
+  &.selected:hover::after,
+  &:active::after,
+  &.selected:active::after {
+    display: none;
   }
 
   &.vertical {
@@ -52,12 +88,9 @@
       white-space: initial;
       text-align: left;
       border-bottom: none;
-      margin-left: -2px;
+      margin-left: -1px;
       padding-left: calc(14px + 2px);
       border-left: 1px solid var(--kd-color-border-accent-secondary);
-      &.selected {
-        border-left-width: 2px;
-      }
     }
   }
 
@@ -66,23 +99,22 @@
 
     &.selected {
       border-color: transparent;
-      border-bottom: 2px solid
-        var(--kd-color-border-button-primary-state-default);
       color: var(--kd-color-text-link-level-default);
     }
 
     &:hover,
     &.selected:hover {
       background: var(--kd-color-background-button-secondary-state-hover);
-      border-bottom-color: var(--kd-color-border-button-primary-state-hover);
       color: var(--kd-color-text-level-primary);
+      border-bottom: 2px solid var(--kd-color-border-button-primary-state-hover);
     }
 
     &:active,
     &.selected:active {
       background: var(--kd-color-background-button-primary-state-pressed);
-      border-bottom-color: transparent;
       color: var(--kd-color-text-level-light);
+      border-bottom: 2px solid
+        var(--kd-color-border-button-secondary-state-hover);
     }
   }
 
@@ -90,7 +122,7 @@
     color: var(--kd-color-text-button-ai-default);
 
     &.selected {
-      border-bottom-color: var(--kd-color-border-button-ai-state-focused);
+      color: var(--kd-color-text-link-level-default);
     }
 
     &:hover {
@@ -100,7 +132,6 @@
         var(--kd-color-background-button-primary-ai-hover)
       );
       color: var(--kd-color-text-level-primary);
-      border-bottom: 1px solid transparent;
     }
 
     &.selected:hover {
@@ -110,14 +141,21 @@
         var(--kd-color-background-button-primary-ai-hover)
       );
       color: var(--kd-color-text-level-primary);
-      border-bottom: 1px solid transparent;
     }
 
     &:active,
     &:hover:active,
+    &.selected:active,
     &.selected:hover:active {
       background: var(--kd-color-background-button-primary-ai-pressed);
-      color: var(--kd-color-text-button-dark-primary);
+      color: var(--kd-color-text-button-primary);
+      box-shadow: none;
+      border-bottom: 1px solid
+        var(--kd-color-background-button-primary-ai-pressed);
+
+      &::before {
+        background: none !important;
+      }
     }
   }
 
@@ -139,6 +177,13 @@
         );
         color: var(--kd-color-text-level-primary);
       }
+      &:active,
+      &.selected:active,
+      &.selected:hover:active {
+        background: var(--kd-color-background-button-primary-ai-pressed);
+        color: var(--kd-color-text-button-dark-primary);
+        box-shadow: none;
+      }
     }
   }
 }
@@ -146,30 +191,18 @@
 .tab:focus-visible {
   outline-color: transparent;
   border-bottom: 1px solid var(--kd-color-border-variants-focus);
-  &.selected {
-    border-bottom-width: 2px;
-  }
 }
 .tab.ai-connected:focus-visible {
   outline-color: transparent;
   border-bottom: 1px solid var(--kd-color-border-button-ai-state-focused);
-  &.selected {
-    border-bottom-width: 2px;
-  }
 }
 @media (min-width: breakpoints.$bp-md) {
   .tab.vertical:focus-visible {
     border-bottom: none;
     border-left: 1px solid var(--kd-color-border-variants-focus);
-    &.selected {
-      border-left-width: 2px;
-    }
   }
   .tab.vertical.ai-connected:focus-visible {
     border-bottom: none;
     border-left: 1px solid var(--kd-color-border-button-ai-state-focused);
-    &.selected {
-      border-left-width: 2px;
-    }
   }
 }
