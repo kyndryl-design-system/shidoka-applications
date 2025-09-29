@@ -63,35 +63,11 @@ export class KynSpinner extends LitElement {
   @query('.container')
   private accessor _containerEl!: any;
 
-  override connectedCallback() {
-    super.connectedCallback();
-    this._syncCssVars();
-  }
-
-  override updated(changedProps: any) {
-    if (
-      changedProps.has('primaryColor') ||
-      changedProps.has('secondaryColor') ||
-      changedProps.has('trackColor')
-    ) {
-      this._syncCssVars();
-    }
-
-    if (changedProps.has('status') && this.variant === 'inline') {
-      this._stopped = this.status !== 'active';
-      this._hidden = this._stopped;
-      if (this.status === 'active') {
-        this._emitStart();
-      } else {
-        this._stopped = true;
-      }
-    }
-  }
-
   override render() {
     if (this.variant === 'inline') {
       const Classes = {
         wrapper: true,
+        'variant-inline': true,
         stopped: this._stopped,
         hidden: this._hidden,
         'status-success': this.status === 'success',
@@ -101,11 +77,8 @@ export class KynSpinner extends LitElement {
       return html`
         <div class="${classMap(Classes)}">
           <div class="container"></div>
-
           <span class="status-icon success">${unsafeSVG(successIcon)}</span>
-
           <span class="status-icon error">${unsafeSVG(errorIcon)}</span>
-
           <slot></slot>
         </div>
       `;
@@ -113,6 +86,7 @@ export class KynSpinner extends LitElement {
 
     const Classes = {
       wrapper: true,
+      'variant-ai': true,
       'ai-connected': true,
       [`size-${this.size}`]: true,
     };
@@ -126,60 +100,73 @@ export class KynSpinner extends LitElement {
       >
         <div class="ai-spinner-svg" aria-hidden="true">
           <svg viewBox="0 0 100 100" class="ai-svg">
-            <circle class="ai-track" cx="50" cy="50" r="44" />
-            <circle class="ai-arc" cx="50" cy="50" r="44" />
+            <circle class="ai-track" cx="50" cy="50" r="44" pathLength="100" />
+            <circle class="ai-arc" cx="50" cy="50" r="44" pathLength="100" />
           </svg>
         </div>
       </div>
     `;
   }
 
-  override firstUpdated() {
-    if (this.variant === 'inline') {
+  override connectedCallback() {
+    super.connectedCallback();
+    this._syncCssVars();
+  }
+
+  override updated(changed: Map<string, unknown>) {
+    if (
+      changed.has('primaryColor') ||
+      changed.has('secondaryColor') ||
+      changed.has('trackColor')
+    ) {
+      this._syncCssVars();
+    }
+    if (changed.has('status') && this.variant === 'inline') {
       this._stopped = this.status !== 'active';
       this._hidden = this._stopped;
-
-      try {
-        lottie.loadAnimation({
-          container: this._containerEl,
-          renderer: 'svg',
-          loop: true,
-          autoplay: this.status === 'active',
-          animationData: animationData,
-        });
-      } catch (err) {
-        // lottie init errors
-      }
-
-      this._containerEl?.addEventListener('transitionend', () => {
-        if (this._stopped) {
-          this._hidden = true;
-          this._emitStop();
-        }
-      });
+      if (this.status === 'active') this._emitStart();
     }
+  }
+
+  override firstUpdated() {
+    if (this.variant !== 'inline') return;
+    this._stopped = this.status !== 'active';
+    this._hidden = this._stopped;
+
+    try {
+      lottie.loadAnimation({
+        container: this._containerEl,
+        renderer: 'svg',
+        loop: true,
+        autoplay: this.status === 'active',
+        animationData,
+      });
+    } catch {
+      /* do nothing on error -- lottie failed to load/render */
+    }
+
+    this._containerEl?.addEventListener('transitionend', () => {
+      if (this._stopped) {
+        this._hidden = true;
+        this._emitStop();
+      }
+    });
   }
 
   private _syncCssVars() {
-    if (this.primaryColor) {
+    if (this.primaryColor)
       this.style.setProperty('--loader-primary', this.primaryColor);
-    }
-    if (this.secondaryColor) {
+    if (this.secondaryColor)
       this.style.setProperty('--loader-secondary', this.secondaryColor);
-    }
-    if (this.trackColor) {
+    if (this.trackColor)
       this.style.setProperty('--loader-track', this.trackColor);
-    }
   }
 
   private _emitStart() {
-    const event = new CustomEvent('on-start');
-    this.dispatchEvent(event);
+    this.dispatchEvent(new CustomEvent('on-start'));
   }
-
   private _emitStop() {
-    const event = new CustomEvent('on-stop');
-    this.dispatchEvent(event);
+    this.dispatchEvent(new CustomEvent('on-stop'));
   }
 }
 

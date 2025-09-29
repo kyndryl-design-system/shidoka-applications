@@ -54,6 +54,25 @@ $ai-gradient-default: var(
   }
 }
 
+@mixin gradient-ring($radius, $width, $bg, $g: $ai-gradient-default) {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: $radius;
+    padding: $width;
+    background: $g;
+    pointer-events: none;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask: linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    box-shadow: inset 0 0 0 999px #0000;
+  }
+  background: $bg;
+}
+
 .g-border-ai {
   @include border-gradient-ai($gradient: $ai-gradient-default);
 }

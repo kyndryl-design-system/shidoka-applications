@@ -8,14 +8,15 @@
   width: 264px;
 }
 
-.card-wrapper.ai-connected.is-hover,
+/* AI hover text colors */
 .card-wrapper.ai-connected:hover {
   --_title-color: var(--kd-color-text-title-ai-secondary);
   --_subtitle-color: var(--kd-color-text-level-primary);
   --_description-color: var(--kd-color-text-level-primary);
 }
 
-.card-wrapper.info-card.ai-connected {
+/* INFO variant (driven by attribute, not host class) */
+.card-wrapper[data-variant='info'].ai-connected {
   @include gradient.border-gradient-ai(
     $gradient: gradient.$ai-gradient-default,
     $radius: 8px,
@@ -43,15 +44,17 @@
       border: 1px solid var(--kd-color-border-card-clickable);
       box-shadow: var(--kd-elevation-level-1);
     }
+
+    &.ai-connected {
+      background-color: var(--kd-color-background-ui-hollow-default);
+      border-color: transparent;
+      @include elevation.shadow(1);
+    }
   }
 
   &-wrapper {
     background-color: var(--kd-color-background-container-default);
     border: 1px solid var(--kd-color-border-card-default);
-
-    &.ai-connected {
-      background-color: var(--kd-color-background-ui-hollow-default);
-    }
 
     &.ai-highlight {
       border: 1px solid var(--kd-color-border-button-ai-state-highlight);
@@ -70,20 +73,7 @@
     transition: border-color 150ms ease-out, box-shadow 150ms ease-out,
       outline-color 150ms ease-out;
 
-    &:not(.ai-connected).is-hover {
-      border-color: var(--kd-color-border-ui-hover);
-      @include elevation.shadow(2);
-    }
-
-    &:focus-visible {
-      outline-color: var(--kd-color-border-variants-focus);
-    }
-
     &.ai-connected {
-      background-color: var(--kd-color-background-container-ai-subtle);
-      border-color: transparent;
-      box-shadow: none;
-
       &::after {
         content: '';
         position: absolute;
@@ -101,14 +91,13 @@
         mask-composite: exclude;
       }
 
-      &.is-hover::after,
       &:hover::after {
         opacity: 1;
       }
 
-      &.is-hover,
       &:hover {
         background: var(--kd-color-background-button-primary-ai-hover);
+
         ::slotted(.card-title) {
           color: var(--_title-color);
         }
@@ -120,8 +109,17 @@
 
       &:active {
         @include elevation.shadow(4);
-        box-shadow: var(--kd-elevation-level-2-overflow-ai);
+        box-shadow: var(--kd-elevation-level-4-ai);
       }
+    }
+
+    &:not(.ai-connected):hover {
+      border-color: var(--kd-color-border-ui-hover);
+      @include elevation.shadow(2);
+    }
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-variants-focus);
     }
 
     &.ai-highlight {

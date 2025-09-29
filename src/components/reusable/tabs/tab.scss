@@ -6,7 +6,7 @@
 :host {
   display: block;
   border-radius: 4px 4px 0 0;
-  padding: 2px 2px 0;
+  padding-top: 2px;
 }
 
 @media (min-width: breakpoints.$bp-md) {
@@ -16,6 +16,7 @@
 }
 
 .tab {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -25,23 +26,15 @@
   border-radius: 4px 4px 0 0;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  transition: outline-color 150ms ease-out;
-  border-style: solid;
-  border-width: 0 0 1px 0;
-  border-color: transparent;
-  border-bottom-color: var(--kd-color-border-accent-secondary);
-  transition: border-color 150ms ease-out, background-color 150ms ease-out,
+  transition: outline-color 150ms ease-out, background-color 150ms ease-out,
     color 150ms ease-out;
-
-  ::slotted(svg) {
-    display: flex;
-  }
+  border: 0;
+  border-bottom: 1px solid var(--kd-color-border-accent-secondary);
 
   &.size--md {
     height: 48px;
     padding: 12px 14px;
   }
-
   &.size--sm {
     @include typography.type-ui-03;
     height: 30px;
@@ -56,10 +49,15 @@
   &.vertical {
     @media (min-width: breakpoints.$bp-md) {
       border-radius: 0 4px 4px 0;
-      border-bottom: none;
-      border-left: 1px solid var(--kd-color-border-accent-secondary);
       white-space: initial;
       text-align: left;
+      border-bottom: none;
+      margin-left: -2px;
+      padding-left: calc(14px + 2px);
+      border-left: 1px solid var(--kd-color-border-accent-secondary);
+      &.selected {
+        border-left-width: 2px;
+      }
     }
   }
 
@@ -67,7 +65,9 @@
     color: var(--kd-color-text-level-primary);
 
     &.selected {
-      border-bottom-color: var(--kd-color-border-button-primary-state-default);
+      border-color: transparent;
+      border-bottom: 2px solid
+        var(--kd-color-border-button-primary-state-default);
       color: var(--kd-color-text-link-level-default);
     }
 
@@ -81,67 +81,64 @@
     &:active,
     &.selected:active {
       background: var(--kd-color-background-button-primary-state-pressed);
-      border-bottom-color: 1px solid transparent;
+      border-bottom-color: transparent;
       color: var(--kd-color-text-level-light);
     }
   }
 
   &.tab.ai-connected:not(.disabled) {
     color: var(--kd-color-text-button-ai-default);
-    border-color: transparent;
 
     &.selected {
       border-bottom-color: var(--kd-color-border-button-ai-state-focused);
     }
 
-    /* Hover AI */
     &:hover {
-      border-color: transparent;
-      color: var(--kd-color-text-level-primary);
-      background: var(--kd-color-background-button-primary-ai-hover);
-      @include gradient.outline-gradient-ai(
-        $gradient: gradient.$ai-gradient-default,
-        $radius: 4px 4px 0 0,
-        $width: 1px,
-        $surface: var(--kd-color-background-button-primary-ai-hover)
+      @include gradient.gradient-ring(
+        4px 4px 0 0,
+        1px,
+        var(--kd-color-background-button-primary-ai-hover)
       );
+      color: var(--kd-color-text-level-primary);
+      border-bottom: 1px solid transparent;
     }
 
     &.selected:hover {
-      border-color: transparent;
-      color: var(--kd-color-text-level-primary);
-      background: var(--kd-color-background-button-primary-ai-hover);
-      @include gradient.outline-gradient-ai(
-        $gradient: gradient.$ai-gradient-default,
-        $radius: 4px 4px 0 0,
-        $width: 2px,
-        $surface: var(--kd-color-background-button-primary-ai-hover)
+      @include gradient.gradient-ring(
+        4px 4px 0 0,
+        2px,
+        var(--kd-color-background-button-primary-ai-hover)
       );
+      color: var(--kd-color-text-level-primary);
+      border-bottom: 1px solid transparent;
     }
 
     &:active,
-    &:hover:active {
-      background: var(--kd-color-background-button-primary-ai-pressed);
-      border-color: transparent;
-      outline-color: transparent;
-      color: var(--kd-color-text-button-dark-primary);
-      background-image: none;
-    }
-
     &:hover:active,
     &.selected:hover:active {
       background: var(--kd-color-background-button-primary-ai-pressed);
-      border-color: transparent;
-      outline-color: transparent;
       color: var(--kd-color-text-button-dark-primary);
-      background-image: none;
     }
+  }
 
-    &:active::after,
-    &.selected:active::after,
-    &:hover:active::after,
-    &.selected:hover:active::after {
-      content: none;
+  @media (min-width: breakpoints.$bp-md) {
+    &.vertical.tab.ai-connected:not(.disabled) {
+      &:hover {
+        @include gradient.gradient-ring(
+          0 4px 4px 0,
+          1px,
+          var(--kd-color-background-button-primary-ai-hover)
+        );
+        color: var(--kd-color-text-level-primary);
+      }
+      &.selected:hover {
+        @include gradient.gradient-ring(
+          0 4px 4px 0,
+          2px,
+          var(--kd-color-background-button-primary-ai-hover)
+        );
+        color: var(--kd-color-text-level-primary);
+      }
     }
   }
 }
@@ -149,21 +146,30 @@
 .tab:focus-visible {
   outline-color: transparent;
   border-bottom: 1px solid var(--kd-color-border-variants-focus);
-
   &.selected {
-    border-bottom: 2px solid var(--kd-color-border-variants-focus);
+    border-bottom-width: 2px;
   }
 }
 .tab.ai-connected:focus-visible {
   outline-color: transparent;
   border-bottom: 1px solid var(--kd-color-border-button-ai-state-focused);
-
   &.selected {
-    border-bottom: 2px solid var(--kd-color-border-button-ai-state-focused);
+    border-bottom-width: 2px;
   }
 }
-
-.tab.disabled {
-  color: var(--kd-color-text-link-level-disabled);
-  cursor: not-allowed;
+@media (min-width: breakpoints.$bp-md) {
+  .tab.vertical:focus-visible {
+    border-bottom: none;
+    border-left: 1px solid var(--kd-color-border-variants-focus);
+    &.selected {
+      border-left-width: 2px;
+    }
+  }
+  .tab.vertical.ai-connected:focus-visible {
+    border-bottom: none;
+    border-left: 1px solid var(--kd-color-border-button-ai-state-focused);
+    &.selected {
+      border-left-width: 2px;
+    }
+  }
 }

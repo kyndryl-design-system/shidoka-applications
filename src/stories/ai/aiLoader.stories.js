@@ -11,7 +11,10 @@ export const Default = {
     <div
       style="display:flex;align-items:center;justify-content:center;min-height:200px;"
     >
-      <kyn-ai-loader size="default"></kyn-ai-loader>
+      <kyn-ai-loader
+        size="default"
+        ariaLabel="Loading AI analysis"
+      ></kyn-ai-loader>
     </div>
   `,
 };
@@ -21,7 +24,10 @@ export const Mini = {
     <div
       style="display:flex;align-items:center;justify-content:center;min-height:200px;"
     >
-      <kyn-ai-loader size="mini"></kyn-ai-loader>
+      <kyn-ai-loader
+        size="mini"
+        ariaLabel="Loading AI analysis (mini)"
+      ></kyn-ai-loader>
     </div>
   `,
 };

@@ -6,22 +6,7 @@
   display: inline-block;
 }
 
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 250ms ease-in-out;
-
-  .stopped & {
-    opacity: 0;
-  }
-
-  .hidden & {
-    visibility: hidden;
-  }
-}
-
-.wrapper {
+.wrapper.variant-inline {
   position: relative;
   display: flex;
   align-items: center;
@@ -29,32 +14,42 @@
   gap: 8px;
   @include typography.type-body-02;
   color: var(--kd-color-text-level-primary);
-}
 
-.wrapper:not(.ai-connected) svg {
-  display: block;
-  width: 16px !important;
-}
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 250ms ease-in-out;
+  }
 
-.status-icon {
-  position: absolute;
-  left: 0;
-  transition: opacity 250ms ease-in-out;
-  opacity: 0;
-}
+  &.stopped .container {
+    opacity: 0;
+  }
 
-.success {
-  color: var(--kd-color-status-success-dark);
+  &.hidden .container {
+    visibility: hidden;
+  }
 
-  .status-success & {
+  svg {
+    display: block;
+    width: 16px !important;
+  }
+
+  .status-icon {
+    position: absolute;
+    left: 0;
+    transition: opacity 250ms ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.status-success .success {
+    color: var(--kd-color-status-success-dark);
     opacity: 1;
   }
-}
 
-.error {
-  color: var(--kd-color-status-error-dark);
-
-  .status-error & {
+  &.status-error .error {
+    color: var(--kd-color-status-error-dark);
     opacity: 1;
   }
 }

@@ -11,8 +11,19 @@ export class AiLoaderWrapper extends LitElement {
   @property({ type: String })
   accessor size: 'default' | 'mini' = 'default';
 
+  /** Accessible label for screen readers. */
+  @property({ type: String })
+  override accessor ariaLabel: string = 'Loading AI results';
+
   override render() {
-    return html`<kyn-spinner variant="ai" .size=${this.size}></kyn-spinner>`;
+    return html`
+      <kyn-spinner
+        variant="ai"
+        .size=${this.size}
+        role="status"
+        aria-label=${this.ariaLabel}
+      ></kyn-spinner>
+    `;
   }
 }
 
