@@ -61,7 +61,7 @@ export class FileUploader extends FormMixin(LitElement) {
   accessor accept: string[] = [];
 
   /**
-   * Accept multiple files. Default value is `false`.
+   * Accept multiple files.
    */
   @property({ type: Boolean })
   accessor multiple = false;
@@ -73,17 +73,18 @@ export class FileUploader extends FormMixin(LitElement) {
   accessor textStrings = _defaultTextStrings;
 
   /**
-   * Set the maximum file size in bytes. Default value is `1048576` (1MB).
+   * Set the maximum file size in bytes.
    * @example
    * 1048576 // 1MB
    * 5242880 // 5MB
+   * 10485760 // 10MB
    * 1073741824 // 1GB
    */
   @property({ type: Number })
-  accessor maxFileSize = 1048576; // 1MB
+  accessor maxFileSize = 10485760; // 10MB
 
   /**
-   * Disable the file uploader. Default value is `false`.
+   * Disable the file uploader.
    */
   @property({ type: Boolean })
   accessor disabled = false;
@@ -182,19 +183,23 @@ export class FileUploader extends FormMixin(LitElement) {
             @dragleave="${() => (this._dragging = false)}"
             @drop="${this.handleDrop}"
           >
-            <div class="uploader-status-icon">
-              <span>${unsafeSVG(uploadIcon)}</span>
+            <div class="drag-drop-explanation">
+              <div class="uploader-status-icon">
+                <span>${unsafeSVG(uploadIcon)}</span>
+              </div>
+
+              <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
+              <p class="or-text">${this._textStrings.separatorText}</p>
             </div>
-            <p class="drag-drop-text">${this._textStrings.dragAndDropText}</p>
-            <p class="or-text">${this._textStrings.separatorText}</p>
+
             <kyn-button
-              kind="outline"
-              size="small"
+              kind="secondary"
               ?disabled=${this.disabled}
               @on-click="${this._triggerFileSelect}"
             >
               ${this._textStrings.buttonText}
             </kyn-button>
+
             <input
               class="file-input"
               type="file"

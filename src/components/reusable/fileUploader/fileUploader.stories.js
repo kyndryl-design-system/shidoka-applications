@@ -44,7 +44,7 @@ const args = {
     validationNotificationTitle: 'Multiple files not allowed',
     validationNotificationMessage: 'Please select only one file.',
   },
-  maxFileSize: 2097152, // 2MB
+  maxFileSize: 10485760, // 10MB
   disabled: false,
 };
 
