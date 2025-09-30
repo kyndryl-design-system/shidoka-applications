@@ -40,7 +40,7 @@ export class Skeleton extends LitElement {
   /**
    * Sets whether to display inline or block.
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor inline = false;
 
   /**
