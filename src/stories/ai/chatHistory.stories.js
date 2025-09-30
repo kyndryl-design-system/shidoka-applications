@@ -23,7 +23,7 @@ export default {
 
 export const ChatHistory = {
   render: () => {
-    const infoArgs = { type: 'normal', variant: 'info' }; // ← pass args so .type is defined
+    const infoArgs = { type: 'normal', variant: 'info' };
     return html`
       <div class="chat_list">
         <kyn-page-title
