@@ -1,8 +1,9 @@
+// infoCard.stories.js
 import { html } from 'lit';
-import '../../components/reusable/card';
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 
+import '../../components/reusable/card';
 import '../../components/reusable/button';
 import '../../components/reusable/inlineConfirm/inlineConfirm';
 import '../../components/reusable/card/infoCard.scss';
@@ -13,6 +14,12 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/d
 export default {
   title: 'AI/Patterns/Info',
   parameters: {
+    docs: {
+      description: {
+        component:
+          'Uses **unnamed slot** for title + description. `slot="leftIcon"` and `slot="inlineConfirm"` for side elements.',
+      },
+    },
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300054&p=f&m=dev',
@@ -20,67 +27,60 @@ export default {
   },
 };
 
+export const renderInfoCard = () => html`
+  <kyn-card
+    class="info-card kyn-card-hover"
+    ?aiConnected=${true}
+    type="normal"
+    variant="info"
+    @on-confirm=${action('on-confirm')}
+  >
+    <span slot="leftIcon">${unsafeSVG(policeIcon)}</span>
+
+    <!-- unnamed slot -->
+    <div>
+      <div class="info-card-title-text kd-type--ui-03">This is the title</div>
+      This is the description
+    </div>
+  </kyn-card>
+`;
+
+export const renderInfoCardWithRightIcon = () => html`
+  <kyn-card
+    class="info-card kyn-card-hover"
+    ?aiConnected=${true}
+    type="normal"
+    variant="info"
+    @on-confirm=${action('on-confirm')}
+  >
+    <span slot="leftIcon">${unsafeSVG(policeIcon)}</span>
+
+    <!-- unnamed slot -->
+    <div>
+      <div class="info-card-title-text kd-type--ui-03">This is the title</div>
+      This is the description
+    </div>
+
+    <kyn-inline-confirm
+      slot="inlineConfirm"
+      class="info-card-rightIcon"
+      ?destructive=${true}
+      .anchorText=${'Delete'}
+      .confirmText=${'Confirm'}
+      .cancelText=${'Cancel'}
+    >
+      ${unsafeSVG(deleteIcon)}
+      <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
+    </kyn-inline-confirm>
+  </kyn-card>
+`;
+
 export const Default = {
-  args: {
-    type: 'normal',
-    variant: 'info',
-  },
-  render: (args) => {
-    return html`
-      <kyn-card
-        class="info-card kyn-card-hover"
-        aiConnected
-        type=${args.type}
-        variant=${args.variant}
-      >
-        <div slot="leftIcon">${unsafeSVG(policeIcon)}</div>
-
-        <div class="info-card-content-wrapper">
-          <div class="info-card-title-text kd-type--ui-03">
-            This is the title
-          </div>
-
-          This is the description
-        </div>
-      </kyn-card>
-    `;
-  },
+  args: { type: 'normal', variant: 'info' },
+  render: (args) => renderInfoCard(args),
 };
 
 export const WithRightIconAndDescription = {
-  args: {
-    type: 'normal',
-    variant: 'info',
-  },
-  render: (args) => {
-    return html`
-      <kyn-card
-        class="info-card kyn-card-hover"
-        aiConnected
-        type=${args.type}
-        variant=${args.variant}
-      >
-        <div class="info-card-content-wrapper">
-          <div class="info-card-title-text kd-type--ui-03">
-            This is the title
-          </div>
-
-          This is the description
-        </div>
-
-        <kyn-inline-confirm
-          slot="inlineConfirm"
-          class="info-card-rightIcon"
-          ?destructive=${true}
-          .anchorText=${'Delete'}
-          .confirmText=${'Confirm'}
-          .cancelText=${'Cancel'}
-          @on-confirm=${action('on-confirm')}
-        >
-          ${unsafeSVG(deleteIcon)}
-          <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>
-        </kyn-inline-confirm>
-      </kyn-card>
-    `;
-  },
+  args: { type: 'normal', variant: 'info' },
+  render: (args) => renderInfoCardWithRightIcon(args),
 };

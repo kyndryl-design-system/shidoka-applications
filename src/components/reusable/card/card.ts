@@ -16,6 +16,8 @@ import '../inlineConfirm/inlineConfirm';
  * Card.
  * @fires on-card-click - Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`
  * @slot unnamed - Slot for card contents.
+ * @slot leftIcon - Slot for left icon when `variant` is `'info'`.
+ * @slot inlineConfirm - Slot for right icon when `variant` is `'info'`.
  * @part card-wrapper - The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)
  */
 @customElement('kyn-card')
@@ -50,6 +52,7 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor highlight = false;
 
+  /** Card variant. `'default'` & `'info'` */
   @property({ type: String })
   accessor variant: CardVariant = 'default';
 

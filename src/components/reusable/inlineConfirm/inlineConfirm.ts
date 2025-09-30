@@ -72,10 +72,15 @@ export class InlineConfirm extends LitElement {
     }, 10);
   }
 
-  private _handleConfirm() {
+  private _handleConfirm(e?: Event) {
     this._handleToggle();
 
-    const event = new CustomEvent('on-confirm');
+    const event = new CustomEvent('on-confirm', {
+      detail: { origEvent: e },
+      bubbles: true,
+      composed: true,
+      cancelable: true,
+    });
     this.dispatchEvent(event);
   }
 
