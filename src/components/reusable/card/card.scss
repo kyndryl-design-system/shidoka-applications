@@ -40,21 +40,16 @@
     border-radius: 8px;
     height: 100%;
 
-    &.card-border {
-      border: 1px solid var(--kd-color-border-card-clickable);
-      box-shadow: var(--kd-elevation-level-1);
-    }
-
     &.ai-connected {
       background-color: var(--kd-color-background-ui-hollow-default);
-      border-color: transparent;
-      @include elevation.shadow(1);
+      border-color: var(--kd-color-border-variants-light);
     }
   }
 
   &-wrapper {
     background-color: var(--kd-color-background-container-default);
     border: 1px solid var(--kd-color-border-card-default);
+    cursor: default;
 
     &.ai-highlight {
       border: 1px solid var(--kd-color-border-button-ai-state-highlight);
@@ -70,10 +65,17 @@
     border: 1px solid transparent;
     outline: 2px solid transparent;
     outline-offset: 2px;
+    cursor: pointer;
     transition: border-color 150ms ease-out, box-shadow 150ms ease-out,
       outline-color 150ms ease-out;
 
+    &.card-border {
+      border: 1px solid var(--kd-color-border-card-clickable);
+      @include elevation.shadow(1);
+    }
+
     &.ai-connected {
+      @include elevation.shadow(1);
       &::after {
         content: '';
         position: absolute;

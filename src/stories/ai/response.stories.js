@@ -26,7 +26,7 @@ export const User = {
             role="region"
             aria-label="User message"
             aiConnected
-            style="width:100%"
+            style="width:100%;"
           >
             User response here...Lorem ipsum dolor sit amet, consectetur
             adipiscing elit
