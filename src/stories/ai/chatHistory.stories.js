@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import { WithRightIconAndDescription } from '../infoCard/infoCard.stories.js';
+import { WithRightIconAndDescription } from './infoCard.stories.js';
 import { ChatMessages } from './chatMessages.stories.js';
 
 import '../../components/reusable/pagetitle';

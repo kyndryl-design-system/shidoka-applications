@@ -1,12 +1,16 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import CardScss from './card.scss?inline';
 import { ifDefined } from 'lit/directives/if-defined.js';
+
+import CardScss from './card.scss?inline';
+import InfoCardScss from './infoCard.scss?inline';
 
 type CardType = 'normal' | 'clickable';
 type CardTarget = '_self' | '_blank' | '_parent' | '_top';
 type CardVariant = 'default' | 'info';
+
+import '../inlineConfirm/inlineConfirm';
 
 /**
  * Card.
@@ -16,7 +20,7 @@ type CardVariant = 'default' | 'info';
  */
 @customElement('kyn-card')
 export class Card extends LitElement {
-  static override styles = unsafeCSS(CardScss);
+  static override styles = [unsafeCSS(CardScss), unsafeCSS(InfoCardScss)];
 
   /** Card Type. `'normal'` & `'clickable'` */
   @property({ type: String })
@@ -62,6 +66,10 @@ export class Card extends LitElement {
 
     const isAnchor = this.type === 'clickable' && this.href !== '';
 
+    if (this.variant === 'info') {
+      return this.renderInfoCard(baseClasses);
+    }
+
     return isAnchor
       ? html`
           <a
@@ -93,6 +101,27 @@ export class Card extends LitElement {
         `;
   }
 
+  private renderInfoCard(baseClasses: Record<string, boolean>) {
+    return html`
+      <div
+        part="card-wrapper"
+        class=${classMap(baseClasses)}
+        data-variant=${this.variant}
+        data-ai=${String(this.aiConnected)}
+      >
+        <div class="info-card-container">
+          <div class="info-card-leftIcon">
+            <slot name="leftIcon"></slot>
+          </div>
+          <div class="info-card-content-wrapper"><slot></slot></div>
+          <div class="info-card-rightIcon">
+            <slot name="inlineConfirm"></slot>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   private get _computedRel(): string {
     if (this.target === '_blank' && (!this.rel || this.rel.trim() === '')) {
       return 'noopener noreferrer';
@@ -101,7 +130,7 @@ export class Card extends LitElement {
   }
 
   private _onClick = (e: Event) => {
-    if (!this.href) e.preventDefault(); // stay put when href is empty
+    if (!this.href) e.preventDefault();
     const ev = new CustomEvent('on-card-click', {
       detail: { origEvent: e },
       bubbles: true,
@@ -118,12 +147,32 @@ export class Card extends LitElement {
     }
   };
 
-  // shim to ensure backwards compatibility with old `info-card` class
+  private _forwardConfirm = (e: Event) => {
+    if ((e.target as HTMLElement) === this) return;
+    const detail = (e as CustomEvent)?.detail;
+    const ev = new CustomEvent('on-confirm', {
+      detail,
+      bubbles: true,
+      composed: true,
+      cancelable: true,
+    });
+    this.dispatchEvent(ev);
+  };
+
   override connectedCallback() {
     super.connectedCallback();
     if (this.variant === 'default' && this.classList.contains('info-card')) {
       this.variant = 'info';
     }
+    this.addEventListener('on-confirm', this._forwardConfirm as EventListener);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener(
+      'on-confirm',
+      this._forwardConfirm as EventListener
+    );
   }
 }
 declare global {

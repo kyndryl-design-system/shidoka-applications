@@ -1,17 +1,25 @@
-@use '../../common/scss/global.scss';
+@use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
-@use '../../common/scss/gradients.scss' as gradient;
+@use '../../../common/scss/gradients.scss' as gradient;
 
 .info-card-container {
   display: flex;
   align-items: center;
   gap: var(--kd-spacing-12);
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .info-card-content-wrapper {
-  flex: 1 0 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--kd-spacing-4);
   word-wrap: anywhere;
+  align-items: flex-start;
+  overflow: hidden;
 }
 
 .info-card {
@@ -23,9 +31,25 @@
   @include typography.type-ui-03;
 }
 
-.info-card-rightIcon,
 .info-card-leftIcon {
   display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  color: var(--kd-color-icon-ai-spruce);
+}
+
+.info-card-rightIcon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  margin-left: auto;
+}
+
+.info-card-leftIcon > *,
+.info-card-rightIcon > * {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .info-card-leftIcon {
