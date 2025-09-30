@@ -6,10 +6,12 @@ import './index';
 import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
+import '../badge';
 
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
+import notificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notification.svg';
 
 export default {
   title: 'Components/Widget',
@@ -171,6 +173,58 @@ export const WithActions = {
                 >${unsafeSVG(settingsIcon)}</span
               >
             </kyn-button>
+
+            <kyn-overflow-menu
+              slot="actions"
+              anchorRight
+              verticalDots
+              ?disabled=${args.disabled}
+            >
+              <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+              <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+            </kyn-overflow-menu>
+
+            ${getExampleContent()}
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const WithBadge = {
+  args,
+  render: (args) => {
+    return html`
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            <div
+              slot="actions"
+              style="display: flex; align-items: center; gap: 8px;"
+            >
+              <kyn-badge
+                label="New Update"
+                status="information"
+                iconTitle="new update"
+                ><span
+                  style="display: flex;"
+                  aria-labelledby="User icon"
+                  aria-hidden="true"
+                  >${unsafeSVG(notificationIcon)}</span
+                ></kyn-badge
+              >
+            </div>
 
             <kyn-overflow-menu
               slot="actions"
