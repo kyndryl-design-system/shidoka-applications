@@ -15,7 +15,7 @@
   --_description-color: var(--kd-color-text-level-primary);
 }
 
-/* INFO variant (driven by attribute, not host class) */
+/* INFO variant */
 .card-wrapper[data-variant='info'].ai-connected {
   @include gradient.border-gradient-ai(
     $gradient: gradient.$ai-gradient-default,
@@ -56,12 +56,17 @@
       background: var(--kd-color-background-container-ai-default);
       color: var(--kd-color-text-level-primary);
     }
+
+    &.hide-border {
+      border: none;
+      @include elevation.shadow(0);
+    }
   }
 
   &-wrapper-clickable {
+    background-color: var(--kd-color-background-container-default);
     color: unset;
     text-decoration: none;
-    background-color: var(--kd-color-background-container-default);
     border: 1px solid transparent;
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -70,19 +75,34 @@
       outline-color 150ms ease-out;
 
     &.card-border {
-      border: 1px solid var(--kd-color-border-level-secondary);
+      border: 1px solid var(--kd-color-border-card-clickable);
       @include elevation.shadow(1);
     }
 
+    &:not(.ai-connected):hover {
+      border-color: var(--kd-color-border-ui-hover);
+      @include elevation.shadow(2);
+    }
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    &:hover:active {
+      border: 1px solid var(--kd-color-border-card-clickable);
+      @include elevation.shadow(4);
+    }
+
     &.ai-connected {
+      border: 1px solid var(--kd-color-border-level-secondary);
       @include elevation.shadow(1);
 
       &::after {
         content: '';
         position: absolute;
-        inset: 0;
+        inset: -1px;
         pointer-events: none;
-        border-radius: inherit;
+        border-radius: calc(8px + 1px);
         opacity: 0;
         transition: opacity 120ms linear;
         padding: 1px;
@@ -117,15 +137,6 @@
       }
     }
 
-    &:not(.ai-connected):hover {
-      border-color: var(--kd-color-border-ui-hover);
-      @include elevation.shadow(2);
-    }
-
-    &:focus-visible {
-      outline-color: var(--kd-color-border-variants-focus);
-    }
-
     &.ai-highlight {
       background: var(--kd-color-background-container-ai-default);
       box-shadow: 0 2px 12px 0 var(--kd-color-utility-elevation-ai-l3);
@@ -134,9 +145,9 @@
       &::after {
         content: '';
         position: absolute;
-        inset: 0;
+        inset: -1px;
         pointer-events: none;
-        border-radius: inherit;
+        border-radius: calc(8px + 1px);
         padding: 1px;
         background: gradient.$ai-gradient-default;
         -webkit-mask: linear-gradient(#000 0 0) content-box,

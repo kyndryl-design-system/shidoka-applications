@@ -231,7 +231,7 @@ export const InsideGrid = {
 export const AIConnected = {
   args: {
     type: 'normal',
-    href: 'asdfasdfdas',
+    href: '',
     rel: '',
     target: '_self',
     hideBorder: false,

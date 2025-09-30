@@ -61,6 +61,7 @@ export class Card extends LitElement {
       'card-wrapper': this.type !== 'clickable',
       'card-wrapper-clickable': this.type === 'clickable',
       'card-border': !this.hideBorder && !this.aiConnected && !this.highlight,
+      'hide-border': this.hideBorder,
       'ai-connected': this.aiConnected,
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
