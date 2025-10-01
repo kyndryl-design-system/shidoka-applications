@@ -41,7 +41,7 @@ export class Tab extends LitElement {
   override accessor role = 'tab';
 
   @property({ type: Number, reflect: true })
-  override accessor tabIndex = 0;
+  override accessor tabIndex = -1;
 
   @property({ type: String, reflect: true })
   accessor 'aria-selected' = 'false';
@@ -63,46 +63,17 @@ export class Tab extends LitElement {
       'ai-connected': this.aiConnected,
     };
 
-    return html`
-      <div
-        class=${classMap(classes)}
-        tabindex="${this.disabled ? -1 : this.tabIndex}"
-      >
-        <slot></slot>
-      </div>
-    `;
+    return html`<div class=${classMap(classes)}><slot></slot></div>`;
   }
 
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', this._handleClick);
-
-    this.addEventListener(
-      'focus',
-      this._handleHostFocus as EventListener,
-      true
-    );
   }
 
   override disconnectedCallback() {
     this.removeEventListener('click', this._handleClick);
-    this.removeEventListener(
-      'focus',
-      this._handleHostFocus as EventListener,
-      true
-    );
     super.disconnectedCallback();
-  }
-
-  public override focus(): void {
-    const inner = (this.renderRoot as ShadowRoot | null)?.querySelector(
-      '.tab'
-    ) as HTMLElement | null;
-    if (inner) {
-      inner.focus();
-    } else {
-      super.focus();
-    }
   }
 
   override willUpdate(changedProps: Map<string, unknown>) {
@@ -112,34 +83,24 @@ export class Tab extends LitElement {
 
     if (changedProps.has('selected')) {
       this['aria-selected'] = this.selected.toString();
-
-      this.tabIndex = this.disabled ? -1 : 0;
+      this.tabIndex = this.selected && !this.disabled ? 0 : -1;
     }
 
     if (changedProps.has('disabled')) {
       this['aria-disabled'] = this.disabled.toString();
-
-      this.tabIndex = this.disabled ? -1 : 0;
+      if (this.disabled) this.tabIndex = -1;
     }
   }
 
   private _handleClick = (e: Event) => {
     if (!this.selected && !this.disabled) {
+      this.focus();
       const event = new CustomEvent('tab-activated', {
         bubbles: true,
         composed: true,
         detail: { origEvent: e, tabId: this.id },
       });
       this.dispatchEvent(event);
-    }
-  };
-
-  private _handleHostFocus = (e: FocusEvent) => {
-    const inner = (this.renderRoot as ShadowRoot | null)?.querySelector(
-      '.tab'
-    ) as HTMLElement | null;
-    if (inner && !this.disabled) {
-      inner.focus();
     }
   };
 }

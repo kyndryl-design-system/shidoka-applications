@@ -3,31 +3,51 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
 @use '../../../common/scss/gradients.scss' as gradient;
 
-@mixin side-accent-bg($side) {
-  background-repeat: no-repeat;
-  background-image: linear-gradient(
-    var(--tab-accent, transparent),
-    var(--tab-accent, transparent)
-  );
-  @if $side == bottom {
-    background-position: left bottom;
-    background-size: 100% var(--tab-accent-thickness, 0px);
-  } @else if $side == left {
-    background-position: left top;
-    background-size: var(--tab-accent-thickness, 0px) 100%;
-  }
-}
-
 :host {
   display: block;
   border-radius: 4px 4px 0 0;
   padding-top: 2px;
 }
 
+:host(:focus),
+:host(:focus-visible) {
+  outline: none !important;
+  outline-offset: 0 !important;
+}
+
+@mixin layered-stripe($side) {
+  background-repeat: no-repeat, no-repeat;
+  $accent: linear-gradient(
+    var(--tab-accent, transparent),
+    var(--tab-accent, transparent)
+  );
+  $base: linear-gradient(
+    var(--tab-baseline, transparent),
+    var(--tab-baseline, transparent)
+  );
+
+  @if $side == bottom {
+    background-image: $accent, $base;
+    background-position: left bottom, left bottom;
+    background-size: 100% var(--tab-accent-thickness, 0px),
+      100% var(--tab-baseline-thickness, 1px);
+  } @else if $side == left {
+    background-image: $accent, $base;
+    background-position: left top, left top;
+    background-size: var(--tab-accent-thickness, 0px) 100%,
+      var(--tab-baseline-thickness, 1px) 100%;
+  }
+}
+
 @media (min-width: breakpoints.$bp-md) {
   .tab.vertical {
     border-radius: 0 4px 4px 0;
   }
+}
+
+.tab.disabled {
+  color: var(--kd-color-text-link-level-disabled);
+  cursor: not-allowed;
 }
 
 .tab {
@@ -43,11 +63,13 @@
   outline-offset: -2px;
   transition: outline-color 150ms ease-out, background-color 150ms ease-out,
     color 150ms ease-out;
+
   border: 0;
-  border-bottom: 1px solid var(--kd-color-border-accent-secondary);
+  --tab-baseline: var(--kd-color-border-accent-secondary);
+  --tab-baseline-thickness: 1px;
   --tab-accent: transparent;
   --tab-accent-thickness: 0px;
-  @include side-accent-bg(bottom);
+  @include layered-stripe(bottom);
 
   &.size--md {
     height: 48px;
@@ -63,10 +85,10 @@
     font-weight: var(--kd-font-weight-medium);
     --tab-accent: var(--kd-color-border-button-primary-state-default);
     --tab-accent-thickness: 2px;
-    @include side-accent-bg(bottom);
+    @include layered-stripe(bottom);
   }
 
-  &:not(.disabled):not(.ai-connected) {
+  &.tab:not(.disabled):not(.ai-connected) {
     color: var(--kd-color-text-level-primary);
 
     &.selected {
@@ -79,7 +101,7 @@
       color: var(--kd-color-text-level-primary);
       --tab-accent: var(--kd-color-border-button-primary-state-hover);
       --tab-accent-thickness: 2px;
-      @include side-accent-bg(bottom);
+      @include layered-stripe(bottom);
     }
 
     &:active,
@@ -88,16 +110,18 @@
       color: var(--kd-color-text-level-light);
       --tab-accent: var(--kd-color-border-button-secondary-state-hover);
       --tab-accent-thickness: 2px;
-      @include side-accent-bg(bottom);
+      @include layered-stripe(bottom);
     }
   }
 
-  &.ai-connected:not(.disabled) {
+  &.tab.ai-connected:not(.disabled) {
     color: var(--kd-color-text-button-ai-default);
 
     &.selected {
       color: var(--kd-color-text-button-ai-default);
       --tab-accent: var(--kd-color-border-button-ai-state-focused);
+      --tab-accent-thickness: 2px;
+      @include layered-stripe(bottom);
     }
 
     &:hover,
@@ -108,34 +132,28 @@
         var(--kd-color-background-button-primary-ai-hover)
       );
       color: var(--kd-color-text-level-primary);
-      --tab-accent: linear-gradient(
-        to right,
-        var(--kd-color-border-button-ai-state-focused),
-        var(--kd-color-border-button-ai-state-focused)
-      );
-      --tab-accent-thickness: 3px;
-      @include side-accent-bg(bottom);
+      --tab-accent: transparent;
+      --tab-accent-thickness: 0px;
+      --tab-baseline-thickness: 0px;
+      @include layered-stripe(bottom);
     }
 
     &:active,
     &.selected:active,
     &:hover:active,
     &.selected:hover:active {
+      @include gradient.gradient-ring(
+        4px 4px 0 0,
+        0,
+        var(--kd-color-background-button-primary-ai-hover)
+      );
       background: var(--kd-color-background-button-primary-ai-pressed);
       color: var(--kd-color-text-button-primary);
-
       --tab-accent: transparent;
-      --tab-accent-thickness: 0;
-      background-image: none;
+      --tab-accent-thickness: 0px;
+      --tab-baseline-thickness: 0px;
       box-shadow: none;
-      border-image: none;
-      border-bottom-color: transparent;
-
-      &::before,
-      &::after {
-        display: none;
-        background: none;
-      }
+      @include layered-stripe(bottom);
     }
   }
 
@@ -144,17 +162,16 @@
       border-radius: 0 4px 4px 0;
       white-space: initial;
       text-align: left;
-      border-bottom: none;
       margin-left: -1px;
       padding-left: calc(14px + 2px);
-      border-left: 1px solid var(--kd-color-border-accent-secondary);
-      @include side-accent-bg(left);
+      --tab-baseline-thickness: 1px;
+      @include layered-stripe(left);
     }
 
     &.vertical.selected {
       --tab-accent: var(--kd-color-border-button-primary-state-default);
-      --tab-accent-thickness: 2px;
-      @include side-accent-bg(left);
+      --tab-accent-thickness: 3px;
+      @include layered-stripe(left);
     }
 
     &.vertical:not(.disabled):not(.ai-connected) {
@@ -163,33 +180,27 @@
         background: var(--kd-color-background-button-secondary-state-hover);
         color: var(--kd-color-text-level-primary);
         --tab-accent: var(--kd-color-border-button-primary-state-hover);
-        --tab-accent-thickness: 2px;
-        @include side-accent-bg(left);
+        --tab-accent-thickness: 3px;
+        @include layered-stripe(left);
       }
 
       &:active,
-      &.selected:active,
-      &:hover:active,
-      &.selected:hover:active {
-        background: var(--kd-color-background-button-primary-ai-pressed);
-        color: var(--kd-color-text-button-dark-primary);
-
-        --tab-accent: transparent;
-        --tab-accent-thickness: 0;
-        background-image: none;
-        box-shadow: none;
-        border-image: none;
-        border-left-color: transparent;
-
-        &::before,
-        &::after {
-          display: none;
-          background: none;
-        }
+      &.selected:active {
+        background: var(--kd-color-background-button-primary-state-pressed);
+        color: var(--kd-color-text-level-light);
+        --tab-accent: var(--kd-color-border-button-secondary-state-hover);
+        --tab-accent-thickness: 3px;
+        @include layered-stripe(left);
       }
     }
 
     &.vertical.ai-connected:not(.disabled) {
+      &.selected {
+        --tab-accent: var(--kd-color-border-button-ai-state-focused);
+        --tab-accent-thickness: 3px;
+        @include layered-stripe(left);
+      }
+
       &:hover,
       &.selected:hover {
         @include gradient.gradient-ring(
@@ -198,22 +209,23 @@
           var(--kd-color-background-button-primary-ai-hover)
         );
         color: var(--kd-color-text-level-primary);
-        --tab-accent: linear-gradient(
-          to bottom,
-          var(--kd-color-border-button-ai-state-focused),
-          var(--kd-color-border-button-ai-state-focused)
-        );
-        --tab-accent-thickness: 3px;
-        @include side-accent-bg(left);
+        --tab-accent: transparent;
+        --tab-accent-thickness: 0px;
+        --tab-baseline-thickness: 0px;
+        @include layered-stripe(left);
       }
 
       &:active,
-      &.selected:active {
+      &.selected:active,
+      &:hover:active,
+      &.selected:hover:active {
         background: var(--kd-color-background-button-primary-ai-pressed);
         color: var(--kd-color-text-button-dark-primary);
-        --tab-accent: var(--kd-color-background-button-primary-ai-pressed);
-        --tab-accent-thickness: 2px;
-        @include side-accent-bg(left);
+        --tab-accent: transparent;
+        --tab-accent-thickness: 0px;
+        --tab-baseline-thickness: 0px;
+        box-shadow: none;
+        @include layered-stripe(left);
       }
     }
   }
@@ -221,27 +233,48 @@
 
 .tab:focus-visible {
   outline-color: transparent;
-  --tab-accent: var(--kd-color-border-variants-focus);
-  --tab-accent-thickness: 1px;
-  @include side-accent-bg(bottom);
 }
-
 .tab.ai-connected:focus-visible {
   outline-color: transparent;
-  --tab-accent: var(--kd-color-border-button-ai-state-focused);
-  --tab-accent-thickness: 1px;
-  @include side-accent-bg(bottom);
 }
 
 @media (min-width: breakpoints.$bp-md) {
   .tab.vertical:focus-visible {
-    --tab-accent: var(--kd-color-border-variants-focus);
-    --tab-accent-thickness: 1px;
-    @include side-accent-bg(left);
   }
   .tab.vertical.ai-connected:focus-visible {
-    --tab-accent: var(--kd-color-border-button-ai-state-focused);
-    --tab-accent-thickness: 1px;
-    @include side-accent-bg(left);
+  }
+}
+
+/* ensure no ring/underline leaks in AI hover+active */
+.tab.ai-connected:not(.disabled):is(
+    :active,
+    .selected:active,
+    :hover:active,
+    .selected:hover:active
+  ) {
+  background: var(--kd-color-background-button-primary-ai-pressed);
+  color: var(--kd-color-text-button-primary);
+  --tab-accent: transparent;
+  --tab-accent-thickness: 0;
+  --tab-baseline-thickness: 0;
+  box-shadow: none !important;
+  outline: none !important;
+  background-image: none !important;
+}
+@media (min-width: breakpoints.$bp-md) {
+  .tab.vertical.ai-connected:not(.disabled):is(
+      :active,
+      .selected:active,
+      :hover:active,
+      .selected:hover:active
+    ) {
+    background: var(--kd-color-background-button-primary-ai-pressed);
+    color: var(--kd-color-text-button-dark-primary);
+    --tab-accent: transparent;
+    --tab-accent-thickness: 0;
+    --tab-baseline-thickness: 0;
+    box-shadow: none !important;
+    outline: none !important;
+    background-image: none !important;
   }
 }
