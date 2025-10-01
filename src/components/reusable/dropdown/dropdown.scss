@@ -3,6 +3,7 @@
 @use '../../../common/scss/form-input.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
@@ -315,4 +316,8 @@ kyn-tag-group {
 .dropdown.ai-connected .options:focus-visible,
 .dropdown.ai-connected [searchable] .options:focus-visible {
   outline-color: var(--kd-color-background-button-secondary-ai-focused);
+}
+
+.dropdown.ai-connected .wrapper .custom .options {
+  @include elevation.shadow(1);
 }
