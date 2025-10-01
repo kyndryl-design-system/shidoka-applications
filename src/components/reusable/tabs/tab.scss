@@ -118,11 +118,24 @@
     }
 
     &:active,
-    &.selected:active {
+    &.selected:active,
+    &:hover:active,
+    &.selected:hover:active {
       background: var(--kd-color-background-button-primary-ai-pressed);
       color: var(--kd-color-text-button-primary);
+
       --tab-accent: transparent;
       --tab-accent-thickness: 0;
+      background-image: none;
+      box-shadow: none;
+      border-image: none;
+      border-bottom-color: transparent;
+
+      &::before,
+      &::after {
+        display: none;
+        background: none;
+      }
     }
   }
 
@@ -155,11 +168,24 @@
       }
 
       &:active,
-      &.selected:active {
+      &.selected:active,
+      &:hover:active,
+      &.selected:hover:active {
         background: var(--kd-color-background-button-primary-ai-pressed);
         color: var(--kd-color-text-button-dark-primary);
+
         --tab-accent: transparent;
         --tab-accent-thickness: 0;
+        background-image: none;
+        box-shadow: none;
+        border-image: none;
+        border-left-color: transparent;
+
+        &::before,
+        &::after {
+          display: none;
+          background: none;
+        }
       }
     }
 
