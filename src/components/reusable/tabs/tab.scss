@@ -3,6 +3,21 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
 @use '../../../common/scss/gradients.scss' as gradient;
 
+@mixin side-accent-bg($side) {
+  background-repeat: no-repeat;
+  background-image: linear-gradient(
+    var(--tab-accent, transparent),
+    var(--tab-accent, transparent)
+  );
+  @if $side == bottom {
+    background-position: left bottom;
+    background-size: 100% var(--tab-accent-thickness, 0px);
+  } @else if $side == left {
+    background-position: left top;
+    background-size: var(--tab-accent-thickness, 0px) 100%;
+  }
+}
+
 :host {
   display: block;
   border-radius: 4px 4px 0 0;
@@ -30,6 +45,9 @@
     color 150ms ease-out;
   border: 0;
   border-bottom: 1px solid var(--kd-color-border-accent-secondary);
+  --tab-accent: transparent;
+  --tab-accent-thickness: 0px;
+  @include side-accent-bg(bottom);
 
   &.size--md {
     height: 48px;
@@ -43,62 +61,15 @@
 
   &.selected {
     font-weight: var(--kd-font-weight-medium);
+    --tab-accent: var(--kd-color-border-button-primary-state-default);
+    --tab-accent-thickness: 2px;
+    @include side-accent-bg(bottom);
   }
 
-  &.selected:not(.vertical)::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    width: 100%;
-    background: var(--kd-color-border-button-primary-state-default);
-    border-radius: 2px 2px 0 0;
-  }
-
-  &.selected.vertical::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 2px;
-    height: 100%;
-    background: var(--kd-color-border-button-primary-state-default);
-    border-radius: 0 2px 2px 0;
-  }
-
-  &.selected.ai-connected:not(.vertical)::after {
-    background: var(--kd-color-border-button-ai-state-focused);
-  }
-
-  &.selected.vertical.ai-connected::after {
-    background: var(--kd-color-border-button-ai-state-focused);
-  }
-
-  &:hover::after,
-  &.selected:hover::after,
-  &:active::after,
-  &.selected:active::after {
-    display: none;
-  }
-
-  &.vertical {
-    @media (min-width: breakpoints.$bp-md) {
-      border-radius: 0 4px 4px 0;
-      white-space: initial;
-      text-align: left;
-      border-bottom: none;
-      margin-left: -1px;
-      padding-left: calc(14px + 2px);
-      border-left: 1px solid var(--kd-color-border-accent-secondary);
-    }
-  }
-
-  &.tab:not(.disabled):not(.ai-connected) {
+  &:not(.disabled):not(.ai-connected) {
     color: var(--kd-color-text-level-primary);
 
     &.selected {
-      border-color: transparent;
       color: var(--kd-color-text-link-level-default);
     }
 
@@ -106,83 +77,117 @@
     &.selected:hover {
       background: var(--kd-color-background-button-secondary-state-hover);
       color: var(--kd-color-text-level-primary);
-      border-bottom: 2px solid var(--kd-color-border-button-primary-state-hover);
+      --tab-accent: var(--kd-color-border-button-primary-state-hover);
+      --tab-accent-thickness: 2px;
+      @include side-accent-bg(bottom);
     }
 
     &:active,
     &.selected:active {
       background: var(--kd-color-background-button-primary-state-pressed);
       color: var(--kd-color-text-level-light);
-      border-bottom: 2px solid
-        var(--kd-color-border-button-secondary-state-hover);
+      --tab-accent: var(--kd-color-border-button-secondary-state-hover);
+      --tab-accent-thickness: 2px;
+      @include side-accent-bg(bottom);
     }
   }
 
-  &.tab.ai-connected:not(.disabled) {
+  &.ai-connected:not(.disabled) {
     color: var(--kd-color-text-button-ai-default);
 
     &.selected {
       color: var(--kd-color-text-button-ai-default);
+      --tab-accent: var(--kd-color-border-button-ai-state-focused);
     }
 
-    &:hover {
+    &:hover,
+    &.selected:hover {
       @include gradient.gradient-ring(
         4px 4px 0 0,
         1px,
         var(--kd-color-background-button-primary-ai-hover)
       );
       color: var(--kd-color-text-level-primary);
-    }
-
-    &.selected:hover {
-      @include gradient.gradient-ring(
-        4px 4px 0 0,
-        2px,
-        var(--kd-color-background-button-primary-ai-hover)
+      --tab-accent: linear-gradient(
+        to right,
+        var(--kd-color-border-button-ai-state-focused),
+        var(--kd-color-border-button-ai-state-focused)
       );
-      color: var(--kd-color-text-level-primary);
+      --tab-accent-thickness: 3px;
+      @include side-accent-bg(bottom);
     }
 
     &:active,
-    &:hover:active,
-    &.selected:active,
-    &.selected:hover:active {
+    &.selected:active {
       background: var(--kd-color-background-button-primary-ai-pressed);
       color: var(--kd-color-text-button-primary);
-      box-shadow: none;
-      border-bottom: 1px solid
-        var(--kd-color-background-button-primary-ai-pressed);
-
-      &::before {
-        background: none !important;
-      }
+      --tab-accent: transparent;
+      --tab-accent-thickness: 0;
     }
   }
 
   @media (min-width: breakpoints.$bp-md) {
-    &.vertical.tab.ai-connected:not(.disabled) {
-      &:hover {
+    &.vertical {
+      border-radius: 0 4px 4px 0;
+      white-space: initial;
+      text-align: left;
+      border-bottom: none;
+      margin-left: -1px;
+      padding-left: calc(14px + 2px);
+      border-left: 1px solid var(--kd-color-border-accent-secondary);
+      @include side-accent-bg(left);
+    }
+
+    &.vertical.selected {
+      --tab-accent: var(--kd-color-border-button-primary-state-default);
+      --tab-accent-thickness: 2px;
+      @include side-accent-bg(left);
+    }
+
+    &.vertical:not(.disabled):not(.ai-connected) {
+      &:hover,
+      &.selected:hover {
+        background: var(--kd-color-background-button-secondary-state-hover);
+        color: var(--kd-color-text-level-primary);
+        --tab-accent: var(--kd-color-border-button-primary-state-hover);
+        --tab-accent-thickness: 2px;
+        @include side-accent-bg(left);
+      }
+
+      &:active,
+      &.selected:active {
+        background: var(--kd-color-background-button-primary-ai-pressed);
+        color: var(--kd-color-text-button-dark-primary);
+        --tab-accent: transparent;
+        --tab-accent-thickness: 0;
+      }
+    }
+
+    &.vertical.ai-connected:not(.disabled) {
+      &:hover,
+      &.selected:hover {
         @include gradient.gradient-ring(
           0 4px 4px 0,
           1px,
           var(--kd-color-background-button-primary-ai-hover)
         );
         color: var(--kd-color-text-level-primary);
-      }
-      &.selected:hover {
-        @include gradient.gradient-ring(
-          0 4px 4px 0,
-          2px,
-          var(--kd-color-background-button-primary-ai-hover)
+        --tab-accent: linear-gradient(
+          to bottom,
+          var(--kd-color-border-button-ai-state-focused),
+          var(--kd-color-border-button-ai-state-focused)
         );
-        color: var(--kd-color-text-level-primary);
+        --tab-accent-thickness: 3px;
+        @include side-accent-bg(left);
       }
+
       &:active,
-      &.selected:active,
-      &.selected:hover:active {
+      &.selected:active {
         background: var(--kd-color-background-button-primary-ai-pressed);
         color: var(--kd-color-text-button-dark-primary);
-        box-shadow: none;
+        --tab-accent: var(--kd-color-background-button-primary-ai-pressed);
+        --tab-accent-thickness: 2px;
+        @include side-accent-bg(left);
       }
     }
   }
@@ -190,19 +195,27 @@
 
 .tab:focus-visible {
   outline-color: transparent;
-  border-bottom: 1px solid var(--kd-color-border-variants-focus);
+  --tab-accent: var(--kd-color-border-variants-focus);
+  --tab-accent-thickness: 1px;
+  @include side-accent-bg(bottom);
 }
+
 .tab.ai-connected:focus-visible {
   outline-color: transparent;
-  border-bottom: 1px solid var(--kd-color-border-button-ai-state-focused);
+  --tab-accent: var(--kd-color-border-button-ai-state-focused);
+  --tab-accent-thickness: 1px;
+  @include side-accent-bg(bottom);
 }
+
 @media (min-width: breakpoints.$bp-md) {
   .tab.vertical:focus-visible {
-    border-bottom: none;
-    border-left: 1px solid var(--kd-color-border-variants-focus);
+    --tab-accent: var(--kd-color-border-variants-focus);
+    --tab-accent-thickness: 1px;
+    @include side-accent-bg(left);
   }
   .tab.vertical.ai-connected:focus-visible {
-    border-bottom: none;
-    border-left: 1px solid var(--kd-color-border-button-ai-state-focused);
+    --tab-accent: var(--kd-color-border-button-ai-state-focused);
+    --tab-accent-thickness: 1px;
+    @include side-accent-bg(left);
   }
 }
