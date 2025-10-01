@@ -40,16 +40,6 @@ dialog {
   outline: none;
   z-index: var(--kd-z-overlay);
 
-  &.ai-connected {
-    @include elevation.shadow(3, true);
-    background: var(--kd-color-background-container-ai-default);
-
-    &.ai-connected {
-      @include elevation.shadow(3, true);
-      background-color: var(--kd-color-background-container-ai-default);
-    }
-  }
-
   &[open] {
     animation: dialog-in 400ms forwards;
     position: fixed;
@@ -224,5 +214,41 @@ form {
 
   100% {
     transform: none;
+  }
+}
+
+/* ===== AI gradient surface ===== */
+
+dialog.ai-connected {
+  @include elevation.shadow(3, true);
+  background: var(--kd-color-background-container-ai-default);
+
+  &.gradient-bkg {
+    background-color: var(--kd-color-background-container-ai-default);
+
+    background-image: radial-gradient(
+        circle at 0% 0%,
+        color-mix(
+            in oklab,
+            var(--kd-color-border-ai-default-gradient-start) 20%,
+            transparent
+          )
+          0%,
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 100% 50%,
+        color-mix(
+            in oklab,
+            var(--kd-color-border-ai-default-gradient-end) 15%,
+            transparent
+          )
+          0%,
+        transparent 55%
+      );
+
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, 100% 50%;
+    background-size: cover, cover;
   }
 }

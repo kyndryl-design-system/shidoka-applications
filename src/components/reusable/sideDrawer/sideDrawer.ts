@@ -83,7 +83,7 @@ export class SideDrawer extends LitElement {
   accessor submitBtnDisabled = false;
 
   /** Apply gradient to modal background */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor gradientBkg = false;
 
   /** Determine whether needs footer */
