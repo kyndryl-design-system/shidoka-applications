@@ -127,7 +127,6 @@ const SourcesContent = () => html`
         slot="sources"
         aiConnected
         type="clickable"
-        aria-label="Card"
         @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <div class="card-description">

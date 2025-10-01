@@ -141,8 +141,6 @@ export class AISourcesFeedback extends LitElement {
               size="small"
               class="kyn-sources-title"
               iconPosition="right"
-              aria-controls="kyn-sources-body"
-              aria-expanded=${this.sourcesOpened}
               ?disabled=${this.sourcesDisabled}
               @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
@@ -162,8 +160,6 @@ export class AISourcesFeedback extends LitElement {
               size="small"
               id="kyn-feedback-title-positive"
               class="kyn-feedback-title"
-              aria-controls="kyn-feedback-body"
-              aria-expanded=${this.feedbackOpened}
               ?disabled=${this.feedbackDisabled}
               description=${this._textStrings.positiveFeedback}
               @on-click=${(e: Event) =>
@@ -185,8 +181,6 @@ export class AISourcesFeedback extends LitElement {
               size="small"
               id="kyn-feedback-title-negative"
               class="kyn-feedback-title"
-              aria-controls="kyn-feedback-body"
-              aria-expanded=${this.feedbackOpened}
               ?disabled=${this.feedbackDisabled}
               description=${this._textStrings.negativeFeedback}
               @on-click="${(e: Event) =>
@@ -217,7 +211,7 @@ export class AISourcesFeedback extends LitElement {
           <kyn-button
             class="close"
             @on-click=${(e: Event) => this._handleClick(e, 'sources')}
-            kind="ghost-ai"
+            kind="ghost"
             size="small"
             description=${this.closeText}
           >

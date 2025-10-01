@@ -99,7 +99,7 @@ export class Modal extends LitElement {
   accessor closeText = 'Close';
 
   /** Apply gradient to modal background */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor gradientBkg = false;
 
   /** The dialog element
