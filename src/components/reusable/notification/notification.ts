@@ -15,6 +15,20 @@ import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/er
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
 
 import '../badge';
+
+type TagStatus = 'default' | 'info' | 'warning' | 'success' | 'error' | 'ai';
+type NotificationType = 'normal' | 'inline' | 'toast' | 'clickable';
+type CardType = 'normal' | 'clickable';
+
+interface TextStrings {
+  success: string;
+  warning: string;
+  info: string;
+  error: string;
+  ai?: string;
+  default?: string;
+}
+
 /**
  * Notification component.
  * @slot unnamed - Slot for notification message body.
@@ -49,19 +63,19 @@ export class Notification extends LitElement {
 
   /** Card link target. */
   @property({ type: String })
-  accessor target = '';
+  accessor target: '_self' | '_blank' | '_parent' | '_top' | '' = '';
 
   /** Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`. */
   @property({ type: String })
-  accessor tagStatus = 'default'; // Need to change the name to badgeStatus, once old tags are removed.
+  accessor tagStatus: TagStatus = 'default'; // Need to change the name to badgeStatus, once old tags are removed.
 
   /** Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel */
   @property({ type: String })
-  accessor type = 'normal';
+  accessor type: NotificationType = 'normal';
 
   /** Customizable text strings. */
   @property({ type: Object })
-  accessor textStrings: any = {
+  accessor textStrings: TextStrings = {
     success: 'Success',
     warning: 'Warning',
     info: 'Information',
@@ -145,12 +159,15 @@ export class Notification extends LitElement {
       'notification-no-description': !this._hasDescriptionSlotContent,
     };
 
+    const cardType: CardType =
+      this.type === 'clickable' ? 'clickable' : 'normal';
+
     return html`
       ${this.type === 'clickable'
         ? html`<kyn-card
             class="notification-clickable"
             ?highlight=${this.unRead}
-            type=${this.type}
+            .type=${cardType}
             href=${ifDefined(this.href || undefined)}
             target=${ifDefined(this.target || undefined)}
             rel=${ifDefined(
@@ -166,7 +183,7 @@ export class Notification extends LitElement {
             ${this.renderInnerUI()}
           </kyn-card>`
         : html` <kyn-card
-            type=${this.type}
+            .type=${cardType}
             role=${ifDefined(this.notificationRole)}
             class="${classMap(cardBgClasses)}"
           >
@@ -258,7 +275,7 @@ export class Notification extends LitElement {
                 <kyn-badge
                   type=${'heavy'}
                   ?hideIcon=${true}
-                  label=${this.textStrings[this.tagStatus]}
+                  label=${ifDefined(this.textStrings[this.tagStatus])}
                   status=${this._badgeColor[this.tagStatus]}
                 ></kyn-badge>
               `
