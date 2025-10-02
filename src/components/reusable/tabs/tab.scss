@@ -9,34 +9,53 @@
   padding-top: 2px;
 }
 
+// match figma for no focus-visible outline in either default or ai
 :host(:focus),
 :host(:focus-visible) {
-  outline: none !important;
-  outline-offset: 0 !important;
+  outline: none;
+  outline-offset: 0;
 }
 
 @mixin layered-stripe($side) {
-  background-repeat: no-repeat, no-repeat;
-  $accent: linear-gradient(
-    var(--tab-accent, transparent),
-    var(--tab-accent, transparent)
+  $accent-image: var(
+    --tab-accent-image,
+    linear-gradient(
+      var(--tab-accent, transparent),
+      var(--tab-accent, transparent)
+    )
   );
-  $base: linear-gradient(
-    var(--tab-baseline, transparent),
-    var(--tab-baseline, transparent)
+  $base-image: var(
+    --tab-baseline-image,
+    linear-gradient(
+      var(--tab-baseline, transparent),
+      var(--tab-baseline, transparent)
+    )
   );
 
+  background-repeat: no-repeat, no-repeat;
+
   @if $side == bottom {
-    background-image: $accent, $base;
+    background-image: $accent-image, $base-image;
     background-position: left bottom, left bottom;
     background-size: 100% var(--tab-accent-thickness, 0px),
       100% var(--tab-baseline-thickness, 1px);
   } @else if $side == left {
-    background-image: $accent, $base;
+    background-image: $accent-image, $base-image;
     background-position: left top, left top;
     background-size: var(--tab-accent-thickness, 0px) 100%,
       var(--tab-baseline-thickness, 1px) 100%;
   }
+}
+
+.tab {
+  --tab-baseline-image: linear-gradient(
+    var(--tab-baseline, transparent),
+    var(--tab-baseline, transparent)
+  );
+  --tab-accent-image: linear-gradient(
+    var(--tab-accent, transparent),
+    var(--tab-accent, transparent)
+  );
 }
 
 @media (min-width: breakpoints.$bp-md) {
@@ -62,7 +81,9 @@
   outline: 2px solid transparent;
   outline-offset: -2px;
   transition: outline-color 150ms ease-out, background-color 150ms ease-out,
-    color 150ms ease-out;
+    color 150ms ease-out, background-size 150ms ease-out,
+    background-image 150ms ease-out;
+  background-clip: padding-box;
 
   border: 0;
   --tab-baseline: var(--kd-color-border-accent-secondary);
@@ -196,7 +217,17 @@
 
     &.vertical.ai-connected:not(.disabled) {
       &.selected {
-        --tab-accent: var(--kd-color-border-button-ai-state-focused);
+        --tab-accent-image: linear-gradient(
+          180deg,
+          var(
+            --kd-color-border-button-ai-focus-start,
+            var(--kd-color-border-button-ai-state-focused)
+          ),
+          var(
+            --kd-color-border-button-ai-focus-end,
+            var(--kd-color-border-button-ai-state-focused)
+          )
+        );
         --tab-accent-thickness: 3px;
         @include layered-stripe(left);
       }
@@ -209,9 +240,21 @@
           var(--kd-color-background-button-primary-ai-hover)
         );
         color: var(--kd-color-text-level-primary);
-        --tab-accent: transparent;
-        --tab-accent-thickness: 0px;
-        --tab-baseline-thickness: 0px;
+
+        --tab-accent-image: linear-gradient(
+          180deg,
+          var(
+            --kd-color-border-button-ai-hover-start,
+            var(--kd-color-border-button-ai-state-hover)
+          ),
+          var(
+            --kd-color-border-button-ai-hover-end,
+            var(--kd-color-border-button-ai-state-hover)
+          )
+        );
+        --tab-accent-thickness: 2px;
+        --tab-baseline-thickness: 1px;
+
         @include layered-stripe(left);
       }
 
@@ -238,14 +281,6 @@
   outline-color: transparent;
 }
 
-@media (min-width: breakpoints.$bp-md) {
-  .tab.vertical:focus-visible {
-  }
-  .tab.vertical.ai-connected:focus-visible {
-  }
-}
-
-/* ensure no ring/underline leaks in AI hover+active */
 .tab.ai-connected:not(.disabled):is(
     :active,
     .selected:active,
@@ -257,9 +292,9 @@
   --tab-accent: transparent;
   --tab-accent-thickness: 0;
   --tab-baseline-thickness: 0;
-  box-shadow: none !important;
-  outline: none !important;
-  background-image: none !important;
+  box-shadow: none;
+  outline: none;
+  background-image: none;
 }
 @media (min-width: breakpoints.$bp-md) {
   .tab.vertical.ai-connected:not(.disabled):is(
@@ -273,8 +308,26 @@
     --tab-accent: transparent;
     --tab-accent-thickness: 0;
     --tab-baseline-thickness: 0;
-    box-shadow: none !important;
-    outline: none !important;
-    background-image: none !important;
+    box-shadow: none;
+    outline: none;
+    background-image: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .tab.vertical.ai-connected:not(.disabled) {
+    &:hover,
+    &.selected:hover {
+      --tab-accent-image: linear-gradient(
+        CurrentColor,
+        CurrentColor
+      ); // use the element’s computed color property here and below
+      --tab-accent-thickness: 2px;
+      --tab-baseline-thickness: 1px;
+    }
+    &.selected {
+      --tab-accent-image: linear-gradient(CurrentColor, CurrentColor);
+      --tab-accent-thickness: 3px;
+    }
   }
 }
