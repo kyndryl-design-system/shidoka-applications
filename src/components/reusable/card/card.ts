@@ -53,7 +53,7 @@ export class Card extends LitElement {
   accessor highlight = false;
 
   /** Card variant. `'default'` & `'info'` */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   accessor variant: CardVariant = 'default';
 
   override render() {

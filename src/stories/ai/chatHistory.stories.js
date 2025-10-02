@@ -1,10 +1,9 @@
-// chat.stories.js (AI/Patterns/Chat)
 import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
-import { renderInfoCardWithRightIcon } from './infoCard.stories.js';
+import { WithRightIcon as InfoCardWithRightIcon } from './infoCard.stories.js';
 import { ChatMessages } from './chatMessages.stories.js';
 
 import '../../components/reusable/pagetitle';
@@ -23,7 +22,6 @@ export default {
 
 export const ChatHistory = {
   render: () => {
-    const infoArgs = { type: 'normal', variant: 'info' };
     return html`
       <div class="chat_list">
         <kyn-page-title
@@ -44,9 +42,8 @@ export const ChatHistory = {
             <p class="kd-type--ui-02 kd-type--weight-medium">
               Day, Date & Time Stamp
             </p>
-
             ${Array.from({ length: 3 }).map(() =>
-              renderInfoCardWithRightIcon(infoArgs)
+              InfoCardWithRightIcon.render()
             )}
           </div>
         </div>
@@ -85,34 +82,36 @@ export const ChatHistory = {
 };
 
 export const ChatHistoryDetails = {
-  render: () => html`
-    <kyn-page-title
-      style="margin-bottom: 4px"
-      type="tertiary"
-      pagetitle="Chat History"
-    ></kyn-page-title>
+  render: () => {
+    return html`
+      <kyn-page-title
+        style="margin-bottom: 4px"
+        type="tertiary"
+        pagetitle="Chat History"
+      ></kyn-page-title>
 
-    <div class="chat_details">
-      <kyn-link
-        kind="ai"
-        standalone
-        @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        Back
-      </kyn-link>
+      <div class="chat_details">
+        <kyn-link
+          kind="ai"
+          standalone
+          @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          Back
+        </kyn-link>
 
-      <kyn-page-title type="tertiary" pagetitle="Page Title"></kyn-page-title>
+        <kyn-page-title type="tertiary" pagetitle="Page Title"></kyn-page-title>
 
-      <div style="width:100%">${ChatMessages.render()}</div>
-    </div>
+        <div style="width:100%">${ChatMessages.render()}</div>
+      </div>
 
-    <style>
-      .chat_details {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--kd-spacing-24);
-      }
-    </style>
-  `,
+      <style>
+        .chat_details {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: var(--kd-spacing-24);
+        }
+      </style>
+    `;
+  },
 };

@@ -4,7 +4,6 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
-@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
@@ -110,21 +109,15 @@ slot[name='icon']::slotted(*) {
     }
 
     &:hover:not(:is(:focus-visible, :focus-within)) {
-      @include gradient.border-gradient-ai(
-        $gradient: gradient.$ai-gradient-default,
-        $radius: 0,
-        $width: 1px,
-        $surface: var(--kd-color-background-menu-state-ai-default)
-      );
+      border: 1px solid var(--kd-color-border-ui-hover);
+      background: var(--kd-color-background-menu-state-ai-default);
+      background-clip: border-box;
+      background-origin: border-box;
     }
 
     &:is(:focus-visible, :focus-within):hover {
       background: var(--kd-color-background-menu-state-ai-default);
-      border: 1px solid transparent;
-
-      background-clip: border-box;
-      background-origin: border-box;
-      background-size: auto;
+      border: 1px solid var(--kd-color-border-variants-focus);
     }
 
     &:active {
@@ -200,10 +193,18 @@ slot[name='icon']::slotted(*) {
     opacity: 1;
     z-index: 11;
   }
+}
 
-  [searchable] &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
-  }
+.dropdown .options {
+  outline-color: transparent;
+}
+
+.dropdown.ai-connected .options {
+  outline-color: transparent;
+}
+
+[searchable] .options {
+  outline-color: transparent;
 }
 
 .error {
@@ -255,6 +256,7 @@ slot[name='icon']::slotted(*) {
 
   span {
     display: flex;
+
     svg {
       width: 14px;
       height: 14px;
@@ -311,11 +313,6 @@ kyn-tag-group {
 
 .placeholder-text {
   color: var(--kd-color-text-variant-placeholder);
-}
-
-.dropdown.ai-connected .options:focus-visible,
-.dropdown.ai-connected [searchable] .options:focus-visible {
-  outline-color: var(--kd-color-background-button-secondary-ai-focused);
 }
 
 .dropdown.ai-connected .wrapper .custom .options {

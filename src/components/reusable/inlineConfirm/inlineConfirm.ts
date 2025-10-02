@@ -77,7 +77,6 @@ export class InlineConfirm extends LitElement {
 
     const event = new CustomEvent('on-confirm', {
       detail: { origEvent: e },
-      bubbles: true,
       composed: true,
       cancelable: true,
     });
