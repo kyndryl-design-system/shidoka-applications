@@ -3,13 +3,6 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '../../common/scss/gradients.scss' as gradient;
 
-// ==== base host ====
-:host,
-:host(:focus),
-:host(:focus-visible) {
-  outline: none;
-}
-
 // ==== mixins ====
 @mixin state-colors($bg, $text, $icon: null) {
   background-color: $bg;
@@ -55,8 +48,7 @@
   }
 
   &:focus-visible {
-    border: 2px solid var(--kd-color-border-button-primary-destructive-default);
-    outline: none;
+    outline: 2px solid var(--kd-color-border-button-primary-destructive-default);
     background-color: var(--kd-color-status-error-light);
 
     .menu-item-inner-el {
@@ -97,7 +89,6 @@
     }
   }
 
-  outline: none;
   border: 1px solid transparent;
 
   .menu-item-inner-el {
@@ -114,6 +105,8 @@
 :host .menu-item {
   background-color: var(--kd-color-background-menu-state-default);
   transition: background-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 
   .menu-item-inner-el {
     color: var(--kd-color-text-level-primary);
@@ -130,8 +123,7 @@
   &:focus,
   &:focus-within,
   &:focus-visible {
-    outline: none;
-    border: 2px solid var(--kd-color-border-variants-focus);
+    outline-color: var(--kd-color-border-variants-focus);
     background-color: var(--kd-color-background-menu-state-focused);
   }
 
@@ -152,17 +144,14 @@
   // 2) readonly (non-disabled)
   &[readonly] {
     cursor: default;
-    border: none;
+
     background-color: var(--kd-color-background-menu-state-default);
-    outline: none;
   }
   &[readonly]:hover,
   &[readonly]:active,
   &[readonly]:focus,
   &[readonly]:focus-visible {
     background-color: var(--kd-color-background-menu-state-default);
-    border: none;
-    outline: none;
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-primary);
@@ -237,12 +226,10 @@
     color: var(--kd-color-text-level-primary);
   }
 
-  &.ai-connected:focus,
-  &.ai-connected:focus-within,
-  &.ai-connected:focus-visible {
-    outline: none;
-    border: none;
-  }
+  // &.ai-connected:focus,
+  // &.ai-connected:focus-within,
+  // &.ai-connected:focus-visible {
+  // }
 
   &.ai-connected:hover {
     background-color: var(--kd-color-background-menu-state-ai-hover);
@@ -257,7 +244,6 @@
   }
 
   &.ai-connected[highlighted] {
-    outline: none;
     background-color: var(--kd-color-background-menu-state-ai-focused);
   }
 
@@ -320,10 +306,3 @@
 // :host .menu-item[readonly]:active,
 // :host .menu-item[readonly][data-pressed] {
 // }
-
-/* Normalize outline removal when focused */
-:host .menu-item:focus,
-:host .menu-item:focus-within,
-:host .menu-item:focus-visible {
-  outline: none;
-}
