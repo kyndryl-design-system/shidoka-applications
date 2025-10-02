@@ -13,6 +13,7 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/d
 
 export default {
   title: 'AI/Patterns/Info',
+  excludeStories: ['renderInfoCardWithRightIcon'],
   parameters: {
     docs: {
       description: {
@@ -27,7 +28,7 @@ export default {
   },
 };
 
-export const renderInfoCard = () => html`
+const renderInfoCard = () => html`
   <kyn-card
     class="info-card kyn-card-hover"
     ?aiConnected=${true}
@@ -80,7 +81,7 @@ export const Default = {
   render: (args) => renderInfoCard(args),
 };
 
-export const WithRightIconAndDescription = {
+export const WithRightIcon = {
   args: { type: 'normal', variant: 'info' },
   render: (args) => renderInfoCardWithRightIcon(args),
 };
