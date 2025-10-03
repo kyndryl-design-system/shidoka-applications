@@ -5,395 +5,253 @@
 
 :host {
   display: block;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 150ms ease-out;
   border-radius: 4px 4px 0 0;
-  padding-top: 2px;
 }
 
-// match figma for no focus-visible outline in either default or ai
-:host(:focus),
+/* HORIZONTAL — AI HOVER */
+:host([data-aiconnected='true']:hover) {
+  @include gradient.outline-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 4px 4px 0 0,
+    $width: 2px,
+    $surface: var(--kd-color-background-button-primary-ai-hover),
+    $outside: false
+  );
+
+  .tab,
+  .tab.selected {
+    position: relative;
+    z-index: 0;
+    background: var(--kd-color-background-button-primary-ai-hover);
+    border-color: var(--kd-color-border-button-secondary-ai-hover);
+    color: var(--kd-color-text-level-light);
+  }
+}
+
+/* HORIZONTAL — AI PRESSED */
+:host([data-aiconnected='true']:active) {
+  outline: 2px solid var(--kd-color-border-button-ai-state-focused);
+
+  .tab,
+  .tab.selected {
+    background: var(--kd-color-background-button-primary-ai-pressed);
+    color: var(--kd-color-text-level-primary);
+  }
+}
+
+/* FOCUS */
 :host(:focus-visible) {
-  outline: none;
-  outline-offset: 0;
+  outline: 2px solid var(--kd-color-border-button-secondary-state-focused);
 }
-
-// --- Geometry stripe helper (unchanged behavior, but reusable) ---
-@mixin layered-stripe($side) {
-  $accent-image: var(
-    --tab-accent-image,
-    linear-gradient(
-      var(--tab-accent, transparent),
-      var(--tab-accent, transparent)
-    )
-  );
-  $base-image: var(
-    --tab-baseline-image,
-    linear-gradient(
-      var(--tab-baseline, transparent),
-      var(--tab-baseline, transparent)
-    )
-  );
-
-  background-repeat: no-repeat, no-repeat;
-
-  @if $side == bottom {
-    background-image: $accent-image, $base-image;
-    background-position: left bottom, left bottom;
-    background-size: 100% var(--tab-accent-thickness, 0px),
-      100% var(--tab-baseline-thickness, 1px);
-  } @else if $side == left {
-    background-image: $accent-image, $base-image;
-    background-position: left top, left top;
-    background-size: var(--tab-accent-thickness, 0px) 100%,
-      var(--tab-baseline-thickness, 1px) 100%;
+:host([data-aiconnected='true']:focus-visible) {
+  outline: 2px solid var(--kd-color-border-button-ai-state-focused);
+  .tab {
+    background: var(--kd-color-background-button-primary-ai-pressed);
+    color: var(--kd-color-text-level-primary) !important;
   }
 }
-
-// --- Shared tokens once (applies to both orientations & AI/non-AI) ---
-.tab {
-  // default images allow per-state overrides via --tab-accent-image if needed
-  --tab-baseline-image: linear-gradient(
-    var(--tab-baseline, transparent),
-    var(--tab-baseline, transparent)
-  );
-  --tab-accent-image: linear-gradient(
-    var(--tab-accent, transparent),
-    var(--tab-accent, transparent)
-  );
-
-  // design tokens (single source of truth)
-  --tab-baseline: var(--kd-color-border-accent-secondary);
-  --tab-baseline-thickness: 1px;
-  --tab-accent: transparent;
-  --tab-accent-thickness: 0px;
+:host(:focus-visible) .tab,
+:host(:focus-visible) .tab:hover {
+  background: var(--kd-color-background-button-primary-state-focused);
+  border-color: var(--kd-color-border-button-secondary-state-focused);
+  color: var(--kd-color-text-level-light) !important;
+}
+:host(:focus-visible) .tab ::slotted(*),
+:host(:focus-visible) .tab ::slotted(svg) {
+  color: inherit;
+  fill: currentColor;
 }
 
+/* VERTICAL BORDER-RADIUS (ALL STATES) */
 @media (min-width: breakpoints.$bp-md) {
-  .tab.vertical {
+  :host([vertical]) {
     border-radius: 0 4px 4px 0;
   }
 }
 
-.tab.disabled {
-  color: var(--kd-color-text-link-level-disabled);
-  cursor: not-allowed;
+/* VERTICAL — AI HOVER */
+@media (min-width: breakpoints.$bp-md) {
+  :host([vertical][data-aiconnected='true']:hover) {
+    @include gradient.outline-gradient-ai(
+      $gradient: gradient.$ai-gradient-default,
+      $radius: 0 4px 4px 0,
+      $width: 2px,
+      $surface: var(--kd-color-background-button-primary-ai-hover),
+      $outside: false
+    );
+
+    .tab,
+    .tab.selected {
+      position: relative;
+      z-index: 0;
+      background: var(--kd-color-background-button-primary-ai-hover);
+      border-color: var(--kd-color-border-button-secondary-ai-hover);
+      color: var(--kd-color-text-level-light);
+    }
+  }
 }
 
-// --- Orientation geometry tweaks only ---
-@mixin tab-geometry($side) {
-  @if $side == bottom {
-    border-radius: 4px 4px 0 0;
-    white-space: nowrap;
-    text-align: center;
-    margin-left: 0;
-    padding-left: 14px;
-    @include layered-stripe(bottom);
-  } @else if $side == left {
+/* VERTICAL — AI PRESSED */
+@media (min-width: breakpoints.$bp-md) {
+  :host([vertical][data-aiconnected='true']:active) {
+    outline: 2px solid var(--kd-color-border-button-ai-state-focused);
     border-radius: 0 4px 4px 0;
-    white-space: initial;
-    text-align: left;
-    margin-left: -1px;
-    padding-left: calc(14px + 2px);
-    @include layered-stripe(left);
-  }
-}
 
-// Utility: nuke any gradient ring artifacts created by gradient.gradient-ring
-@mixin kill-ring() {
-  box-shadow: none !important;
-  background-image: none !important;
-  border-image: none !important;
-  mask-image: none !important;
-  -webkit-mask-image: none !important;
-
-  &::before,
-  &::after {
-    content: none !important;
-    box-shadow: none !important;
-    background: none !important;
-    border-image: none !important;
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
-  }
-}
-
-// --- State machine (standard vs AI) with minimal duplication ---
-@mixin tab-interactions($side, $ai: false) {
-  &:not(.disabled):not(.selected) {
-    @if $ai == false {
+    .tab,
+    .tab.selected {
+      background: var(--kd-color-background-button-primary-ai-pressed);
       color: var(--kd-color-text-level-primary);
-      &:focus-visible {
-        background: var(--kd-color-background-button-primary-state-focused);
-        color: var(--kd-color-text-level-light);
-        border: 2px solid var(--kd-color-border-button-secondary-state-focused);
-        @include layered-stripe($side);
-      }
-      // hover
-      &:hover {
-        background: var(--kd-color-background-button-secondary-state-hover);
-        color: var(--kd-color-text-level-primary);
-        --tab-accent: var(--kd-color-border-button-primary-state-hover);
-        --tab-accent-thickness: if($side == left, 3px, 2px);
-        @include layered-stripe($side);
-      }
-      // active
-      &:active {
-        background: var(--kd-color-background-button-primary-state-pressed);
-        color: var(--kd-color-text-level-light);
-        --tab-accent: var(--kd-color-border-button-secondary-state-hover);
-        --tab-accent-thickness: if($side == left, 3px, 2px);
-        @include layered-stripe($side);
-      }
-    } @else {
-      // AI-connected base
-      color: var(--kd-color-text-button-ai-default);
-
-      // focus (keep stripes intact)
-      &:focus-visible {
-        background: var(--kd-color-background-button-primary-ai-focused);
-        border: 2px solid var(--kd-color-border-button-ai-state-focused);
-        color: var(--kd-color-text-level-primary);
-        @include layered-stripe($side);
-      }
-
-      // hover (shows gradient ring)
-      &:hover {
-        @include gradient.gradient-ring(
-          if($side == left, 0 4px 4px 0, 4px 4px 0 0),
-          2px,
-          var(--kd-color-background-button-primary-ai-hover)
-        );
-        color: var(--kd-color-text-level-primary);
-
-        --tab-accent-image: linear-gradient(
-          if($side == left, 180deg, to bottom),
-          var(
-            --kd-color-border-button-ai-hover-start,
-            var(--kd-color-border-button-ai-state-hover)
-          ),
-          var(
-            --kd-color-border-button-ai-hover-end,
-            var(--kd-color-border-button-ai-state-hover)
-          )
-        );
-        --tab-accent-thickness: if($side == left, 2px, 0px);
-        --tab-baseline-thickness: 1px;
-        @include layered-stripe($side);
-      }
-
-      // active (and hover+active)
-      &:is(:active, :hover:active) {
-        @include kill-ring();
-
-        background: var(--kd-color-background-button-primary-ai-pressed);
-        border: 2px solid var(--kd-color-border-button-ai-state-focused);
-        color: if(
-          $side == left,
-          var(--kd-color-text-button-dark-primary),
-          var(--kd-color-text-button-primary)
-        );
-
-        --tab-accent: transparent;
-        --tab-accent-thickness: 0px;
-        --tab-baseline-thickness: 0px;
-        @include layered-stripe($side);
-      }
-    }
-  }
-
-  // selected
-  &.selected {
-    font-weight: var(--kd-font-weight-medium);
-
-    @if $ai == false {
-      color: var(--kd-color-text-link-level-default);
-      --tab-accent: var(--kd-color-border-button-primary-state-default);
-      --tab-accent-thickness: if($side == left, 3px, 2px);
-      @include layered-stripe($side);
-
-      // selected:hover
-      &:hover {
-        background: var(--kd-color-background-button-secondary-state-hover);
-        color: var(--kd-color-text-level-primary);
-        --tab-accent: var(--kd-color-border-button-primary-state-hover);
-        --tab-accent-thickness: if($side == left, 3px, 2px);
-        @include layered-stripe($side);
-      }
-
-      // selected:active
-      &:active {
-        background: var(--kd-color-background-button-primary-state-pressed);
-        color: var(--kd-color-text-level-light);
-        --tab-accent: var(--kd-color-border-button-secondary-state-hover);
-        --tab-accent-thickness: if($side == left, 3px, 2px);
-        @include layered-stripe($side);
-      }
-    } @else {
-      color: var(--kd-color-text-button-ai-default);
-
-      // selected AI ring (lets vertical keep gradient on the left)
-      --tab-accent-image: linear-gradient(
-        if($side == left, 180deg, to bottom),
-        var(
-          --kd-color-border-button-ai-focus-start,
-          var(--kd-color-border-button-ai-state-focused)
-        ),
-        var(
-          --kd-color-border-button-ai-focus-end,
-          var(--kd-color-border-button-ai-state-focused)
-        )
-      );
-      --tab-accent-thickness: if($side == left, 3px, 2px);
-      @include layered-stripe($side);
-
-      // selected:hover (shows gradient ring)
-      &:hover {
-        @include gradient.gradient-ring(
-          if($side == left, 0 4px 4px 0, 4px 4px 0 0),
-          2px,
-          var(--kd-color-background-button-primary-ai-hover)
-        );
-        color: var(--kd-color-text-level-primary);
-        --tab-accent-image: linear-gradient(
-          if($side == left, 180deg, to bottom),
-          var(
-            --kd-color-border-button-ai-hover-start,
-            var(--kd-color-border-button-ai-state-hover)
-          ),
-          var(
-            --kd-color-border-button-ai-hover-end,
-            var(--kd-color-border-button-ai-state-hover)
-          )
-        );
-        --tab-accent-thickness: if($side == left, 2px, 0px);
-        --tab-baseline-thickness: 1px;
-        @include layered-stripe($side);
-      }
-
-      // selected:active — NO gradient border on active
-      &:is(:active, :hover:active) {
-        @include kill-ring(); // <- fully remove ring (element + pseudos)
-
-        background: var(--kd-color-background-button-primary-ai-pressed);
-        border: 2px solid var(--kd-color-border-button-ai-state-focused);
-        color: if(
-          $side == left,
-          var(--kd-color-text-button-dark-primary),
-          var(--kd-color-text-button-primary)
-        );
-
-        // stripe off while pressed
-        --tab-accent: transparent;
-        --tab-accent-thickness: 0px;
-        --tab-baseline-thickness: 0px;
-        @include layered-stripe($side);
-      }
     }
   }
 }
 
-// --- Base tab block (tokens + layout once) ---
 .tab {
-  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  white-space: nowrap;
   text-align: center;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  transition: outline-color 150ms ease-out, background-color 150ms ease-out,
-    color 150ms ease-out, background-size 150ms ease-out,
-    background-image 150ms ease-out;
-  background-clip: padding-box;
-  border: 0;
+  border-radius: 4px 4px 0 0;
+  border-bottom: 2px solid var(--kd-color-border-accent-secondary);
+  transition: border-color 150ms ease-out, background-color 150ms ease-out,
+    color 150ms ease-out;
+
+  ::slotted(svg) {
+    display: flex;
+  }
 
   &.size--md {
     height: 48px;
     padding: 12px 14px;
   }
+
   &.size--sm {
     @include typography.type-ui-03;
     height: 30px;
     padding: 7px 14px;
+    border-width: 3px;
   }
 
-  // default orientation = horizontal (bottom stripe)
-  @include tab-geometry(bottom);
-  @include tab-interactions(bottom, false);
-
-  // AI variant toggles only the interaction mixin; tokens stay DRY
-  &.ai-connected:not(.disabled) {
-    @include tab-interactions(bottom, true);
+  &.selected {
+    font-weight: var(--kd-font-weight-medium);
+    border-width: 2px;
   }
 
-  @media (min-width: breakpoints.$bp-md) {
-    &.vertical {
-      @include tab-geometry(left);
-      @include tab-interactions(left, false);
+  /* VERTICAL BLOCK */
+  &.vertical {
+    &.selected {
+      border-width: 2px;
+    }
 
-      &.ai-connected:not(.disabled) {
-        @include tab-interactions(left, true);
+    @media (min-width: breakpoints.$bp-md) {
+      border-radius: 0 4px 4px 0;
+      border-bottom: none;
+      border-left: 2px solid var(--kd-color-border-accent-secondary);
+      white-space: initial;
+      text-align: left;
+    }
+  }
+
+  /* NON-AI STATES (HORIZONTAL) */
+  &.tab:not(.disabled):not(.ai-connected) {
+    color: var(--kd-color-text-level-primary);
+
+    &.selected {
+      border-bottom-color: var(--kd-color-border-button-primary-state-default);
+      color: var(--kd-color-text-link-level-default);
+    }
+
+    &:hover,
+    &.selected:hover {
+      background: var(--kd-color-background-button-secondary-state-hover);
+      border-bottom-color: var(--kd-color-border-button-primary-state-hover);
+      color: var(--kd-color-text-level-primary);
+    }
+
+    &:active,
+    &.selected:active {
+      background: var(--kd-color-background-button-primary-state-pressed);
+      border-color: var(--kd-color-border-button-primary-state-hover);
+      color: var(--kd-color-text-level-light);
+    }
+
+    &:focus-visible,
+    &.selected:focus-visible {
+      outline: none;
+      color: var(--kd-color-text-level-light);
+      background: var(--kd-color-background-button-primary-state-focused);
+      border-bottom-color: var(
+        --kd-color-border-button-secondary-state-focused
+      );
+    }
+
+    /* NON-AI STATES (VERTICAL overrides) */
+    @media (min-width: breakpoints.$bp-md) {
+      &.vertical {
+        &.selected {
+          border-left-color: var(
+            --kd-color-border-button-primary-state-default
+          );
+        }
+        &:hover,
+        &.selected:hover {
+          background: var(--kd-color-background-button-secondary-state-hover);
+          border-left-color: var(--kd-color-border-button-primary-state-hover);
+          color: var(--kd-color-text-level-primary);
+        }
+        &:active,
+        &.selected:active {
+          background: var(--kd-color-background-button-primary-state-pressed);
+          border-left-color: var(--kd-color-border-button-primary-state-hover);
+          color: var(--kd-color-text-level-light);
+        }
+        &:focus-visible,
+        &.selected:focus-visible {
+          background: var(--kd-color-background-button-primary-state-focused);
+          border-left-color: var(
+            --kd-color-border-button-secondary-state-focused
+          );
+        }
       }
     }
   }
-}
 
-/* Keep outline hidden on focused .tab (we paint custom focus above) */
-.tab:focus-visible,
-.tab.ai-connected:focus-visible {
-  outline-color: transparent;
-}
+  /* AI-CONNECTED (HORIZONTAL, GENERAL) */
+  &.tab.ai-connected:not(.disabled) {
+    color: var(--kd-color-text-button-ai-default);
+    border-bottom-color: var(--kd-color-border-button-ai-state-default);
 
-// forced colors – keep minimal, orientation-agnostic
-@media (forced-colors: active) {
-  .tab.vertical.ai-connected:not(.disabled) {
-    &:hover,
-    &.selected:hover {
-      --tab-accent-image: linear-gradient(CurrentColor, CurrentColor);
-      --tab-accent-thickness: 2px;
-      --tab-baseline-thickness: 1px;
-    }
     &.selected {
-      --tab-accent-image: linear-gradient(CurrentColor, CurrentColor);
-      --tab-accent-thickness: 3px;
+      border-bottom-color: var(--kd-color-border-button-ai-state-focused);
     }
   }
-}
 
-/* --- Bridge host focus to inner visuals (DON'T zero accent/baseline here) --- */
+  /* AI-CONNECTED (VERTICAL overrides) */
+  @media (min-width: breakpoints.$bp-md) {
+    &.tab.ai-connected.vertical:not(.disabled) {
+      border-bottom: none;
+      border-left: 2px solid var(--kd-color-border-button-ai-state-default);
+      border-radius: 0 4px 4px 0;
 
-/* Horizontal, non-AI */
-:host(:focus-visible) .tab:not(.vertical):not(.ai-connected):not(.disabled) {
-  background: var(--kd-color-background-button-primary-state-focused);
-  color: var(--kd-color-text-level-light);
-  border: 2px solid var(--kd-color-border-button-secondary-state-focused);
-  @include layered-stripe(bottom);
-}
+      &.selected {
+        border-left-color: var(--kd-color-border-button-ai-state-focused);
+      }
 
-/* Vertical (>= md), non-AI */
-@media (min-width: breakpoints.$bp-md) {
-  :host(:focus-visible) .tab.vertical:not(.ai-connected):not(.disabled) {
-    background: var(--kd-color-background-button-primary-state-focused);
-    color: var(--kd-color-text-level-light);
-    border: 2px solid var(--kd-color-border-button-secondary-state-focused);
-    @include layered-stripe(left);
+      &:active,
+      &.selected:active {
+        background: var(--kd-color-background-button-primary-ai-pressed);
+        color: var(--kd-color-text-level-primary);
+        border-left-color: var(--kd-color-border-button-ai-state-focused);
+      }
+    }
   }
-}
 
-/* Horizontal, AI */
-:host(:focus-visible) .tab.ai-connected:not(.vertical):not(.disabled) {
-  background: var(--kd-color-background-button-primary-ai-focused);
-  border: 2px solid var(--kd-color-border-button-ai-state-focused);
-  color: var(--kd-color-text-level-primary);
-  @include layered-stripe(bottom);
-}
-
-/* Vertical (>= md), AI */
-@media (min-width: breakpoints.$bp-md) {
-  :host(:focus-visible) .tab.vertical.ai-connected:not(.disabled) {
-    background: var(--kd-color-background-button-primary-ai-focused);
-    border: 2px solid var(--kd-color-border-button-ai-state-focused);
-    color: var(--kd-color-text-level-primary);
-    @include layered-stripe(left);
+  &.disabled {
+    color: var(--kd-color-text-link-level-disabled);
+    cursor: not-allowed;
   }
 }

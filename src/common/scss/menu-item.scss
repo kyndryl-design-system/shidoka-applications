@@ -73,7 +73,7 @@
 
 // Centralized pressed mixin to avoid drift between variants.
 // $layered=true uses `background` (not `background-color`) to overwrite any gradient layers.
-// $important=true adds `!important` to the background to beat prior hover/outline-gradient compositions.
+// $important=true adds `!important` to the background
 @mixin pressed($bg, $text, $icon, $layered: true, $important: true) {
   @if $layered {
     @if $important {
@@ -117,9 +117,7 @@
     }
   }
 
-  // --- state precedence ---
-
-  // 3) focus/open (general; disabled/readonly/destructive overrides below)
+  // 1) focus/open (general; disabled/readonly/destructive overrides below)
   &:focus,
   &:focus-within,
   &:focus-visible {
@@ -127,7 +125,7 @@
     background-color: var(--kd-color-background-menu-state-focused);
   }
 
-  // 1) disabled
+  // 2) disabled
   &[disabled] {
     @include disabled-common(var(--kd-color-background-menu-state-default));
     outline: none;
@@ -141,7 +139,7 @@
     border: none;
   }
 
-  // 2) readonly (non-disabled)
+  // 3) readonly (non-disabled)
   &[readonly] {
     cursor: default;
 
@@ -297,12 +295,3 @@
     $important: true
   );
 }
-
-/* cancel pressed visuals for disallowed cases */
-// :host .menu-item.ai-connected:active,
-// :host .menu-item.ai-connected[data-pressed],
-// :host .menu-item[disabled]:active,
-// :host .menu-item[disabled][data-pressed],
-// :host .menu-item[readonly]:active,
-// :host .menu-item[readonly][data-pressed] {
-// }
