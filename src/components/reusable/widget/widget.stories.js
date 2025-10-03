@@ -10,7 +10,6 @@ import '../overflowMenu';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
-import { Badge } from '../badge/badge.stories.js';
 
 export default {
   title: 'Components/Widget',
@@ -71,6 +70,8 @@ const args = {
   selected: false,
   compact: false,
   removeHeader: false,
+  showBadge: false,
+  badgeLabel: 'Label',
 };
 
 const getExampleContent = () => html`
@@ -100,6 +101,8 @@ export const Widget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showBadge=${args.showBadge}
+            badgeLabel=${args.badgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -134,6 +137,8 @@ export const SelectableWidget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showBadge=${args.showBadge}
+            badgeLabel=${args.badgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -159,6 +164,8 @@ export const WithActions = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showBadge=${args.showBadge}
+            badgeLabel=${args.badgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
@@ -192,7 +199,11 @@ export const WithActions = {
 };
 
 export const WithBadge = {
-  args,
+  args: {
+    ...args,
+    showBadge: true,
+    badgeLabel: 'Update',
+  },
   render: (args) => {
     return html`
       <div style="display: flex; max-width: 500px; min-height: 200px;">
@@ -206,20 +217,10 @@ export const WithBadge = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showBadge=${args.showBadge}
+            badgeLabel=${args.badgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
-            <div
-              slot="actions"
-              style="display: flex; align-items: center; gap: 8px;"
-            >
-              ${Badge.render({
-                ...Badge.args,
-                label: 'Update',
-                status: 'information',
-                hideIcon: true,
-              })}
-            </div>
-
             <kyn-overflow-menu
               slot="actions"
               anchorRight
@@ -253,6 +254,8 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showBadge=${args.showBadge}
+            badgeLabel=${args.badgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
