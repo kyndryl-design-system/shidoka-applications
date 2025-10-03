@@ -100,7 +100,7 @@ export class Modal extends LitElement {
 
   /** Apply gradient to modal background */
   @property({ type: Boolean, reflect: true })
-  accessor gradientBkg = false;
+  accessor gradientBackground = false;
 
   /** The dialog element
    * @internal
@@ -123,7 +123,7 @@ export class Modal extends LitElement {
       'size--lg': this.size === 'lg',
       'size--xl': this.size === 'xl',
       'ai-connected': this.aiConnected,
-      'gradient-bkg': this.aiConnected && this.gradientBkg,
+      'gradient-bkg': this.aiConnected && this.gradientBackground,
     };
 
     return html`

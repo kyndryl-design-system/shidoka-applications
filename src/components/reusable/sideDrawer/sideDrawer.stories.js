@@ -33,7 +33,7 @@ const args = {
   showSecondaryButton: true,
   secondaryButtonText: 'Secondary',
   hideCancelButton: false,
-  gradientBkg: false,
+  gradientBackground: false,
 };
 
 export const SideDrawer = {
@@ -49,7 +49,7 @@ export const SideDrawer = {
         cancelBtnText=${args.cancelBtnText}
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
@@ -100,7 +100,7 @@ export const BeforeClose = {
         cancelBtnText=${args.cancelBtnText}
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
@@ -160,7 +160,7 @@ export const NoBackdrop = {
         cancelBtnText=${args.cancelBtnText}
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
@@ -200,7 +200,7 @@ export const NoBackdrop = {
 };
 
 export const AIConnected = {
-  args: { ...args, aiConnected: true, gradientBkg: true },
+  args: { ...args, aiConnected: true, gradientBackground: true },
   render: (args) => {
     return html`
       <kyn-side-drawer
@@ -212,7 +212,7 @@ export const AIConnected = {
         cancelBtnText=${args.cancelBtnText}
         ?submitBtnDisabled=${args.submitBtnDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}

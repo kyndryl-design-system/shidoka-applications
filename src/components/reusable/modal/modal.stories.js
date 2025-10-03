@@ -33,7 +33,7 @@ const args = {
   destructive: false,
   okDisabled: false,
   hideFooter: false,
-  gradientBkg: false,
+  gradientBackground: false,
   showSecondaryButton: true,
   secondaryButtonText: 'Secondary',
   secondaryDisabled: false,
@@ -63,7 +63,7 @@ export const Modal = {
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
@@ -98,7 +98,7 @@ export const ActionButtons = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
@@ -137,7 +137,7 @@ export const BeforeClose = {
         ?okDisabled=${args.okDisabled}
         ?hideCancelButton=${args.hideCancelButton}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
@@ -183,7 +183,7 @@ export const WithForm = {
         ?destructive=${args.destructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
@@ -221,7 +221,7 @@ export const AIConnected = {
     ...args,
     showSecondaryButton: false,
     aiConnected: true,
-    gradientBkg: true,
+    gradientBackground: true,
     okText: 'Primary Button',
     cancelText: 'Secondary Button',
   },
@@ -241,7 +241,7 @@ export const AIConnected = {
         secondaryButtonText=${args.secondaryButtonText}
         ?secondaryDisabled=${args.secondaryDisabled}
         ?hideFooter=${args.hideFooter}
-        ?gradientBkg=${args.gradientBkg}
+        ?gradientBackground=${args.gradientBackground}
         ?hideCancelButton=${args.hideCancelButton}
         ?aiConnected=${args.aiConnected}
         ?disableScroll=${args.disableScroll}
