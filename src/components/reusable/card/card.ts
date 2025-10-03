@@ -16,8 +16,8 @@ import '../inlineConfirm/inlineConfirm';
  * Card.
  * @fires on-card-click - Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`
  * @slot unnamed - Slot for card contents.
- * @slot leftIcon - Slot for left icon when `variant` is `'info'`.
- * @slot inlineConfirm - Slot for right icon when `variant` is `'info'`.
+ * @slot leftIcon - Slot for left icon when `variant` is `'notification'`.
+ * @slot inlineConfirm - Slot for right icon when `variant` is `'notification'`.
  * @part card-wrapper - The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)
  */
 @customElement('kyn-card')
@@ -52,7 +52,10 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor highlight = false;
 
-  /** Card variant. `'default'` & `'notification'` */
+  /** Card variant. `'default'` & `'notification'`
+   * `'notification'` variant is used primarily for Info Card
+   * and contains additional padding, per design specs.
+   */
   @property({ type: String, reflect: true })
   accessor variant: CardVariant = 'default';
 
@@ -71,7 +74,7 @@ export class Card extends LitElement {
     const isAnchor = this.type === 'clickable' && this.href !== '';
 
     if (this.variant === 'notification') {
-      return this.renderInfoCard(baseClasses);
+      return this.renderNotificationVariant(baseClasses);
     }
 
     return isAnchor
@@ -105,7 +108,7 @@ export class Card extends LitElement {
         `;
   }
 
-  private renderInfoCard(baseClasses: Record<string, boolean>) {
+  private renderNotificationVariant(baseClasses: Record<string, boolean>) {
     return html`
       <div
         part="card-wrapper"
