@@ -33,7 +33,7 @@ export const Default = {
         class="info-card kyn-card-hover"
         ?aiConnected=${true}
         type="normal"
-        variant="info"
+        variant="notification"
         @on-confirm=${(e) => action('on-confirm')(e)}
       >
         <span slot="leftIcon">${unsafeSVG(policeIcon)}</span>
@@ -56,7 +56,7 @@ export const WithRightIcon = {
         class="info-card kyn-card-hover"
         ?aiConnected=${true}
         type="normal"
-        variant="info"
+        variant="notification"
         @on-confirm=${(e) => action('on-confirm')(e)}
       >
         <span slot="leftIcon">${unsafeSVG(policeIcon)}</span>

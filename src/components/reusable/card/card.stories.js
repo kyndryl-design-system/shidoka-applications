@@ -16,7 +16,7 @@ export default {
       control: { type: 'select' },
     },
     variant: {
-      options: ['default', 'info'],
+      options: ['default', 'notification'],
       control: { type: 'select' },
     },
   },

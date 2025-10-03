@@ -8,7 +8,7 @@ import InfoCardScss from './infoCard.scss?inline';
 
 type CardType = 'normal' | 'clickable';
 type CardTarget = '_self' | '_blank' | '_parent' | '_top';
-type CardVariant = 'default' | 'info';
+type CardVariant = 'default' | 'notification';
 
 import '../inlineConfirm/inlineConfirm';
 
@@ -52,7 +52,7 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor highlight = false;
 
-  /** Card variant. `'default'` & `'info'` */
+  /** Card variant. `'default'` & `'notification'` */
   @property({ type: String, reflect: true })
   accessor variant: CardVariant = 'default';
 
@@ -65,12 +65,12 @@ export class Card extends LitElement {
       'ai-connected': this.aiConnected,
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
-      'variant-info': this.variant === 'info',
+      'variant-notification': this.variant === 'notification',
     };
 
     const isAnchor = this.type === 'clickable' && this.href !== '';
 
-    if (this.variant === 'info') {
+    if (this.variant === 'notification') {
       return this.renderInfoCard(baseClasses);
     }
 
@@ -166,7 +166,7 @@ export class Card extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     if (this.variant === 'default' && this.classList.contains('info-card')) {
-      this.variant = 'info';
+      this.variant = 'notification';
     }
     this.addEventListener('on-confirm', this._forwardConfirm as EventListener);
   }
