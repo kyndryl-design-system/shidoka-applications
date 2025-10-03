@@ -6,12 +6,11 @@ import './index';
 import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
-import '../badge';
 
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
-import notificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notification.svg';
+import { Badge } from '../badge/badge.stories.js';
 
 export default {
   title: 'Components/Widget',
@@ -213,17 +212,12 @@ export const WithBadge = {
               slot="actions"
               style="display: flex; align-items: center; gap: 8px;"
             >
-              <kyn-badge
-                label="New Update"
-                status="information"
-                iconTitle="new update"
-                ><span
-                  style="display: flex;"
-                  aria-labelledby="User icon"
-                  aria-hidden="true"
-                  >${unsafeSVG(notificationIcon)}</span
-                ></kyn-badge
-              >
+              ${Badge.render({
+                ...Badge.args,
+                label: 'Update',
+                status: 'information',
+                hideIcon: true,
+              })}
             </div>
 
             <kyn-overflow-menu
