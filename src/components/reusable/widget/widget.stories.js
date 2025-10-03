@@ -285,6 +285,8 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showBadge=${args.showBadge}
+            badgeLabel=${args.badgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
