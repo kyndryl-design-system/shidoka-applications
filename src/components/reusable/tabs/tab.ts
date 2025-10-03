@@ -22,6 +22,7 @@ export class Tab extends LitElement {
   @property({ type: Boolean, reflect: true, attribute: 'vertical' })
   accessor vertical = false;
 
+  // Keep private state for backward compatibility
   private get _vertical(): boolean {
     return this.vertical;
   }
@@ -41,7 +42,7 @@ export class Tab extends LitElement {
   override accessor role = 'tab';
 
   @property({ type: Number, reflect: true })
-  override accessor tabIndex = -1;
+  override accessor tabIndex = 0;
 
   @property({ type: String, reflect: true })
   accessor 'aria-selected' = 'false';
@@ -63,7 +64,11 @@ export class Tab extends LitElement {
       'ai-connected': this.aiConnected,
     };
 
-    return html`<div class=${classMap(classes)}><slot></slot></div>`;
+    return html`
+      <div class=${classMap(classes)}>
+        <slot></slot>
+      </div>
+    `;
   }
 
   override connectedCallback() {
@@ -83,18 +88,16 @@ export class Tab extends LitElement {
 
     if (changedProps.has('selected')) {
       this['aria-selected'] = this.selected.toString();
-      this.tabIndex = this.selected && !this.disabled ? 0 : -1;
+      this.tabIndex = this.selected ? 0 : -1;
     }
 
     if (changedProps.has('disabled')) {
       this['aria-disabled'] = this.disabled.toString();
-      if (this.disabled) this.tabIndex = -1;
     }
   }
 
   private _handleClick = (e: Event) => {
     if (!this.selected && !this.disabled) {
-      this.focus();
       const event = new CustomEvent('tab-activated', {
         bubbles: true,
         composed: true,

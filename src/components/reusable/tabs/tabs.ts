@@ -41,41 +41,13 @@ export class Tabs extends LitElement {
    * @internal
    */
   @queryAssignedElements({ slot: 'tabs', selector: 'kyn-tab' })
-  accessor _tabs!: Array<
-    HTMLElement & {
-      id: string;
-      selected: boolean;
-      disabled: boolean;
-      tabIndex: number;
-      focus: () => void;
-      _size?: 'sm' | 'md';
-      vertical?: boolean;
-      aiConnected?: boolean;
-    }
-  >;
+  accessor _tabs!: any;
 
   /** Queries for slotted tab panels.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-tab-panel' })
-  accessor _tabPanels!: Array<
-    HTMLElement & {
-      tabId: string;
-      visible: boolean;
-      vertical?: boolean;
-    }
-  >;
-
-  private readonly _onTabActivated = (e: Event) => {
-    e.stopPropagation();
-    const detail = (e as CustomEvent<{ origEvent: Event; tabId: string }>)
-      .detail;
-    this._updateChildrenSelection(detail.tabId);
-    this._emitChangeEvent(detail.origEvent, detail.tabId);
-  };
-
-  private readonly _onKeydownCapture = (e: KeyboardEvent) =>
-    this._handleKeyboard(e);
+  accessor _tabPanels!: any;
 
   override render() {
     const wrapperClasses = {
@@ -92,7 +64,11 @@ export class Tabs extends LitElement {
 
     return html`
       <div class=${classMap(wrapperClasses)}>
-        <div class=${classMap(tabsClasses)} role="tablist">
+        <div
+          class=${classMap(tabsClasses)}
+          role="tablist"
+          @keydown=${(e: any) => this._handleKeyboard(e)}
+        >
           <slot name="tabs" @slotchange=${this._handleSlotChangeTabs}></slot>
         </div>
 
@@ -105,21 +81,15 @@ export class Tabs extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('tab-activated', this._onTabActivated);
-    this.addEventListener('keydown', this._onKeydownCapture, true);
+    this.addEventListener('tab-activated', (e) => this._handleChange(e));
   }
 
   override disconnectedCallback() {
-    this.removeEventListener('tab-activated', this._onTabActivated);
-    this.removeEventListener('keydown', this._onKeydownCapture, true);
+    this.removeEventListener('tab-activated', (e) => this._handleChange(e));
     super.disconnectedCallback();
   }
 
-  override firstUpdated() {
-    this._initializeSelectionAndFocus();
-  }
-
-  override willUpdate(changedProps: Map<string, unknown>) {
+  override willUpdate(changedProps: any) {
     if (
       changedProps.has('tabSize') ||
       changedProps.has('vertical') ||
@@ -131,62 +101,30 @@ export class Tabs extends LitElement {
 
   private _handleSlotChangeTabs() {
     this._updateChildren();
-    this._initializeSelectionAndFocus();
   }
 
   private _updateChildren() {
-    this._tabs.forEach((tab) => {
-      tab._size = (this.tabSize as 'sm' | 'md') ?? 'md';
+    this._tabs.forEach((tab: any) => {
+      tab._size = this.tabSize;
       tab.vertical = this.vertical;
       tab.aiConnected = this.aiConnected;
     });
 
-    this._tabPanels.forEach((tabPanel) => {
+    this._tabPanels.forEach((tabPanel: any) => {
       tabPanel.vertical = this.vertical;
     });
   }
 
-  private _enabledIdxFrom(start: number, dir: 1 | -1): number {
-    const n = this._tabs.length;
-    let i = start;
-    for (let step = 0; step < n; step++) {
-      i = (i + dir + n) % n;
-      if (!this._tabs[i].disabled) return i;
-    }
-    return start;
-  }
-
-  private _selectedIndex(): number {
-    return this._tabs.findIndex((t) => t.selected);
-  }
-
-  private _focusableIndex(): number {
-    return this._tabs.findIndex((t) => t.tabIndex === 0);
-  }
-
-  private _setFocusIndex(index: number) {
-    this._tabs.forEach((t, i) => {
-      t.tabIndex = !t.disabled && i === index ? 0 : -1;
-    });
-    this._tabs[index]?.focus();
-  }
-
-  private _ensureSelectedOrFirstEnabled() {
-    const sel = this._selectedIndex();
-    if (sel >= 0 && !this._tabs[sel].disabled) {
-      this._setFocusIndex(sel);
-      return;
-    }
-    const firstEnabled = this._tabs.findIndex((t) => !t.disabled);
-    if (firstEnabled >= 0) this._setFocusIndex(firstEnabled);
-  }
-
-  private _initializeSelectionAndFocus() {
-    this._ensureSelectedOrFirstEnabled();
-
-    // Sync panel visibility to current selection
-    const sel = this._selectedIndex();
-    if (sel >= 0) this._syncPanels(this._tabs[sel].id);
+  /**
+   * Updates children and emits a change event based on the provided
+   * event details when a child kyn-tab is clicked.
+   * @param {any} e - The parameter "e" is an event object that contains information about the event
+   * that triggered the handleChange function.
+   */
+  private _handleChange(e: any) {
+    e.stopPropagation();
+    this._updateChildrenSelection(e.detail.tabId);
+    this._emitChangeEvent(e.detail.origEvent, e.detail.tabId);
   }
 
   /**
@@ -197,18 +135,13 @@ export class Tabs extends LitElement {
    */
   private _updateChildrenSelection(selectedTabId: string, updatePanel = true) {
     // update tabs selected prop
-    this._tabs.forEach((tab) => {
+    this._tabs.forEach((tab: any) => {
       tab.selected = tab.id === selectedTabId;
-      tab.tabIndex = !tab.disabled && tab.selected ? 0 : -1;
     });
 
     // update tab-panels visible prop
     if (!updatePanel) return;
-    this._syncPanels(selectedTabId);
-  }
-
-  private _syncPanels(selectedTabId: string) {
-    this._tabPanels.forEach((tabPanel) => {
+    this._tabPanels.forEach((tabPanel: any) => {
       tabPanel.visible = tabPanel.tabId === selectedTabId;
     });
   }
@@ -221,9 +154,9 @@ export class Tabs extends LitElement {
    * @param {string} selectedTabId - The selectedTabId parameter is a string that represents the ID of
    * the selected tab.
    */
-  private _emitChangeEvent(origEvent: Event, selectedTabId: string) {
+  private _emitChangeEvent(origEvent: any, selectedTabId: string) {
     const event = new CustomEvent('on-change', {
-      detail: { origEvent, selectedTabId },
+      detail: { origEvent: origEvent, selectedTabId: selectedTabId },
     });
     this.dispatchEvent(event);
   }
@@ -235,67 +168,64 @@ export class Tabs extends LitElement {
    * @returns In this code, the function `_handleKeyboard` returns nothing in all cases
    * except when the `keyCode` matches the left or right arrow key codes.
    */
-  private _handleKeyboard(e: KeyboardEvent) {
+  private _handleKeyboard(e: any) {
     const LEFT_ARROW_KEY_CODE = 37;
     const UP_ARROW_KEY_CODE = 38;
     const RIGHT_ARROW_KEY_CODE = 39;
     const DOWN_ARROW_KEY_CODE = 40;
     const ENTER_KEY_CODE = 13;
     const SPACE_KEY_CODE = 32;
-    const TAB_KEY_CODE = 9;
-
-    if (!this._tabs?.length) return;
-
-    const n = this._tabs.length;
-    const focusIdx =
-      this._focusableIndex() >= 0
-        ? this._focusableIndex()
-        : this._selectedIndex() >= 0
-        ? this._selectedIndex()
-        : 0;
-
-    const emitAndMaybeUpdate = (idx: number) => {
-      if (!this.disableAutoFocusUpdate) {
-        this._updateChildrenSelection(this._tabs[idx].id, true);
-        this._emitChangeEvent(e, this._tabs[idx].id);
-      }
-    };
+    const TabCount = this._tabs.length;
+    const SelectedTabIndex = this._tabs.findIndex((tab: any) => tab.selected);
 
     switch (e.keyCode) {
-      case TAB_KEY_CODE: {
-        e.preventDefault();
-        const forward = !e.shiftKey;
-        const target = this._enabledIdxFrom(focusIdx, forward ? 1 : -1);
-        this._setFocusIndex(target);
-        emitAndMaybeUpdate(target);
+      case ENTER_KEY_CODE:
+      case SPACE_KEY_CODE: {
+        this._updateChildrenSelection(
+          this._tabs[SelectedTabIndex].id,
+          this.disableAutoFocusUpdate
+        );
         return;
       }
       case LEFT_ARROW_KEY_CODE:
       case UP_ARROW_KEY_CODE: {
-        e.preventDefault();
-        const target = this._enabledIdxFrom(focusIdx, -1);
-        this._setFocusIndex(target);
-        emitAndMaybeUpdate(target);
+        // activate previous tab
+        let prevIndex =
+          SelectedTabIndex === 0 ? TabCount - 1 : SelectedTabIndex - 1;
+        let prevTab = this._tabs[prevIndex];
+
+        if (prevTab.disabled) {
+          prevIndex = prevIndex === 0 ? TabCount - 1 : prevIndex - 1;
+          prevTab = this._tabs[prevIndex];
+        }
+
+        prevTab.focus();
+
+        this._updateChildrenSelection(prevTab.id, !this.disableAutoFocusUpdate);
+        this._emitChangeEvent(e, prevTab.id);
         return;
       }
       case RIGHT_ARROW_KEY_CODE:
       case DOWN_ARROW_KEY_CODE: {
-        e.preventDefault();
-        const target = this._enabledIdxFrom(focusIdx, 1);
-        this._setFocusIndex(target);
-        emitAndMaybeUpdate(target);
+        // activate next tab
+        let nextIndex =
+          SelectedTabIndex === TabCount - 1 ? 0 : SelectedTabIndex + 1;
+        let nextTab = this._tabs[nextIndex];
+
+        if (nextTab.disabled) {
+          nextIndex = nextIndex === TabCount - 1 ? 0 : nextIndex + 1;
+          nextTab = this._tabs[nextIndex];
+        }
+
+        nextTab.focus();
+
+        this._updateChildrenSelection(nextTab.id, !this.disableAutoFocusUpdate);
+        this._emitChangeEvent(e, nextTab.id);
         return;
       }
-      case ENTER_KEY_CODE:
-      case SPACE_KEY_CODE: {
-        e.preventDefault();
-        const idx = focusIdx % n;
-        this._updateChildrenSelection(this._tabs[idx].id, true);
-        this._emitChangeEvent(e, this._tabs[idx].id);
+      default: {
         return;
       }
-      default:
-        return;
     }
   }
 }
