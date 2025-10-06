@@ -83,3 +83,42 @@ $ai-gradient-default: var(
 .g-outline-ai {
   @include outline-gradient-ai($gradient: $ai-gradient-default);
 }
+
+/// Gradient Backgrounds for AI-connected components
+:root {
+  --ai-radial-strength: 20%;
+  --ai-radial-outer: 75%;
+  --ai-right-strength: 15%;
+  --ai-right-spread: 55%;
+}
+
+dialog.ai-connected.gradient-bkg {
+  background-color: var(--kd-color-background-container-ai-default);
+
+  background-image: radial-gradient(
+      circle at 0% 0%,
+      color-mix(
+          in oklab,
+          var(--kd-color-border-ai-default-gradient-start)
+            var(--ai-radial-strength),
+          transparent
+        )
+        0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 100% 50%,
+      color-mix(
+          in oklab,
+          var(--kd-color-border-ai-default-gradient-end)
+            var(--ai-right-strength),
+          transparent
+        )
+        0%,
+      transparent var(--ai-right-spread)
+    );
+
+  background-repeat: no-repeat, no-repeat;
+  background-position: 0 0, 100% 50%;
+  background-size: cover, cover;
+}
