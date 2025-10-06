@@ -10,17 +10,27 @@
   transition: outline-color 150ms ease-out, background-color 150ms ease-out,
     border-color 150ms ease-out, color 150ms ease-out, box-shadow 150ms ease-out;
   border-radius: 4px 4px 0 0;
-}
 
-/* HORIZONTAL — AI HOVER */
-:host([data-aiconnected='true']:hover) {
   @include gradient.outline-gradient-ai(
     $gradient: gradient.$ai-gradient-default,
     $radius: 4px 4px 0 0,
     $width: 2px,
-    $surface: var(--kd-color-background-button-primary-ai-hover),
+    $surface: var(--kd-color-background-ui-hollow-default),
     $outside: false
   );
+
+  &::after {
+    opacity: 0;
+    transition: opacity 150ms ease-out, background 150ms ease-out,
+      inset 150ms ease-out, border-radius 150ms ease-out;
+  }
+}
+
+/* HORIZONTAL — AI HOVER */
+:host([data-aiconnected='true']:hover) {
+  &::after {
+    opacity: 1;
+  }
 
   .tab,
   .tab.selected {
@@ -36,6 +46,10 @@
 :host([data-aiconnected='true']:active) {
   outline: 2px solid var(--kd-color-border-button-ai-state-focused);
 
+  &::after {
+    opacity: 1;
+  }
+
   .tab,
   .tab.selected {
     background: var(--kd-color-background-button-primary-ai-pressed);
@@ -49,6 +63,11 @@
 }
 :host([data-aiconnected='true']:focus-visible) {
   outline: 2px solid var(--kd-color-border-button-ai-state-focused);
+
+  &::after {
+    opacity: 1;
+  }
+
   .tab {
     background: var(--kd-color-background-button-primary-ai-pressed);
     color: var(--kd-color-text-level-primary) !important;
@@ -76,13 +95,9 @@
 /* VERTICAL — AI HOVER */
 @media (min-width: breakpoints.$bp-md) {
   :host([vertical][data-aiconnected='true']:hover) {
-    @include gradient.outline-gradient-ai(
-      $gradient: gradient.$ai-gradient-default,
-      $radius: 0 4px 4px 0,
-      $width: 2px,
-      $surface: var(--kd-color-background-button-primary-ai-hover),
-      $outside: false
-    );
+    &::after {
+      opacity: 1;
+    }
 
     .tab,
     .tab.selected {
@@ -100,6 +115,10 @@
   :host([vertical][data-aiconnected='true']:active) {
     outline: 2px solid var(--kd-color-border-button-ai-state-focused);
     border-radius: 0 4px 4px 0;
+
+    &::after {
+      opacity: 1;
+    }
 
     .tab,
     .tab.selected {
@@ -134,7 +153,7 @@
     @include typography.type-ui-03;
     height: 30px;
     padding: 7px 14px;
-    border-width: 3px;
+    border-width: 1px;
   }
 
   &.selected {
