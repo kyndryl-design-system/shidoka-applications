@@ -70,8 +70,8 @@ const args = {
   selected: false,
   compact: false,
   removeHeader: false,
-  showBadge: false,
-  badgeLabel: 'Label',
+  showStatusBadge: false,
+  statusBadgeLabel: 'Update',
 };
 
 const getExampleContent = () => html`
@@ -101,8 +101,8 @@ export const Widget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            ?showBadge=${args.showBadge}
-            badgeLabel=${args.badgeLabel}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -137,8 +137,8 @@ export const SelectableWidget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            ?showBadge=${args.showBadge}
-            badgeLabel=${args.badgeLabel}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -164,8 +164,8 @@ export const WithActions = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            ?showBadge=${args.showBadge}
-            badgeLabel=${args.badgeLabel}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
@@ -201,8 +201,8 @@ export const WithActions = {
 export const WithBadge = {
   args: {
     ...args,
-    showBadge: true,
-    badgeLabel: 'Update',
+    showStatusBadge: true,
+    statusBadgeLabel: 'Update',
   },
   render: (args) => {
     return html`
@@ -217,8 +217,8 @@ export const WithBadge = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            ?showBadge=${args.showBadge}
-            badgeLabel=${args.badgeLabel}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-overflow-menu
@@ -254,8 +254,8 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            ?showBadge=${args.showBadge}
-            badgeLabel=${args.badgeLabel}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -285,8 +285,8 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
-            ?showBadge=${args.showBadge}
-            badgeLabel=${args.badgeLabel}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}

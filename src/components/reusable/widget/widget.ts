@@ -51,13 +51,13 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   accessor removeHeader = false;
 
-  /** Show badge. */
+  /** Show Status badge. */
   @property({ type: Boolean })
-  accessor showBadge = false;
+  accessor showStatusBadge = false;
 
-  /** Badge Label. */
+  /** Status Badge label. */
   @property({ type: String })
-  accessor badgeLabel = '';
+  accessor statusBadgeLabel = 'Update';
 
   /** Slotted chart element.
    * @internal
@@ -100,10 +100,10 @@ export class Widget extends LitElement {
                 </div>
 
                 <div class="actions">
-                  ${this.showBadge
+                  ${this.showStatusBadge
                     ? html`
                         <kyn-badge
-                          label=${this.badgeLabel}
+                          label=${this.statusBadgeLabel}
                           status="information"
                           hideIcon
                         ></kyn-badge>
