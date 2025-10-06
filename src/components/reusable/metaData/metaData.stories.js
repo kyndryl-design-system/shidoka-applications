@@ -70,6 +70,7 @@ export default {
 const args = {
   horizontal: false,
   noBackground: false,
+  noPadding: false,
 };
 
 export const Default = {
@@ -80,6 +81,7 @@ export const Default = {
         <kyn-meta-data
           ?horizontal=${args.horizontal}
           ?noBackground=${args.noBackground}
+          ?noPadding=${args.noPadding}
         >
           <div slot="label" class="label-center">Label</div>
           <div class="example">
