@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
@@ -36,6 +36,9 @@ export class SampleFileUploader extends LitElement {
   @property({ type: Boolean })
   accessor multiple = false;
 
+  @property({ type: Boolean })
+  accessor immediate = false;
+
   @state()
   accessor _validFiles: any[] = [];
 
@@ -50,6 +53,9 @@ export class SampleFileUploader extends LitElement {
 
   @state()
   accessor _notificationTitle = '';
+
+  @state()
+  accessor _notificationTimeout = 0;
 
   @state()
   accessor _notificationMessage = '';
@@ -78,6 +84,9 @@ export class SampleFileUploader extends LitElement {
   @state()
   accessor _disabled = false;
 
+  @query('form')
+  accessor _form!: HTMLFormElement;
+
   override render() {
     return html`
       <form
@@ -103,52 +112,61 @@ export class SampleFileUploader extends LitElement {
           }}
         >
           <!-- Upload status -->
-          ${this._showNotification
-            ? html`
-                <kyn-notification
-                  slot="upload-status"
-                  .type=${'inline'}
-                  .tagStatus=${this._notificationStatus}
-                  .hideCloseButton=${true}
-                  .notificationTitle=${this._notificationTitle}
-                  style="margin-bottom: 24px"
-                >
-                  ${this._showProgressBar
-                    ? html`
-                        <div class="notification-status-body">
-                          <kyn-progress-bar
-                            .label=${this._currentFileUploading}
-                            .value=${this._overallProgress}
-                            .max=${100}
-                            .status=${this._overallProgress === 100
-                              ? 'success'
-                              : 'active'}
-                            .showInlineLoadStatus=${true}
-                            .unit=${'%'}
-                            .showActiveHelperText=${true}
-                            .helperText=${this._helperText}
-                          ></kyn-progress-bar>
-                          <kyn-button
-                            kind="outline"
-                            size="small"
-                            @on-click=${this._stopFileUpload}
-                          >
-                            <span slot="icon">${unsafeSVG(closeIcon)}</span>
-                          </kyn-button>
-                        </div>
-                      `
-                    : this._notificationMessage}
-                </kyn-notification>
-              `
-            : ``}
+          <kyn-notification-container slot="upload-status">
+            ${this._showNotification
+              ? html`
+                  <kyn-notification
+                    type="toast"
+                    .timeout=${this._notificationTimeout}
+                    .tagStatus=${this._notificationStatus}
+                    hideCloseButton
+                    .notificationTitle=${this._notificationTitle}
+                    @on-close=${() => {
+                      this._setNotificationConfig(false, 'default', '', '');
+                    }}
+                  >
+                    ${this._showProgressBar
+                      ? html`
+                          <div class="notification-status-body">
+                            <kyn-progress-bar
+                              .label=${this._currentFileUploading}
+                              .value=${this._overallProgress}
+                              .max=${100}
+                              .status=${this._overallProgress === 100
+                                ? 'success'
+                                : 'active'}
+                              .showInlineLoadStatus=${true}
+                              .unit=${'%'}
+                              .showActiveHelperText=${true}
+                              .helperText=${this._helperText}
+                            ></kyn-progress-bar>
+                            <kyn-button
+                              kind="outline"
+                              size="small"
+                              @on-click=${this._stopFileUpload}
+                            >
+                              <span slot="icon">${unsafeSVG(closeIcon)}</span>
+                            </kyn-button>
+                          </div>
+                        `
+                      : this._notificationMessage}
+                  </kyn-notification>
+                `
+              : ``}
+          </kyn-notification-container>
         </kyn-file-uploader>
-        ${this._validFiles.length > 0 || this._invalidFiles.length > 0
-          ? html`<kyn-button
-              type="submit"
-              size="small"
-              ?disabled=${this._disableUploadButton()}
-              >Start upload</kyn-button
-            >`
+
+        ${!this.immediate &&
+        (this._validFiles.length > 0 || this._invalidFiles.length > 0)
+          ? html`
+              <kyn-button
+                type="submit"
+                size="small"
+                ?disabled=${this._disableUploadButton()}
+              >
+                Start upload
+              </kyn-button>
+            `
           : ''}
       </form>
     `;
@@ -168,6 +186,14 @@ export class SampleFileUploader extends LitElement {
     } else {
       this._setNotificationConfig(false, 'default', '', '');
     }
+
+    if (
+      this.immediate &&
+      this._validFiles.length > 0 &&
+      this._invalidFiles.length === 0
+    ) {
+      this._form.requestSubmit();
+    }
   }
 
   private _disableUploadButton() {
@@ -182,6 +208,8 @@ export class SampleFileUploader extends LitElement {
     this._setNotificationConfig(true, 'default', '', '');
     this._disabled = true;
     this._showProgressBar = true;
+    this._notificationTitle = 'Uploading files';
+    this._notificationTimeout = 0;
     this._currentFileUploading = '';
     this._helperText = '';
     this._uploadCanceled = false;
@@ -256,6 +284,7 @@ export class SampleFileUploader extends LitElement {
         break;
       }
     }
+
     if (!this._uploadCanceled) {
       const invalidFilesCount = this._invalidFiles.length;
       this._notificationStatus = invalidFilesCount > 0 ? 'error' : 'success';
@@ -263,6 +292,7 @@ export class SampleFileUploader extends LitElement {
         invalidFilesCount > 0
           ? 'Upload partially successful'
           : 'Files uploaded';
+      this._notificationTimeout = 6;
       this._showProgressBar = false;
       this._notificationMessage =
         invalidFilesCount > 0
@@ -279,6 +309,7 @@ export class SampleFileUploader extends LitElement {
     this._disabled = false;
     this._uploadCanceled = true;
     this._showProgressBar = false;
+    this._notificationTimeout = 6;
     this._setNotificationConfig(
       true,
       'warning',

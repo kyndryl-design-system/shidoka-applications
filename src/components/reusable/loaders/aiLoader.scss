@@ -1,0 +1,92 @@
+/* aiLoader.scss */
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+.wrapper.variant-ai {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transition: opacity 500ms ease-out;
+}
+
+.wrapper.variant-ai.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--kd-color-background-opacity-4);
+  backdrop-filter: var(--kd-background-blur-medium);
+  z-index: var(--kd-z-overlay);
+}
+
+.wrapper.variant-ai.ai-connected {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  --ai-size: 100px;
+  --ai-stroke: 10px;
+  --ai-track: var(--kd-color-background-loader-bar-primary);
+  --ai-arc: var(--kd-color-opacity-ai-warm-red-90);
+}
+
+.wrapper.variant-ai.ai-connected.size-mini {
+  width: 20px;
+  height: 20px;
+  --ai-size: 16px;
+  --ai-stroke: 2px;
+  --ai-track: var(
+    --loader-track,
+    var(--kd-color-background-loader-bar-primary)
+  );
+  --ai-arc: var(--loader-secondary, var(--kd-color-opacity-ai-warm-red-90));
+}
+
+.wrapper.variant-ai .ai-spinner-svg {
+  width: var(--ai-size);
+  height: var(--ai-size);
+}
+
+.wrapper.variant-ai .ai-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ai-rotate 1.25s linear infinite;
+}
+
+.wrapper.variant-ai .ai-track {
+  fill: none;
+  stroke: var(--ai-track);
+  stroke-width: var(--ai-stroke);
+  stroke-opacity: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.wrapper.variant-ai .ai-arc {
+  fill: none;
+  stroke: var(--ai-arc);
+  stroke-width: var(--ai-stroke);
+  stroke-linecap: round;
+  transform-origin: 50% 50%;
+  stroke-opacity: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 25 276.4601535;
+  stroke-dashoffset: 0;
+}
+
+.wrapper.variant-ai.ai-connected.size-mini .ai-arc {
+  stroke: var(--ai-arc);
+  stroke-dasharray: 6 276.4601535;
+  stroke-opacity: 1;
+}
+
+@keyframes ai-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

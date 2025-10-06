@@ -98,6 +98,10 @@ export class Modal extends LitElement {
   @property({ type: String })
   accessor closeText = 'Close';
 
+  /** Apply gradient to modal background */
+  @property({ type: Boolean, reflect: true })
+  accessor gradientBackground = false;
+
   /** The dialog element
    * @internal
    */
@@ -119,6 +123,7 @@ export class Modal extends LitElement {
       'size--lg': this.size === 'lg',
       'size--xl': this.size === 'xl',
       'ai-connected': this.aiConnected,
+      'gradient-bkg': this.aiConnected && this.gradientBackground,
     };
 
     return html`
@@ -135,7 +140,7 @@ export class Modal extends LitElement {
         <form method="dialog">
           <kyn-button
             class="close"
-            kind="ghost"
+            kind=${this.aiConnected ? 'ghost-ai' : 'ghost'}
             size="small"
             description=${this.closeText}
             @click=${(e: Event) => this._closeModal(e, 'cancel')}
@@ -180,7 +185,7 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind=${this.aiConnected ? 'outline-ai' : 'outline'}
+                            kind=${'outline'}
                             ?disabled=${this.secondaryDisabled}
                             @click=${(e: Event) =>
                               this._closeModal(e, 'secondary')}

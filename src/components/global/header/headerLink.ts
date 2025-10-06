@@ -158,6 +158,7 @@ export class HeaderLink extends LitElement {
                 <kyn-text-input
                   hideLabel
                   size="sm"
+                  type="search"
                   label=${this.searchLabel}
                   placeholder=${this.searchLabel}
                   value=${this._searchTerm}

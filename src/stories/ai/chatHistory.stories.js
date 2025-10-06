@@ -2,11 +2,13 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
-import { WithRightIconAndDescription } from './infoCard.stories.js';
+
+import { WithRightIcon as InfoCardWithRightIcon } from './infoCard.stories.js';
 import { ChatMessages } from './chatMessages.stories.js';
 
 import '../../components/reusable/pagetitle';
 import '../../components/reusable/search';
+import '../../components/reusable/link';
 
 export default {
   title: 'AI/Patterns/Chat',
@@ -22,8 +24,10 @@ export const ChatHistory = {
   render: () => {
     return html`
       <div class="chat_list">
-        <kyn-page-title type="tertiary" pagetitle="Chat History" aiConnected>
-        </kyn-page-title>
+        <kyn-page-title
+          type="tertiary"
+          pagetitle="Chat History"
+        ></kyn-page-title>
 
         <div class="chat_content">
           <kyn-search
@@ -33,20 +37,23 @@ export const ChatHistory = {
             size="md"
             @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
           ></kyn-search>
+
           <div class="chat-section">
-            <label class="kd-type--ui-02 kd-type--weight-medium"
-              >Day, Date & Time Stamp</label
-            >
-            ${Array.from({ length: 3 }, () => {
-              return html` ${WithRightIconAndDescription.render()} `;
-            })}
+            <p class="kd-type--ui-02 kd-type--weight-medium">
+              Day, Date & Time Stamp
+            </p>
+            ${Array.from({ length: 3 }).map(() =>
+              InfoCardWithRightIcon.render()
+            )}
           </div>
         </div>
+
         <kyn-link
           standalone
           kind="ai"
           @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
-          >Show older
+        >
+          Show older
           <span style="display:flex;" slot="icon"
             >${unsafeSVG(chevronDownIcon)}</span
           >
@@ -81,9 +88,8 @@ export const ChatHistoryDetails = {
         style="margin-bottom: 4px"
         type="tertiary"
         pagetitle="Chat History"
-        aiConnected
-      >
-      </kyn-page-title>
+      ></kyn-page-title>
+
       <div class="chat_details">
         <kyn-link
           kind="ai"
@@ -92,10 +98,12 @@ export const ChatHistoryDetails = {
         >
           Back
         </kyn-link>
-        <kyn-page-title type="tertiary" pagetitle="Page Title" aiConnected>
-        </kyn-page-title>
+
+        <kyn-page-title type="tertiary" pagetitle="Page Title"></kyn-page-title>
+
         <div style="width:100%">${ChatMessages.render()}</div>
       </div>
+
       <style>
         .chat_details {
           display: flex;

@@ -1,22 +1,32 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/menu-item.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: block;
 }
 
 .option {
-  cursor: default;
-  padding: 8px 16px;
+  cursor: pointer;
+  padding: 16px;
   height: 48px;
   transition: background-color 150ms ease-out;
   display: flex;
   gap: 8px;
   align-items: center;
+  background: var(--kd-color-background-menu-state-default);
+
+  &.ai-connected {
+    background: var(--kd-color-background-menu-state-ai-default);
+    &:not([disabled]):not([readonly]):hover {
+      background: var(--kd-color-background-menu-state-ai-hover);
+    }
+  }
 
   &[selected] {
     display: flex;
     align-items: center;
+    background: var(--kd-color-background-menu-state-ai-active);
   }
 
   span {
@@ -29,11 +39,12 @@
   span.check-icon {
     display: flex;
     margin-left: auto;
-    padding: 0.5rem 0.5rem 0.5rem 0;
+    padding: 8px 8px 8px 0;
   }
 
   slot[name='icon']::slotted(span) {
     display: flex;
+    padding: 8px 8px 8px 0;
   }
 }
 

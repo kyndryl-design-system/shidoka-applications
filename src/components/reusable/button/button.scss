@@ -4,6 +4,8 @@
 
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
@@ -206,23 +208,42 @@
     }
   }
 
-  &--primary-ai {
+  &--primary-ai,
+  &--secondary-ai {
     background-color: var(--kd-color-background-button-primary-ai-default);
-    color: var(--kd-color-text-button-dark-primary);
+    color: var(--kd-color-text-button-ai-default);
 
-    // hover
-    &:before {
-      background-color: var(--kd-color-background-button-primary-ai-hover);
+    &:not([disabled]) {
+      @include gradient.border-gradient-ai(
+        $gradient: gradient.$ai-gradient-default,
+        $radius: 6px,
+        $width: 1px,
+        $surface: var(--kd-color-background-container-ai-level-2)
+      );
+
+      &:hover {
+        &:before {
+          background-color: var(--kd-color-background-button-primary-ai-hover);
+          color: var(--kd-color-text-button-ai-default);
+        }
+      }
     }
 
     &:focus-visible {
       outline-color: var(--kd-color-border-button-ai-state-focused);
+
+      &:before {
+        background-color: var(--kd-color-background-button-primary-ai-focused);
+        color: var(--kd-color-text-button-ai-default);
+      }
     }
 
     &:active {
       &:before {
         background-color: var(--kd-color-background-button-primary-ai-pressed);
+        color: var(--kd-color-text-density-darker);
       }
+      @include elevation.shadow(2, true);
     }
 
     &.selected {
@@ -295,38 +316,6 @@
     }
   }
 
-  &--secondary-ai {
-    background-color: var(--kd-color-background-button-secondary-ai-default);
-    color: var(--kd-color-text-button-ai-default);
-
-    // hover
-    &:before {
-      background-color: var(--kd-color-background-button-secondary-ai-hover);
-    }
-    &:hover {
-      color: var(--kd-color-text-button-dark-primary);
-    }
-
-    &:focus-visible {
-      outline-color: var(--kd-color-border-button-ai-state-focused);
-    }
-
-    &:active {
-      color: var(--kd-color-text-button-dark-primary);
-
-      &:before {
-        background-color: var(
-          --kd-color-background-button-secondary-ai-pressed
-        );
-      }
-    }
-
-    &.selected {
-      background-color: var(--kd-color-background-button-secondary-ai-selected);
-      color: var(--kd-color-text-level-light);
-    }
-  }
-
   &--secondary-destructive {
     background-color: var(
       --kd-color-background-button-secondary-destructive-default
@@ -361,25 +350,26 @@
   }
 
   &--tertiary {
-    background-color: var(--kd-color-background-button-tertiary-state-default);
-    color: var(--kd-color-text-button-dark-tertiary);
+    background-color: var(--kd-color-background-accent-tertiary);
+    color: var(--kd-color-background-ui-default-dark);
 
     // hover
-    &:before {
-      background-color: var(--kd-color-background-button-tertiary-state-hover);
+    &:hover {
+      background-color: var(--kd-color-background-ui-default-hover);
+      color: var(--kd-color-text-density-darker);
     }
 
     &:focus-visible {
       outline-color: var(--kd-color-border-button-tertiary-state-focused);
+      background-color: var(--kd-color-background-button-web-focused);
+      color: var(--kd-color-text-button-dark-tertiary);
     }
 
     &:active {
       color: var(--kd-color-text-button-dark-primary);
 
       &:before {
-        background-color: var(
-          --kd-color-background-button-tertiary-state-pressed
-        );
+        background-color: var(--kd-color-background-menu-state-pressed);
       }
     }
 
@@ -435,7 +425,8 @@
     }
   }
 
-  &--outline {
+  &--outline,
+  &--outline-ai {
     color: var(--kd-color-text-button-light-primary);
     border-color: var(--kd-color-border-button-primary-state-default);
 
@@ -462,33 +453,6 @@
     &.selected {
       background-color: var(--kd-color-background-secondary-state-selected);
       color: var(--kd-color-text-level-light);
-    }
-  }
-
-  &--outline-ai {
-    color: var(--kd-color-text-button-ai-default);
-    border-color: var(--kd-color-border-button-ai-state-default);
-
-    &:hover {
-      background-color: var(--kd-color-background-button-primary-ai-hover);
-      border-color: var(--kd-color-border-button-ai-state-hover);
-      color: var(--kd-color-text-level-light);
-    }
-
-    &:focus-visible {
-      border-color: var(--kd-color-border-button-ai-state-focused);
-      outline-color: var(--kd-color-border-button-ai-state-focused);
-    }
-
-    &:active {
-      background-color: var(--kd-color-background-button-primary-ai-pressed);
-      border-color: var(--kd-color-border-button-ai-state-pressed);
-      color: var(--kd-color-text-level-light);
-    }
-
-    &.selected {
-      background-color: var(--kd-color-background-secondary-ai-selected);
-      color: var(--kd-color-text-button-dark-primary);
     }
   }
 
@@ -533,7 +497,13 @@
     }
 
     &:focus-visible {
-      outline-color: var(--kd-color-border-button-tertiary-state-focused);
+      background-color: var(--kd-color-background-button-ghost-state-hover);
+      outline-color: transparent;
+      border: 1px solid
+        var(--kd-color-background-page-dashboard-dashboard-default);
+      color: var(--kd-color-text-button-light-primary);
+      box-shadow: 0 0 0 1px
+        var(--kd-color-button-tertiary-state-focused, #1d2125);
     }
 
     &:active {
@@ -552,6 +522,40 @@
     &.selected {
       background-color: var(--kd-color-background-secondary-state-selected);
       color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &--ghost-ai {
+    color: var(--kd-color-text-link-level-default);
+    background: var(--kd-color-background-button-ghost-ai-default);
+
+    &:hover {
+      background-color: var(--kd-color-background-button-ghost-ai-hover);
+      color: var(--kd-color-text-level-primary);
+    }
+
+    &:focus-visible {
+      outline-color: var(--kd-color-border-button-ai-state-focused);
+      background-color: var(--kd-color-background-button-ghost-ai-focused);
+    }
+
+    &:active {
+      background-color: var(--kd-color-background-button-ghost-ai-pressed);
+      color: var(--kd-color-text-level-primary);
+      @include elevation.shadow(2, true);
+    }
+
+    &[disabled] {
+      color: var(--kd-color-text-link-level-disabled);
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    &.selected {
+      background-color: var(--kd-color-background-button-ghost-ai-selected);
+      color: var(--kd-color-text-link-level-default);
     }
   }
 

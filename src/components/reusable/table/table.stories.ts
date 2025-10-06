@@ -258,7 +258,7 @@ export const SortAndExpand: Story = {
   args: {
     sortable: true,
   },
-  render: (args) => {
+  render: () => {
     return html`
       <story-table
         .tableTitle=${'Sorting'}

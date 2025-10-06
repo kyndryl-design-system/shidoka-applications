@@ -2,6 +2,7 @@
 @use '../../../common/scss/mixins.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
@@ -11,16 +12,9 @@
   @include mixins.visually-hidden;
 }
 
-#close-drawer {
-  span.close-icon {
-    display: flex;
+.side-drawer-close-btn {
+  span {
     color: var(--kd-color-icon-primary);
-  }
-
-  &:hover {
-    span.close-icon {
-      color: var(--kd-color-text-button-dark-primary);
-    }
   }
 }
 
@@ -38,11 +32,6 @@ dialog {
   overflow: hidden;
   outline: none;
   z-index: var(--kd-z-overlay);
-
-  &.ai-connected {
-    @include elevation.shadow(3, true);
-    background: var(--kd-color-background-container-ai-subtle);
-  }
 
   &[open] {
     animation: dialog-in 400ms forwards;
@@ -150,7 +139,7 @@ form {
 
   &.ai-connected {
     background-color: var(--kd-color-background-container-ai-default);
-    border-top: 1px solid var(--kd-color-border-variants-ai);
+    border-top: 1px solid var(--kd-color-border-variants-light);
   }
 }
 
@@ -218,5 +207,41 @@ form {
 
   100% {
     transform: none;
+  }
+}
+
+/* ===== AI gradient surface ===== */
+
+dialog.ai-connected {
+  @include elevation.shadow(3, true);
+  background: var(--kd-color-background-container-ai-default);
+
+  &.gradient-bkg {
+    background-color: var(--kd-color-background-container-ai-default);
+
+    background-image: radial-gradient(
+        circle at 0% 0%,
+        color-mix(
+            in oklab,
+            var(--kd-color-border-ai-default-gradient-start) 20%,
+            transparent
+          )
+          0%,
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 100% 50%,
+        color-mix(
+            in oklab,
+            var(--kd-color-border-ai-default-gradient-end) 15%,
+            transparent
+          )
+          0%,
+        transparent 55%
+      );
+
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, 100% 50%;
+    background-size: cover, cover;
   }
 }

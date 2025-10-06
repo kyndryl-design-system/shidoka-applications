@@ -66,6 +66,14 @@ export class TimePicker extends FlatpickrBase {
     };
   }
 
+  getTimepickerClasses() {
+    return {
+      mode: 'time',
+      enableTime: true,
+      noCalendar: true,
+    };
+  }
+
   override async firstUpdated(changedProps: PropertyValues): Promise<void> {
     this.updateTimeFormat();
 

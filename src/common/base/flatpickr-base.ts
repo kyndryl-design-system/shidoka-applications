@@ -14,7 +14,6 @@ import {
   loadLocale,
   hideEmptyYear,
   getModalContainer,
-  clearFlatpickrInput,
   updateEnableTime,
   emitValue,
 } from '../helpers/flatpickr';

@@ -54,6 +54,13 @@ export class DatePicker extends FlatpickrBase {
     };
   }
 
+  override render(): TemplateResult {
+    const placeholder = getPlaceholder(this.dateFormat) || '';
+    const anchorId =
+      this.name || `date-picker-${Math.random().toString(36).slice(2)}`;
+    return this.renderBaseStructure(anchorId, placeholder, true);
+  }
+
   protected hasValue(): boolean {
     if (this.mode === 'multiple') {
       return Array.isArray(this.value) && this.value.length > 0;
@@ -185,13 +192,6 @@ export class DatePicker extends FlatpickrBase {
   override async firstUpdated(changedProperties: Map<string, unknown>) {
     super.firstUpdated(changedProperties);
     injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
-  }
-
-  override render(): TemplateResult {
-    const placeholder = getPlaceholder(this.dateFormat) || '';
-    const anchorId =
-      this.name || `date-picker-${Math.random().toString(36).slice(2)}`;
-    return this.renderBaseStructure(anchorId, placeholder, true);
   }
 }
 declare global {

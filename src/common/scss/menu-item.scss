@@ -1,199 +1,297 @@
-@use './global.scss';
+@use '../scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../common/scss/gradients.scss' as gradient;
 
-:host([highlighted]) {
-  outline: 1px solid var(--kd-color-border-variants-focus);
+// ==== mixins ====
+@mixin state-colors($bg, $text, $icon: null) {
+  background-color: $bg;
+
+  .menu-item-inner-el {
+    color: $text;
+  }
+
+  @if $icon != null {
+    slot[name='icon']::slotted(span) {
+      color: $icon;
+    }
+  }
 }
 
-.menu-item {
+@mixin disabled-common($bg-default) {
+  color: var(--kd-color-text-level-disabled);
+
+  .menu-item-inner-el {
+    color: var(--kd-color-text-level-disabled);
+  }
+
+  &,
+  & * {
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: $bg-default;
+  }
+}
+
+@mixin destructive-common {
+  color: var(--kd-color-text-variant-destructive);
+  border-top: 1px solid var(--kd-color-border-level-tertiary);
+
+  .menu-item-inner-el {
+    color: var(--kd-color-text-variant-destructive);
+  }
+
+  &:hover {
+    background-color: var(--kd-color-status-error-light);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--kd-color-border-button-primary-destructive-default);
+    background-color: var(--kd-color-status-error-light);
+
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-primary);
+    }
+  }
+}
+
+@mixin border-gradient-ai(
+  $gradient,
+  $radius: 4px,
+  $width: 1px,
+  $surface: transparent
+) {
+  box-sizing: border-box;
+  border: $width solid transparent;
+  border-radius: $radius;
+  background: linear-gradient(#{$surface}, #{$surface}) padding-box,
+    #{$gradient} border-box;
+  background-clip: padding-box, border-box;
+}
+
+// Centralized pressed mixin to avoid drift between variants.
+// $layered=true uses `background` (not `background-color`) to overwrite any gradient layers.
+// $important=true adds `!important` to the background
+@mixin pressed($bg, $text, $icon, $layered: true, $important: true) {
+  @if $layered {
+    @if $important {
+      background: $bg !important;
+    } @else {
+      background: $bg;
+    }
+  } @else {
+    @if $important {
+      background-color: $bg !important;
+    } @else {
+      background-color: $bg;
+    }
+  }
+
+  border: 1px solid transparent;
+
+  .menu-item-inner-el {
+    color: $text;
+  }
+
+  slot[name='icon']::slotted(span),
+  .check-icon {
+    color: $icon;
+  }
+}
+
+// ==== defaults ====
+:host .menu-item {
   background-color: var(--kd-color-background-menu-state-default);
+  transition: background-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 
   .menu-item-inner-el {
     color: var(--kd-color-text-level-primary);
     transition: color 150ms ease-out;
-  }
 
-  transition: background-color 150ms ease-out, color 150ms ease-out;
-
-  &:hover:not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-hover);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
+    &.check-icon {
+      color: var(--kd-color-icon-primary);
     }
   }
 
-  &:is(:focus, :focus-within, :focus-visible):not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-open);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-primary);
-    }
+  // 1) focus/open (general; disabled/readonly/destructive overrides below)
+  &:focus,
+  &:focus-within,
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+    background-color: var(--kd-color-background-menu-state-focused);
   }
 
-  &:active:not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-pressed);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
-    }
-  }
-
-  &[selected]:not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-open);
-
-    &:hover {
-      background-color: var(--kd-color-background-menu-state-hover);
-
-      .menu-item-inner-el {
-        color: var(--kd-color-text-level-light);
-      }
-    }
-  }
-
-  &[highlighted]:not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-hover);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
-    }
-  }
-
-  &[selected][highlighted]:not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-hover);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
-    }
-  }
-
-  &[highlighted]:is(:focus, :focus-within, :focus-visible):not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-hover);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
-    }
-  }
-
+  // 2) disabled
   &[disabled] {
-    color: var(--kd-color-text-level-disabled);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-disabled);
-    }
-
-    &:hover {
-      cursor: not-allowed;
-      background-color: var(--kd-color-background-menu-state-default);
-    }
-
-    kyn-checkbox:hover {
-      cursor: not-allowed;
-    }
+    @include disabled-common(var(--kd-color-background-menu-state-default));
+    outline: none;
+    border: none;
+  }
+  // ensure disabled wins over general focus styles
+  &[disabled]:focus,
+  &[disabled]:focus-within,
+  &[disabled]:focus-visible {
+    outline: none;
+    border: none;
   }
 
-  &.destructive {
-    color: var(--kd-color-text-variant-destructive);
-    border-top: 1px solid var(--kd-color-border-level-tertiary);
+  // 3) readonly (non-disabled)
+  &[readonly] {
+    cursor: default;
 
-    &:hover:not([disabled]) {
-      background-color: var(--kd-color-status-error-light);
-    }
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-variant-destructive);
-    }
+    background-color: var(--kd-color-background-menu-state-default);
   }
-
-  &:active:not([disabled]),
-  &:has(:active):not([disabled]),
-  &[selected]:active:not([disabled]),
-  &[selected]:has(:active):not([disabled]),
-  &[highlighted]:active:not([disabled]),
-  &[highlighted]:has(:active):not([disabled]),
-  &[selected][highlighted]:active:not([disabled]),
-  &[selected][highlighted]:has(:active):not([disabled]) {
-    background-color: var(--kd-color-background-menu-state-pressed);
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-light);
-    }
-  }
-
-  &.ai-connected-true {
-    background-color: var(--kd-color-background-menu-state-ai-default);
+  &[readonly]:hover,
+  &[readonly]:active,
+  &[readonly]:focus,
+  &[readonly]:focus-visible {
+    background-color: var(--kd-color-background-menu-state-default);
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-primary);
     }
-
-    &:hover:not([disabled]) {
-      background-color: var(--kd-color-background-menu-state-ai-hover);
-
-      .menu-item-inner-el {
-        color: var(--kd-color-text-level-light);
-      }
+    & .check-icon {
+      color: var(--kd-color-icon-primary);
     }
-
-    &:is(:focus, :focus-within, :focus-visible):not([disabled]) {
-      background-color: var(--kd-color-background-menu-state-ai-open);
-
-      .menu-item-inner-el {
-        color: var(--kd-color-text-level-primary);
-      }
-    }
-
-    &:active:not([disabled]) {
-      background-color: var(--kd-color-background-menu-state-ai-pressed);
-
-      .menu-item-inner-el {
-        color: var(--kd-color-text-level-light);
-      }
-    }
-
-    &[selected]:not([disabled]),
-    &[highlighted]:not([disabled]) {
-      background-color: var(--kd-color-background-menu-state-ai-open);
-
-      &:hover,
-      &[highlighted] {
-        background-color: var(--kd-color-background-menu-state-ai-hover);
-
-        .menu-item-inner-el {
-          color: var(--kd-color-text-level-light);
-        }
-      }
-    }
-
-    &[disabled] {
-      color: var(--kd-color-text-level-disabled);
-
-      .menu-item-inner-el {
-        color: var(--kd-color-text-level-disabled);
-      }
-
-      &:hover {
-        cursor: not-allowed;
-        background-color: var(--kd-color-background-menu-state-ai-default);
-      }
-
-      kyn-checkbox:hover {
-        cursor: not-allowed;
-      }
-    }
-
-    &.destructive {
-      color: var(--kd-color-text-variant-destructive);
-      border-top: 1px solid var(--kd-color-border-level-tertiary);
-
-      &:hover:not([disabled]) {
-        background-color: var(--kd-color-status-error-light);
-      }
-
-      .menu-item-inner-el {
-        color: var(--kd-color-text-variant-destructive);
-      }
+    slot[name='icon']::slotted(span) {
+      color: var(--kd-color-icon-primary);
     }
   }
+
+  // selected + readonly
+  &[readonly][selected] {
+    background-color: var(--kd-color-background-forms-default);
+  }
+  &[readonly][selected]:hover,
+  &[readonly][selected]:active {
+    background-color: var(--kd-color-background-forms-default);
+  }
+
+  // highlighted/active guard
+  &[readonly]:active,
+  &[readonly][highlighted] {
+    background: var(--kd-color-background-forms-default) !important;
+  }
+
+  // 4) hover (non-AI)
+  &:hover {
+    @include state-colors(
+      var(--kd-color-background-menu-state-hover),
+      var(--kd-color-text-level-light),
+      var(--kd-color-icon-light)
+    );
+  }
+  // cancel hover when readonly/disabled/ai-connected/destructive
+  // &[disabled]:hover,
+  // &[readonly]:hover,
+  // &.ai-connected:hover,
+  // &.destructive:hover {
+
+  // }
+
+  // 5) selected (non-disabled)
+  &[selected] {
+    @include state-colors(
+      var(--kd-color-background-menu-state-open),
+      var(--kd-color-text-level-primary)
+    );
+  }
+  &[selected]:hover {
+    @include state-colors(
+      var(--kd-color-background-menu-state-hover),
+      var(--kd-color-text-level-light)
+    );
+  }
+
+  // leave commented out for now as it causes issues with keyboard nav
+  // 6) highlighted (non-disabled)
+  // &[highlighted] {
+  //   @include state-colors(
+  //     var(--kd-color-background-menu-state-hover),
+  //     var(--kd-color-text-level-light)
+  //   );
+  //   // default (non-AI) focus ring
+  //   outline: 1px solid var(--kd-color-border-variants-focus);
+  // }
+
+  // ----- AI variant -----
+  &.ai-connected {
+    background-color: var(--kd-color-background-menu-state-ai-default);
+    color: var(--kd-color-text-level-primary);
+  }
+
+  // &.ai-connected:focus,
+  // &.ai-connected:focus-within,
+  // &.ai-connected:focus-visible {
+  // }
+
+  &.ai-connected:hover {
+    background-color: var(--kd-color-background-menu-state-ai-hover);
+
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-primary);
+    }
+    slot[name='icon']::slotted(span),
+    .check-icon {
+      color: var(--kd-color-icon-primary);
+    }
+  }
+
+  &.ai-connected[highlighted] {
+    background-color: var(--kd-color-background-menu-state-ai-focused);
+  }
+
+  &.ai-connected[selected]:hover,
+  &.ai-connected[highlighted]:hover {
+    @include state-colors(
+      var(--kd-color-background-menu-state-ai-hover),
+      var(--kd-color-text-level-primary)
+    );
+    slot[name='icon']::slotted(span),
+    .check-icon {
+      color: var(--kd-color-icon-primary);
+    }
+  }
+
+  &.ai-connected:active,
+  &.ai-connected[data-pressed],
+  &.ai-connected:hover:active,
+  &.ai-connected:hover[data-pressed] {
+    @include pressed(
+      var(--kd-color-background-menu-state-ai-pressed),
+      var(--kd-color-text-level-primary),
+      var(--kd-color-icon-primary),
+      $layered: true,
+      $important: true
+    );
+  }
+
+  &.ai-connected[disabled] {
+    @include disabled-common(var(--kd-color-background-menu-state-ai-default));
+  }
+
+  // Destructive variant
+  &.destructive {
+    @include destructive-common;
+  }
+}
+
+// ---- pressed states (non-AI) ----
+:host .menu-item:active,
+:host .menu-item[data-pressed],
+:host .menu-item[selected]:active,
+:host .menu-item[selected][data-pressed],
+:host .menu-item[highlighted]:active,
+:host .menu-item[highlighted][data-pressed] {
+  @include pressed(
+    var(--kd-color-background-menu-state-pressed),
+    var(--kd-color-text-level-light),
+    var(--kd-color-icon-light),
+    $layered: true,
+    $important: true
+  );
 }

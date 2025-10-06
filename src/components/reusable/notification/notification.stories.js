@@ -15,6 +15,9 @@ const notificationBodyMsg =
 export default {
   title: 'Components/Notification',
   component: 'kyn-notification',
+  subcomponents: {
+    'kyn-notification-container': 'kyn-notification-container',
+  },
   argTypes: {
     type: {
       options: ['normal', 'clickable', 'inline', 'toast'],
@@ -143,6 +146,7 @@ export const Inline = {
             <kyn-link
               kind="secondary"
               href="#"
+              standalone
               @on-click=${(e) => e.preventDefault()}
             >
               Link
@@ -182,14 +186,7 @@ export const Toast = {
     },
   },
   decorators: [
-    (story) =>
-      html`
-        <div
-          style="height: 80vh; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
-        >
-          ${story()}
-        </div>
-      `,
+    (story) => html` <div style="min-height: 400px;">${story()}</div> `,
   ],
   args: {
     notificationTitle: 'Notification Title',
@@ -198,6 +195,7 @@ export const Toast = {
     tagStatus: 'info',
     hideCloseButton: false,
     timeout: 6,
+    containerBottom: false,
   },
   render: (args) => {
     return html`
@@ -207,7 +205,7 @@ export const Toast = {
       </p>
       <br />
 
-      <kyn-notification-container>
+      <kyn-notification-container ?bottom=${args.containerBottom}>
         <kyn-notification
           notificationTitle=${args.notificationTitle}
           assistiveNotificationTypeText=${args.assistiveNotificationTypeText}

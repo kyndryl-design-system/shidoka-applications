@@ -68,36 +68,54 @@ export class DropdownOption extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor indeterminate = false;
 
+  /** Readonly state (from parent). Option stays focusable but not selectable. */
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false;
+
   /** Kind of the item, derived from parent.
    * @ignore
    */
   @state()
   accessor kind: 'ai' | 'default' = 'default';
 
+  /** slotted icon added state.
+   * @ignore
+   */
+  @state()
+  accessor hasIcon = false;
+
   @property({ type: String, reflect: true })
   override accessor role = 'option';
 
   @property({ type: String, reflect: true, attribute: 'aria-selected' })
-  override accessor ariaSelected = 'option';
+  override accessor ariaSelected = 'false';
 
   override render() {
     const classes = {
       option: true,
       'menu-item': true,
-      [`ai-connected-${this.kind === 'ai'}`]: true,
+      'option-is-readonly': this.readonly,
+      'ai-connected': this.kind === 'ai',
     };
 
     return html`
       <div
         class=${classMap(classes)}
+        role="option"
+        aria-selected=${this.selected ? 'true' : 'false'}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
-        ?multiple=${this.multiple}
+        ?readonly=${!this.disabled && this.readonly}
         title=${this.text}
+        tabindex=${this.disabled || this.readonly ? -1 : 0}
+        @mousedown=${(e: MouseEvent) => {
+          if (this.readonly) e.preventDefault();
+        }}
         @pointerup=${(e: any) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
+        @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
       >
         <span class="menu-item-inner-el text">
           ${this.multiple
@@ -108,36 +126,39 @@ export class DropdownOption extends LitElement {
                   .checked=${this.selected}
                   ?checked=${this.selected}
                   ?disabled=${this.disabled}
+                  ?readonly=${!this.disabled && this.readonly}
                   notFocusable
                   .indeterminate=${this.indeterminate}
-                >
-                </kyn-checkbox>
-
+                ></kyn-checkbox>
                 <slot
                   @slotchange=${(e: any) => this.handleSlotChange(e)}
                 ></slot>
               `
-            : html`
-                <slot
-                  @slotchange=${(e: any) => this.handleSlotChange(e)}
-                ></slot>
-              `}
+            : html`<slot
+                @slotchange=${(e: any) => this.handleSlotChange(e)}
+              ></slot>`}
         </span>
 
-        <span class="menu-item-inner-el icon"
-          ><slot name="icon" style="display:flex"></slot
-        ></span>
+        ${this.hasIcon
+          ? html`<slot
+              name="icon"
+              style="display:flex"
+              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+            ></slot>`
+          : html`<slot
+              name="icon"
+              style="display:none"
+              @slotchange=${(e: any) => this.handleIconSlotChange(e)}
+            ></slot>`}
         ${this.selected && !this.multiple
-          ? html`
-              <span class="menu-item-inner-el check-icon"
-                >${unsafeSVG(checkIcon)}</span
-              >
-            `
+          ? html`<span class="menu-item-inner-el check-icon"
+              >${unsafeSVG(checkIcon)}</span
+            >`
           : this.allowAddOption && this.removable
           ? html`
               <kyn-button
                 class="remove-option"
-                kind="ghost"
+                kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
                 size="small"
                 aria-label="Delete ${this.value}"
                 description="Delete ${this.value}"
@@ -147,9 +168,9 @@ export class DropdownOption extends LitElement {
                 @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
                 @focus=${(e: KeyboardEvent) => e.stopPropagation()}
               >
-                <span slot="icon" class="clear-icon">
-                  ${unsafeSVG(clearIcon)}
-                </span>
+                <span slot="icon" class="clear-icon"
+                  >${unsafeSVG(clearIcon)}</span
+                >
               </kyn-button>
             `
           : null}
@@ -168,9 +189,79 @@ export class DropdownOption extends LitElement {
     }
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('selected')) {
+  override willUpdate(changed: Map<string, unknown>) {
+    if (changed.has('selected')) {
       this.ariaSelected = this.selected.toString();
+    }
+    if (changed.has('disabled') || changed.has('readonly')) {
+      const el = this.shadowRoot?.querySelector(
+        '.menu-item'
+      ) as HTMLElement | null;
+      if (el) el.tabIndex = this.disabled || this.readonly ? -1 : 0;
+    }
+  }
+
+  private handleKeyDown(e: KeyboardEvent) {
+    if (this.disabled || this.readonly) return;
+
+    switch (e.key) {
+      case 'Enter':
+      case ' ': {
+        e.preventDefault();
+        this.handleClick(e);
+        break;
+      }
+      case 'ArrowDown': {
+        e.preventDefault();
+        this.moveFocus(1);
+        break;
+      }
+      case 'ArrowUp': {
+        e.preventDefault();
+        this.moveFocus(-1);
+        break;
+      }
+      case 'Home': {
+        e.preventDefault();
+        this.moveToEdge('start');
+        break;
+      }
+      case 'End': {
+        e.preventDefault();
+        this.moveToEdge('end');
+        break;
+      }
+    }
+  }
+
+  private moveFocus(delta: number) {
+    let node: Element | null =
+      delta > 0 ? this.nextElementSibling : this.previousElementSibling;
+    while (node) {
+      if (node.tagName.toLowerCase() === 'kyn-dropdown-option') {
+        const opt = node as DropdownOption;
+        if (!opt.disabled && !opt.readonly) {
+          const target = opt.shadowRoot?.querySelector(
+            '.menu-item'
+          ) as HTMLElement | null;
+          target?.focus();
+          break;
+        }
+      }
+      node = delta > 0 ? node.nextElementSibling : node.previousElementSibling;
+    }
+  }
+
+  private moveToEdge(where: 'start' | 'end') {
+    const all =
+      this.parentElement?.querySelectorAll('kyn-dropdown-option') ?? [];
+    const list = Array.from(all) as DropdownOption[];
+    const candidate = where === 'start' ? list[0] : list[list.length - 1];
+    if (candidate && !candidate.disabled && !candidate.readonly) {
+      const target = candidate.shadowRoot?.querySelector(
+        '.menu-item'
+      ) as HTMLElement | null;
+      target?.focus();
     }
   }
 
@@ -199,29 +290,25 @@ export class DropdownOption extends LitElement {
   }
 
   private handleClick(e: Event) {
-    // prevent click if disabled
-    if (this.disabled) {
+    // block interaction when disabled or readonly
+    if (this.disabled || this.readonly) {
+      e.stopPropagation();
       return;
     }
 
-    // update selected state
     if (this.multiple) {
       this.selected = !this.selected;
     } else {
       this.selected = true;
     }
 
-    // emit selected value, bubble so it can be captured by the parent dropdown
-    const event = new CustomEvent('on-click', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        selected: this.selected,
-        value: this.value,
-        origEvent: e,
-      },
-    });
-    this.dispatchEvent(event);
+    this.dispatchEvent(
+      new CustomEvent('on-click', {
+        bubbles: true,
+        composed: true,
+        detail: { selected: this.selected, value: this.value, origEvent: e },
+      })
+    );
   }
 
   private handleBlur(e: any) {
@@ -234,6 +321,11 @@ export class DropdownOption extends LitElement {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  private handleIconSlotChange(e: any) {
+    const nodes = e.target.assignedNodes({ flatten: true });
+    this.hasIcon = nodes.length > 0;
   }
 }
 

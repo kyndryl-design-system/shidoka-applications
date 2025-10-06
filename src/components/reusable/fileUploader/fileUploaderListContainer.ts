@@ -1,4 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import {
   customElement,
   property,
@@ -6,8 +7,16 @@ import {
   queryAssignedElements,
   state,
 } from 'lit/decorators.js';
+import { deepmerge } from 'deepmerge-ts';
 import FileUploaderListContainerScss from './fileUploaderListContainer.scss?inline';
 import '../link';
+import '../button';
+import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+
+const _defaultTextStrings = {
+  expand: 'Expand',
+  collapse: 'Collapse',
+};
 
 /**
  * File Uploader List Container
@@ -24,24 +33,21 @@ export class FileUploaderListContainer extends LitElement {
   @property({ type: String })
   accessor titleText = 'File details';
 
-  /**
-   * Show all text.
-   */
-  // @property({ type: String })
-  // showAll = 'Show all files';
+  /** Customizable text strings. */
+  @property({ type: Object })
+  accessor textStrings = _defaultTextStrings;
 
-  /**
-   * Show less text.
-   */
-  // @property({ type: String })
-  // showLess = 'Show less files';
-
-  /**
-   * Limit visible file uploader items.
+  /** Internal text strings.
    * @internal
    */
-  // @state()
-  // _limitRevealed = false;
+  @state()
+  accessor _textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  accessor _expanded = false;
 
   /**
    * Queries for all slotted elements.
@@ -86,12 +92,43 @@ export class FileUploaderListContainer extends LitElement {
           ${this.titleText}
           <slot name="action-button"></slot>
         </div>
-        <div class="file-uploader-list-container__items" tabindex="0">
+
+        <div
+          class="file-uploader-list-container__items ${this._expanded
+            ? 'expanded'
+            : ''}"
+          tabindex=${this._expanded ? '-1' : '0'}
+        >
           <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
+
+        ${this.hasMoreThanThreeItems
+          ? html`
+              <kyn-button
+                class="expand-btn ${this._expanded ? 'expanded' : ''}"
+                kind="ghost"
+                size="small"
+                description=${this._expanded
+                  ? this._textStrings.collapse
+                  : this._textStrings.expand}
+                @on-click=${() => {
+                  this._expanded = !this._expanded;
+                }}
+              >
+                <span slot="icon">${unsafeSVG(arrowIcon)}</span>
+              </kyn-button>
+            `
+          : null}
+
         <!-- footer would go here, if needed. -->
       </div>
     `;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   private _handleSlotChange() {
@@ -138,45 +175,6 @@ export class FileUploaderListContainer extends LitElement {
       }, 5);
     }
   }
-
-  /*
-    ${hasMoreThanThreeItems
-    ? html` <div class="file-uploader-list-container__footer">
-      <kyn-link
-        standalone
-        @on-click=${() => this._toggleReveal(!this._limitRevealed)}
-        >${this._limitRevealed ? this.showLess : this.showAll}</kyn-link
-      >
-      </div>`
-    : ''}
-  */
-
-  /*
-  override firstUpdated() {
-    this._applyLimit(true);
-  }
-
-  private _handleSlotChange() {
-    this._applyLimit(this._limitRevealed);
-    this.requestUpdate();
-  }
-
-  private _toggleReveal(reveal: boolean) {
-      this._limitRevealed = reveal;
-      this._applyLimit(reveal);
-  }
-
-  private _applyLimit(reveal: boolean) {
-    const limit = 3;
-    if (this._fileItems) {
-      this._fileItems.forEach((item: any, index: number) => {
-        if (index >= limit) {
-          item.style.display = reveal ? 'block' : 'none';
-        }
-      });
-    }
-  }
-  */
 }
 
 declare global {

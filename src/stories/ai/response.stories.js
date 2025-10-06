@@ -20,14 +20,13 @@ export default {
 export const User = {
   render: () => {
     return html`
-      <div class="response_wrapper">
+      <div class="response_wrapper user-response">
         <div class="response_title">
-          <kyn-avatar initials="A"></kyn-avatar>
           <kyn-card
             role="region"
             aria-label="User message"
             aiConnected
-            style="width:100%"
+            style="width:100%;"
           >
             User response here...Lorem ipsum dolor sit amet, consectetur
             adipiscing elit
@@ -39,10 +38,16 @@ export const User = {
         .response_wrapper {
           display: flex;
           gap: var(--kd-spacing-16);
+
           .response_title {
             display: flex;
             gap: var(--kd-spacing-16);
           }
+        }
+
+        .response_wrapper.user-response {
+          margin-inline-start: auto;
+          flex-direction: row-reverse;
         }
       </style>
     `;

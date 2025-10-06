@@ -4,8 +4,8 @@ import { action } from 'storybook/actions';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import './index';
-
 import '../tooltip';
+import '../tag';
 
 import businessConsultIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/business-consulting.svg';
 import aiOpsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/AIOps-docs.svg';
@@ -36,6 +36,11 @@ export default {
     enhanced: {
       table: { disable: true },
     },
+    readonly: { control: { type: 'boolean' } },
+    'kind-changed': {
+      table: { disable: true },
+      control: false,
+    },
     allowAddOption: {
       table: { disable: true },
     },
@@ -43,10 +48,6 @@ export default {
     filterSearch: {
       control: { type: 'boolean' },
       if: { arg: 'searchable', truthy: true },
-    },
-    'kind-changed': {
-      table: { disable: true },
-      control: false,
     },
   },
   parameters: {
@@ -68,6 +69,7 @@ const args = {
   open: false,
   required: false,
   disabled: false,
+  readonly: false,
   hideTags: false,
   hideLabel: false,
   selectAll: false,
@@ -82,8 +84,14 @@ const args = {
   filterSearch: false,
   searchable: false,
   textStrings: {
-    required: 'Required',
-    error: 'Error',
+    requiredText: 'Required',
+    errorText: 'Error',
+    clearAll: 'Clear all',
+    clear: 'Clear',
+    title: 'Dropdown',
+    selectedOptions: 'List of selected options',
+    addItem: 'Add item...',
+    add: 'Add',
   },
 };
 
@@ -92,23 +100,28 @@ export const Default = {
     ...args,
     label: 'Enhanced Dropdown Options',
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
+  parameters: { a11y: { disable: true } },
   render: (args) => {
     return html`
+      <style>
+        kyn-dropdown {
+          min-width: 250px;
+        }
+      </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         kind=${args.kind}
+        openDirection=${args.openDirection}
+        ?enhanced=${true}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -116,16 +129,13 @@ export const Default = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         style="min-width: 300px;"
       >
         <kyn-enhanced-dropdown-option value="1">
           <span slot="title">Option 1</span>
-          <span slot="description"
-            >This is a description for the Option 1 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 1.</span>
           <span slot="optionType">Type: Global</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="2">
@@ -136,18 +146,12 @@ export const Default = {
             tagSize="sm"
             tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
           ></kyn-tag>
-          <span slot="description"
-            >This is a description for the Option 2 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 2.</span>
           <span slot="optionType">Type: Private</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="3">
           <span slot="title">Option 3</span>
-          <span slot="description"
-            >This is a description for the Option 3 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 3.</span>
           <span slot="optionType">Type: Private</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="4">
@@ -158,10 +162,7 @@ export const Default = {
             tagSize="sm"
             tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
           ></kyn-tag>
-          <span slot="description"
-            >This is a description for the Option 4 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 4.</span>
           <span slot="optionType">Type: Global</span>
         </kyn-enhanced-dropdown-option>
       </kyn-dropdown>
@@ -170,32 +171,29 @@ export const Default = {
 };
 
 export const WithIcons = {
-  args: {
-    ...args,
-    label: 'Enhanced Dropdown Options',
-  },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
+  args: { ...args, label: 'Enhanced Dropdown Options' },
+  parameters: { a11y: { disable: true } },
   render: (args) => {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 300px;
+          min-width: 250px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         kind=${args.kind}
+        openDirection=${args.openDirection}
+        ?enhanced=${true}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -203,16 +201,13 @@ export const WithIcons = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
           <span slot="title">Option 1</span>
-          <span slot="description"
-            >This is a description for the Option 1 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 1.</span>
           <span slot="optionType">Type: Global</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="2">
@@ -224,19 +219,13 @@ export const WithIcons = {
             tagSize="sm"
             tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
           ></kyn-tag>
-          <span slot="description"
-            >This is a description for the Option 2 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 2.</span>
           <span slot="optionType">Type: Private</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="3">
           <span slot="icon">${unsafeSVG(boxIcon)}</span>
           <span slot="title">Option 3</span>
-          <span slot="description"
-            >This is a description for the Option 3 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 3.</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="4">
           <span slot="icon">${unsafeSVG(branchIcon)}</span>
@@ -247,10 +236,7 @@ export const WithIcons = {
             tagSize="sm"
             tagColor=${args.kind === 'ai' ? 'ai' : 'default'}
           ></kyn-tag>
-          <span slot="description"
-            >This is a description for the Option 4 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 4.</span>
           <span slot="optionType">Type: Global</span>
         </kyn-enhanced-dropdown-option>
       </kyn-dropdown>
@@ -266,28 +252,28 @@ export const ButtonAnchor = {
     buttonText: 'Options',
     kind: 'ai',
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
+  parameters: { a11y: { disable: true } },
   render: (args) => {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 300px;
+          min-width: 250px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         placeholder=${args.placeholder}
         size=${args.size}
         kind=${args.kind}
+        openDirection=${args.openDirection}
+        ?enhanced=${true}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -295,13 +281,13 @@ export const ButtonAnchor = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
           slot="anchor"
           class="dropdown-anchor-button"
-          kind="secondary-ai"
+          kind="tertiary"
           size="small"
           iconPosition="right"
           style="margin-top: 8px;"
@@ -312,10 +298,7 @@ export const ButtonAnchor = {
         <kyn-enhanced-dropdown-option value="1">
           <span slot="icon">${unsafeSVG(businessConsultIcon)}</span>
           <span slot="title">Option 1</span>
-          <span slot="description"
-            >This is a description for the Option 1 enhanced dropdown
-            option.</span
-          >
+          <span slot="description">This is a description for Option 1.</span>
         </kyn-enhanced-dropdown-option>
         <kyn-enhanced-dropdown-option value="2">
           <span slot="icon">${unsafeSVG(aiOpsIcon)}</span>
@@ -375,13 +358,16 @@ export const Searchable = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 20rem;
+          min-width: 300px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
         kind=${args.kind}
+        openDirection=${args.openDirection}
+        ?enhanced=${true}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -389,6 +375,7 @@ export const Searchable = {
         ?filterSearch=${args.filterSearch}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -396,7 +383,7 @@ export const Searchable = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -438,18 +425,14 @@ export const Searchable = {
   },
 };
 
-export const MutliSelect = {
+export const MultiSelect = {
   args: {
     ...args,
     label: 'Enhanced Dropdown Options',
     value: ['1', '2'],
     multiple: true,
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
+  parameters: { a11y: { disable: true } },
   render: (args) => {
     return html`
       <style>
@@ -457,10 +440,13 @@ export const MutliSelect = {
           min-width: 300px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
         kind=${args.kind}
+        openDirection=${args.openDirection}
+        ?enhanced=${true}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -468,6 +454,7 @@ export const MutliSelect = {
         ?searchable=${args.searchable}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         ?hideTags=${args.hideTags}
         ?filterSearch=${args.filterSearch}
@@ -484,34 +471,18 @@ export const MutliSelect = {
           action(e.type)({ ...e, detail: e.detail });
         }}
       >
-        <kyn-enhanced-dropdown-option value="1">
-          <span slot="title">Option 1</span>
-          <span slot="description"
-            >This is a description for the Option 1 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="2">
-          <span slot="title">Option 2</span>
-          <span slot="description"
-            >This is a description for the Option 2 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="3">
-          <span slot="title">Option 3</span>
-          <span slot="description"
-            >This is a description for the Option 3 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
-        <kyn-enhanced-dropdown-option value="4">
-          <span slot="title">Option 4</span>
-          <span slot="description"
-            >This is a description for the Option 4 enhanced dropdown
-            option.</span
-          >
-        </kyn-enhanced-dropdown-option>
+        <kyn-enhanced-dropdown-option value="1"
+          ><span slot="title">Option 1</span></kyn-enhanced-dropdown-option
+        >
+        <kyn-enhanced-dropdown-option value="2"
+          ><span slot="title">Option 2</span></kyn-enhanced-dropdown-option
+        >
+        <kyn-enhanced-dropdown-option value="3"
+          ><span slot="title">Option 3</span></kyn-enhanced-dropdown-option
+        >
+        <kyn-enhanced-dropdown-option value="4"
+          ><span slot="title">Option 4</span></kyn-enhanced-dropdown-option
+        >
       </kyn-dropdown>
     `;
   },
@@ -524,22 +495,21 @@ export const MultiSelectIcons = {
     value: ['1', '2'],
     multiple: true,
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
+  parameters: { a11y: { disable: true } },
   render: (args) => {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 300px;
+          min-width: 325px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
         kind=${args.kind}
+        openDirection=${args.openDirection}
+        ?enhanced=${true}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -547,6 +517,7 @@ export const MultiSelectIcons = {
         ?searchable=${args.searchable}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         ?hideTags=${args.hideTags}
         ?filterSearch=${args.filterSearch}
@@ -608,22 +579,21 @@ export const SearchableMultiSelect = {
     searchable: true,
     multiple: true,
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
+  parameters: { a11y: { disable: true } },
   render: (args) => {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 20rem;
+          min-width: 250px;
         }
       </style>
+
       <kyn-dropdown
         label=${args.label}
         size=${args.size}
         kind=${args.kind}
+        openDirection=${args.openDirection}
+        ?enhanced=${true}
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
@@ -632,6 +602,7 @@ export const SearchableMultiSelect = {
         ?filterSearch=${args.filterSearch}
         ?required=${args.required}
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
@@ -639,7 +610,7 @@ export const SearchableMultiSelect = {
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
-        value=${args.value}
+        .value=${args.value}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >

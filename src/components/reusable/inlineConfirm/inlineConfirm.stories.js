@@ -41,7 +41,7 @@ export const InlineConfirm = {
         .confirmText=${args.confirmText}
         .cancelText=${args.cancelText}
         ?openRight=${args.openRight}
-        @on-confirm=${(e) => action('on-confirm')()}
+        @on-confirm=${() => action('on-confirm')()}
       >
         ${unsafeSVG(deleteIcon)}
         <span slot="confirmIcon">${unsafeSVG(deleteIcon)}</span>

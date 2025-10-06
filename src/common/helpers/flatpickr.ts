@@ -7,6 +7,7 @@ import { default as English } from 'flatpickr/dist/l10n/default.js';
 import { loadLocale as loadLocaleFromLangs } from '../flatpickrLangs';
 
 import ShidokaFlatpickrTheme from '../scss/shidoka-flatpickr-theme.scss?inline';
+import { fixedOverlayPositionPlugin } from '../helpers/flatpickrOverlayPosition';
 
 let flatpickrStylesInjected = false;
 
@@ -377,11 +378,16 @@ export async function getFlatpickrOptions(
 
   const baseLocale = locale.split('-')[0].toLowerCase();
   const isEnglishOr12HourLocale = ['en', 'es'].includes(baseLocale);
-  const isWideScreen = window.innerWidth >= 767;
+
+  const isWideScreen =
+    typeof window !== 'undefined' && window.innerWidth >= 767;
 
   const effectiveDateFormat =
     dateFormat ||
     (mode === 'time' ? (twentyFourHourFormat ? 'H:i' : 'h:i K') : 'Y-m-d');
+
+  const modalContainer = getModalContainer(context.inputEl);
+  const inOverlay = modalContainer !== document.body;
 
   const options: Partial<BaseOptions> = {
     dateFormat: effectiveDateFormat,
@@ -415,6 +421,28 @@ export async function getFlatpickrOptions(
 
   if (showMonths !== undefined) {
     options.showMonths = showMonths;
+  }
+
+  if (inOverlay) {
+    options.appendTo = modalContainer;
+    options.static = false;
+    (options.plugins ||= []).push(
+      fixedOverlayPositionPlugin({
+        offset: 6,
+        minViewportMargin: 8,
+        preferTop: false,
+      }) as any
+    );
+  }
+
+  if (mode === 'range') {
+    options.onReady = (_, __, instance) => {
+      if (instance.calendarContainer) {
+        const timeContainer =
+          instance.calendarContainer.querySelector('.flatpickr-time');
+        timeContainer?.classList.add('default-time-select');
+      }
+    };
   }
 
   // ————————————————————————————————————————————————————————————————————————
@@ -511,7 +539,7 @@ export async function getFlatpickrOptions(
 }
 
 export function updateEnableTime(dateFormat: string): boolean {
-  return dateFormat.includes('H:') || dateFormat.includes('h:');
+  return dateFormat?.includes('H:') || dateFormat?.includes('h:');
 }
 
 export function setCalendarAttributes(
