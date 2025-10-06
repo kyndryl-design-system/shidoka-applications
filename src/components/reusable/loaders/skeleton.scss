@@ -1,23 +1,15 @@
 @use '../../../common/scss/global.scss';
 
 :host {
-  // Base variables
   --skeleton-base-width: 100%;
   --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
   --skeleton-background: var(--kd-color-background-loader-skeleton-default);
-  --skeleton-background-dark: var(
-    --kd-color-background-loader-skeleton-secondary
-  );
   --skeleton-shimmer-duration: 1.5s;
 
-  // Predefined sizes
-  --skeleton-size-small: 32px;
-  --skeleton-size-medium: 64px;
-  --skeleton-size-large: 128px;
-}
+  /* default shimmer color */
+  --_shimmer-color: var(--kd-color-background-loader-skeleton-tertiary);
 
-:host {
   display: block;
   width: 100%;
 }
@@ -30,7 +22,6 @@
 
 :host([inline]) {
   display: inline-block;
-
   & .container {
     flex-direction: row;
   }
@@ -39,78 +30,85 @@
 .skeleton {
   width: var(--skeleton-base-width);
   height: var(--skeleton-base-height);
-  border-radius: var(--skeleton-border-radius);
-  background: var(--skeleton-background);
+
   position: relative;
   overflow: hidden;
-  will-change: transform;
+  background: var(--skeleton-background);
+  border-radius: var(--skeleton-border-radius);
 
-  &.ai-Skeleton {
-    background: var(--kd-color-background-gradients-ai-loader-start-gradient);
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
 
-    &::after {
-      background: linear-gradient(
-        90deg,
-        var(--kd-color-background-gradients-ai-loader-start-gradient) 0%,
-        var(--kd-color-background-gradients-ai-loader-mid-gradient) 30%,
-        var(--kd-color-background-gradients-ai-loader-end-gradient) 70%,
-        var(--kd-color-background-gradients-ai-loader-start-gradient) 100%
-      );
-    }
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--_shimmer-color, var(--kd-color-background-loader-skeleton-tertiary))
+        15%,
+      transparent 30%
+    );
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    background-position: -100% 0;
+
+    animation: shimmer var(--skeleton-shimmer-duration)
+      cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
   }
 
   &.rectangle {
     border-radius: var(--skeleton-border-radius);
   }
-
   &.circle {
     border-radius: 50%;
     aspect-ratio: 1;
   }
 
   &.size-small {
-    width: var(--skeleton-size-small);
-    height: var(--skeleton-size-small);
+    width: 32px;
+    height: 32px;
   }
-
   &.size-medium {
-    width: var(--skeleton-size-medium);
-    height: var(--skeleton-size-medium);
+    width: 64px;
+    height: 64px;
   }
-
   &.size-large {
-    width: var(--skeleton-size-large);
-    height: var(--skeleton-size-large);
+    width: 128px;
+    height: 128px;
   }
+}
 
-  &::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: translateX(-100%) translate3d(0, 0, 0);
-    background-image: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0,
-      var(--kd-color-background-loader-skeleton-default) 10%,
-      var(--kd-color-background-loader-skeleton-tertiary) 50%,
-      var(--kd-color-background-loader-skeleton-default) 90%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    animation: shimmer var(--skeleton-shimmer-duration)
-      cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
-    content: '';
-    pointer-events: none;
-  }
+/* AI variant */
+.skeleton.ai-connected {
+  background: linear-gradient(
+    90deg,
+    var(--kd-color-background-gradients-ai-loader-start-gradient) 0%,
+    var(--kd-color-background-gradients-ai-loader-end-gradient) 100%
+  );
+}
+.skeleton.ai-connected::after {
+  --_ai-band: color-mix(in oklab, gray 55%, transparent);
+  mix-blend-mode: screen;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--_ai-band) 15%,
+    transparent 30%
+  );
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  background-position: -100% 0;
+  animation: shimmer var(--skeleton-shimmer-duration)
+    cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
 
 @keyframes shimmer {
   0% {
-    transform: translateX(-100%) translate3d(0, 0, 0);
+    background-position: -100% 0;
   }
-
   100% {
-    transform: translateX(100%) translate3d(0, 0, 0);
+    background-position: 100% 0;
   }
 }

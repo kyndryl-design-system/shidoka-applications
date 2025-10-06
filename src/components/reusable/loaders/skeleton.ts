@@ -40,11 +40,15 @@ export class Skeleton extends LitElement {
   /**
    * Sets whether to display inline or block.
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor inline = false;
 
-  /** Set to `true` for AI theme. */
-  @property({ type: Boolean })
+  /**
+   * Set to `true` for AI theme.
+   * This adds the `.ai-connected` class and reflects the host attribute,
+   * allowing shidoka-scoped CSS variables to resolve.
+   */
+  @property({ type: Boolean, reflect: true })
   accessor aiConnected = false;
 
   override render() {
@@ -54,7 +58,7 @@ export class Skeleton extends LitElement {
       [`size-${this.size}`]: Boolean(this.size),
       'multi-line': this.lines > 1,
       inline: this.inline,
-      'ai-Skeleton': this.aiConnected,
+      'ai-connected': this.aiConnected,
     };
 
     const styles = {
@@ -75,7 +79,7 @@ export class Skeleton extends LitElement {
       `
     );
 
-    return html` <div class="container">${skeletonLines}</div> `;
+    return html`<div class="container">${skeletonLines}</div>`;
   }
 }
 

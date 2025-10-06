@@ -16,12 +16,17 @@ export default {
 export const Default = {
   args: {
     centered: true,
+    displayVertical: false,
   },
   render: (args) => {
     return html`
       ${aiPromptsStyles}
 
-      <div class="ai-prompts-wrapper ${args.centered ? 'centered' : ''}">
+      <div
+        class="ai-prompts-wrapper ${args.centered
+          ? 'centered'
+          : ''} ${args.displayVertical ? 'vertical' : ''}"
+      >
         <kyn-card
           type="clickable"
           aiConnected
@@ -29,10 +34,12 @@ export const Default = {
           @on-card-click=${handleCardClick}
           class="kd-type--ui-02"
         >
-          <div class="kd-type--weight-medium kd-spacing--margin-bottom-8">
+          <div
+            class="card-title kd-type--weight-medium kd-spacing--margin-bottom-8"
+          >
             Success Stories
           </div>
-          <p>
+          <p class="card-description">
             Help me find previous case studies or Success stories involving
             <code>&lt;industry&gt;</code> or similar clients for
             <code>&lt;business problem&gt;</code> or using
@@ -47,10 +54,12 @@ export const Default = {
           @on-card-click=${handleCardClick}
           class="kd-type--ui-02"
         >
-          <div class="kd-type--weight-medium kd-spacing--margin-bottom-8">
+          <div
+            class="card-title kd-type--weight-medium kd-spacing--margin-bottom-8"
+          >
             Industry based Search
           </div>
-          <p>
+          <p class="card-description">
             Search for documents tailored to the interests of
             <code>&lt;customer&gt;</code> from <code>&lt;industry&gt;</code> for
             a business opportunity focused on
@@ -65,10 +74,12 @@ export const Default = {
           @on-card-click=${handleCardClick}
           class="kd-type--ui-02"
         >
-          <div class="kd-type--weight-medium kd-spacing--margin-bottom-8">
+          <div
+            class="card-title kd-type--weight-medium kd-spacing--margin-bottom-8"
+          >
             Service fit
           </div>
-          <p>
+          <p class="card-description">
             Retrieve documents that highlight how our products/services can
             address <code>&lt;customer specific needs&gt;</code> on customer
             <code>&lt;business problem&gt;</code>
@@ -90,68 +101,39 @@ const aiPromptsStyles = html`
         justify-content: center;
       }
 
+      &.vertical {
+        flex-direction: column;
+
+        &.centered {
+          align-items: center;
+        }
+
+        kyn-card {
+          width: 100%;
+        }
+      }
+
       kyn-card {
         width: 100%;
       }
     }
 
-    @media (min-width: 42rem) {
+    @media (min-width: 767px) {
       .ai-prompts-wrapper kyn-card {
         width: revert-layer;
       }
+
+      .ai-prompts-wrapper.vertical.centered kyn-card {
+        width: auto;
+        max-width: 353px;
+      }
     }
-
-    /** Animation styles to be potentially implemented in the future */
-    /*.ai-prompts-wrapper kyn-card {
-      transition: transform 0.4s ease, opacity 0.5s ease;
-      transform-origin: center;
-      position: relative;
-      z-index: 1;
-    }*/
-
-    /* .ai-prompts-wrapper kyn-card.selected {
-      transform: scale(1.1);
-      z-index: 2;
-    } */
-
-    /* .ai-prompts-wrapper kyn-card.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .ai-prompts-wrapper
-      .ai-prompts-wrapper
-      kyn-card
-      .ai-prompts-wrapper
-      kyn-card.unselected {
-      transform: scale(0.95);
-      opacity: 0.85;
-    } */
   </style>
 `;
 
 const handleCardClick = (e) => {
   e.preventDefault();
   e.stopPropagation();
-
-  // Animation to be potentially implemented in the future
-  // const card = e.target.closest('kyn-card');
-  // const wrapper = card.closest('.ai-prompts-wrapper');
-  // const allCards = wrapper.querySelectorAll('kyn-card');
-  //
-  // card.classList.add('selected');
-  //
-  // allCards.forEach((c) => {
-  //   if (c !== card) {
-  //     c.classList.add('unselected');
-  //   }
-  // });
-  //
-  // setTimeout(() => {
-  //   allCards.forEach((c) => {
-  //     c.classList.add('fade-out');
-  //   });
-  // }, 300);
 
   action(e.type)({ ...e, detail: e.detail });
 };

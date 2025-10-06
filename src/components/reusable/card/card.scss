@@ -1,50 +1,85 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
   width: 264px;
 }
 
+/* AI hover text colors */
+.card-wrapper.ai-connected:hover {
+  --_title-color: var(--kd-color-text-title-ai-secondary);
+  --_subtitle-color: var(--kd-color-text-level-primary);
+  --_description-color: var(--kd-color-text-level-primary);
+}
+
+/* NOTIFICATION variant */
+.card-wrapper[data-variant='notification'].ai-connected {
+  @include gradient.border-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 8px,
+    $width: 1px,
+    $surface: var(--kd-color-background-ui-hollow-default)
+  );
+}
+
+.ai-connected.card-wrapper-clickable:focus-visible {
+  outline-color: var(--kd-color-border-variants-focus);
+  outline-offset: -2px;
+}
+
 .card {
-  &-wrapper {
+  &-wrapper,
+  &-wrapper-clickable {
     position: relative;
+    display: block;
+    width: 100%;
     padding: 16px;
-    background-color: var(--kd-color-background-container-default);
-    border: 1px solid var(--kd-color-border-card-default);
     border-radius: 8px;
     height: 100%;
 
-    &.ai-Connected {
+    &.ai-connected {
       background-color: var(--kd-color-background-ui-hollow-default);
-      border: 1px solid var(--kd-color-border-variants-light);
+      border-color: var(--kd-color-border-variants-light);
     }
+  }
+
+  &-wrapper {
+    background-color: var(--kd-color-background-container-default);
+    border: 1px solid var(--kd-color-border-card-default);
+    cursor: default;
 
     &.ai-highlight {
       border: 1px solid var(--kd-color-border-button-ai-state-highlight);
       background: var(--kd-color-background-container-ai-default);
       color: var(--kd-color-text-level-primary);
     }
+
+    &.hide-border {
+      border: none;
+      @include elevation.shadow(0);
+    }
   }
 
   &-wrapper-clickable {
-    position: relative;
-    display: inline-block;
-    color: unset;
-    width: inherit;
-    text-decoration: none;
     background-color: var(--kd-color-background-container-default);
-    border-radius: 8px;
-    height: 100%;
-    padding: 16px;
+    color: unset;
+    text-decoration: none;
     border: 1px solid transparent;
     outline: 2px solid transparent;
     outline-offset: 2px;
+    cursor: pointer;
     transition: border-color 150ms ease-out, box-shadow 150ms ease-out,
       outline-color 150ms ease-out;
 
-    &:hover {
+    &.card-border {
+      border: 1px solid var(--kd-color-border-card-clickable);
+      @include elevation.shadow(1);
+    }
+
+    &:not(.ai-connected):hover {
       border-color: var(--kd-color-border-ui-hover);
       @include elevation.shadow(2);
     }
@@ -53,45 +88,92 @@
       outline-color: var(--kd-color-border-variants-focus);
     }
 
-    &.ai-Connected {
-      background-color: var(--kd-color-background-ui-hollow-default);
+    &:hover:active {
+      border: 1px solid var(--kd-color-border-card-clickable);
+      @include elevation.shadow(4);
+    }
 
-      &:hover {
-        border-color: var(--kd-color-border-button-ai-state-hover);
-        @include elevation.shadow(2, true);
+    &.ai-connected {
+      border: 1px solid var(--kd-color-border-level-secondary);
+      @include elevation.shadow(1);
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        pointer-events: none;
+        border-radius: calc(8px + 1px);
+        opacity: 0;
+        transition: opacity 120ms linear;
+        padding: 1px;
+        background: gradient.$ai-gradient-default;
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
       }
 
-      &:focus-visible {
-        border-color: var(--kd-color-border-button-ai-state-hover);
+      &:hover::after {
+        opacity: 1;
+      }
+
+      &:hover {
+        background: var(--kd-color-background-button-primary-ai-hover);
+
+        ::slotted(.card-title) {
+          color: var(--_title-color);
+        }
+        ::slotted(.card-subtitle),
+        ::slotted(.card-description) {
+          color: var(--_subtitle-color);
+        }
+      }
+
+      &:active {
+        @include elevation.shadow(4);
+        box-shadow: var(--kd-elevation-level-4-ai);
+        background: var(--kd-color-background-container-ai-default);
       }
     }
 
     &.ai-highlight {
       background: var(--kd-color-background-container-ai-default);
+      box-shadow: 0 2px 12px 0 var(--kd-color-utility-elevation-ai-l3);
+      border-color: transparent;
 
-      &:hover {
-        border-color: var(--kd-color-border-button-ai-state-hover);
-        @include elevation.shadow(2, true);
-      }
-
-      &:focus-visible {
-        border-color: var(--kd-color-border-button-ai-state-hover);
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        pointer-events: none;
+        border-radius: calc(8px + 1px);
+        padding: 1px;
+        background: gradient.$ai-gradient-default;
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        opacity: 1;
       }
     }
   }
 
-  &-border {
+  .card-wrapper.card-border,
+  .card-wrapper-clickable.card-border {
     border: 1px solid var(--kd-color-border-card-clickable);
-
-    &-highlight {
-      border: 1px solid var(--kd-color-background-highlight-border);
-    }
-
-    &.ai-Connected {
-      border: 1px solid var(--kd-color-border-button-ai-state-default);
-    }
-
     @include elevation.shadow(1);
+  }
+
+  .card-wrapper.card-border-highlight,
+  .card-wrapper-clickable.card-border-highlight {
+    border: 1px solid var(--kd-color-background-highlight-border);
+  }
+
+  .card-wrapper.card-border.ai-connected,
+  .card-wrapper-clickable.card-border.ai-connected {
+    border-color: transparent;
   }
 
   &-highlight {
