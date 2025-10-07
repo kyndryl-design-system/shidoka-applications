@@ -82,6 +82,10 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor submitBtnDisabled = false;
 
+  /** Apply gradient to modal background */
+  @property({ type: Boolean, reflect: true })
+  accessor gradientBackground = false;
+
   /** Determine whether needs footer */
   @property({ type: Boolean })
   accessor hideFooter = false;
@@ -126,6 +130,7 @@ export class SideDrawer extends LitElement {
       'no-backdrop': this.noBackdrop,
       [`size--${this.size}`]: this.size,
       'ai-connected': this.aiConnected,
+      'gradient-bkg': this.aiConnected && this.gradientBackground,
     };
 
     const dialogFooterClasses = {
@@ -164,7 +169,7 @@ export class SideDrawer extends LitElement {
             <kyn-button
               class="side-drawer-close-btn"
               size="small"
-              kind="ghost"
+              kind=${this.aiConnected ? 'ghost-ai' : 'ghost'}
               description=${ifDefined(this.closeBtnDescription)}
               @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
             >
@@ -206,9 +211,7 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind=${this.aiConnected
-                              ? 'secondary-ai'
-                              : 'secondary'}
+                            kind=${'secondary'}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'secondary')}
                           >
@@ -222,7 +225,7 @@ export class SideDrawer extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Cancel"
-                            kind="ghost"
+                            kind=${this.aiConnected ? 'ghost-ai' : 'ghost'}
                             @click=${(e: Event) =>
                               this._closeDrawer(e, 'cancel')}
                           >

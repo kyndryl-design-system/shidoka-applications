@@ -168,7 +168,7 @@ export class EnhancedDropdownOption extends LitElement {
             : this.allowAddOption && this.removable
             ? html`
                 <kyn-button
-                  kind="ghost"
+                  kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
                   size="small"
                   aria-label="Delete ${this.value}"
                   ?disabled=${this.disabled}

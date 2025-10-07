@@ -15,6 +15,10 @@ export default {
       options: ['_self', '_blank', '_top', '_parent'],
       control: { type: 'select' },
     },
+    variant: {
+      options: ['default', 'notification'],
+      control: { type: 'select' },
+    },
   },
   parameters: {
     design: {
@@ -31,6 +35,7 @@ export const BlankCard = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    variant: 'default',
     aiConnected: false,
     highlight: false,
   },
@@ -42,6 +47,7 @@ export const BlankCard = {
       rel=${args.rel}
       role="article"
       ?hideBorder=${args.hideBorder}
+      .variant=${args.variant}
       ?aiConnected=${args.aiConnected}
       ?highlight=${args.highlight}
       aria-label="Blank card"
@@ -56,6 +62,7 @@ export const Simple = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    variant: 'default',
     aiConnected: false,
     highlight: false,
   },
@@ -67,6 +74,7 @@ export const Simple = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        .variant=${args.variant}
         ?aiConnected=${args.aiConnected}
         ?highlight=${args.highlight}
         role="article"
@@ -92,6 +100,7 @@ export const Clickable = {
     rel: 'noopener',
     target: '_blank',
     hideBorder: false,
+    variant: 'default',
     aiConnected: false,
     highlight: false,
   },
@@ -103,6 +112,7 @@ export const Clickable = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        .variant=${args.variant}
         ?aiConnected=${args.aiConnected}
         ?highlight=${args.highlight}
         role="link"
@@ -129,6 +139,7 @@ export const InsideGrid = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    variant: 'default',
     aiConnected: false,
     highlight: false,
   },
@@ -143,6 +154,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            .variant=${args.variant}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -164,6 +176,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            .variant=${args.variant}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -187,6 +200,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            .variant=${args.variant}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -207,6 +221,7 @@ export const InsideGrid = {
             target=${args.target}
             rel=${args.rel}
             ?hideBorder=${args.hideBorder}
+            .variant=${args.variant}
             ?aiConnected=${args.aiConnected}
             ?highlight=${args.highlight}
           >
@@ -235,6 +250,7 @@ export const AIConnected = {
     rel: '',
     target: '_self',
     hideBorder: false,
+    variant: 'default',
     aiConnected: true,
     highlight: false,
   },
@@ -246,6 +262,7 @@ export const AIConnected = {
         target=${args.target}
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
+        .variant=${args.variant}
         ?aiConnected=${args.aiConnected}
         ?highlight=${args.highlight}
         role="article"

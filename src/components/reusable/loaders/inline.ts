@@ -28,12 +28,6 @@ export class LoaderInline extends LitElement {
   @state()
   private accessor _stopped = false;
 
-  // /** Wrapper element
-  //  * @internal
-  //  */
-  // @query('.wrapper')
-  // private _wrapperEl!: any;
-
   /** Hidden state
    * @internal
    */
@@ -46,15 +40,10 @@ export class LoaderInline extends LitElement {
   @query('.container')
   private accessor _containerEl!: any;
 
-  // /** Animation instance
-  //  * @internal
-  //  */
-  // @state()
-  // private _animation!: any;
-
   override render() {
     const Classes = {
       wrapper: true,
+      'variant-inline': true,
       stopped: this._stopped,
       hidden: this._hidden,
       'status-success': this.status === 'success',
