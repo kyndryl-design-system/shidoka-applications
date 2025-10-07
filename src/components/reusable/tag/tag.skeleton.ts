@@ -1,6 +1,6 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import '../loaders/skeleton';
 
@@ -26,12 +26,7 @@ export class TagSkeleton extends LitElement {
 
     return html`
       <div class="${classMap(tagClasses)}">
-        <kyn-skeleton
-          shape="rectangle"
-          height="100%"
-          width="60px"
-          inline
-        ></kyn-skeleton>
+        <kyn-skeleton shape="rectangle" width="60px" inline></kyn-skeleton>
       </div>
     `;
   }
