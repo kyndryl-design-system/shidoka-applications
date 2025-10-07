@@ -8,6 +8,7 @@ export default {
     '@storybook/addon-links',
     '@storybook/addon-designs',
     '@storybook/addon-themes',
+    '@storybook/addon-google-analytics',
     {
       name: '@storybook/addon-docs',
       options: {
