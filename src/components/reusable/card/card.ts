@@ -8,7 +8,7 @@ import InfoCardScss from './infoCard.scss?inline';
 
 type CardType = 'normal' | 'clickable';
 type CardTarget = '_self' | '_blank' | '_parent' | '_top';
-type CardVariant = 'default' | 'notification' | 'ai-user-response';
+type CardVariant = 'default' | 'notification' | 'interaction';
 
 import '../inlineConfirm/inlineConfirm';
 
@@ -52,10 +52,10 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor highlight = false;
 
-  /** Card variant. `'default'`, `'notification'`, `'ai-user-response'`
+  /** Card variant. `'default'`, `'notification'`, `'interaction'`
    * * `'notification'` variant is used primarily for Info Card
    * and contains additional padding, per design specs.
-   * * `'ai-user-response'` variant is used for AI responsecontent
+   * * `'interaction'` variant is used for AI response
   
    */
   @property({ type: String, reflect: true })
@@ -71,7 +71,7 @@ export class Card extends LitElement {
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
       'variant-notification': this.variant === 'notification',
-      'variant-ai-user-response': this.variant === 'ai-user-response',
+      'variant-interaction': this.variant === 'interaction',
     };
 
     const isAnchor = this.type === 'clickable' && this.href !== '';
