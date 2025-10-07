@@ -16,7 +16,6 @@ import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/
  * @slot body - Body of the accordion item
  * @slot title - Title of the accordion item
  * @slot subtitle - Optional subtitle of the accordion item
- * @slot action - Optional action after title.
  *
  */
 @customElement('kyn-accordion-item')
@@ -179,8 +178,6 @@ export class AccordionItem extends LitElement {
           </div>
 
           <div class="right">
-            <slot name="action"></slot>
-
             <div class="expand-icon">${unsafeSVG(chevronIcon)}</div>
           </div>
         </div>

@@ -76,21 +76,11 @@ export const SideDrawer = {
                   <kyn-tag-group filter limitTags>
                     <kyn-tag label="Tag 1" tagColor="spruce"></kyn-tag>
                     <kyn-tag label="Tag 2" tagColor="spruce"></kyn-tag>
+                    <kyn-tag label="Clear All" tagColor="spruce"></kyn-tag>
                   </kyn-tag-group>
 
                   <kyn-search class="kd-spacing--margin-top-16"></kyn-search>
                 </div>
-
-                <kyn-button
-                  slot="action"
-                  kind="ghost"
-                  size="small"
-                  @click=${(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  Clear All
-                </kyn-button>
               </kyn-accordion-item>
 
               <kyn-accordion-item>
@@ -111,17 +101,6 @@ export const SideDrawer = {
                     <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
                   </kyn-checkbox-group>
                 </div>
-
-                <kyn-button
-                  slot="action"
-                  kind="ghost"
-                  size="small"
-                  @click=${(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  Clear (#)
-                </kyn-button>
               </kyn-accordion-item>
 
               <kyn-accordion-item>
