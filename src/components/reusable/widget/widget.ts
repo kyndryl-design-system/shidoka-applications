@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
 import Styles from './widget.scss?inline';
+import '../badge';
 
 /**
  * Widget.
@@ -50,6 +51,14 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   accessor removeHeader = false;
 
+  /** Show Status badge. */
+  @property({ type: Boolean })
+  accessor showStatusBadge = false;
+
+  /** Status Badge label. */
+  @property({ type: String })
+  accessor statusBadgeLabel = 'Update';
+
   /** Slotted chart element.
    * @internal
    */
@@ -91,6 +100,15 @@ export class Widget extends LitElement {
                 </div>
 
                 <div class="actions">
+                  ${this.showStatusBadge
+                    ? html`
+                        <kyn-badge
+                          label=${this.statusBadgeLabel}
+                          status="information"
+                          hideIcon
+                        ></kyn-badge>
+                      `
+                    : null}
                   <slot
                     name="actions"
                     tabindex=${this.selectable ? -1 : 0}
