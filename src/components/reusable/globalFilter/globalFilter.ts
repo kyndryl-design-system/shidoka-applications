@@ -3,7 +3,7 @@ import { customElement } from 'lit/decorators.js';
 import GlobalFilterScss from './globalFilter.scss?inline';
 
 /**
- * DEPRECATED. See Patters/Search & Action Bar.
+ * DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).
  * @slot unnamed - Left slot, intended for search input and modal.
  * @slot actions - Right slot, intended for action buttons and overflow menu.
  * @slot tags - Slot below the filter bar, for tag group.

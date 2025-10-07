@@ -70,7 +70,7 @@ export const SideDrawer = {
             <kyn-accordion compact>
               <kyn-accordion-item opened>
                 <span slot="icon">${unsafeSVG(filterIcon)}</span>
-                <span slot="title"> Filter Results (#) </span>
+                <span slot="title"> Results (#) </span>
 
                 <div slot="body">
                   <kyn-tag-group filter limitTags>
