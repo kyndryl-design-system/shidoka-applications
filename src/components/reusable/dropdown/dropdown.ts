@@ -491,7 +491,7 @@ export class Dropdown extends FormMixin(LitElement) {
                 <kyn-button
                   ?disabled=${this.disabled || this.readonly}
                   class="clear-button dropdown-clear"
-                  kind="ghost"
+                  kind=${this.kind === 'ai' ? 'ghost-ai' : 'ghost'}
                   size="small"
                   description=${this._textStrings.clearAll}
                   @click=${(e: Event) => this.handleClear(e)}
@@ -589,6 +589,7 @@ export class Dropdown extends FormMixin(LitElement) {
                     return html`
                       <kyn-tag
                         role="listitem"
+                        tagColor=${this.kind === 'ai' ? 'ai' : 'default'}
                         label=${tag.text}
                         ?disabled=${this.disabled ||
                         tag.disabled ||

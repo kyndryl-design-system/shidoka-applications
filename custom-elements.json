@@ -427,6 +427,2212 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/header/header.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Header component.",
+          "name": "Header",
+          "slots": [
+            {
+              "description": "The default slot for all empty space right of the logo/title.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the logo, will overwrite the default logo.",
+              "name": "logo"
+            },
+            {
+              "description": "Slot left of the logo, intended for the header nav.",
+              "name": "left"
+            },
+            {
+              "description": "Slot between logo/title and right flyouts.",
+              "name": "center"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the header logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "field",
+              "name": "appTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App title text next to logo.  Hidden on smaller screens.",
+              "attribute": "appTitle"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFlyoutsToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the menu toggle click event and emits the menu open state in the detail. `detail:{ origEvent: Event}`",
+              "name": "on-menu-toggle"
+            },
+            {
+              "description": "Captures the logo link click event and emits the original event details. `detail:{ origEvent: Event}`",
+              "name": "on-root-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the header logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            },
+            {
+              "name": "appTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "App title text next to logo.  Hidden on smaller screens.",
+              "fieldName": "appTitle"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Header",
+          "declaration": {
+            "name": "Header",
+            "module": "src/components/global/header/header.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header",
+          "declaration": {
+            "name": "Header",
+            "module": "src/components/global/header/header.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerCategory.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Header link category",
+          "name": "HeaderCategory",
+          "slots": [
+            {
+              "description": "Slot for links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Category text.",
+              "attribute": "heading"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
+              "attribute": "leftPadding"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Category text.",
+              "fieldName": "heading"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-category",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderCategory",
+          "declaration": {
+            "name": "HeaderCategory",
+            "module": "src/components/global/header/headerCategory.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-category",
+          "declaration": {
+            "name": "HeaderCategory",
+            "module": "src/components/global/header/headerCategory.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Header divider",
+          "name": "HeaderDivider",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderDivider",
+          "declaration": {
+            "name": "HeaderDivider",
+            "module": "src/components/global/header/headerDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-divider",
+          "declaration": {
+            "name": "HeaderDivider",
+            "module": "src/components/global/header/headerDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerFlyout.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for header flyout items.",
+          "name": "HeaderFlyout",
+          "slots": [
+            {
+              "description": "Slot for flyout menu content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for button/toggle content.",
+              "name": "button"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Flyout open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "anchorLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
+              "attribute": "anchorLeft"
+            },
+            {
+              "kind": "field",
+              "name": "hideArrow",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the arrow.",
+              "attribute": "hideArrow"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Menu & button label.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "hideMenuLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the label at the top of the flyout menu.",
+              "attribute": "hideMenuLabel"
+            },
+            {
+              "kind": "field",
+              "name": "hideButtonLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the label in the mobile button.",
+              "attribute": "hideButtonLabel"
+            },
+            {
+              "kind": "field",
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
+              "attribute": "assistiveText"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Turns the button into a link.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverlayClick",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Flyout open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "anchorLeft",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
+              "fieldName": "anchorLeft"
+            },
+            {
+              "name": "hideArrow",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the arrow.",
+              "fieldName": "hideArrow"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Menu & button label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "hideMenuLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the label at the top of the flyout menu.",
+              "fieldName": "hideMenuLabel"
+            },
+            {
+              "name": "hideButtonLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the label in the mobile button.",
+              "fieldName": "hideButtonLabel"
+            },
+            {
+              "name": "assistiveText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
+              "fieldName": "assistiveText"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Turns the button into a link.",
+              "fieldName": "href"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-flyout",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderFlyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "src/components/global/header/headerFlyout.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-flyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "src/components/global/header/headerFlyout.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerFlyouts.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container for header-flyout components.",
+          "name": "HeaderFlyouts",
+          "slots": [
+            {
+              "description": "Slot for header-flyout components.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-flyouts",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderFlyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "src/components/global/header/headerFlyouts.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-flyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "src/components/global/header/headerFlyouts.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for navigation links within the Header.",
+          "name": "HeaderLink",
+          "slots": [
+            {
+              "description": "Slot for link text/content.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for sublinks (up to two levels).",
+              "name": "links"
+            },
+            {
+              "description": "Slot for icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Link open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "isActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Link active state, for example when URL path matches link href.",
+              "attribute": "isActive"
+            },
+            {
+              "kind": "field",
+              "name": "divider",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "DEPRECATED. Adds a 1px shadow to the bottom of the link.",
+              "attribute": "divider"
+            },
+            {
+              "kind": "field",
+              "name": "searchLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label for sub-menu link search input, which is visible with > 5 sub-links.",
+              "attribute": "searchLabel"
+            },
+            {
+              "kind": "field",
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "6",
+              "description": "Number of child links required to show search input.",
+              "attribute": "searchThreshold"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "field",
+              "name": "_searchTerm",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Text for mobile \"Back\" button."
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_searchFilter",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineLevel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_positionMenu",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details. `detail:{ origEvent: Event ,defaultPrevented: boolean}`",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Link open state.",
+              "fieldName": "open"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "fieldName": "target"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "fieldName": "rel"
+            },
+            {
+              "name": "isActive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Link active state, for example when URL path matches link href.",
+              "fieldName": "isActive"
+            },
+            {
+              "name": "divider",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "DEPRECATED. Adds a 1px shadow to the bottom of the link.",
+              "fieldName": "divider"
+            },
+            {
+              "name": "searchLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label for sub-menu link search input, which is visible with > 5 sub-links.",
+              "fieldName": "searchLabel"
+            },
+            {
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "6",
+              "description": "Number of child links required to show search input.",
+              "fieldName": "searchThreshold"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderLink",
+          "declaration": {
+            "name": "HeaderLink",
+            "module": "src/components/global/header/headerLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-link",
+          "declaration": {
+            "name": "HeaderLink",
+            "module": "src/components/global/header/headerLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container for header navigation links.",
+          "name": "HeaderNav",
+          "slots": [
+            {
+              "description": "This element has a slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'left'",
+              "description": "Force correct slot",
+              "attribute": "slot",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "_toggleMenuOpen",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverlayClick",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "slot",
+              "type": {
+                "text": "string"
+              },
+              "default": "'left'",
+              "description": "Force correct slot",
+              "fieldName": "slot"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderNav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "src/components/global/header/headerNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-nav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "src/components/global/header/headerNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerNotificationPanel.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Component for notification panel within the Header.",
+          "name": "HeaderNotificationPanel",
+          "slots": [
+            {
+              "description": "Slot for panel menu",
+              "name": "menu-slot"
+            },
+            {
+              "description": "Slot for notification content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "panelTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification panel Title.",
+              "attribute": "panelTitle"
+            },
+            {
+              "kind": "field",
+              "name": "panelFooterBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification panel footer button text.",
+              "attribute": "panelFooterBtnText"
+            },
+            {
+              "kind": "field",
+              "name": "hidePanelFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide notification panel footer",
+              "attribute": "hidePanelFooter"
+            },
+            {
+              "kind": "method",
+              "name": "_handlefooterBtnEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the panel footer button event. `detail:{ origEvent: Event }`",
+              "name": "on-footer-btn-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "panelTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification panel Title.",
+              "fieldName": "panelTitle"
+            },
+            {
+              "name": "panelFooterBtnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification panel footer button text.",
+              "fieldName": "panelFooterBtnText"
+            },
+            {
+              "name": "hidePanelFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide notification panel footer",
+              "fieldName": "hidePanelFooter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-notification-panel",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderNotificationPanel",
+          "declaration": {
+            "name": "HeaderNotificationPanel",
+            "module": "src/components/global/header/headerNotificationPanel.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-notification-panel",
+          "declaration": {
+            "name": "HeaderNotificationPanel",
+            "module": "src/components/global/header/headerNotificationPanel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerPanelLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Header fly-out panel link.",
+          "name": "HeaderPanelLink",
+          "slots": [
+            {
+              "description": "Slot for link text/content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "attribute": "rel"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the original event details. `detail:{ origEvent: Event }`",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "default": "'_self'",
+              "type": {
+                "text": "'_self'"
+              },
+              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
+              "fieldName": "target"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
+              "fieldName": "rel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-panel-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderPanelLink",
+          "declaration": {
+            "name": "HeaderPanelLink",
+            "module": "src/components/global/header/headerPanelLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-panel-link",
+          "declaration": {
+            "name": "HeaderPanelLink",
+            "module": "src/components/global/header/headerPanelLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/headerUserProfile.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Header user profile.",
+          "name": "HeaderUserProfile",
+          "slots": [
+            {
+              "description": "Slot for the profile picture img.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's job title, or subtext.",
+              "attribute": "subtitle"
+            },
+            {
+              "kind": "field",
+              "name": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's email address.",
+              "attribute": "email"
+            },
+            {
+              "kind": "field",
+              "name": "profileLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "View profile link URL.",
+              "attribute": "profileLink"
+            },
+            {
+              "kind": "field",
+              "name": "profileLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'View Profile'",
+              "description": "View Profile link text.",
+              "attribute": "profileLinkText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleProfileClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the view profile link click event and emits the original event details. `detail:{ origEvent: Event }`",
+              "name": "on-profile-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's job title, or subtext.",
+              "fieldName": "subtitle"
+            },
+            {
+              "name": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The user's email address.",
+              "fieldName": "email"
+            },
+            {
+              "name": "profileLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "View profile link URL.",
+              "fieldName": "profileLink"
+            },
+            {
+              "name": "profileLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'View Profile'",
+              "description": "View Profile link text.",
+              "fieldName": "profileLinkText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-header-user-profile",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderUserProfile",
+          "declaration": {
+            "name": "HeaderUserProfile",
+            "module": "src/components/global/header/headerUserProfile.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-header-user-profile",
+          "declaration": {
+            "name": "HeaderUserProfile",
+            "module": "src/components/global/header/headerUserProfile.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/header/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Header",
+          "declaration": {
+            "name": "Header",
+            "module": "./header"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderNav",
+          "declaration": {
+            "name": "HeaderNav",
+            "module": "./headerNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderLink",
+          "declaration": {
+            "name": "HeaderLink",
+            "module": "./headerLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderCategory",
+          "declaration": {
+            "name": "HeaderCategory",
+            "module": "./headerCategory"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderDivider",
+          "declaration": {
+            "name": "HeaderDivider",
+            "module": "./headerDivider"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderFlyouts",
+          "declaration": {
+            "name": "HeaderFlyouts",
+            "module": "./headerFlyouts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderFlyout",
+          "declaration": {
+            "name": "HeaderFlyout",
+            "module": "./headerFlyout"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderUserProfile",
+          "declaration": {
+            "name": "HeaderUserProfile",
+            "module": "./headerUserProfile"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderPanelLink",
+          "declaration": {
+            "name": "HeaderPanelLink",
+            "module": "./headerPanelLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HeaderNotificationPanel",
+          "declaration": {
+            "name": "HeaderNotificationPanel",
+            "module": "./headerNotificationPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/footer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Footer component.",
+          "name": "Footer",
+          "slots": [
+            {
+              "description": "Default slot, for links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the logo, will overwrite the default logo.",
+              "name": "logo"
+            },
+            {
+              "description": "Slot for the copyright text.",
+              "name": "copyright"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "field",
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "attribute": "logoAriaLabel"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`",
+              "name": "on-root-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            },
+            {
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "fieldName": "logoAriaLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "./footer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_onDocumentClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onLinkActive",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ text: string }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-link-active",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "on-click",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/accordion/accordion.ts",
       "declarations": [
         {
@@ -2053,7 +4259,7 @@
           "type": {
             "text": "array"
           },
-          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_AI,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
+          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
         },
         {
           "kind": "variable",
@@ -2061,7 +4267,7 @@
           "type": {
             "text": "array"
           },
-          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_AI,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
+          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
         }
       ],
       "exports": [
@@ -2423,6 +4629,14 @@
             {
               "description": "Slot for card contents.",
               "name": "unnamed"
+            },
+            {
+              "description": "Slot for left icon when `variant` is `'notification'`.",
+              "name": "leftIcon"
+            },
+            {
+              "description": "Slot for right icon when `variant` is `'notification'`.",
+              "name": "inlineConfirm"
             }
           ],
           "members": [
@@ -2430,7 +4644,7 @@
               "kind": "field",
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "CardType"
               },
               "default": "'normal'",
               "description": "Card Type. `'normal'` & `'clickable'`",
@@ -2460,10 +4674,10 @@
               "kind": "field",
               "name": "target",
               "type": {
-                "text": "any"
+                "text": "CardTarget"
               },
               "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
               "attribute": "target"
             },
             {
@@ -2483,7 +4697,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for AI theme.",
+              "description": "AI theme toggle",
               "attribute": "aiConnected"
             },
             {
@@ -2497,22 +4711,57 @@
               "attribute": "highlight"
             },
             {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'` & `'notification'`\n`'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
               "kind": "method",
-              "name": "handleClick",
+              "name": "renderNotificationVariant",
               "privacy": "private",
               "parameters": [
                 {
-                  "name": "e",
+                  "name": "baseClasses",
                   "type": {
-                    "text": "Event"
+                    "text": "Record<string, boolean>"
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "_computedRel",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_onClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_forwardConfirm",
+              "privacy": "private"
             }
           ],
           "events": [
             {
-              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
+              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
               "name": "on-card-click"
             }
           ],
@@ -2520,7 +4769,7 @@
             {
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "CardType"
               },
               "default": "'normal'",
               "description": "Card Type. `'normal'` & `'clickable'`",
@@ -2547,10 +4796,10 @@
             {
               "name": "target",
               "type": {
-                "text": "any"
+                "text": "CardTarget"
               },
               "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
               "fieldName": "target"
             },
             {
@@ -2568,7 +4817,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for AI theme.",
+              "description": "AI theme toggle",
               "fieldName": "aiConnected"
             },
             {
@@ -2579,6 +4828,15 @@
               "default": "false",
               "description": "Set this to `true` for highlight",
               "fieldName": "highlight"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'` & `'notification'`\n`'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.",
+              "fieldName": "variant"
             }
           ],
           "superclass": {
@@ -7092,93 +9350,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/errorBlock.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Error block.",
-          "name": "ErrorBlock",
-          "slots": [
-            {
-              "description": "Slot for the error description.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the error image.",
-              "name": "image"
-            },
-            {
-              "description": "Slot for the action buttons.",
-              "name": "actions"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "attribute": "titleText"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "fieldName": "titleText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-error-block",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-error-block",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "./errorBlock"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/fileUploader/fileUploader.ts",
       "declarations": [
         {
@@ -7636,6 +9807,93 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/errorBlock/errorBlock.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Error block.",
+          "name": "ErrorBlock",
+          "slots": [
+            {
+              "description": "Slot for the error description.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the error image.",
+              "name": "image"
+            },
+            {
+              "description": "Slot for the action buttons.",
+              "name": "actions"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title text",
+              "attribute": "titleText"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title text",
+              "fieldName": "titleText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-error-block",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ErrorBlock",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-error-block",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/errorBlock/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ErrorBlock",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "./errorBlock"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/floatingContainer/floatingContainer.ts",
       "declarations": [
         {
@@ -7687,71 +9945,6 @@
           "declaration": {
             "name": "FloatingContainer",
             "module": "./floatingContainer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Global Filter bar.",
-          "name": "GlobalFilter",
-          "slots": [
-            {
-              "description": "Left slot, intended for search input and modal.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Right slot, intended for action buttons and overflow menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot below the filter bar, for tag group.",
-              "name": "tags"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
           }
         }
       ]
@@ -7946,7 +10139,16 @@
             {
               "kind": "method",
               "name": "_handleConfirm",
-              "privacy": "private"
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
             }
           ],
           "events": [
@@ -8025,6 +10227,71 @@
           "declaration": {
             "name": "InlineConfirm",
             "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Global Filter bar.",
+          "name": "GlobalFilter",
+          "slots": [
+            {
+              "description": "Left slot, intended for search input and modal.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Right slot, intended for action buttons and overflow menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot below the filter bar, for tag group.",
+              "name": "tags"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
           }
         }
       ]
@@ -8268,6 +10535,83 @@
           "declaration": {
             "name": "Link",
             "module": "src/components/reusable/link/link.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/aiLoader.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AI Loader (pure CSS/SVG).",
+          "name": "AiLoaderWrapper",
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'default' | 'mini'"
+              },
+              "default": "'default'",
+              "description": "Size for AI loader.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Loading AI results'",
+              "description": "Accessible label for screen readers.",
+              "attribute": "ariaLabel"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "'default' | 'mini'"
+              },
+              "default": "'default'",
+              "description": "Size for AI loader.",
+              "fieldName": "size"
+            },
+            {
+              "name": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Loading AI results'",
+              "description": "Accessible label for screen readers.",
+              "fieldName": "ariaLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-loader",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AiLoaderWrapper",
+          "declaration": {
+            "name": "AiLoaderWrapper",
+            "module": "src/components/reusable/loaders/aiLoader.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-loader",
+          "declaration": {
+            "name": "AiLoaderWrapper",
+            "module": "src/components/reusable/loaders/aiLoader.ts"
           }
         }
       ]
@@ -8549,7 +10893,8 @@
               },
               "default": "false",
               "description": "Sets whether to display inline or block.",
-              "attribute": "inline"
+              "attribute": "inline",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -8558,8 +10903,9 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set to `true` for AI theme.",
-              "attribute": "aiConnected"
+              "description": "Set to `true` for AI theme.\nThis adds the `.ai-connected` class and reflects the host attribute,\nallowing shidoka-scoped CSS variables to resolve.",
+              "attribute": "aiConnected",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -8620,7 +10966,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set to `true` for AI theme.",
+              "description": "Set to `true` for AI theme.\nThis adds the `.ai-connected` class and reflects the host attribute,\nallowing shidoka-scoped CSS variables to resolve.",
               "fieldName": "aiConnected"
             }
           ],
@@ -8647,6 +10993,215 @@
           "declaration": {
             "name": "Skeleton",
             "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/spinner.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Spinner component\n\n- tag: <kyn-spinner>\n- variant: 'ai' (CSS/SVG spinner) or 'inline' (lottie indeterminate animation)\n- status: for inline variant -> 'active' | 'inactive' | 'success' | 'error'\n- size: for ai variant -> 'default' | 'mini'\n\nColors can be set via properties: primaryColor, secondaryColor, trackColor\nwhich set CSS variables on the host (--loader-primary, --loader-secondary, --loader-track).",
+          "name": "KynSpinner",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "SpinnerVariant"
+              },
+              "default": "'ai'",
+              "description": "Which variant to render: 'ai' | 'inline'",
+              "attribute": "variant"
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Inline spinner status. Can be `active`, `inactive`, `success`, `error`.",
+              "attribute": "status"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "SpinnerSize"
+              },
+              "default": "'default'",
+              "description": "Size for AI spinner",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "primaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Primary color for spinner (CSS color string). Sets --loader-primary on host.",
+              "attribute": "primaryColor"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Secondary color (e.g., arc color). Sets --loader-secondary on host.",
+              "attribute": "secondaryColor"
+            },
+            {
+              "kind": "field",
+              "name": "trackColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Track/backdrop color for SVG track. Sets --loader-track on host.",
+              "attribute": "trackColor"
+            },
+            {
+              "kind": "field",
+              "name": "_stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false",
+              "description": "Inline spinner internal states"
+            },
+            {
+              "kind": "field",
+              "name": "_hidden",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_containerEl",
+              "type": {
+                "text": "any"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_syncCssVars",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-start",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "on-stop",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "SpinnerVariant"
+              },
+              "default": "'ai'",
+              "description": "Which variant to render: 'ai' | 'inline'",
+              "fieldName": "variant"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Inline spinner status. Can be `active`, `inactive`, `success`, `error`.",
+              "fieldName": "status"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "SpinnerSize"
+              },
+              "default": "'default'",
+              "description": "Size for AI spinner",
+              "fieldName": "size"
+            },
+            {
+              "name": "primaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Primary color for spinner (CSS color string). Sets --loader-primary on host.",
+              "fieldName": "primaryColor"
+            },
+            {
+              "name": "secondaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Secondary color (e.g., arc color). Sets --loader-secondary on host.",
+              "fieldName": "secondaryColor"
+            },
+            {
+              "name": "trackColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Track/backdrop color for SVG track. Sets --loader-track on host.",
+              "fieldName": "trackColor"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-spinner",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "KynSpinner",
+          "declaration": {
+            "name": "KynSpinner",
+            "module": "src/components/reusable/loaders/spinner.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-spinner",
+          "declaration": {
+            "name": "KynSpinner",
+            "module": "src/components/reusable/loaders/spinner.ts"
           }
         }
       ]
@@ -8974,6 +11529,17 @@
             },
             {
               "kind": "field",
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "attribute": "gradientBackground",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "aiConnected",
               "type": {
                 "text": "boolean"
@@ -9172,6 +11738,15 @@
               "default": "'Close'",
               "description": "Close button text.",
               "fieldName": "closeText"
+            },
+            {
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "fieldName": "gradientBackground"
             },
             {
               "name": "aiConnected",
@@ -10057,7 +12632,7 @@
               "kind": "field",
               "name": "target",
               "type": {
-                "text": "string"
+                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
               },
               "default": "''",
               "description": "Card link target.",
@@ -10067,7 +12642,7 @@
               "kind": "field",
               "name": "tagStatus",
               "type": {
-                "text": "string"
+                "text": "TagStatus"
               },
               "default": "'default'",
               "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
@@ -10077,7 +12652,7 @@
               "kind": "field",
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "NotificationType"
               },
               "default": "'normal'",
               "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
@@ -10087,7 +12662,7 @@
               "kind": "field",
               "name": "textStrings",
               "type": {
-                "text": "any"
+                "text": "TextStrings"
               },
               "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
               "description": "Customizable text strings.",
@@ -10252,7 +12827,7 @@
             {
               "name": "target",
               "type": {
-                "text": "string"
+                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
               },
               "default": "''",
               "description": "Card link target.",
@@ -10261,7 +12836,7 @@
             {
               "name": "tagStatus",
               "type": {
-                "text": "string"
+                "text": "TagStatus"
               },
               "default": "'default'",
               "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
@@ -10270,7 +12845,7 @@
             {
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "NotificationType"
               },
               "default": "'normal'",
               "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
@@ -10279,7 +12854,7 @@
             {
               "name": "textStrings",
               "type": {
-                "text": "any"
+                "text": "TextStrings"
               },
               "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
               "description": "Customizable text strings.",
@@ -14312,6 +16887,17 @@
             },
             {
               "kind": "field",
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "attribute": "gradientBackground",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "hideFooter",
               "type": {
                 "text": "boolean"
@@ -14513,6 +17099,15 @@
               "default": "false",
               "description": "Disables the primary button.",
               "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "fieldName": "gradientBackground"
             },
             {
               "name": "hideFooter",
@@ -22542,2212 +25137,6 @@
           "declaration": {
             "name": "WidgetGridstack",
             "module": "src/components/reusable/widget/widgetGridstack.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/footer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Footer component.",
-          "name": "Footer",
-          "slots": [
-            {
-              "description": "Default slot, for links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the logo, will overwrite the default logo.",
-              "name": "logo"
-            },
-            {
-              "description": "Slot for the copyright text.",
-              "name": "copyright"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "field",
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "attribute": "logoAriaLabel"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`",
-              "name": "on-root-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "fieldName": "rootUrl"
-            },
-            {
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "fieldName": "logoAriaLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-footer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "./footer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/header.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Header component.",
-          "name": "Header",
-          "slots": [
-            {
-              "description": "The default slot for all empty space right of the logo/title.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the logo, will overwrite the default logo.",
-              "name": "logo"
-            },
-            {
-              "description": "Slot left of the logo, intended for the header nav.",
-              "name": "left"
-            },
-            {
-              "description": "Slot between logo/title and right flyouts.",
-              "name": "center"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the header logo link. Should target the application home page.",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "field",
-              "name": "appTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "App title text next to logo.  Hidden on smaller screens.",
-              "attribute": "appTitle"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleFlyoutsToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the menu toggle click event and emits the menu open state in the detail. `detail:{ origEvent: Event}`",
-              "name": "on-menu-toggle"
-            },
-            {
-              "description": "Captures the logo link click event and emits the original event details. `detail:{ origEvent: Event}`",
-              "name": "on-root-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the header logo link. Should target the application home page.",
-              "fieldName": "rootUrl"
-            },
-            {
-              "name": "appTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "App title text next to logo.  Hidden on smaller screens.",
-              "fieldName": "appTitle"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Header",
-          "declaration": {
-            "name": "Header",
-            "module": "src/components/global/header/header.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header",
-          "declaration": {
-            "name": "Header",
-            "module": "src/components/global/header/header.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerCategory.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Header link category",
-          "name": "HeaderCategory",
-          "slots": [
-            {
-              "description": "Slot for links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Category text.",
-              "attribute": "heading"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
-              "attribute": "leftPadding"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Category text.",
-              "fieldName": "heading"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-category",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderCategory",
-          "declaration": {
-            "name": "HeaderCategory",
-            "module": "src/components/global/header/headerCategory.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-category",
-          "declaration": {
-            "name": "HeaderCategory",
-            "module": "src/components/global/header/headerCategory.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Header divider",
-          "name": "HeaderDivider",
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderDivider",
-          "declaration": {
-            "name": "HeaderDivider",
-            "module": "src/components/global/header/headerDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-divider",
-          "declaration": {
-            "name": "HeaderDivider",
-            "module": "src/components/global/header/headerDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerFlyout.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Component for header flyout items.",
-          "name": "HeaderFlyout",
-          "slots": [
-            {
-              "description": "Slot for flyout menu content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for button/toggle content.",
-              "name": "button"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Flyout open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "anchorLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
-              "attribute": "anchorLeft"
-            },
-            {
-              "kind": "field",
-              "name": "hideArrow",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the arrow.",
-              "attribute": "hideArrow"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Menu & button label.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "hideMenuLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the label at the top of the flyout menu.",
-              "attribute": "hideMenuLabel"
-            },
-            {
-              "kind": "field",
-              "name": "hideButtonLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the label in the mobile button.",
-              "attribute": "hideButtonLabel"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
-              "attribute": "assistiveText"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Turns the button into a link.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverlayClick",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Flyout open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "anchorLeft",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Anchor flyout menu to the left edge of the button instead of the right edge.",
-              "fieldName": "anchorLeft"
-            },
-            {
-              "name": "hideArrow",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the arrow.",
-              "fieldName": "hideArrow"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Menu & button label.",
-              "fieldName": "label"
-            },
-            {
-              "name": "hideMenuLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the label at the top of the flyout menu.",
-              "fieldName": "hideMenuLabel"
-            },
-            {
-              "name": "hideButtonLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the label in the mobile button.",
-              "fieldName": "hideButtonLabel"
-            },
-            {
-              "name": "assistiveText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
-              "fieldName": "assistiveText"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Turns the button into a link.",
-              "fieldName": "href"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-flyout",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderFlyout",
-          "declaration": {
-            "name": "HeaderFlyout",
-            "module": "src/components/global/header/headerFlyout.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-flyout",
-          "declaration": {
-            "name": "HeaderFlyout",
-            "module": "src/components/global/header/headerFlyout.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerFlyouts.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container for header-flyout components.",
-          "name": "HeaderFlyouts",
-          "slots": [
-            {
-              "description": "Slot for header-flyout components.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "open"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleOpen",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "open"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-flyouts",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderFlyouts",
-          "declaration": {
-            "name": "HeaderFlyouts",
-            "module": "src/components/global/header/headerFlyouts.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-flyouts",
-          "declaration": {
-            "name": "HeaderFlyouts",
-            "module": "src/components/global/header/headerFlyouts.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Component for navigation links within the Header.",
-          "name": "HeaderLink",
-          "slots": [
-            {
-              "description": "Slot for link text/content.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for sublinks (up to two levels).",
-              "name": "links"
-            },
-            {
-              "description": "Slot for icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Link open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "default": "'_self'",
-              "type": {
-                "text": "'_self'"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "isActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Link active state, for example when URL path matches link href.",
-              "attribute": "isActive"
-            },
-            {
-              "kind": "field",
-              "name": "divider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "DEPRECATED. Adds a 1px shadow to the bottom of the link.",
-              "attribute": "divider"
-            },
-            {
-              "kind": "field",
-              "name": "searchLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label for sub-menu link search input, which is visible with > 5 sub-links.",
-              "attribute": "searchLabel"
-            },
-            {
-              "kind": "field",
-              "name": "searchThreshold",
-              "type": {
-                "text": "number"
-              },
-              "default": "6",
-              "description": "Number of child links required to show search input.",
-              "attribute": "searchThreshold"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "field",
-              "name": "_searchTerm",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text for mobile \"Back\" button."
-            },
-            {
-              "kind": "method",
-              "name": "_handleSearch",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_searchFilter",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "determineLevel",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_positionMenu",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details. `detail:{ origEvent: Event ,defaultPrevented: boolean}`",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Link open state.",
-              "fieldName": "open"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "target",
-              "default": "'_self'",
-              "type": {
-                "text": "'_self'"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "fieldName": "target"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "fieldName": "rel"
-            },
-            {
-              "name": "isActive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Link active state, for example when URL path matches link href.",
-              "fieldName": "isActive"
-            },
-            {
-              "name": "divider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "DEPRECATED. Adds a 1px shadow to the bottom of the link.",
-              "fieldName": "divider"
-            },
-            {
-              "name": "searchLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label for sub-menu link search input, which is visible with > 5 sub-links.",
-              "fieldName": "searchLabel"
-            },
-            {
-              "name": "searchThreshold",
-              "type": {
-                "text": "number"
-              },
-              "default": "6",
-              "description": "Number of child links required to show search input.",
-              "fieldName": "searchThreshold"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderLink",
-          "declaration": {
-            "name": "HeaderLink",
-            "module": "src/components/global/header/headerLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-link",
-          "declaration": {
-            "name": "HeaderLink",
-            "module": "src/components/global/header/headerLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container for header navigation links.",
-          "name": "HeaderNav",
-          "slots": [
-            {
-              "description": "This element has a slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'left'",
-              "description": "Force correct slot",
-              "attribute": "slot",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "_toggleMenuOpen",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverlayClick",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "slot",
-              "type": {
-                "text": "string"
-              },
-              "default": "'left'",
-              "description": "Force correct slot",
-              "fieldName": "slot"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderNav",
-          "declaration": {
-            "name": "HeaderNav",
-            "module": "src/components/global/header/headerNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-nav",
-          "declaration": {
-            "name": "HeaderNav",
-            "module": "src/components/global/header/headerNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerNotificationPanel.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Component for notification panel within the Header.",
-          "name": "HeaderNotificationPanel",
-          "slots": [
-            {
-              "description": "Slot for panel menu",
-              "name": "menu-slot"
-            },
-            {
-              "description": "Slot for notification content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "panelTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification panel Title.",
-              "attribute": "panelTitle"
-            },
-            {
-              "kind": "field",
-              "name": "panelFooterBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification panel footer button text.",
-              "attribute": "panelFooterBtnText"
-            },
-            {
-              "kind": "field",
-              "name": "hidePanelFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide notification panel footer",
-              "attribute": "hidePanelFooter"
-            },
-            {
-              "kind": "method",
-              "name": "_handlefooterBtnEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the panel footer button event. `detail:{ origEvent: Event }`",
-              "name": "on-footer-btn-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "panelTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification panel Title.",
-              "fieldName": "panelTitle"
-            },
-            {
-              "name": "panelFooterBtnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification panel footer button text.",
-              "fieldName": "panelFooterBtnText"
-            },
-            {
-              "name": "hidePanelFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide notification panel footer",
-              "fieldName": "hidePanelFooter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-notification-panel",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderNotificationPanel",
-          "declaration": {
-            "name": "HeaderNotificationPanel",
-            "module": "src/components/global/header/headerNotificationPanel.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-notification-panel",
-          "declaration": {
-            "name": "HeaderNotificationPanel",
-            "module": "src/components/global/header/headerNotificationPanel.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerPanelLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Header fly-out panel link.",
-          "name": "HeaderPanelLink",
-          "slots": [
-            {
-              "description": "Slot for link text/content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "default": "'_self'",
-              "type": {
-                "text": "'_self'"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "attribute": "rel"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the original event details. `detail:{ origEvent: Event }`",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "target",
-              "default": "'_self'",
-              "type": {
-                "text": "'_self'"
-              },
-              "description": "Defines a target attribute for where to load the URL. Possible options include \"_self\" (default), \"_blank\", \"_parent\", \"_top\"",
-              "fieldName": "target"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship",
-              "fieldName": "rel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-panel-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderPanelLink",
-          "declaration": {
-            "name": "HeaderPanelLink",
-            "module": "src/components/global/header/headerPanelLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-panel-link",
-          "declaration": {
-            "name": "HeaderPanelLink",
-            "module": "src/components/global/header/headerPanelLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/headerUserProfile.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Header user profile.",
-          "name": "HeaderUserProfile",
-          "slots": [
-            {
-              "description": "Slot for the profile picture img.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The user's name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "subtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The user's job title, or subtext.",
-              "attribute": "subtitle"
-            },
-            {
-              "kind": "field",
-              "name": "email",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The user's email address.",
-              "attribute": "email"
-            },
-            {
-              "kind": "field",
-              "name": "profileLink",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "View profile link URL.",
-              "attribute": "profileLink"
-            },
-            {
-              "kind": "field",
-              "name": "profileLinkText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'View Profile'",
-              "description": "View Profile link text.",
-              "attribute": "profileLinkText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleProfileClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the view profile link click event and emits the original event details. `detail:{ origEvent: Event }`",
-              "name": "on-profile-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The user's name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "subtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The user's job title, or subtext.",
-              "fieldName": "subtitle"
-            },
-            {
-              "name": "email",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The user's email address.",
-              "fieldName": "email"
-            },
-            {
-              "name": "profileLink",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "View profile link URL.",
-              "fieldName": "profileLink"
-            },
-            {
-              "name": "profileLinkText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'View Profile'",
-              "description": "View Profile link text.",
-              "fieldName": "profileLinkText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-header-user-profile",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "HeaderUserProfile",
-          "declaration": {
-            "name": "HeaderUserProfile",
-            "module": "src/components/global/header/headerUserProfile.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-header-user-profile",
-          "declaration": {
-            "name": "HeaderUserProfile",
-            "module": "src/components/global/header/headerUserProfile.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/header/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Header",
-          "declaration": {
-            "name": "Header",
-            "module": "./header"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderNav",
-          "declaration": {
-            "name": "HeaderNav",
-            "module": "./headerNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderLink",
-          "declaration": {
-            "name": "HeaderLink",
-            "module": "./headerLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderCategory",
-          "declaration": {
-            "name": "HeaderCategory",
-            "module": "./headerCategory"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderDivider",
-          "declaration": {
-            "name": "HeaderDivider",
-            "module": "./headerDivider"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderFlyouts",
-          "declaration": {
-            "name": "HeaderFlyouts",
-            "module": "./headerFlyouts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderFlyout",
-          "declaration": {
-            "name": "HeaderFlyout",
-            "module": "./headerFlyout"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderUserProfile",
-          "declaration": {
-            "name": "HeaderUserProfile",
-            "module": "./headerUserProfile"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderPanelLink",
-          "declaration": {
-            "name": "HeaderPanelLink",
-            "module": "./headerPanelLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HeaderNotificationPanel",
-          "declaration": {
-            "name": "HeaderNotificationPanel",
-            "module": "./headerNotificationPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "_onDocumentClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_onLinkActive",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ text: string }>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-link-active",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "on-click",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]

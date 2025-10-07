@@ -3,6 +3,7 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/visibility.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: block;
@@ -51,8 +52,15 @@ kyn-card.notification-info::part(card-wrapper) {
 }
 
 kyn-card.notification-ai::part(card-wrapper) {
-  background-color: var(--kd-color-background-container-ai-default);
-  color: var(--kd-color-icon-ai);
+  background-color: var(--kd-color-background-ui-hollow-default);
+  @include elevation.shadow(3, true);
+
+  @include gradient.border-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 8px,
+    $width: 1px,
+    $surface: var(--kd-color-background-container-ai-level-2)
+  );
 }
 
 kyn-card.notification-default::part(card-wrapper) {

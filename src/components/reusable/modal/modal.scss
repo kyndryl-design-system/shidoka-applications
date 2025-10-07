@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: inline-block;
@@ -41,14 +42,14 @@ dialog {
   }
 
   &.ai-connected {
-    @include elevation.shadow('3', true);
+    @include elevation.shadow(3, true);
     border: none;
-    background: var(--kd-color-background-container-ai-subtle);
-    // background: linear-gradient(
-    //   180deg,
-    //   var(--kd-color-background-gradients-ai-linear-top-gradient-1) 0%,
-    //   var(--kd-color-background-gradients-ai-linear-bottom-gradient-1) 70.5%
-    // );
+
+    background-color: var(--kd-color-background-container-ai-default);
+  }
+
+  &.ai-connected.gradient-bkg {
+    @extend .gradient-bkg;
   }
 }
 
@@ -113,6 +114,7 @@ header {
   color: var(--kd-color-icon-primary);
 
   span {
+    color: var(--kd-color-icon-primary);
     display: flex;
   }
 }

@@ -9,7 +9,6 @@ import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit-html/directives/class-map.js';
 
 import stylesheet from './aiSourcesFeedback.scss?inline';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -138,12 +137,10 @@ export class AISourcesFeedback extends LitElement {
 
           <div class="${classesSources}">
             <kyn-button
-              kind="ghost"
+              kind="tertiary"
               size="small"
               class="kyn-sources-title"
               iconPosition="right"
-              aria-controls="kyn-sources-body"
-              aria-expanded=${this.sourcesOpened}
               ?disabled=${this.sourcesDisabled}
               @on-click="${(e: Event) => this._handleClick(e, 'sources')}"
               id="kyn-sources-title"
@@ -159,12 +156,10 @@ export class AISourcesFeedback extends LitElement {
         <div class="right-div">
           <div class="${classesFeedback1}">
             <kyn-button
-              kind="ghost"
+              kind="tertiary"
               size="small"
               id="kyn-feedback-title-positive"
               class="kyn-feedback-title"
-              aria-controls="kyn-feedback-body"
-              aria-expanded=${this.feedbackOpened}
               ?disabled=${this.feedbackDisabled}
               description=${this._textStrings.positiveFeedback}
               @on-click=${(e: Event) =>
@@ -182,12 +177,10 @@ export class AISourcesFeedback extends LitElement {
 
           <div class="${classesFeedback2}">
             <kyn-button
-              kind="ghost"
+              kind="tertiary"
               size="small"
               id="kyn-feedback-title-negative"
               class="kyn-feedback-title"
-              aria-controls="kyn-feedback-body"
-              aria-expanded=${this.feedbackOpened}
               ?disabled=${this.feedbackDisabled}
               description=${this._textStrings.negativeFeedback}
               @on-click="${(e: Event) =>
@@ -235,7 +228,7 @@ export class AISourcesFeedback extends LitElement {
             ? html`
                 <kyn-button
                   class="reveal-toggle"
-                  kind="ghost"
+                  kind="ghost-ai"
                   size="small"
                   @on-click=${() =>
                     this._toggleLimitRevealed(!this.limitRevealed)}

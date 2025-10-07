@@ -40,6 +40,7 @@ export const ChatModal = {
         size="xl"
         titleText="Gen AI"
         aiConnected
+        gradientBackground
         disableScroll
         ?hideFooter=${selectedTabId === 'history'}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
