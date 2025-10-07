@@ -8,7 +8,7 @@ import InfoCardScss from './infoCard.scss?inline';
 
 type CardType = 'normal' | 'clickable';
 type CardTarget = '_self' | '_blank' | '_parent' | '_top';
-type CardVariant = 'default' | 'notification';
+type CardVariant = 'default' | 'notification' | 'interaction';
 
 import '../inlineConfirm/inlineConfirm';
 
@@ -52,9 +52,11 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor highlight = false;
 
-  /** Card variant. `'default'` & `'notification'`
-   * `'notification'` variant is used primarily for Info Card
+  /** Card variant. `'default'`, `'notification'`, `'interaction'`
+   * * `'notification'` variant is used primarily for Info Card
    * and contains additional padding, per design specs.
+   * * `'interaction'` variant is used for AI response
+  
    */
   @property({ type: String, reflect: true })
   accessor variant: CardVariant = 'default';
@@ -69,12 +71,13 @@ export class Card extends LitElement {
       'card-highlight': this.highlight,
       'ai-highlight': this.aiConnected && this.highlight,
       'variant-notification': this.variant === 'notification',
+      'variant-interaction': this.variant === 'interaction',
     };
 
     const isAnchor = this.type === 'clickable' && this.href !== '';
 
-    if (this.variant === 'notification') {
-      return this.renderNotificationVariant(baseClasses);
+    if (this.variant.indexOf('default') === -1) {
+      return this.renderNonDefaultVariant(baseClasses);
     }
 
     return isAnchor
@@ -108,7 +111,7 @@ export class Card extends LitElement {
         `;
   }
 
-  private renderNotificationVariant(baseClasses: Record<string, boolean>) {
+  private renderNonDefaultVariant(baseClasses: Record<string, boolean>) {
     return html`
       <div
         part="card-wrapper"
