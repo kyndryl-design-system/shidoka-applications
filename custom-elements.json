@@ -4259,7 +4259,7 @@
           "type": {
             "text": "array"
           },
-          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_AI,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
+          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
         },
         {
           "kind": "variable",
@@ -4267,7 +4267,7 @@
           "type": {
             "text": "array"
           },
-          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_AI,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
+          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
         }
       ],
       "exports": [
@@ -4629,6 +4629,14 @@
             {
               "description": "Slot for card contents.",
               "name": "unnamed"
+            },
+            {
+              "description": "Slot for left icon when `variant` is `'notification'`.",
+              "name": "leftIcon"
+            },
+            {
+              "description": "Slot for right icon when `variant` is `'notification'`.",
+              "name": "inlineConfirm"
             }
           ],
           "members": [
@@ -4636,7 +4644,7 @@
               "kind": "field",
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "CardType"
               },
               "default": "'normal'",
               "description": "Card Type. `'normal'` & `'clickable'`",
@@ -4666,10 +4674,10 @@
               "kind": "field",
               "name": "target",
               "type": {
-                "text": "any"
+                "text": "CardTarget"
               },
               "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
               "attribute": "target"
             },
             {
@@ -4689,7 +4697,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for AI theme.",
+              "description": "AI theme toggle",
               "attribute": "aiConnected"
             },
             {
@@ -4703,22 +4711,57 @@
               "attribute": "highlight"
             },
             {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'` & `'notification'`\n`'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
               "kind": "method",
-              "name": "handleClick",
+              "name": "renderNotificationVariant",
               "privacy": "private",
               "parameters": [
                 {
-                  "name": "e",
+                  "name": "baseClasses",
                   "type": {
-                    "text": "Event"
+                    "text": "Record<string, boolean>"
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "_computedRel",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_onClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_forwardConfirm",
+              "privacy": "private"
             }
           ],
           "events": [
             {
-              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropogation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
+              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
               "name": "on-card-click"
             }
           ],
@@ -4726,7 +4769,7 @@
             {
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "CardType"
               },
               "default": "'normal'",
               "description": "Card Type. `'normal'` & `'clickable'`",
@@ -4753,10 +4796,10 @@
             {
               "name": "target",
               "type": {
-                "text": "any"
+                "text": "CardTarget"
               },
               "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (deafult), `'_blank'`, `'_parent`', `'_top'`",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
               "fieldName": "target"
             },
             {
@@ -4774,7 +4817,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set this to `true` for AI theme.",
+              "description": "AI theme toggle",
               "fieldName": "aiConnected"
             },
             {
@@ -4785,6 +4828,15 @@
               "default": "false",
               "description": "Set this to `true` for highlight",
               "fieldName": "highlight"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'` & `'notification'`\n`'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.",
+              "fieldName": "variant"
             }
           ],
           "superclass": {
@@ -7652,6 +7704,57 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/divider/divider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Divider Component.",
+          "name": "Divider",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Divider",
+          "declaration": {
+            "name": "Divider",
+            "module": "src/components/reusable/divider/divider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-divider",
+          "declaration": {
+            "name": "Divider",
+            "module": "src/components/reusable/divider/divider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/divider/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Divider",
+          "declaration": {
+            "name": "Divider",
+            "module": "./divider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/dropdown/dropdown.ts",
       "declarations": [
         {
@@ -9298,57 +9401,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/divider/divider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Divider Component.",
-          "name": "Divider",
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Divider",
-          "declaration": {
-            "name": "Divider",
-            "module": "src/components/reusable/divider/divider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-divider",
-          "declaration": {
-            "name": "Divider",
-            "module": "src/components/reusable/divider/divider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/divider/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Divider",
-          "declaration": {
-            "name": "Divider",
-            "module": "./divider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/errorBlock/errorBlock.ts",
       "declarations": [
         {
@@ -10203,7 +10255,16 @@
             {
               "kind": "method",
               "name": "_handleConfirm",
-              "privacy": "private"
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
             }
           ],
           "events": [
@@ -10531,6 +10592,83 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/aiLoader.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AI Loader (pure CSS/SVG).",
+          "name": "AiLoaderWrapper",
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'default' | 'mini'"
+              },
+              "default": "'default'",
+              "description": "Size for AI loader.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Loading AI results'",
+              "description": "Accessible label for screen readers.",
+              "attribute": "ariaLabel"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "'default' | 'mini'"
+              },
+              "default": "'default'",
+              "description": "Size for AI loader.",
+              "fieldName": "size"
+            },
+            {
+              "name": "ariaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Loading AI results'",
+              "description": "Accessible label for screen readers.",
+              "fieldName": "ariaLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-loader",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AiLoaderWrapper",
+          "declaration": {
+            "name": "AiLoaderWrapper",
+            "module": "src/components/reusable/loaders/aiLoader.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-loader",
+          "declaration": {
+            "name": "AiLoaderWrapper",
+            "module": "src/components/reusable/loaders/aiLoader.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/loaders/index.ts",
       "declarations": [],
       "exports": [
@@ -10806,7 +10944,8 @@
               },
               "default": "false",
               "description": "Sets whether to display inline or block.",
-              "attribute": "inline"
+              "attribute": "inline",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -10815,8 +10954,9 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set to `true` for AI theme.",
-              "attribute": "aiConnected"
+              "description": "Set to `true` for AI theme.\nThis adds the `.ai-connected` class and reflects the host attribute,\nallowing shidoka-scoped CSS variables to resolve.",
+              "attribute": "aiConnected",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -10877,7 +11017,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Set to `true` for AI theme.",
+              "description": "Set to `true` for AI theme.\nThis adds the `.ai-connected` class and reflects the host attribute,\nallowing shidoka-scoped CSS variables to resolve.",
               "fieldName": "aiConnected"
             }
           ],
@@ -10904,6 +11044,215 @@
           "declaration": {
             "name": "Skeleton",
             "module": "src/components/reusable/loaders/skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/loaders/spinner.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Spinner component\n\n- tag: <kyn-spinner>\n- variant: 'ai' (CSS/SVG spinner) or 'inline' (lottie indeterminate animation)\n- status: for inline variant -> 'active' | 'inactive' | 'success' | 'error'\n- size: for ai variant -> 'default' | 'mini'\n\nColors can be set via properties: primaryColor, secondaryColor, trackColor\nwhich set CSS variables on the host (--loader-primary, --loader-secondary, --loader-track).",
+          "name": "KynSpinner",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "SpinnerVariant"
+              },
+              "default": "'ai'",
+              "description": "Which variant to render: 'ai' | 'inline'",
+              "attribute": "variant"
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Inline spinner status. Can be `active`, `inactive`, `success`, `error`.",
+              "attribute": "status"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "SpinnerSize"
+              },
+              "default": "'default'",
+              "description": "Size for AI spinner",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "primaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Primary color for spinner (CSS color string). Sets --loader-primary on host.",
+              "attribute": "primaryColor"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Secondary color (e.g., arc color). Sets --loader-secondary on host.",
+              "attribute": "secondaryColor"
+            },
+            {
+              "kind": "field",
+              "name": "trackColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Track/backdrop color for SVG track. Sets --loader-track on host.",
+              "attribute": "trackColor"
+            },
+            {
+              "kind": "field",
+              "name": "_stopped",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false",
+              "description": "Inline spinner internal states"
+            },
+            {
+              "kind": "field",
+              "name": "_hidden",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_containerEl",
+              "type": {
+                "text": "any"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_syncCssVars",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitStop",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-start",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "on-stop",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "SpinnerVariant"
+              },
+              "default": "'ai'",
+              "description": "Which variant to render: 'ai' | 'inline'",
+              "fieldName": "variant"
+            },
+            {
+              "name": "status",
+              "type": {
+                "text": "string"
+              },
+              "default": "'active'",
+              "description": "Inline spinner status. Can be `active`, `inactive`, `success`, `error`.",
+              "fieldName": "status"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "SpinnerSize"
+              },
+              "default": "'default'",
+              "description": "Size for AI spinner",
+              "fieldName": "size"
+            },
+            {
+              "name": "primaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Primary color for spinner (CSS color string). Sets --loader-primary on host.",
+              "fieldName": "primaryColor"
+            },
+            {
+              "name": "secondaryColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Secondary color (e.g., arc color). Sets --loader-secondary on host.",
+              "fieldName": "secondaryColor"
+            },
+            {
+              "name": "trackColor",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "undefined",
+              "description": "Track/backdrop color for SVG track. Sets --loader-track on host.",
+              "fieldName": "trackColor"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-spinner",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "KynSpinner",
+          "declaration": {
+            "name": "KynSpinner",
+            "module": "src/components/reusable/loaders/spinner.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-spinner",
+          "declaration": {
+            "name": "KynSpinner",
+            "module": "src/components/reusable/loaders/spinner.ts"
           }
         }
       ]
@@ -11250,6 +11599,17 @@
             },
             {
               "kind": "field",
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "attribute": "gradientBackground",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "aiConnected",
               "type": {
                 "text": "boolean"
@@ -11448,6 +11808,15 @@
               "default": "'Close'",
               "description": "Close button text.",
               "fieldName": "closeText"
+            },
+            {
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "fieldName": "gradientBackground"
             },
             {
               "name": "aiConnected",
@@ -12333,7 +12702,7 @@
               "kind": "field",
               "name": "target",
               "type": {
-                "text": "string"
+                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
               },
               "default": "''",
               "description": "Card link target.",
@@ -12343,7 +12712,7 @@
               "kind": "field",
               "name": "tagStatus",
               "type": {
-                "text": "string"
+                "text": "TagStatus"
               },
               "default": "'default'",
               "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
@@ -12353,7 +12722,7 @@
               "kind": "field",
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "NotificationType"
               },
               "default": "'normal'",
               "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
@@ -12363,7 +12732,7 @@
               "kind": "field",
               "name": "textStrings",
               "type": {
-                "text": "any"
+                "text": "TextStrings"
               },
               "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
               "description": "Customizable text strings.",
@@ -12528,7 +12897,7 @@
             {
               "name": "target",
               "type": {
-                "text": "string"
+                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
               },
               "default": "''",
               "description": "Card link target.",
@@ -12537,7 +12906,7 @@
             {
               "name": "tagStatus",
               "type": {
-                "text": "string"
+                "text": "TagStatus"
               },
               "default": "'default'",
               "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
@@ -12546,7 +12915,7 @@
             {
               "name": "type",
               "type": {
-                "text": "string"
+                "text": "NotificationType"
               },
               "default": "'normal'",
               "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
@@ -12555,7 +12924,7 @@
             {
               "name": "textStrings",
               "type": {
-                "text": "any"
+                "text": "TextStrings"
               },
               "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
               "description": "Customizable text strings.",
@@ -16588,6 +16957,17 @@
             },
             {
               "kind": "field",
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "attribute": "gradientBackground",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "hideFooter",
               "type": {
                 "text": "boolean"
@@ -16789,6 +17169,15 @@
               "default": "false",
               "description": "Disables the primary button.",
               "fieldName": "submitBtnDisabled"
+            },
+            {
+              "name": "gradientBackground",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Apply gradient to modal background",
+              "fieldName": "gradientBackground"
             },
             {
               "name": "hideFooter",
@@ -24406,6 +24795,26 @@
               "attribute": "removeHeader"
             },
             {
+              "kind": "field",
+              "name": "showStatusBadge",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show Status badge.",
+              "attribute": "showStatusBadge"
+            },
+            {
+              "kind": "field",
+              "name": "statusBadgeLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Update'",
+              "description": "Status Badge label.",
+              "attribute": "statusBadgeLabel"
+            },
+            {
               "kind": "method",
               "name": "_handleBodyClick",
               "privacy": "private"
@@ -24515,6 +24924,24 @@
               "default": "false",
               "description": "Removes the widget header.",
               "fieldName": "removeHeader"
+            },
+            {
+              "name": "showStatusBadge",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show Status badge.",
+              "fieldName": "showStatusBadge"
+            },
+            {
+              "name": "statusBadgeLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Update'",
+              "description": "Status Badge label.",
+              "fieldName": "statusBadgeLabel"
             }
           ],
           "superclass": {

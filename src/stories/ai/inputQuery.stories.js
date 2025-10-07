@@ -8,6 +8,7 @@ import analyticsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/1
 import customerEngagementIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/customer-engagement.svg';
 import databaseIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/database.svg';
 import flowDataIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/flow-data.svg';
+import plusIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import '../../components/reusable/notification';
@@ -105,7 +106,7 @@ export const Footer = {
     secondDropDownIcon: customerEngagementIcon,
   },
   parameters: {
-    controls: { disable: true },
+    controls: { include: ['floating'] },
   },
   render: (args) => {
     return html`
@@ -135,6 +136,22 @@ export const Footer = {
           </kyn-button>
         </div>
         <div class="footer-content">
+          <input
+            id="ai-file-input"
+            type="file"
+            name="ai-attachments"
+            style="display: none;"
+            @change=${(e) => action('files-selected')(e)}
+          />
+          <kyn-button
+            kind="tertiary"
+            size="small"
+            iconPosition="right"
+            description="Additional"
+            @click=${() => document.getElementById('ai-file-input')?.click()}
+          >
+            <span slot="icon">${unsafeSVG(plusIcon)}</span>
+          </kyn-button>
           <kyn-dropdown
             ?hideLabel=${true}
             value=${args.firstDropDownValue}
@@ -145,15 +162,23 @@ export const Footer = {
             <kyn-button
               slot="anchor"
               class="dropdown-anchor-button"
-              kind="secondary-ai"
+              kind="tertiary"
               size="small"
-              iconPosition="right"
             >
-              <span style="display:inline-flex;margin-right: 8px;">
-                ${unsafeSVG(args.firstDropDownIcon)}
-              </span>
-              ${args.firstDropDownValue}
-              <span slot="icon">${unsafeSVG(downIcon)}</span>
+              <div
+                style="display:flex;align-items:center;justify-content:space-between;width:100%;"
+              >
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="display:inline-flex;"
+                    >${unsafeSVG(args.firstDropDownIcon)}</span
+                  >
+                  <span>${args.firstDropDownValue}</span>
+                </div>
+                <span
+                  style="display:inline-flex;align-items:center;height:100%; margin-left:8px;"
+                  >${unsafeSVG(downIcon)}</span
+                >
+              </div>
             </kyn-button>
             <kyn-enhanced-dropdown-option value="Option 1">
               <span slot="icon">${unsafeSVG(databaseIcon)}</span>
@@ -182,15 +207,23 @@ export const Footer = {
             <kyn-button
               slot="anchor"
               class="dropdown-anchor-button"
-              kind="secondary-ai"
+              kind="tertiary"
               size="small"
-              iconPosition="right"
             >
-              <span style="display:inline-flex;margin-right: 8px;">
-                ${unsafeSVG(args.secondDropDownIcon)}
-              </span>
-              ${args.secondDropDownValue}
-              <span slot="icon">${unsafeSVG(downIcon)}</span>
+              <div
+                style="display:flex;align-items:center;justify-content:space-between;width:100%;"
+              >
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="display:inline-flex;"
+                    >${unsafeSVG(args.secondDropDownIcon)}</span
+                  >
+                  <span>${args.secondDropDownValue}</span>
+                </div>
+                <span
+                  style="display:inline-flex;align-items:center;height:100%; margin-left:8px;"
+                  >${unsafeSVG(downIcon)}</span
+                >
+              </div>
             </kyn-button>
             <kyn-enhanced-dropdown-option value="Option 1">
               <span slot="icon">${unsafeSVG(flowDataIcon)}</span>
@@ -247,11 +280,14 @@ const sharedStyles = html`
       gap: 10px;
       padding: 10px;
       align-items: center;
-      background-color: var(--kd-color-background-container-ai-level-2);
       border-radius: 8px;
+      background-color: var(--kd-color-background-container-ai-level-2);
+      border: 1px solid transparent;
+      box-shadow: none;
     }
 
     .ai-input-query.floating {
+      border-color: transparent;
       box-shadow: var(--kd-elevation-level-3-ai);
     }
 

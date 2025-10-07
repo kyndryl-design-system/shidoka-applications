@@ -22,17 +22,17 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-423936&p=f&m=dev',
     },
+    // disable violations flagged in chartjs-plugin-a11y-legend
     a11y: {
-      // disable violations flagged in chartjs-plugin-a11y-legend
       config: {
         rules: [
+          { id: 'aria-toggle-field-name', enabled: false },
+          { id: 'aria-required-parent', enabled: false },
           {
-            id: 'aria-toggle-field-name',
-            enabled: false,
-          },
-          {
-            id: 'aria-required-parent',
-            enabled: false,
+            id: 'color-contrast',
+            enabled: true,
+            selector:
+              ':not(kd-chart .description, .widget kd-chart .description, .description)',
           },
         ],
       },
@@ -70,6 +70,8 @@ const args = {
   selected: false,
   compact: false,
   removeHeader: false,
+  showStatusBadge: false,
+  statusBadgeLabel: 'Update',
 };
 
 const getExampleContent = () => html`
@@ -99,6 +101,8 @@ export const Widget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -133,6 +137,8 @@ export const SelectableWidget = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -158,6 +164,8 @@ export const WithActions = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
@@ -172,6 +180,47 @@ export const WithActions = {
               >
             </kyn-button>
 
+            <kyn-overflow-menu
+              slot="actions"
+              anchorRight
+              verticalDots
+              ?disabled=${args.disabled}
+            >
+              <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+              <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+            </kyn-overflow-menu>
+
+            ${getExampleContent()}
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const WithBadge = {
+  args: {
+    ...args,
+    showStatusBadge: true,
+    statusBadgeLabel: 'Update',
+  },
+  render: (args) => {
+    return html`
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
             <kyn-overflow-menu
               slot="actions"
               anchorRight
@@ -205,6 +254,8 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -234,6 +285,8 @@ export const WithFooter = {
             ?selected=${args.selected}
             ?compact=${args.compact}
             ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}

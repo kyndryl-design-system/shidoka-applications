@@ -1,26 +1,130 @@
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/variables/breakpoints.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: block;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  transition: outline-color 150ms ease-out;
+  transition: outline-color 150ms ease-out, background-color 150ms ease-out,
+    border-color 150ms ease-out, color 150ms ease-out, box-shadow 150ms ease-out;
   border-radius: 4px 4px 0 0;
+
+  @include gradient.outline-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 4px 4px 0 0,
+    $width: 2px,
+    $surface: var(--kd-color-background-ui-hollow-default),
+    $outside: false
+  );
+
+  &::after {
+    opacity: 0;
+    transition: opacity 150ms ease-out, background 150ms ease-out,
+      inset 150ms ease-out, border-radius 150ms ease-out;
+  }
 }
 
+/* HORIZONTAL — AI HOVER */
+:host([data-aiconnected='true']:hover) {
+  &::after {
+    opacity: 1;
+  }
+
+  .tab,
+  .tab.selected {
+    position: relative;
+    z-index: 0;
+    background: var(--kd-color-background-button-primary-ai-hover);
+    border-color: var(--kd-color-border-button-secondary-ai-hover);
+    color: var(--kd-color-text-level-primary);
+  }
+}
+
+/* HORIZONTAL — AI PRESSED */
+:host([data-aiconnected='true']:active) {
+  outline: 2px solid var(--kd-color-border-button-ai-state-focused);
+
+  &::after {
+    opacity: 1;
+  }
+
+  .tab,
+  .tab.selected {
+    background: var(--kd-color-background-button-primary-ai-pressed);
+    color: var(--kd-color-text-level-primary);
+  }
+}
+
+/* FOCUS */
 :host(:focus-visible) {
-  outline-color: var(--kd-color-border-variants-focus);
+  outline: 2px solid var(--kd-color-border-button-secondary-state-focused);
 }
-
 :host([data-aiconnected='true']:focus-visible) {
-  outline-color: var(--kd-color-border-button-ai-state-focused);
+  outline: 2px solid var(--kd-color-border-button-ai-state-focused);
+
+  &::after {
+    opacity: 1;
+  }
+
+  .tab {
+    background: var(--kd-color-background-button-primary-ai-pressed);
+    color: var(--kd-color-text-level-primary) !important;
+  }
+}
+:host(:focus-visible) .tab,
+:host(:focus-visible) .tab:hover {
+  background: var(--kd-color-background-button-primary-state-focused);
+  border-color: var(--kd-color-border-button-secondary-state-focused);
+  color: var(--kd-color-text-level-light) !important;
+}
+:host(:focus-visible) .tab ::slotted(*),
+:host(:focus-visible) .tab ::slotted(svg) {
+  color: inherit;
+  fill: currentColor;
 }
 
+/* VERTICAL BORDER-RADIUS (ALL STATES) */
 @media (min-width: breakpoints.$bp-md) {
   :host([vertical]) {
     border-radius: 0 4px 4px 0;
+  }
+}
+
+/* VERTICAL — AI HOVER */
+@media (min-width: breakpoints.$bp-md) {
+  :host([vertical][data-aiconnected='true']:hover) {
+    &::after {
+      opacity: 1;
+    }
+
+    .tab,
+    .tab.selected {
+      position: relative;
+      z-index: 0;
+      background: var(--kd-color-background-button-primary-ai-hover);
+      border-color: var(--kd-color-border-button-secondary-ai-hover);
+      color: var(--kd-color-text-level-light);
+    }
+  }
+}
+
+/* VERTICAL — AI PRESSED */
+@media (min-width: breakpoints.$bp-md) {
+  :host([vertical][data-aiconnected='true']:active) {
+    outline: 2px solid var(--kd-color-border-button-ai-state-focused);
+    border-radius: 0 4px 4px 0;
+
+    &::after {
+      opacity: 1;
+    }
+
+    .tab,
+    .tab.selected {
+      background: var(--kd-color-background-button-primary-ai-pressed);
+      color: var(--kd-color-text-level-primary);
+    }
   }
 }
 
@@ -49,6 +153,7 @@
     @include typography.type-ui-03;
     height: 30px;
     padding: 7px 14px;
+    border-width: 1px;
   }
 
   &.selected {
@@ -56,6 +161,7 @@
     border-width: 2px;
   }
 
+  /* VERTICAL BLOCK */
   &.vertical {
     &.selected {
       border-width: 2px;
@@ -64,25 +170,25 @@
     @media (min-width: breakpoints.$bp-md) {
       border-radius: 0 4px 4px 0;
       border-bottom: none;
-      border-left: 1px solid var(--kd-color-border-accent-secondary);
+      border-left: 2px solid var(--kd-color-border-accent-secondary);
       white-space: initial;
       text-align: left;
     }
   }
 
-  &.tab:not(.disabled) {
+  /* NON-AI STATES (HORIZONTAL) */
+  &.tab:not(.disabled):not(.ai-connected) {
     color: var(--kd-color-text-level-primary);
 
     &.selected {
-      // background: var(--kd-color-background-button-tertiary-state-default);
-      border-color: var(--kd-color-border-button-primary-state-default);
+      border-bottom-color: var(--kd-color-border-button-primary-state-default);
       color: var(--kd-color-text-link-level-default);
     }
 
     &:hover,
     &.selected:hover {
       background: var(--kd-color-background-button-secondary-state-hover);
-      border-color: var(--kd-color-border-button-primary-state-hover);
+      border-bottom-color: var(--kd-color-border-button-primary-state-hover);
       color: var(--kd-color-text-level-primary);
     }
 
@@ -92,35 +198,80 @@
       border-color: var(--kd-color-border-button-primary-state-hover);
       color: var(--kd-color-text-level-light);
     }
+
+    &:focus-visible,
+    &.selected:focus-visible {
+      outline: none;
+      color: var(--kd-color-text-level-light);
+      background: var(--kd-color-background-button-primary-state-focused);
+      border-bottom-color: var(
+        --kd-color-border-button-secondary-state-focused
+      );
+    }
+
+    /* NON-AI STATES (VERTICAL overrides) */
+    @media (min-width: breakpoints.$bp-md) {
+      &.vertical {
+        &.selected {
+          border-left-color: var(
+            --kd-color-border-button-primary-state-default
+          );
+        }
+        &:hover,
+        &.selected:hover {
+          background: var(--kd-color-background-button-secondary-state-hover);
+          border-left-color: var(--kd-color-border-button-primary-state-hover);
+          color: var(--kd-color-text-level-primary);
+        }
+        &:active,
+        &.selected:active {
+          background: var(--kd-color-background-button-primary-state-pressed);
+          border-left-color: var(--kd-color-border-button-primary-state-hover);
+          color: var(--kd-color-text-level-light);
+        }
+        &:focus-visible,
+        &.selected:focus-visible {
+          background: var(--kd-color-background-button-primary-state-focused);
+          border-left-color: var(
+            --kd-color-border-button-secondary-state-focused
+          );
+        }
+      }
+    }
   }
 
+  /* AI-CONNECTED (HORIZONTAL, GENERAL) */
   &.tab.ai-connected:not(.disabled) {
     color: var(--kd-color-text-button-ai-default);
-    border-color: var(--kd-color-border-button-ai-state-default);
+    border-bottom-color: var(--kd-color-border-button-ai-state-default);
 
     &.selected {
-      // background: var(--kd-color-background-button-secondary-ai-default);
-      border-color: var(--kd-color-border-button-ai-state-focused);
+      border-bottom-color: var(--kd-color-border-button-ai-state-focused);
     }
+  }
 
-    &:hover,
-    &.selected:hover {
-      background: var(--kd-color-background-button-secondary-ai-hover);
-      border-color: var(--kd-color-border-button-secondary-ai-hover);
-      color: var(--kd-color-text-level-light);
-    }
+  /* AI-CONNECTED (VERTICAL overrides) */
+  @media (min-width: breakpoints.$bp-md) {
+    &.tab.ai-connected.vertical:not(.disabled) {
+      border-bottom: none;
+      border-left: 2px solid var(--kd-color-border-button-ai-state-default);
+      border-radius: 0 4px 4px 0;
 
-    &:active,
-    &.selected:active {
-      background: var(--kd-color-background-button-primary-ai-hover);
-      border-color: var(--kd-color-border-button-secondary-ai-hover);
-      color: var(--kd-color-text-button-dark-primary);
+      &.selected {
+        border-left-color: var(--kd-color-border-button-ai-state-focused);
+      }
+
+      &:active,
+      &.selected:active {
+        background: var(--kd-color-background-button-primary-ai-pressed);
+        color: var(--kd-color-text-level-primary);
+        border-left-color: var(--kd-color-border-button-ai-state-focused);
+      }
     }
   }
 
   &.disabled {
     color: var(--kd-color-text-link-level-disabled);
-    // border-color: 1px solid var(--kd-color-border-ui-disabled);
     cursor: not-allowed;
   }
 }

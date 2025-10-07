@@ -24,7 +24,7 @@ export const Default = {
       <div class="ai-answers-wrapper ${args.centered ? 'centered' : ''}">
         <kyn-button
           size="small"
-          kind="secondary-ai"
+          kind="primary-ai"
           name="AI Answer 1"
           description="AI Answer 1"
           @on-click=${handleClick}
@@ -34,7 +34,7 @@ export const Default = {
 
         <kyn-button
           size="small"
-          kind="secondary-ai"
+          kind="primary-ai"
           name="AI Answer 2"
           description="AI Answer 2"
           @on-click=${handleClick}
@@ -44,7 +44,7 @@ export const Default = {
 
         <kyn-button
           size="small"
-          kind="secondary-ai"
+          kind="primary-ai"
           name="AI Answer 3"
           description="AI Answer 3"
           @on-click=${handleClick}
@@ -54,7 +54,7 @@ export const Default = {
 
         <kyn-button
           size="small"
-          kind="secondary-ai"
+          kind="primary-ai"
           name="AI Answer 4"
           description="AI Answer 4"
           @on-click=${handleClick}

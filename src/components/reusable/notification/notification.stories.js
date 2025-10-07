@@ -146,6 +146,7 @@ export const Inline = {
             <kyn-link
               kind="secondary"
               href="#"
+              standalone
               @on-click=${(e) => e.preventDefault()}
             >
               Link

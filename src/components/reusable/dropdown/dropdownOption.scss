@@ -1,16 +1,13 @@
 @use '../../../common/scss/global.scss';
 @use '../../../common/scss/menu-item.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
 
 :host {
   display: block;
 }
 
-.menu-item:is(:focus, :focus-within, :focus-visible) {
-  outline-color: none;
-}
-
 .option {
-  cursor: default;
+  cursor: pointer;
   padding: 16px;
   height: 48px;
   transition: background-color 150ms ease-out;
@@ -19,9 +16,17 @@
   align-items: center;
   background: var(--kd-color-background-menu-state-default);
 
+  &.ai-connected {
+    background: var(--kd-color-background-menu-state-ai-default);
+    &:not([disabled]):not([readonly]):hover {
+      background: var(--kd-color-background-menu-state-ai-hover);
+    }
+  }
+
   &[selected] {
     display: flex;
     align-items: center;
+    background: var(--kd-color-background-menu-state-ai-active);
   }
 
   span {

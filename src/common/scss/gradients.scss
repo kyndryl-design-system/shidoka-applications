@@ -1,0 +1,124 @@
+$ai-gradient-default: var(
+  --kd-gradient-border-ai-default,
+  linear-gradient(
+    to bottom,
+    var(--kd-color-border-ai-default-gradient-start),
+    var(--kd-color-border-ai-default-gradient-end)
+  )
+);
+
+@mixin border-gradient-ai(
+  $gradient,
+  $radius: 8px,
+  $width: 1px,
+  $surface: var(--kd-color-background-ui-hollow-default)
+) {
+  box-sizing: border-box;
+  border-radius: $radius;
+  border: $width solid transparent;
+
+  background: linear-gradient(#{$surface}, #{$surface}) padding-box,
+    #{$gradient} border-box;
+
+  background-clip: padding-box, border-box;
+  background-origin: border-box, border-box;
+
+  background-size: calc(100% + 2px) calc(100% + 2px), cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+@mixin outline-gradient-ai(
+  $gradient,
+  $radius: 8px,
+  $width: 1px,
+  $surface: var(--kd-color-background-ui-hollow-default),
+  $outside: false
+) {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: if($outside, -#{$width}, 0);
+    border-radius: $radius;
+    pointer-events: none;
+    z-index: 1;
+
+    background: #{$gradient};
+
+    padding: #{$width};
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+}
+
+@mixin gradient-ring($radius, $width, $bg, $g: $ai-gradient-default) {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: $radius;
+    padding: $width;
+    background: $g;
+    pointer-events: none;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask: linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    box-shadow: inset 0 0 0 999px #0000;
+    z-index: 1;
+  }
+  background: $bg;
+}
+
+.g-border-ai {
+  @include border-gradient-ai($gradient: $ai-gradient-default);
+}
+
+.g-outline-ai {
+  @include outline-gradient-ai($gradient: $ai-gradient-default);
+}
+
+/// Gradient Backgrounds for AI-connected components
+:root {
+  --ai-radial-strength: 20%;
+  --ai-radial-outer: 75%;
+  --ai-right-strength: 15%;
+  --ai-right-spread: 55%;
+}
+
+dialog.ai-connected.gradient-bkg {
+  background-color: var(--kd-color-background-container-ai-default);
+
+  background-image: radial-gradient(
+      circle at 0% 0%,
+      color-mix(
+          in oklab,
+          var(--kd-color-border-ai-default-gradient-start)
+            var(--ai-radial-strength),
+          transparent
+        )
+        0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 100% 50%,
+      color-mix(
+          in oklab,
+          var(--kd-color-border-ai-default-gradient-end)
+            var(--ai-right-strength),
+          transparent
+        )
+        0%,
+      transparent var(--ai-right-spread)
+    );
+
+  background-repeat: no-repeat, no-repeat;
+  background-position: 0 0, 100% 50%;
+  background-size: cover, cover;
+}
