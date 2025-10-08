@@ -1,4 +1,3 @@
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import './index';
 import '../footer';
@@ -10,7 +9,7 @@ import { LocalNav } from '../localNav/localNav.stories.js';
 import {
   Header,
   WithEverything as HeaderWithEverything,
-} from '../header/header.stories.js';
+} from '../header/Header.stories.js';
 import { WithLinks as FooterWithLinks } from '../footer/footer.stories';
 import { Basic as BasicTable } from '../../reusable/table/table.stories.js';
 import { PageTitle } from '../../reusable/pageTitle/pageTitle.stories.js';
