@@ -32,6 +32,10 @@
 
   &:hover {
     background-color: $bg-default;
+
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-disabled);
+    }
   }
 }
 
@@ -44,15 +48,36 @@
   }
 
   &:hover {
-    background-color: var(--kd-color-status-error-light);
+    background-color: var(--kd-color-status-error-accent) !important;
+
+    .menu-item-inner-el {
+      color: var(--kd-color-status-error-foreground) !important;
+    }
+  }
+
+  &:active {
+    background-color: var(
+      --kd-color-background-button-primary-destructive-pressed
+    ) !important;
+    outline: none;
+
+    .menu-item-inner-el {
+      color: var(--kd-color-text-button-dark-destructive) !important;
+    }
   }
 
   &:focus-visible {
-    outline: 2px solid var(--kd-color-border-button-primary-destructive-default);
-    background-color: var(--kd-color-status-error-light);
+    outline: 2px solid var(--kd-color-border-button-primary-destructive-default) !important;
+    background-color: var(--kd-color-status-error-accent) !important;
 
     .menu-item-inner-el {
-      color: var(--kd-color-text-level-primary);
+      color: var(--kd-color-text-level-primary) !important;
+    }
+
+    &:hover {
+      .menu-item-inner-el {
+        color: var(--kd-color-status-error-foreground) !important;
+      }
     }
   }
 }
@@ -185,13 +210,6 @@
       var(--kd-color-icon-light)
     );
   }
-  // cancel hover when readonly/disabled/ai-connected/destructive
-  // &[disabled]:hover,
-  // &[readonly]:hover,
-  // &.ai-connected:hover,
-  // &.destructive:hover {
-
-  // }
 
   // 5) selected (non-disabled)
   &[selected] {
@@ -207,27 +225,11 @@
     );
   }
 
-  // leave commented out for now as it causes issues with keyboard nav
-  // 6) highlighted (non-disabled)
-  // &[highlighted] {
-  //   @include state-colors(
-  //     var(--kd-color-background-menu-state-hover),
-  //     var(--kd-color-text-level-light)
-  //   );
-  //   // default (non-AI) focus ring
-  //   outline: 1px solid var(--kd-color-border-variants-focus);
-  // }
-
   // ----- AI variant -----
   &.ai-connected {
     background-color: var(--kd-color-background-menu-state-ai-default);
     color: var(--kd-color-text-level-primary);
   }
-
-  // &.ai-connected:focus,
-  // &.ai-connected:focus-within,
-  // &.ai-connected:focus-visible {
-  // }
 
   &.ai-connected:hover {
     background-color: var(--kd-color-background-menu-state-ai-hover);
