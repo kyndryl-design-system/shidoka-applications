@@ -12,7 +12,7 @@ import {
 } from '../header/Header.stories.js';
 import { WithLinks as FooterWithLinks } from '../footer/footer.stories';
 import { Basic as BasicTable } from '../../reusable/table/table.stories.js';
-import { PageTitle } from '../../reusable/pageTitle/pageTitle.stories.js';
+import { PageTitle } from '../../reusable/pagetitle/pageTitle.stories.js';
 
 export default {
   title: 'Global Components/UI Shell',
