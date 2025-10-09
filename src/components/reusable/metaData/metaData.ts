@@ -31,10 +31,6 @@ export class MetaData extends LitElement {
   @property({ type: Boolean })
   accessor noBackground = false;
 
-  /** No padding. */
-  @property({ type: Boolean })
-  accessor noPadding = false;
-
   /** Adds scrollable overflow to the slot content. */
   @property({ type: Boolean })
   accessor scrollableContent = false;
@@ -67,7 +63,6 @@ export class MetaData extends LitElement {
     const metaContainer = {
       'meta-container': true,
       'no-background': this.noBackground,
-      'no-padding': this.noPadding,
     };
     const metaIcon = {
       'meta-icon': true,
