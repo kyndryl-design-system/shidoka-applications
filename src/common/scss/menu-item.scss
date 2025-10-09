@@ -42,8 +42,8 @@
   &:focus-visible,
   &:active {
     background-color: $bg-default;
-    outline: 2px solid transparent;
-    border: none;
+    /* keep border box stable; do NOT switch to `none` */
+    border-color: transparent;
   }
 
   slot[name='icon']::slotted(span),
@@ -59,8 +59,8 @@
     background-color: $bg;
   }
 
-  outline: 2px solid transparent;
-
+  /* maintain constant border to avoid flash */
+  border-color: transparent;
   .menu-item-inner-el {
     color: $text;
   }
@@ -73,9 +73,18 @@
 
 // ==== defaults ====
 .menu-item {
+  /* kill UA/button defaults that can flash a white border on :active */
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: none;
+
+  /* keep a stable border box across all states */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+
   background-color: var(--kd-color-background-menu-state-default);
   transition: background-color 150ms ease-out;
-  outline: 2px solid transparent;
   outline-offset: -2px;
 
   .menu-item-inner-el {
@@ -92,6 +101,8 @@
   &:focus-visible {
     outline-color: var(--kd-color-border-variants-focus);
     background-color: var(--kd-color-background-menu-state-focused);
+    /* keep border stable */
+    border-color: transparent;
   }
 
   &[disabled] {
@@ -107,7 +118,7 @@
     &:focus,
     &:focus-visible {
       background-color: var(--kd-color-background-menu-state-default);
-      outline: 2px solid transparent;
+      border-color: transparent;
     }
 
     .menu-item-inner-el {
@@ -167,8 +178,7 @@
 }
 
 /* --- generic (non-destructive) states --- */
-:host
-  .menu-item:hover:not(:active):not([disabled]):not([readonly]):not(
+.menu-item:hover:not(:active):not([disabled]):not([readonly]):not(
     .destructive
   ):not(.ai-connected) {
   @include state-colors(
@@ -178,8 +188,7 @@
   );
 }
 
-:host
-  .menu-item[selected]:not([disabled]):not([readonly]):hover:not(:active):not(
+.menu-item[selected]:not([disabled]):not([readonly]):hover:not(:active):not(
     .destructive
   ):not(.ai-connected) {
   @include state-colors(
@@ -189,30 +198,24 @@
   );
 }
 
-:host
-  .menu-item:active:not(.destructive):not(.ai-connected):not([disabled]):not(
+.menu-item:active:not(.destructive):not(.ai-connected):not([disabled]):not(
     [readonly]
   ),
-:host
-  .menu-item[data-pressed]:not(.destructive):not(.ai-connected):not(
+.menu-item[data-pressed]:not(.destructive):not(.ai-connected):not(
     [disabled]
   ):not([readonly]),
-:host
-  .menu-item[selected]:active:not(.destructive):not(.ai-connected):not(
+.menu-item[selected]:active:not(.destructive):not(.ai-connected):not(
     [disabled]
   ):not([readonly]),
-:host
-  .menu-item[selected][data-pressed]:not(.destructive):not(.ai-connected):not(
+.menu-item[selected][data-pressed]:not(.destructive):not(.ai-connected):not(
     [disabled]
   ):not([readonly]),
-:host
-  .menu-item[highlighted]:active:not(.destructive):not(.ai-connected):not(
+.menu-item[highlighted]:active:not(.destructive):not(.ai-connected):not(
     [disabled]
   ):not([readonly]),
-:host
-  .menu-item[highlighted][data-pressed]:not(.destructive):not(
-    .ai-connected
-  ):not([disabled]):not([readonly]) {
+.menu-item[highlighted][data-pressed]:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]) {
   @include pressed(
     var(--kd-color-background-menu-state-pressed),
     var(--kd-color-text-level-light),
@@ -225,8 +228,7 @@
 .menu-item.ai-connected:active:not([disabled]):not([readonly]),
 .menu-item.ai-connected[data-pressed]:not([disabled]):not([readonly]),
 .menu-item.ai-connected:hover:active:not([disabled]):not([readonly]),
-:host
-  .menu-item.ai-connected:hover[data-pressed]:not([disabled]):not([readonly]) {
+.menu-item.ai-connected:hover[data-pressed]:not([disabled]):not([readonly]) {
   @include pressed(
     var(--kd-color-background-menu-state-ai-pressed),
     var(--kd-color-text-level-primary),
@@ -264,6 +266,7 @@
       --kd-color-background-button-primary-destructive-focused
     );
     color: var(--kd-color-text-level-light);
+    border-color: transparent;
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-light);
