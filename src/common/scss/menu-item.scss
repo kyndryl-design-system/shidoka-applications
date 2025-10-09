@@ -30,7 +30,6 @@
     cursor: not-allowed;
   }
 
-  /* prevent :hover/:active from firing on custom “disabled” items */
   pointer-events: none;
   user-select: none;
   touch-action: none;
@@ -42,7 +41,6 @@
   &:focus-visible,
   &:active {
     background-color: $bg-default;
-    /* keep border box stable; do NOT switch to `none` */
     border-color: transparent;
   }
 
@@ -59,7 +57,6 @@
     background-color: $bg;
   }
 
-  /* maintain constant border to avoid flash */
   border-color: transparent;
   .menu-item-inner-el {
     color: $text;
@@ -73,13 +70,10 @@
 
 // ==== defaults ====
 .menu-item {
-  /* kill UA/button defaults that can flash a white border on :active */
   appearance: none;
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
   box-shadow: none;
-
-  /* keep a stable border box across all states */
   border: 1px solid transparent;
   background-clip: padding-box;
 
@@ -99,9 +93,8 @@
   &:focus,
   &:focus-within,
   &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
+    outline: 2px solid var(--kd-color-border-variants-focus);
     background-color: var(--kd-color-background-menu-state-focused);
-    /* keep border stable */
     border-color: transparent;
   }
 
@@ -131,7 +124,6 @@
     }
   }
 
-  /* do not restyle destructive on selected */
   &[selected]:not([disabled]):not([readonly]):not(.destructive) {
     @include state-colors(
       var(--kd-color-background-menu-state-open),
