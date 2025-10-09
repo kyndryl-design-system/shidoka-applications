@@ -215,33 +215,5 @@ form {
 dialog.ai-connected {
   @include elevation.shadow(3, true);
   background: var(--kd-color-background-container-ai-default);
-
-  &.gradient-bkg {
-    background-color: var(--kd-color-background-container-ai-default);
-
-    background-image: radial-gradient(
-        circle at 0% 0%,
-        color-mix(
-            in oklab,
-            var(--kd-color-border-ai-default-gradient-start) 20%,
-            transparent
-          )
-          0%,
-        transparent 35%
-      ),
-      radial-gradient(
-        circle at 100% 50%,
-        color-mix(
-            in oklab,
-            var(--kd-color-border-ai-default-gradient-end) 15%,
-            transparent
-          )
-          0%,
-        transparent 55%
-      );
-
-    background-repeat: no-repeat, no-repeat;
-    background-position: 0 0, 100% 50%;
-    background-size: cover, cover;
-  }
+  @extend .gradient-bkg;
 }
