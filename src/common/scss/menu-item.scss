@@ -1,7 +1,6 @@
 @use '../scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
-@use '../../common/scss/gradients.scss' as gradient;
 
 // ==== mixins ====
 @mixin state-colors($bg, $text, $icon: null) {
@@ -12,7 +11,8 @@
   }
 
   @if $icon != null {
-    slot[name='icon']::slotted(span) {
+    slot[name='icon']::slotted(span),
+    .check-icon {
       color: $icon;
     }
   }
@@ -50,20 +50,6 @@
   .check-icon {
     color: var(--kd-color-icon-disabled);
   }
-}
-
-@mixin border-gradient-ai(
-  $gradient,
-  $radius: 4px,
-  $width: 1px,
-  $surface: transparent
-) {
-  box-sizing: border-box;
-  border: $width solid transparent;
-  border-radius: $radius;
-  background: linear-gradient(#{$surface}, #{$surface}) padding-box,
-    #{$gradient} border-box;
-  background-clip: padding-box, border-box;
 }
 
 @mixin pressed($bg, $text, $icon, $layered: true) {
@@ -121,6 +107,7 @@
     &:focus,
     &:focus-visible {
       background-color: var(--kd-color-background-menu-state-default);
+      outline: 2px solid transparent;
     }
 
     .menu-item-inner-el {
@@ -133,7 +120,8 @@
     }
   }
 
-  &[selected]:not([disabled]):not([readonly]) {
+  /* do not restyle destructive on selected */
+  &[selected]:not([disabled]):not([readonly]):not(.destructive) {
     @include state-colors(
       var(--kd-color-background-menu-state-open),
       var(--kd-color-text-level-primary)
@@ -165,13 +153,9 @@
     &[highlighted]:not([disabled]):not([readonly]):hover:not(:active) {
       @include state-colors(
         var(--kd-color-background-menu-state-ai-hover),
-        var(--kd-color-text-level-primary)
+        var(--kd-color-text-level-primary),
+        var(--kd-color-icon-primary)
       );
-
-      slot[name='icon']::slotted(span),
-      .check-icon {
-        color: var(--kd-color-icon-primary);
-      }
     }
 
     &[disabled] {
@@ -186,7 +170,7 @@
 :host
   .menu-item:hover:not(:active):not([disabled]):not([readonly]):not(
     .destructive
-  ) {
+  ):not(.ai-connected) {
   @include state-colors(
     var(--kd-color-background-menu-state-hover),
     var(--kd-color-text-level-light),
@@ -197,7 +181,7 @@
 :host
   .menu-item[selected]:not([disabled]):not([readonly]):hover:not(:active):not(
     .destructive
-  ) {
+  ):not(.ai-connected) {
   @include state-colors(
     var(--kd-color-background-menu-state-hover),
     var(--kd-color-text-level-light),
@@ -205,23 +189,30 @@
   );
 }
 
-:host .menu-item:active:not(.destructive):not([disabled]):not([readonly]),
 :host
-  .menu-item[data-pressed]:not(.destructive):not([disabled]):not([readonly]),
-:host
-  .menu-item[selected]:active:not(.destructive):not([disabled]):not([readonly]),
-:host
-  .menu-item[selected][data-pressed]:not(.destructive):not([disabled]):not(
+  .menu-item:active:not(.destructive):not(.ai-connected):not([disabled]):not(
     [readonly]
   ),
 :host
-  .menu-item[highlighted]:active:not(.destructive):not([disabled]):not(
-    [readonly]
-  ),
+  .menu-item[data-pressed]:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
 :host
-  .menu-item[highlighted][data-pressed]:not(.destructive):not([disabled]):not(
-    [readonly]
-  ) {
+  .menu-item[selected]:active:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
+:host
+  .menu-item[selected][data-pressed]:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
+:host
+  .menu-item[highlighted]:active:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
+:host
+  .menu-item[highlighted][data-pressed]:not(.destructive):not(
+    .ai-connected
+  ):not([disabled]):not([readonly]) {
   @include pressed(
     var(--kd-color-background-menu-state-pressed),
     var(--kd-color-text-level-light),
@@ -246,15 +237,16 @@
 
 /* --- destructive variant --- */
 :host .menu-item.destructive {
-  color: var(--kd-color-text-variant-destructive);
+  color: var(--kd-color-badge-light-text-error);
   border-top: 1px solid var(--kd-color-border-level-tertiary);
   background-color: var(--kd-color-background-menu-state-default);
 
   .menu-item-inner-el {
-    color: var(--kd-color-text-variant-destructive);
+    color: var(--kd-color-badge-light-text-error);
   }
 
   &:hover:not(:active):not([disabled]):not([readonly]) {
+    border-top: 1px solid var(--kd-color-border-level-tertiary);
     background-color: var(
       --kd-color-background-button-primary-destructive-hover
     );
