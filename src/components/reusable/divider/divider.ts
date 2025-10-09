@@ -10,7 +10,7 @@ export class Divider extends LitElement {
   static override styles = unsafeCSS(DividerScss);
 
   override render() {
-    return html` <div role="separator" class="divider vertical"></div> `;
+    return html` <div role="separator"></div> `;
   }
 }
 
