@@ -72,7 +72,7 @@
 }
 
 // ==== defaults ====
-:host .menu-item {
+.menu-item {
   background-color: var(--kd-color-background-menu-state-default);
   transition: background-color 150ms ease-out;
   outline: 2px solid transparent;
@@ -222,9 +222,9 @@
 }
 
 /* --- pressed states (AI) --- */
-:host .menu-item.ai-connected:active:not([disabled]):not([readonly]),
-:host .menu-item.ai-connected[data-pressed]:not([disabled]):not([readonly]),
-:host .menu-item.ai-connected:hover:active:not([disabled]):not([readonly]),
+.menu-item.ai-connected:active:not([disabled]):not([readonly]),
+.menu-item.ai-connected[data-pressed]:not([disabled]):not([readonly]),
+.menu-item.ai-connected:hover:active:not([disabled]):not([readonly]),
 :host
   .menu-item.ai-connected:hover[data-pressed]:not([disabled]):not([readonly]) {
   @include pressed(
@@ -236,7 +236,7 @@
 }
 
 /* --- destructive variant --- */
-:host .menu-item.destructive {
+.menu-item.destructive {
   color: var(--kd-color-badge-light-text-error);
   border-top: 1px solid var(--kd-color-border-level-tertiary);
   background-color: var(--kd-color-background-menu-state-default);
@@ -282,6 +282,6 @@
 }
 
 /* --- destructive + disabled --- */
-:host .menu-item.destructive[disabled] {
+.menu-item.destructive[disabled] {
   @include disabled-common(var(--kd-color-background-menu-state-default));
 }
