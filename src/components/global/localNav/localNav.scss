@@ -16,8 +16,8 @@ nav {
   display: flex;
   flex-direction: column;
   top: 0;
-  padding: 4px 8px;
   left: 0;
+  padding: 8px;
   width: 100%;
   background-color: var(--kd-color-background-menu-state-default);
   overflow: hidden;
@@ -25,8 +25,12 @@ nav {
   @media (min-width: 42rem) {
     position: fixed;
     z-index: var(--kd-z-local-nav);
-    height: 100%;
-    padding-top: calc(var(--kd-header-height) + 8px);
+    top: calc(var(--kd-header-height) + 8px);
+    left: 8px;
+    // height: 100%;
+    bottom: 8px;
+    padding-top: 8px;
+    border-radius: 8px;
     transition: width 300ms ease-in-out, border-color 300ms ease-out;
     width: var(--kd-local-nav-width);
 
@@ -34,7 +38,7 @@ nav {
       box-shadow: none;
     }
 
-    @include elevation.shadow(2);
+    // @include elevation.shadow(2);
   }
 
   &.nav--expanded-mobile {
@@ -140,7 +144,7 @@ slot[name='search'] {
   outline-offset: -2px;
   font: inherit;
   color: var(--kd-color-text-level-primary);
-  padding: 8px 12px 8px 8px;
+  padding: 8px 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
