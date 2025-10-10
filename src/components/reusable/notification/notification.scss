@@ -20,13 +20,22 @@ kyn-card.notification-inline::part(card-wrapper) {
   border: none;
 }
 
-kyn-card.notification-toast::part(card-wrapper) {
+kyn-card.notification-toast:not(.notification-ai)::part(card-wrapper) {
   @include elevation.shadow(3);
   outline: none;
   border: none;
 
   &:hover {
     @include elevation.shadow(2);
+    transition: box-shadow 300ms ease-out;
+  }
+}
+
+kyn-card.notification-toast.notification-ai::part(card-wrapper) {
+  @include elevation.shadow(3, true);
+
+  &:hover {
+    @include elevation.shadow(2, true);
     transition: box-shadow 300ms ease-out;
   }
 }
