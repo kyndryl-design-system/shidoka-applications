@@ -11,7 +11,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/design/s1p6FZKFQEhywrgNNYfeJl/Biscuit-2.7?node-id=5-166321&m=dev',
     },
   },
   decorators: [
@@ -23,6 +23,17 @@ export default {
         .value_text {
           color: var(--kd-color-text-level-primary);
         }
+        .v-align {
+          display: flex;
+          align-items: center;
+          height: 1.5rem;
+          gap: 8px;
+        }
+        .h-align {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
         .margin-24 {
           margin: var(--kd-spacing-8) 0;
         }
@@ -33,22 +44,40 @@ export default {
 };
 
 export const Default = {
-  render: () => {
-    return html` <kyn-divider></kyn-divider>`;
+  args: {
+    vertical: false,
+  },
+  render: (args) => {
+    return args.vertical
+      ? html`
+          <div style="height: 100px;width:1px">
+            <kyn-divider .vertical=${args.vertical}></kyn-divider>
+          </div>
+        `
+      : html` <kyn-divider .vertical=${args.vertical}></kyn-divider> `;
   },
 };
 
 export const Vertical = {
-  render: () => {
-    return html` <div
-      style="display: flex;align-items: center;height: 1.5rem;gap: 8px;"
-    >
-      One
-      <kyn-divider vertical></kyn-divider>
-      Two
-      <kyn-divider vertical></kyn-divider>
-      Three
-    </div>`;
+  args: {
+    vertical: true,
+  },
+  render: (args) => {
+    return args.vertical
+      ? html` <div class="v-align">
+          One
+          <kyn-divider .vertical=${args.vertical}></kyn-divider>
+          Two
+          <kyn-divider .vertical=${args.vertical}></kyn-divider>
+          Three
+        </div>`
+      : html`<div class="h-align">
+          One
+          <kyn-divider .vertical=${args.vertical}></kyn-divider>
+          Two
+          <kyn-divider .vertical=${args.vertical}></kyn-divider>
+          Three
+        </div>`;
   },
 };
 
