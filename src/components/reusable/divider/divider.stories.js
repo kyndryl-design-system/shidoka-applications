@@ -17,8 +17,14 @@ export default {
   decorators: [
     (story) => html`
       <style>
+        .text_label {
+          color: var(--kd-color-text-level-secondary);
+        }
+        .value_text {
+          color: var(--kd-color-text-level-primary);
+        }
         .margin-24 {
-          margin: var(--kd-spacing-16) 0 var(--kd-spacing-24);
+          margin: var(--kd-spacing-8) 0;
         }
       </style>
       ${story()}
@@ -35,7 +41,7 @@ export const Default = {
 export const Vertical = {
   render: () => {
     return html` <div
-      style="display: flex;align-items: center;height: 2rem;gap: 8px;"
+      style="display: flex;align-items: center;height: 1.5rem;gap: 8px;"
     >
       One
       <kyn-divider vertical></kyn-divider>
@@ -67,14 +73,6 @@ export const WithCard = {
           </kyn-meta-data>
         </div>
       </kyn-card>
-      <style>
-        .text_label {
-          color: var(--kd-color-text-level-secondary);
-        }
-        .value_text {
-          color: var(--kd-color-text-level-primary);
-        }
-      </style>
     `;
   },
 };
