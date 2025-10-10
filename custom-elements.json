@@ -2839,23 +2839,23 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "AccordionItem component. *",
+          "description": "Accordion Item component. *",
           "name": "AccordionItem",
           "slots": [
             {
-              "description": "Optional leading icon",
+              "description": "Optional leading icon. 24px, or 16px for compact.",
               "name": "icon"
             },
             {
-              "description": "Body of the accordion item",
+              "description": "Body of the accordion item.",
               "name": "body"
             },
             {
-              "description": "Title of the accordion item",
+              "description": "Title of the accordion item.",
               "name": "title"
             },
             {
-              "description": "Optional subtitle of the accordion item",
+              "description": "Optional subtitle of the accordion item.",
               "name": "subtitle"
             }
           ],
@@ -3322,6 +3322,472 @@
           "declaration": {
             "name": "Badge",
             "module": "./badge"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Breadcrumbs Component.",
+          "name": "Breadcrumbs",
+          "slots": [
+            {
+              "description": "Slot for inserting links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-breadcrumbs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "./breadcrumbs"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/button.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Button component.",
+          "name": "Button",
+          "slots": [
+            {
+              "description": "Slot for button text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the button for accessibility.",
+              "attribute": "description"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "BUTTON_TYPES"
+              },
+              "description": "Type for the &lt;button&gt; element.",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "BUTTON_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the button.",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Converts the button to an &lt;a&gt; tag if specified.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "'_self'",
+              "description": "Link target, only valid if href is supplied.",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "BUTTON_SIZES"
+              },
+              "description": "Specifies the size of the button.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "iconPosition",
+              "type": {
+                "text": "BUTTON_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any button text.",
+              "attribute": "iconPosition"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is disabled.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "isFloating",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is Floatable",
+              "attribute": "isFloating"
+            },
+            {
+              "kind": "field",
+              "name": "showOnScroll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show button after scrolling to 50% of the page",
+              "attribute": "showOnScroll"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Button selected state.",
+              "attribute": "selected"
+            },
+            {
+              "kind": "field",
+              "name": "formmethod",
+              "type": {
+                "text": "any"
+              },
+              "description": "Button formmethod.",
+              "attribute": "formmethod"
+            },
+            {
+              "kind": "field",
+              "name": "splitLayout",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
+              "attribute": "splitLayout"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_testIconOnly",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the original click event. `detail:{ origEvent: Event }`",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the button for accessibility.",
+              "fieldName": "description"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "BUTTON_TYPES"
+              },
+              "description": "Type for the &lt;button&gt; element.",
+              "fieldName": "type"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "BUTTON_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the button.",
+              "fieldName": "kind"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Converts the button to an &lt;a&gt; tag if specified.",
+              "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "'_self'",
+              "description": "Link target, only valid if href is supplied.",
+              "fieldName": "target"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "BUTTON_SIZES"
+              },
+              "description": "Specifies the size of the button.",
+              "fieldName": "size"
+            },
+            {
+              "name": "iconPosition",
+              "type": {
+                "text": "BUTTON_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any button text.",
+              "fieldName": "iconPosition"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "isFloating",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is Floatable",
+              "fieldName": "isFloating"
+            },
+            {
+              "name": "showOnScroll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show button after scrolling to 50% of the page",
+              "fieldName": "showOnScroll"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Button selected state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "formmethod",
+              "type": {
+                "text": "any"
+              },
+              "description": "Button formmethod.",
+              "fieldName": "formmethod"
+            },
+            {
+              "name": "splitLayout",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
+              "fieldName": "splitLayout"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/components/reusable/button/button.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/components/reusable/button/button.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/defs.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "BUTTON_KINDS_SOLID",
+          "type": {
+            "text": "array"
+          },
+          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
+        },
+        {
+          "kind": "variable",
+          "name": "BUTTON_KINDS_OUTLINE",
+          "type": {
+            "text": "array"
+          },
+          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BUTTON_KINDS_SOLID",
+          "declaration": {
+            "name": "BUTTON_KINDS_SOLID",
+            "module": "src/components/reusable/button/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BUTTON_KINDS_OUTLINE",
+          "declaration": {
+            "name": "BUTTON_KINDS_OUTLINE",
+            "module": "src/components/reusable/button/defs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "./button"
           }
         }
       ]
@@ -4147,472 +4613,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/button/button.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Button component.",
-          "name": "Button",
-          "slots": [
-            {
-              "description": "Slot for button text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the button for accessibility.",
-              "attribute": "description"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "BUTTON_TYPES"
-              },
-              "description": "Type for the &lt;button&gt; element.",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "BUTTON_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the button.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts the button to an &lt;a&gt; tag if specified.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "string"
-              },
-              "default": "'_self'",
-              "description": "Link target, only valid if href is supplied.",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "BUTTON_SIZES"
-              },
-              "description": "Specifies the size of the button.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "iconPosition",
-              "type": {
-                "text": "BUTTON_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any button text.",
-              "attribute": "iconPosition"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is disabled.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "isFloating",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is Floatable",
-              "attribute": "isFloating"
-            },
-            {
-              "kind": "field",
-              "name": "showOnScroll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show button after scrolling to 50% of the page",
-              "attribute": "showOnScroll"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Button selected state.",
-              "attribute": "selected"
-            },
-            {
-              "kind": "field",
-              "name": "formmethod",
-              "type": {
-                "text": "any"
-              },
-              "description": "Button formmethod.",
-              "attribute": "formmethod"
-            },
-            {
-              "kind": "field",
-              "name": "splitLayout",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
-              "attribute": "splitLayout"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_testIconOnly",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the original click event. `detail:{ origEvent: Event }`",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the button for accessibility.",
-              "fieldName": "description"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "BUTTON_TYPES"
-              },
-              "description": "Type for the &lt;button&gt; element.",
-              "fieldName": "type"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "BUTTON_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the button.",
-              "fieldName": "kind"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts the button to an &lt;a&gt; tag if specified.",
-              "fieldName": "href"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "string"
-              },
-              "default": "'_self'",
-              "description": "Link target, only valid if href is supplied.",
-              "fieldName": "target"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "BUTTON_SIZES"
-              },
-              "description": "Specifies the size of the button.",
-              "fieldName": "size"
-            },
-            {
-              "name": "iconPosition",
-              "type": {
-                "text": "BUTTON_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any button text.",
-              "fieldName": "iconPosition"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "isFloating",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is Floatable",
-              "fieldName": "isFloating"
-            },
-            {
-              "name": "showOnScroll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show button after scrolling to 50% of the page",
-              "fieldName": "showOnScroll"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Button selected state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "formmethod",
-              "type": {
-                "text": "any"
-              },
-              "description": "Button formmethod.",
-              "fieldName": "formmethod"
-            },
-            {
-              "name": "splitLayout",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
-              "fieldName": "splitLayout"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Button",
-          "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button/button.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-button",
-          "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button/button.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/button/defs.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "BUTTON_KINDS_SOLID",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\n  BUTTON_KINDS.PRIMARY,\n  BUTTON_KINDS.PRIMARY_AI,\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\n  BUTTON_KINDS.SECONDARY,\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\n  BUTTON_KINDS.TERTIARY,\n  BUTTON_KINDS.CONTENT,\n]"
-        },
-        {
-          "kind": "variable",
-          "name": "BUTTON_KINDS_OUTLINE",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\n  BUTTON_KINDS.OUTLINE,\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\n]"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BUTTON_KINDS_SOLID",
-          "declaration": {
-            "name": "BUTTON_KINDS_SOLID",
-            "module": "src/components/reusable/button/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "BUTTON_KINDS_OUTLINE",
-          "declaration": {
-            "name": "BUTTON_KINDS_OUTLINE",
-            "module": "src/components/reusable/button/defs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/button/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Button",
-          "declaration": {
-            "name": "Button",
-            "module": "./button"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Breadcrumbs Component.",
-          "name": "Breadcrumbs",
-          "slots": [
-            {
-              "description": "Slot for inserting links.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-breadcrumbs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "./breadcrumbs"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/card/card.ts",
       "declarations": [
         {
@@ -4717,7 +4717,7 @@
                 "text": "CardVariant"
               },
               "default": "'default'",
-              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\r\n* `'notification'` variant is used primarily for Info Card\r\nand contains additional padding, per design specs.\r\n* `'interaction'` variant is used for AI response",
+              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
               "attribute": "variant",
               "reflects": true
             },
@@ -4835,7 +4835,7 @@
                 "text": "CardVariant"
               },
               "default": "'default'",
-              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\r\n* `'notification'` variant is used primarily for Info Card\r\nand contains additional padding, per design specs.\r\n* `'interaction'` variant is used for AI response",
+              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
               "fieldName": "variant"
             }
           ],
@@ -5028,310 +5028,6 @@
           "declaration": {
             "name": "VitalCardSkeleton",
             "module": "src/components/reusable/card/vitalCard.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/colorInput/colorInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Color input.",
-          "name": "ColorInput",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input required state.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n  pleaseSelectColor: 'Please select a color',\n  invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',\n  colorTextInput: 'Color text input',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "attribute": "autoComplete"
-            },
-            {
-              "kind": "method",
-              "name": "handleColorChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTextInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details. `detail:{ value: string, origEvent: Event }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input required state.",
-              "fieldName": "required"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "fieldName": "autoComplete"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-color-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ColorInput",
-          "declaration": {
-            "name": "ColorInput",
-            "module": "src/components/reusable/colorInput/colorInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-color-input",
-          "declaration": {
-            "name": "ColorInput",
-            "module": "src/components/reusable/colorInput/colorInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/colorInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ColorInput",
-          "declaration": {
-            "name": "ColorInput",
-            "module": "./colorInput"
           }
         }
       ]
@@ -6051,6 +5747,310 @@
           "declaration": {
             "name": "CheckboxSubgroup",
             "module": "./checkboxSubgroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/colorInput/colorInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Color input.",
+          "name": "ColorInput",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input required state.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n  pleaseSelectColor: 'Please select a color',\n  invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',\n  colorTextInput: 'Color text input',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "attribute": "autoComplete"
+            },
+            {
+              "kind": "method",
+              "name": "handleColorChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTextInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ value: string, origEvent: Event }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input required state.",
+              "fieldName": "required"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "fieldName": "autoComplete"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-color-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ColorInput",
+          "declaration": {
+            "name": "ColorInput",
+            "module": "src/components/reusable/colorInput/colorInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-color-input",
+          "declaration": {
+            "name": "ColorInput",
+            "module": "src/components/reusable/colorInput/colorInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/colorInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ColorInput",
+          "declaration": {
+            "name": "ColorInput",
+            "module": "./colorInput"
           }
         }
       ]
@@ -14105,729 +14105,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/popover/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Popover",
-          "declaration": {
-            "name": "Popover",
-            "module": "./popover"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/popover/popover.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Popover component.\r\n\r\nTwo positioning modes are available:\r\n- anchor: positioned relative to an anchor slot element\r\n- floating: manually positioned via top/left/bottom/right properties\r\n\r\nFor anchor mode, the popover will be positioned relative to the anchor element\r\nbased on the direction property. The position can be fixed or absolute.\r\n\r\nFor floating (manual) mode, set triggerType=\"none\" and use top/left/bottom/right\r\nproperties to position the popover.",
-          "name": "Popover",
-          "slots": [
-            {
-              "description": "The main popover slotted body content",
-              "name": "unnamed"
-            },
-            {
-              "description": "The trigger element (icon, button, link, etc.)",
-              "name": "anchor"
-            },
-            {
-              "description": "Optional link to be displayed in the footer",
-              "name": "footerLink"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "direction",
-              "type": {
-                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
-              },
-              "default": "'auto'",
-              "description": "Manual direction or auto (anchor mode only)",
-              "attribute": "direction",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "positionType",
-              "type": {
-                "text": "PositionType"
-              },
-              "default": "'fixed'",
-              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
-              "attribute": "positionType"
-            },
-            {
-              "kind": "field",
-              "name": "launchBehavior",
-              "type": {
-                "text": "'default' | 'hover' | 'link'"
-              },
-              "default": "'default'",
-              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
-              "attribute": "launchBehavior"
-            },
-            {
-              "kind": "field",
-              "name": "linkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for link behavior (when launchBehavior is 'link')",
-              "attribute": "linkHref"
-            },
-            {
-              "kind": "field",
-              "name": "linkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for link behavior (when launchBehavior is 'link')",
-              "attribute": "linkTarget"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'mini' | 'narrow' | 'wide'"
-              },
-              "default": "'mini'",
-              "description": "Size variants for the popover.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "offsetDistance",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
-              "attribute": "offsetDistance",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "shiftPadding",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Padding from viewport edges (px)",
-              "attribute": "shiftPadding",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "triggerType",
-              "type": {
-                "text": "'icon' | 'link' | 'button' | 'none'"
-              },
-              "default": "'button'",
-              "description": "how we style the anchor slot",
-              "attribute": "triggerType",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "arrowPosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
-              "attribute": "arrowPosition",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "open",
-              "description": "Controls the popover's open state."
-            },
-            {
-              "kind": "field",
-              "name": "animationDuration",
-              "type": {
-                "text": "number"
-              },
-              "default": "200",
-              "description": "Animation duration in milliseconds",
-              "attribute": "animationDuration"
-            },
-            {
-              "kind": "field",
-              "name": "top",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Top position value.",
-              "attribute": "top"
-            },
-            {
-              "kind": "field",
-              "name": "left",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Left position value.",
-              "attribute": "left"
-            },
-            {
-              "kind": "field",
-              "name": "bottom",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Bottom position value.",
-              "attribute": "bottom"
-            },
-            {
-              "kind": "field",
-              "name": "right",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Right position value.",
-              "attribute": "right"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate a destructive action",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "zIndex",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Z-index for the popover.",
-              "attribute": "zIndex"
-            },
-            {
-              "kind": "field",
-              "name": "responsivePosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Responsive breakpoints for adjusting position.",
-              "attribute": "responsivePosition"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body title text",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body subtitle/label",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button label",
-              "attribute": "okText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button label",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description text",
-              "attribute": "closeText"
-            },
-            {
-              "kind": "field",
-              "name": "popoverAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Popover'",
-              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
-              "attribute": "popoverAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the secondary button",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "tertiaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Tertiary'",
-              "description": "Tertiary button text",
-              "attribute": "tertiaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showTertiaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the tertiary button",
-              "attribute": "showTertiaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "footerLinkText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text to display for an optional link in the footer.",
-              "attribute": "footerLinkText"
-            },
-            {
-              "kind": "field",
-              "name": "footerLinkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for the optional footer link.",
-              "attribute": "footerLinkHref"
-            },
-            {
-              "kind": "field",
-              "name": "footerLinkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
-              "attribute": "footerLinkTarget"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the entire footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "method",
-              "name": "_renderMini",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "TemplateResult"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_renderStandard",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "TemplateResult"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_toggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_close",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFocusKeyboardEvents",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_removeFocusListener",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_position",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emitted when any action closes the popover.`detail:{ action: string }`",
-              "name": "on-close"
-            },
-            {
-              "description": "Emitted when popover opens. `detail:{ origEvent: Event }`",
-              "name": "on-open"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "direction",
-              "type": {
-                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
-              },
-              "default": "'auto'",
-              "description": "Manual direction or auto (anchor mode only)",
-              "fieldName": "direction"
-            },
-            {
-              "name": "positionType",
-              "type": {
-                "text": "PositionType"
-              },
-              "default": "'fixed'",
-              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
-              "fieldName": "positionType"
-            },
-            {
-              "name": "launchBehavior",
-              "type": {
-                "text": "'default' | 'hover' | 'link'"
-              },
-              "default": "'default'",
-              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
-              "fieldName": "launchBehavior"
-            },
-            {
-              "name": "linkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for link behavior (when launchBehavior is 'link')",
-              "fieldName": "linkHref"
-            },
-            {
-              "name": "linkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for link behavior (when launchBehavior is 'link')",
-              "fieldName": "linkTarget"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "'mini' | 'narrow' | 'wide'"
-              },
-              "default": "'mini'",
-              "description": "Size variants for the popover.",
-              "fieldName": "size"
-            },
-            {
-              "name": "offsetDistance",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
-              "fieldName": "offsetDistance"
-            },
-            {
-              "name": "shiftPadding",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Padding from viewport edges (px)",
-              "fieldName": "shiftPadding"
-            },
-            {
-              "name": "triggerType",
-              "type": {
-                "text": "'icon' | 'link' | 'button' | 'none'"
-              },
-              "default": "'button'",
-              "description": "how we style the anchor slot",
-              "fieldName": "triggerType"
-            },
-            {
-              "name": "arrowPosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
-              "fieldName": "arrowPosition"
-            },
-            {
-              "name": "animationDuration",
-              "type": {
-                "text": "number"
-              },
-              "default": "200",
-              "description": "Animation duration in milliseconds",
-              "fieldName": "animationDuration"
-            },
-            {
-              "name": "top",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Top position value.",
-              "fieldName": "top"
-            },
-            {
-              "name": "left",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Left position value.",
-              "fieldName": "left"
-            },
-            {
-              "name": "bottom",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Bottom position value.",
-              "fieldName": "bottom"
-            },
-            {
-              "name": "right",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Right position value.",
-              "fieldName": "right"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate a destructive action",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "zIndex",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Z-index for the popover.",
-              "fieldName": "zIndex"
-            },
-            {
-              "name": "responsivePosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Responsive breakpoints for adjusting position.",
-              "fieldName": "responsivePosition"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body title text",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body subtitle/label",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button label",
-              "fieldName": "okText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button label",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description text",
-              "fieldName": "closeText"
-            },
-            {
-              "name": "popoverAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Popover'",
-              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
-              "fieldName": "popoverAriaLabel"
-            },
-            {
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text",
-              "fieldName": "secondaryButtonText"
-            },
-            {
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the secondary button",
-              "fieldName": "showSecondaryButton"
-            },
-            {
-              "name": "tertiaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Tertiary'",
-              "description": "Tertiary button text",
-              "fieldName": "tertiaryButtonText"
-            },
-            {
-              "name": "showTertiaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the tertiary button",
-              "fieldName": "showTertiaryButton"
-            },
-            {
-              "name": "footerLinkText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text to display for an optional link in the footer.",
-              "fieldName": "footerLinkText"
-            },
-            {
-              "name": "footerLinkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for the optional footer link.",
-              "fieldName": "footerLinkHref"
-            },
-            {
-              "name": "footerLinkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
-              "fieldName": "footerLinkTarget"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the entire footer",
-              "fieldName": "hideFooter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-popover",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Popover",
-          "declaration": {
-            "name": "Popover",
-            "module": "src/components/reusable/popover/popover.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-popover",
-          "declaration": {
-            "name": "Popover",
-            "module": "src/components/reusable/popover/popover.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/pagination/index.ts",
       "declarations": [],
       "exports": [
@@ -15585,6 +14862,729 @@
           "declaration": {
             "name": "Pagination",
             "module": "src/components/reusable/pagination/Pagination.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/popover/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Popover",
+          "declaration": {
+            "name": "Popover",
+            "module": "./popover"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/popover/popover.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Popover component.\r\n\r\nTwo positioning modes are available:\r\n- anchor: positioned relative to an anchor slot element\r\n- floating: manually positioned via top/left/bottom/right properties\r\n\r\nFor anchor mode, the popover will be positioned relative to the anchor element\r\nbased on the direction property. The position can be fixed or absolute.\r\n\r\nFor floating (manual) mode, set triggerType=\"none\" and use top/left/bottom/right\r\nproperties to position the popover.",
+          "name": "Popover",
+          "slots": [
+            {
+              "description": "The main popover slotted body content",
+              "name": "unnamed"
+            },
+            {
+              "description": "The trigger element (icon, button, link, etc.)",
+              "name": "anchor"
+            },
+            {
+              "description": "Optional link to be displayed in the footer",
+              "name": "footerLink"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "direction",
+              "type": {
+                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
+              },
+              "default": "'auto'",
+              "description": "Manual direction or auto (anchor mode only)",
+              "attribute": "direction",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "positionType",
+              "type": {
+                "text": "PositionType"
+              },
+              "default": "'fixed'",
+              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
+              "attribute": "positionType"
+            },
+            {
+              "kind": "field",
+              "name": "launchBehavior",
+              "type": {
+                "text": "'default' | 'hover' | 'link'"
+              },
+              "default": "'default'",
+              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
+              "attribute": "launchBehavior"
+            },
+            {
+              "kind": "field",
+              "name": "linkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for link behavior (when launchBehavior is 'link')",
+              "attribute": "linkHref"
+            },
+            {
+              "kind": "field",
+              "name": "linkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for link behavior (when launchBehavior is 'link')",
+              "attribute": "linkTarget"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'mini' | 'narrow' | 'wide'"
+              },
+              "default": "'mini'",
+              "description": "Size variants for the popover.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "offsetDistance",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
+              "attribute": "offsetDistance",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "shiftPadding",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Padding from viewport edges (px)",
+              "attribute": "shiftPadding",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "triggerType",
+              "type": {
+                "text": "'icon' | 'link' | 'button' | 'none'"
+              },
+              "default": "'button'",
+              "description": "how we style the anchor slot",
+              "attribute": "triggerType",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "arrowPosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
+              "attribute": "arrowPosition",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "description": "Controls the popover's open state."
+            },
+            {
+              "kind": "field",
+              "name": "animationDuration",
+              "type": {
+                "text": "number"
+              },
+              "default": "200",
+              "description": "Animation duration in milliseconds",
+              "attribute": "animationDuration"
+            },
+            {
+              "kind": "field",
+              "name": "top",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Top position value.",
+              "attribute": "top"
+            },
+            {
+              "kind": "field",
+              "name": "left",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Left position value.",
+              "attribute": "left"
+            },
+            {
+              "kind": "field",
+              "name": "bottom",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Bottom position value.",
+              "attribute": "bottom"
+            },
+            {
+              "kind": "field",
+              "name": "right",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Right position value.",
+              "attribute": "right"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate a destructive action",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "zIndex",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Z-index for the popover.",
+              "attribute": "zIndex"
+            },
+            {
+              "kind": "field",
+              "name": "responsivePosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Responsive breakpoints for adjusting position.",
+              "attribute": "responsivePosition"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body title text",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body subtitle/label",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button label",
+              "attribute": "okText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button label",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description text",
+              "attribute": "closeText"
+            },
+            {
+              "kind": "field",
+              "name": "popoverAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Popover'",
+              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
+              "attribute": "popoverAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text",
+              "attribute": "secondaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the secondary button",
+              "attribute": "showSecondaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "tertiaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tertiary'",
+              "description": "Tertiary button text",
+              "attribute": "tertiaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showTertiaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the tertiary button",
+              "attribute": "showTertiaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "footerLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Text to display for an optional link in the footer.",
+              "attribute": "footerLinkText"
+            },
+            {
+              "kind": "field",
+              "name": "footerLinkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for the optional footer link.",
+              "attribute": "footerLinkHref"
+            },
+            {
+              "kind": "field",
+              "name": "footerLinkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
+              "attribute": "footerLinkTarget"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the entire footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "method",
+              "name": "_renderMini",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_renderStandard",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_toggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_close",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFocusKeyboardEvents",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_removeFocusListener",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_position",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emitted when any action closes the popover.`detail:{ action: string }`",
+              "name": "on-close"
+            },
+            {
+              "description": "Emitted when popover opens. `detail:{ origEvent: Event }`",
+              "name": "on-open"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "direction",
+              "type": {
+                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
+              },
+              "default": "'auto'",
+              "description": "Manual direction or auto (anchor mode only)",
+              "fieldName": "direction"
+            },
+            {
+              "name": "positionType",
+              "type": {
+                "text": "PositionType"
+              },
+              "default": "'fixed'",
+              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
+              "fieldName": "positionType"
+            },
+            {
+              "name": "launchBehavior",
+              "type": {
+                "text": "'default' | 'hover' | 'link'"
+              },
+              "default": "'default'",
+              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
+              "fieldName": "launchBehavior"
+            },
+            {
+              "name": "linkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for link behavior (when launchBehavior is 'link')",
+              "fieldName": "linkHref"
+            },
+            {
+              "name": "linkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for link behavior (when launchBehavior is 'link')",
+              "fieldName": "linkTarget"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "'mini' | 'narrow' | 'wide'"
+              },
+              "default": "'mini'",
+              "description": "Size variants for the popover.",
+              "fieldName": "size"
+            },
+            {
+              "name": "offsetDistance",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
+              "fieldName": "offsetDistance"
+            },
+            {
+              "name": "shiftPadding",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Padding from viewport edges (px)",
+              "fieldName": "shiftPadding"
+            },
+            {
+              "name": "triggerType",
+              "type": {
+                "text": "'icon' | 'link' | 'button' | 'none'"
+              },
+              "default": "'button'",
+              "description": "how we style the anchor slot",
+              "fieldName": "triggerType"
+            },
+            {
+              "name": "arrowPosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
+              "fieldName": "arrowPosition"
+            },
+            {
+              "name": "animationDuration",
+              "type": {
+                "text": "number"
+              },
+              "default": "200",
+              "description": "Animation duration in milliseconds",
+              "fieldName": "animationDuration"
+            },
+            {
+              "name": "top",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Top position value.",
+              "fieldName": "top"
+            },
+            {
+              "name": "left",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Left position value.",
+              "fieldName": "left"
+            },
+            {
+              "name": "bottom",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Bottom position value.",
+              "fieldName": "bottom"
+            },
+            {
+              "name": "right",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Right position value.",
+              "fieldName": "right"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate a destructive action",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "zIndex",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Z-index for the popover.",
+              "fieldName": "zIndex"
+            },
+            {
+              "name": "responsivePosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Responsive breakpoints for adjusting position.",
+              "fieldName": "responsivePosition"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body title text",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body subtitle/label",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button label",
+              "fieldName": "okText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button label",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description text",
+              "fieldName": "closeText"
+            },
+            {
+              "name": "popoverAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Popover'",
+              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
+              "fieldName": "popoverAriaLabel"
+            },
+            {
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text",
+              "fieldName": "secondaryButtonText"
+            },
+            {
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the secondary button",
+              "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "tertiaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tertiary'",
+              "description": "Tertiary button text",
+              "fieldName": "tertiaryButtonText"
+            },
+            {
+              "name": "showTertiaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the tertiary button",
+              "fieldName": "showTertiaryButton"
+            },
+            {
+              "name": "footerLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Text to display for an optional link in the footer.",
+              "fieldName": "footerLinkText"
+            },
+            {
+              "name": "footerLinkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for the optional footer link.",
+              "fieldName": "footerLinkHref"
+            },
+            {
+              "name": "footerLinkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
+              "fieldName": "footerLinkTarget"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the entire footer",
+              "fieldName": "hideFooter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-popover",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Popover",
+          "declaration": {
+            "name": "Popover",
+            "module": "src/components/reusable/popover/popover.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-popover",
+          "declaration": {
+            "name": "Popover",
+            "module": "src/components/reusable/popover/popover.ts"
           }
         }
       ]
@@ -23402,6 +23402,303 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "./toggleButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/toggleButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Toggle Button.",
+          "name": "ToggleButton",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "attribute": "checkedText"
+            },
+            {
+              "kind": "field",
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "attribute": "uncheckedText"
+            },
+            {
+              "kind": "field",
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "attribute": "small",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Toggle read-only state (non-modifiable but focusable).",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "attribute": "reverse"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "handleClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleKeyDown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the change event. `detail:{ origEvent: Event, checked: boolean, value: string }`",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "fieldName": "checkedText"
+            },
+            {
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "fieldName": "uncheckedText"
+            },
+            {
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "fieldName": "small"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Toggle read-only state (non-modifiable but focusable).",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "fieldName": "reverse"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "fieldName": "hideLabel"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-toggle-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-toggle-button",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
@@ -24281,303 +24578,6 @@
           "declaration": {
             "name": "Tooltip",
             "module": "src/components/reusable/tooltip/tooltip.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "./toggleButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/toggleButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Toggle Button.",
-          "name": "ToggleButton",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "attribute": "checked",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "attribute": "checkedText"
-            },
-            {
-              "kind": "field",
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "attribute": "uncheckedText"
-            },
-            {
-              "kind": "field",
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "attribute": "small",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Toggle read-only state (non-modifiable but focusable).",
-              "attribute": "readonly",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "attribute": "reverse"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "handleClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleKeyDown",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the change event. `detail:{ origEvent: Event, checked: boolean, value: string }`",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "fieldName": "checked"
-            },
-            {
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "fieldName": "checkedText"
-            },
-            {
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "fieldName": "uncheckedText"
-            },
-            {
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "fieldName": "small"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Toggle read-only state (non-modifiable but focusable).",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "fieldName": "reverse"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-toggle-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-toggle-button",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
           }
         }
       ]

@@ -10,12 +10,12 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/chevron-down.svg';
 
 /**
- * AccordionItem component. *
+ * Accordion Item component. *
  * @fires on-toggle - Emits the `opened` state when the accordion item opens/closes. `detail:{ opened: boolean }`.
- * @slot icon - Optional leading icon
- * @slot body - Body of the accordion item
- * @slot title - Title of the accordion item
- * @slot subtitle - Optional subtitle of the accordion item
+ * @slot icon - Optional leading icon. 24px, or 16px for compact.
+ * @slot body - Body of the accordion item.
+ * @slot title - Title of the accordion item.
+ * @slot subtitle - Optional subtitle of the accordion item.
  *
  */
 @customElement('kyn-accordion-item')
