@@ -9,7 +9,7 @@ import DividerScss from './divider.scss?inline';
 export class Divider extends LitElement {
   static override styles = unsafeCSS(DividerScss);
 
-  /** Vertical orientation. <br><i>Note:</i> The divider will span the full height of its container. */
+  /** Vertical orientation. <br><i>Note:</i> Vertical divider will span the full height of its container. */
   @property({ type: Boolean, reflect: true })
   accessor vertical = false;
 
