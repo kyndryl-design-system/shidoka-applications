@@ -18,14 +18,23 @@ $ai-gradient-default: var(
   border: $width solid transparent;
 
   background: linear-gradient(#{$surface}, #{$surface}) padding-box,
+    linear-gradient(
+        var(
+          --kd-surface-backdrop,
+          var(--kd-color-background-ui-hollow-default)
+        ),
+        var(--kd-surface-backdrop, var(--kd-color-background-ui-hollow-default))
+      )
+      padding-box,
     #{$gradient} border-box;
 
-  background-clip: padding-box, border-box;
-  background-origin: border-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  background-origin: border-box, border-box, border-box;
 
-  background-size: calc(100% + 2px) calc(100% + 2px), cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
+  background-size: calc(100% + 2px) calc(100% + 2px),
+    calc(100% + 2px) calc(100% + 2px), cover;
+  background-position: center, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 @mixin outline-gradient-ai(
