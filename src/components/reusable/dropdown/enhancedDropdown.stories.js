@@ -177,7 +177,7 @@ export const WithIcons = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 250px;
+          min-width: 275px;
         }
       </style>
 
@@ -257,7 +257,7 @@ export const ButtonAnchor = {
     return html`
       <style>
         kyn-dropdown {
-          min-width: 250px;
+          min-width: 275px;
         }
       </style>
 
@@ -472,16 +472,32 @@ export const MultiSelect = {
         }}
       >
         <kyn-enhanced-dropdown-option value="1"
-          ><span slot="title">Option 1</span></kyn-enhanced-dropdown-option
+          ><span slot="title">Option 1</span>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          ></kyn-enhanced-dropdown-option
         >
         <kyn-enhanced-dropdown-option value="2"
-          ><span slot="title">Option 2</span></kyn-enhanced-dropdown-option
+          ><span slot="title">Option 2</span>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          ></kyn-enhanced-dropdown-option
         >
         <kyn-enhanced-dropdown-option value="3"
-          ><span slot="title">Option 3</span></kyn-enhanced-dropdown-option
+          ><span slot="title">Option 3</span>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          ></kyn-enhanced-dropdown-option
         >
         <kyn-enhanced-dropdown-option value="4"
-          ><span slot="title">Option 4</span></kyn-enhanced-dropdown-option
+          ><span slot="title">Option 4</span>
+          <span slot="description"
+            >This is a description for the Option 2 enhanced dropdown
+            option.</span
+          ></kyn-enhanced-dropdown-option
         >
       </kyn-dropdown>
     `;
