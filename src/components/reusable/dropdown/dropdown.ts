@@ -919,6 +919,8 @@ export class Dropdown extends FormMixin(LitElement) {
         }
 
         visibleOptions[nextIndex].focus();
+        visibleOptions[highlightedIndex].tabIndex = -1;
+        visibleOptions[nextIndex].tabIndex = 0;
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
         visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
@@ -939,6 +941,8 @@ export class Dropdown extends FormMixin(LitElement) {
         }
 
         visibleOptions[nextIndex].focus();
+        visibleOptions[highlightedIndex].tabIndex = -1;
+        visibleOptions[nextIndex].tabIndex = 0;
         visibleOptions[highlightedIndex].highlighted = false;
         visibleOptions[nextIndex].highlighted = true;
         visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
