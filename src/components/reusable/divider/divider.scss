@@ -1,0 +1,18 @@
+@use '../../../common/scss/global.scss';
+
+:host(:not([vertical])) {
+  display: block;
+}
+
+:host([vertical]) {
+  display: inline-flex;
+}
+
+.divider {
+  background-color: var(--kd-color-border-level-secondary);
+  height: 1px;
+  :host([vertical]) & {
+    width: 1px;
+    height: auto;
+  }
+}
