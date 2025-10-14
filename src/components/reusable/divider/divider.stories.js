@@ -17,25 +17,11 @@ export default {
   decorators: [
     (story) => html`
       <style>
-        .text_label {
-          color: var(--kd-color-text-level-secondary);
-        }
-        .value_text {
-          color: var(--kd-color-text-level-primary);
-        }
         .v-align {
           display: flex;
           align-items: center;
-          height: 1.5rem;
-          gap: 8px;
-        }
-        .h-align {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-        .margin-24 {
-          margin: var(--kd-spacing-8) 0;
+          height: var(--kd-spacing-24);
+          gap: var(--kd-spacing-8);
         }
       </style>
       ${story()}
@@ -59,25 +45,14 @@ export const Default = {
 };
 
 export const Vertical = {
-  args: {
-    vertical: true,
-  },
-  render: (args) => {
-    return args.vertical
-      ? html` <div class="v-align">
-          One
-          <kyn-divider .vertical=${args.vertical}></kyn-divider>
-          Two
-          <kyn-divider .vertical=${args.vertical}></kyn-divider>
-          Three
-        </div>`
-      : html`<div class="h-align">
-          One
-          <kyn-divider .vertical=${args.vertical}></kyn-divider>
-          Two
-          <kyn-divider .vertical=${args.vertical}></kyn-divider>
-          Three
-        </div>`;
+  render: () => {
+    return html` <div class="v-align">
+      One
+      <kyn-divider vertical></kyn-divider>
+      Two
+      <kyn-divider vertical></kyn-divider>
+      Three
+    </div>`;
   },
 };
 
@@ -87,18 +62,18 @@ export const WithCard = {
       <kyn-card style="width:300px" type="normal">
         <div style="display: flex; flex-direction: column;">
           <kyn-meta-data noBackground>
-            <div slot="label" class="kd-type--ui-03 text_label">Title</div>
-            <div class="kd-type--ui-02 value_text">Value text</div>
+            <div slot="label" class="kd-type--ui-03">Title</div>
+            <div class="kd-type--ui-02">Value text</div>
           </kyn-meta-data>
           <kyn-divider></kyn-divider>
           <kyn-meta-data noBackground>
-            <div slot="label" class="kd-type--ui-03 text_label">Title</div>
-            <div class="kd-type--ui-02 value_text">Value text</div>
+            <div slot="label" class="kd-type--ui-03">Title</div>
+            <div class="kd-type--ui-02">Value text</div>
           </kyn-meta-data>
           <kyn-divider></kyn-divider>
           <kyn-meta-data noBackground>
-            <div slot="label" class="kd-type--ui-03 text_label">Title</div>
-            <div class="kd-type--ui-02 value_text">Value text</div>
+            <div slot="label" class="kd-type--ui-03">Title</div>
+            <div class="kd-type--ui-02">Value text</div>
           </kyn-meta-data>
         </div>
       </kyn-card>
@@ -153,7 +128,9 @@ export const WithFullPage = {
         </div>
       </div>
 
-      <kyn-divider class="margin-24"></kyn-divider>
+      <kyn-divider
+        class="kd-spacing--margin-top-24 kd-spacing--margin-bottom-16"
+      ></kyn-divider>
 
       <div class="kd-grid">
         <div class="kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-2">
@@ -184,7 +161,7 @@ export const WithFullPage = {
           </kyn-meta-data>
         </div>
       </div>
-      <kyn-divider class="margin-24"></kyn-divider>
+      <kyn-divider class="kd-spacing--margin-top-24"></kyn-divider>
     `;
   },
 };
