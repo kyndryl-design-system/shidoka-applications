@@ -75,7 +75,7 @@ export class EnhancedDropdownOption extends LitElement {
 
   /** ARIA selected must mirror `selected`. */
   @property({ type: String, reflect: true, attribute: 'aria-selected' })
-  override accessor ariaSelected = 'option';
+  override accessor ariaSelected = 'false';
 
   /**
    * Option text, automatically derived.
@@ -113,14 +113,21 @@ export class EnhancedDropdownOption extends LitElement {
     return html`
       <div
         class=${classMap(classes)}
+        role="option"
+        aria-selected=${this.selected ? 'true' : 'false'}
+        aria-disabled=${this.disabled || this.readonly ? 'true' : 'false'}
         ?highlighted=${this.highlighted}
         ?selected=${this.selected}
         ?disabled=${this.disabled}
         ?readonly=${!this.disabled && this.readonly}
-        aria-disabled=${this.disabled || this.readonly ? 'true' : 'false'}
         title=${this.text}
-        @pointerup=${this.onClick}
-        @blur=${this.onBlur}
+        tabindex=${this.disabled || this.readonly ? -1 : 0}
+        @mousedown=${(e: MouseEvent) => {
+          if (this.readonly) e.preventDefault();
+        }}
+        @pointerup=${(e: Event) => this.onClick(e as PointerEvent)}
+        @blur=${(e: Event) => this.onBlur(e as FocusEvent)}
+        @keydown=${(e: KeyboardEvent) => this.onKeyDown(e)}
       >
         ${this.multiple
           ? html`
@@ -174,6 +181,8 @@ export class EnhancedDropdownOption extends LitElement {
                   ?disabled=${this.disabled}
                   @click=${this.onRemove}
                   @mousedown=${(e: Event) => e.stopPropagation()}
+                  @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
+                  @focus=${(e: FocusEvent) => e.stopPropagation()}
                 >
                   <span slot="icon">${unsafeSVG(clearIcon)}</span>
                 </kyn-button>
@@ -198,14 +207,99 @@ export class EnhancedDropdownOption extends LitElement {
     }
   }
 
-  private onIconSlotChange() {
-    this.hasIcon = this.iconSlot.assignedNodes({ flatten: true }).length > 0;
-  }
-
   override willUpdate(changed: Map<string, unknown>) {
     if (changed.has('selected')) {
       this.ariaSelected = this.selected.toString();
     }
+
+    if (changed.has('disabled') || changed.has('readonly')) {
+      const el = this.shadowRoot?.querySelector(
+        '.menu-item'
+      ) as HTMLElement | null;
+      if (el) el.tabIndex = this.disabled || this.readonly ? -1 : 0;
+    }
+  }
+
+  override focus(options?: FocusOptions) {
+    (this.shadowRoot?.querySelector('.menu-item') as HTMLElement | null)?.focus(
+      options
+    );
+  }
+
+  private onKeyDown(e: KeyboardEvent) {
+    e.stopPropagation();
+    if (this.disabled || this.readonly) return;
+
+    switch (e.key) {
+      case 'Enter':
+      case ' ': {
+        e.preventDefault();
+        this.onClick(e as any);
+        break;
+      }
+      case 'ArrowDown': {
+        e.preventDefault();
+        this.moveFocus(1);
+        break;
+      }
+      case 'ArrowUp': {
+        e.preventDefault();
+        this.moveFocus(-1);
+        break;
+      }
+      case 'Home': {
+        e.preventDefault();
+        this.moveToEdge('start');
+        break;
+      }
+      case 'End': {
+        e.preventDefault();
+        this.moveToEdge('end');
+        break;
+      }
+    }
+  }
+
+  private moveFocus(delta: number) {
+    let node: Element | null =
+      delta > 0 ? this.nextElementSibling : this.previousElementSibling;
+    while (node) {
+      const tag = node.tagName.toLowerCase();
+      if (
+        tag === 'kyn-enhanced-dropdown-option' ||
+        tag === 'kyn-dropdown-option'
+      ) {
+        const opt = node as any;
+        if (!opt.disabled && !opt.readonly) {
+          const target = opt.shadowRoot?.querySelector(
+            '.menu-item'
+          ) as HTMLElement | null;
+          target?.focus();
+          break;
+        }
+      }
+      node = delta > 0 ? node.nextElementSibling : node.previousElementSibling;
+    }
+  }
+
+  private moveToEdge(where: 'start' | 'end') {
+    const parent = this.parentElement;
+    if (!parent) return;
+    const all = parent.querySelectorAll(
+      'kyn-enhanced-dropdown-option, kyn-dropdown-option'
+    );
+    const list = Array.from(all) as any[];
+    const candidate = where === 'start' ? list[0] : list[list.length - 1];
+    if (candidate && !candidate.disabled && !candidate.readonly) {
+      const target = candidate.shadowRoot?.querySelector(
+        '.menu-item'
+      ) as HTMLElement | null;
+      target?.focus();
+    }
+  }
+
+  private onIconSlotChange() {
+    this.hasIcon = this.iconSlot.assignedNodes({ flatten: true }).length > 0;
   }
 
   private get iconSlot(): HTMLSlotElement {
