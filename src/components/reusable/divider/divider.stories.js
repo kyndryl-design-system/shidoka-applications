@@ -19,9 +19,11 @@ export default {
       <style>
         .v-align {
           display: flex;
-          align-items: center;
-          height: var(--kd-spacing-24);
           gap: var(--kd-spacing-8);
+        }
+        .card-container {
+          display: flex;
+          flex-direction: column;
         }
       </style>
       ${story()}
@@ -36,8 +38,8 @@ export const Default = {
   render: (args) => {
     return args.vertical
       ? html`
-          <div style="height: 100px;width:1px">
-            <kyn-divider .vertical=${args.vertical}></kyn-divider>
+          <div style="height: 100px;" class="v-align">
+            <kyn-divider vertical></kyn-divider>
           </div>
         `
       : html` <kyn-divider .vertical=${args.vertical}></kyn-divider> `;
@@ -60,20 +62,20 @@ export const WithCard = {
   render: () => {
     return html`
       <kyn-card style="width:300px" type="normal">
-        <div style="display: flex; flex-direction: column;">
+        <div class="card-container">
           <kyn-meta-data noBackground>
-            <div slot="label" class="kd-type--ui-03">Title</div>
-            <div class="kd-type--ui-02">Value text</div>
+            <div slot="label">Title</div>
+            <div>Value text</div>
           </kyn-meta-data>
           <kyn-divider></kyn-divider>
           <kyn-meta-data noBackground>
-            <div slot="label" class="kd-type--ui-03">Title</div>
-            <div class="kd-type--ui-02">Value text</div>
+            <div slot="label">Title</div>
+            <div>Value text</div>
           </kyn-meta-data>
           <kyn-divider></kyn-divider>
           <kyn-meta-data noBackground>
-            <div slot="label" class="kd-type--ui-03">Title</div>
-            <div class="kd-type--ui-02">Value text</div>
+            <div slot="label">Title</div>
+            <div>Value text</div>
           </kyn-meta-data>
         </div>
       </kyn-card>
