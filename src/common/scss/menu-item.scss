@@ -1,7 +1,6 @@
 @use '../scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
-@use '../../common/scss/gradients.scss' as gradient;
 
 // ==== mixins ====
 @mixin state-colors($bg, $text, $icon: null) {
@@ -12,7 +11,8 @@
   }
 
   @if $icon != null {
-    slot[name='icon']::slotted(span) {
+    slot[name='icon']::slotted(span),
+    .check-icon {
       color: $icon;
     }
   }
@@ -30,92 +30,34 @@
     cursor: not-allowed;
   }
 
-  &:hover {
-    background-color: $bg-default;
+  pointer-events: none;
+  user-select: none;
+  touch-action: none;
 
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-disabled);
-    }
-  }
-}
-
-@mixin destructive-common {
-  color: var(--kd-color-text-variant-destructive);
-  border-top: 1px solid var(--kd-color-border-level-tertiary);
-
-  .menu-item-inner-el {
-    color: var(--kd-color-text-variant-destructive);
-  }
-
-  &:hover {
-    background-color: var(--kd-color-status-error-accent) !important;
-
-    .menu-item-inner-el {
-      color: var(--kd-color-status-error-foreground) !important;
-    }
-  }
-
+  &,
+  &:hover,
+  &:focus,
+  &:focus-within,
+  &:focus-visible,
   &:active {
-    background-color: var(
-      --kd-color-background-button-primary-destructive-pressed
-    ) !important;
-    outline: none;
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-button-dark-destructive) !important;
-    }
+    background-color: $bg-default;
+    border-color: transparent;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--kd-color-border-button-primary-destructive-default) !important;
-    background-color: var(--kd-color-status-error-accent) !important;
-
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-primary) !important;
-    }
-
-    &:hover {
-      .menu-item-inner-el {
-        color: var(--kd-color-status-error-foreground) !important;
-      }
-    }
+  slot[name='icon']::slotted(span),
+  .check-icon {
+    color: var(--kd-color-icon-disabled);
   }
 }
 
-@mixin border-gradient-ai(
-  $gradient,
-  $radius: 4px,
-  $width: 1px,
-  $surface: transparent
-) {
-  box-sizing: border-box;
-  border: $width solid transparent;
-  border-radius: $radius;
-  background: linear-gradient(#{$surface}, #{$surface}) padding-box,
-    #{$gradient} border-box;
-  background-clip: padding-box, border-box;
-}
-
-// Centralized pressed mixin to avoid drift between variants.
-// $layered=true uses `background` (not `background-color`) to overwrite any gradient layers.
-// $important=true adds `!important` to the background
-@mixin pressed($bg, $text, $icon, $layered: true, $important: true) {
+@mixin pressed($bg, $text, $icon, $layered: true) {
   @if $layered {
-    @if $important {
-      background: $bg !important;
-    } @else {
-      background: $bg;
-    }
+    background: $bg;
   } @else {
-    @if $important {
-      background-color: $bg !important;
-    } @else {
-      background-color: $bg;
-    }
+    background-color: $bg;
   }
 
-  border: 1px solid transparent;
-
+  border-color: transparent;
   .menu-item-inner-el {
     color: $text;
   }
@@ -127,173 +69,216 @@
 }
 
 // ==== defaults ====
-:host .menu-item {
+.menu-item {
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: none;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+
   background-color: var(--kd-color-background-menu-state-default);
   transition: background-color 150ms ease-out;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
+  outline-offset: -1px;
 
   .menu-item-inner-el {
     color: var(--kd-color-text-level-primary);
     transition: color 150ms ease-out;
+  }
 
-    &.check-icon {
-      color: var(--kd-color-icon-primary);
+  .check-icon {
+    color: var(--kd-color-icon-primary);
+  }
+
+  &:not(:hover) {
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      outline: 1px solid var(--kd-color-border-variants-focus);
+      background-color: var(--kd-color-background-menu-state-focused);
+      border-color: transparent;
     }
   }
 
-  // 1) focus/open (general; disabled/readonly/destructive overrides below)
-  &:focus,
-  &:focus-within,
-  &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
-    background-color: var(--kd-color-background-menu-state-focused);
-  }
-
-  // 2) disabled
   &[disabled] {
     @include disabled-common(var(--kd-color-background-menu-state-default));
-    outline: none;
-    border: none;
-  }
-  // ensure disabled wins over general focus styles
-  &[disabled]:focus,
-  &[disabled]:focus-within,
-  &[disabled]:focus-visible {
-    outline: none;
-    border: none;
   }
 
-  // 3) readonly (non-disabled)
   &[readonly] {
     cursor: default;
+    background-color: var(--kd-color-background-menu-state-default);
 
-    background-color: var(--kd-color-background-menu-state-default);
-  }
-  &[readonly]:hover,
-  &[readonly]:active,
-  &[readonly]:focus,
-  &[readonly]:focus-visible {
-    background-color: var(--kd-color-background-menu-state-default);
+    &:hover,
+    &:active,
+    &:focus,
+    &:focus-visible {
+      background-color: var(--kd-color-background-menu-state-default);
+      border-color: transparent;
+    }
 
     .menu-item-inner-el {
       color: var(--kd-color-text-level-primary);
     }
-    & .check-icon {
-      color: var(--kd-color-icon-primary);
-    }
+
+    .check-icon,
     slot[name='icon']::slotted(span) {
       color: var(--kd-color-icon-primary);
     }
   }
 
-  // selected + readonly
-  &[readonly][selected] {
-    background-color: var(--kd-color-background-forms-default);
-  }
-  &[readonly][selected]:hover,
-  &[readonly][selected]:active {
-    background-color: var(--kd-color-background-forms-default);
-  }
-
-  // highlighted/active guard
-  &[readonly]:active,
-  &[readonly][highlighted] {
-    background: var(--kd-color-background-forms-default) !important;
-  }
-
-  // 4) hover (non-AI)
-  &:hover {
-    @include state-colors(
-      var(--kd-color-background-menu-state-hover),
-      var(--kd-color-text-level-light),
-      var(--kd-color-icon-light)
-    );
-  }
-
-  // 5) selected (non-disabled)
-  &[selected] {
+  &[selected]:not([disabled]):not([readonly]):not(.destructive) {
     @include state-colors(
       var(--kd-color-background-menu-state-open),
       var(--kd-color-text-level-primary)
     );
   }
-  &[selected]:hover {
-    @include state-colors(
-      var(--kd-color-background-menu-state-hover),
-      var(--kd-color-text-level-light)
-    );
-  }
 
-  // ----- AI variant -----
   &.ai-connected {
     background-color: var(--kd-color-background-menu-state-ai-default);
     color: var(--kd-color-text-level-primary);
-  }
 
-  &.ai-connected:hover {
-    background-color: var(--kd-color-background-menu-state-ai-hover);
+    &:hover:not(:active):not([disabled]):not([readonly]) {
+      background-color: var(--kd-color-background-menu-state-ai-hover);
 
-    .menu-item-inner-el {
-      color: var(--kd-color-text-level-primary);
+      .menu-item-inner-el {
+        color: var(--kd-color-text-level-primary);
+      }
+
+      slot[name='icon']::slotted(span),
+      .check-icon {
+        color: var(--kd-color-icon-primary);
+      }
     }
-    slot[name='icon']::slotted(span),
-    .check-icon {
-      color: var(--kd-color-icon-primary);
+
+    &[highlighted] {
+      background-color: var(--kd-color-background-menu-state-ai-focused);
     }
-  }
 
-  &.ai-connected[highlighted] {
-    background-color: var(--kd-color-background-menu-state-ai-focused);
-  }
-
-  &.ai-connected[selected]:hover,
-  &.ai-connected[highlighted]:hover {
-    @include state-colors(
-      var(--kd-color-background-menu-state-ai-hover),
-      var(--kd-color-text-level-primary)
-    );
-    slot[name='icon']::slotted(span),
-    .check-icon {
-      color: var(--kd-color-icon-primary);
+    &[selected]:not([disabled]):not([readonly]):hover:not(:active),
+    &[highlighted]:not([disabled]):not([readonly]):hover:not(:active) {
+      @include state-colors(
+        var(--kd-color-background-menu-state-ai-hover),
+        var(--kd-color-text-level-primary),
+        var(--kd-color-icon-primary)
+      );
     }
-  }
 
-  &.ai-connected:active,
-  &.ai-connected[data-pressed],
-  &.ai-connected:hover:active,
-  &.ai-connected:hover[data-pressed] {
-    @include pressed(
-      var(--kd-color-background-menu-state-ai-pressed),
-      var(--kd-color-text-level-primary),
-      var(--kd-color-icon-primary),
-      $layered: true,
-      $important: true
-    );
-  }
-
-  &.ai-connected[disabled] {
-    @include disabled-common(var(--kd-color-background-menu-state-ai-default));
-  }
-
-  // Destructive variant
-  &.destructive {
-    @include destructive-common;
+    &[disabled] {
+      @include disabled-common(
+        var(--kd-color-background-menu-state-ai-default)
+      );
+    }
   }
 }
 
-// ---- pressed states (non-AI) ----
-:host .menu-item:active,
-:host .menu-item[data-pressed],
-:host .menu-item[selected]:active,
-:host .menu-item[selected][data-pressed],
-:host .menu-item[highlighted]:active,
-:host .menu-item[highlighted][data-pressed] {
+/* --- generic (non-destructive) states --- */
+.menu-item:hover:not(:active):not([disabled]):not([readonly]):not(
+    .destructive
+  ):not(.ai-connected) {
+  @include state-colors(
+    var(--kd-color-background-menu-state-hover),
+    var(--kd-color-text-level-light),
+    var(--kd-color-icon-light)
+  );
+}
+
+.menu-item[selected]:not([disabled]):not([readonly]):hover:not(:active):not(
+    .destructive
+  ):not(.ai-connected) {
+  @include state-colors(
+    var(--kd-color-background-menu-state-hover),
+    var(--kd-color-text-level-light),
+    var(--kd-color-icon-light)
+  );
+}
+
+.menu-item:active:not(.destructive):not(.ai-connected):not([disabled]):not(
+    [readonly]
+  ),
+.menu-item[data-pressed]:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
+.menu-item[selected]:active:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
+.menu-item[selected][data-pressed]:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
+.menu-item[highlighted]:active:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]),
+.menu-item[highlighted][data-pressed]:not(.destructive):not(.ai-connected):not(
+    [disabled]
+  ):not([readonly]) {
   @include pressed(
     var(--kd-color-background-menu-state-pressed),
     var(--kd-color-text-level-light),
     var(--kd-color-icon-light),
-    $layered: true,
-    $important: true
+    $layered: true
   );
+}
+
+/* --- pressed states (AI) --- */
+.menu-item.ai-connected:active:not([disabled]):not([readonly]),
+.menu-item.ai-connected[data-pressed]:not([disabled]):not([readonly]),
+.menu-item.ai-connected:hover:active:not([disabled]):not([readonly]),
+.menu-item.ai-connected:hover[data-pressed]:not([disabled]):not([readonly]) {
+  @include pressed(
+    var(--kd-color-background-menu-state-ai-pressed),
+    var(--kd-color-text-level-primary),
+    var(--kd-color-icon-primary),
+    $layered: true
+  );
+}
+
+/* --- destructive variant --- */
+.menu-item.destructive {
+  color: var(--kd-color-badge-light-text-error);
+  border-top: 1px solid var(--kd-color-border-level-tertiary);
+  background-color: var(--kd-color-background-menu-state-default);
+
+  .menu-item-inner-el {
+    color: var(--kd-color-badge-light-text-error);
+  }
+
+  &:hover:not(:active):not([disabled]):not([readonly]) {
+    border-top: 1px solid var(--kd-color-border-level-tertiary);
+    background-color: var(
+      --kd-color-background-button-primary-destructive-hover
+    );
+
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &:focus,
+  &:focus-within,
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-destructive);
+    background-color: var(
+      --kd-color-background-button-primary-destructive-focused
+    );
+    color: var(--kd-color-text-level-light);
+    border-top: 1px solid transparent;
+
+    .menu-item-inner-el {
+      color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &:active:not([disabled]):not([readonly]),
+  &[data-pressed]:not([disabled]):not([readonly]) {
+    @include pressed(
+      var(--kd-color-background-button-secondary-destructive-pressed),
+      var(--kd-color-text-level-light),
+      var(--kd-color-text-level-light),
+      $layered: true
+    );
+  }
+}
+
+/* --- destructive + disabled --- */
+.menu-item.destructive[disabled] {
+  @include disabled-common(var(--kd-color-background-menu-state-default));
 }

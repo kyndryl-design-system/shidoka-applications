@@ -83,6 +83,6 @@ AIConnected.args = {
   ...args,
   aiConnected: true,
   notResizeable: true,
-  rows: 1,
+  rows: 2,
   maxRowsVisible: 4,
 };
