@@ -350,10 +350,7 @@ const sharedStyles = html`
       position: relative;
       overflow: visible;
       isolation: isolate;
-    }
-
-    .ai-input-query.floating .textarea-container {
-      box-shadow: var(--kd-elevation-level-2-ai);
+      transition: background-color 150ms ease-out, border-color 150ms ease-out;
     }
 
     .textarea-container > kyn-text-area {
