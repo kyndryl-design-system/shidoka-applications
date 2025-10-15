@@ -28,21 +28,26 @@ export default {
 const setBool = (el, key, val) =>
   val ? el.setAttribute(key, 'true') : el.removeAttribute(key);
 
+const onPointer = (e) => (e.currentTarget.dataset.modality = 'pointer');
+const onKeyDown = (e) => (e.currentTarget.dataset.modality = 'keyboard');
+
 export const Default = {
   args: { floating: false },
   render: (args) => {
     return html`
       <form
-        class="ai-input-query ${args.floating ? 'floating' : ''}"
+        class="ai-input-query query-footer ${args.floating ? 'floating' : ''}"
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
           const formData = new FormData(e.target);
           console.log(...formData);
         }}
+        @pointerdown=${onPointer}
+        @keydown=${onKeyDown}
       >
         <div class="message-content">
-          <div class="textarea-container">
+          <div class="textarea-container" tabindex="-1">
             <kyn-text-area
               name="ai-query"
               rows="2"
@@ -72,13 +77,15 @@ export const Thinking = {
   render: (args) => {
     return html`
       <form
-        class="ai-input-query ${args.floating ? 'floating' : ''}"
+        class="ai-input-query query-footer ${args.floating ? 'floating' : ''}"
         @submit=${(e) => {
           e.preventDefault();
           action('submit')(e);
           const formData = new FormData(e.target);
           console.log(...formData);
         }}
+        @pointerdown=${onPointer}
+        @keydown=${onKeyDown}
       >
         <div class="message-content">
           <div class="textarea-container">
@@ -147,6 +154,8 @@ export const Footer = {
           const formData = new FormData(e.target);
           console.log(...formData);
         }}
+        @pointerdown=${onPointer}
+        @keydown=${onKeyDown}
       >
         <div class="message-content">
           <div
@@ -338,6 +347,21 @@ const sharedStyles = html`
       align-self: center;
     }
 
+    /* --- sharedStyles overrides: rely on :focus-within rather than dataset from focusin/out */
+    .textarea-container:focus-within {
+      border: 2px solid var(--kd-color-border-variants-focus);
+    }
+
+    /* If you still want keyboard-only focus ring, use the modality flag set on the <form>: */
+    .ai-input-query[data-modality='keyboard'] .textarea-container:focus-within {
+      border: 2px solid var(--kd-color-border-variants-focus);
+    }
+
+    /* Optional: suppress pointer “focus ring” if desired */
+    .ai-input-query[data-modality='pointer'] .textarea-container:focus-within {
+      border: 1px solid var(--kd-color-border-ui-default);
+    }
+
     .textarea-container {
       display: flex;
       flex-direction: column;
@@ -414,6 +438,7 @@ const sharedStyles = html`
     }
 
     .textarea-container[data-focus-visible='true'],
+    .textarea-container:focus-within[data-focus-visible='true'],
     .textarea-container:focus-visible {
       border: 2px solid var(--kd-color-border-variants-focus);
     }
