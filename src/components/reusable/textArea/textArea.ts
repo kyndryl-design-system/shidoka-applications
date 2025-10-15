@@ -75,6 +75,10 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: Number })
   accessor rows!: number;
 
+  /** Hides border when set to `true`. */
+  @property({ type: Boolean })
+  accessor hideBorder = false;
+
   /** Set this to `true` for AI theme. */
   @property({ type: Boolean })
   accessor aiConnected = false;
@@ -135,12 +139,15 @@ export class TextArea extends FormMixin(LitElement) {
           class=${classMap({
             'input-wrapper': true,
             'ai-connected': this.aiConnected,
-            'no-resize': this.notResizeable,
+            'no-resize': this.notResizeable || this.hideBorder,
           })}
         >
           <textarea
             id=${this.name}
-            class=${this.readonly ? 'is-readonly' : ''}
+            class=${classMap({
+              'hide-border': this.hideBorder,
+              'is-readonly': this.readonly,
+            })}
             name=${this.name}
             placeholder=${this.placeholder}
             ?required=${this.required}

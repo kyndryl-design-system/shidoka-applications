@@ -18,6 +18,7 @@ textarea {
   border-radius: 4px;
   margin: 0;
   padding: 16px;
+  outline: 1px solid transparent;
 
   .ai-connected & {
     &:not([disabled]):hover {
@@ -33,6 +34,23 @@ textarea {
   &.is-readonly {
     cursor: text;
     border: transparent;
+  }
+
+  &.hide-border {
+    border: none !important;
+
+    &:hover {
+      border: none !important;
+    }
+
+    &:active {
+      border: none !important;
+    }
+
+    &:focus-visible {
+      border: none !important;
+      outline: none !important;
+    }
   }
 }
 
