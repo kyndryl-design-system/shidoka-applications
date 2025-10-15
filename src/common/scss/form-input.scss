@@ -70,15 +70,18 @@ textarea {
   pointer-events: auto;
   border-color: var(--kd-color-border-forms-default);
   color: var(--kd-color-text-forms-input-field-text);
-  transition: background-color 150ms ease-out, border-color 150ms ease-out,
-    outline-color 150ms ease-out;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out;
   background: var(--kd-color-background-forms-default);
   outline: 2px solid transparent;
   outline-offset: -2px;
 
+  &:focus {
+    outline-color: transparent;
+    box-shadow: none;
+  }
+
   .ai-connected & {
     background: var(--kd-color-background-forms-default);
-
     &:focus-visible {
       outline-color: var(--kd-color-border-variants-focus);
     }
@@ -87,19 +90,12 @@ textarea {
   &:hover {
     border-color: var(--kd-color-border-ui-hover);
   }
-
   &:focus-visible {
     outline-color: var(--kd-color-border-variants-focus);
   }
 
-  &::placeholder {
-    color: var(--kd-color-text-variant-placeholder);
-  }
-
-  &:-ms-input-placeholder {
-    color: var(--kd-color-text-variant-placeholder);
-  }
-
+  &::placeholder,
+  &:-ms-input-placeholder,
   &::-ms-input-placeholder {
     color: var(--kd-color-text-variant-placeholder);
   }
@@ -107,19 +103,11 @@ textarea {
   &.is-readonly {
     background: var(--kd-color-background-forms-disabled);
     border-color: var(--kd-color-border-ui-disabled);
-
     &:hover {
       border-color: var(--kd-color-border-ui-disabled);
     }
-
-    &::placeholder {
-      color: var(--kd-color-text-variant-placeholder);
-    }
-
-    &:-ms-input-placeholder {
-      color: var(--kd-color-text-variant-placeholder);
-    }
-
+    &::placeholder,
+    &:-ms-input-placeholder,
     &::-ms-input-placeholder {
       color: var(--kd-color-text-variant-placeholder);
     }
@@ -130,23 +118,14 @@ textarea {
     border: none;
     color: var(--kd-color-text-level-disabled);
     cursor: not-allowed;
-
     .arrow-icon {
       color: var(--kd-color-icon-disabled);
     }
-
     &[invalid] {
       border-color: var(--kd-color-border-ui-disabled);
     }
-
-    &::placeholder {
-      color: var(--kd-color-text-level-disabled);
-    }
-
-    &:-ms-input-placeholder {
-      color: var(--kd-color-text-level-disabled);
-    }
-
+    &::placeholder,
+    &:-ms-input-placeholder,
     &::-ms-input-placeholder {
       color: var(--kd-color-text-level-disabled);
     }
@@ -154,6 +133,32 @@ textarea {
 
   &:not([disabled])[invalid] {
     border-color: var(--kd-color-border-variants-destructive);
+  }
+
+  &.hide-border,
+  .ai-connected &.hide-border {
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    background: transparent;
+    outline: 0;
+    box-shadow: none;
+  }
+
+  &.hide-border:hover,
+  &.hide-border:active,
+  &.hide-border:focus,
+  &.hide-border:focus-visible,
+  &.hide-border:focus-within,
+  .ai-connected &.hide-border:hover,
+  .ai-connected &.hide-border:active,
+  .ai-connected &.hide-border:focus,
+  .ai-connected &.hide-border:focus-visible,
+  .ai-connected &.hide-border:focus-within {
+    border-color: transparent !important;
+    background: transparent !important;
+    outline: 0 !important;
+    box-shadow: none !important;
   }
 }
 

@@ -42,7 +42,7 @@ export const Default = {
         }}
       >
         <div class="message-content">
-          <div class="textarea-wrapper">
+          <div class="textarea-container">
             <kyn-text-area
               name="ai-query"
               rows="2"
@@ -81,7 +81,7 @@ export const Thinking = {
         }}
       >
         <div class="message-content">
-          <div class="textarea-wrapper">
+          <div class="textarea-container">
             <kyn-text-area
               name="ai-query"
               rows="2"
@@ -150,7 +150,7 @@ export const Footer = {
       >
         <div class="message-content">
           <div
-            class="textarea-wrapper"
+            class="textarea-container"
             @mouseenter=${onEnter}
             @mouseleave=${onLeave}
             @mousedown=${onDown}
@@ -338,7 +338,7 @@ const sharedStyles = html`
       align-self: center;
     }
 
-    .textarea-wrapper {
+    .textarea-container {
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -352,11 +352,11 @@ const sharedStyles = html`
       isolation: isolate;
     }
 
-    .ai-input-query.floating .textarea-wrapper {
+    .ai-input-query.floating .textarea-container {
       box-shadow: var(--kd-elevation-level-2-ai);
     }
 
-    .textarea-wrapper > kyn-text-area {
+    .textarea-container > kyn-text-area {
       flex: 1 1 auto;
       min-width: 0;
       border: 0;
@@ -368,19 +368,19 @@ const sharedStyles = html`
       padding: 8px 10px;
     }
 
-    .textarea-wrapper > kyn-text-area::part(control),
-    .textarea-wrapper > kyn-text-area::part(textarea),
-    .textarea-wrapper > kyn-text-area::part(root) {
+    .textarea-container > kyn-text-area::part(control),
+    .textarea-container > kyn-text-area::part(textarea),
+    .textarea-container > kyn-text-area::part(root) {
       border: 0 !important;
       background: transparent !important;
       box-shadow: none !important;
     }
 
-    .textarea-wrapper.with-footer {
+    .textarea-container.with-footer {
       overflow: visible;
     }
 
-    .textarea-wrapper:hover {
+    .textarea-container:hover {
       border: 1px solid transparent;
       border-radius: 8px;
       background: linear-gradient(
@@ -416,15 +416,14 @@ const sharedStyles = html`
       background-repeat: no-repeat, no-repeat, no-repeat;
     }
 
-    .textarea-wrapper[data-focus-visible='true'],
-    .textarea-wrapper:focus-within[data-focus-visible='true'] {
-      outline: 2px solid var(--kd-color-border-variants-focus);
-      outline-offset: 2px;
+    .textarea-container[data-focus-visible='true'],
+    .textarea-container:focus-visible {
+      border: 2px solid var(--kd-color-border-variants-focus);
     }
 
-    .textarea-wrapper[data-active='true'] {
+    .textarea-container:active {
       background: var(--kd-color-background-forms-pressed);
-      border-color: var(--kd-color-border-ui-strong);
+      border: 2px solid var(--kd-color-border-variants-focus);
     }
 
     .footer-content {
