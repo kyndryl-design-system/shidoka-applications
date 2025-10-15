@@ -80,9 +80,9 @@ export class Header extends LitElement {
           <slot name="logo" @slotchange=${this.handleSlotChange}>
             ${unsafeHTML(logo)}
           </slot>
-
-          <span class="title">${this.appTitle}</span>
         </a>
+
+        <span class="title">${this.appTitle}</span>
 
         <slot name="center"></slot>
 
