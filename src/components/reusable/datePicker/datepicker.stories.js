@@ -42,6 +42,7 @@ export default {
       control: { type: 'select' },
     },
     defaultDate: { control: { type: 'text' } },
+    allowManualInput: { control: { type: 'boolean' } },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
@@ -91,6 +92,7 @@ const Template = (args) => {
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
+      ?allowManualInput=${args.allowManualInput}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
     </kyn-date-picker>
@@ -121,6 +123,7 @@ DatePickerDefault.args = {
   readonly: false,
   minDate: '',
   maxDate: '',
+  allowManualInput: false,
   label: 'Date',
 };
 DatePickerDefault.storyName = 'Single Date (Default)';
@@ -209,6 +212,7 @@ export const InModal = {
     destructive: false,
     okDisabled: false,
     hideFooter: false,
+    allowManualInput: false,
     showSecondaryButton: false,
     hideCancelButton: false,
     aiConnected: false,
@@ -261,6 +265,7 @@ export const InModal = {
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
+          ?allowManualInput=${args.allowManualInput}
           style="width: 225px;"
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
@@ -305,6 +310,7 @@ export const InSideDrawer = {
     warningAriaLabel: '',
     warningTitle: '',
     datePickerDisabled: false,
+    allowManualInput: false,
     readonly: false,
     twentyFourHourFormat: false,
     minDate: '',
@@ -345,6 +351,7 @@ export const InSideDrawer = {
       warningTitle,
       datePickerDisabled,
       readonly,
+      allowManualInput,
       twentyFourHourFormat,
       minDate,
       maxDate,
@@ -383,6 +390,7 @@ export const InSideDrawer = {
       caption,
       errorAriaLabel,
       errorTitle,
+      allowManualInput,
       warningAriaLabel,
       warningTitle,
       datePickerDisabled,
@@ -441,6 +449,7 @@ export const InSideDrawer = {
           ?twentyFourHourFormat=${datePickerProps.twentyFourHourFormat}
           .minDate=${datePickerProps.minDate}
           .maxDate=${datePickerProps.maxDate}
+          ?allowManualInput=${datePickerProps.allowManualInput}
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="margin-left: 4px; width: 225px;"
         >
@@ -479,6 +488,7 @@ export const InModalScrollablePage = {
     destructive: false,
     okDisabled: false,
     hideFooter: false,
+    allowManualInput: false,
     showSecondaryButton: false,
     hideCancelButton: false,
     aiConnected: false,
@@ -534,6 +544,7 @@ export const InModalScrollablePage = {
             ?twentyFourHourFormat=${args.twentyFourHourFormat}
             .minDate=${args.minDate}
             .maxDate=${args.maxDate}
+            ?allowManualInput=${args.allowManualInput}
             style="width: 225px;"
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >

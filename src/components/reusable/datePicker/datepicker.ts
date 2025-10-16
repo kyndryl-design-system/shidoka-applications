@@ -149,6 +149,10 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor maxDate: string | number | Date = '';
 
+  /** Allows manual input of date/time string that matches dateFormat when true. */
+  @property({ type: Boolean })
+  accessor allowManualInput = false;
+
   /** Sets aria label attribute for error message. */
   @property({ type: String })
   accessor errorAriaLabel = '';
@@ -599,6 +603,18 @@ export class DatePicker extends FormMixin(LitElement) {
     ) {
       this.flatpickrInstance?.close();
     }
+
+    if (changedProperties.has('allowManualInput')) {
+      this.syncAllowInput();
+    }
+  }
+
+  private syncAllowInput(): void {
+    if (!this.flatpickrInstance) return;
+    this.flatpickrInstance.set('allowInput', this.allowManualInput);
+    if (!this.readonly) {
+      this._inputEl.readOnly = !this.allowManualInput;
+    }
   }
 
   private async setupAnchor() {
@@ -825,6 +841,7 @@ export class DatePicker extends FormMixin(LitElement) {
       enable: this.enable,
       disable: this._processedDisableDates,
       mode: this.mode,
+      allowInput: this.allowManualInput,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
       loadLocale,
       onOpen: this.handleOpen.bind(this),
