@@ -46,7 +46,6 @@ export default {
     defaultDate: { control: { type: 'object' } },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
-    allowManualInput: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
     label: { control: { type: 'text' } },
     minDate: { control: { type: 'text' } },

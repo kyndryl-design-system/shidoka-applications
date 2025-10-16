@@ -42,7 +42,6 @@ export default {
       control: { type: 'select' },
     },
     defaultDate: { control: { type: 'text' } },
-    allowManualInput: { control: { type: 'boolean' } },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
