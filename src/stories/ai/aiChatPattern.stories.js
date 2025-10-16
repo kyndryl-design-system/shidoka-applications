@@ -11,7 +11,7 @@ import '../../components/ai/aiLaunchButton';
 import '../../components/reusable/floatingContainer';
 
 import { ChatMessages } from './chatMessages.stories.js';
-import { Default as InputQuery } from './inputQuery.stories.js';
+import { Default as InputQuery } from '../../components/ai/aiInputQuery/aiInputQuery.stories.js';
 import { ChatHistory } from './chatHistory.stories.js';
 
 export default {
