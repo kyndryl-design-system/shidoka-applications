@@ -17,7 +17,7 @@ import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/che
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 export default {
-  title: 'AI/Patterns/Input Query',
+  title: 'AI/Components/ AI Input Query',
   parameters: {
     design: {
       type: 'figma',
