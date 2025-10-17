@@ -11,7 +11,6 @@
 .kyn-accordion-item {
   padding: 0px 0px;
   display: block;
-  background-color: var(--kd-color-background-page-default);
   border-radius: inherit;
 
   &.filled-header {
@@ -51,14 +50,33 @@
   }
 }
 
+.compact .kyn-accordion-item-body {
+  padding-top: 0;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
 .expand-icon {
   display: flex;
-  margin-left: auto;
   transition: transform 150ms ease-out;
 
   .opened & {
     transform: rotate(-180deg);
   }
+}
+
+.compact .expand-icon svg,
+slot[name='icon']::slotted(svg) {
+  width: 16px;
+  height: 16px;
+}
+
+slot[name='icon']::slotted(span) {
+  display: flex;
 }
 
 .kyn-accordion-item-title {
@@ -86,14 +104,22 @@
   .number {
     font-weight: var(--kd-font-weight-regular);
     color: var(--kd-color-text-variant-placeholder);
-    padding-right: 2rem;
+    padding-right: 16px;
+
+    .compact & {
+      padding-right: 8px;
+    }
   }
 
   slot[name='icon']::slotted(*) {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-right: 2rem;
+    padding-right: 16px;
+
+    .compact & {
+      padding-right: 8px;
+    }
   }
 
   .title {

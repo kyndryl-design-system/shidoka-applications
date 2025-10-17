@@ -2839,23 +2839,23 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "AccordionItem component. *",
+          "description": "Accordion Item component. *",
           "name": "AccordionItem",
           "slots": [
             {
-              "description": "Optional leading icon",
+              "description": "Optional leading icon. 24px, or 16px for compact.",
               "name": "icon"
             },
             {
-              "description": "Body of the accordion item",
+              "description": "Body of the accordion item.",
               "name": "body"
             },
             {
-              "description": "Title of the accordion item",
+              "description": "Title of the accordion item.",
               "name": "title"
             },
             {
-              "description": "Optional subtitle of the accordion item",
+              "description": "Optional subtitle of the accordion item.",
               "name": "subtitle"
             }
           ],
@@ -3840,6 +3840,370 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Breadcrumbs Component.",
+          "name": "Breadcrumbs",
+          "slots": [
+            {
+              "description": "Slot for inserting links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-breadcrumbs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "./breadcrumbs"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/buttonGroup/buttonGroup.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "BUTTON_GROUP_KINDS",
+          "type": {
+            "text": "{\r\n  DEFAULT: 'default',\r\n  PAGINATION: 'pagination',\r\n  ICONS: 'icons',\r\n}"
+          },
+          "default": "{\r\n  DEFAULT: 'default',\r\n  PAGINATION: 'pagination',\r\n  ICONS: 'icons',\r\n}"
+        },
+        {
+          "kind": "class",
+          "description": "ButtonGroup component.",
+          "name": "ButtonGroup",
+          "slots": [
+            {
+              "description": "Slot for <kyn-button> elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "attribute": "selectedIndex"
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "totalPages"
+            },
+            {
+              "kind": "field",
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "attribute": "maxVisible"
+            },
+            {
+              "kind": "field",
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "clickIncrementBy"
+            },
+            {
+              "kind": "field",
+              "name": "_visibleStart",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "1",
+              "description": "Starting page for the visible range (internal state)"
+            },
+            {
+              "kind": "field",
+              "name": "visibleStart",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current first page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "visibleEnd",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current last page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  prevButtonDescription: 'Previous Page',\r\n  nextButtonDescription: 'Next Page',\r\n  indivGroupItemDescription: '',\r\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_buttons",
+              "type": {
+                "text": "Button[]"
+              },
+              "privacy": "private",
+              "description": "Target <kyn-button> children"
+            },
+            {
+              "kind": "method",
+              "name": "_renderDefault",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderIcons",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderPagination",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateWindow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onPage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "cmd",
+                  "type": {
+                    "text": "'prev' | 'next' | number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_boundHandlers",
+              "privacy": "private",
+              "default": "new Map<Button, () => void>()"
+            },
+            {
+              "kind": "method",
+              "name": "_attachClickListeners",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onButtonClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "idx",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "unknown"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_syncSelection",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event button selection in button group. `detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "fieldName": "kind"
+            },
+            {
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "fieldName": "selectedIndex"
+            },
+            {
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "totalPages"
+            },
+            {
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "fieldName": "maxVisible"
+            },
+            {
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "clickIncrementBy"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BUTTON_GROUP_KINDS",
+          "declaration": {
+            "name": "BUTTON_GROUP_KINDS",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ButtonGroup",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button-group",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/buttonGroup/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ButtonGroup",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "../buttonGroup/buttonGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/button/button.ts",
       "declarations": [
         {
@@ -4249,57 +4613,421 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
+      "path": "src/components/reusable/card/card.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Breadcrumbs Component.",
-          "name": "Breadcrumbs",
-          "slots": [
+          "description": "Card.",
+          "name": "Card",
+          "cssParts": [
             {
-              "description": "Slot for inserting links.",
-              "name": "unnamed"
+              "description": "The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)",
+              "name": "card-wrapper"
             }
           ],
-          "members": [],
+          "slots": [
+            {
+              "description": "Slot for card contents.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for left icon when `variant` is `'notification'`.",
+              "name": "leftIcon"
+            },
+            {
+              "description": "Slot for right icon when `variant` is `'notification'`.",
+              "name": "inlineConfirm"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "CardType"
+              },
+              "default": "'normal'",
+              "description": "Card Type. `'normal'` & `'clickable'`",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card link url for clickable cards.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "CardTarget"
+              },
+              "default": "'_self'",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
+              "attribute": "hideBorder"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI theme toggle",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for highlight",
+              "attribute": "highlight"
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "renderNonDefaultVariant",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "baseClasses",
+                  "type": {
+                    "text": "Record<string, boolean>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_computedRel",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_onClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_forwardConfirm",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
+              "name": "on-card-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "type": {
+                "text": "CardType"
+              },
+              "default": "'normal'",
+              "description": "Card Type. `'normal'` & `'clickable'`",
+              "fieldName": "type"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card link url for clickable cards.",
+              "fieldName": "href"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
+              "fieldName": "rel"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "CardTarget"
+              },
+              "default": "'_self'",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
+              "fieldName": "target"
+            },
+            {
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
+              "fieldName": "hideBorder"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI theme toggle",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "highlight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for highlight",
+              "fieldName": "highlight"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
+              "fieldName": "variant"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-breadcrumbs",
+          "tagName": "kyn-card",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "Breadcrumbs",
+          "name": "Card",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+            "name": "Card",
+            "module": "src/components/reusable/card/card.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-breadcrumbs",
+          "name": "kyn-card",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+            "name": "Card",
+            "module": "src/components/reusable/card/card.ts"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/index.ts",
+      "path": "src/components/reusable/card/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Breadcrumbs",
+          "name": "Card",
           "declaration": {
-            "name": "Breadcrumbs",
-            "module": "./breadcrumbs"
+            "name": "Card",
+            "module": "./card"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "VitalCardSkeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "./vitalCard.skeleton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "InformationalCardSkeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "./informationalCard.skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/informationalCard.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-info-card-skeleton` Web Component.\r\nA skeleton loading state for the informational card component that mirrors its structure.",
+          "name": "InformationalCardSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "attribute": "lines"
+            },
+            {
+              "kind": "field",
+              "name": "thumbnailVisible",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "description": "Sets show or hide thumbnail element.",
+              "attribute": "thumbnailVisible"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "fieldName": "lines"
+            },
+            {
+              "name": "thumbnailVisible",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "description": "Sets show or hide thumbnail element.",
+              "fieldName": "thumbnailVisible"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-info-card-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InformationalCardSkeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-info-card-skeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/vitalCard.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-vital-card-skeleton` Web Component.\r\nA skeleton loading state for the vital card component that mirrors its structure.",
+          "name": "VitalCardSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "attribute": "lines"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "fieldName": "lines"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-vital-card-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VitalCardSkeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-vital-card-skeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
           }
         }
       ]
@@ -5019,734 +5747,6 @@
           "declaration": {
             "name": "CheckboxSubgroup",
             "module": "./checkboxSubgroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/buttonGroup/buttonGroup.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "BUTTON_GROUP_KINDS",
-          "type": {
-            "text": "{\r\n  DEFAULT: 'default',\r\n  PAGINATION: 'pagination',\r\n  ICONS: 'icons',\r\n}"
-          },
-          "default": "{\r\n  DEFAULT: 'default',\r\n  PAGINATION: 'pagination',\r\n  ICONS: 'icons',\r\n}"
-        },
-        {
-          "kind": "class",
-          "description": "ButtonGroup component.",
-          "name": "ButtonGroup",
-          "slots": [
-            {
-              "description": "Slot for <kyn-button> elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "'default' | 'pagination' | 'icons'"
-              },
-              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "selectedIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "zero-based: default button index; for pagination, page-1",
-              "attribute": "selectedIndex"
-            },
-            {
-              "kind": "field",
-              "name": "totalPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "totalPages"
-            },
-            {
-              "kind": "field",
-              "name": "maxVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "attribute": "maxVisible"
-            },
-            {
-              "kind": "field",
-              "name": "clickIncrementBy",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "clickIncrementBy"
-            },
-            {
-              "kind": "field",
-              "name": "_visibleStart",
-              "type": {
-                "text": "number"
-              },
-              "privacy": "private",
-              "default": "1",
-              "description": "Starting page for the visible range (internal state)"
-            },
-            {
-              "kind": "field",
-              "name": "visibleStart",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Current first page in the visible window (read-only)",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "visibleEnd",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Current last page in the visible window (read-only)",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  prevButtonDescription: 'Previous Page',\r\n  nextButtonDescription: 'Next Page',\r\n  indivGroupItemDescription: '',\r\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "_buttons",
-              "type": {
-                "text": "Button[]"
-              },
-              "privacy": "private",
-              "description": "Target <kyn-button> children"
-            },
-            {
-              "kind": "method",
-              "name": "_renderDefault",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderIcons",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderPagination",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateWindow",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_onPage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "cmd",
-                  "type": {
-                    "text": "'prev' | 'next' | number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "_boundHandlers",
-              "privacy": "private",
-              "default": "new Map<Button, () => void>()"
-            },
-            {
-              "kind": "method",
-              "name": "_attachClickListeners",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_onButtonClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "idx",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "unknown"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_syncSelection",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "name": "on-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event button selection in button group. `detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "kind",
-              "type": {
-                "text": "'default' | 'pagination' | 'icons'"
-              },
-              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
-              "fieldName": "kind"
-            },
-            {
-              "name": "selectedIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "zero-based: default button index; for pagination, page-1",
-              "fieldName": "selectedIndex"
-            },
-            {
-              "name": "totalPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "totalPages"
-            },
-            {
-              "name": "maxVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "fieldName": "maxVisible"
-            },
-            {
-              "name": "clickIncrementBy",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "clickIncrementBy"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-button-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BUTTON_GROUP_KINDS",
-          "declaration": {
-            "name": "BUTTON_GROUP_KINDS",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ButtonGroup",
-          "declaration": {
-            "name": "ButtonGroup",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-button-group",
-          "declaration": {
-            "name": "ButtonGroup",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/buttonGroup/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ButtonGroup",
-          "declaration": {
-            "name": "ButtonGroup",
-            "module": "../buttonGroup/buttonGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/card.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Card.",
-          "name": "Card",
-          "cssParts": [
-            {
-              "description": "The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)",
-              "name": "card-wrapper"
-            }
-          ],
-          "slots": [
-            {
-              "description": "Slot for card contents.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for left icon when `variant` is `'notification'`.",
-              "name": "leftIcon"
-            },
-            {
-              "description": "Slot for right icon when `variant` is `'notification'`.",
-              "name": "inlineConfirm"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "CardType"
-              },
-              "default": "'normal'",
-              "description": "Card Type. `'normal'` & `'clickable'`",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "CardTarget"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "hideBorder",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "attribute": "hideBorder"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI theme toggle",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "highlight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for highlight",
-              "attribute": "highlight"
-            },
-            {
-              "kind": "field",
-              "name": "variant",
-              "type": {
-                "text": "CardVariant"
-              },
-              "default": "'default'",
-              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
-              "attribute": "variant",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "renderNonDefaultVariant",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "baseClasses",
-                  "type": {
-                    "text": "Record<string, boolean>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "_computedRel",
-              "type": {
-                "text": "string"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "_onClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_onKeydown",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_forwardConfirm",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
-              "name": "on-card-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "type",
-              "type": {
-                "text": "CardType"
-              },
-              "default": "'normal'",
-              "description": "Card Type. `'normal'` & `'clickable'`",
-              "fieldName": "type"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "fieldName": "href"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "fieldName": "rel"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "CardTarget"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
-              "fieldName": "target"
-            },
-            {
-              "name": "hideBorder",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "fieldName": "hideBorder"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI theme toggle",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "highlight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for highlight",
-              "fieldName": "highlight"
-            },
-            {
-              "name": "variant",
-              "type": {
-                "text": "CardVariant"
-              },
-              "default": "'default'",
-              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
-              "fieldName": "variant"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-card",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Card",
-          "declaration": {
-            "name": "Card",
-            "module": "src/components/reusable/card/card.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-card",
-          "declaration": {
-            "name": "Card",
-            "module": "src/components/reusable/card/card.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Card",
-          "declaration": {
-            "name": "Card",
-            "module": "./card"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "VitalCardSkeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "./vitalCard.skeleton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "InformationalCardSkeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "./informationalCard.skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/informationalCard.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-info-card-skeleton` Web Component.\r\nA skeleton loading state for the informational card component that mirrors its structure.",
-          "name": "InformationalCardSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "attribute": "lines"
-            },
-            {
-              "kind": "field",
-              "name": "thumbnailVisible",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "false",
-              "description": "Sets show or hide thumbnail element.",
-              "attribute": "thumbnailVisible"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "fieldName": "lines"
-            },
-            {
-              "name": "thumbnailVisible",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "false",
-              "description": "Sets show or hide thumbnail element.",
-              "fieldName": "thumbnailVisible"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-info-card-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InformationalCardSkeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-info-card-skeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/vitalCard.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-vital-card-skeleton` Web Component.\r\nA skeleton loading state for the vital card component that mirrors its structure.",
-          "name": "VitalCardSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "attribute": "lines"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "fieldName": "lines"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-vital-card-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VitalCardSkeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-vital-card-skeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
           }
         }
       ]
@@ -10081,7 +10081,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Global Filter bar.",
+          "description": "DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).",
           "name": "GlobalFilter",
           "slots": [
             {
@@ -14231,6 +14231,729 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/popover/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Popover",
+          "declaration": {
+            "name": "Popover",
+            "module": "./popover"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/popover/popover.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Popover component.\r\n\r\nTwo positioning modes are available:\r\n- anchor: positioned relative to an anchor slot element\r\n- floating: manually positioned via top/left/bottom/right properties\r\n\r\nFor anchor mode, the popover will be positioned relative to the anchor element\r\nbased on the direction property. The position can be fixed or absolute.\r\n\r\nFor floating (manual) mode, set triggerType=\"none\" and use top/left/bottom/right\r\nproperties to position the popover.",
+          "name": "Popover",
+          "slots": [
+            {
+              "description": "The main popover slotted body content",
+              "name": "unnamed"
+            },
+            {
+              "description": "The trigger element (icon, button, link, etc.)",
+              "name": "anchor"
+            },
+            {
+              "description": "Optional link to be displayed in the footer",
+              "name": "footerLink"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "direction",
+              "type": {
+                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
+              },
+              "default": "'auto'",
+              "description": "Manual direction or auto (anchor mode only)",
+              "attribute": "direction",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "positionType",
+              "type": {
+                "text": "PositionType"
+              },
+              "default": "'fixed'",
+              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
+              "attribute": "positionType"
+            },
+            {
+              "kind": "field",
+              "name": "launchBehavior",
+              "type": {
+                "text": "'default' | 'hover' | 'link'"
+              },
+              "default": "'default'",
+              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
+              "attribute": "launchBehavior"
+            },
+            {
+              "kind": "field",
+              "name": "linkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for link behavior (when launchBehavior is 'link')",
+              "attribute": "linkHref"
+            },
+            {
+              "kind": "field",
+              "name": "linkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for link behavior (when launchBehavior is 'link')",
+              "attribute": "linkTarget"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "'mini' | 'narrow' | 'wide'"
+              },
+              "default": "'mini'",
+              "description": "Size variants for the popover.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "offsetDistance",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
+              "attribute": "offsetDistance",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "shiftPadding",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Padding from viewport edges (px)",
+              "attribute": "shiftPadding",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "triggerType",
+              "type": {
+                "text": "'icon' | 'link' | 'button' | 'none'"
+              },
+              "default": "'button'",
+              "description": "how we style the anchor slot",
+              "attribute": "triggerType",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "arrowPosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
+              "attribute": "arrowPosition",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "description": "Controls the popover's open state."
+            },
+            {
+              "kind": "field",
+              "name": "animationDuration",
+              "type": {
+                "text": "number"
+              },
+              "default": "200",
+              "description": "Animation duration in milliseconds",
+              "attribute": "animationDuration"
+            },
+            {
+              "kind": "field",
+              "name": "top",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Top position value.",
+              "attribute": "top"
+            },
+            {
+              "kind": "field",
+              "name": "left",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Left position value.",
+              "attribute": "left"
+            },
+            {
+              "kind": "field",
+              "name": "bottom",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Bottom position value.",
+              "attribute": "bottom"
+            },
+            {
+              "kind": "field",
+              "name": "right",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Right position value.",
+              "attribute": "right"
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate a destructive action",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "zIndex",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Z-index for the popover.",
+              "attribute": "zIndex"
+            },
+            {
+              "kind": "field",
+              "name": "responsivePosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Responsive breakpoints for adjusting position.",
+              "attribute": "responsivePosition"
+            },
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body title text",
+              "attribute": "titleText"
+            },
+            {
+              "kind": "field",
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body subtitle/label",
+              "attribute": "labelText"
+            },
+            {
+              "kind": "field",
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button label",
+              "attribute": "okText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button label",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description text",
+              "attribute": "closeText"
+            },
+            {
+              "kind": "field",
+              "name": "popoverAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Popover'",
+              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
+              "attribute": "popoverAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text",
+              "attribute": "secondaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the secondary button",
+              "attribute": "showSecondaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "tertiaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tertiary'",
+              "description": "Tertiary button text",
+              "attribute": "tertiaryButtonText"
+            },
+            {
+              "kind": "field",
+              "name": "showTertiaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the tertiary button",
+              "attribute": "showTertiaryButton"
+            },
+            {
+              "kind": "field",
+              "name": "footerLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Text to display for an optional link in the footer.",
+              "attribute": "footerLinkText"
+            },
+            {
+              "kind": "field",
+              "name": "footerLinkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for the optional footer link.",
+              "attribute": "footerLinkHref"
+            },
+            {
+              "kind": "field",
+              "name": "footerLinkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
+              "attribute": "footerLinkTarget"
+            },
+            {
+              "kind": "field",
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the entire footer",
+              "attribute": "hideFooter"
+            },
+            {
+              "kind": "method",
+              "name": "_renderMini",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_renderStandard",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_toggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_close",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFocusKeyboardEvents",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_removeFocusListener",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_position",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emitted when any action closes the popover.`detail:{ action: string }`",
+              "name": "on-close"
+            },
+            {
+              "description": "Emitted when popover opens. `detail:{ origEvent: Event }`",
+              "name": "on-open"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "direction",
+              "type": {
+                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
+              },
+              "default": "'auto'",
+              "description": "Manual direction or auto (anchor mode only)",
+              "fieldName": "direction"
+            },
+            {
+              "name": "positionType",
+              "type": {
+                "text": "PositionType"
+              },
+              "default": "'fixed'",
+              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
+              "fieldName": "positionType"
+            },
+            {
+              "name": "launchBehavior",
+              "type": {
+                "text": "'default' | 'hover' | 'link'"
+              },
+              "default": "'default'",
+              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
+              "fieldName": "launchBehavior"
+            },
+            {
+              "name": "linkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for link behavior (when launchBehavior is 'link')",
+              "fieldName": "linkHref"
+            },
+            {
+              "name": "linkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for link behavior (when launchBehavior is 'link')",
+              "fieldName": "linkTarget"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "'mini' | 'narrow' | 'wide'"
+              },
+              "default": "'mini'",
+              "description": "Size variants for the popover.",
+              "fieldName": "size"
+            },
+            {
+              "name": "offsetDistance",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
+              "fieldName": "offsetDistance"
+            },
+            {
+              "name": "shiftPadding",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Padding from viewport edges (px)",
+              "fieldName": "shiftPadding"
+            },
+            {
+              "name": "triggerType",
+              "type": {
+                "text": "'icon' | 'link' | 'button' | 'none'"
+              },
+              "default": "'button'",
+              "description": "how we style the anchor slot",
+              "fieldName": "triggerType"
+            },
+            {
+              "name": "arrowPosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
+              "fieldName": "arrowPosition"
+            },
+            {
+              "name": "animationDuration",
+              "type": {
+                "text": "number"
+              },
+              "default": "200",
+              "description": "Animation duration in milliseconds",
+              "fieldName": "animationDuration"
+            },
+            {
+              "name": "top",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Top position value.",
+              "fieldName": "top"
+            },
+            {
+              "name": "left",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Left position value.",
+              "fieldName": "left"
+            },
+            {
+              "name": "bottom",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Bottom position value.",
+              "fieldName": "bottom"
+            },
+            {
+              "name": "right",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Right position value.",
+              "fieldName": "right"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the primary button styles to indicate a destructive action",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "zIndex",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Z-index for the popover.",
+              "fieldName": "zIndex"
+            },
+            {
+              "name": "responsivePosition",
+              "type": {
+                "text": "string | undefined"
+              },
+              "description": "Responsive breakpoints for adjusting position.",
+              "fieldName": "responsivePosition"
+            },
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body title text",
+              "fieldName": "titleText"
+            },
+            {
+              "name": "labelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Body subtitle/label",
+              "fieldName": "labelText"
+            },
+            {
+              "name": "okText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'OK'",
+              "description": "OK button label",
+              "fieldName": "okText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button label",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description text",
+              "fieldName": "closeText"
+            },
+            {
+              "name": "popoverAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Popover'",
+              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
+              "fieldName": "popoverAriaLabel"
+            },
+            {
+              "name": "secondaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Secondary'",
+              "description": "Secondary button text",
+              "fieldName": "secondaryButtonText"
+            },
+            {
+              "name": "showSecondaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the secondary button",
+              "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "tertiaryButtonText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Tertiary'",
+              "description": "Tertiary button text",
+              "fieldName": "tertiaryButtonText"
+            },
+            {
+              "name": "showTertiaryButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show or hide the tertiary button",
+              "fieldName": "showTertiaryButton"
+            },
+            {
+              "name": "footerLinkText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Text to display for an optional link in the footer.",
+              "fieldName": "footerLinkText"
+            },
+            {
+              "name": "footerLinkHref",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "URL for the optional footer link.",
+              "fieldName": "footerLinkHref"
+            },
+            {
+              "name": "footerLinkTarget",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top'"
+              },
+              "default": "'_self'",
+              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
+              "fieldName": "footerLinkTarget"
+            },
+            {
+              "name": "hideFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the entire footer",
+              "fieldName": "hideFooter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-popover",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Popover",
+          "declaration": {
+            "name": "Popover",
+            "module": "src/components/reusable/popover/popover.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-popover",
+          "declaration": {
+            "name": "Popover",
+            "module": "src/components/reusable/popover/popover.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/pagination/index.ts",
       "declarations": [],
       "exports": [
@@ -14988,729 +15711,6 @@
           "declaration": {
             "name": "Pagination",
             "module": "src/components/reusable/pagination/Pagination.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/popover/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Popover",
-          "declaration": {
-            "name": "Popover",
-            "module": "./popover"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/popover/popover.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Popover component.\r\n\r\nTwo positioning modes are available:\r\n- anchor: positioned relative to an anchor slot element\r\n- floating: manually positioned via top/left/bottom/right properties\r\n\r\nFor anchor mode, the popover will be positioned relative to the anchor element\r\nbased on the direction property. The position can be fixed or absolute.\r\n\r\nFor floating (manual) mode, set triggerType=\"none\" and use top/left/bottom/right\r\nproperties to position the popover.",
-          "name": "Popover",
-          "slots": [
-            {
-              "description": "The main popover slotted body content",
-              "name": "unnamed"
-            },
-            {
-              "description": "The trigger element (icon, button, link, etc.)",
-              "name": "anchor"
-            },
-            {
-              "description": "Optional link to be displayed in the footer",
-              "name": "footerLink"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "direction",
-              "type": {
-                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
-              },
-              "default": "'auto'",
-              "description": "Manual direction or auto (anchor mode only)",
-              "attribute": "direction",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "positionType",
-              "type": {
-                "text": "PositionType"
-              },
-              "default": "'fixed'",
-              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
-              "attribute": "positionType"
-            },
-            {
-              "kind": "field",
-              "name": "launchBehavior",
-              "type": {
-                "text": "'default' | 'hover' | 'link'"
-              },
-              "default": "'default'",
-              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
-              "attribute": "launchBehavior"
-            },
-            {
-              "kind": "field",
-              "name": "linkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for link behavior (when launchBehavior is 'link')",
-              "attribute": "linkHref"
-            },
-            {
-              "kind": "field",
-              "name": "linkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for link behavior (when launchBehavior is 'link')",
-              "attribute": "linkTarget"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "'mini' | 'narrow' | 'wide'"
-              },
-              "default": "'mini'",
-              "description": "Size variants for the popover.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "offsetDistance",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
-              "attribute": "offsetDistance",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "shiftPadding",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Padding from viewport edges (px)",
-              "attribute": "shiftPadding",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "triggerType",
-              "type": {
-                "text": "'icon' | 'link' | 'button' | 'none'"
-              },
-              "default": "'button'",
-              "description": "how we style the anchor slot",
-              "attribute": "triggerType",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "arrowPosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
-              "attribute": "arrowPosition",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "open",
-              "description": "Controls the popover's open state."
-            },
-            {
-              "kind": "field",
-              "name": "animationDuration",
-              "type": {
-                "text": "number"
-              },
-              "default": "200",
-              "description": "Animation duration in milliseconds",
-              "attribute": "animationDuration"
-            },
-            {
-              "kind": "field",
-              "name": "top",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Top position value.",
-              "attribute": "top"
-            },
-            {
-              "kind": "field",
-              "name": "left",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Left position value.",
-              "attribute": "left"
-            },
-            {
-              "kind": "field",
-              "name": "bottom",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Bottom position value.",
-              "attribute": "bottom"
-            },
-            {
-              "kind": "field",
-              "name": "right",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Right position value.",
-              "attribute": "right"
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate a destructive action",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "zIndex",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Z-index for the popover.",
-              "attribute": "zIndex"
-            },
-            {
-              "kind": "field",
-              "name": "responsivePosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Responsive breakpoints for adjusting position.",
-              "attribute": "responsivePosition"
-            },
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body title text",
-              "attribute": "titleText"
-            },
-            {
-              "kind": "field",
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body subtitle/label",
-              "attribute": "labelText"
-            },
-            {
-              "kind": "field",
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button label",
-              "attribute": "okText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button label",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description text",
-              "attribute": "closeText"
-            },
-            {
-              "kind": "field",
-              "name": "popoverAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Popover'",
-              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
-              "attribute": "popoverAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text",
-              "attribute": "secondaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the secondary button",
-              "attribute": "showSecondaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "tertiaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Tertiary'",
-              "description": "Tertiary button text",
-              "attribute": "tertiaryButtonText"
-            },
-            {
-              "kind": "field",
-              "name": "showTertiaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the tertiary button",
-              "attribute": "showTertiaryButton"
-            },
-            {
-              "kind": "field",
-              "name": "footerLinkText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text to display for an optional link in the footer.",
-              "attribute": "footerLinkText"
-            },
-            {
-              "kind": "field",
-              "name": "footerLinkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for the optional footer link.",
-              "attribute": "footerLinkHref"
-            },
-            {
-              "kind": "field",
-              "name": "footerLinkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
-              "attribute": "footerLinkTarget"
-            },
-            {
-              "kind": "field",
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the entire footer",
-              "attribute": "hideFooter"
-            },
-            {
-              "kind": "method",
-              "name": "_renderMini",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "TemplateResult"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_renderStandard",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "TemplateResult"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_toggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_close",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFocusKeyboardEvents",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_removeFocusListener",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_position",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emitted when any action closes the popover.`detail:{ action: string }`",
-              "name": "on-close"
-            },
-            {
-              "description": "Emitted when popover opens. `detail:{ origEvent: Event }`",
-              "name": "on-open"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "direction",
-              "type": {
-                "text": "'top' | 'right' | 'bottom' | 'left' | 'auto'"
-              },
-              "default": "'auto'",
-              "description": "Manual direction or auto (anchor mode only)",
-              "fieldName": "direction"
-            },
-            {
-              "name": "positionType",
-              "type": {
-                "text": "PositionType"
-              },
-              "default": "'fixed'",
-              "description": "Position type: fixed (default) or absolute\r\n- fixed: positions relative to the viewport\r\n- absolute: positions relative to the nearest positioned ancestor",
-              "fieldName": "positionType"
-            },
-            {
-              "name": "launchBehavior",
-              "type": {
-                "text": "'default' | 'hover' | 'link'"
-              },
-              "default": "'default'",
-              "description": "Popover launch behavior.\r\n- default: click to launch/open popover\r\n- hover: opens on hover and closes on mouse leave\r\n- link: click to navigate to an externally linked URL + hover to open",
-              "fieldName": "launchBehavior"
-            },
-            {
-              "name": "linkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for link behavior (when launchBehavior is 'link')",
-              "fieldName": "linkHref"
-            },
-            {
-              "name": "linkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for link behavior (when launchBehavior is 'link')",
-              "fieldName": "linkTarget"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "'mini' | 'narrow' | 'wide'"
-              },
-              "default": "'mini'",
-              "description": "Size variants for the popover.",
-              "fieldName": "size"
-            },
-            {
-              "name": "offsetDistance",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Distance between anchor and popover (px)\r\nControls how far the popover is positioned from its anchor element",
-              "fieldName": "offsetDistance"
-            },
-            {
-              "name": "shiftPadding",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Padding from viewport edges (px)",
-              "fieldName": "shiftPadding"
-            },
-            {
-              "name": "triggerType",
-              "type": {
-                "text": "'icon' | 'link' | 'button' | 'none'"
-              },
-              "default": "'button'",
-              "description": "how we style the anchor slot",
-              "fieldName": "triggerType"
-            },
-            {
-              "name": "arrowPosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Optional manual offset for tooltip-like triangular shaped arrow.\r\nWhen set, this will override the automatic arrow positioning.",
-              "fieldName": "arrowPosition"
-            },
-            {
-              "name": "animationDuration",
-              "type": {
-                "text": "number"
-              },
-              "default": "200",
-              "description": "Animation duration in milliseconds",
-              "fieldName": "animationDuration"
-            },
-            {
-              "name": "top",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Top position value.",
-              "fieldName": "top"
-            },
-            {
-              "name": "left",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Left position value.",
-              "fieldName": "left"
-            },
-            {
-              "name": "bottom",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Bottom position value.",
-              "fieldName": "bottom"
-            },
-            {
-              "name": "right",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Right position value.",
-              "fieldName": "right"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Changes the primary button styles to indicate a destructive action",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "zIndex",
-              "type": {
-                "text": "number | undefined"
-              },
-              "description": "Z-index for the popover.",
-              "fieldName": "zIndex"
-            },
-            {
-              "name": "responsivePosition",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "Responsive breakpoints for adjusting position.",
-              "fieldName": "responsivePosition"
-            },
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body title text",
-              "fieldName": "titleText"
-            },
-            {
-              "name": "labelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Body subtitle/label",
-              "fieldName": "labelText"
-            },
-            {
-              "name": "okText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'OK'",
-              "description": "OK button label",
-              "fieldName": "okText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button label",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description text",
-              "fieldName": "closeText"
-            },
-            {
-              "name": "popoverAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Popover'",
-              "description": "Accessible name for the popover dialog\r\nUsed as aria-label when no title is present",
-              "fieldName": "popoverAriaLabel"
-            },
-            {
-              "name": "secondaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Secondary'",
-              "description": "Secondary button text",
-              "fieldName": "secondaryButtonText"
-            },
-            {
-              "name": "showSecondaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the secondary button",
-              "fieldName": "showSecondaryButton"
-            },
-            {
-              "name": "tertiaryButtonText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Tertiary'",
-              "description": "Tertiary button text",
-              "fieldName": "tertiaryButtonText"
-            },
-            {
-              "name": "showTertiaryButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show or hide the tertiary button",
-              "fieldName": "showTertiaryButton"
-            },
-            {
-              "name": "footerLinkText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Text to display for an optional link in the footer.",
-              "fieldName": "footerLinkText"
-            },
-            {
-              "name": "footerLinkHref",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "URL for the optional footer link.",
-              "fieldName": "footerLinkHref"
-            },
-            {
-              "name": "footerLinkTarget",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top'"
-              },
-              "default": "'_self'",
-              "description": "Target for the footer link (ex: \"_blank\" for new tab).\r\nIf empty, defaults to same tab.",
-              "fieldName": "footerLinkTarget"
-            },
-            {
-              "name": "hideFooter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide the entire footer",
-              "fieldName": "hideFooter"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-popover",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Popover",
-          "declaration": {
-            "name": "Popover",
-            "module": "src/components/reusable/popover/popover.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-popover",
-          "declaration": {
-            "name": "Popover",
-            "module": "src/components/reusable/popover/popover.ts"
           }
         }
       ]
@@ -18986,623 +18986,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/defs.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "./tabs"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "./tab"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "./tabPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tab.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "Tab",
-          "members": [
-            {
-              "kind": "field",
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "id",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "selected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "_size",
-              "type": {
-                "text": "string"
-              },
-              "privacy": "private",
-              "default": "'md'"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "vertical",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "_vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "data-aiconnected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "role",
-              "type": {
-                "text": "string"
-              },
-              "default": "'tab'",
-              "attribute": "role",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "attribute": "tabIndex",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-selected'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "attribute": "'aria-selected'",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-controls'",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "'aria-controls'",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-disabled'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "attribute": "'aria-disabled'",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "_handleClick",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "id"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "selected"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "data-aiconnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "role",
-              "type": {
-                "text": "string"
-              },
-              "default": "'tab'",
-              "fieldName": "role"
-            },
-            {
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "fieldName": "tabIndex"
-            },
-            {
-              "name": "'aria-selected'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "fieldName": "'aria-selected'"
-            },
-            {
-              "name": "'aria-controls'",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "'aria-controls'"
-            },
-            {
-              "name": "'aria-disabled'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "fieldName": "'aria-disabled'"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabPanel.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "TabPanel",
-          "slots": [
-            {
-              "description": "Slot for tab content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "attribute": "tabId"
-            },
-            {
-              "kind": "field",
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "attribute": "visible",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "attribute": "noPadding"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "fieldName": "tabId"
-            },
-            {
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "fieldName": "visible"
-            },
-            {
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "fieldName": "noPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab-panel",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab-panel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "Tabs",
-          "slots": [
-            {
-              "description": "Slot for kyn-tab-panel components.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for kyn-tab components.",
-              "name": "tabs"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "attribute": "tabSize"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI specifier.",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "attribute": "disableAutoFocusUpdate"
-            },
-            {
-              "kind": "field",
-              "name": "scrollablePanels",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds scrollable overflow to the tab panels.",
-              "attribute": "scrollablePanels"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChangeTabs",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
-                }
-              ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildrenSelection",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
-                },
-                {
-                  "name": "updatePanel",
-                  "default": "true"
-                }
-              ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
-            },
-            {
-              "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "origEvent",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
-                },
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
-                }
-              ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
-                }
-              ],
-              "description": "Handles keyboard events for navigating between tabs.",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the new selected Tab ID when switching tabs. `detail:{ origEvent: PointerEvent,selectedTabId: string }`",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "fieldName": "tabSize"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI specifier.",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "fieldName": "disableAutoFocusUpdate"
-            },
-            {
-              "name": "scrollablePanels",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds scrollable overflow to the tab panels.",
-              "fieldName": "scrollablePanels"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tabs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/table/defs.ts",
       "declarations": [],
       "exports": []
@@ -22136,6 +21519,623 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "./tabs"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "./tab"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "./tabPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tab.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Tab",
+          "members": [
+            {
+              "kind": "field",
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "id",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "_size",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "'md'"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "vertical",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "data-aiconnected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'tab'",
+              "attribute": "role",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "tabIndex",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-selected'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "attribute": "'aria-selected'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-controls'",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "'aria-controls'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-disabled'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "attribute": "'aria-disabled'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_handleClick",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "id"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "selected"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "data-aiconnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'tab'",
+              "fieldName": "role"
+            },
+            {
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "tabIndex"
+            },
+            {
+              "name": "'aria-selected'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "fieldName": "'aria-selected'"
+            },
+            {
+              "name": "'aria-controls'",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "'aria-controls'"
+            },
+            {
+              "name": "'aria-disabled'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "fieldName": "'aria-disabled'"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabPanel.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "TabPanel",
+          "slots": [
+            {
+              "description": "Slot for tab content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "attribute": "tabId"
+            },
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "attribute": "visible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "attribute": "noPadding"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "fieldName": "tabId"
+            },
+            {
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "fieldName": "visible"
+            },
+            {
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "fieldName": "noPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab-panel",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab-panel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "Tabs",
+          "slots": [
+            {
+              "description": "Slot for kyn-tab-panel components.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for kyn-tab components.",
+              "name": "tabs"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "attribute": "tabSize"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI specifier.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "attribute": "disableAutoFocusUpdate"
+            },
+            {
+              "kind": "field",
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "attribute": "scrollablePanels"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChangeTabs",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                }
+              ],
+              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildrenSelection",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                },
+                {
+                  "name": "updatePanel",
+                  "default": "true"
+                }
+              ],
+              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "origEvent",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
+                },
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+                }
+              ],
+              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                }
+              ],
+              "description": "Handles keyboard events for navigating between tabs.",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the new selected Tab ID when switching tabs. `detail:{ origEvent: PointerEvent,selectedTabId: string }`",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "fieldName": "tabSize"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI specifier.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "fieldName": "disableAutoFocusUpdate"
+            },
+            {
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "fieldName": "scrollablePanels"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/tag/index.ts",
       "declarations": [],
       "exports": [
@@ -22662,6 +22662,415 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "attribute": "notResizeable"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
+              "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "attribute": "maxRowsVisible"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "attribute": "autoComplete"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateVisibleRows",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "fieldName": "notResizeable"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
+              "fieldName": "rows"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "fieldName": "maxRowsVisible"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "fieldName": "autoComplete"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-area",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-area",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/textInput/index.ts",
       "declarations": [],
       "exports": [
@@ -23113,415 +23522,6 @@
           "declaration": {
             "name": "TextInput",
             "module": "src/components/reusable/textInput/textInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "notResizeable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set it to `true`, if text area is not resizeable.",
-              "attribute": "notResizeable"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
-              "attribute": "rows"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "maxRowsVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
-              "attribute": "maxRowsVisible"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "attribute": "autoComplete"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateVisibleRows",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "notResizeable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set it to `true`, if text area is not resizeable.",
-              "fieldName": "notResizeable"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
-              "fieldName": "rows"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "maxRowsVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
-              "fieldName": "maxRowsVisible"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "fieldName": "autoComplete"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-area",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-area",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]
