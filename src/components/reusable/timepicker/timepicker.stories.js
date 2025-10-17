@@ -31,6 +31,7 @@ export default {
     defaultMinute: { control: { type: 'number' } },
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
+    enableSeconds: { control: { type: 'boolean' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
     ...ValidationArgs,
   },
@@ -68,6 +69,7 @@ const Template = (args) => {
       .errorTitle=${args.errorTitle}
       .warningAriaLabel=${args.warningAriaLabel}
       .warningTitle=${args.warningTitle}
+      .enableSeconds=${args.enableSeconds}
       ?timepickerDisabled=${args.timepickerDisabled}
       ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
@@ -96,6 +98,7 @@ DefaultTimePicker.args = {
   warningTitle: '',
   timepickerDisabled: false,
   readonly: false,
+  enableSeconds: false,
   twentyFourHourFormat: false,
   label: 'Timepicker',
   defaultHour: null,
@@ -203,6 +206,7 @@ export const InModal = {
           .errorTitle=${args.errorTitle}
           .warningAriaLabel=${args.warningAriaLabel}
           .warningTitle=${args.warningTitle}
+          .enableSeconds=${args.enableSeconds}
           ?timepickerDisabled=${args.timepickerDisabled}
           ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
