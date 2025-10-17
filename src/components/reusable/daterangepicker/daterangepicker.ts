@@ -157,6 +157,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor minDate: string | number | Date = '';
 
+  /** Allows manual input of date/time string that matches dateFormat when true. */
+  @property({ type: Boolean })
+  accessor allowManualInput = false;
+
   /** Sets upper boundary of date range picker date selection. */
   @property({ type: String })
   accessor maxDate: string | number | Date = '';
@@ -873,6 +877,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._enableTime = updateEnableTime(this.dateFormat);
       this.updateFlatpickrOptions();
     }
+
+    if (changedProperties.has('allowManualInput')) {
+      this.syncAllowInput();
+    }
+  }
+
+  private syncAllowInput(): void {
+    if (!this.flatpickrInstance) return;
+    this.flatpickrInstance.set('allowInput', this.allowManualInput);
+    if (!this.readonly) {
+      this._inputEl.readOnly = !this.allowManualInput;
+    }
   }
 
   private async setupAnchor() {
@@ -1027,6 +1043,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       disable: this._processedDisableDates,
       mode: 'range',
       closeOnSelect: false,
+      allowInput: this.allowManualInput,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),

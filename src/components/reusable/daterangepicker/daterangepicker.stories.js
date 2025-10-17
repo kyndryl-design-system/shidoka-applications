@@ -31,11 +31,17 @@ export default {
         'm-d-Y',
         'd-m-Y',
         'Y-m-d H:i', // 24-hour format without seconds
+        'Y-m-d H:i:s',
         'Y-m-d h:i K', // 12-hour format with AM/PM
+        'Y-m-d h:i:s K',
         'm-d-Y H:i',
+        'm-d-Y H:i:s',
         'm-d-Y h:i K',
+        'm-d-Y h:i:s K',
         'd-m-Y H:i',
+        'd-m-Y H:i:s',
         'd-m-Y h:i K',
+        'd-m-Y h:i:s K',
       ],
       control: { type: 'select' },
     },
@@ -125,6 +131,7 @@ const Template = (args) => {
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
+      ?allowManualInput=${args.allowManualInput}
       .errorAriaLabel=${args.errorAriaLabel}
       .errorTitle=${args.errorTitle}
       .warningAriaLabel=${args.warningAriaLabel}
@@ -160,6 +167,7 @@ DateRangeDefault.args = {
   readonly: false,
   minDate: '',
   maxDate: '',
+  allowManualInput: false,
   label: 'Date Range',
 };
 
@@ -170,6 +178,7 @@ DateTimeRange.args = {
   dateFormat: 'Y-m-d H:i',
   caption: 'Example caption for the Date Range Picker with Time Input',
   label: 'Start + End Date / Time',
+  allowManualInput: false,
 };
 
 export const InvalidDefaultDates = Template.bind({});
@@ -180,6 +189,7 @@ InvalidDefaultDates.args = {
   defaultDate: ['2025-13-01', '2023-06-01'],
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
+  allowManualInput: false,
   caption: 'Invalid default dates will trigger validation errors..',
   invalidText: '',
   defaultErrorMessage: '',
@@ -197,6 +207,7 @@ WithPreselectedRange.args = {
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-01-01', '2024-01-07'],
+  allowManualInput: false,
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
 };
@@ -207,6 +218,7 @@ WithPreselectedDateTime.args = {
   name: 'preselected-date-time-range',
   dateFormat: 'Y-m-d H:i',
   defaultDate: ['2024-01-01 09:00:00', '2024-01-02 17:00:00'],
+  allowManualInput: false,
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
 };
@@ -219,6 +231,7 @@ WithDisabledDates.args = {
   caption:
     'Example showing disabled dates (weekends and specific dates are disabled)',
   label: 'Date Range Selection',
+  allowManualInput: false,
   disable: [
     function (date) {
       return date.getDay() === 0 || date.getDay() === 6;
@@ -236,6 +249,7 @@ FixedStartDate.args = {
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-05-01', '2024-05-15'],
   rangeEditMode: 'end',
+  allowManualInput: false,
   label: 'Fixed Start - Flexible Deadline',
 };
 
@@ -246,6 +260,7 @@ FixedDeadline.args = {
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-05-01', '2024-05-15'],
   rangeEditMode: 'start',
+  allowManualInput: false,
   label: 'Flexible Start - Fixed Deadline',
 };
 
@@ -256,6 +271,7 @@ ScheduleLockdown_BothDatesFixed.args = {
   dateFormat: 'Y-m-d',
   defaultDate: ['2024-01-01', '2024-01-07'],
   rangeEditMode: 'none',
+  allowManualInput: false,
   label: 'Fixed Date Range (View Only)',
 };
 ScheduleLockdown_BothDatesFixed.storyName = 'Both Dates Fixed';
@@ -270,6 +286,7 @@ export const InModal = {
     caption: 'Date Range Picker in a modal.',
     label: 'Date',
     open: false,
+    allowManualInput: false,
     size: 'lg',
     titleText: 'Select Date',
     labelText: '',
@@ -326,6 +343,7 @@ export const InModal = {
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
+          ?allowManualInput=${args.allowManualInput}
           .errorAriaLabel=${args.errorAriaLabel}
           .errorTitle=${args.errorTitle}
           .warningAriaLabel=${args.warningAriaLabel}
@@ -351,6 +369,7 @@ export const DateRangePickerInAccordionInModal = {
     caption: 'Date-range picker in a modal.',
     label: 'Date',
     staticPosition: true,
+    allowManualInput: false,
     open: false,
     size: 'lg',
     titleText: 'Select Date',
@@ -423,6 +442,7 @@ export const DateRangePickerInAccordionInModal = {
                 ?twentyFourHourFormat=${args.twentyFourHourFormat}
                 .minDate=${args.minDate}
                 .maxDate=${args.maxDate}
+                ?allowManualInput=${args.allowManualInput}
                 .errorAriaLabel=${args.errorAriaLabel}
                 .errorTitle=${args.errorTitle}
                 .warningAriaLabel=${args.warningAriaLabel}

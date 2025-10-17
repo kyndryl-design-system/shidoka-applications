@@ -122,6 +122,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor twentyFourHourFormat: boolean | null = null;
 
+  /** Enable seconds in the timepicker UI. */
+  @property({ type: Boolean })
+  accessor enableSeconds: boolean = false;
+
   /** Sets lower boundary of time selection. */
   @property({ type: String })
   accessor minTime: string | number | Date = '';
@@ -235,17 +239,20 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   /**
-   * Parses a time string (e.g. "14:30") or Date/number into a Date object
+   * Parses a time string (e.g. "14:30" or "14:30:45") or Date/number into a Date object
    * anchored to today, or returns null if invalid.
    */
   private parseTimeString(time: string | number | Date): Date | null {
     if (time instanceof Date) return time;
     if (typeof time === 'number') return new Date(time);
     if (typeof time === 'string') {
-      const [h, m] = time.trim().split(':').map(Number);
-      if (!isNaN(h) && !isNaN(m)) {
+      const parts = time.trim().split(':').map(Number);
+      const h = parts[0];
+      const m = parts.length > 1 ? parts[1] : 0;
+      const s = parts.length > 2 ? parts[2] : 0;
+      if (!isNaN(h) && !isNaN(m) && !isNaN(s)) {
         const d = new Date();
-        d.setHours(h, m, 0, 0);
+        d.setHours(h, m, s, 0);
         return d;
       }
     }
@@ -290,7 +297,7 @@ export class TimePicker extends FormMixin(LitElement) {
       ? this.generateRandomId(this.name)
       : this.generateRandomId('time-picker');
     const descriptionId = this.name ?? '';
-    const placeholder = '—— : ——';
+    const placeholder = this.enableSeconds ? '—— : —— : ——' : '—— : ——';
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
         <div
@@ -483,7 +490,10 @@ export class TimePicker extends FormMixin(LitElement) {
       if (this.flatpickrInstance && !this._isClearing) {
         await this.debouncedUpdate();
       }
-    } else if (changedProperties.has('twentyFourHourFormat')) {
+    } else if (
+      changedProperties.has('twentyFourHourFormat') ||
+      changedProperties.has('enableSeconds')
+    ) {
       if (this.flatpickrInstance && !this._isClearing) {
         await this.debouncedUpdate();
       }
@@ -495,11 +505,14 @@ export class TimePicker extends FormMixin(LitElement) {
           const strValue = newValue as string;
           if (strValue.trim() !== '') {
             this._hasInteracted = true;
-            if (/\d{1,2}:\d{2}/.test(strValue)) {
-              const [hours, minutes] = strValue.split(':').map(Number);
-              if (!isNaN(hours) && !isNaN(minutes)) {
+            if (/\d{1,2}:\d{2}(?::\d{2})?/.test(strValue)) {
+              const parts = strValue.split(':').map(Number);
+              const hours = parts[0];
+              const minutes = parts[1] ?? 0;
+              const seconds = parts[2] ?? 0;
+              if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
                 const date2 = new Date();
-                date2.setHours(hours, minutes, 0, 0);
+                date2.setHours(hours, minutes, seconds, 0);
                 this.value = date2;
                 newValue = this.value;
                 if (this.flatpickrInstance) {
@@ -661,7 +674,13 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
     const container = getModalContainer(this);
-    const effectiveDateFormat = this.twentyFourHourFormat ? 'H:i' : 'h:i K';
+    const effectiveDateFormat = this.twentyFourHourFormat
+      ? this.enableSeconds
+        ? 'H:i:s'
+        : 'H:i'
+      : this.enableSeconds
+      ? 'h:i:s K'
+      : 'h:i K';
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,
@@ -735,7 +754,7 @@ export class TimePicker extends FormMixin(LitElement) {
         const newDate = new Date();
         newDate.setHours(selectedTime.getHours());
         newDate.setMinutes(selectedTime.getMinutes());
-        newDate.setSeconds(0);
+        newDate.setSeconds(selectedTime.getSeconds());
         newDate.setMilliseconds(0);
         this.value = newDate;
         emitValue(this, 'on-change', {
