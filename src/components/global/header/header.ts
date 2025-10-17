@@ -75,14 +75,15 @@ export class Header extends LitElement {
         <a
           href="${this.rootUrl}"
           class="logo-link interactive"
+          aria-label="${this.rootUrl}"
           @click="${(e: Event) => this.handleRootLinkClick(e)}"
         >
           <slot name="logo" @slotchange=${this.handleSlotChange}>
             ${unsafeHTML(logo)}
           </slot>
-
-          <span class="title">${this.appTitle}</span>
         </a>
+
+        <span class="title">${this.appTitle}</span>
 
         <slot name="center"></slot>
 

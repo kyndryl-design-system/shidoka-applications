@@ -22,6 +22,7 @@
 
 :host([inline]) {
   display: inline-block;
+
   & .container {
     flex-direction: row;
   }
@@ -54,8 +55,12 @@
     background-size: 200% 100%;
     background-position: -100% 0;
 
-    animation: shimmer var(--skeleton-shimmer-duration)
-      cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+    animation-name: skeleton-shimmer;
+    animation-duration: var(--skeleton-shimmer-duration);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    will-change: background-position;
   }
 
   &.rectangle {
@@ -88,6 +93,7 @@
     var(--kd-color-background-gradients-ai-loader-end-gradient) 100%
   );
 }
+
 .skeleton.ai-connected::after {
   --_ai-band: color-mix(in oklab, gray 55%, transparent);
   mix-blend-mode: screen;
@@ -100,11 +106,15 @@
   background-repeat: no-repeat;
   background-size: 200% 100%;
   background-position: -100% 0;
-  animation: shimmer var(--skeleton-shimmer-duration)
-    cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  animation-name: skeleton-shimmer;
+  animation-duration: var(--skeleton-shimmer-duration);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: background-position;
 }
 
-@keyframes shimmer {
+@keyframes skeleton-shimmer {
   0% {
     background-position: -100% 0;
   }

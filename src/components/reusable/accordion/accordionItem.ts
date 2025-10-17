@@ -105,46 +105,6 @@ export class AccordionItem extends LitElement {
     this.dispatchEvent(event);
   }
 
-  /**
-   * Generates the number template
-   * @ignore
-   */
-  get numberTemplate() {
-    if (this._showNumber) {
-      return html`<div class="number">${this._index}</div>`;
-    } else {
-      return '';
-    }
-  }
-
-  /**
-   * Generates the icon template
-   * @ignore
-   */
-  get iconTemplate() {
-    if (this.querySelector('[slot="icon"]')) {
-      return html`<div class="icon"><slot name="icon"></slot></div>`;
-    } else {
-      return '';
-    }
-  }
-
-  /**
-   * Generates the subtitle template
-   * @ignore
-   */
-  get subtitleTemplate() {
-    if (this.querySelector('[slot="subtitle"]')) {
-      return html`
-        <div class="kyn-accordion-item-subtitle">
-          <slot name="subtitle"></slot>
-        </div>
-      `;
-    } else {
-      return '';
-    }
-  }
-
   override render() {
     const classes: any = classMap({
       'kyn-accordion-item': true,
@@ -167,14 +127,22 @@ export class AccordionItem extends LitElement {
           @keypress="${(e: KeyboardEvent) => this._handleKeypress(e)}"
           id="kyn-accordion-item-title-${this._index}"
         >
-          ${this.iconTemplate} ${this.numberTemplate}
+          <div class="icon">
+            <slot name="icon"></slot>
+          </div>
+
+          ${this._showNumber
+            ? html` <div class="number">${this._index}</div> `
+            : null}
 
           <div>
             <div class="title">
               <slot name="title"></slot>
             </div>
 
-            ${this.subtitleTemplate}
+            <div class="kyn-accordion-item-subtitle">
+              <slot name="subtitle"></slot>
+            </div>
           </div>
 
           <div class="right">
