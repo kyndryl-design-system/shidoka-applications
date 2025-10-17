@@ -35,10 +35,14 @@ const args = {
   readonly: false,
   invalidText: '',
   hideLabel: false,
-  minLength: undefined,
-  maxLength: undefined,
-  rows: undefined,
+  aiConnected: false,
+  minLength: null,
+  maxLength: null,
+  rows: null,
   autoComplete: 'off',
+  notResizeable: false,
+  maxRowsVisible: null,
+  hideBorder: false,
   textStrings: {
     requiredText: 'Required',
     errorText: 'Error',
@@ -62,6 +66,7 @@ const Template = (args) => {
       rows=${args.rows}
       ?hideLabel=${args.hideLabel}
       ?aiConnected=${args.aiConnected}
+      ?hideBorder=${args.hideBorder}
       ?notResizeable=${args.notResizeable}
       maxRowsVisible=${args.maxRowsVisible}
       autoComplete=${args.autoComplete}

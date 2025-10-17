@@ -1,0 +1,132 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/form-input.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
+
+:host {
+  display: block;
+  --ai-radial-strength: 20%;
+  --ai-radial-outer: 75%;
+  --ai-right-strength: 15%;
+  --ai-right-spread: 55%;
+}
+
+.container {
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  align-items: center;
+  border-radius: 8px;
+  background-color: var(--kd-color-background-container-ai-level-2);
+  border: 1px solid transparent;
+  box-shadow: none;
+  width: 100%;
+}
+
+:host([floating]) .container {
+  border-color: transparent;
+  box-shadow: var(--kd-elevation-level-3-ai);
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.textarea-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  border-radius: 8px;
+  background: var(--kd-color-background-forms-default);
+  border: 1px solid var(--kd-color-border-ui-default);
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+    outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  cursor: text;
+}
+
+.textarea-wrap ::slotted(kyn-text-area) {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  --kyn-text-area-border-color: transparent;
+  --kyn-text-area-background: transparent;
+  --kyn-text-area-box-shadow: none;
+  --kyn-text-area-padding-inline: 0;
+  padding: 8px 10px;
+}
+
+/* focus */
+:host(:focus-within) .textarea-wrap {
+  border: 2px solid var(--kd-color-border-variants-focus);
+}
+
+:host([data-modality='pointer']:focus-within) .textarea-wrap {
+  border: 1px solid var(--kd-color-border-ui-default);
+}
+
+/* hover gradient */
+.textarea-wrap:hover {
+  @include gradient.border-gradient-ai(
+    $gradient: gradient.$ai-gradient-default,
+    $radius: 8px,
+    $width: 1px,
+    $surface: var(--kd-color-background-container-ai-level-2)
+  );
+}
+
+:host([data-active]) .textarea-wrap:hover {
+  background: var(--kd-color-background-forms-pressed);
+  border: 1px solid var(--kd-color-border-variants-focus);
+}
+
+/* pressed */
+:host([data-active]) .textarea-wrap {
+  background: var(--kd-color-background-forms-pressed);
+  border: 1px solid var(--kd-color-border-variants-focus);
+  outline: 2px solid transparent;
+}
+
+/* footer wrapper (in shadowDOM) */
+.footer-content {
+  display: flex;
+  padding: 6px 8px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-self: stretch;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+/* slotted footer (in lightDOM) */
+:host ::slotted(.footer-content) {
+  display: flex;
+  padding: 6px 8px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-self: stretch;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-content ::slotted(*) {
+  margin: 0;
+}
+
+:host ::slotted(.dropdown-anchor-button) {
+  width: auto;
+  justify-content: space-between;
+}
