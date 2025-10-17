@@ -65,8 +65,11 @@ const DATE_FORMAT_OPTIONS = {
   'd-m-Y H:i': 'dd-mm-yyyy —— : ——',
   'd-m-Y h:i K': 'dd-mm-yyyy —— : ——',
   'Y-m-d H:i:s': 'yyyy-mm-dd —— : —— ——',
+  'Y-m-d H:i:S': 'yyyy-mm-dd —— : —— ——',
   'm-d-Y H:i:s': 'mm-dd-yyyy —— : —— ——',
+  'm-d-Y H:i:S': 'mm-dd-yyyy —— : —— ——',
   'd-m-Y H:i:s': 'dd-mm-yyyy —— : —— ——',
+  'd-m-Y H:i:S': 'dd-mm-yyyy —— : —— ——',
 } as const;
 
 type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
@@ -422,7 +425,7 @@ export async function getFlatpickrOptions(
     enableTime: mode === 'time' ? true : enableTime,
     noCalendar: mode === 'time' ? true : noCalendar,
     defaultDate: defaultDate,
-    enableSeconds: false,
+    enableSeconds: effectiveDateFormat.toLowerCase().includes(':s'),
     allowInput: allowInput || false,
     clickOpens: true,
     time_24hr:
@@ -550,7 +553,10 @@ export async function getFlatpickrOptions(
 }
 
 export function updateEnableTime(dateFormat: string): boolean {
-  return dateFormat.includes('H:') || dateFormat.includes('h:');
+  const df = dateFormat || '';
+  return (
+    df.includes('H:') || df.includes('h:') || df.toLowerCase().includes(':s')
+  );
 }
 
 export function setCalendarAttributes(

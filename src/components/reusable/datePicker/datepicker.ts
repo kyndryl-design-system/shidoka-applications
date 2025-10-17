@@ -744,12 +744,16 @@ export class DatePicker extends FormMixin(LitElement) {
       }
     }
 
-    const dtMatch = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})$/.exec(
-      dateStr
-    );
+    const dtMatch =
+      /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/.exec(dateStr);
     if (dtMatch) {
-      const [, y, mo, da, hh, mm] = dtMatch.map(Number);
-      const dt = new Date(y, mo - 1, da, hh, mm);
+      const y = Number(dtMatch[1]);
+      const mo = Number(dtMatch[2]);
+      const da = Number(dtMatch[3]);
+      const hh = Number(dtMatch[4]);
+      const mm = Number(dtMatch[5]);
+      const ss = dtMatch[6] !== undefined ? Number(dtMatch[6]) : 0;
+      const dt = new Date(y, mo - 1, da, hh, mm, ss);
       return isNaN(dt.getTime()) ? null : dt;
     }
 
