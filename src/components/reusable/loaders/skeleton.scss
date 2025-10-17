@@ -5,8 +5,11 @@
   --skeleton-base-height: 16px;
   --skeleton-border-radius: 4px;
   --skeleton-background: var(--kd-color-background-loader-skeleton-default);
-  --skeleton-shimmer-duration: 0.6s;
+  --skeleton-shimmer-duration: 1.5s;
+
+  /* default shimmer color */
   --_shimmer-color: var(--kd-color-background-loader-skeleton-tertiary);
+
   display: block;
   width: 100%;
 }
@@ -28,11 +31,11 @@
 .skeleton {
   width: var(--skeleton-base-width);
   height: var(--skeleton-base-height);
+
   position: relative;
   overflow: hidden;
   background: var(--skeleton-background);
   border-radius: var(--skeleton-border-radius);
-  isolation: isolate;
 
   &::after {
     content: '';
@@ -40,6 +43,7 @@
     inset: 0;
     pointer-events: none;
     z-index: 1;
+
     background-image: linear-gradient(
       90deg,
       transparent 0%,
@@ -50,13 +54,18 @@
     background-repeat: no-repeat;
     background-size: 200% 100%;
     background-position: -100% 0;
-    animation: shimmer var(--skeleton-shimmer-duration) linear infinite;
+
+    animation-name: skeleton-shimmer;
+    animation-duration: var(--skeleton-shimmer-duration);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    will-change: background-position;
   }
 
   &.rectangle {
     border-radius: var(--skeleton-border-radius);
   }
-
   &.circle {
     border-radius: 50%;
     aspect-ratio: 1;
@@ -66,18 +75,17 @@
     width: 32px;
     height: 32px;
   }
-
   &.size-medium {
     width: 64px;
     height: 64px;
   }
-
   &.size-large {
     width: 128px;
     height: 128px;
   }
 }
 
+/* AI variant */
 .skeleton.ai-connected {
   background: linear-gradient(
     90deg,
@@ -87,41 +95,30 @@
 }
 
 .skeleton.ai-connected::after {
-  background: #fff;
-  background-image: none;
+  --_ai-band: color-mix(in oklab, gray 55%, transparent);
   mix-blend-mode: screen;
-  opacity: 0.18;
-  -webkit-mask-image: linear-gradient(
+  background-image: linear-gradient(
     90deg,
-    transparent 0 15%,
-    black 15% 30%,
-    transparent 30% 45%
+    transparent 0%,
+    var(--_ai-band) 15%,
+    transparent 30%
   );
-  mask-image: linear-gradient(
-    90deg,
-    transparent 0 15%,
-    black 15% 30%,
-    transparent 30% 45%
-  );
-  -webkit-mask-size: 200% 100%;
-  mask-size: 200% 100%;
-  -webkit-mask-position: -100% 0;
-  mask-position: -100% 0;
+  background-repeat: no-repeat;
   background-size: 200% 100%;
   background-position: -100% 0;
-  will-change: -webkit-mask-position, mask-position, background-position;
-  animation: shimmer var(--skeleton-shimmer-duration) linear infinite;
+  animation-name: skeleton-shimmer;
+  animation-duration: var(--skeleton-shimmer-duration);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: background-position;
 }
 
-@keyframes shimmer {
+@keyframes skeleton-shimmer {
   0% {
     background-position: -100% 0;
-    -webkit-mask-position: -100% 0;
-    mask-position: -100% 0;
   }
   100% {
     background-position: 100% 0;
-    -webkit-mask-position: 100% 0;
-    mask-position: 100% 0;
   }
 }
