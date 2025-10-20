@@ -58,7 +58,12 @@ const _defaultTextStrings = {
 
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
- * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dateString: string,dates:[],source:string}`
+ * @fires on-change - Emitted when the selected date range changes. Event.detail has the shape:
+ *   { dates: string[] | (Date | null)[] | null, dateString?: string, source?: string }
+ *   - dates: array of ISO strings for selected dates (length 1 or 2), or an array containing Date/null values,
+ *            or null/empty when cleared.
+ *   - dateString: the display string from the input (may be empty when cleared)
+ *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.

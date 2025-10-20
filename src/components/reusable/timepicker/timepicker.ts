@@ -51,7 +51,10 @@ const _defaultTextStrings = {
 
 /**
  * Timepicker: uses Flatpickr library,time picker implementation  -- `https://flatpickr.js.org/examples/#time-picker`
- * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ origEvent: Event, value: string }`
+ * @fires on-change - Emitted when the selected time changes. Event.detail has the shape:
+ *   { time: string | null, source?: string }
+ *   - time: formatted time string when a time is selected, or null when cleared.
+ *   - source: 'clear' when the value was cleared; otherwise undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.

@@ -52,7 +52,12 @@ const _defaultTextStrings = {
 
 /**
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
- * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dateString: string, dates: date, source: string }`
+ * @fires on-change - Emitted when the selected date(s) change. Event.detail has the shape:
+ *   { dates: string | string[] | null | [], dateString?: string, source?: string }
+ *   - dates: ISO string for single selection, or array of ISO strings for multiple selections.
+ *            An empty array or null indicates the value was cleared.
+ *   - dateString: the display string from the input (may be empty when cleared)
+ *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
