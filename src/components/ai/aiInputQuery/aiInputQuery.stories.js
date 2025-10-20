@@ -1,7 +1,11 @@
 import { html } from 'lit';
 import { action } from 'storybook/actions';
-import '../../components/reusable/textArea';
-import '../../components/reusable/button';
+import '../../reusable/textArea';
+import '../../reusable/button';
+import '../../reusable/dropdown';
+import '../../reusable/tag';
+import './index';
+
 import sendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/send.svg';
 import stopIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/control-stop-filled.svg';
 import analyticsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/analytics.svg';
@@ -11,12 +15,9 @@ import flowDataIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import plusIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import '../../components/reusable/notification';
-import '../../components/reusable/dropdown';
-import '../../components/reusable/tag';
 
 export default {
-  title: 'AI/Patterns/Input Query',
+  title: 'AI/Components/ AI Input Query',
   parameters: {
     design: {
       type: 'figma',
@@ -26,21 +27,12 @@ export default {
 };
 
 export const Default = {
-  args: {
-    floating: false,
-  },
+  args: { floating: false },
   render: (args) => {
     return html`
-      <form
-        class="ai-input-query ${args.floating ? 'floating' : ''}"
-        @submit=${(e) => {
-          e.preventDefault();
-          action('submit')(e);
-          const formData = new FormData(e.target);
-          console.log(...formData);
-        }}
-      >
+      <kyn-ai-input-query ?floating=${args.floating}>
         <kyn-text-area
+          slot="textarea"
           name="ai-query"
           rows="2"
           placeholder="Type your message..."
@@ -48,35 +40,32 @@ export const Default = {
           label="AI Prompt Query"
           hideLabel
           aiConnected
+          hideBorder
           notResizeable
+          @on-input=${(e) => action('on-input')(e.detail)}
         ></kyn-text-area>
 
-        <kyn-button type="submit" kind="primary-ai" description="Submit">
+        <kyn-button
+          slot="action"
+          type="submit"
+          kind="primary-ai"
+          description="Submit"
+          @click=${action('submit')}
+        >
           <span slot="icon">${unsafeSVG(sendIcon)}</span>
         </kyn-button>
-      </form>
-
-      ${sharedStyles}
+      </kyn-ai-input-query>
     `;
   },
 };
 
 export const Thinking = {
-  args: {
-    floating: false,
-  },
+  args: { floating: false },
   render: (args) => {
     return html`
-      <form
-        class="ai-input-query ${args.floating ? 'floating' : ''}"
-        @submit=${(e) => {
-          e.preventDefault();
-          action('submit')(e);
-          const formData = new FormData(e.target);
-          console.log(...formData);
-        }}
-      >
+      <kyn-ai-input-query ?floating=${args.floating}>
         <kyn-text-area
+          slot="textarea"
           name="ai-query"
           rows="2"
           placeholder="Type your message..."
@@ -84,15 +73,21 @@ export const Thinking = {
           label="AI Prompt Query"
           hideLabel
           aiConnected
+          hideBorder
           notResizeable
+          @on-input=${(e) => action('on-input')(e.detail)}
         ></kyn-text-area>
 
-        <kyn-button type="submit" kind="primary-ai" description="Submit">
+        <kyn-button
+          slot="action"
+          type="button"
+          kind="primary-ai"
+          description="Stop"
+          @click=${action('stop')}
+        >
           <span slot="icon">${unsafeSVG(stopIcon)}</span>
         </kyn-button>
-      </form>
-
-      ${sharedStyles}
+      </kyn-ai-input-query>
     `;
   },
 };
@@ -105,45 +100,35 @@ export const Footer = {
     firstDropDownIcon: databaseIcon,
     secondDropDownIcon: customerEngagementIcon,
   },
-  parameters: {
-    controls: { include: ['floating'] },
-  },
+  parameters: { controls: { include: ['floating'] } },
   render: (args) => {
     return html`
-      <form
-        class="ai-input-query query-footer ${args.floating ? 'floating' : ''}"
-        @submit=${(e) => {
-          e.preventDefault();
-          action('submit')(e);
-          const formData = new FormData(e.target);
-          console.log(...formData);
-        }}
-      >
-        <div class="message-content">
-          <kyn-text-area
-            name="ai-query"
-            rows="2"
-            placeholder="Type your message..."
-            maxRowsVisible="3"
-            label="AI Prompt Query"
-            hideLabel
-            aiConnected
-            notResizeable
-          ></kyn-text-area>
+      <kyn-ai-input-query ?floating=${args.floating}>
+        <kyn-text-area
+          slot="textarea"
+          name="ai-query"
+          rows="2"
+          placeholder="Type your message..."
+          maxRowsVisible="3"
+          label="AI Prompt Query"
+          hideLabel
+          aiConnected
+          hideBorder
+          notResizeable
+          @on-input=${(e) => action('on-input')(e.detail)}
+        ></kyn-text-area>
 
-          <kyn-button type="submit" kind="primary-ai" description="Submit">
-            <span slot="icon">${unsafeSVG(sendIcon)}</span>
-          </kyn-button>
-        </div>
-        <div class="footer-content">
+        <div slot="footer" class="footer-content">
           <input
             id="ai-file-input"
             type="file"
             name="ai-attachments"
-            style="display: none;"
+            style="display:none;"
             @change=${(e) => action('files-selected')(e)}
           />
+
           <kyn-button
+            type="button"
             kind="tertiary"
             size="small"
             iconPosition="right"
@@ -152,15 +137,17 @@ export const Footer = {
           >
             <span slot="icon">${unsafeSVG(plusIcon)}</span>
           </kyn-button>
+
           <kyn-dropdown
             ?hideLabel=${true}
-            value=${args.firstDropDownValue}
+            .value=${args.firstDropDownValue}
             kind="ai"
             menuMinWidth="280px"
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
               slot="anchor"
+              type="button"
               class="dropdown-anchor-button"
               kind="tertiary"
               size="small"
@@ -175,16 +162,19 @@ export const Footer = {
                   <span>${args.firstDropDownValue}</span>
                 </div>
                 <span
-                  style="display:inline-flex;align-items:center;height:100%; margin-left:8px;"
-                  >${unsafeSVG(downIcon)}</span
+                  style="display:inline-flex;align-items:center;height:100%;margin-left:8px;"
                 >
+                  ${unsafeSVG(downIcon)}
+                </span>
               </div>
             </kyn-button>
+
             <kyn-enhanced-dropdown-option value="Option 1">
               <span slot="icon">${unsafeSVG(databaseIcon)}</span>
               <span slot="title">Option 1</span>
               <span slot="description">Description for the Option 1</span>
             </kyn-enhanced-dropdown-option>
+
             <kyn-enhanced-dropdown-option value="Option 2">
               <span slot="icon">${unsafeSVG(analyticsIcon)}</span>
               <span slot="title">Option 2</span>
@@ -197,15 +187,17 @@ export const Footer = {
               <span slot="description">Description for the Option 2</span>
             </kyn-enhanced-dropdown-option>
           </kyn-dropdown>
+
           <kyn-dropdown
             ?hideLabel=${true}
-            value=${args.secondDropDownValue}
+            .value=${args.secondDropDownValue}
             kind="ai"
             menuMinWidth="280px"
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
               slot="anchor"
+              type="button"
               class="dropdown-anchor-button"
               kind="tertiary"
               size="small"
@@ -220,16 +212,19 @@ export const Footer = {
                   <span>${args.secondDropDownValue}</span>
                 </div>
                 <span
-                  style="display:inline-flex;align-items:center;height:100%; margin-left:8px;"
-                  >${unsafeSVG(downIcon)}</span
+                  style="display:inline-flex;align-items:center;height:100%;margin-left:8px;"
                 >
+                  ${unsafeSVG(downIcon)}
+                </span>
               </div>
             </kyn-button>
+
             <kyn-enhanced-dropdown-option value="Option 1">
               <span slot="icon">${unsafeSVG(flowDataIcon)}</span>
               <span slot="title">Option 1</span>
               <span slot="description">Description for the Option 1</span>
             </kyn-enhanced-dropdown-option>
+
             <kyn-enhanced-dropdown-option value="Option 2">
               <span slot="icon">${unsafeSVG(customerEngagementIcon)}</span>
               <span slot="title">Option 2</span>
@@ -243,56 +238,17 @@ export const Footer = {
             </kyn-enhanced-dropdown-option>
           </kyn-dropdown>
         </div>
-      </form>
 
-      ${sharedStyles}
-      <style>
-        .query-footer {
-          margin-top: auto;
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-        }
-        .message-content {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-        }
-        .footer-content {
-          display: flex;
-          padding: 0 2px;
-          flex-direction: row;
-          align-items: flex-start;
-          gap: 10px;
-          flex-wrap: wrap;
-          align-self: stretch;
-        }
-      </style>
+        <kyn-button
+          slot="action"
+          type="submit"
+          kind="primary-ai"
+          description="Submit"
+          @click=${action('submit')}
+        >
+          <span slot="icon">${unsafeSVG(sendIcon)}</span>
+        </kyn-button>
+      </kyn-ai-input-query>
     `;
   },
 };
-
-const sharedStyles = html`
-  <style>
-    .ai-input-query {
-      margin-top: auto;
-      display: flex;
-      gap: 10px;
-      padding: 10px;
-      align-items: center;
-      border-radius: 8px;
-      background-color: var(--kd-color-background-container-ai-level-2);
-      border: 1px solid transparent;
-      box-shadow: none;
-    }
-
-    .ai-input-query.floating {
-      border-color: transparent;
-      box-shadow: var(--kd-elevation-level-3-ai);
-    }
-
-    .ai-input-query kyn-text-area {
-      flex-grow: 1;
-    }
-  </style>
-`;
