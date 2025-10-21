@@ -32,6 +32,21 @@ export const Footer = {
   },
   render: (args) => html`
     <kyn-footer rootUrl=${args.rootUrl} logoAriaLabel=${args.logoAriaLabel}>
+      <span slot="copyright">
+        Copyright &copy; ${new Date().getFullYear()} Kyndryl Inc. All rights
+        reserved.
+      </span>
+    </kyn-footer>
+  `,
+};
+
+export const WithLinks = {
+  args: {
+    rootUrl: '/',
+    logoAriaLabel: 'Go to Homepage',
+  },
+  render: (args) => html`
+    <kyn-footer rootUrl=${args.rootUrl} logoAriaLabel=${args.logoAriaLabel}>
       <kyn-link href="javascript:void(0);" standalone="">Link 1</kyn-link>
       <kyn-link href="javascript:void(0);" standalone="">Link 2</kyn-link>
       <kyn-link href="javascript:void(0);" standalone="">Link 3</kyn-link>

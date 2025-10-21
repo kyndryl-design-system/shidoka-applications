@@ -1,12 +1,14 @@
 @use '../../../common/scss/global.scss';
 @use './header-interactive.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '../../../../node_modules/@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: block;
 }
 
 .header {
+  @include elevation.shadow(1);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -20,6 +22,8 @@
   padding: 4px calc(var(--kd-page-gutter) - 4px) 4px var(--kd-page-gutter);
   transition: z-index 150ms ease-out;
   z-index: var(--kd-z-header);
+  margin: 8px 8px 0;
+  border-radius: 8px;
 
   &.child-open {
     z-index: calc(var(--kd-z-header) + 20);
@@ -31,6 +35,10 @@
 
   &.left-slotted {
     padding-left: 12px;
+
+    @media (min-width: 42rem) {
+      padding-left: 20px;
+    }
   }
 
   &__right {
