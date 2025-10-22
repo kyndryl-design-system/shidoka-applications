@@ -52,7 +52,12 @@ const _defaultTextStrings = {
 
 /**
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
- * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dataString: string, dates: date, source: string }`
+ * @fires on-change - Emitted when the selected date(s) change. Event.detail has the shape:
+ *   { dates: string | string[] | null | [], dateString?: string, source?: string }
+ *   - dates: ISO string for single selection, or array of ISO strings for multiple selections.
+ *            An empty array or null indicates the value was cleared.
+ *   - dateString: the display string from the input (may be empty when cleared)
+ *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
@@ -148,6 +153,10 @@ export class DatePicker extends FormMixin(LitElement) {
   /** Sets upper boundary of datepicker date selection. */
   @property({ type: String })
   accessor maxDate: string | number | Date = '';
+
+  /** Allows manual input of date/time string that matches dateFormat when true. */
+  @property({ type: Boolean })
+  accessor allowManualInput = false;
 
   /** Sets aria label attribute for error message. */
   @property({ type: String })
@@ -599,6 +608,18 @@ export class DatePicker extends FormMixin(LitElement) {
     ) {
       this.flatpickrInstance?.close();
     }
+
+    if (changedProperties.has('allowManualInput')) {
+      this.syncAllowInput();
+    }
+  }
+
+  private syncAllowInput(): void {
+    if (!this.flatpickrInstance) return;
+    this.flatpickrInstance.set('allowInput', this.allowManualInput);
+    if (!this.readonly) {
+      this._inputEl.readOnly = !this.allowManualInput;
+    }
   }
 
   private async setupAnchor() {
@@ -728,12 +749,16 @@ export class DatePicker extends FormMixin(LitElement) {
       }
     }
 
-    const dtMatch = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})$/.exec(
-      dateStr
-    );
+    const dtMatch =
+      /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/.exec(dateStr);
     if (dtMatch) {
-      const [, y, mo, da, hh, mm] = dtMatch.map(Number);
-      const dt = new Date(y, mo - 1, da, hh, mm);
+      const y = Number(dtMatch[1]);
+      const mo = Number(dtMatch[2]);
+      const da = Number(dtMatch[3]);
+      const hh = Number(dtMatch[4]);
+      const mm = Number(dtMatch[5]);
+      const ss = dtMatch[6] !== undefined ? Number(dtMatch[6]) : 0;
+      const dt = new Date(y, mo - 1, da, hh, mm, ss);
       return isNaN(dt.getTime()) ? null : dt;
     }
 
@@ -825,6 +850,7 @@ export class DatePicker extends FormMixin(LitElement) {
       enable: this.enable,
       disable: this._processedDisableDates,
       mode: this.mode,
+      allowInput: this.allowManualInput,
       closeOnSelect: !(this.mode === 'multiple' || this._enableTime),
       loadLocale,
       onOpen: this.handleOpen.bind(this),

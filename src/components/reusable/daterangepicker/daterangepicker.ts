@@ -58,7 +58,12 @@ const _defaultTextStrings = {
 
 /**
  * Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`
- * @fires on-change - Captures the input event and emits the selected value and original event details. `detail:{ dataString: string,dates:[],source:string}`
+ * @fires on-change - Emitted when the selected date range changes. Event.detail has the shape:
+ *   { dates: string[] | (Date | null)[] | null, dateString?: string, source?: string }
+ *   - dates: array of ISO strings for selected dates (length 1 or 2), or an array containing Date/null values,
+ *            or null/empty when cleared.
+ *   - dateString: the display string from the input (may be empty when cleared)
+ *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
@@ -156,6 +161,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   /** Sets lower boundary of date range picker date selection. */
   @property({ type: String })
   accessor minDate: string | number | Date = '';
+
+  /** Allows manual input of date/time string that matches dateFormat when true. */
+  @property({ type: Boolean })
+  accessor allowManualInput = false;
 
   /** Sets upper boundary of date range picker date selection. */
   @property({ type: String })
@@ -873,6 +882,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._enableTime = updateEnableTime(this.dateFormat);
       this.updateFlatpickrOptions();
     }
+
+    if (changedProperties.has('allowManualInput')) {
+      this.syncAllowInput();
+    }
+  }
+
+  private syncAllowInput(): void {
+    if (!this.flatpickrInstance) return;
+    this.flatpickrInstance.set('allowInput', this.allowManualInput);
+    if (!this.readonly) {
+      this._inputEl.readOnly = !this.allowManualInput;
+    }
   }
 
   private async setupAnchor() {
@@ -1027,6 +1048,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       disable: this._processedDisableDates,
       mode: 'range',
       closeOnSelect: false,
+      allowInput: this.allowManualInput,
       loadLocale,
       onOpen: this.handleOpen.bind(this),
       onClose: this.handleClose.bind(this),
