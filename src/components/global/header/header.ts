@@ -3,10 +3,12 @@ import {
   customElement,
   property,
   state,
+  query,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss?inline';
 import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
 
@@ -61,6 +63,9 @@ export class Header extends LitElement {
   @state()
   accessor _flyoutsOpen = false;
 
+  @query('header')
+  accessor _headerEl!: HTMLElement;
+
   override render() {
     const classes = {
       header: true,
@@ -113,6 +118,15 @@ export class Header extends LitElement {
     this._flyoutsOpen = e.detail.open;
   }
 
+  /** @internal */
+  private _debounceScroll = debounce(() => {
+    if (window.scrollY > 0) {
+      this._headerEl.classList.add('scrolled');
+    } else {
+      this._headerEl.classList.remove('scrolled');
+    }
+  });
+
   override connectedCallback() {
     super.connectedCallback();
 
@@ -122,6 +136,8 @@ export class Header extends LitElement {
     document.addEventListener('on-flyouts-toggle', (e: Event) =>
       this._handleFlyoutsToggle(e)
     );
+
+    window.addEventListener('scroll', this._debounceScroll);
   }
 
   override disconnectedCallback() {
@@ -131,6 +147,8 @@ export class Header extends LitElement {
     document.removeEventListener('on-flyouts-toggle', (e: Event) =>
       this._handleFlyoutsToggle(e)
     );
+
+    window.removeEventListener('scroll', this._debounceScroll);
 
     super.disconnectedCallback();
   }
