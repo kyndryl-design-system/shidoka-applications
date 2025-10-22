@@ -118,14 +118,28 @@ export class Header extends LitElement {
     this._flyoutsOpen = e.detail.open;
   }
 
-  /** @internal */
-  private _debounceScroll = debounce(() => {
+  /** Morph header on scroll.
+   * @internal */
+  private _handleScroll() {
     if (window.scrollY > 0) {
       this._headerEl.classList.add('scrolled');
     } else {
       this._headerEl.classList.remove('scrolled');
     }
+  }
+
+  /** @internal */
+  private _debounceScroll = debounce(() => {
+    this._handleScroll();
   });
+
+  override firstUpdated() {
+    this._handleScroll();
+
+    setTimeout(() => {
+      this._headerEl.classList.add('loaded');
+    }, 0);
+  }
 
   override connectedCallback() {
     super.connectedCallback();
