@@ -19,13 +19,13 @@ nav {
   left: 0;
   padding: 8px;
   width: 100%;
-  background-color: var(--kd-color-background-menu-state-default);
+  background-color: var(--kd-color-background-container-default);
   overflow: hidden;
 
   @media (min-width: 42rem) {
     position: fixed;
     z-index: var(--kd-z-local-nav);
-    top: calc(var(--kd-header-height) + 8px);
+    top: calc(var(--kd-header-height) + 8px + 8px);
     left: 8px;
     // height: 100%;
     bottom: 8px;
@@ -37,8 +37,6 @@ nav {
     &.pinned {
       box-shadow: none;
     }
-
-    // @include elevation.shadow(2);
   }
 
   &.nav--expanded-mobile {
@@ -52,12 +50,13 @@ nav {
   }
 
   @include typography.type-ui-02;
+  @include elevation.shadow(1);
 }
 
 @media (min-width: 42rem) {
   .overlay {
     position: fixed;
-    top: var(--kd-header-height);
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;

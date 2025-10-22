@@ -34,7 +34,7 @@ export const SideDrawer = {
             align-items: center;
             gap: 16px;
             background: var(--kd-color-background-container-default);
-            border-radius: 4px;
+            border-radius: 8px;
             padding: 16px;
 
             & .right {
@@ -48,7 +48,7 @@ export const SideDrawer = {
       </style>
 
       <div class="search-action-bar">
-        <div class="bar">
+        <div class="bar kd-elevation--level-1">
           <kyn-search size="sm"></kyn-search>
 
           <kyn-side-drawer
@@ -171,7 +171,7 @@ export const Inline = {
       </style>
 
       <div class="search-action-bar-inline">
-        <div class="bar">
+        <div class="bar kd-elevation--level-1">
           <kyn-search size="sm"></kyn-search>
 
           <kyn-dropdown
