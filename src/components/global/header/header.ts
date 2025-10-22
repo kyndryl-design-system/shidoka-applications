@@ -63,6 +63,13 @@ export class Header extends LitElement {
   @state()
   accessor _flyoutsOpen = false;
 
+  /** header-flyout open state
+   * @internal
+   */
+  @state()
+  accessor _flyoutOpen = false;
+
+  /** @internal */
   @query('header')
   accessor _headerEl!: HTMLElement;
 
@@ -70,7 +77,7 @@ export class Header extends LitElement {
     const classes = {
       header: true,
       'left-slotted': this.leftEls.length,
-      'child-open': this._navOpen || this._flyoutsOpen,
+      'child-open': this._navOpen || this._flyoutsOpen || this._flyoutOpen,
     };
 
     return html`
@@ -96,6 +103,8 @@ export class Header extends LitElement {
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
       </header>
+
+      <div class="overlay"></div>
     `;
   }
 
@@ -116,6 +125,18 @@ export class Header extends LitElement {
 
   private _handleFlyoutsToggle(e: any) {
     this._flyoutsOpen = e.detail.open;
+  }
+
+  private _handleFlyoutToggle(e: any) {
+    // this._flyoutOpen = e.detail.open;
+    const flyouts = this.querySelectorAll('kyn-header-flyout');
+    let open = false;
+    flyouts.forEach((flyout) => {
+      if (flyout.open) {
+        open = true;
+      }
+    });
+    this._flyoutOpen = open;
   }
 
   /** Morph header on scroll.
@@ -150,6 +171,9 @@ export class Header extends LitElement {
     document.addEventListener('on-flyouts-toggle', (e: Event) =>
       this._handleFlyoutsToggle(e)
     );
+    document.addEventListener('on-flyout-toggle', (e: Event) =>
+      this._handleFlyoutToggle(e)
+    );
 
     window.addEventListener('scroll', this._debounceScroll);
   }
@@ -160,6 +184,9 @@ export class Header extends LitElement {
     );
     document.removeEventListener('on-flyouts-toggle', (e: Event) =>
       this._handleFlyoutsToggle(e)
+    );
+    document.removeEventListener('on-flyout-toggle', (e: Event) =>
+      this._handleFlyoutToggle(e)
     );
 
     window.removeEventListener('scroll', this._debounceScroll);

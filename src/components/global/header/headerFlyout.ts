@@ -20,7 +20,7 @@ export class HeaderFlyout extends LitElement {
   static override styles = unsafeCSS(HeaderFlyoutScss);
 
   /** Flyout open state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor open = false;
 
   /** Anchor flyout menu to the left edge of the button instead of the right edge. */
@@ -143,7 +143,6 @@ export class HeaderFlyout extends LitElement {
           <slot></slot>
         </div>
       </div>
-      <div class="overlay" @click=${this._handleOverlayClick}></div>
     `;
   }
 
@@ -161,8 +160,15 @@ export class HeaderFlyout extends LitElement {
     }
   }
 
-  private _handleOverlayClick() {
-    this.open = false;
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('open')) {
+      const event = new CustomEvent('on-flyout-toggle', {
+        composed: true,
+        bubbles: true,
+        detail: { open: this.open },
+      });
+      this.dispatchEvent(event);
+    }
   }
 
   override connectedCallback() {

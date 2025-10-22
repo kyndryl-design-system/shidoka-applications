@@ -37,17 +37,22 @@
 @media (min-width: 42rem) {
   .overlay {
     position: fixed;
-    top: var(--kd-header-height);
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: -2;
+    z-index: calc(var(--kd-z-header) - 1);
     transition: background-color 300ms ease-out, visibility 300ms ease-out;
     background: transparent;
     visibility: hidden;
 
-    .open + & {
-      background: var(--kd-color-background-opacity-8);
+    &.scrolled {
+      top: var(--kd-header-height);
+    }
+
+    .open + &,
+    .child-open + & {
+      background: var(--kd-color-background-opacity-inverse-backdrop);
       visibility: visible;
     }
   }
