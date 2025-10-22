@@ -4,6 +4,105 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AI Assistant Launch Button.",
+          "name": "AILaunchButton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_initAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the button is clicked.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-launch-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-launch-btn",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "./aiLaunchButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
       "declarations": [
         {
@@ -328,105 +427,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AI Assistant Launch Button.",
-          "name": "AILaunchButton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_initAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_startHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_stopHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitClick",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the button is clicked.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-launch-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-launch-btn",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "./aiLaunchButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -596,13 +596,6 @@
               "default": "''",
               "description": "App title text next to logo.  Hidden on smaller screens.",
               "attribute": "appTitle"
-            },
-            {
-              "kind": "field",
-              "name": "_headerEl",
-              "type": {
-                "text": "HTMLElement"
-              }
             },
             {
               "kind": "method",
@@ -856,7 +849,8 @@
               },
               "default": "false",
               "description": "Flyout open state.",
-              "attribute": "open"
+              "attribute": "open",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -915,7 +909,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
               "attribute": "assistiveText"
             },
             {
@@ -960,11 +954,6 @@
                   }
                 }
               ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverlayClick",
-              "privacy": "private"
             }
           ],
           "attributes": [
@@ -1028,7 +1017,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
+              "description": "DEPRECATED. Use `label` instead.\nButton assistive text, title + aria-label.",
               "fieldName": "assistiveText"
             },
             {
@@ -1118,6 +1107,16 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFlyoutToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitFlyoutsToggle",
+              "privacy": "private"
             }
           ],
           "attributes": [
@@ -1548,11 +1547,6 @@
                   }
                 }
               ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleOverlayClick",
-              "privacy": "private"
             }
           ],
           "attributes": [
@@ -2640,6 +2634,85 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/avatar/avatar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "User avatar.",
+          "name": "Avatar",
+          "slots": [
+            {
+              "description": "Slot for the profile picture img.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "initials",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "attribute": "initials"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "initials",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "fieldName": "initials"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-avatar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/avatar/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "./avatar"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/accordion/accordion.ts",
       "declarations": [
         {
@@ -3052,85 +3125,6 @@
           "declaration": {
             "name": "AccordionItem",
             "module": "./accordionItem"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/avatar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "User avatar.",
-          "name": "Avatar",
-          "slots": [
-            {
-              "description": "Slot for the profile picture img.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "attribute": "initials"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "fieldName": "initials"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-avatar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "./avatar"
           }
         }
       ]
@@ -4620,427 +4614,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/card/card.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Card.",
-          "name": "Card",
-          "cssParts": [
-            {
-              "description": "The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)",
-              "name": "card-wrapper"
-            }
-          ],
-          "slots": [
-            {
-              "description": "Slot for card contents.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for left icon when `variant` is `'notification'`.",
-              "name": "leftIcon"
-            },
-            {
-              "description": "Slot for right icon when `variant` is `'notification'`.",
-              "name": "inlineConfirm"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "CardType"
-              },
-              "default": "'normal'",
-              "description": "Card Type. `'normal'` & `'clickable'`",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "attribute": "rel"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "CardTarget"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "hideBorder",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "attribute": "hideBorder"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI theme toggle",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "highlight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for highlight",
-              "attribute": "highlight"
-            },
-            {
-              "kind": "field",
-              "name": "variant",
-              "type": {
-                "text": "CardVariant"
-              },
-              "default": "'default'",
-              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
-              "attribute": "variant",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "renderNonDefaultVariant",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "baseClasses",
-                  "type": {
-                    "text": "Record<string, boolean>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "_computedRel",
-              "type": {
-                "text": "string"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "_onClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_onKeydown",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_forwardConfirm",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
-              "name": "on-card-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "type",
-              "type": {
-                "text": "CardType"
-              },
-              "default": "'normal'",
-              "description": "Card Type. `'normal'` & `'clickable'`",
-              "fieldName": "type"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card link url for clickable cards.",
-              "fieldName": "href"
-            },
-            {
-              "name": "rel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
-              "fieldName": "rel"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "CardTarget"
-              },
-              "default": "'_self'",
-              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
-              "fieldName": "target"
-            },
-            {
-              "name": "hideBorder",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
-              "fieldName": "hideBorder"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI theme toggle",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "highlight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for highlight",
-              "fieldName": "highlight"
-            },
-            {
-              "name": "variant",
-              "type": {
-                "text": "CardVariant"
-              },
-              "default": "'default'",
-              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
-              "fieldName": "variant"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-card",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Card",
-          "declaration": {
-            "name": "Card",
-            "module": "src/components/reusable/card/card.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-card",
-          "declaration": {
-            "name": "Card",
-            "module": "src/components/reusable/card/card.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Card",
-          "declaration": {
-            "name": "Card",
-            "module": "./card"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "VitalCardSkeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "./vitalCard.skeleton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "InformationalCardSkeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "./informationalCard.skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/informationalCard.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-info-card-skeleton` Web Component.\r\nA skeleton loading state for the informational card component that mirrors its structure.",
-          "name": "InformationalCardSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "attribute": "lines"
-            },
-            {
-              "kind": "field",
-              "name": "thumbnailVisible",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "false",
-              "description": "Sets show or hide thumbnail element.",
-              "attribute": "thumbnailVisible"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "fieldName": "lines"
-            },
-            {
-              "name": "thumbnailVisible",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "default": "false",
-              "description": "Sets show or hide thumbnail element.",
-              "fieldName": "thumbnailVisible"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-info-card-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InformationalCardSkeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-info-card-skeleton",
-          "declaration": {
-            "name": "InformationalCardSkeleton",
-            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/card/vitalCard.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-vital-card-skeleton` Web Component.\r\nA skeleton loading state for the vital card component that mirrors its structure.",
-          "name": "VitalCardSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "attribute": "lines"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "lines",
-              "type": {
-                "text": "any | undefined"
-              },
-              "default": "0",
-              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
-              "fieldName": "lines"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-vital-card-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VitalCardSkeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-vital-card-skeleton",
-          "declaration": {
-            "name": "VitalCardSkeleton",
-            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/checkbox/checkbox.ts",
       "declarations": [
         {
@@ -5754,6 +5327,427 @@
           "declaration": {
             "name": "CheckboxSubgroup",
             "module": "./checkboxSubgroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/card.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Card.",
+          "name": "Card",
+          "cssParts": [
+            {
+              "description": "The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)",
+              "name": "card-wrapper"
+            }
+          ],
+          "slots": [
+            {
+              "description": "Slot for card contents.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for left icon when `variant` is `'notification'`.",
+              "name": "leftIcon"
+            },
+            {
+              "description": "Slot for right icon when `variant` is `'notification'`.",
+              "name": "inlineConfirm"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "CardType"
+              },
+              "default": "'normal'",
+              "description": "Card Type. `'normal'` & `'clickable'`",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card link url for clickable cards.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
+              "attribute": "rel"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "CardTarget"
+              },
+              "default": "'_self'",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
+              "attribute": "hideBorder"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI theme toggle",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for highlight",
+              "attribute": "highlight"
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
+              "attribute": "variant",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "renderNonDefaultVariant",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "baseClasses",
+                  "type": {
+                    "text": "Record<string, boolean>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_computedRel",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_onClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_forwardConfirm",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event of clickable card and emits the original event details. Use `e.stopPropagation()` / `e.preventDefault()` for any internal clickable elements when card type is `'clickable'` to stop bubbling / prevent event. `detail:{ origEvent: PointerEvent }`",
+              "name": "on-card-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "type": {
+                "text": "CardType"
+              },
+              "default": "'normal'",
+              "description": "Card Type. `'normal'` & `'clickable'`",
+              "fieldName": "type"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card link url for clickable cards.",
+              "fieldName": "href"
+            },
+            {
+              "name": "rel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Use for Card type `'clickable'`. Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship.",
+              "fieldName": "rel"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "CardTarget"
+              },
+              "default": "'_self'",
+              "description": "Defines a target attribute for where to load the URL in case of clickable card. Possible options include `'_self'` (default), `'_blank'`, `'_parent'`, `'_top'`",
+              "fieldName": "target"
+            },
+            {
+              "name": "hideBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide card border. Useful when clickable card use inside `<kyn-notification>` component.",
+              "fieldName": "hideBorder"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI theme toggle",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "highlight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for highlight",
+              "fieldName": "highlight"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "CardVariant"
+              },
+              "default": "'default'",
+              "description": "Card variant. `'default'`, `'notification'`, `'interaction'`\n* `'notification'` variant is used primarily for Info Card\nand contains additional padding, per design specs.\n* `'interaction'` variant is used for AI response",
+              "fieldName": "variant"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-card",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Card",
+          "declaration": {
+            "name": "Card",
+            "module": "src/components/reusable/card/card.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-card",
+          "declaration": {
+            "name": "Card",
+            "module": "src/components/reusable/card/card.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Card",
+          "declaration": {
+            "name": "Card",
+            "module": "./card"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "VitalCardSkeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "./vitalCard.skeleton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "InformationalCardSkeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "./informationalCard.skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/informationalCard.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-info-card-skeleton` Web Component.\r\nA skeleton loading state for the informational card component that mirrors its structure.",
+          "name": "InformationalCardSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "attribute": "lines"
+            },
+            {
+              "kind": "field",
+              "name": "thumbnailVisible",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "description": "Sets show or hide thumbnail element.",
+              "attribute": "thumbnailVisible"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "fieldName": "lines"
+            },
+            {
+              "name": "thumbnailVisible",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "description": "Sets show or hide thumbnail element.",
+              "fieldName": "thumbnailVisible"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-info-card-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InformationalCardSkeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-info-card-skeleton",
+          "declaration": {
+            "name": "InformationalCardSkeleton",
+            "module": "src/components/reusable/card/informationalCard.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/card/vitalCard.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-vital-card-skeleton` Web Component.\r\nA skeleton loading state for the vital card component that mirrors its structure.",
+          "name": "VitalCardSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "attribute": "lines"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lines",
+              "type": {
+                "text": "any | undefined"
+              },
+              "default": "0",
+              "description": "Sets the number of body/description lines to show in the skeleton pattern example.",
+              "fieldName": "lines"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-vital-card-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VitalCardSkeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-vital-card-skeleton",
+          "declaration": {
+            "name": "VitalCardSkeleton",
+            "module": "src/components/reusable/card/vitalCard.skeleton.ts"
           }
         }
       ]
@@ -10207,104 +10201,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "./inlineCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
-          "name": "InlineCodeView",
-          "slots": [
-            {
-              "description": "inline code snippet slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "attribute": "snippetFontSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "fieldName": "snippetFontSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-code-view",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/inlineConfirm/index.ts",
       "declarations": [],
       "exports": [
@@ -10483,6 +10379,104 @@
           "declaration": {
             "name": "InlineConfirm",
             "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "attribute": "snippetFontSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "fieldName": "snippetFontSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -16135,6 +16129,395 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButton",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "./radioButton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "./radioButtonGroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/radioButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Radio button.",
+          "name": "RadioButton",
+          "slots": [
+            {
+              "description": "Slot for label text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Radio button value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button readonly state, inherited from the parent group.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the change event and emits the selected value and original event details.`detail:{ checked: boolean,origEvent: Event,value: string }`",
+              "name": "on-radio-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Radio button value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button disabled state, inherited from the parent group.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button readonly state, inherited from the parent group.",
+              "fieldName": "readonly"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-radio-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButton",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-radio-button",
+          "declaration": {
+            "name": "RadioButton",
+            "module": "src/components/reusable/radioButton/radioButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Radio button group container.",
+          "name": "RadioButtonGroup",
+          "slots": [
+            {
+              "description": "Slot for individual radio buttons.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for description text.",
+              "name": "description"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "attribute": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRadioChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ value: string; checked: boolean }>"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-radio-group-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the change event and emits the selected value.`detail:{ value: string }`"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The selected value of the radio group.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text",
+              "fieldName": "label"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "horizontal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Radio button group horizontal layout.",
+              "fieldName": "horizontal"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-radio-button-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioButtonGroup",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-radio-button-group",
+          "declaration": {
+            "name": "RadioButtonGroup",
+            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/search/index.ts",
       "declarations": [],
       "exports": [
@@ -16575,395 +16958,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "./radioButton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "./radioButtonGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button.",
-          "name": "RadioButton",
-          "slots": [
-            {
-              "description": "Slot for label text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button readonly state, inherited from the parent group.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the change event and emits the selected value and original event details.`detail:{ checked: boolean,origEvent: Event,value: string }`",
-              "name": "on-radio-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Radio button value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button disabled state, inherited from the parent group.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button readonly state, inherited from the parent group.",
-              "fieldName": "readonly"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButton",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button",
-          "declaration": {
-            "name": "RadioButton",
-            "module": "src/components/reusable/radioButton/radioButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/radioButton/radioButtonGroup.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Radio button group container.",
-          "name": "RadioButtonGroup",
-          "slots": [
-            {
-              "description": "Slot for individual radio buttons.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for description text.",
-              "name": "description"
-            },
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "attribute": "horizontal"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  required: 'Required',\n  error: 'Error',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleRadioChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ value: string; checked: boolean }>"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-radio-group-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the change event and emits the selected value.`detail:{ value: string }`"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The selected value of the radio group.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text",
-              "fieldName": "label"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "horizontal",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Radio button group horizontal layout.",
-              "fieldName": "horizontal"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-radio-button-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RadioButtonGroup",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-radio-button-group",
-          "declaration": {
-            "name": "RadioButtonGroup",
-            "module": "src/components/reusable/radioButton/radioButtonGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/sideDrawer/index.ts",
       "declarations": [],
       "exports": [
@@ -17387,6 +17381,517 @@
           "declaration": {
             "name": "SideDrawer",
             "module": "src/components/reusable/sideDrawer/sideDrawer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sliderInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SliderInput",
+          "declaration": {
+            "name": "SliderInput",
+            "module": "./sliderInput"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/sliderInput/sliderInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Slider Input.",
+          "name": "SliderInput",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Slot for left button icon.",
+              "name": "leftBtnIcon"
+            },
+            {
+              "description": "Slot for right button icon.",
+              "name": "rightBtnIcon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Input value."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "The maximum value.",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "The minimum value.",
+              "attribute": "min"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "The step between values.",
+              "attribute": "step"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "enableTickMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tick Marker on slider.",
+              "attribute": "enableTickMarker"
+            },
+            {
+              "kind": "field",
+              "name": "enableScaleMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Scale Marker below slider",
+              "attribute": "enableScaleMarker"
+            },
+            {
+              "kind": "field",
+              "name": "editableInput",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
+              "attribute": "editableInput"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  error: 'Error',\r\n  decrease: 'Decrease',\r\n  increase: 'Increase',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "customLabels",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Custom Labels",
+              "attribute": "customLabels"
+            },
+            {
+              "kind": "field",
+              "name": "enableTooltip",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tooltip.",
+              "attribute": "enableTooltip"
+            },
+            {
+              "kind": "field",
+              "name": "enableButtonControls",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for button controls.",
+              "attribute": "enableButtonControls"
+            },
+            {
+              "kind": "method",
+              "name": "_renderTickMarker",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "tickCount",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleDecrease",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleIncrease",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderCustomLabel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderScaleMarker",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "tickCount",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderEditableInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_showTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_hideTooltip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNumberInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_getTooltipPosition",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateTooltipPosition",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "showTickMark",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.`detail:{ origEvent: Event,value: number }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "0"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "100",
+              "description": "The maximum value.",
+              "fieldName": "max"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "The minimum value.",
+              "fieldName": "min"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "The step between values.",
+              "fieldName": "step"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "enableTickMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tick Marker on slider.",
+              "fieldName": "enableTickMarker"
+            },
+            {
+              "name": "enableScaleMarker",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Scale Marker below slider",
+              "fieldName": "enableScaleMarker"
+            },
+            {
+              "name": "editableInput",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
+              "fieldName": "editableInput"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "customLabels",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Custom Labels",
+              "fieldName": "customLabels"
+            },
+            {
+              "name": "enableTooltip",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for enable Tooltip.",
+              "fieldName": "enableTooltip"
+            },
+            {
+              "name": "enableButtonControls",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for button controls.",
+              "fieldName": "enableButtonControls"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-slider-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SliderInput",
+          "declaration": {
+            "name": "SliderInput",
+            "module": "src/components/reusable/sliderInput/sliderInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-slider-input",
+          "declaration": {
+            "name": "SliderInput",
+            "module": "src/components/reusable/sliderInput/sliderInput.ts"
           }
         }
       ]
@@ -17949,517 +18454,6 @@
           "declaration": {
             "name": "SplitButtonOption",
             "module": "src/components/reusable/splitButton/splitButtonOption.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sliderInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SliderInput",
-          "declaration": {
-            "name": "SliderInput",
-            "module": "./sliderInput"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/sliderInput/sliderInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Slider Input.",
-          "name": "SliderInput",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Slot for left button icon.",
-              "name": "leftBtnIcon"
-            },
-            {
-              "description": "Slot for right button icon.",
-              "name": "rightBtnIcon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Input value."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "The maximum value.",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "The minimum value.",
-              "attribute": "min"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "The step between values.",
-              "attribute": "step"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "enableTickMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tick Marker on slider.",
-              "attribute": "enableTickMarker"
-            },
-            {
-              "kind": "field",
-              "name": "enableScaleMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Scale Marker below slider",
-              "attribute": "enableScaleMarker"
-            },
-            {
-              "kind": "field",
-              "name": "editableInput",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
-              "attribute": "editableInput"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  error: 'Error',\r\n  decrease: 'Decrease',\r\n  increase: 'Increase',\r\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "customLabels",
-              "type": {
-                "text": "string[]"
-              },
-              "default": "[]",
-              "description": "Custom Labels",
-              "attribute": "customLabels"
-            },
-            {
-              "kind": "field",
-              "name": "enableTooltip",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tooltip.",
-              "attribute": "enableTooltip"
-            },
-            {
-              "kind": "field",
-              "name": "enableButtonControls",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for button controls.",
-              "attribute": "enableButtonControls"
-            },
-            {
-              "kind": "method",
-              "name": "_renderTickMarker",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "tickCount",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleDecrease",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleIncrease",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderCustomLabel",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderScaleMarker",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "tickCount",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_renderTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderEditableInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_showTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_hideTooltip",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleNumberInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getTooltipPosition",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateTooltipPosition",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "showTickMark",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.`detail:{ origEvent: Event,value: number }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "number"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "0"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "default": "100",
-              "description": "The maximum value.",
-              "fieldName": "max"
-            },
-            {
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "The minimum value.",
-              "fieldName": "min"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "The step between values.",
-              "fieldName": "step"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "enableTickMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tick Marker on slider.",
-              "fieldName": "enableTickMarker"
-            },
-            {
-              "name": "enableScaleMarker",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Scale Marker below slider",
-              "fieldName": "enableScaleMarker"
-            },
-            {
-              "name": "editableInput",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for editable Input. Note: Enabling this property will disable the tooltip.",
-              "fieldName": "editableInput"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "customLabels",
-              "type": {
-                "text": "string[]"
-              },
-              "default": "[]",
-              "description": "Custom Labels",
-              "fieldName": "customLabels"
-            },
-            {
-              "name": "enableTooltip",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for enable Tooltip.",
-              "fieldName": "enableTooltip"
-            },
-            {
-              "name": "enableButtonControls",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for button controls.",
-              "fieldName": "enableButtonControls"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-slider-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SliderInput",
-          "declaration": {
-            "name": "SliderInput",
-            "module": "src/components/reusable/sliderInput/sliderInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-slider-input",
-          "declaration": {
-            "name": "SliderInput",
-            "module": "src/components/reusable/sliderInput/sliderInput.ts"
           }
         }
       ]
@@ -19045,6 +19039,623 @@
           "declaration": {
             "name": "StepperItemChild",
             "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "./tabs"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "./tab"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "./tabPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tab.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Tab",
+          "members": [
+            {
+              "kind": "field",
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "id",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "_size",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "'md'"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "vertical",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "data-aiconnected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'tab'",
+              "attribute": "role",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "tabIndex",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-selected'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "attribute": "'aria-selected'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-controls'",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "'aria-controls'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "'aria-disabled'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "attribute": "'aria-disabled'",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_handleClick",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "id",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "id"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "selected"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "data-aiconnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'tab'",
+              "fieldName": "role"
+            },
+            {
+              "name": "tabIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "fieldName": "tabIndex"
+            },
+            {
+              "name": "'aria-selected'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "fieldName": "'aria-selected'"
+            },
+            {
+              "name": "'aria-controls'",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "'aria-controls'"
+            },
+            {
+              "name": "'aria-disabled'",
+              "type": {
+                "text": "string"
+              },
+              "default": "'false'",
+              "fieldName": "'aria-disabled'"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "src/components/reusable/tabs/tab.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabPanel.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "TabPanel",
+          "slots": [
+            {
+              "description": "Slot for tab content.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "attribute": "tabId"
+            },
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "attribute": "visible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "attribute": "noPadding"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Matching Tab ID, required.",
+              "fieldName": "tabId"
+            },
+            {
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Tab Panel visible state.  Must match Tab selected state.",
+              "fieldName": "visible"
+            },
+            {
+              "name": "noPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Remove side padding (left/right) on tab panel.",
+              "fieldName": "noPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tab-panel",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TabPanel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tab-panel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "src/components/reusable/tabs/tabPanel.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/tabs/tabs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Tabs.",
+          "name": "Tabs",
+          "slots": [
+            {
+              "description": "Slot for kyn-tab-panel components.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for kyn-tab components.",
+              "name": "tabs"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "attribute": "tabSize"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI specifier.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "attribute": "disableAutoFocusUpdate"
+            },
+            {
+              "kind": "field",
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "attribute": "scrollablePanels"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChangeTabs",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
+                }
+              ],
+              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildrenSelection",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
+                },
+                {
+                  "name": "updatePanel",
+                  "default": "true"
+                }
+              ],
+              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
+            },
+            {
+              "kind": "method",
+              "name": "_emitChangeEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "origEvent",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
+                },
+                {
+                  "name": "selectedTabId",
+                  "type": {
+                    "text": "string"
+                  },
+                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
+                }
+              ],
+              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  },
+                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
+                }
+              ],
+              "description": "Handles keyboard events for navigating between tabs.",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the new selected Tab ID when switching tabs. `detail:{ origEvent: PointerEvent,selectedTabId: string }`",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "tabSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
+              "fieldName": "tabSize"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Vertical orientation.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "AI specifier.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "disableAutoFocusUpdate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
+              "fieldName": "disableAutoFocusUpdate"
+            },
+            {
+              "name": "scrollablePanels",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Adds scrollable overflow to the tab panels.",
+              "fieldName": "scrollablePanels"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-tabs",
+          "declaration": {
+            "name": "Tabs",
+            "module": "src/components/reusable/tabs/tabs.ts"
           }
         }
       ]
@@ -21578,623 +22189,6 @@
           "declaration": {
             "name": "Table",
             "module": "src/components/reusable/table/table.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/defs.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "./tabs"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "./tab"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "./tabPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tab.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "Tab",
-          "members": [
-            {
-              "kind": "field",
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "id",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "selected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "_size",
-              "type": {
-                "text": "string"
-              },
-              "privacy": "private",
-              "default": "'md'"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "vertical",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "_vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "data-aiconnected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "role",
-              "type": {
-                "text": "string"
-              },
-              "default": "'tab'",
-              "attribute": "role",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "attribute": "tabIndex",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-selected'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "attribute": "'aria-selected'",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-controls'",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "'aria-controls'",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "'aria-disabled'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "attribute": "'aria-disabled'",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "_handleClick",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "id",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "id"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "selected"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "data-aiconnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "role",
-              "type": {
-                "text": "string"
-              },
-              "default": "'tab'",
-              "fieldName": "role"
-            },
-            {
-              "name": "tabIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "fieldName": "tabIndex"
-            },
-            {
-              "name": "'aria-selected'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "fieldName": "'aria-selected'"
-            },
-            {
-              "name": "'aria-controls'",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "'aria-controls'"
-            },
-            {
-              "name": "'aria-disabled'",
-              "type": {
-                "text": "string"
-              },
-              "default": "'false'",
-              "fieldName": "'aria-disabled'"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab",
-          "declaration": {
-            "name": "Tab",
-            "module": "src/components/reusable/tabs/tab.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabPanel.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "TabPanel",
-          "slots": [
-            {
-              "description": "Slot for tab content.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "attribute": "tabId"
-            },
-            {
-              "kind": "field",
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "attribute": "visible",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "attribute": "noPadding"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabId",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Matching Tab ID, required.",
-              "fieldName": "tabId"
-            },
-            {
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Tab Panel visible state.  Must match Tab selected state.",
-              "fieldName": "visible"
-            },
-            {
-              "name": "noPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Remove side padding (left/right) on tab panel.",
-              "fieldName": "noPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tab-panel",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TabPanel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tab-panel",
-          "declaration": {
-            "name": "TabPanel",
-            "module": "src/components/reusable/tabs/tabPanel.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/tabs/tabs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Tabs.",
-          "name": "Tabs",
-          "slots": [
-            {
-              "description": "Slot for kyn-tab-panel components.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for kyn-tab components.",
-              "name": "tabs"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "attribute": "tabSize"
-            },
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI specifier.",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "attribute": "disableAutoFocusUpdate"
-            },
-            {
-              "kind": "field",
-              "name": "scrollablePanels",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds scrollable overflow to the tab panels.",
-              "attribute": "scrollablePanels"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChangeTabs",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter \"e\" is an event object that contains information about the event\nthat triggered the handleChange function."
-                }
-              ],
-              "description": "Updates children and emits a change event based on the provided\nevent details when a child kyn-tab is clicked."
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildrenSelection",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe tab that is currently selected."
-                },
-                {
-                  "name": "updatePanel",
-                  "default": "true"
-                }
-              ],
-              "description": "Updates the selected property of tabs and the visible property of tab panels based on\nthe selected tab ID."
-            },
-            {
-              "kind": "method",
-              "name": "_emitChangeEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "origEvent",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The origEvent parameter is the original event object that triggered the\nchange event. It could be any type of event object, such as a click event or a keydown event."
-                },
-                {
-                  "name": "selectedTabId",
-                  "type": {
-                    "text": "string"
-                  },
-                  "description": "The selectedTabId parameter is a string that represents the ID of\nthe selected tab."
-                }
-              ],
-              "description": "Creates and dispatches a custom event called 'on-change' with the provided original event and\nselected tab ID as details."
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  },
-                  "description": "The parameter `e` is an event object that represents the keyboard event. It\ncontains information about the keyboard event, such as the key code of the pressed key."
-                }
-              ],
-              "description": "Handles keyboard events for navigating between tabs.",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the new selected Tab ID when switching tabs. `detail:{ origEvent: PointerEvent,selectedTabId: string }`",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "tabSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
-              "fieldName": "tabSize"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Vertical orientation.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "AI specifier.",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "disableAutoFocusUpdate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables tab content change on focus with keyboard navigation/assistive technologies.",
-              "fieldName": "disableAutoFocusUpdate"
-            },
-            {
-              "name": "scrollablePanels",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Adds scrollable overflow to the tab panels.",
-              "fieldName": "scrollablePanels"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-tabs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-tabs",
-          "declaration": {
-            "name": "Tabs",
-            "module": "src/components/reusable/tabs/tabs.ts"
           }
         }
       ]
