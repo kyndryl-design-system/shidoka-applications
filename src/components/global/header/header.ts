@@ -96,6 +96,8 @@ export class Header extends LitElement {
         <div class="header__right">
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
+
+        <div class="background"></div>
       </header>
 
       <div class="overlay"></div>
@@ -138,10 +140,6 @@ export class Header extends LitElement {
 
   override firstUpdated() {
     this._handleScroll();
-
-    setTimeout(() => {
-      this._headerEl.classList.add('loaded');
-    }, 0);
   }
 
   override connectedCallback() {
