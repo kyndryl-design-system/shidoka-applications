@@ -1,5 +1,6 @@
 @use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: block;
@@ -8,15 +9,20 @@
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 0px 16px;
-  padding: 24px var(--kd-spacing-32);
-  background: var(--kd-color-background-container-soft);
-  border-top: 1px solid var(--kd-color-border-variants-light);
+  gap: 24px;
+  padding: 24px 32px;
+  border-radius: 8px;
+  margin: 0 var(--kd-page-gutter) 8px;
+  background: var(--kd-color-background-container-default);
+  // border-top: 1px solid var(--kd-color-border-variants-light);
 
   @media (min-width: 42rem) {
     flex-direction: row;
     align-items: center;
+    gap: 16px;
   }
+
+  @include elevation.shadow(1);
 }
 
 .footer-links {
@@ -27,7 +33,6 @@
 }
 
 .logo-container {
-  padding: 10px 0;
   @media (min-width: 42rem) {
     margin-left: auto;
   }

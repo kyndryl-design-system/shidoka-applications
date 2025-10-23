@@ -1,6 +1,10 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  queryAssignedElements,
+} from 'lit/decorators.js';
 import HeaderFlyoutsScss from './headerFlyouts.scss?inline';
 
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
@@ -16,6 +20,13 @@ export class HeaderFlyouts extends LitElement {
   /* Menu open state (small breakpoint). */
   @property({ type: Boolean })
   accessor open = false;
+
+  /**
+   * Queries any slotted header-flyout.
+   * @ignore
+   */
+  @queryAssignedElements()
+  accessor _slottedFlyouts!: Array<any>;
 
   override render() {
     return html`
@@ -46,14 +57,25 @@ export class HeaderFlyouts extends LitElement {
     }
   }
 
+  private _handleFlyoutToggle() {
+    this._emitFlyoutsToggle();
+  }
+
+  private _emitFlyoutsToggle() {
+    const event = new CustomEvent('on-flyouts-toggle', {
+      composed: true,
+      bubbles: true,
+      detail: {
+        open: this.open,
+        childrenOpen: this._slottedFlyouts.some((flyout) => flyout.open),
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
   override willUpdate(changedProps: any) {
     if (changedProps.has('open')) {
-      const event = new CustomEvent('on-flyouts-toggle', {
-        composed: true,
-        bubbles: true,
-        detail: { open: this.open },
-      });
-      this.dispatchEvent(event);
+      this._emitFlyoutsToggle();
     }
   }
 
@@ -61,10 +83,16 @@ export class HeaderFlyouts extends LitElement {
     super.connectedCallback();
 
     document.addEventListener('click', (e) => this._handleClickOut(e));
+    document.addEventListener('on-flyout-toggle', () =>
+      this._handleFlyoutToggle()
+    );
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', (e) => this._handleClickOut(e));
+    document.removeEventListener('on-flyout-toggle', () =>
+      this._handleFlyoutToggle()
+    );
 
     super.disconnectedCallback();
   }

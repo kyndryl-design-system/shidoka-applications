@@ -1,4 +1,5 @@
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 .interactive {
   border: none;
@@ -36,17 +37,22 @@
 @media (min-width: 42rem) {
   .overlay {
     position: fixed;
-    top: var(--kd-header-height);
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: -2;
+    z-index: calc(var(--kd-z-header) - 1);
     transition: background-color 300ms ease-out, visibility 300ms ease-out;
     background: transparent;
     visibility: hidden;
 
-    .open + & {
-      background: var(--kd-color-background-opacity-8);
+    &.scrolled {
+      top: var(--kd-header-height);
+    }
+
+    .open + &,
+    .child-open + & {
+      background: var(--kd-color-background-opacity-inverse-backdrop);
       visibility: visible;
     }
   }
@@ -97,13 +103,14 @@
       left: auto;
       border-top: none;
       background: var(--kd-color-background-container-default);
-      box-shadow: 0px 2px 8px 0px rgba(61, 60, 60, 0.25);
       max-height: calc(100vh - var(--kd-header-height));
 
       &.left {
         left: -12px;
         right: auto;
       }
+
+      @include elevation.shadow(1);
     }
 
     strong {

@@ -1,6 +1,7 @@
 @use '../../../common/scss/global.scss';
 @use './header-interactive.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
 :host {
   display: block;
@@ -15,8 +16,7 @@
   right: 0;
   left: 0;
   height: var(--kd-header-height);
-  background: var(--kd-color-background-container-secondary);
-  box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.1);
+  background: var(--kd-color-background-container-default);
   padding: 4px calc(var(--kd-page-gutter) - 4px) 4px var(--kd-page-gutter);
   transition: z-index 150ms ease-out;
   z-index: var(--kd-z-header);
@@ -25,12 +25,31 @@
     z-index: calc(var(--kd-z-header) + 20);
   }
 
-  // @media screen and (min-width: 42rem) {
-  //   padding: 4px 12px;
-  // }
+  @media screen and (min-width: 42rem) {
+    &.loaded {
+      transition: border-radius 150ms ease-out, margin 150ms ease-out,
+        padding 150ms ease-out;
+    }
+
+    &:not(.scrolled) {
+      border-radius: 8px;
+      margin: 8px;
+      padding-left: calc(var(--kd-page-gutter) - 8px);
+    }
+
+    @include elevation.shadow(1);
+  }
 
   &.left-slotted {
     padding-left: 12px;
+
+    @media (min-width: 42rem) {
+      padding-left: 12px;
+
+      &.scrolled {
+        padding-left: 20px;
+      }
+    }
   }
 
   &__right {
