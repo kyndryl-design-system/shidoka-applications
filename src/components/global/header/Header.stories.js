@@ -4,11 +4,11 @@ import { action } from 'storybook/actions';
 import './';
 import '../../reusable/button';
 
-import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/user.svg';
-import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/question.svg';
+import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
-import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notifications-new.svg';
-import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/settings.svg';
+import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';

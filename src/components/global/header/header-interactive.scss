@@ -73,14 +73,13 @@
 
   &__content {
     position: fixed;
-    top: calc(var(--kd-header-height));
+    top: var(--kd-header-height);
     right: 0;
     left: 0;
     bottom: 0;
     overflow-y: auto;
     overflow-x: hidden;
     background: var(--kd-color-background-container-default);
-    border-bottom: 4px solid var(--kd-color-border-accent-secondary);
     transition: visibility 300ms, opacity 300ms ease-in-out,
       transform 300ms ease-in-out;
     transform: translateY(-20px);
@@ -97,11 +96,12 @@
 
     @media (min-width: 42rem) {
       position: absolute;
-      top: calc(100% + 12px);
-      right: -12px;
+      top: calc(100% + 12px + 8px);
+      right: -20px;
       bottom: auto;
       left: auto;
       border-top: none;
+      border-radius: 8px;
       background: var(--kd-color-background-container-default);
       max-height: calc(100vh - var(--kd-header-height));
 
