@@ -297,13 +297,16 @@ export class Dropdown extends FormMixin(LitElement) {
           for=${this.name}
         >
           ${this.required
-            ? html`<abbr
-                class="required"
-                title=${this._textStrings.requiredText}
-                role="img"
-                aria-label=${this._textStrings?.requiredText || 'Required'}
-                >*</abbr
-              >`
+            ? html`
+                <abbr
+                  class="required"
+                  title=${this._textStrings.requiredText}
+                  role="img"
+                  aria-label=${this._textStrings?.requiredText || 'Required'}
+                >
+                  *
+                </abbr>
+              `
             : null}
           ${this.label}
           <slot name="tooltip"></slot>
@@ -486,7 +489,7 @@ export class Dropdown extends FormMixin(LitElement) {
               </div>
             </div>
           </div>
-          ${this.hasSearch && this.open
+          ${this.hasSearch
             ? html`
                 <kyn-button
                   ?disabled=${this.disabled || this.readonly}
