@@ -47,12 +47,13 @@ export default {
         .fake-local-nav {
           display: none;
           position: fixed;
-          left: 0;
-          top: 0;
-          bottom: 0;
+          left: 8px;
+          top: 8px;
+          bottom: 8px;
           width: var(--kd-local-nav-width);
-          background: var(--kd-color-background-menu-state-default);
-          box-shadow: var(--kd-elevation-level-2);
+          background: var(--kd-color-background-container-default);
+          box-shadow: var(--kd-elevation-level-1);
+          border-radius: 8px;
 
           &.pinned {
             width: var(--kd-local-nav-width-expanded);
@@ -65,10 +66,10 @@ export default {
           }
 
           .with-local-nav {
-            margin-left: var(--kd-local-nav-width);
+            margin-left: var(--kd-local-nav-reserved-space);
 
             &.pinned {
-              margin-left: var(--kd-local-nav-width-expanded);
+              margin-left: var(--kd-local-nav-expanded-reserved-space);
             }
           }
         }

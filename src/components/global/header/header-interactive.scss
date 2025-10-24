@@ -46,10 +46,6 @@
     background: transparent;
     visibility: hidden;
 
-    &.scrolled {
-      top: var(--kd-header-height);
-    }
-
     .open + &,
     .child-open + & {
       background: var(--kd-color-background-opacity-inverse-backdrop);
@@ -103,7 +99,7 @@
       border-top: none;
       border-radius: 8px;
       background: var(--kd-color-background-container-default);
-      max-height: calc(100vh - var(--kd-header-height));
+      max-height: calc(100vh - var(--kd-header-reserved-space) - 16px);
 
       &.left {
         left: -12px;
