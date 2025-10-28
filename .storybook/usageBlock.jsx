@@ -17,12 +17,12 @@ export const UsageExample = () => {
 
   return (
     <>
-      <h2>Usage</h2>
+      <h2 data-no-toc>Usage</h2>
 
-      <h3>JS Import</h3>
+      <h3 data-no-toc>JS Import</h3>
       <Source code={`import '${FileName.join('/')}';`} />
 
-      <h3>HTML Tag</h3>
+      <h3 data-no-toc>HTML Tag</h3>
       <Source code={TagHtml} />
     </>
   );

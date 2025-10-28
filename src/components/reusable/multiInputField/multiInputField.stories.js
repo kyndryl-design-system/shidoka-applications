@@ -290,7 +290,7 @@ export const ValidationStatesDemo = () => {
   return html`
     <div style="display: flex; flex-direction: column; gap: 2rem;">
       <div>
-        <h3>1. Valid State (no errors)</h3>
+        <h3 data-no-toc>1. Valid State (no errors)</h3>
         <kyn-multi-input-field
           .value=${'valid@example.com'}
           .inputType=${'email'}
@@ -304,7 +304,7 @@ export const ValidationStatesDemo = () => {
       </div>
 
       <div>
-        <h3>2. External Error via itemStatusMap</h3>
+        <h3 data-no-toc>2. External Error via itemStatusMap</h3>
         <kyn-multi-input-field
           .value=${'external-error@example.com'}
           .inputType=${'email'}
@@ -318,7 +318,7 @@ export const ValidationStatesDemo = () => {
       </div>
 
       <div>
-        <h3>3. Custom Error via invalidText</h3>
+        <h3 data-no-toc>3. Custom Error via invalidText</h3>
         <kyn-multi-input-field
           .value=${'custom@example.com'}
           .inputType=${'email'}
@@ -333,7 +333,7 @@ export const ValidationStatesDemo = () => {
       </div>
 
       <div>
-        <h3>4. Combined: External Success + Internal Error</h3>
+        <h3 data-no-toc>4. Combined: External Success + Internal Error</h3>
         <kyn-multi-input-field
           .value=${'success@example.com, invalid-format'}
           .inputType=${'email'}

@@ -178,6 +178,7 @@ const Template = (args) => html`
               >${unsafeSVG(lgCube)}</span
             >
             <h3
+              data-no-toc
               style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
             >
               Slot Content
@@ -454,6 +455,7 @@ export const PreciseAnchorAlignWithLink = {
                 >${unsafeSVG(lgCube)}</span
               >
               <h3
+                data-no-toc
                 style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
               >
                 Slot Content
@@ -607,7 +609,9 @@ export const LaunchBehavior = {
       style="display: flex; flex-direction: column; gap: 40px; padding: 40px;"
     >
       <div>
-        <h3 style="margin-bottom: 20px; font-size: 16px;">Default (Click)</h3>
+        <h3 data-no-toc style="margin-bottom: 20px; font-size: 16px;">
+          Default (Click)
+        </h3>
         ${Template({
           ...baseArgs,
           anchorLabel: '1',
@@ -622,7 +626,7 @@ export const LaunchBehavior = {
         })}
       </div>
       <div>
-        <h3 style="margin-bottom: 20px; font-size: 16px;">Hover</h3>
+        <h3 data-no-toc style="margin-bottom: 20px; font-size: 16px;">Hover</h3>
         ${Template({
           ...baseArgs,
           anchorLabel: '2',
@@ -637,7 +641,7 @@ export const LaunchBehavior = {
         })}
       </div>
       <div>
-        <h3 style="margin-bottom: 20px; font-size: 16px;">
+        <h3 data-no-toc style="margin-bottom: 20px; font-size: 16px;">
           Link (Click for external link, hover to open)
         </h3>
         ${Template({

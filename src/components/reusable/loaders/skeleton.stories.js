@@ -75,28 +75,28 @@ const CustomTemplate = () => html`
     <div>
       <div class="heading kd-type--headline-04">Default</div>
 
-      <h3>Custom Button</h3>
+      <h3 data-no-toc>Custom Button</h3>
       <kyn-skeleton
         style="margin:8px 0 16px"
         .width=${'120px'}
         .height=${'48px'}
       ></kyn-skeleton>
 
-      <h3>Custom Title</h3>
+      <h3 data-no-toc>Custom Title</h3>
       <kyn-skeleton
         style="margin:8px 0 16px"
         .width=${'200px'}
         .height=${'24px'}
       ></kyn-skeleton>
 
-      <h3>Custom Thumbnail</h3>
+      <h3 data-no-toc>Custom Thumbnail</h3>
       <kyn-skeleton
         style="margin:8px 0 16px"
         .width=${'200px'}
         .height=${'120px'}
       ></kyn-skeleton>
 
-      <h3>Custom Logo</h3>
+      <h3 data-no-toc>Custom Logo</h3>
       <kyn-skeleton
         style="margin:8px 0 0"
         shape="circle"
@@ -108,7 +108,7 @@ const CustomTemplate = () => html`
     <div>
       <div class="heading kd-type--headline-04">AI</div>
 
-      <h3>Custom Button AI</h3>
+      <h3 data-no-toc>Custom Button AI</h3>
       <kyn-skeleton
         style="margin:8px 0 16px"
         .width=${'120px'}
@@ -116,7 +116,7 @@ const CustomTemplate = () => html`
         aiConnected
       ></kyn-skeleton>
 
-      <h3>Custom Title AI</h3>
+      <h3 data-no-toc>Custom Title AI</h3>
       <kyn-skeleton
         style="margin:8px 0 16px"
         .width=${'200px'}
@@ -124,7 +124,7 @@ const CustomTemplate = () => html`
         aiConnected
       ></kyn-skeleton>
 
-      <h3>Custom Thumbnail AI</h3>
+      <h3 data-no-toc>Custom Thumbnail AI</h3>
       <kyn-skeleton
         style="margin:8px 0 16px"
         .width=${'200px'}
@@ -132,7 +132,7 @@ const CustomTemplate = () => html`
         aiConnected
       ></kyn-skeleton>
 
-      <h3>Custom Logo AI</h3>
+      <h3 data-no-toc>Custom Logo AI</h3>
       <kyn-skeleton
         style="margin:8px 0 0"
         shape="circle"
