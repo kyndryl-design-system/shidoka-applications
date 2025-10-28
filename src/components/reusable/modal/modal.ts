@@ -2,6 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import ModalScss from './modal.scss?inline';
 
 import '../button';
@@ -12,6 +13,8 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
  * Modal.
  * @slot unnamed - Slot for modal body content.
  * @slot anchor - Slot for the anchor button content.
+ * @slot header - Slot for a fully custom header; when provided it replaces the default title/label header.
+ * @slot header-inline - Slot for an inline header action (badge/button) rendered next to the title/label when using the default header.
  * @slot footer - Slot for the footer content which replaces the ok, cancel, and second ary buttons.
  * @fires on-close - Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`
  * @fires on-open - Emits the modal open event.
@@ -108,6 +111,29 @@ export class Modal extends LitElement {
   @query('dialog')
   accessor _dialog!: any;
 
+  /** Optional slotted header element
+   * @internal
+   */
+  @query('slot[name="header"]')
+  accessor _headerSlot!: HTMLSlotElement;
+
+  /** Whether a header was provided via the header slot */
+  @property({ type: Boolean })
+  accessor hasSlottedHeader = false;
+
+  private _checkHeaderSlot = () => {
+    const assigned =
+      (this._headerSlot &&
+        this._headerSlot.assignedElements({ flatten: true })) ||
+      [];
+    this.hasSlottedHeader = assigned.length > 0;
+  };
+
+  override firstUpdated() {
+    this._checkHeaderSlot();
+    this._headerSlot?.addEventListener('slotchange', this._checkHeaderSlot);
+  }
+
   /** Determines if the component is themed for GenAI.*/
   @property({ type: Boolean, reflect: true })
   accessor aiConnected = false;
@@ -133,7 +159,9 @@ export class Modal extends LitElement {
 
       <dialog
         class="${classMap(classes)}"
-        aria-labelledby="dialogLabel"
+        aria-labelledby=${ifDefined(
+          this.hasSlottedHeader ? undefined : 'dialogLabel'
+        )}
         tabindex="-1"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
@@ -147,14 +175,22 @@ export class Modal extends LitElement {
           >
             <span slot="icon">${unsafeSVG(closeIcon)}</span>
           </kyn-button>
-          <header>
-            <div>
-              <h1 id="dialogLabel">${this.titleText}</h1>
-              ${this.labelText !== ''
-                ? html`<span class="label">${this.labelText}</span>`
-                : null}
-            </div>
-          </header>
+          <slot name="header" @slotchange=${this._checkHeaderSlot}>
+            <header>
+              <div class="header-inner">
+                <div class="header-text">
+                  <h1 id="dialogLabel">${this.titleText}</h1>
+                  ${this.labelText !== ''
+                    ? html`<span class="label">${this.labelText}</span>`
+                    : null}
+                </div>
+
+                <div class="header-inline">
+                  <slot name="header-inline"></slot>
+                </div>
+              </div>
+            </header>
+          </slot>
 
           <div
             class="body ${this.disableScroll ? 'disableScroll' : ''}"

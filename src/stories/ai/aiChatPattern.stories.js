@@ -52,6 +52,15 @@ export const ChatModal = {
           ></kyn-ai-launch-btn>
         </kyn-button-float-container>
 
+        <kyn-button
+          slot="header-inline"
+          kind="ghost-ai"
+          size="small"
+          style="margin-left: 8px;"
+        >
+          <span style="margin-right: 8px;">+</span> New Chat
+        </kyn-button>
+
         <kyn-tabs
           style="height: 100%;"
           scrollablePanels
