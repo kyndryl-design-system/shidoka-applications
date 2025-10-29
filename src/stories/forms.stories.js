@@ -311,7 +311,7 @@ export const Default = {
 
         <br /><br />
 
-        <h3 data-no-toc class="kd-type--headline-08">
+        <h3 class="kd-type--headline-08">
           Pre-selected Date/Time/Date-Range Inputs
         </h3>
 
@@ -474,7 +474,7 @@ export const Default = {
         </kyn-slider-input>
         <br /><br />
 
-        <h3 data-no-toc class="kd-type--headline-08">
+        <h3 class="kd-type--headline-08">
           Pre-selected Slider Input with Editable Input
         </h3>
         <br />
