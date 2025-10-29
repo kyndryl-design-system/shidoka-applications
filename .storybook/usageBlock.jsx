@@ -4,25 +4,28 @@ import { useOf, Source } from '@storybook/addon-docs/blocks';
 export const UsageExample = () => {
   const resolvedOf = useOf('story');
 
-  const TagHtml = `<${resolvedOf.story.component}></${resolvedOf.story.component}>`;
-  const FileName = resolvedOf.story.parameters.fileName
+  const storyComponent = resolvedOf?.story?.component;
+  const storyFileName = resolvedOf?.story?.parameters?.fileName;
+
+  if (!storyComponent || !storyFileName) {
+    return null;
+  }
+
+  const TagHtml = `<${storyComponent}></${storyComponent}>`;
+  const FileName = storyFileName
     .split('./src')
     .join('@kyndryl-design-system/shidoka-applications')
     .split('/');
   FileName.pop();
 
-  if (!resolvedOf.story.component) {
-    return;
-  }
-
   return (
     <>
-      <h2>Usage</h2>
+      <h2 id="usage">Usage</h2>
 
-      <h3>JS Import</h3>
+      <h3 id="usage-js-import">JS Import</h3>
       <Source code={`import '${FileName.join('/')}';`} />
 
-      <h3>HTML Tag</h3>
+      <h3 id="usage-html-tag">HTML Tag</h3>
       <Source code={TagHtml} />
     </>
   );

@@ -21,6 +21,18 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-346870&p=f&m=dev',
     },
+    // docs: { For testing
+    //   toc: {
+    //     contentsSelector: '.sbdocs-content',
+    //     headingSelector: 'h1, h2, h3 ,h4',
+    //     ignoreSelector: '[data-no-toc]',
+    //     title: 'On this page',
+    //     disable: false,
+    //     unsafeTocbotOptions: {
+    //       orderedList: false,
+    //     },
+    //   },
+    // },
   },
 };
 
