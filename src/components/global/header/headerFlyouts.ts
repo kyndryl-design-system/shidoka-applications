@@ -1,10 +1,7 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
-import {
-  customElement,
-  property,
-  queryAssignedElements,
-} from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
+import { querySelectorAllDeep } from 'query-selector-shadow-dom';
 import HeaderFlyoutsScss from './headerFlyouts.scss?inline';
 
 import overflowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/overflow.svg';
@@ -20,13 +17,6 @@ export class HeaderFlyouts extends LitElement {
   /* Menu open state (small breakpoint). */
   @property({ type: Boolean })
   accessor open = false;
-
-  /**
-   * Queries any slotted header-flyout.
-   * @ignore
-   */
-  @queryAssignedElements()
-  accessor _slottedFlyouts!: Array<any>;
 
   override render() {
     return html`
@@ -62,12 +52,14 @@ export class HeaderFlyouts extends LitElement {
   }
 
   private _emitFlyoutsToggle() {
+    const Flyouts: Array<any> = querySelectorAllDeep('kyn-header-flyout', this);
+
     const event = new CustomEvent('on-flyouts-toggle', {
       composed: true,
       bubbles: true,
       detail: {
         open: this.open,
-        childrenOpen: this._slottedFlyouts.some((flyout) => flyout.open),
+        childrenOpen: Flyouts.some((flyout: any) => flyout.open),
       },
     });
     this.dispatchEvent(event);
