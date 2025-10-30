@@ -72,7 +72,7 @@
 
 // Disabled Button Styles
 @mixin kyn-split-btn-disabled {
-  color: var(--kd-color-text-link-level-disabled);
+  color: var(--kd-color-text-level-disabled);
   border: none;
   cursor: not-allowed;
   pointer-events: none;
@@ -81,7 +81,7 @@
 // Disabled Outline Button Styles
 @mixin kd-outline-btn-disabled {
   background-color: transparent;
-  color: var(--kd-color-text-link-level-disabled);
+  color: var(--kd-color-text-level-disabled);
   border: 1px solid var(--kd-color-border-ui-disabled);
   cursor: not-allowed;
   pointer-events: none;
@@ -208,8 +208,7 @@ span {
   }
 
   &:disabled {
-    @include kyn-split-btn-disabled;
-    background-color: var(--kd-color-background-ui-default-disabled);
+    @include kd-outline-btn-disabled;
   }
 }
 
@@ -270,7 +269,8 @@ span {
   }
 
   &:disabled {
-    @include kd-outline-btn-disabled;
+    @include kyn-split-btn-disabled;
+    background-color: var(--kd-color-background-ui-default-disabled);
   }
 }
 
@@ -301,7 +301,6 @@ span {
 
   &:disabled {
     @include kd-outline-btn-disabled;
-    color: var(--kd-color-text-button-dark-destructive);
   }
 }
 
