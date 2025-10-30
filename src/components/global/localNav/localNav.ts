@@ -4,10 +4,12 @@ import {
   customElement,
   property,
   state,
+  query,
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { deepmerge } from 'deepmerge-ts';
+import { debounce } from '../../../common/helpers/helpers';
 
 import '../../reusable/button';
 
@@ -88,6 +90,10 @@ export class LocalNav extends LitElement {
    */
   @state()
   accessor _leaveTimer: number | null = null;
+
+  /** @internal */
+  @query('nav')
+  accessor _navEl!: HTMLElement;
 
   private _onDocumentClick = (e: Event) => this._handleClickOut(e);
   private _onLinkActive = (e: Event) =>
@@ -216,15 +222,38 @@ export class LocalNav extends LitElement {
     }
   }
 
+  /** Morph header on scroll.
+   * @internal */
+  private _handleScroll() {
+    if (window.scrollY > 0) {
+      this._navEl.classList.add('scrolled');
+    } else {
+      this._navEl.classList.remove('scrolled');
+    }
+  }
+
+  /** @internal */
+  private _debounceScroll = debounce(() => {
+    this._handleScroll();
+  });
+
+  override firstUpdated() {
+    this._handleScroll();
+  }
+
   override connectedCallback() {
     super.connectedCallback();
+
     document.addEventListener('click', this._onDocumentClick);
     this.addEventListener('on-link-active', this._onLinkActive);
+    window.addEventListener('scroll', this._debounceScroll);
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', this._onDocumentClick);
     this.removeEventListener('on-link-active', this._onLinkActive);
+    window.removeEventListener('scroll', this._debounceScroll);
+
     super.disconnectedCallback();
   }
 }
