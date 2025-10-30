@@ -158,8 +158,6 @@ export class SplitButton extends LitElement {
             'kyn-split-btn-icon': true,
             ['kyn-split-btn--secondary-icon']:
               this.kind === SPLIT_BTN_KINDS.SECONDARY,
-            'kyn-split-btn-margin-overlapped':
-              this.kind === SPLIT_BTN_KINDS.SECONDARY,
           })}
           type="button"
           ?disabled=${this.disabled}
