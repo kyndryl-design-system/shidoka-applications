@@ -316,7 +316,7 @@ export const HeaderInline = {
         <kyn-badge
           slot="header-inline"
           size="small"
-          style="margin-top: 4px; margin-left:8px;"
+          style="margin-top: 5px; margin-left:8px;"
         >
           Badge Example
         </kyn-badge>
