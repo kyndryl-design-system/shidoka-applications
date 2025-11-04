@@ -124,6 +124,8 @@ export class SplitButton extends LitElement {
       'kyn-split-btn--small': this.size === SPLIT_BTN_SIZES.SMALL,
       'kyn-split-btn--medium': this.size === SPLIT_BTN_SIZES.MEDIUM,
       [`kyn-split-btn--icon-${this.iconPosition}`]: !!this.iconPosition,
+      'kyn-split-btn-margin-overlapped':
+        this.kind === SPLIT_BTN_KINDS.SECONDARY && this.destructive,
     };
 
     return html`
@@ -157,8 +159,6 @@ export class SplitButton extends LitElement {
             [`kyn-split-btn--${this.size}-arrow-btn`]: true,
             'kyn-split-btn-icon': true,
             ['kyn-split-btn--secondary-icon']:
-              this.kind === SPLIT_BTN_KINDS.SECONDARY,
-            'kyn-split-btn-margin-overlapped':
               this.kind === SPLIT_BTN_KINDS.SECONDARY,
           })}
           type="button"
