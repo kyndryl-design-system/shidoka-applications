@@ -25,14 +25,46 @@ npm run analyze
 npm run format
 ```
 
+## Developer's Certificate of Origin 1.1
+
+By making a contribution to this project, I certify that:
+
+(a) The contribution was created in whole or in part by me and I
+have the right to submit it under the open source license
+indicated in the file; or
+
+(b) The contribution is based upon previous work that, to the best
+of my knowledge, is covered under an appropriate open source
+license and I have the right under that license to submit that
+work with modifications, whether created in whole or in part
+by me, under the same open source license (unless I am
+permitted to submit under a different license), as indicated
+in the file; or
+
+(c) The contribution was provided directly to me by some other
+person who certified (a), (b) or (c) and I have not modified
+it.
+
+(d) I understand and agree that this project and the contribution
+are public and that a record of the contribution (including all
+personal information I submit with it, including my sign-off) is
+maintained indefinitely and may be redistributed consistent with
+this project or the open source license(s) involved.
+
 ## Guidelines
 
 1. Commits
    1. Commit messages MUST use [Conventional Commit format](https://semantic-release.gitbook.io/semantic-release#commit-message-format).
-   1. [Certain commit prefixes](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch) or `feat:` (minor) will automatically trigger a release to publish a new package and update the semantic version.
+      1. [Certain commit prefixes](https://semantic-release.gitbook.io/semantic-release/#commit-message-format) like `fix:` (patch) or `feat:` (minor) will automatically trigger a release to publish a new package and update the semantic version.
       1. `BREAKING CHANGE:` in the commit message footer will trigger a major version update.
-   1. [Conventional Commits Cheat Sheet](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
-   1. Git hooks are installed to enforce commit message formatting with commitlint, and code formatting with Prettier.
+      1. [Conventional Commits Cheat Sheet](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
+   1. Commits MUST include a signoff `-s / -signoff` for the above DCO.
+      1. Commits through VS Code can enable auto signoffs via the `git.alwaysSignOff` setting (included in our workspace settings.json).
+      1. Commits via the GitHub web UI can be checked via browser extension:
+         1. [Chrome](https://chromewebstore.google.com/detail/dco-github-ui/onhgmjhnaeipfgacbglaphlmllkpoijo?pli=1)
+         1. [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scott-rigby/)
+      1. [GitHub Desktop does not support commit signoffs](https://github.com/desktop/desktop/issues/5351).
+   1. Git hooks are installed to enforce commit message formatting with commitlint, DCO check, and code formatting with Prettier.
 1. Branching
    1. `main` branch is for stable/current version changes.
    1. `beta` branch is for future version/prerelease/breaking changes.
