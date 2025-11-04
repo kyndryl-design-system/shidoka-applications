@@ -72,7 +72,54 @@ const args = {
   },
 };
 
-export const AISourcesFeedback = {
+export const FeedbackSelections = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-ai-sources-feedback
+        .sourcesOpened=${args.sourcesOpened}
+        .feedbackOpened=${args.feedbackOpened}
+        .sourcesDisabled=${args.sourcesDisabled}
+        .feedbackDisabled=${args.feedbackDisabled}
+        ?revealAllSources=${args.revealAllSources}
+        closeText=${args.closeText}
+        .textStrings=${args.textStrings}
+        @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-feedback-deselected=${(e) =>
+          action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-button
+          slot="copy"
+          kind="tertiary"
+          size="small"
+          iconPosition="left"
+          description="Copy"
+          @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <span class="copy-button-text">${args.copy}</span>
+          <span slot="icon" class="copy-icon">${unsafeSVG(copyIcon)}</span>
+        </kyn-button>
+
+        ${SourcesContent()}
+
+        <div slot="feedback-form" class="feedback-form">
+          ${feedbackFormContent()}
+        </div>
+      </kyn-ai-sources-feedback>
+      <style>
+        .copy-button-text {
+          display: none;
+
+          @media (min-width: 42rem) {
+            display: inline;
+          }
+        }
+      </style>
+    `;
+  },
+};
+
+export const FeedbackForm = {
   args,
   render: (args) => {
     return html`
