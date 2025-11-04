@@ -2,3 +2,11 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npx --no -- commitlint --edit ${1}
+
+# DCO signoff check
+if ! grep -iq "Signed-off-by:" "$1"; then
+  echo "Error: Your commit message is missing a DCO sign-off." >&2
+  echo "Please add 'Signed-off-by: Your Name <your@email.com>' to your commit message." >&2
+  echo "You can also enable git.alwaysSignOff in your VS Code settings to automate this." >&2
+  exit 1
+fi
