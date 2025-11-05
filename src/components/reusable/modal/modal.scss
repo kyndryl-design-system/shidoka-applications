@@ -104,14 +104,25 @@ form {
 header {
   margin-bottom: 32px;
   margin-right: 32px;
+  flex: 0 0 auto;
+  max-height: 100px;
+  overflow: visible;
+  position: relative;
+  padding-right: 8px;
 }
 
-/* Layout for header-inner (title + optional inline slot) */
 .header-inner {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.header-text {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .header-text h1 {
@@ -119,20 +130,31 @@ header {
   color: var(--kd-color-text-title-primary);
   margin: 0;
   order: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Label styling to match existing .label rules */
 .header-text .label {
   @include typography.type-ui-02;
   color: var(--kd-color-text-level-secondary);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Inline slot container (for badge/button/tag) */
 .header-inline {
   display: flex;
   align-items: center;
-  margin-left: 0px;
-  gap: 8px;
+  margin-left: 0;
+  gap: 12px;
+  padding: 4px 8px;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  max-height: 100px;
+  overflow: visible;
+  z-index: 3;
 }
 
 .close {

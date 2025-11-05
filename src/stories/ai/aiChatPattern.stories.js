@@ -1,7 +1,10 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import chatIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat.svg';
+import { classMap } from 'lit/directives/class-map.js';
+import plusIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import chatHistoryIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chat-history.svg';
+import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
+
 import { action } from 'storybook/actions';
 import { useArgs } from 'storybook/preview-api';
 
@@ -31,8 +34,8 @@ export const ChatModal = {
   render: () => {
     const [{ selectedTabId }, updateArgs] = useArgs();
 
-    const handleTabChange = (e) => {
-      updateArgs({ selectedTabId: e.detail.selectedTabId });
+    const emitChange = (tabId) => () => {
+      updateArgs({ selectedTabId: tabId });
     };
 
     return html`
@@ -51,35 +54,83 @@ export const ChatModal = {
             @on-click=${() => action('on-click')()}
           ></kyn-ai-launch-btn>
         </kyn-button-float-container>
-
-        <kyn-button
+        <div
           slot="header-inline"
-          kind="ghost-ai"
-          size="small"
-          style="margin-left: 8px;"
+          style="margin-top: 1px; display: flex; gap: 8px; align-items: flex-start;"
         >
-          <span style="margin-right: 8px;">+</span> New Chat
-        </kyn-button>
+          <kyn-button
+            kind="ghost-ai"
+            size="small"
+            class=${classMap({ selected: selectedTabId === 'chat' })}
+            ?selected=${selectedTabId === 'chat'}
+            @on-click=${emitChange('chat')}
+            aria-pressed=${selectedTabId === 'chat'}
+          >
+            <span
+              slot="icon"
+              style="margin-right: 8px; display: flex; order: -1;"
+              >${unsafeSVG(plusIcon)}</span
+            >
+            New Chat
+          </kyn-button>
+
+          <kyn-button
+            kind="ghost-ai"
+            size="small"
+            class=${classMap({ selected: selectedTabId === 'history' })}
+            ?selected=${selectedTabId === 'history'}
+            @on-click=${emitChange('history')}
+            aria-pressed=${selectedTabId === 'history'}
+          >
+            <span
+              slot="icon"
+              style="margin-right: 8px; display: flex; order: -1;"
+              >${unsafeSVG(chatHistoryIcon)}</span
+            >
+            History
+          </kyn-button>
+
+          <kyn-button
+            kind="ghost-ai"
+            size="small"
+            class=${classMap({ selected: selectedTabId === 'settings' })}
+            ?selected=${selectedTabId === 'settings'}
+            @on-click=${emitChange('settings')}
+            aria-pressed=${selectedTabId === 'settings'}
+          >
+            <span
+              slot="icon"
+              style="margin-right: 8px; display: flex; order: -1;"
+              >${unsafeSVG(settingsIcon)}</span
+            >
+            Settings
+          </kyn-button>
+        </div>
 
         <kyn-tabs
           style="height: 100%;"
           scrollablePanels
           tabStyle="line"
           aiConnected
-          @on-change=${handleTabChange}
+          @on-change=${(e) =>
+            updateArgs({ selectedTabId: e.detail.selectedTabId })}
         >
-          <kyn-tab slot="tabs" id="chat" selected>
-            ${unsafeSVG(chatIcon)} Chat
-          </kyn-tab>
-          <kyn-tab slot="tabs" id="history">
-            ${unsafeSVG(chatHistoryIcon)} History
-          </kyn-tab>
-
-          <kyn-tab-panel tabId="chat" visible>
+          <kyn-tab-panel tabId="chat" ?visible=${selectedTabId === 'chat'}>
             ${ChatMessages.render()}
           </kyn-tab-panel>
-          <kyn-tab-panel tabId="history">
+          <kyn-tab-panel
+            tabId="history"
+            ?visible=${selectedTabId === 'history'}
+          >
             ${ChatHistory.render()}
+          </kyn-tab-panel>
+          <kyn-tab-panel
+            tabId="settings"
+            ?visible=${selectedTabId === 'settings'}
+          >
+            <div class="kd-type--body-02" style="padding: 16px;">
+              Settings content
+            </div>
           </kyn-tab-panel>
         </kyn-tabs>
 
