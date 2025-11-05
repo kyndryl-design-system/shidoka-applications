@@ -39,6 +39,7 @@ export default {
       }
     },
   },
+  external: [/node_modules/],
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
