@@ -114,15 +114,21 @@ header {
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
   flex-wrap: nowrap;
   width: 100%;
 }
 
 .header-text {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
+}
+
+slot[name='header-inline']::slotted(.button-nav-tabs) {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .header-text h1 {
@@ -142,19 +148,6 @@ header {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.header-inline {
-  display: flex;
-  align-items: center;
-  margin-left: 0;
-  gap: 12px;
-  padding: 4px 8px;
-  flex: 0 0 auto;
-  align-self: flex-start;
-  max-height: 100px;
-  overflow: visible;
-  z-index: 3;
 }
 
 .close {

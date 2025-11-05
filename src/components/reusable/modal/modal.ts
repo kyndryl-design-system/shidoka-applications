@@ -185,9 +185,7 @@ export class Modal extends LitElement {
                     : null}
                 </div>
 
-                <div class="header-inline">
-                  <slot name="header-inline"></slot>
-                </div>
+                <slot name="header-inline"></slot>
               </div>
             </header>
           </slot>
