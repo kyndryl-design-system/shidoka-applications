@@ -39,7 +39,12 @@ export default {
       }
     },
   },
-  external: [/node_modules/],
+  external: (id) => {
+    // Treat tslib as external by module name
+    if (id === 'tslib') return true;
+    // Treat all other node_modules as external
+    return id.includes('node_modules');
+  },
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
