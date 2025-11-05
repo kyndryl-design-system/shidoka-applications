@@ -42,6 +42,8 @@ export default {
   external: (id) => {
     // Treat tslib as external by module name
     if (id === 'tslib') return true;
+    // Do NOT treat SVG imports as external
+    if (id.endsWith('.svg')) return false;
     // Treat all other node_modules as external
     return id.includes('node_modules');
   },
