@@ -37,7 +37,7 @@ export default {
 
       toc: {
         contentsSelector: '.sbdocs-content',
-        headingSelector: 'h1, h2, h3 ,h4',
+        headingSelector: ' h2, h3 ,h4',
         title: 'On this page',
       },
     },
@@ -76,25 +76,3 @@ export default {
 };
 
 setCustomElementsManifest(customElements);
-
-if (typeof window !== 'undefined') {
-  // main page title highlight for TOC
-  const ensureTitleId = () => {
-    const t = document.querySelector('.sbdocs-title');
-    if (t && !t.id) t.id = 'main-title';
-  };
-  window.addEventListener('DOMContentLoaded', ensureTitleId);
-  const mo = new MutationObserver(ensureTitleId);
-  mo.observe(document.body, { childList: true, subtree: true });
-
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('.sbdocs-toc a, .sbdocs-toc--custom a');
-    if (!link) return;
-    document
-      .querySelectorAll(
-        '.sbdocs-toc a.is-active, .sbdocs-toc--custom a.is-active'
-      )
-      .forEach((el) => el.classList.remove('is-active'));
-    link.classList.add('is-active');
-  });
-}
