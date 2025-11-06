@@ -120,20 +120,15 @@ const navTabs = (handleTabChange) => html`
       order: -1;
     }
 
-    /* Ensure header layout is flexible; do not force header-inline globally */
     kyn-modal .header-inner {
       display: flex;
       align-items: center;
     }
 
-    /* Default header-text stays neutral so consumers can control spacing */
     kyn-modal .header-text {
       flex: 0 1 auto;
       min-width: 0;
     }
-
-    /* Do not apply a global rule to push header-inline to the right here.
-       Specific variants (button-nav-tabs) will be targeted separately. */
   </style>
 `;
 
