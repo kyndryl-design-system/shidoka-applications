@@ -279,8 +279,8 @@ const handleBeforeCloseSubmit = (returnValue) => {
 export const HeaderInline = {
   args: {
     ...args,
-    titleText: 'Modal Title with Inline',
-    labelText: 'Inline label',
+    titleText: 'Title w/ Inline Badge Example',
+    aiConnected: true,
   },
   render: (args) => {
     return html`
@@ -312,17 +312,22 @@ export const HeaderInline = {
           Open Modal
         </kyn-button>
 
-        <!-- Use the header-inline slot to place a badge/tag/button next to the title -->
-        <kyn-badge
-          slot="header-inline"
-          size="small"
-          style="margin-top: 5px; margin-left:8px;"
-        >
-          Badge Example
-        </kyn-badge>
+        <!-- Use the header-inline slot to place a div/badge/tag/button next to the title -->
+        <div slot="header-inline">
+          <kyn-badge size="small">Example</kyn-badge>
+        </div>
 
         Modal that uses the header-inline slot for a small inline action.
       </kyn-modal>
+
+      <style>
+        [slot='header-inline'] {
+          display: flex;
+          align-items: center;
+          margin-left: 8px;
+          gap: 8px;
+        }
+      </style>
     `;
   },
 };

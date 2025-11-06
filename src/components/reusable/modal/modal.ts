@@ -185,7 +185,9 @@ export class Modal extends LitElement {
                     : null}
                 </div>
 
-                <slot name="header-inline"></slot>
+                ${this.aiConnected
+                  ? html`<slot name="header-inline"></slot>`
+                  : null}
               </div>
             </header>
           </slot>
