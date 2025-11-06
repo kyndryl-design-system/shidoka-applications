@@ -114,6 +114,7 @@ const navTabs = (handleTabChange) => html`
       display: flex;
       align-items: center;
       margin-left: 8px;
+      gap: 8px;
     }
 
     [slot='icon'] {
@@ -206,9 +207,10 @@ const buttonNavTabs = (emitChange, selectedTabId, updateArgs) => html`
 
   <style>
     [slot='header-inline'] {
+      margin-left: auto;
       display: flex;
       align-items: center;
-      margin-left: 8px;
+      gap: 8px;
     }
 
     kyn-modal .header-text {
