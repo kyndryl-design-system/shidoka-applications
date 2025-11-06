@@ -84,7 +84,9 @@ const navTabs = (handleTabChange) => html`
     <kyn-badge status="warning" size="small">Alpha</kyn-badge>
 
     <kyn-button kind="ghost-ai" size="extra-small">
-      <span slot="icon">${unsafeSVG(plusIcon)}</span>
+      <span slot="icon" style="margin-right: 8px; display: flex;order: -1;"
+        >${unsafeSVG(plusIcon)}</span
+      >
       New Chat
     </kyn-button>
   </div>
@@ -115,12 +117,6 @@ const navTabs = (handleTabChange) => html`
       align-items: center;
       margin-left: 8px;
       gap: 8px;
-    }
-
-    [slot='icon'] {
-      margin-right: 8px;
-      display: flex;
-      order: -1;
     }
 
     kyn-modal .header-inner {
