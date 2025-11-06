@@ -80,12 +80,10 @@ export const ChatModal = {
 };
 
 const navTabs = (handleTabChange) => html`
-  <div slot="header-inline">
-    <kyn-badge status="warning" size="small" style="margin-right: 8px;"
-      >Alpha</kyn-badge
-    >
+  <div slot="header-inline" class="nav-tabs">
+    <kyn-badge status="warning" size="small">Alpha</kyn-badge>
 
-    <kyn-button kind="ghost-ai" size="small">
+    <kyn-button kind="ghost-ai" size="extra-small">
       <span slot="icon">${unsafeSVG(plusIcon)}</span>
       New Chat
     </kyn-button>
