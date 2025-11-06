@@ -81,9 +81,11 @@ export const ChatModal = {
 
 const navTabs = (handleTabChange) => html`
   <div slot="header-inline" class="nav-tabs">
-    <kyn-badge status="warning" size="small">Alpha</kyn-badge>
+    <kyn-badge status="warning" size="small" class="version-badge"
+      >Alpha</kyn-badge
+    >
 
-    <kyn-button kind="ghost-ai" size="extra-small">
+    <kyn-button kind="ghost-ai" size="extra-small" class="new-chat-button">
       <span slot="icon" style="margin-right: 8px; display: flex;order: -1;"
         >${unsafeSVG(plusIcon)}</span
       >
@@ -113,20 +115,25 @@ const navTabs = (handleTabChange) => html`
 
   <style>
     [slot='header-inline'] {
+      width: 100%;
       display: flex;
       align-items: center;
-      margin-left: 8px;
       gap: 8px;
     }
 
-    kyn-modal .header-inner {
+    [slot='header-inline'] .version-badge {
+      margin-left: 8px;
       display: flex;
       align-items: center;
+      gap: 8px;
     }
 
-    kyn-modal .header-text {
-      flex: 0 1 auto;
-      min-width: 0;
+    [slot='header-inline'] .new-chat-button {
+      margin-left: auto;
+      margin-right: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
   </style>
 `;
