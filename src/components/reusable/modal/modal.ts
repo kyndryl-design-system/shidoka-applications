@@ -117,23 +117,6 @@ export class Modal extends LitElement {
   @query('slot[name="header"]')
   accessor _headerSlot!: HTMLSlotElement;
 
-  /** Whether a header was provided via the header slot */
-  @property({ type: Boolean })
-  accessor hasSlottedHeader = false;
-
-  private _checkHeaderSlot = () => {
-    const assigned =
-      (this._headerSlot &&
-        this._headerSlot.assignedElements({ flatten: true })) ||
-      [];
-    this.hasSlottedHeader = assigned.length > 0;
-  };
-
-  override firstUpdated() {
-    this._checkHeaderSlot();
-    this._headerSlot?.addEventListener('slotchange', this._checkHeaderSlot);
-  }
-
   /** Determines if the component is themed for GenAI.*/
   @property({ type: Boolean, reflect: true })
   accessor aiConnected = false;
@@ -159,9 +142,7 @@ export class Modal extends LitElement {
 
       <dialog
         class="${classMap(classes)}"
-        aria-labelledby=${ifDefined(
-          this.hasSlottedHeader ? undefined : 'dialogLabel'
-        )}
+        aria-labelledby="dialogLabel"
         tabindex="-1"
         @cancel=${(e: Event) => this._closeModal(e, 'cancel')}
       >
@@ -185,15 +166,7 @@ export class Modal extends LitElement {
                   : null}
               </div>
 
-              ${this.aiConnected
-                ? html`<slot name="header-inline"></slot>
-                    <div class="header-slot-container">
-                      <slot
-                        name="header"
-                        @slotchange=${this._checkHeaderSlot}
-                      ></slot>
-                    </div>`
-                : null}
+              <slot name="header-inline"></slot>
             </div>
           </header>
 
