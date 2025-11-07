@@ -12,7 +12,6 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
  * Modal.
  * @slot unnamed - Slot for modal body content.
  * @slot anchor - Slot for the anchor button content.
- * @slot header - Slot for a fully custom header; when provided it replaces the default title/label header.
  * @slot header-inline - Slot for an inline header action (badge/button) rendered next to the title/label when using the default header.
  * @slot footer - Slot for the footer content which replaces the ok, cancel, and second ary buttons.
  * @fires on-close - Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`
