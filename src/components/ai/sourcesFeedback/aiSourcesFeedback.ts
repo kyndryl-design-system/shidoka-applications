@@ -37,7 +37,14 @@ const _defaultTextStrings = {
  * @slot copy - copy button
  * @slot sources - source cards in source panel.
  * @slot feedback-form - Positive feedback form.
- * @fires on-toggle - Emits the `opened` state when the panel item opens/closes. `detail:{ sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string }`
+ * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
+ * <pre><code>
+ * detail: {
+ *   sourcesOpened: boolean,
+ *   feedbackOpened: boolean,
+ *   selectedFeedbackType: string
+ * }
+ * </code></pre>
  * @fires on-feedback-deselected - Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`
  */
 
