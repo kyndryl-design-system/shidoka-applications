@@ -369,7 +369,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     if (value === 'selectAll') {
       if (e.detail.checked) {
         this.value = this.checkboxes
-          .filter((checkbox: any) => !checkbox.disabled && !checkbox.readonly)
+          .filter((checkbox: any) => {
+            const visible = checkbox.style && checkbox.style.display !== 'none';
+            return visible && !checkbox.disabled && !checkbox.readonly;
+          })
           .map((checkbox: any) => checkbox.value);
       } else {
         this.value = [];
