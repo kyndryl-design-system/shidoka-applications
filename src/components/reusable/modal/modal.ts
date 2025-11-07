@@ -2,7 +2,6 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import ModalScss from './modal.scss?inline';
 
 import '../button';
@@ -110,12 +109,6 @@ export class Modal extends LitElement {
    */
   @query('dialog')
   accessor _dialog!: any;
-
-  /** Optional slotted header element
-   * @internal
-   */
-  @query('slot[name="header"]')
-  accessor _headerSlot!: HTMLSlotElement;
 
   /** Determines if the component is themed for GenAI.*/
   @property({ type: Boolean, reflect: true })
