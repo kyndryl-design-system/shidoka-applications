@@ -104,6 +104,44 @@ form {
 header {
   margin-bottom: 32px;
   margin-right: 32px;
+  flex: 0 0 auto;
+  max-height: 100px;
+  overflow: visible;
+  position: relative;
+  padding-right: 8px;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.header-text {
+  flex: 0 1 auto;
+  width: auto;
+}
+
+.header-text h1 {
+  @include typography.type-body-01;
+  color: var(--kd-color-text-title-primary);
+  margin: 0;
+  order: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-text .label {
+  @include typography.type-ui-02;
+  color: var(--kd-color-text-level-secondary);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .close {

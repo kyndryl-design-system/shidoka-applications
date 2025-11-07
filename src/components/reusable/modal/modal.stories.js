@@ -275,3 +275,59 @@ const handleBeforeCloseSubmit = (returnValue) => {
     return true;
   }
 };
+
+export const HeaderInline = {
+  args: {
+    ...args,
+    titleText: 'Title w/ Inline Badge Example',
+    aiConnected: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-modal
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        okText=${args.okText}
+        cancelText=${args.cancelText}
+        closeText=${args.closeText}
+        ?destructive=${args.destructive}
+        ?okDisabled=${args.okDisabled}
+        ?hideFooter=${args.hideFooter}
+        ?gradientBackground=${args.gradientBackground}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?secondaryDisabled=${args.secondaryDisabled}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?aiConnected=${args.aiConnected}
+        ?disableScroll=${args.disableScroll}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-button
+          slot="anchor"
+          kind=${args.aiConnected ? 'primary-ai' : 'primary'}
+        >
+          Open Modal
+        </kyn-button>
+
+        <!-- Use the header-inline slot to place a div/badge/tag/button next to the title -->
+        <div slot="header-inline">
+          <kyn-badge size="small">Example</kyn-badge>
+        </div>
+
+        Modal that uses the header-inline slot for a small inline action.
+      </kyn-modal>
+
+      <style>
+        [slot='header-inline'] {
+          display: flex;
+          align-items: center;
+          margin-left: 8px;
+          gap: 8px;
+        }
+      </style>
+    `;
+  },
+};
