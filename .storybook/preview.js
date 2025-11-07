@@ -34,6 +34,12 @@ export default {
         // excludeDecorators: true,
         type: 'code',
       },
+
+      toc: {
+        contentsSelector: '.sbdocs-content',
+        headingSelector: ' h2, h3 ,h4',
+        title: 'On this page',
+      },
     },
 
     backgrounds: { disable: true },

@@ -32,6 +32,29 @@
     padding: var(--kd-page-gutter) !important;
   }
 
+  .sbdocs-toc--custom {
+    width: 16rem !important;
+    nav > h2 {
+      color: #3d3c3c;
+    }
+    .toc-link:hover {
+      color: #029cfd !important;
+    }
+  }
+
+  /* Hide custom TOC on smaller screens */
+  @media (max-width: 1024px) {
+    .sbdocs-toc--custom {
+      display: none !important;
+    }
+
+    /* Main docs content takes full width when TOC is hidden */
+    .sbdocs-content {
+      margin-right: 0 !important;
+      max-width: 100% !important;
+    }
+  }
+
   .sbdocs-content {
     max-width: var(--kd-grid-max-width) !important;
   }
