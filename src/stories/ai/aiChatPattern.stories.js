@@ -47,7 +47,6 @@ export const ChatModal = {
       <kyn-modal
         size="xl"
         titleText="Gen AI"
-        header-inline-align="right"
         aiConnected
         gradientBackground
         disableScroll
@@ -114,23 +113,23 @@ const navTabs = (handleTabChange) => html`
   </kyn-tabs>
 
   <style>
-    [slot='header-inline'] {
+    .nav-tabs {
+      flex: 1 1 auto;
       width: 100%;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    [slot='header-inline'] .version-badge {
+    .nav-tabs .version-badge {
       margin-left: 8px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    [slot='header-inline'] .new-chat-button {
+    .nav-tabs .new-chat-button {
       margin-left: auto;
-      margin-right: 8px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -209,7 +208,7 @@ const buttonNavTabs = (emitChange, selectedTabId, updateArgs) => html`
   </kyn-tabs>
 
   <style>
-    [slot='header-inline'] {
+    .button-nav-tabs {
       margin-left: auto;
       display: flex;
       align-items: center;

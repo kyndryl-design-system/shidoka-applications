@@ -175,22 +175,27 @@ export class Modal extends LitElement {
           >
             <span slot="icon">${unsafeSVG(closeIcon)}</span>
           </kyn-button>
-          <slot name="header" @slotchange=${this._checkHeaderSlot}>
-            <header>
-              <div class="header-inner">
-                <div class="header-text">
-                  <h1 id="dialogLabel">${this.titleText}</h1>
-                  ${this.labelText !== ''
-                    ? html`<span class="label">${this.labelText}</span>`
-                    : null}
-                </div>
 
-                ${this.aiConnected
-                  ? html`<slot name="header-inline"></slot>`
+          <header>
+            <div class="header-inner">
+              <div class="header-text">
+                <h1 id="dialogLabel">${this.titleText}</h1>
+                ${this.labelText !== ''
+                  ? html`<span class="label">${this.labelText}</span>`
                   : null}
               </div>
-            </header>
-          </slot>
+
+              ${this.aiConnected
+                ? html`<slot name="header-inline"></slot>
+                    <div class="header-slot-container">
+                      <slot
+                        name="header"
+                        @slotchange=${this._checkHeaderSlot}
+                      ></slot>
+                    </div>`
+                : null}
+            </div>
+          </header>
 
           <div
             class="body ${this.disableScroll ? 'disableScroll' : ''}"
@@ -243,11 +248,6 @@ export class Modal extends LitElement {
                             ${this.cancelText}
                           </kyn-button>
                         `}
-                    <!--
-            <div class="custom-actions">
-              <slot name="actions"></slot>
-            </div>
-            -->
                   </div>
                 </slot>
               `
