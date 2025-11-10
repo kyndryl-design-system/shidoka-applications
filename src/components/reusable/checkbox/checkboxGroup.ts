@@ -520,16 +520,32 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     });
 
     if (this.selectAll) {
-      const CheckedBoxesCount = this.checkboxes.filter(
-        (checkbox) => checkbox.checked
+      const allEnabled = this.checkboxes.filter(
+        (c: any) => !c.disabled && !c.readonly
+      );
+
+      let visibleRelevant = this.filteredCheckboxes.filter(
+        (c: any) => !c.disabled && !c.readonly
+      );
+      if (this.limitCheckboxes && !this.limitRevealed) {
+        visibleRelevant = visibleRelevant.slice(0, this.limitCount);
+      }
+
+      const useVisible =
+        (this.searchTerm && this.searchTerm.length > 0) ||
+        (this.limitCheckboxes && !this.limitRevealed);
+
+      const relevant = useVisible ? visibleRelevant : allEnabled;
+
+      const CheckedBoxesCount = relevant.filter(
+        (checkbox: any) => checkbox.checked
       ).length;
 
       this.selectAllChecked =
-        this.checkboxes.length > 0 &&
-        CheckedBoxesCount === this.checkboxes.length;
+        relevant.length > 0 && CheckedBoxesCount === relevant.length;
 
       this.selectAllIndeterminate =
-        CheckedBoxesCount < this.checkboxes.length && CheckedBoxesCount > 0;
+        CheckedBoxesCount > 0 && CheckedBoxesCount < relevant.length;
     }
   }
 
