@@ -398,7 +398,6 @@ export class CheckboxGroup extends FormMixin(LitElement) {
 
     if (this.disabled || this.readonly) {
       e.stopPropagation();
-
       const target = e.target as HTMLInputElement & { indeterminate?: boolean };
       if (target) {
         const enabled = this.checkboxes.filter(
@@ -407,10 +406,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
         const allSelected =
           enabled.length > 0 &&
           enabled.every((c: any) => this.value.includes(c.value));
-
         const shouldBeChecked =
           value === 'selectAll' ? allSelected : this.value.includes(value);
-
         target.checked = shouldBeChecked;
         if (typeof target.indeterminate === 'boolean')
           target.indeterminate = false;
@@ -426,12 +423,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
         targets.forEach((c: any) => next.add(c.value));
         this.value = Array.from(next);
       } else {
-        if (this.selectAllScope === 'legacy') {
-          this.value = [];
-        } else {
-          const toRemove = new Set(targets.map((c: any) => c.value));
-          this.value = this.value.filter((v) => !toRemove.has(v));
-        }
+        const toRemove = new Set(targets.map((c: any) => c.value));
+        this.value = this.value.filter((v) => !toRemove.has(v));
       }
 
       this.checkboxes.forEach((c: any) => (c.indeterminate = false));
@@ -447,7 +440,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
 
   private _emitChangeEvent() {
     const event = new CustomEvent('on-checkbox-group-change', {
-      detail: { value: this.value },
+      detail: { value: [...this.value], bubbles: true, composed: true },
     });
     this.dispatchEvent(event);
   }
