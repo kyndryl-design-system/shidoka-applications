@@ -296,16 +296,50 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       checkbox.checked = this.value.includes(checkbox.value);
     });
 
-    const CheckedBoxesCount = this.checkboxes.filter(
-      (checkbox) => checkbox.checked
+    const allEnabled = this.checkboxes.filter(
+      (c: any) => !c.disabled && !c.readonly
+    );
+
+    let visibleRelevant = this.filteredCheckboxes.filter(
+      (c: any) => !c.disabled && !c.readonly
+    );
+    if (this.limitCheckboxes && !this.limitRevealed) {
+      visibleRelevant = visibleRelevant.slice(0, this.limitCount);
+    }
+
+    const useVisible =
+      (this.searchTerm && this.searchTerm.length > 0) ||
+      (this.limitCheckboxes && !this.limitRevealed);
+
+    const relevant = useVisible ? visibleRelevant : allEnabled;
+
+    const CheckedBoxesCount = relevant.filter(
+      (checkbox: any) => checkbox.checked
     ).length;
 
     this.selectAllChecked =
-      this.checkboxes.length > 0 &&
-      CheckedBoxesCount === this.checkboxes.length;
-
+      relevant.length > 0 && CheckedBoxesCount === relevant.length;
     this.selectAllIndeterminate =
-      CheckedBoxesCount < this.checkboxes.length && CheckedBoxesCount > 0;
+      CheckedBoxesCount > 0 && CheckedBoxesCount < relevant.length;
+
+    const selectAllEl = this.querySelector('.select-all') as any;
+    if (selectAllEl) {
+      selectAllEl.checked = this.selectAllChecked;
+      selectAllEl.indeterminate = this.selectAllIndeterminate;
+
+      const nativeInput =
+        selectAllEl.shadowRoot?.querySelector('input') ??
+        selectAllEl.querySelector('input');
+      if (nativeInput) {
+        nativeInput.checked = this.selectAllChecked;
+        if (typeof nativeInput.indeterminate === 'boolean') {
+          nativeInput.indeterminate = this.selectAllIndeterminate;
+        }
+      }
+
+      selectAllEl.requestUpdate?.();
+    }
+
     const entries = new FormData();
     this.value.forEach((value) => {
       entries.append(this.name, value);
@@ -327,13 +361,11 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     if (interacted || this.invalidText !== '') {
       this._internals.setValidity(Validity, ValidationMessage);
 
-      // set internal validation message if value was changed by user input
       if (interacted) {
         this._internalValidationMsg = InternalMsg;
       }
     }
 
-    // focus the first checkbox to show validity
     if (report) {
       this._internals.reportValidity();
     }
@@ -368,9 +400,13 @@ export class CheckboxGroup extends FormMixin(LitElement) {
 
     if (value === 'selectAll') {
       if (e.detail.checked) {
-        this.value = this.checkboxes
-          .filter((checkbox: any) => !checkbox.disabled && !checkbox.readonly)
-          .map((checkbox: any) => checkbox.value);
+        let candidates = this.filteredCheckboxes.filter(
+          (c: any) => !c.disabled && !c.readonly
+        );
+        if (this.limitCheckboxes && !this.limitRevealed) {
+          candidates = candidates.slice(0, this.limitCount);
+        }
+        this.value = candidates.map((c: any) => c.value);
       } else {
         this.value = [];
       }
@@ -429,6 +465,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       }
     });
 
+    this._updateCheckboxStates();
+
     const event = new CustomEvent('on-search', {
       detail: { searchTerm: this.searchTerm },
     });
@@ -449,6 +487,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
         }
       }
     });
+
+    this._updateCheckboxStates();
 
     const event = new CustomEvent('on-limit-toggle', {
       detail: { expanded: this.limitRevealed },
