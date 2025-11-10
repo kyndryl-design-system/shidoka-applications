@@ -440,7 +440,9 @@ export class CheckboxGroup extends FormMixin(LitElement) {
 
   private _emitChangeEvent() {
     const event = new CustomEvent('on-checkbox-group-change', {
-      detail: { value: [...this.value], bubbles: true, composed: true },
+      detail: { value: [...this.value] },
+      bubbles: true,
+      composed: true,
     });
     this.dispatchEvent(event);
   }
