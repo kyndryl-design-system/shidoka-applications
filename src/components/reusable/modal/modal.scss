@@ -7,13 +7,18 @@
   display: inline-block;
 }
 
+dialog:has(:focus-visible) {
+  border-color: var(--kd-color-border-variants-focus);
+}
+
 dialog {
   @include elevation.shadow(3);
   padding: 32px;
   color: inherit;
-  background: var(--kd-color-background-container-default);
+  background: var(--kd-color-background-forms-default);
   border-radius: 8px;
-  border: 1px solid var(--kd-color-border-variants-light);
+  border: 1px solid var(--kd-color-border-forms-default);
+  transition: border-color 150ms ease-in-out;
   min-width: 288px;
   max-width: calc(100% - 32px);
   max-height: calc(100% - 32px);
@@ -25,8 +30,16 @@ dialog {
     animation: dialog-in 400ms ease-out;
   }
 
+  &:has(> *:hover) {
+    border-color: var(--kd-color-border-ui-hover);
+  }
+
   &::backdrop {
     background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  &:has(> *:focus-visible) {
+    border-color: var(--kd-color-border-variants-focus);
   }
 
   &.size--md {
