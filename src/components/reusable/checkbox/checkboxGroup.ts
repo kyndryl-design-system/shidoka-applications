@@ -235,11 +235,9 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
-  }
 
-  override updated(changedProps: any) {
-    if (!changedProps.has('invalidText')) {
-      this._onUpdated(changedProps);
+    if (changedProps.has('value')) {
+      this._updateCheckboxStates();
     }
 
     if (changedProps.has('invalidText')) {
@@ -248,8 +246,12 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       this.checkboxes.forEach((checkbox: any) => {
         checkbox.invalid = this._isInvalid;
       });
-    } else if (changedProps.has('value')) {
-      this._updateCheckboxStates();
+    }
+  }
+
+  override updated(changedProps: any) {
+    if (!changedProps.has('invalidText')) {
+      this._onUpdated(changedProps);
     }
 
     if (changedProps.has('name')) {
