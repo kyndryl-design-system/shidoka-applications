@@ -240,6 +240,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       this._updateCheckboxStates();
     }
 
+    if (changedProps.has('selectAllScope')) this._updateCheckboxStates();
+
     if (changedProps.has('invalidText')) {
       this._isInvalid =
         this.invalidText !== '' || this._internalValidationMsg !== '';
@@ -250,38 +252,33 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   }
 
   override updated(changedProps: any) {
-    if (!changedProps.has('invalidText')) {
-      this._onUpdated(changedProps);
-    }
+    if (!changedProps.has('invalidText')) this._onUpdated(changedProps);
 
     if (changedProps.has('name')) {
-      this.checkboxes.forEach((checkbox: any) => {
-        checkbox.name = this.name;
-      });
+      this.checkboxes.forEach((c: any) => (c.name = this.name));
+      const entries = new FormData();
+      this.value.forEach((v) => entries.append(this.name, v));
+      this._internals.setFormValue(entries);
     }
 
     if (changedProps.has('required')) {
-      this.checkboxes.forEach((checkbox: any) => {
-        checkbox.required = this.required;
-      });
+      this.checkboxes.forEach((c: any) => (c.required = this.required));
     }
 
     if (
       changedProps.has('disabled') &&
       changedProps.get('disabled') !== undefined
     ) {
-      this.checkboxes.forEach((checkbox: any) => {
-        checkbox.disabled = this.disabled;
-      });
+      this.checkboxes.forEach((c: any) => (c.disabled = this.disabled));
+      this._updateCheckboxStates();
     }
 
     if (
       changedProps.has('readonly') &&
       changedProps.get('readonly') !== undefined
     ) {
-      this.checkboxes.forEach((checkbox: any) => {
-        checkbox.readonly = this.readonly;
-      });
+      this.checkboxes.forEach((c: any) => (c.readonly = this.readonly));
+      this._updateCheckboxStates();
     }
 
     if (
@@ -331,36 +328,44 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     }
   }
 
+  private _computeSelectAllFromValues() {
+    const relevant = this._scopeRelevant();
+    const relevantValues = new Set(relevant.map((c: any) => c.value));
+    const total = relevantValues.size;
+    if (total === 0) return { checked: false, indeterminate: false };
+
+    let selected = 0;
+    for (const v of this.value) if (relevantValues.has(v)) selected++;
+    return {
+      checked: selected === total,
+      indeterminate: selected > 0 && selected < total,
+    };
+  }
+
   private _updateCheckboxStates() {
-    this.checkboxes.forEach((checkbox: any) => {
-      checkbox.checked = this.value.includes(checkbox.value);
+    this.checkboxes.forEach((c: any) => {
+      c.checked = this.value.includes(c.value);
     });
 
-    const relevant = this._scopeRelevant();
-    const checkedCount = relevant.filter((c: any) => c.checked).length;
-
-    this.selectAllChecked =
-      relevant.length > 0 && checkedCount === relevant.length;
-    this.selectAllIndeterminate =
-      checkedCount > 0 && checkedCount < relevant.length;
+    const { checked, indeterminate } = this._computeSelectAllFromValues();
+    this.selectAllChecked = checked;
+    this.selectAllIndeterminate = indeterminate;
 
     const selectAllEl = this.querySelector('.select-all') as any;
     if (selectAllEl) {
-      selectAllEl.checked = this.selectAllChecked;
-      selectAllEl.indeterminate = this.selectAllIndeterminate;
-
-      const nativeInput =
+      selectAllEl.checked = checked;
+      selectAllEl.indeterminate = indeterminate;
+      const native =
         (selectAllEl.shadowRoot?.querySelector(
           'input'
         ) as HTMLInputElement | null) ??
         (selectAllEl.querySelector('input') as HTMLInputElement | null);
-      if (nativeInput) {
-        nativeInput.checked = this.selectAllChecked;
-        if (typeof (nativeInput as any).indeterminate === 'boolean') {
-          (nativeInput as any).indeterminate = this.selectAllIndeterminate;
+      if (native) {
+        native.checked = checked;
+        if (typeof (native as any).indeterminate === 'boolean') {
+          (native as any).indeterminate = indeterminate;
         }
       }
-
       selectAllEl.requestUpdate?.();
     }
 
@@ -369,7 +374,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     this._internals.setFormValue(entries);
   }
 
-  private _validate(interacted: Boolean, report: Boolean) {
+  private _validate(interacted: boolean, report: boolean) {
     const Validity = {
       customError: this.invalidText !== '',
       valueMissing: this.required && !this.value.length,
@@ -402,17 +407,16 @@ export class CheckboxGroup extends FormMixin(LitElement) {
       e.stopPropagation();
       const target = e.target as HTMLInputElement & { indeterminate?: boolean };
       if (target) {
-        const enabled = this.checkboxes.filter(
-          (c: any) => !c.disabled && !c.readonly
-        );
-        const allSelected =
-          enabled.length > 0 &&
-          enabled.every((c: any) => this.value.includes(c.value));
-        const shouldBeChecked =
-          value === 'selectAll' ? allSelected : this.value.includes(value);
-        target.checked = shouldBeChecked;
-        if (typeof target.indeterminate === 'boolean')
-          target.indeterminate = false;
+        if (value === 'selectAll') {
+          const { checked, indeterminate } = this._computeSelectAllFromValues();
+          target.checked = checked;
+          if (typeof target.indeterminate === 'boolean')
+            target.indeterminate = indeterminate;
+        } else {
+          target.checked = this.value.includes(value);
+          if (typeof target.indeterminate === 'boolean')
+            target.indeterminate = false;
+        }
       }
       return;
     }
@@ -514,56 +518,23 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   }
 
   private _handleSlotChange() {
-    const previousCheckboxes = this.checkboxes;
-    this.checkboxes = Array.from(this.querySelectorAll('kyn-checkbox'));
+    const prev = this.checkboxes;
+    this.checkboxes = Array.from(
+      this.querySelectorAll('kyn-checkbox:not(.select-all)')
+    );
     this.filteredCheckboxes = this.checkboxes;
 
-    if (!previousCheckboxes.length) {
-      this._updateChildren();
-    }
-
+    if (!prev.length) this._updateChildren();
     this._toggleRevealed(this.limitRevealed);
   }
 
   private _updateChildren() {
-    this.checkboxes.forEach((checkbox) => {
-      checkbox.disabled = checkbox.hasAttribute('disabled') || this.disabled;
-      checkbox.readonly = checkbox.hasAttribute('readonly') || this.readonly;
-      if (this.value && this.value.length) {
-        checkbox.checked = this.value.includes(checkbox.value);
-      } else {
-        checkbox.checked = false;
-      }
+    this.checkboxes.forEach((c) => {
+      c.disabled = c.hasAttribute('disabled') || this.disabled;
+      c.readonly = c.hasAttribute('readonly') || this.readonly;
+      c.checked = !!this.value?.length && this.value.includes(c.value);
     });
-
-    if (this.selectAll) {
-      const allEnabled = this.checkboxes.filter(
-        (c: any) => !c.disabled && !c.readonly
-      );
-
-      let visibleRelevant = this.filteredCheckboxes.filter(
-        (c: any) => !c.disabled && !c.readonly
-      );
-      if (this.limitCheckboxes && !this.limitRevealed) {
-        visibleRelevant = visibleRelevant.slice(0, this.limitCount);
-      }
-
-      const useVisible =
-        (this.searchTerm && this.searchTerm.length > 0) ||
-        (this.limitCheckboxes && !this.limitRevealed);
-
-      const relevant = useVisible ? visibleRelevant : allEnabled;
-
-      const CheckedBoxesCount = relevant.filter(
-        (checkbox: any) => checkbox.checked
-      ).length;
-
-      this.selectAllChecked =
-        relevant.length > 0 && CheckedBoxesCount === relevant.length;
-
-      this.selectAllIndeterminate =
-        CheckedBoxesCount > 0 && CheckedBoxesCount < relevant.length;
-    }
+    this._updateCheckboxStates();
   }
 
   private _handleSubgroupChange(e: any) {
@@ -630,35 +601,26 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     this._emitChangeEvent();
   }
 
+  private _onCheckboxChange = (e: any) => this._handleCheckboxChange(e);
+  private _onCheckboxSubgroupChange = (e: any) => this._handleSubgroupChange(e);
+
   override connectedCallback() {
     super.connectedCallback();
-
-    // preserve FormMixin connectedCallback function
     this._onConnected();
-
-    // capture child checkboxes change event
-    this.addEventListener('on-checkbox-change', (e: any) =>
-      this._handleCheckboxChange(e)
-    );
-
-    // capture subgroup change event
-    this.addEventListener('on-checkbox-subgroup-change', (e: any) =>
-      this._handleSubgroupChange(e)
+    this.addEventListener('on-checkbox-change', this._onCheckboxChange);
+    this.addEventListener(
+      'on-checkbox-subgroup-change',
+      this._onCheckboxSubgroupChange
     );
   }
 
   override disconnectedCallback() {
-    // preserve FormMixin disconnectedCallback function
     this._onDisconnected();
-
-    this.removeEventListener('on-checkbox-change', (e: any) =>
-      this._handleCheckboxChange(e)
+    this.removeEventListener('on-checkbox-change', this._onCheckboxChange);
+    this.removeEventListener(
+      'on-checkbox-subgroup-change',
+      this._onCheckboxSubgroupChange
     );
-
-    this.removeEventListener('on-checkbox-subgroup-change', (e: any) =>
-      this._handleSubgroupChange(e)
-    );
-
     super.disconnectedCallback();
   }
 }
