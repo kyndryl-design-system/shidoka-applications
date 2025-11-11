@@ -63,13 +63,13 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor selectAllChecked = false;
 
-  /** Is "Select All" indeterminate.
+  /** Is "Select All" indeterminate boolean.
    * @internal
    */
   @property({ type: Boolean })
   accessor selectAllIndeterminate = false;
 
-  /** Is "Select All" indeterminate.
+  /** Select All scope behavior.
    * @internal
    */
   @property({ type: String, attribute: false })
