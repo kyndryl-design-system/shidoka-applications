@@ -42,7 +42,13 @@ export default {
   },
   external: (id) => {
     // Treat tslib as external by module name
-    if (id === 'tslib') return true;
+    if (
+      id === 'tslib' ||
+      id === 'flatpickr' ||
+      id.startsWith('flatpickr/') ||
+      id.startsWith('prismjs')
+    )
+      return true;
     // Do NOT treat SVG imports as external
     if (id.endsWith('.svg')) return false;
     // Treat all other node_modules as external
