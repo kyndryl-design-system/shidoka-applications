@@ -1,5 +1,5 @@
-import { Locale } from 'flatpickr/dist/types/locale';
-import { default as English } from 'flatpickr/dist/esm/l10n/default.js';
+import type { CustomLocale } from 'flatpickr/dist/types/locale';
+import English from 'flatpickr/dist/esm/l10n/default.js';
 
 export const langsArray = [
   'ar', // Arabic
@@ -64,12 +64,13 @@ export const langsArray = [
   'zh_tw', // Mandarin Traditional
   'zh', // Mandarin
 ] as const;
-
 export type SupportedLocale = (typeof langsArray)[number];
 
-const localeCache: Record<string, Partial<Locale>> = {};
+const alias = (code: SupportedLocale) => (code === 'zh_tw' ? 'zh-tw' : code);
 
-const loaderMap: Record<SupportedLocale, () => Promise<any>> = {
+type Loader = () => Promise<any>;
+
+const loaders: Record<SupportedLocale, Loader> = {
   ar: () => import('flatpickr/dist/esm/l10n/ar.js'),
   at: () => import('flatpickr/dist/esm/l10n/at.js'),
   az: () => import('flatpickr/dist/esm/l10n/az.js'),
@@ -82,6 +83,7 @@ const loaderMap: Record<SupportedLocale, () => Promise<any>> = {
   cy: () => import('flatpickr/dist/esm/l10n/cy.js'),
   da: () => import('flatpickr/dist/esm/l10n/da.js'),
   de: () => import('flatpickr/dist/esm/l10n/de.js'),
+  en: () => import('flatpickr/dist/esm/l10n/default.js'),
   eo: () => import('flatpickr/dist/esm/l10n/eo.js'),
   es: () => import('flatpickr/dist/esm/l10n/es.js'),
   et: () => import('flatpickr/dist/esm/l10n/et.js'),
@@ -128,45 +130,49 @@ const loaderMap: Record<SupportedLocale, () => Promise<any>> = {
   uz: () => import('flatpickr/dist/esm/l10n/uz.js'),
   uz_latn: () => import('flatpickr/dist/esm/l10n/uz_latn.js'),
   vn: () => import('flatpickr/dist/esm/l10n/vn.js'),
-  zh_tw: () => import('flatpickr/dist/esm/l10n/zh-tw.js'),
   zh: () => import('flatpickr/dist/esm/l10n/zh.js'),
-  en: () => Promise.resolve({} as Partial<Locale>),
+  zh_tw: () => import('flatpickr/dist/esm/l10n/zh-tw.js'),
 };
 
-export function isSupportedLocale(locale: string): boolean {
+const cache: Partial<Record<SupportedLocale, CustomLocale>> = {};
+
+const resolveLocaleFromModule = (mod: any, key: string): CustomLocale => {
+  const pick =
+    mod?.default?.[key] ??
+    mod?.default ??
+    mod?.[key] ??
+    Object.values(mod ?? {}).find((v) => v && typeof v === 'object');
+  return (
+    pick ? { ...(English as object), ...(pick as object) } : English
+  ) as CustomLocale;
+};
+
+export const isSupportedLocale = (
+  locale: string
+): locale is SupportedLocale => {
+  const base = locale.split('-')[0].toLowerCase();
+  return (langsArray as readonly string[]).includes(base);
+};
+
+export async function loadLocale(locale: string): Promise<CustomLocale> {
   const base = locale.split('-')[0].toLowerCase() as SupportedLocale;
-  return langsArray.includes(base);
+  if (base === 'en') return English as CustomLocale;
+  if (!isSupportedLocale(base)) return English as CustomLocale;
+  if (cache[base]) return cache[base]!;
+  const mod = await loaders[base]();
+  const merged = Object.freeze(resolveLocaleFromModule(mod, alias(base)));
+  cache[base] = merged;
+  return merged;
 }
 
-export async function loadLocale(locale: string): Promise<Partial<Locale>> {
-  if (locale === 'en') return English;
-  if (localeCache[locale]) return localeCache[locale];
-
-  const base = locale.split('-')[0].toLowerCase() as SupportedLocale;
-  if (!isSupportedLocale(locale)) {
-    console.warn(`Unsupported locale "${locale}". Falling back to English.`);
-    return English;
-  }
-
-  const importer = loaderMap[base];
-  try {
-    const module = await importer();
-    const config =
-      (module as any)[base] ??
-      (module.default && (module.default as any)[base]) ??
-      module.default;
-
-    if (!config) {
-      console.warn(
-        `Locale data missing for "${locale}". Falling back to English.`
-      );
-      return English;
-    }
-
-    localeCache[locale] = config;
-    return config;
-  } catch (error) {
-    console.error(`Error loading locale "${locale}":`, error);
-    return English;
-  }
+export async function preloadAllLocales(): Promise<void> {
+  await Promise.all(
+    (langsArray as readonly SupportedLocale[]).map(async (code) => {
+      if (!cache[code]) {
+        const mod = await loaders[code]();
+        cache[code] = Object.freeze(resolveLocaleFromModule(mod, alias(code)));
+      }
+      return null;
+    })
+  );
 }
