@@ -3,7 +3,7 @@ import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
-import English from 'flatpickr/dist/l10n/default.js';
+import { default as English } from 'flatpickr/dist/esm/l10n/default.js';
 import { loadLocale as loadLocaleFromLangs } from '../flatpickrLangs';
 
 import { fixedOverlayPositionPlugin } from '../helpers/flatpickrOverlayPosition';
