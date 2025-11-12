@@ -2,67 +2,67 @@ import type { CustomLocale } from 'flatpickr/dist/types/locale';
 import English from 'flatpickr/dist/esm/l10n/default.js';
 
 export const langsArray = [
-  'ar',
-  'at',
-  'az',
-  'be',
-  'bg',
-  'bn',
-  'bs',
-  'cat',
-  'cs',
-  'cy',
-  'da',
-  'de',
-  'en',
-  'eo',
-  'es',
-  'et',
-  'fa',
-  'fi',
-  'fo',
-  'fr',
-  'ga',
-  'gr',
-  'he',
-  'hi',
-  'hr',
-  'hu',
-  'id',
-  'is',
-  'it',
-  'ja',
-  'ka',
-  'km',
-  'ko',
-  'kz',
-  'lt',
-  'lv',
-  'mk',
-  'mn',
-  'ms',
-  'my',
-  'nl',
-  'no',
-  'pa',
-  'pl',
-  'pt',
-  'ro',
-  'ru',
-  'si',
-  'sk',
-  'sl',
-  'sq',
-  'sr',
-  'sv',
-  'th',
-  'tr',
-  'uk',
-  'uz',
-  'uz_latn',
-  'vn',
-  'zh_tw',
-  'zh',
+  'ar', // Arabic
+  'at', // Austria
+  'az', // Azerbaijan
+  'be', // Belarusian
+  'bg', // Bulgarian
+  'bn', // Bangla
+  'bs', // Bosnia
+  'cat', // Catalan
+  'cs', // Czech
+  'cy', // Welsh
+  'da', // Danish
+  'de', // German
+  'en', // English
+  'eo', // Esperanto
+  'es', // Spanish
+  'et', // Estonian
+  'fa', // Persian
+  'fi', // Finnish
+  'fo', // Faroese
+  'fr', // French
+  'ga', // Gaelic
+  'gr', // Greek
+  'he', // Hebrew
+  'hi', // Hindi
+  'hr', // Croatian
+  'hu', // Hungarian
+  'id', // Indonesian
+  'is', // Icelandic
+  'it', // Italian
+  'ja', // Japanese
+  'ka', // Georgian
+  'km', // Khmer
+  'ko', // Korean
+  'kz', // Kazakh
+  'lt', // Lithuanian
+  'lv', // Latvian
+  'mk', // Macedonian
+  'mn', // Mongolian
+  'ms', // Malaysian
+  'my', // Burmese
+  'nl', // Dutch
+  'no', // Norwegian
+  'pa', // Punjabi
+  'pl', // Polish
+  'pt', // Portuguese
+  'ro', // Romanian
+  'ru', // Russian
+  'si', // Sinhala
+  'sk', // Slovak
+  'sl', // Slovenian
+  'sq', // Albanian
+  'sr', // Serbian
+  'sv', // Swedish
+  'th', // Thai
+  'tr', // Turkish
+  'uk', // Ukrainian
+  'uz', // Uzbek
+  'uz_latn', // Uzbek Latin
+  'vn', // Vietnamese
+  'zh_tw', // Mandarin Traditional
+  'zh', // Mandarin
 ] as const;
 export type SupportedLocale = (typeof langsArray)[number];
 
