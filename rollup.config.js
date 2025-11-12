@@ -87,6 +87,7 @@ export default {
   ],
 };
 
+// remove query params from imports so they don't break the build
 function removeQueryParams() {
   return {
     name: 'remove-query-params',
