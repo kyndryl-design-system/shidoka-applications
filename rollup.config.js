@@ -22,15 +22,20 @@ export default {
     dir: 'dist',
     format: 'es',
     sourcemap: true,
-    preserveEntrySignatures: 'exports-only',
     manualChunks(id) {
       if (id.includes('node_modules')) {
-        const split = id.includes('\\') ? '\\' : '/';
-        let name = id.split(`node_modules${split}`)[1];
-        name = name.startsWith('@')
-          ? name.split(split).slice(0, 2).join('/')
-          : name.split(split)[0];
-        return 'vendor/' + name;
+        let splitChar = id.includes('\\') ? '\\' : '/';
+        let moduleName = id.split(`node_modules${splitChar}`)[1];
+
+        if (moduleName.includes('@')) {
+          moduleName =
+            moduleName.split(splitChar)[0] +
+            '/' +
+            moduleName.split(splitChar)[1];
+        } else {
+          moduleName = moduleName.split(splitChar)[0];
+        }
+        return 'vendor/' + moduleName;
       }
     },
   },
@@ -46,14 +51,12 @@ export default {
     // Do NOT treat SVG imports as external
     if (id.endsWith('.svg')) return false;
     // Treat all other node_modules as external
-  },
-  treeshake: {
-    moduleSideEffects: 'no-external',
+    return id.includes('node_modules');
   },
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
-    resolve({ browser: true, preferBuiltins: false }),
+    resolve(),
     copy({
       targets: [
         { src: 'package.json', dest: 'dist' },
@@ -90,11 +93,12 @@ function removeQueryParams() {
     resolveId: {
       handler(source, importer) {
         if (source?.includes('?inline')) {
-          const cleaned = source.replace(/\?.*$/, '');
-          const abs = importer
-            ? node_path.resolve(node_path.dirname(importer), cleaned)
-            : node_path.resolve(cleaned);
-          return { id: abs };
+          const removedFromPath = source.replace(/\?.*$/, '');
+          let path = importer
+            ? node_path.resolve(node_path.dirname(importer), removedFromPath)
+            : node_path.resolve(removedFromPath);
+
+          return { id: path };
         }
         return null;
       },
