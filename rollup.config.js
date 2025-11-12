@@ -11,6 +11,7 @@ import InlineSvg from 'rollup-plugin-inline-svg';
 import copy from 'rollup-plugin-copy';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 
 export default {
   input: [
@@ -74,6 +75,10 @@ export default {
       inject: false,
     }),
     postcssLit(),
+    dynamicImportVars({
+      include: ['src/**/*.[jt]s', 'src/**/*.[jt]sx'],
+      warnOnError: false,
+    }),
     commonjs(),
     json(),
     terser(),
