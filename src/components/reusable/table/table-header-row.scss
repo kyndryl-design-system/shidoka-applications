@@ -6,14 +6,23 @@
 }
 
 ::slotted(kyn-th:first-child) {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+  border-top-left-radius: 8px;
 }
 ::slotted(kyn-th:last-child) {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-top-right-radius: 8px;
 }
 
 :host([disabled]) {
   pointer-events: none;
+}
+
+:host([checkboxselection]) {
+  ::slotted(kyn-th:first-child) {
+    border-top-left-radius: 0px;
+  }
+}
+
+.checkbox-header-column {
+  border-top-left-radius: 8px;
+  margin-right: 80px;
 }
