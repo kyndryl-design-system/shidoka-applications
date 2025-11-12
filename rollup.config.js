@@ -11,7 +11,6 @@ import InlineSvg from 'rollup-plugin-inline-svg';
 import copy from 'rollup-plugin-copy';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 
 export default {
   input: [
@@ -23,35 +22,38 @@ export default {
     dir: 'dist',
     format: 'es',
     sourcemap: true,
+    preserveEntrySignatures: 'exports-only',
     manualChunks(id) {
       if (id.includes('node_modules')) {
-        let splitChar = id.includes('\\') ? '\\' : '/';
-        let moduleName = id.split(`node_modules${splitChar}`)[1];
-
-        if (moduleName.includes('@')) {
-          moduleName =
-            moduleName.split(splitChar)[0] +
-            '/' +
-            moduleName.split(splitChar)[1];
-        } else {
-          moduleName = moduleName.split(splitChar)[0];
-        }
-        return 'vendor/' + moduleName;
+        const split = id.includes('\\') ? '\\' : '/';
+        let name = id.split(`node_modules${split}`)[1];
+        name = name.startsWith('@')
+          ? name.split(split).slice(0, 2).join('/')
+          : name.split(split)[0];
+        return 'vendor/' + name;
       }
     },
   },
   external: (id) => {
     // Treat tslib as external by module name
-    if (id === 'tslib') return true;
+    if (
+      id === 'tslib' ||
+      id === 'flatpickr' ||
+      id.startsWith('flatpickr/') ||
+      id.startsWith('prismjs')
+    )
+      return true;
     // Do NOT treat SVG imports as external
     if (id.endsWith('.svg')) return false;
     // Treat all other node_modules as external
-    return id.includes('node_modules');
+  },
+  treeshake: {
+    moduleSideEffects: 'no-external',
   },
   plugins: [
     del({ targets: 'dist/*' }),
     multiInput(),
-    resolve(),
+    resolve({ browser: true, preferBuiltins: false }),
     copy({
       targets: [
         { src: 'package.json', dest: 'dist' },
@@ -75,10 +77,6 @@ export default {
       inject: false,
     }),
     postcssLit(),
-    dynamicImportVars({
-      include: ['src/**/*.[jt]s', 'src/**/*.[jt]sx'],
-      warnOnError: false,
-    }),
     commonjs(),
     json(),
     terser(),
@@ -86,19 +84,17 @@ export default {
   ],
 };
 
-// remove query params from imports so they don't break the build
 function removeQueryParams() {
   return {
     name: 'remove-query-params',
     resolveId: {
       handler(source, importer) {
         if (source?.includes('?inline')) {
-          const removedFromPath = source.replace(/\?.*$/, '');
-          let path = importer
-            ? node_path.resolve(node_path.dirname(importer), removedFromPath)
-            : node_path.resolve(removedFromPath);
-
-          return { id: path };
+          const cleaned = source.replace(/\?.*$/, '');
+          const abs = importer
+            ? node_path.resolve(node_path.dirname(importer), cleaned)
+            : node_path.resolve(cleaned);
+          return { id: abs };
         }
         return null;
       },
