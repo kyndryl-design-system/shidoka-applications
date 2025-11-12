@@ -1,5 +1,5 @@
 import { Locale } from 'flatpickr/dist/types/locale';
-import English from 'flatpickr/dist/l10n/default.js';
+import { default as English } from 'flatpickr/dist/esm/l10n/default.js';
 
 export const langsArray = [
   'ar', // Arabic
