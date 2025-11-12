@@ -1,5 +1,5 @@
 import flatpickr from 'flatpickr';
-import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
+import rangePlugin from 'flatpickr/dist/esm/plugins/rangePlugin';
 import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
