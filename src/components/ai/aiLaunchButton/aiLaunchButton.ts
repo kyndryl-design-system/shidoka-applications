@@ -1,7 +1,7 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import lottie from 'lottie-web';
+import * as lottie from 'lottie-web';
 import animationData from './json/ai_assist.json';
 import aiLaunchButtonDisabled from './json/ai_assist_disabled.json';
 import Styles from './aiLaunchButton.scss?inline';
@@ -63,7 +63,7 @@ export class AILaunchButton extends LitElement {
 
   /// loop the animation on mouseenter. on mouseleave, complete the current loop and then stop.
   private _initAnimation() {
-    this._animation = lottie.loadAnimation({
+    this._animation = (lottie as any).loadAnimation({
       container: this._containerEl,
       renderer: 'svg',
       loop: true,

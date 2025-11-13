@@ -1,7 +1,7 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import lottie from 'lottie-web';
+import * as lottie from 'lottie-web';
 import animationData from './json/loader.json';
 import Styles from './loader.scss?inline';
 
@@ -73,7 +73,7 @@ export class Loader extends LitElement {
     this._hidden = this.stopped;
 
     // initialize the animation
-    this._animation = lottie.loadAnimation({
+    this._animation = (lottie as any).loadAnimation({
       container: this._containerEl, // the dom element that will contain the animation
       renderer: 'svg',
       loop: true,
