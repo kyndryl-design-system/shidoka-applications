@@ -23,7 +23,7 @@ const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 export default {
   title: 'Components/Button',
   component: 'kyn-button',
-  parameters: {},
+
   argTypes: {
     type: {
       options: createSelectOptions(BUTTON_TYPES),
