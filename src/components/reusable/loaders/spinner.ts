@@ -2,7 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import lottie from 'lottie-web';
+import * as lottie from 'lottie-web';
 
 import InlineStyles from './inline.scss?inline';
 import AiStyles from './aiLoader.scss?inline';
@@ -134,7 +134,7 @@ export class KynSpinner extends LitElement {
     this._hidden = this._stopped;
 
     try {
-      lottie.loadAnimation({
+      (lottie as any).loadAnimation({
         container: this._containerEl,
         renderer: 'svg',
         loop: true,
