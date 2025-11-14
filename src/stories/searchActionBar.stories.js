@@ -51,11 +51,14 @@ export const SideDrawer = {
         'on-checkbox-group-change',
         handleCheckboxGroupChange
       );
-      // init listen for update
-      setTimeout(() => handleCheckboxGroupChange(), 0);
+
+      // ensure that the icon is correct on initial load
+      customElements.whenDefined('kyn-checkbox-group').then(() => {
+        queueMicrotask(() => handleCheckboxGroupChange());
+      });
+
       window.__shidoka_filter_icon_listener_added = true;
     }
-
     return html`
       <style>
         .search-action-bar {
