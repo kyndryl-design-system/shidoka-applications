@@ -221,13 +221,38 @@ export const Inline = {
   },
 };
 
-export const SideDrawerFilterIcon = {
+export const FunctionalExample = {
   args: {
+    searchValue: '',
+    filterSearchTerm: '',
     filter1Value: ['1'],
     filter2Value: [],
   },
   render: () => {
-    const [{ filter1Value, filter2Value }, updateArgs] = useArgs();
+    const [
+      { searchValue, filterSearchTerm, filter1Value, filter2Value },
+      updateArgs,
+    ] = useArgs();
+
+    const getSearchValue = (event) => {
+      if (event && event.detail && typeof event.detail.value === 'string') {
+        return event.detail.value;
+      }
+      if (event && event.target && typeof event.target.value === 'string') {
+        return event.target.value;
+      }
+      return '';
+    };
+
+    const handleTopSearchInput = (event) => {
+      const value = getSearchValue(event);
+      updateArgs({ searchValue: value || '' });
+    };
+
+    const handleFilterSearchInput = (event) => {
+      const value = getSearchValue(event);
+      updateArgs({ filterSearchTerm: value || '' });
+    };
 
     const handleFilter1Change = (event) => {
       const value = (event.detail && event.detail.value) || [];
@@ -239,12 +264,39 @@ export const SideDrawerFilterIcon = {
       updateArgs({ filter2Value: value });
     };
 
+    const handleTag1Clear = () => {
+      updateArgs({ filter1Value: [] });
+    };
+
+    const handleTag2Clear = () => {
+      updateArgs({ filter2Value: [] });
+    };
+
+    const handleClearAllClick = () => {
+      updateArgs({
+        filter1Value: [],
+        filter2Value: [],
+        filterSearchTerm: '',
+      });
+    };
+
     const total =
-      (filter1Value && filter1Value.length) +
-        (filter2Value && filter2Value.length) || 0;
+      ((filter1Value && filter1Value.length) || 0) +
+      ((filter2Value && filter2Value.length) || 0);
 
     const currentFilterIcon =
       total > 0 ? unsafeSVG(filterActiveIcon) : unsafeSVG(filterIcon);
+
+    const hasTag1 = filter1Value && filter1Value.length > 0;
+    const hasTag2 = filter2Value && filter2Value.length > 0;
+    const hasSearch = !!filterSearchTerm;
+    const showClearAll = hasTag1 || hasTag2 || hasSearch;
+
+    const term = (filterSearchTerm || '').trim().toLowerCase();
+    const showFilter1 =
+      term === '' || 'filter 1'.includes(term) || term === '1';
+    const showFilter2 =
+      term === '' || 'filter 2'.includes(term) || term === '2';
 
     return html`
       <style>
@@ -270,12 +322,16 @@ export const SideDrawerFilterIcon = {
 
       <div class="search-action-bar">
         <div class="bar kd-elevation--level-1">
-          <kyn-search size="sm"></kyn-search>
+          <kyn-search
+            size="sm"
+            .value=${searchValue || ''}
+            @on-input=${handleTopSearchInput}
+          ></kyn-search>
 
           <kyn-side-drawer
             size="sm"
             titleText="Filter"
-            submitBtnText="Apply (#)"
+            submitBtnText=${`Apply (${total})`}
             hideCancelButton
           >
             <kyn-button
@@ -293,60 +349,101 @@ export const SideDrawerFilterIcon = {
             <kyn-accordion compact>
               <kyn-accordion-item opened>
                 <span slot="icon">${unsafeSVG(filterIcon)}</span>
-                <span slot="title"> Results (#) </span>
+                <span slot="title"> Results (${total}) </span>
 
                 <div slot="body">
                   <kyn-tag-group filter limitTags>
-                    <kyn-tag label="Tag 1" tagColor="spruce"></kyn-tag>
-                    <kyn-tag label="Tag 2" tagColor="spruce"></kyn-tag>
-                    <kyn-tag label="Clear All" tagColor="spruce"></kyn-tag>
+                    ${hasTag1
+                      ? html`
+                          <kyn-tag
+                            filter
+                            label="Filter 1"
+                            tagColor="spruce"
+                            @on-close=${handleTag1Clear}
+                          ></kyn-tag>
+                        `
+                      : null}
+                    ${hasTag2
+                      ? html`
+                          <kyn-tag
+                            filter
+                            label="Filter 2"
+                            tagColor="spruce"
+                            @on-close=${handleTag2Clear}
+                          ></kyn-tag>
+                        `
+                      : null}
+                    ${showClearAll
+                      ? html`
+                          <kyn-tag
+                            filter
+                            label="Clear All"
+                            tagColor="spruce"
+                            @on-close=${handleClearAllClick}
+                          ></kyn-tag>
+                        `
+                      : null}
                   </kyn-tag-group>
 
-                  <kyn-search class="kd-spacing--margin-top-16"></kyn-search>
+                  <kyn-search
+                    class="kd-spacing--margin-top-16"
+                    size="sm"
+                    .value=${filterSearchTerm || ''}
+                    @on-input=${handleFilterSearchInput}
+                  ></kyn-search>
                 </div>
               </kyn-accordion-item>
 
-              <kyn-accordion-item>
-                <span slot="icon">${unsafeSVG(circleDashIcon)}</span>
-                <span slot="title"> Filter 1 </span>
+              ${showFilter1
+                ? html`
+                    <kyn-accordion-item>
+                      <span slot="icon">${unsafeSVG(circleDashIcon)}</span>
+                      <span slot="title"> Filter 1 </span>
 
-                <div slot="body">
-                  <kyn-checkbox-group
-                    name="filter1"
-                    hideLegend
-                    selectAll
-                    limitCheckboxes
-                    .value=${filter1Value}
-                    @on-checkbox-group-change=${handleFilter1Change}
-                  >
-                    <span slot="label">Filter 1</span>
+                      <div slot="body">
+                        <kyn-checkbox-group
+                          name="filter1"
+                          hideLegend
+                          selectAll
+                          limitCheckboxes
+                          .searchTerm=${filterSearchTerm || ''}
+                          .value=${filter1Value}
+                          @on-checkbox-group-change=${handleFilter1Change}
+                        >
+                          <span slot="label">Filter 1</span>
 
-                    <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
-                    <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
-                  </kyn-checkbox-group>
-                </div>
-              </kyn-accordion-item>
+                          <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
+                          <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
+                        </kyn-checkbox-group>
+                      </div>
+                    </kyn-accordion-item>
+                  `
+                : null}
+              ${showFilter2
+                ? html`
+                    <kyn-accordion-item>
+                      <span slot="icon">${unsafeSVG(circleDashIcon)}</span>
+                      <span slot="title"> Filter 2 </span>
 
-              <kyn-accordion-item>
-                <span slot="icon">${unsafeSVG(circleDashIcon)}</span>
-                <span slot="title"> Filter 2 </span>
+                      <div slot="body">
+                        <kyn-checkbox-group
+                          name="filter2"
+                          hideLegend
+                          selectAll
+                          limitCheckboxes
+                          .searchTerm=${filterSearchTerm || ''}
+                          .value=${filter2Value}
+                          @on-checkbox-group-change=${handleFilter2Change}
+                        >
+                          <span slot="label">Filter 2</span>
 
-                <div slot="body">
-                  <kyn-checkbox-group
-                    name="filter2"
-                    hideLegend
-                    selectAll
-                    limitCheckboxes
-                    .value=${filter2Value}
-                    @on-checkbox-group-change=${handleFilter2Change}
-                  >
-                    <span slot="label">Filter 2</span>
-
-                    <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
-                    <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
-                  </kyn-checkbox-group>
-                </div>
-              </kyn-accordion-item>
+                          <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
+                          <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
+                        </kyn-checkbox-group>
+                      </div>
+                    </kyn-accordion-item>
+                  `
+                : null}
             </kyn-accordion>
           </kyn-side-drawer>
 
