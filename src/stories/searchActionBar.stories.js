@@ -11,6 +11,7 @@ import '../components/reusable/dropdown';
 import '../components/reusable/accordion';
 
 import filterIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/filter.svg';
+import filterActiveIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/filter-active.svg';
 import circleDashIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 
 export default {
@@ -25,6 +26,36 @@ export default {
 
 export const SideDrawer = {
   render: () => {
+    // update the filter anchor icon based on selected checkboxes.
+    const handleCheckboxGroupChange = () => {
+      const groups = document.querySelectorAll('kyn-checkbox-group');
+      let total = 0;
+      groups.forEach((g) => {
+        try {
+          const v = g.value && Array.isArray(g.value) ? g.value : [];
+          total += v.length;
+        } catch (err) {
+          const attr = g.getAttribute('value');
+          if (attr) total += 1;
+        }
+      });
+
+      const iconSpan = document.querySelector('#filterAnchorIcon');
+      if (iconSpan) {
+        iconSpan.innerHTML = total > 0 ? filterActiveIcon : filterIcon;
+      }
+    };
+
+    if (!window.__shidoka_filter_icon_listener_added) {
+      document.addEventListener(
+        'on-checkbox-group-change',
+        handleCheckboxGroupChange
+      );
+      // init listen for update
+      setTimeout(() => handleCheckboxGroupChange(), 0);
+      window.__shidoka_filter_icon_listener_added = true;
+    }
+
     return html`
       <style>
         .search-action-bar {
@@ -63,13 +94,15 @@ export const SideDrawer = {
               size="small"
               iconPosition="left"
             >
-              <span slot="icon"> ${unsafeSVG(filterIcon)} </span>
+              <span id="filterAnchorIcon" slot="icon"
+                >${unsafeSVG(filterIcon)}</span
+              >
               <span class="filter-text">Filter</span>
             </kyn-button>
 
             <kyn-accordion compact>
               <kyn-accordion-item opened>
-                <span slot="icon">${unsafeSVG(filterIcon)}</span>
+                <span slot="icon">${unsafeSVG(filterActiveIcon)}</span>
                 <span slot="title"> Results (#) </span>
 
                 <div slot="body">
