@@ -221,11 +221,13 @@ export const Inline = {
   },
 };
 
+let functionalExampleInitialized = false;
+
 export const FunctionalExample = {
   args: {
     searchValue: '',
     filterSearchTerm: '',
-    filter1Value: ['1'],
+    filter1Value: [],
     filter2Value: [],
   },
   render: () => {
@@ -233,6 +235,24 @@ export const FunctionalExample = {
       { searchValue, filterSearchTerm, filter1Value, filter2Value },
       updateArgs,
     ] = useArgs();
+
+    if (!functionalExampleInitialized) {
+      functionalExampleInitialized = true;
+      updateArgs({
+        searchValue: '',
+        filterSearchTerm: '',
+      });
+    }
+
+    const filter1Options = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+    ];
+
+    const filter2Options = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+    ];
 
     const getSearchValue = (event) => {
       if (event && event.detail && typeof event.detail.value === 'string') {
@@ -264,12 +284,14 @@ export const FunctionalExample = {
       updateArgs({ filter2Value: value });
     };
 
-    const handleTag1Clear = () => {
-      updateArgs({ filter1Value: [] });
+    const handleFilter1OptionClear = (valueToClear) => {
+      const next = (filter1Value || []).filter((v) => v !== valueToClear);
+      updateArgs({ filter1Value: next });
     };
 
-    const handleTag2Clear = () => {
-      updateArgs({ filter2Value: [] });
+    const handleFilter2OptionClear = (valueToClear) => {
+      const next = (filter2Value || []).filter((v) => v !== valueToClear);
+      updateArgs({ filter2Value: next });
     };
 
     const handleClearAllClick = () => {
@@ -287,16 +309,33 @@ export const FunctionalExample = {
     const currentFilterIcon =
       total > 0 ? unsafeSVG(filterActiveIcon) : unsafeSVG(filterIcon);
 
-    const hasTag1 = filter1Value && filter1Value.length > 0;
-    const hasTag2 = filter2Value && filter2Value.length > 0;
     const hasSearch = !!filterSearchTerm;
-    const showClearAll = hasTag1 || hasTag2 || hasSearch;
+    const hasFilterTags =
+      (Array.isArray(filter1Value) && filter1Value.length > 0) ||
+      (Array.isArray(filter2Value) && filter2Value.length > 0);
+    const showClearAll = hasFilterTags || hasSearch;
 
     const term = (filterSearchTerm || '').trim().toLowerCase();
+
+    const filterOptionsByTerm = (options) => {
+      if (!term) return options;
+      return options.filter((opt) => {
+        const label = opt.label.toLowerCase();
+        const value = String(opt.value).toLowerCase();
+        return label.includes(term) || value.includes(term);
+      });
+    };
+
+    const visibleFilter1Options = filterOptionsByTerm(filter1Options);
+    const visibleFilter2Options = filterOptionsByTerm(filter2Options);
+
     const showFilter1 =
-      term === '' || 'filter 1'.includes(term) || term === '1';
+      visibleFilter1Options.length > 0 ||
+      (Array.isArray(filter1Value) && filter1Value.length > 0);
+
     const showFilter2 =
-      term === '' || 'filter 2'.includes(term) || term === '2';
+      visibleFilter2Options.length > 0 ||
+      (Array.isArray(filter2Value) && filter2Value.length > 0);
 
     return html`
       <style>
@@ -353,25 +392,29 @@ export const FunctionalExample = {
 
                 <div slot="body">
                   <kyn-tag-group filter limitTags>
-                    ${hasTag1
-                      ? html`
-                          <kyn-tag
-                            filter
-                            label="Filter 1"
-                            tagColor="spruce"
-                            @on-close=${handleTag1Clear}
-                          ></kyn-tag>
-                        `
+                    ${Array.isArray(filter1Value)
+                      ? filter1Value.map(
+                          (v) => html`
+                            <kyn-tag
+                              filter
+                              label=${`Filter 1: Option ${v}`}
+                              tagColor="spruce"
+                              @on-close=${() => handleFilter1OptionClear(v)}
+                            ></kyn-tag>
+                          `
+                        )
                       : null}
-                    ${hasTag2
-                      ? html`
-                          <kyn-tag
-                            filter
-                            label="Filter 2"
-                            tagColor="spruce"
-                            @on-close=${handleTag2Clear}
-                          ></kyn-tag>
-                        `
+                    ${Array.isArray(filter2Value)
+                      ? filter2Value.map(
+                          (v) => html`
+                            <kyn-tag
+                              filter
+                              label=${`Filter 2: Option ${v}`}
+                              tagColor="spruce"
+                              @on-close=${() => handleFilter2OptionClear(v)}
+                            ></kyn-tag>
+                          `
+                        )
                       : null}
                     ${showClearAll
                       ? html`
@@ -406,14 +449,18 @@ export const FunctionalExample = {
                           hideLegend
                           selectAll
                           limitCheckboxes
-                          .searchTerm=${filterSearchTerm || ''}
                           .value=${filter1Value}
                           @on-checkbox-group-change=${handleFilter1Change}
                         >
                           <span slot="label">Filter 1</span>
 
-                          <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
-                          <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
+                          ${visibleFilter1Options.map(
+                            (opt) => html`
+                              <kyn-checkbox value=${opt.value}>
+                                ${opt.label}
+                              </kyn-checkbox>
+                            `
+                          )}
                         </kyn-checkbox-group>
                       </div>
                     </kyn-accordion-item>
@@ -431,14 +478,18 @@ export const FunctionalExample = {
                           hideLegend
                           selectAll
                           limitCheckboxes
-                          .searchTerm=${filterSearchTerm || ''}
                           .value=${filter2Value}
                           @on-checkbox-group-change=${handleFilter2Change}
                         >
                           <span slot="label">Filter 2</span>
 
-                          <kyn-checkbox value="1"> Option 1 </kyn-checkbox>
-                          <kyn-checkbox value="2"> Option 2 </kyn-checkbox>
+                          ${visibleFilter2Options.map(
+                            (opt) => html`
+                              <kyn-checkbox value=${opt.value}>
+                                ${opt.label}
+                              </kyn-checkbox>
+                            `
+                          )}
                         </kyn-checkbox-group>
                       </div>
                     </kyn-accordion-item>
@@ -451,8 +502,8 @@ export const FunctionalExample = {
             <kyn-button kind="secondary" size="small"> Button </kyn-button>
 
             <kyn-overflow-menu anchorRight>
-              <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
-              <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+              <kyn-overflow-menu-item> Option 1 </kyn-overflow-menu-item>
+              <kyn-overflow-menu-item> Option 2 </kyn-overflow-menu-item>
             </kyn-overflow-menu>
           </div>
         </div>
