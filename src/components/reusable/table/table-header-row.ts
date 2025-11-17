@@ -93,6 +93,7 @@ export class TableHeaderRow extends TableRow {
             .align=${'center'}
             ?dense=${this.dense}
             .width=${this.multiSelectColumnWidth}
+            class="checkbox-header-column"
             ><kyn-checkbox
               ?disabled=${this.disabled}
               .indeterminate=${headerCheckboxIndeterminate}

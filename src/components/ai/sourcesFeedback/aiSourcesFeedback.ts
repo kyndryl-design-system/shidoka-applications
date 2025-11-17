@@ -37,7 +37,14 @@ const _defaultTextStrings = {
  * @slot copy - copy button
  * @slot sources - source cards in source panel.
  * @slot feedback-form - Positive feedback form.
- * @fires on-toggle - Emits the `opened` state when the panel item opens/closes. `detail:{ sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string }`
+ * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
+ * <pre><code>
+ * detail: {
+ *   sourcesOpened: boolean,
+ *   feedbackOpened: boolean,
+ *   selectedFeedbackType: string
+ * }
+ * </code></pre>
  * @fires on-feedback-deselected - Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`
  */
 
@@ -135,6 +142,50 @@ export class AISourcesFeedback extends LitElement {
         <div class="left-div">
           <slot name="copy"></slot>
 
+          <div class="thumb-feedback-div">
+            <div class="${classesFeedback1}">
+              <kyn-button
+                kind="tertiary"
+                size="small"
+                id="kyn-feedback-title-positive"
+                class="kyn-feedback-title"
+                ?disabled=${this.feedbackDisabled}
+                description=${this._textStrings.positiveFeedback}
+                @on-click=${(e: Event) =>
+                  this._handleClick(e, 'feedback', 'positive')}
+              >
+                <span slot="icon">
+                  ${unsafeSVG(
+                    this.thumbsUpClickCount % 2 === 0
+                      ? thumbsUpIcon
+                      : thumbsUpFilledIcon
+                  )}
+                </span>
+              </kyn-button>
+            </div>
+
+            <div class="${classesFeedback2}">
+              <kyn-button
+                kind="tertiary"
+                size="small"
+                id="kyn-feedback-title-negative"
+                class="kyn-feedback-title"
+                ?disabled=${this.feedbackDisabled}
+                description=${this._textStrings.negativeFeedback}
+                @on-click="${(e: Event) =>
+                  this._handleClick(e, 'feedback', 'negative')}"
+              >
+                <span slot="icon"
+                  >${unsafeSVG(
+                    this.thumbsDownClickCount % 2 === 0
+                      ? thumbsDownIcon
+                      : thumbsDownFilledIcon
+                  )}
+                </span>
+              </kyn-button>
+            </div>
+          </div>
+
           <div class="${classesSources}">
             <kyn-button
               kind="tertiary"
@@ -149,50 +200,6 @@ export class AISourcesFeedback extends LitElement {
               <span class="expand-icon" slot="icon"
                 >${unsafeSVG(chevronIcon)}</span
               >
-            </kyn-button>
-          </div>
-        </div>
-
-        <div class="right-div">
-          <div class="${classesFeedback1}">
-            <kyn-button
-              kind="tertiary"
-              size="small"
-              id="kyn-feedback-title-positive"
-              class="kyn-feedback-title"
-              ?disabled=${this.feedbackDisabled}
-              description=${this._textStrings.positiveFeedback}
-              @on-click=${(e: Event) =>
-                this._handleClick(e, 'feedback', 'positive')}
-            >
-              <span slot="icon">
-                ${unsafeSVG(
-                  this.thumbsUpClickCount % 2 === 0
-                    ? thumbsUpIcon
-                    : thumbsUpFilledIcon
-                )}
-              </span>
-            </kyn-button>
-          </div>
-
-          <div class="${classesFeedback2}">
-            <kyn-button
-              kind="tertiary"
-              size="small"
-              id="kyn-feedback-title-negative"
-              class="kyn-feedback-title"
-              ?disabled=${this.feedbackDisabled}
-              description=${this._textStrings.negativeFeedback}
-              @on-click="${(e: Event) =>
-                this._handleClick(e, 'feedback', 'negative')}"
-            >
-              <span slot="icon"
-                >${unsafeSVG(
-                  this.thumbsDownClickCount % 2 === 0
-                    ? thumbsDownIcon
-                    : thumbsDownFilledIcon
-                )}
-              </span>
             </kyn-button>
           </div>
         </div>

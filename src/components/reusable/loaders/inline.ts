@@ -2,7 +2,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import lottie from 'lottie-web';
+import * as lottie from 'lottie-web';
 import animationData from './json/indeterminate.json';
 import Styles from './inline.scss?inline';
 import successIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
@@ -69,7 +69,7 @@ export class LoaderInline extends LitElement {
     this._hidden = this._stopped;
 
     // initialize the animation
-    lottie.loadAnimation({
+    (lottie as any).loadAnimation({
       container: this._containerEl, // the dom element that will contain the animation
       renderer: 'svg',
       loop: true,

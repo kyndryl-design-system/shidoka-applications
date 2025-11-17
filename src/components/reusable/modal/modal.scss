@@ -11,9 +11,10 @@ dialog {
   @include elevation.shadow(3);
   padding: 32px;
   color: inherit;
-  background: var(--kd-color-background-container-default);
+  background: var(--kd-color-background-container-overlay-background);
   border-radius: 8px;
-  border: 1px solid var(--kd-color-border-variants-light);
+  border: 1px solid var(--kd-color-border-forms-default);
+  transition: border-color 150ms ease-in-out;
   min-width: 288px;
   max-width: calc(100% - 32px);
   max-height: calc(100% - 32px);
@@ -25,8 +26,12 @@ dialog {
     animation: dialog-in 400ms ease-out;
   }
 
+  &:has(> *:hover) {
+    border-color: var(--kd-color-border-ui-hover);
+  }
+
   &::backdrop {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: var(--kd-color-background-page-default);
   }
 
   &.size--md {
@@ -50,6 +55,10 @@ dialog {
 
   &.ai-connected.gradient-bkg {
     @extend .gradient-bkg;
+  }
+
+  &:has(:focus-visible) {
+    border-color: var(--kd-color-border-variants-focus);
   }
 }
 
@@ -104,6 +113,44 @@ form {
 header {
   margin-bottom: 32px;
   margin-right: 32px;
+  flex: 0 0 auto;
+  max-height: 100px;
+  overflow: visible;
+  position: relative;
+  padding-right: 8px;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.header-text {
+  flex: 0 1 auto;
+  width: auto;
+}
+
+.header-text h1 {
+  @include typography.type-body-01;
+  color: var(--kd-color-text-title-primary);
+  margin: 0;
+  order: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-text .label {
+  @include typography.type-ui-02;
+  color: var(--kd-color-text-level-secondary);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .close {

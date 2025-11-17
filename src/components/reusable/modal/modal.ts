@@ -12,6 +12,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
  * Modal.
  * @slot unnamed - Slot for modal body content.
  * @slot anchor - Slot for the anchor button content.
+ * @slot header-inline - Slot for an inline header action (badge/button) rendered next to the title/label when using the default header.
  * @slot footer - Slot for the footer content which replaces the ok, cancel, and second ary buttons.
  * @fires on-close - Emits the modal close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`
  * @fires on-open - Emits the modal open event.
@@ -147,12 +148,17 @@ export class Modal extends LitElement {
           >
             <span slot="icon">${unsafeSVG(closeIcon)}</span>
           </kyn-button>
+
           <header>
-            <div>
-              <h1 id="dialogLabel">${this.titleText}</h1>
-              ${this.labelText !== ''
-                ? html`<span class="label">${this.labelText}</span>`
-                : null}
+            <div class="header-inner">
+              <div class="header-text">
+                <h1 id="dialogLabel">${this.titleText}</h1>
+                ${this.labelText !== ''
+                  ? html`<span class="label">${this.labelText}</span>`
+                  : null}
+              </div>
+
+              <slot name="header-inline"></slot>
             </div>
           </header>
 
@@ -207,11 +213,6 @@ export class Modal extends LitElement {
                             ${this.cancelText}
                           </kyn-button>
                         `}
-                    <!--
-            <div class="custom-actions">
-              <slot name="actions"></slot>
-            </div>
-            -->
                   </div>
                 </slot>
               `
