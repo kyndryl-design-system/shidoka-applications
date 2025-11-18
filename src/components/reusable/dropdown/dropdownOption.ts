@@ -129,6 +129,8 @@ export class DropdownOption extends LitElement {
                   ?readonly=${!this.disabled && this.readonly}
                   notFocusable
                   .indeterminate=${this.indeterminate}
+                  @on-checkbox-change=${(e: Event) =>
+                    this.handleCheckboxChange(e)}
                   @click=${(e: Event) => e.stopPropagation()}
                   @mousedown=${(e: Event) => e.stopPropagation()}
                   @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
@@ -292,7 +294,17 @@ export class DropdownOption extends LitElement {
     this.text = text;
   }
 
-  private handleClick(e: Event) {
+  private handleCheckboxChange(e: Event) {
+    const detail = (e as CustomEvent).detail || {};
+
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
+    this.handleClick(detail.origEvent || e, detail.checked);
+  }
+
+  private handleClick(e: Event, forcedChecked?: boolean) {
     if (
       e instanceof MouseEvent ||
       (typeof PointerEvent !== 'undefined' && e instanceof PointerEvent)
@@ -300,12 +312,13 @@ export class DropdownOption extends LitElement {
       e.stopPropagation();
     }
 
-    // block interaction when disabled or readonly
     if (this.disabled || this.readonly) {
       return;
     }
 
-    if (this.multiple) {
+    if (typeof forcedChecked === 'boolean') {
+      this.selected = forcedChecked;
+    } else if (this.multiple) {
       this.selected = !this.selected;
     } else {
       this.selected = true;
