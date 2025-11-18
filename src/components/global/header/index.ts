@@ -1,6 +1,7 @@
 export { Header } from './header';
 export { HeaderNav } from './headerNav';
 export { HeaderLink } from './headerLink';
+export { HeaderCategories } from './headerCategories';
 export { HeaderCategory } from './headerCategory';
 export { HeaderDivider } from './headerDivider';
 export { HeaderFlyouts } from './headerFlyouts';

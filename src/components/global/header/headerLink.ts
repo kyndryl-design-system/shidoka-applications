@@ -148,31 +148,36 @@ export class HeaderLink extends LitElement {
           class=${classMap(menuClasses)}
           style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
         >
-          <button class="go-back" @click=${() => this._handleBack()}>
-            <span>${unsafeSVG(backIcon)}</span>
-            ${this.backText}
-          </button>
+          <div class="wrapper">
+            <button class="go-back" @click=${() => this._handleBack()}>
+              <span>${unsafeSVG(backIcon)}</span>
+              ${this.backText}
+            </button>
 
-          ${Links.length >= this.searchThreshold
-            ? html`
-                <kyn-text-input
-                  hideLabel
-                  size="sm"
-                  type="search"
-                  label=${this.searchLabel}
-                  placeholder=${this.searchLabel}
-                  value=${this._searchTerm}
-                  @on-input=${(e: Event) => this._handleSearch(e)}
-                >
-                  <span slot="icon" class="search-icon">
-                    ${unsafeSVG(searchIcon)}
-                  </span>
-                  ${this.searchLabel}
-                </kyn-text-input>
-              `
-            : null}
+            ${Links.length >= this.searchThreshold
+              ? html`
+                  <kyn-text-input
+                    hideLabel
+                    size="sm"
+                    type="search"
+                    label=${this.searchLabel}
+                    placeholder=${this.searchLabel}
+                    value=${this._searchTerm}
+                    @on-input=${(e: Event) => this._handleSearch(e)}
+                  >
+                    <span slot="icon" class="search-icon">
+                      ${unsafeSVG(searchIcon)}
+                    </span>
+                    ${this.searchLabel}
+                  </kyn-text-input>
+                `
+              : null}
 
-          <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
+            <slot
+              name="links"
+              @slotchange=${this._handleLinksSlotChange}
+            ></slot>
+          </div>
         </div>
       </div>
     `;
@@ -233,7 +238,6 @@ export class HeaderLink extends LitElement {
       this._searchTerm === ''
     ) {
       clearTimeout(this._enterTimer);
-
       this._leaveTimer = setTimeout(() => {
         this.open = false;
       }, 150);
@@ -264,26 +268,31 @@ export class HeaderLink extends LitElement {
   }
 
   private determineLevel() {
-    const ParentNode: any = this.parentNode;
-    const GrandparentNode: any = ParentNode.parentNode;
+    let level = 1;
+    let node: any = this.parentNode;
 
-    if (ParentNode.nodeName === 'KYN-HEADER-LINK') {
-      this.level = ParentNode.level + 1;
-    } else if (
-      ParentNode.nodeName === 'KYN-HEADER-CATEGORY' &&
-      GrandparentNode.nodeName === 'KYN-HEADER-LINK'
-    ) {
-      this.level = GrandparentNode.level + 1;
-    } else {
-      if (
-        window.innerWidth < 672 &&
-        ParentNode.nodeName === 'KYN-HEADER-FLYOUT'
+    // Traverse up the DOM tree
+    while (node) {
+      if (node.nodeName === 'KYN-HEADER-LINK') {
+        level = (node.level ?? 1) + 1;
+        break;
+      } else if (
+        node.nodeName === 'KYN-HEADER-CATEGORY' &&
+        node.parentNode?.nodeName === 'KYN-HEADER-LINK'
       ) {
-        this.level = 2;
-      } else {
-        this.level = 1;
+        level = (node.parentNode.level ?? 1) + 1;
+        break;
+      } else if (
+        window.innerWidth < 672 &&
+        node.nodeName === 'KYN-HEADER-FLYOUT'
+      ) {
+        level = 2;
+        break;
       }
+      node = node.parentNode;
     }
+
+    this.level = level;
   }
 
   private _positionMenu() {
@@ -292,7 +301,7 @@ export class HeaderLink extends LitElement {
     const MenuBounds: any = this.shadowRoot
       ?.querySelector('.menu__content')
       ?.getBoundingClientRect();
-    const Padding = 8;
+    const Padding = 12;
     const HeaderHeight = 64;
 
     const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
@@ -303,10 +312,24 @@ export class HeaderLink extends LitElement {
         ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight) - 16
         : LinkHalf - MenuHalf;
 
-    this.menuPosition = {
-      top: Top < HeaderHeight ? HeaderHeight : Top,
-      left: LinkBounds.right + Padding,
-    };
+    // this.menuPosition = {
+    //   // top: Top < HeaderHeight ? HeaderHeight : Top,
+    //   top: HeaderHeight,
+    //   // left: LinkBounds.right + Padding,
+    //   left: 0,
+    // };
+
+    if (this.level === 1) {
+      this.menuPosition = {
+        top: HeaderHeight,
+        left: 0,
+      };
+    } else {
+      this.menuPosition = {
+        top: Top < HeaderHeight ? HeaderHeight : Top,
+        left: LinkBounds.right + Padding,
+      };
+    }
   }
 
   /** @internal */
