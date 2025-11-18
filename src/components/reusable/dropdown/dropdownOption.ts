@@ -113,7 +113,7 @@ export class DropdownOption extends LitElement {
         @mousedown=${(e: MouseEvent) => {
           if (this.readonly) e.preventDefault();
         }}
-        @pointerup=${(e: any) => this.handleClick(e)}
+        @click=${(e: MouseEvent) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
         @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
       >
@@ -290,9 +290,15 @@ export class DropdownOption extends LitElement {
   }
 
   private handleClick(e: Event) {
+    if (
+      e instanceof MouseEvent ||
+      (typeof PointerEvent !== 'undefined' && e instanceof PointerEvent)
+    ) {
+      e.stopPropagation();
+    }
+
     // block interaction when disabled or readonly
     if (this.disabled || this.readonly) {
-      e.stopPropagation();
       return;
     }
 
@@ -306,7 +312,11 @@ export class DropdownOption extends LitElement {
       new CustomEvent('on-click', {
         bubbles: true,
         composed: true,
-        detail: { selected: this.selected, value: this.value, origEvent: e },
+        detail: {
+          selected: this.selected,
+          value: this.value,
+          origEvent: e,
+        },
       })
     );
   }
