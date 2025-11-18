@@ -129,6 +129,9 @@ export class DropdownOption extends LitElement {
                   ?readonly=${!this.disabled && this.readonly}
                   notFocusable
                   .indeterminate=${this.indeterminate}
+                  @click=${(e: Event) => e.stopPropagation()}
+                  @mousedown=${(e: Event) => e.stopPropagation()}
+                  @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
                 ></kyn-checkbox>
                 <slot
                   @slotchange=${(e: any) => this.handleSlotChange(e)}
