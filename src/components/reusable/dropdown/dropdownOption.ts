@@ -127,6 +127,7 @@ export class DropdownOption extends LitElement {
                   ?checked=${this.selected}
                   ?disabled=${this.disabled}
                   ?readonly=${!this.disabled && this.readonly}
+                  notFocusable
                   .indeterminate=${this.indeterminate}
                   @click=${(e: Event) => e.stopPropagation()}
                   @mousedown=${(e: Event) => e.stopPropagation()}

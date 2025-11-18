@@ -105,7 +105,7 @@ export class Checkbox extends LitElement {
           value=${this.value}
           .checked=${this.checked}
           ?required=${this.required}
-          ?disabled=${this.disabled || this.notFocusable}
+          ?disabled=${this.disabled}
           ?readonly=${!this.disabled && this.readonly}
           data-readonly=${ifDefined(this.readonly ? '' : undefined)}
           aria-invalid=${this.invalid ? 'true' : 'false'}
