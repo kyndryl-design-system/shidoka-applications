@@ -1227,17 +1227,8 @@ export class Dropdown extends FormMixin(LitElement) {
       this.open = false;
     }
   }
-
   private _handleClickOut(e: Event) {
-    const path = (e.composedPath?.() || []) as EventTarget[];
-    const target = e.target as HTMLElement | null;
-
-    const clickedInside =
-      path.includes(this) ||
-      (!!target &&
-        (target === this || target.closest('kyn-dropdown') === this));
-
-    if (!clickedInside) {
+    if (!e.composedPath().includes(this)) {
       this.open = false;
     }
   }
