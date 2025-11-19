@@ -1210,18 +1210,23 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   private _handleBlur(e: any) {
-    const relatedTarget = e.detail.origEvent.relatedTarget;
+    // For multi-select, don't auto-close on option blur
+    if (this.multiple) return;
+
+    const relatedTarget = e.detail?.origEvent?.relatedTarget as
+      | HTMLElement
+      | null
+      | undefined;
 
     if (
       !relatedTarget ||
-      (relatedTarget?.localName !== 'kyn-dropdown-option' &&
-        relatedTarget?.localName !== 'kyn-enhanced-dropdown-option' &&
+      (!relatedTarget.closest('kyn-dropdown-option') &&
+        !relatedTarget.closest('kyn-enhanced-dropdown-option') &&
         relatedTarget.localName !== 'kyn-dropdown')
     ) {
       this.open = false;
     }
   }
-
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.open = false;
