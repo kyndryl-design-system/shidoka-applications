@@ -113,7 +113,7 @@ export class DropdownOption extends LitElement {
         @mousedown=${(e: MouseEvent) => {
           if (this.readonly) e.preventDefault();
         }}
-        @pointerup=${(e: any) => this.handleClick(e)}
+        @click=${(e: MouseEvent) => this.handleClick(e)}
         @blur=${(e: any) => this.handleBlur(e)}
         @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
       >
@@ -129,6 +129,11 @@ export class DropdownOption extends LitElement {
                   ?readonly=${!this.disabled && this.readonly}
                   notFocusable
                   .indeterminate=${this.indeterminate}
+                  @on-checkbox-change=${(e: Event) =>
+                    this.handleCheckboxChange(e)}
+                  @click=${(e: Event) => e.stopPropagation()}
+                  @mousedown=${(e: Event) => e.stopPropagation()}
+                  @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
                 ></kyn-checkbox>
                 <slot
                   @slotchange=${(e: any) => this.handleSlotChange(e)}
@@ -289,14 +294,31 @@ export class DropdownOption extends LitElement {
     this.text = text;
   }
 
-  private handleClick(e: Event) {
-    // block interaction when disabled or readonly
+  private handleCheckboxChange(e: Event) {
+    const detail = (e as CustomEvent).detail || {};
+
     if (this.disabled || this.readonly) {
-      e.stopPropagation();
       return;
     }
 
-    if (this.multiple) {
+    this.handleClick(detail.origEvent || e, detail.checked);
+  }
+
+  private handleClick(e: Event, forcedChecked?: boolean) {
+    if (
+      e instanceof MouseEvent ||
+      (typeof PointerEvent !== 'undefined' && e instanceof PointerEvent)
+    ) {
+      e.stopPropagation();
+    }
+
+    if (this.disabled || this.readonly) {
+      return;
+    }
+
+    if (typeof forcedChecked === 'boolean') {
+      this.selected = forcedChecked;
+    } else if (this.multiple) {
       this.selected = !this.selected;
     } else {
       this.selected = true;
@@ -306,7 +328,11 @@ export class DropdownOption extends LitElement {
       new CustomEvent('on-click', {
         bubbles: true,
         composed: true,
-        detail: { selected: this.selected, value: this.value, origEvent: e },
+        detail: {
+          selected: this.selected,
+          value: this.value,
+          origEvent: e,
+        },
       })
     );
   }
