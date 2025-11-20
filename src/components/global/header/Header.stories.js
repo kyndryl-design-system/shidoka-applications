@@ -247,23 +247,26 @@ export const WithMegaNav = {
                   </kyn-header-link>
                 </kyn-header-category>
 
-                <kyn-header-category heading="Category 2">
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Sub Link 1
-                  </kyn-header-link>
-                </kyn-header-category>
+                <!-- pre group categories into columns if you don't want empty space from natural flex wrapping -->
+                <div>
+                  <kyn-header-category heading="Category 2">
+                    <kyn-header-link href="javascript:void(0)">
+                      <span>${unsafeSVG(circleIcon)}</span>
+                      Sub Link 1
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                <kyn-header-category heading="Category 3">
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Sub Link 1
-                  </kyn-header-link>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Sub Link 2
-                  </kyn-header-link>
-                </kyn-header-category>
+                  <kyn-header-category heading="Category 3">
+                    <kyn-header-link href="javascript:void(0)">
+                      <span>${unsafeSVG(circleIcon)}</span>
+                      Sub Link 1
+                    </kyn-header-link>
+                    <kyn-header-link href="javascript:void(0)">
+                      <span>${unsafeSVG(circleIcon)}</span>
+                      Sub Link 2
+                    </kyn-header-link>
+                  </kyn-header-category>
+                </div>
 
                 <kyn-header-category heading="Category 4">
                   <kyn-header-link href="javascript:void(0)">
@@ -299,14 +302,27 @@ export const WithMegaNav = {
                   </kyn-header-link>
                 </kyn-header-category>
 
-                <kyn-header-category heading="Category 6">
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Sub Link 1
-                  </kyn-header-link>
-                </kyn-header-category>
+                <div>
+                  <kyn-header-category heading="Category 6">
+                    <kyn-header-link href="javascript:void(0)">
+                      <span>${unsafeSVG(circleIcon)}</span>
+                      Sub Link 1
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                <kyn-header-category heading="Category 7">
+                  <kyn-header-category heading="Category 7">
+                    <kyn-header-link href="javascript:void(0)">
+                      <span>${unsafeSVG(circleIcon)}</span>
+                      Sub Link 1
+                    </kyn-header-link>
+                    <kyn-header-link href="javascript:void(0)">
+                      <span>${unsafeSVG(circleIcon)}</span>
+                      Sub Link 2
+                    </kyn-header-link>
+                  </kyn-header-category>
+                </div>
+
+                <kyn-header-category heading="Category 8">
                   <kyn-header-link href="javascript:void(0)">
                     <span>${unsafeSVG(circleIcon)}</span>
                     Sub Link 1
@@ -315,9 +331,32 @@ export const WithMegaNav = {
                     <span>${unsafeSVG(circleIcon)}</span>
                     Sub Link 2
                   </kyn-header-link>
+                  <kyn-header-link href="javascript:void(0)">
+                    <span>${unsafeSVG(circleIcon)}</span>
+                    Sub Link 3
+                  </kyn-header-link>
                 </kyn-header-category>
 
-                <kyn-header-category heading="Category 8">
+                <kyn-header-category heading="Category 9">
+                  <kyn-header-link href="javascript:void(0)">
+                    <span>${unsafeSVG(circleIcon)}</span>
+                    Sub Link 1
+                  </kyn-header-link>
+                  <kyn-header-link href="javascript:void(0)">
+                    <span>${unsafeSVG(circleIcon)}</span>
+                    Sub Link 2
+                  </kyn-header-link>
+                  <kyn-header-link href="javascript:void(0)">
+                    <span>${unsafeSVG(circleIcon)}</span>
+                    Sub Link 3
+                  </kyn-header-link>
+                  <kyn-header-link href="javascript:void(0)">
+                    <span>${unsafeSVG(circleIcon)}</span>
+                    Sub Link 4
+                  </kyn-header-link>
+                </kyn-header-category>
+
+                <kyn-header-category heading="Category 10">
                   <kyn-header-link href="javascript:void(0)">
                     <span>${unsafeSVG(circleIcon)}</span>
                     Sub Link 1
