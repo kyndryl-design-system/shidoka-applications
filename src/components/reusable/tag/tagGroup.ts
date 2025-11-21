@@ -53,17 +53,24 @@ export class TagGroup extends LitElement {
   @queryAssignedElements()
   accessor tags!: Array<any>;
 
+  private readonly limitCount = 5;
+
   override render() {
     const toggleBtnClasses = {
       'tag-reveal-toggle': true,
       [`tag-reveal-toggle-${this.tagSize}`]: true,
     };
 
+    const hasOverflow =
+      this.limitTags &&
+      Array.isArray(this.tags) &&
+      this.tags.length > this.limitCount;
+
     return html`
       <div class="tags-container">
         <slot @slotchange=${this._handleSlotChange}></slot>
 
-        ${this.limitTags && this.tags.length > 5
+        ${hasOverflow
           ? html`
               <kyn-link
                 class="${classMap(toggleBtnClasses)}"
@@ -79,7 +86,8 @@ export class TagGroup extends LitElement {
       </div>
     `;
   }
-  override updated(changedProps: any) {
+
+  override updated(changedProps: Map<string, unknown>) {
     if (
       changedProps.has('filter') ||
       changedProps.has('tagSize') ||
@@ -95,13 +103,17 @@ export class TagGroup extends LitElement {
   }
 
   private _updateChildren() {
+    if (!Array.isArray(this.tags)) {
+      return;
+    }
+
     // set filter for each tag
-    this.tags.forEach((tag: any) => {
+    this.tags.forEach((tag) => {
       tag.filter = this.filter;
     });
 
     // set tag size for each tag
-    this.tags.forEach((tag: any) => {
+    this.tags.forEach((tag) => {
       tag.tagSize = this.tagSize;
     });
 
@@ -109,18 +121,39 @@ export class TagGroup extends LitElement {
   }
 
   private _toggleRevealed(revealed: boolean) {
-    const Limit = 5;
     this.limitRevealed = revealed;
-    this.tags.forEach((tagEl, index) => {
-      if (!this.limitTags || this.limitRevealed) {
-        tagEl.style.display = 'inline-block';
-      } else {
-        if (index < Limit) {
-          tagEl.style.display = 'inline-block';
-        } else {
-          tagEl.style.display = 'none';
-        }
-      }
+
+    if (!Array.isArray(this.tags) || this.tags.length === 0) {
+      return;
+    }
+
+    // default behavior when not limiting or fully revealed: show everything.
+    if (!this.limitTags || this.limitRevealed) {
+      this.tags.forEach((t) => {
+        t.style.display = 'inline-block';
+      });
+      return;
+    }
+
+    // split tags into persistent vs non-persistent.
+    const persistentTags = this.tags.filter((t) => t.persistentTag);
+    const nonPersistentTags = this.tags.filter((t) => !t.persistentTag);
+
+    if (nonPersistentTags.length <= this.limitCount) {
+      this.tags.forEach((t) => {
+        t.style.display = 'inline-block';
+      });
+      return;
+    }
+
+    // legacy limiting logic
+    nonPersistentTags.forEach((t, index) => {
+      t.style.display = index < this.limitCount ? 'inline-block' : 'none';
+    });
+
+    // persistent tags are always visible
+    persistentTags.forEach((t) => {
+      t.style.display = 'inline-block';
     });
   }
 }
