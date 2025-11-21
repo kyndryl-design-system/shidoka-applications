@@ -80,7 +80,7 @@ export const SideDrawer = {
                   <kyn-tag-group filter limitTags>
                     <kyn-tag label="Tag 1" tagColor="spruce"></kyn-tag>
                     <kyn-tag label="Tag 2" tagColor="spruce"></kyn-tag>
-                    <kyn-tag label="Clear All" tagColor="spruce"></kyn-tag>
+                    <kyn-tag label="Clear All" tagColor="default"></kyn-tag>
                   </kyn-tag-group>
 
                   <kyn-search class="kd-spacing--margin-top-16"></kyn-search>
@@ -247,11 +247,15 @@ export const FunctionalExample = {
     const filter1Options = [
       { value: '1', label: 'Option 1' },
       { value: '2', label: 'Option 2' },
+      { value: '3', label: 'Option 3' },
+      { value: '4', label: 'Option 4' },
     ];
 
     const filter2Options = [
       { value: '1', label: 'Option 1' },
       { value: '2', label: 'Option 2' },
+      { value: '3', label: 'Option 3' },
+      { value: '4', label: 'Option 4' },
     ];
 
     const getSearchValue = (event) => {
@@ -421,7 +425,8 @@ export const FunctionalExample = {
                           <kyn-tag
                             filter
                             label="Clear All"
-                            tagColor="spruce"
+                            tagColor="default"
+                            persistentTag
                             @on-close=${handleClearAllClick}
                           ></kyn-tag>
                         `

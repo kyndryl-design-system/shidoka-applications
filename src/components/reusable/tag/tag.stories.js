@@ -26,6 +26,11 @@ export default {
         type: 'boolean',
       },
     },
+    persistentTag: {
+      control: {
+        type: 'boolean',
+      },
+    },
     clickable: {
       control: {
         type: 'boolean',
@@ -46,6 +51,7 @@ const args = {
   tagColor: 'default',
   clickable: false,
   filter: false,
+  persistentTag: false,
   noTruncation: false,
   disabled: false,
 };

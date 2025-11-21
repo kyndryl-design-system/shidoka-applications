@@ -41,6 +41,13 @@ export class Tag extends LitElement {
   accessor filter = false;
 
   /**
+   * When true, tag-group visibility limiting will never hide this tag.
+   * Note: this should primarily for the `Clear All` tag.
+   */
+  @property({ type: Boolean })
+  accessor persistentTag = false;
+
+  /**
    * Removes label text truncation.
    */
   @property({ type: Boolean })
