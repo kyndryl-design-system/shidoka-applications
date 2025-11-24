@@ -80,7 +80,7 @@ export const SideDrawer = {
                   <kyn-tag-group filter limitTags>
                     <kyn-tag label="Tag 1" tagColor="spruce"></kyn-tag>
                     <kyn-tag label="Tag 2" tagColor="spruce"></kyn-tag>
-                    <kyn-tag label="Clear All" tagColor="spruce"></kyn-tag>
+                    <kyn-tag label="Clear All" tagColor="default"></kyn-tag>
                   </kyn-tag-group>
 
                   <kyn-search class="kd-spacing--margin-top-16"></kyn-search>
@@ -229,8 +229,15 @@ export const FunctionalExample = {
     filterSearchTerm: '',
     filter1Value: [],
     filter2Value: [],
+    limitTags: false,
   },
-  render: () => {
+  argTypes: {
+    searchValue: { control: false, table: { disable: true } },
+    filterSearchTerm: { control: false, table: { disable: true } },
+    filter1Value: { control: false, table: { disable: true } },
+    filter2Value: { control: false, table: { disable: true } },
+  },
+  render: (args) => {
     const [
       { searchValue, filterSearchTerm, filter1Value, filter2Value },
       updateArgs,
@@ -247,11 +254,15 @@ export const FunctionalExample = {
     const filter1Options = [
       { value: '1', label: 'Option 1' },
       { value: '2', label: 'Option 2' },
+      { value: '3', label: 'Option 3' },
+      { value: '4', label: 'Option 4' },
     ];
 
     const filter2Options = [
       { value: '1', label: 'Option 1' },
       { value: '2', label: 'Option 2' },
+      { value: '3', label: 'Option 3' },
+      { value: '4', label: 'Option 4' },
     ];
 
     const getSearchValue = (event) => {
@@ -309,11 +320,11 @@ export const FunctionalExample = {
     const currentFilterIcon =
       total > 0 ? unsafeSVG(filterActiveIcon) : unsafeSVG(filterIcon);
 
-    const hasSearch = !!filterSearchTerm;
     const hasFilterTags =
       (Array.isArray(filter1Value) && filter1Value.length > 0) ||
       (Array.isArray(filter2Value) && filter2Value.length > 0);
-    const showClearAll = hasFilterTags || hasSearch;
+
+    const showClearAll = hasFilterTags;
 
     const term = (filterSearchTerm || '').trim().toLowerCase();
 
@@ -391,7 +402,7 @@ export const FunctionalExample = {
                 <span slot="title"> Results (${total}) </span>
 
                 <div slot="body">
-                  <kyn-tag-group filter limitTags>
+                  <kyn-tag-group filter ?limitTags=${args.limitTags}>
                     ${Array.isArray(filter1Value)
                       ? filter1Value.map(
                           (v) => html`
@@ -421,7 +432,8 @@ export const FunctionalExample = {
                           <kyn-tag
                             filter
                             label="Clear All"
-                            tagColor="spruce"
+                            tagColor="default"
+                            persistentTag
                             @on-close=${handleClearAllClick}
                           ></kyn-tag>
                         `
