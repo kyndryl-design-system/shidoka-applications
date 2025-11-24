@@ -83,7 +83,7 @@ export class TimePicker extends FormMixin(LitElement) {
    * In uncontrolled usage, this is populated automatically based on defaultHour/defaultMinute and user selections.
    * @internal
    */
-  override value: Date | null = null;
+  override value: Date | string | null = null;
 
   /** Sets initial value of the hour element. */
   @property({ type: Number })
@@ -503,37 +503,39 @@ export class TimePicker extends FormMixin(LitElement) {
     }
     if (changedProperties.has('value') && !this._isClearing) {
       let newValue = this.value;
+
       if (typeof newValue === 'string') {
-        try {
-          const strValue = newValue as string;
-          if (strValue.trim() !== '') {
-            this._hasInteracted = true;
-            if (/\d{1,2}:\d{2}(?::\d{2})?/.test(strValue)) {
-              const parts = strValue.split(':').map(Number);
-              const hours = parts[0];
-              const minutes = parts[1] ?? 0;
-              const seconds = parts[2] ?? 0;
-              if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
-                const date2 = new Date();
-                date2.setHours(hours, minutes, seconds, 0);
-                this.value = date2;
-                newValue = this.value;
-                if (this.flatpickrInstance) {
-                  this.flatpickrInstance.setDate(newValue, true);
-                }
-              }
-            } else if (/\d{4}-\d{2}-\d{2}/.test(strValue)) {
-              this.value = new Date(strValue);
-              newValue = this.value;
-              if (this.flatpickrInstance) {
-                this.flatpickrInstance.setDate(newValue, true);
-              }
+        const strValue = newValue.trim();
+
+        if (strValue === '') {
+          this.value = null;
+          newValue = null;
+        } else if (/\d{1,2}:\d{2}(?::\d{2})?/.test(strValue)) {
+          const parts = strValue.split(':').map(Number);
+          const hours = parts[0];
+          const minutes = parts[1] ?? 0;
+          const seconds = parts[2] ?? 0;
+
+          if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
+            const date2 = new Date();
+            date2.setHours(hours, minutes, seconds, 0);
+            this.value = date2;
+            newValue = this.value;
+
+            if (this.flatpickrInstance) {
+              this.flatpickrInstance.setDate(newValue, true);
             }
           }
-        } catch (e) {
-          console.warn('Error parsing time string:', e);
+        } else if (/\d{4}-\d{2}-\d{2}/.test(strValue)) {
+          this.value = new Date(strValue);
+          newValue = this.value;
+
+          if (this.flatpickrInstance) {
+            this.flatpickrInstance.setDate(newValue, true);
+          }
         }
       }
+
       if (newValue === null && this.flatpickrInstance) {
         this._isClearing = true;
         try {
@@ -546,8 +548,10 @@ export class TimePicker extends FormMixin(LitElement) {
           this._isClearing = false;
         }
       }
+
       this.requestUpdate();
     }
+
     if (
       (changedProperties.has('timepickerDisabled') &&
         this.timepickerDisabled) ||
@@ -708,7 +712,9 @@ export class TimePicker extends FormMixin(LitElement) {
 
   setInitialDates(instance: flatpickr.Instance) {
     try {
-      if (this.value) {
+      if (this.value instanceof Date) {
+        instance.setDate(this.value, false);
+      } else if (typeof this.value === 'string' && this.value.trim() !== '') {
         instance.setDate(this.value, false);
       } else if (
         !this._userHasCleared &&
@@ -882,11 +888,24 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   public getValue(): Date | null {
-    return this.value;
+    return this.value instanceof Date ? this.value : null;
   }
 
   public setValue(newValue: Date | null): void {
     this.value = newValue;
+
+    if (this.flatpickrInstance) {
+      if (newValue) {
+        this.flatpickrInstance.setDate(newValue, true);
+      } else {
+        this.flatpickrInstance.clear();
+        if (this._inputEl) {
+          this._inputEl.value = '';
+          this.updateFormValue();
+        }
+      }
+    }
+
     this.requestUpdate();
   }
 }
