@@ -80,7 +80,7 @@ export class TimePicker extends FormMixin(LitElement) {
    * - Uncontrolled: populated from `defaultHour` / `defaultMinute` and user selections.
    * - Controlled: can be set from the host (e.g. Vue `:value`) as a `Date` or time string.
    */
-  declare value: string | Date | null;
+  override value: string | Date | null = null;
 
   /** Sets initial value of the hour element. */
   @property({ type: Number })
@@ -124,7 +124,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   /** Enable seconds in the timepicker UI. */
   @property({ type: Boolean })
-  accessor enableSeconds: boolean = false;
+  accessor enableSeconds = false;
 
   /** Sets lower boundary of time selection. */
   @property({ type: String })
@@ -172,7 +172,7 @@ export class TimePicker extends FormMixin(LitElement) {
    * @ignore
    */
   @query('input.input-custom')
-  private accessor _inputEl: HTMLInputElement | any;
+  private accessor _inputEl: HTMLInputElement | null = null;
 
   /** Tracks if we're in a clear operation to prevent duplicate events
    * @internal
@@ -201,13 +201,14 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private _shouldFlatpickrOpen = true;
   private _initialized = false;
+  private _isDestroyed = false;
 
   /** Store submit event listener reference for cleanup
    * @internal
    */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
-  private debounce<T extends (...args: any[]) => any>(
+  private debounce<T extends (...args: unknown[]) => unknown>(
     func: T,
     wait: number
   ): (...args: Parameters<T>) => void {
@@ -219,14 +220,14 @@ export class TimePicker extends FormMixin(LitElement) {
       }
 
       timeout = window.setTimeout(() => {
-        func.apply(this, args);
+        void func(...args);
         timeout = null;
       }, wait);
     };
   }
 
   private debouncedUpdate = this.debounce(async () => {
-    if (!this.flatpickrInstance) return;
+    if (!this.flatpickrInstance || this._isDestroyed) return;
     try {
       await this.initializeFlatpickr();
     } catch (error) {
@@ -244,13 +245,16 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private parseTimeString(time: string | number | Date): Date | null {
     if (time instanceof Date) return time;
-    if (typeof time === 'number') return new Date(time);
+    if (typeof time === 'number') {
+      const d = new Date(time);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
     if (typeof time === 'string') {
       const parts = time.trim().split(':').map(Number);
       const h = parts[0];
       const m = parts.length > 1 ? parts[1] : 0;
       const s = parts.length > 2 ? parts[2] : 0;
-      if (!isNaN(h) && !isNaN(m) && !isNaN(s)) {
+      if (!Number.isNaN(h) && !Number.isNaN(m) && !Number.isNaN(s)) {
         const d = new Date();
         d.setHours(h, m, s, 0);
         return d;
@@ -315,8 +319,9 @@ export class TimePicker extends FormMixin(LitElement) {
                 title=${this._textStrings?.requiredText}
                 role="img"
                 aria-label=${this._textStrings?.requiredText}
-                >*</abbr
-              >`
+              >
+                *
+              </abbr>`
             : null}
           ${this.label}
           <slot name="tooltip"></slot>
@@ -399,8 +404,9 @@ export class TimePicker extends FormMixin(LitElement) {
           class="error-icon"
           role="img"
           aria-label=${this.errorAriaLabel || 'Error message icon'}
-          >${unsafeSVG(errorIcon)}</span
         >
+          ${unsafeSVG(errorIcon)}
+        </span>
         ${this.invalidText ||
         this._internalValidationMsg ||
         this.defaultErrorMessage}
@@ -463,12 +469,8 @@ export class TimePicker extends FormMixin(LitElement) {
         date.setSeconds(0);
         date.setMilliseconds(0);
 
-        const min = this.minTime
-          ? this.parseTimeString(this.minTime as string)
-          : null;
-        const max = this.maxTime
-          ? this.parseTimeString(this.maxTime as string)
-          : null;
+        const min = this.minTime ? this.parseTimeString(this.minTime) : null;
+        const max = this.maxTime ? this.parseTimeString(this.maxTime) : null;
 
         if (
           (min && date.getTime() < min.getTime()) ||
@@ -583,15 +585,19 @@ export class TimePicker extends FormMixin(LitElement) {
     try {
       this.value = null;
 
-      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
-        if (this._inputEl) {
-          this._inputEl.setAttribute(
-            'aria-label',
-            this._textStrings.noTimeSelected
-          );
-          this.updateFormValue();
+      await clearFlatpickrInput(
+        this.flatpickrInstance,
+        this._inputEl ?? undefined,
+        () => {
+          if (this._inputEl) {
+            this._inputEl.setAttribute(
+              'aria-label',
+              this._textStrings.noTimeSelected
+            );
+            this.updateFormValue();
+          }
         }
-      });
+      );
 
       emitValue(this, 'on-change', {
         time: this.value,
@@ -616,8 +622,6 @@ export class TimePicker extends FormMixin(LitElement) {
       console.error('Error setting up flatpickr:', error);
     }
   }
-
-  private _isDestroyed = false;
 
   async initializeFlatpickr() {
     if (this._isDestroyed) {
@@ -644,7 +648,7 @@ export class TimePicker extends FormMixin(LitElement) {
         return;
       }
       this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
-        inputEl: this._inputEl,
+        inputEl,
         getFlatpickrOptions: async () => {
           const options = await this.getComponentFlatpickrOptions();
           if (options.noCalendar === false) {
@@ -691,6 +695,10 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    if (!this._inputEl) {
+      return {};
+    }
+
     const container = getModalContainer(this);
     const effectiveDateFormat = this.twentyFourHourFormat
       ? this.enableSeconds
@@ -704,7 +712,7 @@ export class TimePicker extends FormMixin(LitElement) {
       locale: this.locale,
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
-      inputEl: this._inputEl!,
+      inputEl: this._inputEl,
       allowInput: true,
       dateFormat: effectiveDateFormat,
       minTime: this.minTime,

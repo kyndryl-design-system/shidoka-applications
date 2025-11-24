@@ -199,7 +199,7 @@ export class DatePicker extends FormMixin(LitElement) {
    * @internal
    */
   @query('input')
-  private accessor _inputEl: HTMLInputElement | any;
+  private accessor _inputEl: HTMLInputElement | null = null;
 
   /** Tracks if we're in a clear operation to prevent duplicate events
    * @internal
@@ -242,24 +242,25 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
-  private debounce<T extends (...args: any[]) => any>(
+  private debounce<T extends (...args: unknown[]) => unknown>(
     func: T,
     wait: number
   ): (...args: Parameters<T>) => void {
     let timeout: number | null = null;
+
     return (...args: Parameters<T>) => {
       if (timeout !== null) {
         window.clearTimeout(timeout);
       }
       timeout = window.setTimeout(() => {
-        func(...args);
+        void func(...args);
         timeout = null;
       }, wait);
     };
   }
 
   private debouncedUpdate = this.debounce(async () => {
-    if (this.flatpickrInstance) {
+    if (this.flatpickrInstance && !this._isDestroyed) {
       await this.initializeFlatpickr();
     }
   }, 100);
@@ -526,12 +527,14 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (nonEmptyValues.length === 0) return [];
 
-    const min = this.minDate
-      ? this.parseDateString(this.minDate as string)
-      : null;
-    const max = this.maxDate
-      ? this.parseDateString(this.maxDate as string)
-      : null;
+    const min =
+      typeof this.minDate === 'string'
+        ? this.parseDateString(this.minDate)
+        : null;
+    const max =
+      typeof this.maxDate === 'string'
+        ? this.parseDateString(this.maxDate)
+        : null;
 
     const parsed = nonEmptyValues.map((d) => {
       if (d instanceof Date) return d;
@@ -571,7 +574,9 @@ export class DatePicker extends FormMixin(LitElement) {
         this._isClearing = true;
         try {
           this.flatpickrInstance.clear();
-          this._inputEl.value = '';
+          if (this._inputEl) {
+            this._inputEl.value = '';
+          }
         } finally {
           this._isClearing = false;
         }
@@ -656,7 +661,7 @@ export class DatePicker extends FormMixin(LitElement) {
   private syncAllowInput(): void {
     if (!this.flatpickrInstance) return;
     this.flatpickrInstance.set('allowInput', this.allowManualInput);
-    if (!this.readonly) {
+    if (!this.readonly && this._inputEl) {
       this._inputEl.readOnly = !this.allowManualInput;
     }
   }
@@ -688,13 +693,17 @@ export class DatePicker extends FormMixin(LitElement) {
       this.value = this.mode === 'multiple' ? [] : null;
       this.defaultDate = null;
 
-      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
-        this.updateFormValue();
-      });
+      await clearFlatpickrInput(
+        this.flatpickrInstance,
+        this._inputEl ?? undefined,
+        () => {
+          this.updateFormValue();
+        }
+      );
 
       emitValue(this, 'on-change', {
         dates: this.value,
-        dateString: (this._inputEl as HTMLInputElement)?.value,
+        dateString: this._inputEl?.value,
         source: 'clear',
       });
 
@@ -805,9 +814,33 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
     if (dateMatch) {
-      const [, y, mo, da] = dateMatch.map(Number);
+      const y = Number(dateMatch[1]);
+      const mo = Number(dateMatch[2]);
+      const da = Number(dateMatch[3]);
       const dt = new Date(y, mo - 1, da);
       return isNaN(dt.getTime()) ? null : dt;
+    }
+
+    return null;
+  }
+
+  private resolveYearFromConfig(
+    value: Date | string | number | undefined
+  ): number | null {
+    if (!value) return null;
+
+    if (value instanceof Date) {
+      return value.getFullYear();
+    }
+
+    if (typeof value === 'number') {
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? null : d.getFullYear();
+    }
+
+    if (typeof value === 'string') {
+      const d = this.parseDateString(value);
+      return d ? d.getFullYear() : null;
     }
 
     return null;
@@ -833,12 +866,14 @@ export class DatePicker extends FormMixin(LitElement) {
             (date): date is Date => date !== null && !isNaN(date.getTime())
           )
           .filter((d) => {
-            const min = this.minDate
-              ? this.parseDateString(this.minDate as string)
-              : null;
-            const max = this.maxDate
-              ? this.parseDateString(this.maxDate as string)
-              : null;
+            const min =
+              typeof this.minDate === 'string'
+                ? this.parseDateString(this.minDate)
+                : null;
+            const max =
+              typeof this.maxDate === 'string'
+                ? this.parseDateString(this.maxDate)
+                : null;
             return (!min || d >= min) && (!max || d <= max);
           });
 
@@ -878,6 +913,10 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
+    if (!this._inputEl) {
+      return {};
+    }
+
     const container = getModalContainer(this);
     const options = await getFlatpickrOptions({
       locale: this.locale,
@@ -885,7 +924,7 @@ export class DatePicker extends FormMixin(LitElement) {
       defaultDate: this.defaultDate ? this.defaultDate : undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
-      inputEl: this._inputEl!,
+      inputEl: this._inputEl,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
@@ -924,18 +963,22 @@ export class DatePicker extends FormMixin(LitElement) {
     this.flatpickrInstance?.open();
     this._shouldFlatpickrOpen = false;
 
-    const cfg = this.flatpickrInstance!.config;
-    if (
-      cfg.minDate &&
-      cfg.maxDate &&
-      this.flatpickrInstance?.calendarContainer
-    ) {
-      const minY = new Date(cfg.minDate as any).getFullYear();
-      const maxY = new Date(cfg.maxDate as any).getFullYear();
-      this.flatpickrInstance.calendarContainer.classList.toggle(
-        'single-year',
-        minY === maxY
+    const instance = this.flatpickrInstance;
+    const cfg = instance?.config;
+    if (cfg && instance?.calendarContainer) {
+      const minY = this.resolveYearFromConfig(
+        cfg.minDate as Date | string | number | undefined
       );
+      const maxY = this.resolveYearFromConfig(
+        cfg.maxDate as Date | string | number | undefined
+      );
+
+      if (minY !== null && maxY !== null) {
+        instance.calendarContainer.classList.toggle(
+          'single-year',
+          minY === maxY
+        );
+      }
     }
 
     hideEmptyYear();
@@ -984,7 +1027,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
       emitValue(this, 'on-change', {
         dates: formattedDates,
-        dateString: (this._inputEl as HTMLInputElement)?.value || dateStr,
+        dateString: this._inputEl?.value || dateStr,
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });
 

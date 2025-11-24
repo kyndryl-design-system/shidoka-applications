@@ -201,7 +201,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * @internal
    */
   @query('input')
-  private accessor _inputEl: HTMLInputElement | any;
+  private accessor _inputEl: HTMLInputElement | null = null;
 
   /**
    * Sets whether user has interacted with datepicker for error handling.
@@ -253,7 +253,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
-  private debounce<T extends (...args: any[]) => any>(
+  private debounce<T extends (...args: unknown[]) => unknown>(
     func: T,
     wait: number
   ): (...args: Parameters<T>) => void {
@@ -265,7 +265,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
 
       timeout = window.setTimeout(() => {
-        func(...args);
+        void func(...args);
         timeout = null;
       }, wait);
     };
@@ -373,11 +373,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private updateFormValue() {
     if (!this._internals || !this._inputEl) return;
 
-    if (this.value[0] && this.value[1]) {
-      const formattedValue = [
-        this.value[0].toISOString(),
-        this.value[1].toISOString(),
-      ].join(',');
+    const [start, end] = this.value;
+
+    if (start instanceof Date && end instanceof Date) {
+      const formattedValue = [start.toISOString(), end.toISOString()].join(',');
       this._internals.setFormValue(formattedValue);
 
       if (this.name) {
@@ -385,6 +384,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
     } else {
       this._internals.setFormValue('');
+      if (this.name) {
+        this._inputEl.removeAttribute('value');
+      }
     }
   }
 
@@ -403,7 +405,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.rangeEditMode !== DateRangeEditableMode.START &&
       this.rangeEditMode !== DateRangeEditableMode.END &&
       this.rangeEditMode !== DateRangeEditableMode.NONE;
-
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
@@ -472,6 +473,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
                 ${unsafeSVG(calendarIcon)}
               </span>`}
         </div>
+
+        <div
+          id=${`${anchorId}-announcer`}
+          class="sr-only"
+          aria-live="polite"
+        ></div>
 
         ${this.caption
           ? html`<div
@@ -903,7 +910,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   private syncAllowInput(): void {
     if (!this.flatpickrInstance) return;
     this.flatpickrInstance.set('allowInput', this.allowManualInput);
-    if (!this.readonly) {
+    if (!this.readonly && this._inputEl) {
       this._inputEl.readOnly = !this.allowManualInput;
     }
   }
@@ -918,6 +925,66 @@ export class DateRangePicker extends FormMixin(LitElement) {
     } catch (error) {
       console.error('Error setting up flatpickr:', error);
     }
+  }
+
+  private normalizeToDate(value: string | number | Date | ''): Date | null {
+    if (!value) return null;
+
+    if (value instanceof Date) {
+      return isNaN(value.getTime()) ? null : value;
+    }
+
+    if (typeof value === 'number') {
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    if (typeof value === 'string') {
+      return this.parseDateString(value);
+    }
+
+    return null;
+  }
+
+  private processDefaultDates(
+    defaultDate: string | string[] | Date | Date[] | null
+  ): Date[] {
+    if (!defaultDate) return [];
+
+    const rawValues = Array.isArray(defaultDate) ? defaultDate : [defaultDate];
+
+    const parsed = rawValues.map((d) => {
+      if (d instanceof Date) return d;
+      if (typeof d === 'string') return this.parseDateString(d);
+      return null;
+    });
+
+    const validDates = parsed.filter(
+      (date): date is Date => date instanceof Date && !isNaN(date.getTime())
+    );
+
+    if (validDates.length === 2 && validDates[1] < validDates[0]) {
+      console.error(
+        'Invalid date range: End date cannot be earlier than start date'
+      );
+      this.invalidText = this._textStrings.invalidDateRange;
+      return [validDates[0]];
+    }
+
+    const min = this.normalizeToDate(this.minDate);
+    const max = this.normalizeToDate(this.maxDate);
+
+    const inRange = validDates.filter((d) => {
+      return (!min || d >= min) && (!max || d <= max);
+    });
+
+    if (inRange.length !== validDates.length) {
+      console.error('Invalid date(s) provided in defaultDate', inRange);
+      this.invalidText = this._textStrings.pleaseSelectValidDate;
+      this.defaultDate = null;
+    }
+
+    return inRange;
   }
 
   private async _clearInput(
@@ -947,9 +1014,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
       this.updateFormValue();
     } else {
-      await clearFlatpickrInput(this.flatpickrInstance, this._inputEl, () => {
-        this.updateFormValue();
-      });
+      await clearFlatpickrInput(
+        this.flatpickrInstance,
+        this._inputEl ?? undefined,
+        () => {
+          this.updateFormValue();
+        }
+      );
     }
 
     emitValue(this, 'on-change', {
@@ -1052,6 +1123,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this.dateFormat = 'Y-m-d';
     }
 
+    if (!this._inputEl) {
+      return {};
+    }
+
     const container = getModalContainer(this);
     const options = await getFlatpickrOptions({
       locale: this.locale || 'en',
@@ -1059,7 +1134,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       defaultDate: this.defaultDate ?? undefined,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
-      inputEl: this._inputEl!,
+      inputEl: this._inputEl,
       minDate: this.minDate,
       maxDate: this.maxDate,
       enable: this.enable,
@@ -1327,51 +1402,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
     } catch (e) {
       console.warn('Error handling input focus event:', e);
     }
-  }
-
-  private processDefaultDates(
-    defaultDate: string | string[] | Date | Date[] | null
-  ): Date[] {
-    if (!defaultDate) return [];
-
-    const rawValues = Array.isArray(defaultDate) ? defaultDate : [defaultDate];
-
-    const parsed = rawValues.map((d) => {
-      if (d instanceof Date) return d;
-      if (typeof d === 'string') return this.parseDateString(d);
-      return null;
-    });
-
-    const validDates = parsed.filter(
-      (date): date is Date => date instanceof Date && !isNaN(date.getTime())
-    );
-
-    if (validDates.length === 2 && validDates[1] < validDates[0]) {
-      console.error(
-        'Invalid date range: End date cannot be earlier than start date'
-      );
-      this.invalidText = this._textStrings.invalidDateRange;
-      return [validDates[0]];
-    }
-
-    const min = this.minDate
-      ? this.parseDateString(this.minDate as string)
-      : null;
-    const max = this.maxDate
-      ? this.parseDateString(this.maxDate as string)
-      : null;
-
-    const inRange = validDates.filter((d) => {
-      return (!min || d >= min) && (!max || d <= max);
-    });
-
-    if (inRange.length !== validDates.length) {
-      console.error('Invalid date(s) provided in defaultDate', inRange);
-      this.invalidText = this._textStrings.pleaseSelectValidDate;
-      this.defaultDate = null;
-    }
-
-    return inRange;
   }
 
   private _validate(interacted: boolean, report: boolean) {
