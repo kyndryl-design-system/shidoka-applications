@@ -75,15 +75,12 @@ export class TimePicker extends FormMixin(LitElement) {
   accessor locale: SupportedLocale | string = 'en';
 
   /**
-   * Sets the time value for the component.
+   * Current time value for the component.
    *
-   * For controlled usage patterns, this property allows parent components to directly control the selected time.
-   * When used together with defaultHour/defaultMinute, value takes precedence if both are provided.
-   *
-   * In uncontrolled usage, this is populated automatically based on defaultHour/defaultMinute and user selections.
-   * @internal
+   * - Uncontrolled: populated from `defaultHour` / `defaultMinute` and user selections.
+   * - Controlled: can be set from the host (e.g. Vue `:value`) as a `Date` or time string.
    */
-  override value: Date | string | null = null;
+  declare value: string | Date | null;
 
   /** Sets initial value of the hour element. */
   @property({ type: Number })
@@ -301,6 +298,7 @@ export class TimePicker extends FormMixin(LitElement) {
       : this.generateRandomId('time-picker');
     const descriptionId = this.name ?? '';
     const placeholder = this.enableSeconds ? '—— : —— : ——' : '—— : ——';
+
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
         <div
@@ -338,7 +336,7 @@ export class TimePicker extends FormMixin(LitElement) {
             ?readonly=${!this.timepickerDisabled && this.readonly}
             ?required=${this.required}
             ?invalid=${this._isInvalid}
-            aria-invalid=${this._isInvalid}
+            aria-invalid=${this._isInvalid ? 'true' : 'false'}
             aria-labelledby=${`label-${anchorId}`}
             autocomplete="off"
             @click=${this.handleInputClickEvent}
@@ -363,8 +361,11 @@ export class TimePicker extends FormMixin(LitElement) {
                 class="input-icon ${this.timepickerDisabled
                   ? 'is-disabled'
                   : ''}"
-                >${unsafeSVG(clockIcon)}</span
-              >`}
+                aria-hidden="true"
+                @click=${this.handleInputClickEvent}
+              >
+                ${unsafeSVG(clockIcon)}
+              </span>`}
         </div>
         ${this.caption
           ? html`<div
@@ -405,6 +406,7 @@ export class TimePicker extends FormMixin(LitElement) {
         this.defaultErrorMessage}
       </div>`;
     }
+
     if (this.warnText) {
       return html`<div
         id=${warningId}
@@ -418,6 +420,7 @@ export class TimePicker extends FormMixin(LitElement) {
         ${this.warnText}
       </div>`;
     }
+
     return null;
   }
 
@@ -501,42 +504,41 @@ export class TimePicker extends FormMixin(LitElement) {
         await this.debouncedUpdate();
       }
     }
-    if (changedProperties.has('value') && !this._isClearing) {
-      let newValue = this.value;
 
-      if (typeof newValue === 'string') {
-        const strValue = newValue.trim();
+    if (changedProperties.has('value') && !this._isClearing) {
+      const incoming = this.value;
+
+      if (typeof incoming === 'string') {
+        const strValue = incoming.trim();
 
         if (strValue === '') {
-          this.value = null;
-          newValue = null;
-        } else if (/\d{1,2}:\d{2}(?::\d{2})?/.test(strValue)) {
-          const parts = strValue.split(':').map(Number);
-          const hours = parts[0];
-          const minutes = parts[1] ?? 0;
-          const seconds = parts[2] ?? 0;
-
-          if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
-            const date2 = new Date();
-            date2.setHours(hours, minutes, seconds, 0);
-            this.value = date2;
-            newValue = this.value;
-
-            if (this.flatpickrInstance) {
-              this.flatpickrInstance.setDate(newValue, true);
+          if (this.flatpickrInstance) {
+            this._isClearing = true;
+            try {
+              this.flatpickrInstance.clear();
+              if (this._inputEl) {
+                this._inputEl.value = '';
+                this.updateFormValue();
+              }
+            } finally {
+              this._isClearing = false;
             }
           }
+          this.value = null;
         } else if (/\d{4}-\d{2}-\d{2}/.test(strValue)) {
-          this.value = new Date(strValue);
-          newValue = this.value;
-
-          if (this.flatpickrInstance) {
-            this.flatpickrInstance.setDate(newValue, true);
+          const dateFromStr = new Date(strValue);
+          if (!Number.isNaN(dateFromStr.getTime()) && this.flatpickrInstance) {
+            this.flatpickrInstance.setDate(dateFromStr, true);
+          }
+        } else if (/\d{1,2}:\d{2}(?::\d{2})?/.test(strValue)) {
+          const parsed = this.parseTimeString(strValue);
+          if (parsed && this.flatpickrInstance) {
+            this.flatpickrInstance.setDate(parsed, true);
           }
         }
-      }
-
-      if (newValue === null && this.flatpickrInstance) {
+      } else if (incoming instanceof Date && this.flatpickrInstance) {
+        this.flatpickrInstance.setDate(incoming, true);
+      } else if (incoming === null && this.flatpickrInstance) {
         this._isClearing = true;
         try {
           this.flatpickrInstance.clear();
@@ -547,6 +549,15 @@ export class TimePicker extends FormMixin(LitElement) {
         } finally {
           this._isClearing = false;
         }
+      }
+
+      if (this.flatpickrInstance) {
+        const fpVal = this.flatpickrInstance.input?.value ?? '';
+        this.value = fpVal || null;
+      }
+
+      if (this._inputEl) {
+        this.updateFormValue();
       }
 
       this.requestUpdate();
@@ -688,6 +699,7 @@ export class TimePicker extends FormMixin(LitElement) {
       : this.enableSeconds
       ? 'h:i:s K'
       : 'h:i K';
+
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,
@@ -766,6 +778,7 @@ export class TimePicker extends FormMixin(LitElement) {
         newDate.setSeconds(selectedTime.getSeconds());
         newDate.setMilliseconds(0);
         this.value = newDate;
+
         emitValue(this, 'on-change', {
           time: dateStr,
           source: undefined,
@@ -803,32 +816,44 @@ export class TimePicker extends FormMixin(LitElement) {
     if (interacted) {
       this._hasInteracted = true;
     }
+
     const hasDefaultValue =
-      this.defaultHour !== null || this.defaultMinute !== null;
+      !this._userHasCleared &&
+      (this.defaultHour !== null || this.defaultMinute !== null);
+
     const isEmpty = !this._inputEl.value.trim() && !hasDefaultValue;
     const isRequired = this.required;
+
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
+
     if (isRequired && isEmpty) {
       validity = { ...validity, valueMissing: true };
       validationMessage =
         this.defaultErrorMessage || this._textStrings.pleaseSelectDate;
     }
+
     if (this.invalidText) {
       validity = { ...validity, customError: true };
       validationMessage = this.invalidText;
     }
+
     const isValid = !validity.valueMissing && !validity.customError;
+
     if (!isValid && !validationMessage) {
       validationMessage = this._textStrings.pleaseSelectValidDate;
     }
+
     this._internals.setValidity(validity, validationMessage, this._inputEl);
+
     this._isInvalid =
       !isValid && (this._hasInteracted || this.invalidText !== '');
     this._internalValidationMsg = validationMessage;
+
     if (report) {
       this._internals.reportValidity();
     }
+
     this.requestUpdate();
   }
 
@@ -888,25 +913,54 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   public getValue(): Date | null {
-    return this.value instanceof Date ? this.value : null;
+    if (this.flatpickrInstance?.selectedDates[0]) {
+      return this.flatpickrInstance.selectedDates[0];
+    }
+
+    if (this.value instanceof Date) {
+      return this.value;
+    }
+
+    if (typeof this.value === 'string' && this.value.trim() !== '') {
+      return this.parseTimeString(this.value);
+    }
+
+    return null;
   }
 
   public setValue(newValue: Date | null): void {
-    this.value = newValue;
+    this._isClearing = newValue === null;
 
-    if (this.flatpickrInstance) {
-      if (newValue) {
-        this.flatpickrInstance.setDate(newValue, true);
-      } else {
-        this.flatpickrInstance.clear();
-        if (this._inputEl) {
-          this._inputEl.value = '';
-          this.updateFormValue();
+    try {
+      if (this.flatpickrInstance) {
+        if (newValue) {
+          this.flatpickrInstance.setDate(newValue, true);
+        } else {
+          this.flatpickrInstance.clear();
         }
-      }
-    }
 
-    this.requestUpdate();
+        const fpVal = this.flatpickrInstance.input?.value ?? '';
+        this.value = fpVal || null;
+
+        if (this._inputEl) {
+          this._inputEl.value = fpVal;
+        }
+      } else {
+        this.value = newValue;
+      }
+
+      if (this._inputEl) {
+        if (!this.flatpickrInstance) {
+          this._inputEl.value =
+            typeof this.value === 'string' ? this.value : '';
+        }
+        this.updateFormValue();
+      }
+
+      this.requestUpdate('value');
+    } finally {
+      this._isClearing = false;
+    }
   }
 }
 
