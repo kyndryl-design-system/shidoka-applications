@@ -172,7 +172,7 @@ export const WithNav = {
   `,
 };
 
-export const WithMegaNav = {
+export const WithCategorizedMegaMenu = {
   args,
   render: (args) => html`
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
