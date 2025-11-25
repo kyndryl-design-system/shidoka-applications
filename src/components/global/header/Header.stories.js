@@ -61,6 +61,7 @@ const notificationPanelArgs = {
   hidePanelFooter: false,
 };
 
+/** @type {Array<{tagStatus: 'success' | 'default' | 'error' | 'info' | 'warning' | 'ai'}>} */
 const notificationTagStatusArr = [
   {
     tagStatus: 'info',

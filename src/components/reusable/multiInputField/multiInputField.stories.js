@@ -288,7 +288,7 @@ ServerValidatedEmails.storyName = 'Server-Validated Emails';
 
 export const ValidationStatesDemo = () => {
   return html`
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
       <div>
         <h3>1. Valid State (no errors)</h3>
         <kyn-multi-input-field
