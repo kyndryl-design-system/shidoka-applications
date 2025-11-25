@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS, type PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderNavScss from './headerNav.scss?inline';
@@ -25,11 +25,25 @@ export class HeaderNav extends LitElement {
   @property({ type: String, reflect: true })
   override accessor slot = 'left';
 
+  /** Boolean value reflecting whether the navigation has categories. */
+  @state()
+  accessor hasCategories = false;
+
+  /** Mutation observer for attribute changes. */
+  private _attrObserver?: MutationObserver;
+
   override render() {
     const classes = {
       'header-nav': true,
       menu: true,
       open: this.menuOpen,
+      'categories-open': this.hasCategories,
+    };
+
+    const menuContentClasses = {
+      menu__content: true,
+      left: true,
+      'categories-open': this.hasCategories,
     };
 
     return html`
@@ -41,12 +55,12 @@ export class HeaderNav extends LitElement {
           @click=${() => this._toggleMenuOpen()}
         >
           ${this.menuOpen
-            ? html` <span>${unsafeSVG(closeIcon)}</span> `
-            : html` <span>${unsafeSVG(menuIcon)}</span> `}
+            ? html`<span>${unsafeSVG(closeIcon)}</span>`
+            : html`<span>${unsafeSVG(menuIcon)}</span>`}
         </button>
 
-        <div class="menu__content left">
-          <slot></slot>
+        <div class=${classMap(menuContentClasses)}>
+          <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
       </div>
     `;
@@ -56,13 +70,32 @@ export class HeaderNav extends LitElement {
     this.menuOpen = !this.menuOpen;
   }
 
+  private _updateCategoriesVisibility() {
+    const links = this.querySelectorAll('kyn-header-link');
+
+    const next = Array.from(links).some((link) => link.hasAttribute('open'));
+
+    if (this.hasCategories !== next) {
+      this.hasCategories = next;
+      console.log('hasCategories', this.hasCategories);
+    }
+  }
+
+  private _handleSlotChange() {
+    this._updateCategoriesVisibility();
+  }
+
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.menuOpen = false;
     }
   }
 
-  override willUpdate(changedProps: any) {
+  protected override firstUpdated(_changed: PropertyValueMap<this>): void {
+    this._updateCategoriesVisibility();
+  }
+
+  override willUpdate(changedProps: PropertyValueMap<this>): void {
     if (changedProps.has('menuOpen')) {
       const event = new CustomEvent('on-nav-toggle', {
         composed: true,
@@ -73,14 +106,35 @@ export class HeaderNav extends LitElement {
     }
   }
 
-  override connectedCallback() {
+  override updated(changedProps: PropertyValueMap<this>): void {
+    if (changedProps.has('hasCategories')) {
+      this.classList.toggle('categories-open', this.hasCategories);
+    }
+  }
+
+  override connectedCallback(): void {
     super.connectedCallback();
 
     document.addEventListener('click', (e) => this._handleClickOut(e));
+
+    this._attrObserver = new MutationObserver(() => {
+      this._updateCategoriesVisibility();
+    });
+
+    this._attrObserver.observe(this, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['open'],
+    });
   }
 
-  override disconnectedCallback() {
+  override disconnectedCallback(): void {
     document.removeEventListener('click', (e) => this._handleClickOut(e));
+
+    if (this._attrObserver) {
+      this._attrObserver.disconnect();
+      this._attrObserver = undefined;
+    }
 
     super.disconnectedCallback();
   }

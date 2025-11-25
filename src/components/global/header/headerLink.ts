@@ -26,7 +26,7 @@ export class HeaderLink extends LitElement {
   static override styles = unsafeCSS(HeaderLinkScss);
 
   /** Link open state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor open = false;
 
   /** Link url. */
