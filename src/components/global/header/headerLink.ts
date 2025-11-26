@@ -344,19 +344,17 @@ export class HeaderLink extends LitElement {
     }
   }
 
+  private _handleDocumentClick = (e: Event) => this.handleClickOut(e);
+
   override connectedCallback() {
     super.connectedCallback();
-
-    document.addEventListener('click', (e) => this.handleClickOut(e));
-
-    window?.addEventListener('resize', this._debounceResize);
+    document.addEventListener('click', this._handleDocumentClick);
+    window.addEventListener('resize', this._debounceResize);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this.handleClickOut(e));
-
-    window?.removeEventListener('resize', this._debounceResize);
-
+    document.removeEventListener('click', this._handleDocumentClick);
+    window.removeEventListener('resize', this._debounceResize);
     super.disconnectedCallback();
   }
 }
