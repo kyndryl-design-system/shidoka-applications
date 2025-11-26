@@ -296,28 +296,25 @@ export class HeaderLink extends LitElement {
   }
 
   private _positionMenu() {
-    // determine submenu positioning
-    const LinkBounds: any = this.getBoundingClientRect();
-    const MenuBounds: any = this.shadowRoot
-      ?.querySelector('.menu__content')
-      ?.getBoundingClientRect();
+    const linkBounds = this.getBoundingClientRect?.();
+    const menuEl =
+      this.shadowRoot?.querySelector<HTMLElement>('.menu__content');
+    const menuBounds = menuEl?.getBoundingClientRect?.();
+
+    if (!linkBounds || !menuBounds) {
+      return;
+    }
+
     const Padding = 12;
     const HeaderHeight = 64;
 
-    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
-    const MenuHalf = MenuBounds.height / 2;
+    const linkHalf = linkBounds.top + linkBounds.height / 2;
+    const menuHalf = menuBounds.height / 2;
 
-    const Top =
-      LinkHalf + MenuHalf > window.innerHeight
-        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight) - 16
-        : LinkHalf - MenuHalf;
-
-    // this.menuPosition = {
-    //   // top: Top < HeaderHeight ? HeaderHeight : Top,
-    //   top: HeaderHeight,
-    //   // left: LinkBounds.right + Padding,
-    //   left: 0,
-    // };
+    const topCandidate =
+      linkHalf + menuHalf > window.innerHeight
+        ? linkHalf - menuHalf - (linkHalf + menuHalf - window.innerHeight) - 16
+        : linkHalf - menuHalf;
 
     if (this.level === 1) {
       this.menuPosition = {
@@ -326,8 +323,8 @@ export class HeaderLink extends LitElement {
       };
     } else {
       this.menuPosition = {
-        top: Top < HeaderHeight ? HeaderHeight : Top,
-        left: LinkBounds.right + Padding,
+        top: topCandidate < HeaderHeight ? HeaderHeight : topCandidate,
+        left: linkBounds.right + Padding,
       };
     }
   }
