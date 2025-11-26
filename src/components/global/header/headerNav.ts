@@ -29,6 +29,14 @@ export class HeaderNav extends LitElement {
   @state()
   accessor hasCategories = false;
 
+  /**
+   * When true, the nav will automatically expand the active link's
+   * mega menu on first render (desktop) / once the menu is opened
+   * (mobile). This does NOT affect `menuOpen`.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor expandActiveMegaOnLoad = false;
+
   /** Mutation observer for attribute changes. */
   private _attrObserver?: MutationObserver;
 
@@ -37,7 +45,6 @@ export class HeaderNav extends LitElement {
       'header-nav': true,
       menu: true,
       open: this.menuOpen,
-      'categories-open': this.hasCategories,
     };
 
     const menuContentClasses = {
@@ -77,11 +84,34 @@ export class HeaderNav extends LitElement {
 
     if (this.hasCategories !== next) {
       this.hasCategories = next;
-      console.log('hasCategories', this.hasCategories);
+    }
+  }
+
+  /**
+   * Expand the active link's mega menu once, if requested.
+   */
+  private _expandActiveMegaOnce() {
+    if (!this.expandActiveMegaOnLoad) return;
+
+    const links = Array.from(
+      this.querySelectorAll<HTMLElement & { open?: boolean }>('kyn-header-link')
+    );
+
+    if (!links.length) return;
+
+    const activeLink =
+      links.find((link) => link.hasAttribute('isActive')) ?? links[0];
+
+    if (activeLink && !activeLink.hasAttribute('open')) {
+      activeLink.setAttribute('open', '');
+      if ('open' in activeLink) {
+        activeLink.open = true as unknown as boolean;
+      }
     }
   }
 
   private _handleSlotChange() {
+    this._expandActiveMegaOnce();
     this._updateCategoriesVisibility();
   }
 
@@ -92,6 +122,7 @@ export class HeaderNav extends LitElement {
   }
 
   protected override firstUpdated(_changed: PropertyValueMap<this>): void {
+    this._expandActiveMegaOnce();
     this._updateCategoriesVisibility();
   }
 

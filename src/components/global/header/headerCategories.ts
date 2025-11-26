@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import Styles from './headerCategories.scss?inline';
 
 /**
@@ -9,6 +9,12 @@ import Styles from './headerCategories.scss?inline';
 @customElement('kyn-header-categories')
 export class HeaderCategories extends LitElement {
   static override styles = unsafeCSS(Styles);
+
+  /** Handles active mega menu view.
+   * @internal
+   */
+  @property({ type: String, reflect: true })
+  accessor activeMegaView = 'root';
 
   override render() {
     return html`
