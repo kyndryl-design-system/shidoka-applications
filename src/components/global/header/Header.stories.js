@@ -1,14 +1,19 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { useArgs } from 'storybook/preview-api';
 import './';
 import '../../reusable/button';
+import '../../reusable/tabs';
+import '../../reusable/search';
 
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
+import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
@@ -59,6 +64,7 @@ const notificationPanelArgs = {
   hidePanelFooter: false,
 };
 
+/** @type {Array<{tagStatus: 'success' | 'default' | 'error' | 'info' | 'warning' | 'ai'}>} */
 const notificationTagStatusArr = [
   {
     tagStatus: 'info',
@@ -169,6 +175,305 @@ export const WithNav = {
   `,
 };
 
+export const WithCategorizedMegaMenu = {
+  args: {
+    ...args,
+    activeMegaView: 'root', // 'root' | 'detail'
+  },
+  render: (renderArgs) => {
+    const [, updateArgs] = useArgs();
+
+    const handleMoreClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      updateArgs({ activeMegaView: 'detail' });
+    };
+
+    const handleBackClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      updateArgs({ activeMegaView: 'root' });
+    };
+
+    const handleNavToggle = (e) => {
+      if (e.detail?.open) {
+        updateArgs({ activeMegaView: 'root' });
+      }
+    };
+
+    const renderRootCategories = (tabId) => html`
+      <kyn-header-categories .activeMegaView=${renderArgs.activeMegaView}>
+        <kyn-header-category
+          heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 1"
+        >
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 4
+          </kyn-header-link>
+
+          <kyn-header-link href="javascript:void(0)" @click=${handleMoreClick}>
+            <span style="margin-right: 8px;"
+              >${unsafeSVG(chevronRightIcon)}</span
+            >
+            <span>More</span>
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <div>
+          <kyn-header-category
+            heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 2"
+          >
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 1
+            </kyn-header-link>
+          </kyn-header-category>
+
+          <kyn-header-category
+            heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 3"
+          >
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 1
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 2
+            </kyn-header-link>
+          </kyn-header-category>
+        </div>
+
+        <kyn-header-category
+          heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 4"
+        >
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <kyn-header-category
+          heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 5"
+        >
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 4
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <div>
+          <kyn-header-category
+            heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 6"
+          >
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 1
+            </kyn-header-link>
+          </kyn-header-category>
+
+          <kyn-header-category
+            heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 7"
+          >
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 1
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 2
+            </kyn-header-link>
+          </kyn-header-category>
+        </div>
+
+        <kyn-header-category
+          heading="${tabId === 'tab2' ? 'Tab 2 - ' : ''}Category 8"
+        >
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <kyn-header-category heading="Category 9">
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 4
+          </kyn-header-link>
+        </kyn-header-category>
+
+        <kyn-header-category heading="Category 10">
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+          </kyn-header-link>
+        </kyn-header-category>
+      </kyn-header-categories>
+    `;
+
+    const renderDetailView = () => html`
+      <kyn-header-categories .activeMegaView=${renderArgs.activeMegaView}>
+        <kyn-header-category heading="Category 1 – More">
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 4
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 5
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 6
+          </kyn-header-link>
+
+          <!-- Back appended to bottom of this category -->
+          <div style="margin-top: 16px;">
+            <kyn-button
+              size="small"
+              kind="tertiary"
+              @click=${handleBackClick}
+              style="display: inline-flex; align-items: center;"
+            >
+              <span
+                style="display: inline-flex; align-items: center; margin-right: 8px;"
+              >
+                ${unsafeSVG(arrowLeftIcon)}
+              </span>
+              Back
+            </kyn-button>
+          </div>
+        </kyn-header-category>
+      </kyn-header-categories>
+    `;
+
+    return html`
+      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <kyn-header-nav @on-nav-toggle=${handleNavToggle}>
+          <!-- THIS is what opens the mega by default -->
+          <kyn-header-link href="javascript:void(0)" isActive open>
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 1
+
+            <kyn-tabs tabSize="sm" slot="links">
+              <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
+              <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
+
+              <kyn-tab-panel tabId="tab1" noPadding visible>
+                <kyn-search
+                  label="Filter items... (Application controlled)"
+                  style="display: block; margin-bottom: 16px;"
+                ></kyn-search>
+
+                ${renderArgs.activeMegaView === 'root'
+                  ? renderRootCategories('tab1')
+                  : renderDetailView()}
+              </kyn-tab-panel>
+
+              <kyn-tab-panel tabId="tab2" noPadding>
+                ${renderArgs.activeMegaView === 'root'
+                  ? renderRootCategories('tab2')
+                  : renderDetailView()}
+              </kyn-tab-panel>
+            </kyn-tabs>
+          </kyn-header-link>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-category heading="Category">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 2
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 3
+            </kyn-header-link>
+          </kyn-header-category>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 4
+          </kyn-header-link>
+        </kyn-header-nav>
+      </kyn-header>
+    `;
+  },
+};
+
 export const WithFlyouts = {
   args,
   render: (args) => html`
@@ -177,11 +482,6 @@ export const WithFlyouts = {
         <kyn-header-flyout label="Menu Label" hideButtonLabel>
           <span slot="button">${unsafeSVG(helpIcon)}</span>
           <span slot="button" title="Full Button Text">Short ... Text</span>
-          <!--
-          <kyn-tooltip slot="button" direction="bottom">
-            <span slot="anchor">Short ... Text</span>
-          </kyn-tooltip>
-          -->
 
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>

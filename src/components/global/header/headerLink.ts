@@ -26,7 +26,7 @@ export class HeaderLink extends LitElement {
   static override styles = unsafeCSS(HeaderLinkScss);
 
   /** Link open state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor open = false;
 
   /** Link url. */
@@ -148,31 +148,36 @@ export class HeaderLink extends LitElement {
           class=${classMap(menuClasses)}
           style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
         >
-          <button class="go-back" @click=${() => this._handleBack()}>
-            <span>${unsafeSVG(backIcon)}</span>
-            ${this.backText}
-          </button>
+          <div class="wrapper">
+            <button class="go-back" @click=${() => this._handleBack()}>
+              <span>${unsafeSVG(backIcon)}</span>
+              ${this.backText}
+            </button>
 
-          ${Links.length >= this.searchThreshold
-            ? html`
-                <kyn-text-input
-                  hideLabel
-                  size="sm"
-                  type="search"
-                  label=${this.searchLabel}
-                  placeholder=${this.searchLabel}
-                  value=${this._searchTerm}
-                  @on-input=${(e: Event) => this._handleSearch(e)}
-                >
-                  <span slot="icon" class="search-icon">
-                    ${unsafeSVG(searchIcon)}
-                  </span>
-                  ${this.searchLabel}
-                </kyn-text-input>
-              `
-            : null}
+            ${Links.length >= this.searchThreshold
+              ? html`
+                  <kyn-text-input
+                    hideLabel
+                    size="sm"
+                    type="search"
+                    label=${this.searchLabel}
+                    placeholder=${this.searchLabel}
+                    value=${this._searchTerm}
+                    @on-input=${(e: Event) => this._handleSearch(e)}
+                  >
+                    <span slot="icon" class="search-icon">
+                      ${unsafeSVG(searchIcon)}
+                    </span>
+                    ${this.searchLabel}
+                  </kyn-text-input>
+                `
+              : null}
 
-          <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
+            <slot
+              name="links"
+              @slotchange=${this._handleLinksSlotChange}
+            ></slot>
+          </div>
         </div>
       </div>
     `;
@@ -233,7 +238,6 @@ export class HeaderLink extends LitElement {
       this._searchTerm === ''
     ) {
       clearTimeout(this._enterTimer);
-
       this._leaveTimer = setTimeout(() => {
         this.open = false;
       }, 150);
@@ -264,49 +268,65 @@ export class HeaderLink extends LitElement {
   }
 
   private determineLevel() {
-    const ParentNode: any = this.parentNode;
-    const GrandparentNode: any = ParentNode.parentNode;
+    let level = 1;
+    let node: any = this.parentNode;
 
-    if (ParentNode.nodeName === 'KYN-HEADER-LINK') {
-      this.level = ParentNode.level + 1;
-    } else if (
-      ParentNode.nodeName === 'KYN-HEADER-CATEGORY' &&
-      GrandparentNode.nodeName === 'KYN-HEADER-LINK'
-    ) {
-      this.level = GrandparentNode.level + 1;
-    } else {
-      if (
-        window.innerWidth < 672 &&
-        ParentNode.nodeName === 'KYN-HEADER-FLYOUT'
+    // Traverse up the DOM tree
+    while (node) {
+      if (node.nodeName === 'KYN-HEADER-LINK') {
+        level = (node.level ?? 1) + 1;
+        break;
+      } else if (
+        node.nodeName === 'KYN-HEADER-CATEGORY' &&
+        node.parentNode?.nodeName === 'KYN-HEADER-LINK'
       ) {
-        this.level = 2;
-      } else {
-        this.level = 1;
+        level = (node.parentNode.level ?? 1) + 1;
+        break;
+      } else if (
+        window.innerWidth < 672 &&
+        node.nodeName === 'KYN-HEADER-FLYOUT'
+      ) {
+        level = 2;
+        break;
       }
+      node = node.parentNode;
     }
+
+    this.level = level;
   }
 
   private _positionMenu() {
-    // determine submenu positioning
-    const LinkBounds: any = this.getBoundingClientRect();
-    const MenuBounds: any = this.shadowRoot
-      ?.querySelector('.menu__content')
-      ?.getBoundingClientRect();
-    const Padding = 8;
+    const linkBounds = this.getBoundingClientRect?.();
+    const menuEl =
+      this.shadowRoot?.querySelector<HTMLElement>('.menu__content');
+    const menuBounds = menuEl?.getBoundingClientRect?.();
+
+    if (!linkBounds || !menuBounds) {
+      return;
+    }
+
+    const Padding = 12;
     const HeaderHeight = 64;
 
-    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
-    const MenuHalf = MenuBounds.height / 2;
+    const linkHalf = linkBounds.top + linkBounds.height / 2;
+    const menuHalf = menuBounds.height / 2;
 
-    const Top =
-      LinkHalf + MenuHalf > window.innerHeight
-        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight) - 16
-        : LinkHalf - MenuHalf;
+    const topCandidate =
+      linkHalf + menuHalf > window.innerHeight
+        ? linkHalf - menuHalf - (linkHalf + menuHalf - window.innerHeight) - 16
+        : linkHalf - menuHalf;
 
-    this.menuPosition = {
-      top: Top < HeaderHeight ? HeaderHeight : Top,
-      left: LinkBounds.right + Padding,
-    };
+    if (this.level === 1) {
+      this.menuPosition = {
+        top: HeaderHeight,
+        left: 0,
+      };
+    } else {
+      this.menuPosition = {
+        top: topCandidate < HeaderHeight ? HeaderHeight : topCandidate,
+        left: linkBounds.right + Padding,
+      };
+    }
   }
 
   /** @internal */
@@ -324,19 +344,17 @@ export class HeaderLink extends LitElement {
     }
   }
 
+  private _handleDocumentClick = (e: Event) => this.handleClickOut(e);
+
   override connectedCallback() {
     super.connectedCallback();
-
-    document.addEventListener('click', (e) => this.handleClickOut(e));
-
-    window?.addEventListener('resize', this._debounceResize);
+    document.addEventListener('click', this._handleDocumentClick);
+    window.addEventListener('resize', this._debounceResize);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this.handleClickOut(e));
-
-    window?.removeEventListener('resize', this._debounceResize);
-
+    document.removeEventListener('click', this._handleDocumentClick);
+    window.removeEventListener('resize', this._debounceResize);
     super.disconnectedCallback();
   }
 }
