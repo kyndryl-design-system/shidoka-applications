@@ -36,7 +36,18 @@ export const UIShell = {
     <kyn-ui-shell>
       ${Header.render({ ...Header.args })}
 
-      <main>Main content here.</main>
+      <main>
+        Main content here.
+
+        <kyn-tooltip>
+          Tooltip content here. Tooltip content here. Tooltip content here.
+          Tooltip content here.Tooltip content here. Tooltip content here.
+          Tooltip content here. Tooltip content here. Tooltip content here.
+          Tooltip content here. Tooltip content here. Tooltip content here.
+          Tooltip content here. Tooltip content here. Tooltip content here.
+          Tooltip content here.
+        </kyn-tooltip>
+      </main>
 
       ${FooterWithLinks.render({ ...FooterWithLinks.args })}
     </kyn-ui-shell>
