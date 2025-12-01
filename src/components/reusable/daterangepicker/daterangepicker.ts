@@ -1128,10 +1128,29 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     const container = getModalContainer(this);
+
+    let effectiveDefaultDate: Date[] | undefined;
+
+    const [start, end] = this.value ?? [null, null];
+
+    if (start instanceof Date || end instanceof Date) {
+      const dates: Date[] = [];
+      if (start instanceof Date) dates.push(start);
+      if (end instanceof Date) dates.push(end);
+      if (dates.length > 0) {
+        effectiveDefaultDate = dates;
+      }
+    } else if (Array.isArray(this.defaultDate) && this.defaultDate.length > 0) {
+      const processed = this.processDefaultDates(this.defaultDate);
+      if (processed.length > 0) {
+        effectiveDefaultDate = processed.slice(0, 2);
+      }
+    }
+
     const options = await getFlatpickrOptions({
       locale: this.locale || 'en',
       dateFormat: this.dateFormat,
-      defaultDate: this.defaultDate ?? undefined,
+      defaultDate: effectiveDefaultDate,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl,
@@ -1158,6 +1177,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       } else if (Array.isArray(origOnOpen)) {
         origOnOpen.forEach((fn) => fn(selectedDates, dateStr, instance));
       }
+
       setTimeout(() => {
         const firstDay = instance.calendarContainer.querySelector<HTMLElement>(
           '.flatpickr-day:not(.flatpickr-disabled)'
@@ -1173,17 +1193,24 @@ export class DateRangePicker extends FormMixin(LitElement) {
       } else if (Array.isArray(origOnReady)) {
         origOnReady.forEach((fn) => fn(_sel, _str, instance));
       }
+
       const handler = (e: KeyboardEvent) => {
         if (e.key !== 'Enter') return;
-        const target = e.target as HTMLElement & { dateObj: Date };
+
+        const target = e.target as HTMLElement & { dateObj?: Date };
+
         if (
           !target.classList.contains('flatpickr-day') ||
-          target.classList.contains('flatpickr-disabled')
+          target.classList.contains('flatpickr-disabled') ||
+          !target.dateObj
         ) {
           return;
         }
+
         e.preventDefault();
+
         const sel = instance.selectedDates;
+
         if (sel.length === 0) {
           instance.setDate([target.dateObj], true);
         } else if (sel.length === 1) {
@@ -1191,6 +1218,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
           instance.close();
         }
       };
+
       instance.calendarContainer.addEventListener('keydown', handler);
     };
 

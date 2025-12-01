@@ -708,6 +708,39 @@ export class TimePicker extends FormMixin(LitElement) {
       ? 'h:i:s K'
       : 'h:i K';
 
+    let defaultHour: number | undefined;
+    let defaultMinute: number | undefined;
+
+    const currentVal = this.value;
+
+    const applyFromDate = (d: Date) => {
+      defaultHour = d.getHours();
+      defaultMinute = d.getMinutes();
+    };
+
+    if (currentVal instanceof Date) {
+      applyFromDate(currentVal);
+    } else if (typeof currentVal === 'string' && currentVal.trim() !== '') {
+      const parsed = this.parseTimeString(currentVal);
+      if (parsed) {
+        applyFromDate(parsed);
+      }
+    }
+
+    if (
+      defaultHour === undefined &&
+      defaultMinute === undefined &&
+      !this._userHasCleared &&
+      (this.defaultHour !== null || this.defaultMinute !== null)
+    ) {
+      if (this.defaultHour !== null) {
+        defaultHour = this.defaultHour;
+      }
+      if (this.defaultMinute !== null) {
+        defaultMinute = this.defaultMinute;
+      }
+    }
+
     return getFlatpickrOptions({
       locale: this.locale,
       enableTime: true,
@@ -725,8 +758,8 @@ export class TimePicker extends FormMixin(LitElement) {
       onOpen: this.handleOpen.bind(this),
       appendTo: container,
       static: this.staticPosition,
-      defaultHour: this.defaultHour ?? undefined,
-      defaultMinute: this.defaultMinute ?? undefined,
+      defaultHour,
+      defaultMinute,
     });
   }
 

@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
-import { useEffect } from 'storybook/preview-api';
+import { useEffect, useArgs } from 'storybook/preview-api';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -11,7 +11,7 @@ export default {
   title: 'Components/Timepicker',
   component: 'kyn-time-picker',
   parameters: {
-    design: {
+    device: {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-373273&m=dev',
     },
@@ -74,6 +74,75 @@ const Template = (args) => {
       ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+    >
+    </kyn-time-picker>
+  `;
+};
+
+const ControlledTemplate = (args) => {
+  const [{ value }, updateArgs] = useArgs();
+
+  useEffect(() => {
+    return () => {
+      disconnectFlatpickr();
+    };
+  }, []);
+
+  const toDate = (input) => {
+    if (!input) return null;
+    if (input instanceof Date) return input;
+    if (typeof input === 'string') {
+      const parsed = new Date(input);
+      return Number.isNaN(parsed.getTime()) ? null : parsed;
+    }
+    return null;
+  };
+
+  const handleChange = (e) => {
+    const detail = e.detail || {};
+
+    if (detail.source === 'clear') {
+      updateArgs({ value: null });
+      action(e.type)({ ...e, detail });
+      return;
+    }
+
+    const raw =
+      detail.date ??
+      detail.value ??
+      (Array.isArray(detail.dates) ? detail.dates[0] : null);
+
+    const nextValue = toDate(raw);
+    updateArgs({ value: nextValue });
+    action(e.type)({ ...e, detail });
+  };
+
+  return html`
+    <kyn-time-picker
+      .name=${args.name}
+      .label=${args.label}
+      .locale=${args.locale}
+      ?required=${args.required}
+      ?staticPosition=${args.staticPosition}
+      .size=${args.size}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .caption=${args.caption}
+      .defaultHour=${args.defaultHour}
+      .defaultMinute=${args.defaultMinute}
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      .minTime=${args.minTime}
+      .maxTime=${args.maxTime}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      .enableSeconds=${args.enableSeconds}
+      ?timepickerDisabled=${args.timepickerDisabled}
+      ?readonly=${args.readonly}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .value=${value}
+      @on-change=${handleChange}
     >
     </kyn-time-picker>
   `;
@@ -217,3 +286,22 @@ export const InModal = {
     `;
   },
 };
+
+export const ControlledTimePickerValueOverridesDefaults =
+  ControlledTemplate.bind({});
+ControlledTimePickerValueOverridesDefaults.args = {
+  ...DefaultTimePicker.args,
+  name: 'controlled-timepicker',
+  label: 'Controlled Timepicker (value overrides defaults)',
+  caption:
+    'Both defaultHour/defaultMinute and value are set; value (Date) takes precedence.',
+  defaultHour: 9,
+  defaultMinute: 0,
+  value: (() => {
+    const d = new Date(0);
+    d.setHours(14, 30, 0, 0);
+    return d;
+  })(),
+};
+ControlledTimePickerValueOverridesDefaults.storyName =
+  'Value Overrides Other Defaults';
