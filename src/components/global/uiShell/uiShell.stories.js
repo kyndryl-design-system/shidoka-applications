@@ -4,6 +4,7 @@ import '../footer';
 import '../header';
 import '../localNav';
 import '../../reusable/table';
+import '../../reusable/tooltip';
 
 import { LocalNav } from '../localNav/localNav.stories.js';
 import {
