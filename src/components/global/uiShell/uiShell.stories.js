@@ -37,18 +37,7 @@ export const UIShell = {
     <kyn-ui-shell>
       ${Header.render({ ...Header.args })}
 
-      <main>
-        Main content here.
-
-        <kyn-tooltip>
-          Tooltip content here. Tooltip content here. Tooltip content here.
-          Tooltip content here.Tooltip content here. Tooltip content here.
-          Tooltip content here. Tooltip content here. Tooltip content here.
-          Tooltip content here. Tooltip content here. Tooltip content here.
-          Tooltip content here. Tooltip content here. Tooltip content here.
-          Tooltip content here.
-        </kyn-tooltip>
-      </main>
+      <main>Main content here.</main>
 
       ${FooterWithLinks.render({ ...FooterWithLinks.args })}
     </kyn-ui-shell>
@@ -81,7 +70,18 @@ export const WithEverything = {
         ${LocalNav.render({ ...LocalNav.args })}
 
         <main>
-          ${PageTitle.render({ ...PageTitle.args })}
+          <div style="display: flex; align-items: center; gap: 16px;">
+            ${PageTitle.render({ ...PageTitle.args })}
+            <kyn-tooltip>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum Lorem ipsum dolor sit
+              amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua.
+            </kyn-tooltip>
+          </div>
           <br />
           ${BasicTable.render({ ...BasicTable.args })}
         </main>
