@@ -118,10 +118,22 @@ export class Tooltip extends LitElement {
     const ViewportHeight = window.innerHeight;
     const ViewportWidth = window.innerWidth;
 
+    const header = document.querySelector('kyn-header'); // Incase tooltip is near kyn-header
+    let headerHeight = 0;
+    let isNearHeader = false;
+
+    if (header) {
+      const headerRect = header.getBoundingClientRect();
+      headerHeight = headerRect.bottom;
+      isNearHeader = AnchorTop - headerHeight < 100;
+    }
+
     let vertical = 'down';
     let horizontal = 'right';
 
-    if (AnchorTop > ViewportHeight * 0.67) {
+    if (isNearHeader) {
+      vertical = 'down'; // tooltip will always open downwards to avoid being hidden behind header.
+    } else if (AnchorTop > ViewportHeight * 0.67) {
       vertical = 'up';
     } else if (AnchorTop > ViewportHeight * 0.33) {
       vertical = 'middle';
