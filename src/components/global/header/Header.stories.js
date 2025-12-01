@@ -420,9 +420,11 @@ export const WithCategorizedMegaMenu = {
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <kyn-header-nav @on-nav-toggle=${handleNavToggle}>
-          <!-- THIS is what opens the mega by default -->
-          <kyn-header-link href="javascript:void(0)" isActive open>
+        <kyn-header-nav
+          .expandActiveMegaOnLoad=${true}
+          @on-nav-toggle=${handleNavToggle}
+        >
+          <kyn-header-link href="javascript:void(0)" isactive open>
             <span>${unsafeSVG(circleIcon)}</span>
             Link 1
 

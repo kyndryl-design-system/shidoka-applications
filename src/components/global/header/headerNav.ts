@@ -78,9 +78,13 @@ export class HeaderNav extends LitElement {
   }
 
   private _updateCategoriesVisibility() {
-    const links = this.querySelectorAll('kyn-header-link');
+    const links = this.querySelectorAll<HTMLElement & { isActive?: boolean }>(
+      'kyn-header-link'
+    );
 
-    const next = Array.from(links).some((link) => link.hasAttribute('open'));
+    const next = Array.from(links).some(
+      (link) => link.hasAttribute('open') || (link as any).isActive
+    );
 
     if (this.hasCategories !== next) {
       this.hasCategories = next;
@@ -88,7 +92,7 @@ export class HeaderNav extends LitElement {
   }
 
   /**
-   * Expand the active link's mega menu once, if requested.
+   * Ensure the active link's mega menu is open when requested.
    */
   private _expandActiveMegaOnce() {
     if (!this.expandActiveMegaOnLoad) return;
@@ -97,17 +101,36 @@ export class HeaderNav extends LitElement {
       this.querySelectorAll<HTMLElement & { open?: boolean }>('kyn-header-link')
     );
 
-    if (!links.length) return;
+    if (!links.length) {
+      return;
+    }
 
     const activeLink =
       links.find((link) => link.hasAttribute('isActive')) ?? links[0];
 
-    if (activeLink && !activeLink.hasAttribute('open')) {
-      activeLink.setAttribute('open', '');
-      if ('open' in activeLink) {
-        activeLink.open = true as unknown as boolean;
-      }
+    if (!activeLink) {
+      return;
     }
+
+    links.forEach((link) => {
+      const shouldBeOpen = link === activeLink;
+
+      if (shouldBeOpen) {
+        if (!link.hasAttribute('open')) {
+          link.setAttribute('open', '');
+        }
+        if ('open' in link) {
+          (link as any).open = true;
+        }
+      } else {
+        if (link.hasAttribute('open')) {
+          link.removeAttribute('open');
+        }
+        if ('open' in link) {
+          (link as any).open = false;
+        }
+      }
+    });
   }
 
   private _handleSlotChange() {

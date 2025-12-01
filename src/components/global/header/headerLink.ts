@@ -104,7 +104,7 @@ export class HeaderLink extends LitElement {
       menu: this.slottedEls.length,
       [`level--${this.level}`]: true,
       divider: this.divider,
-      open: this.open,
+      open: this.open || (this.level === 1 && this.isActive),
     };
 
     const linkClasses = {
