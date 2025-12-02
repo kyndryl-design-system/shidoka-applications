@@ -2,6 +2,16 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import Styles from './headerCategories.scss?inline';
 
+export interface HeaderCategoryLinkType {
+  label: string;
+}
+
+export interface HeaderCategoryType {
+  id: string;
+  heading: string;
+  links: HeaderCategoryLinkType[];
+}
+
 /**
  * Header categories wrapper for mega menu
  * @slot unnamed - Slot for header category elements.
@@ -10,16 +20,19 @@ import Styles from './headerCategories.scss?inline';
 export class HeaderCategories extends LitElement {
   static override styles = unsafeCSS(Styles);
 
-  /** Handles active mega menu view.
-   * @internal
+  /**
+   * Visual mode for mega menu categories.
+   * Used for styling differences between root and detail views.
    */
   @property({ type: String, reflect: true })
-  accessor activeMegaView = 'root';
+  accessor view: 'root' | 'detail' = 'root';
 
   override render() {
     return html`
-      <div class="header-categories">
-        <slot></slot>
+      <div class="header-categories" data-view=${this.view}>
+        <div class="header-categories__inner">
+          <slot></slot>
+        </div>
       </div>
     `;
   }

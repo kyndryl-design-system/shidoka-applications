@@ -1,18 +1,37 @@
 @use '../../../common/scss/global.scss';
 
 :host {
+  /* mega-nav slab: full viewport width minus left rail (230px) */
   display: block;
+  width: calc(100vw - 230px);
+  max-width: calc(100vw - 230px);
+  padding-right: 32px;
+  box-sizing: border-box;
 }
 
 .header-categories {
-  display: flex;
-  flex-wrap: wrap;
-  width: calc(100vw + 2px);
-  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  &__inner {
+    display: block;
+    column-width: 180px;
+    column-gap: 32px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
 
+:host([view='detail']) .header-categories__inner {
+  max-height: 250px;
+  column-width: auto;
+  column-count: 1;
+  column-gap: 0;
+}
+
+::slotted(kyn-header-category),
 ::slotted(div) {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  break-inside: avoid;
+  margin: 0 0 16px;
 }

@@ -11,6 +11,12 @@
   gap: 2px;
 }
 
+.category__links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .heading {
   @include typography.type-ui-03;
   display: flex;
@@ -32,4 +38,17 @@ slot[name='icon']::slotted(*) {
   justify-content: center;
   width: 16px;
   height: 16px;
+}
+
+/* Detail view: keep heading on top and let consumers control layout
+   of the slotted links (e.g. columns) without additional constraints. */
+:host-context(kyn-header-categories[view='detail']) {
+  .category__links {
+    display: block;
+  }
+
+  .category__links ::slotted(kyn-header-link) {
+    display: block;
+    margin-bottom: 4px;
+  }
 }

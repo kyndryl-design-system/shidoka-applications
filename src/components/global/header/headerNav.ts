@@ -92,43 +92,42 @@ export class HeaderNav extends LitElement {
   }
 
   /**
-   * Ensure the active link's mega menu is open when requested.
+   * Determine whether the active link's mega menu is open when user clicks hamburger (depends on expandActiveMegaOnLoad value).
    */
   private _expandActiveMegaOnce() {
     if (!this.expandActiveMegaOnLoad) return;
 
     const links = Array.from(
-      this.querySelectorAll<HTMLElement & { open?: boolean }>('kyn-header-link')
+      this.querySelectorAll<
+        HTMLElement & { open?: boolean; isActive?: boolean }
+      >('kyn-header-link')
     );
 
-    if (!links.length) {
-      return;
-    }
+    if (!links.length) return;
 
-    const activeLink =
-      links.find((link) => link.hasAttribute('isActive')) ?? links[0];
+    // explicity isactive link set by dev
+    let activeLink = links.find((link) => link.hasAttribute('isactive'));
 
+    // fallback: first link that owns mega content (slot="links")
     if (!activeLink) {
-      return;
+      activeLink = links.find((link) => link.querySelector('[slot="links"]'));
     }
+
+    if (!activeLink) return;
 
     links.forEach((link) => {
       const shouldBeOpen = link === activeLink;
 
+      link.toggleAttribute('open', shouldBeOpen);
+
+      if ('open' in link) {
+        (link as any).open = shouldBeOpen;
+      }
+
       if (shouldBeOpen) {
-        if (!link.hasAttribute('open')) {
-          link.setAttribute('open', '');
-        }
-        if ('open' in link) {
-          (link as any).open = true;
-        }
+        link.setAttribute('isactive', '');
       } else {
-        if (link.hasAttribute('open')) {
-          link.removeAttribute('open');
-        }
-        if ('open' in link) {
-          (link as any).open = false;
-        }
+        link.removeAttribute('isactive');
       }
     });
   }
