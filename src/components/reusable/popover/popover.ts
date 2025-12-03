@@ -482,6 +482,18 @@ export class Popover extends LitElement {
 
   private _renderStandard(): TemplateResult {
     const hasHeader = !!(this.titleText || this.labelText);
+
+    const hasFooterLink =
+      !!this.querySelector('[slot="footerLink"]') ||
+      !!this.footerLinkText ||
+      !!this.footerLinkHref;
+    const hasFooterSlot = !!this.querySelector('[slot="footer"]');
+    const hasAnyFooterButtons =
+      this.showSecondaryButton || this.showTertiaryButton;
+    const shouldRenderFooter =
+      !this.hideFooter &&
+      (hasAnyFooterButtons || hasFooterLink || hasFooterSlot);
+
     return html`
       ${hasHeader
         ? html` <header>
@@ -501,41 +513,57 @@ export class Popover extends LitElement {
           </header>`
         : null}
       <div class="body" id="popover-content"><slot></slot></div>
-      ${!this.hideFooter
+
+      ${shouldRenderFooter
         ? html`
             <div class="footer">
-              <kyn-button
-                class="action-button"
-                value="ok"
-                size="small"
-                kind=${this.destructive ? 'primary-destructive' : 'primary'}
-                @on-click=${() => this._handleAction('ok')}
-              >
-                ${this.okText}
-              </kyn-button>
-              ${this.showSecondaryButton
-                ? html`<kyn-button
-                    class="action-button"
-                    value="secondary"
-                    size="small"
-                    kind="secondary"
-                    @on-click=${() => this._handleAction('secondary')}
-                  >
-                    ${this.secondaryButtonText}
-                  </kyn-button>`
-                : null}
-              ${this.showTertiaryButton
-                ? html`<kyn-button
-                    class="action-button"
-                    value="tertiary"
-                    size="small"
-                    kind="tertiary"
-                    @on-click=${() => this._handleAction('tertiary')}
-                  >
-                    ${this.tertiaryButtonText}
-                  </kyn-button>`
-                : null}
-              <slot name="footerLink"></slot>
+              ${hasFooterSlot
+                ? html`<slot name="footer"></slot>`
+                : html`
+                    <kyn-button
+                      class="action-button"
+                      value="ok"
+                      size="small"
+                      kind=${this.destructive
+                        ? 'primary-destructive'
+                        : 'primary'}
+                      @on-click=${() => this._handleAction('ok')}
+                    >
+                      ${this.okText}
+                    </kyn-button>
+                    ${this.showSecondaryButton
+                      ? html`<kyn-button
+                          class="action-button"
+                          value="secondary"
+                          size="small"
+                          kind="secondary"
+                          @on-click=${() => this._handleAction('secondary')}
+                        >
+                          ${this.secondaryButtonText}
+                        </kyn-button>`
+                      : null}
+                    ${this.showTertiaryButton
+                      ? html`<kyn-button
+                          class="action-button"
+                          value="tertiary"
+                          size="small"
+                          kind="tertiary"
+                          @on-click=${() => this._handleAction('tertiary')}
+                        >
+                          ${this.tertiaryButtonText}
+                        </kyn-button>`
+                      : null}
+                    ${hasFooterLink
+                      ? this.footerLinkText || this.footerLinkHref
+                        ? html`<kyn-link
+                            class="footer-link"
+                            href=${this.footerLinkHref}
+                            target=${this.footerLinkTarget}
+                            >${this.footerLinkText}</kyn-link
+                          >`
+                        : html`<slot name="footerLink"></slot>`
+                      : null}
+                  `}
             </div>
           `
         : null}
