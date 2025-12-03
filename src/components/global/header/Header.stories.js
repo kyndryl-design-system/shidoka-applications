@@ -193,7 +193,7 @@ const chunkBy = (items, size) => {
   return result;
 };
 
-export const WithCategorizedMegaMenu = {
+export const WithCategorizedNav = {
   args: {
     ...args,
     activeMegaTabId: 'tab1',
