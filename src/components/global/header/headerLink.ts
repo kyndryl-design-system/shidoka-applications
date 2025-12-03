@@ -353,6 +353,16 @@ export class HeaderLink extends LitElement {
   }
 
   override disconnectedCallback() {
+    // clear timers to avoid callbacks after unmount
+    if (this._enterTimer) {
+      clearTimeout(this._enterTimer);
+      this._enterTimer = undefined;
+    }
+    if (this._leaveTimer) {
+      clearTimeout(this._leaveTimer);
+      this._leaveTimer = undefined;
+    }
+
     document.removeEventListener('click', this._handleDocumentClick);
     window.removeEventListener('resize', this._debounceResize);
     super.disconnectedCallback();

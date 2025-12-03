@@ -31,14 +31,17 @@ export class HeaderNav extends LitElement {
 
   /**
    * When true, the nav will automatically expand the active link's
-   * mega menu on first render (desktop) / once the menu is opened
-   * (mobile). This does NOT affect `menuOpen`.
+   * categorical menu (mega nav) on first render (desktop) / once the menu is opened
+   * (mobile). This does not affect `menuOpen`.
    */
   @property({ type: Boolean, reflect: true })
   accessor expandActiveMegaOnLoad = false;
 
   /** Mutation observer for attribute changes. */
   private _attrObserver?: MutationObserver;
+
+  /** Bound document click handler to allow proper add/remove of listener */
+  private _boundHandleClickOut = (e: Event) => this._handleClickOut(e);
 
   override render() {
     const classes = {
@@ -92,7 +95,7 @@ export class HeaderNav extends LitElement {
   }
 
   /**
-   * Determine whether the active link's mega menu is open when user clicks hamburger (depends on expandActiveMegaOnLoad value).
+   * Determine whether the active link's categorical menu (mega nav) is open when user clicks hamburger (depends on expandActiveMegaOnLoad value).
    */
   private _expandActiveMegaOnce() {
     if (!this.expandActiveMegaOnLoad) return;
@@ -168,7 +171,7 @@ export class HeaderNav extends LitElement {
   override connectedCallback(): void {
     super.connectedCallback();
 
-    document.addEventListener('click', (e) => this._handleClickOut(e));
+    document.addEventListener('click', this._boundHandleClickOut);
 
     this._attrObserver = new MutationObserver(() => {
       this._updateCategoriesVisibility();
@@ -182,7 +185,7 @@ export class HeaderNav extends LitElement {
   }
 
   override disconnectedCallback(): void {
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
+    document.removeEventListener('click', this._boundHandleClickOut);
 
     if (this._attrObserver) {
       this._attrObserver.disconnect();
