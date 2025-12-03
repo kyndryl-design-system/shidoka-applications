@@ -45,6 +45,7 @@ export default {
       control: 'select',
       options: ['auto', 'top', 'bottom', 'left', 'right'],
     },
+    footerLinkOnly: { control: 'boolean' },
   },
 };
 
@@ -72,6 +73,7 @@ const baseArgs = {
   showTertiaryButton: false,
   tertiaryButtonText: '',
   hideFooter: false,
+  footerLinkOnly: false,
   destructive: false,
   open: false,
   top: undefined,
@@ -93,6 +95,7 @@ const Template = (args) => html`
     ?showTertiaryButton=${args.showTertiaryButton}
     tertiaryButtonText=${args.tertiaryButtonText}
     ?hideFooter=${args.hideFooter}
+    ?footerLinkOnly=${args.footerLinkOnly}
     triggerType=${args.triggerType}
     direction=${args.direction}
     size=${args.size}
@@ -132,28 +135,28 @@ const Template = (args) => html`
           <div
             class="expansion-slot"
             style="
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              background: var(--kd-color-background-container-subtle);
-              padding: 4px 8px;
-              border-radius: 4px;
-              border: 1px dashed var(--kd-color-utility-variant-border);
-              width: 95%;
-              min-width: 170px;
-              text-align: center;
-            "
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							background: var(--kd-color-background-container-subtle);
+							padding: 4px 8px;
+							border-radius: 4px;
+							border: 1px dashed var(--kd-color-utility-variant-border);
+							width: 95%;
+							min-width: 170px;
+							text-align: center;
+						"
           >
             <span
               class="cube-icon"
               style="
-                display: inline-flex;
-                align-items: center;
-                color: var(--kd-color-icon-brand);
-                width: 24px;
-                height: 24px;
-                margin-right: 8px;
-              "
+								display: inline-flex;
+								align-items: center;
+								color: var(--kd-color-icon-brand);
+								width: 24px;
+								height: 24px;
+								margin-right: 8px;
+							"
               >${unsafeSVG(smCube)}</span
             >
             <span>Slot</span>
@@ -163,17 +166,17 @@ const Template = (args) => html`
           <div
             class="expansion-slot"
             style="
-              text-align: center;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              background: var(--kd-color-background-container-subtle);
-              padding: 32px 16px;
-              height: 255px;
-              border-radius: 4px;
-              border: 1px dashed var(--kd-color-utility-variant-border);
-            "
+							text-align: center;
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							justify-content: center;
+							background: var(--kd-color-background-container-subtle);
+							padding: 32px 16px;
+							height: 255px;
+							border-radius: 4px;
+							border: 1px dashed var(--kd-color-utility-variant-border);
+						"
           >
             <span class="cube-icon" style="color:var(--kd-color-icon-brand);"
               >${unsafeSVG(lgCube)}</span
@@ -291,6 +294,8 @@ export const WideFloatingLower = {
   args: {
     ...baseArgs,
     anchorLabel: '1',
+    footerLinkOnly: true,
+    footerLinkText: 'Footer Link',
     triggerType: 'none',
     size: 'wide',
     direction: 'left',
@@ -377,6 +382,7 @@ export const PreciseAnchorAlignWithLink = {
       ?showTertiaryButton=${args.showTertiaryButton}
       tertiaryButtonText=${args.tertiaryButtonText}
       ?hideFooter=${args.hideFooter}
+      ?footerLinkOnly=${args.footerLinkOnly}
       triggerType=${args.triggerType}
       direction=${args.direction}
       size=${args.size}
@@ -409,28 +415,28 @@ export const PreciseAnchorAlignWithLink = {
             <div
               class="expansion-slot"
               style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: var(--kd-color-background-container-subtle);
-                padding: 4px 8px;
-                border-radius: 4px;
-                border: 1px dashed var(--kd-color-utility-variant-border);
-                width: 95%;
-                min-width: 170px;
-                text-align: center;
-              "
+								display: flex;
+								align-items: center;
+								justify-content: center;
+								background: var(--kd-color-background-container-subtle);
+								padding: 4px 8px;
+								border-radius: 4px;
+								border: 1px dashed var(--kd-color-utility-variant-border);
+								width: 95%;
+								min-width: 170px;
+								text-align: center;
+							"
             >
               <span
                 class="cube-icon"
                 style="
-                  display: inline-flex;
-                  align-items: center;
-                  color: var(--kd-color-icon-brand);
-                  width: 24px;
-                  height: 24px;
-                  margin-right: 8px;
-                "
+									display: inline-flex;
+									align-items: center;
+									color: var(--kd-color-icon-brand);
+									width: 24px;
+									height: 24px;
+									margin-right: 8px;
+								"
                 >${unsafeSVG(smCube)}</span
               >
               <span>Slot</span>
@@ -440,17 +446,17 @@ export const PreciseAnchorAlignWithLink = {
             <div
               class="expansion-slot"
               style="
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background: var(--kd-color-background-container-subtle);
-                padding: 32px 16px;
-                height: 255px;
-                border-radius: 4px;
-                border: 1px dashed var(--kd-color-utility-variant-border);
-              "
+								text-align: center;
+								display: flex;
+								flex-direction: column;
+								align-items: center;
+								justify-content: center;
+								background: var(--kd-color-background-container-subtle);
+								padding: 32px 16px;
+								height: 255px;
+								border-radius: 4px;
+								border: 1px dashed var(--kd-color-utility-variant-border);
+							"
             >
               <span class="cube-icon" style="color:var(--kd-color-icon-brand);"
                 >${unsafeSVG(lgCube)}</span
@@ -559,6 +565,7 @@ export const MiniWithCustomText = {
       ?showTertiaryButton=${args.showTertiaryButton}
       tertiaryButtonText=${args.tertiaryButtonText}
       ?hideFooter=${args.hideFooter}
+      ?footerLinkOnly=${args.footerLinkOnly}
       direction=${args.direction}
       size=${args.size}
       footerLinkText=${args.footerLinkText}
@@ -584,17 +591,17 @@ export const MiniWithCustomText = {
       <div
         class="expansion-slot"
         style="
-				padding: 16px;
-				background: var(--kd-color-background-container-subtle);
-				border-radius: 4px;
-			"
+					padding: 16px;
+					background: var(--kd-color-background-container-subtle);
+					border-radius: 4px;
+				"
       >
         <p
           style="
-					font-size: 14px;
-					line-height: 20px;
-					margin: 0;
-				"
+						font-size: 14px;
+						line-height: 20px;
+						margin: 0;
+					"
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
           risus.
