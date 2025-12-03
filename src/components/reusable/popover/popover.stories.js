@@ -40,6 +40,7 @@ export default {
       control: 'select',
       options: ['icon', 'link', 'button', 'none'],
     },
+    hideFooter: { control: 'boolean' },
     direction: {
       control: 'select',
       options: ['auto', 'top', 'bottom', 'left', 'right'],
@@ -64,7 +65,7 @@ const baseArgs = {
   labelText: 'Example label text content.',
   cancelText: '',
   closeText: 'Close',
-  footerLinkText: '',
+  footerLinkText: 'Link',
   footerLinkHref: '',
   footerLinkTarget: '_blank',
   showSecondaryButton: true,
@@ -189,14 +190,14 @@ const Template = (args) => html`
             </p>
           </div>
         `}
-
     <kyn-link
       slot="footerLink"
-      href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
+      href=${args.footerLinkHref ||
+      'https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers'}
       class="footer-link"
-      target="_blank"
+      target=${args.footerLinkTarget || '_blank'}
     >
-      Link
+      ${args.footerLinkText}
     </kyn-link>
   </kyn-popover>
 `;
@@ -274,6 +275,7 @@ export const FloatingUpperNoHeader = {
     ...baseArgs,
     triggerType: 'none',
     titleText: '',
+    footerLinkText: '',
     labelText: '',
     size: 'narrow',
     anchorLabel: '1',
@@ -467,11 +469,12 @@ export const PreciseAnchorAlignWithLink = {
           `}
       <kyn-link
         slot="footerLink"
-        href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
+        href=${args.footerLinkHref ||
+        'https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers'}
         class="footer-link"
-        target="_blank"
+        target=${args.footerLinkTarget || '_blank'}
       >
-        Link
+        ${args.footerLinkText}
       </kyn-link>
     </kyn-popover>
   `,
@@ -581,22 +584,31 @@ export const MiniWithCustomText = {
       <div
         class="expansion-slot"
         style="
-					padding: 16px;
-					background: var(--kd-color-background-container-subtle);
-					border-radius: 4px;
-				"
+				padding: 16px;
+				background: var(--kd-color-background-container-subtle);
+				border-radius: 4px;
+			"
       >
         <p
           style="
-						font-size: 14px;
-						line-height: 20px;
-						margin: 0;
-					"
+					font-size: 14px;
+					line-height: 20px;
+					margin: 0;
+				"
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
           risus.
         </p>
       </div>
+
+      <kyn-link
+        slot="footerLink"
+        href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
+        class="footer-link"
+        target="_blank"
+      >
+        Link
+      </kyn-link>
     </kyn-popover>
   `,
 };
