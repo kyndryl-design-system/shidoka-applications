@@ -349,4 +349,3 @@ export const ValidationStatesDemo = () => {
     </div>
   `;
 };
-ValidationStatesDemo.storyName = 'Validation States Demo';
