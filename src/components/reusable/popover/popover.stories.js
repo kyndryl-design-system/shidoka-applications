@@ -66,7 +66,7 @@ const baseArgs = {
   labelText: 'Example label text content.',
   cancelText: '',
   closeText: 'Close',
-  footerLinkText: 'Link',
+  footerLinkText: '',
   footerLinkHref: '',
   footerLinkTarget: '_blank',
   showSecondaryButton: true,
@@ -370,6 +370,7 @@ export const PreciseAnchorAlignWithLink = {
     size: 'narrow',
     shiftPadding: 165,
     arrowPosition: '20px',
+    footerLinkOnly: true,
   },
   render: (args) => html`
     <kyn-popover
@@ -403,42 +404,46 @@ export const PreciseAnchorAlignWithLink = {
         ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
         : args.triggerType === 'link'
         ? html`<kyn-link slot="anchor" kind="primary">Link</kyn-link>`
-        : html`<kyn-button
-            slot="anchor"
-            style="height:24px;width:24px;"
-            kind="primary"
-            size="small"
-            >1</kyn-button
-          >`}
+        : html`
+            <kyn-button
+              slot="anchor"
+              style="height:24px;width:24px;"
+              kind="primary"
+              size="small"
+            >
+              1
+            </kyn-button>
+          `}
       ${args.size === 'mini'
         ? html`
             <div
               class="expansion-slot"
               style="
-								display: flex;
-								align-items: center;
-								justify-content: center;
-								background: var(--kd-color-background-container-subtle);
-								padding: 4px 8px;
-								border-radius: 4px;
-								border: 1px dashed var(--kd-color-utility-variant-border);
-								width: 95%;
-								min-width: 170px;
-								text-align: center;
-							"
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:var(--kd-color-background-container-subtle);
+                padding:4px 8px;
+                border-radius:4px;
+                border:1px dashed var(--kd-color-utility-variant-border);
+                width:95%;
+                min-width:170px;
+                text-align:center;
+              "
             >
               <span
                 class="cube-icon"
                 style="
-									display: inline-flex;
-									align-items: center;
-									color: var(--kd-color-icon-brand);
-									width: 24px;
-									height: 24px;
-									margin-right: 8px;
-								"
-                >${unsafeSVG(smCube)}</span
+                  display:inline-flex;
+                  align-items:center;
+                  color:var(--kd-color-icon-brand);
+                  width:24px;
+                  height:24px;
+                  margin-right:8px;
+                "
               >
+                ${unsafeSVG(smCube)}
+              </span>
               <span>Slot</span>
             </div>
           `
@@ -446,54 +451,71 @@ export const PreciseAnchorAlignWithLink = {
             <div
               class="expansion-slot"
               style="
-								text-align: center;
-								display: flex;
-								flex-direction: column;
-								align-items: center;
-								justify-content: center;
-								background: var(--kd-color-background-container-subtle);
-								padding: 32px 16px;
-								height: 255px;
-								border-radius: 4px;
-								border: 1px dashed var(--kd-color-utility-variant-border);
-							"
+                text-align:center;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+                background:var(--kd-color-background-container-subtle);
+                padding:32px 16px;
+                height:255px;
+                border-radius:4px;
+                border:1px dashed var(--kd-color-utility-variant-border);
+              "
             >
-              <span class="cube-icon" style="color:var(--kd-color-icon-brand);"
-                >${unsafeSVG(lgCube)}</span
-              >
+              <span class="cube-icon" style="color:var(--kd-color-icon-brand);">
+                ${unsafeSVG(lgCube)}
+              </span>
               <h3
-                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
+                style="
+                  font-size:16px;
+                  font-weight:500;
+                  line-height:24px;
+                  letter-spacing:0.32px;
+                "
               >
                 Slot Content
               </h3>
               <p
-                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
+                style="
+                  font-size:12px;
+                  font-weight:300;
+                  line-height:16px;
+                  letter-spacing:0.32px;
+                "
               >
                 Swap this with your own component.
               </p>
             </div>
           `}
+
+      <!-- ✅ Slotted footer link example -->
       <kyn-link
         slot="footerLink"
-        href=${args.footerLinkHref ||
-        'https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers'}
+        href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
+        target="_blank"
         class="footer-link"
-        target=${args.footerLinkTarget || '_blank'}
       >
-        ${args.footerLinkText}
+        Visit Documentation
       </kyn-link>
     </kyn-popover>
   `,
   decorators: [
     (Story) => html`
-      <div style="padding: 100px;">
-        <div style="position: relative;">
+      <div style="padding:100px;">
+        <div style="position:relative;">
           <div
-            style="border: 1px dashed var(--kd-color-border-variants-light); border-radius: 4px; padding: 40px; display: inline-block; position: relative;"
+            style="
+              border:1px dashed var(--kd-color-border-variants-light);
+              border-radius:4px;
+              padding:40px;
+              display:inline-block;
+              position:relative;
+            "
           >
-            <span style="margin-right: 10px; padding-bottom: 10px;"
-              >Anchor container</span
-            >
+            <span style="margin-right:10px;padding-bottom:10px;">
+              Anchor container
+            </span>
             ${Story()}
           </div>
         </div>
