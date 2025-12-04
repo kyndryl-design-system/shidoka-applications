@@ -15,7 +15,6 @@ import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/c
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
-import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
@@ -25,6 +24,7 @@ import headerCategoriesStyles from './headerCategories.scss?inline';
 
 /** @typedef {import('./headerCategories').HeaderCategoryLinkType} HeaderCategoryLinkType */
 /** @typedef {import('./headerCategories').HeaderLinkRendererContext} HeaderLinkRendererContext */
+/** @typedef {import('./headerCategories').HeaderMegaLinkRenderer} HeaderMegaLinkRenderer */
 
 const headerCategoriesGlobalStyles = html`
   <style>
@@ -93,11 +93,9 @@ const notificationTagStatusArr = [
   },
 ];
 
-// Example of change prop unRead of <kyn-notification> when we select Mark all as Read
 const selectAllNotificationsAsRead = (e) => {
   const notifications = document.querySelectorAll('kyn-notification');
   notifications.forEach((notification) => {
-    // unRead is notification prop
     notification.unRead = false;
   });
   action(e.type)({ ...e, detail: e.detail });
@@ -105,7 +103,6 @@ const selectAllNotificationsAsRead = (e) => {
 
 const handleOverflowClick = (e) => {
   action(e.type)({ ...e, detail: e.detail });
-  // overflow link click logic here to mark as unread
 };
 
 export const Header = {
@@ -202,11 +199,9 @@ export const WithCategorizedNav = {
       updateArgs({ activeMegaTabId, activeMegaCategoryId });
     };
 
-    /** @type {(link: HeaderCategoryLinkType, context?: HeaderLinkRendererContext) => import('lit').TemplateResult | null} */
-    const renderMegaLink = (link, _context) => html`
-      <span>${unsafeSVG(circleIcon)}</span>
-      ${link.label}
-    `;
+    /** @type {HeaderMegaLinkRenderer} */
+    const renderMegaLink = (link, _context) =>
+      html`<span>${unsafeSVG(circleIcon)}</span>${link.label}`;
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
@@ -257,7 +252,7 @@ export const WithCategorizedNav = {
                     .tabsConfig=${megaNavConfig}
                     .activeMegaTabId=${renderArgs.activeMegaTabId}
                     .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    .linkRenderer=${renderMegaLink}
+                    linkRenderer=${renderMegaLink}
                     @on-nav-change=${handleMegaChange}
                   ></kyn-header-categories>
                 </kyn-tab-panel>
@@ -276,7 +271,7 @@ export const WithCategorizedNav = {
                     .tabsConfig=${megaNavConfig}
                     .activeMegaTabId=${renderArgs.activeMegaTabId}
                     .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    .linkRenderer=${renderMegaLink}
+                    linkRenderer=${renderMegaLink}
                     @on-nav-change=${handleMegaChange}
                   ></kyn-header-categories>
                 </kyn-tab-panel>
@@ -314,310 +309,19 @@ export const WithCategorizedNav = {
   },
 };
 
+WithCategorizedNav.storyName = 'With Categorized Nav (JSON-driven)';
+
 // -----------------------------------------------------------------------------
-// Fully manual HTML variant (no JSON), using same masonry grid styles
+// Fully manual HTML variant (no JSON), mirroring megaNavCategories.json
 // -----------------------------------------------------------------------------
 
 export const WithCategorizedNavManualHtml = {
   args: {
     ...args,
     activeMegaTabId: 'tab1',
-    activeMegaView: 'root', // 'root' | 'detail'
-    activeMegaCategoryId: 'analytics', // 'analytics' | 'operations' | 'governance'
   },
   render: (renderArgs) => {
     const [, updateArgs] = useArgs();
-
-    const toRoot = (e) => {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      updateArgs({
-        activeMegaView: 'root',
-        activeMegaCategoryId: 'analytics',
-      });
-    };
-
-    const openCategory = (e, categoryId) => {
-      e.preventDefault();
-      e.stopPropagation();
-      updateArgs({
-        activeMegaView: 'detail',
-        activeMegaCategoryId: categoryId,
-      });
-    };
-
-    const renderRootView = () => html`
-      <div class="header-categories" data-view="root">
-        <div class="header-categories__inner">
-          <kyn-header-category heading="Analytics">
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Usage dashboard
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Performance overview
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Alerts &amp; incidents
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Cost explorer
-            </kyn-header-link>
-
-            <kyn-header-link
-              href="javascript:void(0)"
-              @click=${(e) => openCategory(e, 'analytics')}
-            >
-              <span style="margin-right: 8px;">
-                ${unsafeSVG(chevronRightIcon)}
-              </span>
-              <span>More</span>
-            </kyn-header-link>
-          </kyn-header-category>
-
-          <kyn-header-category heading="Operations">
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Runbooks
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Change calendar
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Service catalog
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Incident queue
-            </kyn-header-link>
-
-            <kyn-header-link
-              href="javascript:void(0)"
-              @click=${(e) => openCategory(e, 'operations')}
-            >
-              <span style="margin-right: 8px;">
-                ${unsafeSVG(chevronRightIcon)}
-              </span>
-              <span>More</span>
-            </kyn-header-link>
-          </kyn-header-category>
-
-          <kyn-header-category heading="Governance">
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Policies
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Compliance reports
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Access reviews
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Security posture
-            </kyn-header-link>
-
-            <kyn-header-link
-              href="javascript:void(0)"
-              @click=${(e) => openCategory(e, 'governance')}
-            >
-              <span style="margin-right: 8px;">
-                ${unsafeSVG(chevronRightIcon)}
-              </span>
-              <span>More</span>
-            </kyn-header-link>
-          </kyn-header-category>
-        </div>
-      </div>
-    `;
-
-    const renderDetailView = () => {
-      const id = renderArgs.activeMegaCategoryId;
-
-      if (id === 'operations') {
-        return html`
-          <div class="header-categories" data-view="detail">
-            <div class="header-categories__inner">
-              <kyn-header-category heading="Operations – More">
-                <div class="header-detail-columns">
-                  <div>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Runbooks
-                    </kyn-header-link>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Change calendar
-                    </kyn-header-link>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Service catalog
-                    </kyn-header-link>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Incident queue
-                    </kyn-header-link>
-                  </div>
-                  <div>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Maintenance windows
-                    </kyn-header-link>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Automation rules
-                    </kyn-header-link>
-                  </div>
-                </div>
-              </kyn-header-category>
-            </div>
-          </div>
-
-          <div style="margin-top: 16px;">
-            <kyn-button
-              size="small"
-              kind="tertiary"
-              @click=${toRoot}
-              style="display: inline-flex; align-items: center;"
-            >
-              <span
-                style="display: inline-flex; align-items: center; margin-right: 8px;"
-              >
-                ${unsafeSVG(arrowLeftIcon)}
-              </span>
-              Back
-            </kyn-button>
-          </div>
-        `;
-      }
-
-      if (id === 'governance') {
-        return html`
-          <div class="header-categories" data-view="detail">
-            <div class="header-categories__inner">
-              <kyn-header-category heading="Governance – More">
-                <div class="header-detail-columns">
-                  <div>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Policies
-                    </kyn-header-link>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Compliance reports
-                    </kyn-header-link>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Audit trails
-                    </kyn-header-link>
-                  </div>
-                  <div>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Access reviews
-                    </kyn-header-link>
-                    <kyn-header-link href="javascript:void(0)">
-                      <span>${unsafeSVG(circleIcon)}</span>
-                      Security posture
-                    </kyn-header-link>
-                  </div>
-                </div>
-              </kyn-header-category>
-            </div>
-          </div>
-
-          <div style="margin-top: 16px;">
-            <kyn-button
-              size="small"
-              kind="tertiary"
-              @click=${toRoot}
-              style="display: inline-flex; align-items: center;"
-            >
-              <span
-                style="display: inline-flex; align-items: center; margin-right: 8px;"
-              >
-                ${unsafeSVG(arrowLeftIcon)}
-              </span>
-              Back
-            </kyn-button>
-          </div>
-        `;
-      }
-
-      // default analytics detail
-      return html`
-        <div class="header-categories" data-view="detail">
-          <div class="header-categories__inner">
-            <kyn-header-category heading="Analytics – More">
-              <div class="header-detail-columns">
-                <div>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Usage dashboard
-                  </kyn-header-link>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Performance overview
-                  </kyn-header-link>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Alerts &amp; incidents
-                  </kyn-header-link>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Cost explorer
-                  </kyn-header-link>
-                </div>
-                <div>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Capacity planning
-                  </kyn-header-link>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Reports center
-                  </kyn-header-link>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    Resource heatmap
-                  </kyn-header-link>
-                  <kyn-header-link href="javascript:void(0)">
-                    <span>${unsafeSVG(circleIcon)}</span>
-                    SLAs &amp; uptime
-                  </kyn-header-link>
-                </div>
-              </div>
-            </kyn-header-category>
-          </div>
-        </div>
-
-        <div style="margin-top: 16px;">
-          <kyn-button
-            size="small"
-            kind="tertiary"
-            @click=${toRoot}
-            style="display: inline-flex; align-items: center;"
-          >
-            <span
-              style="display: inline-flex; align-items: center; margin-right: 8px;"
-            >
-              ${unsafeSVG(arrowLeftIcon)}
-            </span>
-            Back
-          </kyn-button>
-        </div>
-      `;
-    };
 
     return html`
       ${headerCategoriesGlobalStyles}
@@ -633,12 +337,7 @@ export const WithCategorizedNavManualHtml = {
                   slot="tabs"
                   id="tab1"
                   ?selected=${renderArgs.activeMegaTabId === 'tab1'}
-                  @click=${() =>
-                    updateArgs({
-                      activeMegaTabId: 'tab1',
-                      activeMegaView: 'root',
-                      activeMegaCategoryId: 'analytics',
-                    })}
+                  @click=${() => updateArgs({ activeMegaTabId: 'tab1' })}
                 >
                   Tab 1
                 </kyn-tab>
@@ -647,12 +346,7 @@ export const WithCategorizedNavManualHtml = {
                   slot="tabs"
                   id="tab2"
                   ?selected=${renderArgs.activeMegaTabId === 'tab2'}
-                  @click=${() =>
-                    updateArgs({
-                      activeMegaTabId: 'tab2',
-                      activeMegaView: 'root',
-                      activeMegaCategoryId: 'analytics',
-                    })}
+                  @click=${() => updateArgs({ activeMegaTabId: 'tab2' })}
                 >
                   Tab 2
                 </kyn-tab>
@@ -667,9 +361,179 @@ export const WithCategorizedNavManualHtml = {
                     style="display: block; margin-bottom: 16px;"
                   ></kyn-search>
 
-                  ${renderArgs.activeMegaView === 'root'
-                    ? renderRootView()
-                    : renderDetailView()}
+                  <div class="header-categories" data-view="root">
+                    <div class="header-categories__inner">
+                      <!-- CATEGORY 1 (6 links, show 4 + More) -->
+                      <kyn-header-category heading="Category 1">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 3
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 4
+                        </kyn-header-link>
+
+                        <kyn-header-link href="javascript:void(0)">
+                          <span style="margin-right: 8px;">
+                            ${unsafeSVG(chevronRightIcon)}
+                          </span>
+                          <span>More</span>
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 2 -->
+                      <kyn-header-category heading="Category 2">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 3 -->
+                      <kyn-header-category heading="Category 3">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 4 -->
+                      <kyn-header-category heading="Category 4">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 3
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 5 -->
+                      <kyn-header-category heading="Category 5">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 3
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 4
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 6 -->
+                      <kyn-header-category heading="Category 6">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 7 (13 links, show 4 + More) -->
+                      <kyn-header-category heading="Category 7">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 3
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 4
+                        </kyn-header-link>
+
+                        <kyn-header-link href="javascript:void(0)">
+                          <span style="margin-right: 8px;">
+                            ${unsafeSVG(chevronRightIcon)}
+                          </span>
+                          <span>More</span>
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 8 -->
+                      <kyn-header-category heading="Category 8">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 3
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 9 -->
+                      <kyn-header-category heading="Category 9">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 3
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 4
+                        </kyn-header-link>
+                      </kyn-header-category>
+
+                      <!-- CATEGORY 10 -->
+                      <kyn-header-category heading="Category 10">
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 1
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 2
+                        </kyn-header-link>
+                        <kyn-header-link href="#">
+                          <span>${unsafeSVG(circleIcon)}</span>
+                          Sub Link 3
+                        </kyn-header-link>
+                      </kyn-header-category>
+                    </div>
+                  </div>
                 </kyn-tab-panel>
 
                 <kyn-tab-panel
@@ -682,7 +546,14 @@ export const WithCategorizedNavManualHtml = {
                     style="display: block; margin-bottom: 16px;"
                   ></kyn-search>
 
-                  ${renderRootView()}
+                  <!-- For brevity you can mirror the Tab 2 JSON structure the same way -->
+                  <div class="header-categories" data-view="root">
+                    <div class="header-categories__inner">
+                      <!-- Repeat the T2 categories here in the same pattern:
+                         show first 4 links + More where applicable -->
+                      <!-- ... -->
+                    </div>
+                  </div>
                 </kyn-tab-panel>
               </kyn-tabs>
             </kyn-header-link>
@@ -717,6 +588,7 @@ export const WithCategorizedNavManualHtml = {
     `;
   },
 };
+WithCategorizedNavManualHtml.storyName = 'With Categorized Nav (Manual HTML)';
 
 export const WithFlyouts = {
   args,
@@ -775,113 +647,114 @@ export const WithFlyouts = {
     </kyn-header>
   `,
 };
+WithCategorizedNavManualHtml.storyName = 'With Categorized Nav (Manual HTML)';
 
 export const WithNotificationPanel = {
   args,
-  render: (args) => html` <kyn-header
-    rootUrl=${args.rootUrl}
-    appTitle=${args.appTitle}
-  >
-    <kyn-header-flyouts>
-      <kyn-header-flyout label="Notification" hideMenuLabel>
-        <span slot="button">${unsafeSVG(filledNotificationIcon)}</span>
-        <!-- Notification panel inside <kyn-header-flyout></kyn-header-flyout> -->
-        <kyn-header-notification-panel
-          panelTitle=${notificationPanelArgs.panelTitle}
-          panelFooterBtnText=${notificationPanelArgs.panelFooterBtnText}
-          ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
-          @on-footer-btn-click=${(e) =>
-            action(e.type)({ ...e, detail: e.detail })}
-        >
-          <kyn-button
-            slot="menu-slot"
-            kind="secondary"
-            @click=${(e) => selectAllNotificationsAsRead(e)}
+  render: (args) => html`
+    <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
+      <kyn-header-flyouts>
+        <kyn-header-flyout label="Notification" hideMenuLabel>
+          <span slot="button">${unsafeSVG(filledNotificationIcon)}</span>
+          <kyn-header-notification-panel
+            panelTitle=${notificationPanelArgs.panelTitle}
+            panelFooterBtnText=${notificationPanelArgs.panelFooterBtnText}
+            ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
+            @on-footer-btn-click=${(e) =>
+              action(e.type)({ ...e, detail: e.detail })}
           >
-            Mark all as Read
-          </kyn-button>
-          <kyn-button
-            slot="menu-slot"
-            kind="outline"
-            @click=${(e) => console.log(e)}
-          >
-            <span slot="icon">${unsafeSVG(settingsIcon)}</span>
-          </kyn-button>
+            <kyn-button
+              slot="menu-slot"
+              kind="secondary"
+              @click=${(e) => selectAllNotificationsAsRead(e)}
+            >
+              Mark all as Read
+            </kyn-button>
+            <kyn-button
+              slot="menu-slot"
+              kind="outline"
+              @click=${(e) => console.log(e)}
+            >
+              <span slot="icon">${unsafeSVG(settingsIcon)}</span>
+            </kyn-button>
 
-          <!-- Notification component inside notification panel -->
-          ${notificationTagStatusArr.map(
-            (ele) => html`
-              <kyn-notification
-                notificationTitle="Notification Title"
-                notificationSubtitle="Application or Service"
-                timeStamp="2 mins ago"
-                href="#"
-                type="clickable"
-                tagStatus=${ele.tagStatus}
-                unRead
-                @on-notification-click=${(e) =>
-                  action(e.type)({ ...e, detail: e.detail })}
-              >
-                <kyn-overflow-menu
-                  slot="actions"
-                  anchorRight
-                  @click=${(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
+            ${notificationTagStatusArr.map(
+              (ele) => html`
+                <kyn-notification
+                  notificationTitle="Notification Title"
+                  notificationSubtitle="Application or Service"
+                  timeStamp="2 mins ago"
+                  href="#"
+                  type="clickable"
+                  tagStatus=${ele.tagStatus}
+                  unRead
+                  @on-notification-click=${(e) =>
+                    action(e.type)({ ...e, detail: e.detail })}
                 >
-                  <kyn-overflow-menu-item
-                    @on-click=${(e) => handleOverflowClick(e)}
-                    >Mark as Read</kyn-overflow-menu-item
+                  <kyn-overflow-menu
+                    slot="actions"
+                    anchorRight
+                    @click=${(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
                   >
-                  <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
-                </kyn-overflow-menu>
+                    <kyn-overflow-menu-item
+                      @on-click=${(e) => handleOverflowClick(e)}
+                    >
+                      Mark as Read
+                    </kyn-overflow-menu-item>
+                    <kyn-overflow-menu-item>
+                      View Details
+                    </kyn-overflow-menu-item>
+                  </kyn-overflow-menu>
 
-                <div>
-                  Message, this is an additional line Ipsum iMessage, Lorem
-                  Ipsum is simply dummy and typesetting industry.
-                </div>
-              </kyn-notification>
-            `
-          )}
-        </kyn-header-notification-panel>
-      </kyn-header-flyout>
+                  <div>
+                    Message, this is an additional line Ipsum iMessage, Lorem
+                    Ipsum is simply dummy and typesetting industry.
+                  </div>
+                </kyn-notification>
+              `
+            )}
+          </kyn-header-notification-panel>
+        </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label">
-        <span slot="button">${unsafeSVG(helpIcon)}</span>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example 2
-        </kyn-header-link>
-      </kyn-header-flyout>
+        <kyn-header-flyout label="Menu Label">
+          <span slot="button">${unsafeSVG(helpIcon)}</span>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example 2
+          </kyn-header-link>
+        </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label" hideMenuLabel>
-        <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
+        <kyn-header-flyout label="Menu Label" hideMenuLabel>
+          <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
 
-        <kyn-header-user-profile
-          name="User Name"
-          subtitle="Job Title"
-          email="user@kyndryl.com"
-          profileLink="#"
-        >
-          <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
-        </kyn-header-user-profile>
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
+          >
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
+          </kyn-header-user-profile>
 
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example Link 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example Link 2
-        </kyn-header-link>
-      </kyn-header-flyout>
-    </kyn-header-flyouts>
-  </kyn-header>`,
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example Link 2
+          </kyn-header-link>
+        </kyn-header-flyout>
+      </kyn-header-flyouts>
+    </kyn-header>
+  `,
 };
 
 export const WithEverything = {

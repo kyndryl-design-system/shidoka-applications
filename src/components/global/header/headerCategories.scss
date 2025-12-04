@@ -1,7 +1,6 @@
 @use '../../../common/scss/global.scss';
 
 :host {
-  /* mega-nav slab: full viewport width minus left rail (230px) */
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -27,17 +26,14 @@
     max-width: 100%;
     box-sizing: border-box;
   }
+
+  &__back-slot {
+    display: block;
+    margin-top: 16px;
+  }
 }
 
-/* detail view is single-column; columns are controlled inside */
-:host([view='detail']) .header-categories__inner {
-  max-height: 250px;
-  column-width: auto;
-  column-count: 1;
-  column-gap: 0;
-}
-
-/* prevent category headings from being split away from links */
+/* JSON-driven children (direct kyn-header-category instances) */
 .header-categories__inner > * {
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
@@ -45,7 +41,23 @@
   margin: 0 0 16px;
 }
 
-/* detail columns (same for JSON + manual) */
+/* Manual HTML children (slotted kyn-header-category instances) */
+slot.header-categories__slot::slotted(*) {
+  display: block;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 16px;
+}
+
+/* detail view  */
+:host([view='detail']) .header-categories__inner {
+  max-height: 250px;
+  column-width: auto;
+  column-count: 1;
+  column-gap: 0;
+}
+
 :host([view='detail']) .header-detail-columns {
   display: flex;
   align-items: flex-start;

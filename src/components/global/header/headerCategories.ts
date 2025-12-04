@@ -18,6 +18,12 @@ export interface HeaderCategoryLinkType {
   href?: string;
 }
 
+export interface HeaderLinkRendererContext {
+  tabId: string;
+  categoryId: string;
+  view: 'root' | 'detail';
+}
+
 export interface HeaderCategoryType {
   id: string;
   heading: string;
@@ -41,8 +47,8 @@ export interface HeaderMegaChangeDetail {
  */
 export type HeaderMegaLinkRenderer = (
   link: HeaderCategoryLinkType,
-  context?: { tabId: string; categoryId: string; view: 'detail' | 'root' }
-) => TemplateResult | null;
+  context?: HeaderLinkRendererContext
+) => ReturnType<typeof html> | null;
 
 /**
  * Header categories wrapper for mega menu.
