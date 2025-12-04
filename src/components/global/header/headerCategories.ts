@@ -6,8 +6,12 @@ import {
   PropertyValueMap,
   TemplateResult,
 } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import Styles from './headerCategories.scss?inline';
+
+import './headerCategory';
+import '../../reusable/button/button';
+import './headerLink';
 
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
@@ -34,7 +38,12 @@ export interface MegaTabConfig {
   categories: HeaderCategoryType[];
 }
 
-export type MegaTabsConfig = Record<string, MegaTabConfig>;
+/**
+ * Map of tab id to mega nav configuration.
+ */
+export interface MegaTabsConfig {
+  [tabId: string]: MegaTabConfig;
+}
 
 export interface HeaderMegaChangeDetail {
   activeMegaTabId: string;
@@ -48,7 +57,7 @@ export interface HeaderMegaChangeDetail {
 export type HeaderMegaLinkRenderer = (
   link: HeaderCategoryLinkType,
   context?: HeaderLinkRendererContext
-) => ReturnType<typeof html> | null;
+) => TemplateResult | null;
 
 /**
  * Header categories wrapper for mega menu.
@@ -56,6 +65,15 @@ export type HeaderMegaLinkRenderer = (
  * encapsulates all mega-nav view behavior (root/detail, "More", "Back").
  *
  * Emits `on-nav-change` so parents can mirror state for tabs, routing, etc.
+ *
+ * Modes:
+ * - JSON mode: provide `tabsConfig` and categories/links are rendered from config.
+ * - Slotted/manual mode: omit `tabsConfig` and slot <kyn-header-category> /
+ *   <kyn-header-link> similar to the original API; this component will:
+ *    - Truncate visible links per category at `maxRootLinks`
+ *    - Inject a "More" link when there are additional links
+ *    - Switch to a detail view for a category when "More" is clicked
+ *    - Show a Back button to return to the root view
  */
 @customElement('kyn-header-categories')
 export class HeaderCategories extends LitElement {
@@ -77,7 +95,7 @@ export class HeaderCategories extends LitElement {
   @property({ type: Number })
   accessor maxRootLinks = 4;
 
-  /** Number of links per column in the detail view. */
+  /** Number of links per column in the detail view (JSON mode only). */
   @property({ type: Number })
   accessor detailLinksPerColumn = 6;
 
@@ -95,8 +113,15 @@ export class HeaderCategories extends LitElement {
   @property({ attribute: false })
   accessor linkRenderer: HeaderMegaLinkRenderer | null = null;
 
-  private readonly _boundHandleNavToggle = (e: Event) =>
+  @query('slot.header-categories__slot')
+  accessor _defaultSlot!: HTMLSlotElement;
+
+  private readonly _boundHandleNavToggle = (e: Event): void =>
     this._handleNavToggle(e as CustomEvent<{ open?: boolean }>);
+
+  private get _isJsonMode(): boolean {
+    return this.tabsConfig != null;
+  }
 
   private chunkBy<T>(items: T[] | undefined, size: number): T[][] {
     if (!items || size <= 0) return [[]];
@@ -165,42 +190,11 @@ export class HeaderCategories extends LitElement {
         this.view = nextView;
       }
     }
-  }
 
-  override render() {
-    const view = this.view;
-
-    const inner = this.tabsConfig
-      ? view === 'root'
-        ? this.renderRootView()
-        : this.renderDetailView()
-      : html`<slot class="header-categories__slot"></slot>`; // manual HTML mode
-
-    return html`
-      <div class="header-categories" data-view=${view}>
-        <div class="header-categories__inner">${inner}</div>
-
-        ${view === 'detail'
-          ? html`
-              <div class="header-categories__back-slot">
-                <kyn-button
-                  size="small"
-                  kind="tertiary"
-                  @click=${(e: Event) => this.handleBackClick(e)}
-                  style="display: inline-flex; align-items: center;"
-                >
-                  <span
-                    style="display: inline-flex; align-items: center; margin-right: 8px;"
-                  >
-                    ${unsafeSVG(arrowLeftIcon)}
-                  </span>
-                  Back
-                </kyn-button>
-              </div>
-            `
-          : null}
-      </div>
-    `;
+    // In manual/slotted mode, keep the DOM in sync with view + maxRootLinks.
+    if (!this._isJsonMode) {
+      this._syncSlottedCategories();
+    }
   }
 
   private get _tabConfig(): MegaTabConfig | null {
@@ -208,17 +202,9 @@ export class HeaderCategories extends LitElement {
     return this.tabsConfig[this.activeMegaTabId] ?? null;
   }
 
-  private renderRootView() {
-    const categories: HeaderCategoryType[] = this._tabConfig?.categories ?? [];
-
-    return html`${categories.map((category) =>
-      this.renderCategoryColumn(this.activeMegaTabId, category)
-    )}`;
-  }
-
   private renderLinkContent(
     link: HeaderCategoryLinkType,
-    ctx: { tabId: string; categoryId: string; view: 'root' | 'detail' }
+    ctx: HeaderLinkRendererContext
   ): TemplateResult {
     if (this.linkRenderer) {
       const result = this.linkRenderer(link, ctx);
@@ -232,7 +218,10 @@ export class HeaderCategories extends LitElement {
     `;
   }
 
-  private renderCategoryColumn(tabId: string, category: HeaderCategoryType) {
+  private renderCategoryColumn(
+    tabId: string,
+    category: HeaderCategoryType | undefined
+  ): TemplateResult | null {
     if (!category) return null;
 
     const links = category.links ?? [];
@@ -268,7 +257,15 @@ export class HeaderCategories extends LitElement {
     `;
   }
 
-  private renderDetailView() {
+  private renderRootView(): TemplateResult {
+    const categories: HeaderCategoryType[] = this._tabConfig?.categories ?? [];
+
+    return html`${categories.map((category) =>
+      this.renderCategoryColumn(this.activeMegaTabId, category)
+    )}`;
+  }
+
+  private renderDetailView(): TemplateResult | null {
     const categories: HeaderCategoryType[] = this._tabConfig?.categories ?? [];
     const category =
       categories.find((cat) => cat.id === this.activeMegaCategoryId) ??
@@ -306,6 +303,141 @@ export class HeaderCategories extends LitElement {
           )}
         </div>
       </kyn-header-category>
+    `;
+  }
+
+  /**
+   * Slotted/manual mode helper:
+   * - Finds <kyn-header-category> elements from the default slot.
+   * - Applies root vs detail visibility.
+   * - Truncates links at `maxRootLinks` in root view.
+   * - Ensures a "More" link is injected for categories with extra links.
+   */
+  private _syncSlottedCategories(): void {
+    const slot = this._defaultSlot;
+    if (!slot) return;
+
+    const assigned = slot.assignedElements({ flatten: true });
+    const categories = assigned.filter(
+      (el) => el instanceof HTMLElement && el.tagName === 'KYN-HEADER-CATEGORY'
+    ) as HTMLElement[];
+
+    const view = this.view;
+    const activeId = this.activeMegaCategoryId;
+
+    categories.forEach((categoryEl, index) => {
+      const categoryId =
+        categoryEl.getAttribute('id') ?? `category-${index + 1}`;
+      if (!categoryEl.id) {
+        categoryEl.id = categoryId;
+      }
+
+      const allLinks = Array.from(
+        categoryEl.querySelectorAll<HTMLElement>('kyn-header-link')
+      );
+
+      // Treat any existing link with data-kyn-more-link as the special "More" link.
+      const moreLink = allLinks.find(
+        (link) => link.dataset.kynMoreLink === 'true'
+      );
+
+      const regularLinks = moreLinksStripped(allLinks);
+
+      if (view === 'root') {
+        categoryEl.hidden = false;
+
+        // Show only up to maxRootLinks links.
+        regularLinks.forEach((linkEl, linkIndex) => {
+          linkEl.hidden = linkIndex >= this.maxRootLinks;
+        });
+
+        const needsMore = regularLinks.length > this.maxRootLinks;
+
+        let effectiveMoreLink = moreLink;
+
+        if (needsMore && !effectiveMoreLink) {
+          // Create a simple "More" link (no icon here to avoid innerHTML hacks).
+          const link = document.createElement('kyn-header-link') as HTMLElement;
+          link.setAttribute('href', 'javascript:void(0)');
+          link.dataset.kynMoreLink = 'true';
+          link.textContent = 'More';
+          categoryEl.appendChild(link);
+          effectiveMoreLink = link;
+        }
+
+        if (effectiveMoreLink) {
+          // Wire up click handler to go into detail view for this category.
+          effectiveMoreLink.hidden = !needsMore;
+          effectiveMoreLink.onclick = (e: MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.openCategoryDetail(this.activeMegaTabId, categoryId, e);
+          };
+        }
+      } else {
+        // Detail view: show only the active category, with all its links visible.
+        const isActive = categoryId === activeId;
+        categoryEl.hidden = !isActive;
+        if (isActive) {
+          regularLinks.forEach((linkEl) => {
+            linkEl.hidden = false;
+          });
+          if (moreLink) {
+            moreLink.hidden = true;
+          }
+        }
+      }
+    });
+
+    function moreLinksStripped(allLinks: HTMLElement[]): HTMLElement[] {
+      return allLinks.filter((link) => link.dataset.kynMoreLink !== 'true');
+    }
+  }
+
+  private _handleSlotChange(): void {
+    if (!this._isJsonMode) {
+      this._syncSlottedCategories();
+    }
+  }
+
+  override render(): TemplateResult {
+    const view = this.view;
+
+    const inner = this._isJsonMode
+      ? view === 'root'
+        ? this.renderRootView()
+        : this.renderDetailView()
+      : html`
+          <slot
+            class="header-categories__slot"
+            @slotchange=${this._handleSlotChange}
+          ></slot>
+        `; // manual HTML mode
+
+    return html`
+      <div class="header-categories" data-view=${view}>
+        <div class="header-categories__inner">${inner}</div>
+
+        ${view === 'detail'
+          ? html`
+              <div class="header-categories__back-slot">
+                <kyn-button
+                  size="small"
+                  kind="tertiary"
+                  @click=${(e: Event) => this.handleBackClick(e)}
+                  style="display: inline-flex; align-items: center;"
+                >
+                  <span
+                    style="display: inline-flex; align-items: center; margin-right: 8px;"
+                  >
+                    ${unsafeSVG(arrowLeftIcon)}
+                  </span>
+                  Back
+                </kyn-button>
+              </div>
+            `
+          : null}
+      </div>
     `;
   }
 

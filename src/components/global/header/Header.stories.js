@@ -20,17 +20,9 @@ import '../../reusable/notification';
 import '../../reusable/overflowMenu';
 import '../../reusable/tooltip';
 
-import headerCategoriesStyles from './headerCategories.scss?inline';
-
 /** @typedef {import('./headerCategories').HeaderCategoryLinkType} HeaderCategoryLinkType */
 /** @typedef {import('./headerCategories').HeaderLinkRendererContext} HeaderLinkRendererContext */
 /** @typedef {import('./headerCategories').HeaderMegaLinkRenderer} HeaderMegaLinkRenderer */
-
-const headerCategoriesGlobalStyles = html`
-  <style>
-    ${headerCategoriesStyles}
-  </style>
-`;
 
 export default {
   title: 'Global Components/Header',
@@ -324,7 +316,6 @@ export const WithCategorizedNavManualHtml = {
     const [, updateArgs] = useArgs();
 
     return html`
-      ${headerCategoriesGlobalStyles}
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <kyn-header-nav expandActiveMegaOnLoad>
           <div style="padding: 8px 0;">
@@ -361,179 +352,177 @@ export const WithCategorizedNavManualHtml = {
                     style="display: block; margin-bottom: 16px;"
                   ></kyn-search>
 
-                  <div class="header-categories" data-view="root">
-                    <div class="header-categories__inner">
-                      <!-- CATEGORY 1 (6 links, show 4 + More) -->
-                      <kyn-header-category heading="Category 1">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 3
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 4
-                        </kyn-header-link>
+                  <kyn-header-categories>
+                    <!-- CATEGORY 1 (6 links, show 4 + More) -->
+                    <kyn-header-category heading="Category 1">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
 
-                        <kyn-header-link href="javascript:void(0)">
-                          <span style="margin-right: 8px;">
-                            ${unsafeSVG(chevronRightIcon)}
-                          </span>
-                          <span>More</span>
-                        </kyn-header-link>
-                      </kyn-header-category>
+                      <kyn-header-link href="javascript:void(0)">
+                        <span style="margin-right: 8px;">
+                          ${unsafeSVG(chevronRightIcon)}
+                        </span>
+                        <span>More</span>
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 2 -->
-                      <kyn-header-category heading="Category 2">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                      </kyn-header-category>
+                    <!-- CATEGORY 2 -->
+                    <kyn-header-category heading="Category 2">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 3 -->
-                      <kyn-header-category heading="Category 3">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                      </kyn-header-category>
+                    <!-- CATEGORY 3 -->
+                    <kyn-header-category heading="Category 3">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 4 -->
-                      <kyn-header-category heading="Category 4">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 3
-                        </kyn-header-link>
-                      </kyn-header-category>
+                    <!-- CATEGORY 4 -->
+                    <kyn-header-category heading="Category 4">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 5 -->
-                      <kyn-header-category heading="Category 5">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 3
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 4
-                        </kyn-header-link>
-                      </kyn-header-category>
+                    <!-- CATEGORY 5 -->
+                    <kyn-header-category heading="Category 5">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 6 -->
-                      <kyn-header-category heading="Category 6">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                      </kyn-header-category>
+                    <!-- CATEGORY 6 -->
+                    <kyn-header-category heading="Category 6">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 7 (13 links, show 4 + More) -->
-                      <kyn-header-category heading="Category 7">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 3
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 4
-                        </kyn-header-link>
+                    <!-- CATEGORY 7 (13 links, show 4 + More) -->
+                    <kyn-header-category heading="Category 7">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
 
-                        <kyn-header-link href="javascript:void(0)">
-                          <span style="margin-right: 8px;">
-                            ${unsafeSVG(chevronRightIcon)}
-                          </span>
-                          <span>More</span>
-                        </kyn-header-link>
-                      </kyn-header-category>
+                      <kyn-header-link href="javascript:void(0)">
+                        <span style="margin-right: 8px;">
+                          ${unsafeSVG(chevronRightIcon)}
+                        </span>
+                        <span>More</span>
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 8 -->
-                      <kyn-header-category heading="Category 8">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 3
-                        </kyn-header-link>
-                      </kyn-header-category>
+                    <!-- CATEGORY 8 -->
+                    <kyn-header-category heading="Category 8">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 9 -->
-                      <kyn-header-category heading="Category 9">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 3
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 4
-                        </kyn-header-link>
-                      </kyn-header-category>
+                    <!-- CATEGORY 9 -->
+                    <kyn-header-category heading="Category 9">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
+                    </kyn-header-category>
 
-                      <!-- CATEGORY 10 -->
-                      <kyn-header-category heading="Category 10">
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 1
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 2
-                        </kyn-header-link>
-                        <kyn-header-link href="#">
-                          <span>${unsafeSVG(circleIcon)}</span>
-                          Sub Link 3
-                        </kyn-header-link>
-                      </kyn-header-category>
-                    </div>
-                  </div>
+                    <!-- CATEGORY 10 -->
+                    <kyn-header-category heading="Category 10">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                    </kyn-header-category>
+                  </kyn-header-categories>
                 </kyn-tab-panel>
 
                 <kyn-tab-panel
@@ -546,14 +535,10 @@ export const WithCategorizedNavManualHtml = {
                     style="display: block; margin-bottom: 16px;"
                   ></kyn-search>
 
-                  <!-- For brevity you can mirror the Tab 2 JSON structure the same way -->
-                  <div class="header-categories" data-view="root">
-                    <div class="header-categories__inner">
-                      <!-- Repeat the T2 categories here in the same pattern:
-                         show first 4 links + More where applicable -->
-                      <!-- ... -->
-                    </div>
-                  </div>
+                  <!-- mirror Tab 2 categories here if needed -->
+                  <kyn-header-categories>
+                    <!-- ... -->
+                  </kyn-header-categories>
                 </kyn-tab-panel>
               </kyn-tabs>
             </kyn-header-link>
