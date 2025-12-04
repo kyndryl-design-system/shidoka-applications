@@ -489,10 +489,9 @@ export class Popover extends LitElement {
   private _renderStandard(): TemplateResult {
     const hasHeader = !!(this.titleText || this.labelText);
 
-    const hasFooterLink =
-      !!this.querySelector('[slot="footerLink"]') ||
-      !!this.footerLinkText ||
-      !!this.footerLinkHref;
+    const hasFooterLinkSlot = !!this.querySelector('[slot="footerLink"]');
+    const hasFooterLinkProps = !!this.footerLinkText || !!this.footerLinkHref;
+    const hasFooterLink = hasFooterLinkSlot || hasFooterLinkProps;
 
     const hasFooterSlot = !!this.querySelector('[slot="footer"]');
 
@@ -579,8 +578,9 @@ export class Popover extends LitElement {
                         `
                       : null}
                     ${hasFooterLink
-                      ? this.footerLinkText || this.footerLinkHref
-                        ? html`
+                      ? hasFooterLinkSlot
+                        ? html`<slot name="footerLink"></slot>`
+                        : html`
                             <kyn-link
                               class="footer-link"
                               href=${this.footerLinkHref}
@@ -589,7 +589,6 @@ export class Popover extends LitElement {
                               ${this.footerLinkText}
                             </kyn-link>
                           `
-                        : html`<slot name="footerLink"></slot>`
                       : null}
                   `}
             </div>
