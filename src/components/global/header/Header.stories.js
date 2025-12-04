@@ -304,7 +304,7 @@ export const WithCategorizedNav = {
 WithCategorizedNav.storyName = 'With Categorized Nav (JSON-driven)';
 
 // -----------------------------------------------------------------------------
-// Fully manual HTML variant (no JSON), mirroring megaNavCategories.json
+// Fully manual HTML variant (no JSON) - slot driven
 // -----------------------------------------------------------------------------
 
 export const WithCategorizedNavManualHtml = {
@@ -353,7 +353,7 @@ export const WithCategorizedNavManualHtml = {
                   ></kyn-search>
 
                   <kyn-header-categories>
-                    <!-- CATEGORY 1 (6 links, show 4 + More) -->
+                    <!-- CATEGORY 1 -->
                     <kyn-header-category heading="Category 1">
                       <kyn-header-link href="#">
                         <span>${unsafeSVG(circleIcon)}</span>
@@ -371,8 +371,19 @@ export const WithCategorizedNavManualHtml = {
                         <span>${unsafeSVG(circleIcon)}</span>
                         Sub Link 4
                       </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 5
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 6
+                      </kyn-header-link>
 
-                      <kyn-header-link href="javascript:void(0)">
+                      <kyn-header-link
+                        href="javascript:void(0)"
+                        data-kyn-more-link="true"
+                      >
                         <span style="margin-right: 8px;">
                           ${unsafeSVG(chevronRightIcon)}
                         </span>
@@ -444,7 +455,7 @@ export const WithCategorizedNavManualHtml = {
                       </kyn-header-link>
                     </kyn-header-category>
 
-                    <!-- CATEGORY 7 (13 links, show 4 + More) -->
+                    <!-- CATEGORY 7 -->
                     <kyn-header-category heading="Category 7">
                       <kyn-header-link href="#">
                         <span>${unsafeSVG(circleIcon)}</span>
@@ -462,8 +473,47 @@ export const WithCategorizedNavManualHtml = {
                         <span>${unsafeSVG(circleIcon)}</span>
                         Sub Link 4
                       </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 5
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 6
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 7
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 8
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 9
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 10
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 11
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 12
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 13
+                      </kyn-header-link>
 
-                      <kyn-header-link href="javascript:void(0)">
+                      <kyn-header-link
+                        href="javascript:void(0)"
+                        data-kyn-more-link="true"
+                      >
                         <span style="margin-right: 8px;">
                           ${unsafeSVG(chevronRightIcon)}
                         </span>
@@ -535,9 +585,52 @@ export const WithCategorizedNavManualHtml = {
                     style="display: block; margin-bottom: 16px;"
                   ></kyn-search>
 
-                  <!-- mirror Tab 2 categories here if needed -->
                   <kyn-header-categories>
-                    <!-- ... -->
+                    <!-- CATEGORY 1 -->
+                    <kyn-header-category heading="T2 - Category 1">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 5
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 6
+                      </kyn-header-link>
+
+                      <kyn-header-link
+                        href="javascript:void(0)"
+                        data-kyn-more-link="true"
+                      >
+                        <span style="margin-right: 8px;">
+                          ${unsafeSVG(chevronRightIcon)}
+                        </span>
+                        <span>More</span>
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 2 -->
+                    <kyn-header-category heading="T2 - Category 2">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                    </kyn-header-category>
                   </kyn-header-categories>
                 </kyn-tab-panel>
               </kyn-tabs>

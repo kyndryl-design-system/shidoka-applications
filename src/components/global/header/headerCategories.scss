@@ -14,6 +14,13 @@
   }
 }
 
+:host([view='detail'])
+  slot.header-categories__slot::slotted(kyn-header-category)
+  .category__links {
+  column-width: 160px;
+  column-gap: 32px;
+}
+
 .header-categories {
   width: 100%;
   max-width: 100%;
@@ -50,14 +57,25 @@ slot.header-categories__slot::slotted(*) {
   margin: 0 0 16px;
 }
 
-/* detail view  */
+/* ---------------------------------------------------------------------
+   DETAIL VIEW OVERRIDES
+   ------------------------------------------------------------------ */
 :host([view='detail']) .header-categories__inner {
   max-height: 250px;
   column-width: auto;
   column-count: 1;
   column-gap: 0;
+
+  width: auto;
+  max-width: 640px;
 }
 
+:host([view='detail'])
+  slot.header-categories__slot::slotted(kyn-header-category) {
+  width: 100%;
+}
+
+/* JSON detail wrapper */
 :host([view='detail']) .header-detail-columns {
   display: flex;
   align-items: flex-start;
@@ -70,6 +88,11 @@ slot.header-categories__slot::slotted(*) {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 160px;
+  flex: 1 1 auto;
+}
+
+.header-detail-columns > div {
   min-width: 160px;
   flex: 1 1 auto;
 }
