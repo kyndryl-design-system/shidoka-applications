@@ -377,6 +377,8 @@ export class HeaderCategories extends LitElement {
    * - ensures a "More" link is injected
    */
   private _syncSlottedCategories(): void {
+    if (this._isJsonMode) return;
+
     const categories = Array.from(
       this.querySelectorAll<HTMLElement>('kyn-header-category')
     );
@@ -587,11 +589,6 @@ export class HeaderCategories extends LitElement {
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
-
-    const slot = this.shadowRoot?.querySelector(
-      'slot.header-categories__slot'
-    ) as HTMLSlotElement | null;
-    slot?.addEventListener('slotchange', this._boundHandleSlotChange);
   }
 
   override disconnectedCallback(): void {
@@ -599,11 +596,6 @@ export class HeaderCategories extends LitElement {
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
-
-    const slot = this.shadowRoot?.querySelector(
-      'slot.header-categories__slot'
-    ) as HTMLSlotElement | null;
-    slot?.removeEventListener('slotchange', this._boundHandleSlotChange);
 
     super.disconnectedCallback();
   }
