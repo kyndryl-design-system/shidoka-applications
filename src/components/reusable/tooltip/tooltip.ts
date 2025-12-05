@@ -118,6 +118,31 @@ export class Tooltip extends LitElement {
     const ViewportHeight = window.innerHeight;
     const ViewportWidth = window.innerWidth;
 
+    // Edge case handling: When tooltip collide with kyn-header, force the tooltip to render downwards.
+    const header = document.querySelector('kyn-header');
+    const headerRect = header?.getBoundingClientRect();
+    const tooltipHeight = this._contentEl.offsetHeight || 60;
+
+    const isOverlappingHeader =
+      headerRect && AnchorTop - tooltipHeight < headerRect.bottom;
+
+    if (isOverlappingHeader) {
+      this._direction = 'bottom';
+      const center = AnchorLeft + this._anchorEl.offsetWidth / 2;
+
+      if (center < ViewportWidth * 0.33) {
+        this._anchorPosition = 'start';
+      } else if (center < ViewportWidth * 0.66) {
+        this._anchorPosition = 'center';
+      } else {
+        this._anchorPosition = 'end';
+      }
+
+      this._contentEl.style.top = `${AnchorBottom}px`;
+      this._contentEl.style.left = `${center}px`;
+      return;
+    }
+
     let vertical = 'down';
     let horizontal = 'right';
 
