@@ -40,10 +40,12 @@ export default {
       control: 'select',
       options: ['icon', 'link', 'button', 'none'],
     },
+    hideFooter: { control: 'boolean' },
     direction: {
       control: 'select',
       options: ['auto', 'top', 'bottom', 'left', 'right'],
     },
+    footerLinkOnly: { control: 'boolean' },
   },
 };
 
@@ -71,6 +73,7 @@ const baseArgs = {
   showTertiaryButton: false,
   tertiaryButtonText: '',
   hideFooter: false,
+  footerLinkOnly: false,
   destructive: false,
   open: false,
   top: undefined,
@@ -92,6 +95,7 @@ const Template = (args) => html`
     ?showTertiaryButton=${args.showTertiaryButton}
     tertiaryButtonText=${args.tertiaryButtonText}
     ?hideFooter=${args.hideFooter}
+    ?footerLinkOnly=${args.footerLinkOnly}
     triggerType=${args.triggerType}
     direction=${args.direction}
     size=${args.size}
@@ -131,28 +135,28 @@ const Template = (args) => html`
           <div
             class="expansion-slot"
             style="
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              background: var(--kd-color-background-container-subtle);
-              padding: 4px 8px;
-              border-radius: 4px;
-              border: 1px dashed var(--kd-color-utility-variant-border);
-              width: 95%;
-              min-width: 170px;
-              text-align: center;
-            "
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							background: var(--kd-color-background-container-subtle);
+							padding: 4px 8px;
+							border-radius: 4px;
+							border: 1px dashed var(--kd-color-utility-variant-border);
+							width: 95%;
+							min-width: 170px;
+							text-align: center;
+						"
           >
             <span
               class="cube-icon"
               style="
-                display: inline-flex;
-                align-items: center;
-                color: var(--kd-color-icon-brand);
-                width: 24px;
-                height: 24px;
-                margin-right: 8px;
-              "
+								display: inline-flex;
+								align-items: center;
+								color: var(--kd-color-icon-brand);
+								width: 24px;
+								height: 24px;
+								margin-right: 8px;
+							"
               >${unsafeSVG(smCube)}</span
             >
             <span>Slot</span>
@@ -162,17 +166,17 @@ const Template = (args) => html`
           <div
             class="expansion-slot"
             style="
-              text-align: center;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              background: var(--kd-color-background-container-subtle);
-              padding: 32px 16px;
-              height: 255px;
-              border-radius: 4px;
-              border: 1px dashed var(--kd-color-utility-variant-border);
-            "
+							text-align: center;
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							justify-content: center;
+							background: var(--kd-color-background-container-subtle);
+							padding: 32px 16px;
+							height: 255px;
+							border-radius: 4px;
+							border: 1px dashed var(--kd-color-utility-variant-border);
+						"
           >
             <span class="cube-icon" style="color:var(--kd-color-icon-brand);"
               >${unsafeSVG(lgCube)}</span
@@ -189,14 +193,14 @@ const Template = (args) => html`
             </p>
           </div>
         `}
-
     <kyn-link
       slot="footerLink"
-      href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
+      href=${args.footerLinkHref ||
+      'https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers'}
       class="footer-link"
-      target="_blank"
+      target=${args.footerLinkTarget || '_blank'}
     >
-      Link
+      ${args.footerLinkText}
     </kyn-link>
   </kyn-popover>
 `;
@@ -274,6 +278,7 @@ export const FloatingUpperNoHeader = {
     ...baseArgs,
     triggerType: 'none',
     titleText: '',
+    footerLinkText: '',
     labelText: '',
     size: 'narrow',
     anchorLabel: '1',
@@ -289,6 +294,8 @@ export const WideFloatingLower = {
   args: {
     ...baseArgs,
     anchorLabel: '1',
+    footerLinkOnly: true,
+    footerLinkText: 'Footer Link',
     triggerType: 'none',
     size: 'wide',
     direction: 'left',
@@ -363,6 +370,7 @@ export const PreciseAnchorAlignWithLink = {
     size: 'narrow',
     shiftPadding: 165,
     arrowPosition: '20px',
+    footerLinkOnly: true,
   },
   render: (args) => html`
     <kyn-popover
@@ -375,6 +383,7 @@ export const PreciseAnchorAlignWithLink = {
       ?showTertiaryButton=${args.showTertiaryButton}
       tertiaryButtonText=${args.tertiaryButtonText}
       ?hideFooter=${args.hideFooter}
+      ?footerLinkOnly=${args.footerLinkOnly}
       triggerType=${args.triggerType}
       direction=${args.direction}
       size=${args.size}
@@ -395,42 +404,46 @@ export const PreciseAnchorAlignWithLink = {
         ? html`<span slot="anchor">${unsafeSVG(infoIcon)}</span>`
         : args.triggerType === 'link'
         ? html`<kyn-link slot="anchor" kind="primary">Link</kyn-link>`
-        : html`<kyn-button
-            slot="anchor"
-            style="height:24px;width:24px;"
-            kind="primary"
-            size="small"
-            >1</kyn-button
-          >`}
+        : html`
+            <kyn-button
+              slot="anchor"
+              style="height:24px;width:24px;"
+              kind="primary"
+              size="small"
+            >
+              1
+            </kyn-button>
+          `}
       ${args.size === 'mini'
         ? html`
             <div
               class="expansion-slot"
               style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: var(--kd-color-background-container-subtle);
-                padding: 4px 8px;
-                border-radius: 4px;
-                border: 1px dashed var(--kd-color-utility-variant-border);
-                width: 95%;
-                min-width: 170px;
-                text-align: center;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:var(--kd-color-background-container-subtle);
+                padding:4px 8px;
+                border-radius:4px;
+                border:1px dashed var(--kd-color-utility-variant-border);
+                width:95%;
+                min-width:170px;
+                text-align:center;
               "
             >
               <span
                 class="cube-icon"
                 style="
-                  display: inline-flex;
-                  align-items: center;
-                  color: var(--kd-color-icon-brand);
-                  width: 24px;
-                  height: 24px;
-                  margin-right: 8px;
+                  display:inline-flex;
+                  align-items:center;
+                  color:var(--kd-color-icon-brand);
+                  width:24px;
+                  height:24px;
+                  margin-right:8px;
                 "
-                >${unsafeSVG(smCube)}</span
               >
+                ${unsafeSVG(smCube)}
+              </span>
               <span>Slot</span>
             </div>
           `
@@ -438,53 +451,71 @@ export const PreciseAnchorAlignWithLink = {
             <div
               class="expansion-slot"
               style="
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background: var(--kd-color-background-container-subtle);
-                padding: 32px 16px;
-                height: 255px;
-                border-radius: 4px;
-                border: 1px dashed var(--kd-color-utility-variant-border);
+                text-align:center;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+                background:var(--kd-color-background-container-subtle);
+                padding:32px 16px;
+                height:255px;
+                border-radius:4px;
+                border:1px dashed var(--kd-color-utility-variant-border);
               "
             >
-              <span class="cube-icon" style="color:var(--kd-color-icon-brand);"
-                >${unsafeSVG(lgCube)}</span
-              >
+              <span class="cube-icon" style="color:var(--kd-color-icon-brand);">
+                ${unsafeSVG(lgCube)}
+              </span>
               <h3
-                style="font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.32px;"
+                style="
+                  font-size:16px;
+                  font-weight:500;
+                  line-height:24px;
+                  letter-spacing:0.32px;
+                "
               >
                 Slot Content
               </h3>
               <p
-                style="font-size: 12px; font-weight: 300; line-height: 16px; letter-spacing: 0.32px;"
+                style="
+                  font-size:12px;
+                  font-weight:300;
+                  line-height:16px;
+                  letter-spacing:0.32px;
+                "
               >
                 Swap this with your own component.
               </p>
             </div>
           `}
+
+      <!-- ✅ Slotted footer link example -->
       <kyn-link
         slot="footerLink"
         href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
-        class="footer-link"
         target="_blank"
+        class="footer-link"
       >
-        Link
+        Visit Documentation
       </kyn-link>
     </kyn-popover>
   `,
   decorators: [
     (Story) => html`
-      <div style="padding: 100px;">
-        <div style="position: relative;">
+      <div style="padding:100px;">
+        <div style="position:relative;">
           <div
-            style="border: 1px dashed var(--kd-color-border-variants-light); border-radius: 4px; padding: 40px; display: inline-block; position: relative;"
+            style="
+              border:1px dashed var(--kd-color-border-variants-light);
+              border-radius:4px;
+              padding:40px;
+              display:inline-block;
+              position:relative;
+            "
           >
-            <span style="margin-right: 10px; padding-bottom: 10px;"
-              >Anchor container</span
-            >
+            <span style="margin-right:10px;padding-bottom:10px;">
+              Anchor container
+            </span>
             ${Story()}
           </div>
         </div>
@@ -556,6 +587,7 @@ export const MiniWithCustomText = {
       ?showTertiaryButton=${args.showTertiaryButton}
       tertiaryButtonText=${args.tertiaryButtonText}
       ?hideFooter=${args.hideFooter}
+      ?footerLinkOnly=${args.footerLinkOnly}
       direction=${args.direction}
       size=${args.size}
       footerLinkText=${args.footerLinkText}
@@ -597,6 +629,15 @@ export const MiniWithCustomText = {
           risus.
         </p>
       </div>
+
+      <kyn-link
+        slot="footerLink"
+        href="https://kyndryl.gitbook.io/kyndryl-cto/shidoka-design-system/getting-started/for-developers"
+        class="footer-link"
+        target="_blank"
+      >
+        Link
+      </kyn-link>
     </kyn-popover>
   `,
 };

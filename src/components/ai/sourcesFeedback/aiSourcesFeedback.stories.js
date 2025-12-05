@@ -220,12 +220,12 @@ const feedbackFormContent = () => html`
     }
 
     .example-form > * {
-      margin-top: 0.5rem;
+      margin-top: 8px;
     }
 
     .footer {
       display: flex;
-      gap: 1rem;
+      gap: 16px;
     }
   </style>
 `;
