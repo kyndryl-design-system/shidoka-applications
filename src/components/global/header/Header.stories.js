@@ -14,7 +14,6 @@ import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/que
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
-import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';

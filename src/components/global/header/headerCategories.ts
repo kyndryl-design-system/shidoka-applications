@@ -74,7 +74,7 @@ const MORE_ATTR = 'data-kyn-more-link';
  * Header categories wrapper for mega menu.
  * @slot unnamed - Slot for header category elements.
  * Controlled via `activeMegaTabId` / `activeMegaCategoryId` but
- * encapsulates all mega-nav view behavior (root/detail, "More", "Back").
+ * encapsulates all categorical/mega-nav view behavior (root/detail, "More", "Back").
  *
  * Emits `on-nav-change` so parents can mirror state for tabs, routing, etc.
  *
