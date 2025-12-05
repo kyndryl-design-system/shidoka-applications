@@ -1,0 +1,81 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 42rem) {
+  :host {
+    padding-right: 10%;
+    width: calc(100vw - 230px);
+    max-width: calc(100vw - 230px);
+  }
+}
+
+:host([view='detail'])
+  slot.header-categories__slot::slotted(kyn-header-category)
+  .category__links {
+  column-width: 140px;
+  column-gap: 32px;
+}
+
+.header-categories {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  &__inner {
+    display: block;
+    column-width: 140px;
+    column-gap: 32px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__back-slot {
+    display: block;
+    margin-top: 16px;
+  }
+}
+
+/* JSON-driven children (direct kyn-header-category instances) */
+.header-categories__inner > * {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 16px;
+}
+
+/* Manual HTML children (slotted kyn-header-category instances) */
+slot.header-categories__slot::slotted(*) {
+  display: block;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 16px;
+}
+
+/* ---------------------------------------------------------------------
+   DETAIL VIEW OVERRIDES
+   ------------------------------------------------------------------ */
+:host([view='detail']) .header-detail-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 0 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+:host([view='detail']) .header-detail-columns > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 0;
+}
+
+:host([view='detail']) .header-detail-columns--single {
+  max-width: 360px;
+  width: auto;
+}

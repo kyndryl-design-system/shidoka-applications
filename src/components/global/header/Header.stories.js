@@ -1,8 +1,13 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
+import { useArgs } from 'storybook/preview-api';
 import './';
 import '../../reusable/button';
+import '../../reusable/tabs';
+import '../../reusable/search';
+
+import megaNavConfig from './sampleMegaNavCategories.json';
 
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
@@ -13,6 +18,10 @@ import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
 import '../../reusable/tooltip';
+
+/** @typedef {import('./headerCategories').HeaderCategoryLinkType} HeaderCategoryLinkType */
+/** @typedef {import('./headerCategories').HeaderLinkRendererContext} HeaderLinkRendererContext */
+/** @typedef {import('./headerCategories').HeaderMegaLinkRenderer} HeaderMegaLinkRenderer */
 
 export default {
   title: 'Global Components/Header',
@@ -42,9 +51,6 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-214894&p=f&t=A5tcETiCf23sAgKK-0',
     },
-    // controls: {
-    //   include: Object.keys(Header.args),
-    // },
   },
 };
 
@@ -59,6 +65,7 @@ const notificationPanelArgs = {
   hidePanelFooter: false,
 };
 
+/** @type {Array<{tagStatus: 'success' | 'default' | 'error' | 'info' | 'warning' | 'ai'}>} */
 const notificationTagStatusArr = [
   {
     tagStatus: 'info',
@@ -77,11 +84,9 @@ const notificationTagStatusArr = [
   },
 ];
 
-// Example of change prop unRead of <kyn-notification> when we select Mark all as Read
 const selectAllNotificationsAsRead = (e) => {
   const notifications = document.querySelectorAll('kyn-notification');
   notifications.forEach((notification) => {
-    // unRead is notification prop
     notification.unRead = false;
   });
   action(e.type)({ ...e, detail: e.detail });
@@ -89,7 +94,6 @@ const selectAllNotificationsAsRead = (e) => {
 
 const handleOverflowClick = (e) => {
   action(e.type)({ ...e, detail: e.detail });
-  // overflow link click logic here to mark as unread
 };
 
 export const Header = {
@@ -177,11 +181,6 @@ export const WithFlyouts = {
         <kyn-header-flyout label="Menu Label" hideButtonLabel>
           <span slot="button">${unsafeSVG(helpIcon)}</span>
           <span slot="button" title="Full Button Text">Short ... Text</span>
-          <!--
-          <kyn-tooltip slot="button" direction="bottom">
-            <span slot="anchor">Short ... Text</span>
-          </kyn-tooltip>
-          -->
 
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
@@ -234,110 +233,110 @@ export const WithFlyouts = {
 
 export const WithNotificationPanel = {
   args,
-  render: (args) => html` <kyn-header
-    rootUrl=${args.rootUrl}
-    appTitle=${args.appTitle}
-  >
-    <kyn-header-flyouts>
-      <kyn-header-flyout label="Notification" hideMenuLabel>
-        <span slot="button">${unsafeSVG(filledNotificationIcon)}</span>
-        <!-- Notification panel inside <kyn-header-flyout></kyn-header-flyout> -->
-        <kyn-header-notification-panel
-          panelTitle=${notificationPanelArgs.panelTitle}
-          panelFooterBtnText=${notificationPanelArgs.panelFooterBtnText}
-          ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
-          @on-footer-btn-click=${(e) =>
-            action(e.type)({ ...e, detail: e.detail })}
-        >
-          <kyn-button
-            slot="menu-slot"
-            kind="secondary"
-            @click=${(e) => selectAllNotificationsAsRead(e)}
+  render: (args) => html`
+    <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
+      <kyn-header-flyouts>
+        <kyn-header-flyout label="Notification" hideMenuLabel>
+          <span slot="button">${unsafeSVG(filledNotificationIcon)}</span>
+          <kyn-header-notification-panel
+            panelTitle=${notificationPanelArgs.panelTitle}
+            panelFooterBtnText=${notificationPanelArgs.panelFooterBtnText}
+            ?hidePanelFooter=${notificationPanelArgs.hidePanelFooter}
+            @on-footer-btn-click=${(e) =>
+              action(e.type)({ ...e, detail: e.detail })}
           >
-            Mark all as Read
-          </kyn-button>
-          <kyn-button
-            slot="menu-slot"
-            kind="outline"
-            @click=${(e) => console.log(e)}
-          >
-            <span slot="icon">${unsafeSVG(settingsIcon)}</span>
-          </kyn-button>
+            <kyn-button
+              slot="menu-slot"
+              kind="secondary"
+              @click=${(e) => selectAllNotificationsAsRead(e)}
+            >
+              Mark all as Read
+            </kyn-button>
+            <kyn-button
+              slot="menu-slot"
+              kind="outline"
+              @click=${(e) => console.log(e)}
+            >
+              <span slot="icon">${unsafeSVG(settingsIcon)}</span>
+            </kyn-button>
 
-          <!-- Notification component inside notification panel -->
-          ${notificationTagStatusArr.map(
-            (ele) => html`
-              <kyn-notification
-                notificationTitle="Notification Title"
-                notificationSubtitle="Application or Service"
-                timeStamp="2 mins ago"
-                href="#"
-                type="clickable"
-                tagStatus=${ele.tagStatus}
-                unRead
-                @on-notification-click=${(e) =>
-                  action(e.type)({ ...e, detail: e.detail })}
-              >
-                <kyn-overflow-menu
-                  slot="actions"
-                  anchorRight
-                  @click=${(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
+            ${notificationTagStatusArr.map(
+              (ele) => html`
+                <kyn-notification
+                  notificationTitle="Notification Title"
+                  notificationSubtitle="Application or Service"
+                  timeStamp="2 mins ago"
+                  href="#"
+                  type="clickable"
+                  tagStatus=${ele.tagStatus}
+                  unRead
+                  @on-notification-click=${(e) =>
+                    action(e.type)({ ...e, detail: e.detail })}
                 >
-                  <kyn-overflow-menu-item
-                    @on-click=${(e) => handleOverflowClick(e)}
-                    >Mark as Read</kyn-overflow-menu-item
+                  <kyn-overflow-menu
+                    slot="actions"
+                    anchorRight
+                    @click=${(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
                   >
-                  <kyn-overflow-menu-item>View Details</kyn-overflow-menu-item>
-                </kyn-overflow-menu>
+                    <kyn-overflow-menu-item
+                      @on-click=${(e) => handleOverflowClick(e)}
+                    >
+                      Mark as Read
+                    </kyn-overflow-menu-item>
+                    <kyn-overflow-menu-item>
+                      View Details
+                    </kyn-overflow-menu-item>
+                  </kyn-overflow-menu>
 
-                <div>
-                  Message, this is an additional line Ipsum iMessage, Lorem
-                  Ipsum is simply dummy and typesetting industry.
-                </div>
-              </kyn-notification>
-            `
-          )}
-        </kyn-header-notification-panel>
-      </kyn-header-flyout>
+                  <div>
+                    Message, this is an additional line Ipsum iMessage, Lorem
+                    Ipsum is simply dummy and typesetting industry.
+                  </div>
+                </kyn-notification>
+              `
+            )}
+          </kyn-header-notification-panel>
+        </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label">
-        <span slot="button">${unsafeSVG(helpIcon)}</span>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example 2
-        </kyn-header-link>
-      </kyn-header-flyout>
+        <kyn-header-flyout label="Menu Label">
+          <span slot="button">${unsafeSVG(helpIcon)}</span>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example 2
+          </kyn-header-link>
+        </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label" hideMenuLabel>
-        <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
+        <kyn-header-flyout label="Menu Label" hideMenuLabel>
+          <span slot="button">${unsafeSVG(userAvatarIcon)}</span>
 
-        <kyn-header-user-profile
-          name="User Name"
-          subtitle="Job Title"
-          email="user@kyndryl.com"
-          profileLink="#"
-        >
-          <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
-        </kyn-header-user-profile>
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
+          >
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
+          </kyn-header-user-profile>
 
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example Link 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example Link 2
-        </kyn-header-link>
-      </kyn-header-flyout>
-    </kyn-header-flyouts>
-  </kyn-header>`,
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example Link 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example Link 2
+          </kyn-header-link>
+        </kyn-header-flyout>
+      </kyn-header-flyouts>
+    </kyn-header>
+  `,
 };
 
 export const WithEverything = {
@@ -435,3 +434,404 @@ export const WithEverything = {
     </kyn-header>
   `,
 };
+
+// -----------------------------------------------------------------------------
+// JSON-driven categorized nav with configurable linkRenderer
+// -----------------------------------------------------------------------------
+export const WithCategorizedNav = {
+  args: {
+    ...args,
+    activeMegaTabId: 'tab1',
+    activeMegaCategoryId: null,
+  },
+  render: (renderArgs) => {
+    const [, updateArgs] = useArgs();
+
+    const handleMegaChange = (e) => {
+      const { activeMegaTabId, activeMegaCategoryId } = e.detail;
+      updateArgs({ activeMegaTabId, activeMegaCategoryId });
+    };
+
+    /** @type {HeaderMegaLinkRenderer} */
+    const renderMegaLink = (link, _context) =>
+      html`<span>${unsafeSVG(circleIcon)}</span>${link.label}`;
+
+    return html`
+      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <kyn-header-nav expandActiveMegaOnLoad>
+          <div style="padding: 8px 0;">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Application
+
+              <kyn-tabs tabSize="sm" slot="links">
+                <kyn-tab
+                  slot="tabs"
+                  id="tab1"
+                  ?selected=${renderArgs.activeMegaTabId === 'tab1'}
+                  @click=${() =>
+                    updateArgs({
+                      activeMegaTabId: 'tab1',
+                      activeMegaCategoryId: null,
+                    })}
+                >
+                  Tab 1
+                </kyn-tab>
+
+                <kyn-tab
+                  slot="tabs"
+                  id="tab2"
+                  ?selected=${renderArgs.activeMegaTabId === 'tab2'}
+                  @click=${() =>
+                    updateArgs({
+                      activeMegaTabId: 'tab2',
+                      activeMegaCategoryId: null,
+                    })}
+                >
+                  Tab 2
+                </kyn-tab>
+
+                <kyn-tab-panel
+                  tabId="tab1"
+                  noPadding
+                  ?visible=${renderArgs.activeMegaTabId === 'tab1'}
+                >
+                  <kyn-search
+                    label="Filter items... (Application controlled)"
+                    style="display: block; margin-bottom: 16px;"
+                  ></kyn-search>
+
+                  <kyn-header-categories
+                    .tabsConfig=${megaNavConfig}
+                    .activeMegaTabId=${renderArgs.activeMegaTabId}
+                    .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                    linkRenderer=${renderMegaLink}
+                    @on-nav-change=${handleMegaChange}
+                  ></kyn-header-categories>
+                </kyn-tab-panel>
+
+                <kyn-tab-panel
+                  tabId="tab2"
+                  noPadding
+                  ?visible=${renderArgs.activeMegaTabId === 'tab2'}
+                >
+                  <kyn-search
+                    label="Filter items... (Application controlled)"
+                    style="display: block; margin-bottom: 16px;"
+                  ></kyn-search>
+
+                  <kyn-header-categories
+                    .tabsConfig=${megaNavConfig}
+                    .activeMegaTabId=${renderArgs.activeMegaTabId}
+                    .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                    linkRenderer=${renderMegaLink}
+                    @on-nav-change=${handleMegaChange}
+                  ></kyn-header-categories>
+                </kyn-tab-panel>
+              </kyn-tabs>
+            </kyn-header-link>
+          </div>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 1
+          </kyn-header-link>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-category heading="Category">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 2
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 3
+            </kyn-header-link>
+          </kyn-header-category>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 4
+          </kyn-header-link>
+        </kyn-header-nav>
+      </kyn-header>
+    `;
+  },
+};
+WithCategorizedNav.storyName = 'Categorical Nav (JSON-driven)';
+
+// -----------------------------------------------------------------------------
+// Fully manual HTML variant (no JSON) - slot driven
+// -----------------------------------------------------------------------------
+
+export const WithCategorizedNavManualHtml = {
+  args: {
+    ...args,
+    activeMegaTabId: 'tab1',
+  },
+  render: (renderArgs) => {
+    const [, updateArgs] = useArgs();
+
+    return html`
+      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <kyn-header-nav expandActiveMegaOnLoad>
+          <div style="padding: 8px 0;">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Application
+
+              <kyn-tabs tabSize="sm" slot="links">
+                <kyn-tab
+                  slot="tabs"
+                  id="tab1"
+                  ?selected=${renderArgs.activeMegaTabId === 'tab1'}
+                  @click=${() => updateArgs({ activeMegaTabId: 'tab1' })}
+                >
+                  Tab 1
+                </kyn-tab>
+
+                <kyn-tab
+                  slot="tabs"
+                  id="tab2"
+                  ?selected=${renderArgs.activeMegaTabId === 'tab2'}
+                  @click=${() => updateArgs({ activeMegaTabId: 'tab2' })}
+                >
+                  Tab 2
+                </kyn-tab>
+
+                <kyn-tab-panel
+                  tabId="tab1"
+                  noPadding
+                  ?visible=${renderArgs.activeMegaTabId === 'tab1'}
+                >
+                  <kyn-search
+                    label="Filter items... (Application controlled)"
+                    style="display: block; margin-bottom: 16px;"
+                  ></kyn-search>
+
+                  <kyn-header-categories>
+                    <!-- CATEGORY 1 -->
+                    <kyn-header-category heading="Category 1">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 5
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 6
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 2 -->
+                    <kyn-header-category heading="Category 2">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 3 -->
+                    <kyn-header-category heading="Category 3">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 4 -->
+                    <kyn-header-category heading="Category 4">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 5 -->
+                    <kyn-header-category heading="Category 5">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 6 -->
+                    <kyn-header-category heading="Category 6">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 7 -->
+                    <kyn-header-category heading="Category 7">
+                      ${Array.from({ length: 13 }).map(
+                        (_, idx) => html`
+                          <kyn-header-link href="#">
+                            <span>${unsafeSVG(circleIcon)}</span>
+                            Sub Link ${idx + 1}
+                          </kyn-header-link>
+                        `
+                      )}
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 8 -->
+                    <kyn-header-category heading="Category 8">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 9 -->
+                    <kyn-header-category heading="Category 9">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 4
+                      </kyn-header-link>
+                    </kyn-header-category>
+
+                    <!-- CATEGORY 10 -->
+                    <kyn-header-category heading="Category 10">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 2
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 3
+                      </kyn-header-link>
+                    </kyn-header-category>
+                  </kyn-header-categories>
+                </kyn-tab-panel>
+
+                <kyn-tab-panel
+                  tabId="tab2"
+                  noPadding
+                  ?visible=${renderArgs.activeMegaTabId === 'tab2'}
+                >
+                  <kyn-search
+                    label="Filter items... (Application controlled)"
+                    style="display: block; margin-bottom: 16px;"
+                  ></kyn-search>
+
+                  <kyn-header-categories>
+                    <kyn-header-category heading="T2 - Category 1">
+                      ${Array.from({ length: 6 }).map(
+                        (_, idx) => html`
+                          <kyn-header-link href="#">
+                            <span>${unsafeSVG(circleIcon)}</span>
+                            Sub Link ${idx + 1}
+                          </kyn-header-link>
+                        `
+                      )}
+                    </kyn-header-category>
+
+                    <kyn-header-category heading="T2 - Category 2">
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 1
+                      </kyn-header-link>
+                    </kyn-header-category>
+                  </kyn-header-categories>
+                </kyn-tab-panel>
+              </kyn-tabs>
+            </kyn-header-link>
+          </div>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 1
+          </kyn-header-link>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-category heading="Category">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 2
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 3
+            </kyn-header-link>
+          </kyn-header-category>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 4
+          </kyn-header-link>
+        </kyn-header-nav>
+      </kyn-header>
+    `;
+  },
+};
+WithCategorizedNavManualHtml.storyName = 'Categorical Nav (Slotted)';

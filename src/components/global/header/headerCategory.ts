@@ -26,7 +26,9 @@ export class HeaderCategory extends LitElement {
           <slot name="icon"></slot>
           ${this.heading}
         </div>
-        <slot></slot>
+        <div class="category__links">
+          <slot></slot>
+        </div>
       </div>
     `;
   }
