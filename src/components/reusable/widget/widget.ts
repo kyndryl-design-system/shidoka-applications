@@ -1,6 +1,6 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
+import { ClassInfo, classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
 import Styles from './widget.scss?inline';
@@ -63,13 +63,13 @@ export class Widget extends LitElement {
    * @internal
    */
   @state()
-  accessor _chart!: any;
+  accessor _chart: HTMLElement | null = null;
 
   override render() {
-    const Classes = {
+    const Classes: ClassInfo = {
       widget: true,
       'drag-active': this.dragActive,
-      'has-chart': this._chart,
+      'has-chart': !!this._chart,
       disabled: this.disabled,
       selectable: this.selectable,
       selected: this.selected,
@@ -171,10 +171,14 @@ export class Widget extends LitElement {
   }
 
   private _updateChildren() {
-    const Chart = this.querySelector('kd-chart');
-    if (Chart) {
-      this._chart = Chart;
-      this._chart._widget = true;
+    const chart = this.querySelector('kd-chart') as HTMLElement | null;
+
+    // only treat the chart as belonging to *this* widget if it belongs to its nearest kyn-widget ancestor.
+    if (chart && chart.closest('kyn-widget') === this) {
+      this._chart = chart;
+      (this._chart as HTMLElement & { _widget?: boolean })._widget = true;
+    } else {
+      this._chart = null;
     }
   }
 }
