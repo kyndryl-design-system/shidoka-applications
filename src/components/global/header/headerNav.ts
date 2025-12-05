@@ -153,12 +153,20 @@ export class HeaderNav extends LitElement {
 
   override willUpdate(changedProps: PropertyValueMap<this>): void {
     if (changedProps.has('menuOpen')) {
-      const event = new CustomEvent('on-nav-toggle', {
-        composed: true,
-        bubbles: true,
-        detail: { open: this.menuOpen },
-      });
-      this.dispatchEvent(event);
+      const detail = { open: this.menuOpen };
+
+      this.dispatchEvent(
+        new CustomEvent('on-nav-toggle', {
+          composed: true,
+          bubbles: true,
+          detail,
+        })
+      );
+
+      // dispatch to document for other components to listen
+      this.ownerDocument?.dispatchEvent(
+        new CustomEvent('on-nav-toggle', { detail })
+      );
     }
   }
 

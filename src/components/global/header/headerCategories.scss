@@ -17,7 +17,7 @@
 :host([view='detail'])
   slot.header-categories__slot::slotted(kyn-header-category)
   .category__links {
-  column-width: 160px;
+  column-width: 140px;
   column-gap: 32px;
 }
 
@@ -28,7 +28,7 @@
 
   &__inner {
     display: block;
-    column-width: 125px;
+    column-width: 140px;
     column-gap: 32px;
     max-width: 100%;
     box-sizing: border-box;
@@ -60,22 +60,6 @@ slot.header-categories__slot::slotted(*) {
 /* ---------------------------------------------------------------------
    DETAIL VIEW OVERRIDES
    ------------------------------------------------------------------ */
-:host([view='detail']) .header-categories__inner {
-  max-height: 250px;
-  column-width: auto;
-  column-count: 1;
-  column-gap: 0;
-
-  width: auto;
-  max-width: 640px;
-}
-
-:host([view='detail'])
-  slot.header-categories__slot::slotted(kyn-header-category) {
-  width: 100%;
-}
-
-/* JSON detail wrapper */
 :host([view='detail']) .header-detail-columns {
   display: flex;
   align-items: flex-start;
@@ -88,11 +72,10 @@ slot.header-categories__slot::slotted(*) {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-width: 160px;
-  flex: 1 1 auto;
+  flex: 1 1 0;
 }
 
-.header-detail-columns > div {
-  min-width: 160px;
-  flex: 1 1 auto;
+:host([view='detail']) .header-detail-columns--single {
+  max-width: 360px;
+  width: auto;
 }

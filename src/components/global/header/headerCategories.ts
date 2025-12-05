@@ -4,8 +4,8 @@ import {
   LitElement,
   html,
   unsafeCSS,
-  PropertyValueMap,
-  TemplateResult,
+  type PropertyValueMap,
+  type TemplateResult,
 } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import Styles from './headerCategories.scss?inline';
@@ -23,9 +23,13 @@ const _defaultTextStrings = {
   more: 'More',
 };
 
+type HeaderTextStrings = typeof _defaultTextStrings;
+
 export interface HeaderCategoryLinkType {
+  id: string;
   label: string;
   href?: string;
+  iconId?: string;
 }
 
 export interface HeaderLinkRendererContext {
@@ -44,9 +48,6 @@ export interface MegaTabConfig {
   categories: HeaderCategoryType[];
 }
 
-/**
- * Map of tab id to mega nav configuration.
- */
 export interface MegaTabsConfig {
   [tabId: string]: MegaTabConfig;
 }
@@ -56,10 +57,6 @@ export interface HeaderMegaChangeDetail {
   activeMegaCategoryId: string | null;
 }
 
-/**
- * Hook for rendering the *entire* link content that goes into <kyn-header-link>.
- * Consumers can override this to change icon/text/badge/etc per link.
- */
 export type HeaderMegaLinkRenderer = (
   link: HeaderCategoryLinkType,
   context?: HeaderLinkRendererContext
@@ -71,7 +68,6 @@ const ROOT_VIEW: HeaderView = 'root';
 const DETAIL_VIEW: HeaderView = 'detail';
 
 const VOID_HREF = 'javascript:void(0)';
-const MORE_LABEL = 'More';
 const MORE_ATTR = 'data-kyn-more-link';
 
 /**
@@ -85,11 +81,11 @@ const MORE_ATTR = 'data-kyn-more-link';
  * Modes:
  * - JSON mode: provide `tabsConfig` and categories/links are rendered from config.
  * - Slotted/manual mode: omit `tabsConfig` and slot <kyn-header-category> /
- *   <kyn-header-link> similar to the original API; this component will:
- *    - Truncate visible links per category at `maxRootLinks`
- *    - Inject a "More" link when there are additional links
- *    - Switch to a detail view for a category when "More" is clicked
- *    - Show a Back button to return to the root view
+ *   <kyn-header-link> will:
+ *    - truncate visible links per category at `maxRootLinks`
+ *    - inject a "More" link when there are additional links
+ *    - switch to a detail view for a category when "More" is clicked
+ *    - show a Back button to return to the root view
  */
 @customElement('kyn-header-categories')
 export class HeaderCategories extends LitElement {
@@ -111,15 +107,16 @@ export class HeaderCategories extends LitElement {
   @property({ type: Number })
   accessor maxRootLinks = 4;
 
-  /** Text string customization. */
-  @property({ type: Object })
-  accessor textStrings = _defaultTextStrings;
-
-  /** Internal text strings.
-   * @internal
+  /**
+   * Optional text overrides, merged with defaults.
+   * e.g. <kyn-header-categories .textStrings=${{ more: 'More items' }}>
    */
+  @property({ type: Object })
+  accessor textStrings: Partial<HeaderTextStrings> | null = null;
+
+  /** Resolved text strings (defaults + overrides). */
   @state()
-  accessor _textStrings = _defaultTextStrings;
+  accessor _textStrings: HeaderTextStrings = _defaultTextStrings;
 
   /** Number of links per column in the detail view (JSON mode only). */
   @property({ type: Number })
@@ -133,8 +130,8 @@ export class HeaderCategories extends LitElement {
   accessor view: HeaderView = ROOT_VIEW;
 
   /**
-   * Optional hook to render the entire link content slotted into <kyn-header-link>.
-   * If not provided, a simple circle-icon + label placeholder is used.
+   * optional hook to render the entire link content slotted into <kyn-header-link>.
+   * if not provided, a simple circle-icon + label placeholder is used.
    */
   @property({ attribute: false })
   accessor linkRenderer: HeaderMegaLinkRenderer | null = null;
@@ -142,11 +139,10 @@ export class HeaderCategories extends LitElement {
   private readonly _boundHandleNavToggle = (e: Event): void =>
     this._handleNavToggle(e as CustomEvent<{ open?: boolean }>);
 
-  // Bound slotchange handler so we can re-sync slotted content when it changes
+  // bound slotchange handler so we can re-sync slotted content when it changes
   private readonly _boundHandleSlotChange = (): void =>
     this._syncSlottedCategories();
 
-  // bound back-click handler for direct DOM listener
   private readonly _boundBackClick = (e?: Event): void =>
     this.handleBackClick(e);
 
@@ -184,8 +180,8 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * Public API to force root view for a given tab.
-   * Consumer can call via element ref if needed.
+   * force root view for a given tab.
+   * consumer can call via element ref if needed.
    */
   setRootView(tabId?: string): void {
     this.activeMegaTabId = tabId ?? this.activeMegaTabId;
@@ -217,9 +213,20 @@ export class HeaderCategories extends LitElement {
   }
 
   private _handleNavToggle(e: CustomEvent<{ open?: boolean }>): void {
-    if (e.detail?.open) {
-      // When the nav opens, always reset to root view.
+    const isOpen = Boolean(e.detail?.open);
+
+    // when the nav closes, always reset to root view on the next open
+    if (!isOpen) {
       this.setRootView(this.activeMegaTabId);
+    }
+  }
+
+  override willUpdate(changed: PropertyValueMap<this>): void {
+    if (changed.has('textStrings')) {
+      this._textStrings = {
+        ..._defaultTextStrings,
+        ...(this.textStrings ?? {}),
+      };
     }
   }
 
@@ -233,7 +240,6 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    // In manual/slotted mode, keep the DOM in sync with view + maxRootLinks.
     if (!this._isJsonMode) {
       this._syncSlottedCategories();
     }
@@ -265,7 +271,7 @@ export class HeaderCategories extends LitElement {
       return result ?? html``;
     }
 
-    // Default placeholder: circle icon + label, for simple JSON configs.
+    // default placeholder: circle icon + label, for simple JSON configs.
     return html`
       <span>${unsafeSVG(circleIcon)}</span>
       ${link.label}
@@ -330,12 +336,17 @@ export class HeaderCategories extends LitElement {
       category.links ?? [],
       this.detailLinksPerColumn
     );
+    const isSingleColumn = linkColumns.length === 1;
 
     return html`
       <kyn-header-category
         heading=${`${category.heading} – ${this._textStrings.more}`}
       >
-        <div class="header-detail-columns">
+        <div
+          class="header-detail-columns ${isSingleColumn
+            ? 'header-detail-columns--single'
+            : ''}"
+        >
           ${linkColumns.map(
             (column) => html`
               <div>
@@ -359,11 +370,11 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * Slotted/manual mode helper:
-   * - Finds <kyn-header-category> elements from the light DOM.
-   * - Applies root vs detail visibility.
-   * - Truncates links at `maxRootLinks` in root view.
-   * - Ensures a "More" link is injected / wired up for categories with extra links.
+   * slotted/manual mode helper:
+   * - finds <kyn-header-category> elements from the light DOM.
+   * - applies root vs detail visibility.
+   * - truncates links at `maxRootLinks` in root view.
+   * - ensures a "More" link is injected
    */
   private _syncSlottedCategories(): void {
     const categories = Array.from(
@@ -445,6 +456,7 @@ export class HeaderCategories extends LitElement {
         if (isActive) {
           regularLinks.forEach((linkEl) => {
             linkEl.hidden = false;
+            linkEl.style.display = '';
           });
           if (moreLink) {
             moreLink.hidden = true;
@@ -452,6 +464,7 @@ export class HeaderCategories extends LitElement {
         } else {
           regularLinks.forEach((linkEl) => {
             linkEl.hidden = true;
+            linkEl.style.display = 'none';
           });
           if (moreLink) {
             moreLink.hidden = true;
@@ -494,10 +507,15 @@ export class HeaderCategories extends LitElement {
     }));
 
     const columns = this.chunkBy(linkData, this.detailLinksPerColumn);
+    const isSingleColumn = columns.length === 1;
 
     return html`
       <kyn-header-category heading=${`${heading} – ${this._textStrings.more}`}>
-        <div class="header-detail-columns">
+        <div
+          class="header-detail-columns ${isSingleColumn
+            ? 'header-detail-columns--single'
+            : ''}"
+        >
           ${columns.map(
             (col) => html`
               <div>
@@ -526,7 +544,12 @@ export class HeaderCategories extends LitElement {
     } else {
       inner =
         view === ROOT_VIEW
-          ? html`<slot class="header-categories__slot"></slot>`
+          ? html`
+              <slot
+                class="header-categories__slot"
+                @slotchange=${this._boundHandleSlotChange}
+              ></slot>
+            `
           : this.renderSlottedDetail();
     }
 
@@ -559,7 +582,8 @@ export class HeaderCategories extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.addEventListener(
+
+    this.ownerDocument?.addEventListener(
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
@@ -571,14 +595,16 @@ export class HeaderCategories extends LitElement {
   }
 
   override disconnectedCallback(): void {
-    this.removeEventListener(
+    this.ownerDocument?.removeEventListener(
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
+
     const slot = this.shadowRoot?.querySelector(
       'slot.header-categories__slot'
     ) as HTMLSlotElement | null;
     slot?.removeEventListener('slotchange', this._boundHandleSlotChange);
+
     super.disconnectedCallback();
   }
 }
