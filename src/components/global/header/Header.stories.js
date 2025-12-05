@@ -7,7 +7,7 @@ import '../../reusable/button';
 import '../../reusable/tabs';
 import '../../reusable/search';
 
-import megaNavConfig from './megaNavCategories.json';
+import megaNavConfig from './sampleMegaNavCategories.json';
 
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
