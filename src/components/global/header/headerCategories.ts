@@ -68,7 +68,17 @@ const ROOT_VIEW: HeaderView = 'root';
 const DETAIL_VIEW: HeaderView = 'detail';
 
 const VOID_HREF = 'javascript:void(0)';
-const MORE_ATTR = 'data-kyn-more-link';
+
+interface SlottedLinkData {
+  href: string;
+  inner: string;
+}
+
+interface SlottedCategoryData {
+  id: string;
+  heading: string;
+  links: SlottedLinkData[];
+}
 
 /**
  * Header categories wrapper for mega menu.
@@ -136,12 +146,14 @@ export class HeaderCategories extends LitElement {
   @property({ attribute: false })
   accessor linkRenderer: HeaderMegaLinkRenderer | null = null;
 
+  /** Internal representation of slotted categories */
+  @state()
+  accessor _slottedCategories: SlottedCategoryData[] = [];
+
+  private _buildSlottedTimeout?: number;
+
   private readonly _boundHandleNavToggle = (e: Event): void =>
     this._handleNavToggle(e as CustomEvent<{ open?: boolean }>);
-
-  // bound slotchange handler so we can re-sync slotted content when it changes
-  private readonly _boundHandleSlotChange = (): void =>
-    this._syncSlottedCategories();
 
   private readonly _boundBackClick = (e?: Event): void =>
     this.handleBackClick(e);
@@ -189,7 +201,7 @@ export class HeaderCategories extends LitElement {
     this.view = ROOT_VIEW;
     this._emitChange();
 
-    if (!this._isJsonMode) this._syncSlottedCategories();
+    if (!this._isJsonMode) this._buildSlottedCategories();
   }
 
   openCategoryDetail(tabId: string, categoryId: string, e?: Event): void {
@@ -201,7 +213,7 @@ export class HeaderCategories extends LitElement {
     this.activeMegaCategoryId = categoryId;
     this.view = DETAIL_VIEW;
     this._emitChange();
-    if (!this._isJsonMode) this._syncSlottedCategories();
+    if (!this._isJsonMode) this._buildSlottedCategories();
   }
 
   handleBackClick(e?: Event): void {
@@ -210,6 +222,17 @@ export class HeaderCategories extends LitElement {
       e.stopPropagation();
     }
     this.setRootView(this.activeMegaTabId);
+
+    // restore focus to the tab/link that opened the mega
+    this.updateComplete.then(() => {
+      const hostLinks = Array.from(
+        this.querySelectorAll<HTMLElement>('kyn-header-link')
+      );
+      const activeLink = hostLinks.find((l) => l.hasAttribute('isactive'));
+      if (activeLink && (activeLink as HTMLElement).focus) {
+        (activeLink as HTMLElement).focus();
+      }
+    });
   }
 
   private _handleNavToggle(e: CustomEvent<{ open?: boolean }>): void {
@@ -238,10 +261,6 @@ export class HeaderCategories extends LitElement {
       if (this.view !== nextView) {
         this.view = nextView;
       }
-    }
-
-    if (!this._isJsonMode) {
-      this._syncSlottedCategories();
     }
 
     const backButton = this.shadowRoot?.querySelector(
@@ -303,8 +322,19 @@ export class HeaderCategories extends LitElement {
           ? html`
               <kyn-header-link
                 href=${VOID_HREF}
+                role="button"
+                aria-expanded=${this.activeMegaCategoryId === category.id
+                  ? 'true'
+                  : 'false'}
+                aria-controls=${`detail-${category.id}`}
                 @click=${(e: Event) =>
                   this.openCategoryDetail(tabId, category.id, e)}
+                @keydown=${(e: KeyboardEvent) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.openCategoryDetail(tabId, category.id, e);
+                  }
+                }}
               >
                 <span style="margin-right: 8px;">
                   ${unsafeSVG(chevronRightIcon)}
@@ -343,9 +373,12 @@ export class HeaderCategories extends LitElement {
         heading=${`${category.heading} – ${this._textStrings.more}`}
       >
         <div
+          id=${`detail-${category.id}`}
           class="header-detail-columns ${isSingleColumn
             ? 'header-detail-columns--single'
             : ''}"
+          role="region"
+          aria-label=${`${category.heading} – ${this._textStrings.more}`}
         >
           ${linkColumns.map(
             (column) => html`
@@ -370,162 +403,134 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * slotted/manual mode helper:
-   * - finds <kyn-header-category> elements from the light DOM.
-   * - applies root vs detail visibility.
-   * - truncates links at `maxRootLinks` in root view.
-   * - ensures a "More" link is injected
+   * Build an internal, read-only representation of slotted categories.
+   * Avoids mutating the dev consumer's light DOM and allows declarative rendering.
    */
-  private _syncSlottedCategories(): void {
+  private _buildSlottedCategories(): void {
     if (this._isJsonMode) return;
 
     const categories = Array.from(
       this.querySelectorAll<HTMLElement>('kyn-header-category')
     );
 
-    if (!categories.length) return;
+    if (!categories.length) {
+      this._slottedCategories = [];
+      return;
+    }
 
-    const view = this.view;
-    const activeId = this.activeMegaCategoryId;
+    const data = categories.map((categoryEl, index) => {
+      const id = categoryEl.getAttribute('id') ?? `category-${index + 1}`;
+      const heading = categoryEl.getAttribute('heading') ?? '';
 
-    const moreLinksStripped = (allLinks: HTMLElement[]): HTMLElement[] =>
-      allLinks.filter((link) => link.dataset.kynMoreLink !== 'true');
+      const allLinks = Array.from(
+        categoryEl.querySelectorAll<HTMLElement>('kyn-header-link')
+      ).filter((link) => link.parentElement === categoryEl) as HTMLElement[];
 
-    categories.forEach((categoryEl, index) => {
-      const existingId = categoryEl.getAttribute('id');
-      const categoryId = existingId ?? `category-${index + 1}`;
-      if (!existingId) {
-        categoryEl.id = categoryId;
-      }
+      const regularLinks = allLinks.filter(
+        (l) => l.dataset.kynMoreLink !== 'true'
+      );
 
-      let allLinks: HTMLElement[] = [];
-      const slotEl = categoryEl.querySelector('slot');
-      if (
-        slotEl &&
-        typeof (slotEl as HTMLSlotElement).assignedElements === 'function'
-      ) {
-        allLinks = (slotEl as HTMLSlotElement)
-          .assignedElements({ flatten: true })
-          .filter(
-            (el) => el.tagName.toLowerCase() === 'kyn-header-link'
-          ) as HTMLElement[];
-      } else {
-        allLinks = Array.from(
-          categoryEl.querySelectorAll<HTMLElement>('kyn-header-link')
-        ) as HTMLElement[];
-      }
+      const links = regularLinks.map((l) => ({
+        href: l.getAttribute('href') ?? VOID_HREF,
+        inner: l.innerHTML,
+      }));
 
-      allLinks = allLinks.filter((link) => link.parentElement === categoryEl);
-
-      const moreLink = allLinks.find((link) => link.hasAttribute(MORE_ATTR));
-
-      const regularLinks = moreLinksStripped(allLinks);
-
-      if (view === ROOT_VIEW) {
-        categoryEl.hidden = false;
-
-        regularLinks.forEach((linkEl, linkIndex) => {
-          const hide = linkIndex >= this.maxRootLinks;
-          linkEl.hidden = hide;
-          linkEl.style.display = hide ? 'none' : '';
-        });
-
-        const needsMore = regularLinks.length > this.maxRootLinks;
-
-        let effectiveMoreLink = moreLink;
-
-        if (needsMore && !effectiveMoreLink) {
-          const link = document.createElement('kyn-header-link') as HTMLElement;
-          link.setAttribute('href', VOID_HREF);
-          link.setAttribute(MORE_ATTR, 'true');
-          link.innerHTML = `<span style="margin-right: 8px;">${chevronRightIcon}</span><span>${this._textStrings.more}</span>`;
-          categoryEl.appendChild(link);
-          effectiveMoreLink = link;
-        }
-
-        if (effectiveMoreLink) {
-          effectiveMoreLink.hidden = !needsMore;
-          effectiveMoreLink.onclick = (e: MouseEvent) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.openCategoryDetail(this.activeMegaTabId, categoryId, e);
-          };
-        }
-      } else {
-        const isActive = categoryId === activeId;
-        categoryEl.hidden = !isActive;
-
-        if (isActive) {
-          regularLinks.forEach((linkEl) => {
-            linkEl.hidden = false;
-            linkEl.style.display = '';
-          });
-          if (moreLink) {
-            moreLink.hidden = true;
-          }
-        } else {
-          regularLinks.forEach((linkEl) => {
-            linkEl.hidden = true;
-            linkEl.style.display = 'none';
-          });
-          if (moreLink) {
-            moreLink.hidden = true;
-          }
-        }
-      }
+      return {
+        id,
+        heading,
+        links,
+      } as SlottedCategoryData;
     });
+
+    this._slottedCategories = data;
+  }
+
+  private renderSlottedRoot(): TemplateResult | null {
+    const categories = this._slottedCategories;
+    if (!categories.length) return null;
+
+    return html`${categories.map(
+      (category) => html`
+        <kyn-header-category heading=${category.heading}>
+          ${category.links
+            .slice(0, this.maxRootLinks)
+            .map(
+              (link) => html`
+                <kyn-header-link href=${link.href}>
+                  ${unsafeHTML(link.inner)}
+                </kyn-header-link>
+              `
+            )}
+          ${category.links.length > this.maxRootLinks
+            ? html`
+                <kyn-header-link
+                  href=${VOID_HREF}
+                  role="button"
+                  aria-expanded=${this.activeMegaCategoryId === category.id
+                    ? 'true'
+                    : 'false'}
+                  aria-controls=${`detail-${category.id}`}
+                  @click=${(e: Event) =>
+                    this.openCategoryDetail(
+                      this.activeMegaTabId,
+                      category.id,
+                      e
+                    )}
+                  @keydown=${(e: KeyboardEvent) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      this.openCategoryDetail(
+                        this.activeMegaTabId,
+                        category.id,
+                        e as unknown as Event
+                      );
+                    }
+                  }}
+                >
+                  <span style="margin-right: 8px;"
+                    >${unsafeSVG(chevronRightIcon)}</span
+                  >
+                  <span>${this._textStrings.more}</span>
+                </kyn-header-link>
+              `
+            : null}
+        </kyn-header-category>
+      `
+    )}`;
   }
 
   private renderSlottedDetail(): TemplateResult | null {
-    const categories = Array.from(
-      this.querySelectorAll<HTMLElement>('kyn-header-category')
-    );
+    const categories = this._slottedCategories;
     if (!categories.length) return null;
 
-    const categoriesWithId = categories.map((el, idx) => ({
-      el,
-      id: el.getAttribute('id') ?? `category-${idx + 1}`,
-    }));
-
     const categoryItem =
-      categoriesWithId.find((c) => c.id === this.activeMegaCategoryId) ??
-      categoriesWithId[0];
+      categories.find((c) => c.id === this.activeMegaCategoryId) ??
+      categories[0];
     if (!categoryItem) return null;
 
-    const categoryEl = categoryItem.el;
-    const heading = categoryEl.getAttribute('heading') ?? '';
-
-    const allLinks = Array.from(
-      categoryEl.querySelectorAll<HTMLElement>('kyn-header-link')
-    ).filter((link) => link.parentElement === categoryEl) as HTMLElement[];
-
-    const regularLinks = allLinks.filter(
-      (l) => l.dataset.kynMoreLink !== 'true'
-    );
-
-    const linkData = regularLinks.map((l) => ({
-      href: l.getAttribute('href') ?? VOID_HREF,
-      inner: l.innerHTML,
-    }));
-
-    const columns = this.chunkBy(linkData, this.detailLinksPerColumn);
+    const columns = this.chunkBy(categoryItem.links, this.detailLinksPerColumn);
     const isSingleColumn = columns.length === 1;
 
     return html`
-      <kyn-header-category heading=${`${heading} – ${this._textStrings.more}`}>
+      <kyn-header-category
+        heading=${`${categoryItem.heading} – ${this._textStrings.more}`}
+      >
         <div
+          id=${`detail-${categoryItem.id}`}
           class="header-detail-columns ${isSingleColumn
             ? 'header-detail-columns--single'
             : ''}"
+          role="region"
+          aria-label=${`${categoryItem.heading} – ${this._textStrings.more}`}
         >
           ${columns.map(
             (col) => html`
               <div>
                 ${col.map(
                   (link) => html`
-                    <kyn-header-link href=${link.href}
-                      >${unsafeHTML(link.inner)}</kyn-header-link
-                    >
+                    <kyn-header-link href=${link.href}>
+                      ${unsafeHTML(link.inner)}
+                    </kyn-header-link>
                   `
                 )}
               </div>
@@ -534,6 +539,21 @@ export class HeaderCategories extends LitElement {
         </div>
       </kyn-header-category>
     `;
+  }
+
+  private _scheduleBuildSlottedCategories(): void {
+    if (typeof window === 'undefined') {
+      this._buildSlottedCategories();
+      return;
+    }
+
+    if (this._buildSlottedTimeout) {
+      window.clearTimeout(this._buildSlottedTimeout);
+    }
+    this._buildSlottedTimeout = window.setTimeout(() => {
+      this._buildSlottedCategories();
+      this._buildSlottedTimeout = undefined;
+    }, 40);
   }
 
   override render(): TemplateResult {
@@ -546,18 +566,20 @@ export class HeaderCategories extends LitElement {
     } else {
       inner =
         view === ROOT_VIEW
-          ? html`
-              <slot
-                class="header-categories__slot"
-                @slotchange=${this._boundHandleSlotChange}
-              ></slot>
-            `
+          ? this.renderSlottedRoot()
           : this.renderSlottedDetail();
     }
 
     return html`
       <div class="header-categories" data-view=${view}>
         <div class="header-categories__inner">${inner ?? html``}</div>
+
+        <!-- hidden slot used only to observe dev consumer light DOM changes (edge case) -->
+        <slot
+          class="header-categories__slot"
+          style="display: none;"
+          @slotchange=${() => this._scheduleBuildSlottedCategories()}
+        ></slot>
 
         ${view === DETAIL_VIEW
           ? html`
@@ -589,6 +611,9 @@ export class HeaderCategories extends LitElement {
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
+
+    // initial build for slotted mode
+    this._buildSlottedCategories();
   }
 
   override disconnectedCallback(): void {
@@ -596,6 +621,11 @@ export class HeaderCategories extends LitElement {
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
+
+    if (this._buildSlottedTimeout) {
+      window.clearTimeout(this._buildSlottedTimeout);
+      this._buildSlottedTimeout = undefined;
+    }
 
     super.disconnectedCallback();
   }
