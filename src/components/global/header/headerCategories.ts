@@ -60,7 +60,7 @@ export interface HeaderMegaChangeDetail {
 export type HeaderMegaLinkRenderer = (
   link: HeaderCategoryLinkType,
   context?: HeaderLinkRendererContext
-) => TemplateResult | null;
+) => TemplateResult | null | undefined;
 
 type HeaderView = 'root' | 'detail';
 
@@ -144,7 +144,7 @@ export class HeaderCategories extends LitElement {
    * if not provided, a simple circle-icon + label placeholder is used.
    */
   @property({ attribute: false })
-  accessor linkRenderer: HeaderMegaLinkRenderer | null = null;
+  accessor linkRenderer: HeaderMegaLinkRenderer | null | undefined = null;
 
   /** Internal representation of slotted categories */
   @state()

@@ -453,8 +453,10 @@ export const WithCategorizedNav = {
     };
 
     /** @type {HeaderMegaLinkRenderer} */
-    const renderMegaLink = (link, _context) =>
-      html`<span>${unsafeSVG(circleIcon)}</span>${link.label}`;
+    const renderMegaLink = /** @type {any} */ (
+      (link, _context) =>
+        html`<span>${unsafeSVG(circleIcon)}</span>${link.label}`
+    );
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
@@ -505,7 +507,7 @@ export const WithCategorizedNav = {
                     .tabsConfig=${megaNavConfig}
                     .activeMegaTabId=${renderArgs.activeMegaTabId}
                     .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    linkRenderer=${renderMegaLink}
+                    .linkRenderer=${renderMegaLink}
                     @on-nav-change=${handleMegaChange}
                   ></kyn-header-categories>
                 </kyn-tab-panel>
@@ -524,7 +526,7 @@ export const WithCategorizedNav = {
                     .tabsConfig=${megaNavConfig}
                     .activeMegaTabId=${renderArgs.activeMegaTabId}
                     .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    linkRenderer=${renderMegaLink}
+                    .linkRenderer=${renderMegaLink}
                     @on-nav-change=${handleMegaChange}
                   ></kyn-header-categories>
                 </kyn-tab-panel>
