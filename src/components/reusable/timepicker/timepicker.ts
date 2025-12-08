@@ -203,6 +203,11 @@ export class TimePicker extends FormMixin(LitElement) {
   private _initialized = false;
   private _isDestroyed = false;
 
+  /** IntersectionObserver to detect when picker becomes visible (used in tab panels)
+   * @internal
+   */
+  private _visibilityObserver: IntersectionObserver | null = null;
+
   /** Store submit event listener reference for cleanup
    * @internal
    */
@@ -444,6 +449,125 @@ export class TimePicker extends FormMixin(LitElement) {
       this._initialized = true;
       await this.updateComplete;
       this.setupAnchor();
+
+      try {
+        if (
+          !this._visibilityObserver &&
+          typeof IntersectionObserver !== 'undefined'
+        ) {
+          this._visibilityObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  // element became visible
+                  if (!this.flatpickrInstance) {
+                    void this.initializeFlatpickr();
+                  } else {
+                    try {
+                      this.flatpickrInstance.redraw?.();
+                      // sync value from external host when shown
+                      if (this.value instanceof Date) {
+                        this.flatpickrInstance.setDate(this.value, true);
+                      } else if (
+                        typeof this.value === 'string' &&
+                        this.value.trim() !== ''
+                      ) {
+                        this.flatpickrInstance.setDate(this.value, true);
+                      } else if (
+                        this.value === null &&
+                        this.flatpickrInstance
+                      ) {
+                        this.flatpickrInstance.clear();
+                        if (this._inputEl) {
+                          this._inputEl.value = '';
+                          this.updateFormValue();
+                        }
+                      }
+                    } catch (e) {
+                      console.warn(
+                        'Error syncing flatpickr on visibility change:',
+                        e
+                      );
+                    }
+                  }
+                }
+              });
+            },
+            { threshold: 0 }
+          );
+
+          try {
+            this._visibilityObserver.observe(this);
+          } catch (e) {
+            // ignore if observe fails
+          }
+        }
+      } catch (e) {
+        // IntersectionObserver not available or failed
+      }
+
+      try {
+        let wasVisible = this.isElementVisible();
+        const poll = async () => {
+          if (this._isDestroyed) return;
+          const nowVisible = this.isElementVisible();
+          if (!wasVisible && nowVisible) {
+            // became visible
+            if (!this.flatpickrInstance) {
+              await this.initializeFlatpickr();
+            } else {
+              try {
+                this.flatpickrInstance.redraw?.();
+                if (this.value instanceof Date) {
+                  this.flatpickrInstance.setDate(this.value, true);
+                } else if (
+                  typeof this.value === 'string' &&
+                  this.value.trim() !== ''
+                ) {
+                  this.flatpickrInstance.setDate(this.value, true);
+                } else if (this.value === null && this.flatpickrInstance) {
+                  this.flatpickrInstance.clear();
+                  if (this._inputEl) {
+                    this._inputEl.value = '';
+                    this.updateFormValue();
+                  }
+                }
+              } catch (err) {
+                console.warn(
+                  'Error syncing flatpickr on poll visibility:',
+                  err
+                );
+              }
+            }
+          }
+          wasVisible = nowVisible;
+          if (!wasVisible) {
+            setTimeout(poll, 250);
+          }
+        };
+        if (!wasVisible) setTimeout(poll, 250);
+      } catch (e) {
+        // ignore polling errors
+      }
+    }
+  }
+
+  private isElementVisible(): boolean {
+    try {
+      if (!this.isConnected) return false;
+      const el = this as HTMLElement;
+      const rects = el.getClientRects();
+      if (!rects || rects.length === 0) return false;
+      const style = window.getComputedStyle(el);
+      if (
+        style.display === 'none' ||
+        style.visibility === 'hidden' ||
+        style.opacity === '0'
+      )
+        return false;
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 
