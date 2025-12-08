@@ -322,11 +322,6 @@ export class HeaderCategories extends LitElement {
           ? html`
               <kyn-header-link
                 href=${VOID_HREF}
-                role="button"
-                aria-expanded=${this.activeMegaCategoryId === category.id
-                  ? 'true'
-                  : 'false'}
-                aria-controls=${`detail-${category.id}`}
                 @click=${(e: Event) =>
                   this.openCategoryDetail(tabId, category.id, e)}
                 @keydown=${(e: KeyboardEvent) => {
@@ -465,11 +460,6 @@ export class HeaderCategories extends LitElement {
             ? html`
                 <kyn-header-link
                   href=${VOID_HREF}
-                  role="button"
-                  aria-expanded=${this.activeMegaCategoryId === category.id
-                    ? 'true'
-                    : 'false'}
-                  aria-controls=${`detail-${category.id}`}
                   @click=${(e: Event) =>
                     this.openCategoryDetail(
                       this.activeMegaTabId,
