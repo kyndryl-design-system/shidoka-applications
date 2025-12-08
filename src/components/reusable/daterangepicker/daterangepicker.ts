@@ -790,10 +790,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
         this._isClearing = true;
         this.flatpickrInstance.clear();
         this._isClearing = false;
+
         if (this._inputEl) {
           this._inputEl.value = '';
           this.updateFormValue();
         }
+
+        // no dates selected
+        this.updateSelectedDateRangeAria([]);
       } else {
         const currentDates = this.flatpickrInstance.selectedDates;
         if (
@@ -804,6 +808,15 @@ export class DateRangePicker extends FormMixin(LitElement) {
           currentDates[1].getTime() !== newValue[1]?.getTime()
         ) {
           this.setInitialDates();
+        }
+
+        const announcedDates =
+          this.flatpickrInstance.selectedDates.length > 0
+            ? this.flatpickrInstance.selectedDates
+            : newValue.filter((d): d is Date => d instanceof Date);
+
+        if (announcedDates.length > 0) {
+          this.updateSelectedDateRangeAria(announcedDates);
         }
 
         if (
@@ -1022,6 +1035,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       );
     }
+
+    this.updateSelectedDateRangeAria([]);
 
     emitValue(this, 'on-change', {
       dates: this.value,
@@ -1470,6 +1485,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this.flatpickrInstance?.clear();
     this._hasInteracted = false;
     this._validate(false, false);
+
+    this.updateSelectedDateRangeAria([]);
   }
 
   public getValue(): [Date | null, Date | null] {
@@ -1516,6 +1533,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
             this._inputEl.value = this.flatpickrInstance.input.value;
           }
           this.updateFormValue();
+        }
+
+        if (isClear) {
+          this.updateSelectedDateRangeAria([]);
+        } else {
+          this.updateSelectedDateRangeAria(selected);
         }
       } else {
         this.value = newValue;
