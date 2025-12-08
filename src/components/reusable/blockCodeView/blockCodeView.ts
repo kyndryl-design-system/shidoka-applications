@@ -28,6 +28,21 @@ const _defaultTextStrings = {
   expanded: 'Expanded',
 };
 
+type PrismWithAutoloader = typeof Prism & {
+  plugins?: {
+    autoloader?: {
+      languages_path?: string;
+    };
+  };
+};
+
+const prismWithAutoloader = Prism as PrismWithAutoloader;
+
+if (prismWithAutoloader.plugins?.autoloader) {
+  prismWithAutoloader.plugins.autoloader.languages_path =
+    'https://cdn.jsdelivr.net/npm/prismjs@1/components/';
+}
+
 const LANGUAGE_SPECIFIC_TOKENS: Record<string, string[]> = {
   markup: ['<', '>', '/', 'div', 'span', 'class', 'id'],
   html: ['<', '>', '/', 'div', 'span', 'class', 'id'],
