@@ -11,7 +11,7 @@ export default {
   title: 'Components/Timepicker',
   component: 'kyn-time-picker',
   parameters: {
-    device: {
+    design: {
       type: 'figma',
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-373273&m=dev',
     },
