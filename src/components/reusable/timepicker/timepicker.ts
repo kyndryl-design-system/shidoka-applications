@@ -512,7 +512,6 @@ export class TimePicker extends FormMixin(LitElement) {
           if (this._isDestroyed) return;
           const nowVisible = this.isElementVisible();
           if (!wasVisible && nowVisible) {
-            // became visible
             if (!this.flatpickrInstance) {
               await this.initializeFlatpickr();
             } else {
