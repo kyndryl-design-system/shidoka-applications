@@ -358,10 +358,10 @@ export const InSimpleTabs = {
 
     return html`
       <kyn-tabs>
-        <kyn-tab slot="tabs" id="${b1}">Panel A</kyn-tab>
+        <kyn-tab slot="tabs" id="${b1}" selected>Panel A</kyn-tab>
         <kyn-tab slot="tabs" id="${b2}">Panel B</kyn-tab>
 
-        <kyn-tab-panel tabId="${b1}" id="${p1}">
+        <kyn-tab-panel tabId="${b1}" id="${p1}" visible>
           <kyn-time-picker
             .label=${args.label + ' - A'}
             .value=${valA}
