@@ -8,7 +8,6 @@ import { deepmerge } from 'deepmerge-ts';
 import Prism from 'prismjs';
 import 'prismjs/plugins/autoloader/prism-autoloader';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';
-import 'prismjs-components-importer';
 Prism.plugins.autoloader.languages_path = 'node_modules/prismjs/components/';
 
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/copy.svg';
