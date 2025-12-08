@@ -461,7 +461,7 @@ export class TimePicker extends FormMixin(LitElement) {
       if (
         !this._userHasCleared &&
         (this.defaultHour !== null || this.defaultMinute !== null) &&
-        !this.value
+        (this.value === null || this.value === undefined)
       ) {
         const date = new Date();
         if (this.defaultHour !== null) date.setHours(this.defaultHour);
@@ -731,7 +731,8 @@ export class TimePicker extends FormMixin(LitElement) {
       defaultHour === undefined &&
       defaultMinute === undefined &&
       !this._userHasCleared &&
-      (this.defaultHour !== null || this.defaultMinute !== null)
+      (this.defaultHour !== null || this.defaultMinute !== null) &&
+      !(typeof currentVal === 'string' && currentVal.trim() === '')
     ) {
       if (this.defaultHour !== null) {
         defaultHour = this.defaultHour;
@@ -771,7 +772,8 @@ export class TimePicker extends FormMixin(LitElement) {
         instance.setDate(this.value, false);
       } else if (
         !this._userHasCleared &&
-        (this.defaultHour !== null || this.defaultMinute !== null)
+        (this.defaultHour !== null || this.defaultMinute !== null) &&
+        (this.value === null || this.value === undefined)
       ) {
         const date = new Date();
         if (this.defaultHour !== null) date.setHours(this.defaultHour);
