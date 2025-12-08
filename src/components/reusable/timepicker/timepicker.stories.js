@@ -310,20 +310,14 @@ ControlledTimePickerValueOverridesDefaults.storyName =
 export const InTabs = {
   args: {
     ...DefaultTimePicker.args,
-    label: 'Timepicker in tabs (lazy mount)',
+    label: 'Timepicker in tabs (simple panels)',
     defaultHour: null,
     defaultMinute: null,
   },
   render: (args) => {
-    const [{ activeTab = 'tab-a' }, updateArgs] = useArgs();
-
     useEffect(() => {
       return () => disconnectFlatpickr();
     }, []);
-
-    const selectTab = (id) => {
-      updateArgs({ activeTab: id });
-    };
 
     const valA = new Date();
     valA.setHours(9, 0, 0, 0);
@@ -332,63 +326,33 @@ export const InTabs = {
 
     return html`
       <kyn-tabs>
-        <kyn-tab
-          slot="tabs"
-          id="tab-a"
-          ?selected=${activeTab === 'tab-a'}
-          @click=${() => selectTab('tab-a')}
-        >
-          Panel A
-        </kyn-tab>
-        <kyn-tab
-          slot="tabs"
-          id="tab-b"
-          ?selected=${activeTab === 'tab-b'}
-          @click=${() => selectTab('tab-b')}
-        >
-          Panel B
-        </kyn-tab>
+        <kyn-tab slot="tabs" id="tab-a" selected>Panel A</kyn-tab>
+        <kyn-tab slot="tabs" id="tab-b">Panel B</kyn-tab>
 
-        <kyn-tab-panel tabId="tab-a" ?visible=${activeTab === 'tab-a'}>
-          ${activeTab === 'tab-a'
-            ? html`
-                <kyn-time-picker
-                  .label=${args.label + ' - A'}
-                  .value=${valA}
-                  .defaultHour=${args.defaultHour}
-                  .defaultMinute=${args.defaultMinute}
-                  .locale=${args.locale}
-                  .size=${args.size}
-                  @on-change=${(e) =>
-                    action(e.type)({
-                      ...e,
-                      detail: e.detail,
-                    })}
-                >
-                </kyn-time-picker>
-              `
-            : null}
+        <kyn-tab-panel tabId="tab-a" visible>
+          <kyn-time-picker
+            .label=${args.label + ' - A'}
+            .value=${valA}
+            .defaultHour=${args.defaultHour}
+            .defaultMinute=${args.defaultMinute}
+            .locale=${args.locale}
+            .size=${args.size}
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+          </kyn-time-picker>
         </kyn-tab-panel>
 
-        <kyn-tab-panel tabId="tab-b" ?visible=${activeTab === 'tab-b'}>
-          ${activeTab === 'tab-b'
-            ? html`
-                <kyn-time-picker
-                  .label=${args.label + ' - B'}
-                  .value=${valB}
-                  .defaultHour=${args.defaultHour}
-                  .defaultMinute=${args.defaultMinute}
-                  .locale=${args.locale}
-                  .size=${args.size}
-                  @on-change=${(e) =>
-                    action(e.type)({
-                      ...e,
-                      detail: e.detail,
-                    })}
-                >
-                </kyn-time-picker>
-              `
-            : null}
+        <kyn-tab-panel tabId="tab-b">
+          <kyn-time-picker
+            .label=${args.label + ' - B'}
+            .value=${valB}
+            .defaultHour=${args.defaultHour}
+            .defaultMinute=${args.defaultMinute}
+            .locale=${args.locale}
+            .size=${args.size}
+            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+          </kyn-time-picker>
         </kyn-tab-panel>
       </kyn-tabs>
     `;
