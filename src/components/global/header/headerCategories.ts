@@ -32,17 +32,22 @@ export interface HeaderCategoryLinkType {
   iconId?: string;
 }
 
+export interface HeaderCategoryType {
+  id: string;
+  heading: string;
+  links: HeaderCategoryLinkType[];
+}
+
 export interface HeaderLinkRendererContext {
   tabId: string;
   categoryId: string;
   view: 'root' | 'detail';
 }
 
-export interface HeaderCategoryType {
-  id: string;
-  heading: string;
-  links: HeaderCategoryLinkType[];
-}
+export type HeaderMegaLinkRenderer = (
+  link: HeaderCategoryLinkType,
+  context?: HeaderLinkRendererContext
+) => TemplateResult | null;
 
 export interface MegaTabConfig {
   categories: HeaderCategoryType[];
@@ -56,11 +61,6 @@ export interface HeaderMegaChangeDetail {
   activeMegaTabId: string;
   activeMegaCategoryId: string | null;
 }
-
-export type HeaderMegaLinkRenderer = (
-  link: HeaderCategoryLinkType,
-  context?: HeaderLinkRendererContext
-) => TemplateResult | null | undefined;
 
 type HeaderView = 'root' | 'detail';
 
@@ -140,11 +140,11 @@ export class HeaderCategories extends LitElement {
   accessor view: HeaderView = ROOT_VIEW;
 
   /**
-   * optional hook to render the entire link content slotted into <kyn-header-link>.
-   * if not provided, a simple circle-icon + label placeholder is used.
+   * Optional hook to render the entire link content slotted into <kyn-header-link>.
+   * If not provided, a simple circle-icon + label placeholder is used.
    */
   @property({ attribute: false })
-  accessor linkRenderer: HeaderMegaLinkRenderer | null | undefined = null;
+  accessor linkRenderer: HeaderMegaLinkRenderer | null = null;
 
   /** Internal representation of slotted categories */
   @state()
@@ -229,8 +229,8 @@ export class HeaderCategories extends LitElement {
         this.querySelectorAll<HTMLElement>('kyn-header-link')
       );
       const activeLink = hostLinks.find((l) => l.hasAttribute('isactive'));
-      if (activeLink && (activeLink as HTMLElement).focus) {
-        (activeLink as HTMLElement).focus();
+      if (activeLink && activeLink.focus) {
+        activeLink.focus();
       }
     });
   }
@@ -290,7 +290,6 @@ export class HeaderCategories extends LitElement {
       return result ?? html``;
     }
 
-    // default placeholder: circle icon + label, for simple JSON configs.
     return html`
       <span>${unsafeSVG(circleIcon)}</span>
       ${link.label}
@@ -477,9 +476,9 @@ export class HeaderCategories extends LitElement {
                     }
                   }}
                 >
-                  <span style="margin-right: 8px;"
-                    >${unsafeSVG(chevronRightIcon)}</span
-                  >
+                  <span style="margin-right: 8px;">
+                    ${unsafeSVG(chevronRightIcon)}
+                  </span>
                   <span>${this._textStrings.more}</span>
                 </kyn-header-link>
               `
