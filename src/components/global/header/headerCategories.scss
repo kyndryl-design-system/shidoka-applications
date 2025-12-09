@@ -6,19 +6,12 @@
   width: 100%;
 }
 
-@media (min-width: 42rem) {
+@media (min-width: 672px) {
   :host {
     padding-right: 10%;
     width: calc(100vw - 230px);
     max-width: calc(100vw - 230px);
   }
-}
-
-:host([view='detail'])
-  slot.header-categories__slot::slotted(kyn-header-category)
-  .category__links {
-  column-width: 140px;
-  column-gap: 32px;
 }
 
 .header-categories {
@@ -28,7 +21,7 @@
 
   &__inner {
     display: block;
-    column-width: 140px;
+    column-width: 160px;
     column-gap: 32px;
     max-width: 100%;
     box-sizing: border-box;
@@ -40,7 +33,6 @@
   }
 }
 
-/* JSON-driven children (direct kyn-header-category instances) */
 .header-categories__inner > * {
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
@@ -48,7 +40,6 @@
   margin: 0 0 16px;
 }
 
-/* Manual HTML children (slotted kyn-header-category instances) */
 slot.header-categories__slot::slotted(*) {
   display: block;
   break-inside: avoid;
@@ -58,13 +49,44 @@ slot.header-categories__slot::slotted(*) {
 }
 
 /* ---------------------------------------------------------------------
-   DETAIL VIEW OVERRIDES
+   ROOT VIEW (MASONRY)
    ------------------------------------------------------------------ */
+:host(:not([view='detail'])) .header-categories__inner {
+  column-width: 160px;
+}
+
+@media (min-width: 896px) {
+  :host(:not([view='detail'])) .header-categories__inner {
+    column-width: 180px;
+  }
+}
+
+@media (min-width: 1152px) {
+  :host(:not([view='detail'])) .header-categories__inner {
+    column-width: 200px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   DETAIL VIEW
+   ------------------------------------------------------------------ */
+
+:host([view='detail']) {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  .header-categories {
+    &__inner {
+      overflow: auto;
+    }
+  }
+}
+
 :host([view='detail']) .header-detail-columns {
   display: flex;
   align-items: flex-start;
   gap: 0 32px;
-  width: 100%;
+  width: max-content;
   box-sizing: border-box;
 }
 
@@ -72,10 +94,21 @@ slot.header-categories__slot::slotted(*) {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 1 1 0;
+  flex: 0 0 200px;
 }
 
 :host([view='detail']) .header-detail-columns--single {
   max-width: 360px;
   width: auto;
+}
+
+:host([view='detail']) .header-detail-columns kyn-header-link {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 42rem) {
+  :host([view='detail']) .header-detail-columns > div {
+    min-width: 160px;
+  }
 }

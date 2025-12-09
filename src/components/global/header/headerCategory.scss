@@ -19,13 +19,14 @@
 
 .heading {
   @include typography.type-ui-03;
+
   display: flex;
   align-items: center;
   gap: 8px;
   color: var(--kd-color-text-variant-brand);
   font-weight: var(--kd-font-weight-medium);
   text-transform: uppercase;
-  padding: 6px 12px 6px 8px;
+  padding: 6px 6px 6px 8px;
 
   &.left-padding {
     padding-left: 36px;
@@ -38,17 +39,4 @@ slot[name='icon']::slotted(*) {
   justify-content: center;
   width: 16px;
   height: 16px;
-}
-
-/* Detail view: keep heading on top and let consumers control layout
-   of the slotted links (e.g. columns) without additional constraints. */
-:host-context(kyn-header-categories[view='detail']) {
-  .category__links {
-    display: block;
-  }
-
-  .category__links ::slotted(kyn-header-link) {
-    display: block;
-    margin-bottom: 4px;
-  }
 }

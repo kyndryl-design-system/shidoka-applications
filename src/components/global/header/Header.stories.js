@@ -639,6 +639,30 @@ export const WithCategorizedNavManualHtml = {
                         <span>${unsafeSVG(circleIcon)}</span>
                         Sub Link 6
                       </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 7
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 8
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 9
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 10
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 11
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>${unsafeSVG(circleIcon)}</span>
+                        Sub Link 12
+                      </kyn-header-link>
                     </kyn-header-category>
 
                     <!-- CATEGORY 2 -->
@@ -781,9 +805,10 @@ export const WithCategorizedNavManualHtml = {
                     style="display: block; margin-bottom: 16px;"
                   ></kyn-search>
 
+                  <!-- iterating through array here to show how the details view handles many links -->
                   <kyn-header-categories>
                     <kyn-header-category heading="T2 - Category 1">
-                      ${Array.from({ length: 6 }).map(
+                      ${Array.from({ length: 40 }).map(
                         (_, idx) => html`
                           <kyn-header-link href="#">
                             <span>${unsafeSVG(circleIcon)}</span>

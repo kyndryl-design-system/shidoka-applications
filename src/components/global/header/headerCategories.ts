@@ -356,10 +356,7 @@ export class HeaderCategories extends LitElement {
 
     if (!category) return null;
 
-    const linkColumns = this.chunkBy(
-      category.links ?? [],
-      this.detailLinksPerColumn
-    );
+    const linkColumns = this.computeDetailColumns(category.links);
     const isSingleColumn = linkColumns.length === 1;
 
     return html`
@@ -488,6 +485,20 @@ export class HeaderCategories extends LitElement {
     )}`;
   }
 
+  private computeDetailColumns<T>(links: T[] | undefined): T[][] {
+    const list = links ?? [];
+    if (!list.length) return [];
+
+    const minPerColumn = Math.max(this.detailLinksPerColumn, 1);
+    const maxColumns = 4;
+
+    const idealColumns = Math.ceil(list.length / minPerColumn);
+    const columnCount = Math.min(maxColumns, Math.max(1, idealColumns));
+
+    const size = Math.ceil(list.length / columnCount);
+    return this.chunkBy(list, size);
+  }
+
   private renderSlottedDetail(): TemplateResult | null {
     const categories = this._slottedCategories;
     if (!categories.length) return null;
@@ -497,7 +508,7 @@ export class HeaderCategories extends LitElement {
       categories[0];
     if (!categoryItem) return null;
 
-    const columns = this.chunkBy(categoryItem.links, this.detailLinksPerColumn);
+    const columns = this.computeDetailColumns(categoryItem.links);
     const isSingleColumn = columns.length === 1;
 
     return html`
