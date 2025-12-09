@@ -11,6 +11,7 @@ import {
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
+  preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
   setCalendarAttributes,
@@ -418,19 +419,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
           class="label-text"
-          aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
+          ?readonly=${this.readonly}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
-          @keydown=${(e: KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              this.onSuppressLabelInteraction(e);
-            }
-          }}
-          tabindex=${ifDefined(
-            this.dateRangePickerDisabled || this.readonly ? undefined : '0'
-          )}
-          ?readonly=${this.readonly}
+          aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -504,12 +496,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
               aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.onSuppressLabelInteraction}
               @click=${this.onSuppressLabelInteraction}
-              @keydown=${(e: KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  this.onSuppressLabelInteraction(e);
-                }
-              }}
             >
               ${this.caption}
             </div>`
