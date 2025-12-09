@@ -203,10 +203,7 @@ export class TimePicker extends FormMixin(LitElement) {
   private _initialized = false;
   private _isDestroyed = false;
 
-  /** IntersectionObserver to detect when picker becomes visible (used in tab panels)
-   * @internal
-   */
-  private _visibilityObserver: IntersectionObserver | null = null;
+  private _anchorId: string | null = null;
 
   /** Store submit event listener reference for cleanup
    * @internal
@@ -255,15 +252,47 @@ export class TimePicker extends FormMixin(LitElement) {
       return Number.isNaN(d.getTime()) ? null : d;
     }
     if (typeof time === 'string') {
-      const parts = time.trim().split(':').map(Number);
-      const h = parts[0];
-      const m = parts.length > 1 ? parts[1] : 0;
-      const s = parts.length > 2 ? parts[2] : 0;
-      if (!Number.isNaN(h) && !Number.isNaN(m) && !Number.isNaN(s)) {
-        const d = new Date();
-        d.setHours(h, m, s, 0);
-        return d;
+      const str = time.trim();
+
+      // Accept formats like '14:30', '2:30 PM', '02:30:45', etc.
+      const ampmMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([ap]m)?$/i.exec(
+        str
+      );
+      if (!ampmMatch) return null;
+
+      let hours = Number(ampmMatch[1]);
+      const minutes = Number(ampmMatch[2]);
+      const seconds = ampmMatch[3] !== undefined ? Number(ampmMatch[3]) : 0;
+      const ampm = ampmMatch[4];
+
+      if (
+        Number.isNaN(hours) ||
+        Number.isNaN(minutes) ||
+        Number.isNaN(seconds)
+      ) {
+        return null;
       }
+
+      if (ampm) {
+        const a = ampm.toLowerCase();
+        if (a === 'pm' && hours < 12) hours += 12;
+        if (a === 'am' && hours === 12) hours = 0;
+      }
+
+      if (
+        hours < 0 ||
+        hours > 23 ||
+        minutes < 0 ||
+        minutes > 59 ||
+        seconds < 0 ||
+        seconds > 59
+      ) {
+        return null;
+      }
+
+      const d = new Date();
+      d.setHours(hours, minutes, seconds, 0);
+      return d;
     }
     return null;
   }
@@ -302,9 +331,11 @@ export class TimePicker extends FormMixin(LitElement) {
   override render() {
     const errorId = `${this.name}-error-message`;
     const warningId = `${this.name}-warning-message`;
-    const anchorId = this.name
-      ? this.generateRandomId(this.name)
-      : this.generateRandomId('time-picker');
+    const anchorId =
+      this._anchorId ??
+      (this._anchorId = this.name
+        ? this.generateRandomId(this.name)
+        : this.generateRandomId('time-picker'));
     const descriptionId = this.name ?? '';
     const placeholder = this.enableSeconds ? '—— : —— : ——' : '—— : ——';
 
@@ -312,8 +343,8 @@ export class TimePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getTimepickerClasses())}>
         <div
           class="label-text"
-          @mousedown=${this.preventFlatpickrOpen}
-          @click=${this.preventFlatpickrOpen}
+          @mousedown=${this.onSuppressLabelInteraction}
+          @click=${this.onSuppressLabelInteraction}
           ?disabled=${this.timepickerDisabled}
           ?readonly=${this.readonly}
           id=${`label-${anchorId}`}
@@ -382,8 +413,8 @@ export class TimePicker extends FormMixin(LitElement) {
               id=${descriptionId}
               class="caption"
               aria-disabled=${this.timepickerDisabled}
-              @mousedown=${this.preventFlatpickrOpen}
-              @click=${this.preventFlatpickrOpen}
+              @mousedown=${this.onSuppressLabelInteraction}
+              @click=${this.onSuppressLabelInteraction}
             >
               ${this.caption}
             </div>`
@@ -402,8 +433,8 @@ export class TimePicker extends FormMixin(LitElement) {
         class="error error-text"
         role="alert"
         title=${this.errorTitle || 'Error'}
-        @mousedown=${this.preventFlatpickrOpen}
-        @click=${this.preventFlatpickrOpen}
+        @mousedown=${this.onSuppressLabelInteraction}
+        @click=${this.onSuppressLabelInteraction}
       >
         <span
           class="error-icon"
@@ -425,8 +456,8 @@ export class TimePicker extends FormMixin(LitElement) {
         role="alert"
         aria-label=${this.warningAriaLabel || 'Warning message'}
         title=${this.warningTitle || 'Warning'}
-        @mousedown=${this.preventFlatpickrOpen}
-        @click=${this.preventFlatpickrOpen}
+        @mousedown=${this.onSuppressLabelInteraction}
+        @click=${this.onSuppressLabelInteraction}
       >
         ${this.warnText}
       </div>`;
@@ -442,111 +473,64 @@ export class TimePicker extends FormMixin(LitElement) {
     };
   }
 
+  private async syncFlatpickrFromHostValue() {
+    if (!this.flatpickrInstance) return;
+
+    try {
+      this.flatpickrInstance.redraw?.();
+
+      if (this.value instanceof Date) {
+        this.flatpickrInstance.setDate(this.value, true);
+      } else if (typeof this.value === 'string' && this.value.trim() !== '') {
+        this.flatpickrInstance.setDate(this.value, true);
+      } else if (this.value === null) {
+        this.flatpickrInstance.clear();
+        if (this._inputEl) {
+          this._inputEl.value = '';
+          this.updateFormValue();
+        }
+      }
+    } catch (err) {
+      console.warn('Error syncing flatpickr from host value:', err);
+    }
+  }
+
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
+
     if (!this._initialized) {
       injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
       this._initialized = true;
       await this.updateComplete;
-      this.setupAnchor();
 
-      try {
-        if (
-          !this._visibilityObserver &&
-          typeof IntersectionObserver !== 'undefined'
-        ) {
-          this._visibilityObserver = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  // element became visible
-                  if (!this.flatpickrInstance) {
-                    void this.initializeFlatpickr();
-                  } else {
-                    try {
-                      this.flatpickrInstance.redraw?.();
-                      // sync value from external host when shown
-                      if (this.value instanceof Date) {
-                        this.flatpickrInstance.setDate(this.value, true);
-                      } else if (
-                        typeof this.value === 'string' &&
-                        this.value.trim() !== ''
-                      ) {
-                        this.flatpickrInstance.setDate(this.value, true);
-                      } else if (
-                        this.value === null &&
-                        this.flatpickrInstance
-                      ) {
-                        this.flatpickrInstance.clear();
-                        if (this._inputEl) {
-                          this._inputEl.value = '';
-                          this.updateFormValue();
-                        }
-                      }
-                    } catch (e) {
-                      console.warn(
-                        'Error syncing flatpickr on visibility change:',
-                        e
-                      );
-                    }
-                  }
-                }
-              });
-            },
-            { threshold: 0 }
-          );
+      let wasVisible = this.isElementVisible();
 
-          try {
-            this._visibilityObserver.observe(this);
-          } catch (e) {
-            // ignore if observe fails
-          }
-        }
-      } catch (e) {
-        // IntersectionObserver not available or failed
+      if (wasVisible) {
+        await this.setupAnchor();
       }
 
-      try {
-        let wasVisible = this.isElementVisible();
-        const poll = async () => {
-          if (this._isDestroyed) return;
-          const nowVisible = this.isElementVisible();
-          if (!wasVisible && nowVisible) {
-            if (!this.flatpickrInstance) {
-              await this.initializeFlatpickr();
-            } else {
-              try {
-                this.flatpickrInstance.redraw?.();
-                if (this.value instanceof Date) {
-                  this.flatpickrInstance.setDate(this.value, true);
-                } else if (
-                  typeof this.value === 'string' &&
-                  this.value.trim() !== ''
-                ) {
-                  this.flatpickrInstance.setDate(this.value, true);
-                } else if (this.value === null && this.flatpickrInstance) {
-                  this.flatpickrInstance.clear();
-                  if (this._inputEl) {
-                    this._inputEl.value = '';
-                    this.updateFormValue();
-                  }
-                }
-              } catch (err) {
-                console.warn(
-                  'Error syncing flatpickr on poll visibility:',
-                  err
-                );
-              }
-            }
+      const pollVisibility = async () => {
+        if (this._isDestroyed) return;
+
+        const nowVisible = this.isElementVisible();
+
+        if (!wasVisible && nowVisible) {
+          if (!this.flatpickrInstance) {
+            await this.setupAnchor();
+          } else {
+            await this.syncFlatpickrFromHostValue();
           }
-          wasVisible = nowVisible;
-          if (!wasVisible) {
-            setTimeout(poll, 250);
-          }
-        };
-        if (!wasVisible) setTimeout(poll, 250);
-      } catch (e) {
-        // ignore polling errors
+        }
+
+        wasVisible = nowVisible;
+
+        if (!nowVisible) {
+          setTimeout(pollVisibility, 250);
+        }
+      };
+
+      if (!wasVisible) {
+        setTimeout(pollVisibility, 250);
       }
     }
   }
@@ -723,7 +707,8 @@ export class TimePicker extends FormMixin(LitElement) {
       );
 
       emitValue(this, 'on-change', {
-        time: this.value,
+        time: null,
+        date: null,
         source: 'clear',
       });
       this._validate(true, false);
@@ -759,6 +744,18 @@ export class TimePicker extends FormMixin(LitElement) {
     const inputEl = this._inputEl;
     try {
       if (this.flatpickrInstance) {
+        const __handlers = (this.flatpickrInstance as any)
+          .__anchorClickHandlers;
+        if (Array.isArray(__handlers)) {
+          __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
+            try {
+              h.el.removeEventListener('click', h.fn as EventListener);
+            } catch (e) {
+              // ignore cleanup errors
+            }
+          });
+        }
+
         this.flatpickrInstance.destroy();
         this.flatpickrInstance = undefined;
         await new Promise((resolve) => setTimeout(resolve, 0));
@@ -946,13 +943,15 @@ export class TimePicker extends FormMixin(LitElement) {
         this.value = newDate;
 
         emitValue(this, 'on-change', {
-          time: dateStr,
+          time: dateStr || null,
+          date: newDate,
           source: undefined,
         });
       } else {
         this.value = null;
         emitValue(this, 'on-change', {
-          time: this.value,
+          time: null,
+          date: null,
           source: 'clear',
         });
       }
@@ -1049,6 +1048,11 @@ export class TimePicker extends FormMixin(LitElement) {
     preventFlatpickrOpen(event, this.setShouldFlatpickrOpen.bind(this));
   }
 
+  private onSuppressLabelInteraction(event: Event) {
+    event.stopPropagation();
+    this.setShouldFlatpickrOpen(false);
+  }
+
   private handleInputClickEvent() {
     handleInputClick(this.setShouldFlatpickrOpen.bind(this));
   }
@@ -1073,6 +1077,17 @@ export class TimePicker extends FormMixin(LitElement) {
     }
 
     if (this.flatpickrInstance) {
+      const __handlers = (this.flatpickrInstance as any).__anchorClickHandlers;
+      if (Array.isArray(__handlers)) {
+        __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
+          try {
+            h.el.removeEventListener('click', h.fn as EventListener);
+          } catch (e) {
+            // ignore cleanup errors
+          }
+        });
+      }
+
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }

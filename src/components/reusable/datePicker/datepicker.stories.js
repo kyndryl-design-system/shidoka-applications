@@ -661,7 +661,30 @@ const ValueOverridesDefaultTemplate = (args) => {
   const handleChange = (e) => {
     action(e.type)({ ...e, detail: e.detail });
 
+    const dateObjects = e.detail?.dateObjects;
     const dates = e.detail?.dates;
+
+    if (
+      dateObjects === null ||
+      (Array.isArray(dateObjects) && dateObjects.length === 0)
+    ) {
+      updateArgs({ value: null });
+      return;
+    }
+
+    if (dateObjects) {
+      if (Array.isArray(dateObjects)) {
+        updateArgs({
+          value: dateObjects.map((d) => (d instanceof Date ? d : new Date(d))),
+        });
+      } else {
+        updateArgs({
+          value:
+            dateObjects instanceof Date ? dateObjects : new Date(dateObjects),
+        });
+      }
+      return;
+    }
 
     if (!dates || (Array.isArray(dates) && dates.length === 0)) {
       updateArgs({ value: null });

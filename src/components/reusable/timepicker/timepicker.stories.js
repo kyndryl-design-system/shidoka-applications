@@ -43,6 +43,24 @@ const disconnectFlatpickr = () => {
   calendarElements.forEach((calendar) => calendar.remove());
 };
 
+const inTabsState = {
+  a: null,
+  b: null,
+};
+
+const ensureInTabsInitialValues = () => {
+  if (!inTabsState.a) {
+    const valA = new Date();
+    valA.setHours(9, 0, 0, 0);
+    inTabsState.a = valA;
+  }
+  if (!inTabsState.b) {
+    const valB = new Date();
+    valB.setHours(15, 30, 0, 0);
+    inTabsState.b = valB;
+  }
+};
+
 const Template = (args) => {
   useEffect(() => {
     return () => {
@@ -108,6 +126,30 @@ const ControlledTemplate = (args) => {
       return;
     }
 
+    // prefer explicit Date payload from the component if provided
+    if (detail.date instanceof Date) {
+      updateArgs({ value: detail.date });
+      action(e.type)({ ...e, detail });
+      return;
+    }
+
+    // fallback: accept formatted time string (e.g. '14:30' or '2:30 PM') and parse
+    if (typeof detail.time === 'string' && detail.time.trim() !== '') {
+      const parts = detail.time.trim().split(':').map(Number);
+      if (
+        parts.length >= 2 &&
+        !Number.isNaN(parts[0]) &&
+        !Number.isNaN(parts[1])
+      ) {
+        const d = new Date();
+        d.setHours(parts[0], parts[1], parts[2] || 0, 0);
+        updateArgs({ value: d });
+        action(e.type)({ ...e, detail });
+        return;
+      }
+    }
+
+    // fallback to older payload shapes
     const raw =
       detail.date ??
       detail.value ??
@@ -315,14 +357,29 @@ export const InTabs = {
     defaultMinute: null,
   },
   render: (args) => {
-    useEffect(() => {
-      return () => disconnectFlatpickr();
-    }, []);
+    ensureInTabsInitialValues();
 
-    const valA = new Date();
-    valA.setHours(9, 0, 0, 0);
-    const valB = new Date();
-    valB.setHours(15, 30, 0, 0);
+    const handleChange = (panelKey) => (e) => {
+      const detail = e.detail || {};
+
+      action(e.type)({
+        ...e,
+        detail: {
+          ...detail,
+          panel: panelKey,
+        },
+      });
+
+      if (detail.source === 'clear') {
+        inTabsState[panelKey] = null;
+        return;
+      }
+
+      const picker = e.currentTarget;
+      if (picker && typeof picker.getValue === 'function') {
+        inTabsState[panelKey] = picker.getValue();
+      }
+    };
 
     return html`
       <kyn-tabs>
@@ -331,26 +388,26 @@ export const InTabs = {
 
         <kyn-tab-panel tabId="tab-a" visible>
           <kyn-time-picker
-            .label=${args.label + ' - A'}
-            .value=${valA}
-            .defaultHour=${args.defaultHour}
-            .defaultMinute=${args.defaultMinute}
+            .label=${`${args.label} - A`}
             .locale=${args.locale}
             .size=${args.size}
-            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            .defaultHour=${args.defaultHour}
+            .defaultMinute=${args.defaultMinute}
+            .value=${inTabsState.a}
+            @on-change=${handleChange('a')}
           >
           </kyn-time-picker>
         </kyn-tab-panel>
 
         <kyn-tab-panel tabId="tab-b">
           <kyn-time-picker
-            .label=${args.label + ' - B'}
-            .value=${valB}
-            .defaultHour=${args.defaultHour}
-            .defaultMinute=${args.defaultMinute}
+            .label=${`${args.label} - B`}
             .locale=${args.locale}
             .size=${args.size}
-            @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
+            .defaultHour=${args.defaultHour}
+            .defaultMinute=${args.defaultMinute}
+            .value=${inTabsState.b}
+            @on-change=${handleChange('b')}
           >
           </kyn-time-picker>
         </kyn-tab-panel>
