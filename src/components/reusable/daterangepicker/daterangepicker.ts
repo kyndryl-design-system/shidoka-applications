@@ -11,7 +11,6 @@ import {
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
-  preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
   setCalendarAttributes,

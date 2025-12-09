@@ -94,6 +94,7 @@ interface FlatpickrOptionsContext {
   onChange?: Hook;
   onClose?: Hook;
   onOpen?: Hook;
+  onReady?: Hook;
   loadLocale: (locale: string) => Promise<Partial<Locale>>;
   mode?: 'single' | 'multiple' | 'range' | 'time';
   closeOnSelect?: boolean;

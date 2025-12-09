@@ -30,6 +30,7 @@ export default {
     maxTime: { control: { type: 'text' } },
     defaultHour: { control: { type: 'number' } },
     defaultMinute: { control: { type: 'number' } },
+    defaultSeconds: { control: { type: 'number' } },
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     enableSeconds: { control: { type: 'boolean' } },
@@ -81,6 +82,10 @@ const Template = (args) => {
       .caption=${args.caption}
       .defaultHour=${args.defaultHour}
       .defaultMinute=${args.defaultMinute}
+      .defaultSeconds=${args.defaultSeconds === '' ||
+      args.defaultSeconds == null
+        ? null
+        : Number(args.defaultSeconds)}
       .defaultErrorMessage=${args.defaultErrorMessage}
       .minTime=${args.minTime}
       .maxTime=${args.maxTime}
@@ -173,6 +178,10 @@ const ControlledTemplate = (args) => {
       .caption=${args.caption}
       .defaultHour=${args.defaultHour}
       .defaultMinute=${args.defaultMinute}
+      .defaultSeconds=${args.defaultSeconds === '' ||
+      args.defaultSeconds == null
+        ? null
+        : Number(args.defaultSeconds)}
       .defaultErrorMessage=${args.defaultErrorMessage}
       .minTime=${args.minTime}
       .maxTime=${args.maxTime}
@@ -215,8 +224,20 @@ DefaultTimePicker.args = {
   label: 'Timepicker',
   defaultHour: null,
   defaultMinute: null,
+  defaultSeconds: null,
 };
 DefaultTimePicker.storyName = 'Default (12H)';
+
+export const TimePickerWithSeconds = Template.bind({});
+TimePickerWithSeconds.args = {
+  ...DefaultTimePicker.args,
+  label: 'Timepicker with seconds',
+  enableSeconds: true,
+  defaultHour: 12,
+  defaultMinute: 30,
+  defaultSeconds: 15,
+};
+TimePickerWithSeconds.storyName = 'With Seconds (12H)';
 
 export const TimePickerTwentyFourHour = Template.bind({});
 TimePickerTwentyFourHour.args = {
