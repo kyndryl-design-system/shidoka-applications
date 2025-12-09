@@ -418,10 +418,20 @@ export class DateRangePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
           class="label-text"
-          ?readonly=${this.readonly}
+          role="button"
+          aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
-          aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.onSuppressLabelInteraction(e);
+            }
+          }}
+          tabindex=${ifDefined(
+            this.dateRangePickerDisabled || this.readonly ? undefined : '0'
+          )}
+          ?readonly=${this.readonly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -492,9 +502,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
           ? html`<div
               id=${ifDefined(descriptionId)}
               class="caption"
+              role="button"
               aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.onSuppressLabelInteraction}
               @click=${this.onSuppressLabelInteraction}
+              @keydown=${(e: KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  this.onSuppressLabelInteraction(e);
+                }
+              }}
+              tabindex=${ifDefined(
+                this.dateRangePickerDisabled || this.readonly ? undefined : '0'
+              )}
             >
               ${this.caption}
             </div>`

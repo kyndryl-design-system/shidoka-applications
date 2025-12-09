@@ -1,6 +1,7 @@
 import { html, LitElement, PropertyValues, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { langsArray } from '../../../common/flatpickrLangs';
@@ -365,8 +366,19 @@ export class DatePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDatepickerClasses())}>
         <div
           class="label-text"
+          role="button"
+          aria-disabled=${this.datePickerDisabled ? 'true' : 'false'}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
+          @keydown=${(e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.onSuppressLabelInteraction(e);
+            }
+          }}
+          tabindex=${ifDefined(
+            this.datePickerDisabled || this.readonly ? undefined : '0'
+          )}
           ?readonly=${this.readonly}
           ?disabled=${this.datePickerDisabled}
           id=${`label-${anchorId}`}
@@ -436,9 +448,19 @@ export class DatePicker extends FormMixin(LitElement) {
           ? html`<div
               id=${descriptionId}
               class="caption"
-              aria-disabled=${this.datePickerDisabled}
+              role="button"
+              aria-disabled=${this.datePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.onSuppressLabelInteraction}
               @click=${this.onSuppressLabelInteraction}
+              @keydown=${(e: KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  this.onSuppressLabelInteraction(e);
+                }
+              }}
+              tabindex=${ifDefined(
+                this.datePickerDisabled || this.readonly ? undefined : '0'
+              )}
             >
               ${this.caption}
             </div>`
@@ -458,7 +480,6 @@ export class DatePicker extends FormMixin(LitElement) {
         role="alert"
         title=${this.errorTitle || 'Error'}
         @mousedown=${this.onSuppressLabelInteraction}
-        @click=${this.onSuppressLabelInteraction}
       >
         <span
           class="error-icon"
