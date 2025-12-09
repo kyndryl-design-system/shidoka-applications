@@ -418,7 +418,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
           class="label-text"
-          role="button"
           aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
@@ -502,7 +501,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
           ? html`<div
               id=${ifDefined(descriptionId)}
               class="caption"
-              role="button"
               aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.onSuppressLabelInteraction}
               @click=${this.onSuppressLabelInteraction}
@@ -512,9 +510,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
                   this.onSuppressLabelInteraction(e);
                 }
               }}
-              tabindex=${ifDefined(
-                this.dateRangePickerDisabled || this.readonly ? undefined : '0'
-              )}
             >
               ${this.caption}
             </div>`

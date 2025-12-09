@@ -366,7 +366,6 @@ export class DatePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDatepickerClasses())}>
         <div
           class="label-text"
-          role="button"
           aria-disabled=${this.datePickerDisabled ? 'true' : 'false'}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
@@ -376,9 +375,6 @@ export class DatePicker extends FormMixin(LitElement) {
               this.onSuppressLabelInteraction(e);
             }
           }}
-          tabindex=${ifDefined(
-            this.datePickerDisabled || this.readonly ? undefined : '0'
-          )}
           ?readonly=${this.readonly}
           ?disabled=${this.datePickerDisabled}
           id=${`label-${anchorId}`}
@@ -448,7 +444,6 @@ export class DatePicker extends FormMixin(LitElement) {
           ? html`<div
               id=${descriptionId}
               class="caption"
-              role="button"
               aria-disabled=${this.datePickerDisabled ? 'true' : 'false'}
               @mousedown=${this.onSuppressLabelInteraction}
               @click=${this.onSuppressLabelInteraction}
@@ -458,9 +453,6 @@ export class DatePicker extends FormMixin(LitElement) {
                   this.onSuppressLabelInteraction(e);
                 }
               }}
-              tabindex=${ifDefined(
-                this.datePickerDisabled || this.readonly ? undefined : '0'
-              )}
             >
               ${this.caption}
             </div>`
