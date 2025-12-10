@@ -1478,9 +1478,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const shouldShowValidationErrors =
       this._hasInteracted || report || !!this.invalidText;
 
-    const selectedCount = [this.value[0], this.value[1]].filter(
+    const currentValueArray = Array.isArray(this.value)
+      ? this.value
+      : [null, null];
+
+    const selectedCount = [currentValueArray[0], currentValueArray[1]].filter(
       (d) => d !== null
     ).length;
+
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
 
