@@ -710,13 +710,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
         if (Array.isArray(this.defaultDate) && this.defaultDate.length === 1) {
           this._hasInteracted = true;
           this._validate(true, false);
-        } else if (
-          this.value.length === 2 &&
-          ((this.value[0] !== null && this.value[1] === null) ||
-            (this.value[0] === null && this.value[1] !== null))
-        ) {
-          this._hasInteracted = true;
-          this._validate(true, false);
+        } else {
+          const currentValueArray = Array.isArray(this.value)
+            ? this.value
+            : [null, null];
+
+          if (
+            currentValueArray.length === 2 &&
+            ((currentValueArray[0] !== null && currentValueArray[1] === null) ||
+              (currentValueArray[0] === null && currentValueArray[1] !== null))
+          ) {
+            this._hasInteracted = true;
+            this._validate(true, false);
+          }
         }
       }, 0);
     }
