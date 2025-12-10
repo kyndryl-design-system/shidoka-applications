@@ -206,6 +206,8 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private accessor _isClearing = false;
 
+  private _anchorId: string | null = null;
+
   /** Customizable text strings. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -262,8 +264,11 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private debouncedUpdate = this.debounce(async () => {
-    if (this.flatpickrInstance && !this._isDestroyed) {
+    if (!this.flatpickrInstance || this._isDestroyed) return;
+    try {
       await this.initializeFlatpickr();
+    } catch (error) {
+      /* … */
     }
   }, 100);
 
@@ -319,6 +324,17 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     if (this.flatpickrInstance) {
+      const __handlers = (this.flatpickrInstance as any).__anchorClickHandlers;
+      if (Array.isArray(__handlers)) {
+        __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
+          try {
+            h.el.removeEventListener('click', h.fn as EventListener);
+          } catch (e) {
+            // ignore cleanup errors
+          }
+        });
+      }
+
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
@@ -348,9 +364,11 @@ export class DatePicker extends FormMixin(LitElement) {
   override render() {
     const errorId = `${this.name}-error-message`;
     const warningId = `${this.name}-warning-message`;
-    const anchorId = this.name
-      ? this.generateRandomId(this.name)
-      : this.generateRandomId('date-picker');
+    const anchorId =
+      this._anchorId ??
+      (this._anchorId = this.name
+        ? this.generateRandomId(this.name)
+        : this.generateRandomId('date-picker'));
     const descriptionId = this.name ?? '';
     const placeholder = getPlaceholder(this.dateFormat);
 
@@ -532,15 +550,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (nonEmptyValues.length === 0) return [];
 
-    const min =
-      typeof this.minDate === 'string'
-        ? this.parseDateString(this.minDate)
-        : null;
-    const max =
-      typeof this.maxDate === 'string'
-        ? this.parseDateString(this.maxDate)
-        : null;
-
     const parsed = nonEmptyValues.map((d) => {
       if (d instanceof Date) return d;
       if (typeof d === 'string') return this.parseDateString(d);
@@ -548,15 +557,15 @@ export class DatePicker extends FormMixin(LitElement) {
     });
 
     const valid = parsed.filter(
-      (d): d is Date =>
-        d instanceof Date &&
-        !isNaN(d.getTime()) &&
-        (!min || d >= min) &&
-        (!max || d <= max)
+      (d): d is Date => d instanceof Date && !isNaN(d.getTime())
     );
 
     if (valid.length !== parsed.length) {
-      console.error('Invalid date(s) provided in defaultDate', valid);
+      console.error('Invalid date(s) provided in defaultDate', {
+        defaultDate,
+        parsed,
+        valid,
+      });
       this.invalidText = this._textStrings.pleaseSelectValidDate;
       this.defaultDate = null;
     }
@@ -717,9 +726,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr() {
-    if (this._isDestroyed) {
-      return;
-    }
+    if (this._isDestroyed) return;
 
     if (!this._inputEl || !this._inputEl.isConnected) {
       console.warn(
@@ -730,6 +737,18 @@ export class DatePicker extends FormMixin(LitElement) {
 
     try {
       if (this.flatpickrInstance) {
+        const __handlers = (this.flatpickrInstance as any)
+          .__anchorClickHandlers;
+        if (Array.isArray(__handlers)) {
+          __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
+            try {
+              h.el.removeEventListener('click', h.fn as EventListener);
+            } catch (e) {
+              // ignore cleanup errors
+            }
+          });
+        }
+
         this.flatpickrInstance.destroy();
         this.flatpickrInstance = undefined;
       }
@@ -792,7 +811,7 @@ export class DatePicker extends FormMixin(LitElement) {
     if (dateStr.includes('T')) {
       try {
         const date = new Date(dateStr);
-        return isNaN(date.getTime()) ? null : date;
+        if (!isNaN(date.getTime())) return date;
       } catch (e) {
         console.warn('Error parsing ISO date string:', e);
       }
@@ -820,7 +839,13 @@ export class DatePicker extends FormMixin(LitElement) {
       return isNaN(dt.getTime()) ? null : dt;
     }
 
-    return null;
+    // fallback: try parsing using flatpickr with the component's dateFormat
+    try {
+      const parsed = (flatpickr as any).parseDate(dateStr, this.dateFormat);
+      return parsed instanceof Date && !isNaN(parsed.getTime()) ? parsed : null;
+    } catch (e) {
+      return null;
+    }
   }
 
   private resolveYearFromConfig(
@@ -995,8 +1020,15 @@ export class DatePicker extends FormMixin(LitElement) {
         formattedDates = isMultiple ? [] : null;
       }
 
+      const dateObjects = isMultiple
+        ? selectedDates.map((d) => (d instanceof Date ? d : new Date(d)))
+        : selectedDates.length > 0
+        ? (selectedDates[0] as Date)
+        : null;
+
       emitValue(this, 'on-change', {
         dates: formattedDates,
+        dateObjects,
         dateString: this._inputEl?.value || dateStr,
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });
