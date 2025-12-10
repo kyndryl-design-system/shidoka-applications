@@ -19,10 +19,6 @@ import '../../reusable/notification';
 import '../../reusable/overflowMenu';
 import '../../reusable/tooltip';
 
-/** @typedef {import('./headerCategories').HeaderCategoryLinkType} HeaderCategoryLinkType */
-/** @typedef {import('./headerCategories').HeaderLinkRendererContext} HeaderLinkRendererContext */
-/** @typedef {import('./headerCategories').HeaderMegaLinkRenderer} HeaderMegaLinkRenderer */
-
 export default {
   title: 'Global Components/Header',
   component: 'kyn-header',
