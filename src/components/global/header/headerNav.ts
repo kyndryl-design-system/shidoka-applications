@@ -80,24 +80,22 @@ export class HeaderNav extends LitElement {
     this.menuOpen = !this.menuOpen;
   }
 
-  private _updateCategoriesVisibility() {
-    const links = this.querySelectorAll<HTMLElement & { isActive?: boolean }>(
-      'kyn-header-link'
-    );
+  private _updateCategoriesVisibility(): void {
+    const links = this.querySelectorAll<HTMLElement>('kyn-header-link');
 
-    const next = Array.from(links).some(
-      (link) => link.hasAttribute('open') || (link as any).isActive
-    );
+    const hasOpenCategory = Array.from(links).some((link) => {
+      return link.hasAttribute('open') || link.hasAttribute('isactive');
+    });
 
-    if (this.hasCategories !== next) {
-      this.hasCategories = next;
+    if (this.hasCategories !== hasOpenCategory) {
+      this.hasCategories = hasOpenCategory;
     }
   }
 
   /**
    * Determine whether the active link's categorical menu (mega nav) is open when user clicks hamburger (depends on expandActiveMegaOnLoad value).
    */
-  private _expandActiveMegaOnce() {
+  private _ensureActiveMegaExpanded() {
     if (!this.expandActiveMegaOnLoad) return;
 
     const links = Array.from(
@@ -136,7 +134,7 @@ export class HeaderNav extends LitElement {
   }
 
   private _handleSlotChange() {
-    this._expandActiveMegaOnce();
+    this._ensureActiveMegaExpanded();
     this._updateCategoriesVisibility();
   }
 
@@ -147,7 +145,7 @@ export class HeaderNav extends LitElement {
   }
 
   protected override firstUpdated(_changed: PropertyValueMap<this>): void {
-    this._expandActiveMegaOnce();
+    this._ensureActiveMegaExpanded();
     this._updateCategoriesVisibility();
   }
 

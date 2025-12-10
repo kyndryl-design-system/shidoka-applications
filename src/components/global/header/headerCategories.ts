@@ -155,9 +155,6 @@ export class HeaderCategories extends LitElement {
   private readonly _boundHandleNavToggle = (e: Event): void =>
     this._handleNavToggle(e as CustomEvent<{ open?: boolean }>);
 
-  private readonly _boundBackClick = (e?: Event): void =>
-    this.handleBackClick(e);
-
   private get _isJsonMode(): boolean {
     return this.tabsConfig != null;
   }
@@ -260,23 +257,6 @@ export class HeaderCategories extends LitElement {
 
       if (this.view !== nextView) {
         this.view = nextView;
-      }
-    }
-
-    const backButton = this.shadowRoot?.querySelector(
-      '.header-categories__back-slot kyn-button'
-    ) as HTMLElement | null;
-
-    if (backButton) {
-      backButton.removeEventListener(
-        'click',
-        this._boundBackClick as EventListener
-      );
-      if (this.view === DETAIL_VIEW) {
-        backButton.addEventListener(
-          'click',
-          this._boundBackClick as EventListener
-        );
       }
     }
   }
@@ -574,7 +554,7 @@ export class HeaderCategories extends LitElement {
       <div class="header-categories" data-view=${view}>
         <div class="header-categories__inner">${inner ?? html``}</div>
 
-        <!-- hidden slot used only to observe dev consumer light DOM changes (edge case) -->
+        <!-- hidden slot used only to observe light DOM changes (edge case) -->
         <slot
           class="header-categories__slot"
           style="display: none;"
