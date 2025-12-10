@@ -94,6 +94,7 @@ interface FlatpickrOptionsContext {
   onChange?: Hook;
   onClose?: Hook;
   onOpen?: Hook;
+  onReady?: Hook;
   loadLocale: (locale: string) => Promise<Partial<Locale>>;
   mode?: 'single' | 'multiple' | 'range' | 'time';
   closeOnSelect?: boolean;
@@ -212,17 +213,26 @@ export async function initializeMultiAnchorFlatpickr(
         setInitialDates(flatpickrInstance);
       }
 
+      const __anchorClickHandlers: { el: HTMLElement; fn: EventListener }[] =
+        [];
+
       if (!(inputEl instanceof HTMLInputElement)) {
-        inputEl.addEventListener('click', () => {
+        const handler = () => {
           flatpickrInstance.open();
-        });
+        };
+        inputEl.addEventListener('click', handler);
+        __anchorClickHandlers.push({ el: inputEl, fn: handler });
       }
 
       if (endinputEl && !(endinputEl instanceof HTMLInputElement)) {
-        endinputEl.addEventListener('click', () => {
+        const handler = () => {
           flatpickrInstance.open();
-        });
+        };
+        endinputEl.addEventListener('click', handler);
+        __anchorClickHandlers.push({ el: endinputEl, fn: handler });
       }
+
+      (flatpickrInstance as any).__anchorClickHandlers = __anchorClickHandlers;
 
       return flatpickrInstance;
     } else {
@@ -288,9 +298,15 @@ export async function initializeSingleAnchorFlatpickr(
       if (setInitialDates) {
         setInitialDates(flatpickrInstance);
       }
+
       if (!(inputEl instanceof HTMLInputElement)) {
-        inputEl.addEventListener('click', () => flatpickrInstance.open());
+        const handler = () => flatpickrInstance.open();
+        inputEl.addEventListener('click', handler);
+        (flatpickrInstance as any).__anchorClickHandlers = [
+          { el: inputEl, fn: handler },
+        ];
       }
+
       return flatpickrInstance;
     } else {
       console.error('Failed to initialize Flatpickr');
@@ -298,9 +314,6 @@ export async function initializeSingleAnchorFlatpickr(
     }
   } catch (error) {
     console.error('Error initializing Flatpickr:', error);
-    if (error instanceof Error) {
-      console.error('Error details:', error.message);
-    }
     return undefined;
   }
 }
