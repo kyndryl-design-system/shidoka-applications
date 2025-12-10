@@ -881,10 +881,44 @@ export class Popover extends LitElement {
     if (this.arrowPosition) {
       panel.style.setProperty('--arrow-offset-x', this.arrowPosition);
     } else {
-      if (arrowX != null)
-        panel.style.setProperty('--arrow-offset-x', `${Math.round(arrowX)}px`);
-      if (arrowY != null)
-        panel.style.setProperty('--arrow-offset-y', `${Math.round(arrowY)}px`);
+      requestAnimationFrame(() => {
+        const anchorRect = anchorEl.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+
+        if (dir === 'top' || dir === 'bottom') {
+          const anchorCenterX = anchorRect.left + anchorRect.width / 2;
+          const panelLeftX = panelRect.left;
+          const arrowOffsetX = anchorCenterX - panelLeftX - 8;
+          const arrowPadding = 16;
+          const minOffsetX = arrowPadding;
+          const maxOffsetX = panelRect.width - arrowPadding - 16;
+          const clampedArrowX = Math.max(
+            minOffsetX,
+            Math.min(maxOffsetX, arrowOffsetX)
+          );
+
+          panel.style.setProperty(
+            '--arrow-offset',
+            `${Math.round(clampedArrowX)}px`
+          );
+        } else if (dir === 'left' || dir === 'right') {
+          const anchorCenterY = anchorRect.top + anchorRect.height / 2;
+          const panelTopY = panelRect.top;
+          const arrowOffsetY = anchorCenterY - panelTopY - 8;
+          const arrowPadding = 16;
+          const minOffsetY = arrowPadding;
+          const maxOffsetY = panelRect.height - arrowPadding - 16;
+          const clampedArrowY = Math.max(
+            minOffsetY,
+            Math.min(maxOffsetY, arrowOffsetY)
+          );
+
+          panel.style.setProperty(
+            '--arrow-offset',
+            `${Math.round(clampedArrowY)}px`
+          );
+        }
+      });
     }
   }
 }
