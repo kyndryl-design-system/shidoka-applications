@@ -80,7 +80,7 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor dateFormat = 'Y-m-d';
 
-  /** Sets the initial selected date(s). For multiple mode, provide an array of date strings matching dateFormat. */
+  /** @deprecated Use `value` (Date | Date[]) instead. */
   @property({ type: Array })
   accessor defaultDate: string | string[] | null = null;
 
@@ -206,8 +206,6 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private accessor _isClearing = false;
 
-  private _anchorId: string | null = null;
-
   /** Customizable text strings. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -227,6 +225,9 @@ export class DatePicker extends FormMixin(LitElement) {
   /** Track if we initially had a defaultDate when the component was first connected */
   @state()
   private accessor _hasInitialDefaultDate = false;
+
+  /** Track whether we've warned about deprecated defaultDate usage */
+  private _defaultDateDeprecatedWarned = false;
 
   /** Track initialization state
    * @internal
@@ -261,16 +262,28 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private debouncedUpdate = this.debounce(async () => {
-    if (!this.flatpickrInstance || this._isDestroyed) return;
-    try {
+    if (this.flatpickrInstance && !this._isDestroyed) {
       await this.initializeFlatpickr();
-    } catch (error) {
-      /* … */
     }
   }, 100);
 
   private generateRandomId(prefix: string): string {
     return `${prefix}-${Math.random().toString(36).slice(2, 11)}`;
+  }
+
+  private applyLegacyDefaultDate(): void {
+    if (!this.defaultDate) return;
+
+    const processedDates = this.processDefaultDates(this.defaultDate);
+    if (!processedDates.length) {
+      return;
+    }
+
+    if (this.mode === 'multiple') {
+      this.value = [...processedDates];
+    } else {
+      this.value = processedDates[0];
+    }
   }
 
   override connectedCallback() {
@@ -306,17 +319,6 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     if (this.flatpickrInstance) {
-      const __handlers = (this.flatpickrInstance as any).__anchorClickHandlers;
-      if (Array.isArray(__handlers)) {
-        __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
-          try {
-            h.el.removeEventListener('click', h.fn as EventListener);
-          } catch (e) {
-            // ignore cleanup errors
-          }
-        });
-      }
-
       this.flatpickrInstance.destroy();
       this.flatpickrInstance = undefined;
     }
@@ -324,6 +326,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private hasValue(): boolean {
     if (this._inputEl?.value) return true;
+
     if (this.value) {
       if (Array.isArray(this.value)) {
         return (
@@ -332,15 +335,7 @@ export class DatePicker extends FormMixin(LitElement) {
       }
       return true;
     }
-    if (this.defaultDate) {
-      if (Array.isArray(this.defaultDate)) {
-        return (
-          this.defaultDate.length > 0 &&
-          !this.defaultDate.every((date) => !date || date === '')
-        );
-      }
-      return !!this.defaultDate;
-    }
+
     return false;
   }
 
@@ -353,11 +348,9 @@ export class DatePicker extends FormMixin(LitElement) {
   override render() {
     const errorId = `${this.name}-error-message`;
     const warningId = `${this.name}-warning-message`;
-    const anchorId =
-      this._anchorId ??
-      (this._anchorId = this.name
-        ? this.generateRandomId(this.name)
-        : this.generateRandomId('date-picker'));
+    const anchorId = this.name
+      ? this.generateRandomId(this.name)
+      : this.generateRandomId('date-picker');
     const descriptionId = this.name ?? '';
     const placeholder = getPlaceholder(this.dateFormat);
 
@@ -508,22 +501,17 @@ export class DatePicker extends FormMixin(LitElement) {
 
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
+
+    // LEGACY: honor defaultDate, but route it through `value`
+    if (!this.value && this.defaultDate) {
+      this.applyLegacyDefaultDate();
+    }
+
     if (!this._initialized) {
       injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
       this._initialized = true;
       await this.updateComplete;
       this.setupAnchor();
-
-      if (this._hasInitialDefaultDate && this.defaultDate) {
-        const processedDates = this.processDefaultDates(this.defaultDate);
-        if (processedDates && processedDates.length > 0) {
-          if (this.mode === 'multiple') {
-            this.value = [...processedDates];
-          } else {
-            this.value = processedDates[0];
-          }
-        }
-      }
     }
   }
 
@@ -544,6 +532,15 @@ export class DatePicker extends FormMixin(LitElement) {
 
     if (nonEmptyValues.length === 0) return [];
 
+    const min =
+      typeof this.minDate === 'string'
+        ? this.parseDateString(this.minDate)
+        : null;
+    const max =
+      typeof this.maxDate === 'string'
+        ? this.parseDateString(this.maxDate)
+        : null;
+
     const parsed = nonEmptyValues.map((d) => {
       if (d instanceof Date) return d;
       if (typeof d === 'string') return this.parseDateString(d);
@@ -551,15 +548,15 @@ export class DatePicker extends FormMixin(LitElement) {
     });
 
     const valid = parsed.filter(
-      (d): d is Date => d instanceof Date && !isNaN(d.getTime())
+      (d): d is Date =>
+        d instanceof Date &&
+        !isNaN(d.getTime()) &&
+        (!min || d >= min) &&
+        (!max || d <= max)
     );
 
     if (valid.length !== parsed.length) {
-      console.error('Invalid date(s) provided in defaultDate', {
-        defaultDate,
-        parsed,
-        valid,
-      });
+      console.error('Invalid date(s) provided in defaultDate', valid);
       this.invalidText = this._textStrings.pleaseSelectValidDate;
       this.defaultDate = null;
     }
@@ -568,11 +565,16 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   override updated(changedProperties: PropertyValues) {
-    super.updated(changedProperties);
-
-    if (changedProperties.has('textStrings')) {
-      this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
+    // LEGACY: still react to defaultDate changes, but unify through `value`
+    if (
+      changedProperties.has('defaultDate') &&
+      this.defaultDate &&
+      !this._isClearing
+    ) {
+      this.applyLegacyDefaultDate();
     }
+
+    super.updated(changedProperties);
 
     if (changedProperties.has('value') && !this._isClearing) {
       const val = this.value;
@@ -605,29 +607,6 @@ export class DatePicker extends FormMixin(LitElement) {
       }
 
       this.requestUpdate();
-    }
-
-    if (changedProperties.has('defaultDate') && !this._isClearing) {
-      const processedDates = this.processDefaultDates(this.defaultDate);
-
-      const hasExplicitValue =
-        this.value !== null &&
-        (!Array.isArray(this.value) || this.value.length > 0);
-
-      if (
-        !hasExplicitValue &&
-        processedDates.length > 0 &&
-        this.flatpickrInstance
-      ) {
-        this.value =
-          this.mode === 'multiple' ? [...processedDates] : processedDates[0];
-
-        this.flatpickrInstance.setDate(processedDates, true);
-
-        if (this._inputEl) {
-          this.updateFormValue();
-        }
-      }
     }
 
     if (changedProperties.has('disable')) {
@@ -738,7 +717,9 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   async initializeFlatpickr() {
-    if (this._isDestroyed) return;
+    if (this._isDestroyed) {
+      return;
+    }
 
     if (!this._inputEl || !this._inputEl.isConnected) {
       console.warn(
@@ -749,18 +730,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
     try {
       if (this.flatpickrInstance) {
-        const __handlers = (this.flatpickrInstance as any)
-          .__anchorClickHandlers;
-        if (Array.isArray(__handlers)) {
-          __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
-            try {
-              h.el.removeEventListener('click', h.fn as EventListener);
-            } catch (e) {
-              // ignore cleanup errors
-            }
-          });
-        }
-
         this.flatpickrInstance.destroy();
         this.flatpickrInstance = undefined;
       }
@@ -823,7 +792,7 @@ export class DatePicker extends FormMixin(LitElement) {
     if (dateStr.includes('T')) {
       try {
         const date = new Date(dateStr);
-        if (!isNaN(date.getTime())) return date;
+        return isNaN(date.getTime()) ? null : date;
       } catch (e) {
         console.warn('Error parsing ISO date string:', e);
       }
@@ -851,13 +820,7 @@ export class DatePicker extends FormMixin(LitElement) {
       return isNaN(dt.getTime()) ? null : dt;
     }
 
-    // fallback: try parsing using flatpickr with the component's dateFormat
-    try {
-      const parsed = (flatpickr as any).parseDate(dateStr, this.dateFormat);
-      return parsed instanceof Date && !isNaN(parsed.getTime()) ? parsed : null;
-    } catch (e) {
-      return null;
-    }
+    return null;
   }
 
   private resolveYearFromConfig(
@@ -883,55 +846,28 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates() {
-    if (!this.flatpickrInstance) {
-      return;
-    }
+    if (!this.flatpickrInstance || !this.value) return;
 
     try {
-      const dateToSet =
-        this.value && (!Array.isArray(this.value) || this.value.length > 0)
-          ? this.value
-          : this.defaultDate;
+      const rawValue = this.value;
+      const values = Array.isArray(rawValue) ? rawValue : [rawValue];
 
-      if (!dateToSet) return;
+      const validDates = values
+        .map((date) => {
+          if (date instanceof Date) return date;
+          if (typeof date === 'string') return this.parseDateString(date);
+          return null;
+        })
+        .filter((d): d is Date => d !== null && !isNaN(d.getTime()));
 
-      if (Array.isArray(dateToSet)) {
-        const validDates = dateToSet
-          .map((date) => {
-            if (date instanceof Date) return date;
-            if (typeof date === 'string') return this.parseDateString(date);
-            return null;
-          })
-          .filter(
-            (date): date is Date => date !== null && !isNaN(date.getTime())
-          );
+      if (!validDates.length) return;
 
-        if (validDates.length > 0) {
-          this.flatpickrInstance.setDate(validDates, true);
+      this.flatpickrInstance.setDate(validDates, true);
 
-          if (
-            this.value === null ||
-            (Array.isArray(this.value) && this.value.length === 0)
-          ) {
-            this.value =
-              this.mode === 'multiple' ? [...validDates] : validDates[0];
-          }
-        }
-      } else if (typeof dateToSet === 'string') {
-        const parsedDate = this.parseDateString(dateToSet);
-        if (parsedDate) {
-          this.flatpickrInstance.setDate(parsedDate, true);
-
-          if (this.value === null) {
-            this.value = parsedDate;
-          }
-        }
-      } else if (dateToSet instanceof Date) {
-        this.flatpickrInstance.setDate(dateToSet, true);
-
-        if (this.value === null) {
-          this.value = dateToSet;
-        }
+      if (this.mode === 'multiple') {
+        this.value = [...validDates];
+      } else {
+        this.value = validDates[0];
       }
     } catch (error) {
       console.warn('Error setting initial dates:', error);
@@ -945,28 +881,17 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const container = getModalContainer(this);
 
-    let effectiveDefaultDate: string | Date | string[] | Date[] | undefined;
-
-    if (this.value && (!Array.isArray(this.value) || this.value.length > 0)) {
-      // value takes precedence
-      if (Array.isArray(this.value)) {
-        effectiveDefaultDate = this.value;
-      } else if (this.value instanceof Date) {
-        effectiveDefaultDate = this.value;
-      }
-    } else if (this.defaultDate) {
-      const processedDates = this.processDefaultDates(this.defaultDate);
-
-      if (processedDates.length > 0) {
-        effectiveDefaultDate =
-          this.mode === 'multiple' ? processedDates : processedDates[0];
-      }
-    }
+    const defaultDateFromValue =
+      this.value == null
+        ? undefined
+        : Array.isArray(this.value)
+        ? this.value
+        : [this.value];
 
     const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: effectiveDefaultDate,
+      defaultDate: defaultDateFromValue,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl,
@@ -1070,15 +995,8 @@ export class DatePicker extends FormMixin(LitElement) {
         formattedDates = isMultiple ? [] : null;
       }
 
-      const dateObjects = isMultiple
-        ? selectedDates.map((d) => (d instanceof Date ? d : new Date(d)))
-        : selectedDates.length > 0
-        ? (selectedDates[0] as Date)
-        : null;
-
       emitValue(this, 'on-change', {
         dates: formattedDates,
-        dateObjects,
         dateString: this._inputEl?.value || dateStr,
         source: selectedDates.length === 0 ? 'clear' : undefined,
       });

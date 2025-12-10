@@ -11,7 +11,6 @@ import {
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
-  preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
   setCalendarAttributes,
@@ -88,7 +87,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor dateFormat = 'Y-m-d';
 
-  /** Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. ["2024-01-01", "2024-01-07"]). */
+  /** @deprecated Use `value` (Date | Date[]) instead. */
   @property({ type: Array })
   accessor defaultDate: string[] | null = null;
 
@@ -104,10 +103,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * Current date range value for the component.
    *
    * - Uncontrolled: populated from `defaultDate` and user selections.
-   * - Controlled: can be set from the host (e.g. Vue `:value`) as a tuple
-   *   `[startDate, endDate]`, where each entry is a `Date` or `null`.
-   *
-   * When both `defaultDate` and `value` are provided, `value` takes precedence.
+   * - Controlled: can be set from the host (e.g. Vue `:value`).
    */
   override value: [Date | null, Date | null] = [null, null];
 

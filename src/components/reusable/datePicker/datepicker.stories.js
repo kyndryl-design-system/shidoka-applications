@@ -1,7 +1,7 @@
 import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
-import { useArgs, useEffect } from 'storybook/preview-api';
+import { useEffect } from 'storybook/preview-api';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -18,6 +18,7 @@ export default {
     },
   },
   argTypes: {
+    defaultDate: { table: { disable: true } },
     locale: { control: { type: 'text' } },
     dateFormat: {
       options: [
@@ -43,17 +44,11 @@ export default {
       options: ['single', 'multiple'],
       control: { type: 'select' },
     },
+    value: { control: { type: 'object' } },
     size: {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    value: {
-      control: false,
-      table: {
-        type: { summary: 'Date | Date[] | null' },
-      },
-    },
-    defaultDate: { control: { type: 'text' } },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
@@ -83,11 +78,11 @@ const Template = (args) => {
       .locale=${args.locale}
       .label=${args.label}
       .dateFormat=${args.dateFormat}
-      .defaultDate=${args.defaultDate}
       ?staticPosition=${args.staticPosition}
       .defaultErrorMessage=${args.defaultErrorMessage}
       ?required=${args.required}
       .size=${args.size}
+      .value=${args.value}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
       .disable=${args.disable}
@@ -115,7 +110,6 @@ DatePickerDefault.args = {
   name: 'default-date-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  defaultDate: '',
   defaultErrorMessage: 'A date value is required',
   required: false,
   size: 'md',
@@ -179,8 +173,8 @@ DateTimeMultiple.args = {
   locale: 'en',
   name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: '2024-01-01 09:00',
   caption: 'Select multiple dates with time. Example shows preselected dates.',
+  value: [new Date('2024-03-10T10:00:00'), new Date('2024-03-15T15:30:00')],
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
 };
@@ -210,7 +204,7 @@ export const InModal = {
     name: 'date-picker-in-modal',
     dateFormat: 'Y-m-d',
     staticPosition: false,
-    defaultDate: '',
+
     caption: 'Datepicker in a modal.',
     label: 'Date',
     open: false,
@@ -256,11 +250,11 @@ export const InModal = {
           .locale=${args.locale}
           .label=${args.label}
           .dateFormat=${args.dateFormat}
-          .defaultDate=${args.defaultDate}
           ?staticPosition=${args.staticPosition}
           .defaultErrorMessage=${args.defaultErrorMessage}
           ?required=${args.required}
           .size=${args.size}
+          .value=${args.value}
           .warnText=${args.warnText}
           .invalidText=${args.invalidText}
           .disable=${args.disable}
@@ -306,7 +300,7 @@ export const InSideDrawer = {
     name: 'date-picker-in-side-drawer',
     dateFormat: 'Y-m-d',
     staticPosition: true,
-    defaultDate: '',
+
     caption: 'Datepicker in a modal.',
     label: 'Date',
     defaultErrorMessage: '',
@@ -346,7 +340,6 @@ export const InSideDrawer = {
       locale,
       label,
       dateFormat,
-      defaultDate,
       staticPosition,
       defaultErrorMessage,
       required,
@@ -388,7 +381,6 @@ export const InSideDrawer = {
       locale,
       label,
       dateFormat,
-      defaultDate,
       staticPosition,
       defaultErrorMessage,
       required,
@@ -440,7 +432,6 @@ export const InSideDrawer = {
           .locale=${datePickerProps.locale}
           .label=${datePickerProps.label}
           .dateFormat=${datePickerProps.dateFormat}
-          .defaultDate=${datePickerProps.defaultDate}
           ?staticPosition=${datePickerProps.staticPosition}
           .defaultErrorMessage=${datePickerProps.defaultErrorMessage}
           ?required=${datePickerProps.required}
@@ -486,7 +477,7 @@ export const InModalScrollablePage = {
     name: 'date-picker-in-modal-scroll-page',
     dateFormat: 'Y-m-d',
     staticPosition: false,
-    defaultDate: '',
+
     caption: 'Scroll the page under the modal, then open the calendar.',
     label: 'Date',
     open: false,
@@ -535,11 +526,11 @@ export const InModalScrollablePage = {
             .locale=${args.locale}
             .label=${args.label}
             .dateFormat=${args.dateFormat}
-            .defaultDate=${args.defaultDate}
             ?staticPosition=${args.staticPosition}
             .defaultErrorMessage=${args.defaultErrorMessage}
             ?required=${args.required}
             .size=${args.size}
+            .value=${args.value}
             .warnText=${args.warnText}
             .invalidText=${args.invalidText}
             .disable=${args.disable}
@@ -574,7 +565,7 @@ export const InModalScrollableContent = {
     name: 'date-picker-in-modal-scroll-content',
     dateFormat: 'Y-m-d',
     staticPosition: false,
-    defaultDate: '',
+
     caption: 'Scroll inside the modal content, then open the calendar.',
     label: 'Date',
     open: false,
@@ -623,11 +614,11 @@ export const InModalScrollableContent = {
             .locale=${args.locale}
             .label=${args.label}
             .dateFormat=${args.dateFormat}
-            .defaultDate=${args.defaultDate}
             ?staticPosition=${args.staticPosition}
             .defaultErrorMessage=${args.defaultErrorMessage}
             ?required=${args.required}
             .size=${args.size}
+            .value=${args.value}
             .warnText=${args.warnText}
             .invalidText=${args.invalidText}
             .disable=${args.disable}
@@ -654,95 +645,3 @@ export const InModalScrollableContent = {
     `;
   },
 };
-
-const ValueOverridesDefaultTemplate = (args) => {
-  const [, updateArgs] = useArgs();
-
-  const handleChange = (e) => {
-    action(e.type)({ ...e, detail: e.detail });
-
-    const dateObjects = e.detail?.dateObjects;
-    const dates = e.detail?.dates;
-
-    if (
-      dateObjects === null ||
-      (Array.isArray(dateObjects) && dateObjects.length === 0)
-    ) {
-      updateArgs({ value: null });
-      return;
-    }
-
-    if (dateObjects) {
-      if (Array.isArray(dateObjects)) {
-        updateArgs({
-          value: dateObjects.map((d) => (d instanceof Date ? d : new Date(d))),
-        });
-      } else {
-        updateArgs({
-          value:
-            dateObjects instanceof Date ? dateObjects : new Date(dateObjects),
-        });
-      }
-      return;
-    }
-
-    if (!dates || (Array.isArray(dates) && dates.length === 0)) {
-      updateArgs({ value: null });
-      return;
-    }
-
-    if (Array.isArray(dates)) {
-      updateArgs({
-        value: dates.map((d) => (d instanceof Date ? d : new Date(d))),
-      });
-    } else {
-      updateArgs({
-        value: dates instanceof Date ? dates : new Date(dates),
-      });
-    }
-  };
-
-  return html`
-    <kyn-date-picker
-      .name=${args.name}
-      .locale=${args.locale}
-      .label=${args.label}
-      .dateFormat=${args.dateFormat}
-      .defaultDate=${args.defaultDate}
-      .value=${args.value}
-      ?staticPosition=${args.staticPosition}
-      .defaultErrorMessage=${args.defaultErrorMessage}
-      ?required=${args.required}
-      .size=${args.size}
-      .warnText=${args.warnText}
-      .invalidText=${args.invalidText}
-      .disable=${args.disable}
-      .enable=${args.enable}
-      .mode=${args.mode}
-      .caption=${args.caption}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
-      ?datePickerDisabled=${args.datePickerDisabled}
-      ?readonly=${args.readonly}
-      ?twentyFourHourFormat=${args.twentyFourHourFormat}
-      .minDate=${args.minDate}
-      .maxDate=${args.maxDate}
-      ?allowManualInput=${args.allowManualInput}
-      @on-change=${handleChange}
-    >
-    </kyn-date-picker>
-  `;
-};
-
-export const ValueOverridesDefault = ValueOverridesDefaultTemplate.bind({});
-ValueOverridesDefault.args = {
-  ...DatePickerDefault.args,
-  name: 'value-overrides-default',
-  value: new Date('2024-04-10'),
-  defaultDate: '2024-01-01',
-
-  label: 'value overrides defaultDate',
-};
-ValueOverridesDefault.storyName = 'Value Overrides DefaultDate';

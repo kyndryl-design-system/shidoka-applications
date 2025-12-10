@@ -77,6 +77,7 @@ type DateFormatOption = keyof typeof DATE_FORMAT_OPTIONS;
 interface FlatpickrOptionsContext {
   locale: string;
   dateFormat?: string;
+  /** @deprecated Prefer passing pre-normalized `value` and using setInitialDates in the component. */
   defaultDate?: string | Date | string[] | Date[];
   defaultHour?: number;
   defaultMinute?: number;

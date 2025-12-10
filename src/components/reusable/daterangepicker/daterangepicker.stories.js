@@ -49,7 +49,8 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'object' } },
+    // defaultDate is soft deprecated — prefer controlling the component via `value`
+    defaultDate: { control: { type: 'object' }, table: { disable: true } },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
@@ -115,8 +116,8 @@ const Template = (args) => {
       .label=${args.label}
       .locale=${args.locale}
       .dateFormat=${args.dateFormat}
-      .defaultDate=${args.defaultDate}
       .rangeEditMode=${args.rangeEditMode}
+      .value=${args.value}
       .defaultErrorMessage=${args.defaultErrorMessage}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
@@ -149,7 +150,7 @@ DateRangeDefault.args = {
   name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  defaultDate: [],
+  value: [null, null],
   required: false,
   staticPosition: false,
   size: 'md',
@@ -206,7 +207,7 @@ WithPreselectedRange.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-01-01', '2024-01-07'],
+  value: [new Date('2024-01-01'), new Date('2024-01-07')],
   allowManualInput: false,
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
@@ -217,7 +218,7 @@ WithPreselectedDateTime.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-time-range',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: ['2024-01-01 09:00:00', '2024-01-02 17:00:00'],
+  value: [new Date('2024-01-01 09:00:00'), new Date('2024-01-02 17:00:00')],
   allowManualInput: false,
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
@@ -247,7 +248,7 @@ FixedStartDate.args = {
   ...DateRangeDefault.args,
   name: 'fixed-deadline-date-picker',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-05-01', '2024-05-15'],
+  value: [new Date('2024-05-01'), new Date('2024-05-15')],
   rangeEditMode: 'end',
   allowManualInput: false,
   label: 'Fixed Start - Flexible Deadline',
@@ -328,7 +329,7 @@ export const InModal = {
           .label=${args.label}
           .locale=${args.locale}
           .dateFormat=${args.dateFormat}
-          .defaultDate=${args.defaultDate}
+          .value=${args.value}
           ?staticPosition=${args.staticPosition}
           .defaultErrorMessage=${args.defaultErrorMessage}
           .warnText=${args.warnText}
@@ -427,7 +428,7 @@ export const DateRangePickerInAccordionInModal = {
                 .label=${args.label}
                 .locale=${args.locale}
                 .dateFormat=${args.dateFormat}
-                .defaultDate=${args.defaultDate}
+                .value=${args.value}
                 .defaultErrorMessage=${args.defaultErrorMessage}
                 ?staticPosition=${args.staticPosition}
                 .warnText=${args.warnText}
@@ -485,132 +486,3 @@ export const DateRangePickerInAccordionInModal = {
 };
 DateRangePickerInAccordionInModal.storyName =
   'Static Position In Nested Accordion';
-
-const ControlledTemplate = (args) => {
-  const [{ value, defaultDate }, updateArgs] = useArgs();
-
-  useEffect(() => {
-    const renderId = Math.random().toString(36).substring(2, 9);
-
-    setTimeout(() => {
-      const container = document.createElement('div');
-      container.setAttribute('data-picker-container', renderId);
-      container.style.display = 'contents';
-
-      const picker = document.querySelector(
-        `kyn-date-range-picker[name="${args.name}"]`
-      );
-      if (picker && picker.parentNode) {
-        picker.parentNode.insertBefore(container, picker);
-        container.appendChild(picker);
-
-        if (args.rangeEditMode !== undefined) {
-          picker.rangeEditMode = args.rangeEditMode;
-          if (
-            picker.flatpickrInstance &&
-            defaultDate &&
-            Array.isArray(defaultDate) &&
-            defaultDate.length === 2 &&
-            (!defaultDate[0] || !defaultDate[1])
-          ) {
-            picker.flatpickrInstance.destroy();
-            setTimeout(() => picker.initializeFlatpickr(), 10);
-          }
-        }
-      }
-    }, 0);
-
-    return () => {
-      const container = document.querySelector(
-        `div[data-picker-container="${renderId}"]`
-      );
-      if (container) {
-        if (container.firstChild) {
-          const picker = container.firstChild;
-          container.parentNode.insertBefore(picker, container);
-        }
-        container.remove();
-      }
-    };
-  }, [args.rangeEditMode, defaultDate, args.name]);
-
-  const toDate = (d) => {
-    if (!d) return null;
-    if (d instanceof Date) return d;
-    if (typeof d === 'string') {
-      const parsed = new Date(d);
-      return Number.isNaN(parsed.getTime()) ? null : parsed;
-    }
-    return null;
-  };
-
-  const handleChange = (e) => {
-    const detail = e.detail || {};
-    const dates = Array.isArray(detail.dates) ? detail.dates : [];
-
-    // If the clear button was used, wipe both value and defaultDate
-    if (detail.source === 'clear') {
-      updateArgs({
-        value: [null, null],
-        defaultDate: [],
-      });
-      action(e.type)({ ...e, detail: e.detail });
-      return;
-    }
-
-    const nextValue = [
-      dates.length > 0 ? toDate(dates[0]) : null,
-      dates.length > 1 ? toDate(dates[1]) : null,
-    ];
-
-    updateArgs({ value: nextValue });
-    action(e.type)({ ...e, detail: e.detail });
-  };
-
-  return html`
-    <kyn-date-range-picker
-      .name=${args.name}
-      .label=${args.label}
-      .locale=${args.locale}
-      .dateFormat=${args.dateFormat}
-      .defaultDate=${defaultDate}
-      .value=${value}
-      .rangeEditMode=${args.rangeEditMode}
-      .defaultErrorMessage=${args.defaultErrorMessage}
-      .warnText=${args.warnText}
-      .invalidText=${args.invalidText}
-      .disable=${args.disable}
-      .enable=${args.enable}
-      .caption=${args.caption}
-      ?required=${args.required}
-      ?staticPosition=${args.staticPosition}
-      .size=${args.size}
-      ?dateRangePickerDisabled=${args.dateRangePickerDisabled}
-      ?readonly=${args.readonly}
-      ?twentyFourHourFormat=${args.twentyFourHourFormat}
-      .minDate=${args.minDate}
-      .maxDate=${args.maxDate}
-      ?allowManualInput=${args.allowManualInput}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
-      .startDateLabel=${args.startDateLabel}
-      .endDateLabel=${args.endDateLabel}
-      @on-change=${handleChange}
-    >
-    </kyn-date-range-picker>
-  `;
-};
-
-export const ControlledValueOverridesDefault = ControlledTemplate.bind({});
-ControlledValueOverridesDefault.args = {
-  ...DateRangeDefault.args,
-  name: 'controlled-value-overrides-default-date-range',
-  label: 'Controlled Value Overrides defaultDate',
-  caption:
-    'Both defaultDate and value are set; value (Date objects) takes precedence.',
-  defaultDate: ['2024-01-01', '2024-01-07'],
-  value: [new Date('2024-02-10'), new Date('2024-02-20')],
-};
-ControlledValueOverridesDefault.storyName = 'Value Overrides defaultDate';
