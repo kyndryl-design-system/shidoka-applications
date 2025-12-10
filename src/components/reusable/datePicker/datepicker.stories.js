@@ -1,7 +1,7 @@
 import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
-import { useEffect } from 'storybook/preview-api';
+import { useArgs, useEffect } from 'storybook/preview-api';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -46,6 +46,12 @@ export default {
     size: {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
+    },
+    value: {
+      control: false,
+      table: {
+        type: { summary: 'Date | Date[] | null' },
+      },
     },
     defaultDate: { control: { type: 'text' } },
     required: { control: { type: 'boolean' } },
@@ -648,3 +654,95 @@ export const InModalScrollableContent = {
     `;
   },
 };
+
+const ValueOverridesDefaultTemplate = (args) => {
+  const [, updateArgs] = useArgs();
+
+  const handleChange = (e) => {
+    action(e.type)({ ...e, detail: e.detail });
+
+    const dateObjects = e.detail?.dateObjects;
+    const dates = e.detail?.dates;
+
+    if (
+      dateObjects === null ||
+      (Array.isArray(dateObjects) && dateObjects.length === 0)
+    ) {
+      updateArgs({ value: null });
+      return;
+    }
+
+    if (dateObjects) {
+      if (Array.isArray(dateObjects)) {
+        updateArgs({
+          value: dateObjects.map((d) => (d instanceof Date ? d : new Date(d))),
+        });
+      } else {
+        updateArgs({
+          value:
+            dateObjects instanceof Date ? dateObjects : new Date(dateObjects),
+        });
+      }
+      return;
+    }
+
+    if (!dates || (Array.isArray(dates) && dates.length === 0)) {
+      updateArgs({ value: null });
+      return;
+    }
+
+    if (Array.isArray(dates)) {
+      updateArgs({
+        value: dates.map((d) => (d instanceof Date ? d : new Date(d))),
+      });
+    } else {
+      updateArgs({
+        value: dates instanceof Date ? dates : new Date(dates),
+      });
+    }
+  };
+
+  return html`
+    <kyn-date-picker
+      .name=${args.name}
+      .locale=${args.locale}
+      .label=${args.label}
+      .dateFormat=${args.dateFormat}
+      .defaultDate=${args.defaultDate}
+      .value=${args.value}
+      ?staticPosition=${args.staticPosition}
+      .defaultErrorMessage=${args.defaultErrorMessage}
+      ?required=${args.required}
+      .size=${args.size}
+      .warnText=${args.warnText}
+      .invalidText=${args.invalidText}
+      .disable=${args.disable}
+      .enable=${args.enable}
+      .mode=${args.mode}
+      .caption=${args.caption}
+      .errorAriaLabel=${args.errorAriaLabel}
+      .errorTitle=${args.errorTitle}
+      .warningAriaLabel=${args.warningAriaLabel}
+      .warningTitle=${args.warningTitle}
+      ?datePickerDisabled=${args.datePickerDisabled}
+      ?readonly=${args.readonly}
+      ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .minDate=${args.minDate}
+      .maxDate=${args.maxDate}
+      ?allowManualInput=${args.allowManualInput}
+      @on-change=${handleChange}
+    >
+    </kyn-date-picker>
+  `;
+};
+
+export const ValueOverridesDefault = ValueOverridesDefaultTemplate.bind({});
+ValueOverridesDefault.args = {
+  ...DatePickerDefault.args,
+  name: 'value-overrides-default',
+  value: new Date('2024-04-10'),
+  defaultDate: '2024-01-01',
+
+  label: 'value overrides defaultDate',
+};
+ValueOverridesDefault.storyName = 'Value Overrides DefaultDate';
