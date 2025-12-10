@@ -65,7 +65,7 @@ export class HeaderLink extends LitElement {
 
   /** Text for mobile "Back" button. */
   @property({ type: String })
-  accessor backText = 'Back to Root Nav';
+  accessor backText = 'Back';
 
   /** Add left padding when icon is not provided to align text with links that do have icons. */
   @property({ type: Boolean })
@@ -222,6 +222,38 @@ export class HeaderLink extends LitElement {
       e.stopPropagation();
     }
 
+    // detect if we're inside the categorized/mega nav variant
+    const headerCategories = this.closest(
+      'kyn-header-categories'
+    ) as HTMLElement | null;
+
+    if (headerCategories) {
+      // MEGA / CATEGORIZED NAV:
+      // "Back" should go all the way to the root nav.
+      const navRoot =
+        (this.closest('kyn-header-nav') as HTMLElement | null) ??
+        headerCategories;
+
+      const links = navRoot.querySelectorAll<HTMLElement & { open?: boolean }>(
+        'kyn-header-link[open]'
+      );
+
+      links.forEach((link) => {
+        link.removeAttribute('open');
+        if ('open' in link) {
+          (link as any).open = false;
+        }
+      });
+
+      // Clear local search for this column
+      this._searchTerm = '';
+      this._searchFilter();
+
+      return;
+    }
+
+    // BASIC NAV:
+    // Preserve original behavior: go up one level
     this.open = false;
     this._searchTerm = '';
     this._searchFilter();
