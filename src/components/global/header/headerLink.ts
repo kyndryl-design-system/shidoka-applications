@@ -65,7 +65,7 @@ export class HeaderLink extends LitElement {
 
   /** Text for mobile "Back" button. */
   @property({ type: String })
-  accessor backText = 'Back';
+  accessor backText = 'Back to Root Nav';
 
   /** Add left padding when icon is not provided to align text with links that do have icons. */
   @property({ type: Boolean })
@@ -149,11 +149,14 @@ export class HeaderLink extends LitElement {
           style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
         >
           <div class="wrapper">
-            <button class="go-back" @click=${() => this._handleBack()}>
+            <button
+              class="go-back"
+              type="button"
+              @click=${(e: Event) => this._handleBack(e)}
+            >
               <span>${unsafeSVG(backIcon)}</span>
               ${this.backText}
             </button>
-
             ${Links.length >= this.searchThreshold
               ? html`
                   <kyn-text-input
@@ -213,16 +216,32 @@ export class HeaderLink extends LitElement {
     this._positionMenu();
   }
 
-  private _handleBack() {
+  private _handleBack(e?: Event) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
     this.open = false;
+    this._searchTerm = '';
+    this._searchFilter();
   }
 
   private _handleLinksSlotChange() {
     this.requestUpdate();
   }
 
+  private get _isDesktopViewport(): boolean {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 672;
+  }
+
   private handlePointerEnter(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && this.slottedEls.length) {
+    if (
+      e.pointerType === 'mouse' &&
+      this.slottedEls.length &&
+      this._isDesktopViewport
+    ) {
       clearTimeout(this._leaveTimer);
 
       this._enterTimer = setTimeout(() => {
@@ -235,7 +254,8 @@ export class HeaderLink extends LitElement {
     if (
       e.pointerType === 'mouse' &&
       this.slottedEls.length &&
-      this._searchTerm === ''
+      this._searchTerm === '' &&
+      this._isDesktopViewport
     ) {
       clearTimeout(this._enterTimer);
       this._leaveTimer = setTimeout(() => {

@@ -43,6 +43,11 @@ export class HeaderNav extends LitElement {
   /** Bound document click handler to allow proper add/remove of listener */
   private _boundHandleClickOut = (e: Event) => this._handleClickOut(e);
 
+  private get _isDesktop(): boolean {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 672;
+  }
+
   override render() {
     const classes = {
       'header-nav': true,
@@ -83,9 +88,10 @@ export class HeaderNav extends LitElement {
   private _updateCategoriesVisibility(): void {
     const links = this.querySelectorAll<HTMLElement>('kyn-header-link');
 
-    const hasOpenCategory = Array.from(links).some((link) => {
-      return link.hasAttribute('open') || link.hasAttribute('isactive');
-    });
+    // Only treat a mega as “open” when the link actually has the `open` attribute. `isactive` should not force the categorical view in any viewport — desktop gets its initial open via `_ensureActiveMegaExpanded`.
+    const hasOpenCategory = Array.from(links).some((link) =>
+      link.hasAttribute('open')
+    );
 
     if (this.hasCategories !== hasOpenCategory) {
       this.hasCategories = hasOpenCategory;
@@ -93,10 +99,10 @@ export class HeaderNav extends LitElement {
   }
 
   /**
-   * Determine whether the active link's categorical menu (mega nav) is open when user clicks hamburger (depends on expandActiveMegaOnLoad value).
+   * Determine whether the active link's categorical menu (mega nav) is open initially. Only applies on desktop; mobile should start collapsed and require explicit interaction.
    */
   private _ensureActiveMegaExpanded() {
-    if (!this.expandActiveMegaOnLoad) return;
+    if (!this.expandActiveMegaOnLoad || !this._isDesktop) return;
 
     const links = Array.from(
       this.querySelectorAll<
@@ -106,7 +112,6 @@ export class HeaderNav extends LitElement {
 
     if (!links.length) return;
 
-    // explicity isactive link set by dev
     let activeLink = links.find((link) => link.hasAttribute('isactive'));
 
     // fallback: first link that owns mega content (slot="links")
