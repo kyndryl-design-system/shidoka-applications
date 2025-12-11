@@ -432,7 +432,7 @@ const items = [
 ];
 
 export const DataDrivenOptions = {
-  args: { ...args, value: ['option1'] },
+  args: { ...args, value: ['option2'] },
   parameters: {
     a11y: {
       disable: true,
@@ -512,7 +512,7 @@ export const DirectionalControl = {
         }
         .dropdown-row {
           display: flex;
-          gap: 15px;
+          gap: 20px;
         }
         kyn-dropdown {
           min-width: 250px;
