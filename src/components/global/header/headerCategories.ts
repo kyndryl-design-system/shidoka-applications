@@ -30,7 +30,6 @@ export interface HeaderCategoryLinkType {
   id: string;
   label: string;
   href?: string;
-  iconId?: string;
   target?: '_blank' | '_self' | '_parent' | '_top';
   rel?: string;
 }
