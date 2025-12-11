@@ -196,8 +196,8 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private accessor _userHasCleared = false;
 
-  // Flag set when the component is applying a value that originated from Flatpickr
-  // to avoid re-applying it back to the instance and causing loops.
+  // Flag set when the component is applying a value that
+  // originated from Flatpickr to avoid re-applying it back to the instance and causing loops.
   private _isApplyingFlatpickrValue = false;
 
   /** Customizable text strings. */
