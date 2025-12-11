@@ -3,10 +3,12 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { html } from 'lit';
 import './index';
+import '../pagetitle';
 import { action } from 'storybook/actions';
 import '../tooltip';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
+import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 export default {
   title: 'Components/Dropdown',
@@ -741,6 +743,131 @@ export const Readonly = {
         <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
         <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
       </kyn-dropdown>
+    `;
+  },
+};
+
+export const PageTitleWithDropdownAnchor = {
+  args: {
+    ...args,
+    label: 'Environment',
+    placeholder: 'Select environment',
+    openDirection: 'auto',
+    value: 'prod',
+    pageTitle: 'Production',
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    const [{ value, pageTitle }, updateArgs] = useArgs();
+
+    const handleChange = (e) => {
+      const selectedValue = e.detail.value;
+      const dropdown = e.currentTarget;
+
+      let selectedLabel = selectedValue;
+      if (typeof selectedValue === 'string') {
+        const option = dropdown.querySelector(
+          `kyn-dropdown-option[value="${selectedValue}"]`
+        );
+        selectedLabel =
+          option?.textContent?.trim() || selectedValue || 'Select environment';
+      }
+
+      updateArgs({
+        value: selectedValue,
+        pageTitle: selectedLabel,
+      });
+
+      action(e.type)({ ...e, detail: e.detail });
+    };
+
+    const envOptions = [
+      { value: 'dev', text: 'Development' },
+      { value: 'test', text: 'Test' },
+      { value: 'prod', text: 'Production' },
+    ];
+
+    return html`
+      <style>
+        .page-title-with-dropdown {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+
+        .page-title-headline {
+          font-size: 16px;
+          font-weight: 400;
+          color: var(--kyn-color-text-secondary);
+        }
+
+        .page-title-dropdown-anchor {
+          all: unset;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 32px;
+          font-weight: 400;
+          line-height: 1.2;
+          color: var(--kyn-color-text-primary);
+        }
+
+        .page-title-dropdown-icon {
+          display: inline-flex;
+          transition: transform 0.15s ease-in-out;
+          margin-left: 8px;
+        }
+
+        kyn-dropdown[open] .page-title-dropdown-icon {
+          transform: rotate(180deg);
+        }
+
+        kyn-dropdown {
+          min-width: 250px;
+        }
+      </style>
+
+      <div class="page-title-with-dropdown">
+        <div class="page-title-headline">Environment</div>
+
+        <kyn-dropdown
+          label=${args.label}
+          placeholder=${args.placeholder}
+          size=${args.size}
+          kind=${args.kind}
+          name=${args.name}
+          ?open=${args.open}
+          ?required=${args.required}
+          ?disabled=${args.disabled}
+          ?readonly=${args.readonly}
+          ?hideLabel=${true}
+          .textStrings=${args.textStrings}
+          value=${value ?? ''}
+          openDirection=${args.openDirection}
+          @on-change=${handleChange}
+        >
+          <button slot="anchor" class="page-title-dropdown-anchor">
+            ${pageTitle || 'Select environment'}
+            <span class="page-title-dropdown-icon">
+              ${unsafeSVG(chevronDownIcon)}
+            </span>
+          </button>
+
+          ${envOptions.map(
+            (item) => html`
+              <kyn-dropdown-option value=${item.value}>
+                ${item.text}
+              </kyn-dropdown-option>
+            `
+          )}
+        </kyn-dropdown>
+      </div>
     `;
   },
 };
