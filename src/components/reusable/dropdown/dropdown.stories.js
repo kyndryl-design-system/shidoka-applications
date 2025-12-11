@@ -432,7 +432,7 @@ const items = [
 ];
 
 export const DataDrivenOptions = {
-  args: { ...args, value: ['option2'] },
+  args: { ...args, value: ['option1'] },
   parameters: {
     a11y: {
       disable: true,
@@ -512,7 +512,7 @@ export const DirectionalControl = {
         }
         .dropdown-row {
           display: flex;
-          gap: 20px;
+          gap: 15px;
         }
         kyn-dropdown {
           min-width: 250px;
@@ -746,6 +746,11 @@ export const Readonly = {
     `;
   },
 };
+const envOptions = [
+  { value: 'dev', text: 'Development' },
+  { value: 'test', text: 'Test' },
+  { value: 'prod', text: 'Production' },
+];
 
 export const PageTitleWithDropdownAnchor = {
   args: {
@@ -753,43 +758,19 @@ export const PageTitleWithDropdownAnchor = {
     label: 'Environment',
     placeholder: 'Select environment',
     openDirection: 'auto',
-    value: 'prod',
-    pageTitle: 'Production',
+    value: 'dev',
   },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
+  parameters: { a11y: { disable: true } },
   render: (args) => {
-    const [{ value, pageTitle }, updateArgs] = useArgs();
+    const [{ value }, updateArgs] = useArgs();
+
+    const selected = envOptions.find((o) => o.value === value);
+    const pageTitle = selected?.text ?? 'Select environment';
 
     const handleChange = (e) => {
-      const selectedValue = e.detail.value;
-      const dropdown = e.currentTarget;
-
-      let selectedLabel = selectedValue;
-      if (typeof selectedValue === 'string') {
-        const option = dropdown.querySelector(
-          `kyn-dropdown-option[value="${selectedValue}"]`
-        );
-        selectedLabel =
-          option?.textContent?.trim() || selectedValue || 'Select environment';
-      }
-
-      updateArgs({
-        value: selectedValue,
-        pageTitle: selectedLabel,
-      });
-
+      updateArgs({ value: e.detail.value });
       action(e.type)({ ...e, detail: e.detail });
     };
-
-    const envOptions = [
-      { value: 'dev', text: 'Development' },
-      { value: 'test', text: 'Test' },
-      { value: 'prod', text: 'Production' },
-    ];
 
     return html`
       <style>
@@ -848,12 +829,16 @@ export const PageTitleWithDropdownAnchor = {
           ?readonly=${args.readonly}
           ?hideLabel=${true}
           .textStrings=${args.textStrings}
-          value=${value ?? ''}
+          .value=${value ?? ''}
           openDirection=${args.openDirection}
           @on-change=${handleChange}
         >
-          <button slot="anchor" class="page-title-dropdown-anchor">
-            ${pageTitle || 'Select environment'}
+          <button
+            slot="anchor"
+            class="page-title-dropdown-anchor"
+            type="button"
+          >
+            <span class="page-title-text">${pageTitle}</span>
             <span class="page-title-dropdown-icon">
               ${unsafeSVG(chevronDownIcon)}
             </span>
