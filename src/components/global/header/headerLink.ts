@@ -14,6 +14,8 @@ import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/ch
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
 
+export type HeaderLinkTarget = '_self' | '_blank' | '_parent' | '_top';
+
 /**
  * Component for navigation links within the Header.
  * @fires on-click - Captures the click event and emits the original event details. `detail:{ origEvent: Event ,defaultPrevented: boolean}`
@@ -35,7 +37,7 @@ export class HeaderLink extends LitElement {
 
   /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
-  accessor target = '_self' as const;
+  accessor target: HeaderLinkTarget = '_self';
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
@@ -223,14 +225,14 @@ export class HeaderLink extends LitElement {
     }
 
     // detect if we're inside the categorized/mega nav variant
-    const headerCategories = this.closest(
-      'kyn-header-categories'
-    ) as HTMLElement | null;
+    const headerCategories = this.closest('kyn-header-categories') as
+      | (HTMLElement & { handleBackClick?: (evt?: Event) => void })
+      | null;
 
-    if (headerCategories) {
-      // MEGA / CATEGORIZED NAV:
-      // "Back" should go all the way to the root nav.
+    if (headerCategories?.handleBackClick) {
+      headerCategories.handleBackClick(e);
 
+      // Close any open header links under this nav
       const navRoot =
         (this.closest('kyn-header-nav') as HTMLElement | null) ??
         headerCategories;

@@ -1,12 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import {
-  LitElement,
-  html,
-  unsafeCSS,
-  type PropertyValueMap,
-  type TemplateResult,
-} from 'lit';
+import { LitElement, html, unsafeCSS, type PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import Styles from './headerCategories.scss?inline';
 
@@ -18,6 +12,7 @@ import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/c
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import type { HeaderLinkTarget } from './headerLink';
 
 const _defaultTextStrings = {
   back: 'Back',
@@ -49,7 +44,7 @@ export interface HeaderLinkRendererContext {
 export type HeaderMegaLinkRenderer = (
   link: HeaderCategoryLinkType,
   context?: HeaderLinkRendererContext
-) => TemplateResult | null;
+) => string | null;
 
 export interface MegaTabConfig {
   categories: HeaderCategoryType[];
@@ -69,7 +64,7 @@ type HeaderView = 'root' | 'detail';
 const ROOT_VIEW: HeaderView = 'root';
 const DETAIL_VIEW: HeaderView = 'detail';
 
-const VOID_HREF = 'javascript:void(0)';
+const VOID_HREF = '#';
 
 interface SlottedLinkData {
   href: string;
@@ -86,21 +81,33 @@ interface SlottedCategoryData {
 
 /**
  * Header categories wrapper for mega menu.
+ *
  * @slot unnamed - Slot for header category elements.
- * Controlled via `activeMegaTabId` / `activeMegaCategoryId` but
- * encapsulates all categorical/mega-nav view behavior (root/detail, "More", "Back").
+ *
+ * Controlled via `activeMegaTabId` / `activeMegaCategoryId` but encapsulates
+ * all categorical/mega-nav view behavior (root/detail, "More", "Back").
  *
  * Emits `on-nav-change` so parents can mirror state for tabs, routing, etc.
  *
  * Modes:
- * - JSON mode: provide `tabsConfig` and categories/links are rendered from config.
- * - Slotted/manual mode: omit `tabsConfig` and slot <kyn-header-category> /
- *   <kyn-header-link> will:
- *    - truncate visible links per category at `maxRootLinks`
- *    - inject a "More" link when there are additional links
- *    - switch to a detail view for a category when "More" is clicked
- *    - show a Back button to return to the root view
+ * - JSON mode
+ *   - Provide `tabsConfig` and categories/links are rendered from config.
+ *   - Each link may specify `href`, `target`, and `rel`.
+ *   - Optional `linkRenderer` hook can be supplied to fully control the
+ *     slotted content inside each `<kyn-header-link>`.
+ *
+ * - Slotted/manual mode
+ *   - Omit `tabsConfig` and slot `<kyn-header-category>` / `<kyn-header-link>`
+ *     elements directly in the light DOM.
+ *   - Slotted `<kyn-header-link>` `href`, `target`, and `rel` attributes are
+ *     preserved.
+ *   - Root view will:
+ *       - truncate visible links per category at `maxRootLinks`
+ *       - inject a "More" link when there are additional links
+ *   - "More" switches to a detail view for that category, and the Back button
+ *     returns to the root view.
  */
+
 @customElement('kyn-header-categories')
 export class HeaderCategories extends LitElement {
   static override styles = unsafeCSS(Styles);
@@ -145,6 +152,15 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Optional hook to render the entire link content slotted into <kyn-header-link>.
+   *
+   * IMPORTANT:
+   * - This must return an HTML string or null.
+   * - The string is rendered via unsafeHTML; consumers are responsible for sanitizing
+   *   any dynamic content they inject here.
+   *
+   * This API is intentionally framework-agnostic: React, Vue, Angular, etc. can all
+   * build a string and pass it in.
+   *
    * If not provided, a simple circle-icon + label placeholder is used.
    */
   @property({ attribute: false })
@@ -177,6 +193,13 @@ export class HeaderCategories extends LitElement {
     return result;
   }
 
+  private normalizeHeaderLinkTarget(target?: string | null): HeaderLinkTarget {
+    if (target === '_blank' || target === '_parent' || target === '_top') {
+      return target;
+    }
+    return '_self';
+  }
+
   private _emitChange(): void {
     const detail: HeaderMegaChangeDetail = {
       activeMegaTabId: this.activeMegaTabId,
@@ -192,10 +215,6 @@ export class HeaderCategories extends LitElement {
     );
   }
 
-  /**
-   * force root view for a given tab.
-   * consumer can call via element ref if needed.
-   */
   setRootView(tabId?: string): void {
     this.activeMegaTabId = tabId ?? this.activeMegaTabId;
     this.activeMegaCategoryId = null;
@@ -224,7 +243,6 @@ export class HeaderCategories extends LitElement {
     }
     this.setRootView(this.activeMegaTabId);
 
-    // restore focus to the tab/link that opened the mega
     this.updateComplete.then(() => {
       const hostLinks = Array.from(
         this.querySelectorAll<HTMLElement>('kyn-header-link')
@@ -239,7 +257,6 @@ export class HeaderCategories extends LitElement {
   private _handleNavToggle(e: CustomEvent<{ open?: boolean }>): void {
     const isOpen = Boolean(e.detail?.open);
 
-    // when the nav closes, always reset to root view on the next open
     if (!isOpen) {
       this.setRootView(this.activeMegaTabId);
     }
@@ -268,10 +285,20 @@ export class HeaderCategories extends LitElement {
   private renderLinkContent(
     link: HeaderCategoryLinkType,
     ctx: HeaderLinkRendererContext
-  ): TemplateResult {
+  ) {
     if (this.linkRenderer) {
-      const result = this.linkRenderer(link, ctx);
-      return result ?? html``;
+      const rendered = this.linkRenderer(link, ctx);
+
+      if (typeof rendered === 'string' && rendered.trim().length > 0) {
+        return html`${unsafeHTML(rendered)}`;
+      }
+
+      if (rendered != null && typeof rendered !== 'string') {
+        console.warn(
+          '[kyn-header-categories] linkRenderer must return a string or null. ' +
+            `Received: ${typeof rendered}`
+        );
+      }
     }
 
     return html`
@@ -283,18 +310,19 @@ export class HeaderCategories extends LitElement {
   private renderCategoryColumn(
     tabId: string,
     category: HeaderCategoryType | undefined
-  ): TemplateResult | null {
+  ) {
     if (!category) return null;
 
     const links = category.links ?? [];
 
     return html`
       <kyn-header-category heading=${category.heading}>
-        ${links.slice(0, this.maxRootLinks).map(
-          (link) => html`
+        ${links.slice(0, this.maxRootLinks).map((link) => {
+          const target = this.normalizeHeaderLinkTarget(link.target);
+          return html`
             <kyn-header-link
               href=${link.href ?? VOID_HREF}
-              target=${ifDefined(link.target)}
+              target=${target}
               rel=${ifDefined(link.rel)}
             >
               ${this.renderLinkContent(link, {
@@ -303,8 +331,8 @@ export class HeaderCategories extends LitElement {
                 view: ROOT_VIEW,
               })}
             </kyn-header-link>
-          `
-        )}
+          `;
+        })}
         ${links.length > this.maxRootLinks
           ? html`
               <kyn-header-link
@@ -329,14 +357,14 @@ export class HeaderCategories extends LitElement {
     `;
   }
 
-  private renderRootView(): TemplateResult {
+  private renderRootView() {
     const categories: HeaderCategoryType[] = this._tabConfig?.categories ?? [];
     return html`${categories.map((category) =>
       this.renderCategoryColumn(this.activeMegaTabId, category)
     )}`;
   }
 
-  private renderDetailView(): TemplateResult | null {
+  private renderDetailView() {
     const categories: HeaderCategoryType[] = this._tabConfig?.categories ?? [];
     const category =
       categories.find((cat) => cat.id === this.activeMegaCategoryId) ??
@@ -362,11 +390,12 @@ export class HeaderCategories extends LitElement {
           ${linkColumns.map(
             (column) => html`
               <div>
-                ${column.map(
-                  (link) => html`
+                ${column.map((link) => {
+                  const target = this.normalizeHeaderLinkTarget(link.target);
+                  return html`
                     <kyn-header-link
                       href=${link.href ?? VOID_HREF}
-                      target=${ifDefined(link.target)}
+                      target=${target}
                       rel=${ifDefined(link.rel)}
                     >
                       ${this.renderLinkContent(link, {
@@ -375,8 +404,8 @@ export class HeaderCategories extends LitElement {
                         view: DETAIL_VIEW,
                       })}
                     </kyn-header-link>
-                  `
-                )}
+                  `;
+                })}
               </div>
             `
           )}
@@ -385,10 +414,6 @@ export class HeaderCategories extends LitElement {
     `;
   }
 
-  /**
-   * Build an internal, read-only representation of slotted categories.
-   * Avoids mutating the dev consumer's light DOM and allows declarative rendering.
-   */
   private _buildSlottedCategories(): void {
     if (this._isJsonMode) return;
 
@@ -430,26 +455,25 @@ export class HeaderCategories extends LitElement {
     this._slottedCategories = data;
   }
 
-  private renderSlottedRoot(): TemplateResult | null {
+  private renderSlottedRoot() {
     const categories = this._slottedCategories;
     if (!categories.length) return null;
 
     return html`${categories.map(
       (category) => html`
         <kyn-header-category heading=${category.heading}>
-          ${category.links
-            .slice(0, this.maxRootLinks)
-            .map(
-              (link) => html`
-                <kyn-header-link
-                  href=${link.href}
-                  target=${ifDefined(link.target)}
-                  rel=${ifDefined(link.rel)}
-                >
-                  ${unsafeHTML(link.inner)}
-                </kyn-header-link>
-              `
-            )}
+          ${category.links.slice(0, this.maxRootLinks).map((link) => {
+            const target = this.normalizeHeaderLinkTarget(link.target);
+            return html`
+              <kyn-header-link
+                href=${link.href}
+                target=${target}
+                rel=${ifDefined(link.rel)}
+              >
+                ${unsafeHTML(link.inner)}
+              </kyn-header-link>
+            `;
+          })}
           ${category.links.length > this.maxRootLinks
             ? html`
                 <kyn-header-link
@@ -497,7 +521,7 @@ export class HeaderCategories extends LitElement {
     return this.chunkBy(list, size);
   }
 
-  private renderSlottedDetail(): TemplateResult | null {
+  private renderSlottedDetail() {
     const categories = this._slottedCategories;
     if (!categories.length) return null;
 
@@ -524,17 +548,18 @@ export class HeaderCategories extends LitElement {
           ${columns.map(
             (col) => html`
               <div>
-                ${col.map(
-                  (link) => html`
+                ${col.map((link) => {
+                  const target = this.normalizeHeaderLinkTarget(link.target);
+                  return html`
                     <kyn-header-link
                       href=${link.href}
-                      target=${ifDefined(link.target)}
+                      target=${target}
                       rel=${ifDefined(link.rel)}
                     >
                       ${unsafeHTML(link.inner)}
                     </kyn-header-link>
-                  `
-                )}
+                  `;
+                })}
               </div>
             `
           )}
@@ -558,19 +583,16 @@ export class HeaderCategories extends LitElement {
     }, 40);
   }
 
-  override render(): TemplateResult {
+  override render() {
     const view = this.view;
 
-    let inner: TemplateResult | null;
-    if (this._isJsonMode) {
-      inner =
-        view === ROOT_VIEW ? this.renderRootView() : this.renderDetailView();
-    } else {
-      inner =
-        view === ROOT_VIEW
-          ? this.renderSlottedRoot()
-          : this.renderSlottedDetail();
-    }
+    const inner = this._isJsonMode
+      ? view === ROOT_VIEW
+        ? this.renderRootView()
+        : this.renderDetailView()
+      : view === ROOT_VIEW
+      ? this.renderSlottedRoot()
+      : this.renderSlottedDetail();
 
     return html`
       <div class="header-categories" data-view=${view}>

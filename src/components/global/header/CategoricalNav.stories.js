@@ -10,6 +10,8 @@ import '../../reusable/search';
 import megaNavConfig from './sampleMegaNavCategories.json';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 
+import './Docs.mdx';
+
 const args = {
   rootUrl: '/',
   appTitle: 'Application',
@@ -45,9 +47,14 @@ export const WithCategorizedNav = {
       updateArgs({ activeMegaTabId, activeMegaCategoryId });
     };
 
-    /** @type {HeaderMegaLinkRenderer} */
-    const renderMegaLink = (link, _context) =>
-      html`<span>${unsafeSVG(circleIcon)}</span>${link.label}`;
+    const renderMegaLinkPlainString = (link /*, ctx */) => {
+      const defaultIcon = link.iconSvg ?? circleIcon;
+
+      return `
+    <span>${defaultIcon}</span>
+    ${link.label}
+  `;
+    };
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
@@ -98,7 +105,7 @@ export const WithCategorizedNav = {
                     .tabsConfig=${megaNavConfig}
                     .activeMegaTabId=${renderArgs.activeMegaTabId}
                     .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    linkRenderer=${renderMegaLink}
+                    .linkRenderer=${renderMegaLinkPlainString}
                     @on-nav-change=${handleMegaChange}
                   ></kyn-header-categories>
                 </kyn-tab-panel>
@@ -117,7 +124,7 @@ export const WithCategorizedNav = {
                     .tabsConfig=${megaNavConfig}
                     .activeMegaTabId=${renderArgs.activeMegaTabId}
                     .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    linkRenderer=${renderMegaLink}
+                    .linkRenderer=${renderMegaLinkPlainString}
                     @on-nav-change=${handleMegaChange}
                   ></kyn-header-categories>
                 </kyn-tab-panel>
