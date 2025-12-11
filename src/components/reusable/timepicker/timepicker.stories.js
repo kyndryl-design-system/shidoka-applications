@@ -50,14 +50,6 @@ export default {
         summary: 'Soft Deprecated – use `value` instead',
       },
     },
-
-    value: {
-      control: { type: 'text' },
-      table: {
-        summary: 'Current value (Date or time string)',
-      },
-    },
-
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     enableSeconds: { control: { type: 'boolean' } },

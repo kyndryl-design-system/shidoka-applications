@@ -66,6 +66,7 @@ const _defaultTextStrings = {
  *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {[Date | null, Date | null]} [value=''] - The value of the input.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-date-range-picker')
@@ -115,7 +116,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Array })
   accessor disable: (string | number | Date)[] = [];
 
-  /** Internal storage for processed disable dates */
+  /** Internal storage for processed disable dates
+   * @internal
+   */
   @state()
   private accessor _processedDisableDates: (string | number | Date)[] = [];
 
@@ -273,6 +276,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
     };
   }
 
+  /** Debounced re-initialization helper used when configuration changes.
+   * @internal
+   */
   private debouncedUpdate = this.debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
     try {
@@ -289,6 +295,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }, 100);
 
+  /** Debounced resize handler to keep the calendar positioned correctly.
+   * @internal
+   */
   private handleResize = this.debounce(async () => {
     if (this.flatpickrInstance && !this._isDestroyed) {
       try {

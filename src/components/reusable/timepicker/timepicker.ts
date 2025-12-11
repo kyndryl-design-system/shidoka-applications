@@ -58,6 +58,7 @@ const _defaultTextStrings = {
  *   - source: 'clear' when the value was cleared; otherwise undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [value=''] - The value of the input.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-time-picker')
@@ -196,8 +197,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private accessor _userHasCleared = false;
 
-  // Flag set when the component is applying a value that
-  // originated from Flatpickr to avoid re-applying it back to the instance and causing loops.
+  /** Flag set when the component is applying a value that
+   * originated from Flatpickr to avoid re-applying it back to the instance and causing loops.
+   * @internal
+   */
   private _isApplyingFlatpickrValue = false;
 
   /** Customizable text strings. */
@@ -214,10 +217,25 @@ export class TimePicker extends FormMixin(LitElement) {
    * @internal
    */
   private _shouldFlatpickrOpen = true;
+
+  /** Track whether Flatpickr styles and instance have been initialized.
+   * @internal
+   */
   private _initialized = false;
+
+  /** Track destroyed state so we don't re-initialize after disconnect.
+   * @internal
+   */
   private _isDestroyed = false;
+
+  /** Track when legacy/default values are being applied to avoid feedback loops.
+   * @internal
+   */
   private _applyingDefaults = false;
 
+  /** Internal ID used to associate the input with its calendar container.
+   * @internal
+   */
   private _anchorId: string | null = null;
 
   /** Store submit event listener reference for cleanup
@@ -243,6 +261,9 @@ export class TimePicker extends FormMixin(LitElement) {
     };
   }
 
+  /** Debounced re-initialization helper used when configuration changes.
+   * @internal
+   */
   private debouncedUpdate = this.debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
     try {

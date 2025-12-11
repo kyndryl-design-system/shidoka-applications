@@ -60,6 +60,7 @@ const _defaultTextStrings = {
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {Date | Date[] | null} [value=''] - The value of the input.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -112,7 +113,9 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Array })
   accessor disable: (string | number | Date)[] = [];
 
-  /** Internal storage for processed disable dates */
+  /** Internal storage for processed disable dates.
+   * @internal
+   */
   @state()
   private accessor _processedDisableDates: (string | number | Date)[] = [];
 
@@ -206,6 +209,9 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private accessor _isClearing = false;
 
+  /** Internal ID used to associate the input with its calendar container.
+   * @internal
+   */
   private _anchorId: string | null = null;
 
   /** Customizable text strings. */
@@ -224,12 +230,11 @@ export class DatePicker extends FormMixin(LitElement) {
   @state()
   private accessor _shouldFlatpickrOpen = false;
 
-  /** Track if we initially had a defaultDate when the component was first connected */
+  /** Track if we initially had a defaultDate when the component was first connected.
+   * @internal
+   */
   @state()
   private accessor _hasInitialDefaultDate = false;
-
-  /** Track whether we've warned about deprecated defaultDate usage */
-  private _defaultDateDeprecatedWarned = false;
 
   /** Track initialization state
    * @internal
@@ -263,6 +268,9 @@ export class DatePicker extends FormMixin(LitElement) {
     };
   }
 
+  /** Debounced re-initialization helper used when configuration changes.
+   * @internal
+   */
   private debouncedUpdate = this.debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
     try {
