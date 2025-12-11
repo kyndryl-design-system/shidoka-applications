@@ -28,24 +28,25 @@ export default {
     locale: { control: { type: 'text' } },
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
+    // defaultHour/defaultMinute/defaultSeconds are soft deprecated — prefer controlling the component via `value`
     defaultHour: {
       control: { type: 'number' },
       table: {
-        category: 'Soft Deprecated',
+        category: 'Deprecated',
         summary: 'Soft Deprecated – use `value` instead',
       },
     },
     defaultMinute: {
       control: { type: 'number' },
       table: {
-        category: 'Soft Deprecated',
+        category: 'Deprecated',
         summary: 'Soft Deprecated – use `value` instead',
       },
     },
     defaultSeconds: {
       control: { type: 'number' },
       table: {
-        category: 'Soft Deprecated',
+        category: 'Deprecated',
         summary: 'Soft Deprecated – use `value` instead',
       },
     },
@@ -192,6 +193,19 @@ TimePickerPreSelected.args = {
   defaultSeconds: null,
 };
 TimePickerPreSelected.storyName = 'With Pre-selected Time';
+
+export const ValueOverridesDefaultTime = Template.bind({});
+ValueOverridesDefaultTime.args = {
+  ...DefaultTimePicker.args,
+  name: 'value-overrides-default-timepicker',
+  label: 'Value overrides default hour/minute/seconds',
+  value: '12:30:00',
+  defaultHour: 9,
+  defaultMinute: 15,
+  defaultSeconds: 30,
+};
+ValueOverridesDefaultTime.storyName =
+  'Value Overrides defaultHour/defaultMinute/defaultSeconds';
 
 export const InModal = {
   args: {

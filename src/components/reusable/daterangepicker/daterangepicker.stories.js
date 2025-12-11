@@ -53,7 +53,7 @@ export default {
     defaultDate: {
       control: { type: 'object' },
       table: {
-        category: 'Soft Deprecated',
+        category: 'Deprecated',
         summary: 'Soft Deprecated – use `value` instead',
       },
     },

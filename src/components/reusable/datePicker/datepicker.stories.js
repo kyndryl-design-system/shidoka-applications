@@ -57,10 +57,11 @@ export default {
     maxDate: { control: { type: 'text' } },
     label: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
+    // defaultDate is soft deprecated — prefer controlling the component via `value`
     defaultDate: {
       control: { type: 'object' },
       table: {
-        category: 'Soft Deprecated',
+        category: 'Deprecated',
         summary: 'Soft Deprecated – use `value` instead',
       },
     },
@@ -742,4 +743,4 @@ ValueOverridesDefault.args = {
 
   label: 'value overrides defaultDate',
 };
-ValueOverridesDefault.storyName = 'Value Overrides DefaultDate';
+ValueOverridesDefault.storyName = 'Value Overrides defaultDate';
