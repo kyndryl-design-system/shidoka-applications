@@ -2,10 +2,10 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { useArgs } from 'storybook/preview-api';
 
-import '../index';
-import '../../../reusable/button';
-import '../../../reusable/tabs';
-import '../../../reusable/search';
+import './';
+import '../../reusable/button';
+import '../../reusable/tabs';
+import '../../reusable/search';
 
 import megaNavConfig from './sampleMegaNavCategories.json';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
@@ -23,9 +23,6 @@ export default {
     'kyn-header-link': 'kyn-header-link',
     'kyn-header-category': 'kyn-header-category',
     'kyn-header-categories': 'kyn-header-categories',
-    'kyn-tabs': 'kyn-tabs',
-    'kyn-tab': 'kyn-tab',
-    'kyn-tab-panel': 'kyn-tab-panel',
   },
   tags: ['!autodocs'],
   args,

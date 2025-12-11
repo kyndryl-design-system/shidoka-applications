@@ -1,8 +1,8 @@
 export { Header } from './header';
 export { HeaderNav } from './headerNav';
 export { HeaderLink } from './headerLink';
-export { HeaderCategories } from './categoricalNav/headerCategories';
-export { HeaderCategory } from './categoricalNav/headerCategory';
+export { HeaderCategories } from './headerCategories';
+export { HeaderCategory } from './headerCategory';
 export { HeaderDivider } from './headerDivider';
 export { HeaderFlyouts } from './headerFlyouts';
 export { HeaderFlyout } from './headerFlyout';

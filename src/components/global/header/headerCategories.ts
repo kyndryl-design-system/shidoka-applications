@@ -11,12 +11,13 @@ import { customElement, property, state } from 'lit/decorators.js';
 import Styles from './headerCategories.scss?inline';
 
 import './headerCategory';
-import '../../../reusable/button/button';
-import '../headerLink';
+import '../../reusable/button/button';
+import './headerLink';
 
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const _defaultTextStrings = {
   back: 'Back',
@@ -30,6 +31,8 @@ export interface HeaderCategoryLinkType {
   label: string;
   href?: string;
   iconId?: string;
+  target?: '_blank' | '_self' | '_parent' | '_top';
+  rel?: string;
 }
 
 export interface HeaderCategoryType {
@@ -72,6 +75,8 @@ const VOID_HREF = 'javascript:void(0)';
 interface SlottedLinkData {
   href: string;
   inner: string;
+  target?: string;
+  rel?: string;
 }
 
 interface SlottedCategoryData {
@@ -288,7 +293,11 @@ export class HeaderCategories extends LitElement {
       <kyn-header-category heading=${category.heading}>
         ${links.slice(0, this.maxRootLinks).map(
           (link) => html`
-            <kyn-header-link href=${link.href ?? VOID_HREF}>
+            <kyn-header-link
+              href=${link.href ?? VOID_HREF}
+              target=${ifDefined(link.target)}
+              rel=${ifDefined(link.rel)}
+            >
               ${this.renderLinkContent(link, {
                 tabId,
                 categoryId: category.id,
@@ -356,7 +365,11 @@ export class HeaderCategories extends LitElement {
               <div>
                 ${column.map(
                   (link) => html`
-                    <kyn-header-link href=${link.href ?? VOID_HREF}>
+                    <kyn-header-link
+                      href=${link.href ?? VOID_HREF}
+                      target=${ifDefined(link.target)}
+                      rel=${ifDefined(link.rel)}
+                    >
                       ${this.renderLinkContent(link, {
                         tabId: this.activeMegaTabId,
                         categoryId: category.id,
@@ -403,6 +416,8 @@ export class HeaderCategories extends LitElement {
 
       const links = regularLinks.map((l) => ({
         href: l.getAttribute('href') ?? VOID_HREF,
+        target: l.getAttribute('target') ?? undefined,
+        rel: l.getAttribute('rel') ?? undefined,
         inner: l.innerHTML,
       }));
 
@@ -427,7 +442,11 @@ export class HeaderCategories extends LitElement {
             .slice(0, this.maxRootLinks)
             .map(
               (link) => html`
-                <kyn-header-link href=${link.href}>
+                <kyn-header-link
+                  href=${link.href}
+                  target=${ifDefined(link.target)}
+                  rel=${ifDefined(link.rel)}
+                >
                   ${unsafeHTML(link.inner)}
                 </kyn-header-link>
               `
@@ -508,7 +527,11 @@ export class HeaderCategories extends LitElement {
               <div>
                 ${col.map(
                   (link) => html`
-                    <kyn-header-link href=${link.href}>
+                    <kyn-header-link
+                      href=${link.href}
+                      target=${ifDefined(link.target)}
+                      rel=${ifDefined(link.rel)}
+                    >
                       ${unsafeHTML(link.inner)}
                     </kyn-header-link>
                   `
