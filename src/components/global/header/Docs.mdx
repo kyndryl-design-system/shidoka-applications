@@ -31,7 +31,8 @@ type MegaTabsConfig = {
         id: string;
         label: string;
         href?: string;
-        iconId?: string;
+        target?: string;
+        rel?: string;
       }[];
     }[];
   };
@@ -135,7 +136,7 @@ Use this if you prefer full manual markup instead of JSON configuration.
 
 Arguments:
 
-- `link → { id, label, href?, iconId? }`
+- `link → { id, label, href?, target?, rel?}`
 - `context → { tabId, categoryId, view: 'root' | 'detail' }`
 
 Return an HTML string to control how each link renders (icons, badges, wrappers, etc.).
