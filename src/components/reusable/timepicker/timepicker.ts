@@ -196,6 +196,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private accessor _userHasCleared = false;
 
+  // Flag set when the component is applying a value that originated from Flatpickr
+  // to avoid re-applying it back to the instance and causing loops.
+  private _isApplyingFlatpickrValue = false;
+
   /** Customizable text strings. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -715,6 +719,15 @@ export class TimePicker extends FormMixin(LitElement) {
     if (changedProperties.has('value') && !this._isClearing) {
       const incoming = this.value;
 
+      if (this._isApplyingFlatpickrValue) {
+        if (this._inputEl) {
+          this._padSecondsForInput(this._inputEl);
+          this.updateFormValue();
+        }
+        this.requestUpdate();
+        return;
+      }
+
       if (typeof incoming === 'string') {
         const strValue = incoming.trim();
 
@@ -760,7 +773,11 @@ export class TimePicker extends FormMixin(LitElement) {
 
       if (this.flatpickrInstance) {
         const fpVal = this.flatpickrInstance.input?.value ?? '';
-        this.value = fpVal || null;
+        if (typeof incoming === 'string' || incoming === null) {
+          this.value = fpVal || null;
+        } else {
+          if (this._inputEl) this.updateFormValue();
+        }
       }
 
       if (this._inputEl) {
@@ -831,6 +848,20 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
+  private removeCalendarElement(id?: string) {
+    try {
+      const calId = id ?? this._anchorId;
+      if (calId) {
+        const node = document.querySelector(
+          `[data-kyn-timepicker-id="${calId}"]`
+        ) as HTMLElement | null;
+        if (node && node.parentNode) node.parentNode.removeChild(node);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   async initializeFlatpickr() {
     if (this._isDestroyed) {
       return;
@@ -857,6 +888,13 @@ export class TimePicker extends FormMixin(LitElement) {
         }
 
         this.flatpickrInstance.destroy();
+
+        try {
+          this.removeCalendarElement();
+        } catch (e) {
+          // ignore
+        }
+
         this.flatpickrInstance = undefined;
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
@@ -882,6 +920,17 @@ export class TimePicker extends FormMixin(LitElement) {
             const modalDetected = container !== document.body;
             setCalendarAttributes(instance, modalDetected);
             if (instance.calendarContainer) {
+              const id =
+                this._anchorId ??
+                (this._anchorId = this.generateRandomId('time-picker'));
+              try {
+                (
+                  instance.calendarContainer as HTMLElement
+                ).dataset.kynTimepickerId = id;
+              } catch (e) {
+                // ignore
+              }
+
               instance.calendarContainer.setAttribute(
                 'aria-label',
                 'Time picker'
@@ -1056,20 +1105,27 @@ export class TimePicker extends FormMixin(LitElement) {
         newDate.setMinutes(selectedTime.getMinutes());
         newDate.setSeconds(selectedTime.getSeconds());
         newDate.setMilliseconds(0);
-        this.value = newDate;
 
+        this._isApplyingFlatpickrValue = true;
+        this.value = newDate;
         emitValue(this, 'on-change', {
           time: dateStr || null,
           date: newDate,
           source: undefined,
         });
+
+        await this.updateComplete;
+        this._isApplyingFlatpickrValue = false;
       } else {
+        this._isApplyingFlatpickrValue = true;
         this.value = null;
         emitValue(this, 'on-change', {
           time: null,
           date: null,
           source: 'clear',
         });
+        await this.updateComplete;
+        this._isApplyingFlatpickrValue = false;
       }
       this._validate(true, false);
       await this.updateComplete;
@@ -1145,7 +1201,7 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private _handleFormReset() {
-    this.value = null;
+    this.value = '';
     this._userHasCleared = false;
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
@@ -1203,6 +1259,13 @@ export class TimePicker extends FormMixin(LitElement) {
       }
 
       this.flatpickrInstance.destroy();
+
+      try {
+        this.removeCalendarElement();
+      } catch (e) {
+        // ignore
+      }
+
       this.flatpickrInstance = undefined;
     }
   }

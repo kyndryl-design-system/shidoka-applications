@@ -65,11 +65,6 @@ export default {
   },
 };
 
-const disconnectFlatpickr = () => {
-  const calendarElements = document.querySelectorAll('.flatpickr-calendar');
-  calendarElements.forEach((calendar) => calendar.remove());
-};
-
 const inTabsState = {
   a: null,
   b: null,
@@ -89,12 +84,6 @@ const ensureInTabsInitialValues = () => {
 };
 
 const Template = (args) => {
-  useEffect(() => {
-    return () => {
-      disconnectFlatpickr();
-    };
-  }, []);
-
   return html`
     <kyn-time-picker
       .name=${args.name}
@@ -130,100 +119,6 @@ const Template = (args) => {
   `;
 };
 
-const ControlledTemplate = (args) => {
-  const [{ value }, updateArgs] = useArgs();
-
-  useEffect(() => {
-    return () => {
-      disconnectFlatpickr();
-    };
-  }, []);
-
-  const toDate = (input) => {
-    if (!input) return null;
-    if (input instanceof Date) return input;
-    if (typeof input === 'string') {
-      const parsed = new Date(input);
-      return Number.isNaN(parsed.getTime()) ? null : parsed;
-    }
-    return null;
-  };
-
-  const handleChange = (e) => {
-    const detail = e.detail || {};
-
-    if (detail.source === 'clear') {
-      updateArgs({ value: null });
-      action(e.type)({ ...e, detail });
-      return;
-    }
-
-    if (detail.date instanceof Date) {
-      updateArgs({ value: detail.date });
-      action(e.type)({ ...e, detail });
-      return;
-    }
-
-    if (typeof detail.time === 'string' && detail.time.trim() !== '') {
-      const parts = detail.time.trim().split(':').map(Number);
-      if (
-        parts.length >= 2 &&
-        !Number.isNaN(parts[0]) &&
-        !Number.isNaN(parts[1])
-      ) {
-        const d = new Date();
-        d.setHours(parts[0], parts[1], parts[2] || 0, 0);
-        updateArgs({ value: d });
-        action(e.type)({ ...e, detail });
-        return;
-      }
-    }
-
-    const raw =
-      detail.date ??
-      detail.value ??
-      (Array.isArray(detail.dates) ? detail.dates[0] : null);
-
-    const nextValue = toDate(raw);
-    updateArgs({ value: nextValue });
-    action(e.type)({ ...e, detail });
-  };
-
-  return html`
-    <kyn-time-picker
-      .name=${args.name}
-      .label=${args.label}
-      .locale=${args.locale}
-      ?required=${args.required}
-      ?staticPosition=${args.staticPosition}
-      .size=${args.size}
-      .warnText=${args.warnText}
-      .invalidText=${args.invalidText}
-      .caption=${args.caption}
-      .defaultHour=${args.defaultHour}
-      .defaultMinute=${args.defaultMinute}
-      .defaultSeconds=${args.defaultSeconds === '' ||
-      args.defaultSeconds == null
-        ? null
-        : Number(args.defaultSeconds)}
-      .defaultErrorMessage=${args.defaultErrorMessage}
-      .minTime=${args.minTime}
-      .maxTime=${args.maxTime}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
-      .enableSeconds=${args.enableSeconds}
-      ?timepickerDisabled=${args.timepickerDisabled}
-      ?readonly=${args.readonly}
-      ?twentyFourHourFormat=${args.twentyFourHourFormat}
-      .value=${value}
-      @on-change=${handleChange}
-    >
-    </kyn-time-picker>
-  `;
-};
-
 export const DefaultTimePicker = Template.bind({});
 DefaultTimePicker.args = {
   name: 'default-timepicker',
@@ -246,7 +141,7 @@ DefaultTimePicker.args = {
   enableSeconds: false,
   twentyFourHourFormat: false,
   label: 'Timepicker',
-  value: null,
+  value: '',
   defaultHour: null,
   defaultMinute: null,
   defaultSeconds: null,
@@ -258,11 +153,7 @@ TimePickerWithSeconds.args = {
   ...DefaultTimePicker.args,
   label: 'Timepicker with seconds',
   enableSeconds: true,
-  value: (() => {
-    const d = new Date();
-    d.setHours(12, 30, 15, 0);
-    return d;
-  })(),
+  value: '12:30:15',
   defaultHour: null,
   defaultMinute: null,
   defaultSeconds: null,
@@ -329,11 +220,6 @@ export const InModal = {
     defaultMinute: null,
   },
   render: (args) => {
-    useEffect(() => {
-      return () => {
-        disconnectFlatpickr();
-      };
-    }, []);
     return html`
       <kyn-modal
         ?open=${args.open}
@@ -409,13 +295,8 @@ export const InTabs = {
         return;
       }
 
-      const picker = e.currentTarget;
-      if (picker && typeof picker.getValue === 'function') {
-        inTabsState[panelKey] = picker.getValue();
-      }
+      inTabsState[panelKey] = detail.date ?? null;
     };
-
-    const toBindingValue = (d) => (d instanceof Date ? d.toISOString() : '');
 
     return html`
       <kyn-tabs>
@@ -427,7 +308,7 @@ export const InTabs = {
             .label=${`${args.label} - A`}
             .locale=${args.locale}
             .size=${args.size}
-            .value=${toBindingValue(inTabsState.a)}
+            .value=${inTabsState.a ?? ''}
             @on-change=${handleChange('a')}
           >
           </kyn-time-picker>
@@ -438,7 +319,7 @@ export const InTabs = {
             .label=${`${args.label} - B`}
             .locale=${args.locale}
             .size=${args.size}
-            .value=${toBindingValue(inTabsState.b)}
+            .value=${inTabsState.b ?? ''}
             @on-change=${handleChange('b')}
           >
           </kyn-time-picker>
