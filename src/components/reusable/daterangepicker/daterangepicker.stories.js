@@ -50,7 +50,13 @@ export default {
       control: { type: 'select' },
     },
     // defaultDate is soft deprecated — prefer controlling the component via `value`
-    defaultDate: { control: { type: 'object' }, table: { disable: true } },
+    defaultDate: {
+      control: { type: 'object' },
+      table: {
+        category: 'Soft Deprecated',
+        summary: 'Soft Deprecated – use `value` instead',
+      },
+    },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },

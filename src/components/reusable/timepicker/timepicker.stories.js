@@ -28,9 +28,35 @@ export default {
     locale: { control: { type: 'text' } },
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
-    defaultHour: { control: { type: 'number' } },
-    defaultMinute: { control: { type: 'number' } },
-    defaultSeconds: { control: { type: 'number' } },
+    defaultHour: {
+      control: { type: 'number' },
+      table: {
+        category: 'Soft Deprecated',
+        summary: 'Soft Deprecated – use `value` instead',
+      },
+    },
+    defaultMinute: {
+      control: { type: 'number' },
+      table: {
+        category: 'Soft Deprecated',
+        summary: 'Soft Deprecated – use `value` instead',
+      },
+    },
+    defaultSeconds: {
+      control: { type: 'number' },
+      table: {
+        category: 'Soft Deprecated',
+        summary: 'Soft Deprecated – use `value` instead',
+      },
+    },
+
+    value: {
+      control: { type: 'text' },
+      table: {
+        summary: 'Current value (Date or time string)',
+      },
+    },
+
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     enableSeconds: { control: { type: 'boolean' } },
@@ -97,6 +123,7 @@ const Template = (args) => {
       ?timepickerDisabled=${args.timepickerDisabled}
       ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
+      .value=${args.value ?? ''}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
     </kyn-time-picker>
@@ -131,14 +158,12 @@ const ControlledTemplate = (args) => {
       return;
     }
 
-    // prefer explicit Date payload from the component if provided
     if (detail.date instanceof Date) {
       updateArgs({ value: detail.date });
       action(e.type)({ ...e, detail });
       return;
     }
 
-    // fallback: accept formatted time string (e.g. '14:30' or '2:30 PM') and parse
     if (typeof detail.time === 'string' && detail.time.trim() !== '') {
       const parts = detail.time.trim().split(':').map(Number);
       if (
@@ -154,7 +179,6 @@ const ControlledTemplate = (args) => {
       }
     }
 
-    // fallback to older payload shapes
     const raw =
       detail.date ??
       detail.value ??
@@ -222,6 +246,7 @@ DefaultTimePicker.args = {
   enableSeconds: false,
   twentyFourHourFormat: false,
   label: 'Timepicker',
+  value: null,
   defaultHour: null,
   defaultMinute: null,
   defaultSeconds: null,
@@ -233,10 +258,17 @@ TimePickerWithSeconds.args = {
   ...DefaultTimePicker.args,
   label: 'Timepicker with seconds',
   enableSeconds: true,
-  defaultHour: 12,
-  defaultMinute: 30,
-  defaultSeconds: 15,
+  value: (() => {
+    const d = new Date();
+    d.setHours(12, 30, 15, 0);
+    return d;
+  })(),
+  defaultHour: null,
+  defaultMinute: null,
+  defaultSeconds: null,
 };
+TimePickerWithSeconds.storyName = 'With Seconds (12H)';
+
 TimePickerWithSeconds.storyName = 'With Seconds (12H)';
 
 export const TimePickerTwentyFourHour = Template.bind({});
@@ -263,8 +295,10 @@ TimePickerPreSelected.args = {
   locale: 'en',
   twentyFourHourFormat: false,
   label: 'Timepicker with Pre-selected Hour and Minutes',
-  defaultHour: 12,
-  defaultMinute: 30,
+  value: '12:30:00',
+  defaultHour: null,
+  defaultMinute: null,
+  defaultSeconds: null,
 };
 TimePickerPreSelected.storyName = 'With Pre-selected Time';
 
@@ -330,8 +364,6 @@ export const InModal = {
           .invalidText=${args.invalidText}
           ?staticPosition=${args.staticPosition}
           .caption=${args.caption}
-          .defaultHour=${args.defaultHour}
-          .defaultMinute=${args.defaultMinute}
           .defaultErrorMessage=${args.defaultErrorMessage}
           .minTime=${args.minTime}
           .maxTime=${args.maxTime}
@@ -350,25 +382,6 @@ export const InModal = {
     `;
   },
 };
-
-export const ControlledTimePickerValueOverridesDefaults =
-  ControlledTemplate.bind({});
-ControlledTimePickerValueOverridesDefaults.args = {
-  ...DefaultTimePicker.args,
-  name: 'controlled-timepicker',
-  label: 'Controlled Timepicker (value overrides defaults)',
-  caption:
-    'Both defaultHour/defaultMinute and value are set; value (Date) takes precedence.',
-  defaultHour: 9,
-  defaultMinute: 0,
-  value: (() => {
-    const d = new Date(0);
-    d.setHours(14, 30, 0, 0);
-    return d;
-  })(),
-};
-ControlledTimePickerValueOverridesDefaults.storyName =
-  'Value Overrides Other Defaults';
 
 export const InTabs = {
   args: {
@@ -402,6 +415,8 @@ export const InTabs = {
       }
     };
 
+    const toBindingValue = (d) => (d instanceof Date ? d.toISOString() : '');
+
     return html`
       <kyn-tabs>
         <kyn-tab slot="tabs" id="tab-a" selected>Panel A</kyn-tab>
@@ -412,9 +427,7 @@ export const InTabs = {
             .label=${`${args.label} - A`}
             .locale=${args.locale}
             .size=${args.size}
-            .defaultHour=${args.defaultHour}
-            .defaultMinute=${args.defaultMinute}
-            .value=${inTabsState.a}
+            .value=${toBindingValue(inTabsState.a)}
             @on-change=${handleChange('a')}
           >
           </kyn-time-picker>
@@ -425,9 +438,7 @@ export const InTabs = {
             .label=${`${args.label} - B`}
             .locale=${args.locale}
             .size=${args.size}
-            .defaultHour=${args.defaultHour}
-            .defaultMinute=${args.defaultMinute}
-            .value=${inTabsState.b}
+            .value=${toBindingValue(inTabsState.b)}
             @on-change=${handleChange('b')}
           >
           </kyn-time-picker>

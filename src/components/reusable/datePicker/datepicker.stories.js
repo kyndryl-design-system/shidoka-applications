@@ -18,7 +18,6 @@ export default {
     },
   },
   argTypes: {
-    defaultDate: { table: { disable: true } },
     locale: { control: { type: 'text' } },
     dateFormat: {
       options: [
@@ -58,6 +57,13 @@ export default {
     maxDate: { control: { type: 'text' } },
     label: { control: { type: 'text' } },
     invalidText: { control: { type: 'text' } },
+    defaultDate: {
+      control: { type: 'object' },
+      table: {
+        category: 'Soft Deprecated',
+        summary: 'Soft Deprecated – use `value` instead',
+      },
+    },
     ...ValidationArgs,
   },
 };
