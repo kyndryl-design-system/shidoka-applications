@@ -88,13 +88,18 @@ export class HeaderNav extends LitElement {
   private _updateCategoriesVisibility(): void {
     const links = this.querySelectorAll<HTMLElement>('kyn-header-link');
 
-    // Only treat a mega as “open” when the link actually has the `open` attribute. `isactive` should not force the categorical view in any viewport — desktop gets its initial open via `_ensureActiveMegaExpanded`.
-    const hasOpenCategory = Array.from(links).some((link) =>
-      link.hasAttribute('open')
+    const hasOpenCategory = Array.from(links).some((link) => {
+      return link.hasAttribute('open') || link.hasAttribute('isactive');
+    });
+
+    const hasCategoriesElement = Boolean(
+      this.querySelector('kyn-header-categories')
     );
 
-    if (this.hasCategories !== hasOpenCategory) {
-      this.hasCategories = hasOpenCategory;
+    const nextHasCategories = hasOpenCategory || hasCategoriesElement;
+
+    if (this.hasCategories !== nextHasCategories) {
+      this.hasCategories = nextHasCategories;
     }
   }
 
@@ -192,6 +197,7 @@ export class HeaderNav extends LitElement {
       attributes: true,
       subtree: true,
       attributeFilter: ['open'],
+      childList: true,
     });
   }
 

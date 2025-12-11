@@ -11,8 +11,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 import Styles from './headerCategories.scss?inline';
 
 import './headerCategory';
-import '../../reusable/button/button';
-import './headerLink';
+import '../../../reusable/button/button';
+import '../headerLink';
 
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';

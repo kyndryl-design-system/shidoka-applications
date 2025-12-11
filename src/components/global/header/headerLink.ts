@@ -230,6 +230,7 @@ export class HeaderLink extends LitElement {
     if (headerCategories) {
       // MEGA / CATEGORIZED NAV:
       // "Back" should go all the way to the root nav.
+
       const navRoot =
         (this.closest('kyn-header-nav') as HTMLElement | null) ??
         headerCategories;
