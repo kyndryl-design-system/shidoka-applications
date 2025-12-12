@@ -31,139 +31,6 @@ export default {
 };
 
 // -----------------------------------------------------------------------------
-// JSON-driven categorized nav with configurable linkRenderer
-// -----------------------------------------------------------------------------
-export const WithCategorizedNav = {
-  args: {
-    ...args,
-    activeMegaTabId: 'tab1',
-    activeMegaCategoryId: null,
-  },
-  render: (renderArgs) => {
-    const [, updateArgs] = useArgs();
-
-    const handleMegaChange = (e) => {
-      const { activeMegaTabId, activeMegaCategoryId } = e.detail;
-      updateArgs({ activeMegaTabId, activeMegaCategoryId });
-    };
-
-    const renderMegaLinkPlainString = (link /*, ctx */) => {
-      const defaultIcon = link.iconSvg ?? circleIcon;
-
-      return `
-    <span>${defaultIcon}</span>
-    ${link.label}
-  `;
-    };
-
-    return html`
-      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <kyn-header-nav expandActiveMegaOnLoad>
-          <div style="padding: 8px 0;">
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Application
-
-              <kyn-tabs tabSize="sm" slot="links">
-                <kyn-tab
-                  slot="tabs"
-                  id="tab1"
-                  ?selected=${renderArgs.activeMegaTabId === 'tab1'}
-                  @click=${() =>
-                    updateArgs({
-                      activeMegaTabId: 'tab1',
-                      activeMegaCategoryId: null,
-                    })}
-                >
-                  Tab 1
-                </kyn-tab>
-
-                <kyn-tab
-                  slot="tabs"
-                  id="tab2"
-                  ?selected=${renderArgs.activeMegaTabId === 'tab2'}
-                  @click=${() =>
-                    updateArgs({
-                      activeMegaTabId: 'tab2',
-                      activeMegaCategoryId: null,
-                    })}
-                >
-                  Tab 2
-                </kyn-tab>
-
-                <kyn-tab-panel
-                  tabId="tab1"
-                  noPadding
-                  ?visible=${renderArgs.activeMegaTabId === 'tab1'}
-                >
-                  <kyn-search
-                    label="Filter items... (Application controlled)"
-                    style="display: block; margin-bottom: 16px;"
-                  ></kyn-search>
-
-                  <kyn-header-categories
-                    .tabsConfig=${megaNavConfig}
-                    .activeMegaTabId=${renderArgs.activeMegaTabId}
-                    .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    .linkRenderer=${renderMegaLinkPlainString}
-                    @on-nav-change=${handleMegaChange}
-                  ></kyn-header-categories>
-                </kyn-tab-panel>
-
-                <kyn-tab-panel
-                  tabId="tab2"
-                  noPadding
-                  ?visible=${renderArgs.activeMegaTabId === 'tab2'}
-                >
-                  <kyn-search
-                    label="Filter items... (Application controlled)"
-                    style="display: block; margin-bottom: 16px;"
-                  ></kyn-search>
-
-                  <kyn-header-categories
-                    .tabsConfig=${megaNavConfig}
-                    .activeMegaTabId=${renderArgs.activeMegaTabId}
-                    .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
-                    .linkRenderer=${renderMegaLinkPlainString}
-                    @on-nav-change=${handleMegaChange}
-                  ></kyn-header-categories>
-                </kyn-tab-panel>
-              </kyn-tabs>
-            </kyn-header-link>
-          </div>
-
-          <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Link 1
-          </kyn-header-link>
-
-          <kyn-header-divider></kyn-header-divider>
-
-          <kyn-header-category heading="Category">
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Link 2
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Link 3
-            </kyn-header-link>
-          </kyn-header-category>
-
-          <kyn-header-divider></kyn-header-divider>
-
-          <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Link 4
-          </kyn-header-link>
-        </kyn-header-nav>
-      </kyn-header>
-    `;
-  },
-};
-WithCategorizedNav.storyName = 'Categorical Nav (JSON-driven)';
-
-// -----------------------------------------------------------------------------
 // Fully manual HTML variant (no JSON) - slot driven
 // -----------------------------------------------------------------------------
 
@@ -459,4 +326,137 @@ export const WithCategorizedNavManualHtml = {
     `;
   },
 };
-WithCategorizedNavManualHtml.storyName = 'Categorical Nav (Slotted)';
+WithCategorizedNavManualHtml.storyName = 'Slotted HTML Example';
+
+// -----------------------------------------------------------------------------
+// JSON-driven categorized nav with configurable linkRenderer
+// -----------------------------------------------------------------------------
+export const WithCategorizedNav = {
+  args: {
+    ...args,
+    activeMegaTabId: 'tab1',
+    activeMegaCategoryId: null,
+  },
+  render: (renderArgs) => {
+    const [, updateArgs] = useArgs();
+
+    const handleMegaChange = (e) => {
+      const { activeMegaTabId, activeMegaCategoryId } = e.detail;
+      updateArgs({ activeMegaTabId, activeMegaCategoryId });
+    };
+
+    const renderMegaLinkPlainString = (link /*, ctx */) => {
+      const defaultIcon = link.iconSvg ?? circleIcon;
+
+      return `
+    <span>${defaultIcon}</span>
+    ${link.label}
+  `;
+    };
+
+    return html`
+      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <kyn-header-nav expandActiveMegaOnLoad>
+          <div style="padding: 8px 0;">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Application
+
+              <kyn-tabs tabSize="sm" slot="links">
+                <kyn-tab
+                  slot="tabs"
+                  id="tab1"
+                  ?selected=${renderArgs.activeMegaTabId === 'tab1'}
+                  @click=${() =>
+                    updateArgs({
+                      activeMegaTabId: 'tab1',
+                      activeMegaCategoryId: null,
+                    })}
+                >
+                  Tab 1
+                </kyn-tab>
+
+                <kyn-tab
+                  slot="tabs"
+                  id="tab2"
+                  ?selected=${renderArgs.activeMegaTabId === 'tab2'}
+                  @click=${() =>
+                    updateArgs({
+                      activeMegaTabId: 'tab2',
+                      activeMegaCategoryId: null,
+                    })}
+                >
+                  Tab 2
+                </kyn-tab>
+
+                <kyn-tab-panel
+                  tabId="tab1"
+                  noPadding
+                  ?visible=${renderArgs.activeMegaTabId === 'tab1'}
+                >
+                  <kyn-search
+                    label="Filter items... (Application controlled)"
+                    style="display: block; margin-bottom: 16px;"
+                  ></kyn-search>
+
+                  <kyn-header-categories
+                    .tabsConfig=${megaNavConfig}
+                    .activeMegaTabId=${renderArgs.activeMegaTabId}
+                    .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                    .linkRenderer=${renderMegaLinkPlainString}
+                    @on-nav-change=${handleMegaChange}
+                  ></kyn-header-categories>
+                </kyn-tab-panel>
+
+                <kyn-tab-panel
+                  tabId="tab2"
+                  noPadding
+                  ?visible=${renderArgs.activeMegaTabId === 'tab2'}
+                >
+                  <kyn-search
+                    label="Filter items... (Application controlled)"
+                    style="display: block; margin-bottom: 16px;"
+                  ></kyn-search>
+
+                  <kyn-header-categories
+                    .tabsConfig=${megaNavConfig}
+                    .activeMegaTabId=${renderArgs.activeMegaTabId}
+                    .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                    .linkRenderer=${renderMegaLinkPlainString}
+                    @on-nav-change=${handleMegaChange}
+                  ></kyn-header-categories>
+                </kyn-tab-panel>
+              </kyn-tabs>
+            </kyn-header-link>
+          </div>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 1
+          </kyn-header-link>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-category heading="Category">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 2
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 3
+            </kyn-header-link>
+          </kyn-header-category>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 4
+          </kyn-header-link>
+        </kyn-header-nav>
+      </kyn-header>
+    `;
+  },
+};
+WithCategorizedNav.storyName = 'JSON-driven with linkRenderer';

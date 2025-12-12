@@ -301,10 +301,7 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    return html`
-      <span>${unsafeSVG(circleIcon)}</span>
-      ${link.label}
-    `;
+    return html`${link.label}`;
   }
 
   private renderCategoryColumn(
