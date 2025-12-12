@@ -101,6 +101,14 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor allowManualInput = false;
 
+  /**
+   * Current time value for the component.
+   *
+   * - Uncontrolled: populated from `defaultHour` / `defaultMinute` and user selections.
+   * - Controlled: can be set from the host (e.g. Vue `:value`) as a `Date` or time string.
+   */
+  override value: string | Date | null = null;
+
   /** Sets default error message. */
   @property({ type: String })
   accessor defaultErrorMessage = '';
@@ -197,12 +205,6 @@ export class TimePicker extends FormMixin(LitElement) {
   @state()
   private accessor _userHasCleared = false;
 
-  /** Flag set when the component is applying a value that
-   * originated from Flatpickr to avoid re-applying it back to the instance and causing loops.
-   * @internal
-   */
-  private _isApplyingFlatpickrValue = false;
-
   /** Customizable text strings. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -217,6 +219,11 @@ export class TimePicker extends FormMixin(LitElement) {
    * @internal
    */
   private _shouldFlatpickrOpen = true;
+
+  /** Track whether change originated from Flatpickr to avoid feedback loops.
+   * @internal
+   */
+  private _isFromFlatpickr = false;
 
   /** Track whether Flatpickr styles and instance have been initialized.
    * @internal
@@ -513,31 +520,6 @@ export class TimePicker extends FormMixin(LitElement) {
     };
   }
 
-  private applyLegacyDefaultsIfNeeded() {
-    if (
-      this.value != null ||
-      this._userHasCleared ||
-      (this.defaultHour == null &&
-        this.defaultMinute == null &&
-        this.defaultSeconds == null)
-    ) {
-      return;
-    }
-
-    const now = new Date();
-
-    const showSeconds = this.enableSeconds || this.defaultSeconds != null;
-
-    now.setHours(
-      this.defaultHour ?? 0,
-      this.defaultMinute ?? 0,
-      showSeconds ? this.defaultSeconds ?? 0 : 0,
-      0
-    );
-
-    this.value = now;
-  }
-
   private _padSecondsForInput(el?: HTMLInputElement | null) {
     const input = el ?? this._inputEl;
     const showSeconds = this.enableSeconds || this.defaultSeconds !== null;
@@ -599,8 +581,6 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override async firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties);
-
-    this.applyLegacyDefaultsIfNeeded();
 
     if (!this._initialized) {
       injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
@@ -737,17 +717,12 @@ export class TimePicker extends FormMixin(LitElement) {
       }
     }
 
-    if (changedProperties.has('value') && !this._isClearing) {
+    if (
+      changedProperties.has('value') &&
+      !this._isClearing &&
+      !this._isFromFlatpickr
+    ) {
       const incoming = this.value;
-
-      if (this._isApplyingFlatpickrValue) {
-        if (this._inputEl) {
-          this._padSecondsForInput(this._inputEl);
-          this.updateFormValue();
-        }
-        this.requestUpdate();
-        return;
-      }
 
       if (typeof incoming === 'string') {
         const strValue = incoming.trim();
@@ -794,11 +769,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
       if (this.flatpickrInstance) {
         const fpVal = this.flatpickrInstance.input?.value ?? '';
-        if (typeof incoming === 'string' || incoming === null) {
-          this.value = fpVal || null;
-        } else {
-          if (this._inputEl) this.updateFormValue();
-        }
+        this.value = fpVal || null;
       }
 
       if (this._inputEl) {
@@ -1113,11 +1084,12 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async handleTimeChange(selectedDates: Date[], dateStr: string) {
     if (this._isClearing) return;
+
+    this._hasInteracted = true;
+    this._isFromFlatpickr = true;
+
     try {
       if (selectedDates.length > 0) {
-        if (!this._hasInteracted) {
-          this._hasInteracted = true;
-        }
         this._userHasCleared = false;
 
         const selectedTime = selectedDates[0];
@@ -1127,37 +1099,32 @@ export class TimePicker extends FormMixin(LitElement) {
         newDate.setSeconds(selectedTime.getSeconds());
         newDate.setMilliseconds(0);
 
-        this._isApplyingFlatpickrValue = true;
         this.value = newDate;
+
         emitValue(this, 'on-change', {
           time: dateStr || null,
           date: newDate,
-          source: undefined,
         });
-
-        await this.updateComplete;
-        this._isApplyingFlatpickrValue = false;
       } else {
-        this._isApplyingFlatpickrValue = true;
+        this._userHasCleared = true;
         this.value = null;
+
         emitValue(this, 'on-change', {
           time: null,
           date: null,
           source: 'clear',
         });
-        await this.updateComplete;
-        this._isApplyingFlatpickrValue = false;
       }
-      this._validate(true, false);
+    } finally {
       await this.updateComplete;
-      this.requestUpdate();
-      if (this._inputEl) {
-        this.updateFormValue();
-        // ensure seconds are padded after a user selection
-        this._padSecondsForInput(this._inputEl);
-      }
-    } catch (error) {
-      console.warn('Error handling time change:', error);
+      this._isFromFlatpickr = false;
+    }
+
+    this._validate(true, false);
+
+    if (this._inputEl) {
+      this.updateFormValue();
+      this._padSecondsForInput(this._inputEl);
     }
   }
 
@@ -1222,7 +1189,7 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private _handleFormReset() {
-    this.value = '';
+    this.value = null;
     this._userHasCleared = false;
     if (this.flatpickrInstance) {
       this.flatpickrInstance.clear();
