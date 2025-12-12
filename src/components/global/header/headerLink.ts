@@ -14,6 +14,8 @@ import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/ch
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import searchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/search.svg';
 
+export type HeaderLinkTarget = '_self' | '_blank' | '_parent' | '_top';
+
 /**
  * Component for navigation links within the Header.
  * @fires on-click - Captures the click event and emits the original event details. `detail:{ origEvent: Event ,defaultPrevented: boolean}`
@@ -26,7 +28,7 @@ export class HeaderLink extends LitElement {
   static override styles = unsafeCSS(HeaderLinkScss);
 
   /** Link open state. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor open = false;
 
   /** Link url. */
@@ -35,7 +37,7 @@ export class HeaderLink extends LitElement {
 
   /** Defines a target attribute for where to load the URL. Possible options include "_self" (default), "_blank", "_parent", "_top" */
   @property({ type: String })
-  accessor target = '_self' as const;
+  accessor target: HeaderLinkTarget = '_self';
 
   /** Defines a relationship between a linked resource and the document. An empty string (default) means no particular relationship */
   @property({ type: String })
@@ -104,7 +106,7 @@ export class HeaderLink extends LitElement {
       menu: this.slottedEls.length,
       [`level--${this.level}`]: true,
       divider: this.divider,
-      open: this.open,
+      open: this.open || (this.level === 1 && this.isActive),
     };
 
     const linkClasses = {
@@ -148,31 +150,39 @@ export class HeaderLink extends LitElement {
           class=${classMap(menuClasses)}
           style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
         >
-          <button class="go-back" @click=${() => this._handleBack()}>
-            <span>${unsafeSVG(backIcon)}</span>
-            ${this.backText}
-          </button>
+          <div class="wrapper">
+            <button
+              class="go-back"
+              type="button"
+              @click=${(e: Event) => this._handleBack(e)}
+            >
+              <span>${unsafeSVG(backIcon)}</span>
+              ${this.backText}
+            </button>
+            ${Links.length >= this.searchThreshold
+              ? html`
+                  <kyn-text-input
+                    hideLabel
+                    size="sm"
+                    type="search"
+                    label=${this.searchLabel}
+                    placeholder=${this.searchLabel}
+                    value=${this._searchTerm}
+                    @on-input=${(e: Event) => this._handleSearch(e)}
+                  >
+                    <span slot="icon" class="search-icon">
+                      ${unsafeSVG(searchIcon)}
+                    </span>
+                    ${this.searchLabel}
+                  </kyn-text-input>
+                `
+              : null}
 
-          ${Links.length >= this.searchThreshold
-            ? html`
-                <kyn-text-input
-                  hideLabel
-                  size="sm"
-                  type="search"
-                  label=${this.searchLabel}
-                  placeholder=${this.searchLabel}
-                  value=${this._searchTerm}
-                  @on-input=${(e: Event) => this._handleSearch(e)}
-                >
-                  <span slot="icon" class="search-icon">
-                    ${unsafeSVG(searchIcon)}
-                  </span>
-                  ${this.searchLabel}
-                </kyn-text-input>
-              `
-            : null}
-
-          <slot name="links" @slotchange=${this._handleLinksSlotChange}></slot>
+            <slot
+              name="links"
+              @slotchange=${this._handleLinksSlotChange}
+            ></slot>
+          </div>
         </div>
       </div>
     `;
@@ -208,16 +218,65 @@ export class HeaderLink extends LitElement {
     this._positionMenu();
   }
 
-  private _handleBack() {
+  private _handleBack(e?: Event) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    // detect if we're inside the categorized/mega nav variant
+    const headerCategories = this.closest('kyn-header-categories') as
+      | (HTMLElement & { handleBackClick?: (evt?: Event) => void })
+      | null;
+
+    if (headerCategories?.handleBackClick) {
+      headerCategories.handleBackClick(e);
+
+      // Close any open header links under this nav
+      const navRoot =
+        (this.closest('kyn-header-nav') as HTMLElement | null) ??
+        headerCategories;
+
+      const links = navRoot.querySelectorAll<HTMLElement & { open?: boolean }>(
+        'kyn-header-link[open]'
+      );
+
+      links.forEach((link) => {
+        link.removeAttribute('open');
+        if ('open' in link) {
+          (link as any).open = false;
+        }
+      });
+
+      // Clear local search for this column
+      this._searchTerm = '';
+      this._searchFilter();
+
+      return;
+    }
+
+    // BASIC NAV:
+    // Preserve original behavior: go up one level
     this.open = false;
+    this._searchTerm = '';
+    this._searchFilter();
   }
 
   private _handleLinksSlotChange() {
     this.requestUpdate();
   }
 
+  private get _isDesktopViewport(): boolean {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 672;
+  }
+
   private handlePointerEnter(e: PointerEvent) {
-    if (e.pointerType === 'mouse' && this.slottedEls.length) {
+    if (
+      e.pointerType === 'mouse' &&
+      this.slottedEls.length &&
+      this._isDesktopViewport
+    ) {
       clearTimeout(this._leaveTimer);
 
       this._enterTimer = setTimeout(() => {
@@ -230,10 +289,10 @@ export class HeaderLink extends LitElement {
     if (
       e.pointerType === 'mouse' &&
       this.slottedEls.length &&
-      this._searchTerm === ''
+      this._searchTerm === '' &&
+      this._isDesktopViewport
     ) {
       clearTimeout(this._enterTimer);
-
       this._leaveTimer = setTimeout(() => {
         this.open = false;
       }, 150);
@@ -264,49 +323,65 @@ export class HeaderLink extends LitElement {
   }
 
   private determineLevel() {
-    const ParentNode: any = this.parentNode;
-    const GrandparentNode: any = ParentNode.parentNode;
+    let level = 1;
+    let node: any = this.parentNode;
 
-    if (ParentNode.nodeName === 'KYN-HEADER-LINK') {
-      this.level = ParentNode.level + 1;
-    } else if (
-      ParentNode.nodeName === 'KYN-HEADER-CATEGORY' &&
-      GrandparentNode.nodeName === 'KYN-HEADER-LINK'
-    ) {
-      this.level = GrandparentNode.level + 1;
-    } else {
-      if (
-        window.innerWidth < 672 &&
-        ParentNode.nodeName === 'KYN-HEADER-FLYOUT'
+    // Traverse up the DOM tree
+    while (node) {
+      if (node.nodeName === 'KYN-HEADER-LINK') {
+        level = (node.level ?? 1) + 1;
+        break;
+      } else if (
+        node.nodeName === 'KYN-HEADER-CATEGORY' &&
+        node.parentNode?.nodeName === 'KYN-HEADER-LINK'
       ) {
-        this.level = 2;
-      } else {
-        this.level = 1;
+        level = (node.parentNode.level ?? 1) + 1;
+        break;
+      } else if (
+        window.innerWidth < 672 &&
+        node.nodeName === 'KYN-HEADER-FLYOUT'
+      ) {
+        level = 2;
+        break;
       }
+      node = node.parentNode;
     }
+
+    this.level = level;
   }
 
   private _positionMenu() {
-    // determine submenu positioning
-    const LinkBounds: any = this.getBoundingClientRect();
-    const MenuBounds: any = this.shadowRoot
-      ?.querySelector('.menu__content')
-      ?.getBoundingClientRect();
-    const Padding = 8;
+    const linkBounds = this.getBoundingClientRect?.();
+    const menuEl =
+      this.shadowRoot?.querySelector<HTMLElement>('.menu__content');
+    const menuBounds = menuEl?.getBoundingClientRect?.();
+
+    if (!linkBounds || !menuBounds) {
+      return;
+    }
+
+    const Padding = 12;
     const HeaderHeight = 64;
 
-    const LinkHalf = LinkBounds.top + LinkBounds.height / 2;
-    const MenuHalf = MenuBounds.height / 2;
+    const linkHalf = linkBounds.top + linkBounds.height / 2;
+    const menuHalf = menuBounds.height / 2;
 
-    const Top =
-      LinkHalf + MenuHalf > window.innerHeight
-        ? LinkHalf - MenuHalf - (LinkHalf + MenuHalf - window.innerHeight) - 16
-        : LinkHalf - MenuHalf;
+    const topCandidate =
+      linkHalf + menuHalf > window.innerHeight
+        ? linkHalf - menuHalf - (linkHalf + menuHalf - window.innerHeight) - 16
+        : linkHalf - menuHalf;
 
-    this.menuPosition = {
-      top: Top < HeaderHeight ? HeaderHeight : Top,
-      left: LinkBounds.right + Padding,
-    };
+    if (this.level === 1) {
+      this.menuPosition = {
+        top: HeaderHeight,
+        left: 0,
+      };
+    } else {
+      this.menuPosition = {
+        top: topCandidate < HeaderHeight ? HeaderHeight : topCandidate,
+        left: linkBounds.right + Padding,
+      };
+    }
   }
 
   /** @internal */
@@ -324,19 +399,27 @@ export class HeaderLink extends LitElement {
     }
   }
 
+  private _handleDocumentClick = (e: Event) => this.handleClickOut(e);
+
   override connectedCallback() {
     super.connectedCallback();
-
-    document.addEventListener('click', (e) => this.handleClickOut(e));
-
-    window?.addEventListener('resize', this._debounceResize);
+    document.addEventListener('click', this._handleDocumentClick);
+    window.addEventListener('resize', this._debounceResize);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this.handleClickOut(e));
+    // clear timers to avoid callbacks after unmount
+    if (this._enterTimer) {
+      clearTimeout(this._enterTimer);
+      this._enterTimer = undefined;
+    }
+    if (this._leaveTimer) {
+      clearTimeout(this._leaveTimer);
+      this._leaveTimer = undefined;
+    }
 
-    window?.removeEventListener('resize', this._debounceResize);
-
+    document.removeEventListener('click', this._handleDocumentClick);
+    window.removeEventListener('resize', this._debounceResize);
     super.disconnectedCallback();
   }
 }

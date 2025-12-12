@@ -1,0 +1,114 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 672px) {
+  :host {
+    padding-right: 10%;
+    width: calc(100vw - 230px);
+    max-width: calc(100vw - 230px);
+  }
+}
+
+.header-categories {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  &__inner {
+    display: block;
+    column-width: 160px;
+    column-gap: 32px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__back-slot {
+    display: block;
+    margin-top: 16px;
+  }
+}
+
+.header-categories__inner > * {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 16px;
+}
+
+slot.header-categories__slot::slotted(*) {
+  display: block;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 16px;
+}
+
+/* ---------------------------------------------------------------------
+   ROOT VIEW (MASONRY)
+   ------------------------------------------------------------------ */
+:host(:not([view='detail'])) .header-categories__inner {
+  column-width: 160px;
+}
+
+@media (min-width: 896px) {
+  :host(:not([view='detail'])) .header-categories__inner {
+    column-width: 180px;
+  }
+}
+
+@media (min-width: 1152px) {
+  :host(:not([view='detail'])) .header-categories__inner {
+    column-width: 200px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   DETAIL VIEW
+   ------------------------------------------------------------------ */
+
+:host([view='detail']) {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  .header-categories {
+    &__inner {
+      overflow: auto;
+    }
+  }
+}
+
+:host([view='detail']) .header-detail-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 0 32px;
+  width: max-content;
+  box-sizing: border-box;
+}
+
+:host([view='detail']) .header-detail-columns > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 0 0 200px;
+}
+
+:host([view='detail']) .header-detail-columns--single {
+  max-width: 360px;
+  width: auto;
+}
+
+:host([view='detail']) .header-detail-columns kyn-header-link {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 42rem) {
+  :host([view='detail']) .header-detail-columns > div {
+    min-width: 160px;
+  }
+}

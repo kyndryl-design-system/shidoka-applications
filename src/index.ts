@@ -2,6 +2,7 @@ export {
   Header,
   HeaderNav,
   HeaderLink,
+  HeaderCategories,
   HeaderCategory,
   HeaderDivider,
   HeaderFlyouts,
