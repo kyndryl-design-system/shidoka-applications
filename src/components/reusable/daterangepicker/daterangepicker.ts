@@ -11,7 +11,6 @@ import {
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
   getPlaceholder,
-  preventFlatpickrOpen,
   handleInputClick,
   handleInputFocus,
   setCalendarAttributes,
@@ -67,6 +66,7 @@ const _defaultTextStrings = {
  *   - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {[Date | null, Date | null]} [value=''] - The value of the input.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-date-range-picker')
@@ -88,7 +88,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor dateFormat = 'Y-m-d';
 
-  /** Sets the initial selected date(s). For range mode, provide an array of date strings matching dateFormat (e.g. ["2024-01-01", "2024-01-07"]). */
+  /** @deprecated Use `value` (Date | Date[]) instead. */
   @property({ type: Array })
   accessor defaultDate: string[] | null = null;
 
@@ -104,10 +104,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
    * Current date range value for the component.
    *
    * - Uncontrolled: populated from `defaultDate` and user selections.
-   * - Controlled: can be set from the host (e.g. Vue `:value`) as a tuple
-   *   `[startDate, endDate]`, where each entry is a `Date` or `null`.
-   *
-   * When both `defaultDate` and `value` are provided, `value` takes precedence.
+   * - Controlled: can be set from the host (e.g. Vue `:value`).
    */
   override value: [Date | null, Date | null] = [null, null];
 
@@ -119,7 +116,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Array })
   accessor disable: (string | number | Date)[] = [];
 
-  /** Internal storage for processed disable dates */
+  /** Internal storage for processed disable dates
+   * @internal
+   */
   @state()
   private accessor _processedDisableDates: (string | number | Date)[] = [];
 
@@ -277,6 +276,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
     };
   }
 
+  /** Debounced re-initialization helper used when configuration changes.
+   * @internal
+   */
   private debouncedUpdate = this.debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
     try {
@@ -293,6 +295,9 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
   }, 100);
 
+  /** Debounced resize handler to keep the calendar positioned correctly.
+   * @internal
+   */
   private handleResize = this.debounce(async () => {
     if (this.flatpickrInstance && !this._isDestroyed) {
       try {
@@ -714,13 +719,19 @@ export class DateRangePicker extends FormMixin(LitElement) {
         if (Array.isArray(this.defaultDate) && this.defaultDate.length === 1) {
           this._hasInteracted = true;
           this._validate(true, false);
-        } else if (
-          this.value.length === 2 &&
-          ((this.value[0] !== null && this.value[1] === null) ||
-            (this.value[0] === null && this.value[1] !== null))
-        ) {
-          this._hasInteracted = true;
-          this._validate(true, false);
+        } else {
+          const currentValueArray = Array.isArray(this.value)
+            ? this.value
+            : [null, null];
+
+          if (
+            currentValueArray.length === 2 &&
+            ((currentValueArray[0] !== null && currentValueArray[1] === null) ||
+              (currentValueArray[0] === null && currentValueArray[1] !== null))
+          ) {
+            this._hasInteracted = true;
+            this._validate(true, false);
+          }
         }
       }, 0);
     }
@@ -1482,9 +1493,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const shouldShowValidationErrors =
       this._hasInteracted || report || !!this.invalidText;
 
-    const selectedCount = [this.value[0], this.value[1]].filter(
+    const currentValueArray = Array.isArray(this.value)
+      ? this.value
+      : [null, null];
+
+    const selectedCount = [currentValueArray[0], currentValueArray[1]].filter(
       (d) => d !== null
     ).length;
+
     let validity = this._inputEl.validity;
     let validationMessage = this._inputEl.validationMessage;
 
