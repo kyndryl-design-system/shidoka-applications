@@ -76,9 +76,8 @@
     overflow-y: auto;
     overflow-x: hidden;
     background: var(--kd-color-background-container-default);
-    transition: visibility 300ms, opacity 300ms ease-in-out,
-      transform 300ms ease-in-out;
-    transform: translateY(-20px);
+    transition: visibility 120ms ease-out, opacity 120ms ease-out;
+    transform: none;
     visibility: hidden;
     opacity: 0;
     z-index: -1;
@@ -87,7 +86,7 @@
     gap: 2px;
 
     &.slotted {
-      padding: 8px;
+      padding: 8px 12px;
     }
 
     @media (min-width: 42rem) {
@@ -104,6 +103,10 @@
       &.left {
         left: -12px;
         right: auto;
+      }
+
+      &.categories-open {
+        box-shadow: none;
       }
 
       @include elevation.shadow(1);
@@ -151,8 +154,8 @@
   position: relative;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
-  height: 40px;
+  padding: 6px 12px 6px 8px;
+  height: 30px;
   cursor: pointer;
   background: none;
   border: none;

@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS, type PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderNavScss from './headerNav.scss?inline';
@@ -25,11 +25,40 @@ export class HeaderNav extends LitElement {
   @property({ type: String, reflect: true })
   override accessor slot = 'left';
 
+  /** Boolean value reflecting whether the navigation has categories. */
+  @state()
+  accessor hasCategories = false;
+
+  /**
+   * When true, the nav will automatically expand the active link's
+   * categorical menu (mega nav) on first render (desktop) / once the menu is opened
+   * (mobile). This does not affect `menuOpen`.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor expandActiveMegaOnLoad = false;
+
+  /** Mutation observer for attribute changes. */
+  private _attrObserver?: MutationObserver;
+
+  /** Bound document click handler to allow proper add/remove of listener */
+  private _boundHandleClickOut = (e: Event) => this._handleClickOut(e);
+
+  private get _isDesktop(): boolean {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 672;
+  }
+
   override render() {
     const classes = {
       'header-nav': true,
       menu: true,
       open: this.menuOpen,
+    };
+
+    const menuContentClasses = {
+      menu__content: true,
+      left: true,
+      'categories-open': this.hasCategories,
     };
 
     return html`
@@ -41,12 +70,12 @@ export class HeaderNav extends LitElement {
           @click=${() => this._toggleMenuOpen()}
         >
           ${this.menuOpen
-            ? html` <span>${unsafeSVG(closeIcon)}</span> `
-            : html` <span>${unsafeSVG(menuIcon)}</span> `}
+            ? html`<span>${unsafeSVG(closeIcon)}</span>`
+            : html`<span>${unsafeSVG(menuIcon)}</span>`}
         </button>
 
-        <div class="menu__content left">
-          <slot></slot>
+        <div class=${classMap(menuContentClasses)}>
+          <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
       </div>
     `;
@@ -56,31 +85,129 @@ export class HeaderNav extends LitElement {
     this.menuOpen = !this.menuOpen;
   }
 
+  private _updateCategoriesVisibility(): void {
+    const links = this.querySelectorAll<HTMLElement>('kyn-header-link');
+
+    const hasOpenCategory = Array.from(links).some((link) => {
+      return link.hasAttribute('open') || link.hasAttribute('isactive');
+    });
+
+    const hasCategoriesElement = Boolean(
+      this.querySelector('kyn-header-categories')
+    );
+
+    const nextHasCategories = hasOpenCategory || hasCategoriesElement;
+
+    if (this.hasCategories !== nextHasCategories) {
+      this.hasCategories = nextHasCategories;
+    }
+  }
+
+  /**
+   * Determine whether the active link's categorical menu (mega nav) is open initially. Only applies on desktop; mobile should start collapsed and require explicit interaction.
+   */
+  private _ensureActiveMegaExpanded() {
+    if (!this.expandActiveMegaOnLoad || !this._isDesktop) return;
+
+    const links = Array.from(
+      this.querySelectorAll<
+        HTMLElement & { open?: boolean; isActive?: boolean }
+      >('kyn-header-link')
+    );
+
+    if (!links.length) return;
+
+    let activeLink = links.find((link) => link.hasAttribute('isactive'));
+
+    // fallback: first link that owns mega content (slot="links")
+    if (!activeLink) {
+      activeLink = links.find((link) => link.querySelector('[slot="links"]'));
+    }
+
+    if (!activeLink) return;
+
+    links.forEach((link) => {
+      const shouldBeOpen = link === activeLink;
+
+      link.toggleAttribute('open', shouldBeOpen);
+
+      if ('open' in link) {
+        (link as any).open = shouldBeOpen;
+      }
+
+      if (shouldBeOpen) {
+        link.setAttribute('isactive', '');
+      } else {
+        link.removeAttribute('isactive');
+      }
+    });
+  }
+
+  private _handleSlotChange() {
+    this._ensureActiveMegaExpanded();
+    this._updateCategoriesVisibility();
+  }
+
   private _handleClickOut(e: Event) {
     if (!e.composedPath().includes(this)) {
       this.menuOpen = false;
     }
   }
 
-  override willUpdate(changedProps: any) {
+  protected override firstUpdated(_changed: PropertyValueMap<this>): void {
+    this._ensureActiveMegaExpanded();
+    this._updateCategoriesVisibility();
+  }
+
+  override willUpdate(changedProps: PropertyValueMap<this>): void {
     if (changedProps.has('menuOpen')) {
-      const event = new CustomEvent('on-nav-toggle', {
-        composed: true,
-        bubbles: true,
-        detail: { open: this.menuOpen },
-      });
-      this.dispatchEvent(event);
+      const detail = { open: this.menuOpen };
+
+      this.dispatchEvent(
+        new CustomEvent('on-nav-toggle', {
+          composed: true,
+          bubbles: true,
+          detail,
+        })
+      );
+
+      // dispatch to document for other components to listen
+      this.ownerDocument?.dispatchEvent(
+        new CustomEvent('on-nav-toggle', { detail })
+      );
     }
   }
 
-  override connectedCallback() {
-    super.connectedCallback();
-
-    document.addEventListener('click', (e) => this._handleClickOut(e));
+  override updated(changedProps: PropertyValueMap<this>): void {
+    if (changedProps.has('hasCategories')) {
+      this.classList.toggle('categories-open', this.hasCategories);
+    }
   }
 
-  override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    document.addEventListener('click', this._boundHandleClickOut);
+
+    this._attrObserver = new MutationObserver(() => {
+      this._updateCategoriesVisibility();
+    });
+
+    this._attrObserver.observe(this, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['open'],
+      childList: true,
+    });
+  }
+
+  override disconnectedCallback(): void {
+    document.removeEventListener('click', this._boundHandleClickOut);
+
+    if (this._attrObserver) {
+      this._attrObserver.disconnect();
+      this._attrObserver = undefined;
+    }
 
     super.disconnectedCallback();
   }

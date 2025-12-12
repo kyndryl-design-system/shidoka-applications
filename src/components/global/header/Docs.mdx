@@ -1,0 +1,175 @@
+import { Meta, Canvas, Description, Title } from '@storybook/addon-docs/blocks';
+
+<Meta
+  title="Global Components/Header/Categorical Nav"
+  component="kyn-header-categories"
+/>
+
+# Categorical Navigation
+
+Shidoka provides a **categorized navigation component** designed to be easy to configure and accessible. This Docs page shows the two supported modes (JSON-driven and Slotted HTML) and provides copy-paste examples and guidance for consuming developers.
+
+## Overview
+
+The primary component is <code>kyn-header-categories</code>. It supports:
+
+- **JSON-driven mode** via the <code>tabsConfig</code> property (the most common integration pattern).
+- **Slotted HTML mode** where you place <code>kyn-header-category</code> and <code>kyn-header-link</code> elements directly into the light DOM.
+- An optional <code>linkRenderer</code> hook to fully customize how each link is rendered when using JSON-driven mode.
+
+---
+
+## tabsConfig JSON format
+
+When using JSON-driven mode, the component expects a **tab-id keyed configuration object** with this shape:
+
+```ts
+type MegaTabsConfig = {
+  [tabId: string]: {
+    categories: {
+      id: string;
+      heading: string;
+      links: {
+        id: string;
+        label: string;
+        href?: string;
+        target?: '_blank' | '_self' | '_parent' | '_top';
+        rel?: string;
+      }[];
+    }[];
+  };
+};
+```
+
+---
+
+## Example JSON
+
+```json
+{
+  "tab1": {
+    "categories": [
+      {
+        "id": "tab1-cat-1",
+        "heading": "Category 1",
+        "links": [
+          { "id": "tab1-c1-l1", "label": "Sub Link 1", "href": "#" },
+          { "id": "tab1-c1-l2", "label": "Sub Link 2", "href": "#" },
+          { "id": "tab1-c1-l3", "label": "Sub Link 3", "href": "#" }
+        ]
+      },
+      {
+        "id": "tab1-cat-2",
+        "heading": "Category 2",
+        "links": [{ "id": "tab1-c2-l1", "label": "Sub Link 1", "href": "#" }]
+      }
+    ]
+  },
+  "tab2": {
+    "categories": [
+      {
+        "id": "tab2-cat-1",
+        "heading": "T2 - Category 1",
+        "links": [{ "id": "tab2-c1-l1", "label": "Sub Link 1", "href": "#" }]
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Quick copy/paste examples
+
+### JSON-driven (recommended)
+
+Use the JSON configuration and provide an optional renderer to customize how links appear.
+
+```ts
+import megaNavConfig from './sampleMegaNavCategories.json';
+
+const renderMegaLink = (link, ctx) => `
+  <span class="mega-link">${link.label}</span>
+`;
+
+return (
+  <kyn-header-categories
+    tabsConfig={megaNavConfig}
+    activeMegaTabId="tab1"
+    activeMegaCategoryId={null}
+    linkRenderer={renderMegaLink}
+  ></kyn-header-categories>
+);
+```
+
+Notes:
+
+- `activeMegaTabId` is typically controlled by your router or application state.
+- `activeMegaCategoryId` can be synchronized via the `on-nav-change` event if needed.
+- `linkRenderer` is optional — if omitted, a default icon + label layout is used.
+- The `linkRenderer` **must return a string** (HTML) or `null`/`undefined`.
+  - If it returns a non-empty string, it is rendered via `unsafeHTML`.
+  - If it returns `null`, `undefined`, or an empty string, the default icon + label
+    layout is used.
+
+---
+
+### Slotted HTML mode
+
+Use this if you prefer full manual markup instead of JSON configuration.
+
+```html
+<kyn-header-categories>
+  <kyn-header-category heading="Category 1">
+    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
+  </kyn-header-category>
+
+  <kyn-header-category heading="Category 2">
+    <kyn-header-link href="#">Sub Link A</kyn-header-link>
+  </kyn-header-category>
+</kyn-header-categories>
+```
+
+---
+
+## linkRenderer API
+
+```ts
+(link, context) => string | null;
+```
+
+Arguments:
+
+`link → { id, label, href?, target?, rel? }`
+
+`context → { tabId, categoryId, view: 'root' | 'detail' }`
+
+Return a string of HTML to control how each link renders (icons, badges, wrappers, etc.).
+
+If you return null, undefined, or an empty string, the component falls back to the
+built-in icon + label layout for that link.
+
+---
+
+## Accessibility notes
+
+- If your renderer outputs anchors or buttons directly, ensure appropriate keyboard and focus behavior.
+- The detail view is wrapped in a labelled region for screen readers.
+- Focus is preserved automatically when navigating between views.
+
+---
+
+## Security note
+
+- Slotted mode re-renders consumer markup inside the shadow DOM.
+- JSON mode uses `linkRenderer` and renders its result via `unsafeHTML`.
+- Do **not** pass untrusted or user-supplied HTML into slotted content or `linkRenderer`.
+
+---
+
+## Troubleshooting
+
+- If nothing renders in JSON mode, confirm your `tabsConfig` keys match `activeMegaTabId`.
+- If your renderer isn’t applied, ensure `linkRenderer` is passed as a JavaScript function prop, not as a quoted string
