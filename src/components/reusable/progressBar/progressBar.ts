@@ -198,18 +198,14 @@ export class ProgressBar extends LitElement {
   }
 
   override firstUpdated() {
-    if (this.status === ProgressStatus.ACTIVE) {
-      this.startProgress();
-    }
+    this.startProgress();
   }
 
   override updated(changedProperties: Map<string, any>) {
     if (changedProperties.has('status') || changedProperties.has('value')) {
       this.cancelAnimation();
 
-      if (this.status === ProgressStatus.ACTIVE) {
-        this.startProgress();
-      }
+      this.startProgress();
     }
   }
 
