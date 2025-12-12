@@ -104,7 +104,7 @@ export class TimePicker extends FormMixin(LitElement) {
   /**
    * Current time value for the component.
    *
-   * - Uncontrolled: populated from `defaultHour` / `defaultMinute` and user selections.
+   * - Uncontrolled: populated from `defaultHour` / `defaultMinute` / `defaultSeconds` and user selections.
    * - Controlled: can be set from the host (e.g. Vue `:value`) as a `Date` or time string.
    */
   override value: string | Date | null = null;
