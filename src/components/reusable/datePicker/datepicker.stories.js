@@ -43,7 +43,10 @@ export default {
       options: ['single', 'multiple'],
       control: { type: 'select' },
     },
-    value: { control: { type: 'text' } },
+    // NOTE: Storybook "text" controls serialize everything to strings.
+    // For this component, `value` can be Date | Date[] | string | string[] | null.
+    // Use "object" control so arrays survive Controls updates (needed for mode="multiple").
+    value: { control: { type: 'object' } },
     size: {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
@@ -154,6 +157,20 @@ MinMaxDateExample.args = {
   label: 'Min and Max dates set',
 };
 
+export const MinMaxInvalidPresetValue = Template.bind({});
+MinMaxInvalidPresetValue.args = {
+  ...DatePickerDefault.args,
+  name: 'min-max-invalid-preset',
+  dateFormat: 'Y-m-d',
+  minDate: '2024-01-01',
+  maxDate: '2024-12-31',
+  value: '2025-12-04',
+  caption:
+    'Value is pre-set outside min/max. Component should display an error.',
+  label: 'Min/Max with invalid preset value',
+};
+MinMaxInvalidPresetValue.storyName = 'Min/Max + Invalid Preset Value';
+
 export const DatePickerMultiple = Template.bind({});
 DatePickerMultiple.args = {
   ...DatePickerDefault.args,
@@ -163,9 +180,8 @@ DatePickerMultiple.args = {
   caption: 'Select multiple dates.',
   mode: 'multiple',
   label: 'Multiple Date Selection',
-};
-DatePickerMultiple.argTypes = {
-  value: { control: { type: 'object' } },
+  // Use strings here so controls can edit them reliably
+  value: ['2024-03-10', '2024-03-15'],
 };
 DatePickerMultiple.storyName = 'Multiple Date Selection';
 
@@ -176,12 +192,10 @@ DateTimeMultiple.args = {
   name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
   caption: 'Select multiple dates with time. Example shows preselected dates.',
-  value: [new Date('2024-03-10T10:00:00'), new Date('2024-03-15T15:30:00')],
+  // prefer ISO strings for SB controls.
+  value: ['2024-03-10T10:00:00', '2024-03-15T15:30:00'],
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
-};
-DateTimeMultiple.argTypes = {
-  value: { control: { type: 'object' } },
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
 

@@ -88,8 +88,25 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor dateFormat = 'Y-m-d';
 
-  /** @deprecated Use `value` (Date | Date[]) instead. */
-  @property({ type: String })
+  /**
+   * Sets the initial selected date(s) for the range.
+   *
+   * @deprecated Soft-deprecated. Prefer setting `value`.
+   *
+   * Backward compatibility notes:
+   * - still supports property assignment (`defaultDate = '2025-01-01'` or string[]).
+   * - empty attribute values are treated as `null`.
+   */
+  @property({
+    attribute: 'default-date',
+    converter: {
+      fromAttribute: (attr: string | null) => {
+        if (attr == null) return null;
+        const v = attr.trim();
+        return v === '' ? null : v;
+      },
+    },
+  })
   accessor defaultDate: string | string[] | null = null;
 
   /** Controls which parts of the date range are editable. */

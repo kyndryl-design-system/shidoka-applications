@@ -65,7 +65,7 @@ type DatePickerValueInput = string | string[] | Date | Date[] | null;
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
- * @attr {string | string[] | Date | Date[] | null} [value=''] - The value of the input.
+ * @attr {Date | Date[] | string | string[] } [value=''] - The value of the input.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -128,7 +128,7 @@ export class DatePicker extends FormMixin(LitElement) {
    * Note: for backward compatibility, `value` may arrive as strings from some
    * host frameworks; this component will attempt to parse/normalize those.
    */
-  override value: Date | Date[] | null = null;
+  override value: Date | Date[] | string | string[] | null = null;
 
   /** Sets validation warning messaging. */
   @property({ type: String })
@@ -565,6 +565,17 @@ export class DatePicker extends FormMixin(LitElement) {
       this.applyLegacyDefaultDate();
     }
 
+    const initialRaw = this.value as unknown as DatePickerValueInput;
+    if (!this.isEmptyValue(initialRaw)) {
+      const { parseFailed, outOfRange } =
+        this.validateAndNormalizeHostValue(initialRaw);
+      if (parseFailed || outOfRange) {
+        this._hasInteracted = true;
+        this.invalidText = this._textStrings.pleaseSelectValidDate;
+        this._validate(true, false);
+      }
+    }
+
     if (!this._initialized) {
       injectFlatpickrStyles(ShidokaFlatpickrTheme.toString());
       this._initialized = true;
@@ -644,10 +655,10 @@ export class DatePicker extends FormMixin(LitElement) {
 
         if (this.invalidText) this.invalidText = '';
       } else if (this.flatpickrInstance) {
-        const { dates, hostProvidedSomething, parseFailed } =
+        const { dates, hostProvidedSomething, parseFailed, outOfRange } =
           this.validateAndNormalizeHostValue(raw);
 
-        if (parseFailed) {
+        if (parseFailed || outOfRange) {
           this._hasInteracted = true;
           this.invalidText = this._textStrings.pleaseSelectValidDate;
 
@@ -792,7 +803,6 @@ export class DatePicker extends FormMixin(LitElement) {
       this._validate(true, false);
       await this.updateComplete;
       await this.initializeFlatpickr();
-      this.requestUpdate();
     } catch (error) {
       console.error('Error clearing datepicker:', error);
     } finally {
@@ -901,7 +911,22 @@ export class DatePicker extends FormMixin(LitElement) {
       const hh = Number(dtMatch[4]);
       const mm = Number(dtMatch[5]);
       const ss = dtMatch[6] !== undefined ? Number(dtMatch[6]) : 0;
+
+      if (mo < 1 || mo > 12 || da < 1 || da > 31) return null;
+      if (hh < 0 || hh > 23 || mm < 0 || mm > 59 || ss < 0 || ss > 59) {
+        return null;
+      }
+
       const dt = new Date(y, mo - 1, da, hh, mm, ss);
+
+      if (
+        dt.getFullYear() !== y ||
+        dt.getMonth() !== mo - 1 ||
+        dt.getDate() !== da
+      ) {
+        return null;
+      }
+
       return isNaN(dt.getTime()) ? null : dt;
     }
 
@@ -925,13 +950,43 @@ export class DatePicker extends FormMixin(LitElement) {
       return isNaN(dt.getTime()) ? null : dt;
     }
 
-    // fallback: try parsing using flatpickr with the component's dateFormat
     try {
       const parsed = (flatpickr as any).parseDate(dateStr, this.dateFormat);
-      return parsed instanceof Date && !isNaN(parsed.getTime()) ? parsed : null;
+      if (!(parsed instanceof Date) || isNaN(parsed.getTime())) return null;
+
+      const formatted = (flatpickr as any).formatDate(parsed, this.dateFormat);
+      return formatted === dateStr ? parsed : null;
     } catch (e) {
       return null;
     }
+  }
+
+  private normalizeToDate(value: string | number | Date | ''): Date | null {
+    if (!value) return null;
+
+    if (value instanceof Date) {
+      return isNaN(value.getTime()) ? null : value;
+    }
+
+    if (typeof value === 'number') {
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    if (typeof value === 'string') {
+      return this.parseDateString(value);
+    }
+
+    return null;
+  }
+
+  private isDateInRange(date: Date): boolean {
+    const min = this.normalizeToDate(this.minDate);
+    const max = this.normalizeToDate(this.maxDate);
+
+    if (min && date < min) return false;
+    if (max && date > max) return false;
+    return true;
   }
 
   private resolveYearFromConfig(
@@ -1002,6 +1057,7 @@ export class DatePicker extends FormMixin(LitElement) {
     dates: Date[];
     hostProvidedSomething: boolean;
     parseFailed: boolean;
+    outOfRange: boolean;
   } {
     const hostProvidedSomething = !this.isEmptyValue(raw);
 
@@ -1009,7 +1065,12 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const parseFailed = hostProvidedSomething && dates.length === 0;
 
-    return { dates, hostProvidedSomething, parseFailed };
+    const outOfRange =
+      !parseFailed &&
+      dates.length > 0 &&
+      dates.some((d) => !this.isDateInRange(d));
+
+    return { dates, hostProvidedSomething, parseFailed, outOfRange };
   }
 
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
@@ -1155,7 +1216,6 @@ export class DatePicker extends FormMixin(LitElement) {
 
       this._validate(true, false);
       await this.updateComplete;
-      this.requestUpdate();
     } catch (error) {
       console.error('Error handling date change:', error);
       this.invalidText = this._textStrings.errorProcessing;
@@ -1338,8 +1398,6 @@ export class DatePicker extends FormMixin(LitElement) {
       } else {
         this.value = newValue;
       }
-
-      this.requestUpdate('value');
     } finally {
       this._isClearing = false;
     }
