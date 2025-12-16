@@ -49,7 +49,14 @@ export default {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
     },
-    defaultDate: { control: { type: 'object' } },
+    // defaultDate is soft deprecated — prefer controlling the component via `value`
+    defaultDate: {
+      control: { type: 'object' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Soft Deprecated – use `value` instead',
+      },
+    },
     required: { control: { type: 'boolean' } },
     staticPosition: { control: { type: 'boolean' } },
     disable: { control: { type: 'object' } },
@@ -115,8 +122,8 @@ const Template = (args) => {
       .label=${args.label}
       .locale=${args.locale}
       .dateFormat=${args.dateFormat}
-      .defaultDate=${args.defaultDate}
       .rangeEditMode=${args.rangeEditMode}
+      .value=${args.value}
       .defaultErrorMessage=${args.defaultErrorMessage}
       .warnText=${args.warnText}
       .invalidText=${args.invalidText}
@@ -149,7 +156,7 @@ DateRangeDefault.args = {
   name: 'default-date-range-picker',
   locale: 'en',
   dateFormat: 'Y-m-d',
-  defaultDate: [],
+  value: [null, null],
   required: false,
   staticPosition: false,
   size: 'md',
@@ -186,18 +193,18 @@ InvalidDefaultDates.args = {
   name: 'invalid-default-dates-picker',
   label: 'Invalid Default Dates',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2025-13-01', '2023-06-01'],
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
   allowManualInput: false,
   caption: 'Invalid default dates will trigger validation errors..',
   invalidText: '',
   defaultErrorMessage: '',
-  required: false,
+  required: true,
   size: 'md',
   staticPosition: false,
   disable: [],
   enable: [],
+  value: ['2024-01-01', '2024-13-07'],
 };
 InvalidDefaultDates.storyName = 'Invalid / Out-of-Range Defaults';
 
@@ -206,7 +213,7 @@ WithPreselectedRange.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-01-01', '2024-01-07'],
+  value: ['2025-12-11', '2025-12-12'],
   allowManualInput: false,
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
@@ -217,7 +224,7 @@ WithPreselectedDateTime.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-time-range',
   dateFormat: 'Y-m-d H:i',
-  defaultDate: ['2024-01-01 09:00:00', '2024-01-02 17:00:00'],
+  value: [new Date('2024-01-01 09:00:00'), new Date('2024-01-02 17:00:00')],
   allowManualInput: false,
   caption: 'Example with preselected date/time range (format: Y-m-d H:i)',
   label: 'Preselected Date/Time Range',
@@ -247,7 +254,7 @@ FixedStartDate.args = {
   ...DateRangeDefault.args,
   name: 'fixed-deadline-date-picker',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2024-05-01', '2024-05-15'],
+  value: [new Date('2024-05-01'), new Date('2024-05-15')],
   rangeEditMode: 'end',
   allowManualInput: false,
   label: 'Fixed Start - Flexible Deadline',
@@ -328,7 +335,7 @@ export const InModal = {
           .label=${args.label}
           .locale=${args.locale}
           .dateFormat=${args.dateFormat}
-          .defaultDate=${args.defaultDate}
+          .value=${args.value}
           ?staticPosition=${args.staticPosition}
           .defaultErrorMessage=${args.defaultErrorMessage}
           .warnText=${args.warnText}
@@ -427,7 +434,7 @@ export const DateRangePickerInAccordionInModal = {
                 .label=${args.label}
                 .locale=${args.locale}
                 .dateFormat=${args.dateFormat}
-                .defaultDate=${args.defaultDate}
+                .value=${args.value}
                 .defaultErrorMessage=${args.defaultErrorMessage}
                 ?staticPosition=${args.staticPosition}
                 .warnText=${args.warnText}
@@ -611,6 +618,6 @@ ControlledValueOverridesDefault.args = {
   caption:
     'Both defaultDate and value are set; value (Date objects) takes precedence.',
   defaultDate: ['2024-01-01', '2024-01-07'],
-  value: [new Date('2024-02-10'), new Date('2024-02-20')],
+  value: ['2024-02-10', '2024-02-20'],
 };
 ControlledValueOverridesDefault.storyName = 'Value Overrides defaultDate';

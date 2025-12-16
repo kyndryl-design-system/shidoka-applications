@@ -34,6 +34,8 @@ import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cl
 
 type SupportedLocale = (typeof langsArray)[number];
 
+type TimePickerValue = string | Date | null;
+
 const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear',
@@ -56,6 +58,7 @@ const _defaultTextStrings = {
  *   - source: 'clear' when the value was cleared; otherwise undefined.
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
+ * @attr {string} [value=''] - The value of the input.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  */
 @customElement('kyn-time-picker')
@@ -74,28 +77,37 @@ export class TimePicker extends FormMixin(LitElement) {
   accessor locale: SupportedLocale | string = 'en';
 
   /**
-   * Current time value for the component.
-   *
-   * - Uncontrolled: populated from `defaultHour` / `defaultMinute` and user selections.
-   * - Controlled: can be set from the host (e.g. Vue `:value`) as a `Date` or time string.
+   * @deprecated Use `value` (Date or time string) to prefill the time instead.
+   * Legacy: initial hour when `value` is unset.
    */
-  override value: string | Date | null = null;
-
-  /** Sets initial value of the hour element. */
   @property({ type: Number, reflect: true })
   accessor defaultHour: number | null = null;
 
-  /** Sets initial value of the minute element. */
+  /**
+   * @deprecated Use `value` (Date or time string) to prefill the time instead.
+   * Legacy: initial minute when `value` is unset.
+   */
   @property({ type: Number, reflect: true })
   accessor defaultMinute: number | null = null;
 
-  /** Default seconds when using defaultHour/defaultMinute */
+  /**
+   * @deprecated Use `value` (Date or time string) to prefill the time instead.
+   * Legacy: initial seconds when `value` is unset.
+   */
   @property({ type: Number, reflect: true })
   accessor defaultSeconds: number | null = null;
 
   /** Allows manual input of time string (when true, user can type a time) */
   @property({ type: Boolean })
   accessor allowManualInput = false;
+
+  /**
+   * Current time value for the component.
+   *
+   * - Uncontrolled: populated from `defaultHour` / `defaultMinute` / `defaultSeconds` and user selections.
+   * - Controlled: can be set from the host (e.g. Vue `:value`) as a `Date` or time string.
+   */
+  override value: string | Date | null = null;
 
   /** Sets default error message. */
   @property({ type: String })
@@ -207,10 +219,30 @@ export class TimePicker extends FormMixin(LitElement) {
    * @internal
    */
   private _shouldFlatpickrOpen = true;
+
+  /** Track whether change originated from Flatpickr to avoid feedback loops.
+   * @internal
+   */
+  private _isFromFlatpickr = false;
+
+  /** Track whether Flatpickr styles and instance have been initialized.
+   * @internal
+   */
   private _initialized = false;
+
+  /** Track destroyed state so we don't re-initialize after disconnect.
+   * @internal
+   */
   private _isDestroyed = false;
+
+  /** Track when legacy/default values are being applied to avoid feedback loops.
+   * @internal
+   */
   private _applyingDefaults = false;
 
+  /** Internal ID used to associate the input with its calendar container.
+   * @internal
+   */
   private _anchorId: string | null = null;
 
   /** Store submit event listener reference for cleanup
@@ -236,6 +268,9 @@ export class TimePicker extends FormMixin(LitElement) {
     };
   }
 
+  /** Debounced re-initialization helper used when configuration changes.
+   * @internal
+   */
   private debouncedUpdate = this.debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
     try {
@@ -474,6 +509,10 @@ export class TimePicker extends FormMixin(LitElement) {
     return null;
   }
 
+  private getRawValue(): TimePickerValue {
+    return this.value as TimePickerValue;
+  }
+
   getTimepickerClasses() {
     return {
       'time-picker': true,
@@ -516,16 +555,19 @@ export class TimePicker extends FormMixin(LitElement) {
   private async syncFlatpickrFromHostValue() {
     if (!this.flatpickrInstance) return;
 
+    const raw = this.getRawValue();
+
     try {
       this.flatpickrInstance.redraw?.();
 
-      if (this.value instanceof Date) {
-        this.flatpickrInstance.setDate(this.value, true);
+      if (raw && typeof raw !== 'string') {
+        // treat as Date
+        this.flatpickrInstance.setDate(raw, true);
         this._padSecondsForInput(this.flatpickrInstance.input ?? undefined);
-      } else if (typeof this.value === 'string' && this.value.trim() !== '') {
-        this.flatpickrInstance.setDate(this.value, true);
+      } else if (typeof raw === 'string' && raw.trim() !== '') {
+        this.flatpickrInstance.setDate(raw, true);
         this._padSecondsForInput(this.flatpickrInstance.input ?? undefined);
-      } else if (this.value === null) {
+      } else if (raw === null) {
         this.flatpickrInstance.clear();
         if (this._inputEl) {
           this._inputEl.value = '';
@@ -596,143 +638,86 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
-  override async updated(changedProperties: PropertyValues) {
-    await super.updated(changedProperties);
+  override updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
 
-    if (this._applyingDefaults) {
-      return;
-    }
+    if (this._applyingDefaults) return;
 
     if (changedProperties.has('textStrings')) {
       this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
     }
 
     if (
-      changedProperties.has('defaultHour') ||
-      changedProperties.has('defaultMinute') ||
-      changedProperties.has('defaultSeconds')
+      (changedProperties.has('defaultHour') ||
+        changedProperties.has('defaultMinute') ||
+        changedProperties.has('defaultSeconds') ||
+        changedProperties.has('invalidText') ||
+        changedProperties.has('minTime') ||
+        changedProperties.has('maxTime') ||
+        changedProperties.has('twentyFourHourFormat') ||
+        changedProperties.has('enableSeconds')) &&
+      this.flatpickrInstance &&
+      !this._isClearing
     ) {
-      if (
-        !this._userHasCleared &&
-        (this.defaultHour !== null || this.defaultMinute !== null)
-      ) {
-        const date = new Date();
-        if (this.defaultHour !== null) date.setHours(this.defaultHour);
-        if (this.defaultMinute !== null) date.setMinutes(this.defaultMinute);
-        const secondsToSet = this.enableSeconds ? this.defaultSeconds ?? 0 : 0;
-        date.setSeconds(secondsToSet);
-        date.setMilliseconds(0);
-
-        const min = this.minTime ? this.parseTimeString(this.minTime) : null;
-        const max = this.maxTime ? this.parseTimeString(this.maxTime) : null;
-
-        if (
-          (min && date.getTime() < min.getTime()) ||
-          (max && date.getTime() > max.getTime())
-        ) {
-          console.error('Invalid default time provided', date);
-          this.invalidText = this._textStrings.pleaseSelectValidDate;
-          this._userHasCleared = true;
-          this.value = null;
-        } else {
-          this._applyingDefaults = true;
-        }
-
-        if (this.flatpickrInstance && !this._isClearing) {
-          try {
-            this.flatpickrInstance.setDate(date, false);
-            this._padSecondsForInput(this.flatpickrInstance.input ?? undefined);
-            if (this._inputEl) this.updateFormValue();
-          } catch (e) {
-            // ignore errors from updating instance
-          }
-        }
-
-        setTimeout(() => {
-          this._applyingDefaults = false;
-        }, 0);
-
-        this.requestUpdate();
-      }
-
-      if (this.flatpickrInstance && !this._isClearing) {
-        await this.debouncedUpdate();
-      }
-    } else if (
-      changedProperties.has('invalidText') ||
-      changedProperties.has('minTime') ||
-      changedProperties.has('maxTime')
-    ) {
-      if (this.flatpickrInstance && !this._isClearing) {
-        await this.debouncedUpdate();
-      }
-    } else if (
-      changedProperties.has('twentyFourHourFormat') ||
-      changedProperties.has('enableSeconds')
-    ) {
-      if (this.flatpickrInstance && !this._isClearing) {
-        await this.debouncedUpdate();
-      }
+      this.debouncedUpdate();
     }
 
-    if (changedProperties.has('value') && !this._isClearing) {
+    if (
+      changedProperties.has('value') &&
+      !this._isClearing &&
+      !this._isFromFlatpickr
+    ) {
       const incoming = this.value;
 
-      if (typeof incoming === 'string') {
-        const strValue = incoming.trim();
+      if (!this.flatpickrInstance) {
+        return;
+      }
 
-        if (strValue === '') {
-          if (this.flatpickrInstance) {
-            this._isClearing = true;
-            try {
-              this.flatpickrInstance.clear();
-              if (this._inputEl) {
-                this._inputEl.value = '';
-                this.updateFormValue();
-              }
-            } finally {
-              this._isClearing = false;
-            }
+      const hadFocus =
+        (this.renderRoot instanceof ShadowRoot
+          ? this.renderRoot.activeElement
+          : document.activeElement) === this._inputEl;
+
+      this._isFromFlatpickr = true;
+      try {
+        if (
+          incoming == null ||
+          (typeof incoming === 'string' && incoming.trim() === '')
+        ) {
+          this._isClearing = true;
+          try {
+            this.flatpickrInstance.clear();
+            if (this._inputEl) this._inputEl.value = '';
+          } finally {
+            this._isClearing = false;
           }
-          this.value = null;
-        } else if (/\d{4}-\d{2}-\d{2}/.test(strValue)) {
-          const dateFromStr = new Date(strValue);
-          if (!Number.isNaN(dateFromStr.getTime()) && this.flatpickrInstance) {
-            this.flatpickrInstance.setDate(dateFromStr, true);
-          }
-        } else if (/\d{1,2}:\d{2}(?::\d{2})?/.test(strValue)) {
-          const parsed = this.parseTimeString(strValue);
-          if (parsed && this.flatpickrInstance) {
+        } else if (incoming instanceof Date) {
+          this.flatpickrInstance.setDate(incoming, true);
+        } else if (typeof incoming === 'string') {
+          const strValue = incoming.trim();
+          const parsed = /\d{4}-\d{2}-\d{2}/.test(strValue)
+            ? new Date(strValue)
+            : this.parseTimeString(strValue);
+          if (parsed && !Number.isNaN(parsed.getTime())) {
             this.flatpickrInstance.setDate(parsed, true);
           }
         }
-      } else if (incoming instanceof Date && this.flatpickrInstance) {
-        this.flatpickrInstance.setDate(incoming, true);
-      } else if (incoming === null && this.flatpickrInstance) {
-        this._isClearing = true;
-        try {
-          this.flatpickrInstance.clear();
-          if (this._inputEl) {
-            this._inputEl.value = '';
-            this.updateFormValue();
-          }
-        } finally {
-          this._isClearing = false;
+
+        if (this._inputEl && this.flatpickrInstance.input) {
+          this._inputEl.value = this.flatpickrInstance.input.value;
         }
+
+        if (this._inputEl) {
+          this._padSecondsForInput(this._inputEl);
+          this.updateFormValue();
+        }
+      } finally {
+        this._isFromFlatpickr = false;
       }
 
-      if (this.flatpickrInstance) {
-        const fpVal = this.flatpickrInstance.input?.value ?? '';
-        this.value = fpVal || null;
+      if (hadFocus) {
+        queueMicrotask(() => this._inputEl?.focus({ preventScroll: true }));
       }
-
-      if (this._inputEl) {
-        this.updateFormValue();
-        // pad seconds when syncing input -> value
-        this._padSecondsForInput(this._inputEl);
-      }
-
-      this.requestUpdate();
     }
 
     if (
@@ -740,9 +725,7 @@ export class TimePicker extends FormMixin(LitElement) {
         this.timepickerDisabled) ||
       (changedProperties.has('readonly') && this.readonly)
     ) {
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.close();
-      }
+      this.flatpickrInstance?.close();
     }
   }
 
@@ -775,9 +758,10 @@ export class TimePicker extends FormMixin(LitElement) {
         source: 'clear',
       });
       this._validate(true, false);
-      await this.updateComplete;
-      await this.initializeFlatpickr();
-      this.requestUpdate();
+
+      queueMicrotask(() => {
+        void this.initializeFlatpickr();
+      });
     } finally {
       this._isClearing = false;
     }
@@ -791,6 +775,20 @@ export class TimePicker extends FormMixin(LitElement) {
       await this.initializeFlatpickr();
     } catch (error) {
       console.error('Error setting up flatpickr:', error);
+    }
+  }
+
+  private removeCalendarElement(id?: string) {
+    try {
+      const calId = id ?? this._anchorId;
+      if (calId) {
+        const node = document.querySelector(
+          `[data-kyn-timepicker-id="${calId}"]`
+        ) as HTMLElement | null;
+        if (node && node.parentNode) node.parentNode.removeChild(node);
+      }
+    } catch (e) {
+      // ignore
     }
   }
 
@@ -820,6 +818,13 @@ export class TimePicker extends FormMixin(LitElement) {
         }
 
         this.flatpickrInstance.destroy();
+
+        try {
+          this.removeCalendarElement();
+        } catch (e) {
+          // ignore
+        }
+
         this.flatpickrInstance = undefined;
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
@@ -845,6 +850,17 @@ export class TimePicker extends FormMixin(LitElement) {
             const modalDetected = container !== document.body;
             setCalendarAttributes(instance, modalDetected);
             if (instance.calendarContainer) {
+              const id =
+                this._anchorId ??
+                (this._anchorId = this.generateRandomId('time-picker'));
+              try {
+                (
+                  instance.calendarContainer as HTMLElement
+                ).dataset.kynTimepickerId = id;
+              } catch (e) {
+                // ignore
+              }
+
               instance.calendarContainer.setAttribute(
                 'aria-label',
                 'Time picker'
@@ -885,72 +901,22 @@ export class TimePicker extends FormMixin(LitElement) {
     const container = getModalContainer(this);
     let effectiveDateFormat = '';
 
-    let defaultHour: number | undefined;
-    let defaultMinute: number | undefined;
-    let defaultSeconds: number | undefined;
-
-    const currentVal = this.value;
-
-    const applyFromDate = (d: Date) => {
-      defaultHour = d.getHours();
-      defaultMinute = d.getMinutes();
-      defaultSeconds = d.getSeconds();
-    };
-
-    if (currentVal instanceof Date) {
-      applyFromDate(currentVal);
-    } else if (typeof currentVal === 'string' && currentVal.trim() !== '') {
-      const parsed = this.parseTimeString(currentVal);
-      if (parsed) {
-        applyFromDate(parsed);
-      } else if (this.allowManualInput) {
-        try {
-          const fallback = (flatpickr as any).parseDate(
-            currentVal,
-            effectiveDateFormat
-          );
-          if (fallback instanceof Date && !isNaN(fallback.getTime())) {
-            applyFromDate(fallback);
-          }
-        } catch (e) {
-          /* ignore */
-        }
-      }
-    }
-
-    if (
-      defaultHour === undefined &&
-      defaultMinute === undefined &&
-      !this._userHasCleared &&
-      (this.defaultHour !== null || this.defaultMinute !== null) &&
-      !(typeof currentVal === 'string' && currentVal.trim() === '')
-    ) {
-      if (this.defaultHour !== null) {
-        defaultHour = this.defaultHour;
-      }
-      if (this.defaultMinute !== null) {
-        defaultMinute = this.defaultMinute;
-      }
-      if (this.defaultSeconds !== null) {
-        defaultSeconds = this.defaultSeconds;
-      }
-    }
-
     let timeDefaultDate: Date | undefined;
-    if (
-      defaultHour !== undefined ||
-      defaultMinute !== undefined ||
-      defaultSeconds !== undefined
-    ) {
-      const dt = new Date();
-      dt.setHours(defaultHour ?? 0, defaultMinute ?? 0, defaultSeconds ?? 0, 0);
-      timeDefaultDate = dt;
+    const raw = this.getRawValue();
+
+    if (raw && typeof raw !== 'string') {
+      timeDefaultDate = new Date(raw.getTime());
+    } else if (typeof raw === 'string' && raw.trim() !== '') {
+      const parsed = this.parseTimeString(raw);
+      if (parsed) {
+        timeDefaultDate = parsed;
+      }
     }
 
     const showSeconds =
       this.enableSeconds ||
-      defaultSeconds !== undefined ||
-      this.defaultSeconds !== null;
+      (timeDefaultDate != null && timeDefaultDate.getSeconds() !== 0);
+
     effectiveDateFormat = this.twentyFourHourFormat
       ? showSeconds
         ? 'H:i:S'
@@ -975,6 +941,9 @@ export class TimePicker extends FormMixin(LitElement) {
       onClose: this.handleClose.bind(this),
       onOpen: this.handleOpen.bind(this),
       onReady: (selectedDates, dateStr, instance) => {
+        void selectedDates;
+        void dateStr;
+
         setTimeout(
           () => this._padSecondsForInput(instance.input ?? undefined),
           0
@@ -988,14 +957,16 @@ export class TimePicker extends FormMixin(LitElement) {
 
   setInitialDates(instance: flatpickr.Instance) {
     try {
-      if (this.value instanceof Date) {
-        instance.setDate(this.value, false);
-      } else if (typeof this.value === 'string' && this.value.trim() !== '') {
-        instance.setDate(this.value, false);
+      const raw = this.getRawValue();
+
+      if (raw && typeof raw !== 'string') {
+        instance.setDate(raw, false);
+      } else if (typeof raw === 'string' && raw.trim() !== '') {
+        instance.setDate(raw, false);
       } else if (
         !this._userHasCleared &&
         (this.defaultHour !== null || this.defaultMinute !== null) &&
-        (this.value === null || this.value === undefined)
+        (raw === null || raw === undefined)
       ) {
         const date = new Date();
         if (this.defaultHour !== null) date.setHours(this.defaultHour);
@@ -1006,8 +977,9 @@ export class TimePicker extends FormMixin(LitElement) {
         date.setMilliseconds(0);
 
         instance.setDate(date, false);
-        this._padSecondsForInput(instance.input ?? undefined);
       }
+
+      this._padSecondsForInput(instance.input ?? undefined);
     } catch (error) {
       console.error('Error setting initial time:', error);
     }
@@ -1024,6 +996,27 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
+  /**
+   * Returns the selected time as a Date (anchored to today) or null.
+   */
+  public getValue(): Date | null {
+    if (this.flatpickrInstance?.selectedDates[0]) {
+      return this.flatpickrInstance.selectedDates[0];
+    }
+
+    const raw = this.getRawValue();
+
+    if (raw && typeof raw !== 'string') {
+      return raw;
+    }
+
+    if (typeof raw === 'string' && raw.trim() !== '') {
+      return this.parseTimeString(raw);
+    }
+
+    return null;
+  }
+
   async handleClose() {
     this._hasInteracted = true;
     this._validate(true, false);
@@ -1032,11 +1025,18 @@ export class TimePicker extends FormMixin(LitElement) {
 
   async handleTimeChange(selectedDates: Date[], dateStr: string) {
     if (this._isClearing) return;
+
+    this._hasInteracted = true;
+
+    const hadFocus =
+      (this.renderRoot instanceof ShadowRoot
+        ? this.renderRoot.activeElement
+        : document.activeElement) === this._inputEl;
+
+    this._isFromFlatpickr = true;
+
     try {
       if (selectedDates.length > 0) {
-        if (!this._hasInteracted) {
-          this._hasInteracted = true;
-        }
         this._userHasCleared = false;
 
         const selectedTime = selectedDates[0];
@@ -1045,31 +1045,39 @@ export class TimePicker extends FormMixin(LitElement) {
         newDate.setMinutes(selectedTime.getMinutes());
         newDate.setSeconds(selectedTime.getSeconds());
         newDate.setMilliseconds(0);
+
         this.value = newDate;
 
         emitValue(this, 'on-change', {
           time: dateStr || null,
           date: newDate,
-          source: undefined,
         });
       } else {
+        this._userHasCleared = true;
         this.value = null;
+
         emitValue(this, 'on-change', {
           time: null,
           date: null,
           source: 'clear',
         });
       }
-      this._validate(true, false);
+    } finally {
       await this.updateComplete;
-      this.requestUpdate();
-      if (this._inputEl) {
-        this.updateFormValue();
-        // ensure seconds are padded after a user selection
-        this._padSecondsForInput(this._inputEl);
-      }
-    } catch (error) {
-      console.warn('Error handling time change:', error);
+      this._isFromFlatpickr = false;
+    }
+
+    this._validate(true, false);
+
+    if (this._inputEl) {
+      this.updateFormValue();
+      this._padSecondsForInput(this._inputEl);
+    }
+
+    if (hadFocus) {
+      requestAnimationFrame(() => {
+        this._inputEl?.focus({ preventScroll: true });
+      });
     }
   }
 
@@ -1125,8 +1133,6 @@ export class TimePicker extends FormMixin(LitElement) {
     if (report) {
       this._internals.reportValidity();
     }
-
-    this.requestUpdate();
   }
 
   private _onChange() {
@@ -1192,24 +1198,15 @@ export class TimePicker extends FormMixin(LitElement) {
       }
 
       this.flatpickrInstance.destroy();
+
+      try {
+        this.removeCalendarElement();
+      } catch (e) {
+        // ignore
+      }
+
       this.flatpickrInstance = undefined;
     }
-  }
-
-  public getValue(): Date | null {
-    if (this.flatpickrInstance?.selectedDates[0]) {
-      return this.flatpickrInstance.selectedDates[0];
-    }
-
-    if (this.value instanceof Date) {
-      return this.value;
-    }
-
-    if (typeof this.value === 'string' && this.value.trim() !== '') {
-      return this.parseTimeString(this.value);
-    }
-
-    return null;
   }
 
   public setValue(newValue: Date | null): void {
@@ -1240,8 +1237,6 @@ export class TimePicker extends FormMixin(LitElement) {
         }
         this.updateFormValue();
       }
-
-      this.requestUpdate('value');
     } finally {
       this._isClearing = false;
     }
