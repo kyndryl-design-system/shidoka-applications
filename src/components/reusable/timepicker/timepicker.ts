@@ -343,6 +343,31 @@ export class TimePicker extends FormMixin(LitElement) {
     return null;
   }
 
+  private _timesEqual(a: Date | null | undefined, b: Date | null | undefined) {
+    if (!a || !b) return false;
+    return (
+      a.getHours() === b.getHours() &&
+      a.getMinutes() === b.getMinutes() &&
+      a.getSeconds() === b.getSeconds()
+    );
+  }
+
+  private _incomingValueToDate(value: TimePickerValue): Date | null {
+    if (value == null) return null;
+    if (value instanceof Date) {
+      return Number.isNaN(value.getTime()) ? null : value;
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+      const parsed = /\d{4}-\d{2}-\d{2}/.test(trimmed)
+        ? new Date(trimmed)
+        : this.parseTimeString(trimmed);
+      return parsed && !Number.isNaN(parsed.getTime()) ? parsed : null;
+    }
+    return null;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('change', this._onChange);
@@ -673,6 +698,24 @@ export class TimePicker extends FormMixin(LitElement) {
       const incoming = this.value;
 
       if (!this.flatpickrInstance) {
+        return;
+      }
+
+      // Controlled-mode guard: if the host writes back the same time we already
+      // have selected in Flatpickr, skip setDate() to avoid feedback-loop churn.
+      const incomingDate = this._incomingValueToDate(incoming);
+      const currentSelected = this.flatpickrInstance.selectedDates?.[0] ?? null;
+      if (
+        incomingDate &&
+        currentSelected &&
+        this._timesEqual(incomingDate, currentSelected)
+      ) {
+        // Still keep the visible input/form value in sync.
+        if (this._inputEl && this.flatpickrInstance.input) {
+          this._inputEl.value = this.flatpickrInstance.input.value;
+          this._padSecondsForInput(this._inputEl);
+          this.updateFormValue();
+        }
         return;
       }
 

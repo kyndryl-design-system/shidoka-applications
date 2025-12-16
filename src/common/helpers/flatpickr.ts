@@ -628,12 +628,20 @@ export function setCalendarAttributes(
     prevBtn?.setAttribute('tabindex', '0');
     prevBtn?.setAttribute('role', 'button');
     prevBtn?.setAttribute('aria-label', 'Previous month');
-    prevBtn?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        instance.changeMonth(-1);
+    if (prevBtn) {
+      const anyPrev = prevBtn as any;
+      if (anyPrev._kynKeydown) {
+        prevBtn.removeEventListener('keydown', anyPrev._kynKeydown);
       }
-    });
+      const prevKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          instance.changeMonth(-1);
+        }
+      };
+      prevBtn.addEventListener('keydown', prevKeydown);
+      anyPrev._kynKeydown = prevKeydown;
+    }
 
     const nextBtn = container.querySelector<HTMLElement>(
       '.flatpickr-next-month'
@@ -641,12 +649,20 @@ export function setCalendarAttributes(
     nextBtn?.setAttribute('tabindex', '0');
     nextBtn?.setAttribute('role', 'button');
     nextBtn?.setAttribute('aria-label', 'Next month');
-    nextBtn?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        instance.changeMonth(1);
+    if (nextBtn) {
+      const anyNext = nextBtn as any;
+      if (anyNext._kynKeydown) {
+        nextBtn.removeEventListener('keydown', anyNext._kynKeydown);
       }
-    });
+      const nextKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          instance.changeMonth(1);
+        }
+      };
+      nextBtn.addEventListener('keydown', nextKeydown);
+      anyNext._kynKeydown = nextKeydown;
+    }
 
     const firstMonth = container.querySelector<HTMLElement>('.flatpickr-month');
     const yearInput = firstMonth?.querySelector<HTMLInputElement>(
@@ -670,7 +686,13 @@ export function setCalendarAttributes(
       }
       const updateNow = () =>
         yearInput.setAttribute('aria-valuenow', yearInput.value);
-      yearInput.addEventListener('keydown', (e) => {
+
+      const anyYear = yearInput as any;
+      if (anyYear._kynKeydown) {
+        yearInput.removeEventListener('keydown', anyYear._kynKeydown);
+      }
+
+      const yearKeydown = (e: KeyboardEvent) => {
         if (e.key === 'ArrowUp') {
           e.preventDefault();
           instance.changeYear(1);
@@ -681,7 +703,10 @@ export function setCalendarAttributes(
           instance.changeYear(-1);
           setTimeout(updateNow, 0);
         }
-      });
+      };
+
+      yearInput.addEventListener('keydown', yearKeydown);
+      anyYear._kynKeydown = yearKeydown;
       setTimeout(updateNow, 0);
     }
 
@@ -825,12 +850,19 @@ export function setCalendarAttributes(
       ampmToggle.tabIndex = 0;
       ampmToggle.setAttribute('role', 'button');
       ampmToggle.setAttribute('aria-label', 'Toggle AM/PM');
-      ampmToggle.addEventListener('keydown', (e) => {
+
+      const anyAmPm = ampmToggle as any;
+      if (anyAmPm._kynKeydown) {
+        ampmToggle.removeEventListener('keydown', anyAmPm._kynKeydown);
+      }
+      const ampmKeydown = (e: KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           ampmToggle.click();
         }
-      });
+      };
+      ampmToggle.addEventListener('keydown', ampmKeydown);
+      anyAmPm._kynKeydown = ampmKeydown;
     }
   });
 }
