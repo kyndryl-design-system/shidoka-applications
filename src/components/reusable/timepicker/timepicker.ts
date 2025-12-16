@@ -273,6 +273,9 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private debouncedUpdate = this.debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
+
+    if ((this.flatpickrInstance as any).isOpen) return;
+
     try {
       await this.initializeFlatpickr();
     } catch (error) {
@@ -760,7 +763,9 @@ export class TimePicker extends FormMixin(LitElement) {
       this._validate(true, false);
 
       queueMicrotask(() => {
-        void this.initializeFlatpickr();
+        if (!(this.flatpickrInstance as any)?.isOpen) {
+          void this.initializeFlatpickr();
+        }
       });
     } finally {
       this._isClearing = false;

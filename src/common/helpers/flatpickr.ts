@@ -760,7 +760,13 @@ export function setCalendarAttributes(
       hourInput.setAttribute('aria-valuemin', hourInput.min);
       hourInput.setAttribute('aria-valuemax', hourInput.max);
       hourInput.setAttribute('aria-valuenow', hourInput.value);
-      hourInput.addEventListener('keydown', (e) => {
+
+      const anyHour = hourInput as any;
+      if (anyHour._kynKeydown) {
+        hourInput.removeEventListener('keydown', anyHour._kynKeydown);
+      }
+
+      const hourKeydown = (e: KeyboardEvent) => {
         if (e.key === 'ArrowUp') {
           e.preventDefault();
           hourInput.stepUp();
@@ -773,7 +779,10 @@ export function setCalendarAttributes(
           () => hourInput.setAttribute('aria-valuenow', hourInput.value),
           0
         );
-      });
+      };
+
+      hourInput.addEventListener('keydown', hourKeydown);
+      anyHour._kynKeydown = hourKeydown;
     }
 
     const minuteInput = container.querySelector<HTMLInputElement>(
@@ -786,7 +795,13 @@ export function setCalendarAttributes(
       minuteInput.setAttribute('aria-valuemin', minuteInput.min);
       minuteInput.setAttribute('aria-valuemax', minuteInput.max);
       minuteInput.setAttribute('aria-valuenow', minuteInput.value);
-      minuteInput.addEventListener('keydown', (e) => {
+
+      const anyMinute = minuteInput as any;
+      if (anyMinute._kynKeydown) {
+        minuteInput.removeEventListener('keydown', anyMinute._kynKeydown);
+      }
+
+      const minuteKeydown = (e: KeyboardEvent) => {
         if (e.key === 'ArrowUp') {
           e.preventDefault();
           minuteInput.stepUp();
@@ -799,7 +814,10 @@ export function setCalendarAttributes(
           () => minuteInput.setAttribute('aria-valuenow', minuteInput.value),
           0
         );
-      });
+      };
+
+      minuteInput.addEventListener('keydown', minuteKeydown);
+      anyMinute._kynKeydown = minuteKeydown;
     }
 
     const ampmToggle = container.querySelector<HTMLElement>('.flatpickr-am-pm');
