@@ -899,8 +899,8 @@ export const AddNewOptionValidation = {
           </kyn-dropdown>
 
           <div class="validation-note">
-            Try: <b>ab</b> (too short), <b>1abc</b> (fails pattern),
-            <b>option2</b> (duplicate), <b>New Option</b> (valid).
+            Try: <b>ab</b> (too short), <b>option2</b> (duplicate),
+            <b>New Option</b> (valid).
           </div>
         </div>
       </div>
