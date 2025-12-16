@@ -92,17 +92,14 @@ Here is some additional information about why SSR does not work for web componen
 
 #### The Problem
 
-This is a common bundling issue that can appear when you incorporate a component that has already bundled Shidoka components. Typically this would be caused by having a middle layer, for example a Common UI layer that has a cross-platform Header component built using Shidoka components.
+This is a common bundling issue that can appear when you incorporate a component that has already bundled Shidoka components. Typically this would be caused by having a middle layer served via CDN, for example a Common UI layer that has a cross-platform Header component built using Shidoka components.
 
 #### Avoiding This
 
-You can get around this in by not declaring Shidoka components as dependencies, and instead declaring them as external or peer dependencies in the middle/common layer.
-
-For example, from the shidoka-applications rollup.js config using [the external option](https://rollupjs.org/configuration-options/#external): `external: [/shidoka-foundation\/components/]`. Since shidoka-foundation components are used within shidoka-applications components, this prevents the foundation components from being bundled, meaning it leaves the import statements unaltered (ex: `import '@kyndryl-design-system/...'`). This way, the application bundler can handle it instead.
-
-This works with bundling from node_modules, but not with CDN hosted files since the deployed application won't know how to resolve aliased node_modules imports ex: `import '@kyndryl-design-system/...'`. In this case, you probably need a workaround.
+The best solution is to always include external dependencies as npm packages so the application can dedupe the dependencies. This diagram illustrates the problem and solution:
+<img width="2249" height="2040" alt="shidoka-dependencies" src="https://github.com/user-attachments/assets/a0153a42-84e8-4444-88fb-481a27ad5c33" />
 
 #### Workaround
 
-If for some reason the above suggestion does not help, there is a library containing a script/polyfill that can be used which allows custom elements to be redefined:
-https://github.com/caridy/redefine-custom-elements. We've found that this script works best when served from the app's `<head>` tag.
+If the npm package solution is no go, there is a library containing a script/polyfill that can be used which allows custom elements to be redefined:
+https://github.com/caridy/redefine-custom-elements. We've found that this script works best when served from the app's `<head>` tag. Beware this creates a race condition and can cause serious version conflicts if not carefully maintained.
