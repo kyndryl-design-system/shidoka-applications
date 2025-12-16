@@ -82,7 +82,7 @@ export class DatePicker extends FormMixin(LitElement) {
   accessor dateFormat = 'Y-m-d';
 
   /** @deprecated Use `value` (Date | Date[]) instead. */
-  @property({ type: Array })
+  @property({ type: String })
   accessor defaultDate: string | string[] | null = null;
 
   /** Sets default error message. */
@@ -582,11 +582,16 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   override updated(changedProperties: PropertyValues) {
-    // LEGACY: still react to defaultDate changes, but unify through `value`
+    const hasNonEmptyValue =
+      this.value !== null &&
+      (!Array.isArray(this.value) || this.value.length > 0);
+
+    // LEGACY: only populate from defaultDate when value is unset/empty
     if (
       changedProperties.has('defaultDate') &&
       this.defaultDate &&
-      !this._isClearing
+      !this._isClearing &&
+      !hasNonEmptyValue
     ) {
       this.applyLegacyDefaultDate();
     }

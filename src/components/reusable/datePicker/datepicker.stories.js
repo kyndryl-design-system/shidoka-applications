@@ -738,7 +738,7 @@ export const ValueOverridesDefault = ValueOverridesDefaultTemplate.bind({});
 ValueOverridesDefault.args = {
   ...DatePickerDefault.args,
   name: 'value-overrides-default',
-  value: new Date('2024-04-10'),
+  value: '2024-04-11',
   defaultDate: '2024-01-01',
 
   label: 'value overrides defaultDate',

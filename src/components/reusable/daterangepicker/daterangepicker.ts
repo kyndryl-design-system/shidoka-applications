@@ -89,8 +89,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
   accessor dateFormat = 'Y-m-d';
 
   /** @deprecated Use `value` (Date | Date[]) instead. */
-  @property({ type: Array })
-  accessor defaultDate: string[] | null = null;
+  @property({ type: String })
+  accessor defaultDate: string | string[] | null = null;
 
   /** Controls which parts of the date range are editable. */
   @property({ type: String })

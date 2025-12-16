@@ -1,4 +1,4 @@
-import { html, LitElement, unsafeCSS } from 'lit';
+import { html, LitElement, unsafeCSS, type PropertyValues } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 import '../dropdown/dropdown';
@@ -24,13 +24,13 @@ export class PaginationPageSizeDropdown extends LitElement {
   accessor pageSize = 5;
 
   /** Available options for the page size. */
-  @property({ type: Array })
+  @property({ attribute: false })
   accessor pageSizeOptions: Array<number> = [5, 10, 20, 30, 40, 50];
 
   /** Customizable text strings. Inherited from parent
    * @internal
    */
-  @property({ type: Object })
+  @property({ attribute: false })
   accessor textStrings: any = {};
 
   /** Label for the page size dropdown. Required for accessibility.
@@ -44,46 +44,59 @@ export class PaginationPageSizeDropdown extends LitElement {
    * @param {CustomEvent} event - The dropdown change event.
    */
   private handleChange(event: CustomEvent) {
-    this.pageSize = event.detail.value;
+    const next = Number(event.detail.value);
 
-    // this.shadowRoot?.querySelector('kyn-dropdown')?.resetSelection();
+    if (!Number.isFinite(next)) return;
+
+    this.pageSize = next;
 
     this.dispatchEvent(
       new CustomEvent('on-page-size-change', {
-        detail: { value: Number(event.detail.value) },
+        detail: { value: next },
         bubbles: true, // So that parent components can catch it
         composed: true, // Required for the event to pass through the Shadow DOM boundary
       })
     );
   }
 
+  override updated(changedProps: PropertyValues<this>) {
+    if (changedProps.has('pageSizeOptions')) {
+      if (!Array.isArray(this.pageSizeOptions)) {
+        this.pageSizeOptions = [];
+      }
+    }
+  }
+
   override render() {
+    const options = Array.isArray(this.pageSizeOptions)
+      ? this.pageSizeOptions
+      : [];
+
     return html`
-      <label> ${this.textStrings.itemsPerPage} </label>
+      <label>${this.textStrings.itemsPerPage}</label>
       <kyn-dropdown
         name="page-size"
         class="pagination-dropdown"
-        label="${this.pageSizeDropdownLabel}"
+        label=${this.pageSizeDropdownLabel}
         inline
         size="sm"
-        value=${this.pageSize.toString()}
+        .value=${String(this.pageSize)}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
         <span slot="label">${this.textStrings.itemsPerPage}</span>
 
-        ${this.pageSizeOptions.map((option) => {
-          return html`
-            <kyn-dropdown-option value=${option}>
+        ${options.map(
+          (option) => html`
+            <kyn-dropdown-option .value=${String(option)}>
               ${option}
             </kyn-dropdown-option>
-          `;
-        })}
+          `
+        )}
       </kyn-dropdown>
     `;
   }
 }
 
-// Define the custom element in the global namespace
 declare global {
   interface HTMLElementTagNameMap {
     'kyn-pagination-page-size-dropdown': PaginationPageSizeDropdown;
