@@ -130,6 +130,7 @@ DatePickerDefault.args = {
   minDate: '',
   maxDate: '',
   allowManualInput: false,
+  twentyFourHourFormat: false,
   label: 'Date',
   value: '',
 };
@@ -239,6 +240,7 @@ export const InModal = {
     allowManualInput: false,
     showSecondaryButton: false,
     hideCancelButton: false,
+    twentyFourHourFormat: false,
     aiConnected: false,
     disableScroll: false,
   },
