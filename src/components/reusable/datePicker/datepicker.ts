@@ -50,6 +50,11 @@ const _defaultTextStrings = {
 };
 
 /**
+ * Internal helper type used for normalizing dev-provided value.
+ */
+type DatePickerValueInput = string | string[] | Date | Date[] | null;
+
+/**
  * Datepicker: uses Flatpickr's datetime picker library -- `https://flatpickr.js.org`
  * @fires on-change - Emitted when the selected date(s) change. Event.detail has the shape:
  *   { dates: string | string[] | null | [], dateString?: string, source?: string }
@@ -60,7 +65,7 @@ const _defaultTextStrings = {
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
- * @attr {Date | Date[] | null} [value=''] - The value of the input.
+ * @attr {string | string[] | Date | Date[] | null} [value=''] - The value of the input.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -81,8 +86,25 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor dateFormat = 'Y-m-d';
 
-  /** @deprecated Use `value` (Date | Date[]) instead. */
-  @property({ type: String })
+  /**
+   * Sets the initial selected date(s).
+   *
+   * @deprecated Soft-deprecated. Prefer setting `value`.
+   *
+   * Backward compatibility notes:
+   * - still supports property assignment (`defaultDate = '2025-01-01'` or string[]).
+   * - empty attribute values are treated as `null`.
+   */
+  @property({
+    attribute: 'default-date',
+    converter: {
+      fromAttribute: (attr: string | null) => {
+        if (attr == null) return null;
+        const v = attr.trim();
+        return v === '' ? null : v;
+      },
+    },
+  })
   accessor defaultDate: string | string[] | null = null;
 
   /** Sets default error message. */
@@ -100,8 +122,11 @@ export class DatePicker extends FormMixin(LitElement) {
   /**
    * Current date value for the component.
    *
+   * - Controlled: set from the host (recommended).
    * - Uncontrolled: populated from `defaultDate` and user selections.
-   * - Controlled: can be set from the host (e.g. Vue `:value`) as `Date` or `Date[]`.
+   *
+   * Note: for backward compatibility, `value` may arrive as strings from some
+   * host frameworks; this component will attempt to parse/normalize those.
    */
   override value: Date | Date[] | null = null;
 
@@ -268,6 +293,27 @@ export class DatePicker extends FormMixin(LitElement) {
     };
   }
 
+  /** Helper to determine if value is empty.
+   * @internal
+   */
+  private isEmptyValue(value: DatePickerValueInput): boolean {
+    if (value == null) return true;
+
+    if (typeof value === 'string') return value.trim() === '';
+
+    if (Array.isArray(value)) {
+      return (
+        value.length === 0 ||
+        value.every((v) => {
+          if (v == null) return true;
+          return typeof v === 'string' ? v.trim() === '' : false;
+        })
+      );
+    }
+
+    return false;
+  }
+
   /** Debounced re-initialization helper used when configuration changes.
    * @internal
    */
@@ -285,18 +331,13 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private applyLegacyDefaultDate(): void {
-    if (!this.defaultDate) return;
+    if (this.isEmptyValue(this.defaultDate)) return;
 
     const processedDates = this.processDefaultDates(this.defaultDate);
-    if (!processedDates.length) {
-      return;
-    }
+    if (!processedDates.length) return;
 
-    if (this.mode === 'multiple') {
-      this.value = [...processedDates];
-    } else {
-      this.value = processedDates[0];
-    }
+    this.value =
+      this.mode === 'multiple' ? [...processedDates] : processedDates[0];
   }
 
   override connectedCallback() {
@@ -304,7 +345,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
 
-    if (!this.value && this.defaultDate) {
+    if (this.isEmptyValue(this.value) && !this.isEmptyValue(this.defaultDate)) {
       this._hasInitialDefaultDate = true;
     }
 
@@ -349,18 +390,9 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private hasValue(): boolean {
-    if (this._inputEl?.value) return true;
+    if (this._inputEl?.value.trim()) return true;
 
-    if (this.value) {
-      if (Array.isArray(this.value)) {
-        return (
-          this.value.length > 0 && !this.value.every((date) => date === null)
-        );
-      }
-      return true;
-    }
-
-    return false;
+    return !this.isEmptyValue(this.value);
   }
 
   private updateFormValue(): void {
@@ -529,7 +561,7 @@ export class DatePicker extends FormMixin(LitElement) {
     super.firstUpdated(changedProperties);
 
     // LEGACY: honor defaultDate, but route it through `value`
-    if (!this.value && this.defaultDate) {
+    if (this.isEmptyValue(this.value) && !this.isEmptyValue(this.defaultDate)) {
       this.applyLegacyDefaultDate();
     }
 
@@ -582,14 +614,12 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   override updated(changedProperties: PropertyValues) {
-    const hasNonEmptyValue =
-      this.value !== null &&
-      (!Array.isArray(this.value) || this.value.length > 0);
+    const hasNonEmptyValue = !this.isEmptyValue(this.value);
 
     // LEGACY: only populate from defaultDate when value is unset/empty
     if (
       changedProperties.has('defaultDate') &&
-      this.defaultDate &&
+      !this.isEmptyValue(this.defaultDate) &&
       !this._isClearing &&
       !hasNonEmptyValue
     ) {
@@ -599,36 +629,68 @@ export class DatePicker extends FormMixin(LitElement) {
     super.updated(changedProperties);
 
     if (changedProperties.has('value') && !this._isClearing) {
-      const val = this.value;
-      const isNull = val === null || (Array.isArray(val) && val.length === 0);
+      const raw = this.value as unknown as DatePickerValueInput;
+      const isClear =
+        raw === null || (Array.isArray(raw) && (raw as unknown[]).length === 0);
 
-      if (isNull && this.flatpickrInstance) {
+      if (isClear && this.flatpickrInstance) {
         this._isClearing = true;
         try {
           this.flatpickrInstance.clear();
-          if (this._inputEl) {
-            this._inputEl.value = '';
-          }
+          if (this._inputEl) this._inputEl.value = '';
         } finally {
           this._isClearing = false;
         }
-      } else if (this.flatpickrInstance && val != null) {
-        const dates: Date[] = Array.isArray(val)
-          ? val.filter((d): d is Date => d instanceof Date)
-          : val instanceof Date
-          ? [val]
-          : [];
 
-        if (dates.length > 0) {
-          this.flatpickrInstance.setDate(dates, false);
+        if (this.invalidText) this.invalidText = '';
+      } else if (this.flatpickrInstance) {
+        const { dates, hostProvidedSomething, parseFailed } =
+          this.validateAndNormalizeHostValue(raw);
+
+        if (parseFailed) {
+          this._hasInteracted = true;
+          this.invalidText = this._textStrings.pleaseSelectValidDate;
+
+          this._isClearing = true;
+          try {
+            this.flatpickrInstance.clear();
+            if (this._inputEl) this._inputEl.value = '';
+            this.value = this.mode === 'multiple' ? [] : null;
+          } finally {
+            this._isClearing = false;
+          }
+
+          this._validate(true, false);
+        } else if (hostProvidedSomething) {
+          const normalized =
+            this.mode === 'multiple' ? [...dates] : dates[0] ?? null;
+
+          const currentDates = this.normalizeValueInput(
+            this.value as unknown as DatePickerValueInput
+          );
+          const sameLength = currentDates.length === dates.length;
+          const sameTimes =
+            sameLength &&
+            currentDates.every((d, i) => d.getTime() === dates[i].getTime());
+
+          if (!sameTimes) {
+            this.value = normalized as any;
+          }
+
+          if (dates.length > 0) {
+            this.flatpickrInstance.setDate(dates, false);
+          } else {
+            this.flatpickrInstance.clear();
+            if (this._inputEl) this._inputEl.value = '';
+          }
+
+          if (this.invalidText) this.invalidText = '';
         }
       }
 
       if (this._inputEl) {
         this.updateFormValue();
       }
-
-      this.requestUpdate();
     }
 
     if (changedProperties.has('disable')) {
@@ -848,7 +910,18 @@ export class DatePicker extends FormMixin(LitElement) {
       const y = Number(dateMatch[1]);
       const mo = Number(dateMatch[2]);
       const da = Number(dateMatch[3]);
+
+      if (mo < 1 || mo > 12 || da < 1 || da > 31) return null;
+
       const dt = new Date(y, mo - 1, da);
+      if (
+        dt.getFullYear() !== y ||
+        dt.getMonth() !== mo - 1 ||
+        dt.getDate() !== da
+      ) {
+        return null;
+      }
+
       return isNaN(dt.getTime()) ? null : dt;
     }
 
@@ -884,7 +957,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates() {
-    if (!this.flatpickrInstance || !this.value) return;
+    if (!this.flatpickrInstance || this.isEmptyValue(this.value)) return;
 
     try {
       const rawValue = this.value;
@@ -902,34 +975,66 @@ export class DatePicker extends FormMixin(LitElement) {
 
       this.flatpickrInstance.setDate(validDates, true);
 
-      if (this.mode === 'multiple') {
-        this.value = [...validDates];
-      } else {
-        this.value = validDates[0];
-      }
+      this.value = this.mode === 'multiple' ? [...validDates] : validDates[0];
     } catch (error) {
       console.warn('Error setting initial dates:', error);
     }
   }
 
+  private normalizeValueInput(value: DatePickerValueInput): Date[] {
+    if (value == null) return [];
+
+    const values = Array.isArray(value) ? value : [value];
+
+    return values
+      .map((v) => {
+        if (v instanceof Date) return v;
+        if (typeof v === 'string') return this.parseDateString(v);
+        return null;
+      })
+      .filter((d): d is Date => d instanceof Date && !isNaN(d.getTime()));
+  }
+
+  /**
+   * Validate pre-filled `value`.
+   */
+  private validateAndNormalizeHostValue(raw: DatePickerValueInput): {
+    dates: Date[];
+    hostProvidedSomething: boolean;
+    parseFailed: boolean;
+  } {
+    const hostProvidedSomething = !this.isEmptyValue(raw);
+
+    const dates = this.normalizeValueInput(raw);
+
+    const parseFailed = hostProvidedSomething && dates.length === 0;
+
+    return { dates, hostProvidedSomething, parseFailed };
+  }
+
   async getComponentFlatpickrOptions(): Promise<Partial<BaseOptions>> {
-    if (!this._inputEl) {
-      return {};
-    }
+    if (!this._inputEl) return {};
 
     const container = getModalContainer(this);
 
-    const defaultDateFromValue =
-      this.value == null
-        ? undefined
-        : Array.isArray(this.value)
-        ? this.value
-        : [this.value];
+    const valueDates = this.normalizeValueInput(this.value);
+    const defaultDates = this.processDefaultDates(this.defaultDate);
+
+    const effectiveDefaultDate =
+      valueDates.length > 0
+        ? this.mode === 'multiple'
+          ? valueDates
+          : valueDates[0]
+        : defaultDates.length > 0
+        ? this.mode === 'multiple'
+          ? defaultDates
+          : defaultDates[0]
+        : undefined;
 
     const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: defaultDateFromValue,
+      defaultDate: effectiveDefaultDate,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl,
@@ -949,9 +1054,7 @@ export class DatePicker extends FormMixin(LitElement) {
       static: this.staticPosition,
     });
 
-    if (this.mode === 'multiple') {
-      options.closeOnSelect = false;
-    }
+    if (this.mode === 'multiple') options.closeOnSelect = false;
 
     return options;
   }
@@ -996,7 +1099,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this._validate(false, false);
     await this.updateComplete;
 
-    if (!this.value && !this.defaultDate) {
+    if (this.isEmptyValue(this.value) && this.isEmptyValue(this.defaultDate)) {
       this._hasInteracted = true;
     }
   }
@@ -1099,13 +1202,7 @@ export class DatePicker extends FormMixin(LitElement) {
       this._hasInteracted = true;
     }
 
-    const hasValidDefaultValue =
-      this.defaultDate !== null &&
-      ((typeof this.defaultDate === 'string' &&
-        this.defaultDate.trim() !== '') ||
-        (Array.isArray(this.defaultDate) &&
-          this.defaultDate.length > 0 &&
-          this.defaultDate.some((date) => date && date !== '')));
+    const hasValidDefaultValue = !this.isEmptyValue(this.defaultDate);
 
     const isEmpty = !this._inputEl.value.trim() && !hasValidDefaultValue;
     const isRequired = this.required;
@@ -1139,7 +1236,6 @@ export class DatePicker extends FormMixin(LitElement) {
         this._internals.reportValidity();
       }
 
-      this.requestUpdate();
       return;
     }
 
@@ -1170,8 +1266,6 @@ export class DatePicker extends FormMixin(LitElement) {
     if (report) {
       this._internals.reportValidity();
     }
-
-    this.requestUpdate();
   }
 
   private _onChange() {
@@ -1180,9 +1274,19 @@ export class DatePicker extends FormMixin(LitElement) {
 
   private _handleFormReset() {
     this.value = null;
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.clear();
+
+    this._isClearing = true;
+    try {
+      this.flatpickrInstance?.clear();
+
+      if (this._inputEl) {
+        this._inputEl.value = '';
+        this.updateFormValue();
+      }
+    } finally {
+      this._isClearing = false;
     }
+
     this._hasInteracted = false;
     this._validate(false, false);
   }
@@ -1190,15 +1294,20 @@ export class DatePicker extends FormMixin(LitElement) {
   public getValue(): Date | Date[] | null {
     if (this.flatpickrInstance) {
       const selected = this.flatpickrInstance.selectedDates;
-
-      if (this.mode === 'multiple') {
-        return selected.length > 0 ? [...selected] : null;
-      }
-
-      return selected[0] ?? null;
+      return this.mode === 'multiple'
+        ? selected.length > 0
+          ? [...selected]
+          : null
+        : selected[0] ?? null;
     }
 
-    return this.value;
+    const dates = this.normalizeValueInput(this.value);
+
+    return this.mode === 'multiple'
+      ? dates.length > 0
+        ? dates
+        : null
+      : dates[0] ?? null;
   }
 
   public setValue(newValue: Date | Date[] | null): void {

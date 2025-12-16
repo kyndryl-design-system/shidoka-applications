@@ -43,7 +43,7 @@ export default {
       options: ['single', 'multiple'],
       control: { type: 'select' },
     },
-    value: { control: { type: 'object' } },
+    value: { control: { type: 'text' } },
     size: {
       options: ['sm', 'md', 'lg'],
       control: { type: 'select' },
@@ -70,15 +70,6 @@ export default {
 };
 
 const Template = (args) => {
-  useEffect(() => {
-    return () => {
-      const picker = document.querySelector('kyn-date-picker');
-      if (picker) {
-        picker.remove();
-      }
-    };
-  }, []);
-
   return html`
     <kyn-date-picker
       .name=${args.name}
@@ -137,6 +128,7 @@ DatePickerDefault.args = {
   maxDate: '',
   allowManualInput: false,
   label: 'Date',
+  value: '',
 };
 DatePickerDefault.storyName = 'Single Date (Default)';
 
@@ -172,6 +164,9 @@ DatePickerMultiple.args = {
   mode: 'multiple',
   label: 'Multiple Date Selection',
 };
+DatePickerMultiple.argTypes = {
+  value: { control: { type: 'object' } },
+};
 DatePickerMultiple.storyName = 'Multiple Date Selection';
 
 export const DateTimeMultiple = Template.bind({});
@@ -184,6 +179,9 @@ DateTimeMultiple.args = {
   value: [new Date('2024-03-10T10:00:00'), new Date('2024-03-15T15:30:00')],
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
+};
+DateTimeMultiple.argTypes = {
+  value: { control: { type: 'object' } },
 };
 DateTimeMultiple.storyName = 'With Preselected Date Time';
 

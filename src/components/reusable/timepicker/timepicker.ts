@@ -1058,6 +1058,9 @@ export class TimePicker extends FormMixin(LitElement) {
     }
   }
 
+  /**
+   * Returns the selected time as a Date (anchored to today) or null.
+   */
   public getValue(): Date | null {
     if (this.flatpickrInstance?.selectedDates[0]) {
       return this.flatpickrInstance.selectedDates[0];
@@ -1086,6 +1089,12 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this._isClearing) return;
 
     this._hasInteracted = true;
+
+    const hadFocus =
+      (this.renderRoot instanceof ShadowRoot
+        ? this.renderRoot.activeElement
+        : document.activeElement) === this._inputEl;
+
     this._isFromFlatpickr = true;
 
     try {
@@ -1125,6 +1134,12 @@ export class TimePicker extends FormMixin(LitElement) {
     if (this._inputEl) {
       this.updateFormValue();
       this._padSecondsForInput(this._inputEl);
+    }
+
+    if (hadFocus) {
+      queueMicrotask(() => {
+        this._inputEl?.focus({ preventScroll: true });
+      });
     }
   }
 

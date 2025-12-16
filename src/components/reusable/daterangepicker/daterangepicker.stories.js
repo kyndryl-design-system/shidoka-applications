@@ -193,18 +193,18 @@ InvalidDefaultDates.args = {
   name: 'invalid-default-dates-picker',
   label: 'Invalid Default Dates',
   dateFormat: 'Y-m-d',
-  defaultDate: ['2025-13-01', '2023-06-01'],
   minDate: '2024-01-01',
   maxDate: '2024-12-31',
   allowManualInput: false,
   caption: 'Invalid default dates will trigger validation errors..',
   invalidText: '',
   defaultErrorMessage: '',
-  required: false,
+  required: true,
   size: 'md',
   staticPosition: false,
   disable: [],
   enable: [],
+  value: ['2024-01-01', '2024-13-07'],
 };
 InvalidDefaultDates.storyName = 'Invalid / Out-of-Range Defaults';
 
@@ -213,7 +213,7 @@ WithPreselectedRange.args = {
   ...DateRangeDefault.args,
   name: 'preselected-date-range',
   dateFormat: 'Y-m-d',
-  value: [new Date('2024-01-01'), new Date('2024-01-07')],
+  value: ['2025-12-11', '2025-12-12'],
   allowManualInput: false,
   caption: 'Example with preselected date range (format: Y-m-d)',
   label: 'Preselected Range',
@@ -618,6 +618,6 @@ ControlledValueOverridesDefault.args = {
   caption:
     'Both defaultDate and value are set; value (Date objects) takes precedence.',
   defaultDate: ['2024-01-01', '2024-01-07'],
-  value: [new Date('2024-02-10'), new Date('2024-02-20')],
+  value: ['2024-02-10', '2024-02-20'],
 };
 ControlledValueOverridesDefault.storyName = 'Value Overrides defaultDate';
