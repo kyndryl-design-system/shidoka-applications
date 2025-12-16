@@ -756,7 +756,7 @@ export const AddNewOptionValidation = {
 
     preventDuplicateAddOption: true,
     addOptionInvalidText: 'Invalid option.',
-    addOptionPattern: '^[A-Za-z][A-Za-z0-9 _-]{2,}$',
+    addOptionPattern: '^[A-Za-z](?:[A-Za-z0-9]|-(?=[A-Za-z0-9]))*$',
     addOptionMinLength: 3,
     addOptionMaxLength: 24,
     addOptionRequired: false,
@@ -899,8 +899,8 @@ export const AddNewOptionValidation = {
           </kyn-dropdown>
 
           <div class="validation-note">
-            Try: <b>ab</b> (too short), <b>option2</b> (duplicate),
-            <b>New Option</b> (valid).
+            Try: <b>ab</b> (too short), <b>1abc</b> (fails pattern),
+            <b>option2</b> (duplicate), <b>New Option</b> (valid).
           </div>
         </div>
       </div>
