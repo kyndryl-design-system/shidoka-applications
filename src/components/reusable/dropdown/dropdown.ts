@@ -2,7 +2,6 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import DropdownScss from './dropdown.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
@@ -155,55 +154,6 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor allowAddOption = false;
 
-  /** Enables duplicate validation for the "Add option" input. */
-  @property({ type: Boolean })
-  accessor preventDuplicateAddOption = true;
-
-  /** Allows duplicate selections in multi-select dropdowns. */
-  @property({ type: Boolean })
-  accessor allowDuplicateSelections = true;
-
-  /** Custom invalid text for the "Add option" input when native validity fails (pattern/length/required). */
-  @property({ type: String })
-  accessor addOptionInvalidText = '';
-
-  /** RegEx pattern to validate "Add option" input. */
-  @property({ type: String })
-  accessor addOptionPattern = '';
-
-  /** Minimum number of characters for "Add option" input. */
-  @property({ type: Number })
-  accessor addOptionMinLength: number | undefined = undefined;
-
-  /** Maximum number of characters for "Add option" input. */
-  @property({ type: Number })
-  accessor addOptionMaxLength: number | undefined = undefined;
-
-  /** Whether "Add option" input is required (usually false; empty should just not add). */
-  @property({ type: Boolean })
-  accessor addOptionRequired = false;
-
-  /** If true, Add button is disabled whenever the "Add option" input is invalid. */
-  @property({ type: Boolean })
-  accessor disableAddButtonWhenAddOptionInvalid = true;
-
-  /** Force-disable the Add button regardless of validity (consumer-controlled). */
-  @property({ type: Boolean })
-  accessor addButtonDisabled = false;
-
-  /** Consumer hook to dynamically disable Add button (e.g. async validation states). */
-  @property({ attribute: false })
-  accessor isAddButtonDisabled: ((ctx: { value: string }) => boolean) | null =
-    null;
-
-  /** @internal */
-  @state()
-  accessor _addOptionIsInvalid = false;
-
-  /** @internal */
-  @state()
-  accessor _addOptionValidationMsg = '';
-
   /** Internal text strings.
    * @internal
    */
@@ -256,7 +206,10 @@ export class Dropdown extends FormMixin(LitElement) {
   protected get selectedOptions(): Array<
     DropdownOption | EnhancedDropdownOption
   > {
-    return this.options.filter((opt) => opt.selected);
+    return this.options.filter(
+      (opt): opt is DropdownOption | EnhancedDropdownOption =>
+        opt.hasAttribute('selected')
+    );
   }
 
   /**
@@ -329,9 +282,6 @@ export class Dropdown extends FormMixin(LitElement) {
       'ai-connected': this.kind === 'ai',
     };
 
-    const selectedCount =
-      this.multiple && Array.isArray(this.value) ? this.value.length : 0;
-
     return html`
       <div
         class=${classMap(mainDropdownClasses)}
@@ -401,18 +351,19 @@ export class Dropdown extends FormMixin(LitElement) {
                 aria-readonly=${this.readonly}
                 @blur=${(e: any) => e.stopPropagation()}
               >
-                ${this.multiple && selectedCount > 0
+                ${this.multiple && this.value.length
                   ? html`
                       <button
                         class=${classMap({
                           'clear-multiple': true,
                         })}
-                        aria-label="${selectedCount} items selected. Clear selections"
+                        aria-label="${this.value
+                          .length} items selected. Clear selections"
                         ?disabled=${this.disabled || this.readonly}
                         title=${this._textStrings.clear}
                         @click=${(e: Event) => this.handleClearMultiple(e)}
                       >
-                        ${selectedCount}
+                        ${this.value.length}
                         <span style="display:flex;" class="clear-multiple-icon">
                           ${unsafeSVG(clearIcon)}
                         </span>
@@ -468,51 +419,27 @@ export class Dropdown extends FormMixin(LitElement) {
               ${this.allowAddOption
                 ? html`
                     <div class="add-option">
-                      <div class="add-option-row">
-                        <input
-                          class="add-option-input"
-                          type="text"
-                          placeholder=${this._textStrings.addItem}
-                          .value=${this.newOptionValue}
-                          aria-label="Add new option"
-                          ?disabled=${this.disabled}
-                          ?readonly=${!this.disabled && this.readonly}
-                          aria-invalid=${this._addOptionIsInvalid}
-                          aria-describedby=${this._addOptionIsInvalid
-                            ? 'add-option-error'
-                            : nothing}
-                          pattern=${ifDefined(
-                            this.addOptionPattern || undefined
-                          )}
-                          minlength=${ifDefined(this.addOptionMinLength)}
-                          maxlength=${ifDefined(this.addOptionMaxLength)}
-                          ?required=${this.addOptionRequired}
-                          @input=${this._handleInputNewOption}
-                          @keydown=${this._onAddOptionInputKeydown}
-                          @focus=${this._onAddOptionInputFocus}
-                        />
-
-                        <kyn-button
-                          type="button"
-                          size="small"
-                          kind="secondary"
-                          ?disabled=${this._isAddButtonDisabled()}
-                          @on-click=${this._handleAddOption}
-                        >
-                          ${this._textStrings.add}
-                        </kyn-button>
-                      </div>
-
-                      ${this._addOptionIsInvalid
-                        ? html`<div
-                            id="add-option-error"
-                            class="error"
-                            role="status"
-                            aria-live="polite"
-                          >
-                            ${this._addOptionValidationMsg}
-                          </div>`
-                        : null}
+                      <input
+                        class="add-option-input"
+                        type="text"
+                        placeholder=${this._textStrings.addItem}
+                        .value=${this.newOptionValue}
+                        aria-label="Add new option"
+                        ?disabled=${this.disabled}
+                        ?readonly=${!this.disabled && this.readonly}
+                        @input=${this._handleInputNewOption}
+                        @keydown=${this._onAddOptionInputKeydown}
+                        @focus=${this._onAddOptionInputFocus}
+                      />
+                      <kyn-button
+                        type="button"
+                        size="small"
+                        kind="secondary"
+                        ?disabled=${this.disabled}
+                        @on-click=${this._handleAddOption}
+                      >
+                        ${this._textStrings.add}
+                      </kyn-button>
                     </div>
                   `
                 : null}
@@ -627,70 +554,6 @@ export class Dropdown extends FormMixin(LitElement) {
     this.handleClick();
   }
 
-  private _isAddButtonDisabled(): boolean {
-    const v = this.newOptionValue.trim();
-
-    const consumerDisabled =
-      this.isAddButtonDisabled != null
-        ? this.isAddButtonDisabled({ value: v })
-        : false;
-
-    const invalidDisabled =
-      this.disableAddButtonWhenAddOptionInvalid &&
-      v.length > 0 &&
-      this._addOptionIsInvalid;
-
-    const emptyDisabled = v.length === 0;
-
-    return (
-      this.disabled ||
-      this.readonly ||
-      this.addButtonDisabled ||
-      consumerDisabled ||
-      invalidDisabled ||
-      emptyDisabled
-    );
-  }
-
-  private _validateNewOptionValue(valueRaw: string): {
-    valid: boolean;
-    message: string;
-  } {
-    const value = valueRaw.trim();
-
-    if (value.length === 0) {
-      return this.addOptionRequired
-        ? { valid: false, message: 'Please fill out this field.' }
-        : { valid: true, message: '' };
-    }
-
-    const input = this.addOptionInputEl;
-    if (input) {
-      input.setCustomValidity('');
-
-      const nativeOk = input.checkValidity();
-      if (!nativeOk) {
-        return {
-          valid: false,
-          message: this.addOptionInvalidText || input.validationMessage,
-        };
-      }
-    }
-
-    if (this.preventDuplicateAddOption) {
-      const needle = value.toLowerCase();
-      const exists = this.options.some(
-        (opt) => opt.value.trim().toLowerCase() === needle
-      );
-      if (exists) {
-        if (input) input.setCustomValidity('That option already exists.');
-        return { valid: false, message: 'That option already exists.' };
-      }
-    }
-
-    return { valid: true, message: '' };
-  }
-
   private handleAnchorKeydown(e: KeyboardEvent) {
     if (!this.canOpen()) {
       const openKeys = [' ', 'Enter', 'ArrowDown', 'ArrowUp'];
@@ -708,73 +571,74 @@ export class Dropdown extends FormMixin(LitElement) {
 
     const v = this.newOptionValue.trim();
     if (!v) return;
-
-    const { valid, message } = this._validateNewOptionValue(v);
-
-    this._addOptionIsInvalid = !valid;
-    this._addOptionValidationMsg = !valid ? message : '';
-
-    if (!valid) return;
-
     this.dispatchEvent(
       new CustomEvent('on-add-option', { detail: { value: v } })
     );
     this.newOptionValue = '';
-    this._addOptionIsInvalid = false;
-    this._addOptionValidationMsg = '';
   }
 
   private renderHelperContent() {
     return html`
-      ${this.multiple && !this.hideTags && this._tags.length
-        ? html`
-            <kyn-tag-group
-              ?filter=${this.disabled || this.readonly ? false : true}
-              role="list"
-              aria-label=${this._textStrings.selectedOptions}
-              data-readonly=${this.readonly ? '' : nothing}
-            >
-              ${this._tags.map(
-                (tag: any) => html`
-                  <kyn-tag
-                    role="listitem"
-                    tagColor=${this.kind === 'ai' ? 'ai' : 'default'}
-                    label=${tag.text}
-                    ?disabled=${this.disabled || tag.disabled || this.readonly}
-                    @on-close=${() => this.handleTagClear(tag)}
-                  ></kyn-tag>
-                `
-              )}
-            </kyn-tag-group>
-          `
-        : null}
-      ${this.caption !== ''
-        ? html`<div class="caption" aria-disabled=${this.disabled}>
-            ${this.caption}
-          </div>`
-        : null}
-      ${this._isInvalid
-        ? html`
-            <div class="error">
-              <span
-                class="error-icon"
-                role="img"
-                title=${this._textStrings.errorText}
-                aria-label=${this._textStrings.errorText}
-                >${unsafeSVG(errorIcon)}</span
-              >
-              ${this.invalidText || this._internalValidationMsg}
-            </div>
-          `
-        : null}
+        ${
+          this.multiple && !this.hideTags && this._tags.length
+            ? html`
+                <kyn-tag-group
+                  ?filter=${this.disabled || this.readonly ? false : true}
+                  role="list"
+                  aria-label=${this._textStrings.selectedOptions}
+                  data-readonly=${this.readonly ? '' : nothing}
+                >
+                  ${this._tags.map((tag: any) => {
+                    return html`
+                      <kyn-tag
+                        role="listitem"
+                        tagColor=${this.kind === 'ai' ? 'ai' : 'default'}
+                        label=${tag.text}
+                        ?disabled=${this.disabled ||
+                        tag.disabled ||
+                        this.readonly}
+                        @on-close=${() => this.handleTagClear(tag)}
+                      ></kyn-tag>
+                    `;
+                  })}
+                </kyn-tag-group>
+              `
+            : null
+        }
+        ${
+          this.caption !== ''
+            ? html`
+                <div class="caption" aria-disabled=${this.disabled}>
+                  ${this.caption}
+                </div>
+              `
+            : null
+        }
+        ${
+          this._isInvalid
+            ? html`
+                <div class="error">
+                  <span
+                    class="error-icon"
+                    role="img"
+                    title=${this._textStrings.errorText}
+                    aria-label=${this._textStrings.errorText}
+                    >${unsafeSVG(errorIcon)}</span
+                  >
+                  ${this.invalidText || this._internalValidationMsg}
+                </div>
+              `
+            : null
+        }
 
-      <div
-        class="assistive-text"
-        role="status"
-        aria-live="assertive"
-        aria-relevant="additions text"
-      >
-        ${this.assistiveText}
+        <div
+          class="assistive-text"
+          role="status"
+          aria-live="assertive"
+          aria-relevant="additions text"
+        >
+          ${this.assistiveText}
+        </div>
       </div>
     `;
   }
@@ -899,12 +763,8 @@ export class Dropdown extends FormMixin(LitElement) {
     this.assistiveText = 'Dropdown menu options.';
   }
 
-  private handleKeyboard(
-    e: KeyboardEvent & { keyCode: number; target: EventTarget | null },
-    keyCode: number,
-    target: 'button' | 'list' | 'addOption'
-  ) {
-    const SPACEBAR_KEY_CODE = [0, 32] as const;
+  private handleKeyboard(e: any, keyCode: number, target: string) {
+    const SPACEBAR_KEY_CODE = [0, 32];
     const ENTER_KEY_CODE = 13;
     const DOWN_ARROW_KEY_CODE = 40;
     const UP_ARROW_KEY_CODE = 38;
@@ -912,50 +772,31 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // get highlighted element + index and selected element
     const selectAllOptions = Array.from(
-      this.shadowRoot?.querySelectorAll<HTMLElement>('.select-all') ?? []
-    );
-
+      this.shadowRoot?.querySelectorAll('.select-all') || []
+    ) as any[];
     const filteredOptions = this.options.filter(
-      (option) => (option as unknown as HTMLElement).style.display !== 'none'
+      (option: any) => option.style.display !== 'none'
     );
+    const visibleOptions = [...selectAllOptions, ...filteredOptions] as any[];
     // visibleOptions.forEach((e) => (e.tabIndex = 0));
 
-    const visibleOptions = [...selectAllOptions, ...filteredOptions] as Array<
-      | HTMLElement
-      | (DropdownOption | EnhancedDropdownOption)
-      | (HTMLElement & {
-          value?: string;
-          selected?: boolean;
-          highlighted?: boolean;
-          disabled?: boolean;
-          text?: string;
-        })
-    >;
-
     const highlightedEl = visibleOptions.find(
-      (option) => (option as any).highlighted
-    ) as any;
-
-    const selectedEl = visibleOptions.find(
-      (option) => (option as any).selected
-    ) as any;
-
+      (option: any) => option.highlighted
+    );
+    const selectedEl = visibleOptions.find((option: any) => option.selected);
     let highlightedIndex = highlightedEl
       ? visibleOptions.indexOf(highlightedEl)
       : selectedEl
       ? visibleOptions.indexOf(selectedEl)
       : 0;
 
-    if (
-      SPACEBAR_KEY_CODE.includes(keyCode as (typeof SPACEBAR_KEY_CODE)[number])
-    ) {
+    if (SPACEBAR_KEY_CODE.includes(keyCode)) {
       e.preventDefault();
     }
 
     if (this.readonly) {
       if (keyCode === DOWN_ARROW_KEY_CODE || keyCode === UP_ARROW_KEY_CODE) {
         e.preventDefault();
-
         let nextIndex =
           keyCode === DOWN_ARROW_KEY_CODE
             ? (highlightedIndex + 1) % visibleOptions.length
@@ -964,7 +805,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
         let guard = 0;
         while (
-          (visibleOptions[nextIndex] as any)?.disabled &&
+          visibleOptions[nextIndex]?.disabled &&
           guard++ < visibleOptions.length
         ) {
           nextIndex =
@@ -973,35 +814,25 @@ export class Dropdown extends FormMixin(LitElement) {
               : (nextIndex - 1 + visibleOptions.length) % visibleOptions.length;
         }
 
-        const next = visibleOptions[nextIndex] as any;
-        const current = visibleOptions[highlightedIndex] as any;
-
-        if (next) {
-          if (current) current.highlighted = false;
-
-          (next as HTMLElement).focus?.();
-          next.highlighted = true;
-          (next as HTMLElement).scrollIntoView?.({ block: 'nearest' });
-
-          this.assistiveText = next.text || 'Option';
+        if (visibleOptions[nextIndex]) {
+          visibleOptions[highlightedIndex] &&
+            (visibleOptions[highlightedIndex].highlighted = false);
+          visibleOptions[nextIndex].focus();
+          visibleOptions[nextIndex].highlighted = true;
+          visibleOptions[nextIndex].scrollIntoView?.({ block: 'nearest' });
+          this.assistiveText = visibleOptions[nextIndex].text || 'Option';
         }
-
         return;
       }
 
-      if (
-        SPACEBAR_KEY_CODE.includes(
-          keyCode as (typeof SPACEBAR_KEY_CODE)[number]
-        ) ||
-        keyCode === ENTER_KEY_CODE
-      ) {
+      if (SPACEBAR_KEY_CODE.includes(keyCode) || keyCode === ENTER_KEY_CODE) {
         e.preventDefault();
         return;
       }
 
       if (keyCode === ESCAPE_KEY_CODE) {
         this.open = false;
-        (this.searchable ? this.searchEl : this.buttonEl)?.focus?.();
+        (this.searchable ? this.searchEl : this.buttonEl)?.focus();
         this.assistiveText = 'Dropdown menu options.';
         return;
       }
@@ -1010,28 +841,21 @@ export class Dropdown extends FormMixin(LitElement) {
     }
 
     const isListboxElOpened = this.open;
-
     // open the listbox
     if (target === 'button' || target === 'addOption') {
       let openDropdown =
-        SPACEBAR_KEY_CODE.includes(
-          keyCode as (typeof SPACEBAR_KEY_CODE)[number]
-        ) ||
+        SPACEBAR_KEY_CODE.includes(keyCode) ||
         keyCode === ENTER_KEY_CODE ||
-        keyCode === DOWN_ARROW_KEY_CODE ||
-        keyCode === UP_ARROW_KEY_CODE;
+        keyCode == DOWN_ARROW_KEY_CODE ||
+        keyCode == UP_ARROW_KEY_CODE;
 
       if (e.target === this.clearMultipleEl && keyCode === ENTER_KEY_CODE) {
         openDropdown = false;
-
-        const current = visibleOptions[highlightedIndex] as any;
-        if (current) {
-          current.highlighted = false;
-          current.selected = !current.selected;
-        }
-
+        visibleOptions[highlightedIndex].highlighted = false;
+        visibleOptions[highlightedIndex].selected =
+          !visibleOptions[highlightedIndex].selected;
         highlightedIndex = 0;
-        return;
+        if (keyCode !== ENTER_KEY_CODE) return;
       }
 
       if (openDropdown) {
@@ -1043,96 +867,69 @@ export class Dropdown extends FormMixin(LitElement) {
           keyCode === ENTER_KEY_CODE
         ) {
           setTimeout(() => {
-            this.addOptionInputEl?.focus?.();
+            this.addOptionInputEl?.focus();
           }, 100);
         } else {
           // scroll to highlighted option
-          if (
-            !this.multiple &&
-            typeof this.value === 'string' &&
-            this.value !== ''
-          ) {
-            (visibleOptions[highlightedIndex] as HTMLElement)?.scrollIntoView?.(
-              {
-                block: 'nearest',
-              }
-            );
+          if (!this.multiple && this.value !== '') {
+            visibleOptions[highlightedIndex].scrollIntoView({
+              block: 'nearest',
+            });
           }
         }
       }
     }
-
     switch (keyCode) {
       case 0:
       case 32:
       case ENTER_KEY_CODE: {
-        const current = visibleOptions[highlightedIndex] as any;
-        if (!current) return;
-
         // select highlighted option
-        current.highlighted = true;
-
+        visibleOptions[highlightedIndex].highlighted = true;
         if (isListboxElOpened) {
           if (this.multiple) {
-            current.selected = !current.selected;
-
+            visibleOptions[highlightedIndex].selected =
+              !visibleOptions[highlightedIndex].selected;
             this._handleClick({
               detail: {
-                value: current.value,
-                selected: current.selected,
+                value: visibleOptions[highlightedIndex].value,
+                selected: visibleOptions[highlightedIndex].selected,
               },
             });
           } else {
-            visibleOptions.forEach((opt) => {
-              (opt as any).selected = false;
-            });
-
-            current.selected = true;
-
-            this.updateValue(current.value, true);
+            visibleOptions.forEach((e) => (e.selected = false));
+            visibleOptions[highlightedIndex].selected = true;
+            this.updateValue(visibleOptions[highlightedIndex].value, true);
             this.emitValue();
 
             this.open = false;
-            this.assistiveText = `Selected ${current.value}`;
+            this.assistiveText = `Selected ${visibleOptions[highlightedIndex].value}`;
           }
         }
-
         return;
       }
-
       case DOWN_ARROW_KEY_CODE: {
-        const hasHighlightedOrSelected = Boolean(highlightedEl || selectedEl);
-
-        let nextIndex = !hasHighlightedOrSelected
-          ? 0
-          : highlightedIndex === visibleOptions.length - 1
-          ? 0
-          : highlightedIndex + 1;
+        let nextIndex =
+          !highlightedEl && !selectedEl
+            ? 0
+            : highlightedIndex === visibleOptions.length - 1
+            ? 0
+            : highlightedIndex + 1;
 
         // skip disabled options
-        if ((visibleOptions[nextIndex] as any)?.disabled) {
+        if (visibleOptions[nextIndex].disabled) {
           nextIndex =
             nextIndex === visibleOptions.length - 1 ? 0 : nextIndex + 1;
         }
 
-        const next = visibleOptions[nextIndex] as any;
-        const current = visibleOptions[highlightedIndex] as any;
-
-        (next as HTMLElement)?.focus?.();
-
-        if (current) current.tabIndex = -1;
-        if (next) next.tabIndex = 0;
-
-        if (current) current.highlighted = false;
-        if (next) next.highlighted = true;
-
-        (next as HTMLElement)?.scrollIntoView?.({ block: 'nearest' });
-
-        this.assistiveText = next?.text ?? '';
-
+        visibleOptions[nextIndex].focus();
+        visibleOptions[highlightedIndex].tabIndex = -1;
+        visibleOptions[nextIndex].tabIndex = 0;
+        visibleOptions[highlightedIndex].highlighted = false;
+        visibleOptions[nextIndex].highlighted = true;
+        visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
+        this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
-
       case UP_ARROW_KEY_CODE: {
         // go to previous option
         let nextIndex =
@@ -1141,42 +938,30 @@ export class Dropdown extends FormMixin(LitElement) {
             : highlightedIndex - 1;
 
         // skip disabled options
-        if ((visibleOptions[nextIndex] as any)?.disabled) {
+        if (visibleOptions[nextIndex].disabled) {
           nextIndex =
             nextIndex === 0 ? visibleOptions.length - 1 : nextIndex - 1;
         }
 
-        const next = visibleOptions[nextIndex] as any;
-        const current = visibleOptions[highlightedIndex] as any;
-
-        (next as HTMLElement)?.focus?.();
-
-        if (current) current.tabIndex = -1;
-        if (next) next.tabIndex = 0;
-
-        if (current) current.highlighted = false;
-        if (next) next.highlighted = true;
-
-        (next as HTMLElement)?.scrollIntoView?.({ block: 'nearest' });
-
-        this.assistiveText = next?.text ?? '';
-
+        visibleOptions[nextIndex].focus();
+        visibleOptions[highlightedIndex].tabIndex = -1;
+        visibleOptions[nextIndex].tabIndex = 0;
+        visibleOptions[highlightedIndex].highlighted = false;
+        visibleOptions[nextIndex].highlighted = true;
+        visibleOptions[nextIndex].scrollIntoView({ block: 'nearest' });
+        this.assistiveText = visibleOptions[nextIndex].text;
         return;
       }
-
       case ESCAPE_KEY_CODE: {
         this.open = false;
-
         if (this.searchable) {
-          this.searchEl?.focus?.();
+          this.searchEl.focus();
         } else {
-          this.buttonEl?.focus?.();
+          this.buttonEl.focus();
         }
-
         this.assistiveText = 'Dropdown menu options.';
         return;
       }
-
       default: {
         return;
       }
@@ -1197,7 +982,7 @@ export class Dropdown extends FormMixin(LitElement) {
       ).map((option: any) => option.value);
 
       this.value = DisabledSelectedOptions.length
-        ? [...DisabledSelectedOptions]
+        ? DisabledSelectedOptions
         : [];
     } else {
       this.value = '';
@@ -1371,14 +1156,15 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private _updateSelectedOptions() {
     // set selected state for each option
-    this.options.forEach((option) => {
+    this.options.forEach((option: any) => {
       if (this.multiple) {
-        option.selected = this.valueArray.includes(option.value);
+        option.selected = this.value.includes(option.value);
       } else {
         option.selected = this.value === option.value;
       }
     });
   }
+
   private _handleClick(e: any) {
     if (this.readonly) return;
 
@@ -1469,31 +1255,23 @@ export class Dropdown extends FormMixin(LitElement) {
     super.disconnectedCallback();
   }
 
-  private get valueArray(): string[] {
-    return Array.isArray(this.value) ? this.value : [];
-  }
-
   private updateValue(value: string, selected = false) {
     if (this.readonly) return;
 
     // set value
     if (this.multiple) {
-      const next = [...this.valueArray];
+      const values =
+        this.value === '' ? [] : JSON.parse(JSON.stringify(this.value));
 
       // update array
       if (selected) {
-        if (this.allowDuplicateSelections) {
-          next.push(value);
-        } else if (!next.includes(value)) {
-          next.push(value);
-        }
+        values.push(value);
       } else {
-        for (let i = next.length - 1; i >= 0; i--) {
-          if (next[i] === value) next.splice(i, 1);
-        }
+        const index = values.indexOf(value);
+        values.splice(index, 1);
       }
 
-      this.value = next;
+      this.value = values;
     } else {
       this.value = value;
     }
@@ -1501,38 +1279,52 @@ export class Dropdown extends FormMixin(LitElement) {
     this._validate(true, false);
 
     // reset focus
-    if (!this.multiple)
-      (this.searchable ? this.searchEl : this.buttonEl).focus();
+    if (!this.multiple) {
+      if (this.searchable) {
+        this.searchEl.focus();
+      } else {
+        this.buttonEl.focus();
+      }
+    }
   }
 
-  private _validate(interacted: boolean, report: boolean) {
-    const isMissing =
-      this.required &&
-      !this.readonly &&
-      (this.multiple
-        ? !Array.isArray(this.value) || this.value.length === 0
-        : this.value === '');
-
-    const validity = {
+  private _validate(interacted: Boolean, report: Boolean) {
+    // set validity flags
+    const Validity = {
       customError: this.invalidText !== '',
-      valueMissing: isMissing,
+      valueMissing:
+        this.required &&
+        !this.readonly &&
+        (!this.value ||
+          (this.multiple && !this.value.length) ||
+          (!this.multiple && this.value === '')),
     };
 
     // set validationMessage
-    const InternalMsg = isMissing ? 'Please fill out this field.' : '';
-    const validationMessage =
+    const InternalMsg =
+      this.required && !this.value.length ? 'Please fill out this field.' : '';
+    const ValidationMessage =
       this.invalidText !== '' ? this.invalidText : InternalMsg;
 
     const validationAnchor = this.buttonEl || this.listboxEl;
 
-    this._internals.setValidity(
-      validity,
-      validationMessage,
-      validationAnchor ?? undefined
-    );
+    if (validationAnchor) {
+      this._internals.setValidity(
+        Validity,
+        ValidationMessage,
+        validationAnchor
+      );
+    } else {
+      this._internals.setValidity(Validity, ValidationMessage);
+    }
 
-    if (interacted) this._internalValidationMsg = InternalMsg;
-    if (report) this._internals.reportValidity();
+    if (interacted) {
+      this._internalValidationMsg = InternalMsg;
+    }
+
+    if (report) {
+      this._internals.reportValidity();
+    }
   }
 
   private emitValue() {
@@ -1670,61 +1462,56 @@ export class Dropdown extends FormMixin(LitElement) {
 
   // add selected options to Tags array
   private _updateTags() {
-    if (!this.multiple) return;
+    if (this.multiple) {
+      const Options: any = Array.from(
+        this.querySelectorAll(
+          'kyn-dropdown-option, kyn-enhanced-dropdown-option'
+        )
+      );
+      const Tags: Array<object> = [];
 
-    const counts = new Map<string, number>();
-    for (const v of this.valueArray) counts.set(v, (counts.get(v) ?? 0) + 1);
+      if (Options) {
+        Options.forEach((option: any) => {
+          if (option.selected) {
+            let text = option.textContent;
 
-    const options = Array.from(
-      this.querySelectorAll<DropdownOption | EnhancedDropdownOption>(
-        'kyn-dropdown-option, kyn-enhanced-dropdown-option'
-      )
-    );
+            if (option.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION') {
+              const titleSlot = option.querySelector('[slot="title"]');
+              if (titleSlot && titleSlot.textContent.trim()) {
+                text = titleSlot.textContent.trim();
+              } else {
+                text = option.displayText || option.value;
+              }
+            } else {
+              text = option.textContent.trim();
+            }
 
-    const tags: Array<{
-      value: string;
-      text: string;
-      disabled: boolean;
-      count: number;
-    }> = [];
+            Tags.push({
+              value: option.value,
+              text: text,
+              disabled: option.disabled,
+            });
+          }
+        });
 
-    for (const [value, count] of counts.entries()) {
-      const opt = options.find((o) => o.value === value);
-      if (!opt) continue;
-
-      let text = opt.textContent?.trim() ?? value;
-
-      if (opt.tagName === 'KYN-ENHANCED-DROPDOWN-OPTION') {
-        const titleSlot = opt.querySelector('[slot="title"]');
-        text =
-          titleSlot?.textContent?.trim() || (opt as any).displayText || value;
+        this._tags = Tags;
       }
-
-      tags.push({
-        value,
-        text,
-        disabled: (opt as any).disabled ?? false,
-        count,
-      });
     }
-
-    this._tags = tags;
   }
 
   private _updateOptions() {
-    const Options = Array.from(
-      this.querySelectorAll<DropdownOption | EnhancedDropdownOption>(
-        'kyn-dropdown-option, kyn-enhanced-dropdown-option'
-      )
+    const Options: any = Array.from(
+      this.querySelectorAll('kyn-dropdown-option, kyn-enhanced-dropdown-option')
     );
 
-    Options.forEach((option) => {
+    Options.forEach((option: any) => {
       // set option multiple state
       option.multiple = this.multiple;
 
       if (this.multiple) {
+        const Selected = this.value.includes(option.value);
         // set option selected state
-        option.selected = this.valueArray.includes(option.value);
+        option.selected = Selected;
       } else {
         option.selected = this.value === option.value;
       }
@@ -1734,15 +1521,6 @@ export class Dropdown extends FormMixin(LitElement) {
   private _handleInputNewOption(e: Event) {
     const target = e.target as HTMLInputElement;
     this.newOptionValue = target.value;
-
-    const { valid, message } = this._validateNewOptionValue(
-      this.newOptionValue
-    );
-
-    const hasText = this.newOptionValue.trim().length > 0;
-
-    this._addOptionIsInvalid = hasText && !valid;
-    this._addOptionValidationMsg = this._addOptionIsInvalid ? message : '';
   }
 
   private _handleRemoveOption() {
