@@ -670,12 +670,6 @@ export class TimePicker extends FormMixin(LitElement) {
       const incoming = this.value;
 
       if (!this.flatpickrInstance) {
-        if (this._inputEl) {
-          this._inputEl.value =
-            typeof incoming === 'string' ? incoming : incoming ? '' : '';
-          this._padSecondsForInput(this._inputEl);
-          this.updateFormValue();
-        }
         return;
       }
 
@@ -1081,7 +1075,7 @@ export class TimePicker extends FormMixin(LitElement) {
     }
 
     if (hadFocus) {
-      queueMicrotask(() => {
+      requestAnimationFrame(() => {
         this._inputEl?.focus({ preventScroll: true });
       });
     }

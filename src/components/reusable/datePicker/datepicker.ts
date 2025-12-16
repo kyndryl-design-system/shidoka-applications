@@ -661,33 +661,8 @@ export class DatePicker extends FormMixin(LitElement) {
         if (parseFailed || outOfRange) {
           this._hasInteracted = true;
           this.invalidText = this._textStrings.pleaseSelectValidDate;
-
-          this._isClearing = true;
-          try {
-            this.flatpickrInstance.clear();
-            if (this._inputEl) this._inputEl.value = '';
-            this.value = this.mode === 'multiple' ? [] : null;
-          } finally {
-            this._isClearing = false;
-          }
-
           this._validate(true, false);
         } else if (hostProvidedSomething) {
-          const normalized =
-            this.mode === 'multiple' ? [...dates] : dates[0] ?? null;
-
-          const currentDates = this.normalizeValueInput(
-            this.value as unknown as DatePickerValueInput
-          );
-          const sameLength = currentDates.length === dates.length;
-          const sameTimes =
-            sameLength &&
-            currentDates.every((d, i) => d.getTime() === dates[i].getTime());
-
-          if (!sameTimes) {
-            this.value = normalized as any;
-          }
-
           if (dates.length > 0) {
             this.flatpickrInstance.setDate(dates, false);
           } else {
