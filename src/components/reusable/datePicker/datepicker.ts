@@ -1070,7 +1070,7 @@ export class DatePicker extends FormMixin(LitElement) {
     const options = await getFlatpickrOptions({
       locale: this.locale,
       dateFormat: this.dateFormat,
-      defaultDate: defaultDateFromValue,
+      defaultDate: effectiveDefaultDate,
       enableTime: this._enableTime,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl,
