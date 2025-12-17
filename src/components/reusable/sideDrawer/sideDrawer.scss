@@ -56,6 +56,14 @@ dialog {
     width: 1024px;
   }
 
+  &.resizable {
+    @media (min-width: 42rem) {
+      min-width: 300px;
+      resize: horizontal;
+      direction: rtl;
+    }
+  }
+
   @include elevation.shadow(3);
 }
 
@@ -92,6 +100,12 @@ form {
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  .resizable & {
+    @media (min-width: 42rem) {
+      direction: ltr;
+    }
+  }
 }
 
 .body {

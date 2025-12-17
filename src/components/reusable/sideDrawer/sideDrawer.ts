@@ -4,6 +4,14 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+// Predefined drawer widths in px, matching the size prop
+const DRAWER_WIDTHS: Record<'sm' | 'standard' | 'md' | 'xl', number> = {
+  sm: 384,
+  standard: 560,
+  md: 800,
+  xl: 1024,
+};
+
 import '../button';
 import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
@@ -118,6 +126,10 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor noBackdrop = false;
 
+  /** Set this to `true` to add a horizontal resize drag handle */
+  @property({ type: Boolean })
+  accessor resizable = false;
+
   /** The dialog element
    * @internal
    */
@@ -131,6 +143,7 @@ export class SideDrawer extends LitElement {
       [`size--${this.size}`]: this.size,
       'ai-connected': this.aiConnected,
       'gradient-bkg': this.aiConnected && this.gradientBackground,
+      resizable: this.resizable,
     };
 
     const dialogFooterClasses = {
@@ -280,9 +293,52 @@ export class SideDrawer extends LitElement {
           this._dialog.showModal();
         }
         this._emitOpenEvent();
+        this._setupResizeObserver();
       } else {
         this._dialog.close();
+        this._teardownResizeObserver();
       }
+    }
+  }
+
+  /** @internal */
+  private _resizeHandler = (event?: Event) => {
+    // Only handle user-initiated resizes (mouse events)
+    if (event && !(event instanceof MouseEvent)) return;
+    if (!this._dialog) return;
+    let width = this._dialog.offsetWidth;
+    const minWidth = DRAWER_WIDTHS.sm;
+    const maxWidth = DRAWER_WIDTHS.xl;
+    if (width < minWidth) width = minWidth;
+    if (width > maxWidth) width = maxWidth;
+    // Find the closest predefined width within allowed range
+    let closestSize: 'sm' | 'md' | 'xl' | 'standard' = 'md';
+    let minDiff = Infinity;
+    for (const [size, px] of Object.entries(DRAWER_WIDTHS)) {
+      if (px < minWidth || px > maxWidth) continue;
+      const diff = Math.abs(width - px);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestSize = size as 'sm' | 'md' | 'xl' | 'standard';
+      }
+    }
+    const snapWidth = DRAWER_WIDTHS[closestSize];
+    // Always respect the CSS max-width (responsive)
+    this._dialog.style.width = snapWidth + 'px';
+    if (this.size !== closestSize) {
+      this.size = closestSize;
+    }
+  };
+
+  private _setupResizeObserver() {
+    this._dialog.addEventListener('mousemove', this._resizeHandler, true);
+    this._dialog.addEventListener('mouseup', this._resizeHandler, true);
+  }
+
+  private _teardownResizeObserver() {
+    if (this._dialog && this._dialog.style) {
+      this._dialog.removeEventListener('mousemove', this._resizeHandler, true);
+      this._dialog.removeEventListener('mouseup', this._resizeHandler, true);
     }
   }
 }
