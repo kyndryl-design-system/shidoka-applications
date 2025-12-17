@@ -2,7 +2,6 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import DropdownScss from './dropdown.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
@@ -12,7 +11,6 @@ import './dropdownOption';
 import './enhancedDropdownOption';
 import '../tag';
 import '../button';
-import '../textInput';
 
 import { DropdownOption } from './dropdownOption';
 import { EnhancedDropdownOption } from './enhancedDropdownOption';
