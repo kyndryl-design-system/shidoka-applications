@@ -235,6 +235,9 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
+  /** Track visibility polling timeout ID. */
+  private _visibilityPollTimeoutId: number | null = null;
+
   /** Track when legacy/default values are being applied to avoid feedback loops.
    * @internal
    */
@@ -344,6 +347,7 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   private _timesEqual(a: Date | null | undefined, b: Date | null | undefined) {
+    if (!a && !b) return true;
     if (!a || !b) return false;
     return (
       a.getHours() === b.getHours() &&
@@ -637,12 +641,15 @@ export class TimePicker extends FormMixin(LitElement) {
         wasVisible = nowVisible;
 
         if (!nowVisible) {
-          setTimeout(pollVisibility, 250);
+          this._visibilityPollTimeoutId = window.setTimeout(
+            pollVisibility,
+            250
+          );
         }
       };
 
       if (!wasVisible) {
-        setTimeout(pollVisibility, 250);
+        this._visibilityPollTimeoutId = window.setTimeout(pollVisibility, 250);
       }
     }
   }
@@ -761,7 +768,7 @@ export class TimePicker extends FormMixin(LitElement) {
         this._isFromFlatpickr = false;
       }
 
-      if (hadFocus) {
+      if (hadFocus && (this.flatpickrInstance as any)?.isOpen) {
         queueMicrotask(() => this._inputEl?.focus({ preventScroll: true }));
       }
     }
@@ -1122,7 +1129,7 @@ export class TimePicker extends FormMixin(LitElement) {
       this._padSecondsForInput(this._inputEl);
     }
 
-    if (hadFocus) {
+    if (hadFocus && (this.flatpickrInstance as any)?.isOpen) {
       requestAnimationFrame(() => {
         this._inputEl?.focus({ preventScroll: true });
       });
@@ -1224,6 +1231,12 @@ export class TimePicker extends FormMixin(LitElement) {
 
   override disconnectedCallback() {
     this._isDestroyed = true;
+
+    if (this._visibilityPollTimeoutId !== null) {
+      window.clearTimeout(this._visibilityPollTimeoutId);
+      this._visibilityPollTimeoutId = null;
+    }
+
     super.disconnectedCallback();
     this.removeEventListener('change', this._onChange);
     this.removeEventListener('reset', this._handleFormReset);
