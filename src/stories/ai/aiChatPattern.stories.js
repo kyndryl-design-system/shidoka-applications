@@ -11,6 +11,7 @@ import { useArgs } from 'storybook/preview-api';
 
 import '../../components/reusable/tabs';
 import '../../components/reusable/modal';
+import '../../components/reusable/sideDrawer';
 import '../../components/ai/aiLaunchButton';
 import '../../components/reusable/floatingContainer';
 
@@ -28,7 +29,7 @@ export default {
   },
 };
 
-export const ChatModal = {
+export const ChatDialog = {
   args: {
     selectedTabId: 'chat',
   },
@@ -44,8 +45,8 @@ export const ChatModal = {
     };
 
     return html`
-      <kyn-modal
-        size="xl"
+      <kyn-side-drawer
+        resizable
         titleText="Gen AI"
         aiConnected
         gradientBackground
@@ -66,7 +67,7 @@ export const ChatModal = {
           ${InputQuery.render(InputQuery.args)}
           <div class="disclaimer kd-type--ui-02">Optional text here</div>
         </div>
-      </kyn-modal>
+      </kyn-side-drawer>
 
       <style>
         .disclaimer {
@@ -80,9 +81,9 @@ export const ChatModal = {
 
 const navTabs = (handleTabChange) => html`
   <div slot="header-inline" class="nav-tabs">
-    <kyn-badge status="warning" size="small" class="version-badge"
-      >Alpha</kyn-badge
-    >
+    <kyn-badge status="warning" size="small" class="version-badge">
+      Alpha
+    </kyn-badge>
 
     <kyn-button kind="ghost-ai" size="extra-small" class="new-chat-button">
       <span slot="icon" style="margin-right: 8px; display: flex;order: -1;"
