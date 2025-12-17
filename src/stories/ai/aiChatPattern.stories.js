@@ -47,6 +47,7 @@ export const ChatDialog = {
     return html`
       <kyn-side-drawer
         resizable
+        noBackdrop
         titleText="Gen AI"
         aiConnected
         gradientBackground
