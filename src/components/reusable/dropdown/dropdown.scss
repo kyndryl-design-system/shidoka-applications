@@ -291,23 +291,41 @@ kyn-tag-group {
   @include visibility.sr-only;
 }
 
+.add-option-container {
+  position: relative;
+}
+
 .add-option {
   display: flex;
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  padding: 8px 16px;
+  padding: 8px 16px 0;
   height: auto;
-  background-color: var(--kd-color-background-forms-secondary);
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.add-option-error-slot {
+  min-height: 12px;
+  padding: 4px 16px 4px 24px;
+  background-color: transparent;
   box-sizing: border-box;
 }
 
 .add-option-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   width: 100%;
   min-width: 0;
+}
+
+.add-option-error {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 slot[name='add-option-row']::slotted(kyn-text-input) {
@@ -317,7 +335,8 @@ slot[name='add-option-row']::slotted(kyn-text-input) {
 
 slot[name='add-option-row']::slotted(kyn-button) {
   flex: 0 0 auto;
-  margin-top: 3px;
+  margin-top: 16px;
+  align-self: flex-start;
 }
 
 .add-option kyn-button {

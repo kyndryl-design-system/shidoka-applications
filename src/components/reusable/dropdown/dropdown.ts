@@ -28,14 +28,8 @@ const _defaultTextStrings = {
   clear: 'Clear',
   addItem: 'Add item...',
   add: 'Add',
+  duplicateOption: 'Duplicate option. Please select a unique option.',
 };
-
-const KEY = {
-  Enter: 'Enter',
-  Escape: 'Escape',
-  ArrowDown: 'ArrowDown',
-  ArrowUp: 'ArrowUp',
-} as const;
 
 /**
  * Dropdown, single select.
@@ -155,46 +149,25 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor allowAddOption = false;
 
-  /** Enables duplicate validation for the "Add option" input. */
+  /** Enables duplicate prevention when adding new options. */
   @property({ type: Boolean })
   accessor preventDuplicateAddOption = true;
+
+  /** Validator function for new option input. */
+  @property({ attribute: false })
+  accessor addOptionValidator:
+    | ((value: string, ctx: { dropdown: Dropdown }) => string | null | void)
+    | null = null;
 
   /** Allows duplicate selections in multi-select dropdowns. */
   @property({ type: Boolean })
   accessor allowDuplicateSelections = true;
 
-  /** Custom invalid text for the "Add option" input when native validity fails (pattern/length/required). */
-  @property({ type: String })
-  accessor addOptionInvalidText = '';
-
-  /** RegEx pattern to validate "Add option" input. */
-  @property({ type: String })
-  accessor addOptionPattern = '';
-
-  /** Minimum number of characters for "Add option" input. */
-  @property({ type: Number })
-  accessor addOptionMinLength: number | undefined = undefined;
-
-  /** Maximum number of characters for "Add option" input. */
-  @property({ type: Number })
-  accessor addOptionMaxLength: number | undefined = undefined;
-
-  /** Whether "Add option" input is required (usually false; empty should just not add). */
-  @property({ type: Boolean })
-  accessor addOptionRequired = false;
-
-  /** If true, Add button is disabled whenever the "Add option" input is invalid. */
-  @property({ type: Boolean })
-  accessor disableAddButtonWhenAddOptionInvalid = true;
-
-  /** Force-disable the Add button regardless of validity (consumer-controlled). */
-  @property({ type: Boolean })
-  accessor addButtonDisabled = false;
-
-  /** Consumer hook to dynamically disable Add button (e.g. async validation states). */
-  @property({ attribute: false })
-  accessor isAddButtonDisabled: ((ctx: { value: string }) => boolean) | null =
-    null;
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  accessor _textStrings = _defaultTextStrings;
 
   /** @internal */
   @state()
@@ -203,12 +176,6 @@ export class Dropdown extends FormMixin(LitElement) {
   /** @internal */
   @state()
   accessor _addOptionValidationMsg = '';
-
-  /** Internal text strings.
-   * @internal
-   */
-  @state()
-  accessor _textStrings = _defaultTextStrings;
 
   /**
    * New dropdown option value.
@@ -288,13 +255,6 @@ export class Dropdown extends FormMixin(LitElement) {
   accessor clearMultipleEl!: HTMLElement;
 
   /**
-   * Queries the .add-option-input DOM element.
-   * @ignore
-   */
-  @query('.add-option-input')
-  accessor addOptionInputEl!: HTMLInputElement;
-
-  /**
    * Queries the add-option slot (if provided).
    * @ignore
    */
@@ -328,24 +288,6 @@ export class Dropdown extends FormMixin(LitElement) {
       (inputEl as any).value = this.newOptionValue;
     } catch {
       // no-op
-    }
-
-    // validation-related attributes
-    inputEl.toggleAttribute('required', this.addOptionRequired);
-
-    if (this.addOptionPattern)
-      inputEl.setAttribute('pattern', this.addOptionPattern);
-    else inputEl.removeAttribute('pattern');
-
-    inputEl.removeAttribute('minlength');
-    inputEl.removeAttribute('maxlength');
-
-    inputEl.setAttribute('aria-invalid', String(this._addOptionIsInvalid));
-
-    if (this._addOptionIsInvalid) {
-      inputEl.setAttribute('aria-describedby', 'add-option-error');
-    } else {
-      inputEl.removeAttribute('aria-describedby');
     }
   }
 
@@ -522,31 +464,41 @@ export class Dropdown extends FormMixin(LitElement) {
             >
               ${this.allowAddOption
                 ? html`
-                    <div class="add-option">
-                      ${this.querySelector('[slot="add-option-row"]')
-                        ? html`
-                            <div
-                              class="add-option-row"
-                              @click=${(e: MouseEvent) => e.stopPropagation()}
-                              @mousedown=${(e: MouseEvent) =>
-                                e.stopPropagation()}
-                              @keydown=${(e: KeyboardEvent) =>
-                                e.stopPropagation()}
+                    <div class="add-option-container">
+                      <div class="add-option">
+                        ${this.querySelector('[slot="add-option-row"]')
+                          ? html`
+                              <div
+                                class="add-option-row"
+                                @click=${(e: MouseEvent) => e.stopPropagation()}
+                                @mousedown=${(e: MouseEvent) =>
+                                  e.stopPropagation()}
+                                @keydown=${(e: KeyboardEvent) =>
+                                  e.stopPropagation()}
+                              >
+                                <slot name="add-option-row"></slot>
+                              </div>
+                            `
+                          : null}
+                      </div>
+
+                      <div
+                        class="add-option-error-slot"
+                        aria-hidden=${!this._addOptionIsInvalid ||
+                        this._slottedAddOptionInputRendersError()}
+                      >
+                        ${this._addOptionIsInvalid &&
+                        !this._slottedAddOptionInputRendersError()
+                          ? html`<div
+                              id="add-option-error"
+                              class="error add-option-error"
+                              role="status"
+                              aria-live="polite"
                             >
-                              <slot name="add-option-row"></slot>
-                            </div>
-                          `
-                        : null}
-                      ${this._addOptionIsInvalid
-                        ? html`<div
-                            id="add-option-error"
-                            class="error"
-                            role="status"
-                            aria-live="polite"
-                          >
-                            ${this._addOptionValidationMsg}
-                          </div>`
-                        : null}
+                              ${this._addOptionValidationMsg}
+                            </div>`
+                          : null}
+                      </div>
                     </div>
                   `
                 : null}
@@ -616,32 +568,6 @@ export class Dropdown extends FormMixin(LitElement) {
     `;
   }
 
-  private _onAddOptionInputKeydown(e: KeyboardEvent) {
-    if (this.readonly) return;
-
-    e.stopPropagation();
-    switch (e.key) {
-      case KEY.Enter:
-        this._handleAddOption();
-        break;
-      case KEY.Escape:
-        this.newOptionValue = '';
-        this.open = false;
-        this.buttonEl.focus();
-        break;
-      case KEY.ArrowDown:
-        this.handleKeyboard(e, 40, 'addOption');
-        break;
-      case KEY.ArrowUp:
-        this.handleKeyboard(e, 38, 'addOption');
-        break;
-    }
-  }
-
-  private _onAddOptionInputFocus() {
-    this.assistiveText = 'Add new option input';
-  }
-
   private canOpen(): boolean {
     return !this.disabled && !this.readonly;
   }
@@ -661,29 +587,23 @@ export class Dropdown extends FormMixin(LitElement) {
     this.handleClick();
   }
 
-  private _isAddButtonDisabled(): boolean {
-    const v = this.newOptionValue.trim();
+  private _slottedAddOptionInputRendersError(): boolean {
+    const inputEl = this._getSlottedAddOptionInput();
+    return inputEl?.tagName === 'KYN-TEXT-INPUT';
+  }
 
-    const consumerDisabled =
-      this.isAddButtonDisabled != null
-        ? this.isAddButtonDisabled({ value: v })
-        : false;
+  private _setSlottedAddOptionInputError(message: string) {
+    const inputEl = this._getSlottedAddOptionInput() as any;
+    if (!inputEl) return;
 
-    const invalidDisabled =
-      this.disableAddButtonWhenAddOptionInvalid &&
-      v.length > 0 &&
-      this._addOptionIsInvalid;
+    if (inputEl.tagName === 'KYN-TEXT-INPUT') {
+      inputEl.invalidText = message;
+      return;
+    }
 
-    const emptyDisabled = v.length === 0;
-
-    return (
-      this.disabled ||
-      this.readonly ||
-      this.addButtonDisabled ||
-      consumerDisabled ||
-      invalidDisabled ||
-      emptyDisabled
-    );
+    if (typeof inputEl.setCustomValidity === 'function') {
+      inputEl.setCustomValidity(message);
+    }
   }
 
   private _validateNewOptionValue(valueRaw: string): {
@@ -692,41 +612,23 @@ export class Dropdown extends FormMixin(LitElement) {
   } {
     const value = valueRaw.trim();
 
-    if (value.length === 0) {
-      return this.addOptionRequired
-        ? { valid: false, message: 'Please fill out this field.' }
-        : { valid: true, message: '' };
-    }
+    this._setSlottedAddOptionInputError('');
 
-    const input = this.addOptionInputEl;
-    if (input) {
-      input.setCustomValidity('');
+    const input = this._getSlottedAddOptionInput() as any;
 
-      const nativeOk = input.checkValidity();
-      if (!nativeOk) {
-        return {
-          valid: false,
-          message: this.addOptionInvalidText || input.validationMessage,
-        };
+    if (
+      value.length > 0 &&
+      input &&
+      typeof input.checkValidity === 'function'
+    ) {
+      const ok = input.checkValidity();
+      if (!ok) {
+        return { valid: false, message: '' };
       }
     }
 
-    if (
-      this.addOptionMinLength != null &&
-      value.length < this.addOptionMinLength
-    ) {
-      const msg = `Please lengthen this text to ${this.addOptionMinLength} characters or more.`;
-      if (input) input.setCustomValidity(msg);
-      return { valid: false, message: this.addOptionInvalidText || msg };
-    }
-
-    if (
-      this.addOptionMaxLength != null &&
-      value.length > this.addOptionMaxLength
-    ) {
-      const msg = `Please shorten this text to ${this.addOptionMaxLength} characters or fewer.`;
-      if (input) input.setCustomValidity(msg);
-      return { valid: false, message: this.addOptionInvalidText || msg };
+    if (value.length === 0) {
+      return { valid: true, message: '' };
     }
 
     if (this.preventDuplicateAddOption) {
@@ -735,8 +637,18 @@ export class Dropdown extends FormMixin(LitElement) {
         (opt) => opt.value.trim().toLowerCase() === needle
       );
       if (exists) {
-        if (input) input.setCustomValidity('That option already exists.');
-        return { valid: false, message: 'That option already exists.' };
+        const msg = this._textStrings.duplicateOption;
+        this._setSlottedAddOptionInputError(msg);
+        return { valid: false, message: msg };
+      }
+    }
+
+    if (this.addOptionValidator) {
+      const result = this.addOptionValidator(value, { dropdown: this });
+      const msg = typeof result === 'string' ? result : '';
+      if (msg) {
+        this._setSlottedAddOptionInputError(msg);
+        return { valid: false, message: msg };
       }
     }
 
@@ -753,54 +665,6 @@ export class Dropdown extends FormMixin(LitElement) {
     this.handleButtonKeydown(
       e as unknown as KeyboardEvent & { keyCode: number }
     );
-  }
-
-  private _handleAddOption() {
-    if (this.readonly) return;
-
-    const v = this.newOptionValue.trim();
-    if (!v) return;
-
-    const { valid, message } = this._validateNewOptionValue(v);
-
-    this._addOptionIsInvalid = !valid;
-    this._addOptionValidationMsg = !valid ? message : '';
-
-    if (!valid) return;
-
-    this.dispatchEvent(
-      new CustomEvent('on-add-option', { detail: { value: v } })
-    );
-
-    this.newOptionValue = '';
-    const slottedInput =
-      this.addOptionRowSlotEl
-        ?.assignedElements({ flatten: true })
-        .find(
-          (el) =>
-            (el as HTMLElement).classList?.contains('add-option-input') ||
-            (el as HTMLElement).querySelector?.('.add-option-input')
-        ) ?? null;
-
-    const inputEl = (slottedInput as HTMLElement | null)?.classList?.contains(
-      'add-option-input'
-    )
-      ? (slottedInput as any)
-      : (slottedInput as HTMLElement | null)?.querySelector?.(
-          '.add-option-input'
-        );
-
-    if (inputEl) {
-      try {
-        (inputEl as any).value = '';
-      } catch {
-        // no-op
-      }
-    }
-    this._addOptionIsInvalid = false;
-    this._addOptionValidationMsg = '';
-
-    this._syncSlottedAddOptionInput();
   }
 
   override firstUpdated(_changedProperties: PropertyValues) {
@@ -1134,7 +998,7 @@ export class Dropdown extends FormMixin(LitElement) {
           keyCode === ENTER_KEY_CODE
         ) {
           setTimeout(() => {
-            this.addOptionInputEl?.focus?.();
+            this._getSlottedAddOptionInput()?.focus?.();
           }, 100);
         } else {
           // scroll to highlighted option
@@ -1657,12 +1521,7 @@ export class Dropdown extends FormMixin(LitElement) {
       changedProps.has('allowAddOption') ||
       changedProps.has('disabled') ||
       changedProps.has('readonly') ||
-      changedProps.has('newOptionValue') ||
-      changedProps.has('_addOptionIsInvalid') ||
-      changedProps.has('addOptionPattern') ||
-      changedProps.has('addOptionMinLength') ||
-      changedProps.has('addOptionMaxLength') ||
-      changedProps.has('addOptionRequired')
+      changedProps.has('newOptionValue')
     ) {
       this._syncSlottedAddOptionInput();
     }
@@ -1846,7 +1705,6 @@ export class Dropdown extends FormMixin(LitElement) {
     );
 
     const hasText = this.newOptionValue.trim().length > 0;
-
     this._addOptionIsInvalid = hasText && !valid;
     this._addOptionValidationMsg = this._addOptionIsInvalid ? message : '';
   }

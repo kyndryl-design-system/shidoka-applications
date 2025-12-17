@@ -777,14 +777,6 @@ export const AddNewOptionValidation = {
     dropdownItems: items,
 
     preventDuplicateAddOption: true,
-    addOptionInvalidText: 'Invalid option.',
-    addOptionPattern: '^[A-Za-z][A-Za-z0-9 -]*$',
-    addOptionMinLength: 3,
-    addOptionMaxLength: 24,
-    addOptionRequired: false,
-    disableAddButtonWhenAddOptionInvalid: true,
-    addButtonDisabled: false,
-    isAddButtonDisabled: null,
   },
   parameters: {
     a11y: {
@@ -882,14 +874,6 @@ export const AddNewOptionValidation = {
             selectAllText=${args.selectAllText}
             .allowAddOption=${args.allowAddOption}
             .preventDuplicateAddOption=${args.preventDuplicateAddOption}
-            addOptionInvalidText=${args.addOptionInvalidText}
-            addOptionPattern=${args.addOptionPattern}
-            .addOptionMinLength=${args.addOptionMinLength}
-            .addOptionMaxLength=${args.addOptionMaxLength}
-            ?addOptionRequired=${args.addOptionRequired}
-            ?disableAddButtonWhenAddOptionInvalid=${args.disableAddButtonWhenAddOptionInvalid}
-            ?addButtonDisabled=${args.addButtonDisabled}
-            .isAddButtonDisabled=${args.isAddButtonDisabled}
             @on-change=${handleChange}
             @on-add-option=${(e) => {
               handleAddOption(e, dropdownItems);
@@ -901,6 +885,8 @@ export const AddNewOptionValidation = {
               type="text"
               placeholder="Add item..."
               aria-label="Add new option"
+              pattern="^[A-Za-z][A-Za-z0-9 -]*$"
+              minlength="3"
             ></kyn-text-input>
 
             <kyn-button
