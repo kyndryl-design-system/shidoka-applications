@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
-import { useEffect, useArgs } from 'storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -153,8 +153,6 @@ TimePickerWithSeconds.args = {
 };
 TimePickerWithSeconds.storyName = 'With Seconds (12H)';
 
-TimePickerWithSeconds.storyName = 'With Seconds (12H)';
-
 export const TimePickerTwentyFourHour = Template.bind({});
 TimePickerTwentyFourHour.args = {
   ...DefaultTimePicker.args,
@@ -271,6 +269,58 @@ export const InModal = {
         >
         </kyn-time-picker>
       </kyn-modal>
+    `;
+  },
+};
+
+export const ControlledEcho = {
+  args: {
+    ...DefaultTimePicker.args,
+    label: 'Controlled echo (writes value back on change)',
+    enableSeconds: true,
+    twentyFourHourFormat: false,
+  },
+  render: (args) => {
+    const [_, updateArgs] = useArgs();
+
+    const handleChange = (e) => {
+      const detail = e.detail || {};
+      action(e.type)({ ...e, detail });
+
+      // Echo back in a different type to simulate framework patterns.
+      // Prefer a time string (most common in form state).
+      updateArgs({ value: detail.time ?? '' });
+    };
+
+    return html`
+      <kyn-time-picker
+        .name=${args.name}
+        .label=${args.label}
+        .locale=${args.locale}
+        ?required=${args.required}
+        ?staticPosition=${args.staticPosition}
+        .size=${args.size}
+        .warnText=${args.warnText}
+        .invalidText=${args.invalidText}
+        .caption=${args.caption}
+        .defaultHour=${args.defaultHour}
+        .defaultMinute=${args.defaultMinute}
+        .defaultSeconds=${args.defaultSeconds}
+        .defaultErrorMessage=${args.defaultErrorMessage}
+        .minTime=${args.minTime}
+        .maxTime=${args.maxTime}
+        .errorAriaLabel=${args.errorAriaLabel}
+        .errorTitle=${args.errorTitle}
+        .warningAriaLabel=${args.warningAriaLabel}
+        .warningTitle=${args.warningTitle}
+        .enableSeconds=${args.enableSeconds}
+        ?timepickerDisabled=${args.timepickerDisabled}
+        ?readonly=${args.readonly}
+        ?twentyFourHourFormat=${args.twentyFourHourFormat}
+        .value=${args.value ?? ''}
+        @on-change=${handleChange}
+      >
+      </kyn-time-picker>
     `;
   },
 };
