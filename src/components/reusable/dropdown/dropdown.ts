@@ -12,6 +12,7 @@ import './dropdownOption';
 import './enhancedDropdownOption';
 import '../tag';
 import '../button';
+import '../textInput';
 
 import { DropdownOption } from './dropdownOption';
 import { EnhancedDropdownOption } from './enhancedDropdownOption';
@@ -47,6 +48,7 @@ const KEY = {
  * @slot unnamed - Slot for dropdown options.
  * @slot tooltip - Slot for tooltip.
  * @slot anchor - Slot for custom dropdown anchor element. If not provided, defaults to standard input-style anchor.
+ * @slot add-option-row - Slot for providing custom “Add new option” UI row (input + button). If not provided, a default row is rendered.
  * @attr {string/array} [value=''/[]] - The selected value(s) of the input. For single select, it is a string. For multi-select, it is an array of strings.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
@@ -295,6 +297,61 @@ export class Dropdown extends FormMixin(LitElement) {
   accessor addOptionInputEl!: HTMLInputElement;
 
   /**
+   * Queries the add-option slot (if provided).
+   * @ignore
+   */
+  @query('slot[name="add-option-row"]')
+  accessor addOptionRowSlotEl!: HTMLSlotElement;
+
+  private _getSlottedAddOptionInput(): HTMLElement | null {
+    const assigned =
+      this.addOptionRowSlotEl?.assignedElements({ flatten: true }) ?? [];
+
+    for (const el of assigned) {
+      if ((el as HTMLElement).classList?.contains('add-option-input')) {
+        return el as HTMLElement;
+      }
+    }
+
+    return null;
+  }
+
+  private _syncSlottedAddOptionInput() {
+    const inputEl = this._getSlottedAddOptionInput();
+    if (!inputEl) return;
+
+    // disabled/readonly
+    inputEl.toggleAttribute('disabled', this.disabled);
+    inputEl.toggleAttribute('readonly', !this.disabled && this.readonly);
+    inputEl.setAttribute('aria-disabled', String(this.disabled));
+
+    // value
+    try {
+      (inputEl as any).value = this.newOptionValue;
+    } catch {
+      // no-op
+    }
+
+    // validation-related attributes
+    inputEl.toggleAttribute('required', this.addOptionRequired);
+
+    if (this.addOptionPattern)
+      inputEl.setAttribute('pattern', this.addOptionPattern);
+    else inputEl.removeAttribute('pattern');
+
+    inputEl.removeAttribute('minlength');
+    inputEl.removeAttribute('maxlength');
+
+    inputEl.setAttribute('aria-invalid', String(this._addOptionIsInvalid));
+
+    if (this._addOptionIsInvalid) {
+      inputEl.setAttribute('aria-describedby', 'add-option-error');
+    } else {
+      inputEl.removeAttribute('aria-describedby');
+    }
+  }
+
+  /**
    * Open drawer upwards.
    * @ignore
    */
@@ -468,41 +525,20 @@ export class Dropdown extends FormMixin(LitElement) {
               ${this.allowAddOption
                 ? html`
                     <div class="add-option">
-                      <div class="add-option-row">
-                        <input
-                          class="add-option-input"
-                          type="text"
-                          placeholder=${this._textStrings.addItem}
-                          .value=${this.newOptionValue}
-                          aria-label="Add new option"
-                          ?disabled=${this.disabled}
-                          ?readonly=${!this.disabled && this.readonly}
-                          aria-invalid=${this._addOptionIsInvalid}
-                          aria-describedby=${this._addOptionIsInvalid
-                            ? 'add-option-error'
-                            : nothing}
-                          pattern=${ifDefined(
-                            this.addOptionPattern || undefined
-                          )}
-                          minlength=${ifDefined(this.addOptionMinLength)}
-                          maxlength=${ifDefined(this.addOptionMaxLength)}
-                          ?required=${this.addOptionRequired}
-                          @input=${this._handleInputNewOption}
-                          @keydown=${this._onAddOptionInputKeydown}
-                          @focus=${this._onAddOptionInputFocus}
-                        />
-
-                        <kyn-button
-                          type="button"
-                          size="small"
-                          kind="secondary"
-                          ?disabled=${this._isAddButtonDisabled()}
-                          @on-click=${this._handleAddOption}
-                        >
-                          ${this._textStrings.add}
-                        </kyn-button>
-                      </div>
-
+                      ${this.querySelector('[slot="add-option-row"]')
+                        ? html`
+                            <div
+                              class="add-option-row"
+                              @click=${(e: MouseEvent) => e.stopPropagation()}
+                              @mousedown=${(e: MouseEvent) =>
+                                e.stopPropagation()}
+                              @keydown=${(e: KeyboardEvent) =>
+                                e.stopPropagation()}
+                            >
+                              <slot name="add-option-row"></slot>
+                            </div>
+                          `
+                        : null}
                       ${this._addOptionIsInvalid
                         ? html`<div
                             id="add-option-error"
@@ -677,6 +713,24 @@ export class Dropdown extends FormMixin(LitElement) {
       }
     }
 
+    if (
+      this.addOptionMinLength != null &&
+      value.length < this.addOptionMinLength
+    ) {
+      const msg = `Please lengthen this text to ${this.addOptionMinLength} characters or more.`;
+      if (input) input.setCustomValidity(msg);
+      return { valid: false, message: this.addOptionInvalidText || msg };
+    }
+
+    if (
+      this.addOptionMaxLength != null &&
+      value.length > this.addOptionMaxLength
+    ) {
+      const msg = `Please shorten this text to ${this.addOptionMaxLength} characters or fewer.`;
+      if (input) input.setCustomValidity(msg);
+      return { valid: false, message: this.addOptionInvalidText || msg };
+    }
+
     if (this.preventDuplicateAddOption) {
       const needle = value.toLowerCase();
       const exists = this.options.some(
@@ -719,9 +773,63 @@ export class Dropdown extends FormMixin(LitElement) {
     this.dispatchEvent(
       new CustomEvent('on-add-option', { detail: { value: v } })
     );
+
     this.newOptionValue = '';
+    const slottedInput =
+      this.addOptionRowSlotEl
+        ?.assignedElements({ flatten: true })
+        .find(
+          (el) =>
+            (el as HTMLElement).classList?.contains('add-option-input') ||
+            (el as HTMLElement).querySelector?.('.add-option-input')
+        ) ?? null;
+
+    const inputEl = (slottedInput as HTMLElement | null)?.classList?.contains(
+      'add-option-input'
+    )
+      ? (slottedInput as any)
+      : (slottedInput as HTMLElement | null)?.querySelector?.(
+          '.add-option-input'
+        );
+
+    if (inputEl) {
+      try {
+        (inputEl as any).value = '';
+      } catch {
+        // no-op
+      }
+    }
     this._addOptionIsInvalid = false;
     this._addOptionValidationMsg = '';
+
+    this._syncSlottedAddOptionInput();
+  }
+
+  override firstUpdated(_changedProperties: PropertyValues) {
+    if (this.placeholder === '') {
+      if (this.searchable) {
+        this.placeholder = 'Search';
+      } else {
+        this.placeholder = this.multiple ? 'Select items' : 'Select an option';
+      }
+    }
+
+    this.addOptionRowSlotEl?.addEventListener('input', (e: Event) => {
+      const path = (e.composedPath?.() || []) as Array<EventTarget>;
+      const inAddOptionRow = path.some((t) =>
+        (t as HTMLElement)?.classList?.contains?.('add-option-input')
+      );
+
+      if (inAddOptionRow) this._handleInputNewOption(e);
+    });
+
+    this._syncSlottedAddOptionInput();
+
+    this.addOptionRowSlotEl?.addEventListener('on-input' as any, (e: Event) => {
+      this._handleInputNewOption(e);
+    });
+
+    super.firstUpdated(_changedProperties);
   }
 
   private renderHelperContent() {
@@ -777,21 +885,6 @@ export class Dropdown extends FormMixin(LitElement) {
         ${this.assistiveText}
       </div>
     `;
-  }
-
-  override firstUpdated() {
-    // set a default placeholder if none provided
-    if (this.placeholder === '') {
-      if (this.searchable) {
-        this.placeholder = 'Search';
-      } else {
-        if (this.multiple) {
-          this.placeholder = 'Select items';
-        } else {
-          this.placeholder = 'Select an option';
-        }
-      }
-    }
   }
 
   private handleSlotChange() {
@@ -1562,6 +1655,20 @@ export class Dropdown extends FormMixin(LitElement) {
   override updated(changedProps: PropertyValues) {
     super.updated(changedProps);
 
+    if (
+      changedProps.has('allowAddOption') ||
+      changedProps.has('disabled') ||
+      changedProps.has('readonly') ||
+      changedProps.has('newOptionValue') ||
+      changedProps.has('_addOptionIsInvalid') ||
+      changedProps.has('addOptionPattern') ||
+      changedProps.has('addOptionMinLength') ||
+      changedProps.has('addOptionMaxLength') ||
+      changedProps.has('addOptionRequired')
+    ) {
+      this._syncSlottedAddOptionInput();
+    }
+
     if (changedProps.has('readonly')) {
       this.clearMultipleEl?.classList.toggle('is-readonly', this.readonly);
       this.clearMultipleEl?.toggleAttribute('data-readonly', this.readonly);
@@ -1733,7 +1840,8 @@ export class Dropdown extends FormMixin(LitElement) {
 
   private _handleInputNewOption(e: Event) {
     const target = e.target as HTMLInputElement;
-    this.newOptionValue = target.value;
+    this.newOptionValue =
+      (target as any).value ?? (target as any).detail?.value ?? '';
 
     const { valid, message } = this._validateNewOptionValue(
       this.newOptionValue

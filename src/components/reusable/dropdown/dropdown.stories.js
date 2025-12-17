@@ -662,6 +662,28 @@ export const AddNewOption = {
           handleAddOption(e, dropdownItems);
         }}
       >
+        <kyn-text-input
+          slot="add-option-row"
+          class="add-option-input"
+          type="text"
+          placeholder="Add item..."
+          aria-label="Add new option"
+        ></kyn-text-input>
+
+        <kyn-button
+          slot="add-option-row"
+          type="button"
+          size="small"
+          kind="secondary"
+          @on-click=${(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropdown = e.currentTarget.closest('kyn-dropdown');
+            dropdown?._handleAddOption?.();
+          }}
+        >
+          Add
+        </kyn-button>
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
@@ -756,7 +778,7 @@ export const AddNewOptionValidation = {
 
     preventDuplicateAddOption: true,
     addOptionInvalidText: 'Invalid option.',
-    addOptionPattern: '^[A-Za-z](?:[A-Za-z0-9]|-(?=[A-Za-z0-9]))*$',
+    addOptionPattern: '^[A-Za-z][A-Za-z0-9 -]*$',
     addOptionMinLength: 3,
     addOptionMaxLength: 24,
     addOptionRequired: false,
@@ -873,11 +895,34 @@ export const AddNewOptionValidation = {
               handleAddOption(e, dropdownItems);
             }}
           >
+            <kyn-text-input
+              slot="add-option-row"
+              class="add-option-input"
+              type="text"
+              placeholder="Add item..."
+              aria-label="Add new option"
+            ></kyn-text-input>
+
+            <kyn-button
+              slot="add-option-row"
+              type="button"
+              size="small"
+              kind="secondary"
+              @on-click=${(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = e.currentTarget.closest('kyn-dropdown');
+                dropdown?._handleAddOption?.();
+              }}
+            >
+              Add
+            </kyn-button>
             <kyn-tooltip slot="tooltip">
               <span slot="anchor" style="display:flex"
                 >${unsafeSVG(infoIcon)}</span
               >
-              Validation story: pattern + length + duplicate checks.
+              Try: ab (too short), 1abc (fails pattern), option2 (duplicate),
+              New Option (valid).
             </kyn-tooltip>
 
             ${repeat(
