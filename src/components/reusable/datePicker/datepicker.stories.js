@@ -43,6 +43,9 @@ export default {
       options: ['single', 'multiple'],
       control: { type: 'select' },
     },
+    // NOTE: Storybook "text" controls serialize everything to strings.
+    // For this component, `value` can be Date | Date[] | string | string[] | null.
+    // Use "object" control so arrays survive Controls updates (needed for mode="multiple").
     value: { control: { type: 'object' } },
     size: {
       options: ['sm', 'md', 'lg'],
@@ -70,15 +73,6 @@ export default {
 };
 
 const Template = (args) => {
-  useEffect(() => {
-    return () => {
-      const picker = document.querySelector('kyn-date-picker');
-      if (picker) {
-        picker.remove();
-      }
-    };
-  }, []);
-
   return html`
     <kyn-date-picker
       .name=${args.name}
@@ -136,7 +130,9 @@ DatePickerDefault.args = {
   minDate: '',
   maxDate: '',
   allowManualInput: false,
+  twentyFourHourFormat: false,
   label: 'Date',
+  value: '',
 };
 DatePickerDefault.storyName = 'Single Date (Default)';
 
@@ -162,6 +158,20 @@ MinMaxDateExample.args = {
   label: 'Min and Max dates set',
 };
 
+export const MinMaxInvalidPresetValue = Template.bind({});
+MinMaxInvalidPresetValue.args = {
+  ...DatePickerDefault.args,
+  name: 'min-max-invalid-preset',
+  dateFormat: 'Y-m-d',
+  minDate: '2024-01-01',
+  maxDate: '2024-12-31',
+  value: '2025-12-04',
+  caption:
+    'Value is pre-set outside min/max. Component should display an error.',
+  label: 'Min/Max with invalid preset value',
+};
+MinMaxInvalidPresetValue.storyName = 'Min/Max + Invalid Preset Value';
+
 export const DatePickerMultiple = Template.bind({});
 DatePickerMultiple.args = {
   ...DatePickerDefault.args,
@@ -171,6 +181,8 @@ DatePickerMultiple.args = {
   caption: 'Select multiple dates.',
   mode: 'multiple',
   label: 'Multiple Date Selection',
+  // Use strings here so controls can edit them reliably
+  value: ['2024-03-10', '2024-03-15'],
 };
 DatePickerMultiple.storyName = 'Multiple Date Selection';
 
@@ -181,7 +193,8 @@ DateTimeMultiple.args = {
   name: 'date-time-multiple-picker',
   dateFormat: 'Y-m-d H:i',
   caption: 'Select multiple dates with time. Example shows preselected dates.',
-  value: [new Date('2024-03-10T10:00:00'), new Date('2024-03-15T15:30:00')],
+  // prefer ISO strings for SB controls.
+  value: ['2024-03-10T10:00:00', '2024-03-15T15:30:00'],
   mode: 'multiple',
   label: 'Multiple Date/Time Selection',
 };
@@ -227,6 +240,7 @@ export const InModal = {
     allowManualInput: false,
     showSecondaryButton: false,
     hideCancelButton: false,
+    twentyFourHourFormat: false,
     aiConnected: false,
     disableScroll: false,
   },
@@ -738,7 +752,7 @@ export const ValueOverridesDefault = ValueOverridesDefaultTemplate.bind({});
 ValueOverridesDefault.args = {
   ...DatePickerDefault.args,
   name: 'value-overrides-default',
-  value: new Date('2024-04-10'),
+  value: '2024-04-11',
   defaultDate: '2024-01-01',
 
   label: 'value overrides defaultDate',
