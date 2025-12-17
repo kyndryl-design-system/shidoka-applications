@@ -13,6 +13,16 @@
 }
 
 .side-drawer-close-btn {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  color: var(--kd-color-icon-primary);
+  z-index: 2;
+
+  span {
+    color: var(--kd-color-icon-primary);
+    display: flex;
+  }
   span {
     color: var(--kd-color-icon-primary);
   }
@@ -56,6 +66,14 @@ dialog {
     width: 1024px;
   }
 
+  &.resizable {
+    @media (min-width: 42rem) {
+      min-width: 300px;
+      resize: horizontal;
+      direction: rtl;
+    }
+  }
+
   @include elevation.shadow(3);
 }
 
@@ -86,12 +104,20 @@ header {
   flex-direction: row;
   justify-content: space-between;
   padding: 32px;
+  margin-right: 40px;
+  margin-bottom: 32px;
 }
 
 form {
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  .resizable & {
+    @media (min-width: 42rem) {
+      direction: ltr;
+    }
+  }
 }
 
 .body {
@@ -111,7 +137,17 @@ form {
 }
 
 .header-label-title {
-  margin-right: 32px;
+  flex: 1 0 auto;
+  width: auto;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .label {

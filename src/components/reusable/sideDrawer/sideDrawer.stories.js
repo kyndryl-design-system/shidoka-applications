@@ -34,6 +34,7 @@ const args = {
   secondaryButtonText: 'Secondary',
   hideCancelButton: false,
   gradientBackground: false,
+  resizable: false,
 };
 
 export const SideDrawer = {
@@ -54,6 +55,7 @@ export const SideDrawer = {
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
+        ?resizable=${args.resizable}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -166,6 +168,7 @@ export const NoBackdrop = {
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
         noBackdrop
+        ?resizable=${args.resizable}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
