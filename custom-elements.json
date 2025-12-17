@@ -3912,6 +3912,472 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Breadcrumbs Component.",
+          "name": "Breadcrumbs",
+          "slots": [
+            {
+              "description": "Slot for inserting links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-breadcrumbs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "./breadcrumbs"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/button.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Button component.",
+          "name": "Button",
+          "slots": [
+            {
+              "description": "Slot for button text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the button for accessibility.",
+              "attribute": "description"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "BUTTON_TYPES"
+              },
+              "description": "Type for the &lt;button&gt; element.",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "BUTTON_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the button.",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Converts the button to an &lt;a&gt; tag if specified.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "'_self'",
+              "description": "Link target, only valid if href is supplied.",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "BUTTON_SIZES"
+              },
+              "description": "Specifies the size of the button.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "iconPosition",
+              "type": {
+                "text": "BUTTON_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any button text.",
+              "attribute": "iconPosition"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is disabled.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "isFloating",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is Floatable",
+              "attribute": "isFloating"
+            },
+            {
+              "kind": "field",
+              "name": "showOnScroll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show button after scrolling to 50% of the page",
+              "attribute": "showOnScroll"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Button selected state.",
+              "attribute": "selected"
+            },
+            {
+              "kind": "field",
+              "name": "formmethod",
+              "type": {
+                "text": "any"
+              },
+              "description": "Button formmethod.",
+              "attribute": "formmethod"
+            },
+            {
+              "kind": "field",
+              "name": "splitLayout",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
+              "attribute": "splitLayout"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_testIconOnly",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the original click event. `detail:{ origEvent: Event }`",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the button for accessibility.",
+              "fieldName": "description"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "BUTTON_TYPES"
+              },
+              "description": "Type for the &lt;button&gt; element.",
+              "fieldName": "type"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "BUTTON_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the button.",
+              "fieldName": "kind"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Converts the button to an &lt;a&gt; tag if specified.",
+              "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "string"
+              },
+              "default": "'_self'",
+              "description": "Link target, only valid if href is supplied.",
+              "fieldName": "target"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "BUTTON_SIZES"
+              },
+              "description": "Specifies the size of the button.",
+              "fieldName": "size"
+            },
+            {
+              "name": "iconPosition",
+              "type": {
+                "text": "BUTTON_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any button text.",
+              "fieldName": "iconPosition"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Button name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "isFloating",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the button is Floatable",
+              "fieldName": "isFloating"
+            },
+            {
+              "name": "showOnScroll",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show button after scrolling to 50% of the page",
+              "fieldName": "showOnScroll"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Button selected state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "formmethod",
+              "type": {
+                "text": "any"
+              },
+              "description": "Button formmethod.",
+              "fieldName": "formmethod"
+            },
+            {
+              "name": "splitLayout",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
+              "fieldName": "splitLayout"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/components/reusable/button/button.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button",
+          "declaration": {
+            "name": "Button",
+            "module": "src/components/reusable/button/button.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/defs.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "BUTTON_KINDS_SOLID",
+          "type": {
+            "text": "array"
+          },
+          "default": "[\r\n  BUTTON_KINDS.PRIMARY,\r\n  BUTTON_KINDS.PRIMARY_AI,\r\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\r\n  BUTTON_KINDS.SECONDARY,\r\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\r\n  BUTTON_KINDS.TERTIARY,\r\n  BUTTON_KINDS.CONTENT,\r\n]"
+        },
+        {
+          "kind": "variable",
+          "name": "BUTTON_KINDS_OUTLINE",
+          "type": {
+            "text": "array"
+          },
+          "default": "[\r\n  BUTTON_KINDS.OUTLINE,\r\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\r\n]"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BUTTON_KINDS_SOLID",
+          "declaration": {
+            "name": "BUTTON_KINDS_SOLID",
+            "module": "src/components/reusable/button/defs.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BUTTON_KINDS_OUTLINE",
+          "declaration": {
+            "name": "BUTTON_KINDS_OUTLINE",
+            "module": "src/components/reusable/button/defs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/button/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Button",
+          "declaration": {
+            "name": "Button",
+            "module": "./button"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
       "declarations": [
         {
@@ -4424,779 +4890,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/button/button.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Button component.",
-          "name": "Button",
-          "slots": [
-            {
-              "description": "Slot for button text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the button for accessibility.",
-              "attribute": "description"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "BUTTON_TYPES"
-              },
-              "description": "Type for the &lt;button&gt; element.",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "BUTTON_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the button.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts the button to an &lt;a&gt; tag if specified.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "string"
-              },
-              "default": "'_self'",
-              "description": "Link target, only valid if href is supplied.",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "BUTTON_SIZES"
-              },
-              "description": "Specifies the size of the button.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "iconPosition",
-              "type": {
-                "text": "BUTTON_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any button text.",
-              "attribute": "iconPosition"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is disabled.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "isFloating",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is Floatable",
-              "attribute": "isFloating"
-            },
-            {
-              "kind": "field",
-              "name": "showOnScroll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show button after scrolling to 50% of the page",
-              "attribute": "showOnScroll"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Button selected state.",
-              "attribute": "selected"
-            },
-            {
-              "kind": "field",
-              "name": "formmethod",
-              "type": {
-                "text": "any"
-              },
-              "description": "Button formmethod.",
-              "attribute": "formmethod"
-            },
-            {
-              "kind": "field",
-              "name": "splitLayout",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
-              "attribute": "splitLayout"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_testIconOnly",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the original click event. `detail:{ origEvent: Event }`",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the button for accessibility.",
-              "fieldName": "description"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "BUTTON_TYPES"
-              },
-              "description": "Type for the &lt;button&gt; element.",
-              "fieldName": "type"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "BUTTON_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the button.",
-              "fieldName": "kind"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Converts the button to an &lt;a&gt; tag if specified.",
-              "fieldName": "href"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "string"
-              },
-              "default": "'_self'",
-              "description": "Link target, only valid if href is supplied.",
-              "fieldName": "target"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "BUTTON_SIZES"
-              },
-              "description": "Specifies the size of the button.",
-              "fieldName": "size"
-            },
-            {
-              "name": "iconPosition",
-              "type": {
-                "text": "BUTTON_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any button text.",
-              "fieldName": "iconPosition"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Button name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "isFloating",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the button is Floatable",
-              "fieldName": "isFloating"
-            },
-            {
-              "name": "showOnScroll",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Show button after scrolling to 50% of the page",
-              "fieldName": "showOnScroll"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Button selected state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "formmethod",
-              "type": {
-                "text": "any"
-              },
-              "description": "Button formmethod.",
-              "fieldName": "formmethod"
-            },
-            {
-              "name": "splitLayout",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Aligns button text and icon at the edges when `kyn-button` has a set width.",
-              "fieldName": "splitLayout"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Button",
-          "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button/button.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-button",
-          "declaration": {
-            "name": "Button",
-            "module": "src/components/reusable/button/button.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/button/defs.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "BUTTON_KINDS_SOLID",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\r\n  BUTTON_KINDS.PRIMARY,\r\n  BUTTON_KINDS.PRIMARY_AI,\r\n  BUTTON_KINDS.PRIMARY_DESTRUCTIVE,\r\n  BUTTON_KINDS.SECONDARY,\r\n  BUTTON_KINDS.SECONDARY_DESTRUCTIVE,\r\n  BUTTON_KINDS.TERTIARY,\r\n  BUTTON_KINDS.CONTENT,\r\n]"
-        },
-        {
-          "kind": "variable",
-          "name": "BUTTON_KINDS_OUTLINE",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\r\n  BUTTON_KINDS.OUTLINE,\r\n  BUTTON_KINDS.OUTLINE_DESTRUCTIVE,\r\n]"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BUTTON_KINDS_SOLID",
-          "declaration": {
-            "name": "BUTTON_KINDS_SOLID",
-            "module": "src/components/reusable/button/defs.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "BUTTON_KINDS_OUTLINE",
-          "declaration": {
-            "name": "BUTTON_KINDS_OUTLINE",
-            "module": "src/components/reusable/button/defs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/button/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Button",
-          "declaration": {
-            "name": "Button",
-            "module": "./button"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Breadcrumbs Component.",
-          "name": "Breadcrumbs",
-          "slots": [
-            {
-              "description": "Slot for inserting links.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-breadcrumbs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "./breadcrumbs"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/buttonGroup/buttonGroup.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "BUTTON_GROUP_KINDS",
-          "type": {
-            "text": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
-          },
-          "default": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
-        },
-        {
-          "kind": "class",
-          "description": "ButtonGroup component.",
-          "name": "ButtonGroup",
-          "slots": [
-            {
-              "description": "Slot for <kyn-button> elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "'default' | 'pagination' | 'icons'"
-              },
-              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "selectedIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "zero-based: default button index; for pagination, page-1",
-              "attribute": "selectedIndex"
-            },
-            {
-              "kind": "field",
-              "name": "totalPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "totalPages"
-            },
-            {
-              "kind": "field",
-              "name": "maxVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "attribute": "maxVisible"
-            },
-            {
-              "kind": "field",
-              "name": "clickIncrementBy",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "clickIncrementBy"
-            },
-            {
-              "kind": "field",
-              "name": "_visibleStart",
-              "type": {
-                "text": "number"
-              },
-              "privacy": "private",
-              "default": "1",
-              "description": "Starting page for the visible range (internal state)"
-            },
-            {
-              "kind": "field",
-              "name": "visibleStart",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Current first page in the visible window (read-only)",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "visibleEnd",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Current last page in the visible window (read-only)",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  prevButtonDescription: 'Previous Page',\n  nextButtonDescription: 'Next Page',\n  indivGroupItemDescription: '',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "_buttons",
-              "type": {
-                "text": "Button[]"
-              },
-              "privacy": "private",
-              "description": "Target <kyn-button> children"
-            },
-            {
-              "kind": "method",
-              "name": "_renderDefault",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderIcons",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderPagination",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateWindow",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_onPage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "cmd",
-                  "type": {
-                    "text": "'prev' | 'next' | number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "_boundHandlers",
-              "privacy": "private",
-              "default": "new Map<Button, () => void>()"
-            },
-            {
-              "kind": "method",
-              "name": "_attachClickListeners",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_onButtonClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "idx",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "unknown"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_syncSelection",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "name": "on-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event button selection in button group. <pre><code>detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }</code></pre>"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "kind",
-              "type": {
-                "text": "'default' | 'pagination' | 'icons'"
-              },
-              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
-              "fieldName": "kind"
-            },
-            {
-              "name": "selectedIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "zero-based: default button index; for pagination, page-1",
-              "fieldName": "selectedIndex"
-            },
-            {
-              "name": "totalPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "totalPages"
-            },
-            {
-              "name": "maxVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "fieldName": "maxVisible"
-            },
-            {
-              "name": "clickIncrementBy",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "clickIncrementBy"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-button-group",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "BUTTON_GROUP_KINDS",
-          "declaration": {
-            "name": "BUTTON_GROUP_KINDS",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "ButtonGroup",
-          "declaration": {
-            "name": "ButtonGroup",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-button-group",
-          "declaration": {
-            "name": "ButtonGroup",
-            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/buttonGroup/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ButtonGroup",
-          "declaration": {
-            "name": "ButtonGroup",
-            "module": "../buttonGroup/buttonGroup"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/card/card.ts",
       "declarations": [
         {
@@ -5612,6 +5305,313 @@
           "declaration": {
             "name": "VitalCardSkeleton",
             "module": "src/components/reusable/card/vitalCard.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/buttonGroup/buttonGroup.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "BUTTON_GROUP_KINDS",
+          "type": {
+            "text": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
+          },
+          "default": "{\n  DEFAULT: 'default',\n  PAGINATION: 'pagination',\n  ICONS: 'icons',\n}"
+        },
+        {
+          "kind": "class",
+          "description": "ButtonGroup component.",
+          "name": "ButtonGroup",
+          "slots": [
+            {
+              "description": "Slot for <kyn-button> elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "attribute": "selectedIndex"
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "totalPages"
+            },
+            {
+              "kind": "field",
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "attribute": "maxVisible"
+            },
+            {
+              "kind": "field",
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "clickIncrementBy"
+            },
+            {
+              "kind": "field",
+              "name": "_visibleStart",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "1",
+              "description": "Starting page for the visible range (internal state)"
+            },
+            {
+              "kind": "field",
+              "name": "visibleStart",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current first page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "visibleEnd",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current last page in the visible window (read-only)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  prevButtonDescription: 'Previous Page',\n  nextButtonDescription: 'Next Page',\n  indivGroupItemDescription: '',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_buttons",
+              "type": {
+                "text": "Button[]"
+              },
+              "privacy": "private",
+              "description": "Target <kyn-button> children"
+            },
+            {
+              "kind": "method",
+              "name": "_renderDefault",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderIcons",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderPagination",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateWindow",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onPage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "cmd",
+                  "type": {
+                    "text": "'prev' | 'next' | number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_boundHandlers",
+              "privacy": "private",
+              "default": "new Map<Button, () => void>()"
+            },
+            {
+              "kind": "method",
+              "name": "_attachClickListeners",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_onButtonClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "idx",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "unknown"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_syncSelection",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event button selection in button group. <pre><code>detail:{ value: string | number, selectedIndex: number, visibleStart: number, visibleEnd: number }</code></pre>"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "kind",
+              "type": {
+                "text": "'default' | 'pagination' | 'icons'"
+              },
+              "description": "Button group kind. Valid values: 'default', 'pagination', 'icons'",
+              "fieldName": "kind"
+            },
+            {
+              "name": "selectedIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "zero-based: default button index; for pagination, page-1",
+              "fieldName": "selectedIndex"
+            },
+            {
+              "name": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "totalPages"
+            },
+            {
+              "name": "maxVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "fieldName": "maxVisible"
+            },
+            {
+              "name": "clickIncrementBy",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "clickIncrementBy"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-button-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BUTTON_GROUP_KINDS",
+          "declaration": {
+            "name": "BUTTON_GROUP_KINDS",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ButtonGroup",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-button-group",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "src/components/reusable/buttonGroup/buttonGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/buttonGroup/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ButtonGroup",
+          "declaration": {
+            "name": "ButtonGroup",
+            "module": "../buttonGroup/buttonGroup"
           }
         }
       ]
@@ -10995,6 +10995,104 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "attribute": "snippetFontSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "fieldName": "snippetFontSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/inlineConfirm/index.ts",
       "declarations": [],
       "exports": [
@@ -11173,104 +11271,6 @@
           "declaration": {
             "name": "InlineConfirm",
             "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "./inlineCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
-          "name": "InlineCodeView",
-          "slots": [
-            {
-              "description": "inline code snippet slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "attribute": "snippetFontSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "fieldName": "snippetFontSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-code-view",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -13527,6 +13527,410 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/numberInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NumberInput",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "./numberInput"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/numberInput/numberInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Number input.",
+          "name": "NumberInput",
+          "cssProperties": [
+            {
+              "description": "Maximum width of the number input inner container.",
+              "name": "--kyn-number-input-inner-max-width",
+              "default": "200px"
+            },
+            {
+              "description": "Minimum width of the number input inner container.",
+              "name": "--kyn-number-input-inner-min-width",
+              "default": "0px"
+            }
+          ],
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Input value."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum value.",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum value.",
+              "attribute": "min"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step value.",
+              "attribute": "step"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  subtract: 'Subtract',\r\n  add: 'Add',\r\n  error: 'Error',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_sizeMap",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "'small' | 'medium' | 'large'"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSubtract",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleAdd",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the value and original event details.`detail:{ value: number }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum value.",
+              "fieldName": "max"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum value.",
+              "fieldName": "min"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step value.",
+              "fieldName": "step"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-number-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NumberInput",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "src/components/reusable/numberInput/numberInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-number-input",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "src/components/reusable/numberInput/numberInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/notification/index.ts",
       "declarations": [],
       "exports": [
@@ -13993,410 +14397,6 @@
           "declaration": {
             "name": "NotificationContainer",
             "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/numberInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NumberInput",
-          "declaration": {
-            "name": "NumberInput",
-            "module": "./numberInput"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/numberInput/numberInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Number input.",
-          "name": "NumberInput",
-          "cssProperties": [
-            {
-              "description": "Maximum width of the number input inner container.",
-              "name": "--kyn-number-input-inner-max-width",
-              "default": "200px"
-            },
-            {
-              "description": "Minimum width of the number input inner container.",
-              "name": "--kyn-number-input-inner-min-width",
-              "default": "0px"
-            }
-          ],
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Input value."
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum value.",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum value.",
-              "attribute": "min"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Step value.",
-              "attribute": "step"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  requiredText: 'Required',\r\n  subtract: 'Subtract',\r\n  add: 'Add',\r\n  error: 'Error',\r\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_sizeMap",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "'small' | 'medium' | 'large'"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "size",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSubtract",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleAdd",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the value and original event details.`detail:{ value: number }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum value.",
-              "fieldName": "max"
-            },
-            {
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum value.",
-              "fieldName": "min"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Step value.",
-              "fieldName": "step"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-number-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NumberInput",
-          "declaration": {
-            "name": "NumberInput",
-            "module": "src/components/reusable/numberInput/numberInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-number-input",
-          "declaration": {
-            "name": "NumberInput",
-            "module": "src/components/reusable/numberInput/numberInput.ts"
           }
         }
       ]
@@ -17794,6 +17794,10 @@
             {
               "description": "Slot for the anchor button content.",
               "name": "anchor"
+            },
+            {
+              "description": "Slot for an inline header action (badge/button) rendered next to the title/label when using the default header.",
+              "name": "header-inline"
             }
           ],
           "members": [
@@ -23995,463 +23999,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/textInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextInput",
-          "declaration": {
-            "name": "TextInput",
-            "module": "./textInput"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textInput/textInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text input.",
-          "name": "TextInput",
-          "slots": [
-            {
-              "description": "Slot for contextual icon.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "'text' | 'password' | 'email' | 'search' | 'tel' | 'url'"
-              },
-              "default": "'text'",
-              "description": "Input type, limited to options that are \"text like\".",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "pattern",
-              "type": {
-                "text": "string"
-              },
-              "description": "RegEx pattern to validate.",
-              "attribute": "pattern"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "iconRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Place icon on the right.",
-              "attribute": "iconRight"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear all',\r\n  errorText: 'Error',\r\n  showPassword: 'Show password',\r\n  hidePassword: 'Hide password',\r\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "attribute": "autoComplete"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "determineIfSlotted",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_togglePasswordVisibility",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "MouseEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setValueAndNotify",
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details.`detail:{ origEvent: InputEvent, value: string }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "'text' | 'password' | 'email' | 'search' | 'tel' | 'url'"
-              },
-              "default": "'text'",
-              "description": "Input type, limited to options that are \"text like\".",
-              "fieldName": "type"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "pattern",
-              "type": {
-                "text": "string"
-              },
-              "description": "RegEx pattern to validate.",
-              "fieldName": "pattern"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "iconRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Place icon on the right.",
-              "fieldName": "iconRight"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "fieldName": "autoComplete"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextInput",
-          "declaration": {
-            "name": "TextInput",
-            "module": "src/components/reusable/textInput/textInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-input",
-          "declaration": {
-            "name": "TextInput",
-            "module": "src/components/reusable/textInput/textInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
@@ -25349,6 +24896,463 @@
           "declaration": {
             "name": "TimePicker",
             "module": "src/components/reusable/timepicker/timepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextInput",
+          "declaration": {
+            "name": "TextInput",
+            "module": "./textInput"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textInput/textInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text input.",
+          "name": "TextInput",
+          "slots": [
+            {
+              "description": "Slot for contextual icon.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "'text' | 'password' | 'email' | 'search' | 'tel' | 'url'"
+              },
+              "default": "'text'",
+              "description": "Input type, limited to options that are \"text like\".",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "description": "RegEx pattern to validate.",
+              "attribute": "pattern"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "iconRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Place icon on the right.",
+              "attribute": "iconRight"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  clearAll: 'Clear all',\r\n  errorText: 'Error',\r\n  showPassword: 'Show password',\r\n  hidePassword: 'Hide password',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "attribute": "autoComplete"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClear",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "determineIfSlotted",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_togglePasswordVisibility",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setValueAndNotify",
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details.`detail:{ origEvent: InputEvent, value: string }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "'text' | 'password' | 'email' | 'search' | 'tel' | 'url'"
+              },
+              "default": "'text'",
+              "description": "Input type, limited to options that are \"text like\".",
+              "fieldName": "type"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "pattern",
+              "type": {
+                "text": "string"
+              },
+              "description": "RegEx pattern to validate.",
+              "fieldName": "pattern"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "iconRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Place icon on the right.",
+              "fieldName": "iconRight"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "fieldName": "autoComplete"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextInput",
+          "declaration": {
+            "name": "TextInput",
+            "module": "src/components/reusable/textInput/textInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-input",
+          "declaration": {
+            "name": "TextInput",
+            "module": "src/components/reusable/textInput/textInput.ts"
           }
         }
       ]

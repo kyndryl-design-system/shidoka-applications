@@ -21,6 +21,7 @@ import SideDrawerScss from './sideDrawer.scss?inline';
  * Side Drawer.
  * @slot unnamed - Slot for drawer body content.
  * @slot anchor - Slot for the anchor button content.
+ * @slot header-inline - Slot for an inline header action (badge/button) rendered next to the title/label when using the default header.
  * @fires on-close - Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`
  * @fires on-open - Emits the drawer open event.
  */
@@ -168,26 +169,30 @@ export class SideDrawer extends LitElement {
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >
         <form method="dialog">
+          <kyn-button
+            class="side-drawer-close-btn"
+            size="small"
+            kind=${this.aiConnected ? 'ghost-ai' : 'ghost'}
+            description=${ifDefined(this.closeBtnDescription)}
+            @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
+          >
+            <span slot="icon">${unsafeSVG(closeIcon)}</span>
+          </kyn-button>
+
           <!--  Header -->
           <header>
-            <div class="header-label-title">
-              <h1 class="${classMap(dialogHeaderClasses)}" id="dialogLabel">
-                ${this.titleText}
-              </h1>
-              ${this.labelText !== ''
-                ? html`<span class="label">${this.labelText}</span>`
-                : null}
-            </div>
+            <div class="header-inner">
+              <div class="header-label-title">
+                <h1 class="${classMap(dialogHeaderClasses)}" id="dialogLabel">
+                  ${this.titleText}
+                </h1>
+                ${this.labelText !== ''
+                  ? html`<span class="label">${this.labelText}</span>`
+                  : null}
+              </div>
 
-            <kyn-button
-              class="side-drawer-close-btn"
-              size="small"
-              kind=${this.aiConnected ? 'ghost-ai' : 'ghost'}
-              description=${ifDefined(this.closeBtnDescription)}
-              @click=${(e: Event) => this._closeDrawer(e, 'cancel')}
-            >
-              <span slot="icon">${unsafeSVG(closeIcon)}</span>
-            </kyn-button>
+              <slot name="header-inline"></slot>
+            </div>
           </header>
 
           <!-- Body -->
