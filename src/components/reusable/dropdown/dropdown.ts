@@ -555,7 +555,25 @@ export class Dropdown extends FormMixin(LitElement) {
                         <div
                           class="add-option-row"
                           @click=${this._onAddOptionRowClick}
-                          @keydown=${this._onAddOptionRowKeydown}
+                          @keydown=${(e: KeyboardEvent) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              this._handleAddOption();
+                              return;
+                            }
+
+                            if (e.key === 'Escape') {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              this._clearAddOptionInput();
+                              this.open = false;
+                              this.buttonEl?.focus?.();
+                              return;
+                            }
+
+                            e.stopPropagation();
+                          }}
                           @mousedown=${(e: MouseEvent) => e.stopPropagation()}
                         >
                           <slot
