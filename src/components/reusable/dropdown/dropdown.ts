@@ -671,8 +671,8 @@ export class Dropdown extends FormMixin(LitElement) {
     this.handleClick();
   }
 
-  /** Handles input event from add-option input.
-   * @internal
+  /**
+   * @ignore
    */
   private _onAddOptionInputKeydown = (e: KeyboardEvent) => {
     if (this.readonly) return;
@@ -701,8 +701,8 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   };
 
-  /** Handles focus event from add-option input.
-   * @internal
+  /**
+   * @ignore
    */
   private _onAddOptionInputFocus = () => {
     this.assistiveText = 'Add new option input';
@@ -727,8 +727,8 @@ export class Dropdown extends FormMixin(LitElement) {
     if (fallback) fallback.value = '';
   }
 
-  /** Handles input event from add-option input.
-   * @internal
+  /**
+   * @ignore
    */
   private _handleAddOption = () => {
     if (this.readonly) return;
@@ -1574,8 +1574,8 @@ export class Dropdown extends FormMixin(LitElement) {
     super.disconnectedCallback();
   }
 
-  /** Get value as array
-   * @internal
+  /**
+   * @ignore
    */
   private get valueArray(): string[] {
     return Array.isArray(this.value) ? this.value : [];

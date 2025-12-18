@@ -893,8 +893,8 @@ export const AddNewOptionValidation = {
               <span slot="anchor" style="display:flex"
                 >${unsafeSVG(infoIcon)}</span
               >
-              Try: ab (too short), 1abc (fails pattern), option2 (duplicate),
-              New Option (valid).
+              Try: ab (too short), 1abc (fails pattern), bad (fails pattern),
+              option2 (duplicate), New Option (valid).
             </kyn-tooltip>
 
             ${repeat(
@@ -917,7 +917,8 @@ export const AddNewOptionValidation = {
 
           <div class="validation-note">
             Try: <b>ab</b> (too short), <b>1abc</b> (fails pattern),
-            <b>option2</b> (duplicate), <b>New Option</b> (valid).
+            <b>bad</b> (fails pattern), <b>option2</b> (duplicate),
+            <b>New Option</b> (valid).
           </div>
         </div>
       </div>
