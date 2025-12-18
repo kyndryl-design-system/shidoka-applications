@@ -123,13 +123,13 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   // checkboxes!: Array<any>;
 
   /** Checkboxes array.
-   * @ignore
+   * @internal
    */
   @state()
   accessor checkboxes: Array<any> = [];
 
   /** Filtered Checkboxes array.
-   * @ignore
+   * @internal
    */
   @state()
   accessor filteredCheckboxes: Array<any> = [];
@@ -461,47 +461,6 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     this.dispatchEvent(event);
   }
 
-  // private _handleFilter(e: any) {
-  //   let visibleCount = 0;
-
-  //   this.searchTerm = e.detail.value.toLowerCase();
-
-  //   this.filteredCheckboxes = this.checkboxes.filter((checkboxEl) => {
-  //     return checkboxEl.textContent.toLowerCase().includes(this.searchTerm);
-  //   });
-
-  //   this.checkboxes.forEach((checkboxEl) => {
-  //     // get checkbox label text
-  //     const checkboxText = checkboxEl.textContent.toLowerCase();
-
-  //     // hide checkbox if no match to search term
-  //     if (this.limitCheckboxes && !this.limitRevealed) {
-  //       if (
-  //         checkboxText.includes(this.searchTerm) &&
-  //         visibleCount < this.limitCount
-  //       ) {
-  //         checkboxEl.style.display = 'block';
-  //         visibleCount++;
-  //       } else {
-  //         checkboxEl.style.display = 'none';
-  //       }
-  //     } else {
-  //       if (checkboxText.includes(this.searchTerm)) {
-  //         checkboxEl.style.display = 'block';
-  //       } else {
-  //         checkboxEl.style.display = 'none';
-  //       }
-  //     }
-  //   });
-
-  //   this._updateCheckboxStates();
-
-  //   const event = new CustomEvent('on-search', {
-  //     detail: { searchTerm: this.searchTerm },
-  //   });
-  //   this.dispatchEvent(event);
-  // }
-
   private _applyFilter() {
     let visibleCount = 0;
     const searchLower = this.searchTerm.toLowerCase();
@@ -511,8 +470,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     });
 
     this.checkboxes.forEach((checkboxEl) => {
+      // get checkbox label text
       const checkboxText = checkboxEl.textContent.toLowerCase();
 
+      // hide checkbox if no match to search term
       if (this.limitCheckboxes && !this.limitRevealed) {
         if (
           checkboxText.includes(searchLower) &&
