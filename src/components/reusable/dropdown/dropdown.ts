@@ -740,9 +740,7 @@ export class Dropdown extends FormMixin(LitElement) {
       ) as HTMLInputElement | null;
 
       if (nativeInput && !nativeInput.checkValidity()) {
-        // Trigger the text-input to show its built-in validation
         slottedInput.invalidText = '';
-        // reportValidity is on ElementInternals, but this forces the browser msg
         nativeInput.reportValidity?.();
         return;
       }
