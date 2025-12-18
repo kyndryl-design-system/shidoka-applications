@@ -87,10 +87,8 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   @property({ type: String })
   accessor label = '';
 
-  /** Filter text input value.
-   * @internal
-   */
-  @state()
+  /** Search input value */
+  @property({ type: String })
   accessor searchTerm = '';
 
   /** Limits visible checkboxes behind a "Show all" button. */
@@ -124,9 +122,15 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   // @queryAssignedElements()
   // checkboxes!: Array<any>;
 
+  /** Checkboxes array.
+   * @ignore
+   */
   @state()
   accessor checkboxes: Array<any> = [];
 
+  /** Filtered Checkboxes array.
+   * @ignore
+   */
   @state()
   accessor filteredCheckboxes: Array<any> = [];
 
@@ -241,6 +245,10 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     }
 
     if (changedProps.has('selectAllScope')) this._updateCheckboxStates();
+
+    if (changedProps.has('searchTerm') && this.checkboxes.length) {
+      this._applyFilter();
+    }
 
     if (changedProps.has('invalidText')) {
       this._isInvalid =
@@ -453,23 +461,61 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     this.dispatchEvent(event);
   }
 
-  private _handleFilter(e: any) {
-    let visibleCount = 0;
+  // private _handleFilter(e: any) {
+  //   let visibleCount = 0;
 
-    this.searchTerm = e.detail.value.toLowerCase();
+  //   this.searchTerm = e.detail.value.toLowerCase();
+
+  //   this.filteredCheckboxes = this.checkboxes.filter((checkboxEl) => {
+  //     return checkboxEl.textContent.toLowerCase().includes(this.searchTerm);
+  //   });
+
+  //   this.checkboxes.forEach((checkboxEl) => {
+  //     // get checkbox label text
+  //     const checkboxText = checkboxEl.textContent.toLowerCase();
+
+  //     // hide checkbox if no match to search term
+  //     if (this.limitCheckboxes && !this.limitRevealed) {
+  //       if (
+  //         checkboxText.includes(this.searchTerm) &&
+  //         visibleCount < this.limitCount
+  //       ) {
+  //         checkboxEl.style.display = 'block';
+  //         visibleCount++;
+  //       } else {
+  //         checkboxEl.style.display = 'none';
+  //       }
+  //     } else {
+  //       if (checkboxText.includes(this.searchTerm)) {
+  //         checkboxEl.style.display = 'block';
+  //       } else {
+  //         checkboxEl.style.display = 'none';
+  //       }
+  //     }
+  //   });
+
+  //   this._updateCheckboxStates();
+
+  //   const event = new CustomEvent('on-search', {
+  //     detail: { searchTerm: this.searchTerm },
+  //   });
+  //   this.dispatchEvent(event);
+  // }
+
+  private _applyFilter() {
+    let visibleCount = 0;
+    const searchLower = this.searchTerm.toLowerCase();
 
     this.filteredCheckboxes = this.checkboxes.filter((checkboxEl) => {
-      return checkboxEl.textContent.toLowerCase().includes(this.searchTerm);
+      return checkboxEl.textContent.toLowerCase().includes(searchLower);
     });
 
     this.checkboxes.forEach((checkboxEl) => {
-      // get checkbox label text
       const checkboxText = checkboxEl.textContent.toLowerCase();
 
-      // hide checkbox if no match to search term
       if (this.limitCheckboxes && !this.limitRevealed) {
         if (
-          checkboxText.includes(this.searchTerm) &&
+          checkboxText.includes(searchLower) &&
           visibleCount < this.limitCount
         ) {
           checkboxEl.style.display = 'block';
@@ -478,7 +524,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
           checkboxEl.style.display = 'none';
         }
       } else {
-        if (checkboxText.includes(this.searchTerm)) {
+        if (checkboxText.includes(searchLower)) {
           checkboxEl.style.display = 'block';
         } else {
           checkboxEl.style.display = 'none';
@@ -487,6 +533,11 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     });
 
     this._updateCheckboxStates();
+  }
+
+  private _handleFilter(e: any) {
+    this.searchTerm = e.detail.value.toLowerCase();
+    this._applyFilter();
 
     const event = new CustomEvent('on-search', {
       detail: { searchTerm: this.searchTerm },
@@ -524,7 +575,14 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     );
     this.filteredCheckboxes = this.checkboxes;
 
-    if (!prev.length) this._updateChildren();
+    if (!prev.length) {
+      this._updateChildren();
+      // Apply initial filter if searchTerm is set
+      if (this.searchTerm && this.searchTerm.length > 0) {
+        this._applyFilter();
+      }
+    }
+
     this._toggleRevealed(this.limitRevealed);
   }
 
@@ -601,7 +659,13 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     this._emitChangeEvent();
   }
 
+  /** _onCheckboxChange event.
+   * @ignore
+   */
   private _onCheckboxChange = (e: any) => this._handleCheckboxChange(e);
+  /** _onCheckboxSubgroupChange event.
+   * @ignore
+   */
   private _onCheckboxSubgroupChange = (e: any) => this._handleSubgroupChange(e);
 
   override connectedCallback() {

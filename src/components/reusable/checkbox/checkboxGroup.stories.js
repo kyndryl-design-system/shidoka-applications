@@ -39,6 +39,7 @@ const args = {
   limitCount: 4,
   invalidText: '',
   description: 'Description',
+  searchTerm: '',
   textStrings: {
     selectAll: 'Select all',
     showMore: 'Show more',
@@ -68,6 +69,7 @@ export const CheckboxGroup = {
         .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
+        searchTerm=${args.searchTerm}
         @on-checkbox-group-change=${(e) =>
           action(e.type)({ ...e, detail: e.detail })}
         @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -108,6 +110,7 @@ export const CheckboxSubgroups = {
         .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
         .textStrings=${args.textStrings}
+        searchTerm=${args.searchTerm}
         @on-checkbox-group-change=${(e) =>
           action(e.type)({ ...e, detail: e.detail })}
         @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
