@@ -1776,8 +1776,8 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   }
 
-  /** Check if there is search text
-   * @internal
+  /**
+   * @ignore
    */
   private get hasSearch(): boolean {
     return (this.searchText ?? '').trim().length > 0;
