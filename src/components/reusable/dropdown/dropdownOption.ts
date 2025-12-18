@@ -133,7 +133,6 @@ export class DropdownOption extends LitElement {
                     this.handleCheckboxChange(e)}
                   @click=${(e: Event) => e.stopPropagation()}
                   @mousedown=${(e: Event) => e.stopPropagation()}
-                  @keydown=${(e: KeyboardEvent) => e.stopPropagation()}
                 ></kyn-checkbox>
                 <slot
                   @slotchange=${(e: any) => this.handleSlotChange(e)}
@@ -206,35 +205,30 @@ export class DropdownOption extends LitElement {
     }
   }
 
+  override focus(options?: FocusOptions) {
+    (this.shadowRoot?.querySelector('.menu-item') as HTMLElement | null)?.focus(
+      options
+    );
+  }
+
   private handleKeyDown(e: KeyboardEvent) {
     if (this.disabled || this.readonly) return;
 
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.handleClick(e);
+      return;
+    }
+
     switch (e.key) {
-      case 'Enter':
-      case ' ': {
-        e.preventDefault();
-        this.handleClick(e);
-        break;
-      }
-      case 'ArrowDown': {
-        e.preventDefault();
-        this.moveFocus(1);
-        break;
-      }
-      case 'ArrowUp': {
-        e.preventDefault();
-        this.moveFocus(-1);
-        break;
-      }
-      case 'Home': {
-        e.preventDefault();
-        this.moveToEdge('start');
-        break;
-      }
+      case 'ArrowDown':
+      case 'ArrowUp':
+      case 'Home':
       case 'End': {
         e.preventDefault();
-        this.moveToEdge('end');
-        break;
+        e.stopPropagation();
+        return;
       }
     }
   }

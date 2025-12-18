@@ -948,6 +948,23 @@ export class Dropdown extends FormMixin(LitElement) {
       return;
     }
 
+    const isFromOption = path.some((t) => {
+      const el = t as HTMLElement | null;
+      if (!el) return false;
+      const tag = (el.tagName ?? '').toUpperCase();
+      return (
+        tag === 'KYN-DROPDOWN-OPTION' ||
+        tag === 'KYN-ENHANCED-DROPDOWN-OPTION' ||
+        Boolean(
+          el.closest?.('kyn-dropdown-option, kyn-enhanced-dropdown-option')
+        )
+      );
+    });
+
+    if (isFromOption) {
+      return;
+    }
+
     if (this.readonly) {
       if ((e as KeyboardEvent).key === 'Escape') {
         e.preventDefault();
@@ -980,11 +997,10 @@ export class Dropdown extends FormMixin(LitElement) {
 
     visibleOptions.forEach((o: any) => (o.highlighted = false));
 
-    if (!('tabIndex' in firstEnabled) || firstEnabled.tabIndex < 0) {
-      firstEnabled.tabIndex = 0;
-    }
-    firstEnabled.focus();
+    firstEnabled.focus?.({ preventScroll: true });
+    firstEnabled.highlighted = true;
     firstEnabled.scrollIntoView({ block: 'nearest' });
+
     this.assistiveText = firstEnabled.text || 'Option';
   }
 
@@ -1234,7 +1250,7 @@ export class Dropdown extends FormMixin(LitElement) {
         const next = visibleOptions[nextIndex] as any;
         const current = visibleOptions[highlightedIndex] as any;
 
-        (next as HTMLElement)?.focus?.();
+        next?.focus?.();
 
         if (current) current.tabIndex = -1;
         if (next) next.tabIndex = 0;
@@ -1265,7 +1281,7 @@ export class Dropdown extends FormMixin(LitElement) {
         const next = visibleOptions[nextIndex] as any;
         const current = visibleOptions[highlightedIndex] as any;
 
-        (next as HTMLElement)?.focus?.();
+        next?.focus?.();
 
         if (current) current.tabIndex = -1;
         if (next) next.tabIndex = 0;
