@@ -43,7 +43,8 @@ const _defaultTextStrings = {
  * @slot unnamed - Slot for dropdown options.
  * @slot tooltip - Slot for tooltip.
  * @slot anchor - Slot for custom dropdown anchor element. If not provided, defaults to standard input-style anchor.
- * @slot add-option-row - Slot for providing custom “Add new option” UI row (input + button). If not provided, a default row is rendered.
+ * @slot add-option-input - Slot for providing a custom “Add new option” input.
+ * @slot add-option-button - Slot for providing a custom “Add new option” button.
  * @attr {string/array} [value=''/[]] - The selected value(s) of the input. For single select, it is a string. For multi-select, it is an array of strings.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
@@ -148,15 +149,17 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
-  /** Enables the "Add New Option" feature.
-   * If not explicitly set, this will be auto-enabled when `slot="add-option-row"` content is provided.
-   */
+  /** Enables the "Add New Option" feature. */
   @property({ type: Boolean })
   accessor allowAddOption = false;
 
   /** @internal */
   @state()
-  accessor _hasSlottedAddOptionRow = false;
+  accessor _hasSlottedAddOptionInput = false;
+
+  /** @internal */
+  @state()
+  accessor _hasSlottedAddOptionButton = false;
 
   /** @internal */
   @state()
@@ -264,28 +267,24 @@ export class Dropdown extends FormMixin(LitElement) {
   accessor clearMultipleEl!: HTMLElement;
 
   /**
-   * Queries the add-option slot (if provided).
+   * Queries the add-option input slot (if provided).
    * @ignore
    */
-  @query('slot[name="add-option-row"]')
-  accessor addOptionRowSlotEl!: HTMLSlotElement;
+  @query('slot[name="add-option-input"]')
+  accessor addOptionInputSlotEl!: HTMLSlotElement;
+
+  /**
+   * Queries the add-option button slot (if provided).
+   * @ignore
+   */
+  @query('slot[name="add-option-button"]')
+  accessor addOptionButtonSlotEl!: HTMLSlotElement;
 
   private _getSlottedAddOptionInput(): HTMLElement | null {
     const assigned =
-      this.addOptionRowSlotEl?.assignedElements({ flatten: true }) ?? [];
+      this.addOptionInputSlotEl?.assignedElements({ flatten: true }) ?? [];
 
-    const direct = assigned.find((el) =>
-      (el as HTMLElement).classList?.contains('add-option-input')
-    ) as HTMLElement | undefined;
-
-    if (direct) return direct;
-
-    for (const el of assigned) {
-      const found = (el as HTMLElement)?.querySelector?.('.add-option-input');
-      if (found) return found as HTMLElement;
-    }
-
-    return null;
+    return (assigned[0] as HTMLElement | undefined) ?? null;
   }
 
   private _getAddOptionInputEls(): {
@@ -371,14 +370,19 @@ export class Dropdown extends FormMixin(LitElement) {
    */
   private _onChildBlur = (e: Event) => this._handleBlur(e as any);
 
-  private _handleAddOptionRowSlotChange() {
-    const assigned =
-      this.addOptionRowSlotEl?.assignedElements({ flatten: true }) ?? [];
+  private _handleAddOptionSlotChange() {
+    const hasInput =
+      (this.addOptionInputSlotEl?.assignedElements({ flatten: true }) ?? [])
+        .length > 0;
+    const hasButton =
+      (this.addOptionButtonSlotEl?.assignedElements({ flatten: true }) ?? [])
+        .length > 0;
 
-    const hasContent = assigned.length > 0;
-    this._hasSlottedAddOptionRow = hasContent;
+    this._hasSlottedAddOptionInput = hasInput;
+    this._hasSlottedAddOptionButton = hasButton;
 
-    if (hasContent && !this.allowAddOption) {
+    // auto-enable when either slot is provided
+    if ((hasInput || hasButton) && !this.allowAddOption) {
       this.allowAddOption = true;
     }
   }
@@ -556,30 +560,14 @@ export class Dropdown extends FormMixin(LitElement) {
                           class="add-option-row"
                           @click=${this._onAddOptionRowClick}
                           @keydown=${(e: KeyboardEvent) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              this._handleAddOption();
-                              return;
-                            }
-
-                            if (e.key === 'Escape') {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              this._clearAddOptionInput();
-                              this.open = false;
-                              this.buttonEl?.focus?.();
-                              return;
-                            }
-
-                            e.stopPropagation();
+                            this._addOptionRowKeydown(e);
                           }}
                           @mousedown=${(e: MouseEvent) => e.stopPropagation()}
                         >
                           <slot
-                            name="add-option-row"
+                            name="add-option-input"
                             @slotchange=${() =>
-                              this._handleAddOptionRowSlotChange()}
+                              this._handleAddOptionSlotChange()}
                           >
                             <kyn-text-input
                               class="add-option-input"
@@ -592,7 +580,13 @@ export class Dropdown extends FormMixin(LitElement) {
                               aria-label="Add new option"
                               ?disabled=${this.disabled || this.readonly}
                             ></kyn-text-input>
+                          </slot>
 
+                          <slot
+                            name="add-option-button"
+                            @slotchange=${() =>
+                              this._handleAddOptionSlotChange()}
+                          >
                             <kyn-button
                               class="add-option-button"
                               type="button"
@@ -677,6 +671,27 @@ export class Dropdown extends FormMixin(LitElement) {
         ${this.renderHelperContent()}
       </div>
     `;
+  }
+
+  /** @ignore */
+  private _addOptionRowKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      this._handleAddOption();
+      return;
+    }
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      e.stopPropagation();
+      this._clearAddOptionInput();
+      this.open = false;
+      this.buttonEl?.focus?.();
+      return;
+    }
+
+    e.stopPropagation();
   }
 
   private canOpen(): boolean {
@@ -1169,7 +1184,7 @@ export class Dropdown extends FormMixin(LitElement) {
         ) {
           setTimeout(() => {
             (
-              this.addOptionRowSlotEl
+              this.addOptionInputSlotEl
                 ?.assignedElements({ flatten: true })
                 ?.find(
                   (el): el is HTMLElement =>
@@ -1930,17 +1945,8 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // Clear only if we set it (don’t fight consumer-provided invalidText)
     const assigned =
-      this.addOptionRowSlotEl?.assignedElements({ flatten: true }) ?? [];
-    const slottedInputEl =
-      (assigned.find((el) =>
-        (el as HTMLElement).classList?.contains('add-option-input')
-      ) as HTMLElement | undefined) ??
-      (
-        assigned.find((el) =>
-          (el as HTMLElement).querySelector?.('.add-option-input')
-        ) as HTMLElement | undefined
-      )?.querySelector?.('.add-option-input') ??
-      null;
+      this.addOptionInputSlotEl?.assignedElements({ flatten: true }) ?? [];
+    const slottedInputEl = (assigned[0] as HTMLElement | undefined) ?? null;
 
     if (
       slottedInputEl &&

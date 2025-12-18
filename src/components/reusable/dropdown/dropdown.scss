@@ -301,7 +301,7 @@ kyn-tag-group {
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  padding: 12px 16px 8px;
+  padding: 12px 16px;
   height: auto;
   background-color: var(--kd-color-background-menu-state-default);
   box-sizing: border-box;
@@ -315,39 +315,34 @@ kyn-tag-group {
   width: 100%;
   min-width: 0;
   align-items: start;
-  justify-items: start;
+  justify-items: stretch;
 }
 
-slot[name='add-option-row']::slotted(kyn-text-input) {
-  grid-column: 1;
+kyn-text-input.add-option-input {
   width: 100%;
   min-width: 0;
 }
 
-slot[name='add-option-row']::slotted(kyn-button) {
-  grid-column: 1;
-  justify-self: start;
-  width: fit-content;
+::slotted(.add-option-input) {
+  width: 100%;
   max-width: 100%;
-}
-
-/* Wrapper-slot pattern support: <div slot="add-option-row"> ... </div> */
-slot[name='add-option-row']::slotted(*) {
-  width: 100%;
-  min-width: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-auto-rows: auto;
-  row-gap: 12px;
-  justify-items: start;
-}
-
-slot[name='add-option-row']::slotted(*) > kyn-text-input {
-  width: 100%;
   min-width: 0;
 }
 
-slot[name='add-option-row']::slotted(*) > kyn-button {
+::slotted(.add-option-input) input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+slot[name='add-option-input']::slotted(*) {
+  /* Ensure the slotted add-option input expands to the full row width */
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+slot[name='add-option-button']::slotted(*) {
   justify-self: start;
   width: fit-content;
   max-width: 100%;

@@ -662,18 +662,21 @@ export const AddNewOption = {
           handleAddOption(e, dropdownItems);
         }}
       >
-        <div slot="add-option-row">
-          <kyn-text-input
-            class="add-option-input"
-            type="text"
-            placeholder="Add item..."
-            aria-label="Add new option"
-          ></kyn-text-input>
+        <kyn-text-input
+          slot="add-option-input"
+          class="add-option-input"
+          type="text"
+          placeholder="Add item..."
+          aria-label="Add new option"
+        ></kyn-text-input>
 
-          <kyn-button type="button" size="small" kind="secondary"
-            >Add</kyn-button
-          >
-        </div>
+        <kyn-button
+          slot="add-option-button"
+          type="button"
+          size="small"
+          kind="secondary"
+          >Add</kyn-button
+        >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
@@ -875,20 +878,23 @@ export const AddNewOptionValidation = {
               handleAddOption(e, dropdownItems);
             }}
           >
-            <div slot="add-option-row">
-              <kyn-text-input
-                class="add-option-input"
-                type="text"
-                placeholder="Add item..."
-                aria-label="Add new option"
-                pattern="^[A-Za-z][A-Za-z0-9 -]*$"
-                minlength="3"
-              ></kyn-text-input>
+            <kyn-text-input
+              slot="add-option-input"
+              class="add-option-input"
+              type="text"
+              placeholder="Add item..."
+              aria-label="Add new option"
+              pattern="^[A-Za-z][A-Za-z0-9 -]*$"
+              minlength="3"
+            ></kyn-text-input>
 
-              <kyn-button type="button" size="small" kind="secondary"
-                >Add</kyn-button
-              >
-            </div>
+            <kyn-button
+              slot="add-option-button"
+              type="button"
+              size="small"
+              kind="secondary"
+              >Add</kyn-button
+            >
             <kyn-tooltip slot="tooltip">
               <span slot="anchor" style="display:flex"
                 >${unsafeSVG(infoIcon)}</span
