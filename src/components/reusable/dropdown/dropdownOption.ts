@@ -214,20 +214,33 @@ export class DropdownOption extends LitElement {
   private handleKeyDown(e: KeyboardEvent) {
     if (this.disabled || this.readonly) return;
 
+    e.stopPropagation();
+
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      e.stopPropagation();
       this.handleClick(e);
       return;
     }
 
     switch (e.key) {
-      case 'ArrowDown':
-      case 'ArrowUp':
-      case 'Home':
+      case 'ArrowDown': {
+        e.preventDefault();
+        this.moveFocus(1);
+        return;
+      }
+      case 'ArrowUp': {
+        e.preventDefault();
+        this.moveFocus(-1);
+        return;
+      }
+      case 'Home': {
+        e.preventDefault();
+        this.moveToEdge('start');
+        return;
+      }
       case 'End': {
         e.preventDefault();
-        e.stopPropagation();
+        this.moveToEdge('end');
         return;
       }
     }
@@ -236,31 +249,40 @@ export class DropdownOption extends LitElement {
   private moveFocus(delta: number) {
     let node: Element | null =
       delta > 0 ? this.nextElementSibling : this.previousElementSibling;
+
     while (node) {
-      if (node.tagName.toLowerCase() === 'kyn-dropdown-option') {
-        const opt = node as DropdownOption;
+      const tag = node.tagName.toLowerCase();
+      if (
+        tag === 'kyn-dropdown-option' ||
+        tag === 'kyn-enhanced-dropdown-option'
+      ) {
+        const opt = node as any;
         if (!opt.disabled && !opt.readonly) {
-          const target = opt.shadowRoot?.querySelector(
-            '.menu-item'
-          ) as HTMLElement | null;
-          target?.focus();
+          opt.focus?.({ preventScroll: true });
+          opt.highlighted = true;
+          opt.scrollIntoView?.({ block: 'nearest' });
           break;
         }
       }
+
       node = delta > 0 ? node.nextElementSibling : node.previousElementSibling;
     }
   }
 
   private moveToEdge(where: 'start' | 'end') {
-    const all =
-      this.parentElement?.querySelectorAll('kyn-dropdown-option') ?? [];
-    const list = Array.from(all) as DropdownOption[];
+    const parent = this.parentElement;
+    if (!parent) return;
+
+    const all = parent.querySelectorAll(
+      'kyn-dropdown-option, kyn-enhanced-dropdown-option'
+    );
+    const list = Array.from(all) as any[];
+
     const candidate = where === 'start' ? list[0] : list[list.length - 1];
     if (candidate && !candidate.disabled && !candidate.readonly) {
-      const target = candidate.shadowRoot?.querySelector(
-        '.menu-item'
-      ) as HTMLElement | null;
-      target?.focus();
+      candidate.focus?.({ preventScroll: true });
+      candidate.highlighted = true;
+      candidate.scrollIntoView?.({ block: 'nearest' });
     }
   }
 

@@ -1556,39 +1556,6 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   /** @ignore */
-  private _onAddOptionRowKeydown = (e: KeyboardEvent) => {
-    if (this.readonly || this.disabled) return;
-
-    const path = (e.composedPath?.() ?? []) as EventTarget[];
-    const isFromInput = path.some((t) => {
-      const el = t as HTMLElement | null;
-      if (!el) return false;
-      return (
-        el.classList?.contains?.('add-option-input') ||
-        (el.tagName ?? '').toUpperCase() === 'KYN-TEXT-INPUT' ||
-        (el.tagName ?? '').toUpperCase() === 'INPUT'
-      );
-    });
-
-    if (!isFromInput) return;
-
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      e.stopPropagation();
-      this._handleAddOption();
-      return;
-    }
-
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      e.stopPropagation();
-      this._clearAddOptionInput();
-      this.open = false;
-      this.buttonEl?.focus?.();
-    }
-  };
-
-  /** @ignore */
   private _onAddOptionRowClick = (e: Event) => {
     if (this.readonly || this.disabled) return;
 
