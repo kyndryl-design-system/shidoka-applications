@@ -662,28 +662,18 @@ export const AddNewOption = {
           handleAddOption(e, dropdownItems);
         }}
       >
-        <kyn-text-input
-          slot="add-option-row"
-          class="add-option-input"
-          type="text"
-          placeholder="Add item..."
-          aria-label="Add new option"
-        ></kyn-text-input>
+        <div slot="add-option-row">
+          <kyn-text-input
+            class="add-option-input"
+            type="text"
+            placeholder="Add item..."
+            aria-label="Add new option"
+          ></kyn-text-input>
 
-        <kyn-button
-          slot="add-option-row"
-          type="button"
-          size="small"
-          kind="secondary"
-          @on-click=${(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const dropdown = e.currentTarget.closest('kyn-dropdown');
-            dropdown?._handleAddOption?.();
-          }}
-        >
-          Add
-        </kyn-button>
+          <kyn-button type="button" size="small" kind="secondary"
+            >Add</kyn-button
+          >
+        </div>
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
@@ -874,35 +864,31 @@ export const AddNewOptionValidation = {
             selectAllText=${args.selectAllText}
             .allowAddOption=${args.allowAddOption}
             .preventDuplicateAddOption=${args.preventDuplicateAddOption}
+            .addOptionValidator=${(val) => {
+              if (val.toLowerCase().includes('bad')) {
+                return 'Value cannot include "bad".';
+              }
+              return null;
+            }}
             @on-change=${handleChange}
             @on-add-option=${(e) => {
               handleAddOption(e, dropdownItems);
             }}
           >
-            <kyn-text-input
-              slot="add-option-row"
-              class="add-option-input"
-              type="text"
-              placeholder="Add item..."
-              aria-label="Add new option"
-              pattern="^[A-Za-z][A-Za-z0-9 -]*$"
-              minlength="3"
-            ></kyn-text-input>
+            <div slot="add-option-row">
+              <kyn-text-input
+                class="add-option-input"
+                type="text"
+                placeholder="Add item..."
+                aria-label="Add new option"
+                pattern="^[A-Za-z][A-Za-z0-9 -]*$"
+                minlength="3"
+              ></kyn-text-input>
 
-            <kyn-button
-              slot="add-option-row"
-              type="button"
-              size="small"
-              kind="secondary"
-              @on-click=${(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const dropdown = e.currentTarget.closest('kyn-dropdown');
-                dropdown?._handleAddOption?.();
-              }}
-            >
-              Add
-            </kyn-button>
+              <kyn-button type="button" size="small" kind="secondary"
+                >Add</kyn-button
+              >
+            </div>
             <kyn-tooltip slot="tooltip">
               <span slot="anchor" style="display:flex"
                 >${unsafeSVG(infoIcon)}</span
