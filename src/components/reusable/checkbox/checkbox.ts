@@ -119,6 +119,10 @@ export class Checkbox extends LitElement {
     `;
   }
 
+  /**
+   *
+   * @ignore
+   */
   private blockIfReadonly = (e: Event) => {
     if (!this.readonly) return;
     e.preventDefault();
@@ -127,6 +131,10 @@ export class Checkbox extends LitElement {
     input.checked = this.checked;
   };
 
+  /**
+   *
+   * @ignore
+   */
   private blockToggleIfReadonly = (e: KeyboardEvent) => {
     if (!this.readonly) return;
     if (e.key === ' ' || e.code === 'Space') {
