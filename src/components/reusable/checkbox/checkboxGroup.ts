@@ -461,6 +461,16 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     this.dispatchEvent(event);
   }
 
+  private _handleFilter(e: any) {
+    this.searchTerm = e.detail.value.toLowerCase();
+    this._applyFilter();
+
+    const event = new CustomEvent('on-search', {
+      detail: { searchTerm: this.searchTerm },
+    });
+    this.dispatchEvent(event);
+  }
+
   private _applyFilter() {
     let visibleCount = 0;
     const searchLower = this.searchTerm.toLowerCase();
@@ -494,16 +504,6 @@ export class CheckboxGroup extends FormMixin(LitElement) {
     });
 
     this._updateCheckboxStates();
-  }
-
-  private _handleFilter(e: any) {
-    this.searchTerm = e.detail.value.toLowerCase();
-    this._applyFilter();
-
-    const event = new CustomEvent('on-search', {
-      detail: { searchTerm: this.searchTerm },
-    });
-    this.dispatchEvent(event);
   }
 
   private _toggleRevealed(revealed: boolean) {
