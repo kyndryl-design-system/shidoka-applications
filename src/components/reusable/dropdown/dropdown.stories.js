@@ -666,8 +666,9 @@ export const AddNewOption = {
           slot="add-option-input"
           class="add-option-input"
           type="text"
+          label="Add new option"
+          hideLabel
           placeholder="Add item..."
-          aria-label="Add new option"
         ></kyn-text-input>
 
         <kyn-button
@@ -882,8 +883,9 @@ export const AddNewOptionValidation = {
               slot="add-option-input"
               class="add-option-input"
               type="text"
+              label="Add new option"
+              hideLabel
               placeholder="Add item..."
-              aria-label="Add new option"
               pattern="^[A-Za-z][A-Za-z0-9 -]*$"
               minlength="3"
             ></kyn-text-input>

@@ -572,12 +572,13 @@ export class Dropdown extends FormMixin(LitElement) {
                             <kyn-text-input
                               class="add-option-input"
                               type="text"
+                              label="Add new option"
+                              hideLabel
                               placeholder=${this._textStrings.addItem}
                               .value=${this.newOptionValue}
                               @on-input=${this._handleInputNewOption as any}
                               @input=${this._handleInputNewOption as any}
                               @focus=${this._onAddOptionInputFocus}
-                              aria-label="Add new option"
                               ?disabled=${this.disabled || this.readonly}
                             ></kyn-text-input>
                           </slot>
@@ -1924,6 +1925,7 @@ export class Dropdown extends FormMixin(LitElement) {
     }
   };
 
+  /** @ignore */
   private _handleInputNewOption = (e: Event) => {
     const path = (e.composedPath?.() || []) as Array<EventTarget>;
     const inAddOptionRow = path.some((t) =>
