@@ -552,9 +552,9 @@ export const Skeleton = {
   },
 };
 
-export const Aggegrator: Story = {
+export const Aggregate: Story = {
   render: () => {
-    return html` <kyn-table-toolbar .tableTitle=${'Aggregator'}>
+    return html` <kyn-table-toolbar .tableTitle=${'Aggregate'}>
       </kyn-table-toolbar>
       <kyn-table-container style="height:350px;">
         <kyn-table stickyHeader>
