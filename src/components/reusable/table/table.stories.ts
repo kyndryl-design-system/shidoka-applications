@@ -551,3 +551,58 @@ export const Skeleton = {
     },
   },
 };
+
+export const Aggegrator: Story = {
+  render: () => {
+    return html` <kyn-table-toolbar .tableTitle=${'Aggregator'}>
+      </kyn-table-toolbar>
+      <kyn-table-container style="height:350px;">
+        <kyn-table stickyHeader>
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th>First Name</kyn-th>
+              <kyn-th>Last Name</kyn-th>
+              <kyn-th>Birthday</kyn-th>
+              <kyn-th>Age</kyn-th>
+              <kyn-th>Full Name</kyn-th>
+              <kyn-th>Account Deposits($)</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id}>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td>${row.age}</kyn-td>
+                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                  <kyn-td>${row.deposits}</kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+
+          <kyn-tfoot stickyFooter>
+            <kyn-tr
+              style="
+    --kd-color-background-table-row: var(--kd-color-background-menu-state-category);
+    --kd-color-background-table-row-active: var(--kd-color-background-menu-state-category);
+  "
+            >
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td style="max-width:180px"
+                ><strong>Total Customer: 5</strong></kyn-td
+              >
+              <kyn-td><strong>Total Deposits: $38000</strong></kyn-td>
+            </kyn-tr>
+          </kyn-tfoot>
+        </kyn-table>
+      </kyn-table-container>`;
+  },
+};
