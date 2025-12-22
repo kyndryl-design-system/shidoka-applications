@@ -44,6 +44,22 @@ const meta: Meta = {
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-382289&p=f&m=dev',
     },
   },
+  decorators: [
+    (story) => html`
+      <style>
+        .footer-row {
+          display: table-row;
+          vertical-align: middle;
+          background-color: var(--kd-color-background-menu-state-category);
+        }
+        .example {
+          border-top: 1px solid var(--kd-color-border-level-tertiary);
+          border-bottom: 1px solid var(--kd-color-border-level-tertiary);
+        }
+      </style>
+      ${story()}
+    `,
+  ],
 };
 
 export default meta;
@@ -552,12 +568,12 @@ export const Skeleton = {
   },
 };
 
-export const Aggregate: Story = {
+export const stickyFooter: Story = {
   render: () => {
-    return html` <kyn-table-toolbar .tableTitle=${'Aggregate'}>
-      </kyn-table-toolbar>
-      <kyn-table-container style="height:350px;">
-        <kyn-table stickyHeader>
+    return html`
+      <kyn-table-toolbar .tableTitle=${'Sticky Footer'}> </kyn-table-toolbar>
+      <kyn-table-container style="height:300px;">
+        <kyn-table stickyHeader style="border-collapse: initial;">
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th>First Name</kyn-th>
@@ -585,24 +601,27 @@ export const Aggregate: Story = {
             )}
           </kyn-tbody>
 
-          <kyn-tfoot stickyFooter>
-            <kyn-tr
-              style="
-    --kd-color-background-table-row: var(--kd-color-background-menu-state-category);
-    --kd-color-background-table-row-active: var(--kd-color-background-menu-state-category);
-  "
-            >
-              <kyn-td></kyn-td>
-              <kyn-td></kyn-td>
-              <kyn-td></kyn-td>
-              <kyn-td></kyn-td>
-              <kyn-td style="max-width:180px"
-                ><strong>Total Customer: 5</strong></kyn-td
+          <kyn-tfoot stickyfooter>
+            <div class="footer-row">
+              <kyn-td
+                class="example"
+                style="border-bottom-left-radius: 8px;"
+              ></kyn-td>
+              <kyn-td class="example"></kyn-td>
+              <kyn-td class="example"></kyn-td>
+              <kyn-td class="example"></kyn-td>
+              <kyn-td class="kd-type--body-02 example" style="font-weight:500;"
+                >Total Customer: 5</kyn-td
               >
-              <kyn-td><strong>Total Deposits: $38000</strong></kyn-td>
-            </kyn-tr>
+              <kyn-td
+                class="kd-type--body-02 example"
+                style="font-weight:500; border-bottom-right-radius: 8px;"
+                >Total:38000</kyn-td
+              >
+            </div>
           </kyn-tfoot>
         </kyn-table>
-      </kyn-table-container>`;
+      </kyn-table-container>
+    `;
   },
 };
