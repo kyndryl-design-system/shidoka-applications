@@ -1075,9 +1075,60 @@ export class TimePicker extends FormMixin(LitElement) {
   }
 
   async handleClose() {
+    this.commitManualInputValue();
     this._hasInteracted = true;
     this._validate(true, false);
     await this.updateComplete;
+  }
+
+  private commitManualInputValue() {
+    if (!this._inputEl) return;
+
+    const raw = this._inputEl.value.trim();
+
+    if (!raw) {
+      this._userHasCleared = true;
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.clear();
+      } else {
+        this.value = null;
+        emitValue(this, 'on-change', {
+          time: null,
+          date: null,
+          source: 'clear',
+        });
+      }
+      this.updateFormValue();
+      return;
+    }
+
+    const parsed = this.parseTimeString(raw);
+    if (!parsed) {
+      this.updateFormValue();
+      return;
+    }
+
+    const current = this.getValue();
+    if (current && this._timesEqual(parsed, current)) {
+      this._padSecondsForInput(this._inputEl);
+      this.updateFormValue();
+      return;
+    }
+
+    this._userHasCleared = false;
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.setDate(parsed, true);
+    } else {
+      this.value = parsed;
+      emitValue(this, 'on-change', {
+        time: raw,
+        date: parsed,
+      });
+      console.log({ raw, parsed });
+    }
+
+    this._padSecondsForInput(this._inputEl);
+    this.updateFormValue();
   }
 
   async handleTimeChange(selectedDates: Date[], dateStr: string) {
