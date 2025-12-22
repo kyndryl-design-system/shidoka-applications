@@ -56,6 +56,15 @@ const meta: Meta = {
           border-top: 1px solid var(--kd-color-border-level-tertiary);
           border-bottom: 1px solid var(--kd-color-border-level-tertiary);
         }
+        .font-wt {
+          font-weight: 500;
+        }
+        .border-bottom-right {
+          border-bottom-right-radius: 8px;
+        }
+        .border-bottom-left {
+          border-bottom-left-radius: 8px;
+        }
       </style>
       ${story()}
     `,
@@ -568,11 +577,61 @@ export const Skeleton = {
   },
 };
 
-export const stickyFooter: Story = {
+export const WithFooter: Story = {
   render: () => {
     return html`
-      <kyn-table-toolbar .tableTitle=${'Sticky Footer'}> </kyn-table-toolbar>
-      <kyn-table-container style="height:300px;">
+      <kyn-table-toolbar .tableTitle=${'Footer'}> </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table style="border-collapse: initial;">
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th>First Name</kyn-th>
+              <kyn-th>Last Name</kyn-th>
+              <kyn-th>Birthday</kyn-th>
+              <kyn-th>Age</kyn-th>
+              <kyn-th>Full Name</kyn-th>
+              <kyn-th>Account Deposits($)</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id}>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td>${row.age}</kyn-td>
+                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                  <kyn-td>${row.deposits}</kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+
+          <kyn-tfoot stickyfooter>
+            <div class="footer-row" role="row">
+              <kyn-td class="border-bottom-left"></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td class="kd-type--body-02 font-wt"
+                >Total Customer: 5</kyn-td
+              >
+              <kyn-td class="kd-type--body-02 border-bottom-right font-wt"
+                >Total:38000</kyn-td
+              >
+            </div>
+          </kyn-tfoot>
+        </kyn-table>
+      </kyn-table-container>
+
+      <br />
+
+      <kyn-table-toolbar .tableTitle=${'Sticky Footer with Sticky Header'}>
+      </kyn-table-toolbar>
+      <kyn-table-container style="height:350px;">
         <kyn-table stickyHeader style="border-collapse: initial;">
           <kyn-thead>
             <kyn-header-tr>
@@ -603,19 +662,15 @@ export const stickyFooter: Story = {
 
           <kyn-tfoot stickyfooter>
             <div class="footer-row" role="row">
-              <kyn-td
-                class="example"
-                style="border-bottom-left-radius: 8px;"
-              ></kyn-td>
+              <kyn-td class="example border-bottom-left"></kyn-td>
               <kyn-td class="example"></kyn-td>
               <kyn-td class="example"></kyn-td>
               <kyn-td class="example"></kyn-td>
-              <kyn-td class="kd-type--body-02 example" style="font-weight:500;"
+              <kyn-td class="kd-type--body-02 example font-wt"
                 >Total Customer: 5</kyn-td
               >
               <kyn-td
-                class="kd-type--body-02 example"
-                style="font-weight:500; border-bottom-right-radius: 8px;"
+                class="kd-type--body-02 example border-bottom-right font-wt"
                 >Total:38000</kyn-td
               >
             </div>
