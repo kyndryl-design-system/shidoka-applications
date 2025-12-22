@@ -235,7 +235,9 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private _isDestroyed = false;
 
-  /** Track visibility polling timeout ID. */
+  /** Track visibility polling timeout ID.
+   * @internal
+   */
   private _visibilityPollTimeoutId: number | null = null;
 
   /** Track when legacy/default values are being applied to avoid feedback loops.
