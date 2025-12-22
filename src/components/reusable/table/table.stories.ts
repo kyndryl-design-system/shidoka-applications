@@ -602,7 +602,7 @@ export const stickyFooter: Story = {
           </kyn-tbody>
 
           <kyn-tfoot stickyfooter>
-            <div class="footer-row">
+            <div class="footer-row" role="row">
               <kyn-td
                 class="example"
                 style="border-bottom-left-radius: 8px;"
