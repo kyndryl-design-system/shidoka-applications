@@ -47,11 +47,6 @@ const meta: Meta = {
   decorators: [
     (story) => html`
       <style>
-        .footer-row {
-          display: table-row;
-          vertical-align: middle;
-          background-color: var(--kd-color-background-menu-state-category);
-        }
         .example {
           border-top: 1px solid var(--kd-color-border-level-tertiary);
           border-bottom: 1px solid var(--kd-color-border-level-tertiary);
@@ -611,7 +606,12 @@ export const WithFooter: Story = {
           </kyn-tbody>
 
           <kyn-tfoot stickyfooter>
-            <div class="footer-row" role="row">
+            <kyn-tr
+              style="
+    --kd-color-background-table-row: var(--kd-color-background-menu-state-category);
+    --kd-color-background-table-row-active: var(--kd-color-background-menu-state-category);
+  "
+            >
               <kyn-td class="border-bottom-left"></kyn-td>
               <kyn-td></kyn-td>
               <kyn-td></kyn-td>
@@ -622,7 +622,7 @@ export const WithFooter: Story = {
               <kyn-td class="kd-type--body-02 border-bottom-right font-wt"
                 >Total:38000</kyn-td
               >
-            </div>
+            </kyn-tr>
           </kyn-tfoot>
         </kyn-table>
       </kyn-table-container>
@@ -661,7 +661,12 @@ export const WithFooter: Story = {
           </kyn-tbody>
 
           <kyn-tfoot stickyfooter>
-            <div class="footer-row" role="row">
+            <kyn-tr
+              style="
+    --kd-color-background-table-row: var(--kd-color-background-menu-state-category);
+    --kd-color-background-table-row-active: var(--kd-color-background-menu-state-category);
+  "
+            >
               <kyn-td class="example border-bottom-left"></kyn-td>
               <kyn-td class="example"></kyn-td>
               <kyn-td class="example"></kyn-td>
@@ -673,7 +678,7 @@ export const WithFooter: Story = {
                 class="kd-type--body-02 example border-bottom-right font-wt"
                 >Total:38000</kyn-td
               >
-            </div>
+            </kyn-tr>
           </kyn-tfoot>
         </kyn-table>
       </kyn-table-container>
