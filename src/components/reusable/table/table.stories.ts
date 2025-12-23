@@ -60,6 +60,14 @@ const meta: Meta = {
         .border-bottom-left {
           border-bottom-left-radius: 8px;
         }
+        .footer-example {
+          --kd-color-background-table-row: var(
+            --kd-color-background-menu-state-category
+          );
+          --kd-color-background-table-row-active: var(
+            --kd-color-background-menu-state-category
+          );
+        }
       </style>
       ${story()}
     `,
@@ -606,12 +614,7 @@ export const WithFooter: Story = {
           </kyn-tbody>
 
           <kyn-tfoot stickyfooter>
-            <kyn-tr
-              style="
-    --kd-color-background-table-row: var(--kd-color-background-menu-state-category);
-    --kd-color-background-table-row-active: var(--kd-color-background-menu-state-category);
-  "
-            >
+            <kyn-tr class="footer-example">
               <kyn-td class="border-bottom-left"></kyn-td>
               <kyn-td></kyn-td>
               <kyn-td></kyn-td>
@@ -661,12 +664,7 @@ export const WithFooter: Story = {
           </kyn-tbody>
 
           <kyn-tfoot stickyfooter>
-            <kyn-tr
-              style="
-    --kd-color-background-table-row: var(--kd-color-background-menu-state-category);
-    --kd-color-background-table-row-active: var(--kd-color-background-menu-state-category);
-  "
-            >
+            <kyn-tr class="footer-example">
               <kyn-td class="example border-bottom-left"></kyn-td>
               <kyn-td class="example"></kyn-td>
               <kyn-td class="example"></kyn-td>
