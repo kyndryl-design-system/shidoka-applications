@@ -285,7 +285,7 @@ export class TableRow extends LitElement {
             </kyn-td>
           `
         : null}
-      ${this.checkboxSelection
+      ${this.checkboxSelection && this.closest('kyn-tfoot') === null
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
               <kyn-checkbox

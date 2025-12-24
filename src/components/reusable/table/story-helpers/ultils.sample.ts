@@ -5,6 +5,7 @@ interface Person {
   lastName: string;
   age: number;
   birthday: string;
+  deposits?: number;
 }
 
 export const sortByFName = (sortDirection: SORT_DIRECTION) => {
@@ -70,6 +71,7 @@ export const characters = [
     fullname: 'Jon Snow',
     gender: 'Male',
     unread: true,
+    deposits: 2500,
   },
   {
     id: 2,
@@ -80,6 +82,7 @@ export const characters = [
     fullname: 'Daenerys Targaryen',
     gender: 'Female',
     expanded: true,
+    deposits: 5500,
   },
   {
     id: 3,
@@ -89,6 +92,7 @@ export const characters = [
     birthday: 'June 12',
     fullname: 'Tyrion Lannister',
     gender: 'Male',
+    deposits: 10000,
   },
   {
     id: 4,
@@ -98,6 +102,7 @@ export const characters = [
     birthday: 'February 15',
     fullname: 'Arya Stark',
     gender: 'Female',
+    deposits: 8000,
   },
   {
     id: 5,
@@ -107,6 +112,7 @@ export const characters = [
     birthday: 'November 30',
     fullname: 'Cersei Lannister',
     gender: 'Female',
+    deposits: 12000,
   },
 ];
 
