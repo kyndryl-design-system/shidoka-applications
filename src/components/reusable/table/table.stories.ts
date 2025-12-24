@@ -588,12 +588,12 @@ export const WithFooter: Story = {
         <kyn-table style="border-collapse: initial;">
           <kyn-thead>
             <kyn-header-tr>
+              <kyn-th .align=${'center'}>ID</kyn-th>
               <kyn-th>First Name</kyn-th>
               <kyn-th>Last Name</kyn-th>
               <kyn-th>Birthday</kyn-th>
-              <kyn-th>Age</kyn-th>
-              <kyn-th>Full Name</kyn-th>
-              <kyn-th>Account Deposits($)</kyn-th>
+              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
             </kyn-header-tr>
           </kyn-thead>
           <kyn-tbody>
@@ -602,12 +602,12 @@ export const WithFooter: Story = {
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr .rowId=${row.id}>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td>${row.firstName}</kyn-td>
                   <kyn-td>${row.lastName}</kyn-td>
                   <kyn-td>${row.birthday}</kyn-td>
-                  <kyn-td>${row.age}</kyn-td>
-                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                  <kyn-td>${row.deposits}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
               `
             )}
@@ -619,10 +619,10 @@ export const WithFooter: Story = {
               <kyn-td></kyn-td>
               <kyn-td></kyn-td>
               <kyn-td></kyn-td>
-              <kyn-td class="kd-type--body-02 font-wt"
-                >Total Customer: 5</kyn-td
-              >
-              <kyn-td class="kd-type--body-02 border-bottom-right font-wt"
+              <kyn-td></kyn-td>
+              <kyn-td
+                .align=${'right'}
+                class="kd-type--body-02 border-bottom-right font-wt"
                 >Total:38000</kyn-td
               >
             </kyn-tr>
@@ -638,12 +638,12 @@ export const WithFooter: Story = {
         <kyn-table stickyHeader style="border-collapse: initial;">
           <kyn-thead>
             <kyn-header-tr>
+              <kyn-th .align=${'center'}>ID</kyn-th>
               <kyn-th>First Name</kyn-th>
               <kyn-th>Last Name</kyn-th>
               <kyn-th>Birthday</kyn-th>
-              <kyn-th>Age</kyn-th>
-              <kyn-th>Full Name</kyn-th>
-              <kyn-th>Account Deposits($)</kyn-th>
+              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
             </kyn-header-tr>
           </kyn-thead>
           <kyn-tbody>
@@ -652,12 +652,12 @@ export const WithFooter: Story = {
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr .rowId=${row.id}>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td>${row.firstName}</kyn-td>
                   <kyn-td>${row.lastName}</kyn-td>
                   <kyn-td>${row.birthday}</kyn-td>
-                  <kyn-td>${row.age}</kyn-td>
-                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
-                  <kyn-td>${row.deposits}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
               `
             )}
@@ -669,10 +669,10 @@ export const WithFooter: Story = {
               <kyn-td class="example"></kyn-td>
               <kyn-td class="example"></kyn-td>
               <kyn-td class="example"></kyn-td>
-              <kyn-td class="kd-type--body-02 example font-wt"
-                >Total Customer: 5</kyn-td
-              >
+              <kyn-td class="example"></kyn-td>
+
               <kyn-td
+                .align=${'right'}
                 class="kd-type--body-02 example border-bottom-right font-wt"
                 >Total:38000</kyn-td
               >
