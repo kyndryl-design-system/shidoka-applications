@@ -176,6 +176,25 @@ DateRangeDefault.args = {
   maxDate: '',
   allowManualInput: false,
   label: 'Date Range',
+  textStrings: {
+    requiredText: 'Required',
+    clearAll: 'Clear',
+    pleaseSelectDate: 'Please select a date',
+    pleaseSelectValidDate: 'Please select a valid date',
+    pleaseSelectBothDates: 'Please select a start and end date.',
+    dateRange: 'Date range',
+    noDateSelected: 'No dates selected',
+    startDateSelected: 'Start date selected: {0}. Please select end date.',
+    invalidDateRange:
+      'Invalid date range: End date cannot be earlier than start date',
+    dateRangeSelected: 'Selected date range: {0} to {1}',
+
+    lockedStartDate: 'Start date is locked',
+    lockedEndDate: 'End date is locked',
+    dateLocked: 'Date is locked',
+    dateNotAvailable: 'Date is not available',
+    dateInSelectedRange: 'Date is in selected range',
+  },
 };
 
 export const DateTimeRange = Template.bind({});
