@@ -133,6 +133,21 @@ DatePickerDefault.args = {
   twentyFourHourFormat: false,
   label: 'Date',
   value: '',
+  textStrings: {
+    requiredText: 'Required',
+    clearAll: 'Clear',
+    pleaseSelectDate: 'Please select a date',
+    noDateSelected: 'No date selected',
+    pleaseSelectValidDate: 'Please select a valid date',
+    invalidDateFormat: 'Invalid date format provided',
+    errorProcessing: 'Error processing date',
+
+    lockedStartDate: 'Start date is locked',
+    lockedEndDate: 'End date is locked',
+    dateLocked: 'Date is locked',
+    dateNotAvailable: 'Date is not available',
+    dateInSelectedRange: 'Date is in selected range',
+  },
 };
 DatePickerDefault.storyName = 'Single Date (Default)';
 

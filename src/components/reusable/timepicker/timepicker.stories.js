@@ -138,6 +138,13 @@ DefaultTimePicker.args = {
   defaultHour: null,
   defaultMinute: null,
   defaultSeconds: null,
+  textStrings: {
+    requiredText: 'Required',
+    clearAll: 'Clear',
+    pleaseSelectDate: 'Please select a time',
+    noTimeSelected: 'No time selected',
+    pleaseSelectValidDate: 'Please select a valid time',
+  },
 };
 DefaultTimePicker.storyName = 'Default (12H)';
 
