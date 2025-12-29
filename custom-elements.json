@@ -552,496 +552,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "_onDocumentClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_onLinkActive",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ text: string }>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-link-active",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "on-click",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -3148,6 +2658,496 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_onDocumentClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onLinkActive",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ text: string }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-link-active",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "on-click",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -8619,8 +8619,12 @@
               "name": "anchor"
             },
             {
-              "description": "Slot for providing custom “Add new option” UI row (input + button). If not provided, a default row is rendered.",
-              "name": "add-option-row"
+              "description": "Slot for providing a custom “Add new option” input.",
+              "name": "add-option-input"
+            },
+            {
+              "description": "Slot for providing a custom “Add new option” button.",
+              "name": "add-option-button"
             }
           ],
           "members": [
@@ -8843,7 +8847,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Enables the \"Add New Option\" feature.\nIf not explicitly set, this will be auto-enabled when `slot=\"add-option-row\"` content is provided.",
+              "description": "Enables the \"Add New Option\" feature.",
               "attribute": "allowAddOption"
             },
             {
@@ -8916,7 +8920,7 @@
             },
             {
               "kind": "method",
-              "name": "_handleAddOptionRowSlotChange",
+              "name": "_handleAddOptionSlotChange",
               "privacy": "private"
             },
             {
@@ -9251,11 +9255,6 @@
               "privacy": "private"
             },
             {
-              "kind": "field",
-              "name": "_handleInputNewOption",
-              "privacy": "private"
-            },
-            {
               "kind": "method",
               "name": "_handleRemoveOption",
               "privacy": "private"
@@ -9507,7 +9506,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Enables the \"Add New Option\" feature.\nIf not explicitly set, this will be auto-enabled when `slot=\"add-option-row\"` content is provided.",
+              "description": "Enables the \"Add New Option\" feature.",
               "fieldName": "allowAddOption"
             },
             {
@@ -10976,6 +10975,71 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).",
+          "name": "GlobalFilter",
+          "slots": [
+            {
+              "description": "Left slot, intended for search input and modal.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Right slot, intended for action buttons and overflow menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot below the filter bar, for tag group.",
+              "name": "tags"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/inlineCodeView/index.ts",
       "declarations": [],
       "exports": [
@@ -11068,255 +11132,6 @@
           "declaration": {
             "name": "InlineCodeView",
             "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).",
-          "name": "GlobalFilter",
-          "slots": [
-            {
-              "description": "Left slot, intended for search input and modal.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Right slot, intended for action buttons and overflow menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot below the filter bar, for tag group.",
-              "name": "tags"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineConfirm/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineConfirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "./inlineConfirm"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineConfirm/inlineConfirm.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "InlineConfirm component.",
-          "name": "InlineConfirm",
-          "slots": [
-            {
-              "description": "Slot for anchor button icon.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for confirm icon button, will be a check icon by default if none provided.",
-              "name": "confirmIcon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the action is destructive.",
-              "attribute": "destructive"
-            },
-            {
-              "kind": "field",
-              "name": "anchorText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Anchor button text.",
-              "attribute": "anchorText"
-            },
-            {
-              "kind": "field",
-              "name": "confirmText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Confirm'",
-              "description": "Confirm button text.",
-              "attribute": "confirmText"
-            },
-            {
-              "kind": "field",
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "attribute": "cancelText"
-            },
-            {
-              "kind": "field",
-              "name": "openRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Open to the right.",
-              "attribute": "openRight"
-            },
-            {
-              "kind": "method",
-              "name": "_handleToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleConfirm",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Dispatched when the confirm button is clicked.`detail:{ origEvent: PointerEvent }`",
-              "name": "on-confirm"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the action is destructive.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "anchorText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Anchor button text.",
-              "fieldName": "anchorText"
-            },
-            {
-              "name": "confirmText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Confirm'",
-              "description": "Confirm button text.",
-              "fieldName": "confirmText"
-            },
-            {
-              "name": "cancelText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Cancel'",
-              "description": "Cancel button text.",
-              "fieldName": "cancelText"
-            },
-            {
-              "name": "openRight",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Open to the right.",
-              "fieldName": "openRight"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-confirm",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineConfirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-confirm",
-          "declaration": {
-            "name": "InlineConfirm",
-            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
           }
         }
       ]
@@ -12227,6 +12042,190 @@
           "declaration": {
             "name": "KynSpinner",
             "module": "src/components/reusable/loaders/spinner.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineConfirm/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineConfirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "./inlineConfirm"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineConfirm/inlineConfirm.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "InlineConfirm component.",
+          "name": "InlineConfirm",
+          "slots": [
+            {
+              "description": "Slot for anchor button icon.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for confirm icon button, will be a check icon by default if none provided.",
+              "name": "confirmIcon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the action is destructive.",
+              "attribute": "destructive"
+            },
+            {
+              "kind": "field",
+              "name": "anchorText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Anchor button text.",
+              "attribute": "anchorText"
+            },
+            {
+              "kind": "field",
+              "name": "confirmText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Confirm'",
+              "description": "Confirm button text.",
+              "attribute": "confirmText"
+            },
+            {
+              "kind": "field",
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "attribute": "cancelText"
+            },
+            {
+              "kind": "field",
+              "name": "openRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Open to the right.",
+              "attribute": "openRight"
+            },
+            {
+              "kind": "method",
+              "name": "_handleToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleConfirm",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Dispatched when the confirm button is clicked.`detail:{ origEvent: PointerEvent }`",
+              "name": "on-confirm"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the action is destructive.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "anchorText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Anchor button text.",
+              "fieldName": "anchorText"
+            },
+            {
+              "name": "confirmText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Confirm'",
+              "description": "Confirm button text.",
+              "fieldName": "confirmText"
+            },
+            {
+              "name": "cancelText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Cancel'",
+              "description": "Cancel button text.",
+              "fieldName": "cancelText"
+            },
+            {
+              "name": "openRight",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Open to the right.",
+              "fieldName": "openRight"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-confirm",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineConfirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-confirm",
+          "declaration": {
+            "name": "InlineConfirm",
+            "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
           }
         }
       ]
@@ -14449,161 +14448,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "./pageTitle"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagetitle/pageTitle.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Page Title",
-          "name": "PageTitle",
-          "slots": [
-            {
-              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "attribute": "headLine"
-            },
-            {
-              "kind": "field",
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "attribute": "pageTitle"
-            },
-            {
-              "kind": "field",
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "attribute": "subTitle"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "headLine",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Headline text.",
-              "fieldName": "headLine"
-            },
-            {
-              "name": "pageTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page title text (required).",
-              "fieldName": "pageTitle"
-            },
-            {
-              "name": "subTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Page subtitle text.",
-              "fieldName": "subTitle"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "string"
-              },
-              "default": "'primary'",
-              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
-              "fieldName": "type"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-page-title",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PageTitle",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-page-title",
-          "declaration": {
-            "name": "PageTitle",
-            "module": "src/components/reusable/pagetitle/pageTitle.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/overflowMenu/index.ts",
       "declarations": [],
       "exports": [
@@ -15128,6 +14972,161 @@
           "declaration": {
             "name": "OverflowMenuItem",
             "module": "src/components/reusable/overflowMenu/overflowMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "./pageTitle"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/pageTitle.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Page Title",
+          "name": "PageTitle",
+          "slots": [
+            {
+              "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "attribute": "headLine"
+            },
+            {
+              "kind": "field",
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "attribute": "pageTitle"
+            },
+            {
+              "kind": "field",
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "attribute": "subTitle"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "headLine",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Headline text.",
+              "fieldName": "headLine"
+            },
+            {
+              "name": "pageTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page title text (required).",
+              "fieldName": "pageTitle"
+            },
+            {
+              "name": "subTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Page subtitle text.",
+              "fieldName": "subTitle"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "'primary'",
+              "description": "Type of page title `'primary'` , `'secondary'` & `'tertiary'`.",
+              "fieldName": "type"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-page-title",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitle",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-page-title",
+          "declaration": {
+            "name": "PageTitle",
+            "module": "src/components/reusable/pagetitle/pageTitle.ts"
           }
         }
       ]
@@ -18751,568 +18750,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/defs.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SplitButton",
-          "declaration": {
-            "name": "SplitButton",
-            "module": "./splitButton"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SplitButtonOption",
-          "declaration": {
-            "name": "SplitButtonOption",
-            "module": "./splitButtonOption"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/splitButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Split Button",
-          "name": "SplitButton",
-          "slots": [
-            {
-              "description": "Slot for split button options.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon (optional).",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the buttons for accessibility.",
-              "attribute": "description"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "SPLIT_BTN_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the split button.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "SPLIT_BTN_SIZES"
-              },
-              "description": "Specifies the size of the split button.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "iconPosition",
-              "type": {
-                "text": "SPLIIT_BTN_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
-              "attribute": "iconPosition"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button text (required)",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button is disabled.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button indicates a destructive action.",
-              "attribute": "destructive",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "menuMinWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'initial'",
-              "description": "Menu CSS min-width value.",
-              "attribute": "menuMinWidth"
-            },
-            {
-              "kind": "field",
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Listbox/menu open state.",
-              "attribute": "open"
-            },
-            {
-              "kind": "method",
-              "name": "handleListBlur",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleButtonKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleListKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "keyCode",
-                  "type": {
-                    "text": "number"
-                  }
-                },
-                {
-                  "name": "target",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "toggleDropdown",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleBlur",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handlePrimaryClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the selected value and original event details.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "ARIA label for the buttons for accessibility.",
-              "fieldName": "description"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "SPLIT_BTN_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the split button.",
-              "fieldName": "kind"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "SPLIT_BTN_SIZES"
-              },
-              "description": "Specifies the size of the split button.",
-              "fieldName": "size"
-            },
-            {
-              "name": "iconPosition",
-              "type": {
-                "text": "SPLIIT_BTN_ICON_POSITION"
-              },
-              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
-              "fieldName": "iconPosition"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button text (required)",
-              "fieldName": "label"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button is disabled.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "destructive",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Determines if the split button indicates a destructive action.",
-              "fieldName": "destructive"
-            },
-            {
-              "name": "menuMinWidth",
-              "type": {
-                "text": "string"
-              },
-              "default": "'initial'",
-              "description": "Menu CSS min-width value.",
-              "fieldName": "menuMinWidth"
-            },
-            {
-              "name": "open",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Listbox/menu open state.",
-              "fieldName": "open"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-split-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SplitButton",
-          "declaration": {
-            "name": "SplitButton",
-            "module": "src/components/reusable/splitButton/splitButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-split-btn",
-          "declaration": {
-            "name": "SplitButton",
-            "module": "src/components/reusable/splitButton/splitButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/splitButton/splitButtonOption.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Split button option.",
-          "name": "SplitButtonOption",
-          "slots": [
-            {
-              "description": "Slot for option text.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button option value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button option selected state.",
-              "attribute": "selected",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button menu option disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleBlur",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the option details to the parent split button. `detail:{ origEvent: CustomEvent,value: string, text: string,otherattributes }`",
-              "name": "on-action-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Split button option value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button option selected state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Split button menu option disabled state.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-splitbutton-option",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "SplitButtonOption",
-          "declaration": {
-            "name": "SplitButtonOption",
-            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-splitbutton-option",
-          "declaration": {
-            "name": "SplitButtonOption",
-            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/stepper/index.ts",
       "declarations": [],
       "exports": [
@@ -19892,6 +19329,568 @@
           "declaration": {
             "name": "StepperItemChild",
             "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SplitButton",
+          "declaration": {
+            "name": "SplitButton",
+            "module": "./splitButton"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SplitButtonOption",
+          "declaration": {
+            "name": "SplitButtonOption",
+            "module": "./splitButtonOption"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/splitButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Split Button",
+          "name": "SplitButton",
+          "slots": [
+            {
+              "description": "Slot for split button options.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon (optional).",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the buttons for accessibility.",
+              "attribute": "description"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "SPLIT_BTN_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the split button.",
+              "attribute": "kind"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "SPLIT_BTN_SIZES"
+              },
+              "description": "Specifies the size of the split button.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "iconPosition",
+              "type": {
+                "text": "SPLIIT_BTN_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
+              "attribute": "iconPosition"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button text (required)",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button is disabled.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button indicates a destructive action.",
+              "attribute": "destructive",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "menuMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'initial'",
+              "description": "Menu CSS min-width value.",
+              "attribute": "menuMinWidth"
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Listbox/menu open state.",
+              "attribute": "open"
+            },
+            {
+              "kind": "method",
+              "name": "handleListBlur",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleButtonKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleListKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "keyCode",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "target",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "toggleDropdown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleBlur",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handlePrimaryClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the selected value and original event details.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "ARIA label for the buttons for accessibility.",
+              "fieldName": "description"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "SPLIT_BTN_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the split button.",
+              "fieldName": "kind"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "SPLIT_BTN_SIZES"
+              },
+              "description": "Specifies the size of the split button.",
+              "fieldName": "size"
+            },
+            {
+              "name": "iconPosition",
+              "type": {
+                "text": "SPLIIT_BTN_ICON_POSITION"
+              },
+              "description": "Specifies the position of the icon relative to any split button text. Default `'left'`. This is optional and work with icon slot.",
+              "fieldName": "iconPosition"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button text (required)",
+              "fieldName": "label"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button is disabled.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "destructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Determines if the split button indicates a destructive action.",
+              "fieldName": "destructive"
+            },
+            {
+              "name": "menuMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'initial'",
+              "description": "Menu CSS min-width value.",
+              "fieldName": "menuMinWidth"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Listbox/menu open state.",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-split-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SplitButton",
+          "declaration": {
+            "name": "SplitButton",
+            "module": "src/components/reusable/splitButton/splitButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-split-btn",
+          "declaration": {
+            "name": "SplitButton",
+            "module": "src/components/reusable/splitButton/splitButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/splitButton/splitButtonOption.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Split button option.",
+          "name": "SplitButtonOption",
+          "slots": [
+            {
+              "description": "Slot for option text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button option value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button option selected state.",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button menu option disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleBlur",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the option details to the parent split button. `detail:{ origEvent: CustomEvent,value: string, text: string,otherattributes }`",
+              "name": "on-action-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Split button option value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button option selected state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Split button menu option disabled state.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-splitbutton-option",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SplitButtonOption",
+          "declaration": {
+            "name": "SplitButtonOption",
+            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-splitbutton-option",
+          "declaration": {
+            "name": "SplitButtonOption",
+            "module": "src/components/reusable/splitButton/splitButtonOption.ts"
           }
         }
       ]
@@ -20493,7 +20492,28 @@
               "name": "unnamed"
             }
           ],
-          "members": [],
+          "members": [
+            {
+              "kind": "field",
+              "name": "stickyFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "stickyFooter",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stickyFooter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "stickyFooter"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -24469,6 +24489,303 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "./toggleButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/toggleButton/toggleButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Toggle Button.",
+          "name": "ToggleButton",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "attribute": "checkedText"
+            },
+            {
+              "kind": "field",
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "attribute": "uncheckedText"
+            },
+            {
+              "kind": "field",
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "attribute": "small",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Toggle read-only state (non-modifiable but focusable).",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "attribute": "reverse"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "handleClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleKeyDown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the change event. `detail:{ origEvent: Event, checked: boolean, value: string }`",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox checked state.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "checkedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'On'",
+              "description": "Checked state text.",
+              "fieldName": "checkedText"
+            },
+            {
+              "name": "uncheckedText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Off'",
+              "description": "Unchecked state text.",
+              "fieldName": "uncheckedText"
+            },
+            {
+              "name": "small",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to use small size.",
+              "fieldName": "small"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checkbox disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Toggle read-only state (non-modifiable but focusable).",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "reverse",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reverse UI element order, label on the left.",
+              "fieldName": "reverse"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the label visually.",
+              "fieldName": "hideLabel"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-toggle-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ToggleButton",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-toggle-button",
+          "declaration": {
+            "name": "ToggleButton",
+            "module": "src/components/reusable/toggleButton/toggleButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/timepicker/index.ts",
       "declarations": [],
       "exports": [
@@ -24996,6 +25313,11 @@
             },
             {
               "kind": "method",
+              "name": "commitManualInputValue",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
               "name": "handleTimeChange",
               "parameters": [
                 {
@@ -25366,303 +25688,6 @@
           "declaration": {
             "name": "TimePicker",
             "module": "src/components/reusable/timepicker/timepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "./toggleButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/toggleButton/toggleButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Toggle Button.",
-          "name": "ToggleButton",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "attribute": "checked",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "attribute": "checkedText"
-            },
-            {
-              "kind": "field",
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "attribute": "uncheckedText"
-            },
-            {
-              "kind": "field",
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "attribute": "small",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "attribute": "disabled",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Toggle read-only state (non-modifiable but focusable).",
-              "attribute": "readonly",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "attribute": "reverse"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "handleClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "handleKeyDown",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the change event. `detail:{ origEvent: Event, checked: boolean, value: string }`",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox checked state.",
-              "fieldName": "checked"
-            },
-            {
-              "name": "checkedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'On'",
-              "description": "Checked state text.",
-              "fieldName": "checkedText"
-            },
-            {
-              "name": "uncheckedText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Off'",
-              "description": "Unchecked state text.",
-              "fieldName": "uncheckedText"
-            },
-            {
-              "name": "small",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to use small size.",
-              "fieldName": "small"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Checkbox disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Toggle read-only state (non-modifiable but focusable).",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "reverse",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Reverse UI element order, label on the left.",
-              "fieldName": "reverse"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the label visually.",
-              "fieldName": "hideLabel"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-toggle-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ToggleButton",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-toggle-button",
-          "declaration": {
-            "name": "ToggleButton",
-            "module": "src/components/reusable/toggleButton/toggleButton.ts"
           }
         }
       ]
