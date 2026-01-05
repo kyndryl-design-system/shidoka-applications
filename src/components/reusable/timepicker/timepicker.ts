@@ -39,15 +39,9 @@ type TimePickerValue = string | Date | null;
 const _defaultTextStrings = {
   requiredText: 'Required',
   clearAll: 'Clear',
-  pleaseSelectDate: 'Please select a date',
+  pleaseSelectDate: 'Please select a time',
   noTimeSelected: 'No time selected',
-  pleaseSelectValidDate: 'Please select a valid date',
-
-  lockedStartDate: 'Start date is locked',
-  lockedEndDate: 'End date is locked',
-  dateLocked: 'Date is locked',
-  dateNotAvailable: 'Date is not available',
-  dateInSelectedRange: 'Date is in selected range',
+  pleaseSelectValidDate: 'Please select a valid time',
 };
 
 /**
