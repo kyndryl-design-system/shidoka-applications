@@ -281,6 +281,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   private accessor _isSyncingFromHost = false;
 
+  /** For handling DatePicker change to prevent circular updates
+   * @internal
+   */
+  @state()
+  private accessor _isDatePickerChange = false;
+
   private debounce<T extends (...args: unknown[]) => unknown>(
     func: T,
     wait: number
@@ -843,7 +849,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     if (
       changedProperties.has('value') &&
       !this.dateRangePickerDisabled &&
-      !this._isClearing
+      !this._isClearing &&
+      !this._isDatePickerChange
     ) {
       const newValue = this.value;
 
@@ -1524,50 +1531,59 @@ export class DateRangePicker extends FormMixin(LitElement) {
 
     if (this._isClearing || this._isSyncingFromHost) return;
 
-    if (selectedDates.length === 0) {
-      this.value = [null, null];
-      if (this._inputEl) {
-        this._inputEl.value = '';
-        this.updateFormValue();
-      }
-      emitValue(this, 'on-change', {
-        dates: this.value,
-        dateObjects: this.value,
-        dateString: this._inputEl?.value,
-        source: 'clear',
-      });
-    } else if (selectedDates.length === 1) {
-      this.value = [selectedDates[0], null];
+    // Set flag to prevent circular updates
+    this._isDatePickerChange = true;
 
-      if (this._inputEl) {
-        this._inputEl.value = dateStr;
-        this.updateFormValue();
+    try {
+      if (selectedDates.length === 0) {
+        this.value = [null, null];
+        if (this._inputEl) {
+          this._inputEl.value = '';
+          this.updateFormValue();
+        }
+        emitValue(this, 'on-change', {
+          dates: this.value,
+          dateObjects: this.value,
+          dateString: this._inputEl?.value,
+          source: 'clear',
+        });
+      } else if (selectedDates.length === 1) {
+        this.value = [selectedDates[0], null];
+
+        if (this._inputEl) {
+          this._inputEl.value = dateStr;
+          this.updateFormValue();
+        }
+
+        emitValue(this, 'on-change', {
+          dates: [selectedDates[0].toISOString()],
+          dateObjects: [selectedDates[0], null],
+          dateString: dateStr,
+          source: 'date-selection',
+        });
+      } else {
+        this.value = [selectedDates[0], selectedDates[1]];
+        const iso = selectedDates.map((d) => d.toISOString());
+        const display = this.flatpickrInstance!.input.value;
+        if (this._inputEl) {
+          this._inputEl.value = display;
+          this.updateFormValue();
+        }
+        emitValue(this, 'on-change', {
+          dates: iso,
+          dateObjects: selectedDates,
+          dateString: display,
+          source: 'date-selection',
+        });
       }
 
-      emitValue(this, 'on-change', {
-        dates: [selectedDates[0].toISOString()],
-        dateObjects: [selectedDates[0], null],
-        dateString: dateStr,
-        source: 'date-selection',
-      });
-    } else {
-      this.value = [selectedDates[0], selectedDates[1]];
-      const iso = selectedDates.map((d) => d.toISOString());
-      const display = this.flatpickrInstance!.input.value;
-      if (this._inputEl) {
-        this._inputEl.value = display;
-        this.updateFormValue();
-      }
-      emitValue(this, 'on-change', {
-        dates: iso,
-        dateObjects: selectedDates,
-        dateString: display,
-        source: 'date-selection',
-      });
+      this.updateSelectedDateRangeAria(selectedDates);
+      this._validate(true, false);
+    } finally {
+      // Reset flag to ensure updated()
+      await Promise.resolve();
+      this._isDatePickerChange = false;
     }
-
-    this.updateSelectedDateRangeAria(selectedDates);
-    this._validate(true, false);
   }
 
   private updateSelectedDateRangeAria(selectedDates: Date[]) {
