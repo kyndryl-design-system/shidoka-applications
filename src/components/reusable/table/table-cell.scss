@@ -11,6 +11,7 @@
   max-width: var(--kyn-td-max-width, none);
   width: var(--kyn-td-width, auto);
   min-width: var(--kyn-td-min-width, auto);
+  font-weight: var(--kyn-td-font-weight);
 }
 
 .slot-wrapper {
@@ -58,4 +59,12 @@
 
 :host([dimmed]) {
   color: var(--kd-color-text-level-disabled);
+}
+
+// Apply radius only to first and last cells, applicable for footer column
+:host(:first-child) {
+  border-bottom-left-radius: var(--kyn-td-border-radius-bl);
+}
+:host(:last-child) {
+  border-bottom-right-radius: var(--kyn-td-border-radius-br);
 }

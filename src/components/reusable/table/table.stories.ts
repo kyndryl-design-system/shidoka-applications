@@ -44,34 +44,6 @@ const meta: Meta = {
       url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-382289&p=f&m=dev',
     },
   },
-  decorators: [
-    (story) => html`
-      <style>
-        .example {
-          border-top: 1px solid var(--kd-color-border-level-tertiary);
-          border-bottom: 1px solid var(--kd-color-border-level-tertiary);
-        }
-        .font-wt {
-          font-weight: 500;
-        }
-        .border-bottom-right {
-          border-bottom-right-radius: 8px;
-        }
-        .border-bottom-left {
-          border-bottom-left-radius: 8px;
-        }
-        .footer-example {
-          --kd-color-background-table-row: var(
-            --kd-color-background-menu-state-category
-          );
-          --kd-color-background-table-row-active: var(
-            --kd-color-background-menu-state-category
-          );
-        }
-      </style>
-      ${story()}
-    `,
-  ],
 };
 
 export default meta;
@@ -585,7 +557,7 @@ export const WithFooter: Story = {
     return html`
       <kyn-table-toolbar .tableTitle=${'Footer'}> </kyn-table-toolbar>
       <kyn-table-container>
-        <kyn-table style="border-collapse: initial;">
+        <kyn-table>
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th .align=${'center'}>ID</kyn-th>
@@ -613,18 +585,14 @@ export const WithFooter: Story = {
             )}
           </kyn-tbody>
 
-          <kyn-tfoot stickyfooter>
-            <kyn-tr class="footer-example">
-              <kyn-td class="border-bottom-left"></kyn-td>
+          <kyn-tfoot>
+            <kyn-tr>
               <kyn-td></kyn-td>
               <kyn-td></kyn-td>
               <kyn-td></kyn-td>
               <kyn-td></kyn-td>
-              <kyn-td
-                .align=${'right'}
-                class="kd-type--body-02 border-bottom-right font-wt"
-                >Total:38000</kyn-td
-              >
+              <kyn-td></kyn-td>
+              <kyn-td .align=${'right'}>Total:38000</kyn-td>
             </kyn-tr>
           </kyn-tfoot>
         </kyn-table>
@@ -634,8 +602,8 @@ export const WithFooter: Story = {
 
       <kyn-table-toolbar .tableTitle=${'Sticky Footer with Sticky Header'}>
       </kyn-table-toolbar>
-      <kyn-table-container style="height:350px;">
-        <kyn-table stickyHeader style="border-collapse: initial;">
+      <kyn-table-container style="height:250px">
+        <kyn-table stickyHeader>
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th .align=${'center'}>ID</kyn-th>
@@ -664,18 +632,13 @@ export const WithFooter: Story = {
           </kyn-tbody>
 
           <kyn-tfoot stickyfooter>
-            <kyn-tr class="footer-example">
-              <kyn-td class="example border-bottom-left"></kyn-td>
-              <kyn-td class="example"></kyn-td>
-              <kyn-td class="example"></kyn-td>
-              <kyn-td class="example"></kyn-td>
-              <kyn-td class="example"></kyn-td>
-
-              <kyn-td
-                .align=${'right'}
-                class="kd-type--body-02 example border-bottom-right font-wt"
-                >Total:38000</kyn-td
-              >
+            <kyn-tr>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td .align=${'right'}>Total:38000</kyn-td>
             </kyn-tr>
           </kyn-tfoot>
         </kyn-table>
