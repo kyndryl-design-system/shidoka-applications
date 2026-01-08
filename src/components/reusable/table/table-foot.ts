@@ -21,9 +21,6 @@ export class TableFoot extends LitElement {
   @property({ type: String, reflect: true })
   override accessor role = 'rowgroup';
 
-  @property({ type: Boolean, reflect: true })
-  accessor stickyFooter = false;
-
   override render() {
     return html` <slot></slot> `;
   }
