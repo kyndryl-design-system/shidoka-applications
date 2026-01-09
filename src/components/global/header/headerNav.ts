@@ -37,14 +37,6 @@ export class HeaderNav extends LitElement {
   @state()
   accessor hasCategories = false;
 
-  // /**
-  //  * When true, the nav will automatically expand the active link's
-  //  * categorical menu (mega nav) on first render (desktop) / once the menu is opened
-  //  * (mobile). This does not affect `menuOpen`.
-  //  */
-  // @property({ type: Boolean, reflect: true })
-  // accessor expandActiveMegaOnLoad = false;
-
   /** Mutation observer for attribute changes.
    * @internal
    */
