@@ -2,6 +2,10 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS, type PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  querySelectorAllDeep,
+  querySelectorDeep,
+} from 'query-selector-shadow-dom';
 import HeaderNavScss from './headerNav.scss?inline';
 
 import menuIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/hamburger-menu.svg';
@@ -21,28 +25,37 @@ export class HeaderNav extends LitElement {
   @state()
   accessor menuOpen = false;
 
-  /** Force correct slot */
+  /** Force correct slot
+   * @internal
+   */
   @property({ type: String, reflect: true })
   override accessor slot = 'left';
 
-  /** Boolean value reflecting whether the navigation has categories. */
+  /** Boolean value reflecting whether the navigation has categories.
+   * @internal
+   */
   @state()
   accessor hasCategories = false;
 
-  /**
-   * When true, the nav will automatically expand the active link's
-   * categorical menu (mega nav) on first render (desktop) / once the menu is opened
-   * (mobile). This does not affect `menuOpen`.
-   */
-  @property({ type: Boolean, reflect: true })
-  accessor expandActiveMegaOnLoad = false;
+  // /**
+  //  * When true, the nav will automatically expand the active link's
+  //  * categorical menu (mega nav) on first render (desktop) / once the menu is opened
+  //  * (mobile). This does not affect `menuOpen`.
+  //  */
+  // @property({ type: Boolean, reflect: true })
+  // accessor expandActiveMegaOnLoad = false;
 
-  /** Mutation observer for attribute changes. */
+  /** Mutation observer for attribute changes.
+   * @internal
+   */
   private _attrObserver?: MutationObserver;
 
-  /** Bound document click handler to allow proper add/remove of listener */
+  /** Bound document click handler to allow proper add/remove of listener
+   * @internal
+   */
   private _boundHandleClickOut = (e: Event) => this._handleClickOut(e);
 
+  /** @internal */
   private get _isDesktop(): boolean {
     if (typeof window === 'undefined') return true;
     return window.innerWidth >= 672;
@@ -86,14 +99,14 @@ export class HeaderNav extends LitElement {
   }
 
   private _updateCategoriesVisibility(): void {
-    const links = this.querySelectorAll<HTMLElement>('kyn-header-link');
+    const links = querySelectorAllDeep('kyn-header-link', this);
 
     const hasOpenCategory = Array.from(links).some((link) => {
       return link.hasAttribute('open') || link.hasAttribute('isactive');
     });
 
     const hasCategoriesElement = Boolean(
-      this.querySelector('kyn-header-categories')
+      querySelectorDeep('kyn-header-categories', this)
     );
 
     const nextHasCategories = hasOpenCategory || hasCategoriesElement;
@@ -103,48 +116,7 @@ export class HeaderNav extends LitElement {
     }
   }
 
-  /**
-   * Determine whether the active link's categorical menu (mega nav) is open initially. Only applies on desktop; mobile should start collapsed and require explicit interaction.
-   */
-  private _ensureActiveMegaExpanded() {
-    if (!this.expandActiveMegaOnLoad || !this._isDesktop) return;
-
-    const links = Array.from(
-      this.querySelectorAll<
-        HTMLElement & { open?: boolean; isActive?: boolean }
-      >('kyn-header-link')
-    );
-
-    if (!links.length) return;
-
-    let activeLink = links.find((link) => link.hasAttribute('isactive'));
-
-    // fallback: first link that owns mega content (slot="links")
-    if (!activeLink) {
-      activeLink = links.find((link) => link.querySelector('[slot="links"]'));
-    }
-
-    if (!activeLink) return;
-
-    links.forEach((link) => {
-      const shouldBeOpen = link === activeLink;
-
-      link.toggleAttribute('open', shouldBeOpen);
-
-      if ('open' in link) {
-        (link as any).open = shouldBeOpen;
-      }
-
-      if (shouldBeOpen) {
-        link.setAttribute('isactive', '');
-      } else {
-        link.removeAttribute('isactive');
-      }
-    });
-  }
-
   private _handleSlotChange() {
-    this._ensureActiveMegaExpanded();
     this._updateCategoriesVisibility();
   }
 
@@ -155,7 +127,6 @@ export class HeaderNav extends LitElement {
   }
 
   protected override firstUpdated(_changed: PropertyValueMap<this>): void {
-    this._ensureActiveMegaExpanded();
     this._updateCategoriesVisibility();
   }
 

@@ -135,7 +135,9 @@ export class HeaderCategories extends LitElement {
   @property({ type: Object })
   accessor textStrings: Partial<HeaderTextStrings> | null = null;
 
-  /** Resolved text strings (defaults + overrides). */
+  /** Resolved text strings (defaults + overrides).
+   * @internal
+   */
   @state()
   accessor _textStrings: HeaderTextStrings = _defaultTextStrings;
 
@@ -146,6 +148,7 @@ export class HeaderCategories extends LitElement {
   /**
    * Current visual view for styling ('root' | 'detail').
    * Derived from `activeMegaCategoryId` but reflected for CSS hooks.
+   * @internal
    */
   @property({ type: String, reflect: true })
   accessor view: HeaderView = ROOT_VIEW;
@@ -166,19 +169,25 @@ export class HeaderCategories extends LitElement {
   @property({ attribute: false })
   accessor linkRenderer: HeaderMegaLinkRenderer | null = null;
 
-  /** Internal representation of slotted categories */
+  /** Internal representation of slotted categories
+   * @internal
+   */
   @state()
   accessor _slottedCategories: SlottedCategoryData[] = [];
 
+  /** @internal */
   private _buildSlottedTimeout?: number;
 
+  /** @internal */
   private readonly _boundHandleNavToggle = (e: Event): void =>
     this._handleNavToggle(e as CustomEvent<{ open?: boolean }>);
 
+  /** @internal */
   private get _isJsonMode(): boolean {
     return this.tabsConfig != null;
   }
 
+  /** @internal */
   private get _tabConfig(): MegaTabConfig | null {
     if (!this.tabsConfig) return null;
     return this.tabsConfig[this.activeMegaTabId] ?? null;
