@@ -1,6 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, unsafeCSS, type PropertyValueMap } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderNavScss from './headerNav.scss?inline';
 
@@ -37,12 +37,21 @@ export class HeaderNav extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor expandActiveMegaOnLoad = false;
 
-  /** Mutation observer for attribute changes. */
+  /** Mutation observer for attribute changes.
+   * @internal
+   */
   private _attrObserver?: MutationObserver;
 
-  /** Bound document click handler to allow proper add/remove of listener */
+  /** Bound document click handler to allow proper add/remove of listener
+   * @internal
+   */
   private _boundHandleClickOut = (e: Event) => this._handleClickOut(e);
 
+  /** @internal */
+  @query('slot')
+  accessor _defaultSlot!: HTMLSlotElement;
+
+  /** @internal */
   private get _isDesktop(): boolean {
     if (typeof window === 'undefined') return true;
     return window.innerWidth >= 672;
@@ -92,9 +101,9 @@ export class HeaderNav extends LitElement {
       return link.hasAttribute('open') || link.hasAttribute('isactive');
     });
 
-    const hasCategoriesElement = Boolean(
-      this.querySelector('kyn-header-categories')
-    );
+    const hasCategoriesElement = this._defaultSlot
+      ?.assignedElements({ flatten: true })
+      .some((el) => el.querySelector?.('kyn-header-categories'));
 
     const nextHasCategories = hasOpenCategory || hasCategoriesElement;
 
