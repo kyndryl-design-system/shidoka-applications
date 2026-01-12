@@ -13,6 +13,16 @@ const dirname =
 export default defineConfig({
   test: {
     projects: [
+      // Unit tests for utilities and helpers
+      {
+        extends: true,
+        test: {
+          name: 'unit',
+          include: ['src/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
+      // Storybook interaction tests
       {
         extends: true,
         plugins: [

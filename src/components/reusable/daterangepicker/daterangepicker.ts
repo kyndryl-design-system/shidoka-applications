@@ -4,9 +4,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { langsArray } from '../../../common/flatpickrLangs';
-import { DateRangeEditableMode } from '../../../common/helpers/flatpickr';
 import {
+  langsArray,
+  DateRangeEditableMode,
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
@@ -21,7 +21,12 @@ import {
   getModalContainer,
   applyDateRangeEditingRestrictions,
   clearFlatpickrInput,
-} from '../../../common/helpers/flatpickr';
+  debounce,
+  generateRandomId,
+  cleanupFlatpickrInstance,
+  CONFIG_DEBOUNCE_DELAY,
+  RESIZE_DEBOUNCE_DELAY,
+} from '../../../common/helpers/flatpickr/index';
 import '../../reusable/button';
 
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -287,28 +292,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @state()
   private accessor _isDatePickerChange = false;
 
-  private debounce<T extends (...args: unknown[]) => unknown>(
-    func: T,
-    wait: number
-  ): (...args: Parameters<T>) => void {
-    let timeout: number | null = null;
-
-    return (...args: Parameters<T>) => {
-      if (timeout !== null) {
-        window.clearTimeout(timeout);
-      }
-
-      timeout = window.setTimeout(() => {
-        void func(...args);
-        timeout = null;
-      }, wait);
-    };
-  }
-
   /** Debounced re-initialization helper used when configuration changes.
    * @internal
    */
-  private debouncedUpdate = this.debounce(async () => {
+  private debouncedUpdate = debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
     try {
       await this.initializeFlatpickr();
@@ -322,12 +309,12 @@ export class DateRangePicker extends FormMixin(LitElement) {
         console.warn('DateRangePicker update info:', error.message);
       }
     }
-  }, 100);
+  }, CONFIG_DEBOUNCE_DELAY);
 
   /** Debounced resize handler to keep the calendar positioned correctly.
    * @internal
    */
-  private handleResize = this.debounce(async () => {
+  private handleResize = debounce(async () => {
     if (this.flatpickrInstance && !this._isDestroyed) {
       try {
         await this.initializeFlatpickr();
@@ -342,11 +329,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       }
     }
-  }, 250);
-
-  private generateRandomId(prefix: string): string {
-    return `${prefix}-${Math.random().toString(36).slice(2, 11)}`;
-  }
+  }, RESIZE_DEBOUNCE_DELAY);
 
   override connectedCallback() {
     super.connectedCallback();
@@ -389,7 +372,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       this._submitListener = null;
     }
 
-    this.flatpickrInstance?.destroy();
+    cleanupFlatpickrInstance(this.flatpickrInstance);
     this.flatpickrInstance = undefined;
   }
 
@@ -434,8 +417,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     const anchorId =
       this._anchorId ??
       (this._anchorId = this.name
-        ? this.generateRandomId(this.name)
-        : this.generateRandomId('date-range-picker'));
+        ? generateRandomId(this.name)
+        : generateRandomId('date-range-picker'));
 
     const errorId = `${anchorId}-error-message`;
     const warningId = `${anchorId}-warning-message`;
@@ -834,7 +817,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
       }
 
-      this.flatpickrInstance.destroy();
+      cleanupFlatpickrInstance(this.flatpickrInstance);
+      this.flatpickrInstance = undefined;
       setTimeout(() => {
         this.initializeFlatpickr().then(() => {
           if (this._inputEl && this.flatpickrInstance) {
@@ -991,7 +975,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
       }
 
       if (this.flatpickrInstance) {
-        this.flatpickrInstance.destroy();
+        cleanupFlatpickrInstance(this.flatpickrInstance);
+        this.flatpickrInstance = undefined;
         this.initializeFlatpickr().then(() => {
           if (this._inputEl && this.flatpickrInstance) {
             this._inputEl.value = this.flatpickrInstance.input.value;
@@ -1209,7 +1194,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
     }
 
     try {
-      this.flatpickrInstance?.destroy();
+      cleanupFlatpickrInstance(this.flatpickrInstance);
+      this.flatpickrInstance = undefined;
       this.flatpickrInstance = await initializeSingleAnchorFlatpickr({
         inputEl: this._inputEl,
         getFlatpickrOptions: () => this.getComponentFlatpickrOptions(),
