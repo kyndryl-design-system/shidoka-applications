@@ -4,9 +4,8 @@ import { Instance } from 'flatpickr/dist/types/instance';
 import { BaseOptions, Hook } from 'flatpickr/dist/types/options';
 import { Locale } from 'flatpickr/dist/types/locale';
 import { default as English } from 'flatpickr/dist/esm/l10n/default.js';
-import { loadLocale as loadLocaleFromLangs } from '../flatpickrLangs';
-
-import { fixedOverlayPositionPlugin } from '../helpers/flatpickrOverlayPosition';
+import { loadLocale as loadLocaleFromLangs } from './langs';
+import { fixedOverlayPositionPlugin } from './overlay';
 
 let flatpickrStylesInjected = false;
 
@@ -884,43 +883,6 @@ export function hideEmptyYear(): void {
       }
     }
   });
-}
-
-export function validate(
-  inputEl: HTMLInputElement,
-  required: boolean,
-  invalidText: string,
-  defaultErrorMessage: string,
-  hasInteracted: boolean,
-  internals: ElementInternals
-): { isValid: boolean; validationMessage: string } {
-  if (!inputEl) {
-    console.warn('Input element is undefined...');
-    return { isValid: true, validationMessage: '' };
-  }
-
-  const isEmpty = !inputEl.value.trim();
-  const isRequired = required;
-
-  let validity = inputEl.validity;
-  let validationMessage = inputEl.validationMessage;
-
-  if (isRequired && isEmpty) {
-    validity = { ...validity, valueMissing: true };
-    validationMessage = defaultErrorMessage;
-  }
-
-  if (invalidText) {
-    validity = { ...validity, customError: true };
-    validationMessage = invalidText;
-  }
-
-  internals.setValidity(validity, validationMessage, inputEl);
-
-  const isValid =
-    !invalidText && (!hasInteracted || !isEmpty || (isEmpty && !isRequired));
-
-  return { isValid, validationMessage };
 }
 
 export function emitValue(
