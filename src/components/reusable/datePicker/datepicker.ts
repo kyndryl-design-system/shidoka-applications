@@ -3,8 +3,8 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { langsArray } from '../../../common/flatpickrLangs';
 import {
+  langsArray,
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
@@ -18,7 +18,12 @@ import {
   hideEmptyYear,
   getModalContainer,
   clearFlatpickrInput,
-} from '../../../common/helpers/flatpickr';
+  debounce,
+  generateRandomId,
+  isEmptyValue,
+  cleanupFlatpickrInstance,
+  CONFIG_DEBOUNCE_DELAY,
+} from '../../../common/helpers/flatpickr/index';
 import '../../reusable/button';
 
 import flatpickr from 'flatpickr';
@@ -276,62 +281,20 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
-  private debounce<T extends (...args: unknown[]) => unknown>(
-    func: T,
-    wait: number
-  ): (...args: Parameters<T>) => void {
-    let timeout: number | null = null;
-
-    return (...args: Parameters<T>) => {
-      if (timeout !== null) {
-        window.clearTimeout(timeout);
-      }
-      timeout = window.setTimeout(() => {
-        void func(...args);
-        timeout = null;
-      }, wait);
-    };
-  }
-
-  /** Helper to determine if value is empty.
-   * @internal
-   */
-  private isEmptyValue(value: DatePickerValueInput): boolean {
-    if (value == null) return true;
-
-    if (typeof value === 'string') return value.trim() === '';
-
-    if (Array.isArray(value)) {
-      return (
-        value.length === 0 ||
-        value.every((v) => {
-          if (v == null) return true;
-          return typeof v === 'string' ? v.trim() === '' : false;
-        })
-      );
-    }
-
-    return false;
-  }
-
   /** Debounced re-initialization helper used when configuration changes.
    * @internal
    */
-  private debouncedUpdate = this.debounce(async () => {
+  private debouncedUpdate = debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
     try {
       await this.initializeFlatpickr();
     } catch (error) {
       /* … */
     }
-  }, 100);
-
-  private generateRandomId(prefix: string): string {
-    return `${prefix}-${Math.random().toString(36).slice(2, 11)}`;
-  }
+  }, CONFIG_DEBOUNCE_DELAY);
 
   private applyLegacyDefaultDate(): void {
-    if (this.isEmptyValue(this.defaultDate)) return;
+    if (isEmptyValue(this.defaultDate)) return;
 
     const processedDates = this.processDefaultDates(this.defaultDate);
     if (!processedDates.length) return;
@@ -345,7 +308,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this.addEventListener('change', this._onChange);
     this.addEventListener('reset', this._handleFormReset);
 
-    if (this.isEmptyValue(this.value) && !this.isEmptyValue(this.defaultDate)) {
+    if (isEmptyValue(this.value) && !isEmptyValue(this.defaultDate)) {
       this._hasInitialDefaultDate = true;
     }
 
@@ -372,27 +335,14 @@ export class DatePicker extends FormMixin(LitElement) {
       this._submitListener = null;
     }
 
-    if (this.flatpickrInstance) {
-      const __handlers = (this.flatpickrInstance as any).__anchorClickHandlers;
-      if (Array.isArray(__handlers)) {
-        __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
-          try {
-            h.el.removeEventListener('click', h.fn as EventListener);
-          } catch (e) {
-            // ignore cleanup errors
-          }
-        });
-      }
-
-      this.flatpickrInstance.destroy();
-      this.flatpickrInstance = undefined;
-    }
+    cleanupFlatpickrInstance(this.flatpickrInstance);
+    this.flatpickrInstance = undefined;
   }
 
   private hasValue(): boolean {
     if (this._inputEl?.value.trim()) return true;
 
-    return !this.isEmptyValue(this.value);
+    return !isEmptyValue(this.value);
   }
 
   private updateFormValue(): void {
@@ -407,8 +357,8 @@ export class DatePicker extends FormMixin(LitElement) {
     const anchorId =
       this._anchorId ??
       (this._anchorId = this.name
-        ? this.generateRandomId(this.name)
-        : this.generateRandomId('date-picker'));
+        ? generateRandomId(this.name)
+        : generateRandomId('date-picker'));
     const descriptionId = this.name ?? '';
     const placeholder = getPlaceholder(this.dateFormat);
 
@@ -561,12 +511,12 @@ export class DatePicker extends FormMixin(LitElement) {
     super.firstUpdated(changedProperties);
 
     // LEGACY: honor defaultDate, but route it through `value`
-    if (this.isEmptyValue(this.value) && !this.isEmptyValue(this.defaultDate)) {
+    if (isEmptyValue(this.value) && !isEmptyValue(this.defaultDate)) {
       this.applyLegacyDefaultDate();
     }
 
     const initialRaw = this.value as unknown as DatePickerValueInput;
-    if (!this.isEmptyValue(initialRaw)) {
+    if (!isEmptyValue(initialRaw)) {
       const { parseFailed, outOfRange } =
         this.validateAndNormalizeHostValue(initialRaw);
       if (parseFailed || outOfRange) {
@@ -625,12 +575,12 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   override updated(changedProperties: PropertyValues) {
-    const hasNonEmptyValue = !this.isEmptyValue(this.value);
+    const hasNonEmptyValue = !isEmptyValue(this.value);
 
     // LEGACY: only populate from defaultDate when value is unset/empty
     if (
       changedProperties.has('defaultDate') &&
-      !this.isEmptyValue(this.defaultDate) &&
+      !isEmptyValue(this.defaultDate) &&
       !this._isClearing &&
       !hasNonEmptyValue
     ) {
@@ -797,19 +747,7 @@ export class DatePicker extends FormMixin(LitElement) {
 
     try {
       if (this.flatpickrInstance) {
-        const __handlers = (this.flatpickrInstance as any)
-          .__anchorClickHandlers;
-        if (Array.isArray(__handlers)) {
-          __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
-            try {
-              h.el.removeEventListener('click', h.fn as EventListener);
-            } catch (e) {
-              // ignore cleanup errors
-            }
-          });
-        }
-
-        this.flatpickrInstance.destroy();
+        cleanupFlatpickrInstance(this.flatpickrInstance);
         this.flatpickrInstance = undefined;
       }
 
@@ -987,7 +925,7 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   setInitialDates() {
-    if (!this.flatpickrInstance || this.isEmptyValue(this.value)) return;
+    if (!this.flatpickrInstance || isEmptyValue(this.value)) return;
 
     try {
       const rawValue = this.value;
@@ -1034,7 +972,7 @@ export class DatePicker extends FormMixin(LitElement) {
     parseFailed: boolean;
     outOfRange: boolean;
   } {
-    const hostProvidedSomething = !this.isEmptyValue(raw);
+    const hostProvidedSomething = !isEmptyValue(raw);
 
     const dates = this.normalizeValueInput(raw);
 
@@ -1135,7 +1073,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this._validate(false, false);
     await this.updateComplete;
 
-    if (this.isEmptyValue(this.value) && this.isEmptyValue(this.defaultDate)) {
+    if (isEmptyValue(this.value) && isEmptyValue(this.defaultDate)) {
       this._hasInteracted = true;
     }
   }
@@ -1237,7 +1175,7 @@ export class DatePicker extends FormMixin(LitElement) {
       this._hasInteracted = true;
     }
 
-    const hasValidDefaultValue = !this.isEmptyValue(this.defaultDate);
+    const hasValidDefaultValue = !isEmptyValue(this.defaultDate);
 
     const isEmpty = !this._inputEl.value.trim() && !hasValidDefaultValue;
     const isRequired = this.required;

@@ -39,8 +39,15 @@ export class CheckboxSubgroup extends LitElement {
   }
 
   private _syncParent(count: number) {
-    // sync Parent indeterminate state
-    this._parent[0].indeterminate = count < this._children.length && count > 0;
+    const parent = this._parent?.[0];
+    if (!parent) return;
+
+    // checked when all children are checked, otherwise unchecked
+    parent.checked =
+      this._children.length > 0 && count === this._children.length;
+
+    // indeterminate when some (but not all) children are checked
+    parent.indeterminate = count < this._children.length && count > 0;
   }
 
   private _handleCheckboxChange(e: any) {
@@ -58,12 +65,6 @@ export class CheckboxSubgroup extends LitElement {
 
     if (isParent) {
       checkedBoxesCount = e.detail.checked ? this._children.length : 0;
-    } else {
-      if (e.detail.checked) {
-        checkedBoxesCount += 1;
-      } else {
-        checkedBoxesCount -= 1;
-      }
     }
 
     this._syncParent(checkedBoxesCount);

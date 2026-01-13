@@ -14,7 +14,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-373273&m=dev',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library?node-id=19723-26652&p=f&m=dev',
     },
   },
   argTypes: {
@@ -138,6 +138,13 @@ DefaultTimePicker.args = {
   defaultHour: null,
   defaultMinute: null,
   defaultSeconds: null,
+  textStrings: {
+    requiredText: 'Required',
+    clearAll: 'Clear',
+    pleaseSelectDate: 'Please select a time',
+    noTimeSelected: 'No time selected',
+    pleaseSelectValidDate: 'Please select a valid time',
+  },
 };
 DefaultTimePicker.storyName = 'Default (12H)';
 

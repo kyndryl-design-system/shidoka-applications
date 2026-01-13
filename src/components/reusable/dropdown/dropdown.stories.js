@@ -662,6 +662,22 @@ export const AddNewOption = {
           handleAddOption(e, dropdownItems);
         }}
       >
+        <kyn-text-input
+          slot="add-option-input"
+          class="add-option-input"
+          type="text"
+          label="Add new option"
+          hideLabel
+          placeholder="Add item..."
+        ></kyn-text-input>
+
+        <kyn-button
+          slot="add-option-button"
+          type="button"
+          size="small"
+          kind="secondary"
+          >Add</kyn-button
+        >
         <kyn-tooltip slot="tooltip">
           <span slot="anchor" style="display:flex">${unsafeSVG(infoIcon)}</span>
           tooltip
@@ -741,6 +757,179 @@ export const Readonly = {
         <kyn-dropdown-option value="6">Option 6</kyn-dropdown-option>
         <kyn-dropdown-option value="7">Option 7</kyn-dropdown-option>
       </kyn-dropdown>
+    `;
+  },
+};
+
+export const AddNewOptionValidation = {
+  args: {
+    ...args,
+    label: 'Add New Option (Validation)',
+    value: ['option2'],
+    allowAddOption: true,
+    items: items,
+    dropdownItems: items,
+
+    preventDuplicateAddOption: true,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    const [{ dropdownItems, value }, updateArgs] = useArgs();
+
+    const handleChange = (e) => {
+      updateArgs({
+        value: e.detail.value,
+      });
+      action(e.type)({ ...e, detail: e.detail });
+    };
+
+    const handleAddOption = (e, dropdownItems) => {
+      const newOption = {
+        value: e.detail.value,
+        text: e.detail.value,
+        removable: true,
+      };
+
+      const newItems = [...dropdownItems, newOption].sort((a, b) => {
+        return a.text.localeCompare(b.text);
+      });
+
+      updateArgs({
+        dropdownItems: newItems,
+      });
+
+      action(e.type)({ ...e, detail: e.detail });
+    };
+
+    const handleRemoveOption = (e, dropdownItems) => {
+      const removedOption = e.detail.value;
+      const newOption = dropdownItems.filter(
+        (item) => item.value !== removedOption
+      );
+      const newValue = [...value].filter((item) => item !== removedOption);
+
+      updateArgs({
+        dropdownItems: [...newOption],
+        value: newValue,
+      });
+
+      action(e.type)({ ...e, detail: e.detail });
+    };
+
+    return html`
+      <style>
+        kyn-dropdown {
+          min-width: 250px;
+        }
+        .validation-grid {
+          display: grid;
+          gap: 16px;
+          grid-template-columns: repeat(2, minmax(260px, 1fr));
+          align-items: start;
+        }
+        .validation-note {
+          font-size: 12px;
+          opacity: 0.8;
+          margin-top: 6px;
+        }
+        @media (max-width: 700px) {
+          .validation-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      </style>
+
+      <div class="validation-grid">
+        <div>
+          <kyn-dropdown
+            label=${args.label}
+            multiple
+            placeholder=${args.placeholder}
+            size=${args.size}
+            kind=${args.kind}
+            ?inline=${args.inline}
+            ?hideTags=${args.hideTags}
+            name=${args.name}
+            ?open=${args.open}
+            ?hideLabel=${args.hideLabel}
+            ?required=${args.required}
+            ?disabled=${args.disabled}
+            ?readonly=${args.readonly}
+            invalidText=${args.invalidText}
+            caption=${args.caption}
+            menuMinWidth=${args.menuMinWidth}
+            .textStrings=${args.textStrings}
+            .value=${value}
+            ?selectAll=${args.selectAll}
+            selectAllText=${args.selectAllText}
+            .allowAddOption=${args.allowAddOption}
+            .preventDuplicateAddOption=${args.preventDuplicateAddOption}
+            .addOptionValidator=${(val) => {
+              if (val.toLowerCase().includes('bad')) {
+                return 'Value cannot include "bad".';
+              }
+              return null;
+            }}
+            @on-change=${handleChange}
+            @on-add-option=${(e) => {
+              handleAddOption(e, dropdownItems);
+            }}
+          >
+            <kyn-text-input
+              slot="add-option-input"
+              class="add-option-input"
+              type="text"
+              label="Add new option"
+              hideLabel
+              placeholder="Add item..."
+              pattern="^[A-Za-z][A-Za-z0-9 -]*$"
+              minlength="3"
+            ></kyn-text-input>
+
+            <kyn-button
+              slot="add-option-button"
+              type="button"
+              size="small"
+              kind="secondary"
+              >Add</kyn-button
+            >
+            <kyn-tooltip slot="tooltip">
+              <span slot="anchor" style="display:flex"
+                >${unsafeSVG(infoIcon)}</span
+              >
+              Try: ab (too short), 1abc (fails pattern), bad (fails pattern),
+              option2 (duplicate), New Option (valid).
+            </kyn-tooltip>
+
+            ${repeat(
+              dropdownItems,
+              (item) => item.value,
+              (item) => html`
+                <kyn-dropdown-option
+                  value=${item.value}
+                  ?disabled=${item.disabled}
+                  ?removable=${item.removable}
+                  @on-remove-option=${(e) =>
+                    handleRemoveOption(e, dropdownItems)}
+                >
+                  <span slot="icon">${unsafeSVG(infoIcon)}</span>
+                  ${item.text}
+                </kyn-dropdown-option>
+              `
+            )}
+          </kyn-dropdown>
+
+          <div class="validation-note">
+            Try: <b>ab</b> (too short), <b>1abc</b> (fails pattern),
+            <b>bad</b> (fails pattern), <b>option2</b> (duplicate),
+            <b>New Option</b> (valid).
+          </div>
+        </div>
+      </div>
     `;
   },
 };
