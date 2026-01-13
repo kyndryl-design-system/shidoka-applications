@@ -2,11 +2,8 @@ import { LitElement, html, PropertyValues, unsafeCSS } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FormMixin } from '../../../common/mixins/form-input';
-import { langsArray } from '../../../common/flatpickrLangs';
-
-import '../../reusable/button';
-
 import {
+  langsArray,
   injectFlatpickrStyles,
   initializeSingleAnchorFlatpickr,
   getFlatpickrOptions,
@@ -18,7 +15,14 @@ import {
   hideEmptyYear,
   getModalContainer,
   clearFlatpickrInput,
-} from '../../../common/helpers/flatpickr';
+  debounce,
+  generateRandomId,
+  cleanupFlatpickrInstance,
+  CONFIG_DEBOUNCE_DELAY,
+  VISIBILITY_CHECK_INTERVAL,
+} from '../../../common/helpers/flatpickr/index';
+
+import '../../reusable/button';
 
 import flatpickr from 'flatpickr';
 import { BaseOptions } from 'flatpickr/dist/types/options';
@@ -249,28 +253,10 @@ export class TimePicker extends FormMixin(LitElement) {
    */
   private _submitListener: ((e: SubmitEvent) => void) | null = null;
 
-  private debounce<T extends (...args: unknown[]) => unknown>(
-    func: T,
-    wait: number
-  ): (...args: Parameters<T>) => void {
-    let timeout: number | null = null;
-
-    return (...args: Parameters<T>) => {
-      if (timeout !== null) {
-        window.clearTimeout(timeout);
-      }
-
-      timeout = window.setTimeout(() => {
-        void func(...args);
-        timeout = null;
-      }, wait);
-    };
-  }
-
   /** Debounced re-initialization helper used when configuration changes.
    * @internal
    */
-  private debouncedUpdate = this.debounce(async () => {
+  private debouncedUpdate = debounce(async () => {
     if (!this.flatpickrInstance || this._isDestroyed) return;
 
     if ((this.flatpickrInstance as any).isOpen) return;
@@ -280,11 +266,7 @@ export class TimePicker extends FormMixin(LitElement) {
     } catch (error) {
       console.error('Error in debounced update:', error);
     }
-  }, 100);
-
-  private generateRandomId(prefix: string): string {
-    return `${prefix}-${Math.random().toString(36).slice(2, 11)}`;
-  }
+  }, CONFIG_DEBOUNCE_DELAY);
 
   /**
    * Parses a time string (e.g. "14:30" or "14:30:45") or Date/number into a Date object
@@ -405,8 +387,8 @@ export class TimePicker extends FormMixin(LitElement) {
     const anchorId =
       this._anchorId ??
       (this._anchorId = this.name
-        ? this.generateRandomId(this.name)
-        : this.generateRandomId('time-picker'));
+        ? generateRandomId(this.name)
+        : generateRandomId('time-picker'));
     const descriptionId = this.name ?? '';
     const placeholder = this.enableSeconds ? '—— : —— : ——' : '—— : ——';
 
@@ -645,7 +627,10 @@ export class TimePicker extends FormMixin(LitElement) {
       };
 
       if (!wasVisible) {
-        this._visibilityPollTimeoutId = window.setTimeout(pollVisibility, 250);
+        this._visibilityPollTimeoutId = window.setTimeout(
+          pollVisibility,
+          VISIBILITY_CHECK_INTERVAL
+        );
       }
     }
   }
@@ -856,19 +841,7 @@ export class TimePicker extends FormMixin(LitElement) {
     const inputEl = this._inputEl;
     try {
       if (this.flatpickrInstance) {
-        const __handlers = (this.flatpickrInstance as any)
-          .__anchorClickHandlers;
-        if (Array.isArray(__handlers)) {
-          __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
-            try {
-              h.el.removeEventListener('click', h.fn as EventListener);
-            } catch (e) {
-              // ignore cleanup errors
-            }
-          });
-        }
-
-        this.flatpickrInstance.destroy();
+        cleanupFlatpickrInstance(this.flatpickrInstance);
 
         try {
           this.removeCalendarElement();
@@ -903,7 +876,7 @@ export class TimePicker extends FormMixin(LitElement) {
             if (instance.calendarContainer) {
               const id =
                 this._anchorId ??
-                (this._anchorId = this.generateRandomId('time-picker'));
+                (this._anchorId = generateRandomId('time-picker'));
               try {
                 (
                   instance.calendarContainer as HTMLElement
@@ -1118,7 +1091,6 @@ export class TimePicker extends FormMixin(LitElement) {
         time: raw,
         date: parsed,
       });
-      console.log({ raw, parsed });
     }
 
     this._padSecondsForInput(this._inputEl);
@@ -1294,18 +1266,7 @@ export class TimePicker extends FormMixin(LitElement) {
     }
 
     if (this.flatpickrInstance) {
-      const __handlers = (this.flatpickrInstance as any).__anchorClickHandlers;
-      if (Array.isArray(__handlers)) {
-        __handlers.forEach((h: { el: HTMLElement; fn: EventListener }) => {
-          try {
-            h.el.removeEventListener('click', h.fn as EventListener);
-          } catch (e) {
-            // ignore cleanup errors
-          }
-        });
-      }
-
-      this.flatpickrInstance.destroy();
+      cleanupFlatpickrInstance(this.flatpickrInstance);
 
       try {
         this.removeCalendarElement();

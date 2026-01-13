@@ -370,6 +370,8 @@ export class Dropdown extends FormMixin(LitElement) {
    */
   private _onChildBlur = (e: Event) => this._handleBlur(e as any);
 
+  private _addOptionInputCleanup?: () => void;
+
   private _handleAddOptionSlotChange() {
     const hasInput =
       (this.addOptionInputSlotEl?.assignedElements({ flatten: true }) ?? [])
@@ -385,6 +387,35 @@ export class Dropdown extends FormMixin(LitElement) {
     if ((hasInput || hasButton) && !this.allowAddOption) {
       this.allowAddOption = true;
     }
+    this._addOptionInputCleanup?.();
+    this._attachAddOptionInputListener();
+  }
+
+  private _attachAddOptionInputListener() {
+    const textInput = this._getAddOptionTextInput();
+    if (!textInput) return;
+
+    const handler = (e: CustomEvent) => {
+      this.newOptionValue = e.detail?.value ?? '';
+
+      // clear invalid text on input change
+      if (this._lastAddOptionInvalidText) {
+        textInput.invalidText = '';
+        this._lastAddOptionInvalidText = '';
+      }
+    };
+    textInput.addEventListener('on-input', handler);
+    this._addOptionInputCleanup = () => {
+      textInput.removeEventListener('on-input', handler);
+    };
+  }
+
+  private _getAddOptionTextInput() {
+    const assigned =
+      this.addOptionInputSlotEl?.assignedElements({ flatten: true }) ?? [];
+    return assigned.find(
+      (el) => el.tagName?.toLowerCase() === 'kyn-text-input'
+    ) as any | undefined;
   }
 
   /** @ignore */
@@ -1620,7 +1651,7 @@ export class Dropdown extends FormMixin(LitElement) {
     this.removeEventListener('on-click', this._onChildClick);
     this.removeEventListener('on-remove-option', this._onChildRemove);
     this.removeEventListener('on-blur', this._onChildBlur);
-
+    this._addOptionInputCleanup?.();
     super.disconnectedCallback();
   }
 
