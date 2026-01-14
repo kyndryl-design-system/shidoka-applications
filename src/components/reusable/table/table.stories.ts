@@ -551,3 +551,56 @@ export const Skeleton = {
     },
   },
 };
+
+export const WithFooter: Story = {
+  render: () => {
+    return html`
+      <kyn-table-toolbar
+        .tableTitle=${'With Footer'}
+        .tableSubtitle=${'Table Subtitle'}
+      >
+      </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th .align=${'center'}>ID</kyn-th>
+              <kyn-th>First Name</kyn-th>
+              <kyn-th>Last Name</kyn-th>
+              <kyn-th>Birthday</kyn-th>
+              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id}>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+
+          <kyn-tfoot>
+            <kyn-tr>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td></kyn-td>
+              <kyn-td .align=${'right'}>Total:38000</kyn-td>
+            </kyn-tr>
+          </kyn-tfoot>
+        </kyn-table>
+      </kyn-table-container>
+    `;
+  },
+};
