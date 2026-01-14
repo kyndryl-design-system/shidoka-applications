@@ -27,7 +27,9 @@ export type HeaderLinkTarget = '_self' | '_blank' | '_parent' | '_top';
 export class HeaderLink extends LitElement {
   static override styles = unsafeCSS(HeaderLinkScss);
 
-  /** Link open state. */
+  /** Link open state.
+   * @internal
+   */
   @property({ type: Boolean, reflect: true })
   accessor open = false;
 
