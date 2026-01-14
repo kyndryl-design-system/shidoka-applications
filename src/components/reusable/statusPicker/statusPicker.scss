@@ -1,0 +1,72 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: inline-block;
+}
+
+.status-picker {
+  @include typography.type-ui-03;
+  display: flex;
+  height: 24px;
+  align-items: center;
+  justify-content: space-around;
+  border: 0.5px solid var(--kd-color-tag-border-default); // needs to be border color variable
+  border-radius: 6px;
+  padding: 4px;
+  gap: 4px;
+  min-width: 24px;
+  max-width: 161px;
+  transition: background-color 0.4s ease;
+
+  &.no-truncation {
+    max-width: none;
+  }
+}
+
+.status-picker__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-picker__state {
+  &-disable {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background-color: var(--kd-color-tag-background-disabled) !important;
+    color: var(--kd-color-text-label-disabled) !important;
+    border-color: var(--kd-color-tag-border-disabled) !important;
+    outline: none !important;
+  }
+
+  &-clickable {
+    cursor: pointer;
+
+    &-ai {
+      &:hover,
+      &:active {
+        background-color: var(--kd-color-tag-hover-ai);
+      }
+      &.selected {
+        border: 0.5px solid #2f808c;
+        color: #132632;
+      }
+    }
+
+    &:focus-visible,
+    &:active {
+      border: none;
+      outline: 1px solid var(--kd-color-border-variants-focus);
+      outline-offset: 1px;
+    }
+  }
+
+  /* ai color */
+  &-ai {
+    color: var(--kd-color-tag-text-ai);
+    background-color: var(--kd-color-tag-background-ai);
+    border-color: var(--kd-color-tag-border-ai);
+  }
+}
