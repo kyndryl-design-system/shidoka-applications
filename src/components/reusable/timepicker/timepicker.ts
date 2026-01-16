@@ -18,6 +18,7 @@ import {
   debounce,
   generateRandomId,
   cleanupFlatpickrInstance,
+  filterValidDates,
   CONFIG_DEBOUNCE_DELAY,
   VISIBILITY_CHECK_INTERVAL,
 } from '../../../common/helpers/flatpickr/index';
@@ -1102,6 +1103,10 @@ export class TimePicker extends FormMixin(LitElement) {
 
     this._hasInteracted = true;
 
+    // Filter to only valid Date objects to handle edge cases where flatpickr
+    // may pass non-Date values (e.g., during time input arrow control changes)
+    const validDates = filterValidDates(selectedDates);
+
     const hadFocus =
       (this.renderRoot instanceof ShadowRoot
         ? this.renderRoot.activeElement
@@ -1110,10 +1115,10 @@ export class TimePicker extends FormMixin(LitElement) {
     this._isFromFlatpickr = true;
 
     try {
-      if (selectedDates.length > 0) {
+      if (validDates.length > 0) {
         this._userHasCleared = false;
 
-        const selectedTime = selectedDates[0];
+        const selectedTime = validDates[0];
         const newDate = new Date();
         newDate.setHours(selectedTime.getHours());
         newDate.setMinutes(selectedTime.getMinutes());
