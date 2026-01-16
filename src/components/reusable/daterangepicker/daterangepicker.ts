@@ -24,6 +24,7 @@ import {
   debounce,
   generateRandomId,
   cleanupFlatpickrInstance,
+  filterValidDates,
   CONFIG_DEBOUNCE_DELAY,
   RESIZE_DEBOUNCE_DELAY,
 } from '../../../common/helpers/flatpickr/index';
@@ -904,7 +905,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
         this.updateSelectedDateRangeAria([]);
       } else {
         const currentDates = this.flatpickrInstance?.selectedDates ?? [];
-        // Ensure currentDates are actual Date objects before calling getTime()
         const currentDate0 =
           currentDates[0] instanceof Date ? currentDates[0] : null;
         const currentDate1 =
@@ -1083,9 +1083,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
       return null;
     });
 
-    const validDates = parsed.filter(
-      (date): date is Date => date instanceof Date && !isNaN(date.getTime())
-    );
+    const validDates = filterValidDates(parsed);
 
     if (validDates.length === 2 && validDates[1] < validDates[0]) {
       console.error(
@@ -1526,11 +1524,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this._isDatePickerChange = true;
 
     try {
-      // Filter to only valid Date objects to handle edge cases where flatpickr
-      // may pass non-Date values (e.g., during time input changes)
-      const validDates = selectedDates.filter(
-        (d): d is Date => d instanceof Date && !isNaN(d.getTime())
-      );
+      const validDates = filterValidDates(selectedDates);
 
       if (validDates.length === 0) {
         this.value = [null, null];

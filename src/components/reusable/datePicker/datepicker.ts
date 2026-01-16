@@ -21,6 +21,7 @@ import {
   debounce,
   generateRandomId,
   isEmptyValue,
+  filterValidDates,
   cleanupFlatpickrInstance,
   CONFIG_DEBOUNCE_DELAY,
 } from '../../../common/helpers/flatpickr/index';
@@ -557,9 +558,7 @@ export class DatePicker extends FormMixin(LitElement) {
       return null;
     });
 
-    const valid = parsed.filter(
-      (d): d is Date => d instanceof Date && !isNaN(d.getTime())
-    );
+    const valid = filterValidDates(parsed);
 
     if (valid.length !== parsed.length) {
       console.error('Invalid date(s) provided in defaultDate', {
@@ -954,13 +953,12 @@ export class DatePicker extends FormMixin(LitElement) {
 
     const values = Array.isArray(value) ? value : [value];
 
-    return values
-      .map((v) => {
-        if (v instanceof Date) return v;
-        if (typeof v === 'string') return this.parseDateString(v);
-        return null;
-      })
-      .filter((d): d is Date => d instanceof Date && !isNaN(d.getTime()));
+    const mapped = values.map((v) => {
+      if (v instanceof Date) return v;
+      if (typeof v === 'string') return this.parseDateString(v);
+      return null;
+    });
+    return filterValidDates(mapped);
   }
 
   /**
@@ -1084,9 +1082,7 @@ export class DatePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
 
     try {
-      const validDates = selectedDates.filter(
-        (d): d is Date => d instanceof Date && !isNaN(d.getTime())
-      );
+      const validDates = filterValidDates(selectedDates);
 
       // check if any items were not valid Date objects
       if (

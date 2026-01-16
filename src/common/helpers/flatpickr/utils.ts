@@ -206,6 +206,23 @@ export function normalizeToDate(
 // ============================================================================
 
 /**
+ * Type guard that checks if a value is a valid Date object.
+ * Returns true only if the value is a Date instance with a valid time value.
+ */
+export function isValidDate(value: unknown): value is Date {
+  return value instanceof Date && !isNaN(value.getTime());
+}
+
+/**
+ * Filters an array to only include valid Date objects.
+ * Useful for defensive handling of flatpickr callbacks which may occasionally
+ * pass non-Date values during certain interactions (e.g., time input changes).
+ */
+export function filterValidDates(dates: unknown[]): Date[] {
+  return dates.filter((d): d is Date => isValidDate(d));
+}
+
+/**
  * Checks if a value is empty (null, undefined, empty string, or empty array).
  */
 export function isEmptyValue(

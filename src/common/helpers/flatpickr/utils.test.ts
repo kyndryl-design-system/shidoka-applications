@@ -31,6 +31,8 @@ import {
   parseDateTime,
   parseTimeString,
   normalizeToDate,
+  isValidDate,
+  filterValidDates,
   isEmptyValue,
   timesEqual,
   datesEqual,
@@ -373,6 +375,89 @@ describe('normalizeToDate', () => {
 // ============================================================================
 // VALUE CHECKING TESTS
 // ============================================================================
+
+describe('isValidDate', () => {
+  it('should return true for valid Date objects', () => {
+    expect(isValidDate(new Date())).toBe(true);
+    expect(isValidDate(new Date(2024, 2, 15))).toBe(true);
+    expect(isValidDate(new Date('2024-03-15T14:30:00'))).toBe(true);
+  });
+
+  it('should return false for invalid Date objects', () => {
+    expect(isValidDate(new Date('invalid'))).toBe(false);
+    expect(isValidDate(new Date(NaN))).toBe(false);
+  });
+
+  it('should return false for null and undefined', () => {
+    expect(isValidDate(null)).toBe(false);
+    expect(isValidDate(undefined)).toBe(false);
+  });
+
+  it('should return false for non-Date values', () => {
+    expect(isValidDate('2024-03-15')).toBe(false);
+    expect(isValidDate(1710489600000)).toBe(false);
+    expect(isValidDate({})).toBe(false);
+    expect(isValidDate([])).toBe(false);
+    expect(isValidDate(42)).toBe(false);
+    expect(isValidDate('')).toBe(false);
+  });
+
+  it('should return false for objects with getTime method that are not Dates', () => {
+    const fakeDateLike = { getTime: () => 1710489600000 };
+    expect(isValidDate(fakeDateLike)).toBe(false);
+  });
+});
+
+describe('filterValidDates', () => {
+  it('should return empty array for empty input', () => {
+    expect(filterValidDates([])).toEqual([]);
+  });
+
+  it('should return all valid Dates from array', () => {
+    const date1 = new Date(2024, 2, 15);
+    const date2 = new Date(2024, 2, 16);
+    const result = filterValidDates([date1, date2]);
+    expect(result).toEqual([date1, date2]);
+  });
+
+  it('should filter out invalid Dates', () => {
+    const validDate = new Date(2024, 2, 15);
+    const invalidDate = new Date('invalid');
+    const result = filterValidDates([validDate, invalidDate]);
+    expect(result).toEqual([validDate]);
+  });
+
+  it('should filter out non-Date values', () => {
+    const validDate = new Date(2024, 2, 15);
+    const result = filterValidDates([
+      validDate,
+      null,
+      undefined,
+      '2024-03-15',
+      1710489600000,
+      {},
+    ]);
+    expect(result).toEqual([validDate]);
+  });
+
+  it('should return empty array when all values are invalid', () => {
+    const result = filterValidDates([
+      null,
+      undefined,
+      'not a date',
+      new Date('invalid'),
+    ]);
+    expect(result).toEqual([]);
+  });
+
+  it('should preserve order of valid dates', () => {
+    const date1 = new Date(2024, 0, 1);
+    const date2 = new Date(2024, 5, 15);
+    const date3 = new Date(2024, 11, 31);
+    const result = filterValidDates([date1, null, date2, 'invalid', date3]);
+    expect(result).toEqual([date1, date2, date3]);
+  });
+});
 
 describe('isEmptyValue', () => {
   it('should return true for null', () => {
