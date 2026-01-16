@@ -175,35 +175,6 @@ export const WithNav = {
             <span>${unsafeSVG(circleIcon)}</span>
             Sub Link 2
           </kyn-header-link>
-          <kyn-header-link slot="links" href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Sub Link 3
-
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Sub Link 1
-            </kyn-header-link>
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Sub Link 2
-            </kyn-header-link>
-            <kyn-header-link slot="links" href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Sub Link 3
-            </kyn-header-link>
-          </kyn-header-link>
-          <kyn-header-link slot="links" href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Sub Link 4
-          </kyn-header-link>
-          <kyn-header-link slot="links" href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Sub Link 5
-          </kyn-header-link>
-          <kyn-header-link slot="links" href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Sub Link 6
-          </kyn-header-link>
         </kyn-header-link>
       </kyn-header-nav>
     </kyn-header>
