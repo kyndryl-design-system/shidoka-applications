@@ -904,13 +904,18 @@ export class DateRangePicker extends FormMixin(LitElement) {
         this.updateSelectedDateRangeAria([]);
       } else {
         const currentDates = this.flatpickrInstance?.selectedDates ?? [];
+        // Ensure currentDates are actual Date objects before calling getTime()
+        const currentDate0 =
+          currentDates[0] instanceof Date ? currentDates[0] : null;
+        const currentDate1 =
+          currentDates[1] instanceof Date ? currentDates[1] : null;
         if (
           currentDates.length !== 2 ||
-          !currentDates[0] ||
-          !currentDates[1] ||
-          currentDates[0].getTime() !==
+          !currentDate0 ||
+          !currentDate1 ||
+          currentDate0.getTime() !==
             (newValue[0] instanceof Date ? newValue[0].getTime() : undefined) ||
-          currentDates[1].getTime() !==
+          currentDate1.getTime() !==
             (newValue[1] instanceof Date ? newValue[1].getTime() : undefined)
         ) {
           this.setInitialDates();
@@ -1521,7 +1526,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
     this._isDatePickerChange = true;
 
     try {
-      if (selectedDates.length === 0) {
+      // Filter to only valid Date objects to handle edge cases where flatpickr
+      // may pass non-Date values (e.g., during time input changes)
+      const validDates = selectedDates.filter(
+        (d): d is Date => d instanceof Date && !isNaN(d.getTime())
+      );
+
+      if (validDates.length === 0) {
         this.value = [null, null];
         if (this._inputEl) {
           this._inputEl.value = '';
@@ -1533,8 +1544,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
           dateString: this._inputEl?.value,
           source: 'clear',
         });
-      } else if (selectedDates.length === 1) {
-        this.value = [selectedDates[0], null];
+      } else if (validDates.length === 1) {
+        this.value = [validDates[0], null];
 
         if (this._inputEl) {
           this._inputEl.value = dateStr;
@@ -1542,14 +1553,14 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
 
         emitValue(this, 'on-change', {
-          dates: [selectedDates[0].toISOString()],
-          dateObjects: [selectedDates[0], null],
+          dates: [validDates[0].toISOString()],
+          dateObjects: [validDates[0], null],
           dateString: dateStr,
           source: 'date-selection',
         });
       } else {
-        this.value = [selectedDates[0], selectedDates[1]];
-        const iso = selectedDates.map((d) => d.toISOString());
+        this.value = [validDates[0], validDates[1]];
+        const iso = validDates.slice(0, 2).map((d) => d.toISOString());
         const display = this.flatpickrInstance!.input.value;
         if (this._inputEl) {
           this._inputEl.value = display;
@@ -1557,13 +1568,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
         }
         emitValue(this, 'on-change', {
           dates: iso,
-          dateObjects: selectedDates,
+          dateObjects: validDates.slice(0, 2),
           dateString: display,
           source: 'date-selection',
         });
       }
 
-      this.updateSelectedDateRangeAria(selectedDates);
+      this.updateSelectedDateRangeAria(validDates);
       this._validate(true, false);
     } finally {
       // Reset flag to ensure updated()

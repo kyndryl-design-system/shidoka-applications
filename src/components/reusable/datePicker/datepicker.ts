@@ -1084,43 +1084,48 @@ export class DatePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
 
     try {
-      const invalidDates = selectedDates.filter((date) =>
-        isNaN(date.getTime())
+      const validDates = selectedDates.filter(
+        (d): d is Date => d instanceof Date && !isNaN(d.getTime())
       );
-      if (invalidDates.length > 0) {
+
+      // check if any items were not valid Date objects
+      if (
+        validDates.length !== selectedDates.length &&
+        selectedDates.length > 0
+      ) {
         this.invalidText = this._textStrings.invalidDateFormat;
         this._validate(true, false);
         return;
       }
 
       if (this.mode === 'multiple') {
-        this.value = selectedDates.length > 0 ? [...selectedDates] : [];
+        this.value = validDates.length > 0 ? [...validDates] : [];
       } else {
-        this.value = selectedDates.length > 0 ? selectedDates[0] : null;
+        this.value = validDates.length > 0 ? validDates[0] : null;
       }
 
       let formattedDates: string | string[] | null | [];
       const isMultiple = this.mode === 'multiple';
 
       if (isMultiple) {
-        formattedDates = selectedDates.map((date) => date.toISOString());
-      } else if (selectedDates.length > 0) {
-        formattedDates = selectedDates[0].toISOString();
+        formattedDates = validDates.map((date) => date.toISOString());
+      } else if (validDates.length > 0) {
+        formattedDates = validDates[0].toISOString();
       } else {
         formattedDates = isMultiple ? [] : null;
       }
 
       const dateObjects = isMultiple
-        ? selectedDates.map((d) => (d instanceof Date ? d : new Date(d)))
-        : selectedDates.length > 0
-        ? (selectedDates[0] as Date)
+        ? validDates.map((d) => d)
+        : validDates.length > 0
+        ? validDates[0]
         : null;
 
       emitValue(this, 'on-change', {
         dates: formattedDates,
         dateObjects,
         dateString: this._inputEl?.value || dateStr,
-        source: selectedDates.length === 0 ? 'clear' : undefined,
+        source: validDates.length === 0 ? 'clear' : undefined,
       });
 
       if (this.invalidText) {
