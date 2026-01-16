@@ -1,5 +1,5 @@
-import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import StatusPickerScss from './statusPicker.scss?inline';
 
@@ -38,10 +38,30 @@ export class StatusPicker extends LitElement {
   accessor noTruncation = false;
 
   /**
-   * Color variants.
+   * Icon title for screen readers.
    */
   @property({ type: String })
-  accessor kind = 'ai';
+  accessor iconTitle = 'Icon title';
+
+  /**
+   * Specifies the visual appearance/kind of the status.
+   */
+  @property({ type: String })
+  accessor kind:
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'low'
+    | 'medium'
+    | 'high'
+    | 'ai' = 'ai';
+
+  /**
+   * Determine if contains icon only.
+   * @internal
+   */
+  @state()
+  accessor _iconOnly = false;
 
   override render() {
     const newBaseColorClass = `status-picker__state-${this.kind}`;
@@ -50,8 +70,8 @@ export class StatusPicker extends LitElement {
       'status-picker': true,
       'no-truncation': this.noTruncation,
       'status-picker__state-disable': this.disabled,
-      'status-picker__state-clickable': true,
-      [`status-picker__state-clickable-${this.kind}`]: true,
+      'status-picker__state-interactive': true,
+      [`status-picker__state-interactive-${this.kind}`]: true,
       [`${newBaseColorClass}`]: true,
       selected: this.selected,
     };
@@ -62,17 +82,21 @@ export class StatusPicker extends LitElement {
       kind=${this.kind}
       title="${this.label}"
       tabindex=${this.disabled ? -1 : 0}
-      @click=${(e: any) => this.handleTagClick(e, this.label)}
-      @keydown=${(e: any) => this.handleTagPress(e, this.label)}
+      @click=${(e: any) => this.handleStatusClick(e, this.label)}
+      @keydown=${(e: any) => this.handleStatusPress(e, this.label)}
     >
       <slot></slot>
-      <span class="status-selector__label" aria-disabled=${this.disabled}
-        >${this.label}</span
-      >
+      ${!this._iconOnly
+        ? html` <span
+            class="status-picker__label"
+            aria-disabled=${this.disabled}
+            >${this.label}</span
+          >`
+        : ''}
     </div>`;
   }
 
-  private handleTagClick(e: any, value: string) {
+  private handleStatusClick(e: any, value: string) {
     if (!this.disabled) {
       const event = new CustomEvent('on-click', {
         detail: {
@@ -84,7 +108,7 @@ export class StatusPicker extends LitElement {
     }
   }
 
-  private handleTagPress(e: any, value: string) {
+  private handleStatusPress(e: any, value: string) {
     // Keyboard key codes: 32 = SPACE | 13 = ENTER
     if ((e.keyCode === 32 || e.keyCode === 13) && !this.disabled) {
       const event = new CustomEvent('on-click', {
@@ -97,8 +121,15 @@ export class StatusPicker extends LitElement {
     }
   }
 
-  override updated() {
+  override updated(changedProperties: PropertyValues) {
     this.label = this.label.trim();
+    super.updated(changedProperties);
+
+    if (this.label.length === 0) {
+      this._iconOnly = true;
+    } else {
+      this._iconOnly = false;
+    }
   }
 }
 

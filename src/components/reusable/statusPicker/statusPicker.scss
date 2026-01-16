@@ -12,12 +12,13 @@
   height: 24px;
   align-items: center;
   justify-content: space-around;
-  border: 0.5px solid var(--kd-color-tag-border-default); // needs to be border color variable
+  border: 0.5px solid transparent;
   border-radius: 6px;
   padding: 4px;
   gap: 4px;
   min-width: 24px;
   max-width: 161px;
+  cursor: pointer;
   transition: background-color 0.4s ease;
 
   &.no-truncation {
@@ -33,40 +34,189 @@
 
 .status-picker__state {
   &-disable {
-    cursor: not-allowed !important;
-    pointer-events: none !important;
-    background-color: var(--kd-color-tag-background-disabled) !important;
-    color: var(--kd-color-text-label-disabled) !important;
-    border-color: var(--kd-color-tag-border-disabled) !important;
+    cursor: not-allowed;
+    background-color: #f1f0f0 !important;
+    color: #a8a5a6 !important;
+    border-color: rgba(21, 25, 29, 0.2) !important;
     outline: none !important;
   }
 
-  &-clickable {
-    cursor: pointer;
-
+  &-interactive {
+    /* ai state */
     &-ai {
-      &:hover,
-      &:active {
-        background-color: var(--kd-color-tag-hover-ai);
+      color: #215763;
+      background-color: #def7fa;
+      border-color: #3fadbd;
+      &:hover {
+        color: #193d4b;
+        background-color: #8ecfd9;
       }
       &.selected {
-        border: 0.5px solid #2f808c;
+        border-color: #2f808c;
         color: #132632;
       }
+      &:focus-visible {
+        // border: transparent;
+        color: #215763;
+        outline: 1px solid #3fadbd;
+        // outline-offset: 1px;
+      }
+      &:active {
+        border-color: #2f808c;
+        background-color: #3fadbd;
+      }
     }
+    /* error state */
+    // &-error {
+    //   color: red;
+    //   background-color: var(--kd-color-tag-background-error);
+    //   border-color: red;
+    //   &:hover {
+    //     color: var(--kd-color-tag-text-error-hover);
+    //     background-color: var(--kd-color-tag-background-error-hover);
+    //   }
+    //   &.selected {
+    //     border-color: var(--kd-color-tag-border-error-selected);
+    //     color: var(--kd-color-tag-text-error-selected);
+    //   }
+    //   &:focus-visible {
+    //     border: transparent;
+    //     color: #215763;
+    //     outline: 1px solid #3fadbd;
+    //     outline-offset: 1px;
+    //   }
+    //   &:active {
+    //     border-color: #2f808c;
+    //     background-color: #3fadbd;
+    //   }
+    // }
+    // /* warning state */
+    // &-warning {
+    //   color: var(--kd-color-tag-text-warning);
+    //   background-color: var(--kd-color-tag-background-warning);
+    //   border-color: var(--kd-color-tag-border-warning);
+    //   &:hover {
+    //     color: var(--kd-color-tag-text-error-hover);
+    //     background-color: var(--kd-color-tag-background-error-hover);
+    //   }
+    //   &.selected {
+    //     border-color: var(--kd-color-tag-border-error-selected);
+    //     color: var(--kd-color-tag-text-error-selected);
+    //   }
+    //   &:focus-visible {
+    //     border: transparent;
+    //     color: #215763;
+    //     outline: 1px solid #3fadbd;
+    //     outline-offset: 1px;
+    //   }
+    //   &:active {
+    //     border-color: #2f808c;
+    //     background-color: #3fadbd;
+    //   }
+    // }
 
-    &:focus-visible,
-    &:active {
-      border: none;
-      outline: 1px solid var(--kd-color-border-variants-focus);
+    // /* success state */
+    // &-success {
+    //   color: var(--kd-color-tag-text-success);
+    //   background-color: var(--kd-color-tag-background-success);
+    //   border-color: var(--kd-color-tag-border-success);
+    //   &:hover {
+    //     color: var(--kd-color-tag-text-error-hover);
+    //     background-color: var(--kd-color-tag-background-error-hover);
+    //   }
+    //   &.selected {
+    //     border-color: var(--kd-color-tag-border-error-selected);
+    //     color: var(--kd-color-tag-text-error-selected);
+    //   }
+    //   &:focus-visible {
+    //     border: transparent;
+    //     color: #215763;
+    //     outline: 1px solid #3fadbd;
+    //     outline-offset: 1px;
+    //   }
+    //   &:active {
+    //     border-color: #2f808c;
+    //     background-color: #3fadbd;
+    //   }
+    // }
+
+    // /* low state */
+    // &-low {
+    //   color: var(--kd-color-tag-text-low);
+    //   background-color: var(--kd-color-tag-background-low);
+    //   border-color: var(--kd-color-tag-border-low);
+    //   &:hover {
+    //     color: var(--kd-color-tag-text-error-hover);
+    //     background-color: var(--kd-color-tag-background-error-hover);
+    //   }
+    //   &.selected {
+    //     border-color: var(--kd-color-tag-border-error-selected);
+    //     color: var(--kd-color-tag-text-error-selected);
+    //   }
+    //   &:focus-visible {
+    //     border: transparent;
+    //     color: #215763;
+    //     outline: 1px solid #3fadbd;
+    //     outline-offset: 1px;
+    //   }
+    //   &:active {
+    //     border-color: #2f808c;
+    //     background-color: #3fadbd;
+    //   }
+    // }
+
+    // /* medium state */
+    // &-medium {
+    //   color: var(--kd-color-tag-text-medium);
+    //   background-color: var(--kd-color-tag-background-medium);
+    //   border-color: var(--kd-color-tag-border-medium);
+    //   &:hover {
+    //     color: var(--kd-color-tag-text-error-hover);
+    //     background-color: var(--kd-color-tag-background-error-hover);
+    //   }
+    //   &.selected {
+    //     border-color: var(--kd-color-tag-border-error-selected);
+    //     color: var(--kd-color-tag-text-error-selected);
+    //   }
+    //   &:focus-visible {
+    //     border: transparent;
+    //     color: #215763;
+    //     outline: 1px solid #3fadbd;
+    //     outline-offset: 1px;
+    //   }
+    //   &:active {
+    //     border-color: #2f808c;
+    //     background-color: #3fadbd;
+    //   }
+    // }
+
+    // /* high state */
+    // &-high {
+    //   color: var(--kd-color-tag-text-high);
+    //   background-color: var(--kd-color-tag-background-high);
+    //   border-color: var(--kd-color-tag-border-high);
+    //   &:hover {
+    //     color: var(--kd-color-tag-text-error-hover);
+    //     background-color: var(--kd-color-tag-background-error-hover);
+    //   }
+    //   &.selected {
+    //     border-color: var(--kd-color-tag-border-error-selected);
+    //     color: var(--kd-color-tag-text-error-selected);
+    //   }
+    //   &:focus-visible {
+    //     border: transparent;
+    //     color: #215763;
+    //     outline: 1px solid #3fadbd;
+    //     outline-offset: 1px;
+    //   }
+    //   &:active {
+    //     border-color: #2f808c;
+    //     background-color: #3fadbd;
+    //   }
+    // }
+    &:focus-visible {
+      border: transparent;
       outline-offset: 1px;
     }
-  }
-
-  /* ai color */
-  &-ai {
-    color: var(--kd-color-tag-text-ai);
-    background-color: var(--kd-color-tag-background-ai);
-    border-color: var(--kd-color-tag-border-ai);
   }
 }

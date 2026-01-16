@@ -22,6 +22,7 @@ export default {
   subcomponents: {
     'kyn-header-nav': 'kyn-header-nav',
     'kyn-header-link': 'kyn-header-link',
+    'kyn-header-categories': 'kyn-header-categories',
     'kyn-header-category': 'kyn-header-category',
     'kyn-header-divider': 'kyn-header-divider',
     'kyn-header-flyouts': 'kyn-header-flyouts',
@@ -122,6 +123,49 @@ export const WithNav = {
         <kyn-header-link href="javascript:void(0)">
           <span>${unsafeSVG(circleIcon)}</span>
           Link 4
+
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 1
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 2
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 3
+
+            <kyn-header-link slot="links" href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 1
+            </kyn-header-link>
+            <kyn-header-link slot="links" href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 2
+            </kyn-header-link>
+            <kyn-header-link slot="links" href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Sub Link 3
+            </kyn-header-link>
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 4
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 5
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Sub Link 6
+          </kyn-header-link>
+        </kyn-header-link>
+
+        <kyn-header-link href="javascript:void(0)">
+          <span>${unsafeSVG(circleIcon)}</span>
+          Link 5
 
           <kyn-header-link slot="links" href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>

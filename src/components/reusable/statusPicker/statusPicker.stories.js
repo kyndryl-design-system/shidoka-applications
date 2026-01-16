@@ -9,7 +9,7 @@ export default {
   component: 'kyn-status-picker',
   argTypes: {
     kind: {
-      options: ['ai'],
+      options: ['success', 'warning', 'error', 'low', 'medium', 'high', 'ai'],
       control: { type: 'select' },
     },
     disabled: {
