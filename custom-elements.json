@@ -4,6 +4,429 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AI Assistant Launch Button.",
+          "name": "AILaunchButton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_initAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the button is clicked.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-launch-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-launch-btn",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "./aiLaunchButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AISourcesFeedback Component.",
+          "name": "AISourcesFeedback",
+          "slots": [
+            {
+              "description": "copy button",
+              "name": "copy"
+            },
+            {
+              "description": "source cards in source panel.",
+              "name": "sources"
+            },
+            {
+              "description": "Positive feedback form.",
+              "name": "feedback-form"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "attribute": "sourcesOpened"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "attribute": "feedbackOpened"
+            },
+            {
+              "kind": "field",
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "attribute": "sourcesDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "attribute": "feedbackDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "attribute": "revealAllSources"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "attribute": "closeText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateFeedbackCounts",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_shouldEmitFeedbackEvent",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggleEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleFeedbackPanel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleLimitRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-feedback-deselected",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`"
+            },
+            {
+              "name": "on-toggle",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits the `opened` state when the panel item opens/closes. <pre><code> detail: { sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string } </code></pre>"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "fieldName": "sourcesOpened"
+            },
+            {
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "fieldName": "feedbackOpened"
+            },
+            {
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "fieldName": "sourcesDisabled"
+            },
+            {
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "fieldName": "feedbackDisabled"
+            },
+            {
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "fieldName": "revealAllSources"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "fieldName": "closeText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-sources-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AISourcesFeedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-sources-feedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/sourcesFeedback/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AISourcesFeedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "./aiSourcesFeedback"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -2623,429 +3046,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AI Assistant Launch Button.",
-          "name": "AILaunchButton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_initAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_startHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_stopHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitClick",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the button is clicked.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-launch-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-launch-btn",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "./aiLaunchButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AISourcesFeedback Component.",
-          "name": "AISourcesFeedback",
-          "slots": [
-            {
-              "description": "copy button",
-              "name": "copy"
-            },
-            {
-              "description": "source cards in source panel.",
-              "name": "sources"
-            },
-            {
-              "description": "Positive feedback form.",
-              "name": "feedback-form"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "attribute": "sourcesOpened"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "attribute": "feedbackOpened"
-            },
-            {
-              "kind": "field",
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "attribute": "sourcesDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "attribute": "feedbackDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "attribute": "revealAllSources"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "attribute": "closeText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateFeedbackCounts",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_shouldEmitFeedbackEvent",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggleEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_toggleFeedbackPanel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleLimitRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-feedback-deselected",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`"
-            },
-            {
-              "name": "on-toggle",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits the `opened` state when the panel item opens/closes. <pre><code> detail: { sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string } </code></pre>"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "fieldName": "sourcesOpened"
-            },
-            {
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "fieldName": "feedbackOpened"
-            },
-            {
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "fieldName": "sourcesDisabled"
-            },
-            {
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "fieldName": "feedbackDisabled"
-            },
-            {
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "fieldName": "revealAllSources"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "fieldName": "closeText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-sources-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AISourcesFeedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-sources-feedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AISourcesFeedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "./aiSourcesFeedback"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/accordion/accordion.ts",
       "declarations": [
         {
@@ -3741,6 +3741,63 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Breadcrumbs Component.",
+          "name": "Breadcrumbs",
+          "slots": [
+            {
+              "description": "Slot for inserting links.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-breadcrumbs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/breadcrumbs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Breadcrumbs",
+          "declaration": {
+            "name": "Breadcrumbs",
+            "module": "./breadcrumbs"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/blockCodeView/blockCodeView.ts",
       "declarations": [
         {
@@ -4247,63 +4304,6 @@
           "declaration": {
             "name": "BlockCodeView",
             "module": "./blockCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/breadcrumbs.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Breadcrumbs Component.",
-          "name": "Breadcrumbs",
-          "slots": [
-            {
-              "description": "Slot for inserting links.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-breadcrumbs",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "src/components/reusable/breadcrumbs/breadcrumbs.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/breadcrumbs/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Breadcrumbs",
-          "declaration": {
-            "name": "Breadcrumbs",
-            "module": "./breadcrumbs"
           }
         }
       ]
@@ -10738,6 +10738,71 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).",
+          "name": "GlobalFilter",
+          "slots": [
+            {
+              "description": "Left slot, intended for search input and modal.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Right slot, intended for action buttons and overflow menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot below the filter bar, for tag group.",
+              "name": "tags"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/inlineCodeView/index.ts",
       "declarations": [],
       "exports": [
@@ -10830,71 +10895,6 @@
           "declaration": {
             "name": "InlineCodeView",
             "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).",
-          "name": "GlobalFilter",
-          "slots": [
-            {
-              "description": "Left slot, intended for search input and modal.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Right slot, intended for action buttons and overflow menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot below the filter bar, for tag group.",
-              "name": "tags"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "GlobalFilter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
           }
         }
       ]
@@ -12587,478 +12587,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/notification/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "./notification"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "./notificationContainer"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notification.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification component.",
-          "name": "Notification",
-          "slots": [
-            {
-              "description": "Slot for notification message body.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot for an icon.",
-              "name": "icon"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "attribute": "notificationTitle"
-            },
-            {
-              "kind": "field",
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "attribute": "notificationSubtitle"
-            },
-            {
-              "kind": "field",
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
-              "attribute": "timeStamp"
-            },
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "target",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
-              },
-              "default": "''",
-              "description": "Card link target.",
-              "attribute": "target"
-            },
-            {
-              "kind": "field",
-              "name": "tagStatus",
-              "type": {
-                "text": "TagStatus"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "attribute": "tagStatus"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "NotificationType"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "attribute": "type"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "TextStrings"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "field",
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "attribute": "closeBtnDescription"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveNotificationTypeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
-              "attribute": "assistiveNotificationTypeText"
-            },
-            {
-              "kind": "field",
-              "name": "notificationRole",
-              "type": {
-                "text": "'alert' | 'log' | 'status' | undefined"
-              },
-              "description": "Notification role (Required to support accessibility).",
-              "attribute": "notificationRole"
-            },
-            {
-              "kind": "field",
-              "name": "statusLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
-              "attribute": "statusLabel"
-            },
-            {
-              "kind": "field",
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "attribute": "unRead",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "attribute": "hideCloseButton"
-            },
-            {
-              "kind": "field",
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "attribute": "timeout"
-            },
-            {
-              "kind": "method",
-              "name": "renderInnerUI",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_close",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClose",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleCardClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_checkSlotContent",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emit event for clickable notification.`detail:{ origEvent: PointerEvent }`",
-              "name": "on-notification-click"
-            },
-            {
-              "description": "Emits when an inline/toast notification closes.",
-              "name": "on-close"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "notificationTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification Title (Required).",
-              "fieldName": "notificationTitle"
-            },
-            {
-              "name": "notificationSubtitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Notification subtitle.(optional)",
-              "fieldName": "notificationSubtitle"
-            },
-            {
-              "name": "timeStamp",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
-              "fieldName": "timeStamp"
-            },
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Card href link.",
-              "fieldName": "href"
-            },
-            {
-              "name": "target",
-              "type": {
-                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
-              },
-              "default": "''",
-              "description": "Card link target.",
-              "fieldName": "target"
-            },
-            {
-              "name": "tagStatus",
-              "type": {
-                "text": "TagStatus"
-              },
-              "default": "'default'",
-              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
-              "fieldName": "tagStatus"
-            },
-            {
-              "name": "type",
-              "type": {
-                "text": "NotificationType"
-              },
-              "default": "'normal'",
-              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
-              "fieldName": "type"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "TextStrings"
-              },
-              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "closeBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button description (Required to support accessibility).",
-              "fieldName": "closeBtnDescription"
-            },
-            {
-              "name": "assistiveNotificationTypeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
-              "fieldName": "assistiveNotificationTypeText"
-            },
-            {
-              "name": "notificationRole",
-              "type": {
-                "text": "'alert' | 'log' | 'status' | undefined"
-              },
-              "description": "Notification role (Required to support accessibility).",
-              "fieldName": "notificationRole"
-            },
-            {
-              "name": "statusLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Status'",
-              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
-              "fieldName": "statusLabel"
-            },
-            {
-              "name": "unRead",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
-              "fieldName": "unRead"
-            },
-            {
-              "name": "hideCloseButton",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
-              "fieldName": "hideCloseButton"
-            },
-            {
-              "name": "timeout",
-              "type": {
-                "text": "number"
-              },
-              "default": "8",
-              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
-              "fieldName": "timeout"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification",
-          "declaration": {
-            "name": "Notification",
-            "module": "src/components/reusable/notification/notification.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/notification/notificationContainer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
-          "name": "NotificationContainer",
-          "slots": [
-            {
-              "description": "Slot for <kyn-notification type=\"toast\"> component.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "bottom",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Position at bottom instead of top of screen.",
-              "attribute": "bottom"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "bottom",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Position at bottom instead of top of screen.",
-              "fieldName": "bottom"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-notification-container",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NotificationContainer",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-notification-container",
-          "declaration": {
-            "name": "NotificationContainer",
-            "module": "src/components/reusable/notification/notificationContainer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/multiInputField/index.ts",
       "declarations": [],
       "exports": [
@@ -13801,6 +13329,478 @@
           "declaration": {
             "name": "MultiInputField",
             "module": "src/components/reusable/multiInputField/multiInputField.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "./notification"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "./notificationContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notification.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification component.",
+          "name": "Notification",
+          "slots": [
+            {
+              "description": "Slot for notification message body.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot for an icon.",
+              "name": "icon"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "attribute": "notificationTitle"
+            },
+            {
+              "kind": "field",
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "attribute": "notificationSubtitle"
+            },
+            {
+              "kind": "field",
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "attribute": "timeStamp"
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "target",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
+              },
+              "default": "''",
+              "description": "Card link target.",
+              "attribute": "target"
+            },
+            {
+              "kind": "field",
+              "name": "tagStatus",
+              "type": {
+                "text": "TagStatus"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "attribute": "tagStatus"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "NotificationType"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "attribute": "type"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "TextStrings"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "attribute": "closeBtnDescription"
+            },
+            {
+              "kind": "field",
+              "name": "assistiveNotificationTypeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "attribute": "assistiveNotificationTypeText"
+            },
+            {
+              "kind": "field",
+              "name": "notificationRole",
+              "type": {
+                "text": "'alert' | 'log' | 'status' | undefined"
+              },
+              "description": "Notification role (Required to support accessibility).",
+              "attribute": "notificationRole"
+            },
+            {
+              "kind": "field",
+              "name": "statusLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Status'",
+              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "attribute": "statusLabel"
+            },
+            {
+              "kind": "field",
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "attribute": "unRead",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "attribute": "hideCloseButton"
+            },
+            {
+              "kind": "field",
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "attribute": "timeout"
+            },
+            {
+              "kind": "method",
+              "name": "renderInnerUI",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_close",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCardClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_checkSlotContent",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emit event for clickable notification.`detail:{ origEvent: PointerEvent }`",
+              "name": "on-notification-click"
+            },
+            {
+              "description": "Emits when an inline/toast notification closes.",
+              "name": "on-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "notificationTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification Title (Required).",
+              "fieldName": "notificationTitle"
+            },
+            {
+              "name": "notificationSubtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Notification subtitle.(optional)",
+              "fieldName": "notificationSubtitle"
+            },
+            {
+              "name": "timeStamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Timestamp of notification.\nIt is recommended to add the context along with the timestamp. Example: `Updated 2 mins ago`.",
+              "fieldName": "timeStamp"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Card href link.",
+              "fieldName": "href"
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "'_self' | '_blank' | '_parent' | '_top' | ''"
+              },
+              "default": "''",
+              "description": "Card link target.",
+              "fieldName": "target"
+            },
+            {
+              "name": "tagStatus",
+              "type": {
+                "text": "TagStatus"
+              },
+              "default": "'default'",
+              "description": "Notification status / tag type. `'default'`, `'info'`, `'warning'`, `'success'` & `'error'`.",
+              "fieldName": "tagStatus"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "NotificationType"
+              },
+              "default": "'normal'",
+              "description": "Notification type. `'normal'`, `'inline'`, `'toast'` and `'clickable'`. Clickable type can be use inside notification panel",
+              "fieldName": "type"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "TextStrings"
+              },
+              "default": "{\n    success: 'Success',\n    warning: 'Warning',\n    info: 'Information',\n    error: 'Error',\n  }",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "closeBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button description (Required to support accessibility).",
+              "fieldName": "closeBtnDescription"
+            },
+            {
+              "name": "assistiveNotificationTypeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Assistive text for notification type.\nRequired for `'clickable'`, `'inline'` and `'toast'` notification types.",
+              "fieldName": "assistiveNotificationTypeText"
+            },
+            {
+              "name": "notificationRole",
+              "type": {
+                "text": "'alert' | 'log' | 'status' | undefined"
+              },
+              "description": "Notification role (Required to support accessibility).",
+              "fieldName": "notificationRole"
+            },
+            {
+              "name": "statusLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Status'",
+              "description": "Status label (Required to support accessibility).\nAssign the localized string value for the word **Status**.",
+              "fieldName": "statusLabel"
+            },
+            {
+              "name": "unRead",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set notification mark read prop. Required ony for `type: 'clickable'`.",
+              "fieldName": "unRead"
+            },
+            {
+              "name": "hideCloseButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide close (x) button. Useful only for `type='toast'`. This required `timeout > 0` otherwise toast remain as it is when `hideCloseButton` is set true.",
+              "fieldName": "hideCloseButton"
+            },
+            {
+              "name": "timeout",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Timeout (Default 8 seconds for Toast). Specify an optional duration the toast notification should be closed in. Only apply with `type = 'toast'`",
+              "fieldName": "timeout"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification",
+          "declaration": {
+            "name": "Notification",
+            "module": "src/components/reusable/notification/notification.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/notification/notificationContainer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Notification container component for Toast notification.\nUsage is limited for <kyn-notification type=\"toast\">..</kyn-notification>",
+          "name": "NotificationContainer",
+          "slots": [
+            {
+              "description": "Slot for <kyn-notification type=\"toast\"> component.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "bottom",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Position at bottom instead of top of screen.",
+              "attribute": "bottom"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bottom",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Position at bottom instead of top of screen.",
+              "fieldName": "bottom"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-notification-container",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NotificationContainer",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-notification-container",
+          "declaration": {
+            "name": "NotificationContainer",
+            "module": "src/components/reusable/notification/notificationContainer.ts"
           }
         }
       ]
@@ -17133,446 +17133,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/search/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Search",
-          "declaration": {
-            "name": "Search",
-            "module": "./search"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/search/search.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Search",
-          "name": "Search",
-          "members": [
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expandable style search.",
-              "attribute": "expandable"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "suggestions",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "attribute": "suggestions"
-            },
-            {
-              "kind": "field",
-              "name": "searchHistory",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest history array of strings. Update this array externally after on-input.",
-              "attribute": "searchHistory"
-            },
-            {
-              "kind": "field",
-              "name": "expandableSearchBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Expandable style search button description (Required to support accessibility).",
-              "attribute": "expandableSearchBtnDescription"
-            },
-            {
-              "kind": "field",
-              "name": "assistiveTextStrings",
-              "default": "{\n  searchSuggestions: 'Search suggestions.',\n  noMatches: 'No matches found for',\n  selected: 'Selected',\n  found: 'Found',\n  recentSearches: 'Recent searches',\n}",
-              "description": "Assistive text strings.",
-              "attribute": "assistiveTextStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "enableSearchHistory",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "To show history searches in suggestion panel",
-              "attribute": "enableSearchHistory"
-            },
-            {
-              "kind": "method",
-              "name": "_buttonSizeMap",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleButtonClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSuggestionClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "suggestion",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSuggestionWithMouseUp",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "suggestion",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSuggestionWithMouseDown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleSearchKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleListKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleKeyboard",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "keyCode",
-                  "type": {
-                    "text": "number"
-                  }
-                },
-                {
-                  "name": "target",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_checkForMatchingSuggestions",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderSuggestionContent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "suggestion",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "isSearchHistory",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_wrapTextWithSpaces",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "text",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the value on text input/clear.`detail:{ origEvent: InputEvent,value: string }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input name.",
-              "fieldName": "name"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Search'",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "expandable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expandable style search.",
-              "fieldName": "expandable"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input value.",
-              "fieldName": "value"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input & button size.",
-              "fieldName": "size"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "suggestions",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
-              "fieldName": "suggestions"
-            },
-            {
-              "name": "searchHistory",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]",
-              "description": "Auto-suggest history array of strings. Update this array externally after on-input.",
-              "fieldName": "searchHistory"
-            },
-            {
-              "name": "expandableSearchBtnDescription",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Expandable style search button description (Required to support accessibility).",
-              "fieldName": "expandableSearchBtnDescription"
-            },
-            {
-              "name": "assistiveTextStrings",
-              "default": "_defaultTextStrings",
-              "description": "Assistive text strings.",
-              "fieldName": "assistiveTextStrings"
-            },
-            {
-              "name": "enableSearchHistory",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "To show history searches in suggestion panel",
-              "fieldName": "enableSearchHistory"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-search",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Search",
-          "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-search",
-          "declaration": {
-            "name": "Search",
-            "module": "src/components/reusable/search/search.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/sideDrawer/index.ts",
       "declarations": [],
       "exports": [
@@ -19069,6 +18629,446 @@
           "declaration": {
             "name": "SplitButtonOption",
             "module": "src/components/reusable/splitButton/splitButtonOption.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/search/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "./search"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/search/search.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Search",
+          "name": "Search",
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "attribute": "expandable"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "attribute": "suggestions"
+            },
+            {
+              "kind": "field",
+              "name": "searchHistory",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest history array of strings. Update this array externally after on-input.",
+              "attribute": "searchHistory"
+            },
+            {
+              "kind": "field",
+              "name": "expandableSearchBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Expandable style search button description (Required to support accessibility).",
+              "attribute": "expandableSearchBtnDescription"
+            },
+            {
+              "kind": "field",
+              "name": "assistiveTextStrings",
+              "default": "{\n  searchSuggestions: 'Search suggestions.',\n  noMatches: 'No matches found for',\n  selected: 'Selected',\n  found: 'Found',\n  recentSearches: 'Recent searches',\n}",
+              "description": "Assistive text strings.",
+              "attribute": "assistiveTextStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "enableSearchHistory",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "To show history searches in suggestion panel",
+              "attribute": "enableSearchHistory"
+            },
+            {
+              "kind": "method",
+              "name": "_buttonSizeMap",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleButtonClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "suggestion",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionWithMouseUp",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "suggestion",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSuggestionWithMouseDown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSearchKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleListKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyboard",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "keyCode",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "target",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_checkForMatchingSuggestions",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderSuggestionContent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "suggestion",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "isSearchHistory",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_wrapTextWithSpaces",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the value on text input/clear.`detail:{ origEvent: InputEvent,value: string }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "expandable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expandable style search.",
+              "fieldName": "expandable"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input & button size.",
+              "fieldName": "size"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "suggestions",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest array of strings that should match the current value. Update this array externally after on-input.",
+              "fieldName": "suggestions"
+            },
+            {
+              "name": "searchHistory",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "description": "Auto-suggest history array of strings. Update this array externally after on-input.",
+              "fieldName": "searchHistory"
+            },
+            {
+              "name": "expandableSearchBtnDescription",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Expandable style search button description (Required to support accessibility).",
+              "fieldName": "expandableSearchBtnDescription"
+            },
+            {
+              "name": "assistiveTextStrings",
+              "default": "_defaultTextStrings",
+              "description": "Assistive text strings.",
+              "fieldName": "assistiveTextStrings"
+            },
+            {
+              "name": "enableSearchHistory",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "To show history searches in suggestion panel",
+              "fieldName": "enableSearchHistory"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-search",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-search",
+          "declaration": {
+            "name": "Search",
+            "module": "src/components/reusable/search/search.ts"
           }
         }
       ]
@@ -23583,415 +23583,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "notResizeable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set it to `true`, if text area is not resizeable.",
-              "attribute": "notResizeable"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
-              "attribute": "rows"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "maxRowsVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
-              "attribute": "maxRowsVisible"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "attribute": "autoComplete"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateVisibleRows",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "notResizeable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set it to `true`, if text area is not resizeable.",
-              "fieldName": "notResizeable"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
-              "fieldName": "rows"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "maxRowsVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
-              "fieldName": "maxRowsVisible"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "fieldName": "autoComplete"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-area",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-area",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/textInput/index.ts",
       "declarations": [],
       "exports": [
@@ -24443,6 +24034,415 @@
           "declaration": {
             "name": "TextInput",
             "module": "src/components/reusable/textInput/textInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "attribute": "notResizeable"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
+              "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "attribute": "maxRowsVisible"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "attribute": "autoComplete"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateVisibleRows",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "fieldName": "notResizeable"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.\n**Required** when `aiConnected` is set to `true`.",
+              "fieldName": "rows"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "fieldName": "maxRowsVisible"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "fieldName": "autoComplete"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-area",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-area",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]
