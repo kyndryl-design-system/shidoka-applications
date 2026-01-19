@@ -74,3 +74,41 @@ export const WithIcon = {
     `;
   },
 };
+
+export const Gallery = {
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    return html`
+      <div class="heading kd-type--headline-06 heading-text">
+        Operational Status
+      </div>
+      <kyn-status-picker label="Label" kind="ai"></kyn-status-picker>
+      <br />
+      <br />
+      <div class="heading kd-type--headline-06 heading-text">
+        Opportunity Status
+      </div>
+      <kyn-status-picker label="Label" kind="error"></kyn-status-picker>
+      <br />
+      <br />
+      <div class="heading kd-type--headline-06 heading-text">AI</div>
+      <kyn-status-picker label="Label" kind="ai"></kyn-status-picker>
+      <br />
+      <br />
+      <div class="heading kd-type--headline-06 heading-text">Disabled</div>
+      <kyn-status-picker
+        label="Label"
+        kind="success"
+        disabled
+      ></kyn-status-picker>
+
+      <style>
+        .heading-text {
+          margin-bottom: var(--kd-spacing-12);
+        }
+      </style>
+    `;
+  },
+};
