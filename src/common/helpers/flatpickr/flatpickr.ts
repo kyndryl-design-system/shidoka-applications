@@ -807,6 +807,48 @@ export function setCalendarAttributes(
 
       hourInput.addEventListener('keydown', hourKeydown);
       anyHour._kynKeydown = hourKeydown;
+
+      // add click handlers for hour arrow buttons
+      const hourWrapper = hourInput.closest('.numInputWrapper');
+      if (hourWrapper) {
+        const hourArrowUp = hourWrapper.querySelector<HTMLElement>('.arrowUp');
+        const hourArrowDown =
+          hourWrapper.querySelector<HTMLElement>('.arrowDown');
+
+        if (hourArrowUp) {
+          const anyArrowUp = hourArrowUp as any;
+          if (anyArrowUp._kynClick) {
+            hourArrowUp.removeEventListener('click', anyArrowUp._kynClick);
+          }
+          const arrowUpClick = () => {
+            hourInput.stepUp();
+            hourInput.dispatchEvent(new Event('input', { bubbles: true }));
+            setTimeout(
+              () => hourInput.setAttribute('aria-valuenow', hourInput.value),
+              0
+            );
+          };
+          hourArrowUp.addEventListener('click', arrowUpClick);
+          anyArrowUp._kynClick = arrowUpClick;
+        }
+
+        if (hourArrowDown) {
+          const anyArrowDown = hourArrowDown as any;
+          if (anyArrowDown._kynClick) {
+            hourArrowDown.removeEventListener('click', anyArrowDown._kynClick);
+          }
+          const arrowDownClick = () => {
+            hourInput.stepDown();
+            hourInput.dispatchEvent(new Event('input', { bubbles: true }));
+            setTimeout(
+              () => hourInput.setAttribute('aria-valuenow', hourInput.value),
+              0
+            );
+          };
+          hourArrowDown.addEventListener('click', arrowDownClick);
+          anyArrowDown._kynClick = arrowDownClick;
+        }
+      }
     }
 
     const minuteInput = container.querySelector<HTMLInputElement>(
@@ -842,6 +884,138 @@ export function setCalendarAttributes(
 
       minuteInput.addEventListener('keydown', minuteKeydown);
       anyMinute._kynKeydown = minuteKeydown;
+
+      // add click handlers for minute arrow buttons
+      const minuteWrapper = minuteInput.closest('.numInputWrapper');
+      if (minuteWrapper) {
+        const minuteArrowUp =
+          minuteWrapper.querySelector<HTMLElement>('.arrowUp');
+        const minuteArrowDown =
+          minuteWrapper.querySelector<HTMLElement>('.arrowDown');
+
+        if (minuteArrowUp) {
+          const anyArrowUp = minuteArrowUp as any;
+          if (anyArrowUp._kynClick) {
+            minuteArrowUp.removeEventListener('click', anyArrowUp._kynClick);
+          }
+          const arrowUpClick = () => {
+            minuteInput.stepUp();
+            minuteInput.dispatchEvent(new Event('input', { bubbles: true }));
+            setTimeout(
+              () =>
+                minuteInput.setAttribute('aria-valuenow', minuteInput.value),
+              0
+            );
+          };
+          minuteArrowUp.addEventListener('click', arrowUpClick);
+          anyArrowUp._kynClick = arrowUpClick;
+        }
+
+        if (minuteArrowDown) {
+          const anyArrowDown = minuteArrowDown as any;
+          if (anyArrowDown._kynClick) {
+            minuteArrowDown.removeEventListener(
+              'click',
+              anyArrowDown._kynClick
+            );
+          }
+          const arrowDownClick = () => {
+            minuteInput.stepDown();
+            minuteInput.dispatchEvent(new Event('input', { bubbles: true }));
+            setTimeout(
+              () =>
+                minuteInput.setAttribute('aria-valuenow', minuteInput.value),
+              0
+            );
+          };
+          minuteArrowDown.addEventListener('click', arrowDownClick);
+          anyArrowDown._kynClick = arrowDownClick;
+        }
+      }
+    }
+
+    // add seconds input handling if present
+    const secondInput = container.querySelector<HTMLInputElement>(
+      'input.flatpickr-second'
+    );
+    if (secondInput) {
+      secondInput.tabIndex = 0;
+      secondInput.setAttribute('role', 'spinbutton');
+      secondInput.setAttribute('aria-label', 'Second');
+      secondInput.setAttribute('aria-valuemin', secondInput.min);
+      secondInput.setAttribute('aria-valuemax', secondInput.max);
+      secondInput.setAttribute('aria-valuenow', secondInput.value);
+
+      const anySecond = secondInput as any;
+      if (anySecond._kynKeydown) {
+        secondInput.removeEventListener('keydown', anySecond._kynKeydown);
+      }
+
+      const secondKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          secondInput.stepUp();
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          secondInput.stepDown();
+        }
+        setTimeout(
+          () => secondInput.setAttribute('aria-valuenow', secondInput.value),
+          0
+        );
+      };
+
+      secondInput.addEventListener('keydown', secondKeydown);
+      anySecond._kynKeydown = secondKeydown;
+
+      // add click handlers for second arrow buttons
+      const secondWrapper = secondInput.closest('.numInputWrapper');
+      if (secondWrapper) {
+        const secondArrowUp =
+          secondWrapper.querySelector<HTMLElement>('.arrowUp');
+        const secondArrowDown =
+          secondWrapper.querySelector<HTMLElement>('.arrowDown');
+
+        if (secondArrowUp) {
+          const anyArrowUp = secondArrowUp as any;
+          if (anyArrowUp._kynClick) {
+            secondArrowUp.removeEventListener('click', anyArrowUp._kynClick);
+          }
+          const arrowUpClick = () => {
+            secondInput.stepUp();
+            secondInput.dispatchEvent(new Event('input', { bubbles: true }));
+            setTimeout(
+              () =>
+                secondInput.setAttribute('aria-valuenow', secondInput.value),
+              0
+            );
+          };
+          secondArrowUp.addEventListener('click', arrowUpClick);
+          anyArrowUp._kynClick = arrowUpClick;
+        }
+
+        if (secondArrowDown) {
+          const anyArrowDown = secondArrowDown as any;
+          if (anyArrowDown._kynClick) {
+            secondArrowDown.removeEventListener(
+              'click',
+              anyArrowDown._kynClick
+            );
+          }
+          const arrowDownClick = () => {
+            secondInput.stepDown();
+            secondInput.dispatchEvent(new Event('input', { bubbles: true }));
+            setTimeout(
+              () =>
+                secondInput.setAttribute('aria-valuenow', secondInput.value),
+              0
+            );
+          };
+          secondArrowDown.addEventListener('click', arrowDownClick);
+          anyArrowDown._kynClick = arrowDownClick;
+        }
+      }
     }
 
     const ampmToggle = container.querySelector<HTMLElement>('.flatpickr-am-pm');

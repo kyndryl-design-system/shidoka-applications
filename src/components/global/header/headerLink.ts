@@ -7,6 +7,7 @@ import {
   queryAssignedElements,
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss?inline';
 import '../../reusable/textInput';
@@ -150,7 +151,7 @@ export class HeaderLink extends LitElement {
 
         <div
           class=${classMap(menuClasses)}
-          style=${`top: ${this.menuPosition.top}px; left: ${this.menuPosition.left}px;`}
+          style=${styleMap(this.menuPosition)}
         >
           <div class="wrapper">
             <button
@@ -374,14 +375,28 @@ export class HeaderLink extends LitElement {
         : linkHalf - menuHalf;
 
     if (this.level === 1) {
+      // get the height of the level 1 menu to use as submenu min-height
+      let navMenuHeight = 0;
+      const headerNav = this.closest('kyn-header-nav') as HTMLElement | null;
+      if (headerNav) {
+        const navMenu = headerNav.shadowRoot?.querySelector(
+          '.menu__content'
+        ) as HTMLElement | null;
+        if (navMenu) {
+          navMenuHeight = navMenu.offsetHeight;
+        }
+      }
+
       this.menuPosition = {
-        top: HeaderHeight,
-        left: 0,
+        top: HeaderHeight + 'px',
+        left: '0px',
+        minHeight: navMenuHeight + 'px',
       };
     } else {
+      const top = topCandidate < HeaderHeight ? HeaderHeight : topCandidate;
       this.menuPosition = {
-        top: topCandidate < HeaderHeight ? HeaderHeight : topCandidate,
-        left: linkBounds.right + Padding,
+        top: top + 'px',
+        left: linkBounds.right + Padding + 'px',
       };
     }
   }

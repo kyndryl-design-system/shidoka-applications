@@ -51,6 +51,8 @@ export {
   parseDateTime,
   parseTimeString,
   normalizeToDate,
+  isValidDate,
+  filterValidDates,
   isEmptyValue,
   timesEqual,
   datesEqual,
