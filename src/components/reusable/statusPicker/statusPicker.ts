@@ -30,13 +30,13 @@ export class StatusPicker extends LitElement {
   accessor label = '';
 
   /**
-   * Specify if is disabled.
+   * Specify disabled state.
    */
   @property({ type: Boolean })
   accessor disabled = false;
 
   /**
-   * Specify if is selected.
+   * Specify selected state.
    */
   @property({ type: Boolean })
   accessor selected = false;
@@ -46,12 +46,6 @@ export class StatusPicker extends LitElement {
    */
   @property({ type: Boolean })
   accessor noTruncation = false;
-
-  /**
-   * Icon title for screen readers.
-   */
-  @property({ type: String })
-  accessor iconTitle = 'Icon title';
 
   /**
    * Specifies the visual appearance/kind of the status.
