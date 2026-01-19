@@ -26,14 +26,14 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-420751&p=f&t=A5tcETiCf23sAgKK-0',
+      url: '', //To be added
     },
   },
 };
 
 const args = {
   label: 'Label',
-  kind: 'ai',
+  kind: 'success',
   noTruncation: false,
   disabled: false,
   selected: false,
@@ -84,17 +84,23 @@ export const Gallery = {
       <div class="heading kd-type--headline-06 heading-text">
         Operational Status
       </div>
-      <kyn-status-picker label="Label" kind="ai"></kyn-status-picker>
-      <br />
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <kyn-status-picker label="Success" kind="success"></kyn-status-picker>
+        <kyn-status-picker label="Warning" kind="warning"></kyn-status-picker>
+        <kyn-status-picker label="Error" kind="error"></kyn-status-picker>
+      </div>
       <br />
       <div class="heading kd-type--headline-06 heading-text">
         Opportunity Status
       </div>
-      <kyn-status-picker label="Label" kind="error"></kyn-status-picker>
-      <br />
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <kyn-status-picker label="Low" kind="low"></kyn-status-picker>
+        <kyn-status-picker label="Medium" kind="medium"></kyn-status-picker>
+        <kyn-status-picker label="High" kind="high"></kyn-status-picker>
+      </div>
       <br />
       <div class="heading kd-type--headline-06 heading-text">AI</div>
-      <kyn-status-picker label="Label" kind="ai"></kyn-status-picker>
+      <kyn-status-picker label="AI" kind="ai"></kyn-status-picker>
       <br />
       <br />
       <div class="heading kd-type--headline-06 heading-text">Disabled</div>

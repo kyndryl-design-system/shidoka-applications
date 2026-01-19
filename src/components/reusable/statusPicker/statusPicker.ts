@@ -3,6 +3,16 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import StatusPickerScss from './statusPicker.scss?inline';
 
+enum STATUS_KINDS {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  AI = 'ai',
+}
+
 /**
  * Status Picker.
  * @fires on-click - Captures the click event and emits the Status Picker value. `detail:{ origEvent: PointerEvent,value: string }`
@@ -47,14 +57,7 @@ export class StatusPicker extends LitElement {
    * Specifies the visual appearance/kind of the status.
    */
   @property({ type: String })
-  accessor kind:
-    | 'success'
-    | 'warning'
-    | 'error'
-    | 'low'
-    | 'medium'
-    | 'high'
-    | 'ai' = 'ai';
+  accessor kind: STATUS_KINDS = STATUS_KINDS.SUCCESS;
 
   /**
    * Determine if contains icon only.
@@ -69,9 +72,9 @@ export class StatusPicker extends LitElement {
     const Classes = {
       'status-picker': true,
       'no-truncation': this.noTruncation,
-      'status-picker__state-disable': this.disabled,
       'status-picker__state-interactive': true,
       [`status-picker__state-interactive-${this.kind}`]: true,
+      'status-picker__state-disable': this.disabled,
       [`${newBaseColorClass}`]: true,
       selected: this.selected,
     };
