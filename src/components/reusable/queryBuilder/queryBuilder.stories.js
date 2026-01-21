@@ -433,7 +433,7 @@ export const WithQueryOutput = {
           }
         }}
       ></kyn-query-builder>
-      <div class="query-output">
+      <div class="query-output" tabindex="0">
         <span class="query-output-label">Query Output (JSON):</span>
         <div id="query-output">${JSON.stringify(args.query, null, 2)}</div>
       </div>

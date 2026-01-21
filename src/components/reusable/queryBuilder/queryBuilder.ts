@@ -56,9 +56,8 @@ export class QueryBuilder extends LitElement {
   @property({ type: Array })
   accessor fields: QueryField[] = [];
 
-  /** Available combinators */
-  @property({ type: Array })
-  accessor combinators: QueryOption[] = [
+  /** Available combinators (internal) */
+  private _combinators: QueryOption[] = [
     { value: 'and', label: 'AND' },
     { value: 'or', label: 'OR' },
   ];
@@ -87,7 +86,9 @@ export class QueryBuilder extends LitElement {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
-  /** Internal query state for tracking changes */
+  /** Internal query state for tracking changes
+   * @internal
+   */
   @state()
   accessor _internalQuery: RuleGroupType = createDefaultQuery();
 
@@ -118,7 +119,7 @@ export class QueryBuilder extends LitElement {
           <kyn-qb-group
             .group=${this._internalQuery}
             .fields=${this.fields}
-            .combinators=${this.combinators}
+            .combinators=${this._combinators}
             .path=${[]}
             .depth=${0}
             .maxDepth=${this.maxDepth}

@@ -16809,13 +16809,13 @@
             },
             {
               "kind": "field",
-              "name": "combinators",
+              "name": "_combinators",
               "type": {
                 "text": "QueryOption[]"
               },
+              "privacy": "private",
               "default": "[\n    { value: 'and', label: 'AND' },\n    { value: 'or', label: 'OR' },\n  ]",
-              "description": "Available combinators",
-              "attribute": "combinators"
+              "description": "Available combinators (internal)"
             },
             {
               "kind": "field",
@@ -16874,14 +16874,6 @@
               "type": {
                 "text": "object"
               }
-            },
-            {
-              "kind": "field",
-              "name": "_internalQuery",
-              "type": {
-                "text": "RuleGroupType"
-              },
-              "description": "Internal query state for tracking changes"
             },
             {
               "kind": "method",
@@ -16956,15 +16948,6 @@
               "default": "[]",
               "description": "Available fields to query",
               "fieldName": "fields"
-            },
-            {
-              "name": "combinators",
-              "type": {
-                "text": "QueryOption[]"
-              },
-              "default": "[\n    { value: 'and', label: 'AND' },\n    { value: 'or', label: 'OR' },\n  ]",
-              "description": "Available combinators",
-              "fieldName": "combinators"
             },
             {
               "name": "showCloneButtons",
@@ -28688,7 +28671,7 @@
           "type": {
             "text": "QueryOperator[]"
           },
-          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'contains', label: 'Contains' },\n  { name: 'notContains', label: 'Does Not Contain' },\n  { name: 'startsWith', label: 'Starts With' },\n  { name: 'endsWith', label: 'Ends With' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "default": "[\n  { name: 'equal', label: 'Equals' },\n  { name: 'notEqual', label: 'Does Not Equal' },\n  { name: 'contains', label: 'Contains' },\n  { name: 'notContains', label: 'Does Not Contain' },\n  { name: 'startsWith', label: 'Starts With' },\n  { name: 'endsWith', label: 'Ends With' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
           "description": "Default operators for text fields"
         },
         {
@@ -28697,7 +28680,7 @@
           "type": {
             "text": "QueryOperator[]"
           },
-          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'lessThan', label: 'Less Than' },\n  { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },\n  { name: 'greaterThan', label: 'Greater Than' },\n  { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },\n  { name: 'between', label: 'Between' },\n  { name: 'notBetween', label: 'Not Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "default": "[\n  { name: 'equal', label: 'Equals' },\n  { name: 'notEqual', label: 'Does Not Equal' },\n  { name: 'lessThan', label: 'Less Than' },\n  { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },\n  { name: 'greaterThan', label: 'Greater Than' },\n  { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },\n  { name: 'between', label: 'Between' },\n  { name: 'notBetween', label: 'Not Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
           "description": "Default operators for number fields"
         },
         {
@@ -28706,7 +28689,7 @@
           "type": {
             "text": "QueryOperator[]"
           },
-          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'before', label: 'Before' },\n  { name: 'after', label: 'After' },\n  { name: 'between', label: 'Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "default": "[\n  { name: 'equal', label: 'Equals' },\n  { name: 'notEqual', label: 'Does Not Equal' },\n  { name: 'before', label: 'Before' },\n  { name: 'after', label: 'After' },\n  { name: 'between', label: 'Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
           "description": "Default operators for date/datetime fields"
         },
         {
@@ -28715,7 +28698,7 @@
           "type": {
             "text": "QueryOperator[]"
           },
-          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'before', label: 'Before' },\n  { name: 'after', label: 'After' },\n  { name: 'between', label: 'Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "default": "[\n  { name: 'equal', label: 'Equals' },\n  { name: 'notEqual', label: 'Does Not Equal' },\n  { name: 'before', label: 'Before' },\n  { name: 'after', label: 'After' },\n  { name: 'between', label: 'Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
           "description": "Default operators for time fields"
         },
         {
@@ -28733,7 +28716,7 @@
           "type": {
             "text": "QueryOperator[]"
           },
-          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'in', label: 'In' },\n  { name: 'notIn', label: 'Not In' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "default": "[\n  { name: 'equal', label: 'Equals' },\n  { name: 'notEqual', label: 'Does Not Equal' },\n  { name: 'in', label: 'In' },\n  { name: 'notIn', label: 'Not In' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
           "description": "Default operators for select/multiselect fields"
         },
         {
@@ -28742,7 +28725,7 @@
           "type": {
             "text": "QueryOperator[]"
           },
-          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n]",
+          "default": "[\n  { name: 'equal', label: 'Equals' },\n  { name: 'notEqual', label: 'Does Not Equal' },\n]",
           "description": "Default operators for radio button fields"
         },
         {
@@ -28751,7 +28734,7 @@
           "type": {
             "text": "QueryOperator[]"
           },
-          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'lessThan', label: 'Less Than' },\n  { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },\n  { name: 'greaterThan', label: 'Greater Than' },\n  { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },\n  { name: 'between', label: 'Between' },\n]",
+          "default": "[\n  { name: 'equal', label: 'Equals' },\n  { name: 'notEqual', label: 'Does Not Equal' },\n  { name: 'lessThan', label: 'Less Than' },\n  { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },\n  { name: 'greaterThan', label: 'Greater Than' },\n  { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },\n  { name: 'between', label: 'Between' },\n]",
           "description": "Default operators for slider fields (numeric range)"
         },
         {

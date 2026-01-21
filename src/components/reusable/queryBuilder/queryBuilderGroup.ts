@@ -127,15 +127,19 @@ export class QueryBuilderGroup extends LitElement {
               </kyn-button>
             `
           : null}
-        <kyn-button
-          kind="outline-destructive"
-          size="small"
-          description="Remove group"
-          ?disabled=${this.disabled || this.group.disabled}
-          @on-click=${this._handleRemoveGroup}
-        >
-          <span slot="icon">${unsafeSVG(deleteIcon)}</span>
-        </kyn-button>
+        ${!this.isRoot
+          ? html`
+              <kyn-button
+                kind="outline-destructive"
+                size="small"
+                description="Remove group"
+                ?disabled=${this.disabled || this.group.disabled}
+                @on-click=${this._handleRemoveGroup}
+              >
+                <span slot="icon">${unsafeSVG(deleteIcon)}</span>
+              </kyn-button>
+            `
+          : null}
         ${this._renderHeaderActions()}
       </div>
     `;

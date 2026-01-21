@@ -4,8 +4,8 @@ import type { QueryOperator, FieldDataType } from './types';
  * Default operators for text fields
  */
 export const TEXT_OPERATORS: QueryOperator[] = [
-  { name: 'equal', label: 'Equal' },
-  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'equal', label: 'Equals' },
+  { name: 'notEqual', label: 'Does Not Equal' },
   { name: 'contains', label: 'Contains' },
   { name: 'notContains', label: 'Does Not Contain' },
   { name: 'startsWith', label: 'Starts With' },
@@ -18,8 +18,8 @@ export const TEXT_OPERATORS: QueryOperator[] = [
  * Default operators for number fields
  */
 export const NUMBER_OPERATORS: QueryOperator[] = [
-  { name: 'equal', label: 'Equal' },
-  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'equal', label: 'Equals' },
+  { name: 'notEqual', label: 'Does Not Equal' },
   { name: 'lessThan', label: 'Less Than' },
   { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },
   { name: 'greaterThan', label: 'Greater Than' },
@@ -34,8 +34,8 @@ export const NUMBER_OPERATORS: QueryOperator[] = [
  * Default operators for date/datetime fields
  */
 export const DATE_OPERATORS: QueryOperator[] = [
-  { name: 'equal', label: 'Equal' },
-  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'equal', label: 'Equals' },
+  { name: 'notEqual', label: 'Does Not Equal' },
   { name: 'before', label: 'Before' },
   { name: 'after', label: 'After' },
   { name: 'between', label: 'Between' },
@@ -47,8 +47,8 @@ export const DATE_OPERATORS: QueryOperator[] = [
  * Default operators for time fields
  */
 export const TIME_OPERATORS: QueryOperator[] = [
-  { name: 'equal', label: 'Equal' },
-  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'equal', label: 'Equals' },
+  { name: 'notEqual', label: 'Does Not Equal' },
   { name: 'before', label: 'Before' },
   { name: 'after', label: 'After' },
   { name: 'between', label: 'Between' },
@@ -67,8 +67,8 @@ export const BOOLEAN_OPERATORS: QueryOperator[] = [
  * Default operators for select/multiselect fields
  */
 export const SELECT_OPERATORS: QueryOperator[] = [
-  { name: 'equal', label: 'Equal' },
-  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'equal', label: 'Equals' },
+  { name: 'notEqual', label: 'Does Not Equal' },
   { name: 'in', label: 'In' },
   { name: 'notIn', label: 'Not In' },
   { name: 'isNull', label: 'Is Empty', arity: 'unary' },
@@ -79,16 +79,16 @@ export const SELECT_OPERATORS: QueryOperator[] = [
  * Default operators for radio button fields
  */
 export const RADIO_OPERATORS: QueryOperator[] = [
-  { name: 'equal', label: 'Equal' },
-  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'equal', label: 'Equals' },
+  { name: 'notEqual', label: 'Does Not Equal' },
 ];
 
 /**
  * Default operators for slider fields (numeric range)
  */
 export const SLIDER_OPERATORS: QueryOperator[] = [
-  { name: 'equal', label: 'Equal' },
-  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'equal', label: 'Equals' },
+  { name: 'notEqual', label: 'Does Not Equal' },
   { name: 'lessThan', label: 'Less Than' },
   { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },
   { name: 'greaterThan', label: 'Greater Than' },
