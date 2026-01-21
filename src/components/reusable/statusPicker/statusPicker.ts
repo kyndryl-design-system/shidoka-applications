@@ -1,5 +1,5 @@
 import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import StatusPickerScss from './statusPicker.scss?inline';
 
@@ -60,6 +60,20 @@ export class StatusPicker extends LitElement {
   @state()
   accessor _iconOnly = false;
 
+  /**
+   * Determine if label is truncated.
+   * @internal
+   */
+  @state()
+  accessor _isTruncated = false;
+
+  /**
+   * Queries the .label element.
+   * @internal
+   */
+  @query('.status-picker__label')
+  accessor _labelEl!: HTMLSpanElement;
+
   override render() {
     const newBaseColorClass = `status-picker__state-${this.kind}`;
 
@@ -78,7 +92,7 @@ export class StatusPicker extends LitElement {
       class="${classMap(Classes)}"
       ?disabled="${this.disabled}"
       kind=${this.kind}
-      title="${this.label}"
+      title="${this._isTruncated && !this.noTruncation ? this.label : ''}"
       @click=${(e: any) => this.handleStatusClick(e, this.label)}
     >
       <slot></slot>
@@ -106,6 +120,10 @@ export class StatusPicker extends LitElement {
 
   override updated(changedProperties: PropertyValues) {
     this.label = this.label.trim();
+    // Check if label is truncated
+    if (this._labelEl && !this.noTruncation) {
+      this._isTruncated = this._labelEl.scrollWidth > this._labelEl.clientWidth;
+    }
     super.updated(changedProperties);
 
     if (this.label.length === 0) {
