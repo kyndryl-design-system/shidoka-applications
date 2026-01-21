@@ -1,0 +1,311 @@
+@use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: inline-block;
+}
+
+.status-picker {
+  @include typography.type-ui-03;
+  display: flex;
+  height: 24px;
+  align-items: center;
+  justify-content: space-around;
+  border: 0.5px solid transparent;
+  border-radius: 6px;
+  padding: 4px;
+  gap: 4px;
+  min-width: 24px;
+  max-width: 161px;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+
+  &.no-truncation {
+    max-width: none;
+  }
+}
+
+.status-picker__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-picker__state {
+  &-disable {
+    cursor: not-allowed;
+    background-color: var(
+      --kd-color-background-status-picker-success-disabled
+    ) !important;
+    color: var(--kd-color-text-status-picker-success-disabled) !important;
+    border-color: var(
+      --kd-color-border-status-picker-success-disabled
+    ) !important;
+    outline: none !important;
+  }
+
+  &-interactive {
+    /* error state */
+    &-error {
+      color: var(--kd-color-text-status-picker-error-enabled);
+      background-color: var(--kd-color-background-status-picker-error-enabled);
+      border-color: var(--kd-color-border-status-picker-error-enabled);
+      &:hover {
+        color: var(--kd-color-text-status-picker-error-hover);
+        background-color: var(--kd-color-background-status-picker-error-hover);
+        border-color: var(--kd-color-border-status-picker-error-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-picker-error-selected);
+        color: var(--kd-color-text-status-picker-error-selected);
+        background-color: var(
+          --kd-color-background-status-picker-error-selected
+        );
+      }
+      &:focus-visible {
+        outline: 1px solid var(--kd-color-border-status-picker-error-focused);
+        background-color: var(
+          --kd-color-background-status-picker-error-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-picker-error-pressed);
+        border-color: var(--kd-color-border-status-picker-error-pressed);
+        background-color: var(
+          --kd-color-background-status-picker-error-pressed
+        );
+      }
+    }
+    /* warning state */
+    &-warning {
+      color: var(--kd-color-text-status-picker-warning-enabled);
+      background-color: var(
+        --kd-color-background-status-picker-warning-enabled
+      );
+      border-color: var(--kd-color-border-status-picker-warning-enabled);
+      &:hover {
+        background-color: var(
+          --kd-color-background-status-picker-warning-hover
+        );
+        border-color: var(--kd-color-border-status-picker-warning-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-picker-warning-selected);
+        background-color: var(
+          --kd-color-background-status-picker-warning-selected
+        );
+      }
+      &:focus-visible {
+        outline: 1px solid var(--kd-color-border-status-picker-warning-focused);
+        background-color: var(
+          --kd-color-background-status-picker-warning-focused
+        );
+      }
+      &:active {
+        border-color: var(--kd-color-border-status-picker-warning-pressed);
+        background-color: var(
+          --kd-color-background-status-picker-warning-pressed
+        );
+      }
+    }
+
+    /* success state */
+    &-success {
+      color: var(--kd-color-text-status-picker-success-enabled);
+      background-color: var(
+        --kd-color-background-status-picker-success-enabled
+      );
+      border-color: var(--kd-color-border-status-picker-success-enabled);
+      &:hover {
+        background-color: var(
+          --kd-color-background-status-picker-success-hover
+        );
+        border-color: var(--kd-color-border-status-picker-success-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-picker-success-selected);
+        background-color: var(
+          --kd-color-background-status-picker-success-selected
+        );
+      }
+      &:focus-visible {
+        outline: 1px solid var(--kd-color-border-status-picker-success-focused);
+        background-color: var(
+          --kd-color-background-status-picker-success-focused
+        );
+      }
+      &:active {
+        border-color: var(--kd-color-border-status-picker-success-pressed);
+        background-color: var(
+          --kd-color-background-status-picker-success-pressed
+        );
+      }
+    }
+
+    /* low state */
+    &-low {
+      color: var(--kd-color-text-status-picker-information-low-enabled);
+      background-color: var(
+        --kd-color-background-status-picker-information-low-enabled
+      );
+      border-color: var(
+        --kd-color-border-status-picker-information-low-enabled
+      );
+      &:hover {
+        color: var(--kd-color-text-status-picker-information-low-hover);
+        border-color: var(
+          --kd-color-border-status-picker-information-low-hover
+        );
+        background-color: var(
+          --kd-color-background-status-picker-information-low-hover
+        );
+      }
+      &.selected {
+        color: var(--kd-color-text-status-picker-information-low-selected);
+        border-color: var(--kd-color-tag-border-error-selected);
+        background-color: var(
+          --kd-color-background-status-picker-information-low-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-picker-information-low-focused);
+        outline: 1px solid
+          var(--kd-color-border-status-picker-information-low-focused);
+        background-color: var(
+          --kd-color-background-status-picker-information-low-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-picker-information-low-pressed);
+        border-color: var(
+          --kd-color-border-status-picker-information-low-pressed
+        );
+        background-color: var(
+          --kd-color-background-status-picker-information-low-pressed
+        );
+      }
+    }
+
+    /* medium state */
+    &-medium {
+      color: var(--kd-color-text-status-picker-information-medium-enabled);
+      background-color: var(
+        --kd-color-background-status-picker-information-medium-enabled
+      );
+      border-color: var(
+        --kd-color-border-status-picker-information-medium-enabled
+      );
+      &:hover {
+        color: var(--kd-color-text-status-picker-information-medium-hover);
+        background-color: var(
+          --kd-color-background-status-picker-information-medium-hover
+        );
+        border-color: var(
+          --kd-color-border-status-picker-information-medium-hover
+        );
+      }
+      &.selected {
+        color: var(--kd-color-text-status-picker-information-medium-selected);
+        border-color: var(
+          --kd-color-border-status-picker-information-medium-selected
+        );
+        background-color: var(
+          --kd-color-background-status-picker-information-medium-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-picker-information-medium-focused);
+        outline: 1px solid
+          var(--kd-color-border-status-picker-information-medium-focused);
+        background-color: var(
+          --kd-color-background-status-picker-information-medium-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-picker-information-medium-pressed);
+        border-color: var(
+          --kd-color-border-status-picker-information-medium-pressed
+        );
+        background-color: var(
+          --kd-color-background-status-picker-information-medium-pressed
+        );
+      }
+    }
+
+    /* high state */
+    &-high {
+      color: var(--kd-color-text-status-picker-information-high-enabled);
+      background-color: var(
+        --kd-color-background-status-picker-information-high-enabled
+      );
+      border-color: var(
+        --kd-color-border-status-picker-information-high-enabled
+      );
+      &:hover {
+        color: var(--kd-color-text-status-picker-information-high-hover);
+        background-color: var(
+          --kd-color-background-status-picker-information-high-hover
+        );
+        border-color: var(
+          --kd-color-border-status-picker-information-high-hover
+        );
+      }
+      &.selected {
+        color: var(--kd-color-text-status-picker-information-high-selected);
+        border-color: var(
+          --kd-color-border-status-picker-information-high-selected
+        );
+        background-color: var(
+          --kd-color-background-status-picker-information-high-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-picker-information-high-focused);
+        outline: 1px solid
+          var(--kd-color-border-status-picker-information-high-focused);
+        background-color: var(
+          --kd-color-background-status-picker-information-high-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-picker-information-high-pressed);
+        border-color: var(
+          --kd-color-border-status-picker-information-high-pressed
+        );
+        background-color: var(
+          --kd-color-background-status-picker-information-high-pressed
+        );
+      }
+    }
+
+    /* ai state Pending from UX*/
+    &-ai {
+      color: var(--kd-color-text-status-picker-ai-enabled);
+      background-color: var(--kd-color-background-status-picker-ai-enabled);
+      border-color: var(--kd-color-border-status-picker-ai-enabled);
+      &:hover {
+        color: var(--kd-color-text-status-picker-ai-hover);
+        background-color: var(--kd-color-background-status-picker-ai-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-picker-ai-selected);
+        color: var(--kd-color-text-status-picker-ai-selected);
+        background-color: var(--kd-color-background-status-picker-ai-selected);
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-picker-ai-focused);
+        outline: 1px solid var(--kd-color-border-status-picker-ai-focused);
+      }
+      &:active {
+        color: var(--kd-color-text-status-picker-ai-pressed);
+        border-color: var(--kd-color-border-status-picker-ai-pressed);
+        background-color: var(--kd-color-background-status-picker-ai-pressed);
+      }
+    }
+    &:focus-visible {
+      border: transparent;
+      outline-offset: 1px;
+    }
+  }
+}
