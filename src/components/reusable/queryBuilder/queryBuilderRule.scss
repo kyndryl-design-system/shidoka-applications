@@ -1,0 +1,86 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+.qb-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.qb-rule__drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  cursor: grab;
+  color: var(--kd-color-text-level-secondary);
+  flex-shrink: 0;
+
+  &:hover {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.qb-rule__fields {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.qb-rule__field,
+.qb-rule__operator,
+.qb-rule__value {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.qb-rule__value--boolean {
+  flex: 0 0 auto;
+}
+
+.qb-rule__between {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 0;
+  min-width: 0;
+
+  .qb-rule__value {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.qb-rule__between-separator {
+  color: var(--kd-color-text-level-secondary);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.qb-rule__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}

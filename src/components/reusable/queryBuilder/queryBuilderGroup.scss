@@ -1,0 +1,98 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+.qb-group {
+  border: 1px solid var(--kd-color-border-level-secondary);
+  border-radius: 8px;
+  background-color: var(--kd-color-background-ui-soft);
+  padding: 12px;
+
+  &--root {
+    background-color: var(--kd-color-background-ui-default);
+  }
+
+  &--nested {
+    margin: 8px 0;
+    margin-left: 24px;
+  }
+
+  &--disabled {
+    opacity: 0.6;
+  }
+
+  // Depth-based background colors for visual hierarchy
+  &--depth-0 {
+    background-color: var(--kd-color-background-ui-default);
+  }
+
+  &--depth-1 {
+    background-color: var(--kd-color-background-ui-soft);
+  }
+
+  &--depth-2 {
+    background-color: var(--kd-color-background-ui-default);
+  }
+
+  &--depth-3 {
+    background-color: var(--kd-color-background-ui-soft);
+  }
+
+  &--depth-4 {
+    background-color: var(--kd-color-background-ui-default);
+  }
+}
+
+.qb-group__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.qb-group__drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  cursor: grab;
+  color: var(--kd-color-text-level-secondary);
+  flex-shrink: 0;
+
+  &:hover {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.qb-group__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.qb-group__rules {
+  display: flex;
+  flex-direction: column;
+}
+
+.qb-group__empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--kd-color-text-level-secondary);
+  border: 1px dashed var(--kd-color-border-level-secondary);
+  border-radius: 4px;
+  margin: 8px 0;
+}
