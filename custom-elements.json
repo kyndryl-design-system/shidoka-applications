@@ -552,6 +552,496 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_onDocumentClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_onLinkActive",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ text: string }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-link-active",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "on-click",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -2487,496 +2977,6 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "_onDocumentClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_onLinkActive",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ text: string }>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-link-active",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "on-click",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
           }
         }
       ]
@@ -16744,6 +16744,1435 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "QueryBuilder",
+          "declaration": {
+            "name": "QueryBuilder",
+            "module": "./queryBuilder"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryBuilderGroup",
+          "declaration": {
+            "name": "QueryBuilderGroup",
+            "module": "./queryBuilderGroup"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryBuilderRule",
+          "declaration": {
+            "name": "QueryBuilderRule",
+            "module": "./queryBuilderRule"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/queryBuilder.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Query Builder component.\nA visual query builder for constructing complex filter conditions.",
+          "name": "QueryBuilder",
+          "slots": [
+            {
+              "description": "Slot for custom header content",
+              "name": "header"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              },
+              "description": "The query data structure",
+              "attribute": "query"
+            },
+            {
+              "kind": "field",
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              },
+              "default": "[]",
+              "description": "Available fields to query",
+              "attribute": "fields"
+            },
+            {
+              "kind": "field",
+              "name": "combinators",
+              "type": {
+                "text": "QueryOption[]"
+              },
+              "default": "[\n    { value: 'and', label: 'AND' },\n    { value: 'or', label: 'OR' },\n  ]",
+              "description": "Available combinators",
+              "attribute": "combinators"
+            },
+            {
+              "kind": "field",
+              "name": "showCloneButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show clone button on rules/groups",
+              "attribute": "showCloneButtons"
+            },
+            {
+              "kind": "field",
+              "name": "showLockButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show lock/disable button on rules/groups",
+              "attribute": "showLockButtons"
+            },
+            {
+              "kind": "field",
+              "name": "maxDepth",
+              "default": "Infinity",
+              "description": "Maximum nesting depth (default: unlimited)",
+              "attribute": "maxDepth"
+            },
+            {
+              "kind": "field",
+              "name": "allowDragAndDrop",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enable drag-and-drop reordering",
+              "attribute": "allowDragAndDrop"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable the entire query builder",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  title: 'Query Builder',\n  emptyState: 'No conditions added. Add a rule to get started.',\n  addRule: 'Add Rule',\n  addGroup: 'Add Group',\n}",
+              "description": "Text string customization",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_internalQuery",
+              "type": {
+                "text": "RuleGroupType"
+              },
+              "description": "Internal query state for tracking changes"
+            },
+            {
+              "kind": "method",
+              "name": "_handleGroupChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitQueryChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getQuery",
+              "return": {
+                "type": {
+                  "text": "RuleGroupType"
+                }
+              },
+              "description": "Get the current query"
+            },
+            {
+              "kind": "method",
+              "name": "setQuery",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "RuleGroupType"
+                  }
+                }
+              ],
+              "description": "Set the query programmatically"
+            },
+            {
+              "kind": "method",
+              "name": "resetQuery",
+              "description": "Reset the query to initial empty state"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-query-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the query changes. `detail: { query: RuleGroupType }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              },
+              "description": "The query data structure",
+              "fieldName": "query"
+            },
+            {
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              },
+              "default": "[]",
+              "description": "Available fields to query",
+              "fieldName": "fields"
+            },
+            {
+              "name": "combinators",
+              "type": {
+                "text": "QueryOption[]"
+              },
+              "default": "[\n    { value: 'and', label: 'AND' },\n    { value: 'or', label: 'OR' },\n  ]",
+              "description": "Available combinators",
+              "fieldName": "combinators"
+            },
+            {
+              "name": "showCloneButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show clone button on rules/groups",
+              "fieldName": "showCloneButtons"
+            },
+            {
+              "name": "showLockButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Show lock/disable button on rules/groups",
+              "fieldName": "showLockButtons"
+            },
+            {
+              "name": "maxDepth",
+              "default": "Infinity",
+              "description": "Maximum nesting depth (default: unlimited)",
+              "fieldName": "maxDepth"
+            },
+            {
+              "name": "allowDragAndDrop",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enable drag-and-drop reordering",
+              "fieldName": "allowDragAndDrop"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable the entire query builder",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-query-builder",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "QueryBuilder",
+          "declaration": {
+            "name": "QueryBuilder",
+            "module": "src/components/reusable/queryBuilder/queryBuilder.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-query-builder",
+          "declaration": {
+            "name": "QueryBuilder",
+            "module": "src/components/reusable/queryBuilder/queryBuilder.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/queryBuilderGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Query Builder Group component.\nRepresents a group of rules with a combinator (AND/OR).",
+          "name": "QueryBuilderGroup",
+          "members": [
+            {
+              "kind": "field",
+              "name": "group",
+              "type": {
+                "text": "RuleGroupType"
+              },
+              "default": "{\n    id: '',\n    combinator: 'and',\n    rules: [],\n  }",
+              "description": "The group data",
+              "attribute": "group"
+            },
+            {
+              "kind": "field",
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              },
+              "default": "[]",
+              "description": "Available fields for rules",
+              "attribute": "fields"
+            },
+            {
+              "kind": "field",
+              "name": "combinators",
+              "type": {
+                "text": "QueryOption[]"
+              },
+              "default": "[\n    { value: 'and', label: 'AND' },\n    { value: 'or', label: 'OR' },\n  ]",
+              "description": "Available combinators",
+              "attribute": "combinators"
+            },
+            {
+              "kind": "field",
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[]",
+              "description": "Path to this group in the query tree",
+              "attribute": "path"
+            },
+            {
+              "kind": "field",
+              "name": "depth",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Current depth level (0 = root)",
+              "attribute": "depth"
+            },
+            {
+              "kind": "field",
+              "name": "maxDepth",
+              "default": "Infinity",
+              "description": "Maximum allowed depth",
+              "attribute": "maxDepth"
+            },
+            {
+              "kind": "field",
+              "name": "isRoot",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether this is the root group",
+              "attribute": "isRoot"
+            },
+            {
+              "kind": "field",
+              "name": "showCloneButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show clone button",
+              "attribute": "showCloneButton"
+            },
+            {
+              "kind": "field",
+              "name": "showLockButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show lock button",
+              "attribute": "showLockButton"
+            },
+            {
+              "kind": "field",
+              "name": "allowDragAndDrop",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether drag and drop is enabled",
+              "attribute": "allowDragAndDrop"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the group is disabled/locked",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "_renderHeader",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderDragHandle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderCombinatorToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCombinatorGroupChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderHeaderActions",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderRules",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderEmptyState",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderRuleOrGroup",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "RuleOrGroup"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_isLastRule",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "description": "Check if this is the last rule (not group) in the rules array"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCombinatorChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "combinator",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleAddRule",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleAddRuleAfter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_addNewRule",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "insertIndex",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleAddGroup",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleRuleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRuleRemove",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRuleClone",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRuleLock",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNestedGroupChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNestedGroupRemove",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNestedGroupClone",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleNestedGroupLock",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRemoveGroup",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCloneGroup",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitGroupChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "group",
+                  "type": {
+                    "text": "RuleGroupType"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_deepCloneGroup",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "RuleGroupType"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "group",
+                  "type": {
+                    "text": "RuleGroupType"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-group-remove",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the group should be removed. `detail: { groupId: string, path: number[] }`"
+            },
+            {
+              "name": "on-group-clone",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the group should be cloned. `detail: { groupId: string, path: number[] }`"
+            },
+            {
+              "name": "on-group-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the group changes. `detail: { group: RuleGroupType, path: number[] }`"
+            },
+            {
+              "description": "Emits when the group lock state changes. `detail: { groupId: string, disabled: boolean, path: number[] }`",
+              "name": "on-group-lock"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "group",
+              "type": {
+                "text": "RuleGroupType"
+              },
+              "default": "{\n    id: '',\n    combinator: 'and',\n    rules: [],\n  }",
+              "description": "The group data",
+              "fieldName": "group"
+            },
+            {
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              },
+              "default": "[]",
+              "description": "Available fields for rules",
+              "fieldName": "fields"
+            },
+            {
+              "name": "combinators",
+              "type": {
+                "text": "QueryOption[]"
+              },
+              "default": "[\n    { value: 'and', label: 'AND' },\n    { value: 'or', label: 'OR' },\n  ]",
+              "description": "Available combinators",
+              "fieldName": "combinators"
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[]",
+              "description": "Path to this group in the query tree",
+              "fieldName": "path"
+            },
+            {
+              "name": "depth",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Current depth level (0 = root)",
+              "fieldName": "depth"
+            },
+            {
+              "name": "maxDepth",
+              "default": "Infinity",
+              "description": "Maximum allowed depth",
+              "fieldName": "maxDepth"
+            },
+            {
+              "name": "isRoot",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether this is the root group",
+              "fieldName": "isRoot"
+            },
+            {
+              "name": "showCloneButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show clone button",
+              "fieldName": "showCloneButton"
+            },
+            {
+              "name": "showLockButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show lock button",
+              "fieldName": "showLockButton"
+            },
+            {
+              "name": "allowDragAndDrop",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether drag and drop is enabled",
+              "fieldName": "allowDragAndDrop"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the group is disabled/locked",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-qb-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "QueryBuilderGroup",
+          "declaration": {
+            "name": "QueryBuilderGroup",
+            "module": "src/components/reusable/queryBuilder/queryBuilderGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-qb-group",
+          "declaration": {
+            "name": "QueryBuilderGroup",
+            "module": "src/components/reusable/queryBuilder/queryBuilderGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/queryBuilderRule.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Query Builder Rule component.\nRepresents a single condition in the query (field + operator + value).",
+          "name": "QueryBuilderRule",
+          "members": [
+            {
+              "kind": "field",
+              "name": "rule",
+              "type": {
+                "text": "RuleType"
+              },
+              "default": "{\n    id: '',\n    field: '',\n    operator: '',\n    value: '',\n  }",
+              "description": "The rule data",
+              "attribute": "rule"
+            },
+            {
+              "kind": "field",
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              },
+              "default": "[]",
+              "description": "Available fields",
+              "attribute": "fields"
+            },
+            {
+              "kind": "field",
+              "name": "isLast",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether this is the last rule in the group (shows add button)",
+              "attribute": "isLast"
+            },
+            {
+              "kind": "field",
+              "name": "showCloneButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the clone button",
+              "attribute": "showCloneButton"
+            },
+            {
+              "kind": "field",
+              "name": "showLockButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the lock button",
+              "attribute": "showLockButton"
+            },
+            {
+              "kind": "field",
+              "name": "allowDragAndDrop",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether drag and drop is enabled",
+              "attribute": "allowDragAndDrop"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the rule is disabled/locked",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "selectedField",
+              "type": {
+                "text": "QueryField | undefined"
+              },
+              "privacy": "private",
+              "description": "Get the currently selected field configuration",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "operators",
+              "type": {
+                "text": "QueryOperator[]"
+              },
+              "privacy": "private",
+              "description": "Get operators for the current field",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "isUnary",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "description": "Check if current operator is unary (no value needed)",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "isBetween",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "description": "Check if current operator requires two values",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "isMultiValue",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "description": "Check if current operator accepts multiple values",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "_renderDragHandle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderFieldSelector",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderOperatorSelector",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderValueEditor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderTextInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "optional": true,
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderNumberInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderDateInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderDateTimeInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderTimeInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderBooleanInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "_field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderRadioInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderSliderInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderSelectInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderMultiSelectEditor",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderBetweenEditor",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "field",
+                  "type": {
+                    "text": "QueryField"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderActions",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFieldChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleOperatorChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleValueChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleBooleanChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRadioChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSliderChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMultiValueChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleBetweenChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "0 | 1"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitRuleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "rule",
+                  "type": {
+                    "text": "RuleType"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleAddRule",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleRemoveRule",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCloneRule",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLockToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-rule-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the rule changes. `detail: { rule: RuleType }`"
+            },
+            {
+              "name": "on-rule-add",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when a new rule should be added after this one. `detail: { ruleId: string }`"
+            },
+            {
+              "name": "on-rule-remove",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the rule should be removed. `detail: { ruleId: string }`"
+            },
+            {
+              "name": "on-rule-clone",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the rule should be cloned. `detail: { ruleId: string }`"
+            },
+            {
+              "name": "on-rule-lock",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the rule lock state changes. `detail: { ruleId: string, disabled: boolean }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rule",
+              "type": {
+                "text": "RuleType"
+              },
+              "default": "{\n    id: '',\n    field: '',\n    operator: '',\n    value: '',\n  }",
+              "description": "The rule data",
+              "fieldName": "rule"
+            },
+            {
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              },
+              "default": "[]",
+              "description": "Available fields",
+              "fieldName": "fields"
+            },
+            {
+              "name": "isLast",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether this is the last rule in the group (shows add button)",
+              "fieldName": "isLast"
+            },
+            {
+              "name": "showCloneButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the clone button",
+              "fieldName": "showCloneButton"
+            },
+            {
+              "name": "showLockButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the lock button",
+              "fieldName": "showLockButton"
+            },
+            {
+              "name": "allowDragAndDrop",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether drag and drop is enabled",
+              "fieldName": "allowDragAndDrop"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the rule is disabled/locked",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-qb-rule",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "QueryBuilderRule",
+          "declaration": {
+            "name": "QueryBuilderRule",
+            "module": "src/components/reusable/queryBuilder/queryBuilderRule.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-qb-rule",
+          "declaration": {
+            "name": "QueryBuilderRule",
+            "module": "src/components/reusable/queryBuilder/queryBuilderRule.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -26252,6 +27681,1313 @@
           "declaration": {
             "name": "WidgetGridstack",
             "module": "src/components/reusable/widget/widgetGridstack.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/defs/helpers.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "generateId",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "description": "Generate a unique ID for rules and groups"
+        },
+        {
+          "kind": "function",
+          "name": "createRule",
+          "return": {
+            "type": {
+              "text": "RuleType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              }
+            }
+          ],
+          "description": "Create a new empty rule"
+        },
+        {
+          "kind": "function",
+          "name": "createRuleGroup",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "combinator",
+              "default": "'and'",
+              "type": {
+                "text": "'and' | 'or'"
+              }
+            }
+          ],
+          "description": "Create a new empty rule group"
+        },
+        {
+          "kind": "function",
+          "name": "createDefaultQuery",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "description": "Create the initial/default query structure"
+        },
+        {
+          "kind": "function",
+          "name": "cloneQuery",
+          "return": {
+            "type": {
+              "text": "T"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "T"
+              }
+            }
+          ],
+          "description": "Deep clone a query object"
+        },
+        {
+          "kind": "function",
+          "name": "cloneWithNewIds",
+          "return": {
+            "type": {
+              "text": "T"
+            }
+          },
+          "parameters": [
+            {
+              "name": "item",
+              "type": {
+                "text": "T"
+              }
+            }
+          ],
+          "description": "Clone a rule or group with new IDs"
+        },
+        {
+          "kind": "function",
+          "name": "findByPath",
+          "return": {
+            "type": {
+              "text": "RuleOrGroup | undefined"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Find an item in the query tree by path\nPath is an array of indices, e.g., [0, 1, 2] means root.rules[0].rules[1].rules[2]"
+        },
+        {
+          "kind": "function",
+          "name": "findParentByPath",
+          "return": {
+            "type": {
+              "text": "RuleGroupType | undefined"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Find the parent group of an item by path"
+        },
+        {
+          "kind": "function",
+          "name": "addRule",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            },
+            {
+              "name": "fields",
+              "type": {
+                "text": "QueryField[]"
+              }
+            }
+          ],
+          "description": "Add a rule to a group at the specified path"
+        },
+        {
+          "kind": "function",
+          "name": "addGroup",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            },
+            {
+              "name": "combinator",
+              "default": "'and'",
+              "type": {
+                "text": "'and' | 'or'"
+              }
+            }
+          ],
+          "description": "Add a nested group to a group at the specified path"
+        },
+        {
+          "kind": "function",
+          "name": "removeItem",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Remove an item (rule or group) at the specified path"
+        },
+        {
+          "kind": "function",
+          "name": "updateRule",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            },
+            {
+              "name": "updates",
+              "type": {
+                "text": "Partial<RuleType>"
+              }
+            }
+          ],
+          "description": "Update a rule at the specified path"
+        },
+        {
+          "kind": "function",
+          "name": "updateCombinator",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            },
+            {
+              "name": "combinator",
+              "type": {
+                "text": "'and' | 'or'"
+              }
+            }
+          ],
+          "description": "Update a group's combinator at the specified path"
+        },
+        {
+          "kind": "function",
+          "name": "toggleNot",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Toggle the NOT flag on a group at the specified path"
+        },
+        {
+          "kind": "function",
+          "name": "toggleDisabled",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Toggle the disabled flag on an item at the specified path"
+        },
+        {
+          "kind": "function",
+          "name": "cloneItem",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Clone an item at the specified path and insert it after"
+        },
+        {
+          "kind": "function",
+          "name": "moveItem",
+          "return": {
+            "type": {
+              "text": "RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            },
+            {
+              "name": "fromPath",
+              "type": {
+                "text": "number[]"
+              }
+            },
+            {
+              "name": "toPath",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Move an item from one path to another"
+        },
+        {
+          "kind": "function",
+          "name": "getDepth",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            }
+          ],
+          "description": "Get the depth of a path (0 = root)"
+        },
+        {
+          "kind": "function",
+          "name": "wouldExceedMaxDepth",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "path",
+              "type": {
+                "text": "number[]"
+              }
+            },
+            {
+              "name": "maxDepth",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "Check if adding a group at the path would exceed max depth"
+        },
+        {
+          "kind": "function",
+          "name": "countRules",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            }
+          ],
+          "description": "Count total rules in a query (excluding groups)"
+        },
+        {
+          "kind": "function",
+          "name": "countGroups",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "query",
+              "type": {
+                "text": "RuleGroupType"
+              }
+            }
+          ],
+          "description": "Count total groups in a query (including root)"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "generateId",
+          "declaration": {
+            "name": "generateId",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createRule",
+          "declaration": {
+            "name": "createRule",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createRuleGroup",
+          "declaration": {
+            "name": "createRuleGroup",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createDefaultQuery",
+          "declaration": {
+            "name": "createDefaultQuery",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "cloneQuery",
+          "declaration": {
+            "name": "cloneQuery",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "cloneWithNewIds",
+          "declaration": {
+            "name": "cloneWithNewIds",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "findByPath",
+          "declaration": {
+            "name": "findByPath",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "findParentByPath",
+          "declaration": {
+            "name": "findParentByPath",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "addRule",
+          "declaration": {
+            "name": "addRule",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "addGroup",
+          "declaration": {
+            "name": "addGroup",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "removeItem",
+          "declaration": {
+            "name": "removeItem",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "updateRule",
+          "declaration": {
+            "name": "updateRule",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "updateCombinator",
+          "declaration": {
+            "name": "updateCombinator",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "toggleNot",
+          "declaration": {
+            "name": "toggleNot",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "toggleDisabled",
+          "declaration": {
+            "name": "toggleDisabled",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "cloneItem",
+          "declaration": {
+            "name": "cloneItem",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "moveItem",
+          "declaration": {
+            "name": "moveItem",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getDepth",
+          "declaration": {
+            "name": "getDepth",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "wouldExceedMaxDepth",
+          "declaration": {
+            "name": "wouldExceedMaxDepth",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "countRules",
+          "declaration": {
+            "name": "countRules",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "countGroups",
+          "declaration": {
+            "name": "countGroups",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/defs/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RuleGroupType",
+          "declaration": {
+            "name": "RuleGroupType",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RuleType",
+          "declaration": {
+            "name": "RuleType",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RuleOrGroup",
+          "declaration": {
+            "name": "RuleOrGroup",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryField",
+          "declaration": {
+            "name": "QueryField",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FieldDataType",
+          "declaration": {
+            "name": "FieldDataType",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryOperator",
+          "declaration": {
+            "name": "QueryOperator",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryOption",
+          "declaration": {
+            "name": "QueryOption",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryBuilderConfig",
+          "declaration": {
+            "name": "QueryBuilderConfig",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryChangeEventDetail",
+          "declaration": {
+            "name": "QueryChangeEventDetail",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QueryActionEventDetail",
+          "declaration": {
+            "name": "QueryActionEventDetail",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isRuleGroup",
+          "declaration": {
+            "name": "isRuleGroup",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isRule",
+          "declaration": {
+            "name": "isRule",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TEXT_OPERATORS",
+          "declaration": {
+            "name": "TEXT_OPERATORS",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NUMBER_OPERATORS",
+          "declaration": {
+            "name": "NUMBER_OPERATORS",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "DATE_OPERATORS",
+          "declaration": {
+            "name": "DATE_OPERATORS",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TIME_OPERATORS",
+          "declaration": {
+            "name": "TIME_OPERATORS",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BOOLEAN_OPERATORS",
+          "declaration": {
+            "name": "BOOLEAN_OPERATORS",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SELECT_OPERATORS",
+          "declaration": {
+            "name": "SELECT_OPERATORS",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getOperatorsForType",
+          "declaration": {
+            "name": "getOperatorsForType",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isUnaryOperator",
+          "declaration": {
+            "name": "isUnaryOperator",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isBetweenOperator",
+          "declaration": {
+            "name": "isBetweenOperator",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isMultiValueOperator",
+          "declaration": {
+            "name": "isMultiValueOperator",
+            "module": "./operators"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "generateId",
+          "declaration": {
+            "name": "generateId",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createRule",
+          "declaration": {
+            "name": "createRule",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createRuleGroup",
+          "declaration": {
+            "name": "createRuleGroup",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createDefaultQuery",
+          "declaration": {
+            "name": "createDefaultQuery",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "cloneQuery",
+          "declaration": {
+            "name": "cloneQuery",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "cloneWithNewIds",
+          "declaration": {
+            "name": "cloneWithNewIds",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "findByPath",
+          "declaration": {
+            "name": "findByPath",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "findParentByPath",
+          "declaration": {
+            "name": "findParentByPath",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "addRule",
+          "declaration": {
+            "name": "addRule",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "addGroup",
+          "declaration": {
+            "name": "addGroup",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "removeItem",
+          "declaration": {
+            "name": "removeItem",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "updateRule",
+          "declaration": {
+            "name": "updateRule",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "updateCombinator",
+          "declaration": {
+            "name": "updateCombinator",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "toggleNot",
+          "declaration": {
+            "name": "toggleNot",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "toggleDisabled",
+          "declaration": {
+            "name": "toggleDisabled",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "cloneItem",
+          "declaration": {
+            "name": "cloneItem",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "moveItem",
+          "declaration": {
+            "name": "moveItem",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getDepth",
+          "declaration": {
+            "name": "getDepth",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "wouldExceedMaxDepth",
+          "declaration": {
+            "name": "wouldExceedMaxDepth",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "countRules",
+          "declaration": {
+            "name": "countRules",
+            "module": "./helpers"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "countGroups",
+          "declaration": {
+            "name": "countGroups",
+            "module": "./helpers"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/defs/operators.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "TEXT_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'contains', label: 'Contains' },\n  { name: 'notContains', label: 'Does Not Contain' },\n  { name: 'startsWith', label: 'Starts With' },\n  { name: 'endsWith', label: 'Ends With' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "description": "Default operators for text fields"
+        },
+        {
+          "kind": "variable",
+          "name": "NUMBER_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'lessThan', label: 'Less Than' },\n  { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },\n  { name: 'greaterThan', label: 'Greater Than' },\n  { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },\n  { name: 'between', label: 'Between' },\n  { name: 'notBetween', label: 'Not Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "description": "Default operators for number fields"
+        },
+        {
+          "kind": "variable",
+          "name": "DATE_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'before', label: 'Before' },\n  { name: 'after', label: 'After' },\n  { name: 'between', label: 'Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "description": "Default operators for date/datetime fields"
+        },
+        {
+          "kind": "variable",
+          "name": "TIME_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'before', label: 'Before' },\n  { name: 'after', label: 'After' },\n  { name: 'between', label: 'Between' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "description": "Default operators for time fields"
+        },
+        {
+          "kind": "variable",
+          "name": "BOOLEAN_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Is' },\n]",
+          "description": "Default operators for boolean fields"
+        },
+        {
+          "kind": "variable",
+          "name": "SELECT_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'in', label: 'In' },\n  { name: 'notIn', label: 'Not In' },\n  { name: 'isNull', label: 'Is Empty', arity: 'unary' },\n  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },\n]",
+          "description": "Default operators for select/multiselect fields"
+        },
+        {
+          "kind": "variable",
+          "name": "RADIO_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n]",
+          "description": "Default operators for radio button fields"
+        },
+        {
+          "kind": "variable",
+          "name": "SLIDER_OPERATORS",
+          "type": {
+            "text": "QueryOperator[]"
+          },
+          "default": "[\n  { name: 'equal', label: 'Equal' },\n  { name: 'notEqual', label: 'Not Equal' },\n  { name: 'lessThan', label: 'Less Than' },\n  { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },\n  { name: 'greaterThan', label: 'Greater Than' },\n  { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },\n  { name: 'between', label: 'Between' },\n]",
+          "description": "Default operators for slider fields (numeric range)"
+        },
+        {
+          "kind": "function",
+          "name": "getOperatorsForType",
+          "return": {
+            "type": {
+              "text": "QueryOperator[]"
+            }
+          },
+          "parameters": [
+            {
+              "name": "dataType",
+              "type": {
+                "text": "FieldDataType"
+              }
+            }
+          ],
+          "description": "Get default operators for a given field data type"
+        },
+        {
+          "kind": "function",
+          "name": "isUnaryOperator",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "operator",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "operators",
+              "type": {
+                "text": "QueryOperator[]"
+              }
+            }
+          ],
+          "description": "Check if an operator is unary (doesn't require a value)"
+        },
+        {
+          "kind": "function",
+          "name": "isBetweenOperator",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "operator",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "Check if an operator requires two values (between, notBetween)"
+        },
+        {
+          "kind": "function",
+          "name": "isMultiValueOperator",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "operator",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "Check if an operator works with multiple values (in, notIn)"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TEXT_OPERATORS",
+          "declaration": {
+            "name": "TEXT_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NUMBER_OPERATORS",
+          "declaration": {
+            "name": "NUMBER_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "DATE_OPERATORS",
+          "declaration": {
+            "name": "DATE_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TIME_OPERATORS",
+          "declaration": {
+            "name": "TIME_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BOOLEAN_OPERATORS",
+          "declaration": {
+            "name": "BOOLEAN_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SELECT_OPERATORS",
+          "declaration": {
+            "name": "SELECT_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RADIO_OPERATORS",
+          "declaration": {
+            "name": "RADIO_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SLIDER_OPERATORS",
+          "declaration": {
+            "name": "SLIDER_OPERATORS",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getOperatorsForType",
+          "declaration": {
+            "name": "getOperatorsForType",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isUnaryOperator",
+          "declaration": {
+            "name": "isUnaryOperator",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isBetweenOperator",
+          "declaration": {
+            "name": "isBetweenOperator",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isMultiValueOperator",
+          "declaration": {
+            "name": "isMultiValueOperator",
+            "module": "src/components/reusable/queryBuilder/defs/operators.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/queryBuilder/defs/types.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "isRuleGroup",
+          "return": {
+            "type": {
+              "text": "item is RuleGroupType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "item",
+              "type": {
+                "text": "RuleOrGroup"
+              }
+            }
+          ],
+          "description": "Type guard to check if an item is a RuleGroupType"
+        },
+        {
+          "kind": "function",
+          "name": "isRule",
+          "return": {
+            "type": {
+              "text": "item is RuleType"
+            }
+          },
+          "parameters": [
+            {
+              "name": "item",
+              "type": {
+                "text": "RuleOrGroup"
+              }
+            }
+          ],
+          "description": "Type guard to check if an item is a RuleType"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "isRuleGroup",
+          "declaration": {
+            "name": "isRuleGroup",
+            "module": "src/components/reusable/queryBuilder/defs/types.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isRule",
+          "declaration": {
+            "name": "isRule",
+            "module": "src/components/reusable/queryBuilder/defs/types.ts"
           }
         }
       ]
