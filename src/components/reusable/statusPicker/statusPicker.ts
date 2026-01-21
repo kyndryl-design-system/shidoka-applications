@@ -79,7 +79,6 @@ export class StatusPicker extends LitElement {
       ?disabled="${this.disabled}"
       kind=${this.kind}
       title="${this.label}"
-      tabindex=${this.disabled ? -1 : 0}
       @click=${(e: any) => this.handleStatusClick(e, this.label)}
     >
       <slot></slot>
