@@ -73,14 +73,13 @@ export class StatusPicker extends LitElement {
       selected: this.selected,
     };
 
-    return html`<div
+    return html`<button
       class="${classMap(Classes)}"
       ?disabled="${this.disabled}"
       kind=${this.kind}
       title="${this.label}"
       tabindex=${this.disabled ? -1 : 0}
       @click=${(e: any) => this.handleStatusClick(e, this.label)}
-      @keydown=${(e: any) => this.handleStatusPress(e, this.label)}
     >
       <slot></slot>
       ${!this._iconOnly
@@ -90,24 +89,11 @@ export class StatusPicker extends LitElement {
             >${this.label}</span
           >`
         : ''}
-    </div>`;
+    </button>`;
   }
 
   private handleStatusClick(e: any, value: string) {
     if (!this.disabled) {
-      const event = new CustomEvent('on-click', {
-        detail: {
-          value,
-          origEvent: e,
-        },
-      });
-      this.dispatchEvent(event);
-    }
-  }
-
-  private handleStatusPress(e: any, value: string) {
-    // Keyboard key codes: 32 = SPACE | 13 = ENTER
-    if ((e.keyCode === 32 || e.keyCode === 13) && !this.disabled) {
       const event = new CustomEvent('on-click', {
         detail: {
           value,
