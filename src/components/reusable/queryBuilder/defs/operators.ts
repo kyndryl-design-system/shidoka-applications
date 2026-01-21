@@ -76,6 +76,27 @@ export const SELECT_OPERATORS: QueryOperator[] = [
 ];
 
 /**
+ * Default operators for radio button fields
+ */
+export const RADIO_OPERATORS: QueryOperator[] = [
+  { name: 'equal', label: 'Equal' },
+  { name: 'notEqual', label: 'Not Equal' },
+];
+
+/**
+ * Default operators for slider fields (numeric range)
+ */
+export const SLIDER_OPERATORS: QueryOperator[] = [
+  { name: 'equal', label: 'Equal' },
+  { name: 'notEqual', label: 'Not Equal' },
+  { name: 'lessThan', label: 'Less Than' },
+  { name: 'lessThanOrEqual', label: 'Less Than Or Equal' },
+  { name: 'greaterThan', label: 'Greater Than' },
+  { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },
+  { name: 'between', label: 'Between' },
+];
+
+/**
  * Get default operators for a given field data type
  */
 export function getOperatorsForType(dataType: FieldDataType): QueryOperator[] {
@@ -93,6 +114,10 @@ export function getOperatorsForType(dataType: FieldDataType): QueryOperator[] {
       return BOOLEAN_OPERATORS;
     case 'select':
       return SELECT_OPERATORS;
+    case 'radio':
+      return RADIO_OPERATORS;
+    case 'slider':
+      return SLIDER_OPERATORS;
     default:
       return TEXT_OPERATORS;
   }

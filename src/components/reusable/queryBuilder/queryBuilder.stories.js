@@ -22,8 +22,10 @@ export default {
   },
 };
 
-// Sample fields configuration
+// Sample fields configuration showcasing all value types:
+// text, number, date, select, radio, slider
 const sampleFields = [
+  // Text inputs
   { name: 'firstName', label: 'First Name', dataType: 'text' },
   { name: 'lastName', label: 'Last Name', dataType: 'text' },
   {
@@ -32,11 +34,16 @@ const sampleFields = [
     dataType: 'text',
     placeholder: 'Enter email address',
   },
+
+  // Number inputs
   { name: 'age', label: 'Age', dataType: 'number' },
   { name: 'salary', label: 'Salary', dataType: 'number' },
+
+  // Date inputs
   { name: 'birthDate', label: 'Birth Date', dataType: 'date' },
   { name: 'hireDate', label: 'Hire Date', dataType: 'date' },
-  { name: 'isActive', label: 'Is Active', dataType: 'boolean' },
+
+  // Select (dropdown) inputs
   {
     name: 'status',
     label: 'Status',
@@ -71,9 +78,50 @@ const sampleFields = [
       { value: 'contractor', label: 'Contractor' },
     ],
   },
+
+  // Radio button inputs
+  {
+    name: 'priority',
+    label: 'Priority',
+    dataType: 'radio',
+    values: [
+      { value: 'low', label: 'Low' },
+      { value: 'medium', label: 'Medium' },
+      { value: 'high', label: 'High' },
+    ],
+  },
+  {
+    name: 'employmentType',
+    label: 'Employment Type',
+    dataType: 'radio',
+    values: [
+      { value: 'full-time', label: 'Full-time' },
+      { value: 'part-time', label: 'Part-time' },
+    ],
+  },
+
+  // Slider inputs
+  {
+    name: 'rating',
+    label: 'Rating',
+    dataType: 'slider',
+    min: 0,
+    max: 100,
+    step: 10,
+    defaultValue: 50,
+  },
+  {
+    name: 'experienceYears',
+    label: 'Years of Experience',
+    dataType: 'slider',
+    min: 0,
+    max: 30,
+    step: 1,
+    defaultValue: 5,
+  },
 ];
 
-// Initial query with some pre-populated rules
+// Initial query with some pre-populated rules showcasing different value types
 const initialQuery = {
   id: 'root',
   combinator: 'and',
@@ -82,7 +130,7 @@ const initialQuery = {
       id: 'rule-1',
       field: 'firstName',
       operator: 'contains',
-      value: '',
+      value: 'John',
     },
     {
       id: 'rule-2',
@@ -90,10 +138,22 @@ const initialQuery = {
       operator: 'equal',
       value: 'active',
     },
+    {
+      id: 'rule-3',
+      field: 'priority',
+      operator: 'equal',
+      value: 'high',
+    },
+    {
+      id: 'rule-4',
+      field: 'rating',
+      operator: 'greaterThan',
+      value: 70,
+    },
   ],
 };
 
-// Complex nested query for demo
+// Complex nested query showcasing different value types
 const nestedQuery = {
   id: 'root',
   combinator: 'and',
@@ -116,9 +176,9 @@ const nestedQuery = {
         },
         {
           id: 'rule-3',
-          field: 'department',
+          field: 'priority',
           operator: 'equal',
-          value: 'sales',
+          value: 'high',
         },
         {
           id: 'group-2',
@@ -132,9 +192,9 @@ const nestedQuery = {
             },
             {
               id: 'rule-5',
-              field: 'salary',
+              field: 'experienceYears',
               operator: 'greaterThan',
-              value: 50000,
+              value: 5,
             },
           ],
         },
@@ -142,9 +202,9 @@ const nestedQuery = {
     },
     {
       id: 'rule-6',
-      field: 'isActive',
-      operator: 'equal',
-      value: true,
+      field: 'rating',
+      operator: 'greaterThanOrEqual',
+      value: 80,
     },
   ],
 };
@@ -152,7 +212,6 @@ const nestedQuery = {
 const args = {
   fields: sampleFields,
   query: { id: 'root', combinator: 'and', rules: [] },
-  showNotToggle: false,
   showCloneButtons: false,
   showLockButtons: false,
   maxDepth: 5,
@@ -169,7 +228,6 @@ export const Default = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
-        ?showNotToggle=${args.showNotToggle}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -197,7 +255,6 @@ export const WithInitialQuery = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
-        ?showNotToggle=${args.showNotToggle}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -225,7 +282,6 @@ export const NestedGroups = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
-        ?showNotToggle=${args.showNotToggle}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -247,7 +303,6 @@ export const WithAllOptions = {
   args: {
     ...args,
     query: initialQuery,
-    showNotToggle: true,
     showCloneButtons: true,
     showLockButtons: true,
   },
@@ -256,7 +311,6 @@ export const WithAllOptions = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
-        ?showNotToggle=${args.showNotToggle}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -291,7 +345,6 @@ export const LimitedDepth = {
         <kyn-query-builder
           .fields=${args.fields}
           .query=${args.query}
-          ?showNotToggle=${args.showNotToggle}
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
           .maxDepth=${args.maxDepth}
@@ -321,7 +374,6 @@ export const Disabled = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
-        ?showNotToggle=${args.showNotToggle}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -368,7 +420,6 @@ export const WithQueryOutput = {
         id="query-builder-with-output"
         .fields=${args.fields}
         .query=${args.query}
-        ?showNotToggle=${args.showNotToggle}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -385,6 +436,87 @@ export const WithQueryOutput = {
       <div class="query-output">
         <span class="query-output-label">Query Output (JSON):</span>
         <div id="query-output">${JSON.stringify(args.query, null, 2)}</div>
+      </div>
+    `;
+  },
+};
+
+// Query showcasing all the different value types
+const allValueTypesQuery = {
+  id: 'root',
+  combinator: 'and',
+  rules: [
+    {
+      id: 'rule-text',
+      field: 'firstName',
+      operator: 'contains',
+      value: 'John',
+    },
+    {
+      id: 'rule-number',
+      field: 'age',
+      operator: 'greaterThan',
+      value: 25,
+    },
+    {
+      id: 'rule-date',
+      field: 'birthDate',
+      operator: 'greaterThan',
+      value: '1990-01-01',
+    },
+    {
+      id: 'rule-select',
+      field: 'department',
+      operator: 'equal',
+      value: 'engineering',
+    },
+    {
+      id: 'rule-radio',
+      field: 'priority',
+      operator: 'equal',
+      value: 'high',
+    },
+    {
+      id: 'rule-slider',
+      field: 'rating',
+      operator: 'greaterThanOrEqual',
+      value: 70,
+    },
+  ],
+};
+
+export const AllValueTypes = {
+  args: {
+    ...args,
+    query: allValueTypesQuery,
+    showCloneButtons: true,
+    showLockButtons: true,
+  },
+  render: (args) => {
+    return html`
+      <div>
+        <p
+          style="margin-bottom: 16px; color: var(--kd-color-text-level-secondary);"
+        >
+          This story showcases all available value types: text input, number
+          input, date picker, dropdown select, radio button group, and slider.
+        </p>
+        <kyn-query-builder
+          .fields=${args.fields}
+          .query=${args.query}
+          ?showCloneButtons=${args.showCloneButtons}
+          ?showLockButtons=${args.showLockButtons}
+          .maxDepth=${args.maxDepth}
+          ?allowDragAndDrop=${args.allowDragAndDrop}
+          ?disabled=${args.disabled}
+          @on-query-change=${(e) => {
+            action('on-query-change')(e.detail);
+            console.log(
+              'Query changed:',
+              JSON.stringify(e.detail.query, null, 2)
+            );
+          }}
+        ></kyn-query-builder>
       </div>
     `;
   },

@@ -12,7 +12,12 @@
 
   &--disabled {
     opacity: 0.5;
-    pointer-events: none;
+
+    // Disable pointer events on fields but allow actions (lock/unlock button) to remain clickable
+    .qb-rule__fields,
+    .qb-rule__drag-handle {
+      pointer-events: none;
+    }
   }
 }
 
@@ -53,10 +58,44 @@
 .qb-rule__value {
   flex: 1 1 0;
   min-width: 0;
+
+  &:is(kyn-slider-input) {
+    padding: 6px 8px 0;
+  }
+
+  // Ensure nested components fill their container
+  kyn-dropdown,
+  kyn-text-input,
+  kyn-number-input,
+  kyn-date-picker,
+  kyn-time-picker {
+    width: 100%;
+  }
+
+  // Slider needs extra horizontal padding for the thumb and vertical centering
+  kyn-slider-input {
+    width: 100%;
+    padding: 6px 16px 0;
+  }
 }
 
-.qb-rule__value--boolean {
-  flex: 0 0 auto;
+// Radio buttons need their own wrapper for centering and even spacing
+.qb-rule__value.qb-rule__value--radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  margin-top: -13px; // Offset for vertical alignment with other inputs
+
+  kyn-radio-button-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+
+    // Override internal horizontal gap
+    --kyn-radio-group-gap: 32px;
+  }
 }
 
 .qb-rule__between {

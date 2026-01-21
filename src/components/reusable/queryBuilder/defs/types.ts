@@ -64,7 +64,7 @@ export interface QueryField {
   dataType: FieldDataType;
   /** Custom operators for this field (overrides defaults for dataType) */
   operators?: QueryOperator[];
-  /** Predefined values for select/multiselect fields */
+  /** Predefined values for select/multiselect/radio fields */
   values?: QueryOption[];
   /** Default operator when field is selected */
   defaultOperator?: string;
@@ -74,6 +74,12 @@ export interface QueryField {
   placeholder?: string;
   /** Custom validation function */
   validator?: (rule: RuleType) => boolean | string;
+  /** Minimum value for slider fields */
+  min?: number;
+  /** Maximum value for slider fields */
+  max?: number;
+  /** Step value for slider fields */
+  step?: number;
 }
 
 /**
@@ -86,7 +92,9 @@ export type FieldDataType =
   | 'datetime'
   | 'time'
   | 'boolean'
-  | 'select';
+  | 'select'
+  | 'radio'
+  | 'slider';
 
 /**
  * Configuration for an operator.
@@ -118,8 +126,6 @@ export interface QueryBuilderConfig {
   fields: QueryField[];
   /** Available combinators (default: AND, OR) */
   combinators?: QueryOption[];
-  /** Show NOT toggle on groups */
-  showNotToggle?: boolean;
   /** Show clone button on rules/groups */
   showCloneButtons?: boolean;
   /** Show lock/disable button on rules/groups */

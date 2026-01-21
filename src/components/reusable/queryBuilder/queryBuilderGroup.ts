@@ -23,8 +23,6 @@ import '../buttonGroup';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
 import addSimpleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import dragIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/draggable.svg';
-import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
-import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/unlock.svg';
 import cloneIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
 
 /**
@@ -74,10 +72,6 @@ export class QueryBuilderGroup extends LitElement {
   /** Whether this is the root group */
   @property({ type: Boolean })
   accessor isRoot = false;
-
-  /** Whether to show NOT toggle */
-  @property({ type: Boolean })
-  accessor showNotToggle = false;
 
   /** Whether to show clone button */
   @property({ type: Boolean })
@@ -179,19 +173,6 @@ export class QueryBuilderGroup extends LitElement {
           `
         )}
       </kyn-button-group>
-      ${this.showNotToggle
-        ? html`
-            <kyn-button
-              kind=${this.group.not ? 'primary-destructive' : 'tertiary'}
-              size="small"
-              ?disabled=${this.disabled || this.group.disabled}
-              @on-click=${this._handleNotToggle}
-              description="Negate group (NOT)"
-            >
-              NOT
-            </kyn-button>
-          `
-        : null}
     `;
   }
 
@@ -203,42 +184,22 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _renderHeaderActions() {
-    // Only render if there are optional buttons to show
-    if (!this.showCloneButton && !this.showLockButton) {
+    // Only render clone button for non-root groups
+    if (!this.showCloneButton || this.isRoot) {
       return null;
     }
 
     return html`
       <div class="qb-group__header-actions">
-        ${this.showCloneButton && !this.isRoot
-          ? html`
-              <kyn-button
-                kind="ghost"
-                size="small"
-                description="Clone group"
-                ?disabled=${this.disabled || this.group.disabled}
-                @on-click=${this._handleCloneGroup}
-              >
-                <span slot="icon">${unsafeSVG(cloneIcon)}</span>
-              </kyn-button>
-            `
-          : null}
-        ${this.showLockButton
-          ? html`
-              <kyn-button
-                kind="ghost"
-                size="small"
-                description=${this.group.disabled
-                  ? 'Unlock group'
-                  : 'Lock group'}
-                @on-click=${this._handleLockToggle}
-              >
-                <span slot="icon">
-                  ${unsafeSVG(this.group.disabled ? lockIcon : unlockIcon)}
-                </span>
-              </kyn-button>
-            `
-          : null}
+        <kyn-button
+          kind="ghost"
+          size="small"
+          description="Clone group"
+          ?disabled=${this.disabled || this.group.disabled}
+          @on-click=${this._handleCloneGroup}
+        >
+          <span slot="icon">${unsafeSVG(cloneIcon)}</span>
+        </kyn-button>
       </div>
     `;
   }
@@ -286,7 +247,6 @@ export class QueryBuilderGroup extends LitElement {
           .path=${[...this.path, index]}
           .depth=${this.depth + 1}
           .maxDepth=${this.maxDepth}
-          ?showNotToggle=${this.showNotToggle}
           ?showCloneButton=${this.showCloneButton}
           ?showLockButton=${this.showLockButton}
           ?allowDragAndDrop=${this.allowDragAndDrop}
@@ -334,14 +294,6 @@ export class QueryBuilderGroup extends LitElement {
     const updatedGroup: RuleGroupType = {
       ...this.group,
       combinator: combinator as 'and' | 'or',
-    };
-    this._emitGroupChange(updatedGroup);
-  }
-
-  private _handleNotToggle() {
-    const updatedGroup: RuleGroupType = {
-      ...this.group,
-      not: !this.group.not,
     };
     this._emitGroupChange(updatedGroup);
   }
@@ -542,20 +494,6 @@ export class QueryBuilderGroup extends LitElement {
     this.dispatchEvent(
       new CustomEvent('on-group-clone', {
         detail: { groupId: this.group.id, path: this.path },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _handleLockToggle() {
-    this.dispatchEvent(
-      new CustomEvent('on-group-lock', {
-        detail: {
-          groupId: this.group.id,
-          disabled: !this.group.disabled,
-          path: this.path,
-        },
         bubbles: true,
         composed: true,
       })

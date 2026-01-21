@@ -21,6 +21,8 @@ import '../datePicker';
 import '../timepicker';
 import '../toggleButton';
 import '../button';
+import '../radioButton';
+import '../sliderInput';
 
 // Import icons
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
@@ -208,6 +210,10 @@ export class QueryBuilderRule extends LitElement {
         return this._renderBooleanInput(field);
       case 'select':
         return this._renderSelectInput(field);
+      case 'radio':
+        return this._renderRadioInput(field);
+      case 'slider':
+        return this._renderSliderInput(field);
       case 'text':
       default:
         return this._renderTextInput(field);
@@ -296,6 +302,47 @@ export class QueryBuilderRule extends LitElement {
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleBooleanChange}
       ></kyn-toggle-button>
+    `;
+  }
+
+  private _renderRadioInput(field: QueryField) {
+    return html`
+      <div class="qb-rule__value qb-rule__value--radio">
+        <kyn-radio-button-group
+          horizontal
+          hideLabel
+          .value=${String(this.rule.value || '')}
+          ?disabled=${this.disabled || this.rule.disabled}
+          @on-radio-group-change=${this._handleRadioChange}
+        >
+          ${(field.values || []).map(
+            (opt) => html`
+              <kyn-radio-button value=${opt.value}
+                >${opt.label}</kyn-radio-button
+              >
+            `
+          )}
+        </kyn-radio-button-group>
+      </div>
+    `;
+  }
+
+  private _renderSliderInput(field: QueryField) {
+    const min = field.min ?? 0;
+    const max = field.max ?? 100;
+    const step = field.step ?? 1;
+
+    return html`
+      <kyn-slider-input
+        class="qb-rule__value"
+        hideLabel
+        .value=${Number(this.rule.value) || min}
+        .min=${min}
+        .max=${max}
+        .step=${step}
+        ?disabled=${this.disabled || this.rule.disabled}
+        @on-input=${this._handleSliderChange}
+      ></kyn-slider-input>
     `;
   }
 
@@ -433,6 +480,7 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _renderActions() {
+    // Order: add, lock, copy, delete (per design)
     return html`
       <div class="qb-rule__actions">
         ${this.isLast
@@ -448,23 +496,10 @@ export class QueryBuilderRule extends LitElement {
               </kyn-button>
             `
           : null}
-        ${this.showCloneButton
-          ? html`
-              <kyn-button
-                kind="ghost"
-                size="small"
-                description="Clone rule"
-                ?disabled=${this.disabled || this.rule.disabled}
-                @on-click=${this._handleCloneRule}
-              >
-                <span slot="icon">${unsafeSVG(cloneIcon)}</span>
-              </kyn-button>
-            `
-          : null}
         ${this.showLockButton
           ? html`
               <kyn-button
-                kind="ghost"
+                kind=${this.rule.disabled ? 'secondary' : 'outline'}
                 size="small"
                 description=${this.rule.disabled ? 'Unlock rule' : 'Lock rule'}
                 @on-click=${this._handleLockToggle}
@@ -472,6 +507,19 @@ export class QueryBuilderRule extends LitElement {
                 <span slot="icon">
                   ${unsafeSVG(this.rule.disabled ? lockIcon : unlockIcon)}
                 </span>
+              </kyn-button>
+            `
+          : null}
+        ${this.showCloneButton
+          ? html`
+              <kyn-button
+                kind="outline"
+                size="small"
+                description="Clone rule"
+                ?disabled=${this.disabled || this.rule.disabled}
+                @on-click=${this._handleCloneRule}
+              >
+                <span slot="icon">${unsafeSVG(cloneIcon)}</span>
               </kyn-button>
             `
           : null}
@@ -547,6 +595,24 @@ export class QueryBuilderRule extends LitElement {
     const updatedRule: RuleType = {
       ...this.rule,
       value: e.detail.checked,
+    };
+
+    this._emitRuleChange(updatedRule);
+  }
+
+  private _handleRadioChange(e: CustomEvent) {
+    const updatedRule: RuleType = {
+      ...this.rule,
+      value: e.detail.value,
+    };
+
+    this._emitRuleChange(updatedRule);
+  }
+
+  private _handleSliderChange(e: CustomEvent) {
+    const updatedRule: RuleType = {
+      ...this.rule,
+      value: e.detail.value,
     };
 
     this._emitRuleChange(updatedRule);

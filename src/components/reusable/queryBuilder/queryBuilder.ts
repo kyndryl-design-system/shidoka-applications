@@ -63,10 +63,6 @@ export class QueryBuilder extends LitElement {
     { value: 'or', label: 'OR' },
   ];
 
-  /** Show NOT toggle on groups */
-  @property({ type: Boolean })
-  accessor showNotToggle = false;
-
   /** Show clone button on rules/groups */
   @property({ type: Boolean })
   accessor showCloneButtons = false;
@@ -127,7 +123,6 @@ export class QueryBuilder extends LitElement {
             .depth=${0}
             .maxDepth=${this.maxDepth}
             isRoot
-            ?showNotToggle=${this.showNotToggle}
             ?showCloneButton=${this.showCloneButtons}
             ?showLockButton=${this.showLockButtons}
             ?allowDragAndDrop=${this.allowDragAndDrop}
