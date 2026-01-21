@@ -74,6 +74,7 @@ export class StatusPicker extends LitElement {
     };
 
     return html`<button
+      type="button"
       class="${classMap(Classes)}"
       ?disabled="${this.disabled}"
       kind=${this.kind}
