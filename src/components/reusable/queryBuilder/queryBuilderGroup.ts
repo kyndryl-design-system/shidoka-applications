@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -89,6 +89,10 @@ export class QueryBuilderGroup extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor disabled = false;
 
+  /** Current drag over index for drop indicator */
+  @state()
+  accessor _dragOverIndex: number | null = null;
+
   override render() {
     const classes = {
       'qb-group': true,
@@ -146,8 +150,21 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _renderDragHandle() {
+    // Don't allow dragging the root group
+    if (this.isRoot) {
+      return null;
+    }
+
+    const canDrag = !this.disabled && !this.group.disabled;
+
     return html`
-      <div class="qb-group__drag-handle" title="Drag to reorder">
+      <div
+        class="qb-group__drag-handle"
+        title=${canDrag ? 'Drag to reorder' : ''}
+        draggable="true"
+        @dragstart=${this._handleDragStart}
+        @dragend=${this._handleDragEnd}
+      >
         ${unsafeSVG(dragIcon)}
       </div>
     `;
@@ -214,7 +231,11 @@ export class QueryBuilderGroup extends LitElement {
     }
 
     return html`
-      <div class="qb-group__rules">
+      <div
+        class="qb-group__rules"
+        @dragover=${this._handleGroupDragOver}
+        @drop=${this._handleGroupDrop}
+      >
         ${repeat(
           this.group.rules,
           (item) => item.id,
@@ -242,44 +263,73 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _renderRuleOrGroup(item: RuleOrGroup, index: number) {
+    const isDropBefore = this._dragOverIndex === index;
+    const isDropAfter =
+      this._dragOverIndex === index + 1 &&
+      index === this.group.rules.length - 1;
+
+    const wrapperClasses = {
+      'qb-group__item-wrapper': true,
+      'qb-group__item-wrapper--drop-before': isDropBefore,
+      'qb-group__item-wrapper--drop-after': isDropAfter,
+    };
+
     if (isRuleGroup(item)) {
       return html`
-        <kyn-qb-group
-          .group=${item}
-          .fields=${this.fields}
-          .combinators=${this.combinators}
-          .path=${[...this.path, index]}
-          .depth=${this.depth + 1}
-          .maxDepth=${this.maxDepth}
-          ?showCloneButton=${this.showCloneButton}
-          ?showLockButton=${this.showLockButton}
-          ?allowDragAndDrop=${this.allowDragAndDrop}
-          ?disabled=${this.disabled || this.group.disabled}
-          @on-group-change=${this._handleNestedGroupChange}
-          @on-group-remove=${this._handleNestedGroupRemove}
-          @on-group-clone=${this._handleNestedGroupClone}
-          @on-group-lock=${this._handleNestedGroupLock}
-        ></kyn-qb-group>
+        <div
+          class=${classMap(wrapperClasses)}
+          @dragover=${(e: DragEvent) => this._handleItemDragOver(e, index)}
+          @dragleave=${this._handleItemDragLeave}
+          @drop=${(e: DragEvent) => this._handleItemDrop(e, index)}
+        >
+          <kyn-qb-group
+            .group=${item}
+            .fields=${this.fields}
+            .combinators=${this.combinators}
+            .path=${[...this.path, index]}
+            .depth=${this.depth + 1}
+            .maxDepth=${this.maxDepth}
+            ?showCloneButton=${this.showCloneButton}
+            ?showLockButton=${this.showLockButton}
+            ?allowDragAndDrop=${this.allowDragAndDrop}
+            ?disabled=${this.disabled || this.group.disabled}
+            @on-group-change=${this._handleNestedGroupChange}
+            @on-group-remove=${this._handleNestedGroupRemove}
+            @on-group-clone=${this._handleNestedGroupClone}
+            @on-group-lock=${this._handleNestedGroupLock}
+            @on-item-move=${this._handleNestedItemMove}
+          ></kyn-qb-group>
+        </div>
       `;
     }
 
     const isLastRule = this._isLastRule(index);
 
     return html`
-      <kyn-qb-rule
-        .rule=${item}
-        .fields=${this.fields}
-        ?isLast=${isLastRule}
-        ?showCloneButton=${this.showCloneButton}
-        ?showLockButton=${this.showLockButton}
-        ?allowDragAndDrop=${this.allowDragAndDrop}
-        ?disabled=${this.disabled || this.group.disabled}
-        @on-rule-change=${(e: CustomEvent) => this._handleRuleChange(e, index)}
-        @on-rule-remove=${() => this._handleRuleRemove(index)}
-        @on-rule-add=${() => this._handleAddRuleAfter(index)}
-        @on-rule-clone=${() => this._handleRuleClone(index)}
-        @on-rule-lock=${(e: CustomEvent) => this._handleRuleLock(e, index)}
-      ></kyn-qb-rule>
+      <div
+        class=${classMap(wrapperClasses)}
+        @dragover=${(e: DragEvent) => this._handleItemDragOver(e, index)}
+        @dragleave=${this._handleItemDragLeave}
+        @drop=${(e: DragEvent) => this._handleItemDrop(e, index)}
+      >
+        <kyn-qb-rule
+          .rule=${item}
+          .fields=${this.fields}
+          .index=${index}
+          .parentPath=${this.path}
+          ?isLast=${isLastRule}
+          ?showCloneButton=${this.showCloneButton}
+          ?showLockButton=${this.showLockButton}
+          ?allowDragAndDrop=${this.allowDragAndDrop}
+          ?disabled=${this.disabled || this.group.disabled}
+          @on-rule-change=${(e: CustomEvent) =>
+            this._handleRuleChange(e, index)}
+          @on-rule-remove=${() => this._handleRuleRemove(index)}
+          @on-rule-add=${() => this._handleAddRuleAfter(index)}
+          @on-rule-clone=${() => this._handleRuleClone(index)}
+          @on-rule-lock=${(e: CustomEvent) => this._handleRuleLock(e, index)}
+        ></kyn-qb-rule>
+      </div>
     `;
   }
 
@@ -531,6 +581,178 @@ export class QueryBuilderGroup extends LitElement {
       }),
     };
     return cloned;
+  }
+
+  // ============================================
+  // Drag and Drop Handlers
+  // ============================================
+
+  private _handleDragStart(e: DragEvent) {
+    if (!this.allowDragAndDrop || this.disabled || this.group.disabled) {
+      e.preventDefault();
+      return;
+    }
+
+    const dragData = {
+      type: 'group',
+      id: this.group.id,
+      sourceIndex: this.path[this.path.length - 1] ?? 0,
+      sourcePath: this.path.slice(0, -1),
+    };
+
+    e.dataTransfer!.setData('text/plain', JSON.stringify(dragData));
+    e.dataTransfer!.effectAllowed = 'move';
+
+    // Position drag image relative to where user clicked
+    const rect = this.getBoundingClientRect();
+    e.dataTransfer!.setDragImage(
+      this,
+      e.clientX - rect.left,
+      e.clientY - rect.top
+    );
+
+    // Add visual feedback to the source element
+    this.classList.add('qb-group--dragging');
+  }
+
+  private _handleDragEnd() {
+    this.classList.remove('qb-group--dragging');
+    this._dragOverIndex = null;
+  }
+
+  private _handleItemDragOver(e: DragEvent, index: number) {
+    if (!this.allowDragAndDrop || this.disabled || this.group.disabled) {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Determine drop position based on mouse position
+    const target = e.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+
+    // Set drop index: if above midpoint, drop before; if below, drop after
+    const newIndex = e.clientY < midY ? index : index + 1;
+
+    if (this._dragOverIndex !== newIndex) {
+      this._dragOverIndex = newIndex;
+    }
+
+    e.dataTransfer!.dropEffect = 'move';
+  }
+
+  private _handleItemDragLeave(e: DragEvent) {
+    const relatedTarget = e.relatedTarget as Node | null;
+    const currentTarget = e.currentTarget as Node;
+
+    // Only clear if leaving to outside the current wrapper
+    if (relatedTarget && currentTarget.contains(relatedTarget)) {
+      return;
+    }
+
+    this._dragOverIndex = null;
+  }
+
+  private _handleItemDrop(e: DragEvent, targetIndex: number) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const dataStr = e.dataTransfer?.getData('text/plain');
+    if (!dataStr) {
+      this._dragOverIndex = null;
+      return;
+    }
+
+    try {
+      const dragData = JSON.parse(dataStr);
+
+      // Calculate actual target index based on mouse position
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      const actualTargetIndex =
+        e.clientY < midY ? targetIndex : targetIndex + 1;
+
+      // Emit move event
+      this.dispatchEvent(
+        new CustomEvent('on-item-move', {
+          detail: {
+            dragData,
+            targetPath: this.path,
+            targetIndex: actualTargetIndex,
+          },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    } catch {
+      // Invalid drag data
+    }
+
+    this._dragOverIndex = null;
+  }
+
+  private _handleGroupDragOver(e: DragEvent) {
+    if (!this.allowDragAndDrop || this.disabled || this.group.disabled) {
+      return;
+    }
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = 'move';
+  }
+
+  private _handleGroupDrop(e: DragEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const dataStr = e.dataTransfer?.getData('text/plain');
+    if (!dataStr) {
+      this._dragOverIndex = null;
+      return;
+    }
+
+    try {
+      const dragData = JSON.parse(dataStr);
+
+      // Don't allow dropping a group into itself
+      if (dragData.type === 'group') {
+        const dragPath = [...dragData.sourcePath, dragData.sourceIndex];
+        const thisPath = this.path;
+        if (thisPath.join(',').startsWith(dragPath.join(','))) {
+          this._dragOverIndex = null;
+          return;
+        }
+      }
+
+      // Emit move event to add at end of this group
+      this.dispatchEvent(
+        new CustomEvent('on-item-move', {
+          detail: {
+            dragData,
+            targetPath: this.path,
+            targetIndex: this.group.rules.length,
+          },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    } catch {
+      // Invalid drag data
+    }
+
+    this._dragOverIndex = null;
+  }
+
+  private _handleNestedItemMove(e: CustomEvent) {
+    // Bubble up move events from nested groups
+    e.stopPropagation();
+    this.dispatchEvent(
+      new CustomEvent('on-item-move', {
+        detail: e.detail,
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }
 

@@ -79,6 +79,14 @@ export class QueryBuilderRule extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor disabled = false;
 
+  /** Index of this rule in its parent group (for drag-and-drop) */
+  @property({ type: Number })
+  accessor index = 0;
+
+  /** Path to the parent group (for drag-and-drop) */
+  @property({ type: Array })
+  accessor parentPath: number[] = [];
+
   /** Get the currently selected field configuration */
   private get selectedField(): QueryField | undefined {
     return this.fields.find((f) => f.name === this.rule.field);
@@ -127,11 +135,51 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _renderDragHandle() {
+    const canDrag = !this.disabled && !this.rule.disabled;
+
     return html`
-      <div class="qb-rule__drag-handle" title="Drag to reorder">
+      <div
+        class="qb-rule__drag-handle"
+        title=${canDrag ? 'Drag to reorder' : ''}
+        draggable="true"
+        @dragstart=${this._handleDragStart}
+        @dragend=${this._handleDragEnd}
+      >
         ${unsafeSVG(dragIcon)}
       </div>
     `;
+  }
+
+  private _handleDragStart(e: DragEvent) {
+    if (!this.allowDragAndDrop || this.disabled || this.rule.disabled) {
+      e.preventDefault();
+      return;
+    }
+
+    const dragData = {
+      type: 'rule',
+      id: this.rule.id,
+      sourceIndex: this.index,
+      sourcePath: this.parentPath,
+    };
+
+    e.dataTransfer!.setData('text/plain', JSON.stringify(dragData));
+    e.dataTransfer!.effectAllowed = 'move';
+
+    // Position drag image relative to where user clicked
+    const rect = this.getBoundingClientRect();
+    e.dataTransfer!.setDragImage(
+      this,
+      e.clientX - rect.left,
+      e.clientY - rect.top
+    );
+
+    // Add visual feedback to the source element
+    this.classList.add('qb-rule--dragging');
+  }
+
+  private _handleDragEnd() {
+    this.classList.remove('qb-rule--dragging');
   }
 
   private _renderFieldSelector() {
@@ -334,7 +382,7 @@ export class QueryBuilderRule extends LitElement {
 
     return html`
       <kyn-slider-input
-        class="qb-rule__value"
+        class="qb-rule__value qb-rule__value--slider"
         hideLabel
         .value=${Number(this.rule.value) || min}
         .min=${min}

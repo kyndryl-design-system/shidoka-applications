@@ -6,10 +6,12 @@ import QueryBuilderStyles from './queryBuilder.scss?inline';
 
 import type {
   RuleGroupType,
+  RuleOrGroup,
   QueryField,
   QueryOption,
   QueryChangeEventDetail,
 } from './defs/types';
+import { isRuleGroup } from './defs/types';
 import { createDefaultQuery, generateId } from './defs/helpers';
 
 import './queryBuilderGroup';
@@ -129,6 +131,7 @@ export class QueryBuilder extends LitElement {
             ?allowDragAndDrop=${this.allowDragAndDrop}
             ?disabled=${this.disabled}
             @on-group-change=${this._handleGroupChange}
+            @on-item-move=${this._handleItemMove}
           ></kyn-qb-group>
         </div>
       </div>
@@ -177,6 +180,70 @@ export class QueryBuilder extends LitElement {
   resetQuery() {
     this._internalQuery = createDefaultQuery();
     this._emitQueryChange();
+  }
+
+  /**
+   * Handle drag-and-drop move events
+   */
+  private _handleItemMove(e: CustomEvent) {
+    e.stopPropagation();
+
+    const { dragData, targetPath, targetIndex } = e.detail;
+
+    // Deep clone the query to work with
+    const newQuery = JSON.parse(
+      JSON.stringify(this._internalQuery)
+    ) as RuleGroupType;
+
+    // Find and remove the item from its source location
+    const sourceGroup = this._getGroupAtPath(newQuery, dragData.sourcePath);
+    if (!sourceGroup) return;
+
+    const [movedItem] = sourceGroup.rules.splice(dragData.sourceIndex, 1);
+    if (!movedItem) return;
+
+    // Find the target group and insert the item
+    const targetGroup = this._getGroupAtPath(newQuery, targetPath);
+    if (!targetGroup) return;
+
+    // Adjust target index if moving within same group and source was before target
+    let adjustedTargetIndex = targetIndex;
+    if (
+      JSON.stringify(dragData.sourcePath) === JSON.stringify(targetPath) &&
+      dragData.sourceIndex < targetIndex
+    ) {
+      adjustedTargetIndex = Math.max(0, targetIndex - 1);
+    }
+
+    targetGroup.rules.splice(adjustedTargetIndex, 0, movedItem);
+
+    this._internalQuery = newQuery;
+    this._emitQueryChange();
+  }
+
+  /**
+   * Get a group at a specific path in the query tree
+   */
+  private _getGroupAtPath(
+    query: RuleGroupType,
+    path: number[]
+  ): RuleGroupType | null {
+    if (path.length === 0) {
+      return query;
+    }
+
+    let current: RuleOrGroup = query;
+    for (const index of path) {
+      if (!isRuleGroup(current)) {
+        return null;
+      }
+      current = current.rules[index];
+      if (!current) {
+        return null;
+      }
+    }
+
+    return isRuleGroup(current) ? current : null;
   }
 }
 

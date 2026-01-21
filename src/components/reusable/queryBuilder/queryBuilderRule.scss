@@ -51,17 +51,23 @@
   gap: 8px;
   flex: 1;
   min-width: 0;
+  flex-wrap: wrap;
 }
 
 .qb-rule__field,
-.qb-rule__operator,
-.qb-rule__value {
-  flex: 1 1 0;
-  min-width: 0;
+.qb-rule__operator {
+  flex: 1 1 120px;
+  min-width: 120px;
 
-  &:is(kyn-slider-input) {
-    padding: 6px 8px 0;
+  // Ensure nested components fill their container
+  kyn-dropdown {
+    width: 100%;
   }
+}
+
+.qb-rule__value {
+  flex: 1 1 150px;
+  min-width: 150px;
 
   // Ensure nested components fill their container
   kyn-dropdown,
@@ -71,12 +77,13 @@
   kyn-time-picker {
     width: 100%;
   }
+}
 
-  // Slider needs extra horizontal padding for the thumb and vertical centering
-  kyn-slider-input {
-    width: 100%;
-    padding: 6px 16px 0;
-  }
+// Slider needs more space to be usable
+.qb-rule__value.qb-rule__value--slider {
+  flex: 2 1 250px;
+  min-width: 200px;
+  padding: 6px 16px 0;
 }
 
 // Radio buttons need their own wrapper for alignment
@@ -86,10 +93,13 @@
   justify-content: flex-start;
   margin-top: -13px;
   padding: 0px 8px;
+  flex: 1 1 auto;
+  min-width: fit-content;
 
   kyn-radio-button-group {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     // Override internal horizontal gap
     --kyn-radio-group-gap: 16px;
@@ -100,12 +110,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 1 1 0;
-  min-width: 0;
+  flex: 1 1 250px;
+  min-width: 200px;
+  flex-wrap: wrap;
 
   .qb-rule__value {
-    flex: 1 1 0;
-    min-width: 0;
+    flex: 1 1 100px;
+    min-width: 80px;
   }
 }
 
@@ -120,4 +131,9 @@
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+}
+
+// Drag and drop states
+:host(.qb-rule--dragging) {
+  opacity: 0.5;
 }

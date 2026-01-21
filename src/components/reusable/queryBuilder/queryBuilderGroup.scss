@@ -96,3 +96,46 @@
   border-radius: 4px;
   margin: 8px 0;
 }
+
+// Item wrapper for drag-and-drop targeting
+.qb-group__item-wrapper {
+  position: relative;
+
+  // Drop indicator as pseudo-element (before)
+  &.qb-group__item-wrapper--drop-before::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--kd-color-border-variants-interactive);
+    border-radius: 2px;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  // Drop indicator as pseudo-element (after)
+  &.qb-group__item-wrapper--drop-after::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--kd-color-border-variants-interactive);
+    border-radius: 2px;
+    z-index: 10;
+    pointer-events: none;
+  }
+}
+
+// Drag and drop states
+:host(.qb-group--dragging) {
+  opacity: 0.5;
+}
+
+.qb-group__empty--dragover {
+  background-color: var(--kd-color-background-ui-soft);
+  border-color: var(--kd-color-border-variants-interactive);
+}
