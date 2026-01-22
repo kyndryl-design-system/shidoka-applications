@@ -187,7 +187,7 @@ export class QueryBuilderRule extends LitElement {
       <kyn-dropdown
         class="qb-rule__field"
         placeholder="Select Field"
-        size="sm"
+        size="xs"
         hideTags
         hideLabel
         .value=${this.rule.field}
@@ -210,7 +210,7 @@ export class QueryBuilderRule extends LitElement {
       <kyn-dropdown
         class="qb-rule__operator"
         placeholder="Select Operator"
-        size="sm"
+        size="xs"
         hideTags
         hideLabel
         .value=${this.rule.operator}
@@ -272,7 +272,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-text-input
         class="qb-rule__value"
-        size="sm"
+        size="xs"
         hideLabel
         placeholder=${field?.placeholder || 'Value'}
         .value=${String(this.rule.value || '')}
@@ -286,7 +286,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-number-input
         class="qb-rule__value"
-        size="sm"
+        size="xs"
         hideLabel
         placeholder=${field.placeholder || 'Value'}
         .value=${Number(this.rule.value) || 0}
@@ -300,7 +300,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-date-picker
         class="qb-rule__value"
-        size="sm"
+        size="xs"
         hideLabel
         placeholder=${field.placeholder || 'Select date'}
         .value=${this.rule.value || ''}
@@ -314,7 +314,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-date-picker
         class="qb-rule__value"
-        size="sm"
+        size="xs"
         hideLabel
         enableTime
         placeholder=${field.placeholder || 'Select date/time'}
@@ -329,7 +329,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-time-picker
         class="qb-rule__value"
-        size="sm"
+        size="xs"
         hideLabel
         placeholder=${field.placeholder || 'Select time'}
         .value=${this.rule.value || ''}
@@ -398,7 +398,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__value"
-        size="sm"
+        size="xs"
         hideTags
         hideLabel
         placeholder=${field.placeholder || 'Select value'}
@@ -424,7 +424,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__value"
-        size="sm"
+        size="xs"
         multiple
         hideLabel
         placeholder=${field.placeholder || 'Select values'}
@@ -452,7 +452,7 @@ export class QueryBuilderRule extends LitElement {
         <div class="qb-rule__between">
           <kyn-number-input
             class="qb-rule__value"
-            size="sm"
+            size="xs"
             hideLabel
             placeholder="Min"
             .value=${Number(val1) || 0}
@@ -462,7 +462,7 @@ export class QueryBuilderRule extends LitElement {
           <span class="qb-rule__between-separator">and</span>
           <kyn-number-input
             class="qb-rule__value"
-            size="sm"
+            size="xs"
             hideLabel
             placeholder="Max"
             .value=${Number(val2) || 0}
@@ -478,7 +478,7 @@ export class QueryBuilderRule extends LitElement {
         <div class="qb-rule__between">
           <kyn-date-picker
             class="qb-rule__value"
-            size="sm"
+            size="xs"
             hideLabel
             ?enableTime=${field.dataType === 'datetime'}
             placeholder="Start"
@@ -489,7 +489,7 @@ export class QueryBuilderRule extends LitElement {
           <span class="qb-rule__between-separator">and</span>
           <kyn-date-picker
             class="qb-rule__value"
-            size="sm"
+            size="xs"
             hideLabel
             ?enableTime=${field.dataType === 'datetime'}
             placeholder="End"
@@ -506,7 +506,7 @@ export class QueryBuilderRule extends LitElement {
       <div class="qb-rule__between">
         <kyn-text-input
           class="qb-rule__value"
-          size="sm"
+          size="xs"
           hideLabel
           placeholder="From"
           .value=${String(val1 || '')}
@@ -516,7 +516,7 @@ export class QueryBuilderRule extends LitElement {
         <span class="qb-rule__between-separator">and</span>
         <kyn-text-input
           class="qb-rule__value"
-          size="sm"
+          size="xs"
           hideLabel
           placeholder="To"
           .value=${String(val2 || '')}

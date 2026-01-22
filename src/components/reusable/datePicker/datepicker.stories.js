@@ -48,7 +48,7 @@ export default {
     // Use "object" control so arrays survive Controls updates (needed for mode="multiple").
     value: { control: { type: 'object' } },
     size: {
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
       control: { type: 'select' },
     },
     required: { control: { type: 'boolean' } },

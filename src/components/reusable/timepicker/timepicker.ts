@@ -124,7 +124,7 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor required = false;
 
-  /** Input size. "sm", "md", or "lg". */
+  /** Input size. "xs", "sm", "md", or "lg". */
   @property({ type: String })
   accessor size = 'md';
 

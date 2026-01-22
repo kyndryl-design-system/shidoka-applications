@@ -55,7 +55,7 @@ export class TextInput extends FormMixin(LitElement) {
   accessor type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' =
     'text';
 
-  /** Input size. "sm", "md", or "lg". */
+  /** Input size. "xs", "sm", "md", or "lg". */
   @property({ type: String })
   accessor size = 'md';
 
@@ -177,6 +177,7 @@ export class TextInput extends FormMixin(LitElement) {
 
           <input
             class="${classMap({
+              'size--xs': this.size === 'xs',
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
               'is-readonly': this.readonly,
