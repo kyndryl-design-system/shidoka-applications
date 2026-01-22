@@ -87,6 +87,10 @@ export class QueryBuilderRule extends LitElement {
   @property({ type: Array })
   accessor parentPath: number[] = [];
 
+  /** Number of siblings at this level (used to determine if drag handle should show at depth 1) */
+  @property({ type: Number })
+  accessor siblingCount = 1;
+
   /** Get the currently selected field configuration */
   private get selectedField(): QueryField | undefined {
     return this.fields.find((f) => f.name === this.rule.field);
@@ -135,6 +139,11 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _renderDragHandle() {
+    // At depth 1 (parentPath is empty, meaning direct child of root), only show drag handle if there are multiple siblings
+    if (this.parentPath.length === 0 && this.siblingCount <= 1) {
+      return null;
+    }
+
     const canDrag = !this.disabled && !this.rule.disabled;
 
     return html`

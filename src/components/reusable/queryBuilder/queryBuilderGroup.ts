@@ -89,6 +89,10 @@ export class QueryBuilderGroup extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor disabled = false;
 
+  /** Number of siblings at this level (used to determine if drag handle should show at depth 1) */
+  @property({ type: Number })
+  accessor siblingCount = 1;
+
   /** Current drag over index for drop indicator */
   @state()
   accessor _dragOverIndex: number | null = null;
@@ -152,6 +156,11 @@ export class QueryBuilderGroup extends LitElement {
   private _renderDragHandle() {
     // Don't allow dragging the root group
     if (this.isRoot) {
+      return null;
+    }
+
+    // At depth 1 (direct child of root), only show drag handle if there are multiple siblings
+    if (this.depth === 1 && this.siblingCount <= 1) {
       return null;
     }
 
@@ -289,6 +298,7 @@ export class QueryBuilderGroup extends LitElement {
             .path=${[...this.path, index]}
             .depth=${this.depth + 1}
             .maxDepth=${this.maxDepth}
+            .siblingCount=${this.group.rules.length}
             ?showCloneButton=${this.showCloneButton}
             ?showLockButton=${this.showLockButton}
             ?allowDragAndDrop=${this.allowDragAndDrop}
@@ -317,6 +327,7 @@ export class QueryBuilderGroup extends LitElement {
           .fields=${this.fields}
           .index=${index}
           .parentPath=${this.path}
+          .siblingCount=${this.group.rules.length}
           ?isLast=${isLastRule}
           ?showCloneButton=${this.showCloneButton}
           ?showLockButton=${this.showLockButton}

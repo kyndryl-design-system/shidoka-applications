@@ -19,10 +19,16 @@ export class HeaderCategory extends LitElement {
   @property({ type: Boolean })
   accessor leftPadding = false;
 
+  /** Show bottom border/divider. */
+  @property({ type: Boolean })
+  accessor showDivider = false;
+
   override render() {
     return html`
-      <div class="category">
-        <div class="heading ${this.leftPadding ? 'left-padding' : ''}">
+      <div class="category ${this.showDivider ? 'divider' : ''}"">
+        <div
+          class="heading ${this.leftPadding ? 'left-padding' : ''}
+        >
           <slot name="icon"></slot>
           ${this.heading}
         </div>
