@@ -6527,6 +6527,16 @@
             },
             {
               "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
               "name": "locale",
               "type": {
                 "text": "SupportedLocale | string"
@@ -7159,6 +7169,15 @@
               "fieldName": "label"
             },
             {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
               "name": "locale",
               "type": {
                 "text": "SupportedLocale | string"
@@ -7435,6 +7454,16 @@
               "default": "''",
               "description": "Label text.",
               "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
             },
             {
               "kind": "field",
@@ -8033,6 +8062,15 @@
               "default": "''",
               "description": "Label text.",
               "fieldName": "label"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
             },
             {
               "name": "locale",
@@ -16833,8 +16871,8 @@
                 "text": "QueryOption[]"
               },
               "privacy": "private",
-              "default": "[\n    { value: 'and', label: 'AND' },\n    { value: 'or', label: 'OR' },\n  ]",
-              "description": "Available combinators (internal)"
+              "description": "Available combinators (internal)",
+              "readonly": true
             },
             {
               "kind": "field",
@@ -16887,8 +16925,8 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  title: 'Query Builder',\n  emptyState: 'No conditions added. Add a rule to get started.',\n  addRule: 'Add Rule',\n  addGroup: 'Add Group',\n}",
-              "description": "Text string customization",
+              "default": "{\n  // Combinator labels\n  and: 'AND',\n  or: 'OR',\n  // Group actions\n  removeGroup: 'Remove group',\n  cloneGroup: 'Clone group',\n  addRule: 'Add rule',\n  addGroup: 'Add group',\n  lockGroup: 'Lock group',\n  unlockGroup: 'Unlock group',\n  // Rule actions\n  removeRule: 'Remove rule',\n  cloneRule: 'Clone rule',\n  lockRule: 'Lock rule',\n  unlockRule: 'Unlock rule',\n  // Drag and drop\n  dragToReorder: 'Drag to reorder',\n  // Field/operator placeholders\n  selectField: 'Select field',\n  selectOperator: 'Select operator',\n  // Value placeholders\n  value: 'Value',\n  selectValue: 'Select value',\n  selectValues: 'Select values',\n  selectDate: 'Select date',\n  selectDateTime: 'Select date/time',\n  selectTime: 'Select time',\n  min: 'Min',\n  max: 'Max',\n  start: 'Start',\n  end: 'End',\n  from: 'From',\n  to: 'To',\n}",
+              "description": "Text string customization for i18n.",
               "attribute": "textStrings",
               "type": {
                 "text": "object"
@@ -17052,7 +17090,7 @@
             {
               "name": "textStrings",
               "default": "_defaultTextStrings",
-              "description": "Text string customization",
+              "description": "Text string customization for i18n.",
               "fieldName": "textStrings"
             }
           ],
@@ -17209,6 +17247,16 @@
               "default": "1",
               "description": "Number of siblings at this level (used to determine if drag handle should show at depth 1)",
               "attribute": "siblingCount"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "Record<string, string>"
+              },
+              "default": "{}",
+              "description": "Text strings for i18n",
+              "attribute": "textStrings"
             },
             {
               "kind": "field",
@@ -17753,6 +17801,15 @@
               "default": "1",
               "description": "Number of siblings at this level (used to determine if drag handle should show at depth 1)",
               "fieldName": "siblingCount"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "Record<string, string>"
+              },
+              "default": "{}",
+              "description": "Text strings for i18n",
+              "fieldName": "textStrings"
             }
           ],
           "superclass": {
@@ -17891,6 +17948,16 @@
               "default": "1",
               "description": "Number of siblings at this level (used to determine if drag handle should show at depth 1)",
               "attribute": "siblingCount"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "Record<string, string>"
+              },
+              "default": "{}",
+              "description": "Text strings for i18n",
+              "attribute": "textStrings"
             },
             {
               "kind": "field",
@@ -18400,6 +18467,15 @@
               "default": "1",
               "description": "Number of siblings at this level (used to determine if drag handle should show at depth 1)",
               "fieldName": "siblingCount"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "Record<string, string>"
+              },
+              "default": "{}",
+              "description": "Text strings for i18n",
+              "fieldName": "textStrings"
             }
           ],
           "superclass": {
@@ -26136,6 +26212,16 @@
             },
             {
               "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
               "name": "locale",
               "type": {
                 "text": "SupportedLocale | string"
@@ -26730,6 +26816,15 @@
               "default": "''",
               "description": "Label text.",
               "fieldName": "label"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
             },
             {
               "name": "locale",
@@ -27959,43 +28054,6 @@
         },
         {
           "kind": "function",
-          "name": "createRule",
-          "return": {
-            "type": {
-              "text": "RuleType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "fields",
-              "type": {
-                "text": "QueryField[]"
-              }
-            }
-          ],
-          "description": "Create a new empty rule"
-        },
-        {
-          "kind": "function",
-          "name": "createRuleGroup",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "combinator",
-              "default": "'and'",
-              "type": {
-                "text": "'and' | 'or'"
-              }
-            }
-          ],
-          "description": "Create a new empty rule group"
-        },
-        {
-          "kind": "function",
           "name": "createDefaultQuery",
           "return": {
             "type": {
@@ -28003,415 +28061,6 @@
             }
           },
           "description": "Create the initial/default query structure"
-        },
-        {
-          "kind": "function",
-          "name": "cloneQuery",
-          "return": {
-            "type": {
-              "text": "T"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "T"
-              }
-            }
-          ],
-          "description": "Deep clone a query object"
-        },
-        {
-          "kind": "function",
-          "name": "cloneWithNewIds",
-          "return": {
-            "type": {
-              "text": "T"
-            }
-          },
-          "parameters": [
-            {
-              "name": "item",
-              "type": {
-                "text": "T"
-              }
-            }
-          ],
-          "description": "Clone a rule or group with new IDs"
-        },
-        {
-          "kind": "function",
-          "name": "findByPath",
-          "return": {
-            "type": {
-              "text": "RuleOrGroup | undefined"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Find an item in the query tree by path\nPath is an array of indices, e.g., [0, 1, 2] means root.rules[0].rules[1].rules[2]"
-        },
-        {
-          "kind": "function",
-          "name": "findParentByPath",
-          "return": {
-            "type": {
-              "text": "RuleGroupType | undefined"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Find the parent group of an item by path"
-        },
-        {
-          "kind": "function",
-          "name": "addRule",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            },
-            {
-              "name": "fields",
-              "type": {
-                "text": "QueryField[]"
-              }
-            }
-          ],
-          "description": "Add a rule to a group at the specified path"
-        },
-        {
-          "kind": "function",
-          "name": "addGroup",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            },
-            {
-              "name": "combinator",
-              "default": "'and'",
-              "type": {
-                "text": "'and' | 'or'"
-              }
-            }
-          ],
-          "description": "Add a nested group to a group at the specified path"
-        },
-        {
-          "kind": "function",
-          "name": "removeItem",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Remove an item (rule or group) at the specified path"
-        },
-        {
-          "kind": "function",
-          "name": "updateRule",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            },
-            {
-              "name": "updates",
-              "type": {
-                "text": "Partial<RuleType>"
-              }
-            }
-          ],
-          "description": "Update a rule at the specified path"
-        },
-        {
-          "kind": "function",
-          "name": "updateCombinator",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            },
-            {
-              "name": "combinator",
-              "type": {
-                "text": "'and' | 'or'"
-              }
-            }
-          ],
-          "description": "Update a group's combinator at the specified path"
-        },
-        {
-          "kind": "function",
-          "name": "toggleNot",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Toggle the NOT flag on a group at the specified path"
-        },
-        {
-          "kind": "function",
-          "name": "toggleDisabled",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Toggle the disabled flag on an item at the specified path"
-        },
-        {
-          "kind": "function",
-          "name": "cloneItem",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Clone an item at the specified path and insert it after"
-        },
-        {
-          "kind": "function",
-          "name": "moveItem",
-          "return": {
-            "type": {
-              "text": "RuleGroupType"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            },
-            {
-              "name": "fromPath",
-              "type": {
-                "text": "number[]"
-              }
-            },
-            {
-              "name": "toPath",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Move an item from one path to another"
-        },
-        {
-          "kind": "function",
-          "name": "getDepth",
-          "return": {
-            "type": {
-              "text": "number"
-            }
-          },
-          "parameters": [
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            }
-          ],
-          "description": "Get the depth of a path (0 = root)"
-        },
-        {
-          "kind": "function",
-          "name": "wouldExceedMaxDepth",
-          "return": {
-            "type": {
-              "text": "boolean"
-            }
-          },
-          "parameters": [
-            {
-              "name": "path",
-              "type": {
-                "text": "number[]"
-              }
-            },
-            {
-              "name": "maxDepth",
-              "type": {
-                "text": "number"
-              }
-            }
-          ],
-          "description": "Check if adding a group at the path would exceed max depth"
-        },
-        {
-          "kind": "function",
-          "name": "countRules",
-          "return": {
-            "type": {
-              "text": "number"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            }
-          ],
-          "description": "Count total rules in a query (excluding groups)"
-        },
-        {
-          "kind": "function",
-          "name": "countGroups",
-          "return": {
-            "type": {
-              "text": "number"
-            }
-          },
-          "parameters": [
-            {
-              "name": "query",
-              "type": {
-                "text": "RuleGroupType"
-              }
-            }
-          ],
-          "description": "Count total groups in a query (including root)"
         }
       ],
       "exports": [
@@ -28425,161 +28074,9 @@
         },
         {
           "kind": "js",
-          "name": "createRule",
-          "declaration": {
-            "name": "createRule",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "createRuleGroup",
-          "declaration": {
-            "name": "createRuleGroup",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
           "name": "createDefaultQuery",
           "declaration": {
             "name": "createDefaultQuery",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cloneQuery",
-          "declaration": {
-            "name": "cloneQuery",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cloneWithNewIds",
-          "declaration": {
-            "name": "cloneWithNewIds",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "findByPath",
-          "declaration": {
-            "name": "findByPath",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "findParentByPath",
-          "declaration": {
-            "name": "findParentByPath",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "addRule",
-          "declaration": {
-            "name": "addRule",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "addGroup",
-          "declaration": {
-            "name": "addGroup",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "removeItem",
-          "declaration": {
-            "name": "removeItem",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "updateRule",
-          "declaration": {
-            "name": "updateRule",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "updateCombinator",
-          "declaration": {
-            "name": "updateCombinator",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "toggleNot",
-          "declaration": {
-            "name": "toggleNot",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "toggleDisabled",
-          "declaration": {
-            "name": "toggleDisabled",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cloneItem",
-          "declaration": {
-            "name": "cloneItem",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "moveItem",
-          "declaration": {
-            "name": "moveItem",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "getDepth",
-          "declaration": {
-            "name": "getDepth",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "wouldExceedMaxDepth",
-          "declaration": {
-            "name": "wouldExceedMaxDepth",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "countRules",
-          "declaration": {
-            "name": "countRules",
-            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "countGroups",
-          "declaration": {
-            "name": "countGroups",
             "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
           }
         }
@@ -28688,54 +28185,6 @@
         },
         {
           "kind": "js",
-          "name": "TEXT_OPERATORS",
-          "declaration": {
-            "name": "TEXT_OPERATORS",
-            "module": "./operators"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NUMBER_OPERATORS",
-          "declaration": {
-            "name": "NUMBER_OPERATORS",
-            "module": "./operators"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "DATE_OPERATORS",
-          "declaration": {
-            "name": "DATE_OPERATORS",
-            "module": "./operators"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "TIME_OPERATORS",
-          "declaration": {
-            "name": "TIME_OPERATORS",
-            "module": "./operators"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "BOOLEAN_OPERATORS",
-          "declaration": {
-            "name": "BOOLEAN_OPERATORS",
-            "module": "./operators"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SELECT_OPERATORS",
-          "declaration": {
-            "name": "SELECT_OPERATORS",
-            "module": "./operators"
-          }
-        },
-        {
-          "kind": "js",
           "name": "getOperatorsForType",
           "declaration": {
             "name": "getOperatorsForType",
@@ -28776,161 +28225,9 @@
         },
         {
           "kind": "js",
-          "name": "createRule",
-          "declaration": {
-            "name": "createRule",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "createRuleGroup",
-          "declaration": {
-            "name": "createRuleGroup",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
           "name": "createDefaultQuery",
           "declaration": {
             "name": "createDefaultQuery",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cloneQuery",
-          "declaration": {
-            "name": "cloneQuery",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cloneWithNewIds",
-          "declaration": {
-            "name": "cloneWithNewIds",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "findByPath",
-          "declaration": {
-            "name": "findByPath",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "findParentByPath",
-          "declaration": {
-            "name": "findParentByPath",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "addRule",
-          "declaration": {
-            "name": "addRule",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "addGroup",
-          "declaration": {
-            "name": "addGroup",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "removeItem",
-          "declaration": {
-            "name": "removeItem",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "updateRule",
-          "declaration": {
-            "name": "updateRule",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "updateCombinator",
-          "declaration": {
-            "name": "updateCombinator",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "toggleNot",
-          "declaration": {
-            "name": "toggleNot",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "toggleDisabled",
-          "declaration": {
-            "name": "toggleDisabled",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cloneItem",
-          "declaration": {
-            "name": "cloneItem",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "moveItem",
-          "declaration": {
-            "name": "moveItem",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "getDepth",
-          "declaration": {
-            "name": "getDepth",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "wouldExceedMaxDepth",
-          "declaration": {
-            "name": "wouldExceedMaxDepth",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "countRules",
-          "declaration": {
-            "name": "countRules",
-            "module": "./helpers"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "countGroups",
-          "declaration": {
-            "name": "countGroups",
             "module": "./helpers"
           }
         }

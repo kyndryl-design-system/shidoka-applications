@@ -1,6 +1,7 @@
 import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { deepmerge } from 'deepmerge-ts';
 
 import QueryBuilderStyles from './queryBuilder.scss?inline';
 
@@ -18,10 +19,39 @@ import './queryBuilderGroup';
 import './queryBuilderRule';
 
 const _defaultTextStrings = {
-  title: 'Query Builder',
-  emptyState: 'No conditions added. Add a rule to get started.',
-  addRule: 'Add Rule',
-  addGroup: 'Add Group',
+  // Combinator labels
+  and: 'AND',
+  or: 'OR',
+  // Group actions
+  removeGroup: 'Remove group',
+  cloneGroup: 'Clone group',
+  addRule: 'Add rule',
+  addGroup: 'Add group',
+  lockGroup: 'Lock group',
+  unlockGroup: 'Unlock group',
+  // Rule actions
+  removeRule: 'Remove rule',
+  cloneRule: 'Clone rule',
+  lockRule: 'Lock rule',
+  unlockRule: 'Unlock rule',
+  // Drag and drop
+  dragToReorder: 'Drag to reorder',
+  // Field/operator placeholders
+  selectField: 'Select field',
+  selectOperator: 'Select operator',
+  // Value placeholders
+  value: 'Value',
+  selectValue: 'Select value',
+  selectValues: 'Select values',
+  selectDate: 'Select date',
+  selectDateTime: 'Select date/time',
+  selectTime: 'Select time',
+  min: 'Min',
+  max: 'Max',
+  start: 'Start',
+  end: 'End',
+  from: 'From',
+  to: 'To',
 };
 
 /**
@@ -59,10 +89,12 @@ export class QueryBuilder extends LitElement {
   accessor fields: QueryField[] = [];
 
   /** Available combinators (internal) */
-  private _combinators: QueryOption[] = [
-    { value: 'and', label: 'AND' },
-    { value: 'or', label: 'OR' },
-  ];
+  private get _combinators(): QueryOption[] {
+    return [
+      { value: 'and', label: this._textStrings.and },
+      { value: 'or', label: this._textStrings.or },
+    ];
+  }
 
   /** Show clone button on rules/groups */
   @property({ type: Boolean })
@@ -84,7 +116,7 @@ export class QueryBuilder extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor disabled = false;
 
-  /** Text string customization */
+  /** Text string customization for i18n. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
@@ -93,6 +125,12 @@ export class QueryBuilder extends LitElement {
    */
   @state()
   accessor _internalQuery: RuleGroupType = createDefaultQuery();
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  accessor _textStrings = _defaultTextStrings;
 
   override willUpdate(changedProps: PropertyValues) {
     if (changedProps.has('query')) {
@@ -105,6 +143,10 @@ export class QueryBuilder extends LitElement {
       } else {
         this._internalQuery = this.query;
       }
+    }
+
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
     }
   }
 
@@ -122,6 +164,7 @@ export class QueryBuilder extends LitElement {
             .group=${this._internalQuery}
             .fields=${this.fields}
             .combinators=${this._combinators}
+            .textStrings=${this._textStrings}
             .path=${[]}
             .depth=${0}
             .maxDepth=${this.maxDepth}
@@ -190,23 +233,23 @@ export class QueryBuilder extends LitElement {
 
     const { dragData, targetPath, targetIndex } = e.detail;
 
-    // Deep clone the query to work with
+    // deep clone the query
     const newQuery = JSON.parse(
       JSON.stringify(this._internalQuery)
     ) as RuleGroupType;
 
-    // Find and remove the item from its source location
+    // find and remove the item from its source location
     const sourceGroup = this._getGroupAtPath(newQuery, dragData.sourcePath);
     if (!sourceGroup) return;
 
     const [movedItem] = sourceGroup.rules.splice(dragData.sourceIndex, 1);
     if (!movedItem) return;
 
-    // Find the target group and insert the item
+    // find the target group and insert the item
     const targetGroup = this._getGroupAtPath(newQuery, targetPath);
     if (!targetGroup) return;
 
-    // Adjust target index if moving within same group and source was before target
+    // adjust target index if moving within same group and source was before target
     let adjustedTargetIndex = targetIndex;
     if (
       JSON.stringify(dragData.sourcePath) === JSON.stringify(targetPath) &&

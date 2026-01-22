@@ -13,7 +13,6 @@ import {
   isMultiValueOperator,
 } from './defs/operators';
 
-// Import Shidoka components
 import '../dropdown';
 import '../textInput';
 import '../numberInput';
@@ -24,7 +23,6 @@ import '../button';
 import '../radioButton';
 import '../sliderInput';
 
-// Import icons
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
 import addSimpleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import dragIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/draggable.svg';
@@ -91,6 +89,10 @@ export class QueryBuilderRule extends LitElement {
   @property({ type: Number })
   accessor siblingCount = 1;
 
+  /** Text strings for i18n */
+  @property({ type: Object })
+  accessor textStrings: Record<string, string> = {};
+
   /** Get the currently selected field configuration */
   private get selectedField(): QueryField | undefined {
     return this.fields.find((f) => f.name === this.rule.field);
@@ -139,7 +141,7 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _renderDragHandle() {
-    // At depth 1 (parentPath is empty, meaning direct child of root), only show drag handle if there are multiple siblings
+    // at depth 1 (direct child of root is empty), only show drag handle if there are multiple siblings
     if (this.parentPath.length === 0 && this.siblingCount <= 1) {
       return null;
     }
@@ -149,7 +151,9 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <div
         class="qb-rule__drag-handle"
-        title=${canDrag ? 'Drag to reorder' : ''}
+        title=${canDrag
+          ? this.textStrings.dragToReorder || 'Drag to reorder'
+          : ''}
         draggable="true"
         @dragstart=${this._handleDragStart}
         @dragend=${this._handleDragEnd}
@@ -175,7 +179,7 @@ export class QueryBuilderRule extends LitElement {
     e.dataTransfer!.setData('text/plain', JSON.stringify(dragData));
     e.dataTransfer!.effectAllowed = 'move';
 
-    // Position drag image relative to where user clicked
+    // position drag image relative to where user clicked
     const rect = this.getBoundingClientRect();
     e.dataTransfer!.setDragImage(
       this,
@@ -183,7 +187,7 @@ export class QueryBuilderRule extends LitElement {
       e.clientY - rect.top
     );
 
-    // Add visual feedback to the source element
+    // add visual feedback to the source element
     this.classList.add('qb-rule--dragging');
   }
 
@@ -195,7 +199,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__field"
-        placeholder="Select Field"
+        placeholder=${this.textStrings.selectField || 'Select field'}
         size="xs"
         hideTags
         hideLabel
@@ -218,7 +222,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__operator"
-        placeholder="Select Operator"
+        placeholder=${this.textStrings.selectOperator || 'Select operator'}
         size="xs"
         hideTags
         hideLabel
@@ -243,17 +247,17 @@ export class QueryBuilderRule extends LitElement {
       return this._renderTextInput();
     }
 
-    // Handle "between" operators with dual inputs
+    // handle "between" operators with dual inputs
     if (this.isBetween) {
       return this._renderBetweenEditor(field);
     }
 
-    // Handle multi-value operators (in, notIn)
+    // handle multi-value operators (in, notIn)
     if (this.isMultiValue && field.values) {
       return this._renderMultiSelectEditor(field);
     }
 
-    // Render based on field data type
+    // render based on field data type
     switch (field.dataType) {
       case 'number':
         return this._renderNumberInput(field);
@@ -283,8 +287,8 @@ export class QueryBuilderRule extends LitElement {
         class="qb-rule__value"
         size="xs"
         hideLabel
-        placeholder=${field?.placeholder || 'Value'}
-        .value=${String(this.rule.value || '')}
+        placeholder=${field?.placeholder || this.textStrings.value || 'Value'}
+        .value=${String(this.rule.value)}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
       ></kyn-text-input>
@@ -297,7 +301,7 @@ export class QueryBuilderRule extends LitElement {
         class="qb-rule__value"
         size="xs"
         hideLabel
-        placeholder=${field.placeholder || 'Value'}
+        placeholder=${field.placeholder || this.textStrings.value || 'Value'}
         .value=${Number(this.rule.value) || 0}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
@@ -311,8 +315,10 @@ export class QueryBuilderRule extends LitElement {
         class="qb-rule__value"
         size="xs"
         hideLabel
-        placeholder=${field.placeholder || 'Select date'}
-        .value=${this.rule.value || ''}
+        placeholder=${field.placeholder ||
+        this.textStrings.selectDate ||
+        'Select date'}
+        .value=${this.rule.value}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
       ></kyn-date-picker>
@@ -326,8 +332,10 @@ export class QueryBuilderRule extends LitElement {
         size="xs"
         hideLabel
         enableTime
-        placeholder=${field.placeholder || 'Select date/time'}
-        .value=${this.rule.value || ''}
+        placeholder=${field.placeholder ||
+        this.textStrings.selectDateTime ||
+        'Select date/time'}
+        .value=${this.rule.value}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
       ></kyn-date-picker>
@@ -340,8 +348,10 @@ export class QueryBuilderRule extends LitElement {
         class="qb-rule__value"
         size="xs"
         hideLabel
-        placeholder=${field.placeholder || 'Select time'}
-        .value=${this.rule.value || ''}
+        placeholder=${field.placeholder ||
+        this.textStrings.selectTime ||
+        'Select time'}
+        .value=${this.rule.value}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
       ></kyn-time-picker>
@@ -354,7 +364,7 @@ export class QueryBuilderRule extends LitElement {
         class="qb-rule__value qb-rule__value--boolean"
         small
         hideLabel
-        label="Value"
+        label=${this.textStrings.value || 'Value'}
         ?checked=${Boolean(this.rule.value)}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleBooleanChange}
@@ -368,7 +378,7 @@ export class QueryBuilderRule extends LitElement {
         <kyn-radio-button-group
           horizontal
           hideLabel
-          .value=${String(this.rule.value || '')}
+          .value=${String(this.rule.value)}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-radio-group-change=${this._handleRadioChange}
         >
@@ -410,8 +420,10 @@ export class QueryBuilderRule extends LitElement {
         size="xs"
         hideTags
         hideLabel
-        placeholder=${field.placeholder || 'Select value'}
-        .value=${this.rule.value || ''}
+        placeholder=${field.placeholder ||
+        this.textStrings.selectValue ||
+        'Select value'}
+        .value=${this.rule.value}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
       >
@@ -436,7 +448,9 @@ export class QueryBuilderRule extends LitElement {
         size="xs"
         multiple
         hideLabel
-        placeholder=${field.placeholder || 'Select values'}
+        placeholder=${field.placeholder ||
+        this.textStrings.selectValues ||
+        'Select values'}
         .value=${values as unknown as string}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleMultiValueChange}
@@ -463,7 +477,7 @@ export class QueryBuilderRule extends LitElement {
             class="qb-rule__value"
             size="xs"
             hideLabel
-            placeholder="Min"
+            placeholder=${this.textStrings.min || 'Min'}
             .value=${Number(val1) || 0}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
@@ -473,7 +487,7 @@ export class QueryBuilderRule extends LitElement {
             class="qb-rule__value"
             size="xs"
             hideLabel
-            placeholder="Max"
+            placeholder=${this.textStrings.max || 'Max'}
             .value=${Number(val2) || 0}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
@@ -490,8 +504,8 @@ export class QueryBuilderRule extends LitElement {
             size="xs"
             hideLabel
             ?enableTime=${field.dataType === 'datetime'}
-            placeholder="Start"
-            .value=${val1 || ''}
+            placeholder=${this.textStrings.start || 'Start'}
+            .value=${val1}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
           ></kyn-date-picker>
@@ -501,8 +515,8 @@ export class QueryBuilderRule extends LitElement {
             size="xs"
             hideLabel
             ?enableTime=${field.dataType === 'datetime'}
-            placeholder="End"
-            .value=${val2 || ''}
+            placeholder=${this.textStrings.end || 'End'}
+            .value=${val2}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
           ></kyn-date-picker>
@@ -510,15 +524,16 @@ export class QueryBuilderRule extends LitElement {
       `;
     }
 
-    // Default text between
+    // default text between
+    // defensive fallbacks in place for when parent queryBuilder doesn't define for some reason
     return html`
       <div class="qb-rule__between">
         <kyn-text-input
           class="qb-rule__value"
           size="xs"
           hideLabel
-          placeholder="From"
-          .value=${String(val1 || '')}
+          placeholder=${this.textStrings.from || 'From'}
+          .value=${String(val1)}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
         ></kyn-text-input>
@@ -527,8 +542,8 @@ export class QueryBuilderRule extends LitElement {
           class="qb-rule__value"
           size="xs"
           hideLabel
-          placeholder="To"
-          .value=${String(val2 || '')}
+          placeholder=${this.textStrings.to || 'To'}
+          .value=${String(val2)}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
         ></kyn-text-input>
@@ -537,7 +552,7 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _renderActions() {
-    // Order: add, lock, copy, delete (per design)
+    // order: add, lock, copy, delete
     return html`
       <div class="qb-rule__actions">
         ${this.isLast
@@ -545,7 +560,7 @@ export class QueryBuilderRule extends LitElement {
               <kyn-button
                 kind="outline"
                 size="extra-small"
-                description="Add rule"
+                description=${this.textStrings.addRule || 'Add rule'}
                 ?disabled=${this.disabled || this.rule.disabled}
                 @on-click=${this._handleAddRule}
               >
@@ -558,7 +573,9 @@ export class QueryBuilderRule extends LitElement {
               <kyn-button
                 kind=${this.rule.disabled ? 'secondary' : 'outline'}
                 size="extra-small"
-                description=${this.rule.disabled ? 'Unlock rule' : 'Lock rule'}
+                description=${this.rule.disabled
+                  ? this.textStrings.unlockRule || 'Unlock rule'
+                  : this.textStrings.lockRule || 'Lock rule'}
                 @on-click=${this._handleLockToggle}
               >
                 <span slot="icon">
@@ -572,7 +589,7 @@ export class QueryBuilderRule extends LitElement {
               <kyn-button
                 kind="outline"
                 size="extra-small"
-                description="Clone rule"
+                description=${this.textStrings.cloneRule || 'Clone rule'}
                 ?disabled=${this.disabled || this.rule.disabled}
                 @on-click=${this._handleCloneRule}
               >
@@ -583,7 +600,7 @@ export class QueryBuilderRule extends LitElement {
         <kyn-button
           kind="outline-destructive"
           size="extra-small"
-          description="Remove rule"
+          description=${this.textStrings.removeRule || 'Remove rule'}
           ?disabled=${this.disabled}
           @on-click=${this._handleRemoveRule}
         >
@@ -599,7 +616,7 @@ export class QueryBuilderRule extends LitElement {
     const operators =
       field?.operators || getOperatorsForType(field?.dataType || 'text');
 
-    // When field changes, reset operator and value
+    // when field changes, reset operator and value
     const updatedRule: RuleType = {
       ...this.rule,
       field: newField,
@@ -614,7 +631,7 @@ export class QueryBuilderRule extends LitElement {
     const newOperator = e.detail.value;
     let newValue = this.rule.value;
 
-    // Reset value when switching to/from between operators
+    // reset value when switching to/from between operators
     if (isBetweenOperator(newOperator) && !Array.isArray(this.rule.value)) {
       newValue = ['', ''];
     } else if (

@@ -3,15 +3,10 @@
  * Groups can contain both rules and nested groups, forming a tree structure.
  */
 export interface RuleGroupType {
-  /** Unique identifier for the group */
   id: string;
-  /** Logical combinator for rules in this group */
   combinator: 'and' | 'or';
-  /** Array of rules and/or nested groups */
   rules: RuleOrGroup[];
-  /** Whether to negate the group (NOT) */
   not?: boolean;
-  /** Whether the group is disabled */
   disabled?: boolean;
 }
 
@@ -19,17 +14,11 @@ export interface RuleGroupType {
  * Represents a single rule/condition in the query.
  */
 export interface RuleType {
-  /** Unique identifier for the rule */
   id: string;
-  /** The field name being queried */
   field: string;
-  /** The operator to apply */
   operator: string;
-  /** The value(s) to compare against */
   value: any;
-  /** Source of the value - either a literal value or another field */
   valueSource?: 'value' | 'field';
-  /** Whether the rule is disabled */
   disabled?: boolean;
 }
 
@@ -56,29 +45,17 @@ export function isRule(item: RuleOrGroup): item is RuleType {
  * Configuration for a queryable field.
  */
 export interface QueryField {
-  /** Unique field identifier (used in RuleType.field) */
   name: string;
-  /** Display label for the field */
   label: string;
-  /** Data type of the field, determines available operators and value editor */
   dataType: FieldDataType;
-  /** Custom operators for this field (overrides defaults for dataType) */
   operators?: QueryOperator[];
-  /** Predefined values for select/multiselect/radio fields */
   values?: QueryOption[];
-  /** Default operator when field is selected */
   defaultOperator?: string;
-  /** Default value when field is selected */
   defaultValue?: any;
-  /** Placeholder text for the value input */
   placeholder?: string;
-  /** Custom validation function */
   validator?: (rule: RuleType) => boolean | string;
-  /** Minimum value for slider fields */
   min?: number;
-  /** Maximum value for slider fields */
   max?: number;
-  /** Step value for slider fields */
   step?: number;
 }
 
@@ -100,11 +77,8 @@ export type FieldDataType =
  * Configuration for an operator.
  */
 export interface QueryOperator {
-  /** Unique operator identifier */
   name: string;
-  /** Display label for the operator */
   label: string;
-  /** Arity of the operator - unary operators don't need a value */
   arity?: 'unary' | 'binary';
 }
 
@@ -112,9 +86,7 @@ export interface QueryOperator {
  * A generic option used for dropdowns (fields, operators, values).
  */
 export interface QueryOption {
-  /** Option value */
   value: string;
-  /** Display label */
   label: string;
 }
 
@@ -122,17 +94,11 @@ export interface QueryOption {
  * Configuration options for the query builder component.
  */
 export interface QueryBuilderConfig {
-  /** Available fields to query */
   fields: QueryField[];
-  /** Available combinators (default: AND, OR) */
   combinators?: QueryOption[];
-  /** Show clone button on rules/groups */
   showCloneButtons?: boolean;
-  /** Show lock/disable button on rules/groups */
   showLockButtons?: boolean;
-  /** Maximum nesting depth (default: unlimited) */
   maxDepth?: number;
-  /** Enable drag-and-drop reordering */
   allowDragAndDrop?: boolean;
 }
 
@@ -148,10 +114,7 @@ export interface QueryChangeEventDetail {
  * Event detail for rule/group actions.
  */
 export interface QueryActionEventDetail {
-  /** Type of action performed */
   action: 'add-rule' | 'add-group' | 'remove' | 'clone' | 'lock' | 'unlock';
-  /** Path to the affected item */
   path: number[];
-  /** The item that was acted upon */
   item?: RuleOrGroup;
 }

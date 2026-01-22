@@ -93,6 +93,10 @@ export class QueryBuilderGroup extends LitElement {
   @property({ type: Number })
   accessor siblingCount = 1;
 
+  /** Text strings for i18n */
+  @property({ type: Object })
+  accessor textStrings: Record<string, string> = {};
+
   /** Current drag over index for drop indicator */
   @state()
   accessor _dragOverIndex: number | null = null;
@@ -131,7 +135,7 @@ export class QueryBuilderGroup extends LitElement {
                 @on-click=${this._handleAddGroup}
               >
                 <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
-                Group
+                ${this.textStrings.addGroup || 'Add group'}
               </kyn-button>
             `
           : null}
@@ -140,7 +144,7 @@ export class QueryBuilderGroup extends LitElement {
               <kyn-button
                 kind="outline-destructive"
                 size="extra-small"
-                description="Remove group"
+                description=${this.textStrings.removeGroup || 'Remove group'}
                 ?disabled=${this.disabled || this.group.disabled}
                 @on-click=${this._handleRemoveGroup}
               >
@@ -169,7 +173,9 @@ export class QueryBuilderGroup extends LitElement {
     return html`
       <div
         class="qb-group__drag-handle"
-        title=${canDrag ? 'Drag to reorder' : ''}
+        title=${canDrag
+          ? this.textStrings.dragToReorder || 'Drag to reorder'
+          : ''}
         draggable="true"
         @dragstart=${this._handleDragStart}
         @dragend=${this._handleDragEnd}
@@ -224,7 +230,7 @@ export class QueryBuilderGroup extends LitElement {
         <kyn-button
           kind="ghost"
           size="extra-small"
-          description="Clone group"
+          description=${this.textStrings.cloneGroup || 'Clone group'}
           ?disabled=${this.disabled || this.group.disabled}
           @on-click=${this._handleCloneGroup}
         >
@@ -265,7 +271,7 @@ export class QueryBuilderGroup extends LitElement {
           @on-click=${this._handleAddRule}
         >
           <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
-          Add Rule
+          ${this.textStrings.addRule || 'Add rule'}
         </kyn-button>
       </div>
     `;
@@ -295,6 +301,7 @@ export class QueryBuilderGroup extends LitElement {
             .group=${item}
             .fields=${this.fields}
             .combinators=${this.combinators}
+            .textStrings=${this.textStrings}
             .path=${[...this.path, index]}
             .depth=${this.depth + 1}
             .maxDepth=${this.maxDepth}
@@ -325,6 +332,7 @@ export class QueryBuilderGroup extends LitElement {
         <kyn-qb-rule
           .rule=${item}
           .fields=${this.fields}
+          .textStrings=${this.textStrings}
           .index=${index}
           .parentPath=${this.path}
           .siblingCount=${this.group.rules.length}

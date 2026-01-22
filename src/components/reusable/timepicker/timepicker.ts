@@ -71,6 +71,10 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor label = '';
 
+  /** Visually hide the label. */
+  @property({ type: Boolean })
+  accessor hideLabel = false;
+
   /** Sets desired locale and, if supported, dynamically loads language lib */
   @property({ type: String })
   accessor locale: SupportedLocale | string = 'en';
@@ -396,7 +400,7 @@ export class TimePicker extends FormMixin(LitElement) {
     return html`
       <div class=${classMap(this.getTimepickerClasses())}>
         <div
-          class="label-text"
+          class="label-text ${this.hideLabel || !this.label ? 'sr-only' : ''}"
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
           ?disabled=${this.timepickerDisabled}

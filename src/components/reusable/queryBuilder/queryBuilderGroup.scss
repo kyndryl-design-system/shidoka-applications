@@ -23,7 +23,6 @@
     opacity: 0.6;
   }
 
-  // Depth-based background colors for visual hierarchy
   &--depth-0 {
     background-color: var(--kd-color-background-query-builder-odd-group);
   }
@@ -89,7 +88,7 @@
 }
 
 .qb-group__empty {
-  padding: 16px;
+  padding: 8px 16px;
   text-align: center;
   color: var(--kd-color-text-level-secondary);
   border: 1px dashed var(--kd-color-border-level-secondary);
@@ -97,11 +96,9 @@
   margin: 8px 0;
 }
 
-// Item wrapper for drag-and-drop targeting
 .qb-group__item-wrapper {
   position: relative;
 
-  // Drop indicator as pseudo-element (before)
   &.qb-group__item-wrapper--drop-before::before {
     content: '';
     position: absolute;
@@ -115,7 +112,6 @@
     pointer-events: none;
   }
 
-  // Drop indicator as pseudo-element (after)
   &.qb-group__item-wrapper--drop-after::after {
     content: '';
     position: absolute;
@@ -130,7 +126,6 @@
   }
 }
 
-// Drag and drop states
 :host(.qb-group--dragging) {
   opacity: 0.5;
 }

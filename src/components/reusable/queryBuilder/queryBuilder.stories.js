@@ -23,8 +23,7 @@ export default {
       config: {
         rules: [
           {
-            // False positive: accessibility checks incorrectly measures unselected button text
-            // against adjacent selected button background in button groups
+            // False positive: accessibility checks incorrectly measures unselected button text against adjacent selected button background in button groups
             id: 'color-contrast',
             selector: '.kd-btn--group-first, .kd-btn--group-last',
             enabled: false,
@@ -35,10 +34,8 @@ export default {
   },
 };
 
-// Sample fields configuration showcasing all value types:
-// text, number, date, select, radio, slider
 const sampleFields = [
-  // Text inputs
+  // text inputs
   { name: 'firstName', label: 'First Name', dataType: 'text' },
   { name: 'lastName', label: 'Last Name', dataType: 'text' },
   {
@@ -48,15 +45,15 @@ const sampleFields = [
     placeholder: 'Enter email address',
   },
 
-  // Number inputs
+  // number inputs
   { name: 'age', label: 'Age', dataType: 'number' },
   { name: 'salary', label: 'Salary', dataType: 'number' },
 
-  // Date inputs
+  // date inputs
   { name: 'birthDate', label: 'Birth Date', dataType: 'date' },
   { name: 'hireDate', label: 'Hire Date', dataType: 'date' },
 
-  // Select (dropdown) inputs
+  // select (dropdown) inputs
   {
     name: 'status',
     label: 'Status',
@@ -92,7 +89,7 @@ const sampleFields = [
     ],
   },
 
-  // Radio button inputs
+  // radio button inputs
   {
     name: 'priority',
     label: 'Priority',
@@ -113,7 +110,7 @@ const sampleFields = [
     ],
   },
 
-  // Slider inputs
+  // slider inputs
   {
     name: 'rating',
     label: 'Rating',
@@ -134,7 +131,6 @@ const sampleFields = [
   },
 ];
 
-// Initial query with some pre-populated rules showcasing different value types
 const initialQuery = {
   id: 'root',
   combinator: 'and',
@@ -166,7 +162,7 @@ const initialQuery = {
   ],
 };
 
-// Complex nested query showcasing different value types
+// complex nested query showcasing different value types
 const nestedQuery = {
   id: 'root',
   combinator: 'and',
@@ -454,7 +450,6 @@ export const WithQueryOutput = {
   },
 };
 
-// Query showcasing all the different value types
 const allValueTypesQuery = {
   id: 'root',
   combinator: 'and',
