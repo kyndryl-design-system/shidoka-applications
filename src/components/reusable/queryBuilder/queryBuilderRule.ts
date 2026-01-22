@@ -535,7 +535,7 @@ export class QueryBuilderRule extends LitElement {
           ? html`
               <kyn-button
                 kind="outline"
-                size="small"
+                size="extra-small"
                 description="Add rule"
                 ?disabled=${this.disabled || this.rule.disabled}
                 @on-click=${this._handleAddRule}
@@ -548,7 +548,7 @@ export class QueryBuilderRule extends LitElement {
           ? html`
               <kyn-button
                 kind=${this.rule.disabled ? 'secondary' : 'outline'}
-                size="small"
+                size="extra-small"
                 description=${this.rule.disabled ? 'Unlock rule' : 'Lock rule'}
                 @on-click=${this._handleLockToggle}
               >
@@ -562,7 +562,7 @@ export class QueryBuilderRule extends LitElement {
           ? html`
               <kyn-button
                 kind="outline"
-                size="small"
+                size="extra-small"
                 description="Clone rule"
                 ?disabled=${this.disabled || this.rule.disabled}
                 @on-click=${this._handleCloneRule}
@@ -573,7 +573,7 @@ export class QueryBuilderRule extends LitElement {
           : null}
         <kyn-button
           kind="outline-destructive"
-          size="small"
+          size="extra-small"
           description="Remove rule"
           ?disabled=${this.disabled}
           @on-click=${this._handleRemoveRule}

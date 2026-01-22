@@ -121,7 +121,7 @@ export class QueryBuilderGroup extends LitElement {
           ? html`
               <kyn-button
                 kind="outline"
-                size="small"
+                size="extra-small"
                 iconPosition="left"
                 ?disabled=${this.disabled || this.group.disabled}
                 @on-click=${this._handleAddGroup}
@@ -135,7 +135,7 @@ export class QueryBuilderGroup extends LitElement {
           ? html`
               <kyn-button
                 kind="outline-destructive"
-                size="small"
+                size="extra-small"
                 description="Remove group"
                 ?disabled=${this.disabled || this.group.disabled}
                 @on-click=${this._handleRemoveGroup}
@@ -185,7 +185,7 @@ export class QueryBuilderGroup extends LitElement {
           (comb) => html`
             <kyn-button
               kind="tertiary"
-              size="small"
+              size="extra-small"
               value=${comb.value}
               ?disabled=${this.disabled || this.group.disabled}
             >
@@ -214,7 +214,7 @@ export class QueryBuilderGroup extends LitElement {
       <div class="qb-group__header-actions">
         <kyn-button
           kind="ghost"
-          size="small"
+          size="extra-small"
           description="Clone group"
           ?disabled=${this.disabled || this.group.disabled}
           @on-click=${this._handleCloneGroup}
@@ -250,7 +250,7 @@ export class QueryBuilderGroup extends LitElement {
       <div class="qb-group__empty">
         <kyn-button
           kind="ghost"
-          size="small"
+          size="extra-small"
           iconPosition="left"
           ?disabled=${this.disabled || this.group.disabled}
           @on-click=${this._handleAddRule}
