@@ -19,6 +19,19 @@ export default {
       type: 'figma',
       url: '',
     },
+    a11y: {
+      config: {
+        rules: [
+          {
+            // False positive: accessibility checks incorrectly measures unselected button text
+            // against adjacent selected button background in button groups
+            id: 'color-contrast',
+            selector: '.kd-btn--group-first, .kd-btn--group-last',
+            enabled: false,
+          },
+        ],
+      },
+    },
   },
 };
 
