@@ -13,6 +13,14 @@ export default {
     maxDepth: {
       control: { type: 'number', min: 1, max: 10 },
     },
+    size: {
+      options: ['xs', 'sm', 'md', 'lg'],
+      control: { type: 'select' },
+      description: 'Size of all child components (buttons, inputs, dropdowns)',
+      table: {
+        defaultValue: { summary: 'xs' },
+      },
+    },
   },
   parameters: {
     design: {
@@ -225,6 +233,7 @@ const args = {
   maxDepth: 5,
   allowDragAndDrop: true,
   disabled: false,
+  size: 'xs',
 };
 
 export const Default = {
@@ -235,6 +244,7 @@ export const Default = {
     return html`
       <kyn-query-builder
         .fields=${args.fields}
+        .size=${args.size}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -262,6 +272,7 @@ export const WithInitialQuery = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
+        .size=${args.size}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -289,6 +300,7 @@ export const NestedGroups = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
+        .size=${args.size}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -318,6 +330,7 @@ export const WithAllOptions = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
+        .size=${args.size}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -352,6 +365,7 @@ export const LimitedDepth = {
         <kyn-query-builder
           .fields=${args.fields}
           .query=${args.query}
+          .size=${args.size}
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
           .maxDepth=${args.maxDepth}
@@ -381,6 +395,7 @@ export const Disabled = {
       <kyn-query-builder
         .fields=${args.fields}
         .query=${args.query}
+        .size=${args.size}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -427,6 +442,7 @@ export const WithQueryOutput = {
         id="query-builder-with-output"
         .fields=${args.fields}
         .query=${args.query}
+        .size=${args.size}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -510,6 +526,7 @@ export const AllValueTypes = {
         <kyn-query-builder
           .fields=${args.fields}
           .query=${args.query}
+          .size=${args.size}
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
           .maxDepth=${args.maxDepth}

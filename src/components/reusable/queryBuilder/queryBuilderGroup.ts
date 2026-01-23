@@ -12,8 +12,9 @@ import type {
   RuleOrGroup,
   QueryField,
   QueryOption,
+  QueryBuilderSize,
 } from './defs/types';
-import { isRuleGroup } from './defs/types';
+import { isRuleGroup, sizeToButtonSize } from './defs/types';
 
 import './queryBuilderRule';
 import '../button';
@@ -99,6 +100,10 @@ export class QueryBuilderGroup extends LitElement {
   @property({ type: Object })
   accessor textStrings: Record<string, string> = {};
 
+  /** Size of child components */
+  @property({ type: String })
+  accessor size: QueryBuilderSize = 'xs';
+
   /** Current drag over index for drop indicator */
   @state()
   accessor _dragOverIndex: number | null = null;
@@ -131,7 +136,7 @@ export class QueryBuilderGroup extends LitElement {
           ? html`
               <kyn-button
                 kind="outline"
-                size="extra-small"
+                size=${sizeToButtonSize[this.size]}
                 iconPosition="left"
                 ?disabled=${this.disabled || this.group.disabled}
                 @on-click=${this._handleAddGroup}
@@ -145,7 +150,7 @@ export class QueryBuilderGroup extends LitElement {
           ? html`
               <kyn-button
                 kind="outline-destructive"
-                size="extra-small"
+                size=${sizeToButtonSize[this.size]}
                 description=${this.textStrings.removeGroup || 'Remove group'}
                 ?disabled=${this.disabled || this.group.disabled}
                 @on-click=${this._handleRemoveGroup}
@@ -202,7 +207,7 @@ export class QueryBuilderGroup extends LitElement {
           (comb) => html`
             <kyn-button
               kind="tertiary"
-              size="extra-small"
+              size=${sizeToButtonSize[this.size]}
               value=${comb.value}
               ?disabled=${this.disabled || this.group.disabled}
             >
@@ -235,7 +240,7 @@ export class QueryBuilderGroup extends LitElement {
           ? html`
               <kyn-button
                 kind=${this.group.disabled ? 'secondary' : 'outline'}
-                size="extra-small"
+                size=${sizeToButtonSize[this.size]}
                 description=${this.group.disabled
                   ? this.textStrings.unlockGroup || 'Unlock group'
                   : this.textStrings.lockGroup || 'Lock group'}
@@ -251,7 +256,7 @@ export class QueryBuilderGroup extends LitElement {
           ? html`
               <kyn-button
                 kind="outline"
-                size="extra-small"
+                size=${sizeToButtonSize[this.size]}
                 description=${this.textStrings.cloneGroup || 'Clone group'}
                 ?disabled=${this.disabled || this.group.disabled}
                 @on-click=${this._handleCloneGroup}
@@ -289,7 +294,7 @@ export class QueryBuilderGroup extends LitElement {
       <div class="qb-group__empty">
         <kyn-button
           kind="ghost"
-          size="extra-small"
+          size=${sizeToButtonSize[this.size]}
           iconPosition="left"
           ?disabled=${this.disabled || this.group.disabled}
           @on-click=${this._handleAddRule}
@@ -330,6 +335,7 @@ export class QueryBuilderGroup extends LitElement {
             .depth=${this.depth + 1}
             .maxDepth=${this.maxDepth}
             .siblingCount=${this.group.rules.length}
+            .size=${this.size}
             ?showCloneButton=${this.showCloneButton}
             ?showLockButton=${this.showLockButton}
             ?allowDragAndDrop=${this.allowDragAndDrop}
@@ -360,6 +366,7 @@ export class QueryBuilderGroup extends LitElement {
           .index=${index}
           .parentPath=${this.path}
           .siblingCount=${this.group.rules.length}
+          .size=${this.size}
           ?isLast=${isLastRule}
           ?showCloneButton=${this.showCloneButton}
           ?showLockButton=${this.showLockButton}

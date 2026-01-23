@@ -16924,8 +16924,18 @@
             },
             {
               "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "QueryBuilderSize"
+              },
+              "default": "'xs'",
+              "description": "Size of all child components (buttons, inputs, dropdowns, datepickers)",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
               "name": "textStrings",
-              "default": "{\n  // Combinator labels\n  and: 'AND',\n  or: 'OR',\n  // Group actions\n  removeGroup: 'Remove group',\n  cloneGroup: 'Clone group',\n  addRule: 'Add rule',\n  addGroup: 'Add group',\n  lockGroup: 'Lock group',\n  unlockGroup: 'Unlock group',\n  // Rule actions\n  removeRule: 'Remove rule',\n  cloneRule: 'Clone rule',\n  lockRule: 'Lock rule',\n  unlockRule: 'Unlock rule',\n  // Drag and drop\n  dragToReorder: 'Drag to reorder',\n  // Field/operator placeholders\n  selectField: 'Select field',\n  selectOperator: 'Select operator',\n  // Value placeholders\n  value: 'Value',\n  selectValue: 'Select value',\n  selectValues: 'Select values',\n  selectDate: 'Select date',\n  selectDateTime: 'Select date/time',\n  selectTime: 'Select time',\n  min: 'Min',\n  max: 'Max',\n  start: 'Start',\n  end: 'End',\n  from: 'From',\n  to: 'To',\n}",
+              "default": "{\n  and: 'AND',\n  or: 'OR',\n  removeGroup: 'Remove group',\n  cloneGroup: 'Clone group',\n  addRule: 'Add rule',\n  addGroup: 'Group',\n  lockGroup: 'Lock group',\n  unlockGroup: 'Unlock group',\n  removeRule: 'Remove rule',\n  cloneRule: 'Clone rule',\n  lockRule: 'Lock rule',\n  unlockRule: 'Unlock rule',\n  dragToReorder: 'Drag to reorder',\n  selectField: 'Select field',\n  selectOperator: 'Select operator',\n  value: 'Value',\n  selectValue: 'Select value',\n  selectValues: 'Select values',\n  selectDate: 'Select date',\n  selectDateTime: 'Select date/time',\n  selectTime: 'Select time',\n  min: 'Min',\n  max: 'Max',\n  start: 'Start',\n  end: 'End',\n  from: 'From',\n  to: 'To',\n}",
               "description": "Text string customization for i18n.",
               "attribute": "textStrings",
               "type": {
@@ -17086,6 +17096,15 @@
               "default": "false",
               "description": "Disable the entire query builder",
               "fieldName": "disabled"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "QueryBuilderSize"
+              },
+              "default": "'xs'",
+              "description": "Size of all child components (buttons, inputs, dropdowns, datepickers)",
+              "fieldName": "size"
             },
             {
               "name": "textStrings",
@@ -17257,6 +17276,16 @@
               "default": "{}",
               "description": "Text strings for i18n",
               "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "QueryBuilderSize"
+              },
+              "default": "'xs'",
+              "description": "Size of child components",
+              "attribute": "size"
             },
             {
               "kind": "field",
@@ -17525,6 +17554,11 @@
             },
             {
               "kind": "method",
+              "name": "_handleLockToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
               "name": "_emitGroupChange",
               "privacy": "private",
               "parameters": [
@@ -17679,6 +17713,13 @@
               "description": "Emits when the group should be cloned. `detail: { groupId: string, path: number[] }`"
             },
             {
+              "name": "on-group-lock",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the group lock state changes. `detail: { groupId: string, disabled: boolean, path: number[] }`"
+            },
+            {
               "name": "on-group-change",
               "type": {
                 "text": "CustomEvent"
@@ -17690,10 +17731,6 @@
               "type": {
                 "text": "CustomEvent"
               }
-            },
-            {
-              "description": "Emits when the group lock state changes. `detail: { groupId: string, disabled: boolean, path: number[] }`",
-              "name": "on-group-lock"
             }
           ],
           "attributes": [
@@ -17810,6 +17847,15 @@
               "default": "{}",
               "description": "Text strings for i18n",
               "fieldName": "textStrings"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "QueryBuilderSize"
+              },
+              "default": "'xs'",
+              "description": "Size of child components",
+              "fieldName": "size"
             }
           ],
           "superclass": {
@@ -17958,6 +18004,16 @@
               "default": "{}",
               "description": "Text strings for i18n",
               "attribute": "textStrings"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "QueryBuilderSize"
+              },
+              "default": "'xs'",
+              "description": "Size of child components",
+              "attribute": "size"
             },
             {
               "kind": "field",
@@ -18476,6 +18532,15 @@
               "default": "{}",
               "description": "Text strings for i18n",
               "fieldName": "textStrings"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "QueryBuilderSize"
+              },
+              "default": "'xs'",
+              "description": "Size of child components",
+              "fieldName": "size"
             }
           ],
           "superclass": {
@@ -28054,13 +28119,23 @@
         },
         {
           "kind": "function",
+          "name": "createEmptyRule",
+          "return": {
+            "type": {
+              "text": "RuleType"
+            }
+          },
+          "description": "Create an empty rule with no field/operator/value selected"
+        },
+        {
+          "kind": "function",
           "name": "createDefaultQuery",
           "return": {
             "type": {
               "text": "RuleGroupType"
             }
           },
-          "description": "Create the initial/default query structure"
+          "description": "Create the initial/default query structure with one empty rule"
         }
       ],
       "exports": [
@@ -28069,6 +28144,14 @@
           "name": "generateId",
           "declaration": {
             "name": "generateId",
+            "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createEmptyRule",
+          "declaration": {
+            "name": "createEmptyRule",
             "module": "src/components/reusable/queryBuilder/defs/helpers.ts"
           }
         },
@@ -28169,6 +28252,22 @@
         },
         {
           "kind": "js",
+          "name": "QueryBuilderSize",
+          "declaration": {
+            "name": "QueryBuilderSize",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ButtonSize",
+          "declaration": {
+            "name": "ButtonSize",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
           "name": "isRuleGroup",
           "declaration": {
             "name": "isRuleGroup",
@@ -28180,6 +28279,14 @@
           "name": "isRule",
           "declaration": {
             "name": "isRule",
+            "module": "./types"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "sizeToButtonSize",
+          "declaration": {
+            "name": "sizeToButtonSize",
             "module": "./types"
           }
         },
@@ -28526,6 +28633,15 @@
             }
           ],
           "description": "Type guard to check if an item is a RuleType"
+        },
+        {
+          "kind": "variable",
+          "name": "sizeToButtonSize",
+          "type": {
+            "text": "Record<QueryBuilderSize, ButtonSize>"
+          },
+          "default": "{\n  xs: 'extra-small',\n  sm: 'small',\n  md: 'medium',\n  lg: 'large',\n}",
+          "description": "maps QueryBuilderSize to ButtonSize."
         }
       ],
       "exports": [
@@ -28542,6 +28658,14 @@
           "name": "isRule",
           "declaration": {
             "name": "isRule",
+            "module": "src/components/reusable/queryBuilder/defs/types.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "sizeToButtonSize",
+          "declaration": {
+            "name": "sizeToButtonSize",
             "module": "src/components/reusable/queryBuilder/defs/types.ts"
           }
         }

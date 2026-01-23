@@ -11,6 +11,7 @@ import type {
   QueryField,
   QueryOption,
   QueryChangeEventDetail,
+  QueryBuilderSize,
 } from './defs/types';
 import { isRuleGroup } from './defs/types';
 import { createDefaultQuery, generateId } from './defs/helpers';
@@ -19,27 +20,21 @@ import './queryBuilderGroup';
 import './queryBuilderRule';
 
 const _defaultTextStrings = {
-  // Combinator labels
   and: 'AND',
   or: 'OR',
-  // Group actions
   removeGroup: 'Remove group',
   cloneGroup: 'Clone group',
   addRule: 'Add rule',
   addGroup: 'Group',
   lockGroup: 'Lock group',
   unlockGroup: 'Unlock group',
-  // Rule actions
   removeRule: 'Remove rule',
   cloneRule: 'Clone rule',
   lockRule: 'Lock rule',
   unlockRule: 'Unlock rule',
-  // Drag and drop
   dragToReorder: 'Drag to reorder',
-  // Field/operator placeholders
   selectField: 'Select field',
   selectOperator: 'Select operator',
-  // Value placeholders
   value: 'Value',
   selectValue: 'Select value',
   selectValues: 'Select values',
@@ -116,6 +111,10 @@ export class QueryBuilder extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor disabled = false;
 
+  /** Size of all child components (buttons, inputs, dropdowns, datepickers) */
+  @property({ type: String })
+  accessor size: QueryBuilderSize = 'xs';
+
   /** Text string customization for i18n. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -134,7 +133,7 @@ export class QueryBuilder extends LitElement {
 
   override willUpdate(changedProps: PropertyValues) {
     if (changedProps.has('query')) {
-      // Ensure the query has an ID
+      // ensure the query has an ID
       if (!this.query.id) {
         this._internalQuery = {
           ...this.query,
@@ -168,6 +167,7 @@ export class QueryBuilder extends LitElement {
             .path=${[]}
             .depth=${0}
             .maxDepth=${this.maxDepth}
+            .size=${this.size}
             isRoot
             ?showCloneButton=${this.showCloneButtons}
             ?showLockButton=${this.showLockButtons}
@@ -204,21 +204,21 @@ export class QueryBuilder extends LitElement {
   }
 
   /**
-   * Get the current query
+   * get the current query
    */
   getQuery(): RuleGroupType {
     return this._internalQuery;
   }
 
   /**
-   * Set the query programmatically
+   * set the query programmatically
    */
   setQuery(query: RuleGroupType) {
     this.query = query;
   }
 
   /**
-   * Reset the query to initial empty state
+   * reset the query to initial empty state
    */
   resetQuery() {
     this._internalQuery = createDefaultQuery();
@@ -226,7 +226,7 @@ export class QueryBuilder extends LitElement {
   }
 
   /**
-   * Handle drag-and-drop move events
+   * handle drag-and-drop move events
    */
   private _handleItemMove(e: CustomEvent) {
     e.stopPropagation();
@@ -265,7 +265,7 @@ export class QueryBuilder extends LitElement {
   }
 
   /**
-   * Get a group at a specific path in the query tree
+   * get a group at a specific path in the query tree
    */
   private _getGroupAtPath(
     query: RuleGroupType,

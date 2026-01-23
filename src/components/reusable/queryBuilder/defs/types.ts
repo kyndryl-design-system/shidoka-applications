@@ -118,3 +118,26 @@ export interface QueryActionEventDetail {
   path: number[];
   item?: RuleOrGroup;
 }
+
+/**
+ * size options for the query builder components.
+ * uses the short format (xs, sm, md, lg) which maps to:
+ * - inputs/dropdowns/pickers: xs, sm, md, lg
+ * - buttons: extra-small, small, medium, large
+ */
+export type QueryBuilderSize = 'xs' | 'sm' | 'md' | 'lg';
+
+/**
+ * button size format used by kyn-button component.
+ */
+export type ButtonSize = 'extra-small' | 'small' | 'medium' | 'large';
+
+/**
+ * maps QueryBuilderSize to ButtonSize.
+ */
+export const sizeToButtonSize: Record<QueryBuilderSize, ButtonSize> = {
+  xs: 'extra-small',
+  sm: 'small',
+  md: 'medium',
+  lg: 'large',
+};
