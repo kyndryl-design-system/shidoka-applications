@@ -233,3 +233,62 @@ export const dataForColumns = [
     col20: 'Column 20',
   },
 ];
+
+export const dataForColumnsFilter = [
+  {
+    applnName: 'Application 01',
+    businessService: 'Marketing',
+    businessGroups: 'Banking',
+    oppurtunitySize: 180,
+    criticalityRisk: 80,
+    complexityRisk: 90,
+  },
+  {
+    applnName: 'Application 02',
+    businessService: 'Research',
+    businessGroups: 'Retail',
+    oppurtunitySize: 190,
+    criticalityRisk: 74,
+    complexityRisk: 92,
+  },
+  {
+    applnName: 'Application 03',
+    businessService: 'HR',
+    businessGroups: 'HealtCare',
+    oppurtunitySize: 200,
+    criticalityRisk: 61,
+    complexityRisk: 81,
+  },
+  {
+    applnName: 'Application 04',
+    businessService: 'Finanace',
+    businessGroups: 'Life Science',
+    oppurtunitySize: 210,
+    criticalityRisk: 52,
+    complexityRisk: 61,
+  },
+  {
+    applnName: 'Application 05',
+    businessService: 'Training',
+    businessGroups: 'HealtCare',
+    oppurtunitySize: 210,
+    criticalityRisk: 42,
+    complexityRisk: 63,
+  },
+  {
+    applnName: 'Application 06',
+    businessService: 'Compliance',
+    businessGroups: 'Banking',
+    oppurtunitySize: 215,
+    criticalityRisk: 33,
+    complexityRisk: 52,
+  },
+  {
+    applnName: 'Application 07',
+    businessService: 'Sales',
+    businessGroups: 'Banking',
+    oppurtunitySize: 220,
+    criticalityRisk: 20,
+    complexityRisk: 44,
+  },
+];

@@ -81,13 +81,15 @@
   }
 }
 
-:host([sortable]:hover) {
-  transition: background-color 0.3s;
-  color: var(--kd-color-text-level-tertiary);
-  cursor: pointer;
-
-  .sort-icon {
+:host([sortable]) {
+  .container:hover {
+    transition: background-color 0.3s;
     color: var(--kd-color-text-level-tertiary);
+    cursor: pointer;
+
+    .sort-icon {
+      color: var(--kd-color-text-level-tertiary);
+    }
   }
 }
 
@@ -121,4 +123,11 @@
 
 .assistive-text {
   @include mixins.visually-hidden;
+}
+
+::slotted([slot='header-filter']) {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
 }

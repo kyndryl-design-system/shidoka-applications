@@ -16,6 +16,7 @@ import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import styles from './table-header.scss?inline';
 
 import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
+import '../search';
 
 /**
  * `kyn-th` Web Component.
@@ -24,7 +25,9 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
  * Provides sorting functionality when enabled and allows alignment customization.
  *
  * @fires on-sort-changed - Dispatched when the sort direction is changed. `detail: {sortDirection: string, sortKey: string } `
+ * @fires on-search - Dispatched when the search value changes. `detail: {searchValue: string, searchKey: string } `
  * @slot unnamed - The content slot for adding header text or content.
+ * @slot header-filter - The slot for adding a custom filter.
  */
 @customElement('kyn-th')
 export class TableHeader extends LitElement {
@@ -156,6 +159,38 @@ export class TableHeader extends LitElement {
   accessor assistiveText = '';
 
   /**
+   * Enable filtering feature.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor enableFiltering = false;
+
+  /**
+   * Search input value..
+   */
+  @property({ type: String })
+  accessor searchValue = '';
+
+  /**
+   * Search label text.
+   */
+  @property({ type: String })
+  accessor searchLabel = 'Search';
+
+  /**
+   * The unique identifier representing this column header.
+   * Used to distinguish between different searchable columns.
+   */
+  @property({ type: String })
+  accessor searchKey = '';
+
+  /**
+   * To store search value.
+   * @internal
+   */
+  @state()
+  accessor searchTerm = '';
+
+  /**
    * Toggles the sort direction between ascending, descending, and default states.
    * It also dispatches an event to notify parent components of the sorting change.
    */
@@ -195,6 +230,16 @@ export class TableHeader extends LitElement {
         detail: { sortDirection: this.sortDirection, sortKey: this.sortKey },
       })
     );
+  }
+
+  private _handleSearchFilter(e: any) {
+    this.searchTerm = e.detail.value;
+    const event = new CustomEvent('on-search', {
+      bubbles: true,
+      composed: true,
+      detail: { searchValue: this.searchTerm, searchKey: this.searchKey },
+    });
+    this.dispatchEvent(event);
   }
 
   override updated(changedProperties: PropertyValues) {
@@ -287,6 +332,24 @@ export class TableHeader extends LitElement {
           ${this.assistiveText}
         </div>
       </div>
+
+      ${this.enableFiltering
+        ? html`
+            <div
+              style="display:flex;align-items:center;gap:8px;flex: 1 0 0;align-self: stretch;padding:8px;border-top:1px solid var(--kd-color-border-variants-inverse);border-bottom:1px solid var(--kd-color-border-level-tertiary);"
+            >
+              <slot name="header-filter">
+                <kyn-search
+                  size="sm"
+                  name="search"
+                  label=${this.searchLabel}
+                  value=${this.searchValue}
+                  @on-input=${(e: Event) => this._handleSearchFilter(e)}
+                ></kyn-search>
+              </slot>
+            </div>
+          `
+        : null}
     `;
   }
 }

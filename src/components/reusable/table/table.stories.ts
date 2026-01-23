@@ -14,7 +14,12 @@ import './index';
 import './story-helpers/action-menu.sample';
 import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
-import { characters, dataForColumns } from './story-helpers/ultils.sample';
+import './story-helpers/column-filter.sample';
+import {
+  characters,
+  dataForColumns,
+  dataForColumnsFilter,
+} from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
@@ -602,5 +607,25 @@ export const WithFooter: Story = {
         </kyn-table>
       </kyn-table-container>
     `;
+  },
+};
+
+export const ColumnFilter: Story = {
+  render: () => {
+    return html` <ul>
+        <li>
+          <b>Note:</b> Enable 'enableFiltering' property to see column filter
+          search input(default) in the table header.
+        </li>
+        <li>
+          You can also customize the filter input by using the slot
+          'header-filter' in 'kyn-th' component.
+        </li>
+      </ul>
+      <story-column-filter
+        .tableTitle=${'Column Filter'}
+        .rows=${dataForColumnsFilter}
+      >
+      </story-column-filter>`;
   },
 };
