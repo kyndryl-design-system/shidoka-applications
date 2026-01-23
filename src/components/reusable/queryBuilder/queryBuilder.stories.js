@@ -220,7 +220,6 @@ const nestedQuery = {
 
 const args = {
   fields: sampleFields,
-  query: { id: 'root', combinator: 'and', rules: [] },
   showCloneButtons: false,
   showLockButtons: false,
   maxDepth: 5,
@@ -236,7 +235,6 @@ export const Default = {
     return html`
       <kyn-query-builder
         .fields=${args.fields}
-        .query=${args.query}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}

@@ -26,7 +26,7 @@ const _defaultTextStrings = {
   removeGroup: 'Remove group',
   cloneGroup: 'Clone group',
   addRule: 'Add rule',
-  addGroup: 'Add group',
+  addGroup: 'Group',
   lockGroup: 'Lock group',
   unlockGroup: 'Unlock group',
   // Rule actions

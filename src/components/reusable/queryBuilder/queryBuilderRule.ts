@@ -133,7 +133,9 @@ export class QueryBuilderRule extends LitElement {
         ${this.allowDragAndDrop ? this._renderDragHandle() : null}
         <div class="qb-rule__fields">
           ${this._renderFieldSelector()} ${this._renderOperatorSelector()}
-          ${!this.isUnary ? this._renderValueEditor() : null}
+          ${this.rule.operator && !this.isUnary
+            ? this._renderValueEditor()
+            : null}
         </div>
         ${this._renderActions()}
       </div>
