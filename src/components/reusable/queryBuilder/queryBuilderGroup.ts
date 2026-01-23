@@ -24,6 +24,8 @@ import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/d
 import addSimpleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/add-simple.svg';
 import dragIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/draggable.svg';
 import cloneIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import lockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/lock.svg';
+import unlockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/unlock.svg';
 
 /**
  * Query Builder Group component.
@@ -220,22 +222,44 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _renderHeaderActions() {
-    // Only render clone button for non-root groups
-    if (!this.showCloneButton || this.isRoot) {
+    const showLock = this.showLockButton;
+    const showClone = this.showCloneButton;
+
+    if (!showLock && !showClone) {
       return null;
     }
 
     return html`
       <div class="qb-group__header-actions">
-        <kyn-button
-          kind="ghost"
-          size="extra-small"
-          description=${this.textStrings.cloneGroup || 'Clone group'}
-          ?disabled=${this.disabled || this.group.disabled}
-          @on-click=${this._handleCloneGroup}
-        >
-          <span slot="icon">${unsafeSVG(cloneIcon)}</span>
-        </kyn-button>
+        ${showLock
+          ? html`
+              <kyn-button
+                kind=${this.group.disabled ? 'secondary' : 'outline'}
+                size="extra-small"
+                description=${this.group.disabled
+                  ? this.textStrings.unlockGroup || 'Unlock group'
+                  : this.textStrings.lockGroup || 'Lock group'}
+                @on-click=${this._handleLockToggle}
+              >
+                <span slot="icon">
+                  ${unsafeSVG(this.group.disabled ? lockIcon : unlockIcon)}
+                </span>
+              </kyn-button>
+            `
+          : null}
+        ${showClone
+          ? html`
+              <kyn-button
+                kind="outline"
+                size="extra-small"
+                description=${this.textStrings.cloneGroup || 'Clone group'}
+                ?disabled=${this.disabled || this.group.disabled}
+                @on-click=${this._handleCloneGroup}
+              >
+                <span slot="icon">${unsafeSVG(cloneIcon)}</span>
+              </kyn-button>
+            `
+          : null}
       </div>
     `;
   }
@@ -567,6 +591,20 @@ export class QueryBuilderGroup extends LitElement {
     this.dispatchEvent(
       new CustomEvent('on-group-clone', {
         detail: { groupId: this.group.id, path: this.path },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private _handleLockToggle() {
+    this.dispatchEvent(
+      new CustomEvent('on-group-lock', {
+        detail: {
+          groupId: this.group.id,
+          disabled: !this.group.disabled,
+          path: this.path,
+        },
         bubbles: true,
         composed: true,
       })
