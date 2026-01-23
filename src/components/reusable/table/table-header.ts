@@ -335,9 +335,7 @@ export class TableHeader extends LitElement {
 
       ${this.enableFiltering
         ? html`
-            <div
-              style="display:flex;align-items:center;gap:8px;flex: 1 0 0;align-self: stretch;padding:8px;border-top:1px solid var(--kd-color-border-variants-inverse);border-bottom:1px solid var(--kd-color-border-level-tertiary);"
-            >
+            <div class="filter-wrapper">
               <slot name="header-filter">
                 <kyn-search
                   size="sm"
