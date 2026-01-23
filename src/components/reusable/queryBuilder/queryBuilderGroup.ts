@@ -146,6 +146,35 @@ export class QueryBuilderGroup extends LitElement {
               </kyn-button>
             `
           : null}
+        ${this.showLockButton
+          ? html`
+              <kyn-button
+                kind=${this.group.disabled ? 'secondary' : 'outline'}
+                size=${sizeToButtonSize[this.size]}
+                description=${this.group.disabled
+                  ? this.textStrings.unlockGroup || 'Unlock group'
+                  : this.textStrings.lockGroup || 'Lock group'}
+                @on-click=${this._handleLockToggle}
+              >
+                <span slot="icon">
+                  ${unsafeSVG(this.group.disabled ? lockIcon : unlockIcon)}
+                </span>
+              </kyn-button>
+            `
+          : null}
+        ${this.showCloneButton && !this.isRoot
+          ? html`
+              <kyn-button
+                kind="outline"
+                size=${sizeToButtonSize[this.size]}
+                description=${this.textStrings.cloneGroup || 'Clone group'}
+                ?disabled=${this.disabled || this.group.disabled}
+                @on-click=${this._handleCloneGroup}
+              >
+                <span slot="icon">${unsafeSVG(cloneIcon)}</span>
+              </kyn-button>
+            `
+          : null}
         ${!this.isRoot
           ? html`
               <kyn-button
@@ -159,7 +188,6 @@ export class QueryBuilderGroup extends LitElement {
               </kyn-button>
             `
           : null}
-        ${this._renderHeaderActions()}
       </div>
     `;
   }
@@ -224,49 +252,6 @@ export class QueryBuilderGroup extends LitElement {
     if (value) {
       this._handleCombinatorChange(value);
     }
-  }
-
-  private _renderHeaderActions() {
-    const showLock = this.showLockButton;
-    const showClone = this.showCloneButton;
-
-    if (!showLock && !showClone) {
-      return null;
-    }
-
-    return html`
-      <div class="qb-group__header-actions">
-        ${showLock
-          ? html`
-              <kyn-button
-                kind=${this.group.disabled ? 'secondary' : 'outline'}
-                size=${sizeToButtonSize[this.size]}
-                description=${this.group.disabled
-                  ? this.textStrings.unlockGroup || 'Unlock group'
-                  : this.textStrings.lockGroup || 'Lock group'}
-                @on-click=${this._handleLockToggle}
-              >
-                <span slot="icon">
-                  ${unsafeSVG(this.group.disabled ? lockIcon : unlockIcon)}
-                </span>
-              </kyn-button>
-            `
-          : null}
-        ${showClone
-          ? html`
-              <kyn-button
-                kind="outline"
-                size=${sizeToButtonSize[this.size]}
-                description=${this.textStrings.cloneGroup || 'Clone group'}
-                ?disabled=${this.disabled || this.group.disabled}
-                @on-click=${this._handleCloneGroup}
-              >
-                <span slot="icon">${unsafeSVG(cloneIcon)}</span>
-              </kyn-button>
-            `
-          : null}
-      </div>
-    `;
   }
 
   private _renderRules() {

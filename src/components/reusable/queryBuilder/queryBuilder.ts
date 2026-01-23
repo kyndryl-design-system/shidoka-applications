@@ -174,6 +174,7 @@ export class QueryBuilder extends LitElement {
             ?allowDragAndDrop=${this.allowDragAndDrop}
             ?disabled=${this.disabled}
             @on-group-change=${this._handleGroupChange}
+            @on-group-lock=${this._handleGroupLock}
             @on-item-move=${this._handleItemMove}
           ></kyn-qb-group>
         </div>
@@ -186,6 +187,17 @@ export class QueryBuilder extends LitElement {
     const { group } = e.detail;
 
     this._internalQuery = group;
+    this._emitQueryChange();
+  }
+
+  private _handleGroupLock(e: CustomEvent) {
+    e.stopPropagation();
+    const { disabled } = e.detail;
+
+    this._internalQuery = {
+      ...this._internalQuery,
+      disabled,
+    };
     this._emitQueryChange();
   }
 
