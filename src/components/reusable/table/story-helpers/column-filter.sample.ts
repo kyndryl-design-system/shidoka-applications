@@ -4,6 +4,7 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import '../index';
 import { Table } from '../table';
+import '../../search';
 
 @customElement('story-column-filter')
 class StoryColumnFilter extends LitElement {
@@ -83,9 +84,9 @@ class StoryColumnFilter extends LitElement {
     this.requestUpdate();
   }
 
-  _handleSearchByapplnName(e: CustomEvent) {
-    const { searchValue } = e.detail;
-    console.log('searchValue applnName:', searchValue, e.detail);
+  _handleSearchByapplnName(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const searchValue = input.value;
     this.filterValues = {
       ...this.filterValues,
       applnName: searchValue?.trim() || '',
@@ -93,8 +94,9 @@ class StoryColumnFilter extends LitElement {
     this.applyFilters();
   }
 
-  _handleSearchByBusinessService(e: CustomEvent) {
-    const { searchValue } = e.detail;
+  _handleSearchByBusinessService(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const searchValue = input.value;
     this.filterValues = {
       ...this.filterValues,
       businessService: searchValue?.trim() || '',
@@ -102,8 +104,9 @@ class StoryColumnFilter extends LitElement {
     this.applyFilters();
   }
 
-  _handleSearchByBusinessGroups(e: CustomEvent) {
-    const { searchValue } = e.detail;
+  _handleSearchByBusinessGroups(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const searchValue = input.value;
     this.filterValues = {
       ...this.filterValues,
       businessGroups: searchValue?.trim() || '',
@@ -132,31 +135,72 @@ class StoryColumnFilter extends LitElement {
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th
-                enableFiltering
-                searchKey="applnName"
-                @on-search=${this._handleSearchByapplnName}
+                
               >
                 <span class="ellipsis-header">Applications</span>
+                <kyn-search slot="column-filter"
+                  size="sm"
+                  name="search"
+                  label="Search"
+                  value=""
+                  @on-input=${(e: Event) => this._handleSearchByapplnName(e)}
+                ></kyn-search>
               </kyn-th>
               <kyn-th
-                enableFiltering
-                searchKey="businessServices"
+                
                 @on-search=${this._handleSearchByBusinessService}
-                ><span class="ellipsis-header">Business Service</span></kyn-th
+                ><span class="ellipsis-header">Business Service</span>
+                <kyn-search slot="column-filter"
+                  size="sm"
+                  name="search"
+                  label="Search"
+                  value=""
+                  @on-input=${(e: Event) =>
+                    this._handleSearchByBusinessService(e)}
+                ></kyn-search>
+                </kyn-th
               >
-              <kyn-th enableFiltering
-              searchKey="businessGroups"
-                @on-search=${this._handleSearchByBusinessGroups}
-                ><span class="ellipsis-header">Business Groups</span></kyn-th
+              <kyn-th 
+                ><span class="ellipsis-header">Business Groups</span>
+                <kyn-search slot="column-filter"
+                  size="sm"
+                  name="search"
+                  label="Search"
+                  value=""
+                  @on-input=${(e: Event) =>
+                    this._handleSearchByBusinessGroups(e)}
+                ></kyn-search>
+                </kyn-th
               >
-              <kyn-th enableFiltering .align=${'right'}
-                ><span class="ellipsis-header">Oppurtunity Size</span></kyn-th
+              <kyn-th  .align=${'right'}
+                ><span class="ellipsis-header">Oppurtunity Size</span>
+                <kyn-search slot="column-filter"
+                  size="sm"
+                  name="search"
+                  label="Search"
+                  value=""
+                ></kyn-search>
+                </kyn-th
               >
-              <kyn-th enableFiltering .align=${'right'}
-                ><span class="ellipsis-header">Criticality Risk %</span></kyn-th
+              <kyn-th  .align=${'right'}
+                ><span class="ellipsis-header">Criticality Risk %</span>
+                <kyn-search slot="column-filter"
+                  size="sm"
+                  name="search"
+                  label="Search"
+                  value=""
+                ></kyn-search>
+                </kyn-th
               >
-              <kyn-th enableFiltering .align=${'right'}
-                ><span class="ellipsis-header">Complexity Risk %</span></kyn-th
+              <kyn-th  .align=${'right'}
+                ><span class="ellipsis-header">Complexity Risk %</span>
+                <kyn-search slot="column-filter"
+                  size="sm"
+                  name="search"
+                  label="Search"
+                  value=""
+                ></kyn-search>
+                </kyn-th
                 ></kyn-th
               >
             </kyn-header-tr>

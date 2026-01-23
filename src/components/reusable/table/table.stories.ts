@@ -612,20 +612,10 @@ export const WithFooter: Story = {
 
 export const ColumnFilter: Story = {
   render: () => {
-    return html` <ul>
-        <li>
-          <b>Note:</b> Enable 'enableFiltering' property to see column filter
-          search input(default) in the table header.
-        </li>
-        <li>
-          You can also customize the filter input by using the slot
-          'header-filter' in 'kyn-th' component.
-        </li>
-      </ul>
-      <story-column-filter
-        .tableTitle=${'Column Filter'}
-        .rows=${dataForColumnsFilter}
-      >
-      </story-column-filter>`;
+    return html` <story-column-filter
+      .tableTitle=${'Column Filter'}
+      .rows=${dataForColumnsFilter}
+    >
+    </story-column-filter>`;
   },
 };
