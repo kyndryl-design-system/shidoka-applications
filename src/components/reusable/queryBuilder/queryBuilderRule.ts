@@ -160,13 +160,17 @@ export class QueryBuilderRule extends LitElement {
 
     const canDrag = !this.disabled && !this.rule.disabled;
 
+    const dragLabel = this.textStrings.dragToReorder || 'Drag to reorder';
+
     return html`
       <div
         class="qb-rule__drag-handle"
-        title=${canDrag
-          ? this.textStrings.dragToReorder || 'Drag to reorder'
-          : ''}
-        draggable="true"
+        role="button"
+        tabindex=${canDrag ? '0' : '-1'}
+        title=${canDrag ? dragLabel : ''}
+        aria-label=${canDrag ? dragLabel : ''}
+        aria-disabled=${!canDrag}
+        draggable=${canDrag ? 'true' : 'false'}
         @dragstart=${this._handleDragStart}
         @dragend=${this._handleDragEnd}
       >

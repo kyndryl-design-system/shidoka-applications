@@ -206,13 +206,17 @@ export class QueryBuilderGroup extends LitElement {
 
     const canDrag = !this.disabled && !this.group.disabled;
 
+    const dragLabel = this.textStrings.dragToReorder || 'Drag to reorder';
+
     return html`
       <div
         class="qb-group__drag-handle"
-        title=${canDrag
-          ? this.textStrings.dragToReorder || 'Drag to reorder'
-          : ''}
-        draggable="true"
+        role="button"
+        tabindex=${canDrag ? '0' : '-1'}
+        title=${canDrag ? dragLabel : ''}
+        aria-label=${canDrag ? dragLabel : ''}
+        aria-disabled=${!canDrag}
+        draggable=${canDrag ? 'true' : 'false'}
         @dragstart=${this._handleDragStart}
         @dragend=${this._handleDragEnd}
       >
@@ -736,8 +740,8 @@ export class QueryBuilderGroup extends LitElement {
           composed: true,
         })
       );
-    } catch {
-      // Invalid drag data
+    } catch (error) {
+      console.error('QueryBuilder: Failed to process drop data', error);
     }
 
     this._dragOverIndex = null;
@@ -786,8 +790,8 @@ export class QueryBuilderGroup extends LitElement {
           composed: true,
         })
       );
-    } catch {
-      // Invalid drag data
+    } catch (error) {
+      console.error('QueryBuilder: Failed to process group drop data', error);
     }
 
     this._dragOverIndex = null;
