@@ -213,8 +213,8 @@ export class QueryBuilderGroup extends LitElement {
         class="qb-group__drag-handle"
         role="button"
         tabindex=${canDrag ? '0' : '-1'}
-        title=${canDrag ? dragLabel : ''}
-        aria-label=${canDrag ? dragLabel : ''}
+        title=${dragLabel}
+        aria-label=${dragLabel}
         aria-disabled=${!canDrag}
         draggable=${canDrag ? 'true' : 'false'}
         @dragstart=${this._handleDragStart}
