@@ -8,13 +8,17 @@ import QueryBuilderStyles from './queryBuilder.scss?inline';
 import type {
   RuleGroupType,
   RuleOrGroup,
+  RuleType,
   QueryField,
   QueryOption,
   QueryChangeEventDetail,
   QueryBuilderSize,
 } from './defs/types';
-import { isRuleGroup } from './defs/types';
+import { isRuleGroup, isRule } from './defs/types';
 import { createDefaultQuery, generateId } from './defs/helpers';
+
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 
 import './queryBuilderGroup';
 import './queryBuilderRule';
@@ -47,6 +51,8 @@ const _defaultTextStrings = {
   end: 'End',
   from: 'From',
   to: 'To',
+  validationErrors: 'Validation errors',
+  validationErrorCount: '{count} validation error(s)',
 };
 
 /**
@@ -170,8 +176,64 @@ export class QueryBuilder extends LitElement {
             @on-item-move=${this._handleItemMove}
           ></kyn-qb-group>
         </div>
+        ${this._renderValidationSummary()}
       </div>
     `;
+  }
+
+  private _renderValidationSummary() {
+    const errors = this._collectValidationErrors(this._internalQuery);
+    if (errors.length === 0) {
+      return null;
+    }
+
+    return html`
+      <div class="query-builder__validation-summary" role="alert">
+        <div class="query-builder__validation-header">
+          <span class="query-builder__validation-icon">
+            ${unsafeSVG(errorIcon)}
+          </span>
+          <span class="query-builder__validation-title">
+            ${this._textStrings.validationErrorCount?.replace(
+              '{count}',
+              String(errors.length)
+            ) || `${errors.length} validation error(s)`}
+          </span>
+        </div>
+        <ul class="query-builder__validation-list">
+          ${errors.map(
+            (error) => html`
+              <li class="query-builder__validation-item">
+                <strong>${error.fieldLabel}:</strong> ${error.message}
+              </li>
+            `
+          )}
+        </ul>
+      </div>
+    `;
+  }
+
+  /**
+   * Recursively collect all validation errors from the query tree
+   */
+  private _collectValidationErrors(
+    group: RuleGroupType
+  ): Array<{ fieldLabel: string; message: string }> {
+    const errors: Array<{ fieldLabel: string; message: string }> = [];
+
+    for (const item of group.rules) {
+      if (isRuleGroup(item)) {
+        errors.push(...this._collectValidationErrors(item));
+      } else if (isRule(item) && item.valid === false && item.validationError) {
+        const field = this.fields.find((f) => f.name === item.field);
+        errors.push({
+          fieldLabel: field?.label || item.field || 'Unknown field',
+          message: item.validationError,
+        });
+      }
+    }
+
+    return errors;
   }
 
   private _handleGroupChange(e: CustomEvent) {

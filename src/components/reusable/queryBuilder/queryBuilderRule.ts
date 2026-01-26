@@ -136,6 +136,7 @@ export class QueryBuilderRule extends LitElement {
     const classes = {
       'qb-rule': true,
       'qb-rule--disabled': this.disabled || !!this.rule.disabled,
+      'qb-rule--invalid': this.rule.valid === false,
     };
 
     return html`
@@ -307,6 +308,7 @@ export class QueryBuilderRule extends LitElement {
         .value=${String(this.rule.value)}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
+        @blur=${this._handleValueBlur}
       ></kyn-text-input>
     `;
   }
@@ -321,6 +323,7 @@ export class QueryBuilderRule extends LitElement {
         .value=${Number(this.rule.value) || 0}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
+        @blur=${this._handleValueBlur}
       ></kyn-number-input>
     `;
   }
@@ -337,6 +340,7 @@ export class QueryBuilderRule extends LitElement {
         .value=${this.rule.value}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
+        @blur=${this._handleValueBlur}
       ></kyn-date-picker>
     `;
   }
@@ -354,6 +358,7 @@ export class QueryBuilderRule extends LitElement {
         .value=${this.rule.value}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
+        @blur=${this._handleValueBlur}
       ></kyn-date-picker>
     `;
   }
@@ -370,6 +375,7 @@ export class QueryBuilderRule extends LitElement {
         .value=${this.rule.value}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
+        @blur=${this._handleValueBlur}
       ></kyn-time-picker>
     `;
   }
@@ -426,6 +432,7 @@ export class QueryBuilderRule extends LitElement {
         .step=${step}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleSliderChange}
+        @blur=${this._handleValueBlur}
       ></kyn-slider-input>
     `;
   }
@@ -443,6 +450,7 @@ export class QueryBuilderRule extends LitElement {
         .value=${this.rule.value as string}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
+        @blur=${this._handleValueBlur}
       >
         ${(field.values || []).map(
           (opt) => html`
@@ -468,9 +476,10 @@ export class QueryBuilderRule extends LitElement {
         placeholder=${field.placeholder ||
         this.textStrings.selectValues ||
         'Select values'}
-        .value=${values as string[]}
+        .value=${values}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleMultiValueChange}
+        @blur=${this._handleValueBlur}
       >
         ${(field.values || []).map(
           (opt) => html`
@@ -498,6 +507,7 @@ export class QueryBuilderRule extends LitElement {
             .value=${Number(val1) || 0}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
+            @blur=${this._handleValueBlur}
           ></kyn-number-input>
           <span class="qb-rule__between-separator">and</span>
           <kyn-number-input
@@ -508,6 +518,7 @@ export class QueryBuilderRule extends LitElement {
             .value=${Number(val2) || 0}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
+            @blur=${this._handleValueBlur}
           ></kyn-number-input>
         </div>
       `;
@@ -525,6 +536,7 @@ export class QueryBuilderRule extends LitElement {
             .value=${val1}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
+            @blur=${this._handleValueBlur}
           ></kyn-date-picker>
           <span class="qb-rule__between-separator">and</span>
           <kyn-date-picker
@@ -536,6 +548,7 @@ export class QueryBuilderRule extends LitElement {
             .value=${val2}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
+            @blur=${this._handleValueBlur}
           ></kyn-date-picker>
         </div>
       `;
@@ -553,6 +566,7 @@ export class QueryBuilderRule extends LitElement {
           .value=${String(val1)}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
+          @blur=${this._handleValueBlur}
         ></kyn-text-input>
         <span class="qb-rule__between-separator">and</span>
         <kyn-text-input
@@ -563,6 +577,7 @@ export class QueryBuilderRule extends LitElement {
           .value=${String(val2)}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
+          @blur=${this._handleValueBlur}
         ></kyn-text-input>
       </div>
     `;
@@ -757,6 +772,44 @@ export class QueryBuilderRule extends LitElement {
         composed: true,
       })
     );
+  }
+
+  /** validate the current rule using the field's validator function */
+  private _validateRule() {
+    const field = this.selectedField;
+    if (!field?.validator) {
+      if (this.rule.valid !== true || this.rule.validationError !== undefined) {
+        const updatedRule: RuleType = {
+          ...this.rule,
+          valid: true,
+          validationError: undefined,
+        };
+        this._emitRuleChange(updatedRule);
+      }
+      return;
+    }
+
+    const result = field.validator(this.rule);
+    const isValid = result === true;
+    const errorMessage =
+      typeof result === 'string' ? result : isValid ? undefined : 'Invalid';
+
+    if (
+      this.rule.valid !== isValid ||
+      this.rule.validationError !== errorMessage
+    ) {
+      const updatedRule: RuleType = {
+        ...this.rule,
+        valid: isValid,
+        validationError: errorMessage,
+      };
+      this._emitRuleChange(updatedRule);
+    }
+  }
+
+  /** handle blur events on value inputs to trigger validation */
+  private _handleValueBlur() {
+    this._validateRule();
   }
 
   private _getDetailValue(detail: Record<string, unknown>): unknown {

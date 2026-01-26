@@ -544,3 +544,137 @@ export const AllValueTypes = {
     `;
   },
 };
+
+// Fields with validators for the validation story
+const fieldsWithValidation = [
+  {
+    name: 'firstName',
+    label: 'First Name',
+    dataType: 'text',
+    validator: (rule) => {
+      if (!rule.value || rule.value.trim() === '') {
+        return 'First name is required';
+      }
+      if (rule.value.length < 2) {
+        return 'First name must be at least 2 characters';
+      }
+      return true;
+    },
+  },
+  {
+    name: 'age',
+    label: 'Age',
+    dataType: 'number',
+    validator: (rule) => {
+      if (
+        rule.value === '' ||
+        rule.value === null ||
+        rule.value === undefined
+      ) {
+        return 'Age is required';
+      }
+      if (rule.value < 0) {
+        return 'Age must be a positive number';
+      }
+      if (rule.value > 150) {
+        return 'Age must be realistic (0-150)';
+      }
+      return true;
+    },
+  },
+  {
+    name: 'email',
+    label: 'Email',
+    dataType: 'text',
+    placeholder: 'Enter email address',
+    validator: (rule) => {
+      if (!rule.value || rule.value.trim() === '') {
+        return 'Email is required';
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(rule.value)) {
+        return 'Please enter a valid email address';
+      }
+      return true;
+    },
+  },
+  {
+    name: 'status',
+    label: 'Status',
+    dataType: 'select',
+    values: [
+      { value: 'active', label: 'Active' },
+      { value: 'inactive', label: 'Inactive' },
+      { value: 'pending', label: 'Pending' },
+    ],
+  },
+];
+
+// Query with the second rule invalid (age is negative)
+const validationQuery = {
+  id: 'root',
+  combinator: 'and',
+  rules: [
+    {
+      id: 'rule-1',
+      field: 'firstName',
+      operator: 'equal',
+      value: 'John',
+      valid: true,
+    },
+    {
+      id: 'rule-2',
+      field: 'age',
+      operator: 'greaterThan',
+      value: -5,
+      valid: false,
+      validationError: 'Age must be a positive number',
+    },
+    {
+      id: 'rule-3',
+      field: 'status',
+      operator: 'equal',
+      value: 'active',
+      valid: true,
+    },
+  ],
+};
+
+export const WithValidation = {
+  args: {
+    ...args,
+    fields: fieldsWithValidation,
+    query: validationQuery,
+  },
+  render: (args) => {
+    return html`
+      <div>
+        <p
+          style="margin-bottom: 16px; color: var(--kd-color-text-level-secondary);"
+        >
+          This story demonstrates field validation. The second rule (Age) has an
+          invalid value (-5) and displays a validation error. Try editing the
+          values and blurring out of the fields to see validation in action
+          (onBlur).
+        </p>
+        <kyn-query-builder
+          .fields=${args.fields}
+          .query=${args.query}
+          .size=${args.size}
+          ?showCloneButtons=${args.showCloneButtons}
+          ?showLockButtons=${args.showLockButtons}
+          .maxDepth=${args.maxDepth}
+          ?allowDragAndDrop=${args.allowDragAndDrop}
+          ?disabled=${args.disabled}
+          @on-query-change=${(e) => {
+            action('on-query-change')(e.detail);
+            console.log(
+              'Query changed:',
+              JSON.stringify(e.detail.query, null, 2)
+            );
+          }}
+        ></kyn-query-builder>
+      </div>
+    `;
+  },
+};

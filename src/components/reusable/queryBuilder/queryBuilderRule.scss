@@ -18,6 +18,16 @@
       pointer-events: none;
     }
   }
+
+  &--invalid {
+    // Override border color for inputs inside invalid rules
+    // CSS custom properties cascade into shadow DOM
+    .qb-rule__value {
+      --kd-color-border-forms-default: var(
+        --kd-color-border-variants-destructive
+      );
+    }
+  }
 }
 
 .qb-rule__drag-handle {
@@ -66,14 +76,14 @@
 .qb-rule__value {
   flex: 1 1 150px;
   min-width: 150px;
+}
 
-  kyn-dropdown,
-  kyn-text-input,
-  kyn-number-input,
-  kyn-date-picker,
-  kyn-time-picker {
-    width: 100%;
-  }
+// Allow number input to fill available space
+// Override inline-block display and max-width constraint
+// Note: kyn-number-input itself has the .qb-rule__value class
+kyn-number-input.qb-rule__value {
+  display: block;
+  --kyn-number-input-inner-max-width: 100%;
 }
 
 .qb-rule__value.qb-rule__value--slider {

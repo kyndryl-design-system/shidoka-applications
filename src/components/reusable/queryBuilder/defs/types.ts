@@ -20,6 +20,10 @@ export interface RuleType {
   value: any;
   valueSource?: 'value' | 'field';
   disabled?: boolean;
+  /** Wwether the rule passes validation (undefined = not yet validated) */
+  valid?: boolean;
+  /** validation error message if valid is false */
+  validationError?: string;
 }
 
 /**

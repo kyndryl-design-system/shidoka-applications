@@ -194,12 +194,12 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _renderDragHandle() {
-    // Don't allow dragging the root group
+    // don't allow dragging the root group
     if (this.isRoot) {
       return null;
     }
 
-    // At depth 1 (direct child of root), only show drag handle if there are multiple siblings
+    // at depth 1 (direct child of root), only show drag handle if there are multiple siblings
     if (this.depth === 1 && this.siblingCount <= 1) {
       return null;
     }
@@ -375,7 +375,7 @@ export class QueryBuilderGroup extends LitElement {
 
   /** Check if this is the last rule (not group) in the rules array */
   private _isLastRule(index: number): boolean {
-    // Find the index of the last rule (non-group) item
+    // find the index of the last rule (non-group) item
     for (let i = this.group.rules.length - 1; i >= 0; i--) {
       if (!isRuleGroup(this.group.rules[i])) {
         return i === index;
@@ -497,7 +497,7 @@ export class QueryBuilderGroup extends LitElement {
     e.stopPropagation();
     const { group: nestedGroup, path } = e.detail;
 
-    // Find the index in our rules array
+    // find the index in our rules array
     const localIndex = path[this.path.length];
     if (localIndex === undefined) return;
 
@@ -515,7 +515,7 @@ export class QueryBuilderGroup extends LitElement {
     e.stopPropagation();
     const { path } = e.detail;
 
-    // Find the index in our rules array
+    // find the index in our rules array
     const localIndex = path[this.path.length];
     if (localIndex === undefined) return;
 
@@ -533,7 +533,7 @@ export class QueryBuilderGroup extends LitElement {
     e.stopPropagation();
     const { path } = e.detail;
 
-    // Find the index in our rules array
+    // find the index in our rules array
     const localIndex = path[this.path.length];
     if (localIndex === undefined) return;
 
@@ -554,7 +554,7 @@ export class QueryBuilderGroup extends LitElement {
     e.stopPropagation();
     const { path, disabled } = e.detail;
 
-    // Find the index in our rules array
+    // find the index in our rules array
     const localIndex = path[this.path.length];
     if (localIndex === undefined) return;
 
@@ -657,7 +657,7 @@ export class QueryBuilderGroup extends LitElement {
     e.dataTransfer!.setData('text/plain', JSON.stringify(dragData));
     e.dataTransfer!.effectAllowed = 'move';
 
-    // Position drag image relative to where user clicked
+    // position drag image relative to where user clicked
     const rect = this.getBoundingClientRect();
     e.dataTransfer!.setDragImage(
       this,
@@ -665,7 +665,7 @@ export class QueryBuilderGroup extends LitElement {
       e.clientY - rect.top
     );
 
-    // Add visual feedback to the source element
+    // add visual feedback to the source element
     this.classList.add('qb-group--dragging');
   }
 
@@ -682,12 +682,10 @@ export class QueryBuilderGroup extends LitElement {
     e.preventDefault();
     e.stopPropagation();
 
-    // Determine drop position based on mouse position
     const target = e.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     const midY = rect.top + rect.height / 2;
 
-    // Set drop index: if above midpoint, drop before; if below, drop after
     const newIndex = e.clientY < midY ? index : index + 1;
 
     if (this._dragOverIndex !== newIndex) {
@@ -768,7 +766,7 @@ export class QueryBuilderGroup extends LitElement {
     try {
       const dragData = JSON.parse(dataStr);
 
-      // Don't allow dropping a group into itself
+      // don't allow dropping a group into itself
       if (dragData.type === 'group') {
         const dragPath = [...dragData.sourcePath, dragData.sourceIndex];
         const thisPath = this.path;
@@ -778,7 +776,6 @@ export class QueryBuilderGroup extends LitElement {
         }
       }
 
-      // Emit move event to add at end of this group
       this.dispatchEvent(
         new CustomEvent('on-item-move', {
           detail: {
@@ -798,7 +795,6 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _handleNestedItemMove(e: CustomEvent) {
-    // Bubble up move events from nested groups
     e.stopPropagation();
     this.dispatchEvent(
       new CustomEvent('on-item-move', {
