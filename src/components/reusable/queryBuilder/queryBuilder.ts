@@ -133,15 +133,7 @@ export class QueryBuilder extends LitElement {
 
   override willUpdate(changedProps: PropertyValues) {
     if (changedProps.has('query')) {
-      // ensure the query has an ID
-      if (!this.query.id) {
-        this._internalQuery = {
-          ...this.query,
-          id: generateId(),
-        };
-      } else {
-        this._internalQuery = this.query;
-      }
+      this._internalQuery = this._normalizeQuery(this.query);
     }
 
     if (changedProps.has('textStrings')) {
@@ -246,20 +238,28 @@ export class QueryBuilder extends LitElement {
     const { dragData, targetPath, targetIndex } = e.detail;
 
     // deep clone the query
-    const newQuery = JSON.parse(
-      JSON.stringify(this._internalQuery)
-    ) as RuleGroupType;
+    const newQuery = this._cloneQuery(this._internalQuery);
 
     // find and remove the item from its source location
     const sourceGroup = this._getGroupAtPath(newQuery, dragData.sourcePath);
     if (!sourceGroup) return;
 
-    const [movedItem] = sourceGroup.rules.splice(dragData.sourceIndex, 1);
+    const movedItem = sourceGroup.rules[dragData.sourceIndex];
     if (!movedItem) return;
 
     // find the target group and insert the item
     const targetGroup = this._getGroupAtPath(newQuery, targetPath);
     if (!targetGroup) return;
+
+    if (isRuleGroup(movedItem)) {
+      const targetDepth = targetPath.length + 1;
+      const groupDepth = this._getMaxGroupDepth(movedItem);
+      if (targetDepth + groupDepth > this.maxDepth) {
+        return;
+      }
+    }
+
+    sourceGroup.rules.splice(dragData.sourceIndex, 1);
 
     // adjust target index if moving within same group and source was before target
     let adjustedTargetIndex = targetIndex;
@@ -299,6 +299,41 @@ export class QueryBuilder extends LitElement {
     }
 
     return isRuleGroup(current) ? current : null;
+  }
+
+  private _normalizeQuery(query: RuleGroupType): RuleGroupType {
+    const normalizeGroup = (group: RuleGroupType): RuleGroupType => ({
+      ...group,
+      id: group.id || generateId(),
+      rules: (group.rules || []).map((item) => {
+        if (isRuleGroup(item)) {
+          return normalizeGroup(item);
+        }
+        return {
+          ...item,
+          id: item.id || generateId(),
+        };
+      }),
+    });
+
+    return normalizeGroup(query);
+  }
+
+  private _cloneQuery(query: RuleGroupType): RuleGroupType {
+    if (typeof structuredClone === 'function') {
+      return structuredClone(query);
+    }
+    return JSON.parse(JSON.stringify(query)) as RuleGroupType;
+  }
+
+  private _getMaxGroupDepth(group: RuleGroupType): number {
+    let maxDepth = 0;
+    for (const item of group.rules) {
+      if (isRuleGroup(item)) {
+        maxDepth = Math.max(maxDepth, 1 + this._getMaxGroupDepth(item));
+      }
+    }
+    return maxDepth;
   }
 }
 

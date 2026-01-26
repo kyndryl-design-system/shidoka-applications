@@ -10,8 +10,8 @@ export const TEXT_OPERATORS: QueryOperator[] = [
   { name: 'notContains', label: 'Does Not Contain' },
   { name: 'startsWith', label: 'Starts With' },
   { name: 'endsWith', label: 'Ends With' },
-  { name: 'isNull', label: 'Is Empty', arity: 'unary' },
-  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },
+  { name: 'isNull', label: 'Is Empty', valueCount: 'none' },
+  { name: 'isNotNull', label: 'Is Not Empty', valueCount: 'none' },
 ];
 
 /**
@@ -26,8 +26,8 @@ export const NUMBER_OPERATORS: QueryOperator[] = [
   { name: 'greaterThanOrEqual', label: 'Greater Than Or Equal' },
   { name: 'between', label: 'Between' },
   { name: 'notBetween', label: 'Not Between' },
-  { name: 'isNull', label: 'Is Empty', arity: 'unary' },
-  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },
+  { name: 'isNull', label: 'Is Empty', valueCount: 'none' },
+  { name: 'isNotNull', label: 'Is Not Empty', valueCount: 'none' },
 ];
 
 /**
@@ -39,8 +39,8 @@ export const DATE_OPERATORS: QueryOperator[] = [
   { name: 'before', label: 'Before' },
   { name: 'after', label: 'After' },
   { name: 'between', label: 'Between' },
-  { name: 'isNull', label: 'Is Empty', arity: 'unary' },
-  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },
+  { name: 'isNull', label: 'Is Empty', valueCount: 'none' },
+  { name: 'isNotNull', label: 'Is Not Empty', valueCount: 'none' },
 ];
 
 /**
@@ -52,31 +52,31 @@ export const TIME_OPERATORS: QueryOperator[] = [
   { name: 'before', label: 'Before' },
   { name: 'after', label: 'After' },
   { name: 'between', label: 'Between' },
-  { name: 'isNull', label: 'Is Empty', arity: 'unary' },
-  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },
+  { name: 'isNull', label: 'Is Empty', valueCount: 'none' },
+  { name: 'isNotNull', label: 'Is Not Empty', valueCount: 'none' },
 ];
 
 /**
- * Default operators for boolean fields
+ * default operators for boolean fields
  */
 export const BOOLEAN_OPERATORS: QueryOperator[] = [
   { name: 'equal', label: 'Is' },
 ];
 
 /**
- * Default operators for select/multiselect fields
+ * default operators for select/multiselect fields
  */
 export const SELECT_OPERATORS: QueryOperator[] = [
   { name: 'equal', label: 'Equals' },
   { name: 'notEqual', label: 'Does Not Equal' },
   { name: 'in', label: 'In' },
   { name: 'notIn', label: 'Not In' },
-  { name: 'isNull', label: 'Is Empty', arity: 'unary' },
-  { name: 'isNotNull', label: 'Is Not Empty', arity: 'unary' },
+  { name: 'isNull', label: 'Is Empty', valueCount: 'none' },
+  { name: 'isNotNull', label: 'Is Not Empty', valueCount: 'none' },
 ];
 
 /**
- * Default operators for radio button fields
+ * default operators for radio button fields
  */
 export const RADIO_OPERATORS: QueryOperator[] = [
   { name: 'equal', label: 'Equals' },
@@ -84,7 +84,7 @@ export const RADIO_OPERATORS: QueryOperator[] = [
 ];
 
 /**
- * Default operators for slider fields (numeric range)
+ * default operators for slider fields (numeric range)
  */
 export const SLIDER_OPERATORS: QueryOperator[] = [
   { name: 'equal', label: 'Equals' },
@@ -97,7 +97,7 @@ export const SLIDER_OPERATORS: QueryOperator[] = [
 ];
 
 /**
- * Get default operators for a given field data type
+ * get default operators for a given field data type
  */
 export function getOperatorsForType(dataType: FieldDataType): QueryOperator[] {
   switch (dataType) {
@@ -124,25 +124,25 @@ export function getOperatorsForType(dataType: FieldDataType): QueryOperator[] {
 }
 
 /**
- * Check if an operator is unary (doesn't require a value)
+ * check if an operator requires no value
  */
-export function isUnaryOperator(
+export function isNoValueOperator(
   operator: string,
   operators: QueryOperator[]
 ): boolean {
   const op = operators.find((o) => o.name === operator);
-  return op?.arity === 'unary';
+  return op?.valueCount === 'none';
 }
 
 /**
- * Check if an operator requires two values (between, notBetween)
+ * check if an operator requires two values (between, notBetween)
  */
 export function isBetweenOperator(operator: string): boolean {
   return operator === 'between' || operator === 'notBetween';
 }
 
 /**
- * Check if an operator works with multiple values (in, notIn)
+ * check if an operator works with multiple values (in, notIn)
  */
 export function isMultiValueOperator(operator: string): boolean {
   return operator === 'in' || operator === 'notIn';

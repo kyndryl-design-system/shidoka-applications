@@ -14,7 +14,7 @@ import type {
 import { sizeToButtonSize } from './defs/types';
 import {
   getOperatorsForType,
-  isUnaryOperator,
+  isNoValueOperator,
   isBetweenOperator,
   isMultiValueOperator,
 } from './defs/operators';
@@ -117,9 +117,9 @@ export class QueryBuilderRule extends LitElement {
     return getOperatorsForType(field?.dataType || 'text');
   }
 
-  /** Check if current operator is unary (no value needed) */
-  private get isUnary(): boolean {
-    return isUnaryOperator(this.rule.operator, this.operators);
+  /** Check if current operator requires no value */
+  private get isNoValue(): boolean {
+    return isNoValueOperator(this.rule.operator, this.operators);
   }
 
   /** Check if current operator requires two values */
@@ -143,7 +143,7 @@ export class QueryBuilderRule extends LitElement {
         ${this.allowDragAndDrop ? this._renderDragHandle() : null}
         <div class="qb-rule__fields">
           ${this._renderFieldSelector()} ${this._renderOperatorSelector()}
-          ${this.rule.operator && !this.isUnary
+          ${this.rule.operator && !this.isNoValue
             ? this._renderValueEditor()
             : null}
         </div>
@@ -435,7 +435,7 @@ export class QueryBuilderRule extends LitElement {
         placeholder=${field.placeholder ||
         this.textStrings.selectValue ||
         'Select value'}
-        .value=${this.rule.value}
+        .value=${this.rule.value as string}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
       >
@@ -463,7 +463,7 @@ export class QueryBuilderRule extends LitElement {
         placeholder=${field.placeholder ||
         this.textStrings.selectValues ||
         'Select values'}
-        .value=${values as unknown as string}
+        .value=${values as string[]}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleMultiValueChange}
       >
@@ -588,6 +588,7 @@ export class QueryBuilderRule extends LitElement {
                 description=${this.rule.disabled
                   ? this.textStrings.unlockRule || 'Unlock rule'
                   : this.textStrings.lockRule || 'Lock rule'}
+                ?disabled=${this.disabled}
                 @on-click=${this._handleLockToggle}
               >
                 <span slot="icon">
@@ -613,7 +614,7 @@ export class QueryBuilderRule extends LitElement {
           kind="outline-destructive"
           size=${sizeToButtonSize[this.size]}
           description=${this.textStrings.removeRule || 'Remove rule'}
-          ?disabled=${this.disabled}
+          ?disabled=${this.disabled || this.rule.disabled}
           @on-click=${this._handleRemoveRule}
         >
           <span slot="icon">${unsafeSVG(deleteIcon)}</span>
@@ -642,9 +643,15 @@ export class QueryBuilderRule extends LitElement {
   private _handleOperatorChange(e: CustomEvent) {
     const newOperator = e.detail.value;
     let newValue = this.rule.value;
+    const isNewNoValue = isNoValueOperator(newOperator, this.operators);
 
     // reset value when switching to/from between operators
-    if (isBetweenOperator(newOperator) && !Array.isArray(this.rule.value)) {
+    if (isNewNoValue) {
+      newValue = '';
+    } else if (
+      isBetweenOperator(newOperator) &&
+      !Array.isArray(this.rule.value)
+    ) {
       newValue = ['', ''];
     } else if (
       isMultiValueOperator(newOperator) &&
@@ -669,9 +676,14 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _handleValueChange(e: CustomEvent) {
+    const value = this._getDetailValue(e.detail ?? {});
+    if (value === undefined) {
+      return;
+    }
+
     const updatedRule: RuleType = {
       ...this.rule,
-      value: e.detail.value,
+      value,
     };
 
     this._emitRuleChange(updatedRule);
@@ -714,10 +726,15 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _handleBetweenChange(e: CustomEvent, index: 0 | 1) {
+    const value = this._getDetailValue(e.detail ?? {});
+    if (value === undefined) {
+      return;
+    }
+
     const currentValue = Array.isArray(this.rule.value)
       ? [...this.rule.value]
       : ['', ''];
-    currentValue[index] = e.detail.value;
+    currentValue[index] = value;
 
     const updatedRule: RuleType = {
       ...this.rule,
@@ -735,6 +752,25 @@ export class QueryBuilderRule extends LitElement {
         composed: true,
       })
     );
+  }
+
+  private _getDetailValue(detail: Record<string, unknown>): unknown {
+    if (Object.prototype.hasOwnProperty.call(detail, 'value')) {
+      const value = (detail as { value?: unknown }).value;
+      if (value !== undefined) {
+        return value;
+      }
+    }
+    if (Object.prototype.hasOwnProperty.call(detail, 'dates')) {
+      return (detail as { dates: unknown }).dates;
+    }
+    if (Object.prototype.hasOwnProperty.call(detail, 'time')) {
+      return (detail as { time: unknown }).time;
+    }
+    if (Object.prototype.hasOwnProperty.call(detail, 'date')) {
+      return (detail as { date: unknown }).date;
+    }
+    return undefined;
   }
 
   private _handleAddRule() {

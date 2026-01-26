@@ -19,7 +19,7 @@ export { isRuleGroup, isRule, sizeToButtonSize } from './types';
 // operator exports
 export {
   getOperatorsForType,
-  isUnaryOperator,
+  isNoValueOperator,
   isBetweenOperator,
   isMultiValueOperator,
 } from './operators';

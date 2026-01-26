@@ -1,6 +1,6 @@
 /**
- * Represents a group of rules with a logical combinator (AND/OR).
- * Groups can contain both rules and nested groups, forming a tree structure.
+ * represents a group of rules with a logical combinator (AND/OR).
+ * groups can contain both rules and nested groups, forming a tree structure.
  */
 export interface RuleGroupType {
   id: string;
@@ -11,7 +11,7 @@ export interface RuleGroupType {
 }
 
 /**
- * Represents a single rule/condition in the query.
+ * represents a single rule/condition in the query.
  */
 export interface RuleType {
   id: string;
@@ -23,26 +23,26 @@ export interface RuleType {
 }
 
 /**
- * Union type for items that can appear in a rule group
+ * union type for items that can appear in a rule group
  */
 export type RuleOrGroup = RuleType | RuleGroupType;
 
 /**
- * Type guard to check if an item is a RuleGroupType
+ * type guard to check if an item is a RuleGroupType
  */
 export function isRuleGroup(item: RuleOrGroup): item is RuleGroupType {
   return 'combinator' in item && 'rules' in item;
 }
 
 /**
- * Type guard to check if an item is a RuleType
+ * type guard to check if an item is a RuleType
  */
 export function isRule(item: RuleOrGroup): item is RuleType {
   return 'field' in item && 'operator' in item;
 }
 
 /**
- * Configuration for a queryable field.
+ * configuration for a queryable field.
  */
 export interface QueryField {
   name: string;
@@ -60,7 +60,7 @@ export interface QueryField {
 }
 
 /**
- * Supported field data types
+ * supported field data types
  */
 export type FieldDataType =
   | 'text'
@@ -74,16 +74,16 @@ export type FieldDataType =
   | 'slider';
 
 /**
- * Configuration for an operator.
+ * configuration for an operator.
  */
 export interface QueryOperator {
   name: string;
   label: string;
-  arity?: 'unary' | 'binary';
+  valueCount?: 'none' | 'single';
 }
 
 /**
- * A generic option used for dropdowns (fields, operators, values).
+ * generic option used for dropdowns (fields, operators, values).
  */
 export interface QueryOption {
   value: string;
@@ -91,7 +91,7 @@ export interface QueryOption {
 }
 
 /**
- * Configuration options for the query builder component.
+ * configuration options for the query builder component.
  */
 export interface QueryBuilderConfig {
   fields: QueryField[];
@@ -103,7 +103,7 @@ export interface QueryBuilderConfig {
 }
 
 /**
- * Event detail for query change events.
+ * event detail for query change events.
  */
 export interface QueryChangeEventDetail {
   /** The updated query */
@@ -111,7 +111,7 @@ export interface QueryChangeEventDetail {
 }
 
 /**
- * Event detail for rule/group actions.
+ * event detail for rule/group actions.
  */
 export interface QueryActionEventDetail {
   action: 'add-rule' | 'add-group' | 'remove' | 'clone' | 'lock' | 'unlock';

@@ -154,6 +154,7 @@ export class QueryBuilderGroup extends LitElement {
                 description=${this.group.disabled
                   ? this.textStrings.unlockGroup || 'Unlock group'
                   : this.textStrings.lockGroup || 'Lock group'}
+                ?disabled=${this.disabled}
                 @on-click=${this._handleLockToggle}
               >
                 <span slot="icon">
