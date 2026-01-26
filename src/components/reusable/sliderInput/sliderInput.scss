@@ -5,6 +5,10 @@
 
 :host {
   display: inline-block;
+  width: 355px;
+}
+
+:host([fullWidth]) {
   width: 100%;
   max-width: 100%;
 }
@@ -71,10 +75,14 @@
 
 input[type='range'] {
   width: 100%;
-  min-width: 0;
+  min-width: 301px;
   overflow: hidden;
   outline: none;
   background: transparent;
+}
+
+:host([fullWidth]) input[type='range'] {
+  min-width: 0;
 }
 
 input[type='range']:disabled {

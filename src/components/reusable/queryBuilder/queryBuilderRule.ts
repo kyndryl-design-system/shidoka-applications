@@ -414,6 +414,7 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-slider-input
         class="qb-rule__value qb-rule__value--slider"
+        fullWidth
         hideLabel
         .value=${Number(this.rule.value) || min}
         .min=${min}
