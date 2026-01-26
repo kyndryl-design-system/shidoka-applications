@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './index';
+import '../blockCodeView';
 import { action } from 'storybook/actions';
 
 export default {
@@ -231,7 +232,7 @@ const args = {
   showCloneButtons: false,
   showLockButtons: false,
   maxDepth: 5,
-  allowDragAndDrop: true,
+  disableDragAndDrop: false,
   disabled: false,
   size: 'xs',
 };
@@ -248,7 +249,7 @@ export const Default = {
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
-        ?allowDragAndDrop=${args.allowDragAndDrop}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
         @on-query-change=${(e) => {
           action('on-query-change')(e.detail);
@@ -276,7 +277,7 @@ export const WithInitialQuery = {
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
-        ?allowDragAndDrop=${args.allowDragAndDrop}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
         @on-query-change=${(e) => {
           action('on-query-change')(e.detail);
@@ -304,7 +305,7 @@ export const NestedGroups = {
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
-        ?allowDragAndDrop=${args.allowDragAndDrop}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
         @on-query-change=${(e) => {
           action('on-query-change')(e.detail);
@@ -334,7 +335,7 @@ export const WithAllOptions = {
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
-        ?allowDragAndDrop=${args.allowDragAndDrop}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
         @on-query-change=${(e) => {
           action('on-query-change')(e.detail);
@@ -369,7 +370,7 @@ export const LimitedDepth = {
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
           .maxDepth=${args.maxDepth}
-          ?allowDragAndDrop=${args.allowDragAndDrop}
+          ?disableDragAndDrop=${args.disableDragAndDrop}
           ?disabled=${args.disabled}
           @on-query-change=${(e) => {
             action('on-query-change')(e.detail);
@@ -399,7 +400,7 @@ export const Disabled = {
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
-        ?allowDragAndDrop=${args.allowDragAndDrop}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
         @on-query-change=${(e) => {
           action('on-query-change')(e.detail);
@@ -423,19 +424,6 @@ export const WithQueryOutput = {
       <style>
         .query-output {
           margin-top: 24px;
-          padding: 16px;
-          background-color: var(--kd-color-background-ui-soft);
-          border-radius: 8px;
-          font-family: monospace;
-          font-size: 12px;
-          white-space: pre-wrap;
-          max-height: 300px;
-          overflow: auto;
-        }
-        .query-output-label {
-          font-weight: 600;
-          margin-bottom: 8px;
-          display: block;
         }
       </style>
       <kyn-query-builder
@@ -446,19 +434,25 @@ export const WithQueryOutput = {
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
-        ?allowDragAndDrop=${args.allowDragAndDrop}
+        ?disableDragAndDrop=${args.disableDragAndDrop}
         ?disabled=${args.disabled}
         @on-query-change=${(e) => {
           action('on-query-change')(e.detail);
           const outputEl = document.getElementById('query-output');
           if (outputEl) {
-            outputEl.textContent = JSON.stringify(e.detail.query, null, 2);
+            outputEl.codeSnippet = JSON.stringify(e.detail.query, null, 2);
           }
         }}
       ></kyn-query-builder>
-      <div class="query-output" tabindex="0">
-        <span class="query-output-label">Query Output (JSON):</span>
-        <div id="query-output">${JSON.stringify(args.query, null, 2)}</div>
+      <div class="query-output">
+        <kyn-block-code-view
+          id="query-output"
+          language="json"
+          codeViewLabel="Query Output"
+          codeSnippet=${JSON.stringify(args.query, null, 2)}
+          .maxHeight=${300}
+          copyOptionVisible
+        ></kyn-block-code-view>
       </div>
     `;
   },
@@ -530,7 +524,7 @@ export const AllValueTypes = {
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
           .maxDepth=${args.maxDepth}
-          ?allowDragAndDrop=${args.allowDragAndDrop}
+          ?disableDragAndDrop=${args.disableDragAndDrop}
           ?disabled=${args.disabled}
           @on-query-change=${(e) => {
             action('on-query-change')(e.detail);
@@ -664,7 +658,7 @@ export const WithValidation = {
           ?showCloneButtons=${args.showCloneButtons}
           ?showLockButtons=${args.showLockButtons}
           .maxDepth=${args.maxDepth}
-          ?allowDragAndDrop=${args.allowDragAndDrop}
+          ?disableDragAndDrop=${args.disableDragAndDrop}
           ?disabled=${args.disabled}
           @on-query-change=${(e) => {
             action('on-query-change')(e.detail);

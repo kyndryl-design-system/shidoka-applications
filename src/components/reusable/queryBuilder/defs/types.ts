@@ -103,7 +103,7 @@ export interface QueryBuilderConfig {
   showCloneButtons?: boolean;
   showLockButtons?: boolean;
   maxDepth?: number;
-  allowDragAndDrop?: boolean;
+  disableDragAndDrop?: boolean;
 }
 
 /**

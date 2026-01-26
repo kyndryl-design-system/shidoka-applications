@@ -84,9 +84,9 @@ export class QueryBuilderGroup extends LitElement {
   @property({ type: Boolean })
   accessor showLockButton = false;
 
-  /** Whether drag and drop is enabled */
+  /** Whether drag and drop is disabled */
   @property({ type: Boolean })
-  accessor allowDragAndDrop = true;
+  accessor disableDragAndDrop = false;
 
   /** Whether the group is disabled/locked */
   @property({ type: Boolean, reflect: true })
@@ -130,7 +130,7 @@ export class QueryBuilderGroup extends LitElement {
 
     return html`
       <div class="qb-group__header">
-        ${this.allowDragAndDrop ? this._renderDragHandle() : null}
+        ${!this.disableDragAndDrop ? this._renderDragHandle() : null}
         ${this._renderCombinatorToggle()}
         ${canAddGroup
           ? html`
@@ -328,7 +328,7 @@ export class QueryBuilderGroup extends LitElement {
             .size=${this.size}
             ?showCloneButton=${this.showCloneButton}
             ?showLockButton=${this.showLockButton}
-            ?allowDragAndDrop=${this.allowDragAndDrop}
+            ?disableDragAndDrop=${this.disableDragAndDrop}
             ?disabled=${this.disabled || this.group.disabled}
             @on-group-change=${this._handleNestedGroupChange}
             @on-group-remove=${this._handleNestedGroupRemove}
@@ -360,7 +360,7 @@ export class QueryBuilderGroup extends LitElement {
           ?isLast=${isLastRule}
           ?showCloneButton=${this.showCloneButton}
           ?showLockButton=${this.showLockButton}
-          ?allowDragAndDrop=${this.allowDragAndDrop}
+          ?disableDragAndDrop=${this.disableDragAndDrop}
           ?disabled=${this.disabled || this.group.disabled}
           @on-rule-change=${(e: CustomEvent) =>
             this._handleRuleChange(e, index)}
@@ -642,7 +642,7 @@ export class QueryBuilderGroup extends LitElement {
   // ============================================
 
   private _handleDragStart(e: DragEvent) {
-    if (!this.allowDragAndDrop || this.disabled || this.group.disabled) {
+    if (this.disableDragAndDrop || this.disabled || this.group.disabled) {
       e.preventDefault();
       return;
     }
@@ -675,7 +675,7 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _handleItemDragOver(e: DragEvent, index: number) {
-    if (!this.allowDragAndDrop || this.disabled || this.group.disabled) {
+    if (this.disableDragAndDrop || this.disabled || this.group.disabled) {
       return;
     }
 
@@ -746,7 +746,7 @@ export class QueryBuilderGroup extends LitElement {
   }
 
   private _handleGroupDragOver(e: DragEvent) {
-    if (!this.allowDragAndDrop || this.disabled || this.group.disabled) {
+    if (this.disableDragAndDrop || this.disabled || this.group.disabled) {
       return;
     }
     e.preventDefault();

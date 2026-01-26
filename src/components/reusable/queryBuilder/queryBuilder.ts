@@ -89,7 +89,9 @@ export class QueryBuilder extends LitElement {
   @property({ type: Array })
   accessor fields: QueryField[] = [];
 
-  /** Available combinators (internal) */
+  /** Available combinators
+   * @internal
+   */
   private get _combinators(): QueryOption[] {
     return [
       { value: 'and', label: this._textStrings.and },
@@ -109,9 +111,9 @@ export class QueryBuilder extends LitElement {
   @property({ type: Number })
   accessor maxDepth = Infinity;
 
-  /** Enable drag-and-drop reordering */
+  /** Disable drag-and-drop reordering */
   @property({ type: Boolean })
-  accessor allowDragAndDrop = true;
+  accessor disableDragAndDrop = false;
 
   /** Disable the entire query builder */
   @property({ type: Boolean, reflect: true })
@@ -169,7 +171,7 @@ export class QueryBuilder extends LitElement {
             isRoot
             ?showCloneButton=${this.showCloneButtons}
             ?showLockButton=${this.showLockButtons}
-            ?allowDragAndDrop=${this.allowDragAndDrop}
+            ?disableDragAndDrop=${this.disableDragAndDrop}
             ?disabled=${this.disabled}
             @on-group-change=${this._handleGroupChange}
             @on-group-lock=${this._handleGroupLock}

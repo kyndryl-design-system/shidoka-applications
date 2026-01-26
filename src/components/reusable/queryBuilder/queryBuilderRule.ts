@@ -75,9 +75,9 @@ export class QueryBuilderRule extends LitElement {
   @property({ type: Boolean })
   accessor showLockButton = false;
 
-  /** Whether drag and drop is enabled */
+  /** Whether drag and drop is disabled */
   @property({ type: Boolean })
-  accessor allowDragAndDrop = true;
+  accessor disableDragAndDrop = false;
 
   /** Whether the rule is disabled/locked */
   @property({ type: Boolean, reflect: true })
@@ -141,7 +141,7 @@ export class QueryBuilderRule extends LitElement {
 
     return html`
       <div class=${classMap(classes)}>
-        ${this.allowDragAndDrop ? this._renderDragHandle() : null}
+        ${!this.disableDragAndDrop ? this._renderDragHandle() : null}
         <div class="qb-rule__fields">
           ${this._renderFieldSelector()} ${this._renderOperatorSelector()}
           ${this.rule.operator && !this.isNoValue
@@ -181,7 +181,7 @@ export class QueryBuilderRule extends LitElement {
   }
 
   private _handleDragStart(e: DragEvent) {
-    if (!this.allowDragAndDrop || this.disabled || this.rule.disabled) {
+    if (this.disableDragAndDrop || this.disabled || this.rule.disabled) {
       e.preventDefault();
       return;
     }
