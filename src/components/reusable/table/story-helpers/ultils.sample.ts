@@ -248,7 +248,7 @@ export const dataForColumnsFilter = [
     applnName: 'Application 02',
     businessService: 'Research',
     businessGroups: 'Retail',
-    ticketStatus: 'Canelled',
+    ticketStatus: 'Cancelled',
     criticalityRisk: 74,
   },
   {

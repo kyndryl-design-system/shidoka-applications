@@ -614,8 +614,10 @@ export const WithFooter: Story = {
 };
 
 const columnFilterValues: { [key: string]: string } = {
+  applnName: '',
   businessService: '',
   businessGroups: '',
+  ticketStatus: '',
 };
 export const ColumnFiltering: Story = {
   args: {
@@ -699,6 +701,7 @@ export const ColumnFiltering: Story = {
                   <kyn-dropdown-option value="p1"> P1 </kyn-dropdown-option>
                   <kyn-dropdown-option value="p2">P2</kyn-dropdown-option>
                   <kyn-dropdown-option value="p3"> P3 </kyn-dropdown-option>
+                  <kyn-dropdown-option value="p4"> P4 </kyn-dropdown-option>
                 </kyn-dropdown>
               </kyn-th>
               <kyn-th>
@@ -709,6 +712,7 @@ export const ColumnFiltering: Story = {
                   name="search"
                   label="Search"
                   value=""
+                  @on-input=${(e: Event) => handleSearch('applnName', e)}
                 ></kyn-search>
               </kyn-th>
               <kyn-th>
@@ -741,14 +745,15 @@ export const ColumnFiltering: Story = {
                   placeholder=${args.placeholder}
                   size="sm"
                   hideLabel
+                  @on-change=${(e: Event) => handleSearch('ticketStatus', e)}
                 >
-                  <kyn-dropdown-option value="inprogress">
+                  <kyn-dropdown-option value="In Progress">
                     In Progress
                   </kyn-dropdown-option>
-                  <kyn-dropdown-option value="onhold"
+                  <kyn-dropdown-option value="On Hold"
                     >On Hold</kyn-dropdown-option
                   >
-                  <kyn-dropdown-option value="cancelled">
+                  <kyn-dropdown-option value="Cancelled">
                     Cancelled
                   </kyn-dropdown-option>
                 </kyn-dropdown>
