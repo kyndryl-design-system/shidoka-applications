@@ -21,9 +21,9 @@ import {
   dataForColumnsFilter,
 } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
-import '../../reusable/search';
 import '../../reusable/dropdown';
 import '../../reusable/tag';
+import '../../reusable/textInput';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
@@ -694,6 +694,7 @@ export const ColumnFiltering: Story = {
                 <kyn-dropdown
                   slot="column-filter"
                   size="sm"
+                  placeholder=" "
                   hideLabel
                   multiple
                   hideTags
@@ -706,45 +707,45 @@ export const ColumnFiltering: Story = {
               </kyn-th>
               <kyn-th>
                 <span class="ellipsis-header">Applications</span>
-                <kyn-search
+                <kyn-text-input
                   slot="column-filter"
                   size="sm"
-                  name="search"
-                  label="Search"
+                  type="search"
                   value=""
+                  hideLabel
                   @on-input=${(e: Event) => handleSearch('applnName', e)}
-                ></kyn-search>
+                ></kyn-text-input>
               </kyn-th>
               <kyn-th>
                 <span class="ellipsis-header">Business Service</span>
-                <kyn-search
+                <kyn-text-input
                   slot="column-filter"
                   size="sm"
-                  name="search"
-                  label="Search"
+                  type="search"
                   value=""
+                  hideLabel
                   @on-input=${(e: Event) => handleSearch('businessService', e)}
-                ></kyn-search>
+                ></kyn-text-input>
               </kyn-th>
               <kyn-th>
                 <span class="ellipsis-header">Business Groups</span>
-                <kyn-search
+                <kyn-text-input
                   slot="column-filter"
                   size="sm"
-                  name="search"
-                  label="Search"
+                  type="search"
                   value=""
+                  hideLabel
                   @on-input=${(e: Event) => handleSearch('businessGroups', e)}
-                ></kyn-search>
+                ></kyn-text-input>
               </kyn-th>
               <kyn-th>
                 <span class="ellipsis-header">Ticket Status</span>
                 <kyn-dropdown
                   slot="column-filter"
                   label=${args.label}
-                  placeholder=${args.placeholder}
                   size="sm"
                   hideLabel
+                  placeholder=" "
                   @on-change=${(e: Event) => handleSearch('ticketStatus', e)}
                 >
                   <kyn-dropdown-option value="In Progress">
@@ -760,13 +761,13 @@ export const ColumnFiltering: Story = {
               </kyn-th>
               <kyn-th .align=${'right'}>
                 <span class="ellipsis-header">Criticality Risk %</span>
-                <kyn-search
+                <kyn-text-input
                   slot="column-filter"
                   size="sm"
-                  name="search"
-                  label="Search"
+                  type="search"
                   value=""
-                ></kyn-search>
+                  hideLabel
+                ></kyn-text-input>
               </kyn-th>
             </kyn-header-tr>
           </kyn-thead>
