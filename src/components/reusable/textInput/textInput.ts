@@ -318,7 +318,13 @@ export class TextInput extends FormMixin(LitElement) {
         : this._inputEl.validationMessage;
 
     // set validity on custom element, anchor to inputEl
-    this._internals.setValidity(Validity, ValidationMessage, this._inputEl);
+    // setValidity requires a non-empty message when any validity flag is true
+    if (Validity.valid) {
+      this._internals.setValidity({});
+    } else {
+      const message = ValidationMessage || this._textStrings.errorText;
+      this._internals.setValidity(Validity, message, this._inputEl);
+    }
 
     // set internal validation message if value was changed by user input
     if (interacted) {
