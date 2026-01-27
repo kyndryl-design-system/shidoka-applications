@@ -648,8 +648,7 @@ export const WithValidation = {
         >
           This story demonstrates field validation. The second rule (Age) has an
           invalid value (-5) and displays a validation error. Try editing the
-          values and blurring out of the fields to see validation in action
-          (onBlur).
+          values to see validation in action (onBlur).
         </p>
         <kyn-query-builder
           .fields=${args.fields}
