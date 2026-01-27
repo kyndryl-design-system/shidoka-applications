@@ -22,6 +22,8 @@ import {
 } from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
 import '../../reusable/search';
+import '../../reusable/dropdown';
+import '../../reusable/tag';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
@@ -612,7 +614,6 @@ export const WithFooter: Story = {
 };
 
 const columnFilterValues: { [key: string]: string } = {
-  applnName: '',
   businessService: '',
   businessGroups: '',
 };
@@ -687,6 +688,20 @@ export const ColumnFiltering: Story = {
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th>
+                <span class="ellipsis-header">Ticket Priority</span>
+                <kyn-dropdown
+                  slot="column-filter"
+                  size="sm"
+                  hideLabel
+                  multiple
+                  hideTags
+                >
+                  <kyn-dropdown-option value="p1"> P1 </kyn-dropdown-option>
+                  <kyn-dropdown-option value="p2">P2</kyn-dropdown-option>
+                  <kyn-dropdown-option value="p3"> P3 </kyn-dropdown-option>
+                </kyn-dropdown>
+              </kyn-th>
+              <kyn-th>
                 <span class="ellipsis-header">Applications</span>
                 <kyn-search
                   slot="column-filter"
@@ -694,7 +709,6 @@ export const ColumnFiltering: Story = {
                   name="search"
                   label="Search"
                   value=""
-                  @on-input=${(e: Event) => handleSearch('applnName', e)}
                 ></kyn-search>
               </kyn-th>
               <kyn-th>
@@ -719,28 +733,28 @@ export const ColumnFiltering: Story = {
                   @on-input=${(e: Event) => handleSearch('businessGroups', e)}
                 ></kyn-search>
               </kyn-th>
-              <kyn-th enableFiltering .align=${'right'}>
-                <span class="ellipsis-header">Oppurtunity Size</span>
-                <kyn-search
+              <kyn-th>
+                <span class="ellipsis-header">Ticket Status</span>
+                <kyn-dropdown
                   slot="column-filter"
+                  label=${args.label}
+                  placeholder=${args.placeholder}
                   size="sm"
-                  name="search"
-                  label="Search"
-                  value=""
-                ></kyn-search>
+                  hideLabel
+                >
+                  <kyn-dropdown-option value="inprogress">
+                    In Progress
+                  </kyn-dropdown-option>
+                  <kyn-dropdown-option value="onhold"
+                    >On Hold</kyn-dropdown-option
+                  >
+                  <kyn-dropdown-option value="cancelled">
+                    Cancelled
+                  </kyn-dropdown-option>
+                </kyn-dropdown>
               </kyn-th>
-              <kyn-th enableFiltering .align=${'right'}>
+              <kyn-th .align=${'right'}>
                 <span class="ellipsis-header">Criticality Risk %</span>
-                <kyn-search
-                  slot="column-filter"
-                  size="sm"
-                  name="search"
-                  label="Search"
-                  value=""
-                ></kyn-search>
-              </kyn-th>
-              <kyn-th enableFiltering .align=${'right'}>
-                <span class="ellipsis-header">Complexity Risk %</span>
                 <kyn-search
                   slot="column-filter"
                   size="sm"
@@ -760,15 +774,25 @@ export const ColumnFiltering: Story = {
                 `
               : repeat(
                   rows,
-                  (row: any) => row.applnName,
                   (row: any) => html`
                     <kyn-tr>
+                      <kyn-td> ${row.ticketPriority} </kyn-td>
                       <kyn-td> ${row.applnName} </kyn-td>
                       <kyn-td>${row.businessService}</kyn-td>
                       <kyn-td>${row.businessGroups}</kyn-td>
-                      <kyn-td .align=${'right'}>${row.oppurtunitySize}</kyn-td>
+                      <kyn-td><kyn-tag
+                              tagSize="md"
+                              tagColor=${
+                                row.ticketStatus === 'In Progress'
+                                  ? 'spruce'
+                                  : row.ticketStatus === 'On Hold'
+                                  ? 'lilac'
+                                  : 'default'
+                              }
+                            />
+                            ${row.ticketStatus}
+                          </kyn-tag></kyn-td>
                       <kyn-td .align=${'right'}>${row.criticalityRisk}</kyn-td>
-                      <kyn-td .align=${'right'}>${row.complexityRisk}</kyn-td>
                     </kyn-tr>
                   `
                 )}
@@ -782,6 +806,20 @@ export const ColumnFiltering: Story = {
           color: var(--kd-color-text-level-secondary);
           pointer-events: none;
         }
+        kyn-table-container {
+          overflow: visible;
+        }
+        kyn-thead {
+          overflow: visible;
+        }
+        kyn-th {
+          overflow: visible;
+          kyn-dropdown {
+            display: block;
+            width: 200px;
+          }
+        }
+
         @media (max-width: 1232px) {
           .ellipsis-header {
             overflow: hidden;
