@@ -78,9 +78,6 @@
   min-width: 150px;
 }
 
-// Allow number input to fill available space
-// Override inline-block display and max-width constraint
-// Note: kyn-number-input itself has the .qb-rule__value class
 kyn-number-input.qb-rule__value {
   display: block;
   --kyn-number-input-inner-max-width: 100%;
@@ -91,7 +88,7 @@ kyn-number-input.qb-rule__value {
   min-width: 150px;
   padding: 0 16px;
   box-sizing: border-box;
-  margin: -6px 0;
+  margin: -5px 0;
 
   kyn-slider-input {
     width: 100%;
@@ -102,17 +99,18 @@ kyn-number-input.qb-rule__value {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: -13px;
-  padding: 0px 8px;
-  flex: 1 1 auto;
-  min-width: fit-content;
+  padding: 0 8px;
+  // Allow inline on large screens, wrap to own row on smaller screens
+  flex: 1 1 250px;
+  min-width: 150px;
 
   kyn-radio-button-group {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 
     --kyn-radio-group-gap: 16px;
+    --kyn-radio-description-display: none;
   }
 }
 
@@ -139,7 +137,7 @@ kyn-number-input.qb-rule__value {
 .qb-rule__actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
 }
 

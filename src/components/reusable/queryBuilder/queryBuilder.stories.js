@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import './index';
 import '../blockCodeView';
+import '../sideDrawer';
+import '../button';
 import { action } from 'storybook/actions';
 
 export default {
@@ -668,6 +670,113 @@ export const WithValidation = {
           }}
         ></kyn-query-builder>
       </div>
+    `;
+  },
+};
+
+// Fields with only text and select types for side drawer story
+const sideDrawerFields = sampleFields.filter(
+  (field) => field.dataType === 'text' || field.dataType === 'select'
+);
+
+// Query with only text and select rules
+const sideDrawerQuery = {
+  id: 'root',
+  combinator: 'and',
+  rules: [
+    {
+      id: 'rule-1',
+      field: 'firstName',
+      operator: 'contains',
+      value: 'John',
+    },
+    {
+      id: 'rule-2',
+      field: 'lastName',
+      operator: 'equal',
+      value: 'Doe',
+    },
+    {
+      id: 'rule-3',
+      field: 'status',
+      operator: 'equal',
+      value: 'active',
+    },
+    {
+      id: 'rule-4',
+      field: 'department',
+      operator: 'equal',
+      value: 'engineering',
+    },
+  ],
+};
+
+export const WithSideDrawer = {
+  args: {
+    ...args,
+    fields: sideDrawerFields,
+    query: sideDrawerQuery,
+  },
+  render: (args) => {
+    return html`
+      <kyn-side-drawer
+        size="md"
+        titleText="Edit Query"
+        labelText="View and Category will be locked after conditions are added"
+        submitBtnText="Apply"
+        cancelBtnText="Reset"
+        showSecondaryButton
+        secondaryButtonText="Save"
+        @on-close=${(e) => action('on-close')(e.detail)}
+        @on-open=${(e) => action('on-open')(e.detail)}
+      >
+        <kyn-button slot="anchor">Open Query Builder</kyn-button>
+
+        <div class="side-drawer-content">
+          <kyn-query-builder
+            id="side-drawer-query-builder"
+            .fields=${args.fields}
+            .query=${args.query}
+            .size=${args.size}
+            ?showCloneButtons=${args.showCloneButtons}
+            ?showLockButtons=${args.showLockButtons}
+            .maxDepth=${args.maxDepth}
+            ?disableDragAndDrop=${args.disableDragAndDrop}
+            ?disabled=${args.disabled}
+            @on-query-change=${(e) => {
+              action('on-query-change')(e.detail);
+              const outputEl = document.getElementById(
+                'side-drawer-query-output'
+              );
+              if (outputEl) {
+                outputEl.codeSnippet = JSON.stringify(e.detail.query, null, 2);
+              }
+            }}
+          ></kyn-query-builder>
+
+          <div class="preview-section">
+            <kyn-block-code-view
+              id="side-drawer-query-output"
+              language="json"
+              codeViewLabel="Preview"
+              codeSnippet=${JSON.stringify(args.query, null, 2)}
+              .maxHeight=${200}
+              copyOptionVisible
+            ></kyn-block-code-view>
+          </div>
+        </div>
+      </kyn-side-drawer>
+
+      <style>
+        .side-drawer-content {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+        .preview-section {
+          margin-top: 8px;
+        }
+      </style>
     `;
   },
 };
