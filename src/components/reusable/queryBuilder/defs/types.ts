@@ -58,9 +58,38 @@ export interface QueryField {
   defaultValue?: any;
   placeholder?: string;
   validator?: (rule: RuleType) => boolean | string;
+
+  // Validation props - passed through to input components
+  /** Makes the field required */
+  required?: boolean;
+
+  // Number validation (also used for slider)
+  /** Minimum value for number/slider fields */
   min?: number;
+  /** Maximum value for number/slider fields */
   max?: number;
+  /** Step increment for number/slider fields */
   step?: number;
+
+  // Text validation
+  /** RegEx pattern for text fields */
+  pattern?: string;
+  /** Minimum character length for text fields */
+  minLength?: number;
+  /** Maximum character length for text fields */
+  maxLength?: number;
+
+  // Date validation
+  /** Minimum date for date/datetime fields */
+  minDate?: string | number | Date;
+  /** Maximum date for date/datetime fields */
+  maxDate?: string | number | Date;
+
+  // Time validation
+  /** Minimum time for time fields */
+  minTime?: string | number | Date;
+  /** Maximum time for time fields */
+  maxTime?: string | number | Date;
 }
 
 /**

@@ -216,6 +216,8 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__field"
+        name=${`${this.rule.id}-field`}
+        label=${this.textStrings.selectField || 'Select field'}
         placeholder=${this.textStrings.selectField || 'Select field'}
         size=${this.size}
         hideTags
@@ -239,6 +241,8 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__operator"
+        name=${`${this.rule.id}-operator`}
+        label=${this.textStrings.selectOperator || 'Select operator'}
         placeholder=${this.textStrings.selectOperator || 'Select operator'}
         size=${this.size}
         hideTags
@@ -302,10 +306,16 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-text-input
         class="qb-rule__value"
+        name=${`${this.rule.id}-value`}
+        label=${field?.label || this.textStrings.value || 'Value'}
         size=${this.size}
         hideLabel
         placeholder=${field?.placeholder || this.textStrings.value || 'Value'}
         .value=${String(this.rule.value)}
+        ?required=${field?.required}
+        pattern=${field?.pattern || ''}
+        .minLength=${field?.minLength}
+        .maxLength=${field?.maxLength}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -317,10 +327,15 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-number-input
         class="qb-rule__value"
+        name=${`${this.rule.id}-value`}
+        label=${field.label || this.textStrings.value || 'Value'}
         size=${this.size}
         hideLabel
         placeholder=${field.placeholder || this.textStrings.value || 'Value'}
         .value=${Number(this.rule.value) || 0}
+        ?required=${field.required}
+        .min=${field.min}
+        .max=${field.max}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -332,12 +347,17 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-date-picker
         class="qb-rule__value"
+        name=${`${this.rule.id}-value`}
+        label=${field.label || this.textStrings.selectDate || 'Select date'}
         size=${this.size}
         hideLabel
         placeholder=${field.placeholder ||
         this.textStrings.selectDate ||
         'Select date'}
         .value=${this.rule.value}
+        ?required=${field.required}
+        .minDate=${field.minDate || ''}
+        .maxDate=${field.maxDate || ''}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -349,6 +369,10 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-date-picker
         class="qb-rule__value"
+        name=${`${this.rule.id}-value`}
+        label=${field.label ||
+        this.textStrings.selectDateTime ||
+        'Select date/time'}
         size=${this.size}
         hideLabel
         enableTime
@@ -356,6 +380,9 @@ export class QueryBuilderRule extends LitElement {
         this.textStrings.selectDateTime ||
         'Select date/time'}
         .value=${this.rule.value}
+        ?required=${field.required}
+        .minDate=${field.minDate || ''}
+        .maxDate=${field.maxDate || ''}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -367,12 +394,17 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-time-picker
         class="qb-rule__value"
+        name=${`${this.rule.id}-value`}
+        label=${field.label || this.textStrings.selectTime || 'Select time'}
         size=${this.size}
         hideLabel
         placeholder=${field.placeholder ||
         this.textStrings.selectTime ||
         'Select time'}
         .value=${this.rule.value}
+        ?required=${field.required}
+        .minTime=${field.minTime || ''}
+        .maxTime=${field.maxTime || ''}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -380,13 +412,14 @@ export class QueryBuilderRule extends LitElement {
     `;
   }
 
-  private _renderBooleanInput(_field: QueryField) {
+  private _renderBooleanInput(field: QueryField) {
     return html`
       <kyn-toggle-button
         class="qb-rule__value qb-rule__value--boolean"
+        name=${`${this.rule.id}-value`}
         small
         hideLabel
-        label=${this.textStrings.value || 'Value'}
+        label=${field.label || this.textStrings.value || 'Value'}
         ?checked=${Boolean(this.rule.value)}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleBooleanChange}
@@ -398,6 +431,8 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <div class="qb-rule__value qb-rule__value--radio">
         <kyn-radio-button-group
+          name=${`${this.rule.id}-value`}
+          label=${field.label || this.textStrings.value || 'Value'}
           horizontal
           hideLabel
           .value=${String(this.rule.value)}
@@ -424,6 +459,8 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-slider-input
         class="qb-rule__value qb-rule__value--slider"
+        name=${`${this.rule.id}-value`}
+        label=${field.label || this.textStrings.value || 'Value'}
         fullWidth
         hideLabel
         .value=${Number(this.rule.value) || min}
@@ -441,6 +478,8 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__value"
+        name=${`${this.rule.id}-value`}
+        label=${field.label || this.textStrings.selectValue || 'Select value'}
         size=${this.size}
         hideTags
         hideLabel
@@ -448,6 +487,7 @@ export class QueryBuilderRule extends LitElement {
         this.textStrings.selectValue ||
         'Select value'}
         .value=${this.rule.value as string}
+        ?required=${field.required}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -470,6 +510,8 @@ export class QueryBuilderRule extends LitElement {
     return html`
       <kyn-dropdown
         class="qb-rule__value"
+        name=${`${this.rule.id}-value`}
+        label=${field.label || this.textStrings.selectValues || 'Select values'}
         size=${this.size}
         multiple
         hideLabel
@@ -477,6 +519,7 @@ export class QueryBuilderRule extends LitElement {
         this.textStrings.selectValues ||
         'Select values'}
         .value=${values}
+        ?required=${field.required}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleMultiValueChange}
         @blur=${this._handleValueBlur}
@@ -495,16 +538,27 @@ export class QueryBuilderRule extends LitElement {
   private _renderBetweenEditor(field: QueryField) {
     const values = Array.isArray(this.rule.value) ? this.rule.value : ['', ''];
     const [val1, val2] = values;
+    const minLabel = `${field.label} ${this.textStrings.min || 'minimum'}`;
+    const maxLabel = `${field.label} ${this.textStrings.max || 'maximum'}`;
+    const startLabel = `${field.label} ${this.textStrings.start || 'start'}`;
+    const endLabel = `${field.label} ${this.textStrings.end || 'end'}`;
+    const fromLabel = `${field.label} ${this.textStrings.from || 'from'}`;
+    const toLabel = `${field.label} ${this.textStrings.to || 'to'}`;
 
     if (field.dataType === 'number') {
       return html`
         <div class="qb-rule__between">
           <kyn-number-input
             class="qb-rule__value"
+            name=${`${this.rule.id}-value-min`}
+            label=${minLabel}
             size=${this.size}
             hideLabel
             placeholder=${this.textStrings.min || 'Min'}
             .value=${Number(val1) || 0}
+            ?required=${field.required}
+            .min=${field.min}
+            .max=${field.max}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
             @blur=${this._handleValueBlur}
@@ -512,10 +566,15 @@ export class QueryBuilderRule extends LitElement {
           <span class="qb-rule__between-separator">and</span>
           <kyn-number-input
             class="qb-rule__value"
+            name=${`${this.rule.id}-value-max`}
+            label=${maxLabel}
             size=${this.size}
             hideLabel
             placeholder=${this.textStrings.max || 'Max'}
             .value=${Number(val2) || 0}
+            ?required=${field.required}
+            .min=${field.min}
+            .max=${field.max}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
             @blur=${this._handleValueBlur}
@@ -529,11 +588,16 @@ export class QueryBuilderRule extends LitElement {
         <div class="qb-rule__between">
           <kyn-date-picker
             class="qb-rule__value"
+            name=${`${this.rule.id}-value-start`}
+            label=${startLabel}
             size=${this.size}
             hideLabel
             ?enableTime=${field.dataType === 'datetime'}
             placeholder=${this.textStrings.start || 'Start'}
             .value=${val1}
+            ?required=${field.required}
+            .minDate=${field.minDate || ''}
+            .maxDate=${field.maxDate || ''}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
             @blur=${this._handleValueBlur}
@@ -541,11 +605,16 @@ export class QueryBuilderRule extends LitElement {
           <span class="qb-rule__between-separator">and</span>
           <kyn-date-picker
             class="qb-rule__value"
+            name=${`${this.rule.id}-value-end`}
+            label=${endLabel}
             size=${this.size}
             hideLabel
             ?enableTime=${field.dataType === 'datetime'}
             placeholder=${this.textStrings.end || 'End'}
             .value=${val2}
+            ?required=${field.required}
+            .minDate=${field.minDate || ''}
+            .maxDate=${field.maxDate || ''}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
             @blur=${this._handleValueBlur}
@@ -560,10 +629,16 @@ export class QueryBuilderRule extends LitElement {
       <div class="qb-rule__between">
         <kyn-text-input
           class="qb-rule__value"
+          name=${`${this.rule.id}-value-from`}
+          label=${fromLabel}
           size=${this.size}
           hideLabel
           placeholder=${this.textStrings.from || 'From'}
           .value=${String(val1)}
+          ?required=${field.required}
+          pattern=${field.pattern || ''}
+          .minLength=${field.minLength}
+          .maxLength=${field.maxLength}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
           @blur=${this._handleValueBlur}
@@ -571,10 +646,16 @@ export class QueryBuilderRule extends LitElement {
         <span class="qb-rule__between-separator">and</span>
         <kyn-text-input
           class="qb-rule__value"
+          name=${`${this.rule.id}-value-to`}
+          label=${toLabel}
           size=${this.size}
           hideLabel
           placeholder=${this.textStrings.to || 'To'}
           .value=${String(val2)}
+          ?required=${field.required}
+          pattern=${field.pattern || ''}
+          .minLength=${field.minLength}
+          .maxLength=${field.maxLength}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
           @blur=${this._handleValueBlur}
