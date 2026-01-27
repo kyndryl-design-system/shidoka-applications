@@ -8,7 +8,6 @@ import QueryBuilderStyles from './queryBuilder.scss?inline';
 import type {
   RuleGroupType,
   RuleOrGroup,
-  RuleType,
   QueryField,
   QueryOption,
   QueryChangeEventDetail,

@@ -28,13 +28,13 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: 'https://www.figma.com/design/wrDALK5VGuhJ0q4Sfii2rl/Template-Library?node-id=2830-17768&m=dev',
     },
     a11y: {
       config: {
         rules: [
           {
-            // False positive: accessibility checks incorrectly measures unselected button text against adjacent selected button background in button groups
+            // false positive: accessibility checks incorrectly measures unselected button text against adjacent selected button background in button groups
             id: 'color-contrast',
             selector: '.kd-btn--group-first, .kd-btn--group-last',
             enabled: false,
