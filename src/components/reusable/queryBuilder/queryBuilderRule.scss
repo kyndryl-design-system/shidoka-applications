@@ -20,7 +20,7 @@
   }
 
   &--invalid {
-    // Override border color for inputs inside invalid rules
+    // override border color for inputs inside invalid rules
     // CSS custom properties cascade into shadow DOM
     .qb-rule__value {
       --kd-color-border-forms-default: var(
@@ -83,16 +83,17 @@ kyn-number-input.qb-rule__value {
   --kyn-number-input-inner-max-width: 100%;
 }
 
-.qb-rule__value.qb-rule__value--slider {
+kyn-slider-input.qb-rule__value.qb-rule__value--slider {
+  display: block;
   flex: 1 1 150px;
   min-width: 150px;
   padding: 0 16px;
   box-sizing: border-box;
-  margin: -5px 0;
-
-  kyn-slider-input {
-    width: 100%;
-  }
+  width: 100%;
+  // Reduce row height to match other rows
+  margin-top: -5px;
+  // Use the slider's CSS custom property for vertical alignment
+  --kyn-slider-track-offset-y: 5px;
 }
 
 .qb-rule__value.qb-rule__value--radio {
@@ -100,7 +101,6 @@ kyn-number-input.qb-rule__value {
   align-items: center;
   justify-content: flex-start;
   padding: 0 8px;
-  // Allow inline on large screens, wrap to own row on smaller screens
   flex: 1 1 250px;
   min-width: 150px;
 

@@ -479,7 +479,7 @@ const allValueTypesQuery = {
     {
       id: 'rule-date',
       field: 'birthDate',
-      operator: 'greaterThan',
+      operator: 'after',
       value: '1990-01-01',
     },
     {
