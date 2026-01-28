@@ -77,6 +77,7 @@ interface SlottedCategoryData {
   id: string;
   heading: string;
   links: SlottedLinkData[];
+  iconHtml?: string;
 }
 
 /**
@@ -177,6 +178,9 @@ export class HeaderCategories extends LitElement {
 
   /** @internal */
   private _buildSlottedTimeout?: number;
+
+  /** @internal */
+  private _resizeObserver?: ResizeObserver;
 
   /** @internal */
   private readonly _boundHandleNavToggle = (e: Event): void =>
@@ -289,6 +293,12 @@ export class HeaderCategories extends LitElement {
         this.view = nextView;
       }
     }
+
+    // Update dividers after render when in root view
+    if (this.view === ROOT_VIEW) {
+      // Use requestAnimationFrame to ensure layout is complete
+      requestAnimationFrame(() => this._updateDividers());
+    }
   }
 
   private renderLinkContent(
@@ -322,7 +332,7 @@ export class HeaderCategories extends LitElement {
     const links = category.links ?? [];
 
     return html`
-      <kyn-header-category heading=${category.heading}>
+      <kyn-header-category heading=${category.heading} showDivider>
         ${links.slice(0, this.maxRootLinks).map((link) => {
           const target = this.normalizeHeaderLinkTarget(link.target);
           return html`
@@ -342,6 +352,7 @@ export class HeaderCategories extends LitElement {
         ${links.length > this.maxRootLinks
           ? html`
               <kyn-header-link
+                slot="more"
                 href=${VOID_HREF}
                 @click=${(e: Event) =>
                   this.openCategoryDetail(tabId, category.id, e)}
@@ -436,6 +447,10 @@ export class HeaderCategories extends LitElement {
       const id = categoryEl.getAttribute('id') ?? `category-${index + 1}`;
       const heading = categoryEl.getAttribute('heading') ?? '';
 
+      // Extract icon slot content
+      const iconSlot = categoryEl.querySelector('[slot="icon"]');
+      const iconHtml = iconSlot ? iconSlot.innerHTML : undefined;
+
       const allLinks = Array.from(
         categoryEl.querySelectorAll<HTMLElement>('kyn-header-link')
       ).filter((link) => link.parentElement === categoryEl) as HTMLElement[];
@@ -455,6 +470,7 @@ export class HeaderCategories extends LitElement {
         id,
         heading,
         links,
+        iconHtml,
       } as SlottedCategoryData;
     });
 
@@ -467,7 +483,10 @@ export class HeaderCategories extends LitElement {
 
     return html`${categories.map(
       (category) => html`
-        <kyn-header-category heading=${category.heading}>
+        <kyn-header-category heading=${category.heading} showDivider>
+          ${category.iconHtml
+            ? html`<span slot="icon">${unsafeHTML(category.iconHtml)}</span>`
+            : null}
           ${category.links.slice(0, this.maxRootLinks).map((link) => {
             const target = this.normalizeHeaderLinkTarget(link.target);
             return html`
@@ -483,6 +502,7 @@ export class HeaderCategories extends LitElement {
           ${category.links.length > this.maxRootLinks
             ? html`
                 <kyn-header-link
+                  slot="more"
                   href=${VOID_HREF}
                   @click=${(e: Event) =>
                     this.openCategoryDetail(
@@ -543,6 +563,9 @@ export class HeaderCategories extends LitElement {
       <kyn-header-category
         heading=${`${categoryItem.heading} – ${this._textStrings.more}`}
       >
+        ${categoryItem.iconHtml
+          ? html`<span slot="icon">${unsafeHTML(categoryItem.iconHtml)}</span>`
+          : null}
         <div
           id=${`detail-${categoryItem.id}`}
           class="header-detail-columns ${isSingleColumn
@@ -587,6 +610,73 @@ export class HeaderCategories extends LitElement {
       this._buildSlottedCategories();
       this._buildSlottedTimeout = undefined;
     }, 40);
+  }
+
+  /**
+   * After render, detect which categories are "last" in their visual column
+   * and remove their dividers. CSS multi-column determines column breaks
+   * dynamically, so we must inspect rendered positions.
+   * @internal
+   */
+  private _updateDividers(): void {
+    if (this.view !== ROOT_VIEW) return;
+
+    const inner = this.shadowRoot?.querySelector('.header-categories__inner');
+    if (!inner) return;
+
+    const categories = Array.from(
+      inner.querySelectorAll<HTMLElement>('kyn-header-category')
+    );
+
+    if (!categories.length) return;
+
+    // First, reset all to showDivider=true
+    categories.forEach((cat) => {
+      (cat as unknown as { showDivider: boolean }).showDivider = true;
+    });
+
+    // Get bounding rects and group by column (x-position)
+    const categoryData = categories.map((cat) => ({
+      el: cat,
+      rect: cat.getBoundingClientRect(),
+    }));
+
+    // Group categories by their left edge (column), using tolerance for rounding
+    const columnMap = new Map<number, typeof categoryData>();
+    const tolerance = 5; // pixels
+
+    for (const item of categoryData) {
+      const x = item.rect.left;
+      let foundColumn = false;
+
+      for (const [columnX] of columnMap) {
+        if (Math.abs(x - columnX) <= tolerance) {
+          columnMap.get(columnX)!.push(item);
+          foundColumn = true;
+          break;
+        }
+      }
+
+      if (!foundColumn) {
+        columnMap.set(x, [item]);
+      }
+    }
+
+    // For each column, find the category with the highest bottom (last in column)
+    for (const [, columnCategories] of columnMap) {
+      if (columnCategories.length === 0) continue;
+
+      let lastInColumn = columnCategories[0];
+      for (const item of columnCategories) {
+        if (item.rect.bottom > lastInColumn.rect.bottom) {
+          lastInColumn = item;
+        }
+      }
+
+      // Remove divider from the last category in this column
+      (lastInColumn.el as unknown as { showDivider: boolean }).showDivider =
+        false;
+    }
   }
 
   override render() {
@@ -644,6 +734,16 @@ export class HeaderCategories extends LitElement {
 
     // initial build for slotted mode
     this._buildSlottedCategories();
+
+    // Set up ResizeObserver to update dividers when columns reflow
+    if (typeof ResizeObserver !== 'undefined') {
+      this._resizeObserver = new ResizeObserver(() => {
+        if (this.view === ROOT_VIEW) {
+          this._updateDividers();
+        }
+      });
+      this._resizeObserver.observe(this);
+    }
   }
 
   override disconnectedCallback(): void {
@@ -655,6 +755,11 @@ export class HeaderCategories extends LitElement {
     if (this._buildSlottedTimeout) {
       window.clearTimeout(this._buildSlottedTimeout);
       this._buildSlottedTimeout = undefined;
+    }
+
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+      this._resizeObserver = undefined;
     }
 
     super.disconnectedCallback();
