@@ -228,3 +228,31 @@ export const Disabled = {
     `;
   },
 };
+
+export const FullWidth = {
+  args,
+  render: (args) => {
+    return html`
+      <div style="width: 100%; border: 1px dashed #ccc; padding: 16px;">
+        <kyn-slider-input
+          fullWidth
+          name=${args.name}
+          value=${args.value}
+          caption=${args.caption}
+          ?disabled=${args.disabled}
+          invalidText=${args.invalidText}
+          ?hideLabel=${args.hideLabel}
+          step=${ifDefined(args.step)}
+          min=${ifDefined(args.min)}
+          max=${ifDefined(args.max)}
+          ?enableTooltip=${args.enableTooltip}
+          ?editableInput=${args.editableInput}
+          .textStrings=${args.textStrings}
+          label=${args.label}
+          @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+        </kyn-slider-input>
+      </div>
+    `;
+  },
+};
