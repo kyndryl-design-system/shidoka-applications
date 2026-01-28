@@ -233,3 +233,62 @@ export const dataForColumns = [
     col20: 'Column 20',
   },
 ];
+
+export const dataForColumnsFilter = [
+  {
+    ticketPriority: 'P1',
+    applnName: 'Application 01',
+    businessService: 'Marketing',
+    businessGroups: 'Banking',
+    ticketStatus: 'In Progress',
+    criticalityRisk: 80,
+  },
+  {
+    ticketPriority: 'P2',
+    applnName: 'Application 02',
+    businessService: 'Research',
+    businessGroups: 'Retail',
+    ticketStatus: 'Cancelled',
+    criticalityRisk: 74,
+  },
+  {
+    ticketPriority: 'P1',
+    applnName: 'Application 03',
+    businessService: 'HR',
+    businessGroups: 'Healthcare',
+    ticketStatus: 'On Hold',
+    criticalityRisk: 61,
+  },
+  {
+    ticketPriority: 'P3',
+    applnName: 'Application 04',
+    businessService: 'Finanace',
+    businessGroups: 'Life Science',
+    ticketStatus: 'Queued',
+    criticalityRisk: 52,
+  },
+  {
+    ticketPriority: 'P4',
+    applnName: 'Application 05',
+    businessService: 'Training',
+    businessGroups: 'Healthcare',
+    ticketStatus: 'In Progress',
+    criticalityRisk: 42,
+  },
+  {
+    ticketPriority: 'P1',
+    applnName: 'Application 06',
+    businessService: 'Compliance',
+    businessGroups: 'Banking',
+    ticketStatus: 'In Progress',
+    criticalityRisk: 33,
+  },
+  {
+    ticketPriority: 'P4',
+    applnName: 'Application 07',
+    businessService: 'Sales',
+    businessGroups: 'Banking',
+    ticketStatus: 'In Progress',
+    criticalityRisk: 20,
+  },
+];
