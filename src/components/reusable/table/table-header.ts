@@ -25,6 +25,7 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
  *
  * @fires on-sort-changed - Dispatched when the sort direction is changed. `detail: {sortDirection: string, sortKey: string } `
  * @slot unnamed - The content slot for adding header text or content.
+ * @slot column-filter - slot for column filter.
  */
 @customElement('kyn-th')
 export class TableHeader extends LitElement {
@@ -287,6 +288,7 @@ export class TableHeader extends LitElement {
           ${this.assistiveText}
         </div>
       </div>
+      <slot name="column-filter"> </slot>
     `;
   }
 }
