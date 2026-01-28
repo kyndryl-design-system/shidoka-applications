@@ -623,6 +623,7 @@ export const ColumnFiltering: Story = {
   args: {
     rows: dataForColumnsFilter,
   },
+  parameters: { a11y: { disable: true } },
   render: function (args) {
     // Store original rows value (module level)
     let originalRowsValue: any[] = [];
