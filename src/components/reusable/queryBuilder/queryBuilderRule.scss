@@ -6,12 +6,12 @@
 
 .qb-rule {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   padding: 24px 0;
 
   &--disabled {
-    opacity: 0.5;
+    opacity: 0.8;
 
     .qb-rule__fields,
     .qb-rule__drag-handle {
@@ -20,8 +20,6 @@
   }
 
   &--invalid {
-    // override border color for inputs inside invalid rules
-    // CSS custom properties cascade into shadow DOM
     .qb-rule__value {
       --kd-color-border-forms-default: var(
         --kd-color-border-variants-destructive
@@ -36,6 +34,7 @@
   justify-content: center;
   width: 24px;
   height: 24px;
+  margin-top: 12px;
   cursor: grab;
   color: var(--kd-color-text-level-secondary);
   flex-shrink: 0;
@@ -56,7 +55,7 @@
 
 .qb-rule__fields {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   flex: 1;
   min-width: 0;
@@ -90,9 +89,7 @@ kyn-slider-input.qb-rule__value.qb-rule__value--slider {
   padding: 0 16px;
   box-sizing: border-box;
   width: 100%;
-  // Reduce row height to match other rows
   margin-top: -5px;
-  // Use the slider's CSS custom property for vertical alignment
   --kyn-slider-track-offset-y: 5px;
 }
 
@@ -116,7 +113,7 @@ kyn-slider-input.qb-rule__value.qb-rule__value--slider {
 
 .qb-rule__between {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   flex: 1 1 250px;
   min-width: 200px;
@@ -132,6 +129,7 @@ kyn-slider-input.qb-rule__value.qb-rule__value--slider {
   color: var(--kd-color-text-level-secondary);
   font-size: 14px;
   white-space: nowrap;
+  line-height: 48px;
 }
 
 .qb-rule__actions {
