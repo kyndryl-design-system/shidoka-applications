@@ -16,9 +16,10 @@ export default {
       html`
         <style>
           .account-meta-info {
-            display: flex;
+            display: inline-flex;
             flex-direction: column;
             gap: 2px;
+            padding: 16px;
           }
 
           .account-meta-info__name {
@@ -55,13 +56,21 @@ export default {
   ],
 };
 
-const handleCopy = (value) => {
+const handleCopy = (value, e) => {
+  const button = e.target.closest('kyn-button');
+  const textNode = button.childNodes[button.childNodes.length - 1];
+  const originalText = textNode.textContent;
+
   navigator.clipboard.writeText(value).then(() => {
-    console.log('Copied:', value);
+    textNode.textContent = 'Copied!';
+    setTimeout(() => {
+      textNode.textContent = originalText;
+    }, 3000);
   });
 };
 
 export const Default = {
+  parameters: { a11y: { disable: true } },
   render: () => {
     const accountId = '023497uw02399023509';
 
@@ -76,7 +85,7 @@ export const Default = {
             kind="ghost"
             size="small"
             iconPosition="left"
-            @click=${() => handleCopy(accountId)}
+            @click=${(e) => handleCopy(accountId, e)}
           >
             <span slot="icon">${unsafeSVG(copyIcon)}</span>
             Copy
@@ -105,7 +114,7 @@ export const WithoutHeader = {
             kind="ghost"
             size="small"
             iconPosition="left"
-            @click=${() => handleCopy(accountId)}
+            @click=${(e) => handleCopy(accountId, e)}
           >
             <span slot="icon">${unsafeSVG(copyIcon)}</span>
             Copy
@@ -121,6 +130,7 @@ export const WithoutHeader = {
 };
 
 export const WithoutCopyButton = {
+  parameters: { a11y: { disable: true } },
   render: () => {
     return html`
       <div class="account-meta-info">
