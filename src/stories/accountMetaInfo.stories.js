@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
-import '../../components/reusable/button';
+import '../components/reusable/button';
 
 export default {
   title: 'Patterns/Account Meta Info',
@@ -20,10 +20,11 @@ export default {
             flex-direction: column;
             gap: 2px;
             padding: 16px;
+            align-self: center;
           }
 
           .account-meta-info__name {
-            font-size: var(--kd-font-size-ui-02);
+            font-size: 14px;
             line-height: var(--kd-line-height-ui-02);
             font-weight: 500;
             color: var(--kd-color-text-variant-brand);
@@ -34,6 +35,7 @@ export default {
             align-items: center;
             gap: 16px;
             min-height: 24px;
+            font-size: 14px;
           }
 
           .account-meta-info__label {
@@ -46,9 +48,10 @@ export default {
           }
 
           .account-meta-info__copy-btn {
-            margin-left: 8px;
-            margin-top: -8px;
+            margin-left: 0px;
+            margin-top: -10px;
             margin-bottom: -8px;
+            font-size: 14px;
           }
         </style>
         ${story()}
