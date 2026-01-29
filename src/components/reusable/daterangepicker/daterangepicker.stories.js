@@ -46,7 +46,7 @@ export default {
       control: { type: 'select' },
     },
     size: {
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
       control: { type: 'select' },
     },
     // defaultDate is soft deprecated — prefer controlling the component via `value`

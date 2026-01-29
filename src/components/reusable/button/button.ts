@@ -170,6 +170,7 @@ export class Button extends LitElement {
       [`kd-btn--${this.kind}`]: true,
       'kd-btn--solid-styles': BUTTON_KINDS_SOLID.includes(this.kind),
       'kd-btn--outline-styles': BUTTON_KINDS_OUTLINE.includes(this.kind),
+      'kd-btn--extra-small': this.size === BUTTON_SIZES.EXTRA_SMALL,
       'kd-btn--large': this.size === BUTTON_SIZES.LARGE,
       'kd-btn--small': this.size === BUTTON_SIZES.SMALL,
       'kd-btn--medium': this._reSizeBtn || this.size === BUTTON_SIZES.MEDIUM,
