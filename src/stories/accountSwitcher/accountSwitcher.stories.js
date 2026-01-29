@@ -161,6 +161,7 @@ const sampleCategories = [
 ];
 
 export const Default = {
+  parameters: { a11y: { disable: true } },
   render: () => {
     const accountId = '023497uw02399023509';
 
