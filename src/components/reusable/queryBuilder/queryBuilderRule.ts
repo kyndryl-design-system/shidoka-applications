@@ -1,6 +1,7 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
 import QueryBuilderRuleStyles from './queryBuilderRule.scss?inline';
@@ -315,8 +316,8 @@ export class QueryBuilderRule extends LitElement {
         .value=${String(this.rule.value)}
         ?required=${field?.required}
         pattern=${field?.pattern || ''}
-        .minLength=${field?.minLength}
-        .maxLength=${field?.maxLength}
+        minLength=${ifDefined(field?.minLength)}
+        maxLength=${ifDefined(field?.maxLength)}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -335,8 +336,8 @@ export class QueryBuilderRule extends LitElement {
         placeholder=${field.placeholder || this.textStrings.value || 'Value'}
         .value=${Number(this.rule.value) || 0}
         ?required=${field.required}
-        .min=${field.min}
-        .max=${field.max}
+        min=${ifDefined(field.min)}
+        max=${ifDefined(field.max)}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-input=${this._handleValueChange}
         @blur=${this._handleValueBlur}
@@ -519,7 +520,7 @@ export class QueryBuilderRule extends LitElement {
         placeholder=${field.placeholder ||
         this.textStrings.selectValues ||
         'Select values'}
-        .value=${values}
+        .value=${values as unknown as string}
         ?required=${field.required}
         ?disabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleMultiValueChange}
@@ -558,8 +559,8 @@ export class QueryBuilderRule extends LitElement {
             placeholder=${this.textStrings.min || 'Min'}
             .value=${Number(val1) || 0}
             ?required=${field.required}
-            .min=${field.min}
-            .max=${field.max}
+            min=${ifDefined(field.min)}
+            max=${ifDefined(field.max)}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
             @blur=${this._handleValueBlur}
@@ -574,8 +575,8 @@ export class QueryBuilderRule extends LitElement {
             placeholder=${this.textStrings.max || 'Max'}
             .value=${Number(val2) || 0}
             ?required=${field.required}
-            .min=${field.min}
-            .max=${field.max}
+            min=${ifDefined(field.min)}
+            max=${ifDefined(field.max)}
             ?disabled=${this.disabled || this.rule.disabled}
             @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
             @blur=${this._handleValueBlur}
@@ -638,8 +639,8 @@ export class QueryBuilderRule extends LitElement {
           .value=${String(val1)}
           ?required=${field.required}
           pattern=${field.pattern || ''}
-          .minLength=${field.minLength}
-          .maxLength=${field.maxLength}
+          minLength=${ifDefined(field.minLength)}
+          maxLength=${ifDefined(field.maxLength)}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
           @blur=${this._handleValueBlur}
@@ -655,8 +656,8 @@ export class QueryBuilderRule extends LitElement {
           .value=${String(val2)}
           ?required=${field.required}
           pattern=${field.pattern || ''}
-          .minLength=${field.minLength}
-          .maxLength=${field.maxLength}
+          minLength=${ifDefined(field.minLength)}
+          maxLength=${ifDefined(field.maxLength)}
           ?disabled=${this.disabled || this.rule.disabled}
           @on-input=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
           @blur=${this._handleValueBlur}
