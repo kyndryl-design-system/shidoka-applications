@@ -135,6 +135,7 @@ export class QueryBuilderRule extends LitElement {
   override render() {
     const classes = {
       'qb-rule': true,
+      [`qb-rule--${this.size}`]: true,
       'qb-rule--disabled': this.disabled || !!this.rule.disabled,
       'qb-rule--invalid': this.rule.valid === false,
     };

@@ -11,7 +11,7 @@
   padding: 24px 0;
 
   &--disabled {
-    opacity: 0.8;
+    opacity: 0.9;
 
     .qb-rule__fields,
     .qb-rule__drag-handle {
@@ -38,6 +38,19 @@
   cursor: grab;
   color: var(--kd-color-text-level-secondary);
   flex-shrink: 0;
+
+  // size-specific adjustments to center drag handle with input
+  .qb-rule--xs & {
+    margin-top: 1px;
+  }
+
+  .qb-rule--sm & {
+    margin-top: 4px;
+  }
+
+  .qb-rule--lg & {
+    margin-top: 16px;
+  }
 
   &:hover {
     color: var(--kd-color-text-level-primary);
@@ -66,6 +79,14 @@
 .qb-rule__operator {
   flex: 1 1 120px;
   min-width: 120px;
+  position: relative;
+
+  // Position validation errors absolutely so they don't shift layout
+  --kyn-error-position: absolute;
+  --kyn-error-top: 100%;
+  --kyn-error-left: 0;
+  --kyn-error-right: 0;
+  --kyn-error-margin-top: 4px;
 
   kyn-dropdown {
     width: 100%;
@@ -75,6 +96,14 @@
 .qb-rule__value {
   flex: 1 1 150px;
   min-width: 150px;
+  position: relative;
+
+  // Position validation errors absolutely so they don't shift layout
+  --kyn-error-position: absolute;
+  --kyn-error-top: 100%;
+  --kyn-error-left: 0;
+  --kyn-error-right: 0;
+  --kyn-error-margin-top: 4px;
 }
 
 kyn-number-input.qb-rule__value {
