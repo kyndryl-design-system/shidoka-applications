@@ -6,12 +6,18 @@
 :host {
   display: inline-block;
   width: 355px;
+}
+
+:host([fullWidth]) {
+  width: 100%;
   max-width: 100%;
 }
 
 .slider-container {
   display: flex;
   position: relative;
+  // Allow external control of slider track vertical alignment via CSS custom property
+  transform: translateY(var(--kyn-slider-track-offset-y, 0px));
 }
 
 .slider-wrapper {
@@ -74,6 +80,11 @@ input[type='range'] {
   min-width: 301px;
   overflow: hidden;
   outline: none;
+  background: transparent;
+}
+
+:host([fullWidth]) input[type='range'] {
+  min-width: 0;
 }
 
 input[type='range']:disabled {
@@ -89,7 +100,7 @@ input[type='range'] {
   --track-height: 4px;
   --track-color: var(--kd-color-border-level-secondary);
   --clip-edges: 0.125em;
-  height: calc(var(--thumb-height) + 12px);
+  height: calc(var(--thumb-height) + 8px);
 }
 
 input[type='range'],
@@ -263,7 +274,7 @@ input[type='number'] {
 
 .tick-wrapper {
   position: absolute;
-  top: 18px;
+  top: 16px;
   left: 0;
   width: 100%;
   pointer-events: none;

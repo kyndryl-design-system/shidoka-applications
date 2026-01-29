@@ -1,0 +1,163 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+}
+
+.qb-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px 0 0;
+
+  &--disabled {
+    opacity: 0.9;
+
+    .qb-rule__fields,
+    .qb-rule__drag-handle {
+      pointer-events: none;
+    }
+  }
+
+  &--invalid {
+    .qb-rule__value {
+      --kd-color-border-forms-default: var(
+        --kd-color-border-variants-destructive
+      );
+    }
+  }
+}
+
+.qb-rule__drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-top: 12px;
+  cursor: grab;
+  color: var(--kd-color-text-level-secondary);
+  flex-shrink: 0;
+
+  // size-specific adjustments to center drag handle with input
+  .qb-rule--xs & {
+    margin-top: 1px;
+  }
+
+  .qb-rule--sm & {
+    margin-top: 4px;
+  }
+
+  .qb-rule--lg & {
+    margin-top: 16px;
+  }
+
+  &:hover {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.qb-rule__fields {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.qb-rule__field,
+.qb-rule__operator {
+  flex: 1 1 120px;
+  min-width: 120px;
+
+  // hide inline validation errors - shown in summary instead
+  --kyn-error-display: none;
+
+  kyn-dropdown {
+    width: 100%;
+  }
+}
+
+.qb-rule__value {
+  flex: 1 1 150px;
+  min-width: 150px;
+
+  // hide inline validation errors - shown in summary instead
+  --kyn-error-display: none;
+}
+
+kyn-number-input.qb-rule__value {
+  display: block;
+  --kyn-number-input-inner-max-width: 100%;
+}
+
+kyn-slider-input.qb-rule__value.qb-rule__value--slider {
+  display: block;
+  flex: 1 1 150px;
+  min-width: 150px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: -5px;
+  --kyn-slider-track-offset-y: 5px;
+}
+
+.qb-rule__value.qb-rule__value--radio {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8px;
+  flex: 1 1 250px;
+  min-width: 150px;
+
+  kyn-radio-button-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    --kyn-radio-group-gap: 16px;
+    --kyn-radio-description-display: none;
+  }
+}
+
+.qb-rule__between {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1 1 250px;
+  min-width: 200px;
+  flex-wrap: wrap;
+
+  .qb-rule__value {
+    flex: 1 1 100px;
+    min-width: 80px;
+  }
+}
+
+.qb-rule__between-separator {
+  color: var(--kd-color-text-level-secondary);
+  font-size: 14px;
+  white-space: nowrap;
+  line-height: 48px;
+}
+
+.qb-rule__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+:host(.qb-rule--dragging) {
+  opacity: 0.5;
+}

@@ -9,7 +9,7 @@ export default {
   component: 'kyn-number-input',
   argTypes: {
     size: {
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
       control: { type: 'select' },
     },
     value: {

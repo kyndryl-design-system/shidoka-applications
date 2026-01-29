@@ -57,7 +57,7 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: String })
   accessor label = '';
 
-  /** Dropdown size/height. "sm", "md", or "lg". */
+  /** Dropdown size/height. "xs", "sm", "md", or "lg". */
   @property({ type: String })
   accessor size = 'md';
 
@@ -496,6 +496,7 @@ export class Dropdown extends FormMixin(LitElement) {
                   'is-readonly': !this.disabled && this.readonly,
                   multiple: this.multiple,
                   'input-custom': true,
+                  'size--xs': this.size === 'xs',
                   'size--sm': this.size === 'sm',
                   'size--lg': this.size === 'lg',
                   inline: this.inline,

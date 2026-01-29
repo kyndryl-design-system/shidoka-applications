@@ -38,7 +38,7 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: String })
   accessor label = '';
 
-  /** Input size. "sm", "md", or "lg". */
+  /** Input size. "xs", "sm", "md", or "lg". */
   @property({ type: String })
   accessor size = 'md';
 
@@ -137,6 +137,7 @@ export class NumberInput extends FormMixin(LitElement) {
 
           <input
             class="${classMap({
+              'size--xs': this.size === 'xs',
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
               'is-readonly': this.readonly,
@@ -195,8 +196,8 @@ export class NumberInput extends FormMixin(LitElement) {
     `;
   }
 
-  private _sizeMap(size: string): 'small' | 'medium' | 'large' {
-    let btnSize: 'small' | 'medium' | 'large' = 'medium';
+  private _sizeMap(size: string): 'extra-small' | 'small' | 'medium' | 'large' {
+    let btnSize: 'extra-small' | 'small' | 'medium' | 'large' = 'medium';
 
     switch (size) {
       case 'lg':
@@ -204,6 +205,9 @@ export class NumberInput extends FormMixin(LitElement) {
         break;
       case 'sm':
         btnSize = 'small';
+        break;
+      case 'xs':
+        btnSize = 'extra-small';
         break;
     }
 
