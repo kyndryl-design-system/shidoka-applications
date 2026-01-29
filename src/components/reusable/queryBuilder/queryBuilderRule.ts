@@ -360,7 +360,7 @@ export class QueryBuilderRule extends LitElement {
         ?required=${field.required}
         .minDate=${field.minDate || ''}
         .maxDate=${field.maxDate || ''}
-        ?disabled=${this.disabled || this.rule.disabled}
+        ?datePickerDisabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
         @blur=${this._handleValueBlur}
       ></kyn-date-picker>
@@ -385,7 +385,7 @@ export class QueryBuilderRule extends LitElement {
         ?required=${field.required}
         .minDate=${field.minDate || ''}
         .maxDate=${field.maxDate || ''}
-        ?disabled=${this.disabled || this.rule.disabled}
+        ?datePickerDisabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
         @blur=${this._handleValueBlur}
       ></kyn-date-picker>
@@ -407,7 +407,7 @@ export class QueryBuilderRule extends LitElement {
         ?required=${field.required}
         .minTime=${field.minTime || ''}
         .maxTime=${field.maxTime || ''}
-        ?disabled=${this.disabled || this.rule.disabled}
+        ?timepickerDisabled=${this.disabled || this.rule.disabled}
         @on-change=${this._handleValueChange}
         @blur=${this._handleValueBlur}
       ></kyn-time-picker>
@@ -600,7 +600,7 @@ export class QueryBuilderRule extends LitElement {
             ?required=${field.required}
             .minDate=${field.minDate || ''}
             .maxDate=${field.maxDate || ''}
-            ?disabled=${this.disabled || this.rule.disabled}
+            ?datePickerDisabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 0)}
             @blur=${this._handleValueBlur}
           ></kyn-date-picker>
@@ -617,7 +617,7 @@ export class QueryBuilderRule extends LitElement {
             ?required=${field.required}
             .minDate=${field.minDate || ''}
             .maxDate=${field.maxDate || ''}
-            ?disabled=${this.disabled || this.rule.disabled}
+            ?datePickerDisabled=${this.disabled || this.rule.disabled}
             @on-change=${(e: CustomEvent) => this._handleBetweenChange(e, 1)}
             @blur=${this._handleValueBlur}
           ></kyn-date-picker>
@@ -857,26 +857,37 @@ export class QueryBuilderRule extends LitElement {
     );
   }
 
-  /** validate the current rule using the field's validator function */
+  /** validate the current rule using native validation and field's validator function */
   private _validateRule() {
     const field = this.selectedField;
-    if (!field?.validator) {
-      if (this.rule.valid !== true || this.rule.validationError !== undefined) {
-        const updatedRule: RuleType = {
-          ...this.rule,
-          valid: true,
-          validationError: undefined,
-        };
-        this._emitRuleChange(updatedRule);
+    let isValid = true;
+    let errorMessage: string | undefined;
+
+    // Check native validation from input elements
+    const valueInputs = this.shadowRoot?.querySelectorAll('.qb-rule__value');
+    if (valueInputs) {
+      for (const input of valueInputs) {
+        // Get the internal input element from the custom component
+        const internalInput =
+          (input as HTMLElement).shadowRoot?.querySelector('input') ||
+          (input as HTMLElement).shadowRoot?.querySelector('textarea');
+        if (internalInput && !internalInput.validity.valid) {
+          isValid = false;
+          errorMessage = internalInput.validationMessage || 'Invalid value';
+          break;
+        }
       }
-      return;
     }
 
-    const result = field.validator(this.rule);
-    const isValid = result === true;
-    const errorMessage =
-      typeof result === 'string' ? result : isValid ? undefined : 'Invalid';
+    // If native validation passed, check custom validator
+    if (isValid && field?.validator) {
+      const result = field.validator(this.rule);
+      isValid = result === true;
+      errorMessage =
+        typeof result === 'string' ? result : isValid ? undefined : 'Invalid';
+    }
 
+    // Only emit if validation state changed
     if (
       this.rule.valid !== isValid ||
       this.rule.validationError !== errorMessage
