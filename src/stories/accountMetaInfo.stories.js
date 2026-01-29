@@ -18,22 +18,30 @@ export default {
           .account-meta-info {
             display: inline-flex;
             flex-direction: column;
-            gap: 2px;
-            padding: 16px;
-            align-self: center;
+            gap: 0;
+            padding: 16px 32px 16px;
+            align-self: flex-start;
+          }
+
+          .account-meta-info__heading {
+            color: var(--kd-color-text-variant-brand);
+            font-weight: var(--kd-font-weight-bold);
+            text-transform: uppercase;
+            font-size: 14px;
+            line-height: 18px;
+            margin-bottom: 4px;
           }
 
           .account-meta-info__row {
             display: flex;
             align-items: center;
-            gap: 16px;
-            min-height: 24px;
+            gap: 8px;
+            min-height: 20px;
             font-size: 14px;
           }
 
           .account-meta-info__label {
-            font-weight: 600;
-            min-width: 80px;
+            font-weight: var(--kd-font-weight-bold);
           }
 
           .account-meta-info__value {
@@ -42,8 +50,8 @@ export default {
 
           .account-meta-info__copy-btn {
             margin-left: 0px;
-            margin-top: -10px;
-            margin-bottom: -8px;
+            margin-top: -6px;
+            margin-bottom: -6px;
             font-size: 14px;
           }
         </style>
@@ -104,6 +112,42 @@ export const WithoutCopyButton = {
         </div>
         <div class="account-meta-info__row">
           <span class="account-meta-info__label">Country</span>
+          <span class="account-meta-info__value">United States</span>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const WithHeading = {
+  render: () => {
+    const accountId = '023497uw02399023509';
+
+    return html`
+      <style>
+        .account-meta-info--with-heading {
+          background: var(--kd-color-background-container-default);
+          border-radius: 4px;
+        }
+      </style>
+      <div class="account-meta-info account-meta-info--with-heading">
+        <div class="account-meta-info__heading">ACME</div>
+        <div class="account-meta-info__row">
+          <span class="account-meta-info__label">Account ID:</span>
+          <span class="account-meta-info__value">${accountId}</span>
+          <kyn-button
+            class="account-meta-info__copy-btn"
+            kind="ghost"
+            size="small"
+            iconPosition="left"
+            @click=${(e) => handleCopy(accountId, e)}
+          >
+            <span slot="icon">${unsafeSVG(copyIcon)}</span>
+            Copy
+          </kyn-button>
+        </div>
+        <div class="account-meta-info__row">
+          <span class="account-meta-info__label">Country:</span>
           <span class="account-meta-info__value">United States</span>
         </div>
       </div>
