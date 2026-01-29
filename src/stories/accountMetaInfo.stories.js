@@ -23,13 +23,6 @@ export default {
             align-self: center;
           }
 
-          .account-meta-info__name {
-            font-size: 14px;
-            line-height: var(--kd-line-height-ui-02);
-            font-weight: 500;
-            color: var(--kd-color-text-variant-brand);
-          }
-
           .account-meta-info__row {
             display: flex;
             align-items: center;
@@ -73,37 +66,6 @@ const handleCopy = (value, e) => {
 };
 
 export const Default = {
-  parameters: { a11y: { disable: true } },
-  render: () => {
-    const accountId = '023497uw02399023509';
-
-    return html`
-      <div class="account-meta-info">
-        <div class="account-meta-info__name">ACME</div>
-        <div class="account-meta-info__row">
-          <span class="account-meta-info__label">Account ID</span>
-          <span class="account-meta-info__value">${accountId}</span>
-          <kyn-button
-            class="account-meta-info__copy-btn"
-            kind="ghost"
-            size="small"
-            iconPosition="left"
-            @click=${(e) => handleCopy(accountId, e)}
-          >
-            <span slot="icon">${unsafeSVG(copyIcon)}</span>
-            Copy
-          </kyn-button>
-        </div>
-        <div class="account-meta-info__row">
-          <span class="account-meta-info__label">Country</span>
-          <span class="account-meta-info__value">United States</span>
-        </div>
-      </div>
-    `;
-  },
-};
-
-export const WithoutHeader = {
   render: () => {
     const accountId = '023497uw02399023509';
 
@@ -133,11 +95,9 @@ export const WithoutHeader = {
 };
 
 export const WithoutCopyButton = {
-  parameters: { a11y: { disable: true } },
   render: () => {
     return html`
       <div class="account-meta-info">
-        <div class="account-meta-info__name">ACME</div>
         <div class="account-meta-info__row">
           <span class="account-meta-info__label">Account ID</span>
           <span class="account-meta-info__value">023497uw02399023509</span>

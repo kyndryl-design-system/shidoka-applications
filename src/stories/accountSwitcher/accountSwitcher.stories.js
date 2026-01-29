@@ -38,13 +38,6 @@ export default {
             align-self: center;
           }
 
-          .account-meta-info__name {
-            font-size: 14px;
-            line-height: var(--kd-line-height-ui-02);
-            font-weight: 500;
-            color: var(--kd-color-text-variant-brand);
-          }
-
           .account-meta-info__row {
             display: flex;
             align-items: center;
@@ -78,6 +71,7 @@ export default {
 
           .account-categories-grid kyn-header-category {
             margin: 0;
+            --kd-color-text-variant-brand: var(--kd-color-text-level-primary);
           }
         </style>
         ${story()}
@@ -161,7 +155,6 @@ const sampleCategories = [
 ];
 
 export const Default = {
-  parameters: { a11y: { disable: true } },
   render: () => {
     const accountId = '023497uw02399023509';
 
@@ -169,7 +162,6 @@ export const Default = {
       <div class="account-switcher">
         <!-- account meta info section (using default pattern) -->
         <div class="account-meta-info">
-          <div class="account-meta-info__name">ACME</div>
           <div class="account-meta-info__row">
             <span class="account-meta-info__label">Account ID:</span>
             <span class="account-meta-info__value">${accountId}</span>
