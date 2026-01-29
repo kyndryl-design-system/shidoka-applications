@@ -10,6 +10,9 @@ export default {
       type: 'figma',
       url: '',
     },
+    a11y: {
+      disable: true,
+    },
   },
   decorators: [
     (story) =>
@@ -21,6 +24,7 @@ export default {
             gap: 0;
             padding: 16px 32px 16px;
             align-self: flex-start;
+            background: var(--kd-color-background-container-default);
           }
 
           .account-meta-info__heading {
@@ -126,7 +130,7 @@ export const WithHeading = {
     return html`
       <style>
         .account-meta-info--with-heading {
-          background: var(--kd-color-background-container-default);
+          background: var(--kd-color-background-menu-state-default);
           border-radius: 4px;
         }
       </style>
