@@ -30,7 +30,7 @@ const _defaultTextStrings = {
  * It primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.
  *
  * @slot unnamed - The content slot for adding table cells (`kyn-td` or other relevant cells).
- * @slot expand-placeholder - Slot for the content when the row is expandable.
+ * @slot expand-placeholder - Slot for expand placeholder content (like `kyn-td` or other relevant cells).
  */
 @customElement('kyn-tr')
 export class TableRow extends LitElement {
