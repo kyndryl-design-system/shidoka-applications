@@ -15,7 +15,7 @@ enum STATUS_KINDS {
 
 /**
  * Status Button.
- * @fires on-click - Captures the click event and emits the Status Button value. `detail:{ origEvent: PointerEvent,value: string }`
+ * @fires on-click - Captures the event and emits the selected value and original event details.`detail:{ origEvent: PointerEvent,value: string }`
  * @slot unnamed - Slot for icon.
  */
 
