@@ -39,7 +39,7 @@ export default {
           .account-meta-info__row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 16px;
             min-height: 20px;
             font-size: 14px;
           }
