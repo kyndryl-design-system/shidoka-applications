@@ -21,8 +21,8 @@
 
   &__inner {
     display: block;
-    column-width: 160px;
-    column-gap: 32px;
+    column-width: 120px;
+    column-gap: 16px;
     max-width: 100%;
     box-sizing: border-box;
   }
@@ -37,7 +37,7 @@
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
-  margin: 0 0 16px;
+  margin: 0 0 8px;
 }
 
 slot.header-categories__slot::slotted(*) {
@@ -45,25 +45,25 @@ slot.header-categories__slot::slotted(*) {
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
-  margin: 0 0 16px;
+  margin: 0 0 8px;
 }
 
 /* ---------------------------------------------------------------------
    ROOT VIEW (MASONRY)
    ------------------------------------------------------------------ */
 :host(:not([view='detail'])) .header-categories__inner {
-  column-width: 160px;
+  column-width: 120px;
 }
 
 @media (min-width: 896px) {
   :host(:not([view='detail'])) .header-categories__inner {
-    column-width: 180px;
+    column-width: 140px;
   }
 }
 
 @media (min-width: 1152px) {
   :host(:not([view='detail'])) .header-categories__inner {
-    column-width: 200px;
+    column-width: 160px;
   }
 }
 
@@ -85,7 +85,7 @@ slot.header-categories__slot::slotted(*) {
 :host([view='detail']) .header-detail-columns {
   display: flex;
   align-items: flex-start;
-  gap: 0 32px;
+  gap: 0 16px;
   width: max-content;
   box-sizing: border-box;
 }
@@ -94,7 +94,7 @@ slot.header-categories__slot::slotted(*) {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 0 0 200px;
+  flex: 0 0 160px;
 }
 
 :host([view='detail']) .header-detail-columns--single {
@@ -109,6 +109,6 @@ slot.header-categories__slot::slotted(*) {
 
 @media (min-width: 42rem) {
   :host([view='detail']) .header-detail-columns > div {
-    min-width: 160px;
+    min-width: 120px;
   }
 }

@@ -1,11 +1,12 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import HeaderCategoryScss from './headerCategory.scss?inline';
 
 /**
  * Header link category
  * @slot unnamed - Slot for links.
  * @slot icon - Slot for icon.
+ * @slot more - Slot for "More" link (not indented).
  */
 @customElement('kyn-header-category')
 export class HeaderCategory extends LitElement {
@@ -23,18 +24,33 @@ export class HeaderCategory extends LitElement {
   @property({ type: Boolean })
   accessor showDivider = false;
 
+  /** @internal */
+  @state()
+  private accessor _hasIcon = false;
+
+  private _handleIconSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    const assignedNodes = slot.assignedNodes({ flatten: true });
+    this._hasIcon = assignedNodes.length > 0;
+  }
+
   override render() {
+    // Indent links ONLY when category has an icon (so link text aligns with heading text after icon)
+    // This preserves backward compatibility: links with their own icons won't get double-indented
+    const indentLinks = this._hasIcon;
+    // Add heading padding when leftPadding is set AND there's no icon (for alignment with other categories that have icons)
+    const indentHeading = this.leftPadding && !this._hasIcon;
+
     return html`
-      <div class="category ${this.showDivider ? 'divider' : ''}"">
-        <div
-          class="heading ${this.leftPadding ? 'left-padding' : ''}
-        >
-          <slot name="icon"></slot>
+      <div class="category ${this.showDivider ? 'divider' : ''}">
+        <div class="heading ${indentHeading ? 'left-padding' : ''}">
+          <slot name="icon" @slotchange=${this._handleIconSlotChange}></slot>
           ${this.heading}
         </div>
-        <div class="category__links">
+        <div class="category__links ${indentLinks ? 'left-padding' : ''}">
           <slot></slot>
         </div>
+        <slot name="more"></slot>
       </div>
     `;
   }
