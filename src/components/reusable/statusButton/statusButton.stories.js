@@ -26,7 +26,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '', //To be added
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=9214-16831&m=dev',
     },
   },
 };
