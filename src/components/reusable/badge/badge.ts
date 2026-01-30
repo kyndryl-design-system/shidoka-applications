@@ -36,7 +36,7 @@ export class Badge extends LitElement {
   accessor type = 'medium';
 
   /**
-   * Badge status, `'success'` (default), `'critical'`, `'error'`, `'warning'`, `'information'`, `'others'`.
+   * Badge status, `'success'` (default), `'critical'`, `'error'`, `'warning'`, `'information'`, `'others'`, `'ai'`.
    *
    */
   @property({ type: String })
@@ -117,6 +117,8 @@ export class Badge extends LitElement {
         return successIcon;
       case 'information':
         return infoIcon;
+      case 'ai':
+        return '';
       default:
         return '';
     }

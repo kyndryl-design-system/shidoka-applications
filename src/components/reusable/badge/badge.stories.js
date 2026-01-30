@@ -22,6 +22,7 @@ export default {
         'warning',
         'information',
         'critical',
+        'ai',
         'others',
       ],
       control: { type: 'select' },
