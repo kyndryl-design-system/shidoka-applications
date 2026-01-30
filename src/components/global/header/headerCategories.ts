@@ -12,6 +12,7 @@ import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/c
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { debounce } from '../../../common/helpers/helpers';
 import type { HeaderLinkTarget } from './headerLink';
 
 const _defaultTextStrings = {
@@ -65,6 +66,12 @@ const ROOT_VIEW: HeaderView = 'root';
 const DETAIL_VIEW: HeaderView = 'detail';
 
 const VOID_HREF = '#';
+
+/**
+ * Pixel tolerance for grouping categories into visual columns.
+ * Accounts for sub-pixel rendering differences across browsers.
+ */
+const COLUMN_GROUPING_TOLERANCE_PX = 10;
 
 interface SlottedLinkData {
   href: string;
@@ -181,6 +188,15 @@ export class HeaderCategories extends LitElement {
 
   /** @internal */
   private _resizeObserver?: ResizeObserver;
+
+  /** Debounced divider update to prevent jank during rapid resize
+   * @internal
+   */
+  private _debouncedUpdateDividers = debounce(() => {
+    if (this.view === ROOT_VIEW) {
+      this._updateDividers();
+    }
+  }, 100);
 
   /** @internal */
   private readonly _boundHandleNavToggle = (e: Event): void =>
@@ -630,9 +646,9 @@ export class HeaderCategories extends LitElement {
 
     if (!categories.length) return;
 
-    // First, reset all to showDivider=true
+    // First, reset all to showDivider=true (use attribute API for proper component interaction)
     categories.forEach((cat) => {
-      (cat as unknown as { showDivider: boolean }).showDivider = true;
+      cat.toggleAttribute('showdivider', true);
     });
 
     // Get bounding rects and group by column (x-position)
@@ -643,14 +659,13 @@ export class HeaderCategories extends LitElement {
 
     // Group categories by their left edge (column), using tolerance for rounding
     const columnMap = new Map<number, typeof categoryData>();
-    const tolerance = 5; // pixels
 
     for (const item of categoryData) {
       const x = item.rect.left;
       let foundColumn = false;
 
       for (const [columnX] of columnMap) {
-        if (Math.abs(x - columnX) <= tolerance) {
+        if (Math.abs(x - columnX) <= COLUMN_GROUPING_TOLERANCE_PX) {
           columnMap.get(columnX)!.push(item);
           foundColumn = true;
           break;
@@ -673,9 +688,8 @@ export class HeaderCategories extends LitElement {
         }
       }
 
-      // Remove divider from the last category in this column
-      (lastInColumn.el as unknown as { showDivider: boolean }).showDivider =
-        false;
+      // Remove divider from the last category in this column (use attribute API)
+      lastInColumn.el.removeAttribute('showdivider');
     }
   }
 
@@ -735,13 +749,9 @@ export class HeaderCategories extends LitElement {
     // initial build for slotted mode
     this._buildSlottedCategories();
 
-    // Set up ResizeObserver to update dividers when columns reflow
+    // Set up ResizeObserver to update dividers when columns reflow (debounced to prevent jank)
     if (typeof ResizeObserver !== 'undefined') {
-      this._resizeObserver = new ResizeObserver(() => {
-        if (this.view === ROOT_VIEW) {
-          this._updateDividers();
-        }
-      });
+      this._resizeObserver = new ResizeObserver(this._debouncedUpdateDividers);
       this._resizeObserver.observe(this);
     }
   }

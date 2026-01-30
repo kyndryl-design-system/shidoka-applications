@@ -45,7 +45,6 @@ export default {
             text-transform: uppercase;
             font-size: 14px;
             line-height: 18px;
-            margin-bottom: 4px;
           }
 
           .account-meta-info__row {

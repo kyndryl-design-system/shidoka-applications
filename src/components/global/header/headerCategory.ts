@@ -35,9 +35,10 @@ export class HeaderCategory extends LitElement {
   }
 
   override render() {
-    // Indent links if there's an icon OR if leftPadding is explicitly set
-    const indentLinks = this._hasIcon || this.leftPadding;
-    // Only add heading padding if leftPadding is set AND there's no icon
+    // Indent links ONLY when category has an icon (so link text aligns with heading text after icon)
+    // This preserves backward compatibility: links with their own icons won't get double-indented
+    const indentLinks = this._hasIcon;
+    // Add heading padding when leftPadding is set AND there's no icon (for alignment with other categories that have icons)
     const indentHeading = this.leftPadding && !this._hasIcon;
 
     return html`
