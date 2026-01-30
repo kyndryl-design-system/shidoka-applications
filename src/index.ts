@@ -118,4 +118,4 @@ export { InlineConfirm } from './components/reusable/inlineConfirm';
 export { ColorInput } from './components/reusable/colorInput';
 export { MetaData } from './components/reusable/metaData';
 export { Divider } from './components/reusable/divider';
-export { StatusPicker } from './components/reusable/statusPicker';
+export { StatusButton } from './components/reusable/statusButton';

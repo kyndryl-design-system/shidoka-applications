@@ -1,7 +1,7 @@
 import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import StatusPickerScss from './statusPicker.scss?inline';
+import StatusBtnScss from './statusButton.scss?inline';
 
 enum STATUS_KINDS {
   SUCCESS = 'success',
@@ -14,14 +14,14 @@ enum STATUS_KINDS {
 }
 
 /**
- * Status Picker.
- * @fires on-click - Captures the click event and emits the Status Picker value. `detail:{ origEvent: PointerEvent,value: string }`
+ * Status Button.
+ * @fires on-click - Captures the event and emits the selected value and original event details.`detail:{ origEvent: PointerEvent,value: string }`
  * @slot unnamed - Slot for icon.
  */
 
-@customElement('kyn-status-picker')
-export class StatusPicker extends LitElement {
-  static override styles = unsafeCSS(StatusPickerScss);
+@customElement('kyn-status-btn')
+export class StatusButton extends LitElement {
+  static override styles = unsafeCSS(StatusBtnScss);
 
   /**
    * Status label (Required).
@@ -71,18 +71,18 @@ export class StatusPicker extends LitElement {
    * Queries the .label element.
    * @internal
    */
-  @query('.status-picker__label')
+  @query('.status-btn__label')
   accessor _labelEl!: HTMLSpanElement;
 
   override render() {
-    const newBaseColorClass = `status-picker__state-${this.kind}`;
+    const newBaseColorClass = `status-btn__state-${this.kind}`;
 
     const Classes = {
-      'status-picker': true,
+      'status-btn': true,
       'no-truncation': this.noTruncation,
-      'status-picker__state-interactive': true,
-      [`status-picker__state-interactive-${this.kind}`]: true,
-      'status-picker__state-disable': this.disabled,
+      'status-btn__state-interactive': true,
+      [`status-btn__state-interactive-${this.kind}`]: true,
+      'status-btn__state-disable': this.disabled,
       [`${newBaseColorClass}`]: true,
       selected: this.selected,
     };
@@ -93,20 +93,18 @@ export class StatusPicker extends LitElement {
       ?disabled="${this.disabled}"
       kind=${this.kind}
       title="${this._isTruncated && !this.noTruncation ? this.label : ''}"
-      @click=${(e: any) => this.handleStatusClick(e, this.label)}
+      @click=${(e: any) => this.handleBtnClick(e, this.label)}
     >
       <slot></slot>
       ${!this._iconOnly
-        ? html` <span
-            class="status-picker__label"
-            aria-disabled=${this.disabled}
+        ? html` <span class="status-btn__label" aria-disabled=${this.disabled}
             >${this.label}</span
           >`
         : ''}
     </button>`;
   }
 
-  private handleStatusClick(e: any, value: string) {
+  private handleBtnClick(e: any, value: string) {
     if (!this.disabled) {
       const event = new CustomEvent('on-click', {
         detail: {
@@ -136,6 +134,6 @@ export class StatusPicker extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-status-picker': StatusPicker;
+    'kyn-status-btn': StatusButton;
   }
 }

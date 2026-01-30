@@ -5,8 +5,8 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 export default {
-  title: 'Components/Status Picker',
-  component: 'kyn-status-picker',
+  title: 'Components/Status Button',
+  component: 'kyn-status-btn',
   argTypes: {
     kind: {
       options: ['success', 'warning', 'error', 'low', 'medium', 'high', 'ai'],
@@ -26,7 +26,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '', //To be added
+      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=9214-16831&m=dev',
     },
   },
 };
@@ -43,14 +43,14 @@ export const Default = {
   args,
   render: (args) => {
     return html`
-      <kyn-status-picker
+      <kyn-status-btn
         label=${args.label}
         kind=${args.kind}
         ?disabled=${args.disabled}
         ?selected=${args.selected}
         ?noTruncation=${args.noTruncation}
         @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      ></kyn-status-picker>
+      ></kyn-status-btn>
     `;
   },
 };
@@ -59,7 +59,7 @@ export const WithIcon = {
   args,
   render: (args) => {
     return html`
-      <kyn-status-picker
+      <kyn-status-btn
         label=${args.label}
         kind=${args.kind}
         ?disabled=${args.disabled}
@@ -70,7 +70,7 @@ export const WithIcon = {
       <span style="display: flex;" aria-label="User icon" aria-hidden="true">
         ${unsafeSVG(userIcon)}
       </span>
-    </kyn-status-picker>
+    </kyn-status-btn>
     `;
   },
 };
@@ -85,31 +85,26 @@ export const Gallery = {
         Operational Status
       </div>
       <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <kyn-status-picker label="Success" kind="success"></kyn-status-picker>
-        <kyn-status-picker label="Warning" kind="warning"></kyn-status-picker>
-        <kyn-status-picker label="Error" kind="error"></kyn-status-picker>
+        <kyn-status-btn label="Success" kind="success"></kyn-status-btn>
+        <kyn-status-btn label="Warning" kind="warning"></kyn-status-btn>
+        <kyn-status-btn label="Error" kind="error"></kyn-status-btn>
       </div>
       <br />
       <div class="heading kd-type--headline-06 heading-text">
         Opportunity Status
       </div>
       <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <kyn-status-picker label="Low" kind="low"></kyn-status-picker>
-        <kyn-status-picker label="Medium" kind="medium"></kyn-status-picker>
-        <kyn-status-picker label="High" kind="high"></kyn-status-picker>
+        <kyn-status-btn label="Low" kind="low"></kyn-status-btn>
+        <kyn-status-btn label="Medium" kind="medium"></kyn-status-btn>
+        <kyn-status-btn label="High" kind="high"></kyn-status-btn>
       </div>
       <br />
       <div class="heading kd-type--headline-06 heading-text">AI</div>
-      <kyn-status-picker label="AI" kind="ai"></kyn-status-picker>
+      <kyn-status-btn label="AI" kind="ai"></kyn-status-btn>
       <br />
       <br />
       <div class="heading kd-type--headline-06 heading-text">Disabled</div>
-      <kyn-status-picker
-        label="Label"
-        kind="success"
-        disabled
-      ></kyn-status-picker>
-
+      <kyn-status-btn label="Label" kind="success" disabled></kyn-status-btn>
       <style>
         .heading-text {
           margin-bottom: var(--kd-spacing-12);
