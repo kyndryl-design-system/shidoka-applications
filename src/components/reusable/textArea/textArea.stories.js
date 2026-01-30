@@ -43,6 +43,7 @@ const args = {
     requiredText: 'Required',
     errorText: 'Error',
   },
+  borderless: false,
 };
 
 const Template = (args) => {
@@ -68,6 +69,7 @@ const Template = (args) => {
       @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
       @keydown=${(e) => e.stopPropagation()}
       label=${args.label}
+      ?borderless=${args.borderless}
     >
     </kyn-text-area>
   `;
