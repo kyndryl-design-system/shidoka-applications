@@ -9,6 +9,7 @@ export enum BUTTON_KINDS {
   PRIMARY_AI = 'primary-ai',
   PRIMARY_DESTRUCTIVE = 'primary-destructive',
   SECONDARY = 'secondary',
+  SECONDARY_AI = 'secondary-ai',
   SECONDARY_DESTRUCTIVE = 'secondary-destructive',
   TERTIARY = 'tertiary',
   OUTLINE = 'outline',
@@ -35,6 +36,7 @@ export enum BUTTON_ICON_POSITION {
 export const BUTTON_KINDS_SOLID = [
   BUTTON_KINDS.PRIMARY,
   BUTTON_KINDS.PRIMARY_AI,
+  BUTTON_KINDS.SECONDARY_AI,
   BUTTON_KINDS.PRIMARY_DESTRUCTIVE,
   BUTTON_KINDS.SECONDARY,
   BUTTON_KINDS.SECONDARY_DESTRUCTIVE,
