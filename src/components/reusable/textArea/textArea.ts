@@ -94,9 +94,9 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: String })
   accessor autoComplete: string = 'off';
 
-  /** Removes input border and outline. */
+  /** Removes input background, border and outline. */
   @property({ type: Boolean })
-  accessor borderless = false;
+  accessor unstyled = false;
 
   /** Internal text strings.
    * @internal
@@ -146,7 +146,7 @@ export class TextArea extends FormMixin(LitElement) {
             id=${this.name}
             class=${classMap({
               'is-readonly': this.readonly,
-              ghost: this.borderless,
+              unstyled: this.unstyled,
             })}
             name=${this.name}
             placeholder=${this.placeholder}
