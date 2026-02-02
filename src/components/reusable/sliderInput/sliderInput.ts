@@ -97,6 +97,10 @@ export class SliderInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor enableButtonControls = false;
 
+  /** Makes the slider expand to fill the full width of its container. */
+  @property({ type: Boolean, reflect: true })
+  accessor fullWidth = false;
+
   /** Internal text strings.
    * @internal
    */

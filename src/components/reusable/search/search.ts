@@ -297,7 +297,7 @@ export class Search extends LitElement {
       case ENTER_KEY_CODE: {
         // select highlighted option
         e.preventDefault();
-        const selectedValue = suggestionEls[highlightedIndex].innerText;
+        const selectedValue = suggestionEls[highlightedIndex]?.innerText;
         this.shadowRoot
           ?.querySelector('kyn-text-input')
           ?.setValueAndNotify(selectedValue);

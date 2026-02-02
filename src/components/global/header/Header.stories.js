@@ -107,7 +107,7 @@ export const WithNav = {
           Link 1
         </kyn-header-link>
 
-        <kyn-header-category heading="Category">
+        <kyn-header-category heading="Category" showDivider>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
             Link 2
@@ -117,8 +117,6 @@ export const WithNav = {
             Link 3
           </kyn-header-link>
         </kyn-header-category>
-
-        <kyn-header-divider></kyn-header-divider>
 
         <kyn-header-link href="javascript:void(0)">
           <span>${unsafeSVG(circleIcon)}</span>
