@@ -120,3 +120,4 @@ export { ColorInput } from './components/reusable/colorInput';
 export { MetaData } from './components/reusable/metaData';
 export { Divider } from './components/reusable/divider';
 export { StatusPicker } from './components/reusable/statusPicker';
+export { Thumbnail } from './components/reusable/thumbnail';
