@@ -19,17 +19,15 @@ export const SingleSlide = {
     return html`
       <kyn-chat-onboard-content
         title-text="Welcome to Bridge AI Assist"
+        title-font-size="38px"
+        title-background="linear-gradient(90deg, #ff8a00, #e52e71)"
         total-slides="1"
         @on-complete=${() => alert('Welcome! Getting started...')}
       >
         <p>
           AI Assist is built for accuracy and relevance. Unlike general AI
           tools, it uses a
-          <strong
-            >curated knowledge set tailored to specific use cases and
-            personas</strong
-          >, with access to
-          <strong>selected internal sources and tools</strong>.
+          <strong>curated knowledge set tailored to specific use cases</strong>.
         </p>
         <p>Click "Get Started" to begin your AI journey!</p>
       </kyn-chat-onboard-content>
@@ -54,27 +52,23 @@ export const MultiSlideWithButtons = {
         title: 'Welcome to Bridge AI Assist',
         content: html`
           <p>AI Assist helps you get more done with your data.</p>
-          <p>Use the navigation buttons to explore features.</p>
         `,
       },
       {
         title: 'Ask Questions About Your Data',
-        content: html`
-          <p>Simply type your question in natural language.</p>
-          <p>AI Assist searches through your connected data sources.</p>
-        `,
+        content: html` <p>Simply type your question in natural language.</p> `,
       },
       {
         title: 'Ready to Get Started!',
-        content: html`
-          <p>You're all set! Start exploring what AI can do for you.</p>
-        `,
+        content: html` <p>You're all set! Start exploring.</p> `,
       },
     ];
 
     return html`
       <kyn-chat-onboard-content
         title-text="${slides[currentSlide].title}"
+        title-font-size="24px"
+        title-background="linear-gradient(90deg, #4facfe, #00f2fe)"
         total-slides="3"
         current-slide="${currentSlide}"
         @on-slide-change=${handleSlideChange}

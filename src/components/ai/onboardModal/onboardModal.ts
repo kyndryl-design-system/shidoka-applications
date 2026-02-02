@@ -86,6 +86,14 @@ export class ChatOnboardContent extends LitElement {
   @property({ type: String, attribute: 'height' })
   accessor height = '';
 
+  /** Onboard title font size */
+  @property({ type: String, attribute: 'title-font-size' })
+  accessor titleFontSize = '';
+
+  /** Onboard title background (gradient or color) */
+  @property({ type: String, attribute: 'title-background' })
+  accessor titleBackground = '';
+
   override render() {
     const showPagination = !this.hideIndicators && this.totalSlides > 1;
     const showNavigation = !this.hideNavigation;
@@ -95,9 +103,23 @@ export class ChatOnboardContent extends LitElement {
       this.height ? `height: ${this.height};` : ''
     }`;
 
+    const titleStyle = `
+      ${this.titleFontSize ? `font-size: ${this.titleFontSize};` : ''}
+      ${
+        this.titleBackground
+          ? `
+            background: ${this.titleBackground};
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          `
+          : ''
+      }
+    `;
+
     return html`
       <div class="onboard-content" style="${style}">
-        <h1 class="onboard-title">${this.titleText}</h1>
+        <h1 class="onboard-title" style="${titleStyle}">${this.titleText}</h1>
 
         <div class="onboard-body">
           <slot></slot>
