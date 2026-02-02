@@ -6,7 +6,7 @@ import '../button';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Query Builder',
+  title: 'Components/Filters & Querying/Query Builder',
   component: 'kyn-query-builder',
   subcomponents: {
     QueryBuilderGroup: 'kyn-qb-group',

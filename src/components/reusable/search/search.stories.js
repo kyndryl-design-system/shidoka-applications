@@ -3,7 +3,7 @@ import './index';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Search',
+  title: 'Components/Form Inputs/Search',
   component: 'kyn-search',
   parameters: {
     design: {

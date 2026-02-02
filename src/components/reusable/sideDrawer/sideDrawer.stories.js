@@ -4,7 +4,7 @@ import { action } from 'storybook/actions';
 import '../button';
 
 export default {
-  title: 'Components/Side Drawer',
+  title: 'Components/Layout & Structure/Side Drawer',
   component: 'kyn-side-drawer',
   argTypes: {
     size: {

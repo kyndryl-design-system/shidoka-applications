@@ -11,7 +11,7 @@ import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/cube.svg';
 
 export default {
-  title: 'Components/Popover',
+  title: 'Components/Overlays & Floating UI/Popover',
   component: 'kyn-popover',
   argTypes: {
     size: { control: 'select', options: ['mini', 'narrow', 'wide'] },
