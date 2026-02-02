@@ -1,4 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import { useArgs } from 'storybook/preview-api';
 /**
  * Copyright Kyndryl, Inc. 2023
  */
@@ -14,8 +15,15 @@ import './index';
 import './story-helpers/action-menu.sample';
 import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
-import { characters, dataForColumns } from './story-helpers/ultils.sample';
+import {
+  characters,
+  dataForColumns,
+  dataForColumnsFilter,
+} from './story-helpers/ultils.sample';
 import allData from './story-helpers/table-data.json';
+import '../../reusable/dropdown';
+import '../../reusable/tag';
+import '../../reusable/textInput';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
@@ -601,6 +609,234 @@ export const WithFooter: Story = {
           </kyn-tfoot>
         </kyn-table>
       </kyn-table-container>
+    `;
+  },
+};
+
+const columnFilterValues: { [key: string]: string } = {
+  applnName: '',
+  businessService: '',
+  businessGroups: '',
+  ticketStatus: '',
+};
+export const ColumnFiltering: Story = {
+  args: {
+    rows: dataForColumnsFilter,
+  },
+  parameters: { a11y: { disable: true } },
+  render: function (args) {
+    // Store original rows value (module level)
+    let originalRowsValue: any[] = [];
+
+    const [{ rows }, updateArgs] = useArgs();
+
+    // Store original rows on first render
+    if (originalRowsValue.length === 0) {
+      originalRowsValue = JSON.parse(JSON.stringify(dataForColumnsFilter));
+    }
+
+    const originalRows = originalRowsValue;
+    const filterValues = columnFilterValues;
+
+    const applyFilters = () => {
+      const hasActiveFilter = Object.values(filterValues).some(
+        (value) => value && value.trim().length > 0
+      );
+
+      let filteredRows = originalRows;
+
+      if (hasActiveFilter) {
+        filteredRows = originalRows.filter((row: any) => {
+          const matches = Object.entries(filterValues).every(
+            ([key, searchValue]) => {
+              if (!searchValue || searchValue.trim().length === 0) {
+                return true;
+              }
+              const rowValue = row[key];
+              if (rowValue === undefined || rowValue === null) {
+                return false;
+              }
+
+              const match = rowValue
+                .toString()
+                .toLowerCase()
+                .includes(searchValue.toLowerCase());
+
+              return match;
+            }
+          );
+          return matches;
+        });
+      }
+
+      updateArgs({ rows: filteredRows });
+    };
+
+    const handleSearch = (columnKey: string, event: Event) => {
+      const searchElement = event.target as HTMLInputElement;
+      const searchValue = searchElement.value || '';
+      columnFilterValues[columnKey] = searchValue?.trim() || '';
+      applyFilters();
+    };
+
+    return html`
+      <kyn-table-toolbar
+        tableTitle="Column Filtering"
+        tableSubtitle="SubTitle Text"
+      >
+      </kyn-table-toolbar>
+
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th>
+                <span class="ellipsis-header">Ticket Priority</span>
+                <kyn-dropdown
+                  slot="column-filter"
+                  size="sm"
+                  placeholder=" "
+                  hideLabel
+                  multiple
+                  hideTags
+                >
+                  <kyn-dropdown-option value="p1"> P1 </kyn-dropdown-option>
+                  <kyn-dropdown-option value="p2">P2</kyn-dropdown-option>
+                  <kyn-dropdown-option value="p3"> P3 </kyn-dropdown-option>
+                  <kyn-dropdown-option value="p4"> P4 </kyn-dropdown-option>
+                </kyn-dropdown>
+              </kyn-th>
+              <kyn-th>
+                <span class="ellipsis-header">Applications</span>
+                <kyn-text-input
+                  slot="column-filter"
+                  size="sm"
+                  type="search"
+                  value=""
+                  hideLabel
+                  @on-input=${(e: Event) => handleSearch('applnName', e)}
+                ></kyn-text-input>
+              </kyn-th>
+              <kyn-th>
+                <span class="ellipsis-header">Business Service</span>
+                <kyn-text-input
+                  slot="column-filter"
+                  size="sm"
+                  type="search"
+                  value=""
+                  hideLabel
+                  @on-input=${(e: Event) => handleSearch('businessService', e)}
+                ></kyn-text-input>
+              </kyn-th>
+              <kyn-th>
+                <span class="ellipsis-header">Business Groups</span>
+                <kyn-text-input
+                  slot="column-filter"
+                  size="sm"
+                  type="search"
+                  value=""
+                  hideLabel
+                  @on-input=${(e: Event) => handleSearch('businessGroups', e)}
+                ></kyn-text-input>
+              </kyn-th>
+              <kyn-th>
+                <span class="ellipsis-header">Ticket Status</span>
+                <kyn-dropdown
+                  slot="column-filter"
+                  label=${args.label}
+                  size="sm"
+                  hideLabel
+                  placeholder=" "
+                  @on-change=${(e: Event) => handleSearch('ticketStatus', e)}
+                >
+                  <kyn-dropdown-option value="In Progress">
+                    In Progress
+                  </kyn-dropdown-option>
+                  <kyn-dropdown-option value="On Hold"
+                    >On Hold</kyn-dropdown-option
+                  >
+                  <kyn-dropdown-option value="Cancelled">
+                    Cancelled
+                  </kyn-dropdown-option>
+                </kyn-dropdown>
+              </kyn-th>
+              <kyn-th .align=${'right'}>
+                <span class="ellipsis-header">Criticality Risk %</span>
+                <kyn-text-input
+                  slot="column-filter"
+                  size="sm"
+                  type="search"
+                  value=""
+                  hideLabel
+                ></kyn-text-input>
+              </kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${rows.length === 0
+              ? html`
+                  <div class="no-data">
+                    <kyn-tr> No records to display. </kyn-tr>
+                  </div>
+                `
+              : repeat(
+                  rows,
+                  (row: any) => html`
+                    <kyn-tr>
+                      <kyn-td> ${row.ticketPriority} </kyn-td>
+                      <kyn-td> ${row.applnName} </kyn-td>
+                      <kyn-td>${row.businessService}</kyn-td>
+                      <kyn-td>${row.businessGroups}</kyn-td>
+                      <kyn-td><kyn-tag
+                              tagSize="md"
+                              tagColor=${
+                                row.ticketStatus === 'In Progress'
+                                  ? 'spruce'
+                                  : row.ticketStatus === 'On Hold'
+                                  ? 'lilac'
+                                  : 'default'
+                              }
+                            />
+                            ${row.ticketStatus}
+                          </kyn-tag></kyn-td>
+                      <kyn-td .align=${'right'}>${row.criticalityRisk}</kyn-td>
+                    </kyn-tr>
+                  `
+                )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+      <style>
+        .no-data {
+          margin-top: 24px;
+          width: 100%;
+          color: var(--kd-color-text-level-secondary);
+          pointer-events: none;
+        }
+        kyn-table-container {
+          overflow: visible;
+        }
+        kyn-thead {
+          overflow: visible;
+        }
+        kyn-th {
+          overflow: visible;
+          kyn-dropdown {
+            display: block;
+            width: 200px;
+          }
+        }
+
+        @media (max-width: 1232px) {
+          .ellipsis-header {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100px;
+            display: block;
+          }
+        }
+      </style>
     `;
   },
 };

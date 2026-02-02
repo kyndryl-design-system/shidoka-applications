@@ -50,6 +50,10 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor horizontal = false;
 
+  /** Visually hides the label while keeping it accessible to screen readers. */
+  @property({ type: Boolean })
+  accessor hideLabel = false;
+
   /** Text string customization. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -75,7 +79,7 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
         role="radiogroup"
         aria-disabled=${this.disabled ? 'true' : 'false'}
       >
-        <legend class="label-text">
+        <legend class="label-text${this.hideLabel ? ' sr-only' : ''}">
           ${this.required
             ? html`<abbr
                 class="required"

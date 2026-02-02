@@ -86,6 +86,10 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor label = '';
 
+  /** Visually hide the label. */
+  @property({ type: Boolean })
+  accessor hideLabel = false;
+
   /** Sets and dynamically imports specific l10n calendar localization. */
   @property({ type: String })
   accessor locale: SupportedLocale | string = 'en';
@@ -157,7 +161,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor required = false;
 
-  /** Input size. "sm", "md", or "lg". */
+  /** Input size. "xs", "sm", "md", or "lg". */
   @property({ type: String })
   accessor size = 'md';
 
@@ -436,7 +440,7 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return html`
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
-          class="label-text"
+          class="label-text ${this.hideLabel || !this.label ? 'sr-only' : ''}"
           ?readonly=${this.readonly}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}

@@ -1,3 +1,5 @@
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
 @mixin visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -29,16 +31,50 @@
     border: 1px solid var(--kd-color-border-forms-default);
     border-radius: 4px;
     height: 48px;
-    line-height: 48px;
     -webkit-appearance: none;
     appearance: none;
+    // md (default) typography
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+
+    &.size--xs {
+      height: 26px;
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: 0.32px;
+    }
 
     &.size--sm {
       height: 32px;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 0.32px;
     }
 
     &.size--lg {
       height: 56px;
+      font-size: 16px;
+      line-height: 18px;
+      letter-spacing: 0.32px;
+    }
+  }
+
+  // Icon sizing for xs size variant
+  input.size--xs ~ .input-icon,
+  input.size--xs ~ .clear-icon {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // Icon sizing for sm size variant
+  input.size--sm ~ .input-icon,
+  input.size--sm ~ .clear-icon {
+    svg {
+      width: 16px;
+      height: 16px;
     }
   }
 }

@@ -30,6 +30,7 @@ const _defaultTextStrings = {
  * It primarily acts as a container for individual table cells and behaves similarly to a native `<tr>` element.
  *
  * @slot unnamed - The content slot for adding table cells (`kyn-td` or other relevant cells).
+ * @slot expand-placeholder - Slot for expand placeholder content (like `kyn-td` or other relevant cells).
  */
 @customElement('kyn-tr')
 export class TableRow extends LitElement {
@@ -285,6 +286,7 @@ export class TableRow extends LitElement {
             </kyn-td>
           `
         : null}
+      <slot name="expand-placeholder"></slot>
       ${this.checkboxSelection && this.closest('kyn-tfoot') === null
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
