@@ -1,0 +1,111 @@
+.thumbnail {
+  position: relative;
+  width: 200px;
+  height: 38px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 8px;
+  border: solid 0.5px rgba(21, 25, 29, 0.1);
+}
+
+.thumbnail.loading {
+  pointer-events: none;
+}
+
+.thumbnail-content {
+  height: 38px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.file-type {
+  width: 30px;
+  height: 30px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  border-radius: 6px;
+  border: solid 0.5px var(--kd-color-spruce-30);
+  background-color: var(--kd-color-spruce-15);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--kd-color-text-secondary);
+  }
+}
+
+.file-name {
+  height: 16px;
+  flex-grow: 1;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: 0.32px;
+  text-align: left;
+  color: var(--kd-color-spruce-70);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.close-button {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  color: var(--kd-color-text-secondary);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  &:hover {
+    background-color: var(--kd-color-background-ui-hover);
+    color: var(--kd-color-text-primary);
+  }
+
+  &:focus {
+    outline: 2px solid var(--kd-color-border-ui-focus);
+    outline-offset: 1px;
+  }
+}
+
+/* Loading state */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(21, 25, 29, 0.25);
+  border-radius: 8px;
+}
