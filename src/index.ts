@@ -114,6 +114,7 @@ export {
 } from './components/reusable/splitButton';
 export { FloatingContainer } from './components/reusable/floatingContainer';
 export { AISourcesFeedback } from './components/ai/sourcesFeedback';
+export { ChatOnboardContent } from './components/ai/onboardModal';
 export { InlineConfirm } from './components/reusable/inlineConfirm';
 export { ColorInput } from './components/reusable/colorInput';
 export { MetaData } from './components/reusable/metaData';

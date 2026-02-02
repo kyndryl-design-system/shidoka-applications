@@ -13,6 +13,7 @@ import '../../components/reusable/tabs';
 import '../../components/reusable/modal';
 import '../../components/ai/aiLaunchButton';
 import '../../components/reusable/floatingContainer';
+import '../../components/ai/onboardModal';
 
 import { ChatMessages } from './chatMessages.stories.js';
 import { Default as InputQuery } from './inputQuery.stories.js';
@@ -228,3 +229,34 @@ const buttonNavTabs = (emitChange, selectedTabId, updateArgs) => html`
     }
   </style>
 `;
+
+// export const ChatModalOnboard = {
+//   render: () => {
+//     const handleSlideChange = (e) => {
+//       console.log('Slide changed to:', e.detail.currentSlide);
+//     };
+
+//     return html`
+//     <!--
+//       <kyn-modal
+//         open
+//         titleText="Welcome to AI Chat"
+//         okText="Get Started"
+//         cancelText="Skip"
+//         aiConnected
+//       >
+//     -->
+//         <kyn-chat-onboard-content
+//           title-text="Hi Anna! Welcome to Bridge AI Assist"
+//           total-slides="3"
+//           current-slide="0"
+//           @on-slide-change=${handleSlideChange}
+//         >
+//           <p>Your content with <strong>bold text</strong> and <a href="#">links</a></p>
+//         </kyn-chat-onboard-content>
+//     <!--
+//       </kyn-modal>
+//     -->
+//     `;
+//   },
+// };
