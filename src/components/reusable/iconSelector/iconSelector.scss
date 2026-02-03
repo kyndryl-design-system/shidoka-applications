@@ -11,13 +11,13 @@
 
 // Only visible on hover: uses CSS custom property set by parent (e.g., header-link)
 // This works at any nesting depth, unlike ::slotted() which only matches direct children
-:host([onlyVisibleOnHover]) {
+:host(.only-visible-on-hover) {
   opacity: var(--kyn-icon-selector-hover-opacity, 0);
   transition: opacity 150ms ease-out;
 }
 
 // When persistWhenChecked is true, keep checked items visible
-:host([onlyVisibleOnHover][persistwhenchecked][checked]) {
+:host(.only-visible-on-hover.persist-when-checked.is-checked) {
   opacity: 1;
 }
 
@@ -34,7 +34,7 @@
   border-radius: 4px;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  transition: outline-color 150ms ease-out, background-color 150ms ease-out;
+  transition: outline-color 150ms ease-out, transform 150ms ease-out;
   vertical-align: middle;
   line-height: 0;
 
@@ -62,21 +62,14 @@
     outline-color: var(--kd-color-border-variants-focus);
   }
 
-  // Show preview of toggled state on hover
-  // When unchecked + hover: show filled icon (preview of adding to favorites)
-  &:hover:not([disabled]):not(.icon-selector--checked) .icon--unchecked {
-    display: none;
-  }
-  &:hover:not([disabled]):not(.icon-selector--checked) .icon--checked {
-    display: flex;
+  // Subtle scale on hover for interactivity feedback
+  // Icons always show actual state, so clicking gives clear visual change
+  &:hover:not([disabled]) {
+    transform: scale(1.1);
   }
 
-  // When checked + hover: show outline icon (preview of removing from favorites)
-  &.icon-selector--checked:hover:not([disabled]) .icon--unchecked {
-    display: flex;
-  }
-  &.icon-selector--checked:hover:not([disabled]) .icon--checked {
-    display: none;
+  &:active:not([disabled]) {
+    transform: scale(0.95);
   }
 
   &[disabled] {
