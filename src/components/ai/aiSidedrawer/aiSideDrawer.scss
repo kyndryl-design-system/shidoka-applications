@@ -1,0 +1,106 @@
+:host {
+  display: block;
+
+  height: 100%; /* ← match the modal content area, not the window */
+  min-height: 0;
+
+  background: #f5f4f3;
+  color: black;
+  transition: width 0.3s ease;
+  width: 30%;
+  border-radius: 10px;
+}
+
+/* collapsed */
+:host([collapsed]) {
+  width: 40px;
+}
+
+/* MAIN COLUMN LAYOUT */
+.side-nav {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER / FOOTER */
+.drawer-header,
+.drawer-footer {
+  flex-shrink: 0;
+  flex: 0 0 auto;
+}
+
+/* 🔑 THIS IS THE FIX */
+.drawer-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* nav item styling */
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  white-space: nowrap;
+}
+
+.nav-item span {
+  margin-left: 15px;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+:host([collapsed]) .nav-item span {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* icon rotate */
+.rotated {
+  transform: rotate(180deg);
+}
+
+/* pin button alignment */
+.ai-button {
+  display: flex;
+  justify-content: flex-end;
+}
+chats-header {
+  font-weight: 600;
+}
+
+.chat-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  max-height: 100%;
+}
+
+.chat-item {
+  padding: 8px 12px 8px 40px; /* indent under Chats */
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.see-all {
+  margin: 8px 0 0 40px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #0f62fe; /* link color */
+  cursor: pointer;
+  font-size: 14px;
+}
+
+:host([collapsed]) .chat-list,
+:host([collapsed]) .see-all {
+  display: none;
+}
