@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import '../components/reusable/card';
 
-import './sampleCardComponents/card.sample.ts';
-import './sampleCardComponents/card.content.sample.ts';
+import './sampleCardComponents/card.sample.js';
+import './sampleCardComponents/card.content.sample.js';
 
 export default {
   title: 'Patterns/Informational Card',

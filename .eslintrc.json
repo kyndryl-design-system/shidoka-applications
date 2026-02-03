@@ -12,7 +12,7 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "lit-a11y"],
+  "plugins": ["@typescript-eslint", "lit-a11y", "import"],
   "env": {
     "browser": true
   },
@@ -31,7 +31,24 @@
       {
         "argsIgnorePattern": "^_"
       }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "always",
+        "jsx": "always",
+        "ts": "never",
+        "tsx": "never"
+      }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   },
   "overrides": [
     {
