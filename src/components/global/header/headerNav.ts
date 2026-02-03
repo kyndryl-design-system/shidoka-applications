@@ -154,7 +154,7 @@ export class HeaderNav extends LitElement {
     }
   }
 
-  /** Auto-open the first header link that contains categorical nav or slotted links
+  /** Auto-open the first header link that contains categorical nav
    * @internal
    */
   private _autoOpenFirstCategoricalLink(): void {
@@ -165,16 +165,14 @@ export class HeaderNav extends LitElement {
       );
 
       for (const link of links) {
-        // Auto-open if this link contains kyn-header-categories (JSON-driven categorical nav)
-        // OR kyn-header-category (slotted categorical nav)
-        // OR has slotted links content
+        // Auto-open only if this link contains categorical nav
+        // (kyn-header-categories for JSON-driven, kyn-header-category for slotted)
         const hasCategoricalNav =
           link.querySelector('kyn-header-categories') !== null;
         const hasSlottedCategory =
           link.querySelector('kyn-header-category') !== null;
-        const hasSlottedLinks = link.querySelector('[slot="links"]') !== null;
 
-        if (hasCategoricalNav || hasSlottedCategory || hasSlottedLinks) {
+        if (hasCategoricalNav || hasSlottedCategory) {
           link.open = true;
           break;
         }

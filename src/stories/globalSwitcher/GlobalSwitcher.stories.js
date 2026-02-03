@@ -58,6 +58,7 @@ export const FullImplementation = {
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -74,6 +75,7 @@ export const FullImplementation = {
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -90,6 +92,7 @@ export const FullImplementation = {
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -106,6 +109,7 @@ export const FullImplementation = {
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -122,6 +126,7 @@ export const FullImplementation = {
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -138,6 +143,7 @@ export const FullImplementation = {
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -154,6 +160,7 @@ export const FullImplementation = {
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -254,6 +261,7 @@ export const FullImplementation = {
                 >
                 <kyn-icon-selector
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -269,6 +277,7 @@ export const FullImplementation = {
                 >
                 <kyn-icon-selector
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -289,6 +298,7 @@ export const FullImplementation = {
                   >
                   <kyn-icon-selector
                     onlyVisibleOnHover
+                    persistWhenChecked
                     style="margin-left: auto;"
                   >
                     <span slot="icon-unchecked"
@@ -306,6 +316,7 @@ export const FullImplementation = {
                   >
                   <kyn-icon-selector
                     onlyVisibleOnHover
+                    persistWhenChecked
                     style="margin-left: auto;"
                   >
                     <span slot="icon-unchecked"
@@ -323,6 +334,7 @@ export const FullImplementation = {
                   >
                   <kyn-icon-selector
                     onlyVisibleOnHover
+                    persistWhenChecked
                     style="margin-left: auto;"
                   >
                     <span slot="icon-unchecked"
@@ -344,6 +356,7 @@ export const FullImplementation = {
                   >
                   <kyn-icon-selector
                     onlyVisibleOnHover
+                    persistWhenChecked
                     style="margin-left: auto;"
                   >
                     <span slot="icon-unchecked"
@@ -411,6 +424,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -428,6 +442,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -446,6 +461,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -467,6 +483,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -484,6 +501,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -501,6 +519,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -527,6 +546,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -544,6 +564,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -561,6 +582,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -581,6 +603,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -598,6 +621,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -615,6 +639,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -635,6 +660,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -660,6 +686,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -677,6 +704,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -694,6 +722,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -711,6 +740,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -728,6 +758,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -745,6 +776,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -762,6 +794,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -779,6 +812,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -796,6 +830,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -834,6 +869,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -855,7 +891,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -879,6 +918,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -896,6 +936,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -916,6 +957,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -936,6 +978,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -953,6 +996,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -979,7 +1023,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -1000,6 +1047,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1018,7 +1066,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -1040,7 +1091,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -1062,7 +1116,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -1084,7 +1141,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -1105,6 +1165,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1122,6 +1183,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1140,7 +1202,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -1164,6 +1229,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1183,7 +1249,10 @@ export const FullImplementation = {
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
-                          <kyn-icon-selector onlyVisibleOnHover>
+                          <kyn-icon-selector
+                            onlyVisibleOnHover
+                            persistWhenChecked
+                          >
                             <span slot="icon-unchecked"
                               >${unsafeSVG(starOutlineIcon)}</span
                             >
@@ -1204,6 +1273,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1221,6 +1291,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1248,6 +1319,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1269,6 +1341,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1290,6 +1363,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1311,6 +1385,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1331,6 +1406,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1348,6 +1424,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1365,6 +1442,7 @@ export const FullImplementation = {
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
+                          persistWhenChecked
                           style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
@@ -1395,6 +1473,7 @@ export const FullImplementation = {
                 >
                 <kyn-icon-selector
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -1410,6 +1489,7 @@ export const FullImplementation = {
                 >
                 <kyn-icon-selector
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -1425,6 +1505,7 @@ export const FullImplementation = {
                 >
                 <kyn-icon-selector
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -1440,6 +1521,7 @@ export const FullImplementation = {
                 >
                 <kyn-icon-selector
                   onlyVisibleOnHover
+                  persistWhenChecked
                   style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
@@ -1474,6 +1556,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1491,6 +1574,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1508,6 +1592,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1529,6 +1614,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1552,6 +1638,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1578,6 +1665,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1595,6 +1683,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1612,6 +1701,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1629,6 +1719,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1654,6 +1745,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"
@@ -1675,6 +1767,7 @@ export const FullImplementation = {
                     >
                     <kyn-icon-selector
                       onlyVisibleOnHover
+                      persistWhenChecked
                       style="margin-left: auto;"
                     >
                       <span slot="icon-unchecked"

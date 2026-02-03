@@ -53,6 +53,13 @@ export class IconSelector extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor onlyVisibleOnHover = false;
 
+  /**
+   * When true, checked items remain visible even when onlyVisibleOnHover is enabled.
+   * Useful for showing users which items they've already favorited.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor persistWhenChecked = false;
+
   /** Size of the icon: 'sm' (16px) or 'md' (24px). */
   @property({ type: String, reflect: true })
   accessor size: 'sm' | 'md' = 'sm';

@@ -9,6 +9,18 @@
   color: inherit;
 }
 
+// Only visible on hover: uses CSS custom property set by parent (e.g., header-link)
+// This works at any nesting depth, unlike ::slotted() which only matches direct children
+:host([onlyVisibleOnHover]) {
+  opacity: var(--kyn-icon-selector-hover-opacity, 0);
+  transition: opacity 150ms ease-out;
+}
+
+// When persistWhenChecked is true, keep checked items visible
+:host([onlyVisibleOnHover][persistwhenchecked][checked]) {
+  opacity: 1;
+}
+
 .icon-selector {
   display: inline-flex;
   align-items: center;

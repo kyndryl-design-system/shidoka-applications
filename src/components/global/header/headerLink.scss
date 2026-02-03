@@ -27,6 +27,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  // CSS custom property for iconSelector hover visibility (works at any nesting depth)
+  --kyn-icon-selector-hover-opacity: 0;
+
+  &:hover,
+  &:focus-within {
+    --kyn-icon-selector-hover-opacity: 1;
+  }
+
   &.left-padding {
     padding-left: 36px;
   }
@@ -82,16 +90,6 @@
 
   ::slotted(kyn-icon-selector) {
     color: inherit;
-  }
-
-  ::slotted(kyn-icon-selector[onlyVisibleOnHover]) {
-    opacity: 0;
-    transition: opacity 150ms ease-out;
-  }
-
-  &:hover ::slotted(kyn-icon-selector[onlyVisibleOnHover]),
-  &:focus-within ::slotted(kyn-icon-selector[onlyVisibleOnHover]) {
-    opacity: 1;
   }
 }
 
