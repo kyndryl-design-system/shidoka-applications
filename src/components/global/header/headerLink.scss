@@ -79,6 +79,20 @@
   }
 
   @include typography.type-ui-02;
+
+  ::slotted(kyn-icon-selector) {
+    color: inherit;
+  }
+
+  ::slotted(kyn-icon-selector[onlyVisibleOnHover]) {
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+
+  &:hover ::slotted(kyn-icon-selector[onlyVisibleOnHover]),
+  &:focus-within ::slotted(kyn-icon-selector[onlyVisibleOnHover]) {
+    opacity: 1;
+  }
 }
 
 .search-icon {
@@ -151,6 +165,7 @@
     display: none;
     background: var(--kd-color-background-menu-state-default);
 
+    // Basic nav (non-categorical): always show slotted content when present
     &.slotted {
       display: flex;
       max-width: 100%;
@@ -168,6 +183,21 @@
       right: auto;
       top: auto;
     }
+  }
+}
+
+// Categorical nav (desktop only): only show flyout content when menu is open
+@media (min-width: 42rem) {
+  :host([has-categorical]) .menu .menu__content.slotted {
+    display: none;
+  }
+
+  :host([has-categorical]) .menu.open .menu__content.slotted {
+    display: flex;
+    max-width: 100%;
+    padding: 8px 8px 8px 230px;
+    left: 8px;
+    right: 0;
   }
 }
 
@@ -211,6 +241,12 @@ kyn-text-input {
     left: 0 !important;
     transform: scaleX(0);
     transform-origin: right;
+
+    // On mobile, always render slotted content (hidden via transform) for animation
+    &.slotted {
+      display: flex;
+      max-width: 100%;
+    }
   }
 }
 

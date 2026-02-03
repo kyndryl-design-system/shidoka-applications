@@ -31,6 +31,13 @@ export class HeaderNav extends LitElement {
   @property({ type: String, reflect: true })
   override accessor slot = 'left';
 
+  /** when false (default), the first link's flyout automatically opens when the nav opens,
+   * and flyouts don't auto-close on mouse leave.
+   * when true, flyouts remain collapsed until user interaction.
+   */
+  @property({ type: Boolean })
+  accessor flyoutAutoCollapsed = false;
+
   /** Boolean value reflecting whether the navigation has categories.
    * @internal
    */
@@ -138,7 +145,41 @@ export class HeaderNav extends LitElement {
       this.ownerDocument?.dispatchEvent(
         new CustomEvent('on-nav-toggle', { detail })
       );
+
+      // Auto-open first link's flyout when nav opens and flyoutAutoCollapsed is false
+      // Only applies to categorical nav (when kyn-header-categories is present)
+      if (this.menuOpen && !this.flyoutAutoCollapsed && this._isDesktop) {
+        this._autoOpenFirstCategoricalLink();
+      }
     }
+  }
+
+  /** Auto-open the first header link that contains categorical nav or slotted links
+   * @internal
+   */
+  private _autoOpenFirstCategoricalLink(): void {
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      const links = this.querySelectorAll<HTMLElement & { open?: boolean }>(
+        ':scope > kyn-header-link'
+      );
+
+      for (const link of links) {
+        // Auto-open if this link contains kyn-header-categories (JSON-driven categorical nav)
+        // OR kyn-header-category (slotted categorical nav)
+        // OR has slotted links content
+        const hasCategoricalNav =
+          link.querySelector('kyn-header-categories') !== null;
+        const hasSlottedCategory =
+          link.querySelector('kyn-header-category') !== null;
+        const hasSlottedLinks = link.querySelector('[slot="links"]') !== null;
+
+        if (hasCategoricalNav || hasSlottedCategory || hasSlottedLinks) {
+          link.open = true;
+          break;
+        }
+      }
+    });
   }
 
   override updated(changedProps: PropertyValueMap<this>): void {

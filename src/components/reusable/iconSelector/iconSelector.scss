@@ -1,0 +1,109 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  color: inherit;
+}
+
+.icon-selector {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 150ms ease-out, background-color 150ms ease-out;
+  vertical-align: middle;
+  line-height: 0;
+
+  &--sm {
+    width: 24px;
+    height: 24px;
+
+    .icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--md {
+    width: 32px;
+    height: 32px;
+
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
+
+  // Show preview of toggled state on hover
+  // When unchecked + hover: show filled icon (preview of adding to favorites)
+  &:hover:not([disabled]):not(.icon-selector--checked) .icon--unchecked {
+    display: none;
+  }
+  &:hover:not([disabled]):not(.icon-selector--checked) .icon--checked {
+    display: flex;
+  }
+
+  // When checked + hover: show outline icon (preview of removing from favorites)
+  &.icon-selector--checked:hover:not([disabled]) .icon--unchecked {
+    display: flex;
+  }
+  &.icon-selector--checked:hover:not([disabled]) .icon--checked {
+    display: none;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+  transition: color 150ms ease-out;
+
+  // Override inline SVG width/height attributes
+  ::slotted(svg),
+  svg {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    fill: currentColor;
+  }
+
+  // Show/hide icons based on checked state
+  &--unchecked {
+    display: flex;
+
+    .icon-selector--checked & {
+      display: none;
+    }
+  }
+
+  &--checked {
+    display: none;
+
+    .icon-selector--checked & {
+      display: flex;
+    }
+  }
+}

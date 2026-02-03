@@ -80,6 +80,18 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean })
   accessor leftPadding = false;
 
+  /** When false (default), the flyout stays open and doesn't auto-close on mouse leave.
+   * When true, the flyout will auto-collapse when the mouse leaves.
+   */
+  @property({ type: Boolean })
+  accessor flyoutAutoCollapsed = false;
+
+  /** Indicates whether this link contains categorical navigation (kyn-header-categories).
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'has-categorical' })
+  accessor hasCategorical = false;
+
   /** Text for mobile "Back" button. */
   @state()
   accessor _searchTerm = '';
@@ -277,6 +289,10 @@ export class HeaderLink extends LitElement {
   }
 
   private _handleLinksSlotChange() {
+    // Detect if this link contains categorical navigation
+    this.hasCategorical =
+      this.querySelector('kyn-header-categories') !== null ||
+      this.querySelector('kyn-header-category') !== null;
     this.requestUpdate();
   }
 
@@ -293,13 +309,45 @@ export class HeaderLink extends LitElement {
     ) {
       clearTimeout(this._leaveTimer);
 
+      // close other open sibling links immediately when entering (categorical nav only)
+      if (this.hasCategorical) {
+        this._closeOtherOpenLinks();
+      }
+
       this._enterTimer = setTimeout(() => {
         this.open = true;
       }, 150);
     }
   }
 
+  /** close other open header links at the same level
+   * @internal
+   */
+  private _closeOtherOpenLinks(): void {
+    // Find the parent nav container
+    const parentNav = this.closest('kyn-header-nav');
+    if (!parentNav) return;
+
+    // Get all top-level header links in this nav
+    const siblingLinks = parentNav.querySelectorAll<
+      HTMLElement & { open?: boolean }
+    >(':scope > kyn-header-link');
+
+    siblingLinks.forEach((link) => {
+      if (link !== this && link.open) {
+        link.open = false;
+      }
+    });
+  }
+
   private handlePointerLeave(e: PointerEvent) {
+    // check both the link's own prop and parent nav's prop
+    // if either is false, don't auto-close the flyout
+    const shouldAutoCollapse = this._shouldAutoCollapse();
+    if (!shouldAutoCollapse) {
+      return;
+    }
+
     if (
       e.pointerType === 'mouse' &&
       this.slottedEls.length &&
@@ -311,6 +359,30 @@ export class HeaderLink extends LitElement {
         this.open = false;
       }, 150);
     }
+  }
+
+  /** check if flyout should auto-collapse based on own prop and parent nav's prop
+   * only applies to links containing categorical nav (kyn-header-categories)
+   * @internal
+   */
+  private _shouldAutoCollapse(): boolean {
+    // Non-categorical links always auto-collapse (preserve original behavior)
+    if (!this.hasCategorical) {
+      return true;
+    }
+
+    if (this.flyoutAutoCollapsed) {
+      return true;
+    }
+
+    const parentNav = this.closest('kyn-header-nav') as
+      | (HTMLElement & { flyoutAutoCollapsed?: boolean })
+      | null;
+    if (parentNav && parentNav.flyoutAutoCollapsed) {
+      return true;
+    }
+
+    return false;
   }
 
   private handleClick(e: Event) {
