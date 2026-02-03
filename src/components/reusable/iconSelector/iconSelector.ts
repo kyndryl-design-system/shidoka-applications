@@ -60,9 +60,9 @@ export class IconSelector extends LitElement {
   @property({ type: Boolean })
   accessor persistWhenChecked = false;
 
-  /** Size of the icon: 'sm' (16px) or 'md' (24px). */
+  /** Size of the icon: 'sm' (16px), 'md' (24px), or 'lg' (32px). */
   @property({ type: String, reflect: true })
-  accessor size: 'sm' | 'md' = 'sm';
+  accessor size: 'sm' | 'md' | 'lg' = 'sm';
 
   override render() {
     const classes = {

@@ -309,8 +309,8 @@ export class HeaderLink extends LitElement {
     ) {
       clearTimeout(this._leaveTimer);
 
-      // close other open sibling links immediately when entering (categorical nav only)
-      if (this.hasCategorical) {
+      // close other open sibling links immediately when entering any level-1 link with submenus
+      if (this.level === 1) {
         this._closeOtherOpenLinks();
       }
 

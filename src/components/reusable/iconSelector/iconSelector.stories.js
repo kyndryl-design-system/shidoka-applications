@@ -9,6 +9,30 @@ import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 export default {
   title: 'Components/Icon Selector',
   component: 'kyn-icon-selector',
+  argTypes: {
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+      description: 'Size of the icon: sm (16px), md (24px), or lg (32px)',
+    },
+    checked: {
+      control: { type: 'boolean' },
+      description: 'Checked/selected state',
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      description: 'Disabled state',
+    },
+    onlyVisibleOnHover: {
+      control: { type: 'boolean' },
+      description: 'When true, icon is only visible when parent is hovered',
+    },
+    persistWhenChecked: {
+      control: { type: 'boolean' },
+      description:
+        'When true, checked items remain visible even with onlyVisibleOnHover',
+    },
+  },
   parameters: {
     design: {
       type: 'figma',
@@ -35,75 +59,6 @@ export const IconSelector = {
         size=${args.size}
         checkedLabel=${args.checkedLabel}
         uncheckedLabel=${args.uncheckedLabel}
-        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
-        <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
-      </kyn-icon-selector>
-    `;
-  },
-};
-
-export const Checked = {
-  args: {
-    value: 'example-item',
-    checked: true,
-    disabled: false,
-    size: 'sm',
-  },
-  render: (args) => {
-    return html`
-      <kyn-icon-selector
-        value=${args.value}
-        ?checked=${args.checked}
-        ?disabled=${args.disabled}
-        size=${args.size}
-        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
-        <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
-      </kyn-icon-selector>
-    `;
-  },
-};
-
-export const Disabled = {
-  args: {
-    value: 'example-item',
-    checked: false,
-    disabled: true,
-    size: 'sm',
-  },
-  render: (args) => {
-    return html`
-      <kyn-icon-selector
-        value=${args.value}
-        ?checked=${args.checked}
-        ?disabled=${args.disabled}
-        size=${args.size}
-        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
-        <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
-      </kyn-icon-selector>
-    `;
-  },
-};
-
-export const MediumSize = {
-  args: {
-    value: 'example-item',
-    checked: false,
-    disabled: false,
-    size: 'md',
-  },
-  render: (args) => {
-    return html`
-      <kyn-icon-selector
-        value=${args.value}
-        ?checked=${args.checked}
-        ?disabled=${args.disabled}
-        size=${args.size}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>

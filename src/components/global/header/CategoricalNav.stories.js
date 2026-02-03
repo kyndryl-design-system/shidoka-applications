@@ -629,9 +629,9 @@ export const FullImplementation = {
       return `
         <span style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
           <span>${link.label}</span>
-          <span style="display: flex; align-items: center; gap: 4px; margin-left: auto;">
-            <span class="action-icon action-icon--hover" style="opacity: 0; transition: opacity 150ms;">${starOutlineIcon}</span>
-            <span class="action-icon">${launchIcon}</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px; margin-left: auto; flex-shrink: 0;">
+            <span class="action-icon action-icon--hover" style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; opacity: 0; transition: opacity 150ms;">${starOutlineIcon}</span>
+            <span class="action-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px;">${launchIcon}</span>
           </span>
         </span>
       `;
@@ -673,6 +673,31 @@ export const FullImplementation = {
                 ></kyn-header-categories>
               </kyn-tab-panel>
             </kyn-tabs>
+          </kyn-header-link>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 1
+          </kyn-header-link>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-category heading="Category">
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 2
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              <span>${unsafeSVG(circleIcon)}</span>
+              Link 3
+            </kyn-header-link>
+          </kyn-header-category>
+
+          <kyn-header-divider></kyn-header-divider>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 4
           </kyn-header-link>
         </kyn-header-nav>
       </kyn-header>

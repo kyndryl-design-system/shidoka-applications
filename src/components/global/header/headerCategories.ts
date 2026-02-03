@@ -349,6 +349,7 @@ export class HeaderCategories extends LitElement {
 
     return html`
       <kyn-header-category heading=${category.heading} showDivider>
+        <span slot="icon">${unsafeSVG(circleIcon)}</span>
         ${links.slice(0, this.maxRootLinks).map((link) => {
           const target = this.normalizeHeaderLinkTarget(link.target);
           return html`
@@ -412,6 +413,7 @@ export class HeaderCategories extends LitElement {
       <kyn-header-category
         heading=${`${category.heading} – ${this._textStrings.more}`}
       >
+        <span slot="icon">${unsafeSVG(circleIcon)}</span>
         <div
           id=${`detail-${category.id}`}
           class="header-detail-columns ${isSingleColumn
