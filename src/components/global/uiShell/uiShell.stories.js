@@ -10,7 +10,7 @@ import {
   Header,
   WithEverything as HeaderWithEverything,
 } from '../header/Header.stories.js';
-import { WithLinks as FooterWithLinks } from '../footer/footer.stories';
+import { WithLinks as FooterWithLinks } from '../footer/footer.stories.js';
 import { Basic as BasicTable } from '../../reusable/table/table.stories.js';
 import { PageTitle } from '../../reusable/pagetitle/pageTitle.stories.js';
 
