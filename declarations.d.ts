@@ -22,7 +22,7 @@ declare module 'flatpickr/dist/esm/l10n/*.js' {
   export default locale;
 }
 
-declare module 'flatpickr/dist/esm/plugins/*' {
+declare module 'flatpickr/dist/esm/plugins/*.js' {
   const plugin: any;
   export default plugin;
 }

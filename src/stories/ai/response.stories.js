@@ -4,7 +4,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import aiResponse from '@kyndryl-design-system/shidoka-foundation/assets/svg/ai/indicator.svg';
 import '../../components/reusable/card';
 
-import { AISourcesFeedback } from '../../components/ai/sourcesFeedback/aiSourcesFeedback.stories';
+import { AISourcesFeedback } from '../../components/ai/sourcesFeedback/aiSourcesFeedback.stories.js';
 import '../../components/reusable/loaders/skeleton';
 
 export default {
