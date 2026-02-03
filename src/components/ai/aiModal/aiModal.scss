@@ -1,0 +1,160 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
+@use '../../../common/scss/gradients.scss' as gradient;
+
+/* ========= aiModal.scss ========= */
+
+/* Centralize values as CSS custom properties on host */
+:host {
+  --ai-modal-width: 95vw;
+  --ai-modal-max-width: 1600px;
+  --ai-modal-height: 85vh;
+  --ai-modal-max-height: 90vh;
+  --ai-modal-radius: 12px;
+
+  /* spacing for header actions (expand/close) */
+  --ai-modal-actions-gap: 0.25rem;
+  --ai-modal-header-inline-gap: 0.5rem;
+  --ai-modal-padding: 32px;
+}
+
+/* Base dialog */
+dialog {
+  padding: var(--ai-modal-padding);
+  border-radius: var(--ai-modal-radius);
+  border: none;
+  overflow: hidden; /* body manages scroll */
+
+  &::backdrop {
+    background-color: var(--kd-color-background-opacity-inverse-backdrop);
+  }
+
+  /* Size variants (unchanged / refined) */
+  &.size--md {
+    width: min(720px, 95vw);
+    height: auto;
+    max-height: 80vh;
+  }
+
+  &.size--lg {
+    width: min(1200px, 95vw);
+    height: 75vh;
+    max-height: 85vh;
+  }
+
+  &.size--xl {
+    width: var(--ai-modal-width);
+    max-width: var(--ai-modal-max-width);
+    height: var(--ai-modal-height);
+    max-height: var(--ai-modal-max-height);
+  }
+
+  /* Expanded/full-screen mode */
+  /* Expanded (larger, but still centered) */
+  &.expanded {
+    width: 95vw !important;
+    max-width: 2000px !important;
+
+    height: 95vh !important;
+    max-height: 900px !important;
+
+    margin: auto; /* ✅ keeps it centered */
+    border-radius: 12px; /* ✅ retain modal feel */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: inherit;
+    }
+  }
+}
+
+/* Make the internal layout consume full height so only the body scrolls */
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Header: title left, actions right */
+header {
+  margin-bottom: 24px;
+  /* remove right margin & absolute close—actions will live inside header */
+  flex: 0 0 auto;
+  max-height: none;
+  overflow: visible;
+  position: relative; /* anchor for potential absolute layouts */
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ai-modal-header-inline-gap);
+  }
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    h1 {
+      @include typography.type-body-01;
+      font-size: 28px; /* override the mixin scale as before */
+      font-weight: 300; /* optional, matches your prior setup */
+      margin: 0;
+    }
+
+    .label {
+      @include typography.type-body-01;
+      color: var(--kd-color-text-secondary, #6f6f6f);
+    }
+  }
+
+  /* Inline slot (badges, etc.) typically sits beside header text; keep space */
+  ::slotted([slot='header-inline']) {
+    margin-left: auto; /* allows actions to still hug right */
+  }
+
+  /* Right actions cluster: Expand (left) + Close (right) */
+  .header-actions {
+    display: inline-flex;
+    gap: var(--ai-modal-actions-gap);
+    align-items: center;
+    margin-left: 12px; /* breathing room from inline slot, if present */
+
+    /* Make the buttons look like compact icon-only controls */
+    kyn-button.expand,
+    kyn-button.close {
+      --kyn-button-padding-inline: 0.25rem;
+      --kyn-button-padding-block: 0.25rem;
+    }
+  }
+
+  /* If you previously positioned .close absolutely, remove or override it */
+  .close {
+    position: static;
+    top: auto;
+    right: auto;
+  }
+}
+
+/* Content/body area: only this scrolls */
+.body,
+dialog > form > div[tabindex] {
+  flex: 1 1 auto;
+  min-height: 0; /* critical for overflow to work in flex containers */
+  overflow: auto; /* scroll only here */
+  margin: 0;
+  padding: 0;
+}
+
+/* Optional: hide expand on very short viewports */
+@media (max-height: 480px) {
+  header .header-actions .expand {
+    display: none;
+  }
+}
