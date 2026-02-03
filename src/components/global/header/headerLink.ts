@@ -68,6 +68,10 @@ export class HeaderLink extends LitElement {
   @property({ type: Number })
   accessor searchThreshold = 6;
 
+  /** Hide the search input regardless of the number of child links. */
+  @property({ type: Boolean })
+  accessor hideSearch = false;
+
   /** Text for mobile "Back" button. */
   @property({ type: String })
   accessor backText = 'Back';
@@ -128,6 +132,13 @@ export class HeaderLink extends LitElement {
       ':scope > kyn-header-link, :scope > kyn-header-category > kyn-header-link'
     );
 
+    const showSearch = !this.hideSearch && Links.length >= this.searchThreshold;
+
+    const wrapperClasses = {
+      wrapper: true,
+      'no-search': !showSearch,
+    };
+
     return html`
       <div
         class="${classMap(classes)}"
@@ -153,7 +164,7 @@ export class HeaderLink extends LitElement {
           class=${classMap(menuClasses)}
           style=${styleMap(this.menuPosition)}
         >
-          <div class="wrapper">
+          <div class=${classMap(wrapperClasses)}>
             <button
               class="go-back"
               type="button"
@@ -162,7 +173,7 @@ export class HeaderLink extends LitElement {
               <span>${unsafeSVG(backIcon)}</span>
               ${this.backText}
             </button>
-            ${Links.length >= this.searchThreshold
+            ${showSearch
               ? html`
                   <kyn-text-input
                     hideLabel

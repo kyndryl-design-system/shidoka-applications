@@ -20,18 +20,48 @@ export class HeaderCategory extends LitElement {
   @property({ type: Boolean })
   accessor leftPadding = false;
 
-  /** Show bottom border/divider. */
+  /** Show bottom border/divider. Set to true to force show, false to force hide. By default, dividers are automatically shown when followed by another category. */
   @property({ type: Boolean })
   accessor showDivider = false;
+
+  /** Disable automatic divider detection. When true, only shows divider if showDivider is explicitly set. */
+  @property({ type: Boolean })
+  accessor noAutoDivider = false;
 
   /** @internal */
   @state()
   private accessor _hasIcon = false;
 
+  /** @internal */
+  @state()
+  private accessor _hasNextCategorySibling = false;
+
   private _handleIconSlotChange(e: Event) {
     const slot = e.target as HTMLSlotElement;
     const assignedNodes = slot.assignedNodes({ flatten: true });
     this._hasIcon = assignedNodes.length > 0;
+  }
+
+  private _checkForNextCategorySibling() {
+    // Check if there's a next sibling that's also a kyn-header-category
+    let nextSibling = this.nextElementSibling;
+    while (nextSibling) {
+      if (nextSibling.tagName === 'KYN-HEADER-CATEGORY') {
+        this._hasNextCategorySibling = true;
+        return;
+      }
+      // Skip text nodes and comments, but stop if we hit another element type
+      if (nextSibling.nodeType === Node.ELEMENT_NODE) {
+        break;
+      }
+      nextSibling = nextSibling.nextElementSibling;
+    }
+    this._hasNextCategorySibling = false;
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this._checkForNextCategorySibling();
   }
 
   override render() {
@@ -41,8 +71,12 @@ export class HeaderCategory extends LitElement {
     // Add heading padding when leftPadding is set AND there's no icon (for alignment with other categories that have icons)
     const indentHeading = this.leftPadding && !this._hasIcon;
 
+    // Show divider if explicitly set, or if auto-detection finds a next category sibling
+    const shouldShowDivider =
+      this.showDivider || (!this.noAutoDivider && this._hasNextCategorySibling);
+
     return html`
-      <div class="category ${this.showDivider ? 'divider' : ''}">
+      <div class="category ${shouldShowDivider ? 'divider' : ''}">
         <div class="heading ${indentHeading ? 'left-padding' : ''}">
           <slot name="icon" @slotchange=${this._handleIconSlotChange}></slot>
           ${this.heading}
