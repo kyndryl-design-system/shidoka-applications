@@ -317,8 +317,11 @@ export class HeaderCategories extends LitElement {
 
     // Update dividers after render when in root view
     if (this.view === ROOT_VIEW) {
-      // Use requestAnimationFrame to ensure layout is complete
-      requestAnimationFrame(() => this._updateDividers());
+      // Use double requestAnimationFrame to ensure CSS grid layout is fully computed
+      // The first rAF runs after the browser paints, the second ensures layout reflow is complete
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => this._updateDividers());
+      });
     }
   }
 
@@ -386,10 +389,11 @@ export class HeaderCategories extends LitElement {
                   }
                 }}
               >
-                <span style="margin-right: 8px;">
-                  ${unsafeSVG(chevronRightIcon)}
+                <span
+                  style="display: inline-flex; align-items: center; gap: 8px;"
+                >
+                  ${unsafeSVG(chevronRightIcon)} ${this._textStrings.more}
                 </span>
-                <span>${this._textStrings.more}</span>
               </kyn-header-link>
             `
           : null}
@@ -548,10 +552,11 @@ export class HeaderCategories extends LitElement {
                     }
                   }}
                 >
-                  <span style="margin-right: 8px;">
-                    ${unsafeSVG(chevronRightIcon)}
+                  <span
+                    style="display: inline-flex; align-items: center; gap: 8px;"
+                  >
+                    ${unsafeSVG(chevronRightIcon)} ${this._textStrings.more}
                   </span>
-                  <span>${this._textStrings.more}</span>
                 </kyn-header-link>
               `
             : null}
@@ -642,7 +647,7 @@ export class HeaderCategories extends LitElement {
 
   /**
    * After render, detect which categories are in the last visual row
-   * and remove their dividers. CSS Grid determines row breaks dynamically,
+   * and disable their dividers. CSS Grid determines row breaks dynamically,
    * so we must inspect rendered positions.
    * @internal
    */
@@ -658,9 +663,9 @@ export class HeaderCategories extends LitElement {
 
     if (!categories.length) return;
 
-    // First, reset all to showDivider=true (use attribute API for proper component interaction)
+    // First, reset all categories: remove noAutoDivider to allow auto-detection
     categories.forEach((cat) => {
-      cat.toggleAttribute('showdivider', true);
+      cat.removeAttribute('noautodivider');
     });
 
     // Get bounding rects and group by row (y-position)
@@ -697,17 +702,20 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    // Remove dividers from all categories in the last row
+    // Disable dividers for all categories in the last row
+    // Must remove showdivider (set in template) and set noautodivider (prevents auto-detection)
     const lastRowCategories = rowMap.get(lastRowY);
     if (lastRowCategories) {
       for (const item of lastRowCategories) {
         item.el.removeAttribute('showdivider');
+        item.el.setAttribute('noautodivider', '');
       }
     }
   }
 
   /**
-   * Get the number of columns to display (max 3).
+   * Get the number of columns to display.
+   * Returns actual category count, letting CSS handle the multi-column layout.
    * @internal
    */
   private _getColumnCount(): number {
@@ -717,7 +725,9 @@ export class HeaderCategories extends LitElement {
       ? this._tabConfig?.categories?.length ?? 0
       : this._slottedCategories.length;
 
-    return Math.min(3, Math.max(1, categoryCount));
+    // CSS multi-column will handle the actual column distribution
+    // Return actual count for data attribute, CSS will determine layout
+    return Math.max(1, categoryCount);
   }
 
   override render() {

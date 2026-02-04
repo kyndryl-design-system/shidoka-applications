@@ -75,9 +75,16 @@ export class HeaderCategory extends LitElement {
     const shouldShowDivider =
       this.showDivider || (!this.noAutoDivider && this._hasNextCategorySibling);
 
+    // Hide heading when there's no text and no icon
+    const hideHeading = !this.heading && !this._hasIcon;
+
     return html`
       <div class="category ${shouldShowDivider ? 'divider' : ''}">
-        <div class="heading ${indentHeading ? 'left-padding' : ''}">
+        <div
+          class="heading ${indentHeading ? 'left-padding' : ''} ${hideHeading
+            ? 'empty'
+            : ''}"
+        >
           <slot name="icon" @slotchange=${this._handleIconSlotChange}></slot>
           ${this.heading}
         </div>

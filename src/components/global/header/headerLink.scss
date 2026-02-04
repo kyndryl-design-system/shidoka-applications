@@ -5,12 +5,14 @@
 :host {
   display: block;
   position: relative;
+  min-width: 0; // Allow host to shrink for text truncation in flex/grid containers
 }
 
 .nav-link {
   display: flex;
   position: relative;
   align-items: center;
+  justify-content: flex-start;
   break-inside: avoid;
   gap: 8px;
   text-decoration: none;
@@ -80,16 +82,26 @@
     flex-shrink: 0;
   }
 
-  // icon slots at the start of links (fixed size, centered) - only SVGs, not spans
-  ::slotted(svg:first-child) {
+  // Icon elements at the start of links (fixed size, don't grow)
+  // Note: :only-child counts element children only, not text nodes.
+  // For <span>icon</span> Text, the span IS :only-child (text node doesn't count).
+  // For <span>text</span> <kyn-icon-selector>, span is NOT :only-child (has element sibling).
+  // This lets us target icon spans (only-child) without affecting text spans (not only-child).
+  ::slotted(svg:first-child),
+  ::slotted(span:first-child:only-child),
+  ::slotted(span[slot='icon']) {
     width: 16px;
     height: 16px;
+    flex: 0 0 auto; // Don't grow or shrink - fixed size
   }
 
   @include typography.type-ui-02;
 
+  // Icon selector should be pushed to the right edge
   ::slotted(kyn-icon-selector) {
     color: inherit;
+    margin-left: auto;
+    flex-shrink: 0;
   }
 }
 
@@ -98,12 +110,19 @@
 }
 
 .arrow {
-  margin-left: auto;
+  flex-shrink: 0;
 
   svg {
     display: block;
   }
 }
+
+// Level 1 (parent nav): arrow should be right-aligned
+.level--1 > .nav-link .arrow {
+  margin-left: auto;
+}
+
+// Level 2+ (nested flyouts): arrow stays next to text (no margin-left: auto)
 
 .menu {
   &.open {
@@ -147,15 +166,18 @@
       border-radius: 8px;
       flex-grow: 1;
 
-      // Reduce top padding when search bar is not shown
-      &.no-search {
-        padding-top: 0;
-      }
-
       // Constrain slotted content width within the expanded wrapper
       > ::slotted(*) {
         max-width: 450px;
       }
+    }
+
+    // Level 2+ wrapper styling for nested flyouts
+    &.level--2 .wrapper,
+    &.level--3 .wrapper {
+      padding: 16px;
+      background-color: var(--kd-color-background-opacity-1);
+      border-radius: 8px;
     }
   }
 
@@ -169,7 +191,7 @@
       max-width: 100%;
 
       @media (min-width: 42rem) {
-        padding: 8px 8px 8px 230px;
+        padding: 8px 16px 8px 230px;
         right: 8px;
       }
     }
@@ -192,10 +214,12 @@
 
   :host([has-categorical]) .menu.open .menu__content.slotted {
     display: flex;
-    max-width: 100%;
-    padding: 8px 8px 8px 230px;
+    padding: 8px 0px 8px 230px;
     left: 8px;
-    right: 0;
+    right: auto;
+    width: fit-content;
+    max-width: calc(100vw - 24px);
+    align-items: stretch;
   }
 
   // Remove max-width constraint on slotted content for categorical nav
@@ -204,17 +228,27 @@
     max-width: none;
   }
 
-  // For categorical nav, set minimum width but don't force expansion
-  // Content can control its own width (fit-content for 1-2 cols, 100% for 3 cols)
+  // For categorical nav, wrapper fits to content width with max-height for scrolling
   :host([has-categorical]) .menu.level--1 .wrapper {
     flex-grow: 0;
+    flex-shrink: 1;
+    width: auto;
     min-width: 450px;
+    min-height: 250px;
+    max-height: calc(
+      100vh - var(--kd-header-height) - 32px
+    ); // Viewport minus header and padding
+    overflow: hidden; // Clip overflow on both axes
+    overflow-y: auto; // But allow vertical scrolling
+    align-self: stretch;
+    margin-right: 16px; // Gap between wrapper and flyout edge
   }
 }
 
 @media (min-width: 42rem) {
-  .level--2 .menu__content.slotted {
-    padding-left: 8px;
+  .level--2 .menu__content.slotted,
+  .level--3 .menu__content.slotted {
+    padding: 8px 16px 8px 8px;
   }
 }
 

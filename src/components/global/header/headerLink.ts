@@ -85,6 +85,12 @@ export class HeaderLink extends LitElement {
   @property({ type: String, attribute: 'link-title' })
   accessor linkTitle = '';
 
+  /** Auto-derived title from slot content, used if linkTitle is not set.
+   * @internal
+   */
+  @state()
+  accessor _autoTitle = '';
+
   /** When false (default), the flyout stays open and doesn't auto-close on mouse leave.
    * When true, the flyout will auto-collapse when the mouse leaves.
    */
@@ -166,12 +172,16 @@ export class HeaderLink extends LitElement {
           target=${this.target}
           rel=${this.rel}
           href=${this.href}
-          title=${ifDefined(this.linkTitle || undefined)}
+          title=${ifDefined(
+            this.linkTitle ||
+              (this.slottedEls.length === 0 ? this._autoTitle : '') ||
+              undefined
+          )}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
           @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
         >
-          <slot></slot>
+          <slot @slotchange=${this._handleDefaultSlotChange}></slot>
 
           ${this.slottedEls.length
             ? html` <span class="arrow">${unsafeSVG(arrowIcon)}</span> `
@@ -250,6 +260,17 @@ export class HeaderLink extends LitElement {
     this._positionMenu();
   }
 
+  /** Extract text content from the default slot to use as auto-title */
+  private _handleDefaultSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    const nodes = slot.assignedNodes({ flatten: true });
+    let textContent = '';
+    for (const node of nodes) {
+      textContent += node.textContent?.trim() ?? '';
+    }
+    this._autoTitle = textContent.trim();
+  }
+
   private _handleBack(e?: Event) {
     if (e) {
       e.preventDefault();
@@ -319,6 +340,8 @@ export class HeaderLink extends LitElement {
       this._closeOtherOpenLinks();
 
       this._enterTimer = setTimeout(() => {
+        // Close siblings again right before opening to prevent race conditions
+        this._closeOtherOpenLinks();
         this.open = true;
       }, 150);
     }
@@ -335,13 +358,28 @@ export class HeaderLink extends LitElement {
     if (this.level === 1) {
       const parent = this.parentElement;
       if (parent) {
+        // Find ALL level 1 links (not just open ones) to clear pending timers
         const siblingLinks = parent.querySelectorAll<
-          HTMLElement & { open?: boolean }
-        >(':scope > kyn-header-link[open]');
+          HTMLElement & { open?: boolean; _enterTimer?: any }
+        >(':scope > kyn-header-link');
 
         siblingLinks.forEach((link) => {
           if (link !== this) {
-            link.open = false;
+            // Clear any pending timers
+            if ((link as any)._enterTimer) {
+              clearTimeout((link as any)._enterTimer);
+              (link as any)._enterTimer = undefined;
+            }
+            if ((link as any)._leaveTimer) {
+              clearTimeout((link as any)._leaveTimer);
+              (link as any)._leaveTimer = undefined;
+            }
+            // Force close - set property, remove attribute, and force re-render
+            if ((link as any).open) {
+              (link as any).open = false;
+              link.removeAttribute('open');
+              (link as any).requestUpdate?.();
+            }
           }
         });
       }
@@ -356,12 +394,26 @@ export class HeaderLink extends LitElement {
 
     if (navContainer) {
       const allLinks = navContainer.querySelectorAll<
-        HTMLElement & { open?: boolean; level?: number }
-      >('kyn-header-link[open]');
+        HTMLElement & { open?: boolean; level?: number; _enterTimer?: any }
+      >('kyn-header-link');
 
       allLinks.forEach((link) => {
         if (link !== this && (link as any).level === this.level) {
-          link.open = false;
+          // Clear any pending timers
+          if ((link as any)._enterTimer) {
+            clearTimeout((link as any)._enterTimer);
+            (link as any)._enterTimer = undefined;
+          }
+          if ((link as any)._leaveTimer) {
+            clearTimeout((link as any)._leaveTimer);
+            (link as any)._leaveTimer = undefined;
+          }
+          // Force close - set property, remove attribute, and force re-render
+          if ((link as any).open) {
+            (link as any).open = false;
+            link.removeAttribute('open');
+            (link as any).requestUpdate?.();
+          }
         }
       });
     }
@@ -418,6 +470,10 @@ export class HeaderLink extends LitElement {
     if (this.slottedEls.length) {
       preventDefault = true;
       e.preventDefault();
+      // Close other open links before toggling this one
+      if (!this.open) {
+        this._closeOtherOpenLinks();
+      }
       this.open = !this.open;
     }
 

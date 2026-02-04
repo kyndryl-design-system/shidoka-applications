@@ -3,6 +3,7 @@
 
 :host {
   display: block;
+  min-width: 0; // Allow host to shrink in grid/flex containers
 }
 
 .category {
@@ -25,6 +26,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0; // Allow flex container to shrink for text truncation
 
   &.left-padding {
     padding-left: 24px;
@@ -37,6 +39,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: fit-content; // Don't stretch to fill parent column
   color: var(--kd-color-text-variant-brand);
   font-weight: var(--kd-font-weight-medium);
   text-transform: uppercase;
@@ -44,6 +47,11 @@
 
   &.left-padding {
     padding-left: 36px;
+  }
+
+  // Hide heading when empty (no text and no icon)
+  &.empty {
+    display: none;
   }
 }
 

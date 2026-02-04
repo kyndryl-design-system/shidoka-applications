@@ -64,11 +64,11 @@ export class IconSelectorGroup extends LitElement {
     `;
   }
 
-  private _handleSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    this._selectors = slot
-      .assignedElements({ flatten: true })
-      .filter((el) => el.tagName === 'KYN-ICON-SELECTOR') as HTMLElement[];
+  private _handleSlotChange() {
+    // Use querySelectorAll to find icon-selectors even when nested in wrapper elements
+    this._selectors = Array.from(
+      this.querySelectorAll('kyn-icon-selector')
+    ) as HTMLElement[];
 
     this._syncChildrenState();
   }

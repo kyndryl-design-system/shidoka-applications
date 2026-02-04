@@ -51,15 +51,11 @@ export const FullImplementation = {
 
             <kyn-header-category slot="links">
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Connections Management</span
-                >
+                <span>Connections Management</span>
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
                   persistWhenChecked
-                  style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
@@ -68,15 +64,11 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Discovered Data</span
-                >
+                <span>Discovered Data</span>
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
                   persistWhenChecked
-                  style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
@@ -85,15 +77,11 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Visualization, Exploration and Semantic Analytics</span
-                >
+                <span>Visualization, Exploration and Semantic Analytics</span>
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
                   persistWhenChecked
-                  style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
@@ -102,15 +90,11 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Topology</span
-                >
+                <span>Topology</span>
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
                   persistWhenChecked
-                  style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
@@ -119,15 +103,11 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Menu item five</span
-                >
+                <span>Menu item five</span>
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
                   persistWhenChecked
-                  style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
@@ -136,15 +116,11 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Menu item six</span
-                >
+                <span>Menu item six</span>
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
                   persistWhenChecked
-                  style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
@@ -153,15 +129,11 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Menu Item seven</span
-                >
+                <span>Menu Item seven</span>
                 <kyn-icon-selector
                   checked
                   onlyVisibleOnHover
                   persistWhenChecked
-                  style="margin-left: auto;"
                 >
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
@@ -178,64 +150,36 @@ export const FullImplementation = {
             Recently Viewed
 
             <kyn-header-category slot="links">
+              <kyn-header-link href="#"><span>Topology</span></kyn-header-link>
               <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Topology</span
-                ></kyn-header-link
+                ><span>Discovered Data</span></kyn-header-link
+              >
+              <kyn-header-link href="#"
+                ><span>Connections Management</span></kyn-header-link
+              >
+              <kyn-header-link href="#"
+                ><span>Sustainability Advisor</span></kyn-header-link
+              >
+              <kyn-header-link href="#"
+                ><span>Discovered Data</span></kyn-header-link
+              >
+              <kyn-header-link href="#"
+                ><span>Private Cloud IaaS/PaaS</span></kyn-header-link
+              >
+              <kyn-header-link href="#"
+                ><span>Mass Recovery Model</span></kyn-header-link
               >
               <kyn-header-link href="#"
                 ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Discovered Data</span
-                ></kyn-header-link
-              >
-              <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Connections Management</span
-                ></kyn-header-link
-              >
-              <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Sustainability Advisor</span
-                ></kyn-header-link
-              >
-              <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Discovered Data</span
-                ></kyn-header-link
-              >
-              <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Private Cloud IaaS/PaaS</span
-                ></kyn-header-link
-              >
-              <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Mass Recovery Model</span
-                ></kyn-header-link
-              >
-              <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                   >Assessment for Microsoft Azure Stack Hyper Converged
                   Infrastructure</span
                 ></kyn-header-link
               >
               <kyn-header-link href="#"
-                ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Private Cloud IaaS/PaaS</span
-                ></kyn-header-link
+                ><span>Private Cloud IaaS/PaaS</span></kyn-header-link
               >
               <kyn-header-link href="#"
                 ><span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                   >Rapid Assessments for Enterprise Sustainability</span
                 ></kyn-header-link
               >
@@ -252,18 +196,11 @@ export const FullImplementation = {
 
             <div
               slot="links"
-              style="display: flex; flex-direction: column; gap: 2px; padding-top: 12px;"
+              style="display: flex; flex-direction: column; gap: 2px;"
             >
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Bridge Home</span
-                >
-                <kyn-icon-selector
-                  onlyVisibleOnHover
-                  persistWhenChecked
-                  style="margin-left: auto;"
-                >
+                <span>Bridge Home</span>
+                <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
                   >
@@ -271,15 +208,8 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >All Dashboards</span
-                >
-                <kyn-icon-selector
-                  onlyVisibleOnHover
-                  persistWhenChecked
-                  style="margin-left: auto;"
-                >
+                <span>All Dashboards</span>
+                <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
                   >
@@ -292,15 +222,8 @@ export const FullImplementation = {
                 style="margin-top: 8px;"
               >
                 <kyn-header-link href="#">
-                  <span
-                    style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                    >Actionable Insights</span
-                  >
-                  <kyn-icon-selector
-                    onlyVisibleOnHover
-                    persistWhenChecked
-                    style="margin-left: auto;"
-                  >
+                  <span>Actionable Insights</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                     <span slot="icon-unchecked"
                       >${unsafeSVG(starOutlineIcon)}</span
                     >
@@ -310,15 +233,8 @@ export const FullImplementation = {
                   </kyn-icon-selector>
                 </kyn-header-link>
                 <kyn-header-link href="#">
-                  <span
-                    style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                    >AIOps IT Health Indicators Dashboard</span
-                  >
-                  <kyn-icon-selector
-                    onlyVisibleOnHover
-                    persistWhenChecked
-                    style="margin-left: auto;"
-                  >
+                  <span>AIOps IT Health Indicators Dashboard</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                     <span slot="icon-unchecked"
                       >${unsafeSVG(starOutlineIcon)}</span
                     >
@@ -328,15 +244,8 @@ export const FullImplementation = {
                   </kyn-icon-selector>
                 </kyn-header-link>
                 <kyn-header-link href="#" target="_blank">
-                  <span
-                    style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                    >Business Console (legacy)</span
-                  >
-                  <kyn-icon-selector
-                    onlyVisibleOnHover
-                    persistWhenChecked
-                    style="margin-left: auto;"
-                  >
+                  <span>Business Console (legacy)</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                     <span slot="icon-unchecked"
                       >${unsafeSVG(starOutlineIcon)}</span
                     >
@@ -350,15 +259,8 @@ export const FullImplementation = {
                   >
                 </kyn-header-link>
                 <kyn-header-link href="#" target="_blank">
-                  <span
-                    style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                    >Business Service Insights (legacy)</span
-                  >
-                  <kyn-icon-selector
-                    onlyVisibleOnHover
-                    persistWhenChecked
-                    style="margin-left: auto;"
-                  >
+                  <span>Business Service Insights (legacy)</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                     <span slot="icon-unchecked"
                       >${unsafeSVG(starOutlineIcon)}</span
                     >
@@ -418,14 +320,24 @@ export const FullImplementation = {
                   >
                     <kyn-header-category heading="Applications, Data, & AI">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Business Intelligence</span
-                        >
+                        <span>Business Intelligence</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
+                        >
+                          <span slot="icon-unchecked"
+                            >${unsafeSVG(starOutlineIcon)}</span
+                          >
+                          <span slot="icon-checked"
+                            >${unsafeSVG(starFilledIcon)}</span
+                          >
+                        </kyn-icon-selector>
+                      </kyn-header-link>
+                      <kyn-header-link href="#">
+                        <span>Storage Migration</span>
+                        <kyn-icon-selector
+                          onlyVisibleOnHover
+                          persistWhenChecked
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -437,32 +349,12 @@ export const FullImplementation = {
                       </kyn-header-link>
                       <kyn-header-link href="#">
                         <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Storage Migration</span
-                        >
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
-                          style="margin-left: auto;"
-                        >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                           >Visualization, Exploration and Semantic
                           Analytics</span
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -477,14 +369,12 @@ export const FullImplementation = {
                     <kyn-header-category heading="Cloud Services">
                       <kyn-header-link href="#">
                         <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                           >Assessment for Microsoft Azure Stack Hyper Converged
                           Infrastructure</span
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -495,14 +385,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Private Cloud IaaS/PaaS</span
-                        >
+                        <span>Private Cloud IaaS/PaaS</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -514,13 +400,11 @@ export const FullImplementation = {
                       </kyn-header-link>
                       <kyn-header-link href="#">
                         <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                           >Rapid Assessments for Enterprise Sustainability</span
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -540,14 +424,12 @@ export const FullImplementation = {
                     <kyn-header-category heading="Core Enterprise & Z Cloud">
                       <kyn-header-link href="#">
                         <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                           >Application Management Services for IBM Z and IBM
                           i</span
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -559,13 +441,11 @@ export const FullImplementation = {
                       </kyn-header-link>
                       <kyn-header-link href="#">
                         <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                           >Managed Extended Cloud IaaS for IBM i on Skytap</span
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -577,13 +457,11 @@ export const FullImplementation = {
                       </kyn-header-link>
                       <kyn-header-link href="#">
                         <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                           >Managed Extended Cloud IaaS for IBM Z (zCloud)</span
                         >
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -597,14 +475,10 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Digital Workplace">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Connected Experience</span
-                        >
+                        <span>Connected Experience</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -615,14 +489,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Digital Experience Management</span
-                        >
+                        <span>Digital Experience Management</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -633,14 +503,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Modern Device Management Services</span
-                        >
+                        <span>Modern Device Management Services</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -654,14 +520,10 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Network & Edge">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Managed Network Services</span
-                        >
+                        <span>Managed Network Services</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -680,14 +542,10 @@ export const FullImplementation = {
                   >
                     <kyn-header-category heading="Security & Resiliency">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Continuous Controls Monitoring & Management</span
-                        >
+                        <span>Continuous Controls Monitoring & Management</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -698,14 +556,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Enterprise Security Compliance Management</span
-                        >
+                        <span>Enterprise Security Compliance Management</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -716,14 +570,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Intelligent Recovery Service</span
-                        >
+                        <span>Intelligent Recovery Service</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -734,14 +584,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Mass Recovery Model</span
-                        >
+                        <span>Mass Recovery Model</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -752,14 +598,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Recovery Retainer Service</span
-                        >
+                        <span>Recovery Retainer Service</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -770,14 +612,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Security & Network Operations</span
-                        >
+                        <span>Security & Network Operations</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -788,14 +626,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Security Operations as a Platform</span
-                        >
+                        <span>Security Operations as a Platform</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -806,14 +640,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Sustainability Advisor</span
-                        >
+                        <span>Sustainability Advisor</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -824,14 +654,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Vulnerability Management Service</span
-                        >
+                        <span>Vulnerability Management Service</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -863,14 +689,10 @@ export const FullImplementation = {
                       heading="Application & Business Services"
                     >
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Application Modernization Intelligence</span
-                        >
+                        <span>Application Modernization Intelligence</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -884,10 +706,7 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Change Management">
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Guided Change Manager (legacy)</span
-                        >
+                        <span>Guided Change Manager (legacy)</span>
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
@@ -912,14 +731,10 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Cloud Management">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Container Cluster Management</span
-                        >
+                        <span>Container Cluster Management</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -930,14 +745,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >FinOps & Cost Optimization Intelligence</span
-                        >
+                        <span>FinOps & Cost Optimization Intelligence</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -951,14 +762,10 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Data Analytics">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Data Fabric</span
-                        >
+                        <span>Data Fabric</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -972,14 +779,10 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Discovery">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Discovered Data</span
-                        >
+                        <span>Discovered Data</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -990,14 +793,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Discovered Management</span
-                        >
+                        <span>Discovered Management</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1016,10 +815,7 @@ export const FullImplementation = {
                   >
                     <kyn-header-category heading="Inventory">
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Applications & Resources (legacy)</span
-                        >
+                        <span>Applications & Resources (legacy)</span>
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
@@ -1041,14 +837,10 @@ export const FullImplementation = {
                         </span>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Application Inventory</span
-                        >
+                        <span>Application Inventory</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1059,10 +851,7 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Infrastructure & Cloud Inventory (legacy)</span
-                        >
+                        <span>Infrastructure & Cloud Inventory (legacy)</span>
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
@@ -1084,10 +873,7 @@ export const FullImplementation = {
                         </span>
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Inventory Insights (legacy)</span
-                        >
+                        <span>Inventory Insights (legacy)</span>
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
@@ -1109,10 +895,7 @@ export const FullImplementation = {
                         </span>
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Location Dictionary (legacy)</span
-                        >
+                        <span>Location Dictionary (legacy)</span>
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
@@ -1134,10 +917,7 @@ export const FullImplementation = {
                         </span>
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Product Dictionary (legacy)</span
-                        >
+                        <span>Product Dictionary (legacy)</span>
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
@@ -1159,14 +939,10 @@ export const FullImplementation = {
                         </span>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Tagging Compliance Report</span
-                        >
+                        <span>Tagging Compliance Report</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1177,14 +953,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Topology</span
-                        >
+                        <span>Topology</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1195,10 +967,7 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Workstation Inventory (legacy)</span
-                        >
+                        <span>Workstation Inventory (legacy)</span>
                         <span
                           style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
                         >
@@ -1223,14 +992,10 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Knowledge & AI">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Agentic AI Designer</span
-                        >
+                        <span>Agentic AI Designer</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1242,7 +1007,6 @@ export const FullImplementation = {
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
                         <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
                           >Artificial Intelligence for IT Operations
                           (legacy)</span
                         >
@@ -1267,14 +1031,10 @@ export const FullImplementation = {
                         </span>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Bridge AI Assist Configuration</span
-                        >
+                        <span>Bridge AI Assist Configuration</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1285,14 +1045,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Knowledge Foundation</span
-                        >
+                        <span>Knowledge Foundation</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1313,14 +1069,10 @@ export const FullImplementation = {
                       heading="Provisioning Orchestration & Automation"
                     >
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Actions (legacy)</span
-                        >
+                        <span>Actions (legacy)</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1335,14 +1087,10 @@ export const FullImplementation = {
                         >
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Automation (legacy)</span
-                        >
+                        <span>Automation (legacy)</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1357,14 +1105,10 @@ export const FullImplementation = {
                         >
                       </kyn-header-link>
                       <kyn-header-link href="#" target="_blank">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Scheduler (legacy)</span
-                        >
+                        <span>Scheduler (legacy)</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1379,14 +1123,10 @@ export const FullImplementation = {
                         >
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Workflow Executions</span
-                        >
+                        <span>Workflow Executions</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1400,14 +1140,10 @@ export const FullImplementation = {
 
                     <kyn-header-category heading="Toolchain & Pipeline">
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >DevOps Intelligence</span
-                        >
+                        <span>DevOps Intelligence</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1418,14 +1154,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Machine Learning Operations Pipeline</span
-                        >
+                        <span>Machine Learning Operations Pipeline</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1436,14 +1168,10 @@ export const FullImplementation = {
                         </kyn-icon-selector>
                       </kyn-header-link>
                       <kyn-header-link href="#">
-                        <span
-                          style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                          >Tool Chain Management</span
-                        >
+                        <span>Tool Chain Management</span>
                         <kyn-icon-selector
                           onlyVisibleOnHover
                           persistWhenChecked
-                          style="margin-left: auto;"
                         >
                           <span slot="icon-unchecked"
                             >${unsafeSVG(starOutlineIcon)}</span
@@ -1467,15 +1195,8 @@ export const FullImplementation = {
 
             <kyn-header-category slot="links">
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Bridge Private Catalog</span
-                >
-                <kyn-icon-selector
-                  onlyVisibleOnHover
-                  persistWhenChecked
-                  style="margin-left: auto;"
-                >
+                <span>Bridge Private Catalog</span>
+                <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
                   >
@@ -1483,15 +1204,8 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Bridge Service Catalog</span
-                >
-                <kyn-icon-selector
-                  onlyVisibleOnHover
-                  persistWhenChecked
-                  style="margin-left: auto;"
-                >
+                <span>Bridge Service Catalog</span>
+                <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
                   >
@@ -1499,15 +1213,8 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Enablement Catalog</span
-                >
-                <kyn-icon-selector
-                  onlyVisibleOnHover
-                  persistWhenChecked
-                  style="margin-left: auto;"
-                >
+                <span>Enablement Catalog</span>
+                <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
                   >
@@ -1515,15 +1222,8 @@ export const FullImplementation = {
                 </kyn-icon-selector>
               </kyn-header-link>
               <kyn-header-link href="#">
-                <span
-                  style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                  >Orchestration Catalog</span
-                >
-                <kyn-icon-selector
-                  onlyVisibleOnHover
-                  persistWhenChecked
-                  style="margin-left: auto;"
-                >
+                <span>Orchestration Catalog</span>
+                <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                   <span slot="icon-unchecked"
                     >${unsafeSVG(starOutlineIcon)}</span
                   >
@@ -1539,10 +1239,7 @@ export const FullImplementation = {
             <span>${unsafeSVG(adminIcon)}</span>
             Administration
 
-            <div
-              slot="links"
-              style="display: flex; gap: 32px; padding-top: 12px;"
-            >
+            <div slot="links" style="display: flex; gap: 32px;">
               <!-- LEFT COLUMN -->
               <div
                 style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
@@ -1550,15 +1247,8 @@ export const FullImplementation = {
                 <!-- ACCESS MANAGEMENT -->
                 <kyn-header-category heading="Access Management">
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Access Request Management System (ARMS)</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Access Request Management System (ARMS)</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1568,15 +1258,8 @@ export const FullImplementation = {
                     </kyn-icon-selector>
                   </kyn-header-link>
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Bridge Access Management</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Bridge Access Management</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1586,15 +1269,8 @@ export const FullImplementation = {
                     </kyn-icon-selector>
                   </kyn-header-link>
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Service Access Management</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Service Access Management</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1608,15 +1284,8 @@ export const FullImplementation = {
                 <!-- POLICY SERVICE -->
                 <kyn-header-category heading="Policy Service">
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Policy Management (Bundles)</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Policy Management (Bundles)</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1632,15 +1301,8 @@ export const FullImplementation = {
                   heading="Provisioning Orchestration & Administration"
                 >
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Orchestration Administration</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Orchestration Administration</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1659,15 +1321,8 @@ export const FullImplementation = {
                 <!-- SERVICE OPERATIONS -->
                 <kyn-header-category heading="Service Operations">
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Auditing</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Auditing</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1677,15 +1332,8 @@ export const FullImplementation = {
                     </kyn-icon-selector>
                   </kyn-header-link>
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Connections Management</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Connections Management</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1695,15 +1343,8 @@ export const FullImplementation = {
                     </kyn-icon-selector>
                   </kyn-header-link>
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Logging & Monitoring</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Logging & Monitoring</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1713,15 +1354,8 @@ export const FullImplementation = {
                     </kyn-icon-selector>
                   </kyn-header-link>
                   <kyn-header-link href="#" target="_blank">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Sunrise Insights Administration (legacy)</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Sunrise Insights Administration (legacy)</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1739,15 +1373,8 @@ export const FullImplementation = {
                 <!-- TAG MANAGEMENT -->
                 <kyn-header-category heading="Tag Management">
                   <kyn-header-link href="#" target="_blank">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >AIOps Tagging (legacy)</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>AIOps Tagging (legacy)</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >
@@ -1761,15 +1388,8 @@ export const FullImplementation = {
                     >
                   </kyn-header-link>
                   <kyn-header-link href="#">
-                    <span
-                      style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;"
-                      >Bridge Tag Management</span
-                    >
-                    <kyn-icon-selector
-                      onlyVisibleOnHover
-                      persistWhenChecked
-                      style="margin-left: auto;"
-                    >
+                    <span>Bridge Tag Management</span>
+                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
                       <span slot="icon-unchecked"
                         >${unsafeSVG(starOutlineIcon)}</span
                       >

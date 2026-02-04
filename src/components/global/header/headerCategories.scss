@@ -2,7 +2,9 @@
 
 // Layout configuration
 $column-gap: 32px;
+$row-gap: 16px;
 $min-wrapper-width: 450px;
+$max-column-width: 400px;
 
 :host {
   display: block;
@@ -10,17 +12,19 @@ $min-wrapper-width: 450px;
   min-width: $min-wrapper-width;
 }
 
-// 1-2 columns: fit to content
+// All column counts: fit to content, constrained by parent
 :host([data-columns='1']),
-:host([data-columns='2']) {
-  width: fit-content;
-  max-width: calc(100vw - 230px);
-}
-
-// 3 columns: span full available width
-:host([data-columns='3']) {
-  width: calc(100vw - 230px);
-  max-width: calc(100vw - 230px);
+:host([data-columns='2']),
+:host([data-columns='3']),
+:host([data-columns='4']),
+:host([data-columns='5']),
+:host([data-columns='6']),
+:host([data-columns='7']),
+:host([data-columns='8']),
+:host([data-columns='9']),
+:host([data-columns='10']) {
+  width: 100%;
+  max-width: 100%;
 }
 
 .header-categories {
@@ -29,8 +33,10 @@ $min-wrapper-width: 450px;
 
   &__inner {
     display: grid;
-    gap: $column-gap;
+    gap: $row-gap $column-gap;
     box-sizing: border-box;
+    // Default: 3 columns with flexible width
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   &__back-slot {
@@ -39,29 +45,31 @@ $min-wrapper-width: 450px;
   }
 }
 
-// Default: single column
-.header-categories__inner {
-  grid-template-columns: 1fr;
+// 1 column grid
+.header-categories__inner[data-columns='1'] {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 // 2 column grid
 .header-categories__inner[data-columns='2'] {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-// 3 column grid - equal widths spanning full available space
-.header-categories__inner[data-columns='3'] {
-  grid-template-columns: 1fr 1fr 1fr;
+// 3+ columns: use 3-column grid, items wrap to next row
+.header-categories__inner[data-columns='3'],
+.header-categories__inner[data-columns='4'],
+.header-categories__inner[data-columns='5'],
+.header-categories__inner[data-columns='6'],
+.header-categories__inner[data-columns='7'],
+.header-categories__inner[data-columns='8'],
+.header-categories__inner[data-columns='9'],
+.header-categories__inner[data-columns='10'] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-/* Grid items should fill their cells */
-.header-categories__inner > * {
-  min-width: 0; // Allow grid items to shrink below content size for text truncation
-}
-
-/* Ensure categories display correctly in grid */
+/* Grid items */
 .header-categories__inner > kyn-header-category {
-  width: 100%;
+  min-width: 0; // Allow grid items to shrink for text truncation
 }
 
 /* ---------------------------------------------------------------------
