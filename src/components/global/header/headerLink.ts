@@ -85,17 +85,21 @@ export class HeaderLink extends LitElement {
   @property({ type: String, attribute: 'link-title' })
   accessor linkTitle = '';
 
+  /** When true, long text truncates with ellipsis. Default: false (text wraps normally). */
+  @property({ type: Boolean, reflect: true })
+  accessor truncate = false;
+
   /** Auto-derived title from slot content, used if linkTitle is not set.
    * @internal
    */
   @state()
   accessor _autoTitle = '';
 
-  /** When false (default), the flyout stays open and doesn't auto-close on mouse leave.
-   * When true, the flyout will auto-collapse when the mouse leaves.
+  /** When true (default), the flyout auto-closes when the mouse leaves (original behavior).
+   * When false, the flyout stays open and doesn't auto-close on mouse leave.
    */
   @property({ type: Boolean })
-  accessor flyoutAutoCollapsed = false;
+  accessor flyoutAutoCollapsed = true;
 
   /** Indicates whether this link contains categorical navigation (kyn-header-categories).
    * @internal

@@ -31,12 +31,11 @@ export class HeaderNav extends LitElement {
   @property({ type: String, reflect: true })
   override accessor slot = 'left';
 
-  /** when false (default), the first link's flyout automatically opens when the nav opens,
-   * and flyouts don't auto-close on mouse leave.
-   * when true, flyouts remain collapsed until user interaction.
+  /** When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).
+   * When false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.
    */
   @property({ type: Boolean })
-  accessor flyoutAutoCollapsed = false;
+  accessor flyoutAutoCollapsed = true;
 
   /** Boolean value reflecting whether the navigation has categories.
    * @internal

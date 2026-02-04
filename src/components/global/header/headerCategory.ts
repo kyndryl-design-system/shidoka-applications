@@ -24,9 +24,19 @@ export class HeaderCategory extends LitElement {
   @property({ type: Boolean })
   accessor showDivider = false;
 
-  /** Disable automatic divider detection. When true, only shows divider if showDivider is explicitly set. */
+  /** Disable automatic divider detection (default: true for backwards compatibility).
+   * When true, only shows divider if showDivider is explicitly set.
+   * When false, dividers auto-detect based on sibling categories.
+   */
   @property({ type: Boolean })
-  accessor noAutoDivider = false;
+  accessor noAutoDivider = true;
+
+  /** Indent links to align with heading text when icon is present.
+   * Default: false for backwards compatibility.
+   * Set to true when using icon slot and you want links to align with heading text.
+   */
+  @property({ type: Boolean })
+  accessor indentLinks = false;
 
   /** @internal */
   @state()
@@ -65,9 +75,8 @@ export class HeaderCategory extends LitElement {
   }
 
   override render() {
-    // Indent links ONLY when category has an icon (so link text aligns with heading text after icon)
-    // This preserves backward compatibility: links with their own icons won't get double-indented
-    const indentLinks = this._hasIcon;
+    // Indent links when explicitly requested via indentLinks prop (opt-in)
+    const shouldIndentLinks = this.indentLinks;
     // Add heading padding when leftPadding is set AND there's no icon (for alignment with other categories that have icons)
     const indentHeading = this.leftPadding && !this._hasIcon;
 
@@ -88,7 +97,7 @@ export class HeaderCategory extends LitElement {
           <slot name="icon" @slotchange=${this._handleIconSlotChange}></slot>
           ${this.heading}
         </div>
-        <div class="category__links ${indentLinks ? 'left-padding' : ''}">
+        <div class="category__links ${shouldIndentLinks ? 'left-padding' : ''}">
           <slot></slot>
         </div>
         <slot name="more"></slot>

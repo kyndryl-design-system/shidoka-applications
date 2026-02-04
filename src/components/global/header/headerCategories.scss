@@ -1,6 +1,6 @@
 @use '../../../common/scss/global.scss';
 
-// Layout configuration
+// Layout configuration (used by grid layout)
 $column-gap: 32px;
 $row-gap: 16px;
 $min-wrapper-width: 450px;
@@ -10,34 +10,29 @@ $max-column-width: 400px;
 :host {
   display: block;
   box-sizing: border-box;
-  min-width: $min-wrapper-width;
+  width: 100%;
 }
 
-// All column counts: fit to content, constrained by parent
-:host([data-columns='1']),
-:host([data-columns='2']),
-:host([data-columns='3']),
-:host([data-columns='4']),
-:host([data-columns='5']),
-:host([data-columns='6']),
-:host([data-columns='7']),
-:host([data-columns='8']),
-:host([data-columns='9']),
-:host([data-columns='10']) {
-  width: 100%;
-  max-width: 100%;
+// Desktop sizing (masonry default)
+@media (min-width: 672px) {
+  :host {
+    padding-right: 10%;
+    width: calc(100vw - 230px);
+    max-width: calc(100vw - 230px);
+  }
 }
 
 .header-categories {
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 
   &__inner {
-    display: grid;
-    gap: $row-gap $column-gap;
+    display: block;
+    column-width: 160px;
+    column-gap: 32px;
+    max-width: 100%;
     box-sizing: border-box;
-    // Default: 3 columns with minimum width to fill space
-    grid-template-columns: repeat(3, minmax($min-column-width, 1fr));
   }
 
   &__back-slot {
@@ -46,17 +41,88 @@ $max-column-width: 400px;
   }
 }
 
-// Responsive grid using auto-fit - columns wrap naturally based on available space
-// Max-width prevents columns from spreading too far when few categories exist
-.header-categories__inner {
+.header-categories__inner > * {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 16px;
+}
+
+slot.header-categories__slot::slotted(*) {
+  display: block;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 16px;
+}
+
+/* ---------------------------------------------------------------------
+   ROOT VIEW (MASONRY - default)
+   ------------------------------------------------------------------ */
+:host(:not([view='detail'])) .header-categories__inner {
+  column-width: 160px;
+}
+
+@media (min-width: 896px) {
+  :host(:not([view='detail'])) .header-categories__inner {
+    column-width: 180px;
+  }
+}
+
+@media (min-width: 1152px) {
+  :host(:not([view='detail'])) .header-categories__inner {
+    column-width: 200px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   GRID LAYOUT (opt-in via layout="grid")
+   ------------------------------------------------------------------ */
+:host([layout='grid']) {
+  min-width: $min-wrapper-width;
+}
+
+// Grid mode: override sizing
+@media (min-width: 672px) {
+  :host([layout='grid']) {
+    padding-right: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+// All column counts: fit to content, constrained by parent
+:host([layout='grid'][data-columns='1']),
+:host([layout='grid'][data-columns='2']),
+:host([layout='grid'][data-columns='3']),
+:host([layout='grid'][data-columns='4']),
+:host([layout='grid'][data-columns='5']),
+:host([layout='grid'][data-columns='6']),
+:host([layout='grid'][data-columns='7']),
+:host([layout='grid'][data-columns='8']),
+:host([layout='grid'][data-columns='9']),
+:host([layout='grid'][data-columns='10']) {
+  width: 100%;
+  max-width: 100%;
+}
+
+:host([layout='grid']) .header-categories__inner {
+  display: grid;
+  gap: $row-gap $column-gap;
+  // Responsive grid using auto-fit - columns wrap naturally based on available space
+  // Max-width prevents columns from spreading too far when few categories exist
   grid-template-columns: repeat(
     auto-fit,
     minmax($min-column-width, $max-column-width)
   );
 }
 
-/* Grid items */
-.header-categories__inner > kyn-header-category {
+// Grid items: reset masonry-specific styles
+:host([layout='grid']) .header-categories__inner > * {
+  break-inside: auto;
+  -webkit-column-break-inside: auto;
+  page-break-inside: auto;
+  margin: 0;
   min-width: 0; // Allow grid items to shrink for text truncation
 }
 
@@ -87,7 +153,7 @@ $max-column-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 0 0 160px;
+  flex: 0 0 200px;
 }
 
 :host([view='detail']) .header-detail-columns--single {
@@ -102,6 +168,6 @@ $max-column-width: 400px;
 
 @media (min-width: 42rem) {
   :host([view='detail']) .header-detail-columns > div {
-    min-width: 120px;
+    min-width: 160px;
   }
 }

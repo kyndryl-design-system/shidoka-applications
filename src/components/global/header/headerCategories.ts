@@ -137,9 +137,19 @@ export class HeaderCategories extends LitElement {
   @property({ type: Number })
   accessor maxRootLinks = 4;
 
-  /** Max number of columns to display in the grid (default: 3). */
+  /**
+   * Layout mode for categories.
+   * - "masonry" (default): Original CSS multi-column layout for backwards compatibility
+   * - "grid": New CSS Grid with auto-fit columns and responsive wrapping
+   */
+  @property({ type: String, reflect: true })
+  accessor layout: 'masonry' | 'grid' = 'masonry';
+
+  /** Max number of columns to display when layout="grid" (default: 10, effectively unlimited).
+   * Has no effect when layout="masonry".
+   */
   @property({ type: Number })
-  accessor maxColumns = 3;
+  accessor maxColumns = 10;
 
   /**
    * Optional text overrides, merged with defaults.
@@ -194,14 +204,22 @@ export class HeaderCategories extends LitElement {
   /** @internal */
   private _resizeObserver?: ResizeObserver;
 
-  /** Debounced divider update to prevent jank during rapid resize
+  /** Debounced divider update to prevent jank during rapid resize (grid mode only)
    * @internal
    */
-  private _debouncedUpdateDividers = debounce(() => {
-    if (this.view === ROOT_VIEW) {
+  private _debouncedUpdateDividers = debounce((_e: Event) => {
+    if (this.view === ROOT_VIEW && this.layout === 'grid') {
       this._updateDividers();
     }
   }, 100);
+
+  /** Wrapper for ResizeObserver callback
+   * @internal
+   */
+  private _handleResize = (): void => {
+    // Create a synthetic event for the debounced function
+    this._debouncedUpdateDividers(new Event('resize'));
+  };
 
   /** @internal */
   private readonly _boundHandleNavToggle = (e: Event): void =>
@@ -315,17 +333,22 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    // Update data-columns attribute on host for CSS targeting
-    const columnCount = this._getColumnCount();
-    this.setAttribute('data-columns', String(columnCount));
+    // Grid mode only: update data-columns attribute and dividers
+    if (this.layout === 'grid') {
+      const columnCount = this._getColumnCount();
+      this.setAttribute('data-columns', String(columnCount));
 
-    // Update dividers after render when in root view
-    if (this.view === ROOT_VIEW) {
-      // Use double requestAnimationFrame to ensure CSS grid layout is fully computed
-      // The first rAF runs after the browser paints, the second ensures layout reflow is complete
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => this._updateDividers());
-      });
+      // Update dividers after render when in root view
+      if (this.view === ROOT_VIEW) {
+        // Use double requestAnimationFrame to ensure CSS grid layout is fully computed
+        // The first rAF runs after the browser paints, the second ensures layout reflow is complete
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => this._updateDividers());
+        });
+      }
+    } else {
+      // Remove data-columns attribute in masonry mode
+      this.removeAttribute('data-columns');
     }
   }
 
@@ -656,7 +679,8 @@ export class HeaderCategories extends LitElement {
    * @internal
    */
   private _updateDividers(): void {
-    if (this.view !== ROOT_VIEW) return;
+    // Only update dividers in grid mode (masonry doesn't need row-based divider detection)
+    if (this.view !== ROOT_VIEW || this.layout !== 'grid') return;
 
     const inner = this.shadowRoot?.querySelector('.header-categories__inner');
     if (!inner) return;
@@ -718,12 +742,12 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * Get the number of columns to display.
+   * Get the number of columns to display (grid mode only).
    * Returns the minimum of category count and maxColumns.
    * @internal
    */
   private _getColumnCount(): number {
-    if (this.view !== ROOT_VIEW) return 1;
+    if (this.view !== ROOT_VIEW || this.layout !== 'grid') return 1;
 
     const categoryCount = this._isJsonMode
       ? this._tabConfig?.categories?.length ?? 0
@@ -735,7 +759,7 @@ export class HeaderCategories extends LitElement {
 
   override render() {
     const view = this.view;
-    const columnCount = this._getColumnCount();
+    const columnCount = this.layout === 'grid' ? this._getColumnCount() : null;
 
     const inner = this._isJsonMode
       ? view === ROOT_VIEW
@@ -747,7 +771,10 @@ export class HeaderCategories extends LitElement {
 
     return html`
       <div class="header-categories" data-view=${view}>
-        <div class="header-categories__inner" data-columns=${columnCount}>
+        <div
+          class="header-categories__inner"
+          data-columns=${ifDefined(columnCount ?? undefined)}
+        >
           ${inner ?? html``}
         </div>
 
@@ -792,9 +819,9 @@ export class HeaderCategories extends LitElement {
     // initial build for slotted mode
     this._buildSlottedCategories();
 
-    // Set up ResizeObserver to update dividers when columns reflow (debounced to prevent jank)
+    // Set up ResizeObserver to update dividers when columns reflow (grid mode only, debounced)
     if (typeof ResizeObserver !== 'undefined') {
-      this._resizeObserver = new ResizeObserver(this._debouncedUpdateDividers);
+      this._resizeObserver = new ResizeObserver(this._handleResize);
       this._resizeObserver.observe(this);
     }
   }

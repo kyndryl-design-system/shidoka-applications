@@ -25,9 +25,6 @@
   padding: 6px 12px 6px 8px;
   width: 100%;
   min-width: 0; // Allow flex item to shrink below content size
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   // CSS custom property for iconSelector hover visibility (works at any nesting depth)
   --kyn-icon-selector-hover-opacity: 0;
@@ -100,15 +97,6 @@
     text-overflow: var(--kyn-header-span-only-text-overflow, clip);
     white-space: var(--kyn-header-span-only-white-space, normal);
     min-width: var(--kyn-header-span-only-min-width, auto);
-  }
-
-  // Text spans with siblings (text + icons pattern) should truncate
-  // This allows icons to remain visible and right-aligned via margin-left: auto
-  ::slotted(span:first-child:not(:only-child):not([slot])) {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   @include typography.type-ui-02;
@@ -342,4 +330,24 @@ kyn-text-input {
 
 .go-back {
   margin-bottom: 8px;
+}
+
+/* ---------------------------------------------------------------------
+   TRUNCATION (opt-in via truncate attribute)
+   ------------------------------------------------------------------ */
+:host([truncate]) .nav-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Text spans with siblings (text + icons pattern) should truncate when enabled
+// This allows icons to remain visible and right-aligned via margin-left: auto
+:host([truncate])
+  .nav-link
+  ::slotted(span:first-child:not(:only-child):not([slot])) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
