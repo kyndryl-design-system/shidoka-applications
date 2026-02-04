@@ -311,363 +311,281 @@ export const FullImplementation = {
                 noPadding
                 ?visible=${renderArgs.activeServicesTab === 'kyndryl'}
               >
-                <div style="display: flex; gap: 32px; width: 100%;">
-                  <!-- LEFT COLUMN -->
-                  <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
-                  >
-                    <kyn-header-category heading="Applications, Data, & AI">
-                      <kyn-header-link href="#">
-                        <span>Business Intelligence</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                <kyn-header-categories layout="masonry" maxColumns="3">
+                  <kyn-header-category heading="Applications, Data, & AI">
+                    <kyn-header-link href="#" truncate>
+                      <span>Business Intelligence</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Storage Migration</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span
-                          >Visualization, Exploration and Semantic
-                          Analytics</span
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Storage Migration</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span
+                        >Visualization, Exploration and Semantic Analytics</span
+                      >
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Cloud Services">
-                      <kyn-header-link href="#">
-                        <span
-                          >Assessment for Microsoft Azure Stack Hyper Converged
-                          Infrastructure</span
+                  <kyn-header-category heading="Cloud Services">
+                    <kyn-header-link href="#" truncate>
+                      <span
+                        >Assessment for Microsoft Azure Stack Hyper Converged
+                        Infrastructure</span
+                      >
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Private Cloud IaaS/PaaS</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Private Cloud IaaS/PaaS</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span
-                          >Rapid Assessments for Enterprise Sustainability</span
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span
+                        >Rapid Assessments for Enterprise Sustainability</span
+                      >
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
-                  </div>
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                  <!-- MIDDLE COLUMN -->
-                  <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
-                  >
-                    <kyn-header-category heading="Core Enterprise & Z Cloud">
-                      <kyn-header-link href="#">
-                        <span
-                          >Application Management Services for IBM Z and IBM
-                          i</span
+                  <kyn-header-category heading="Core Enterprise & Z Cloud">
+                    <kyn-header-link href="#" truncate>
+                      <span
+                        >Application Management Services for IBM Z and IBM
+                        i</span
+                      >
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span
-                          >Managed Extended Cloud IaaS for IBM i on Skytap</span
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span
+                        >Managed Extended Cloud IaaS for IBM i on Skytap</span
+                      >
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span
-                          >Managed Extended Cloud IaaS for IBM Z (zCloud)</span
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span
+                        >Managed Extended Cloud IaaS for IBM Z (zCloud)</span
+                      >
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Digital Workplace">
-                      <kyn-header-link href="#">
-                        <span>Connected Experience</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                  <kyn-header-category heading="Digital Workplace">
+                    <kyn-header-link href="#" truncate>
+                      <span>Connected Experience</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Digital Experience Management</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Modern Device Management Services</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Digital Experience Management</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Modern Device Management Services</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Network & Edge">
-                      <kyn-header-link href="#">
-                        <span>Managed Network Services</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                  <kyn-header-category heading="Network & Edge">
+                    <kyn-header-link href="#" truncate>
+                      <span>Managed Network Services</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
-                  </div>
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                  <!-- RIGHT COLUMN -->
-                  <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
-                  >
-                    <kyn-header-category heading="Security & Resiliency">
-                      <kyn-header-link href="#">
-                        <span>Continuous Controls Monitoring & Management</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                  <kyn-header-category heading="Security & Resiliency">
+                    <kyn-header-link href="#" truncate>
+                      <span>Continuous Controls Monitoring & Management</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Enterprise Security Compliance Management</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Intelligent Recovery Service</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Enterprise Security Compliance Management</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Mass Recovery Model</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Recovery Retainer Service</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Intelligent Recovery Service</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Security & Network Operations</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Security Operations as a Platform</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Mass Recovery Model</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Sustainability Advisor</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Vulnerability Management Service</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Recovery Retainer Service</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
-                  </div>
-                </div>
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Security & Network Operations</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Security Operations as a Platform</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Sustainability Advisor</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Vulnerability Management Service</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
+                </kyn-header-categories>
               </kyn-tab-panel>
 
               <!-- PLATFORM SERVICES TAB -->
@@ -676,510 +594,382 @@ export const FullImplementation = {
                 noPadding
                 ?visible=${renderArgs.activeServicesTab === 'platform'}
               >
-                <div style="display: flex; gap: 32px; width: 100%;">
-                  <!-- LEFT COLUMN -->
-                  <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
+                <kyn-header-categories layout="masonry" maxColumns="3">
+                  <kyn-header-category
+                    heading="Application & Business Services"
                   >
-                    <kyn-header-category
-                      heading="Application & Business Services"
-                    >
-                      <kyn-header-link href="#">
-                        <span>Application Modernization Intelligence</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                    <kyn-header-link href="#" truncate>
+                      <span>Application Modernization Intelligence</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Change Management">
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Guided Change Manager (legacy)</span>
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
+                  <kyn-header-category heading="Change Management">
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Guided Change Manager (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Cloud Management">
-                      <kyn-header-link href="#">
-                        <span>Container Cluster Management</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                  <kyn-header-category heading="Cloud Management">
+                    <kyn-header-link href="#" truncate>
+                      <span>Container Cluster Management</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>FinOps & Cost Optimization Intelligence</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>FinOps & Cost Optimization Intelligence</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Data Analytics">
-                      <kyn-header-link href="#">
-                        <span>Data Fabric</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                  <kyn-header-category heading="Data Analytics">
+                    <kyn-header-link href="#" truncate>
+                      <span>Data Fabric</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Discovery">
-                      <kyn-header-link href="#">
-                        <span>Discovered Data</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                  <kyn-header-category heading="Discovery">
+                    <kyn-header-link href="#" truncate>
+                      <span>Discovered Data</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Discovered Management</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
-                  </div>
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Discovered Management</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                  <!-- MIDDLE COLUMN -->
-                  <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
+                  <kyn-header-category heading="Inventory">
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Applications & Resources (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Application Inventory</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Infrastructure & Cloud Inventory (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Inventory Insights (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Location Dictionary (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Product Dictionary (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Tagging Compliance Report</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Topology</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Workstation Inventory (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category heading="Knowledge & AI">
+                    <kyn-header-link href="#" truncate>
+                      <span>Agentic AI Designer</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span
+                        >Artificial Intelligence for IT Operations
+                        (legacy)</span
+                      >
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Bridge AI Assist Configuration</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Knowledge Foundation</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
+                        >
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
+                        >
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category
+                    heading="Provisioning Orchestration & Automation"
                   >
-                    <kyn-header-category heading="Inventory">
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Applications & Resources (legacy)</span>
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Actions (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Application Inventory</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Infrastructure & Cloud Inventory (legacy)</span>
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Automation (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Inventory Insights (legacy)</span>
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Location Dictionary (legacy)</span>
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" target="_blank" truncate>
+                      <span>Scheduler (legacy)</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Product Dictionary (legacy)</span>
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Tagging Compliance Report</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                      <span
+                        style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                        >${unsafeSVG(launchIcon)}</span
+                      >
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Workflow Executions</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Topology</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Workstation Inventory (legacy)</span>
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
-                        >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                    </kyn-header-category>
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
 
-                    <kyn-header-category heading="Knowledge & AI">
-                      <kyn-header-link href="#">
-                        <span>Agentic AI Designer</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                  <kyn-header-category heading="Toolchain & Pipeline">
+                    <kyn-header-link href="#" truncate>
+                      <span>DevOps Intelligence</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span
-                          >Artificial Intelligence for IT Operations
-                          (legacy)</span
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                        <span
-                          style="display: inline-flex; align-items: center; margin-left: auto; gap: 8px; flex-shrink: 0;"
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Machine Learning Operations Pipeline</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <kyn-icon-selector
-                            onlyVisibleOnHover
-                            persistWhenChecked
-                          >
-                            <span slot="icon-unchecked"
-                              >${unsafeSVG(starOutlineIcon)}</span
-                            >
-                            <span slot="icon-checked"
-                              >${unsafeSVG(starFilledIcon)}</span
-                            >
-                          </kyn-icon-selector>
-                          <span
-                            style="display: flex; width: 16px; height: 16px;"
-                            >${unsafeSVG(launchIcon)}</span
-                          >
-                        </span>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Bridge AI Assist Configuration</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Knowledge Foundation</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                    <kyn-header-link href="#" truncate>
+                      <span>Tool Chain Management</span>
+                      <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                        <span slot="icon-unchecked"
+                          >${unsafeSVG(starOutlineIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
-                  </div>
-
-                  <!-- RIGHT COLUMN -->
-                  <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
-                  >
-                    <kyn-header-category
-                      heading="Provisioning Orchestration & Automation"
-                    >
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Actions (legacy)</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
+                        <span slot="icon-checked"
+                          >${unsafeSVG(starFilledIcon)}</span
                         >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                        <span
-                          style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
-                          >${unsafeSVG(launchIcon)}</span
-                        >
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Automation (legacy)</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
-                        >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                        <span
-                          style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
-                          >${unsafeSVG(launchIcon)}</span
-                        >
-                      </kyn-header-link>
-                      <kyn-header-link href="#" target="_blank">
-                        <span>Scheduler (legacy)</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
-                        >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                        <span
-                          style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
-                          >${unsafeSVG(launchIcon)}</span
-                        >
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Workflow Executions</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
-                        >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
-
-                    <kyn-header-category heading="Toolchain & Pipeline">
-                      <kyn-header-link href="#">
-                        <span>DevOps Intelligence</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
-                        >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Machine Learning Operations Pipeline</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
-                        >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                      <kyn-header-link href="#">
-                        <span>Tool Chain Management</span>
-                        <kyn-icon-selector
-                          onlyVisibleOnHover
-                          persistWhenChecked
-                        >
-                          <span slot="icon-unchecked"
-                            >${unsafeSVG(starOutlineIcon)}</span
-                          >
-                          <span slot="icon-checked"
-                            >${unsafeSVG(starFilledIcon)}</span
-                          >
-                        </kyn-icon-selector>
-                      </kyn-header-link>
-                    </kyn-header-category>
-                  </div>
-                </div>
+                      </kyn-icon-selector>
+                    </kyn-header-link>
+                  </kyn-header-category>
+                </kyn-header-categories>
               </kyn-tab-panel>
             </kyn-tabs>
           </kyn-header-link>
@@ -1230,173 +1020,157 @@ export const FullImplementation = {
           </kyn-header-link>
 
           <!-- ADMINISTRATION -->
-          <!-- Two-column layout with explicit column arrangement -->
           <kyn-header-link href="javascript:void(0)" hideSearch>
             <span>${unsafeSVG(adminIcon)}</span>
             Administration
 
-            <div slot="links" style="display: flex; gap: 32px;">
-              <!-- LEFT COLUMN -->
-              <div
-                style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
-              >
-                <!-- ACCESS MANAGEMENT -->
-                <kyn-header-category heading="Access Management">
-                  <kyn-header-link href="#">
-                    <span>Access Request Management System (ARMS)</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                  <kyn-header-link href="#">
-                    <span>Bridge Access Management</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                  <kyn-header-link href="#">
-                    <span>Service Access Management</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                </kyn-header-category>
-
-                <!-- POLICY SERVICE -->
-                <kyn-header-category heading="Policy Service">
-                  <kyn-header-link href="#">
-                    <span>Policy Management (Bundles)</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                </kyn-header-category>
-
-                <!-- PROVISIONING ORCHESTRATION & ADMINISTRATION -->
-                <kyn-header-category
-                  heading="Provisioning Orchestration & Administration"
-                >
-                  <kyn-header-link href="#">
-                    <span>Orchestration Administration</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                </kyn-header-category>
-              </div>
-
-              <!-- RIGHT COLUMN -->
-              <div
-                style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
-              >
-                <!-- SERVICE OPERATIONS -->
-                <kyn-header-category heading="Service Operations">
-                  <kyn-header-link href="#">
-                    <span>Auditing</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                  <kyn-header-link href="#">
-                    <span>Connections Management</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                  <kyn-header-link href="#">
-                    <span>Logging & Monitoring</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                  <kyn-header-link href="#" target="_blank">
-                    <span>Sunrise Insights Administration (legacy)</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                    <span
-                      style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
-                      >${unsafeSVG(launchIcon)}</span
+            <kyn-header-categories slot="links" layout="masonry" maxColumns="2">
+              <kyn-header-category heading="Access Management">
+                <kyn-header-link href="#" truncate>
+                  <span>Access Request Management System (ARMS)</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
                     >
-                  </kyn-header-link>
-                </kyn-header-category>
-
-                <!-- TAG MANAGEMENT -->
-                <kyn-header-category heading="Tag Management">
-                  <kyn-header-link href="#" target="_blank">
-                    <span>AIOps Tagging (legacy)</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                    <span
-                      style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
-                      >${unsafeSVG(launchIcon)}</span
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
                     >
-                  </kyn-header-link>
-                  <kyn-header-link href="#">
-                    <span>Bridge Tag Management</span>
-                    <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
-                      <span slot="icon-unchecked"
-                        >${unsafeSVG(starOutlineIcon)}</span
-                      >
-                      <span slot="icon-checked"
-                        >${unsafeSVG(starFilledIcon)}</span
-                      >
-                    </kyn-icon-selector>
-                  </kyn-header-link>
-                </kyn-header-category>
-              </div>
-            </div>
+                  </kyn-icon-selector>
+                </kyn-header-link>
+                <kyn-header-link href="#" truncate>
+                  <span>Bridge Access Management</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+                <kyn-header-link href="#" truncate>
+                  <span>Service Access Management</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+              </kyn-header-category>
+
+              <kyn-header-category heading="Policy Service">
+                <kyn-header-link href="#" truncate>
+                  <span>Policy Management (Bundles)</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+              </kyn-header-category>
+
+              <kyn-header-category
+                heading="Provisioning Orchestration & Administration"
+              >
+                <kyn-header-link href="#" truncate>
+                  <span>Orchestration Administration</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+              </kyn-header-category>
+
+              <kyn-header-category heading="Service Operations">
+                <kyn-header-link href="#" truncate>
+                  <span>Auditing</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+                <kyn-header-link href="#" truncate>
+                  <span>Connections Management</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+                <kyn-header-link href="#" truncate>
+                  <span>Logging & Monitoring</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+                <kyn-header-link href="#" target="_blank" truncate>
+                  <span>Sunrise Insights Administration (legacy)</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                  <span
+                    style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                    >${unsafeSVG(launchIcon)}</span
+                  >
+                </kyn-header-link>
+              </kyn-header-category>
+
+              <kyn-header-category heading="Tag Management">
+                <kyn-header-link href="#" target="_blank" truncate>
+                  <span>AIOps Tagging (legacy)</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                  <span
+                    style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+                    >${unsafeSVG(launchIcon)}</span
+                  >
+                </kyn-header-link>
+                <kyn-header-link href="#" truncate>
+                  <span>Bridge Tag Management</span>
+                  <kyn-icon-selector onlyVisibleOnHover persistWhenChecked>
+                    <span slot="icon-unchecked"
+                      >${unsafeSVG(starOutlineIcon)}</span
+                    >
+                    <span slot="icon-checked"
+                      >${unsafeSVG(starFilledIcon)}</span
+                    >
+                  </kyn-icon-selector>
+                </kyn-header-link>
+              </kyn-header-category>
+            </kyn-header-categories>
           </kyn-header-link>
         </kyn-header-nav>
       </kyn-header>

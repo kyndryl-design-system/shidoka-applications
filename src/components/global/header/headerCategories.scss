@@ -76,43 +76,146 @@ slot.header-categories__slot::slotted(*) {
 }
 
 /* ---------------------------------------------------------------------
-   GRID LAYOUT (opt-in via layout="grid")
+   MASONRY LAYOUT (opt-in via layout="masonry")
+   Uses CSS column-count for true masonry behavior where items flow
+   vertically in each column before moving to the next column.
+   Column count is controlled via data-columns attribute.
    ------------------------------------------------------------------ */
-:host([layout='grid']) {
-  min-width: $min-wrapper-width;
+:host([layout='masonry']) {
+  width: max-content; // Shrink-fit to actual content width
+  min-width: $min-column-width;
+  max-width: 100%; // Don't exceed parent
 }
 
-// Grid mode: override sizing
 @media (min-width: 672px) {
-  :host([layout='grid']) {
+  :host([layout='masonry']) {
     padding-right: 0;
-    width: 100%;
-    max-width: 100%;
   }
 }
 
-// All column counts: fit to content, constrained by parent
-:host([layout='grid'][data-columns='1']),
-:host([layout='grid'][data-columns='2']),
-:host([layout='grid'][data-columns='3']),
-:host([layout='grid'][data-columns='4']),
-:host([layout='grid'][data-columns='5']),
-:host([layout='grid'][data-columns='6']),
-:host([layout='grid'][data-columns='7']),
-:host([layout='grid'][data-columns='8']),
-:host([layout='grid'][data-columns='9']),
-:host([layout='grid'][data-columns='10']) {
-  width: 100%;
-  max-width: 100%;
+// Base masonry setup - override default column-width with column-count
+:host([layout='masonry']) .header-categories__inner {
+  column-width: auto; // Disable auto column-width
+  column-gap: $column-gap;
 }
 
+// Fixed column-count based on data-columns attribute
+:host([layout='masonry'][data-columns='1']) .header-categories__inner {
+  column-count: 1;
+}
+:host([layout='masonry'][data-columns='2']) .header-categories__inner {
+  column-count: 2;
+}
+:host([layout='masonry'][data-columns='3']) .header-categories__inner {
+  column-count: 3;
+}
+:host([layout='masonry'][data-columns='4']) .header-categories__inner {
+  column-count: 4;
+}
+:host([layout='masonry'][data-columns='5']) .header-categories__inner {
+  column-count: 5;
+}
+:host([layout='masonry'][data-columns='6']) .header-categories__inner {
+  column-count: 6;
+}
+:host([layout='masonry'][data-columns='7']) .header-categories__inner {
+  column-count: 7;
+}
+:host([layout='masonry'][data-columns='8']) .header-categories__inner {
+  column-count: 8;
+}
+:host([layout='masonry'][data-columns='9']) .header-categories__inner {
+  column-count: 9;
+}
+:host([layout='masonry'][data-columns='10']) .header-categories__inner {
+  column-count: 10;
+}
+
+// Masonry items keep break-inside: avoid (default behavior)
+// No need to reset since that's the default
+
+/* ---------------------------------------------------------------------
+   GRID LAYOUT (opt-in via layout="grid")
+   Uses fixed column count from data-columns attribute to avoid
+   circular dependency between container width and auto-fit.
+   Items flow row-by-row (left to right, then wrap).
+   ------------------------------------------------------------------ */
+:host([layout='grid']) {
+  width: max-content; // Shrink-fit to actual grid width
+  min-width: $min-column-width;
+  max-width: 100%; // Don't exceed parent
+}
+
+@media (min-width: 672px) {
+  :host([layout='grid']) {
+    padding-right: 0;
+  }
+}
+
+// Base grid setup
 :host([layout='grid']) .header-categories__inner {
   display: grid;
   gap: $row-gap $column-gap;
-  // Responsive grid using auto-fit - columns wrap naturally based on available space
-  // Max-width prevents columns from spreading too far when few categories exist
+  // Default: single column with max width for truncation (fallback)
+  grid-template-columns: minmax($min-column-width, $max-column-width);
+}
+
+// Fixed column templates based on data-columns attribute
+// Each column has min 150px, max 300px for truncation of long text
+:host([layout='grid'][data-columns='1']) .header-categories__inner {
+  grid-template-columns: minmax($min-column-width, $max-column-width);
+}
+:host([layout='grid'][data-columns='2']) .header-categories__inner {
   grid-template-columns: repeat(
-    auto-fit,
+    2,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='3']) .header-categories__inner {
+  grid-template-columns: repeat(
+    3,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='4']) .header-categories__inner {
+  grid-template-columns: repeat(
+    4,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='5']) .header-categories__inner {
+  grid-template-columns: repeat(
+    5,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='6']) .header-categories__inner {
+  grid-template-columns: repeat(
+    6,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='7']) .header-categories__inner {
+  grid-template-columns: repeat(
+    7,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='8']) .header-categories__inner {
+  grid-template-columns: repeat(
+    8,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='9']) .header-categories__inner {
+  grid-template-columns: repeat(
+    9,
+    minmax($min-column-width, $max-column-width)
+  );
+}
+:host([layout='grid'][data-columns='10']) .header-categories__inner {
+  grid-template-columns: repeat(
+    10,
     minmax($min-column-width, $max-column-width)
   );
 }

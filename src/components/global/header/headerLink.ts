@@ -107,6 +107,12 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean, reflect: true, attribute: 'has-categorical' })
   accessor hasCategorical = false;
 
+  /** Number of columns in the categorical flyout (for width adjustment).
+   * @internal
+   */
+  @property({ type: Number, reflect: true, attribute: 'data-flyout-columns' })
+  accessor flyoutColumns = 0;
+
   /** Text for mobile "Back" button. */
   @state()
   accessor _searchTerm = '';
@@ -326,6 +332,16 @@ export class HeaderLink extends LitElement {
       this.querySelector('kyn-header-category') !== null;
     this.requestUpdate();
   }
+
+  /** Handle column count changes from slotted kyn-header-categories
+   * @internal
+   */
+  private _handleColumnCountChange = (e: Event) => {
+    const detail = (e as CustomEvent<{ columnCount: number }>).detail;
+    if (detail?.columnCount !== undefined) {
+      this.flyoutColumns = detail.columnCount;
+    }
+  };
 
   private get _isDesktopViewport(): boolean {
     if (typeof window === 'undefined') return true;
@@ -592,6 +608,8 @@ export class HeaderLink extends LitElement {
     super.connectedCallback();
     document.addEventListener('click', this._handleDocumentClick);
     window.addEventListener('resize', this._debounceResize);
+    // Listen for column count changes from slotted kyn-header-categories
+    this.addEventListener('column-count-change', this._handleColumnCountChange);
   }
 
   override disconnectedCallback() {
@@ -607,6 +625,10 @@ export class HeaderLink extends LitElement {
 
     document.removeEventListener('click', this._handleDocumentClick);
     window.removeEventListener('resize', this._debounceResize);
+    this.removeEventListener(
+      'column-count-change',
+      this._handleColumnCountChange
+    );
     super.disconnectedCallback();
   }
 }

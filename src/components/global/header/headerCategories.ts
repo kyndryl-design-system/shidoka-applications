@@ -213,13 +213,62 @@ export class HeaderCategories extends LitElement {
     }
   }, 100);
 
+  /** Tracks the last emitted column count to avoid duplicate events
+   * @internal
+   */
+  private _lastEmittedColumnCount = 0;
+
   /** Wrapper for ResizeObserver callback
    * @internal
    */
   private _handleResize = (): void => {
     // Create a synthetic event for the debounced function
     this._debouncedUpdateDividers(new Event('resize'));
+    // Category count doesn't change on resize, so no need to re-emit
   };
+
+  /**
+   * Get the category count for flyout width determination.
+   * Uses category count (not rendered columns) to avoid feedback loops
+   * where narrow flyout causes single-column rendering.
+   * Only applicable for grid layout; masonry uses different column flow.
+   * @internal
+   */
+  private _getCategoryCountForFlyout(): number {
+    // Only detect for grid mode; masonry doesn't need flyout width adjustment
+    if (this.view !== ROOT_VIEW || this.layout !== 'grid') return 0;
+
+    // Use category count (not rendered columns) to avoid feedback loops
+    const categoryCount = this._isJsonMode
+      ? this._tabConfig?.categories?.length ?? 0
+      : this._slottedCategories.length;
+
+    return categoryCount;
+  }
+
+  /**
+   * Update category count and emit event if changed.
+   * Only emits for grid layout (masonry doesn't need flyout width adjustment).
+   * @internal
+   */
+  private _updateAndEmitColumnCount(): void {
+    // Only emit for grid layout
+    if (this.layout !== 'grid') return;
+
+    const categoryCount = this._getCategoryCountForFlyout();
+
+    if (categoryCount !== this._lastEmittedColumnCount) {
+      this._lastEmittedColumnCount = categoryCount;
+
+      this.dispatchEvent(
+        new CustomEvent('column-count-change', {
+          detail: { columnCount: categoryCount },
+          composed: true,
+          bubbles: true,
+        })
+      );
+    }
+  }
 
   /** @internal */
   private readonly _boundHandleNavToggle = (e: Event): void =>
@@ -333,13 +382,13 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    // Grid mode only: update data-columns attribute and dividers
-    if (this.layout === 'grid') {
+    // Grid and masonry modes: update data-columns attribute
+    if (this.layout === 'grid' || this.layout === 'masonry') {
       const columnCount = this._getColumnCount();
       this.setAttribute('data-columns', String(columnCount));
 
-      // Update dividers after render when in root view
-      if (this.view === ROOT_VIEW) {
+      // Update dividers after render when in root view (grid mode only)
+      if (this.view === ROOT_VIEW && this.layout === 'grid') {
         // Use double requestAnimationFrame to ensure CSS grid layout is fully computed
         // The first rAF runs after the browser paints, the second ensures layout reflow is complete
         requestAnimationFrame(() => {
@@ -347,8 +396,13 @@ export class HeaderCategories extends LitElement {
         });
       }
     } else {
-      // Remove data-columns attribute in masonry mode
+      // Remove data-columns attribute for default auto-responsive mode
       this.removeAttribute('data-columns');
+    }
+
+    // Always emit column count after render (for flyout width adjustment)
+    if (this.view === ROOT_VIEW) {
+      this._updateAndEmitColumnCount();
     }
   }
 
@@ -393,6 +447,7 @@ export class HeaderCategories extends LitElement {
               target=${target}
               rel=${ifDefined(link.rel)}
               .linkTitle=${link.label}
+              ?truncate=${this.layout === 'grid' || this.layout === 'masonry'}
             >
               ${this.renderLinkContent(link, {
                 tabId,
@@ -470,6 +525,8 @@ export class HeaderCategories extends LitElement {
                       target=${target}
                       rel=${ifDefined(link.rel)}
                       .linkTitle=${link.label}
+                      ?truncate=${this.layout === 'grid' ||
+                      this.layout === 'masonry'}
                     >
                       ${this.renderLinkContent(link, {
                         tabId: this.activeMegaTabId,
@@ -552,6 +609,7 @@ export class HeaderCategories extends LitElement {
                 target=${target}
                 rel=${ifDefined(link.rel)}
                 .linkTitle=${link.textContent}
+                ?truncate=${this.layout === 'grid' || this.layout === 'masonry'}
               >
                 ${unsafeHTML(link.inner)}
               </kyn-header-link>
@@ -644,6 +702,8 @@ export class HeaderCategories extends LitElement {
                       target=${target}
                       rel=${ifDefined(link.rel)}
                       .linkTitle=${link.textContent}
+                      ?truncate=${this.layout === 'grid' ||
+                      this.layout === 'masonry'}
                     >
                       ${unsafeHTML(link.inner)}
                     </kyn-header-link>
@@ -742,12 +802,16 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * Get the number of columns to display (grid mode only).
+   * Get the number of columns to display (grid and masonry modes).
    * Returns the minimum of category count and maxColumns.
    * @internal
    */
   private _getColumnCount(): number {
-    if (this.view !== ROOT_VIEW || this.layout !== 'grid') return 1;
+    if (
+      this.view !== ROOT_VIEW ||
+      (this.layout !== 'grid' && this.layout !== 'masonry')
+    )
+      return 1;
 
     const categoryCount = this._isJsonMode
       ? this._tabConfig?.categories?.length ?? 0

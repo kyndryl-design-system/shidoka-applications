@@ -168,9 +168,9 @@
       padding: 16px;
       background-color: var(--kd-color-background-opacity-1);
       border-radius: 8px;
-      flex-grow: 1;
-      margin-right: 16px; // Gap between wrapper and flyout edge
       box-sizing: border-box;
+      align-self: stretch; // Fill parent height
+      flex: 1 1 auto; // Grow to fill available space
 
       // Signal to nested header-links that they're in a flyout context
       // Override span styling for text truncation instead of icon sizing
@@ -193,11 +193,10 @@
     // Level 2+ wrapper styling for nested flyouts
     &.level--2 .wrapper,
     &.level--3 .wrapper {
+      flex: 0 1 auto; // Don't grow beyond content
       padding: 16px;
       background-color: var(--kd-color-background-opacity-1);
       border-radius: 8px;
-      flex-grow: 1;
-      margin-right: 16px;
       box-sizing: border-box;
 
       // Also signal flyout context for nested flyouts
@@ -218,14 +217,12 @@
 
     // Basic nav (non-categorical): always show slotted content when present
     &.slotted {
-      display: flex;
+      display: inline-flex; // inline-flex shrinks to content
+      align-items: stretch; // Children fill height
+      max-width: 100%;
 
       @media (min-width: 42rem) {
-        padding: 8px 32px 8px 230px;
-        left: 8px;
-        right: auto;
-        width: fit-content;
-        max-width: calc(100vw - 48px);
+        padding: 8px 8px 8px 230px;
       }
     }
 
@@ -246,12 +243,11 @@
   }
 
   :host([has-categorical]) .menu.open .menu__content.slotted {
-    display: flex;
+    display: inline-flex; // Shrink-wrap to content width
     padding: 8px 8px 8px 230px;
-    left: 8px;
-    right: 8px; // Stretch to fill viewport width
-    width: auto; // Don't use fit-content - let it expand
-    max-width: calc(100vw - 24px); // Constrain to viewport
+    left: auto; // Don't stretch to viewport edges
+    right: auto;
+    max-width: calc(100vw - 16px); // Constrain to viewport
     align-items: stretch;
   }
 
@@ -261,27 +257,25 @@
     max-width: none;
   }
 
-  // For categorical nav, wrapper expands to fill available space
+  // For categorical nav, wrapper sizes to content (no extra space)
   :host([has-categorical]) .menu.level--1 .wrapper {
-    flex-grow: 1; // Expand to fill available space
-    flex-shrink: 1;
-    width: auto;
-    min-width: 450px;
+    flex: 0 1 auto; // Don't grow, can shrink, auto basis
+    width: auto; // Let content determine width
+    min-width: 150px; // At least one column width
+    max-width: calc(100vw - 230px - 32px); // Viewport minus sidebar/padding
     min-height: 250px;
-    max-height: calc(
-      100vh - var(--kd-header-height) - 32px
-    ); // Viewport minus header and padding
-    overflow-x: hidden; // Constrain content to wrapper
-    overflow-y: auto; // But allow vertical scrolling
+    max-height: calc(100vh - var(--kd-header-height) - 32px);
+    overflow-x: auto; // Allow horizontal scroll if needed
+    overflow-y: auto; // Allow vertical scrolling
     align-self: stretch;
-    margin-right: 8px; // Gap between wrapper and flyout edge
+    // No margin-right - flyout padding provides the gap
   }
 }
 
 @media (min-width: 42rem) {
   .level--2 .menu__content.slotted,
   .level--3 .menu__content.slotted {
-    padding: 8px 16px 8px 8px;
+    padding: 8px; // Symmetrical padding
   }
 }
 

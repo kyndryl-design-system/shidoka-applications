@@ -79,7 +79,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories layout="grid" maxColumns="8">
+                <kyn-header-categories layout="grid" maxColumns="2">
                   <!-- CATEGORY 1 -->
                   <kyn-header-category heading="Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -260,7 +260,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories layout="grid" maxColumns="8">
+                <kyn-header-categories layout="grid" maxColumns="2">
                   <kyn-header-category heading="T2 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -314,7 +314,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories layout="grid" maxColumns="8">
+                <kyn-header-categories layout="grid" maxColumns="2">
                   <!-- APP2 CATEGORY A -->
                   <kyn-header-category heading="App2 Category A">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -358,7 +358,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories layout="grid" maxColumns="8">
+                <kyn-header-categories layout="grid" maxColumns="2">
                   <kyn-header-category heading="T4 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -478,7 +478,7 @@ export const WithCategorizedNav = {
 
                 <kyn-header-categories
                   layout="grid"
-                  maxColumns="8"
+                  maxColumns="2"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
@@ -499,7 +499,7 @@ export const WithCategorizedNav = {
 
                 <kyn-header-categories
                   layout="grid"
-                  maxColumns="8"
+                  maxColumns="2"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
@@ -553,7 +553,7 @@ export const WithCategorizedNav = {
 
                 <kyn-header-categories
                   layout="grid"
-                  maxColumns="8"
+                  maxColumns="2"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
@@ -574,7 +574,7 @@ export const WithCategorizedNav = {
 
                 <kyn-header-categories
                   layout="grid"
-                  maxColumns="8"
+                  maxColumns="2"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
