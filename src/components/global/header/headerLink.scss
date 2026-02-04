@@ -197,6 +197,19 @@
     left: 8px;
     right: 0;
   }
+
+  // Remove max-width constraint on slotted content for categorical nav
+  // Let kyn-header-categories control its own width based on column count
+  :host([has-categorical]) .menu.level--1 .wrapper > ::slotted(*) {
+    max-width: none;
+  }
+
+  // For categorical nav, set minimum width but don't force expansion
+  // Content can control its own width (fit-content for 1-2 cols, 100% for 3 cols)
+  :host([has-categorical]) .menu.level--1 .wrapper {
+    flex-grow: 0;
+    min-width: 450px;
+  }
 }
 
 @media (min-width: 42rem) {

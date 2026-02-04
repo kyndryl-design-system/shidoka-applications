@@ -8,6 +8,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss?inline';
 import '../../reusable/textInput';
@@ -79,6 +80,10 @@ export class HeaderLink extends LitElement {
   /** Add left padding when icon is not provided to align text with links that do have icons. */
   @property({ type: Boolean })
   accessor leftPadding = false;
+
+  /** Title attribute for the link, shown as a tooltip on hover. Useful for truncated text. */
+  @property({ type: String, attribute: 'link-title' })
+  accessor linkTitle = '';
 
   /** When false (default), the flyout stays open and doesn't auto-close on mouse leave.
    * When true, the flyout will auto-collapse when the mouse leaves.
@@ -161,6 +166,7 @@ export class HeaderLink extends LitElement {
           target=${this.target}
           rel=${this.rel}
           href=${this.href}
+          title=${ifDefined(this.linkTitle || undefined)}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
           @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
@@ -309,10 +315,8 @@ export class HeaderLink extends LitElement {
     ) {
       clearTimeout(this._leaveTimer);
 
-      // close other open sibling links immediately when entering any level-1 link with submenus
-      if (this.level === 1) {
-        this._closeOtherOpenLinks();
-      }
+      // close other open sibling links immediately when entering any link with submenus
+      this._closeOtherOpenLinks();
 
       this._enterTimer = setTimeout(() => {
         this.open = true;
@@ -324,20 +328,43 @@ export class HeaderLink extends LitElement {
    * @internal
    */
   private _closeOtherOpenLinks(): void {
-    // Find the parent nav container
-    const parentNav = this.closest('kyn-header-nav');
-    if (!parentNav) return;
+    // Strategy: Close all sibling header-links that are currently open
+    // This handles the sidebar nav where links are direct children of header-nav
 
-    // Get all top-level header links in this nav
-    const siblingLinks = parentNav.querySelectorAll<
-      HTMLElement & { open?: boolean }
-    >(':scope > kyn-header-link');
+    // For level 1 links (main sidebar), find siblings via parent
+    if (this.level === 1) {
+      const parent = this.parentElement;
+      if (parent) {
+        const siblingLinks = parent.querySelectorAll<
+          HTMLElement & { open?: boolean }
+        >(':scope > kyn-header-link[open]');
 
-    siblingLinks.forEach((link) => {
-      if (link !== this && link.open) {
-        link.open = false;
+        siblingLinks.forEach((link) => {
+          if (link !== this) {
+            link.open = false;
+          }
+        });
       }
-    });
+      return;
+    }
+
+    // For nested links, find the nearest container and close same-level links
+    const navContainer =
+      this.closest('kyn-header-nav') ||
+      this.closest('kyn-tab-panel') ||
+      this.closest('.menu__content');
+
+    if (navContainer) {
+      const allLinks = navContainer.querySelectorAll<
+        HTMLElement & { open?: boolean; level?: number }
+      >('kyn-header-link[open]');
+
+      allLinks.forEach((link) => {
+        if (link !== this && (link as any).level === this.level) {
+          link.open = false;
+        }
+      });
+    }
   }
 
   private handlePointerLeave(e: PointerEvent) {

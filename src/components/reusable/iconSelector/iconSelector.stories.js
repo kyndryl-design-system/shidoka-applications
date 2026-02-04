@@ -10,11 +10,6 @@ export default {
   title: 'Components/Icon Selector',
   component: 'kyn-icon-selector',
   argTypes: {
-    size: {
-      control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
-      description: 'Size of the icon: sm (16px), md (24px), or lg (32px)',
-    },
     checked: {
       control: { type: 'boolean' },
       description: 'Checked/selected state',
@@ -46,7 +41,6 @@ export const IconSelector = {
     value: 'example-item',
     checked: false,
     disabled: false,
-    size: 'sm',
     checkedLabel: 'Remove from favorites',
     uncheckedLabel: 'Add to favorites',
   },
@@ -56,7 +50,6 @@ export const IconSelector = {
         value=${args.value}
         ?checked=${args.checked}
         ?disabled=${args.disabled}
-        size=${args.size}
         checkedLabel=${args.checkedLabel}
         uncheckedLabel=${args.uncheckedLabel}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}

@@ -1,39 +1,35 @@
 @use '../../../common/scss/global.scss';
 
-// Masonry layout configuration
-$masonry-gap: 32px;
-$masonry-column-width: 200px;
-$masonry-max-columns: 6;
-// Max width = (columns × column-width) + ((columns - 1) × gap)
-$masonry-max-width: ($masonry-max-columns * $masonry-column-width) +
-  (($masonry-max-columns - 1) * $masonry-gap);
+// Layout configuration
+$column-gap: 32px;
+$min-wrapper-width: 450px;
 
 :host {
   display: block;
   box-sizing: border-box;
-  width: 100%;
+  min-width: $min-wrapper-width;
 }
 
-@media (min-width: 672px) {
-  :host {
-    padding-right: 10%;
-    width: calc(100vw - 230px);
-    max-width: calc(100vw - 230px);
-  }
+// 1-2 columns: fit to content
+:host([data-columns='1']),
+:host([data-columns='2']) {
+  width: fit-content;
+  max-width: calc(100vw - 230px);
+}
+
+// 3 columns: span full available width
+:host([data-columns='3']) {
+  width: calc(100vw - 230px);
+  max-width: calc(100vw - 230px);
 }
 
 .header-categories {
   width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
 
   &__inner {
-    display: block;
-    column-width: $masonry-column-width;
-    column-gap: $masonry-gap;
-    column-count: $masonry-max-columns;
-    column-fill: initial;
-    max-width: $masonry-max-width;
+    display: grid;
+    gap: $column-gap;
     box-sizing: border-box;
   }
 
@@ -43,36 +39,29 @@ $masonry-max-width: ($masonry-max-columns * $masonry-column-width) +
   }
 }
 
+// Default: single column
+.header-categories__inner {
+  grid-template-columns: 1fr;
+}
+
+// 2 column grid
+.header-categories__inner[data-columns='2'] {
+  grid-template-columns: 1fr 1fr;
+}
+
+// 3 column grid - equal widths spanning full available space
+.header-categories__inner[data-columns='3'] {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* Grid items should fill their cells */
 .header-categories__inner > * {
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;
-  margin: 0 0 $masonry-gap;
+  min-width: 0; // Allow grid items to shrink below content size for text truncation
 }
 
-slot.header-categories__slot::slotted(*) {
-  display: block;
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;
-  margin: 0 0 $masonry-gap;
-}
-
-/* ---------------------------------------------------------------------
-   ROOT VIEW (MASONRY)
-
-   Uses CSS multi-column layout for masonry effect:
-   - Min column width: 200px
-   - Max columns: 6
-   - Gap: 32px
-
-   Below ~1200px: columns stay closer to min-width for masonry feel
-   Above ~1200px: columns expand to fill available space
-   ------------------------------------------------------------------ */
-:host(:not([view='detail'])) .header-categories__inner {
-  column-width: $masonry-column-width;
-  column-gap: $masonry-gap;
-  column-count: $masonry-max-columns;
+/* Ensure categories display correctly in grid */
+.header-categories__inner > kyn-header-category {
+  width: 100%;
 }
 
 /* ---------------------------------------------------------------------
@@ -93,7 +82,7 @@ slot.header-categories__slot::slotted(*) {
 :host([view='detail']) .header-detail-columns {
   display: flex;
   align-items: flex-start;
-  gap: 0 $masonry-gap;
+  gap: 0 $column-gap;
   width: max-content;
   box-sizing: border-box;
 }

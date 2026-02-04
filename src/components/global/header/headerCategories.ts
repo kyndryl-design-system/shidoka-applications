@@ -76,6 +76,7 @@ const COLUMN_GROUPING_TOLERANCE_PX = 10;
 interface SlottedLinkData {
   href: string;
   inner: string;
+  textContent: string;
   target?: string;
   rel?: string;
 }
@@ -310,6 +311,10 @@ export class HeaderCategories extends LitElement {
       }
     }
 
+    // Update data-columns attribute on host for CSS targeting
+    const columnCount = this._getColumnCount();
+    this.setAttribute('data-columns', String(columnCount));
+
     // Update dividers after render when in root view
     if (this.view === ROOT_VIEW) {
       // Use requestAnimationFrame to ensure layout is complete
@@ -357,6 +362,7 @@ export class HeaderCategories extends LitElement {
               href=${link.href ?? VOID_HREF}
               target=${target}
               rel=${ifDefined(link.rel)}
+              .linkTitle=${link.label}
             >
               ${this.renderLinkContent(link, {
                 tabId,
@@ -432,6 +438,7 @@ export class HeaderCategories extends LitElement {
                       href=${link.href ?? VOID_HREF}
                       target=${target}
                       rel=${ifDefined(link.rel)}
+                      .linkTitle=${link.label}
                     >
                       ${this.renderLinkContent(link, {
                         tabId: this.activeMegaTabId,
@@ -482,6 +489,7 @@ export class HeaderCategories extends LitElement {
         target: l.getAttribute('target') ?? undefined,
         rel: l.getAttribute('rel') ?? undefined,
         inner: l.innerHTML,
+        textContent: l.textContent?.trim() ?? '',
       }));
 
       return {
@@ -512,6 +520,7 @@ export class HeaderCategories extends LitElement {
                 href=${link.href}
                 target=${target}
                 rel=${ifDefined(link.rel)}
+                .linkTitle=${link.textContent}
               >
                 ${unsafeHTML(link.inner)}
               </kyn-header-link>
@@ -602,6 +611,7 @@ export class HeaderCategories extends LitElement {
                       href=${link.href}
                       target=${target}
                       rel=${ifDefined(link.rel)}
+                      .linkTitle=${link.textContent}
                     >
                       ${unsafeHTML(link.inner)}
                     </kyn-header-link>
@@ -631,9 +641,9 @@ export class HeaderCategories extends LitElement {
   }
 
   /**
-   * After render, detect which categories are "last" in their visual column
-   * and remove their dividers. CSS multi-column determines column breaks
-   * dynamically, so we must inspect rendered positions.
+   * After render, detect which categories are in the last visual row
+   * and remove their dividers. CSS Grid determines row breaks dynamically,
+   * so we must inspect rendered positions.
    * @internal
    */
   private _updateDividers(): void {
@@ -653,50 +663,66 @@ export class HeaderCategories extends LitElement {
       cat.toggleAttribute('showdivider', true);
     });
 
-    // Get bounding rects and group by column (x-position)
+    // Get bounding rects and group by row (y-position)
     const categoryData = categories.map((cat) => ({
       el: cat,
       rect: cat.getBoundingClientRect(),
     }));
 
-    // Group categories by their left edge (column), using tolerance for rounding
-    const columnMap = new Map<number, typeof categoryData>();
+    // Group categories by their top edge (row), using tolerance for rounding
+    const rowMap = new Map<number, typeof categoryData>();
 
     for (const item of categoryData) {
-      const x = item.rect.left;
-      let foundColumn = false;
+      const y = item.rect.top;
+      let foundRow = false;
 
-      for (const [columnX] of columnMap) {
-        if (Math.abs(x - columnX) <= COLUMN_GROUPING_TOLERANCE_PX) {
-          columnMap.get(columnX)!.push(item);
-          foundColumn = true;
+      for (const [rowY] of rowMap) {
+        if (Math.abs(y - rowY) <= COLUMN_GROUPING_TOLERANCE_PX) {
+          rowMap.get(rowY)!.push(item);
+          foundRow = true;
           break;
         }
       }
 
-      if (!foundColumn) {
-        columnMap.set(x, [item]);
+      if (!foundRow) {
+        rowMap.set(y, [item]);
       }
     }
 
-    // For each column, find the category with the highest bottom (last in column)
-    for (const [, columnCategories] of columnMap) {
-      if (columnCategories.length === 0) continue;
-
-      let lastInColumn = columnCategories[0];
-      for (const item of columnCategories) {
-        if (item.rect.bottom > lastInColumn.rect.bottom) {
-          lastInColumn = item;
-        }
+    // Find the last row (highest Y value)
+    let lastRowY = -Infinity;
+    for (const [rowY] of rowMap) {
+      if (rowY > lastRowY) {
+        lastRowY = rowY;
       }
-
-      // Remove divider from the last category in this column (use attribute API)
-      lastInColumn.el.removeAttribute('showdivider');
     }
+
+    // Remove dividers from all categories in the last row
+    const lastRowCategories = rowMap.get(lastRowY);
+    if (lastRowCategories) {
+      for (const item of lastRowCategories) {
+        item.el.removeAttribute('showdivider');
+      }
+    }
+  }
+
+  /**
+   * Get the number of columns to display (max 3).
+   * @internal
+   */
+  private _getColumnCount(): number {
+    if (this.view !== ROOT_VIEW) return 1;
+
+    const categoryCount = this._isJsonMode
+      ? this._tabConfig?.categories?.length ?? 0
+      : this._slottedCategories.length;
+
+    return Math.min(3, Math.max(1, categoryCount));
   }
 
   override render() {
     const view = this.view;
+    const columnCount = this._getColumnCount();
 
     const inner = this._isJsonMode
       ? view === ROOT_VIEW
@@ -708,7 +734,9 @@ export class HeaderCategories extends LitElement {
 
     return html`
       <div class="header-categories" data-view=${view}>
-        <div class="header-categories__inner">${inner ?? html``}</div>
+        <div class="header-categories__inner" data-columns=${columnCount}>
+          ${inner ?? html``}
+        </div>
 
         <!-- hidden slot used only to observe light DOM changes (edge case) -->
         <slot

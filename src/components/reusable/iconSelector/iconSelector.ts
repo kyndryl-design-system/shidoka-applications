@@ -60,15 +60,10 @@ export class IconSelector extends LitElement {
   @property({ type: Boolean })
   accessor persistWhenChecked = false;
 
-  /** Size of the icon: 'sm' (16px), 'md' (24px), or 'lg' (32px). */
-  @property({ type: String, reflect: true })
-  accessor size: 'sm' | 'md' | 'lg' = 'sm';
-
   override render() {
     const classes = {
       'icon-selector': true,
       'icon-selector--checked': this.checked,
-      [`icon-selector--${this.size}`]: true,
     };
 
     const currentLabel = this.checked ? this.checkedLabel : this.uncheckedLabel;

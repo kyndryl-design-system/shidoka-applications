@@ -38,36 +38,6 @@
   vertical-align: middle;
   line-height: 0;
 
-  &--sm {
-    width: 24px;
-    height: 24px;
-
-    .icon {
-      width: 16px;
-      height: 16px;
-    }
-  }
-
-  &--md {
-    width: 32px;
-    height: 32px;
-
-    .icon {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  &--lg {
-    width: 40px;
-    height: 40px;
-
-    .icon {
-      width: 32px;
-      height: 32px;
-    }
-  }
-
   &:focus-visible {
     outline-color: var(--kd-color-border-variants-focus);
   }
@@ -96,13 +66,11 @@
   color: currentColor;
   transition: color 150ms ease-out;
 
-  // Override inline SVG width/height attributes
+  // Let slotted content determine its own dimensions
   ::slotted(svg),
   ::slotted(span),
   svg {
     display: block;
-    width: 100% !important;
-    height: 100% !important;
     fill: currentColor;
   }
 

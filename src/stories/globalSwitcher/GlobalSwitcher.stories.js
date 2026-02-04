@@ -410,11 +410,11 @@ export const FullImplementation = {
                 ?visible=${renderArgs.activeServicesTab === 'kyndryl'}
               >
                 <div
-                  style="display: flex; gap: 32px; width: 100%; max-width: none;"
+                  style="display: flex; gap: 32px; width: calc(100vw - 280px);"
                 >
                   <!-- LEFT COLUMN -->
                   <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
                   >
                     <kyn-header-category heading="Applications, Data, & AI">
                       <kyn-header-link href="#">
@@ -535,7 +535,7 @@ export const FullImplementation = {
 
                   <!-- MIDDLE COLUMN -->
                   <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
                   >
                     <kyn-header-category heading="Core Enterprise & Z Cloud">
                       <kyn-header-link href="#">
@@ -676,7 +676,7 @@ export const FullImplementation = {
 
                   <!-- RIGHT COLUMN -->
                   <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
                   >
                     <kyn-header-category heading="Security & Resiliency">
                       <kyn-header-link href="#">
@@ -853,11 +853,11 @@ export const FullImplementation = {
                 ?visible=${renderArgs.activeServicesTab === 'platform'}
               >
                 <div
-                  style="display: flex; gap: 32px; width: 100%; max-width: none;"
+                  style="display: flex; gap: 32px; width: calc(100vw - 280px);"
                 >
                   <!-- LEFT COLUMN -->
                   <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
                   >
                     <kyn-header-category
                       heading="Application & Business Services"
@@ -1012,7 +1012,7 @@ export const FullImplementation = {
 
                   <!-- MIDDLE COLUMN -->
                   <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
                   >
                     <kyn-header-category heading="Inventory">
                       <kyn-header-link href="#" target="_blank">
@@ -1307,7 +1307,7 @@ export const FullImplementation = {
 
                   <!-- RIGHT COLUMN -->
                   <div
-                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                    style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
                   >
                     <kyn-header-category
                       heading="Provisioning Orchestration & Automation"
@@ -1541,11 +1541,11 @@ export const FullImplementation = {
 
             <div
               slot="links"
-              style="display: flex; gap: 32px; padding-top: 12px; width: 100%; max-width: none;"
+              style="display: flex; gap: 32px; padding-top: 12px;"
             >
               <!-- LEFT COLUMN -->
               <div
-                style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
               >
                 <!-- ACCESS MANAGEMENT -->
                 <kyn-header-category heading="Access Management">
@@ -1654,7 +1654,7 @@ export const FullImplementation = {
 
               <!-- RIGHT COLUMN -->
               <div
-                style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; max-width: 200px;"
+                style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
               >
                 <!-- SERVICE OPERATIONS -->
                 <kyn-header-category heading="Service Operations">
