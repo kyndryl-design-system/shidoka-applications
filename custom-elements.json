@@ -427,6 +427,357 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/accountSwitcher/accountSwitcher.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Account Switcher component for selecting accounts and workspaces.",
+          "name": "AccountSwitcher",
+          "members": [
+            {
+              "kind": "field",
+              "name": "currentAccount",
+              "type": {
+                "text": "CurrentAccount"
+              },
+              "default": "{ name: '' }",
+              "description": "Current account information displayed at the top of the left panel.",
+              "attribute": "currentAccount"
+            },
+            {
+              "kind": "field",
+              "name": "workspaces",
+              "type": {
+                "text": "Workspace[]"
+              },
+              "default": "[]",
+              "description": "List of workspaces to display in the left panel.",
+              "attribute": "workspaces"
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "AccountItem[]"
+              },
+              "default": "[]",
+              "description": "List of items (accounts, zones, etc.) to display in the right panel.",
+              "attribute": "items"
+            },
+            {
+              "kind": "field",
+              "name": "showSearch",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether to show the search input in the right panel.",
+              "attribute": "showSearch"
+            },
+            {
+              "kind": "field",
+              "name": "searchLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label for the search input.",
+              "attribute": "searchLabel"
+            },
+            {
+              "kind": "field",
+              "name": "currentSectionLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Current'",
+              "description": "Label for the \"Current\" section header.",
+              "attribute": "currentSectionLabel"
+            },
+            {
+              "kind": "field",
+              "name": "workspacesSectionLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Workspaces'",
+              "description": "Label for the \"Workspaces\" section header.",
+              "attribute": "workspacesSectionLabel"
+            },
+            {
+              "kind": "method",
+              "name": "_renderCurrentAccount",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderWorkspaceList",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderSearch",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderItemsList",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                },
+                {
+                  "name": "callback",
+                  "type": {
+                    "text": "() => void"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleCopyAccountId",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleWorkspaceSelect",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "workspace",
+                  "type": {
+                    "text": "Workspace"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleItemSelect",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "AccountItem"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleFavoriteChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "AccountItem"
+                  }
+                },
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSearch",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-workspace-select",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when a workspace is selected. `detail: { workspace: Workspace }`"
+            },
+            {
+              "name": "on-item-select",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when an item is selected. `detail: { item: AccountItem }`"
+            },
+            {
+              "name": "on-favorite-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when an item's favorite status changes. `detail: { item: AccountItem, favorited: boolean }`"
+            },
+            {
+              "name": "on-search",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when search input changes. `detail: { value: string }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "currentAccount",
+              "type": {
+                "text": "CurrentAccount"
+              },
+              "default": "{ name: '' }",
+              "description": "Current account information displayed at the top of the left panel.",
+              "fieldName": "currentAccount"
+            },
+            {
+              "name": "workspaces",
+              "type": {
+                "text": "Workspace[]"
+              },
+              "default": "[]",
+              "description": "List of workspaces to display in the left panel.",
+              "fieldName": "workspaces"
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "AccountItem[]"
+              },
+              "default": "[]",
+              "description": "List of items (accounts, zones, etc.) to display in the right panel.",
+              "fieldName": "items"
+            },
+            {
+              "name": "showSearch",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether to show the search input in the right panel.",
+              "fieldName": "showSearch"
+            },
+            {
+              "name": "searchLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Search'",
+              "description": "Label for the search input.",
+              "fieldName": "searchLabel"
+            },
+            {
+              "name": "currentSectionLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Current'",
+              "description": "Label for the \"Current\" section header.",
+              "fieldName": "currentSectionLabel"
+            },
+            {
+              "name": "workspacesSectionLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Workspaces'",
+              "description": "Label for the \"Workspaces\" section header.",
+              "fieldName": "workspacesSectionLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-account-switcher",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AccountSwitcher",
+          "declaration": {
+            "name": "AccountSwitcher",
+            "module": "src/components/global/accountSwitcher/accountSwitcher.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-account-switcher",
+          "declaration": {
+            "name": "AccountSwitcher",
+            "module": "src/components/global/accountSwitcher/accountSwitcher.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/accountSwitcher/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AccountSwitcher",
+          "declaration": {
+            "name": "AccountSwitcher",
+            "module": "./accountSwitcher"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Workspace",
+          "declaration": {
+            "name": "Workspace",
+            "module": "./accountSwitcher"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "AccountItem",
+          "declaration": {
+            "name": "AccountItem",
+            "module": "./accountSwitcher"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CurrentAccount",
+          "declaration": {
+            "name": "CurrentAccount",
+            "module": "./accountSwitcher"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -10854,6 +11205,412 @@
           "declaration": {
             "name": "GlobalFilter",
             "module": "./globalFilter"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/iconSelector/iconSelector.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Icon Selector - A checkbox-style toggle using icons for visual states.\nPrimarily designed for favorite/unfavorite functionality.",
+          "name": "IconSelector",
+          "slots": [
+            {
+              "description": "Optional icon for unchecked state. Defaults to star outline.",
+              "name": "icon-unchecked"
+            },
+            {
+              "description": "Optional icon for checked state. Defaults to filled star.",
+              "name": "icon-checked"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checked/selected state.",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Value associated with this selector, useful for identifying the item.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "checkedLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Remove from favorites'",
+              "description": "Accessible label when checked.",
+              "attribute": "checkedLabel"
+            },
+            {
+              "kind": "field",
+              "name": "uncheckedLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Add to favorites'",
+              "description": "Accessible label when unchecked.",
+              "attribute": "uncheckedLabel"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "onlyVisibleOnHover",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, the icon is only visible when the parent element is hovered.\nVisibility is controlled via CSS on the parent component.",
+              "attribute": "onlyVisibleOnHover"
+            },
+            {
+              "kind": "field",
+              "name": "persistWhenChecked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, checked items remain visible even when onlyVisibleOnHover is enabled.\nUseful for showing users which items they've already favorited.",
+              "attribute": "persistWhenChecked"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "origEvent",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "_handleHostClick",
+              "privacy": "private",
+              "description": "Stop click events from bubbling up to parent elements (e.g., anchor tags).\nThis ensures clicking the icon-selector doesn't trigger navigation."
+            }
+          ],
+          "events": [
+            {
+              "name": "on-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the checked state changes. `detail: { checked: boolean, value: string, origEvent: Event }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checked/selected state.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Value associated with this selector, useful for identifying the item.",
+              "fieldName": "value"
+            },
+            {
+              "name": "checkedLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Remove from favorites'",
+              "description": "Accessible label when checked.",
+              "fieldName": "checkedLabel"
+            },
+            {
+              "name": "uncheckedLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Add to favorites'",
+              "description": "Accessible label when unchecked.",
+              "fieldName": "uncheckedLabel"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "onlyVisibleOnHover",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, the icon is only visible when the parent element is hovered.\nVisibility is controlled via CSS on the parent component.",
+              "fieldName": "onlyVisibleOnHover"
+            },
+            {
+              "name": "persistWhenChecked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, checked items remain visible even when onlyVisibleOnHover is enabled.\nUseful for showing users which items they've already favorited.",
+              "fieldName": "persistWhenChecked"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-icon-selector",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "IconSelector",
+          "declaration": {
+            "name": "IconSelector",
+            "module": "src/components/reusable/iconSelector/iconSelector.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-icon-selector",
+          "declaration": {
+            "name": "IconSelector",
+            "module": "src/components/reusable/iconSelector/iconSelector.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/iconSelector/iconSelectorGroup.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Icon Selector Group - A container for managing multiple icon selectors with multi-select functionality.",
+          "name": "IconSelectorGroup",
+          "slots": [
+            {
+              "description": "Slot for icon-selector elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Selected values array.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state for all selectors.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "direction",
+              "type": {
+                "text": "'vertical' | 'horizontal'"
+              },
+              "default": "'vertical'",
+              "description": "Stack direction: 'vertical' or 'horizontal'.",
+              "attribute": "direction",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "onlyVisibleOnHover",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, all child icon-selectors are only visible when the parent element is hovered.\nThis propagates the onlyVisibleOnHover attribute to all children.",
+              "attribute": "onlyVisibleOnHover",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_syncChildrenState",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_handleChildChange",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when any icon selector's state changes. `detail: { value: string[], origEvent: Event }`",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Selected values array.",
+              "fieldName": "value"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state for all selectors.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "direction",
+              "type": {
+                "text": "'vertical' | 'horizontal'"
+              },
+              "default": "'vertical'",
+              "description": "Stack direction: 'vertical' or 'horizontal'.",
+              "fieldName": "direction"
+            },
+            {
+              "name": "onlyVisibleOnHover",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, all child icon-selectors are only visible when the parent element is hovered.\nThis propagates the onlyVisibleOnHover attribute to all children.",
+              "fieldName": "onlyVisibleOnHover"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-icon-selector-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "IconSelectorGroup",
+          "declaration": {
+            "name": "IconSelectorGroup",
+            "module": "src/components/reusable/iconSelector/iconSelectorGroup.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-icon-selector-group",
+          "declaration": {
+            "name": "IconSelectorGroup",
+            "module": "src/components/reusable/iconSelector/iconSelectorGroup.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/iconSelector/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "IconSelector",
+          "declaration": {
+            "name": "IconSelector",
+            "module": "./iconSelector"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "IconSelectorGroup",
+          "declaration": {
+            "name": "IconSelectorGroup",
+            "module": "./iconSelectorGroup"
           }
         }
       ]

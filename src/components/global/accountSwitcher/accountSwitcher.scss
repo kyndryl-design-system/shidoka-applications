@@ -1,0 +1,199 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.account-switcher {
+  display: flex;
+  width: 625px;
+  height: 480px;
+  background: var(--kd-color-background-container-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Left panel - workspaces */
+.account-switcher__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 300px;
+  flex-shrink: 0;
+  padding: 12px;
+  background: var(--kd-color-background-opacity-1);
+  border-radius: 8px 0 0 8px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Right panel - items list */
+.account-switcher__right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  padding: 12px 0 0 12px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Section header styling */
+.section-header {
+  @include typography.type-ui-03;
+
+  font-weight: var(--kd-font-weight-medium);
+  text-transform: uppercase;
+  color: var(--kd-color-text-level-primary);
+  padding: 0 8px;
+}
+
+/* Account Meta Info */
+.account-meta-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px 16px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.account-meta-info__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account-meta-info__checkmark {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  svg {
+    fill: var(--kd-color-badge-heavy-background-success);
+  }
+}
+
+.account-meta-info__name {
+  font-weight: var(--kd-font-weight-medium);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--kd-color-text-level-primary);
+}
+
+.account-meta-info__details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 24px;
+
+  ::slotted(kyn-link) {
+    font-size: 14px;
+  }
+}
+
+.account-meta-info__country {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--kd-color-text-level-primary);
+}
+
+/* Workspace list */
+.workspace-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.workspace-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 150ms ease-out;
+
+  &:hover:not(.workspace-item--selected) {
+    background: var(--kd-color-background-ui-hover);
+  }
+
+  &--selected {
+    background: var(--kd-color-background-accent);
+    color: var(--kd-color-text-inversed);
+
+    .workspace-item__name,
+    .workspace-item__count,
+    .workspace-item__chevron {
+      color: var(--kd-color-text-inversed);
+    }
+  }
+}
+
+.workspace-item__name {
+  flex: 1;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--kd-color-text-level-primary);
+}
+
+.workspace-item__count {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--kd-color-text-level-secondary);
+}
+
+.workspace-item__chevron {
+  display: flex;
+  align-items: center;
+  color: var(--kd-color-text-level-secondary);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Search area */
+.account-switcher__search {
+  width: 95%;
+  margin-bottom: 0;
+
+  kyn-search {
+    width: 100%;
+  }
+}
+
+/* Items list (accounts, zones, etc.) */
+.items-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-right: 12px;
+  overflow-y: auto;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 150ms ease-out;
+
+  &:hover:not(.item--selected) {
+    background: var(--kd-color-background-ui-hover);
+  }
+
+  &--selected {
+    background: var(--kd-color-background-ui-soft);
+  }
+}
+
+.item__name {
+  flex: 1;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--kd-color-text-level-primary);
+}
