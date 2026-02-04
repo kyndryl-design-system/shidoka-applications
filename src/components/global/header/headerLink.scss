@@ -83,16 +83,33 @@
   }
 
   // Icon elements at the start of links (fixed size, don't grow)
-  // Note: :only-child counts element children only, not text nodes.
-  // For <span>icon</span> Text, the span IS :only-child (text node doesn't count).
-  // For <span>text</span> <kyn-icon-selector>, span is NOT :only-child (has element sibling).
-  // This lets us target icon spans (only-child) without affecting text spans (not only-child).
   ::slotted(svg:first-child),
-  ::slotted(span:first-child:only-child),
   ::slotted(span[slot='icon']) {
     width: 16px;
     height: 16px;
     flex: 0 0 auto; // Don't grow or shrink - fixed size
+  }
+
+  // Only-child spans: icons in parent nav (16px) vs text in flyout (truncate)
+  // Uses CSS custom property --kyn-header-link-in-flyout set by .wrapper
+  // When in flyout context, spans should truncate; otherwise fixed icon size
+  ::slotted(span:first-child:only-child:not([slot])) {
+    width: var(--kyn-header-span-only-width, 16px);
+    height: var(--kyn-header-span-only-height, 16px);
+    flex: var(--kyn-header-span-only-flex, 0 0 auto);
+    overflow: var(--kyn-header-span-only-overflow, visible);
+    text-overflow: var(--kyn-header-span-only-text-overflow, clip);
+    white-space: var(--kyn-header-span-only-white-space, normal);
+    min-width: var(--kyn-header-span-only-min-width, auto);
+  }
+
+  // Text spans with siblings (text + icons pattern) should truncate
+  // This allows icons to remain visible and right-aligned via margin-left: auto
+  ::slotted(span:first-child:not(:only-child):not([slot])) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   @include typography.type-ui-02;
@@ -165,10 +182,24 @@
       background-color: var(--kd-color-background-opacity-1);
       border-radius: 8px;
       flex-grow: 1;
+      margin-right: 16px; // Gap between wrapper and flyout edge
+      box-sizing: border-box;
 
-      // Constrain slotted content width within the expanded wrapper
+      // Signal to nested header-links that they're in a flyout context
+      // Override span styling for text truncation instead of icon sizing
+      --kyn-header-link-in-flyout: 1;
+      --kyn-header-span-only-width: auto;
+      --kyn-header-span-only-height: auto;
+      --kyn-header-span-only-flex: 1 1 0%;
+      --kyn-header-span-only-overflow: hidden;
+      --kyn-header-span-only-text-overflow: ellipsis;
+      --kyn-header-span-only-white-space: nowrap;
+      --kyn-header-span-only-min-width: 0;
+
+      // Ensure slotted content respects wrapper bounds
       > ::slotted(*) {
-        max-width: 450px;
+        max-width: 100%;
+        box-sizing: border-box;
       }
     }
 
@@ -178,6 +209,16 @@
       padding: 16px;
       background-color: var(--kd-color-background-opacity-1);
       border-radius: 8px;
+
+      // Also signal flyout context for nested flyouts
+      --kyn-header-link-in-flyout: 1;
+      --kyn-header-span-only-width: auto;
+      --kyn-header-span-only-height: auto;
+      --kyn-header-span-only-flex: 1 1 0%;
+      --kyn-header-span-only-overflow: hidden;
+      --kyn-header-span-only-text-overflow: ellipsis;
+      --kyn-header-span-only-white-space: nowrap;
+      --kyn-header-span-only-min-width: 0;
     }
   }
 
@@ -188,11 +229,13 @@
     // Basic nav (non-categorical): always show slotted content when present
     &.slotted {
       display: flex;
-      max-width: 100%;
 
       @media (min-width: 42rem) {
         padding: 8px 16px 8px 230px;
-        right: 8px;
+        left: 8px;
+        right: auto;
+        width: fit-content;
+        max-width: calc(100vw - 24px);
       }
     }
 
@@ -241,7 +284,7 @@
     overflow: hidden; // Clip overflow on both axes
     overflow-y: auto; // But allow vertical scrolling
     align-self: stretch;
-    margin-right: 16px; // Gap between wrapper and flyout edge
+    margin-right: 8px; // Gap between wrapper and flyout edge
   }
 }
 
