@@ -315,7 +315,7 @@ export class QueryBuilderRule extends LitElement {
         placeholder=${field?.placeholder || this.textStrings.value || 'Value'}
         .value=${String(this.rule.value)}
         ?required=${field?.required}
-        pattern=${field?.pattern || ''}
+        pattern=${ifDefined(field?.pattern)}
         minLength=${ifDefined(field?.minLength)}
         maxLength=${ifDefined(field?.maxLength)}
         ?disabled=${this.disabled || this.rule.disabled}
@@ -638,7 +638,7 @@ export class QueryBuilderRule extends LitElement {
           placeholder=${this.textStrings.from || 'From'}
           .value=${String(val1)}
           ?required=${field.required}
-          pattern=${field.pattern || ''}
+          pattern=${ifDefined(field.pattern)}
           minLength=${ifDefined(field.minLength)}
           maxLength=${ifDefined(field.maxLength)}
           ?disabled=${this.disabled || this.rule.disabled}
@@ -655,7 +655,7 @@ export class QueryBuilderRule extends LitElement {
           placeholder=${this.textStrings.to || 'To'}
           .value=${String(val2)}
           ?required=${field.required}
-          pattern=${field.pattern || ''}
+          pattern=${ifDefined(field.pattern)}
           minLength=${ifDefined(field.minLength)}
           maxLength=${ifDefined(field.maxLength)}
           ?disabled=${this.disabled || this.rule.disabled}
