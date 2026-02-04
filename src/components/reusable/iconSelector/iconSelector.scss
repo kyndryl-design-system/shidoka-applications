@@ -1,0 +1,93 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  color: inherit;
+}
+
+// Only visible on hover: uses CSS custom property set by parent (e.g., header-link)
+// This works at any nesting depth, unlike ::slotted() which only matches direct children
+:host(.only-visible-on-hover) {
+  opacity: var(--kyn-icon-selector-hover-opacity, 0);
+  transition: opacity 150ms ease-out;
+}
+
+// When persistWhenChecked is true, keep checked items visible
+:host(.only-visible-on-hover.persist-when-checked.is-checked) {
+  opacity: 1;
+}
+
+.icon-selector {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 150ms ease-out, transform 150ms ease-out;
+  vertical-align: middle;
+  line-height: 0;
+
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
+
+  // Subtle scale on hover for interactivity feedback
+  // Icons always show actual state, so clicking gives clear visual change
+  &:hover:not([disabled]) {
+    transform: scale(1.1);
+  }
+
+  &:active:not([disabled]) {
+    transform: scale(0.95);
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+  transition: color 150ms ease-out;
+
+  // Let slotted content determine its own dimensions
+  ::slotted(svg),
+  ::slotted(span),
+  svg {
+    display: block;
+    fill: currentColor;
+  }
+
+  // Show/hide icons based on checked state
+  &--unchecked {
+    display: flex;
+
+    .icon-selector--checked & {
+      display: none;
+    }
+  }
+
+  &--checked {
+    display: none;
+
+    .icon-selector--checked & {
+      display: flex;
+    }
+  }
+}
