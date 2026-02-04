@@ -18,6 +18,8 @@ export class KynActivityPanel extends LitElement {
   /** Title text if no `slot="title"` content is provided. */
   @property({ type: String }) accessor activityTitle: string = 'Activity';
 
+  @property({ type: String }) accessor subtitleText: string = '';
+
   /** Optional list of items to render if no body content is slotted. */
   @property({ type: Array }) accessor items: ActivityItem[] = [];
 
@@ -33,8 +35,11 @@ export class KynActivityPanel extends LitElement {
   /** Detect if a custom title slot is provided. */
   @state() private accessor _hasTitleSlot = false;
 
+  @state() private accessor _hasSubtitleSlot = false;
+
   accessor bodyNodes!: Node[];
   accessor titleNodes!: Node[];
+  accessor subtitleNodes!: Node[];
 
   static override styles = css`
     :host {
@@ -73,6 +78,18 @@ export class KynActivityPanel extends LitElement {
       font-size: 16px;
       line-height: 1.2;
       margin-right: auto;
+    }
+    .subtitle {
+      margin-top: 4px;
+
+      font-size: 14px;
+      line-height: 1.4;
+
+      font-weight: 400;
+      color: var(--kd-color-text-level-secondary, #6f6f6f);
+
+      max-width: 100%;
+      white-space: normal;
     }
     .close-btn {
       appearance: none;
@@ -200,6 +217,7 @@ export class KynActivityPanel extends LitElement {
   private _updateSlotFlags() {
     this._hasBodySlot = (this.bodyNodes?.length ?? 0) > 0;
     this._hasTitleSlot = (this.titleNodes?.length ?? 0) > 0;
+    this._hasSubtitleSlot = (this.subtitleNodes?.length ?? 0) > 0;
   }
 
   /** Public API: open programmatically */ // NEW
@@ -318,6 +336,7 @@ export class KynActivityPanel extends LitElement {
 
   override render() {
     const label = this.ariaLabel ?? this.activityTitle ?? 'Activity';
+    const showSubtitle = this._hasSubtitleSlot || !!this.subtitleText;
     return html`
       <section
         class="panel"
@@ -328,34 +347,19 @@ export class KynActivityPanel extends LitElement {
             <slot name="title" @slotchange=${this._onSlotsChanged}>${
       this.activityTitle
     }</slot>
-          </div>
+    
+${
+  showSubtitle
+    ? html`
+        <div class="subtitle">
+          <slot name="subtitle" @slotchange=${this._onSlotsChanged}>
+            ${this.subtitleText}
+          </slot>
+        </div>
+      `
+    : nothing
+}
 
-          ${
-            this.dismissible
-              ? html`
-                  <button
-                    class="close-btn"
-                    @click=${this._onDismiss}
-                    aria-label="Close activity panel"
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M5 5l10 10M15 5L5 15"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                      />
-                    </svg>
-                  </button>
-                `
-              : nothing
-          }
         </header>
 
         <div class="divider" aria-hidden="true"></div>
