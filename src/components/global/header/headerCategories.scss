@@ -4,6 +4,7 @@
 $column-gap: 32px;
 $row-gap: 16px;
 $min-wrapper-width: 450px;
+$min-column-width: 150px;
 $max-column-width: 400px;
 
 :host {
@@ -35,8 +36,8 @@ $max-column-width: 400px;
     display: grid;
     gap: $row-gap $column-gap;
     box-sizing: border-box;
-    // Default: 3 columns with flexible width
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    // Default: 3 columns with minimum width to fill space
+    grid-template-columns: repeat(3, minmax($min-column-width, 1fr));
   }
 
   &__back-slot {
@@ -45,26 +46,13 @@ $max-column-width: 400px;
   }
 }
 
-// 1 column grid
-.header-categories__inner[data-columns='1'] {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-// 2 column grid
-.header-categories__inner[data-columns='2'] {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-// 3+ columns: use 3-column grid, items wrap to next row
-.header-categories__inner[data-columns='3'],
-.header-categories__inner[data-columns='4'],
-.header-categories__inner[data-columns='5'],
-.header-categories__inner[data-columns='6'],
-.header-categories__inner[data-columns='7'],
-.header-categories__inner[data-columns='8'],
-.header-categories__inner[data-columns='9'],
-.header-categories__inner[data-columns='10'] {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+// Responsive grid using auto-fit - columns wrap naturally based on available space
+// Max-width prevents columns from spreading too far when few categories exist
+.header-categories__inner {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax($min-column-width, $max-column-width)
+  );
 }
 
 /* Grid items */

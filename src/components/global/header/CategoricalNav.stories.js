@@ -83,7 +83,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories>
+                <kyn-header-categories maxColumns="8">
                   <!-- CATEGORY 1 -->
                   <kyn-header-category heading="Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -264,7 +264,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories>
+                <kyn-header-categories maxColumns="8">
                   <kyn-header-category heading="T2 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -318,7 +318,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories>
+                <kyn-header-categories maxColumns="8">
                   <!-- APP2 CATEGORY A -->
                   <kyn-header-category heading="App2 Category A">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -362,7 +362,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories>
+                <kyn-header-categories maxColumns="8">
                   <kyn-header-category heading="T4 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -481,6 +481,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
+                  maxColumns="8"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
@@ -500,6 +501,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
+                  maxColumns="8"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
@@ -552,6 +554,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
+                  maxColumns="8"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
@@ -571,6 +574,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
+                  maxColumns="8"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
                   .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
@@ -611,97 +615,3 @@ export const WithCategorizedNav = {
   },
 };
 WithCategorizedNav.storyName = 'JSON-driven with linkRenderer';
-
-// -----------------------------------------------------------------------------
-// Full implementation with action icons (star favorite + launch)
-// -----------------------------------------------------------------------------
-export const FullImplementation = {
-  args: {
-    ...args,
-    activeMegaTabId: 'tab1',
-  },
-  render: (renderArgs) => {
-    const [, updateArgs] = useArgs();
-
-    // Link renderer with action icons: star (hover-only) FIRST, launch (always visible) SECOND
-    // This order ensures the launch icon doesn't shift when star appears on hover
-    const renderLinkWithActions = (link) => {
-      return `
-        <span style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-          <span>${link.label}</span>
-          <span style="display: inline-flex; align-items: center; gap: 4px; margin-left: auto; flex-shrink: 0;">
-            <span class="action-icon action-icon--hover" style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; opacity: 0; transition: opacity 150ms;">${starOutlineIcon}</span>
-            <span class="action-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px;">${launchIcon}</span>
-          </span>
-        </span>
-      `;
-    };
-
-    return html`
-      <style>
-        /* Show star icon on hover */
-        kyn-header-link:hover .action-icon--hover,
-        kyn-header-link:focus-within .action-icon--hover {
-          opacity: 1 !important;
-        }
-      </style>
-      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <kyn-header-nav ?flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
-          <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Application
-
-            <kyn-tabs tabSize="lg" slot="links">
-              <kyn-tab
-                slot="tabs"
-                id="tab1"
-                ?selected=${renderArgs.activeMegaTabId === 'tab1'}
-                @click=${() => updateArgs({ activeMegaTabId: 'tab1' })}
-              >
-                Tab 1
-              </kyn-tab>
-
-              <kyn-tab-panel
-                tabId="tab1"
-                noPadding
-                ?visible=${renderArgs.activeMegaTabId === 'tab1'}
-              >
-                <kyn-header-categories
-                  .tabsConfig=${megaNavConfig}
-                  .activeMegaTabId=${renderArgs.activeMegaTabId}
-                  .linkRenderer=${renderLinkWithActions}
-                ></kyn-header-categories>
-              </kyn-tab-panel>
-            </kyn-tabs>
-          </kyn-header-link>
-
-          <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Link 1
-          </kyn-header-link>
-
-          <kyn-header-divider></kyn-header-divider>
-
-          <kyn-header-category heading="Category">
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Link 2
-            </kyn-header-link>
-            <kyn-header-link href="javascript:void(0)">
-              <span>${unsafeSVG(circleIcon)}</span>
-              Link 3
-            </kyn-header-link>
-          </kyn-header-category>
-
-          <kyn-header-divider></kyn-header-divider>
-
-          <kyn-header-link href="javascript:void(0)">
-            <span>${unsafeSVG(circleIcon)}</span>
-            Link 4
-          </kyn-header-link>
-        </kyn-header-nav>
-      </kyn-header>
-    `;
-  },
-};
-FullImplementation.storyName = 'With Action Icons';

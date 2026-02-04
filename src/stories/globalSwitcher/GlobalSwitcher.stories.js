@@ -311,9 +311,7 @@ export const FullImplementation = {
                 noPadding
                 ?visible=${renderArgs.activeServicesTab === 'kyndryl'}
               >
-                <div
-                  style="display: flex; gap: 32px; width: calc(100vw - 280px);"
-                >
+                <div style="display: flex; gap: 32px; width: 100%;">
                   <!-- LEFT COLUMN -->
                   <div
                     style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"
@@ -678,9 +676,7 @@ export const FullImplementation = {
                 noPadding
                 ?visible=${renderArgs.activeServicesTab === 'platform'}
               >
-                <div
-                  style="display: flex; gap: 32px; width: calc(100vw - 280px);"
-                >
+                <div style="display: flex; gap: 32px; width: 100%;">
                   <!-- LEFT COLUMN -->
                   <div
                     style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0;"

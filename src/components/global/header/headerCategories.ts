@@ -137,6 +137,10 @@ export class HeaderCategories extends LitElement {
   @property({ type: Number })
   accessor maxRootLinks = 4;
 
+  /** Max number of columns to display in the grid (default: 3). */
+  @property({ type: Number })
+  accessor maxColumns = 3;
+
   /**
    * Optional text overrides, merged with defaults.
    * e.g. <kyn-header-categories .textStrings=${{ more: 'More items' }}>
@@ -715,7 +719,7 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Get the number of columns to display.
-   * Returns actual category count, letting CSS handle the multi-column layout.
+   * Returns the minimum of category count and maxColumns.
    * @internal
    */
   private _getColumnCount(): number {
@@ -725,9 +729,8 @@ export class HeaderCategories extends LitElement {
       ? this._tabConfig?.categories?.length ?? 0
       : this._slottedCategories.length;
 
-    // CSS multi-column will handle the actual column distribution
-    // Return actual count for data attribute, CSS will determine layout
-    return Math.max(1, categoryCount);
+    // Return the minimum of actual category count and maxColumns
+    return Math.min(Math.max(1, categoryCount), this.maxColumns);
   }
 
   override render() {

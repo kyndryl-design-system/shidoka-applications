@@ -96,7 +96,6 @@
   ::slotted(span:first-child:only-child:not([slot])) {
     width: var(--kyn-header-span-only-width, 16px);
     height: var(--kyn-header-span-only-height, 16px);
-    flex: var(--kyn-header-span-only-flex, 0 0 auto);
     overflow: var(--kyn-header-span-only-overflow, visible);
     text-overflow: var(--kyn-header-span-only-text-overflow, clip);
     white-space: var(--kyn-header-span-only-white-space, normal);
@@ -134,12 +133,12 @@
   }
 }
 
-// Level 1 (parent nav): arrow should be right-aligned
-.level--1 > .nav-link .arrow {
+// All levels: arrow should be right-aligned
+.level--1 > .nav-link .arrow,
+.level--2 > .nav-link .arrow,
+.level--3 > .nav-link .arrow {
   margin-left: auto;
 }
-
-// Level 2+ (nested flyouts): arrow stays next to text (no margin-left: auto)
 
 .menu {
   &.open {
@@ -209,6 +208,9 @@
       padding: 16px;
       background-color: var(--kd-color-background-opacity-1);
       border-radius: 8px;
+      flex-grow: 1;
+      margin-right: 16px;
+      box-sizing: border-box;
 
       // Also signal flyout context for nested flyouts
       --kyn-header-link-in-flyout: 1;
@@ -231,11 +233,11 @@
       display: flex;
 
       @media (min-width: 42rem) {
-        padding: 8px 16px 8px 230px;
+        padding: 8px 32px 8px 230px;
         left: 8px;
         right: auto;
         width: fit-content;
-        max-width: calc(100vw - 24px);
+        max-width: calc(100vw - 48px);
       }
     }
 
@@ -257,11 +259,11 @@
 
   :host([has-categorical]) .menu.open .menu__content.slotted {
     display: flex;
-    padding: 8px 0px 8px 230px;
+    padding: 8px 8px 8px 230px;
     left: 8px;
-    right: auto;
-    width: fit-content;
-    max-width: calc(100vw - 24px);
+    right: 8px; // Stretch to fill viewport width
+    width: auto; // Don't use fit-content - let it expand
+    max-width: calc(100vw - 24px); // Constrain to viewport
     align-items: stretch;
   }
 
@@ -271,9 +273,9 @@
     max-width: none;
   }
 
-  // For categorical nav, wrapper fits to content width with max-height for scrolling
+  // For categorical nav, wrapper expands to fill available space
   :host([has-categorical]) .menu.level--1 .wrapper {
-    flex-grow: 0;
+    flex-grow: 1; // Expand to fill available space
     flex-shrink: 1;
     width: auto;
     min-width: 450px;
@@ -281,7 +283,7 @@
     max-height: calc(
       100vh - var(--kd-header-height) - 32px
     ); // Viewport minus header and padding
-    overflow: hidden; // Clip overflow on both axes
+    overflow-x: hidden; // Constrain content to wrapper
     overflow-y: auto; // But allow vertical scrolling
     align-self: stretch;
     margin-right: 8px; // Gap between wrapper and flyout edge
