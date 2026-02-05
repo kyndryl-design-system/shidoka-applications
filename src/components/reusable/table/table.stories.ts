@@ -823,7 +823,7 @@ export const ColumnFiltering: Story = {
           overflow: visible;
           kyn-dropdown {
             display: block;
-            width: 200px;
+            min-width: 200px;
           }
         }
 
@@ -837,6 +837,90 @@ export const ColumnFiltering: Story = {
           }
         }
       </style>
+    `;
+  },
+};
+
+export const ResizeColumn: Story = {
+  render: () => {
+    return html`
+      <h4>Important Information about Resize Column</h4>
+      <ul>
+        <li>
+          <b>Note:</b> When <i>minWidth/maxWidth</i> and
+          <i>resizeMinWidth/resizeMaxWidth</i>
+          both are provided, then minWidth/maxWidth takes precedence.
+        </li>
+      </ul>
+      <kyn-table-toolbar
+        .tableTitle=${'Resize Column'}
+        .tableSubtitle=${'Table Subtitle'}
+      >
+      </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th
+                resizable
+                .align=${'center'}
+                @on-column-resize=${(e: any) =>
+                  action(e.type)({ ...e, detail: e.detail })}
+                >ID</kyn-th
+              >
+              <kyn-th
+                resizable
+                @on-column-resize=${(e: any) =>
+                  action(e.type)({ ...e, detail: e.detail })}
+                >First Name</kyn-th
+              >
+              <kyn-th
+                resizable
+                @on-column-resize=${(e: any) =>
+                  action(e.type)({ ...e, detail: e.detail })}
+                >Last Name</kyn-th
+              >
+              <kyn-th
+                resizable
+                @on-column-resize=${(e: any) =>
+                  action(e.type)({ ...e, detail: e.detail })}
+                >Birthday</kyn-th
+              >
+              <kyn-th
+                resizable
+                .align=${'right'}
+                @on-column-resize=${(e: any) =>
+                  action(e.type)({ ...e, detail: e.detail })}
+                >Age</kyn-th
+              >
+              <kyn-th
+                resizable
+                .align=${'right'}
+                @on-column-resize=${(e: any) =>
+                  action(e.type)({ ...e, detail: e.detail })}
+                >Account Deposits($)</kyn-th
+              >
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id}>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+      <br />
     `;
   },
 };
