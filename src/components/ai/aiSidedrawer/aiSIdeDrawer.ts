@@ -115,15 +115,17 @@ export class aiSideDrawer extends LitElement {
         </div>
         <!-- CONTENT -->
         <div class="drawer-content">
-          <kyn-chats-section
-            .chats=${this.chats}
-            .maxVisible=${6}
-            seeAllHref="/chats"
-            ?collapsed=${this.collapsed}
-            .selectedId=${this.selectedChatId ?? null}
-            @chat-selected=${this._onChatSelected}
-            @see-all=${() => (window.location.href = '/chats')}
-          ></kyn-chats-section>
+          <div class="chat-section">
+            <kyn-chats-section
+              .chats=${this.chats}
+              .maxVisible=${6}
+              seeAllHref="/chats"
+              ?collapsed=${this.collapsed}
+              .selectedId=${this.selectedChatId ?? null}
+              @chat-selected=${this._onChatSelected}
+              @see-all=${() => (window.location.href = '/chats')}
+            ></kyn-chats-section>
+          </div>
         </div>
 
         <!-- FOOTER -->

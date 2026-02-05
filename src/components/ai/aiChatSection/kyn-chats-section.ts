@@ -17,7 +17,7 @@ export class KynChatsSection extends LitElement {
   /** Chats to display (data-driven) */
   @property({ type: Array }) accessor chats: ChatItem[] = [];
 
-  /** Show at most N items before "See all" appears */
+  /** Show at most N items (hard cap before we even try to fit) */
   @property({ type: Number }) accessor maxVisible = 6;
 
   /** Link for the "See all" action. If empty, no link is rendered. */
@@ -47,10 +47,20 @@ export class KynChatsSection extends LitElement {
   // Roving tabindex for keyboard list navigation
   @state() private accessor _focusIndex: number = 0;
 
+  // How many rows fit physically (computed)
+  @state() private accessor _fitCount: number = 0;
+
+  // Observers for resize
+  private _hostRO?: ResizeObserver;
+  private _innerRO?: ResizeObserver;
+
   static override styles = css`
     :host {
       display: block;
-      --chats-collapsed-height: 220px; /* tweak to taste */
+      /* Keep the component in a fixed-height area provided by the parent.
+         Adjust this from the parent (or override here) as needed. */
+      --chats-collapsed-height: 300px;
+      --chats-notCollapsed-height: 400px;
     }
 
     /* Header button */
@@ -95,7 +105,7 @@ export class KynChatsSection extends LitElement {
 
     /* Body container w/ animation */
     .panel-outer {
-      overflow: hidden;
+      overflow: hidden; /* 🔒 no scrollbars here */
       transition: height 180ms ease;
     }
     .panel-inner {
@@ -157,10 +167,16 @@ export class KynChatsSection extends LitElement {
       text-decoration: underline;
     }
 
-    /* Hide body entirely when the nav rail is collapsed */
+    /* Collapsed: hide body entirely */
     :host([collapsed]) .panel-outer {
       height: var(--chats-collapsed-height) !important;
     }
+
+    /* Optional: keep a fixed overall height for this section when not collapsed */
+    :host(:not([collapsed])) {
+      height: var(--chats-notCollapsed-height) !important;
+    }
+
     :host([collapsed]) .chat-list,
     :host([collapsed]) .see-all {
       display: none;
@@ -180,12 +196,28 @@ export class KynChatsSection extends LitElement {
 
   override firstUpdated() {
     this._initialized = true;
-    this.#syncHeight();
+
+    // Observe the HOST for size changes (e.g., parent resizes)
+    this._hostRO = new ResizeObserver(() => {
+      this.#recalcVisibleByFit();
+      this.#syncHeight();
+    });
+    this._hostRO.observe(this);
+
+    // Observe inner content for height changes (font size, density, etc.)
     const inner = this.innerRef.value;
     if (inner) {
-      const ro = new ResizeObserver(() => this.#syncHeight());
-      ro.observe(inner);
+      this._innerRO = new ResizeObserver(() => {
+        this.#recalcVisibleByFit();
+        this.#syncHeight();
+      });
+      this._innerRO.observe(inner);
     }
+
+    // Initial calc
+    this.#recalcVisibleByFit();
+    this.#syncHeight();
+
     // Initialize focus index
     this._focusIndex = Math.min(
       this._focusIndex,
@@ -193,15 +225,26 @@ export class KynChatsSection extends LitElement {
     );
   }
 
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._hostRO?.disconnect();
+    this._innerRO?.disconnect();
+  }
+
   override updated(changed: Map<string, unknown>) {
     if (!this._initialized) return;
+
     if (
       changed.has('open') ||
+      changed.has('collapsed') ||
       changed.has('chats') ||
       changed.has('maxVisible') ||
-      changed.has('collapsed')
+      changed.has('twoLine')
     ) {
+      // Recompute fit FIRST so syncHeight uses the post-slice height
+      this.#recalcVisibleByFit();
       this.#syncHeight();
+
       // Keep focus index in bounds if the visible list changed
       this._focusIndex = Math.min(
         this._focusIndex,
@@ -214,12 +257,82 @@ export class KynChatsSection extends LitElement {
     const outer = this.outerRef.value;
     const inner = this.innerRef.value;
     if (!outer || !inner) return;
+
+    // When collapsed or closed, height is 0; otherwise match rendered content.
     const target = this.collapsed ? 0 : this.open ? inner.scrollHeight : 0;
     requestAnimationFrame(() => (outer.style.height = `${target}px`));
   }
 
+  // Compute how many rows physically fit within the host
+  #recalcVisibleByFit() {
+    if (this.collapsed || !this.open) {
+      this._fitCount = 0;
+      return;
+    }
+
+    const hostRect = this.getBoundingClientRect();
+    if (!hostRect.height || hostRect.height <= 0) {
+      // When unknown, fall back to maxVisible
+      this._fitCount = Math.min(this.maxVisible, this.chats.length);
+      return;
+    }
+
+    // Heights to subtract from host: header + vertical paddings + "See all" (if shown)
+    const header = this.renderRoot.querySelector(
+      '.nav-summary'
+    ) as HTMLElement | null;
+    const headerH = header?.getBoundingClientRect().height ?? 0;
+    const verticalPadding = 4 + 6; // from .panel-inner { padding: 4px 0 6px; }
+
+    // First pass: fit rows ignoring "See all"
+    let availableForList = hostRect.height - headerH - verticalPadding;
+    if (availableForList <= 0) {
+      this._fitCount = 0;
+      return;
+    }
+
+    // Row height: measure a real row if present; otherwise use a reasonable fallback
+    const firstRow = this.renderRoot.querySelector(
+      '.chat-btn'
+    ) as HTMLElement | null;
+    const rowH =
+      firstRow?.getBoundingClientRect().height || (this.twoLine ? 40 : 32);
+
+    let fit = Math.floor(availableForList / rowH);
+    fit = Math.max(0, Math.min(fit, this.chats.length));
+    let n = Math.min(fit, this.maxVisible);
+
+    // Decide if "See all" will be shown; if so, subtract its height and recompute
+    const willShowSeeAll = this.seeAllHref && this.chats.length > n;
+    if (willShowSeeAll) {
+      // Measure real link if present; else conservative default
+      const seeAllEl = this.renderRoot.querySelector(
+        '.see-all'
+      ) as HTMLElement | null;
+      const seeAllH = seeAllEl?.getBoundingClientRect().height ?? 28;
+
+      availableForList = hostRect.height - headerH - verticalPadding - seeAllH;
+      if (availableForList <= 0) {
+        this._fitCount = 0;
+        return;
+      }
+
+      fit = Math.floor(availableForList / rowH);
+      fit = Math.max(0, Math.min(fit, this.chats.length));
+      n = Math.min(fit, this.maxVisible);
+    }
+
+    this._fitCount = n;
+  }
+
   #toggle = () => {
     this.open = !this.open;
+    // Persist if desired
+    try {
+      localStorage.setItem(this.persistKey, this.open ? '1' : '0');
+    } catch {
+      /* ignore */
+    }
     this.dispatchEvent(
       new CustomEvent('chats-toggle', {
         detail: { open: this.open },
@@ -230,7 +343,10 @@ export class KynChatsSection extends LitElement {
   };
 
   #visible(): ChatItem[] {
-    return this.chats.slice(0, this.maxVisible);
+    const n = Number.isFinite(this._fitCount)
+      ? this._fitCount
+      : this.maxVisible;
+    return this.chats.slice(0, n);
   }
 
   #onChatClick(item: ChatItem, e: MouseEvent) {
@@ -270,6 +386,7 @@ export class KynChatsSection extends LitElement {
 
   override render() {
     const visible = this.#visible();
+    const showSeeAll = !!this.seeAllHref && this.chats.length > visible.length;
 
     return html`
       <!-- Header -->
@@ -297,10 +414,8 @@ export class KynChatsSection extends LitElement {
             ${visible.map((c, i) => {
               const isActive =
                 this.selectedId != null && this.selectedId === c.id;
-              // Roving tabindex: first visible row gets 0 by default (or active row if found)
               let tabindex = -1;
               if (this._focusIndex === i) tabindex = 0;
-              // If selectedId exists and matches this row, prefer it for initial focus index
               if (!this._initialized && isActive) tabindex = 0;
 
               return html`
@@ -310,6 +425,10 @@ export class KynChatsSection extends LitElement {
                     class="chat-btn ${isActive ? 'active' : ''}"
                     title=${c.title}
                     @click=${(e: MouseEvent) => this.#onChatClick(c, e)}
+                    @keydown=${(e: KeyboardEvent) =>
+                      this.#onChatKeyDown(i, c, e)}
+                    tabindex=${tabindex}
+                    aria-current=${isActive ? 'true' : 'false'}
                   >
                     ${c.title}
                   </button>
@@ -318,10 +437,10 @@ export class KynChatsSection extends LitElement {
             })}
           </ul>
 
-          ${this.chats.length > visible.length && this.seeAllHref
+          ${showSeeAll
             ? html`<a
                 class="see-all"
-                href=${'/'}
+                href=${this.seeAllHref}
                 @click=${() =>
                   this.dispatchEvent(
                     new CustomEvent('see-all', {

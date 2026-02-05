@@ -29,7 +29,9 @@
   display: flex;
   flex-direction: column;
 }
-
+.chat-section {
+  height: 100%;
+}
 /* HEADER / FOOTER */
 .drawer-header,
 .drawer-footer {
@@ -39,9 +41,9 @@
 
 /* 🔑 THIS IS THE FIX */
 .drawer-content {
-  flex: 1;
-  min-height: 100%;
-  overflow-y: auto;
+  flex: 1 1 auto; /* reserve the middle row */
+  min-height: 0; /* IMPORTANT: prevents content-based shrink/grow issues */
+  overflow: hidden; /* scroll only inside this area */
 }
 
 /* nav item styling */
@@ -49,7 +51,12 @@
   display: flex;
   align-items: center;
   padding: 12px;
+  border-radius: 6px;
   white-space: nowrap;
+}
+
+.nav-item:hover {
+  background: rgba(0, 0, 0, 0.06); /* subtle hover */
 }
 
 .nav-item span {
