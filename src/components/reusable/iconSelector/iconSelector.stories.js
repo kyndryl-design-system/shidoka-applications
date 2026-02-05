@@ -9,32 +9,6 @@ import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 export default {
   title: 'Components/Icon Selector',
   component: 'kyn-icon-selector',
-  subcomponents: {
-    'kyn-icon-selector-group': 'kyn-icon-selector-group',
-  },
-  argTypes: {
-    checked: {
-      control: { type: 'boolean' },
-      description: 'Checked/selected state',
-    },
-    disabled: {
-      control: { type: 'boolean' },
-      description: 'Disabled state',
-    },
-    onlyVisibleOnHover: {
-      control: { type: 'boolean' },
-      description: 'When true, icon is only visible when parent is hovered',
-    },
-    persistWhenChecked: {
-      control: { type: 'boolean' },
-      description:
-        'When true, checked items remain visible even with onlyVisibleOnHover',
-    },
-    value: {
-      control: { type: 'text' },
-      description: 'Value identifier for this selector',
-    },
-  },
   parameters: {
     design: {
       type: 'figma',
@@ -88,12 +62,8 @@ export const OnlyVisibleOnHover = {
         .hover-container:hover {
           background-color: var(--kd-color-background-ui-soft);
         }
-        .hover-container kyn-icon-selector[onlyVisibleOnHover] {
-          opacity: 0;
-          transition: opacity 150ms ease-out;
-        }
-        .hover-container:hover kyn-icon-selector[onlyVisibleOnHover] {
-          opacity: 1;
+        .hover-container:hover {
+          --kyn-icon-selector-hover-opacity: 1;
         }
       </style>
       <div class="hover-container">

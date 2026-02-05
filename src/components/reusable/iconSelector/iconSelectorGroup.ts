@@ -2,7 +2,7 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import IconSelectorGroupScss from './iconSelectorGroup.scss?inline';
 
-import './iconSelector';
+import type { IconSelector } from './iconSelector';
 
 /**
  * Icon Selector Group - A container for managing multiple icon selectors with multi-select functionality.
@@ -38,7 +38,7 @@ export class IconSelectorGroup extends LitElement {
    * @internal
    */
   @state()
-  private accessor _selectors: HTMLElement[] = [];
+  private accessor _selectors: IconSelector[] = [];
 
   override connectedCallback() {
     super.connectedCallback();
@@ -64,35 +64,31 @@ export class IconSelectorGroup extends LitElement {
     `;
   }
 
+  /**
+   * @internal
+   */
   private _handleSlotChange() {
-    // Use querySelectorAll to find icon-selectors even when nested in wrapper elements
     this._selectors = Array.from(
       this.querySelectorAll('kyn-icon-selector')
-    ) as HTMLElement[];
-
+    ) as IconSelector[];
     this._syncChildrenState();
   }
 
   private _syncChildrenState() {
-    this._selectors.forEach((selector: any) => {
-      // Sync disabled state
+    this._selectors.forEach((selector) => {
       if (this.disabled) {
         selector.disabled = true;
       }
-
-      // Sync onlyVisibleOnHover
       if (this.onlyVisibleOnHover) {
         selector.onlyVisibleOnHover = true;
       }
-
-      // Sync checked state based on value array
-      const selectorValue = selector.value;
-      if (selectorValue && this.value.includes(selectorValue)) {
-        selector.checked = true;
-      }
+      selector.checked = this.value.includes(selector.value);
     });
   }
 
+  /**
+   * @internal
+   */
   private _handleChildChange = (e: CustomEvent) => {
     // Stop the child event from bubbling further
     e.stopPropagation();
@@ -111,7 +107,6 @@ export class IconSelectorGroup extends LitElement {
     // Emit group change event
     this.dispatchEvent(
       new CustomEvent('on-change', {
-        bubbles: true,
         composed: true,
         detail: {
           value: this.value,

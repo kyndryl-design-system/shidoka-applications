@@ -17,20 +17,6 @@ export default {
     direction: {
       control: { type: 'select' },
       options: ['vertical', 'horizontal'],
-      description: 'Stack direction for the group',
-    },
-    disabled: {
-      control: { type: 'boolean' },
-      description: 'Disabled state for all selectors',
-    },
-    value: {
-      control: { type: 'object' },
-      description: 'Selected values array',
-    },
-    onlyVisibleOnHover: {
-      control: { type: 'boolean' },
-      description:
-        'When true, all child icon-selectors are only visible when hovered',
     },
   },
   parameters: {
@@ -61,16 +47,8 @@ export const Group = {
         .group-hover-container:hover {
           background-color: var(--kd-color-background-ui-soft);
         }
-        .group-hover-container
-          kyn-icon-selector[onlyVisibleOnHover]:not([checked]) {
-          opacity: 0;
-          transition: opacity 150ms ease-out;
-        }
-        .group-hover-container:hover kyn-icon-selector[onlyVisibleOnHover] {
-          opacity: 1;
-        }
-        .group-hover-container kyn-icon-selector[checked] {
-          opacity: 1;
+        .group-hover-container:hover {
+          --kyn-icon-selector-hover-opacity: 1;
         }
       </style>
       <kyn-icon-selector-group
@@ -172,16 +150,8 @@ export const GroupWithPreselected = {
         .group-hover-container:hover {
           background-color: var(--kd-color-background-ui-soft);
         }
-        .group-hover-container
-          kyn-icon-selector[onlyVisibleOnHover]:not([checked]) {
-          opacity: 0;
-          transition: opacity 150ms ease-out;
-        }
-        .group-hover-container:hover kyn-icon-selector[onlyVisibleOnHover] {
-          opacity: 1;
-        }
-        .group-hover-container kyn-icon-selector[checked] {
-          opacity: 1;
+        .group-hover-container:hover {
+          --kyn-icon-selector-hover-opacity: 1;
         }
       </style>
       <kyn-icon-selector-group
