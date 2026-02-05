@@ -50,6 +50,7 @@ export class KynChatsSection extends LitElement {
   static override styles = css`
     :host {
       display: block;
+      --chats-collapsed-height: 220px; /* tweak to taste */
     }
 
     /* Header button */
@@ -158,7 +159,7 @@ export class KynChatsSection extends LitElement {
 
     /* Hide body entirely when the nav rail is collapsed */
     :host([collapsed]) .panel-outer {
-      height: 0 !important;
+      height: var(--chats-collapsed-height) !important;
     }
     :host([collapsed]) .chat-list,
     :host([collapsed]) .see-all {
@@ -320,7 +321,7 @@ export class KynChatsSection extends LitElement {
           ${this.chats.length > visible.length && this.seeAllHref
             ? html`<a
                 class="see-all"
-                href=${this.seeAllHref}
+                href=${'/'}
                 @click=${() =>
                   this.dispatchEvent(
                     new CustomEvent('see-all', {

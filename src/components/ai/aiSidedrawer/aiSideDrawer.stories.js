@@ -50,13 +50,15 @@ export const Default = {
     };
 
     return html`
-      <kyn-ai-side-drawer
-        class="modal-left"
-        ?disabled=${disabled}
-        @drawer-tab-change=${onDrawerTabChange}
-        @drawer-chat-selected=${onDrawerChatSelected}
-        @dismiss=${onDismissActivity}
-      ></kyn-ai-side-drawer>
+      <div class>
+        <kyn-ai-side-drawer
+          class="modal-left"
+          ?disabled=${disabled}
+          @drawer-tab-change=${onDrawerTabChange}
+          @drawer-chat-selected=${onDrawerChatSelected}
+          @dismiss=${onDismissActivity}
+        ></kyn-ai-side-drawer>
+      </div>
     `;
   },
 };
