@@ -67,30 +67,66 @@ export class KynActivityPanel extends LitElement {
     }
 
     /* Header */
+
     .header {
       display: flex;
-      align-items: center;
+      flex-direction: column; /* subtitle sits below */
+      gap: 6px;
       padding: 12px 16px;
-      gap: 8px;
     }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0; /* allows title ellipsis */
+    }
+
+    /* Title grows, pushes the X to the end */
     .title {
+      flex: 1 1 auto;
+      min-width: 0;
       font-weight: var(--kd-font-weight-semi, 600);
       font-size: 16px;
       line-height: 1.2;
-      margin-right: auto;
+      /* remove margin-right: auto; not needed anymore */
+      margin-right: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .subtitle {
-      margin-top: 4px;
 
+    .close-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      background: transparent;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: inherit;
+      flex: 0 0 auto; /* keep tight to the right */
+    }
+
+    .close-btn:hover {
+      background: var(--kd-color-background-accent-subtle, rgba(0, 0, 0, 0.05));
+    }
+
+    .close-btn:focus-visible {
+      outline: 2px solid var(--kd-color-border-variants-focus, #2563eb);
+      outline-offset: 2px;
+    }
+
+    .subtitle {
+      margin-top: 2px;
       font-size: 14px;
       line-height: 1.4;
-
       font-weight: 400;
       color: var(--kd-color-text-level-secondary, #6f6f6f);
-
       max-width: 100%;
-      white-space: normal;
+      white-space: normal; /* wraps on next line */
     }
+
     .close-btn {
       appearance: none;
       -webkit-appearance: none;
@@ -337,32 +373,57 @@ export class KynActivityPanel extends LitElement {
   override render() {
     const label = this.ariaLabel ?? this.activityTitle ?? 'Activity';
     const showSubtitle = this._hasSubtitleSlot || !!this.subtitleText;
+
     return html`
       <section
         class="panel"
         aria-label=${label}
-        aria-hidden=${String(!this.open)}   /* a11y hint */  >
+        aria-hidden=${String(!this.open)}
+      >
         <header class="header">
-          <div class="title">
-            <slot name="title" @slotchange=${this._onSlotsChanged}>${
-      this.activityTitle
-    }</slot>
-    
-${
-  showSubtitle
-    ? html`
-        <div class="subtitle">
-          <slot name="subtitle" @slotchange=${this._onSlotsChanged}>
-            ${this.subtitleText}
-          </slot>
-        </div>
-      `
-    : nothing
-}
+          <div class="header-row">
+            <div class="title">
+              <slot name="title" @slotchange=${this._onSlotsChanged}>
+                ${this.activityTitle}
+              </slot>
+            </div>
 
+            ${this.dismissible
+              ? html`
+                  <button
+                    class="close-btn"
+                    @click=${this._onDismiss}
+                    aria-label="Close activity panel"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M5 5l10 10M15 5L5 15"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                `
+              : nothing}
+          </div>
+
+          ${showSubtitle
+            ? html`
+                <div class="subtitle">
+                  <slot name="subtitle" @slotchange=${this._onSlotsChanged}>
+                    ${this.subtitleText}
+                  </slot>
+                </div>
+              `
+            : nothing}
         </header>
-
-        <div class="divider" aria-hidden="true"></div>
 
         <div class="body">
           <slot @slotchange=${this._onSlotsChanged}></slot>

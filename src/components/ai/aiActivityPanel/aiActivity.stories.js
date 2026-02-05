@@ -59,7 +59,6 @@ export const ActivityPanel = {
               @dismiss=${onDismissActivity}
             >
               <div>
-                <h3>TITLE</h3>
                 <p>you can put items in this body</p>
               </div>
             </kyn-activity-panel-ai>
