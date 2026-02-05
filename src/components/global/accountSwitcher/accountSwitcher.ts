@@ -1,6 +1,7 @@
 import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { deepmerge } from 'deepmerge-ts';
 
 import AccountSwitcherScss from './accountSwitcher.scss?inline';
 
@@ -11,6 +12,13 @@ import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cop
 import '../../reusable/link';
 import '../../reusable/search';
 import './accountSwitcherMenuItem';
+
+const _defaultTextStrings = {
+  current: 'Current',
+  workspaces: 'Workspaces',
+  search: 'Search',
+  items: 'Items',
+};
 
 export interface Workspace {
   id: string;
@@ -59,32 +67,65 @@ export class AccountSwitcher extends LitElement {
   @property({ type: Boolean })
   accessor showSearch = false;
 
-  /** Label for the search input. */
-  @property({ type: String })
-  accessor searchLabel = 'Search';
+  /** Text string customization. */
+  @property({ type: Object })
+  accessor textStrings = _defaultTextStrings;
 
-  /** Label for the "Current" section header. */
-  @property({ type: String })
-  accessor currentSectionLabel = 'Current';
+  /** Merged text strings.
+   * @internal
+   */
+  @state()
+  private accessor _textStrings = _defaultTextStrings;
 
-  /** Label for the "Workspaces" section header. */
-  @property({ type: String })
-  accessor workspacesSectionLabel = 'Workspaces';
-
-  /** Internal state for copy feedback. */
+  /** Internal state for copy feedback.
+   * @internal
+   */
   @state()
   private accessor _copied = false;
 
-  /** Internal state for selected workspace (immediate visual feedback). */
+  /** Internal state for selected workspace (immediate visual feedback).
+   * @internal
+   */
   @state()
   private accessor _selectedWorkspaceId: string | null = null;
 
-  /** Internal state for selected item (immediate visual feedback). */
+  /** Internal state for selected item (immediate visual feedback).
+   * @internal
+   */
   @state()
   private accessor _selectedItemId: string | null = null;
 
+  override render() {
+    const hasFullAccountInfo =
+      this.currentAccount.accountId || this.currentAccount.country;
+
+    return html`
+      <div class="account-switcher">
+        <div class="account-switcher__left">
+          ${!hasFullAccountInfo
+            ? html`<div class="section-header">
+                ${this._textStrings.current}
+              </div>`
+            : null}
+          ${this._renderCurrentAccount()}
+          <div class="section-header">${this._textStrings.workspaces}</div>
+          ${this._renderWorkspaceList()}
+        </div>
+        <div class="account-switcher__right">
+          ${this.showSearch ? this._renderSearch() : null}
+          ${this._renderItemsList()}
+        </div>
+      </div>
+    `;
+  }
+
   override willUpdate(changedProperties: PropertyValues) {
-    // Initialize selected workspace from props on first load or when workspaces change
+    // merge text strings
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+
+    // initialize selected workspace from props on first load or when workspaces change
     if (
       changedProperties.has('workspaces') &&
       this._selectedWorkspaceId === null
@@ -98,35 +139,11 @@ export class AccountSwitcher extends LitElement {
       }
     }
 
-    // Initialize selected item from props on first load or when items change
+    // initialize selected item from props on first load or when items change
     if (changedProperties.has('items')) {
       const selectedItem = this.items.find((i) => i.selected);
       this._selectedItemId = selectedItem?.id ?? null;
     }
-  }
-
-  override render() {
-    const hasFullAccountInfo =
-      this.currentAccount.accountId || this.currentAccount.country;
-
-    return html`
-      <div class="account-switcher">
-        <div class="account-switcher__left">
-          ${!hasFullAccountInfo
-            ? html`<div class="section-header">
-                ${this.currentSectionLabel}
-              </div>`
-            : null}
-          ${this._renderCurrentAccount()}
-          <div class="section-header">${this.workspacesSectionLabel}</div>
-          ${this._renderWorkspaceList()}
-        </div>
-        <div class="account-switcher__right">
-          ${this.showSearch ? this._renderSearch() : null}
-          ${this._renderItemsList()}
-        </div>
-      </div>
-    `;
   }
 
   private _renderCurrentAccount() {
@@ -179,7 +196,11 @@ export class AccountSwitcher extends LitElement {
 
   private _renderWorkspaceList() {
     return html`
-      <div class="workspace-list" role="list" aria-label="Workspaces">
+      <div
+        class="workspace-list"
+        role="list"
+        aria-label=${this._textStrings.workspaces}
+      >
         ${this.workspaces.map(
           (workspace) => html`
             <kyn-account-switcher-menu-item
@@ -201,7 +222,7 @@ export class AccountSwitcher extends LitElement {
       <div class="account-switcher__search">
         <kyn-search
           size="sm"
-          label=${this.searchLabel}
+          label=${this._textStrings.search}
           @on-input=${this._handleSearch}
         ></kyn-search>
       </div>
@@ -210,7 +231,7 @@ export class AccountSwitcher extends LitElement {
 
   private _renderItemsList() {
     return html`
-      <div class="items-list" role="list" aria-label="Items">
+      <div class="items-list" role="list" aria-label=${this._textStrings.items}>
         ${this.items.map(
           (item) => html`
             <kyn-account-switcher-menu-item
