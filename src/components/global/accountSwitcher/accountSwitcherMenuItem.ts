@@ -6,8 +6,8 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import AccountSwitcherMenuItemScss from './accountSwitcherMenuItem.scss?inline';
 
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
-import recommendIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
-import recommendFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
+
+import '../../reusable/iconSelector';
 
 /**
  * Account Switcher Menu Item component.
@@ -86,18 +86,15 @@ export class AccountSwitcherMenuItem extends LitElement {
   private _renderItemContent() {
     if (!this.showFavorite) return null;
 
-    const favoriteClasses = {
-      'menu-item__favorite': true,
-      'menu-item__favorite--active': this.favorited,
-    };
-
     return html`
-      <span
-        class=${classMap(favoriteClasses)}
-        @click=${this._handleFavoriteClick}
-      >
-        ${unsafeSVG(this.favorited ? recommendFilledIcon : recommendIcon)}
-      </span>
+      <kyn-icon-selector
+        class="menu-item__favorite"
+        ?checked=${this.favorited}
+        value=${this.value}
+        onlyVisibleOnHover
+        persistWhenChecked
+        @on-change=${this._handleFavoriteChange}
+      ></kyn-icon-selector>
     `;
   }
 
@@ -118,12 +115,11 @@ export class AccountSwitcherMenuItem extends LitElement {
     }
   }
 
-  private _handleFavoriteClick(e: Event) {
+  private _handleFavoriteChange(e: CustomEvent) {
     e.stopPropagation();
-    const newFavorited = !this.favorited;
     this.dispatchEvent(
       new CustomEvent('on-favorite-change', {
-        detail: { value: this.value, favorited: newFavorited },
+        detail: { value: this.value, favorited: e.detail.checked },
         bubbles: true,
         composed: true,
       })

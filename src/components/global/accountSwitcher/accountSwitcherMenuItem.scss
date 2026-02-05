@@ -45,12 +45,6 @@
 
   // Workspace variant styles
   &--workspace {
-    margin-bottom: 2px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
     &:hover:not(.menu-item--selected) {
       background: var(--kd-color-background-menu-state-hover);
 
@@ -85,6 +79,7 @@
   // Item variant styles
   &--item {
     &:hover:not(.menu-item--selected) {
+      --kyn-icon-selector-hover-opacity: 1;
       background: var(--kd-color-background-menu-state-hover);
 
       .menu-item__name,
@@ -111,28 +106,9 @@
       }
     }
 
-    // Favorite icon styles
+    // Favorite icon selector
     .menu-item__favorite {
-      display: flex;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 150ms ease-out;
       color: var(--kd-color-text-level-secondary);
-      cursor: pointer;
-
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      &--active {
-        opacity: 1;
-        color: var(--kd-color-text-level-primary);
-      }
-    }
-
-    &:hover .menu-item__favorite {
-      opacity: 1;
     }
   }
 }

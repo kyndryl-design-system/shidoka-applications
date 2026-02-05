@@ -57,7 +57,7 @@ export class AccountSwitcher extends LitElement {
 
   /** Whether to show the search input in the right panel. */
   @property({ type: Boolean })
-  accessor showSearch = true;
+  accessor showSearch = false;
 
   /** Label for the search input. */
   @property({ type: String })
@@ -242,7 +242,6 @@ export class AccountSwitcher extends LitElement {
   }
 
   private _handleWorkspaceSelect(workspace: Workspace) {
-    // Immediate visual feedback
     this._selectedWorkspaceId = workspace.id;
 
     this.dispatchEvent(
@@ -255,7 +254,6 @@ export class AccountSwitcher extends LitElement {
   }
 
   private _handleItemSelect(item: AccountItem) {
-    // Immediate visual feedback
     this._selectedItemId = item.id;
 
     this.dispatchEvent(
