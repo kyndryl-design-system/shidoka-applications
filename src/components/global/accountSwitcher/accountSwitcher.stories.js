@@ -9,9 +9,11 @@ import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 
 // All items aggregated for Global Zone default view
+// Mark the first item as selected by default
 const allItems = Object.entries(exampleData.itemsByWorkspace)
   .filter(([key]) => key !== 'global')
-  .flatMap(([, items]) => items);
+  .flatMap(([, items]) => items)
+  .map((item, index) => ({ ...item, selected: index === 0 }));
 
 // Workspaces with counts computed from actual items data
 const workspaces = exampleData.workspaces.map((workspace) => ({
@@ -21,6 +23,21 @@ const workspaces = exampleData.workspaces.map((workspace) => ({
       ? null
       : exampleData.itemsByWorkspace[workspace.id]?.length || 0,
 }));
+
+// Current account derives its name from the selected item
+// In production, apps would manage this via their state management
+const selectedItem = allItems.find((item) => item.selected) || allItems[0];
+
+// Full account info includes additional metadata (accountId, country)
+const fullCurrentAccount = {
+  name: selectedItem?.name || '',
+  ...exampleData.accountDetails,
+};
+
+// Simple account info only has the name
+const simpleCurrentAccount = {
+  name: selectedItem?.name || '',
+};
 
 // Consuming apps are responsible for managing their own data. Real apps will likely
 // fetch items from an API when a workspace is selected, use their own state management,
@@ -35,6 +52,17 @@ const handleWorkspaceSelect = (e) => {
   } else {
     switcher.items = exampleData.itemsByWorkspace[workspaceId] || [];
   }
+};
+
+// When an item is selected, update the currentAccount name while preserving other fields.
+// In production, apps would typically update their state management and re-render.
+const handleItemSelect = (e) => {
+  action('on-item-select')(e.detail);
+  const switcher = e.target.closest('kyn-account-switcher') || e.target;
+  switcher.currentAccount = {
+    ...switcher.currentAccount,
+    name: e.detail.item.name,
+  };
 };
 
 export default {
@@ -54,11 +82,11 @@ export default {
 export const FullAccountInfo = {
   render: () => html`
     <kyn-account-switcher
-      .currentAccount=${exampleData.currentAccount}
+      .currentAccount=${fullCurrentAccount}
       .workspaces=${workspaces}
       .items=${allItems}
       @on-workspace-select=${handleWorkspaceSelect}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
+      @on-item-select=${handleItemSelect}
       @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
     ></kyn-account-switcher>
   `,
@@ -67,11 +95,11 @@ export const FullAccountInfo = {
 export const SimpleAccountInfo = {
   render: () => html`
     <kyn-account-switcher
-      .currentAccount=${exampleData.simpleCurrentAccount}
+      .currentAccount=${simpleCurrentAccount}
       .workspaces=${workspaces}
       .items=${allItems}
       @on-workspace-select=${handleWorkspaceSelect}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
+      @on-item-select=${handleItemSelect}
       @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
     ></kyn-account-switcher>
   `,
@@ -80,13 +108,12 @@ export const SimpleAccountInfo = {
 export const WithSearch = {
   render: () => html`
     <kyn-account-switcher
-      .currentAccount=${exampleData.currentAccount}
+      .currentAccount=${fullCurrentAccount}
       .workspaces=${workspaces}
       .items=${allItems}
       showSearch
-      searchLabel="Search"
       @on-workspace-select=${handleWorkspaceSelect}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
+      @on-item-select=${handleItemSelect}
       @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
       @on-search=${(e) => action('on-search')(e.detail)}
     ></kyn-account-switcher>
@@ -111,11 +138,11 @@ export const UIImplementation = {
           <span slot="button">${unsafeSVG(helpIcon)}</span>
 
           <kyn-account-switcher
-            .currentAccount=${exampleData.currentAccount}
+            .currentAccount=${fullCurrentAccount}
             .workspaces=${workspaces}
             .items=${allItems}
             @on-workspace-select=${handleWorkspaceSelect}
-            @on-item-select=${(e) => action('on-item-select')(e.detail)}
+            @on-item-select=${handleItemSelect}
             @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
           ></kyn-account-switcher>
         </kyn-header-flyout>

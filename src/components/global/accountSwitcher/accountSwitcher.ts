@@ -147,49 +147,42 @@ export class AccountSwitcher extends LitElement {
   }
 
   private _renderCurrentAccount() {
-    const hasDetails =
-      this.currentAccount.accountId || this.currentAccount.country;
-
     return html`
       <div class="account-meta-info">
         <div class="account-meta-info__header">
           <span class="account-meta-info__checkmark">
             ${unsafeSVG(checkmarkFilledIcon)}
           </span>
-          <span class="account-meta-info__name">
-            ${this.currentAccount.name}
-          </span>
+          <div class="account-meta-info__content">
+            <span class="account-meta-info__name">
+              ${this.currentAccount.name}
+            </span>
+            ${this.currentAccount.accountId
+              ? html`
+                  <kyn-link
+                    standalone
+                    animationInactive
+                    href="javascript:void(0)"
+                    @on-click=${this._handleCopyAccountId}
+                  >
+                    ${this.currentAccount.accountId}
+                    <span slot="icon"
+                      >${unsafeSVG(
+                        this._copied ? checkmarkIcon : copyIcon
+                      )}</span
+                    >
+                  </kyn-link>
+                `
+              : null}
+            ${this.currentAccount.country
+              ? html`
+                  <span class="account-meta-info__country">
+                    ${this.currentAccount.country}
+                  </span>
+                `
+              : null}
+          </div>
         </div>
-        ${hasDetails
-          ? html`
-              <div class="account-meta-info__details">
-                ${this.currentAccount.accountId
-                  ? html`
-                      <kyn-link
-                        standalone
-                        animationInactive
-                        href="javascript:void(0)"
-                        @on-click=${this._handleCopyAccountId}
-                      >
-                        ${this.currentAccount.accountId}
-                        <span slot="icon"
-                          >${unsafeSVG(
-                            this._copied ? checkmarkIcon : copyIcon
-                          )}</span
-                        >
-                      </kyn-link>
-                    `
-                  : null}
-                ${this.currentAccount.country
-                  ? html`
-                      <div class="account-meta-info__country">
-                        ${this.currentAccount.country}
-                      </div>
-                    `
-                  : null}
-              </div>
-            `
-          : null}
       </div>
     `;
   }

@@ -26,6 +26,9 @@
   &__name {
     flex: 1;
     color: var(--kd-color-text-level-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__count {
@@ -43,8 +46,12 @@
     }
   }
 
-  // Workspace variant styles
+  // Workspace variant styles (left panel - 25ch max)
   &--workspace {
+    .menu-item__name {
+      max-width: 25ch;
+    }
+
     &:hover:not(.menu-item--selected) {
       background: var(--kd-color-background-menu-state-hover);
 
@@ -76,8 +83,12 @@
     }
   }
 
-  // Item variant styles
+  // Item variant styles (right panel - 40ch max)
   &--item {
+    .menu-item__name {
+      max-width: 40ch;
+    }
+
     &:hover:not(.menu-item--selected) {
       --kyn-icon-selector-hover-opacity: 1;
       background: var(--kd-color-background-menu-state-hover);

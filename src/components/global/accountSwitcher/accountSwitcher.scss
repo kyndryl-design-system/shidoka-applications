@@ -56,8 +56,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 0px 24px 12px 12px;
-  margin: 0 auto 12px;
+  gap: 2px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
   font-size: 14px;
   line-height: 20px;
 
@@ -74,7 +75,7 @@
 
 .account-meta-info__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
 }
 
@@ -82,10 +83,16 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  margin-top: 2px;
 
   svg {
     fill: var(--kd-color-badge-heavy-background-success);
   }
+}
+
+.account-meta-info__content {
+  display: flex;
+  flex-direction: column;
 }
 
 .account-meta-info__name {
@@ -93,16 +100,15 @@
   font-size: 14px;
   line-height: 20px;
   color: var(--kd-color-text-level-primary);
+  max-width: 25ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .account-meta-info__details {
   display: flex;
   flex-direction: column;
-  margin-left: 24px;
-
-  ::slotted(kyn-link) {
-    font-size: 14px;
-  }
 }
 
 .account-meta-info__country {
