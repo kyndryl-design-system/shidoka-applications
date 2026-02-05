@@ -8,7 +8,7 @@
 .account-switcher {
   display: flex;
   width: 625px;
-  height: 480px;
+  height: 446px;
   background: var(--kd-color-background-container-default);
   border-radius: 8px;
   overflow: hidden;
@@ -52,11 +52,23 @@
 
 /* Account Meta Info */
 .account-meta-info {
+  position: relative;
   display: flex;
   flex-direction: column;
-  padding: 0 4px 16px;
+  padding: 0px 24px 12px 12px;
+  margin: 0 auto 12px;
   font-size: 14px;
   line-height: 20px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--kd-color-border-variants-light);
+  }
 }
 
 .account-meta-info__header {
@@ -106,40 +118,66 @@
 }
 
 .workspace-item {
+  margin-bottom: 2px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @include typography.type-ui-02;
+
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px;
+  padding: 6px 8px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 150ms ease-out;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 
-  &:hover:not(.workspace-item--selected) {
-    background: var(--kd-color-background-ui-hover);
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
   }
 
-  &--selected {
-    background: var(--kd-color-background-accent);
-    color: var(--kd-color-text-inversed);
+  &:hover:not(.workspace-item--selected) {
+    background: var(--kd-color-background-menu-state-hover);
 
     .workspace-item__name,
     .workspace-item__count,
     .workspace-item__chevron {
-      color: var(--kd-color-text-inversed);
+      color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &:active:not(.workspace-item--selected) {
+    background: var(--kd-color-background-menu-state-pressed);
+
+    .workspace-item__name,
+    .workspace-item__count,
+    .workspace-item__chevron {
+      color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &--selected {
+    background: var(--kd-color-background-menu-state-hover);
+
+    .workspace-item__name,
+    .workspace-item__count,
+    .workspace-item__chevron {
+      color: var(--kd-color-text-level-light);
     }
   }
 }
 
 .workspace-item__name {
   flex: 1;
-  font-size: 14px;
-  line-height: 20px;
   color: var(--kd-color-text-level-primary);
 }
 
 .workspace-item__count {
-  font-size: 14px;
-  line-height: 20px;
   color: var(--kd-color-text-level-secondary);
 }
 
@@ -170,30 +208,67 @@
   flex-direction: column;
   width: 100%;
   padding-right: 12px;
+  padding-bottom: 12px;
   overflow-y: auto;
 }
 
 .item {
+  @include typography.type-ui-02;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px;
+  padding: 6px 8px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 150ms ease-out;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
 
   &:hover:not(.item--selected) {
-    background: var(--kd-color-background-ui-hover);
+    background: var(--kd-color-background-menu-state-hover);
+
+    .item__name,
+    kyn-icon-selector {
+      color: var(--kd-color-text-level-light);
+    }
+  }
+
+  &:active:not(.item--selected) {
+    background: var(--kd-color-background-menu-state-pressed);
+
+    .item__name,
+    kyn-icon-selector {
+      color: var(--kd-color-text-level-light);
+    }
   }
 
   &--selected {
-    background: var(--kd-color-background-ui-soft);
+    background: var(--kd-color-background-menu-state-open);
+
+    .item__name {
+      color: var(--kd-color-text-level-primary);
+      font-weight: 500;
+    }
+  }
+
+  // Icon selector hover visibility
+  kyn-icon-selector.only-visible-on-hover {
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+
+  &:hover kyn-icon-selector.only-visible-on-hover,
+  kyn-icon-selector.only-visible-on-hover.is-checked {
+    opacity: 1;
   }
 }
 
 .item__name {
   flex: 1;
-  font-size: 14px;
-  line-height: 20px;
   color: var(--kd-color-text-level-primary);
 }

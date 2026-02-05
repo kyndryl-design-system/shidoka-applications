@@ -1,4 +1,4 @@
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
@@ -76,6 +76,36 @@ export class AccountSwitcher extends LitElement {
   /** Internal state for copy feedback. */
   @state()
   private accessor _copied = false;
+
+  /** Internal state for selected workspace (immediate visual feedback). */
+  @state()
+  private accessor _selectedWorkspaceId: string | null = null;
+
+  /** Internal state for selected item (immediate visual feedback). */
+  @state()
+  private accessor _selectedItemId: string | null = null;
+
+  override willUpdate(changedProperties: PropertyValues) {
+    // Initialize selected workspace from props on first load or when workspaces change
+    if (
+      changedProperties.has('workspaces') &&
+      this._selectedWorkspaceId === null
+    ) {
+      const selectedWorkspace = this.workspaces.find((w) => w.selected);
+      if (selectedWorkspace) {
+        this._selectedWorkspaceId = selectedWorkspace.id;
+      } else if (this.workspaces.length > 0) {
+        // Default to first workspace if none selected
+        this._selectedWorkspaceId = this.workspaces[0].id;
+      }
+    }
+
+    // Initialize selected item from props on first load or when items change
+    if (changedProperties.has('items')) {
+      const selectedItem = this.items.find((i) => i.selected);
+      this._selectedItemId = selectedItem?.id ?? null;
+    }
+  }
 
   override render() {
     const hasFullAccountInfo =
@@ -157,7 +187,8 @@ export class AccountSwitcher extends LitElement {
             <div
               class=${classMap({
                 'workspace-item': true,
-                'workspace-item--selected': !!workspace.selected,
+                'workspace-item--selected':
+                  this._selectedWorkspaceId === workspace.id,
               })}
               role="button"
               tabindex="0"
@@ -205,7 +236,7 @@ export class AccountSwitcher extends LitElement {
             <div
               class=${classMap({
                 item: true,
-                'item--selected': !!item.selected,
+                'item--selected': this._selectedItemId === item.id,
               })}
               role="button"
               tabindex="0"
@@ -217,6 +248,8 @@ export class AccountSwitcher extends LitElement {
               <kyn-icon-selector
                 value=${item.id}
                 ?checked=${item.favorited}
+                onlyVisibleOnHover
+                persistWhenChecked
                 @on-change=${(e: CustomEvent) =>
                   this._handleFavoriteChange(item, e)}
               ></kyn-icon-selector>
@@ -247,6 +280,9 @@ export class AccountSwitcher extends LitElement {
   }
 
   private _handleWorkspaceSelect(workspace: Workspace) {
+    // Immediate visual feedback
+    this._selectedWorkspaceId = workspace.id;
+
     this.dispatchEvent(
       new CustomEvent('on-workspace-select', {
         detail: { workspace },
@@ -257,6 +293,9 @@ export class AccountSwitcher extends LitElement {
   }
 
   private _handleItemSelect(item: AccountItem) {
+    // Immediate visual feedback
+    this._selectedItemId = item.id;
+
     this.dispatchEvent(
       new CustomEvent('on-item-select', {
         detail: { item },

@@ -1,6 +1,120 @@
-import { html } from 'lit';
+import { html, LitElement } from 'lit';
 import { action } from 'storybook/actions';
 import './index';
+import exampleData from './example_account_switcher_data.json';
+
+// Wrapper component for interactive demo with state management
+class AccountSwitcherDemo extends LitElement {
+  static properties = {
+    currentAccount: { type: Object },
+    showSearch: { type: Boolean },
+    searchLabel: { type: String },
+    _currentItems: { state: true },
+    _baseItems: { state: true },
+    _currentWorkspaceId: { state: true },
+  };
+
+  constructor() {
+    super();
+    const defaultWorkspaceId = exampleData.defaultSelectedWorkspace;
+    this.currentAccount = exampleData.currentAccount;
+    this.showSearch = true;
+    this.searchLabel = 'Search';
+    this._currentWorkspaceId = defaultWorkspaceId;
+    this._baseItems = [...exampleData.itemsByWorkspace[defaultWorkspaceId]];
+    this._currentItems = [...this._baseItems];
+  }
+
+  // Disable shadow DOM so styles from parent work
+  createRenderRoot() {
+    return this;
+  }
+
+  _handleWorkspaceSelect(e) {
+    action('on-workspace-select')(e.detail);
+    const workspaceId = e.detail.workspace.id;
+
+    this._currentWorkspaceId = workspaceId;
+
+    // Global Zone shows all items from all workspaces
+    if (workspaceId === 'global') {
+      const allItems = Object.entries(exampleData.itemsByWorkspace)
+        .filter(([key]) => key !== 'global')
+        .flatMap(([, items]) => items);
+      this._baseItems = [...allItems];
+    } else {
+      this._baseItems = [...(exampleData.itemsByWorkspace[workspaceId] || [])];
+    }
+    this._currentItems = [...this._baseItems];
+  }
+
+  _handleItemSelect(e) {
+    action('on-item-select')(e.detail);
+    const selectedId = e.detail.item.id;
+
+    this._currentItems = this._currentItems.map((item) => ({
+      ...item,
+      selected: item.id === selectedId,
+    }));
+  }
+
+  _handleSearch(e) {
+    action('on-search')(e.detail);
+    const searchValue = e.detail.value.toLowerCase().trim();
+
+    if (searchValue) {
+      this._currentItems = this._baseItems.filter((item) =>
+        item.name.toLowerCase().includes(searchValue)
+      );
+    } else {
+      this._currentItems = [...this._baseItems];
+    }
+  }
+
+  _handleFavoriteChange(e) {
+    action('on-favorite-change')(e.detail);
+    const { item, favorited } = e.detail;
+
+    this._baseItems = this._baseItems.map((i) =>
+      i.id === item.id ? { ...i, favorited } : i
+    );
+    this._currentItems = this._currentItems.map((i) =>
+      i.id === item.id ? { ...i, favorited } : i
+    );
+  }
+
+  render() {
+    // Calculate total items for Global Zone
+    const totalItems = Object.entries(exampleData.itemsByWorkspace)
+      .filter(([key]) => key !== 'global')
+      .reduce((sum, [, items]) => sum + items.length, 0);
+
+    const workspacesWithCounts = exampleData.workspaces.map((workspace) => ({
+      ...workspace,
+      count:
+        workspace.id === 'global'
+          ? null // Global Zone doesn't show count per design
+          : exampleData.itemsByWorkspace[workspace.id]?.length || 0,
+      selected: workspace.id === this._currentWorkspaceId,
+    }));
+
+    return html`
+      <kyn-account-switcher
+        .currentAccount=${this.currentAccount}
+        .workspaces=${workspacesWithCounts}
+        .items=${this._currentItems}
+        ?showSearch=${this.showSearch}
+        searchLabel=${this.searchLabel}
+        @on-workspace-select=${this._handleWorkspaceSelect}
+        @on-item-select=${this._handleItemSelect}
+        @on-favorite-change=${this._handleFavoriteChange}
+        @on-search=${this._handleSearch}
+      ></kyn-account-switcher>
+    `;
+  }
+}
+
+customElements.define('account-switcher-demo', AccountSwitcherDemo);
 
 export default {
   title: 'Global Components/Account Switcher',
@@ -18,195 +132,55 @@ export default {
     searchLabel: {
       control: { type: 'text' },
     },
-    currentSectionLabel: {
-      control: { type: 'text' },
-    },
-    workspacesSectionLabel: {
-      control: { type: 'text' },
-    },
   },
 };
 
-// Sample data
-const currentAccountSelected = {
-  name: 'CurrentSelect...AccountName',
-  accountId: '023497uw02399023509',
-  country: 'United States',
-};
+// Account info variants
+const fullAccountInfo = exampleData.currentAccount;
 
-const currentAccountNonSelected = {
+const simpleAccountInfo = {
   name: 'Nonaccountc...rrentlyselected',
 };
 
-const manyTypesWorkspaces = [
-  { id: 'global', name: 'Global Zone (All)', count: null },
-  { id: 'tenants', name: 'Account Tenants', count: 23, selected: true },
-  { id: 'compute', name: 'Compute Zones', count: 12 },
-  { id: 'countries', name: 'Countries', count: 7 },
-  { id: 'pods', name: 'Delivery Pods', count: 5 },
-  { id: 'buying', name: 'Global Buying Groups', count: 12 },
-  { id: 'markets', name: 'Markets', count: 2 },
-  { id: 'org-markets', name: 'Org Markets', count: 4 },
-  { id: 'pools', name: 'Pools', count: 7 },
-  { id: 'regions', name: 'Regions', count: 13 },
-];
-
-const manyTypesSmallCountsWorkspaces = [
-  { id: 'global', name: 'Global Zone (All)', count: null },
-  { id: 'tenants', name: 'Account Tenants', count: 3, selected: true },
-  { id: 'compute', name: 'Compute Zones', count: 2 },
-  { id: 'countries', name: 'Countries', count: 2 },
-  { id: 'pods', name: 'Delivery Pods', count: 1 },
-  { id: 'buying', name: 'Global Buying Groups', count: 1 },
-  { id: 'markets', name: 'Markets', count: 1 },
-  { id: 'org-markets', name: 'Org Markets', count: 1 },
-  { id: 'pools', name: 'Pools', count: 1 },
-  { id: 'regions', name: 'Regions', count: 1 },
-];
-
-const fewTypesWorkspaces = [
-  { id: 'global', name: 'Global Zone (All)', count: null },
-  { id: 'tenants', name: 'Account Tenants', count: 3, selected: true },
-  { id: 'buying', name: 'Global Buying Groups', count: 1 },
-  { id: 'org-markets', name: 'Org Markets', count: 1 },
-];
-
-const manyTypesComputeSelectedWorkspaces = [
-  { id: 'global', name: 'Global Zone (All)', count: null },
-  { id: 'tenants', name: 'Account Tenants', count: 2 },
-  { id: 'compute', name: 'Compute Zones', count: 2, selected: true },
-  { id: 'countries', name: 'Countries', count: 2 },
-  { id: 'pods', name: 'Delivery Pods', count: 1 },
-  { id: 'buying', name: 'Global Buying Groups', count: 1 },
-  { id: 'markets', name: 'Markets', count: 1 },
-  { id: 'org-markets', name: 'Org Markets', count: 1 },
-  { id: 'pools', name: 'Pools', count: 1 },
-  { id: 'regions', name: 'Regions', count: 1 },
-];
-
-const manyItemsAccounts = [
-  { id: '1', name: 'Account 1' },
-  { id: '2', name: 'Account 2' },
-  { id: 'current', name: 'CurrentlySelectedAccountName', selected: true },
-  { id: '4', name: 'Account 4' },
-  { id: '5', name: 'Account 5' },
-  { id: '6', name: 'Account 6' },
-  { id: '7', name: 'Account 7' },
-  { id: '8', name: 'Account 8' },
-  { id: '9', name: 'Account 9' },
-  { id: '10', name: 'Account 10' },
-  { id: '11', name: 'Account 11' },
-  { id: '12', name: 'Account 12' },
-  { id: '13', name: 'Account 13' },
-];
-
-const fewItemsAccounts = [
-  { id: '1', name: 'Account 1' },
-  { id: 'current', name: 'CurrentlySelectedAccountName', selected: true },
-  { id: '3', name: 'Account 3' },
-];
-
-const fewItemsComputeZones = [
-  { id: '1', name: 'Compute Zone 1' },
-  { id: '2', name: 'Compute Zone 2' },
-];
-
-// Story: Many types, many items, account selected
-export const ManyTypesManyItemsAccountSelected = {
-  args: {
-    showSearch: true,
-    searchLabel: 'Search',
-    currentSectionLabel: 'Current',
-    workspacesSectionLabel: 'Workspaces',
-  },
-  render: (args) => html`
-    <kyn-account-switcher
-      .currentAccount=${currentAccountSelected}
-      .workspaces=${manyTypesWorkspaces}
-      .items=${manyItemsAccounts}
-      ?showSearch=${args.showSearch}
-      searchLabel=${args.searchLabel}
-      currentSectionLabel=${args.currentSectionLabel}
-      workspacesSectionLabel=${args.workspacesSectionLabel}
-      @on-workspace-select=${(e) => action('on-workspace-select')(e.detail)}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
-      @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-      @on-search=${(e) => action('on-search')(e.detail)}
-    ></kyn-account-switcher>
-  `,
-};
-
-// Story: Many types, many items, non account
-export const ManyTypesManyItemsNonAccount = {
+// Story: Full account info (with ID and country)
+export const FullAccountInfo = {
   args: {
     showSearch: true,
     searchLabel: 'Search',
   },
   render: (args) => html`
-    <kyn-account-switcher
-      .currentAccount=${currentAccountNonSelected}
-      .workspaces=${manyTypesWorkspaces}
-      .items=${manyItemsAccounts}
+    <account-switcher-demo
+      .currentAccount=${fullAccountInfo}
       ?showSearch=${args.showSearch}
       searchLabel=${args.searchLabel}
-      @on-workspace-select=${(e) => action('on-workspace-select')(e.detail)}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
-      @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-      @on-search=${(e) => action('on-search')(e.detail)}
-    ></kyn-account-switcher>
+    ></account-switcher-demo>
   `,
 };
 
-// Story: Few items, many types, account selected
-export const FewItemsManyTypesAccountSelected = {
+// Story: Simple account info (name only)
+export const SimpleAccountInfo = {
+  args: {
+    showSearch: true,
+    searchLabel: 'Search',
+  },
+  render: (args) => html`
+    <account-switcher-demo
+      .currentAccount=${simpleAccountInfo}
+      ?showSearch=${args.showSearch}
+      searchLabel=${args.searchLabel}
+    ></account-switcher-demo>
+  `,
+};
+
+// Story: Without search
+export const WithoutSearch = {
   args: {
     showSearch: false,
   },
   render: (args) => html`
-    <kyn-account-switcher
-      .currentAccount=${currentAccountSelected}
-      .workspaces=${manyTypesSmallCountsWorkspaces}
-      .items=${fewItemsAccounts}
+    <account-switcher-demo
+      .currentAccount=${fullAccountInfo}
       ?showSearch=${args.showSearch}
-      @on-workspace-select=${(e) => action('on-workspace-select')(e.detail)}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
-      @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-    ></kyn-account-switcher>
-  `,
-};
-
-// Story: Few items, few types, account selected
-export const FewItemsFewTypesAccountSelected = {
-  args: {
-    showSearch: false,
-  },
-  render: (args) => html`
-    <kyn-account-switcher
-      .currentAccount=${currentAccountSelected}
-      .workspaces=${fewTypesWorkspaces}
-      .items=${fewItemsAccounts}
-      ?showSearch=${args.showSearch}
-      @on-workspace-select=${(e) => action('on-workspace-select')(e.detail)}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
-      @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-    ></kyn-account-switcher>
-  `,
-};
-
-// Story: Few items, many types, non account selected
-export const FewItemsManyTypesNonAccount = {
-  args: {
-    showSearch: false,
-  },
-  render: (args) => html`
-    <kyn-account-switcher
-      .currentAccount=${currentAccountNonSelected}
-      .workspaces=${manyTypesComputeSelectedWorkspaces}
-      .items=${fewItemsComputeZones}
-      ?showSearch=${args.showSearch}
-      @on-workspace-select=${(e) => action('on-workspace-select')(e.detail)}
-      @on-item-select=${(e) => action('on-item-select')(e.detail)}
-      @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-    ></kyn-account-switcher>
+    ></account-switcher-demo>
   `,
 };
