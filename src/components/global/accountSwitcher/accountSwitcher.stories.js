@@ -84,11 +84,6 @@ class AccountSwitcherDemo extends LitElement {
   }
 
   render() {
-    // Calculate total items for Global Zone
-    const totalItems = Object.entries(exampleData.itemsByWorkspace)
-      .filter(([key]) => key !== 'global')
-      .reduce((sum, [, items]) => sum + items.length, 0);
-
     const workspacesWithCounts = exampleData.workspaces.map((workspace) => ({
       ...workspace,
       count:

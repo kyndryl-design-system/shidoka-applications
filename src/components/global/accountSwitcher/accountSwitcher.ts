@@ -1,18 +1,16 @@
 import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import AccountSwitcherScss from './accountSwitcher.scss?inline';
 
-import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
 
 import '../../reusable/link';
 import '../../reusable/search';
-import '../../reusable/iconSelector';
+import './accountSwitcherMenuItem';
 
 export interface Workspace {
   id: string;
@@ -181,35 +179,17 @@ export class AccountSwitcher extends LitElement {
 
   private _renderWorkspaceList() {
     return html`
-      <div class="workspace-list">
+      <div class="workspace-list" role="listbox" aria-label="Workspaces">
         ${this.workspaces.map(
           (workspace) => html`
-            <div
-              class=${classMap({
-                'workspace-item': true,
-                'workspace-item--selected':
-                  this._selectedWorkspaceId === workspace.id,
-              })}
-              role="button"
-              tabindex="0"
-              @click=${() => this._handleWorkspaceSelect(workspace)}
-              @keydown=${(e: KeyboardEvent) =>
-                this._handleKeydown(e, () =>
-                  this._handleWorkspaceSelect(workspace)
-                )}
-            >
-              <span class="workspace-item__name">${workspace.name}</span>
-              ${workspace.count != null
-                ? html`
-                    <span class="workspace-item__count"
-                      >${workspace.count}</span
-                    >
-                    <span class="workspace-item__chevron">
-                      ${unsafeSVG(chevronRightIcon)}
-                    </span>
-                  `
-                : null}
-            </div>
+            <kyn-account-switcher-menu-item
+              variant="workspace"
+              value=${workspace.id}
+              name=${workspace.name}
+              .count=${workspace.count}
+              ?selected=${this._selectedWorkspaceId === workspace.id}
+              @on-click=${() => this._handleWorkspaceSelect(workspace)}
+            ></kyn-account-switcher-menu-item>
           `
         )}
       </div>
@@ -230,41 +210,23 @@ export class AccountSwitcher extends LitElement {
 
   private _renderItemsList() {
     return html`
-      <div class="items-list">
+      <div class="items-list" role="listbox" aria-label="Items">
         ${this.items.map(
           (item) => html`
-            <div
-              class=${classMap({
-                item: true,
-                'item--selected': this._selectedItemId === item.id,
-              })}
-              role="button"
-              tabindex="0"
-              @click=${() => this._handleItemSelect(item)}
-              @keydown=${(e: KeyboardEvent) =>
-                this._handleKeydown(e, () => this._handleItemSelect(item))}
-            >
-              <span class="item__name">${item.name}</span>
-              <kyn-icon-selector
-                value=${item.id}
-                ?checked=${item.favorited}
-                onlyVisibleOnHover
-                persistWhenChecked
-                @on-change=${(e: CustomEvent) =>
-                  this._handleFavoriteChange(item, e)}
-              ></kyn-icon-selector>
-            </div>
+            <kyn-account-switcher-menu-item
+              variant="item"
+              value=${item.id}
+              name=${item.name}
+              ?selected=${this._selectedItemId === item.id}
+              ?favorited=${item.favorited}
+              @on-click=${() => this._handleItemSelect(item)}
+              @on-favorite-change=${(e: CustomEvent) =>
+                this._handleFavoriteChange(item, e)}
+            ></kyn-account-switcher-menu-item>
           `
         )}
       </div>
     `;
-  }
-
-  private _handleKeydown(e: KeyboardEvent, callback: () => void) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      callback();
-    }
   }
 
   private _handleCopyAccountId(e: CustomEvent) {
@@ -309,7 +271,7 @@ export class AccountSwitcher extends LitElement {
     e.stopPropagation();
     this.dispatchEvent(
       new CustomEvent('on-favorite-change', {
-        detail: { item, favorited: e.detail.checked },
+        detail: { item, favorited: e.detail.favorited },
         bubbles: true,
         composed: true,
       })
