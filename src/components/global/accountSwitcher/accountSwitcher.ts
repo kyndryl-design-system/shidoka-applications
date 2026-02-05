@@ -179,14 +179,14 @@ export class AccountSwitcher extends LitElement {
 
   private _renderWorkspaceList() {
     return html`
-      <div class="workspace-list" role="listbox" aria-label="Workspaces">
+      <div class="workspace-list" role="list" aria-label="Workspaces">
         ${this.workspaces.map(
           (workspace) => html`
             <kyn-account-switcher-menu-item
               variant="workspace"
               value=${workspace.id}
               name=${workspace.name}
-              .count=${workspace.count}
+              .count=${workspace.count ?? null}
               ?selected=${this._selectedWorkspaceId === workspace.id}
               @on-click=${() => this._handleWorkspaceSelect(workspace)}
             ></kyn-account-switcher-menu-item>
@@ -210,7 +210,7 @@ export class AccountSwitcher extends LitElement {
 
   private _renderItemsList() {
     return html`
-      <div class="items-list" role="listbox" aria-label="Items">
+      <div class="items-list" role="list" aria-label="Items">
         ${this.items.map(
           (item) => html`
             <kyn-account-switcher-menu-item

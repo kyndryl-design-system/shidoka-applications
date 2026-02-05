@@ -58,6 +58,7 @@ export class Tab extends LitElement {
       tab: true,
       'size--sm': this._size === 'sm',
       'size--md': this._size === 'md',
+      'size--lg': this._size === 'lg',
       vertical: this._vertical,
       selected: this.selected,
       disabled: this.disabled,

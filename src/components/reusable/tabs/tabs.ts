@@ -17,7 +17,7 @@ import TabsScss from './tabs.scss?inline';
 export class Tabs extends LitElement {
   static override styles = unsafeCSS(TabsScss);
 
-  /** Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px. */
+  /** Size of the tab buttons, `'sm'`, `'md'`, or `'lg'`. Icon size: 16px. */
   @property({ type: String })
   accessor tabSize = 'md';
 

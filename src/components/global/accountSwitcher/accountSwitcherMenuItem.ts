@@ -60,9 +60,9 @@ export class AccountSwitcherMenuItem extends LitElement {
     return html`
       <div
         class=${classMap(classes)}
-        role="option"
+        role="listitem"
         tabindex="0"
-        aria-selected=${this.selected}
+        aria-current=${this.selected ? 'true' : 'false'}
         @click=${this._handleClick}
         @keydown=${this._handleKeydown}
       >

@@ -12,7 +12,7 @@ import defaultCheckedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochr
  * Primarily designed for favorite/unfavorite functionality.
  *
  * @fires on-change - Emits when the checked state changes.
- *   `detail: { checked: boolean, value: string, origEvent: Event }`
+ * <pre><code>detail: { checked: boolean, value: string, origEvent: Event }</code></pre>
  * @slot icon-unchecked - Optional icon for unchecked state. Defaults to star outline.
  * @slot icon-checked - Optional icon for checked state. Defaults to filled star.
  */
@@ -128,6 +128,7 @@ export class IconSelector extends LitElement {
   /**
    * Stop click events from bubbling up to parent elements (e.g., anchor tags).
    * This ensures clicking the icon-selector doesn't trigger navigation.
+   * @internal
    */
   private _handleHostClick = (e: Event) => {
     e.stopPropagation();
