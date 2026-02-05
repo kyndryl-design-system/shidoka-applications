@@ -11,8 +11,7 @@ import defaultCheckedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochr
  * Icon Selector - A checkbox-style toggle using icons for visual states.
  * Primarily designed for favorite/unfavorite functionality.
  *
- * @fires on-change - Emits when the checked state changes.
- * <pre><code>detail: { checked: boolean, value: string, origEvent: Event }</code></pre>
+ * @fires on-change - Emits when the checked state changes. Detail includes checked (boolean), value (string), and origEvent.
  * @slot icon-unchecked - Optional icon for unchecked state. Defaults to star outline.
  * @slot icon-checked - Optional icon for checked state. Defaults to filled star.
  */

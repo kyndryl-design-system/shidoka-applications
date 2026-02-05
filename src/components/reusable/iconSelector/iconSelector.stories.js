@@ -9,9 +9,6 @@ import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 export default {
   title: 'Components/Icon Selector',
   component: 'kyn-icon-selector',
-  subcomponents: {
-    'kyn-icon-selector-group': 'kyn-icon-selector-group',
-  },
   argTypes: {
     checked: {
       control: { type: 'boolean' },
