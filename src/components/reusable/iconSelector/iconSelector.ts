@@ -1,4 +1,4 @@
-import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -49,7 +49,7 @@ export class IconSelector extends LitElement {
    * When true, the icon is only visible when the parent element is hovered.
    * Visibility is controlled via CSS on the parent component.
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor onlyVisibleOnHover = false;
 
   /**
@@ -63,6 +63,8 @@ export class IconSelector extends LitElement {
     const classes = {
       'icon-selector': true,
       'icon-selector--checked': this.checked,
+      'only-visible-on-hover': this.onlyVisibleOnHover,
+      'persist-when-checked': this.persistWhenChecked,
     };
 
     const currentLabel = this.checked ? this.checkedLabel : this.uncheckedLabel;
@@ -132,14 +134,6 @@ export class IconSelector extends LitElement {
   private _handleHostClick = (e: Event) => {
     e.stopPropagation();
   };
-
-  override updated(changedProperties: PropertyValues) {
-    super.updated(changedProperties);
-    // Manage host classes for CSS styling
-    this.classList.toggle('only-visible-on-hover', this.onlyVisibleOnHover);
-    this.classList.toggle('persist-when-checked', this.persistWhenChecked);
-    this.classList.toggle('is-checked', this.checked);
-  }
 
   override connectedCallback() {
     super.connectedCallback();

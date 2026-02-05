@@ -9,18 +9,6 @@
   color: inherit;
 }
 
-// Only visible on hover: uses CSS custom property set by parent (e.g., header-link)
-// This works at any nesting depth, unlike ::slotted() which only matches direct children
-:host(.only-visible-on-hover) {
-  opacity: var(--kyn-icon-selector-hover-opacity, 0);
-  transition: opacity 150ms ease-out;
-}
-
-// When persistWhenChecked is true, keep checked items visible
-:host(.only-visible-on-hover.persist-when-checked.is-checked) {
-  opacity: 1;
-}
-
 .icon-selector {
   display: inline-flex;
   align-items: center;
@@ -55,6 +43,17 @@
   &[disabled] {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+
+  // Only visible on hover: uses CSS custom property set by parent (e.g., header-link)
+  &.only-visible-on-hover {
+    opacity: var(--kyn-icon-selector-hover-opacity, 0);
+    transition: opacity 150ms ease-out;
+  }
+
+  // When persistWhenChecked is true, keep checked items visible
+  &.only-visible-on-hover.persist-when-checked.icon-selector--checked {
+    opacity: 1;
   }
 }
 
