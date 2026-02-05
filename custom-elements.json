@@ -1245,12 +1245,23 @@
             },
             {
               "kind": "field",
+              "name": "layout",
+              "type": {
+                "text": "'masonry' | 'grid'"
+              },
+              "default": "'masonry'",
+              "description": "Layout mode for categories.\n- \"masonry\" (default): Original CSS multi-column layout for backwards compatibility\n- \"grid\": New CSS Grid with auto-fit columns and responsive wrapping",
+              "attribute": "layout",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "maxColumns",
               "type": {
                 "text": "number"
               },
-              "default": "3",
-              "description": "Max number of columns to display in the grid (default: 3).",
+              "default": "10",
+              "description": "Max number of columns to display when layout=\"grid\" (default: 10, effectively unlimited).\nHas no effect when layout=\"masonry\".",
               "attribute": "maxColumns"
             },
             {
@@ -1518,6 +1529,12 @@
           ],
           "events": [
             {
+              "name": "column-count-change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
               "name": "on-nav-change",
               "type": {
                 "text": "CustomEvent"
@@ -1553,12 +1570,21 @@
               "fieldName": "maxRootLinks"
             },
             {
+              "name": "layout",
+              "type": {
+                "text": "'masonry' | 'grid'"
+              },
+              "default": "'masonry'",
+              "description": "Layout mode for categories.\n- \"masonry\" (default): Original CSS multi-column layout for backwards compatibility\n- \"grid\": New CSS Grid with auto-fit columns and responsive wrapping",
+              "fieldName": "layout"
+            },
+            {
               "name": "maxColumns",
               "type": {
                 "text": "number"
               },
-              "default": "3",
-              "description": "Max number of columns to display in the grid (default: 3).",
+              "default": "10",
+              "description": "Max number of columns to display when layout=\"grid\" (default: 10, effectively unlimited).\nHas no effect when layout=\"masonry\".",
               "fieldName": "maxColumns"
             },
             {
@@ -1666,9 +1692,19 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "false",
-              "description": "Disable automatic divider detection. When true, only shows divider if showDivider is explicitly set.",
+              "default": "true",
+              "description": "Disable automatic divider detection (default: true for backwards compatibility).\nWhen true, only shows divider if showDivider is explicitly set.\nWhen false, dividers auto-detect based on sibling categories.",
               "attribute": "noAutoDivider"
+            },
+            {
+              "kind": "field",
+              "name": "indentLinks",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Indent links to align with heading text when icon is present.\nDefault: false for backwards compatibility.\nSet to true when using icon slot and you want links to align with heading text.",
+              "attribute": "indentLinks"
             },
             {
               "kind": "method",
@@ -1722,9 +1758,18 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "false",
-              "description": "Disable automatic divider detection. When true, only shows divider if showDivider is explicitly set.",
+              "default": "true",
+              "description": "Disable automatic divider detection (default: true for backwards compatibility).\nWhen true, only shows divider if showDivider is explicitly set.\nWhen false, dividers auto-detect based on sibling categories.",
               "fieldName": "noAutoDivider"
+            },
+            {
+              "name": "indentLinks",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Indent links to align with heading text when icon is present.\nDefault: false for backwards compatibility.\nSet to true when using icon slot and you want links to align with heading text.",
+              "fieldName": "indentLinks"
             }
           ],
           "superclass": {
@@ -2259,12 +2304,23 @@
             },
             {
               "kind": "field",
-              "name": "flyoutAutoCollapsed",
+              "name": "truncate",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "When false (default), the flyout stays open and doesn't auto-close on mouse leave.\nWhen true, the flyout will auto-collapse when the mouse leaves.",
+              "description": "When true, long text truncates with ellipsis. Default: false (text wraps normally).",
+              "attribute": "truncate",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "flyoutAutoCollapsed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "When true (default), the flyout auto-closes when the mouse leaves (original behavior).\nWhen false, the flyout stays open and doesn't auto-close on mouse leave.",
               "attribute": "flyoutAutoCollapsed"
             },
             {
@@ -2511,12 +2567,21 @@
               "fieldName": "linkTitle"
             },
             {
-              "name": "flyoutAutoCollapsed",
+              "name": "truncate",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "When false (default), the flyout stays open and doesn't auto-close on mouse leave.\nWhen true, the flyout will auto-collapse when the mouse leaves.",
+              "description": "When true, long text truncates with ellipsis. Default: false (text wraps normally).",
+              "fieldName": "truncate"
+            },
+            {
+              "name": "flyoutAutoCollapsed",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "When true (default), the flyout auto-closes when the mouse leaves (original behavior).\nWhen false, the flyout stays open and doesn't auto-close on mouse leave.",
               "fieldName": "flyoutAutoCollapsed"
             }
           ],
@@ -2568,8 +2633,8 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "false",
-              "description": "when false (default), the first link's flyout automatically opens when the nav opens,\nand flyouts don't auto-close on mouse leave.\nwhen true, flyouts remain collapsed until user interaction.",
+              "default": "true",
+              "description": "When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).\nWhen false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.",
               "attribute": "flyoutAutoCollapsed"
             },
             {
@@ -2620,8 +2685,8 @@
               "type": {
                 "text": "boolean"
               },
-              "default": "false",
-              "description": "when false (default), the first link's flyout automatically opens when the nav opens,\nand flyouts don't auto-close on mouse leave.\nwhen true, flyouts remain collapsed until user interaction.",
+              "default": "true",
+              "description": "When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).\nWhen false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.",
               "fieldName": "flyoutAutoCollapsed"
             }
           ],
@@ -11089,7 +11154,8 @@
               },
               "default": "false",
               "description": "When true, the icon is only visible when the parent element is hovered.\nVisibility is controlled via CSS on the parent component.",
-              "attribute": "onlyVisibleOnHover"
+              "attribute": "onlyVisibleOnHover",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -11139,12 +11205,6 @@
                   }
                 }
               ]
-            },
-            {
-              "kind": "field",
-              "name": "_handleHostClick",
-              "privacy": "private",
-              "description": "Stop click events from bubbling up to parent elements (e.g., anchor tags).\nThis ensures clicking the icon-selector doesn't trigger navigation."
             }
           ],
           "events": [
@@ -11153,7 +11213,7 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Emits when the checked state changes. `detail: { checked: boolean, value: string, origEvent: Event }`"
+              "description": "Emits when the checked state changes. Detail includes checked (boolean), value (string), and origEvent."
             }
           ],
           "attributes": [
@@ -11308,17 +11368,7 @@
             },
             {
               "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
               "name": "_syncChildrenState",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_handleChildChange",
               "privacy": "private"
             }
           ],

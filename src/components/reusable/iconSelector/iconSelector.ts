@@ -1,4 +1,4 @@
-import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
@@ -11,8 +11,7 @@ import defaultCheckedIcon from '@kyndryl-design-system/shidoka-icons/svg/monochr
  * Icon Selector - A checkbox-style toggle using icons for visual states.
  * Primarily designed for favorite/unfavorite functionality.
  *
- * @fires on-change - Emits when the checked state changes.
- *   `detail: { checked: boolean, value: string, origEvent: Event }`
+ * @fires on-change - Emits when the checked state changes. Detail includes checked (boolean), value (string), and origEvent.
  * @slot icon-unchecked - Optional icon for unchecked state. Defaults to star outline.
  * @slot icon-checked - Optional icon for checked state. Defaults to filled star.
  */
@@ -50,7 +49,7 @@ export class IconSelector extends LitElement {
    * When true, the icon is only visible when the parent element is hovered.
    * Visibility is controlled via CSS on the parent component.
    */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor onlyVisibleOnHover = false;
 
   /**
@@ -64,6 +63,8 @@ export class IconSelector extends LitElement {
     const classes = {
       'icon-selector': true,
       'icon-selector--checked': this.checked,
+      'only-visible-on-hover': this.onlyVisibleOnHover,
+      'persist-when-checked': this.persistWhenChecked,
     };
 
     const currentLabel = this.checked ? this.checkedLabel : this.uncheckedLabel;
@@ -128,18 +129,11 @@ export class IconSelector extends LitElement {
   /**
    * Stop click events from bubbling up to parent elements (e.g., anchor tags).
    * This ensures clicking the icon-selector doesn't trigger navigation.
+   * @internal
    */
   private _handleHostClick = (e: Event) => {
     e.stopPropagation();
   };
-
-  override updated(changedProperties: PropertyValues) {
-    super.updated(changedProperties);
-    // Manage host classes for CSS styling
-    this.classList.toggle('only-visible-on-hover', this.onlyVisibleOnHover);
-    this.classList.toggle('persist-when-checked', this.persistWhenChecked);
-    this.classList.toggle('is-checked', this.checked);
-  }
 
   override connectedCallback() {
     super.connectedCallback();
