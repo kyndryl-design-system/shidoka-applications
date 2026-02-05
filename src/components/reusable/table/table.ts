@@ -78,6 +78,14 @@ export class Table extends LitElement {
   private accessor _provider = new ContextProvider(this, tableContext);
 
   /**
+   * Tracks column widths for resizable columns.
+   * @ignore
+   * @private
+   */
+  @state()
+  private accessor _columnWidths: Map<number, number> = new Map();
+
+  /**
    * updated: Lifecycle method called when the element is updated.
    */
   override updated(changedProperties: PropertyValues) {
@@ -322,6 +330,10 @@ export class Table extends LitElement {
       'on-rows-change',
       this._handleRowsChange as EventListener
     );
+    this.addEventListener(
+      'on-column-resize',
+      this._handleColumnResize as EventListener
+    );
   }
 
   override disconnectedCallback() {
@@ -339,11 +351,117 @@ export class Table extends LitElement {
       'on-rows-change',
       this._handleRowsChange as EventListener
     );
+    this.removeEventListener(
+      'on-column-resize',
+      this._handleColumnResize as EventListener
+    );
   }
 
   override firstUpdated() {
     this._tableHeaderRow = this.querySelector('kyn-header-tr');
   }
+
+  private _handleColumnResize = (e: CustomEvent) => {
+    e.stopPropagation();
+
+    const { columnIndex, newWidth } = e.detail;
+
+    if (columnIndex == null || newWidth == null) return;
+
+    // Parse width to pixels
+    const width =
+      typeof newWidth === 'string'
+        ? parseInt(newWidth.replace(/[^0-9]/g, ''), 10)
+        : newWidth;
+
+    // Store column width
+    const updatedWidths = new Map(this._columnWidths);
+    updatedWidths.set(columnIndex, width);
+    this._columnWidths = updatedWidths;
+  };
+
+  /**
+   * Locks the table width to its current size.
+   * Used during column resize to prevent reflow.
+   * @internal
+   */
+  public lockTableWidth = () => {
+    const currentWidth = this.offsetWidth;
+    this.style.width = `${currentWidth}px`;
+  };
+
+  /**
+   * Unlocks the table width to allow natural expansion.
+   * @internal
+   */
+  public unlockTableWidth = () => {
+    this.style.width = 'auto';
+    this.style.minWidth = '100%';
+    this.style.maxWidth = 'none';
+  };
+
+  /**
+   * Updates table width based on current column widths.
+   * @internal
+   */
+  public updateTableWidth = () => {
+    const headerRow = this.querySelector('kyn-header-tr');
+    if (!headerRow) return;
+
+    const columns = headerRow.querySelectorAll('kyn-th');
+    let totalWidth = 0;
+
+    columns.forEach((col) => {
+      totalWidth += col.offsetWidth;
+    });
+    this.style.width = `${totalWidth}px`;
+  };
+
+  /**
+   * Updates table width during column resize based on snapshot widths.
+   * Called from kyn-th during drag to calculate and apply table width.
+   * @param {Map<number, number>} columnWidthsSnapshot - Map of column index to width
+   * @param {number} resizingColumnIndex - Index of the column being resized
+   * @param {number} resizedColumnWidth - New width of the resizing column
+   * @internal
+   */
+  public updateTableWidthFromResize = (
+    columnWidthsSnapshot: Map<number, number>,
+    resizingColumnIndex: number,
+    resizedColumnWidth: number
+  ) => {
+    let totalWidth = 0;
+
+    columnWidthsSnapshot.forEach((width, index) => {
+      if (index === resizingColumnIndex) {
+        totalWidth += resizedColumnWidth;
+      } else {
+        totalWidth += width;
+      }
+    });
+
+    this.style.width = `${totalWidth}px`;
+  };
+
+  /**
+   * Locks all columns except the specified index.
+   * Used during column resize to keep other columns fixed.
+   * @internal
+   */
+  public lockAllColumnsExcept = (columnIndex: number) => {
+    const headerRow = this.querySelector('kyn-header-tr');
+    if (!headerRow) return;
+
+    const columns = Array.from(headerRow.querySelectorAll('kyn-th'));
+    columns.forEach((col, index) => {
+      if (index !== columnIndex) {
+        const computedWidth = (col as any).offsetWidth;
+        col.style.width = `${computedWidth}px`;
+        col.style.flexGrow = '0';
+        col.style.flexShrink = '0';
+      }
+    });
+  };
 
   override render() {
     return html` <slot></slot> `;

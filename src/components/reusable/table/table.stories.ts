@@ -572,12 +572,12 @@ export const WithFooter: Story = {
         <kyn-table>
           <kyn-thead>
             <kyn-header-tr>
-              <kyn-th .align=${'center'}>ID</kyn-th>
-              <kyn-th>First Name</kyn-th>
-              <kyn-th>Last Name</kyn-th>
-              <kyn-th>Birthday</kyn-th>
-              <kyn-th .align=${'right'}>Age</kyn-th>
-              <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
+              <kyn-th resizable .align=${'center'}>ID</kyn-th>
+              <kyn-th resizable>First Name</kyn-th>
+              <kyn-th resizable>Last Name</kyn-th>
+              <kyn-th resizable>Birthday</kyn-th>
+              <kyn-th resizable .align=${'right'}>Age</kyn-th>
+              <kyn-th resizable .align=${'right'}>Account Deposits($)</kyn-th>
             </kyn-header-tr>
           </kyn-thead>
           <kyn-tbody>

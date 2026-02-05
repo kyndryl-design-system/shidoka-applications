@@ -136,10 +136,41 @@ export class TableHeader extends LitElement {
   accessor minWidth = '';
 
   /**
+   * Enables resizing for this column.
+   * When true, a resize handle appears on the right edge of the column.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor resizable = false;
+
+  /**
+   * Minimum width constraint for resizing (in pixels).
+   */
+  @property({ type: Number })
+  accessor resizeMinWidth = 50;
+
+  /**
+   * Maximum width constraint for resizing (in pixels).
+   */
+  @property({ type: Number })
+  accessor resizeMaxWidth = 1000;
+
+  /**
    * @ignore
    */
   @queryAssignedNodes({ flatten: true })
   accessor listItems!: Array<Node>;
+
+  @state()
+  private accessor _isResizing = false;
+
+  @state()
+  private accessor _resizeStartX = 0;
+
+  @state()
+  private accessor _resizeStartWidth = 0;
+
+  @state()
+  private accessor _columnWidthsSnapshot: Map<number, number> = new Map();
 
   /**
    * Resets the sorting direction of the component to its default state.
@@ -215,6 +246,22 @@ export class TableHeader extends LitElement {
     }
   }
 
+  override connectedCallback() {
+    super.connectedCallback();
+    if (this.resizable) {
+      this.addEventListener('mousedown', this._handleResizeStart, {
+        capture: false,
+      });
+    }
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.resizable) {
+      this.removeEventListener('mousedown', this._handleResizeStart);
+    }
+  }
+
   getTextContent() {
     const nonWhitespaceNodes = this.listItems.filter((node) => {
       return (
@@ -224,6 +271,191 @@ export class TableHeader extends LitElement {
 
     this.headerLabel = nonWhitespaceNodes[0]?.textContent || '';
   }
+
+  private _handleResizeStart = (e: MouseEvent) => {
+    if (!this.resizable) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    this._isResizing = true;
+    this._resizeStartX = e.clientX;
+    this._resizeStartWidth = this.offsetWidth;
+
+    const table = this.closest('kyn-table') as any;
+    if (table) {
+      const columnIndex = this._getColumnIndex();
+      // HARDCORE: Lock ALL columns to their exact current widths - this freezes the layout completely
+      this._lockAllColumnsExactly(columnIndex);
+      // Force reflow to apply the lock immediately - prevents jump on first mousemove
+      void this.offsetWidth;
+      // Lock table width during resize
+      table.lockTableWidth();
+      // Disable pointer events on all other headers to prevent layout thrashing
+      this._disableOtherHeadersPointerEvents(columnIndex);
+    }
+
+    // Add event listeners
+    document.addEventListener('mousemove', this._handleResizeMove);
+    document.addEventListener('mouseup', this._handleResizeEnd);
+
+    // Lock cursor and prevent text selection
+    this._lockResizeCursor();
+  };
+
+  private _handleResizeMove = (e: MouseEvent) => {
+    if (!this._isResizing) return;
+
+    e.preventDefault();
+    const deltaX = e.clientX - this._resizeStartX;
+    let newWidth = this._resizeStartWidth + deltaX;
+
+    // Apply constraints
+    newWidth = Math.max(
+      this.resizeMinWidth,
+      Math.min(newWidth, this.resizeMaxWidth)
+    );
+
+    // Apply width ONLY to the resized column - nothing else changes
+    this._applyWidthToAllCells(newWidth);
+
+    // Calculate table width = sum of all locked columns + new resized column width
+    this._updateTableWidthFromSnapshot(newWidth);
+
+    // Dispatch event with new width
+    this.dispatchEvent(
+      new CustomEvent('on-column-resize', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          columnIndex: this._getColumnIndex(),
+          newWidth: `${Math.round(newWidth)}px`,
+          deltaX,
+          source: 'resize',
+        },
+      })
+    );
+  };
+
+  private _handleResizeEnd = (e: MouseEvent) => {
+    if (!this._isResizing) return;
+
+    e.preventDefault();
+    this._isResizing = false;
+
+    // Remove event listeners
+    document.removeEventListener('mousemove', this._handleResizeMove);
+    document.removeEventListener('mouseup', this._handleResizeEnd);
+
+    // Re-enable pointer events on all headers
+    this._enableAllHeadersPointerEvents();
+
+    // Unlock cursor
+    this._unlockResizeCursor();
+  };
+
+  private _applyWidthToAllCells = (width: number) => {
+    const roundedWidth = Math.round(width);
+    const widthStr = `${roundedWidth}px`;
+
+    // Apply width to this header cell only - body cells have their own styles
+    this.style.width = widthStr;
+    this.style.minWidth = widthStr;
+    this.style.maxWidth = widthStr;
+  };
+
+  private _lockResizeCursor = () => {
+    (document.body as any).style.cursor = 'col-resize';
+    (document.body as any).style.userSelect = 'none';
+    (document.body as any).style.webkitUserSelect = 'none';
+  };
+
+  private _unlockResizeCursor = () => {
+    (document.body as any).style.cursor = 'auto';
+    (document.body as any).style.userSelect = 'auto';
+    (document.body as any).style.webkitUserSelect = 'auto';
+  };
+
+  private _getColumnIndex = (): number => {
+    const parent = this.closest('kyn-header-tr');
+    if (!parent) return -1;
+    return Array.from(parent.querySelectorAll('kyn-th')).indexOf(this);
+  };
+
+  private _lockAllColumnsExactly = (resizingColumnIndex: number) => {
+    const table = this.closest('kyn-table') as any;
+    if (!table) return;
+
+    const headerRow = table.querySelector('kyn-header-tr');
+    if (!headerRow) return;
+
+    const columns = Array.from(headerRow.querySelectorAll('kyn-th'));
+
+    // HARDCORE: Lock EVERY column to exact pixel width
+    columns.forEach((col, index) => {
+      const width = (col as any).offsetWidth;
+
+      // Store the width for later calculation
+      this._columnWidthsSnapshot.set(index, width);
+
+      // Lock header cell only - no body cell styling
+      (col as any).style.width = `${width}px`;
+      (col as any).style.minWidth = `${width}px`;
+      (col as any).style.maxWidth = `${width}px`;
+      (col as any).style.flexGrow = '0';
+      (col as any).style.flexShrink = '0';
+      (col as any).style.flex = 'none';
+    });
+  };
+
+  private _updateTableWidthFromSnapshot = (resizedColumnWidth: number) => {
+    const table = this.closest('kyn-table') as any;
+    if (!table) return;
+
+    const resizingColumnIndex = this._getColumnIndex();
+
+    // Delegate to table component to update its width
+    table.updateTableWidthFromResize(
+      this._columnWidthsSnapshot,
+      resizingColumnIndex,
+      resizedColumnWidth
+    );
+  };
+
+  // private _isLastColumn = (): boolean => {
+  //   const parent = this.closest('kyn-header-tr');
+  //   if (!parent) return false;
+  //   const columns = Array.from(parent.querySelectorAll('kyn-th'));
+  //   return columns[columns.length - 1] === this;
+  // };
+
+  private _disableOtherHeadersPointerEvents = (resizingColumnIndex: number) => {
+    const table = this.closest('kyn-table') as any;
+    if (!table) return;
+
+    const headerRow = table.querySelector('kyn-header-tr');
+    if (!headerRow) return;
+
+    const columns = Array.from(headerRow.querySelectorAll('kyn-th'));
+    columns.forEach((col, index) => {
+      if (index !== resizingColumnIndex) {
+        (col as any).style.pointerEvents = 'none';
+      }
+    });
+  };
+
+  private _enableAllHeadersPointerEvents = () => {
+    const table = this.closest('kyn-table') as any;
+    if (!table) return;
+
+    const headerRow = table.querySelector('kyn-header-tr');
+    if (!headerRow) return;
+
+    const columns = Array.from(headerRow.querySelectorAll('kyn-th'));
+    columns.forEach((col) => {
+      (col as any).style.pointerEvents = '';
+    });
+  };
 
   override render() {
     const iconClasses = {
@@ -288,6 +520,15 @@ export class TableHeader extends LitElement {
           ${this.assistiveText}
         </div>
       </div>
+      ${this.resizable
+        ? html`<div
+            class="resize-handle"
+            @mousedown=${this._handleResizeStart}
+            role="separator"
+            aria-label="Resize column"
+            aria-orientation="vertical"
+          ></div>`
+        : null}
       <slot name="column-filter"> </slot>
     `;
   }
