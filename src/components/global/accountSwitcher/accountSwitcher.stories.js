@@ -13,6 +13,15 @@ const allItems = Object.entries(exampleData.itemsByWorkspace)
   .filter(([key]) => key !== 'global')
   .flatMap(([, items]) => items);
 
+// Workspaces with counts computed from actual items data
+const workspaces = exampleData.workspaces.map((workspace) => ({
+  ...workspace,
+  count:
+    workspace.id === 'global'
+      ? null
+      : exampleData.itemsByWorkspace[workspace.id]?.length || 0,
+}));
+
 // Consuming apps are responsible for managing their own data. Real apps will likely
 // fetch items from an API when a workspace is selected, use their own state management,
 // or have different data structures. The component just emits events and accepts items.
@@ -46,7 +55,7 @@ export const FullAccountInfo = {
   render: () => html`
     <kyn-account-switcher
       .currentAccount=${exampleData.currentAccount}
-      .workspaces=${exampleData.workspaces}
+      .workspaces=${workspaces}
       .items=${allItems}
       @on-workspace-select=${handleWorkspaceSelect}
       @on-item-select=${(e) => action('on-item-select')(e.detail)}
@@ -59,7 +68,7 @@ export const SimpleAccountInfo = {
   render: () => html`
     <kyn-account-switcher
       .currentAccount=${exampleData.simpleCurrentAccount}
-      .workspaces=${exampleData.workspaces}
+      .workspaces=${workspaces}
       .items=${allItems}
       @on-workspace-select=${handleWorkspaceSelect}
       @on-item-select=${(e) => action('on-item-select')(e.detail)}
@@ -72,7 +81,7 @@ export const WithSearch = {
   render: () => html`
     <kyn-account-switcher
       .currentAccount=${exampleData.currentAccount}
-      .workspaces=${exampleData.workspaces}
+      .workspaces=${workspaces}
       .items=${allItems}
       showSearch
       searchLabel="Search"
@@ -103,7 +112,7 @@ export const UIImplementation = {
 
           <kyn-account-switcher
             .currentAccount=${exampleData.currentAccount}
-            .workspaces=${exampleData.workspaces}
+            .workspaces=${workspaces}
             .items=${allItems}
             @on-workspace-select=${handleWorkspaceSelect}
             @on-item-select=${(e) => action('on-item-select')(e.detail)}
