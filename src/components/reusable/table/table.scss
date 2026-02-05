@@ -11,6 +11,17 @@
   table-layout: fixed;
 }
 
+/* When table has resizable columns, use fixed layout and allow dynamic width */
+:host:has(kyn-th[resizable]) {
+  table-layout: fixed;
+  width: max-content;
+}
+
+/* Allow inline width style to override default 100% width */
+:host[style*='width: '] {
+  width: var(--kyn-table-width, auto) !important;
+}
+
 kyn-tr.selected {
   background-color: var(--kd-color-background-table-row-active);
 }

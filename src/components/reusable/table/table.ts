@@ -77,6 +77,9 @@ export class Table extends LitElement {
   @state()
   private accessor _provider = new ContextProvider(this, tableContext);
 
+  @state()
+  private accessor _columnWidths: string[] = [];
+
   /**
    * updated: Lifecycle method called when the element is updated.
    */
@@ -341,12 +344,47 @@ export class Table extends LitElement {
     );
   }
 
+  private _handleColumnResize = (event: CustomEvent) => {
+    event.stopPropagation();
+
+    const { columnIndex, newWidth } = event.detail;
+
+    if (columnIndex == null) return;
+
+    const widths = [...this._columnWidths];
+    widths[columnIndex] = newWidth;
+
+    this._columnWidths = widths;
+  };
+
   override firstUpdated() {
     this._tableHeaderRow = this.querySelector('kyn-header-tr');
+
+    const headers = Array.from(
+      this.querySelectorAll('kyn-header-tr > kyn-th')
+    ) as HTMLElement[];
+
+    this._columnWidths = headers.map((th) => {
+      console.log('Initial th width:', th.getAttribute('width'));
+      return th.getAttribute('width') || `${th.offsetWidth}px`;
+    });
+
+    // Listen for resize events from kyn-th
+    this.addEventListener(
+      'on-column-resize',
+      this._handleColumnResize as EventListener
+    );
   }
 
   override render() {
-    return html` <slot></slot> `;
+    return html`
+      <colgroup>
+        ${this._columnWidths.map(
+          (width) => html`<col style="width:${width}" />`
+        )}
+      </colgroup>
+      <slot></slot>
+    `;
   }
 }
 

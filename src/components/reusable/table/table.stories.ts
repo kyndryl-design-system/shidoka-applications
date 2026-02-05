@@ -216,8 +216,8 @@ export const ExpandableRows: Story = {
       <kyn-table-toolbar tableTitle=${'Expanded Rows'}> </kyn-table-toolbar>
       <kyn-table>
         <kyn-thead>
-          <kyn-header-tr expandable .expandableColumnWidth=${'64px'}>
-            <kyn-th .align=${'center'}>ID</kyn-th>
+          <kyn-header-tr>
+            <kyn-th width="200px" .align=${'center'}>ID</kyn-th>
             <kyn-th>First Name</kyn-th>
             <kyn-th>Last Name</kyn-th>
             <kyn-th>Birthday</kyn-th>
@@ -572,11 +572,11 @@ export const WithFooter: Story = {
         <kyn-table>
           <kyn-thead>
             <kyn-header-tr>
-              <kyn-th .align=${'center'}>ID</kyn-th>
-              <kyn-th>First Name</kyn-th>
-              <kyn-th>Last Name</kyn-th>
-              <kyn-th>Birthday</kyn-th>
-              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th .align=${'center'} resizable>ID</kyn-th>
+              <kyn-th resizable>First Name</kyn-th>
+              <kyn-th resizable>Last Name</kyn-th>
+              <kyn-th resizable>Birthday</kyn-th>
+              <kyn-th .align=${'right'} resizable>Age</kyn-th>
               <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
             </kyn-header-tr>
           </kyn-thead>
@@ -709,6 +709,7 @@ export const ColumnFiltering: Story = {
               <kyn-th>
                 <span class="ellipsis-header">Applications</span>
                 <kyn-text-input
+                  style="width: 100%;"
                   slot="column-filter"
                   size="sm"
                   type="search"
@@ -720,6 +721,7 @@ export const ColumnFiltering: Story = {
               <kyn-th>
                 <span class="ellipsis-header">Business Service</span>
                 <kyn-text-input
+                  style="width: 100%;"
                   slot="column-filter"
                   size="sm"
                   type="search"
@@ -731,6 +733,7 @@ export const ColumnFiltering: Story = {
               <kyn-th>
                 <span class="ellipsis-header">Business Groups</span>
                 <kyn-text-input
+                  style="width: 100%;"
                   slot="column-filter"
                   size="sm"
                   type="search"
@@ -823,7 +826,7 @@ export const ColumnFiltering: Story = {
           overflow: visible;
           kyn-dropdown {
             display: block;
-            width: 200px;
+            min-width: 200px;
           }
         }
 
@@ -836,6 +839,102 @@ export const ColumnFiltering: Story = {
             display: block;
           }
         }
+      </style>
+    `;
+  },
+};
+export const ResizableColumns: Story = {
+  args: {
+    checkboxSelection: false,
+    striped: true,
+    stickyHeader: false,
+    dense: false,
+  },
+  render: (args) => {
+    const basicData = [
+      {
+        id: '1',
+        name: 'John Smith',
+        email: 'john.smith@example.com',
+        department: 'Engineering',
+        status: 'Active',
+      },
+      {
+        id: '2',
+        name: 'Jane Doe',
+        email: 'jane.doe@example.com',
+        department: 'Marketing',
+        status: 'Active',
+      },
+      {
+        id: '3',
+        name: 'Bob Johnson',
+        email: 'bob.johnson@example.com',
+        department: 'Sales',
+        status: 'Inactive',
+      },
+      {
+        id: '4',
+        name: 'Alice Williams',
+        email: 'alice.williams@example.com',
+        department: 'HR',
+        status: 'Active',
+      },
+      {
+        id: '5',
+        name: 'Charlie Brown',
+        email: 'charlie.brown@example.com',
+        department: 'Finance',
+        status: 'Active',
+      },
+    ];
+
+    return html`
+      <kyn-table-container>
+        <kyn-table
+          ?checkboxSelection=${args.checkboxSelection}
+          ?striped=${args.striped}
+          ?stickyHeader=${args.stickyHeader}
+          ?dense=${args.dense}
+        >
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th resizable> Name </kyn-th>
+              <kyn-th resizable> Email </kyn-th>
+              <kyn-th resizable> Department </kyn-th>
+              <kyn-th resizable> Status </kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              basicData,
+              (row) => row.id,
+              (row) => html`
+                <kyn-tr row-id=${row.id}>
+                  <kyn-td>${row.name}</kyn-td>
+                  <kyn-td>${row.email}</kyn-td>
+                  <kyn-td>${row.department}</kyn-td>
+                  <kyn-td
+                    ><kyn-tag
+                      .type=${row.status === 'Active' ? 'success' : 'secondary'}
+                      >${row.status}</kyn-tag
+                    ></kyn-td
+                  >
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+
+      <style>
+        kyn-table-container {
+          margin-top: 16px;
+        }
+
+        /* kyn-th {
+          user-select: none;
+        } */
       </style>
     `;
   },

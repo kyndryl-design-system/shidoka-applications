@@ -12,7 +12,7 @@
   min-width: var(--kyn-th-min-width, auto);
   width: var(--kyn-th-width, auto);
   max-width: var(--kyn-th-max-width, none);
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 
   .container {
@@ -22,6 +22,7 @@
     outline: 2px solid transparent;
     outline-offset: -2px;
     transition: outline-color 0.2s ease-in-out;
+    overflow: hidden;
 
     &:hover,
     &:focus-visible {
@@ -34,6 +35,15 @@
 
     &:focus-visible {
       outline-color: var(--kd-color-border-variants-focus);
+    }
+
+    /* Hide sort icon during resize */
+    &.is-resizing {
+      pointer-events: none;
+
+      .sort-icon {
+        visibility: hidden;
+      }
     }
   }
 }
@@ -135,4 +145,50 @@
   padding: 8px;
   border-top: 1px solid var(--kd-color-border-variants-inverse);
   border-bottom: 1px solid var(--kd-color-border-level-tertiary);
+}
+/**
+ * Resize handle styles for resizable columns.
+ * Positioned on the right edge of the column header.
+ */
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  cursor: col-resize;
+  pointer-events: auto;
+  user-select: none;
+  background-color: var(--kd-color-border-variants-focus);
+  width: 3px;
+  right: -1px;
+  transition: background-color 0.2s ease-in-out;
+
+  // &:hover {
+  //   background-color: var(--kd-color-border-variants-focus);
+  //   width: 3px;
+  //   right: -1px;
+  // }
+
+  &:active {
+    width: 3px;
+    right: -1px;
+    background-color: var(--kd-color-border-variants-focus);
+  }
+
+  /* Prevent hover effects from affecting the header background */
+  &:hover ~ .container {
+    background-color: var(--kd-color-background-container-soft) !important;
+  }
+}
+
+:host([resizable]) {
+  .container {
+    padding-right: var(--kd-spacing-8);
+  }
+
+  /* Ensure resize handle hover doesn't change header background */
+  &:hover .container {
+    background-color: var(--kd-color-background-container-soft);
+  }
 }

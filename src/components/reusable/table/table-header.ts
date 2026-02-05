@@ -3,8 +3,8 @@ import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
 import {
   customElement,
   property,
-  queryAssignedNodes,
   state,
+  queryAssignedNodes,
 } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -15,15 +15,16 @@ import { tableContext, TableContextType } from './table-context';
 import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-up.svg';
 import styles from './table-header.scss?inline';
 
-import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
+import { SORT_DIRECTION, TABLE_CELL_ALIGN, RESIZE_MIN_WIDTH } from './defs';
 
 /**
  * `kyn-th` Web Component.
  *
  * Represents a custom table header cell (`<th>`) for Shidoka's design system tables.
- * Provides sorting functionality when enabled and allows alignment customization.
+ * Provides sorting functionality when enabled, allows alignment customization, and supports column resizing.
  *
  * @fires on-sort-changed - Dispatched when the sort direction is changed. `detail: {sortDirection: string, sortKey: string } `
+ * @fires on-column-resize - Dispatched when a column is resized. `detail: { columnIndex: number, newWidth: string, columnHeader: TableHeader } `
  * @slot unnamed - The content slot for adding header text or content.
  * @slot column-filter - slot for column filter.
  */
@@ -136,6 +137,32 @@ export class TableHeader extends LitElement {
   accessor minWidth = '';
 
   /**
+   * Specifies if the column is resizable.
+   * When enabled, users can drag the right edge of the column header to resize the column.
+   * @type {boolean}
+   * @default false
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor resizable = false;
+
+  /**
+   * Specifies the maximum width allowed when resizing the column.
+   * Accepts standard CSS width values (e.g., '500px'). If not set, no maximum is enforced.
+   * @type {string}
+   */
+  @property({ type: String })
+  accessor resizeMaxWidth = '';
+
+  /**
+   * Specifies the minimum width allowed when resizing the column.
+   * Accepts standard CSS width values (e.g., '50px'). Defaults to RESIZE_MIN_WIDTH constant.
+   * @type {string}
+   */
+  @property({ type: String })
+  accessor resizeMinWidth = RESIZE_MIN_WIDTH;
+
+  /**
+   * List of assigned nodes from the default slot.
    * @ignore
    */
   @queryAssignedNodes({ flatten: true })
@@ -150,11 +177,206 @@ export class TableHeader extends LitElement {
   }
 
   /**
+   * Internal state for tracking resize operations.
+   * @ignore
+   * @private
+   */
+  @state()
+  private accessor _isResizing = false;
+
+  /**
+   * Stores the starting X position during resize operation.
+   * @ignore
+   * @private
+   */
+  private _resizeStartX = 0;
+
+  /**
+   * Stores the starting width before resize operation.
+   * @ignore
+   * @private
+   */
+  private _resizeStartWidth = 0;
+
+  /**
    * Assistive text for screen readers.
    * @ignore
    */
   @state()
   accessor assistiveText = '';
+
+  /**
+   * Parses a CSS width value and returns the numeric value in pixels.
+   * @param width - The width value (e.g., '150px', '100')
+   * @returns The width in pixels as a number
+   * @private
+   */
+  private _parseWidth(width: string): number {
+    if (!width) return 0;
+    return parseInt(width.replace(/[^0-9]/g, ''), 10) || 0;
+  }
+
+  /**
+   * Gets the current width of the column header element.
+   * @returns The width in pixels as a number
+   * @private
+   */
+  private _getCurrentWidth(): number {
+    return this.offsetWidth;
+  }
+
+  private _resizeStartTableWidth = 0;
+
+  // private _hasResizeMoved = false;
+  // private _lastClientX = 0;
+  /**
+   * Handles the start of a column resize operation.
+   * Sets up the initial state for tracking the resize.
+   * @param event - The mouse event
+   * @private
+   */
+  private _handleResizeStart = (event: MouseEvent) => {
+    if (!this.resizable) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._isResizing = true;
+
+    // this._hasResizeMoved = false;
+
+    this._resizeStartX = event.clientX;
+
+    // this._lastClientX = event.clientX;
+
+    const rect = this.getBoundingClientRect();
+    this._resizeStartWidth = rect.width;
+
+    //Freeze external width into px
+    this._applyWidth(this._resizeStartWidth);
+
+    // FORCE layout flush so future reads are correct
+    void this.offsetWidth;
+
+    const table = this.closest('kyn-table') as HTMLElement;
+    this._resizeStartTableWidth = table?.offsetWidth || 0;
+
+    // 🔒 IMPORTANT: reset mouse baseline AFTER freeze
+    // this._lastClientX = event.clientX;
+
+    this._lockResizeCursor();
+
+    document.addEventListener('mousemove', this._handleResizeMove);
+    document.addEventListener('mouseup', this._handleResizeEnd);
+    document.addEventListener('selectstart', this._preventSelection);
+  };
+
+  private _applyWidth(width: number) {
+    const px = `${Math.round(width)}px`;
+    this.width = px;
+
+    this.style.setProperty('width', px, 'important');
+    this.style.setProperty('min-width', px, 'important');
+    this.style.setProperty('max-width', px, 'important');
+  }
+
+  private _lockResizeCursor() {
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }
+
+  private _unlockResizeCursor() {
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  }
+
+  /**
+   * Handles the mouse move event during column resize.
+   * Updates the column width based on mouse movement.
+   * @param event - The mouse event
+   * @private
+   */
+  private _handleResizeMove = (event: MouseEvent) => {
+    if (!this._isResizing) return;
+
+    if (event.clientX === this._resizeStartX) return;
+
+    const deltaX = event.clientX - this._resizeStartX;
+
+    if (deltaX === 0) return;
+
+    // this._lastClientX = event.clientX;
+
+    let newWidth = this._resizeStartWidth + deltaX;
+
+    const min = this._parseWidth(this.resizeMinWidth);
+    if (newWidth < min) newWidth = min;
+
+    if (this.resizeMaxWidth) {
+      const max = this._parseWidth(this.resizeMaxWidth);
+      if (newWidth > max) newWidth = max;
+    }
+    // ✅ Column only
+    this._applyWidth(newWidth);
+
+    // ✅ Table only grows/shrinks by delta
+    const table = this.closest('kyn-table') as HTMLElement;
+    if (table && this._resizeStartTableWidth) {
+      const tableWidth = this._resizeStartTableWidth + deltaX;
+      table.style.setProperty('width', `${tableWidth}px`, 'important');
+      table.style.setProperty('min-width', `${tableWidth}px`, 'important');
+    }
+
+    // Event stays the same (but now reliable)
+    this.dispatchEvent(
+      new CustomEvent('on-column-resize', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          columnIndex: Array.from(
+            this.parentElement?.querySelectorAll('kyn-th') || []
+          ).indexOf(this),
+          newWidth: `${Math.round(newWidth)}px`,
+          deltaX: deltaX,
+          columnHeader: this,
+          source: 'resize',
+        },
+      })
+    );
+  };
+
+  /**
+   * Handles the end of a column resize operation.
+   * Cleans up event listeners and resets the resizing state.
+   * @param event - The mouse event
+   * @private
+   */
+  private _handleResizeEnd = (event: MouseEvent) => {
+    event.preventDefault();
+    this._isResizing = false;
+
+    // this._hasResizeMoved = false;
+
+    this._unlockResizeCursor();
+
+    document.removeEventListener('mousemove', this._handleResizeMove);
+    document.removeEventListener('mouseup', this._handleResizeEnd);
+    document.removeEventListener('selectstart', this._preventSelection);
+
+    // // Update the table width only after resize is complete
+    // this._updateTableWidth();
+  };
+
+  /**
+   * Prevents text selection during resize operation.
+   * @param event - The selection event
+   * @private
+   */
+  private _preventSelection = (event: Event) => {
+    if (this._isResizing) {
+      event.preventDefault();
+    }
+  };
 
   /**
    * Toggles the sort direction between ascending, descending, and default states.
@@ -213,6 +435,50 @@ export class TableHeader extends LitElement {
     if (this.minWidth && changedProperties.has('minWidth')) {
       this.style.setProperty('--kyn-th-min-width', this.minWidth);
     }
+
+    // Attach resize handle listener after render
+    if (this.resizable && changedProperties.has('resizable')) {
+      const resizeHandle = this.shadowRoot?.querySelector(
+        '.resize-handle'
+      ) as HTMLElement;
+      if (resizeHandle) {
+        resizeHandle.addEventListener(
+          'mousedown',
+          this._handleResizeStart as EventListener
+        );
+      }
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    // Clean up resize handle listener
+    const resizeHandle = this.shadowRoot?.querySelector(
+      '.resize-handle'
+    ) as HTMLElement;
+    if (resizeHandle) {
+      resizeHandle.removeEventListener(
+        'mousedown',
+        this._handleResizeStart as EventListener
+      );
+    }
+    // Clean up any lingering event listeners
+    document.removeEventListener(
+      'mousemove',
+      this._handleResizeMove as EventListener
+    );
+    document.removeEventListener(
+      'mouseup',
+      this._handleResizeEnd as EventListener
+    );
+    document.removeEventListener(
+      'selectstart',
+      this._preventSelection as EventListener
+    );
   }
 
   getTextContent() {
@@ -263,9 +529,14 @@ export class TableHeader extends LitElement {
 
     return html`
       <div
-        class="container"
+        class=${classMap({
+          container: true,
+          'is-resizing': this._isResizing,
+        })}
         role=${ifDefined(role)}
-        @click=${this.sortable ? () => this.toggleSortDirection() : undefined}
+        @click=${this.sortable && !this._isResizing
+          ? () => this.toggleSortDirection()
+          : undefined}
         aria-label=${ifDefined(ariaLabel)}
         tabindex=${ifDefined(tabIndex)}
         @keydown=${onKeyDown}
@@ -288,7 +559,22 @@ export class TableHeader extends LitElement {
           ${this.assistiveText}
         </div>
       </div>
+
       <slot name="column-filter"> </slot>
+      ${this.resizable
+        ? html`<div
+            class="resize-handle"
+            title="Drag to resize column"
+            aria-label="Resize column ${this.headerLabel}"
+            role="slider"
+            aria-valuenow=${this._getCurrentWidth()}
+            aria-valuemin=${this._parseWidth(this.resizeMinWidth)}
+            aria-valuemax=${this.resizeMaxWidth
+              ? this._parseWidth(this.resizeMaxWidth)
+              : 9999}
+            tabindex="0"
+          ></div>`
+        : null}
     `;
   }
 }
