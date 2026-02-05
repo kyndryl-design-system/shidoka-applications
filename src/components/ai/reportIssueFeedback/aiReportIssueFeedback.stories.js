@@ -64,7 +64,6 @@ const args = {
   revealAllSources: false,
   reportIssueOpened: false,
   reportIssueDisabled: false,
-  closeText: 'Close',
   textStrings: {
     sourcesText: 'Sources used',
     foundSources: 'Found sources',
@@ -72,6 +71,7 @@ const args = {
     showLess: 'Show less',
     positiveFeedback: 'Share what you liked',
     negativeFeedback: 'Help us improve',
+    closeText: 'Close',
   },
   reportIssueText: 'Report Issue',
 };
@@ -88,13 +88,14 @@ export const AIReportIssueFeedback = {
         .feedbackDisabled=${args.feedbackDisabled}
         ?revealAllSources=${args.revealAllSources}
         closeText=${args.closeText}
+        reportIssueText=${args.reportIssueText}
         .textStrings=${args.textStrings}
         @on-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-feedback-selected=${(e) =>
           action(e.type)({ ...e, detail: e.detail })}
         @on-feedback-deselected=${(e) =>
           action(e.type)({ ...e, detail: e.detail })}
-        @sources-used-toggle=${(e) =>
+        @on-sources-used-toggle=${(e) =>
           action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button
@@ -105,7 +106,6 @@ export const AIReportIssueFeedback = {
           description="Copy"
           @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
-          <span class="copy-button-text">${args.copy}</span>
           <span slot="icon" class="copy-icon">${unsafeSVG(copyIcon)}</span>
         </kyn-button>
 

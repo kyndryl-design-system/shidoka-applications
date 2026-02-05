@@ -28,6 +28,7 @@ const _defaultTextStrings = {
   showLess: 'Show less',
   positiveFeedback: 'Share what you liked',
   negativeFeedback: 'Help us improve',
+  closeText: 'Close',
 };
 
 /**
@@ -45,7 +46,7 @@ const _defaultTextStrings = {
  * </code></pre>
  * @fires on-feedback-selected - Emits when thumbs-up or thumbs-down button is selected. `detail:{ feedbackType: string }`
  * @fires on-feedback-deselected - Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`
- * @fires sources-used-toggle - Emits when sources used is clicked. `detail:{ sourcesOpened: boolean }`
+ * @fires on-sources-used-toggle - Emits when sources used is clicked. `detail:{ sourcesOpened: boolean }`
  */
 
 @customElement('kyn-ai-report-issue-feedback')
@@ -53,12 +54,8 @@ export class AIReportIssueFeedback extends LitElement {
   static override styles = unsafeCSS(stylesheet);
 
   /** expandable anchor opened state for Sources used. */
-  // @property({ type: Boolean })
+  @property({ type: Boolean })
   accessor sourcesOpened = false;
-
-  /** expandable anchor opened state for Feedback buttons. */
-  // @property({ type: Boolean })
-  // accessor feedbackOpened = false;
 
   /** expandable anchor opened state for Report Issue buttons. */
   @property({ type: Boolean })
@@ -84,10 +81,6 @@ export class AIReportIssueFeedback extends LitElement {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
-  /** Close button text. */
-  @property({ type: String })
-  accessor closeText = 'Close';
-
   /** Number of sources visible when limited.
    * @internal
    */
@@ -111,7 +104,7 @@ export class AIReportIssueFeedback extends LitElement {
    * @internal
    */
   @property({ type: String })
-  accessor _reportIssueText = 'Report Issue';
+  accessor reportIssueText = 'Report Issue';
 
   /** Selecting Positive or Negative Feedback
    * @internal
@@ -211,7 +204,7 @@ export class AIReportIssueFeedback extends LitElement {
               @on-click="${(e: Event) => this._handleClick(e, 'reportIssue')}"
               id="kyn-report-issue-title"
             >
-              <span>${this._reportIssueText}</span>              
+              <span>${this.reportIssueText}</span>
             </kyn-button>
           </div>
 
@@ -239,13 +232,11 @@ export class AIReportIssueFeedback extends LitElement {
         id="kyn-report-issue-body"
         role="region"
         aria-labelledby="kyn-report-issue-title"
-          ? 'positive'
-          : 'negative'}"
       >
         <div class="close-container">
           <kyn-button
             class="close"
-            description=${this.closeText}
+            description=${this.textStrings.closeText}
             @on-click=${(e: Event) => this._handleClick(e, 'reportIssue')}
             kind="ghost-ai"
             size="small"
@@ -286,9 +277,10 @@ export class AIReportIssueFeedback extends LitElement {
     }
 
     if (panel === 'sources') {
+      this.sourcesOpened = !this.sourcesOpened;
       this.dispatchEvent(
-        new CustomEvent('sources-used-toggle', {
-          detail: { sourcesOpened: !this.sourcesOpened },
+        new CustomEvent('on-sources-used-toggle', {
+          detail: { sourcesOpened: this.sourcesOpened },
           bubbles: true,
           composed: true,
         })
