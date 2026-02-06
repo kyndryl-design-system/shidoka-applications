@@ -100,6 +100,9 @@ export class IconSelectorGroup extends LitElement {
    */
   private _dispatching = false;
 
+  /**
+   * @internal
+   */
   private _handleChildChange = (e: CustomEvent) => {
     // prevent re-entrancy: the group's own dispatched on-change
     // re-triggers this listener since it fires on the same element.
