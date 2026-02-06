@@ -552,6 +552,9 @@ export class HeaderLink extends LitElement {
     this.level = level;
   }
 
+  /** Threshold in pixels - if flyout is within this distance of nav width, stretch to match */
+  private static readonly STRETCH_THRESHOLD = 150;
+
   private _positionMenu() {
     const linkBounds = this.getBoundingClientRect?.();
     const menuEl =
@@ -576,6 +579,7 @@ export class HeaderLink extends LitElement {
     if (this.level === 1) {
       // get the height of the level 1 menu to use as submenu min-height
       let navMenuHeight = 0;
+      let navMenuWidth = 0;
       const headerNav = this.closest('kyn-header-nav') as HTMLElement | null;
       if (headerNav) {
         const navMenu = headerNav.shadowRoot?.querySelector(
@@ -583,6 +587,7 @@ export class HeaderLink extends LitElement {
         ) as HTMLElement | null;
         if (navMenu) {
           navMenuHeight = navMenu.offsetHeight;
+          navMenuWidth = navMenu.offsetWidth;
         }
       }
 
@@ -590,10 +595,29 @@ export class HeaderLink extends LitElement {
       // (kyn-header-categories), not simple category lists
       const hasMegaNav = this.querySelector('kyn-header-categories') !== null;
 
+      // Calculate if flyout should stretch to fill available viewport width
+      // Only stretch if the difference is below the threshold
+      let stretchWidth: string | undefined;
+      if (hasMegaNav) {
+        const flyoutNaturalWidth = menuBounds.width;
+        const rightMargin = 16; // Margin from viewport edge
+        const availableWidth = window.innerWidth - rightMargin;
+        const widthDifference = availableWidth - flyoutNaturalWidth;
+
+        if (
+          widthDifference > 0 &&
+          widthDifference <= HeaderLink.STRETCH_THRESHOLD
+        ) {
+          // Stretch flyout to fill available width
+          stretchWidth = availableWidth + 'px';
+        }
+      }
+
       this.menuPosition = {
         top: HeaderHeight + 'px',
         left: '0px',
         ...(hasMegaNav ? { minHeight: navMenuHeight + 'px' } : {}),
+        ...(stretchWidth ? { width: stretchWidth } : {}),
       };
     } else {
       const top = topCandidate < HeaderHeight ? HeaderHeight : topCandidate;
@@ -616,6 +640,16 @@ export class HeaderLink extends LitElement {
   override willUpdate(changedProps: any) {
     if (changedProps.has('open') && this.open) {
       this._positionMenu();
+    }
+  }
+
+  override updated(changedProps: any) {
+    // Re-position after render when the menu has its actual dimensions
+    if (changedProps.has('open') && this.open) {
+      // Use rAF to ensure the DOM has painted
+      requestAnimationFrame(() => {
+        this._positionMenu();
+      });
     }
   }
 

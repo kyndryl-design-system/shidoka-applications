@@ -263,16 +263,13 @@
 
   // For categorical nav, wrapper sizes to content (no extra space)
   :host([has-categorical]) .menu.level--1 .wrapper {
-    flex: 0 1 auto; // Don't grow, can shrink, auto basis
-    width: auto; // Let content determine width
+    flex: 1 1 0%; // Grow to fill available space, shrink if needed
     min-width: 150px; // At least one column width
-    max-width: calc(100vw - 230px - 32px); // Viewport minus sidebar/padding
     min-height: 250px;
     max-height: calc(100vh - var(--kd-header-height) - 32px);
     overflow-x: auto; // Allow horizontal scroll if needed
     overflow-y: auto; // Allow vertical scrolling
     align-self: stretch;
-    // No margin-right - flyout padding provides the gap
   }
 }
 
