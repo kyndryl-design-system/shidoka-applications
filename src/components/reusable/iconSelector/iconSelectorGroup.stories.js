@@ -2,7 +2,6 @@ import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import './index';
 import { action } from 'storybook/actions';
-import { useArgs } from 'storybook/preview-api';
 
 import starOutlineIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend.svg';
 import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
@@ -18,6 +17,18 @@ export default {
       control: { type: 'select' },
       options: ['vertical', 'horizontal'],
     },
+    disabled: {
+      control: { type: 'boolean' },
+    },
+    onlyVisibleOnHover: {
+      control: { type: 'boolean' },
+    },
+    persistWhenChecked: {
+      control: { type: 'boolean' },
+    },
+    animateSelection: {
+      control: { type: 'boolean' },
+    },
   },
   parameters: {
     design: {
@@ -31,6 +42,9 @@ export const Group = {
   args: {
     direction: 'vertical',
     disabled: false,
+    onlyVisibleOnHover: true,
+    persistWhenChecked: true,
+    animateSelection: true,
   },
   render: (args) => {
     return html`
@@ -54,37 +68,28 @@ export const Group = {
       <kyn-icon-selector-group
         direction=${args.direction}
         ?disabled=${args.disabled}
+        ?onlyVisibleOnHover=${args.onlyVisibleOnHover}
+        ?persistWhenChecked=${args.persistWhenChecked}
+        ?animateSelection=${args.animateSelection}
         @on-change=${(e) => action(e.type)({ value: e.detail.value })}
       >
         <div class="group-hover-container">
           <span>Item One</span>
-          <kyn-icon-selector
-            value="item-1"
-            onlyVisibleOnHover
-            persistWhenChecked
-          >
+          <kyn-icon-selector value="item-1">
             <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
             <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
           </kyn-icon-selector>
         </div>
         <div class="group-hover-container">
           <span>Item Two</span>
-          <kyn-icon-selector
-            value="item-2"
-            onlyVisibleOnHover
-            persistWhenChecked
-          >
+          <kyn-icon-selector value="item-2">
             <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
             <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
           </kyn-icon-selector>
         </div>
         <div class="group-hover-container">
           <span>Item Three</span>
-          <kyn-icon-selector
-            value="item-3"
-            onlyVisibleOnHover
-            persistWhenChecked
-          >
+          <kyn-icon-selector value="item-3">
             <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
             <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
           </kyn-icon-selector>
@@ -127,15 +132,11 @@ export const GroupWithPreselected = {
   args: {
     direction: 'vertical',
     value: ['item-2'],
+    onlyVisibleOnHover: true,
+    persistWhenChecked: true,
+    animateSelection: true,
   },
   render: (args) => {
-    const [, updateArgs] = useArgs();
-
-    const handleChange = (e) => {
-      updateArgs({ value: e.detail.value });
-      action(e.type)({ value: e.detail.value });
-    };
-
     return html`
       <style>
         .group-hover-container {
@@ -157,37 +158,28 @@ export const GroupWithPreselected = {
       <kyn-icon-selector-group
         direction=${args.direction}
         .value=${args.value}
-        @on-change=${handleChange}
+        ?onlyVisibleOnHover=${args.onlyVisibleOnHover}
+        ?persistWhenChecked=${args.persistWhenChecked}
+        ?animateSelection=${args.animateSelection}
+        @on-change=${(e) => action(e.type)({ value: e.detail.value })}
       >
         <div class="group-hover-container">
           <span>Item One</span>
-          <kyn-icon-selector
-            value="item-1"
-            onlyVisibleOnHover
-            persistWhenChecked
-          >
+          <kyn-icon-selector value="item-1">
             <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
             <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
           </kyn-icon-selector>
         </div>
         <div class="group-hover-container">
           <span>Item Two</span>
-          <kyn-icon-selector
-            value="item-2"
-            onlyVisibleOnHover
-            persistWhenChecked
-          >
+          <kyn-icon-selector value="item-2">
             <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
             <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
           </kyn-icon-selector>
         </div>
         <div class="group-hover-container">
           <span>Item Three</span>
-          <kyn-icon-selector
-            value="item-3"
-            onlyVisibleOnHover
-            persistWhenChecked
-          >
+          <kyn-icon-selector value="item-3">
             <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
             <span slot="icon-checked">${unsafeSVG(starFilledIcon)}</span>
           </kyn-icon-selector>

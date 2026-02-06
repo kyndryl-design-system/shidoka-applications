@@ -152,7 +152,17 @@ export class IconSelector extends LitElement {
   };
 
   override firstUpdated() {
-    // Single getComputedStyle call — read all CSS custom properties at once and cache.
+    // Resolve again after first paint in case connectedCallback was too early.
+    if (!this._cssResolved) {
+      this._readCSSFlags();
+      this._resolveFlags();
+      this.requestUpdate();
+    }
+  }
+
+  private _cssResolved = false;
+
+  private _readCSSFlags() {
     const styles = getComputedStyle(this);
     const cssFlag = (prop: string) => {
       const val = styles.getPropertyValue(prop).trim();
@@ -165,9 +175,7 @@ export class IconSelector extends LitElement {
     this._cssPersistWhenChecked = cssFlag(
       '--kyn-icon-selector-persist-when-checked'
     );
-    this._resolveFlags();
-    // Trigger re-render since resolved flags are plain fields, not reactive properties.
-    this.requestUpdate();
+    this._cssResolved = true;
   }
 
   override willUpdate(changedProps: Map<string, unknown>) {
@@ -196,6 +204,10 @@ export class IconSelector extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', this._handleHostClick);
+    // Read CSS custom properties early so the first render has correct classes.
+    // Prevents blink where icons are briefly visible before only-visible-on-hover applies.
+    this._readCSSFlags();
+    this._resolveFlags();
   }
 
   override disconnectedCallback() {

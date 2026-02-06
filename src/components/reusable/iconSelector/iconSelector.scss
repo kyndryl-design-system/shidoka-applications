@@ -14,7 +14,6 @@
   align-items: center;
   justify-content: center;
 
-  // Animated mode: stack icons with grid so they can crossfade
   &.animate-selection {
     display: inline-grid;
     place-items: center;
@@ -71,7 +70,6 @@
   color: currentColor;
   transition: color 150ms ease-out;
 
-  // Let slotted content determine its own dimensions
   ::slotted(svg),
   ::slotted(span),
   svg {
@@ -79,7 +77,6 @@
     fill: currentColor;
   }
 
-  // Default: instant toggle via display
   &--unchecked {
     display: flex;
 
@@ -96,7 +93,6 @@
     }
   }
 
-  // Animated mode: crossfade + scale with pop
   .animate-selection & {
     grid-area: 1 / 1;
     transition: opacity 200ms ease-out, transform 200ms ease-out;

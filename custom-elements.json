@@ -11276,6 +11276,20 @@
             },
             {
               "kind": "field",
+              "name": "_cssResolved",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "_readCSSFlags",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
               "name": "_cssOnlyVisibleOnHover",
               "type": {
                 "text": "boolean"
@@ -11467,8 +11481,33 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "persistWhenChecked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, checked child icon-selectors remain visible even when onlyVisibleOnHover is enabled.",
+              "attribute": "persistWhenChecked"
+            },
+            {
+              "kind": "field",
+              "name": "animateSelection",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables a subtle pop/crossfade animation when toggling checked state on all children.",
+              "attribute": "animateSelection"
+            },
+            {
               "kind": "method",
               "name": "_syncChildrenState",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_handleChildChange",
               "privacy": "private"
             }
           ],
@@ -11514,6 +11553,24 @@
               "default": "false",
               "description": "When true, all child icon-selectors are only visible when the parent element is hovered.\nThis propagates the onlyVisibleOnHover attribute to all children.",
               "fieldName": "onlyVisibleOnHover"
+            },
+            {
+              "name": "persistWhenChecked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, checked child icon-selectors remain visible even when onlyVisibleOnHover is enabled.",
+              "fieldName": "persistWhenChecked"
+            },
+            {
+              "name": "animateSelection",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables a subtle pop/crossfade animation when toggling checked state on all children.",
+              "fieldName": "animateSelection"
             }
           ],
           "superclass": {
