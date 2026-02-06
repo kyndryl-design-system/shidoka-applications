@@ -101,11 +101,18 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean })
   accessor flyoutAutoCollapsed = true;
 
-  /** Indicates whether this link contains categorical navigation (kyn-header-categories).
+  /** Indicates whether this link contains categorical navigation (kyn-header-categories or kyn-header-category).
    * @internal
    */
   @property({ type: Boolean, reflect: true, attribute: 'has-categorical' })
   accessor hasCategorical = false;
+
+  /** Indicates whether this link contains multi-column categorical navigation (kyn-header-categories wrapper).
+   * Used to distinguish multi-column flyouts from single-column category lists.
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'has-multi-column' })
+  accessor hasMultiColumn = false;
 
   /** Number of columns in the categorical flyout (for width adjustment).
    * @internal
@@ -141,6 +148,12 @@ export class HeaderLink extends LitElement {
   private _viewChangeInProgress = false;
   private _viewChangeTimer: any;
 
+  /** Cached truncation state from parent nav
+   * @internal
+   */
+  @state()
+  accessor _inheritedTruncate = false;
+
   /** Menu positioning
    * @internal
    */
@@ -155,11 +168,15 @@ export class HeaderLink extends LitElement {
       open: this.open || (this.level === 1 && this.isActive),
     };
 
+    // Check if truncation should be applied (individual prop or inherited from nav)
+    const shouldTruncate = this.truncate || this._inheritedTruncate;
+
     const linkClasses = {
       'nav-link': true,
       active: this.isActive,
       interactive: this.level == 1,
       'padding-left': this.leftPadding,
+      truncate: shouldTruncate,
     };
 
     const menuClasses = {
@@ -333,9 +350,11 @@ export class HeaderLink extends LitElement {
 
   private _handleLinksSlotChange() {
     // Detect if this link contains categorical navigation
-    this.hasCategorical =
-      this.querySelector('kyn-header-categories') !== null ||
-      this.querySelector('kyn-header-category') !== null;
+    const hasCategories = this.querySelector('kyn-header-categories') !== null;
+    const hasCategory = this.querySelector('kyn-header-category') !== null;
+
+    this.hasCategorical = hasCategories || hasCategory;
+    this.hasMultiColumn = hasCategories; // Only true for multi-column wrapper
     this.requestUpdate();
   }
 
@@ -616,7 +635,7 @@ export class HeaderLink extends LitElement {
       this.menuPosition = {
         top: HeaderHeight + 'px',
         left: '0px',
-        ...(hasMegaNav ? { minHeight: navMenuHeight + 'px' } : {}),
+        minHeight: navMenuHeight + 'px',
         ...(stretchWidth ? { width: stretchWidth } : {}),
       };
     } else {
@@ -675,6 +694,38 @@ export class HeaderLink extends LitElement {
     this.addEventListener('column-count-change', this._handleColumnCountChange);
     // Suppress flyout close during internal view transitions (e.g. "More" click)
     this.addEventListener('on-nav-change', this._handleNavChange);
+    // Check for truncation inheritance after DOM is ready
+    queueMicrotask(() => {
+      this._inheritedTruncate = this._isInTruncatingNav();
+    });
+  }
+
+  /** Check if this link is inside a nav with truncate-links attribute
+   * Uses getRootNode to traverse up through shadow DOM boundaries
+   * @internal
+   */
+  private _isInTruncatingNav(): boolean {
+    // First try direct closest (works for top-level links)
+    let parentNav = this.closest('kyn-header-nav');
+    if (parentNav) {
+      return parentNav.hasAttribute('truncate-links');
+    }
+
+    // For nested links, traverse up through shadow DOM boundaries
+    let node: Node | null = this.getRootNode();
+    while (node) {
+      if (node instanceof ShadowRoot) {
+        node = node.host;
+        parentNav = (node as Element).closest?.('kyn-header-nav');
+        if (parentNav) {
+          return parentNav.hasAttribute('truncate-links');
+        }
+        node = node.getRootNode();
+      } else {
+        break;
+      }
+    }
+    return false;
   }
 
   override disconnectedCallback() {

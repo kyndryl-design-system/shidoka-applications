@@ -1260,7 +1260,7 @@
               "type": {
                 "text": "number"
               },
-              "default": "10",
+              "default": "3",
               "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".\nHas no effect when layout=\"auto\" (default).",
               "attribute": "maxColumns"
             },
@@ -1583,7 +1583,7 @@
               "type": {
                 "text": "number"
               },
-              "default": "10",
+              "default": "3",
               "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".\nHas no effect when layout=\"auto\" (default).",
               "fieldName": "maxColumns"
             },
@@ -2458,6 +2458,18 @@
               "privacy": "private"
             },
             {
+              "kind": "field",
+              "name": "STRETCH_THRESHOLD",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "static": true,
+              "readonly": true,
+              "default": "150",
+              "description": "Threshold in pixels - if flyout is within this distance of nav width, stretch to match"
+            },
+            {
               "kind": "method",
               "name": "_positionMenu",
               "privacy": "private"
@@ -2646,6 +2658,17 @@
               "attribute": "flyoutAutoCollapsed"
             },
             {
+              "kind": "field",
+              "name": "truncateLinks",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, all links in flyouts will truncate long text with ellipsis.\nThis cascades to all nested kyn-header-link components via CSS custom property.",
+              "attribute": "truncate-links",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "_toggleMenuOpen",
               "privacy": "private"
@@ -2696,6 +2719,15 @@
               "default": "true",
               "description": "When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).\nWhen false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.",
               "fieldName": "flyoutAutoCollapsed"
+            },
+            {
+              "name": "truncate-links",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, all links in flyouts will truncate long text with ellipsis.\nThis cascades to all nested kyn-header-link components via CSS custom property.",
+              "fieldName": "truncateLinks"
             }
           ],
           "superclass": {
@@ -3227,69 +3259,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/accordion/accordion.ts",
       "declarations": [
         {
@@ -3702,6 +3671,69 @@
           "declaration": {
             "name": "AccordionItem",
             "module": "./accordionItem"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -25381,7 +25413,7 @@
                 "text": "string"
               },
               "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'`, `'md'`, or `'lg'`. Icon size: 16px.",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
               "attribute": "tabSize"
             },
             {
@@ -25524,7 +25556,7 @@
                 "text": "string"
               },
               "default": "'md'",
-              "description": "Size of the tab buttons, `'sm'`, `'md'`, or `'lg'`. Icon size: 16px.",
+              "description": "Size of the tab buttons, `'sm'` or `'md'`. Icon size: 16px.",
               "fieldName": "tabSize"
             },
             {

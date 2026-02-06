@@ -37,6 +37,12 @@ export class HeaderNav extends LitElement {
   @property({ type: Boolean })
   accessor flyoutAutoCollapsed = true;
 
+  /** When true, all links in flyouts will truncate long text with ellipsis.
+   * This cascades to all nested kyn-header-link components via CSS custom property.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'truncate-links' })
+  accessor truncateLinks = false;
+
   /** Boolean value reflecting whether the navigation has categories.
    * @internal
    */
@@ -182,17 +188,32 @@ export class HeaderNav extends LitElement {
    * @internal
    */
   private _autoOpenFirstCategoricalLink(): void {
-    // Use setTimeout to ensure all components are fully initialized
-    // This needs to run after document click handlers have finished
-    setTimeout(() => {
+    // Use rAF to ensure child elements have completed their first Lit render
+    // cycle before we try to open them. This is ~16ms (one frame) vs the
+    // previous setTimeout(100) which caused a visible two-step open.
+    requestAnimationFrame(() => {
       const links = this.querySelectorAll<HTMLElement & { open?: boolean }>(
         ':scope > kyn-header-link'
       );
 
+      // Clear any pending pointer-event timers on all sibling links.
+      // When the nav first paints, links can appear under the cursor,
+      // firing pointerenter which queues a 150ms timer to open that link
+      // and close others. Without clearing, that timer fires after our
+      // auto-open and immediately closes the flyout.
       for (const link of links) {
-        // Auto-open only if this link contains categorical nav
-        // Check both light DOM (querySelector) and shadow DOM (querySelectorDeep)
-        // (kyn-header-categories for JSON-driven, kyn-header-category for slotted)
+        const l = link as any;
+        if (l._enterTimer) {
+          clearTimeout(l._enterTimer);
+          l._enterTimer = undefined;
+        }
+        if (l._leaveTimer) {
+          clearTimeout(l._leaveTimer);
+          l._leaveTimer = undefined;
+        }
+      }
+
+      for (const link of links) {
         const hasCategoricalNav =
           link.querySelector('kyn-header-categories') !== null ||
           querySelectorDeep('kyn-header-categories', link) !== null;
@@ -206,7 +227,7 @@ export class HeaderNav extends LitElement {
           break;
         }
       }
-    }, 100);
+    });
   }
 
   override updated(changedProps: PropertyValueMap<this>): void {

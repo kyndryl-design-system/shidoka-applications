@@ -79,7 +79,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-categories layout="grid" maxColumns="5">
                   <!-- CATEGORY 1 -->
                   <kyn-header-category heading="Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -260,7 +260,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-categories layout="grid" maxColumns="5">
                   <kyn-header-category heading="T2 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -314,7 +314,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-categories layout="grid" maxColumns="5">
                   <!-- APP2 CATEGORY A -->
                   <kyn-header-category heading="App2 Category A">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -358,7 +358,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories layout="masonry" maxColumns="5">
+                <kyn-header-categories layout="grid" maxColumns="5">
                   <kyn-header-category heading="T4 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -477,7 +477,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="masonry"
+                  layout="grid"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
@@ -498,7 +498,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="masonry"
+                  layout="grid"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
@@ -552,7 +552,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="masonry"
+                  layout="grid"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
@@ -573,7 +573,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="masonry"
+                  layout="grid"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}

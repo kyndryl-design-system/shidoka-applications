@@ -150,7 +150,7 @@ export class HeaderCategories extends LitElement {
    * Has no effect when layout="auto" (default).
    */
   @property({ type: Number })
-  accessor maxColumns = 10;
+  accessor maxColumns = 3;
 
   /**
    * Optional text overrides, merged with defaults.
