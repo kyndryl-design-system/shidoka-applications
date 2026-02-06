@@ -34,6 +34,16 @@ export class IconSelectorGroup extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor onlyVisibleOnHover = false;
 
+  /**
+   * When true, checked child icon-selectors remain visible even when onlyVisibleOnHover is enabled.
+   */
+  @property({ type: Boolean })
+  accessor persistWhenChecked = false;
+
+  /** Enables a subtle pop/crossfade animation when toggling checked state on all children. */
+  @property({ type: Boolean })
+  accessor animateSelection = false;
+
   /** Slotted icon selectors.
    * @internal
    */
@@ -76,20 +86,28 @@ export class IconSelectorGroup extends LitElement {
 
   private _syncChildrenState() {
     this._selectors.forEach((selector) => {
-      if (this.disabled) {
-        selector.disabled = true;
-      }
-      if (this.onlyVisibleOnHover) {
-        selector.onlyVisibleOnHover = true;
-      }
+      selector.disabled = this.disabled;
+      selector.onlyVisibleOnHover = this.onlyVisibleOnHover;
+      selector.persistWhenChecked = this.persistWhenChecked;
+      selector.animateSelection = this.animateSelection;
       selector.checked = this.value.includes(selector.value);
     });
   }
 
   /**
    * @internal
+   * Re-entrancy guard for event dispatch.
+   */
+  private _dispatching = false;
+
+  /**
+   * @internal
    */
   private _handleChildChange = (e: CustomEvent) => {
+    // prevent re-entrancy: the group's own dispatched on-change
+    // re-triggers this listener since it fires on the same element.
+    if (this._dispatching) return;
+
     // Stop the child event from bubbling further
     e.stopPropagation();
 
@@ -105,6 +123,7 @@ export class IconSelectorGroup extends LitElement {
     this.value = newValue;
 
     // Emit group change event
+    this._dispatching = true;
     this.dispatchEvent(
       new CustomEvent('on-change', {
         composed: true,
@@ -114,13 +133,16 @@ export class IconSelectorGroup extends LitElement {
         },
       })
     );
+    this._dispatching = false;
   };
 
   override updated(changedProperties: Map<string, unknown>) {
     if (
       changedProperties.has('value') ||
       changedProperties.has('disabled') ||
-      changedProperties.has('onlyVisibleOnHover')
+      changedProperties.has('onlyVisibleOnHover') ||
+      changedProperties.has('persistWhenChecked') ||
+      changedProperties.has('animateSelection')
     ) {
       this._syncChildrenState();
     }
