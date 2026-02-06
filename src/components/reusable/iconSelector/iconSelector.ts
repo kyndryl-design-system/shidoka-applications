@@ -152,12 +152,9 @@ export class IconSelector extends LitElement {
   };
 
   override firstUpdated() {
-    // Resolve again after first paint in case connectedCallback was too early.
-    if (!this._cssResolved) {
-      this._readCSSFlags();
-      this._resolveFlags();
-      this.requestUpdate();
-    }
+    this._readCSSFlags();
+    this._resolveFlags();
+    this.requestUpdate();
   }
 
   private _cssResolved = false;
