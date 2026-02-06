@@ -78,14 +78,6 @@ export class Table extends LitElement {
   private accessor _provider = new ContextProvider(this, tableContext);
 
   /**
-   * Tracks column widths for resizable columns.
-   * @ignore
-   * @private
-   */
-  @state()
-  private accessor _columnWidths: Map<number, number> = new Map();
-
-  /**
    * updated: Lifecycle method called when the element is updated.
    */
   override updated(changedProperties: PropertyValues) {
@@ -377,6 +369,16 @@ export class Table extends LitElement {
     });
 
     this.style.width = `${totalWidth}px`;
+  };
+
+  /**
+   * Locks the table width to its current size.
+   * Used during column resize to prevent reflow.
+   * @internal
+   */
+  public lockTableWidth = () => {
+    const currentWidth = this.offsetWidth;
+    this.style.width = `${currentWidth}px`;
   };
 
   override render() {

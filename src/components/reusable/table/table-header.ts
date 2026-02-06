@@ -145,9 +145,10 @@ export class TableHeader extends LitElement {
 
   /**
    * Sets a resize minimum width for the cell(supports 'px'.e.g., '150px');
+   * Defaults to '50px' if not specified.
    */
   @property({ type: String })
-  accessor resizeMinWidth = '120px';
+  accessor resizeMinWidth = '50px';
 
   /**
    * Sets a resize minimum width for the cell (supports 'px'e.g., '150px');
@@ -167,6 +168,13 @@ export class TableHeader extends LitElement {
    */
   @state()
   private accessor _isResizing = false;
+
+  /**
+   * Table height for extending resize handle during drag
+   * @ignore
+   */
+  @state()
+  private accessor _tableHeightDuringResize = 0;
 
   /**
    * @ignore
@@ -271,6 +279,7 @@ export class TableHeader extends LitElement {
     this.headerLabel = nonWhitespaceNodes[0]?.textContent || '';
   }
 
+  // Handle Resize Start
   private _handleResizeStart = (e: MouseEvent) => {
     if (!this.resizable) return;
 
@@ -286,36 +295,65 @@ export class TableHeader extends LitElement {
 
     const table = this.closest('kyn-table') as any;
     if (table) {
+      // Store table height to extend resize handle
+      this._handleResizeHandleHeight(table);
+
       //  Lock ALL columns to their exact current widths - this freezes the layout completely
       this._lockAllColumnsExactly();
+
       // Force reflow to apply the lock immediately - prevents jump on first mousemove
       void this.offsetWidth;
+
       // Lock table width during resize
-      // table.lockTableWidth();
-      const currentWidth = this.offsetWidth;
-      this.style.width = `${currentWidth}px`;
+      table.lockTableWidth();
     }
 
-    // Add event listeners
+    // event listeners
     document.addEventListener('mousemove', this._handleResizeMove);
     document.addEventListener('mouseup', this._handleResizeEnd);
   };
 
+  // Handle Resize Move
   private _handleResizeMove = (e: MouseEvent) => {
     if (!this._isResizing) return;
 
     e.preventDefault();
+
+    // Check if cursor is still within table bounds
+    const table = this.closest('kyn-table') as any;
+    if (table) {
+      const tableRect = table.getBoundingClientRect();
+      // If cursor moved outside table horizontally or vertically, stop the resize
+      if (
+        e.clientX < tableRect.left ||
+        e.clientX > tableRect.right ||
+        e.clientY < tableRect.top ||
+        e.clientY > tableRect.bottom
+      ) {
+        // End resize operation
+        this._handleResizeEnd(e);
+        return;
+      }
+    }
+
     const deltaX = e.clientX - this._resizeStartX;
     let newWidth = this._resizeStartWidth + deltaX;
 
-    // Parse constraint values (support px)
-    const minWidth = this._parseConstraintValue(this.resizeMinWidth);
-    // const maxWidthValue = this.maxWidth ? this.maxWidth : this.resizeMaxWidth;
-    const maxWidth =
-      this._parseConstraintValue(this.resizeMaxWidth) || Infinity;
+    // Parse constraint values - minWidth takes precedence over resizeMinWidth
+    const minWidthValue = this.minWidth
+      ? this._parseConstraintValue(this.minWidth)
+      : this._parseConstraintValue(this.resizeMinWidth);
+    const maxWidthValue = this.maxWidth
+      ? this._parseConstraintValue(this.maxWidth)
+      : this._parseConstraintValue(this.resizeMaxWidth) || Infinity;
 
     // Apply constraints
-    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+    newWidth = Math.max(minWidthValue, Math.min(newWidth, maxWidthValue));
+
+    // Update resize handle height as table height changes during drag
+    if (table) {
+      this._handleResizeHandleHeight(table);
+    }
 
     // Apply width ONLY to the resized column - nothing else changes
     this._applyWidthToAllCells(newWidth);
@@ -336,11 +374,23 @@ export class TableHeader extends LitElement {
     );
   };
 
+  private _handleResizeHandleHeight(table: any) {
+    const tableRect = table.getBoundingClientRect();
+    this._tableHeightDuringResize = tableRect.height;
+    this.style.setProperty(
+      '--kyn-resize-handle-height',
+      `${tableRect.height}px`
+    );
+  }
+
+  // Handle Resize End
   private _handleResizeEnd = (e: MouseEvent) => {
     if (!this._isResizing) return;
 
     e.preventDefault();
     this._isResizing = false;
+    this._tableHeightDuringResize = 0;
+    this.style.removeProperty('--kyn-resize-handle-height');
 
     // Remove event listeners
     document.removeEventListener('mousemove', this._handleResizeMove);
@@ -381,12 +431,19 @@ export class TableHeader extends LitElement {
 
     const columns = Array.from(headerRow.querySelectorAll('kyn-th'));
 
-    // Lock EVERY column to exact pixel width
+    // Lock EVERY column to exact pixel width to prevent layout shifts
     columns.forEach((col, index) => {
       const width = (col as any).offsetWidth;
 
       // Store the width for later calculation
       this._columnWidthsSnapshot.set(index, width);
+
+      // Apply the lock immediately to prevent any layout shifts
+      (col as any).style.width = `${width}px`;
+      (col as any).style.minWidth = `${width}px`;
+      (col as any).style.maxWidth = `${width}px`;
+      (col as any).style.flexGrow = '0';
+      (col as any).style.flexShrink = '0';
     });
   };
 

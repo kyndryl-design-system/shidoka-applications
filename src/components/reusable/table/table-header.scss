@@ -38,6 +38,10 @@
   }
 }
 
+:host([data-resizing='true']) {
+  overflow: visible;
+}
+
 :host::before,
 :host::after {
   content: '';
@@ -146,15 +150,15 @@
   position: absolute;
   right: 0;
   top: 0;
-  bottom: 0;
   width: 2px;
   background: var(--kd-color-border-level-tertiary);
   cursor: col-resize;
   user-select: none;
   -webkit-user-select: none;
-  &:hover,
-  &:active {
-    width: 2px;
-    background: var(--kd-color-border-variants-focus);
-  }
+  height: var(--kyn-resize-handle-height, 100%);
+}
+
+// Show active background when data-resizing attribute is set
+:host([data-resizing='true']) .resize-handle {
+  background: var(--kd-color-border-variants-focus);
 }
