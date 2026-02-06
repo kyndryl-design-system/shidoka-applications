@@ -144,18 +144,16 @@ export class TableHeader extends LitElement {
   accessor resizable = false;
 
   /**
-   * Sets a resize minimum width for the cell;
-   * Minimum width constraint for resizing (supports 'px').
+   * Sets a resize minimum width for the cell(supports 'px'.e.g., '150px');
    */
   @property({ type: String })
-  accessor resizeMinWidth = '100px';
+  accessor resizeMinWidth = '120px';
 
   /**
-   * Sets a resize minimum width for the cell;
-   * Maximum width constraint for resizing (supports 'px').
+   * Sets a resize minimum width for the cell (supports 'px'e.g., '150px');
    */
   @property({ type: String })
-  accessor resizeMaxWidth = '1200px';
+  accessor resizeMaxWidth = '';
 
   /**
    * @ignore
@@ -163,15 +161,29 @@ export class TableHeader extends LitElement {
   @queryAssignedNodes({ flatten: true })
   accessor listItems!: Array<Node>;
 
+  /**
+   *
+   * @internal
+   */
   @state()
   private accessor _isResizing = false;
 
+  /**
+   * @ignore
+   */
   @state()
   private accessor _resizeStartX = 0;
 
+  /**
+   * @ignore
+   */
   @state()
   private accessor _resizeStartWidth = 0;
 
+  /**
+   * For keeping track of the initial widths of all columns before resizing starts.
+   * @ignore
+   */
   @state()
   private accessor _columnWidthsSnapshot: Map<number, number> = new Map();
 
@@ -249,16 +261,6 @@ export class TableHeader extends LitElement {
     }
   }
 
-  override connectedCallback() {
-    super.connectedCallback();
-    // Resize listener is attached directly to the resize-handle in the template
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    // No cleanup needed as event listener is in the template
-  }
-
   getTextContent() {
     const nonWhitespaceNodes = this.listItems.filter((node) => {
       return (
@@ -284,23 +286,19 @@ export class TableHeader extends LitElement {
 
     const table = this.closest('kyn-table') as any;
     if (table) {
-      // const columnIndex = this._getColumnIndex();
       //  Lock ALL columns to their exact current widths - this freezes the layout completely
       this._lockAllColumnsExactly();
       // Force reflow to apply the lock immediately - prevents jump on first mousemove
       void this.offsetWidth;
       // Lock table width during resize
-      table.lockTableWidth();
-      // Disable pointer events on all other headers to prevent layout thrashing
-      // this._disableOtherHeadersPointerEvents(columnIndex);
+      // table.lockTableWidth();
+      const currentWidth = this.offsetWidth;
+      this.style.width = `${currentWidth}px`;
     }
 
     // Add event listeners
     document.addEventListener('mousemove', this._handleResizeMove);
     document.addEventListener('mouseup', this._handleResizeEnd);
-
-    // Lock cursor and prevent text selection
-    // this._lockResizeCursor();
   };
 
   private _handleResizeMove = (e: MouseEvent) => {
@@ -311,12 +309,10 @@ export class TableHeader extends LitElement {
     let newWidth = this._resizeStartWidth + deltaX;
 
     // Parse constraint values (support px)
-    const minWidth = this._parseConstraintValue(
-      this.minWidth ? this.minWidth : this.resizeMinWidth
-    );
-    const maxWidth = this._parseConstraintValue(
-      this.maxWidth ? this.maxWidth : this.resizeMaxWidth
-    );
+    const minWidth = this._parseConstraintValue(this.resizeMinWidth);
+    // const maxWidthValue = this.maxWidth ? this.maxWidth : this.resizeMaxWidth;
+    const maxWidth =
+      this._parseConstraintValue(this.resizeMaxWidth) || Infinity;
 
     // Apply constraints
     newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
@@ -334,7 +330,6 @@ export class TableHeader extends LitElement {
         composed: true,
         detail: {
           columnIndex: this._getColumnIndex(),
-          // newWidth: `${Math.round(newWidth)}px`,
           newWidth: `${newWidth}px`,
         },
       })
@@ -353,12 +348,6 @@ export class TableHeader extends LitElement {
 
     // Remove resizing state (shows sort icon again)
     this.removeAttribute('data-resizing');
-
-    // Re-enable pointer events on all headers
-    // this._enableAllHeadersPointerEvents();
-
-    // Unlock cursor
-    // this._unlockResizeCursor();
   };
 
   private _applyWidthToAllCells = (width: number) => {
@@ -370,18 +359,6 @@ export class TableHeader extends LitElement {
     this.style.minWidth = widthStr;
     this.style.maxWidth = widthStr;
   };
-
-  // private _lockResizeCursor = () => {
-  //   (document.body as any).style.cursor = 'col-resize';
-  //   (document.body as any).style.userSelect = 'none';
-  //   (document.body as any).style.webkitUserSelect = 'none';
-  // };
-
-  // private _unlockResizeCursor = () => {
-  //   (document.body as any).style.cursor = 'auto';
-  //   (document.body as any).style.userSelect = 'auto';
-  //   (document.body as any).style.webkitUserSelect = 'auto';
-  // };
 
   private _parseConstraintValue = (value: string | number): number => {
     if (typeof value === 'number') return value;
@@ -410,14 +387,6 @@ export class TableHeader extends LitElement {
 
       // Store the width for later calculation
       this._columnWidthsSnapshot.set(index, width);
-
-      // Locking header cell
-      // (col as any).style.width = `${width}px`;
-      // (col as any).style.minWidth = `${width}px`;
-      // (col as any).style.maxWidth = `${width}px`;
-      // (col as any).style.flexGrow = '0';
-      // (col as any).style.flexShrink = '0';
-      // (col as any).style.flex = 'none';
     });
   };
 
@@ -427,26 +396,13 @@ export class TableHeader extends LitElement {
 
     const resizingColumnIndex = this._getColumnIndex();
 
-    // Delegate to table component to update its width
+    // To updated table component width
     table.updateTableWidthFromResize(
       this._columnWidthsSnapshot,
       resizingColumnIndex,
       resizedColumnWidth
     );
   };
-
-  // private _enableAllHeadersPointerEvents = () => {
-  //   const table = this.closest('kyn-table') as any;
-  //   if (!table) return;
-
-  //   const headerRow = table.querySelector('kyn-header-tr');
-  //   if (!headerRow) return;
-
-  //   const columns = Array.from(headerRow.querySelectorAll('kyn-th'));
-  //   columns.forEach((col) => {
-  //     (col as any).style.pointerEvents = '';
-  //   });
-  // };
 
   override render() {
     const iconClasses = {

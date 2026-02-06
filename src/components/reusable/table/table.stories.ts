@@ -847,6 +847,12 @@ export const ResizeColumn: Story = {
       <h4>Important Information about Resize Column</h4>
       <ul>
         <li>
+          Columns can be resized by clicking and dragging the right edges of the
+          column header. To enable this feature, set resizable to true. To
+          disable resizing for specific columns, set columns(kyn-th) ->
+          resizable to false.
+        </li>
+        <li>
           <b>Note:</b> When <i>minWidth/maxWidth</i> and
           <i>resizeMinWidth/resizeMaxWidth</i>
           both are provided, then minWidth/maxWidth takes precedence.
@@ -858,11 +864,13 @@ export const ResizeColumn: Story = {
       >
       </kyn-table-toolbar>
       <kyn-table-container>
-        <kyn-table>
+        <kyn-table fixedLayout>
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th
                 resizable
+                maxWidth="250px"
+                width="100px"
                 .align=${'center'}
                 @on-column-resize=${(e: any) =>
                   action(e.type)({ ...e, detail: e.detail })}
