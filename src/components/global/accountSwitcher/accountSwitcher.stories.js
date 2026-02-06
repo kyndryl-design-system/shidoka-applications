@@ -6,7 +6,9 @@ import '../header';
 import exampleData from './example_account_switcher_data.json';
 
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
+import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 
 // All items aggregated for Global Zone default view
 // Mark the first item as selected by default
@@ -120,6 +122,27 @@ export const WithSearch = {
   `,
 };
 
+const truncateName = (name, maxLen = 10) =>
+  name.length > maxLen ? name.slice(0, maxLen) + '…' : name;
+
+const handleUIItemSelect = (e) => {
+  handleItemSelect(e);
+  const name = e.detail.item.name;
+  const flyout = e.target.closest('kyn-header-flyout');
+  if (flyout) {
+    const nameEl = flyout.querySelector('.account-name');
+    if (nameEl) nameEl.textContent = truncateName(name);
+    flyout.label = truncateName(name);
+  }
+};
+
+const handleFlyoutToggle = (e) => {
+  const chevron = e.target.querySelector('.account-chevron');
+  if (chevron) {
+    chevron.style.transform = e.detail.open ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+};
+
 export const UIImplementation = {
   decorators: [
     (story) =>
@@ -134,17 +157,46 @@ export const UIImplementation = {
   render: () => html`
     <kyn-header rootUrl="/" appTitle="Application">
       <kyn-header-flyouts>
-        <kyn-header-flyout label="Account Switcher" hideMenuLabel>
-          <span slot="button">${unsafeSVG(helpIcon)}</span>
+        <kyn-header-flyout
+          label=${truncateName(selectedItem?.name || '')}
+          hideMenuLabel
+          @on-flyout-toggle=${handleFlyoutToggle}
+        >
+          <span
+            slot="button"
+            style="display: flex; align-items: center; gap: 8px; font-size: 14px;"
+          >
+            <span class="account-name"
+              >${truncateName(selectedItem?.name || '')}</span
+            >
+            <span
+              class="account-chevron"
+              style="display: flex; transition: transform 0.2s;"
+              >${unsafeSVG(chevronDownIcon)}</span
+            >
+          </span>
 
           <kyn-account-switcher
             .currentAccount=${fullCurrentAccount}
             .workspaces=${workspaces}
             .items=${allItems}
             @on-workspace-select=${handleWorkspaceSelect}
-            @on-item-select=${handleItemSelect}
+            @on-item-select=${handleUIItemSelect}
             @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
           ></kyn-account-switcher>
+        </kyn-header-flyout>
+
+        <kyn-header-flyout label="Menu Label">
+          <span slot="button">${unsafeSVG(helpIcon)}</span>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example 1
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Example 2
+          </kyn-header-link>
         </kyn-header-flyout>
 
         <kyn-header-flyout label="User Profile" hideMenuLabel>
