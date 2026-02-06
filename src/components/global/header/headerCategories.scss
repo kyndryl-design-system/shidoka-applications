@@ -94,7 +94,7 @@ slot.header-categories__slot::slotted(*) {
    Column count is controlled via data-columns attribute.
    ------------------------------------------------------------------ */
 :host([layout='masonry']) {
-  width: max-content; // Shrink-fit to actual content width
+  width: 100%; // Fill available parent width; column-count divides it evenly
   min-width: $min-column-width;
   max-width: 100%; // Don't exceed parent
 }
@@ -120,17 +120,14 @@ slot.header-categories__slot::slotted(*) {
 }
 
 // Fixed column-count based on data-columns attribute.
-// 1-2 columns use fixed column-width for consistent flyout sizing.
-// 3+ columns omit column-width so column-count is honored — otherwise
-// the min-width constraint silently reduces the visible column count
-// when the container isn't wide enough (e.g. 5 × 280px = 1400px).
+// All column counts omit column-width so columns flex to fill available
+// space — fixed column-width creates a min-content floor that causes
+// horizontal overflow when the flyout wrapper is narrower.
 :host([layout='masonry'][data-columns='1']) .header-categories__inner {
   column-count: 1;
-  column-width: $column-width-1;
 }
 :host([layout='masonry'][data-columns='2']) .header-categories__inner {
   column-count: 2;
-  column-width: $column-width-2;
 }
 @for $i from 3 through 10 {
   :host([layout='masonry'][data-columns='#{$i}']) .header-categories__inner {
