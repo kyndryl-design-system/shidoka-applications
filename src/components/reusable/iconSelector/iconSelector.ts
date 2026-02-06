@@ -48,6 +48,7 @@ export class IconSelector extends LitElement {
   /**
    * When true, the icon is only visible when the parent element is hovered.
    * Visibility is controlled via CSS on the parent component.
+   * Can also be set via `--kyn-icon-selector-only-visible-on-hover: 1` on an ancestor.
    */
   @property({ type: Boolean, reflect: true })
   accessor onlyVisibleOnHover = false;
@@ -55,16 +56,31 @@ export class IconSelector extends LitElement {
   /**
    * When true, checked items remain visible even when onlyVisibleOnHover is enabled.
    * Useful for showing users which items they've already favorited.
+   * Can also be set via `--kyn-icon-selector-persist-when-checked: 1` on an ancestor.
    */
   @property({ type: Boolean })
   accessor persistWhenChecked = false;
+
+  /**
+   * Enables a subtle pop/crossfade animation when toggling checked state.
+   * Can also be enabled for all descendants by setting the CSS custom property
+   * `--kyn-icon-selector-animate-selection: 1` on any ancestor element.
+   */
+  @property({ type: Boolean })
+  accessor animateSelection = false;
+
+  /** @internal Resolved flags (prop OR inherited CSS custom property). */
+  private _shouldAnimate = false;
+  private _shouldOnlyVisibleOnHover = false;
+  private _shouldPersistWhenChecked = false;
 
   override render() {
     const classes = {
       'icon-selector': true,
       'icon-selector--checked': this.checked,
-      'only-visible-on-hover': this.onlyVisibleOnHover,
-      'persist-when-checked': this.persistWhenChecked,
+      'only-visible-on-hover': this._shouldOnlyVisibleOnHover,
+      'persist-when-checked': this._shouldPersistWhenChecked,
+      'animate-selection': this._shouldAnimate,
     };
 
     const currentLabel = this.checked ? this.checkedLabel : this.uncheckedLabel;
@@ -135,9 +151,63 @@ export class IconSelector extends LitElement {
     e.stopPropagation();
   };
 
+  override firstUpdated() {
+    // Resolve again after first paint in case connectedCallback was too early.
+    if (!this._cssResolved) {
+      this._readCSSFlags();
+      this._resolveFlags();
+      this.requestUpdate();
+    }
+  }
+
+  private _cssResolved = false;
+
+  private _readCSSFlags() {
+    const styles = getComputedStyle(this);
+    const cssFlag = (prop: string) => {
+      const val = styles.getPropertyValue(prop).trim();
+      return val === '1' || val === 'true';
+    };
+    this._cssAnimate = cssFlag('--kyn-icon-selector-animate-selection');
+    this._cssOnlyVisibleOnHover = cssFlag(
+      '--kyn-icon-selector-only-visible-on-hover'
+    );
+    this._cssPersistWhenChecked = cssFlag(
+      '--kyn-icon-selector-persist-when-checked'
+    );
+    this._cssResolved = true;
+  }
+
+  override willUpdate(changedProps: Map<string, unknown>) {
+    if (
+      changedProps.has('animateSelection') ||
+      changedProps.has('onlyVisibleOnHover') ||
+      changedProps.has('persistWhenChecked')
+    ) {
+      this._resolveFlags();
+    }
+  }
+
+  /** @internal Cached CSS custom property values (read once in firstUpdated). */
+  private _cssAnimate = false;
+  private _cssOnlyVisibleOnHover = false;
+  private _cssPersistWhenChecked = false;
+
+  private _resolveFlags() {
+    this._shouldAnimate = this.animateSelection || this._cssAnimate;
+    this._shouldOnlyVisibleOnHover =
+      this.onlyVisibleOnHover || this._cssOnlyVisibleOnHover;
+    this._shouldPersistWhenChecked =
+      this.persistWhenChecked || this._cssPersistWhenChecked;
+  }
+
   override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', this._handleHostClick);
+    // Read CSS custom properties early so the first render has correct classes.
+    // Prevents blink where icons are briefly visible before only-visible-on-hover applies.
+    this._readCSSFlags();
+    this._resolveFlags();
   }
 
   override disconnectedCallback() {
