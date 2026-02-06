@@ -139,14 +139,15 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Layout mode for categories.
-   * - "masonry" (default): Original CSS multi-column layout for backwards compatibility
-   * - "grid": New CSS Grid with auto-fit columns and responsive wrapping
+   * - "auto" (default): Original CSS multi-column layout with automatic column-width for backwards compatibility
+   * - "masonry": CSS multi-column with fixed column-count based on category count
+   * - "grid": CSS Grid with fixed columns and row-based wrapping
    */
   @property({ type: String, reflect: true })
-  accessor layout: 'masonry' | 'grid' = 'masonry';
+  accessor layout: 'auto' | 'masonry' | 'grid' = 'auto';
 
-  /** Max number of columns to display when layout="grid" (default: 10, effectively unlimited).
-   * Has no effect when layout="masonry".
+  /** Max number of columns to display when layout="grid" or layout="masonry".
+   * Has no effect when layout="auto" (default).
    */
   @property({ type: Number })
   accessor maxColumns = 10;
@@ -204,11 +205,14 @@ export class HeaderCategories extends LitElement {
   /** @internal */
   private _resizeObserver?: ResizeObserver;
 
-  /** Debounced divider update to prevent jank during rapid resize (grid mode only)
+  /** Debounced divider update to prevent jank during rapid resize (grid and masonry modes)
    * @internal
    */
   private _debouncedUpdateDividers = debounce((_e: Event) => {
-    if (this.view === ROOT_VIEW && this.layout === 'grid') {
+    if (
+      this.view === ROOT_VIEW &&
+      (this.layout === 'grid' || this.layout === 'masonry')
+    ) {
       this._updateDividers();
     }
   }, 100);
@@ -387,9 +391,11 @@ export class HeaderCategories extends LitElement {
       const columnCount = this._getColumnCount();
       this.setAttribute('data-columns', String(columnCount));
 
-      // Update dividers after render when in root view (grid mode only)
-      if (this.view === ROOT_VIEW && this.layout === 'grid') {
-        // Use double requestAnimationFrame to ensure CSS grid layout is fully computed
+      // Update dividers after render when in root view (grid and masonry modes).
+      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
+      // so post-render correction won't cause reflow.
+      if (this.view === ROOT_VIEW) {
+        // Use double requestAnimationFrame to ensure layout is fully computed
         // The first rAF runs after the browser paints, the second ensures layout reflow is complete
         requestAnimationFrame(() => {
           requestAnimationFrame(() => this._updateDividers());
@@ -594,7 +600,6 @@ export class HeaderCategories extends LitElement {
   private renderSlottedRoot() {
     const categories = this._slottedCategories;
     if (!categories.length) return null;
-
     return html`${categories.map(
       (category) => html`
         <kyn-header-category heading=${category.heading} showDivider>
@@ -739,8 +744,8 @@ export class HeaderCategories extends LitElement {
    * @internal
    */
   private _updateDividers(): void {
-    // Only update dividers in grid mode (masonry doesn't need row-based divider detection)
-    if (this.view !== ROOT_VIEW || this.layout !== 'grid') return;
+    if (this.view !== ROOT_VIEW) return;
+    if (this.layout !== 'grid' && this.layout !== 'masonry') return;
 
     const inner = this.shadowRoot?.querySelector('.header-categories__inner');
     if (!inner) return;
@@ -751,52 +756,84 @@ export class HeaderCategories extends LitElement {
 
     if (!categories.length) return;
 
-    // First, reset all categories: remove noAutoDivider to allow auto-detection
+    // Reset all categories: remove noAutoDivider to allow auto-detection
     categories.forEach((cat) => {
       cat.removeAttribute('noautodivider');
     });
 
-    // Get bounding rects and group by row (y-position)
+    // Get bounding rects
     const categoryData = categories.map((cat) => ({
       el: cat,
       rect: cat.getBoundingClientRect(),
     }));
 
-    // Group categories by their top edge (row), using tolerance for rounding
-    const rowMap = new Map<number, typeof categoryData>();
+    if (this.layout === 'grid') {
+      // Grid: group by row (Y-position), hide dividers on the last row
+      const rowMap = new Map<number, typeof categoryData>();
 
-    for (const item of categoryData) {
-      const y = item.rect.top;
-      let foundRow = false;
+      for (const item of categoryData) {
+        const y = item.rect.top;
+        let foundRow = false;
 
-      for (const [rowY] of rowMap) {
-        if (Math.abs(y - rowY) <= COLUMN_GROUPING_TOLERANCE_PX) {
-          rowMap.get(rowY)!.push(item);
-          foundRow = true;
-          break;
+        for (const [rowY] of rowMap) {
+          if (Math.abs(y - rowY) <= COLUMN_GROUPING_TOLERANCE_PX) {
+            rowMap.get(rowY)!.push(item);
+            foundRow = true;
+            break;
+          }
+        }
+
+        if (!foundRow) {
+          rowMap.set(y, [item]);
         }
       }
 
-      if (!foundRow) {
-        rowMap.set(y, [item]);
+      let lastRowY = -Infinity;
+      for (const [rowY] of rowMap) {
+        if (rowY > lastRowY) {
+          lastRowY = rowY;
+        }
       }
-    }
 
-    // Find the last row (highest Y value)
-    let lastRowY = -Infinity;
-    for (const [rowY] of rowMap) {
-      if (rowY > lastRowY) {
-        lastRowY = rowY;
+      const lastRowCategories = rowMap.get(lastRowY);
+      if (lastRowCategories) {
+        for (const item of lastRowCategories) {
+          item.el.removeAttribute('showdivider');
+          item.el.setAttribute('noautodivider', '');
+        }
       }
-    }
+    } else {
+      // Masonry: group by column (X-position), hide dividers on the last item in each column.
+      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
+      // so this correction won't cause reflow.
+      const colMap = new Map<number, typeof categoryData>();
 
-    // Disable dividers for all categories in the last row
-    // Must remove showdivider (set in template) and set noautodivider (prevents auto-detection)
-    const lastRowCategories = rowMap.get(lastRowY);
-    if (lastRowCategories) {
-      for (const item of lastRowCategories) {
-        item.el.removeAttribute('showdivider');
-        item.el.setAttribute('noautodivider', '');
+      for (const item of categoryData) {
+        const x = item.rect.left;
+        let foundCol = false;
+
+        for (const [colX] of colMap) {
+          if (Math.abs(x - colX) <= COLUMN_GROUPING_TOLERANCE_PX) {
+            colMap.get(colX)!.push(item);
+            foundCol = true;
+            break;
+          }
+        }
+
+        if (!foundCol) {
+          colMap.set(x, [item]);
+        }
+      }
+
+      for (const [, colItems] of colMap) {
+        let lastItem = colItems[0];
+        for (const item of colItems) {
+          if (item.rect.bottom > lastItem.rect.bottom) {
+            lastItem = item;
+          }
+        }
+        lastItem.el.removeAttribute('showdivider');
+        lastItem.el.setAttribute('noautodivider', '');
       }
     }
   }

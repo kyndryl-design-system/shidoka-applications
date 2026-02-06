@@ -56,6 +56,12 @@ slot.header-categories__slot::slotted(*) {
   margin: 0 0 16px;
 }
 
+// Compensate for the last item's trailing 16px bottom margin in column-based
+// layouts. Grid is excluded (it resets item margin to 0 and uses gap instead).
+:host(:not([layout='grid']):not([view='detail'])) .header-categories__inner {
+  margin-bottom: -16px;
+}
+
 /* ---------------------------------------------------------------------
    ROOT VIEW (MASONRY - default)
    ------------------------------------------------------------------ */
@@ -89,7 +95,7 @@ slot.header-categories__slot::slotted(*) {
 
 @media (min-width: 672px) {
   :host([layout='masonry']) {
-    padding-right: 0;
+    padding-right: 16px; // Room to breathe on right edge
   }
 }
 
@@ -97,6 +103,14 @@ slot.header-categories__slot::slotted(*) {
 :host([layout='masonry']) .header-categories__inner {
   column-width: auto; // Disable auto column-width
   column-gap: $column-gap;
+
+  // Make category dividers layout-free (absolute positioned) so they don't
+  // affect column height balancing. Divider sits centered in the 16px item gap.
+  --kyn-header-divider-position: absolute;
+  --kyn-header-divider-bottom: -9px;
+  --kyn-header-divider-left: 8px;
+  --kyn-header-divider-right: 8px;
+  --kyn-header-divider-margin: 0;
 }
 
 // Fixed column-count based on data-columns attribute
@@ -148,7 +162,7 @@ slot.header-categories__slot::slotted(*) {
 
 @media (min-width: 672px) {
   :host([layout='grid']) {
-    padding-right: 0;
+    padding-right: 16px; // Room to breathe on right edge
   }
 }
 

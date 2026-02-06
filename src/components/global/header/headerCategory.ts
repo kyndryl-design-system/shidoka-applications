@@ -75,10 +75,10 @@ export class HeaderCategory extends LitElement {
   }
 
   override render() {
-    // Indent links when explicitly requested via indentLinks prop (opt-in)
-    const shouldIndentLinks = this.indentLinks;
     // Add heading padding when leftPadding is set AND there's no icon (for alignment with other categories that have icons)
     const indentHeading = this.leftPadding && !this._hasIcon;
+    // Indent links to align with heading text when icon is present (8px + 16px icon + 8px gap = 32px)
+    const shouldIndentLinks = this._hasIcon;
 
     // Show divider if explicitly set, or if auto-detection finds a next category sibling
     const shouldShowDivider =
@@ -97,7 +97,7 @@ export class HeaderCategory extends LitElement {
           <slot name="icon" @slotchange=${this._handleIconSlotChange}></slot>
           ${this.heading}
         </div>
-        <div class="category__links ${shouldIndentLinks ? 'left-padding' : ''}">
+        <div class="category__links ${shouldIndentLinks ? 'has-icon' : ''}">
           <slot></slot>
         </div>
         <slot name="more"></slot>

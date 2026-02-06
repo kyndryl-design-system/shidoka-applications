@@ -43,7 +43,7 @@ export const FullImplementation = {
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <kyn-header-nav ?flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
+        <kyn-header-nav .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
           <!-- FAVORITES -->
           <kyn-header-link href="javascript:void(0)" hideSearch>
             <span>${unsafeSVG(starFilledIcon)}</span>

@@ -135,6 +135,12 @@ export class HeaderLink extends LitElement {
   @state()
   accessor _leaveTimer: any;
 
+  /** Suppresses pointer-leave close during internal view transitions (e.g. "More" click).
+   * @internal
+   */
+  private _viewChangeInProgress = false;
+  private _viewChangeTimer: any;
+
   /** Menu positioning
    * @internal
    */
@@ -440,6 +446,13 @@ export class HeaderLink extends LitElement {
   }
 
   private handlePointerLeave(e: PointerEvent) {
+    // Suppress close during internal view transitions (e.g. "More" → detail view).
+    // The flyout resizes and the cursor may end up outside, but the user's intent
+    // was to drill in — not to leave.
+    if (this._viewChangeInProgress) {
+      return;
+    }
+
     // check both the link's own prop and parent nav's prop
     // if either is false, don't auto-close the flyout
     const shouldAutoCollapse = this._shouldAutoCollapse();
@@ -573,10 +586,14 @@ export class HeaderLink extends LitElement {
         }
       }
 
+      // Only enforce min-height for multi-column mega nav flyouts
+      // (kyn-header-categories), not simple category lists
+      const hasMegaNav = this.querySelector('kyn-header-categories') !== null;
+
       this.menuPosition = {
         top: HeaderHeight + 'px',
         left: '0px',
-        minHeight: navMenuHeight + 'px',
+        ...(hasMegaNav ? { minHeight: navMenuHeight + 'px' } : {}),
       };
     } else {
       const top = topCandidate < HeaderHeight ? HeaderHeight : topCandidate;
@@ -604,12 +621,26 @@ export class HeaderLink extends LitElement {
 
   private _handleDocumentClick = (e: Event) => this.handleClickOut(e);
 
+  /** Suppress pointer-leave close when categories switch views (root ↔ detail).
+   * @internal
+   */
+  private _handleNavChange = () => {
+    this._viewChangeInProgress = true;
+    clearTimeout(this._viewChangeTimer);
+    // Allow enough time for the flyout to finish resizing before re-enabling close
+    this._viewChangeTimer = setTimeout(() => {
+      this._viewChangeInProgress = false;
+    }, 500);
+  };
+
   override connectedCallback() {
     super.connectedCallback();
     document.addEventListener('click', this._handleDocumentClick);
     window.addEventListener('resize', this._debounceResize);
     // Listen for column count changes from slotted kyn-header-categories
     this.addEventListener('column-count-change', this._handleColumnCountChange);
+    // Suppress flyout close during internal view transitions (e.g. "More" click)
+    this.addEventListener('on-nav-change', this._handleNavChange);
   }
 
   override disconnectedCallback() {
@@ -623,12 +654,18 @@ export class HeaderLink extends LitElement {
       this._leaveTimer = undefined;
     }
 
+    if (this._viewChangeTimer) {
+      clearTimeout(this._viewChangeTimer);
+      this._viewChangeTimer = undefined;
+    }
+
     document.removeEventListener('click', this._handleDocumentClick);
     window.removeEventListener('resize', this._debounceResize);
     this.removeEventListener(
       'column-count-change',
       this._handleColumnCountChange
     );
+    this.removeEventListener('on-nav-change', this._handleNavChange);
     super.disconnectedCallback();
   }
 }

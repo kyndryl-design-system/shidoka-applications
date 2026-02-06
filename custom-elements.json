@@ -1247,10 +1247,10 @@
               "kind": "field",
               "name": "layout",
               "type": {
-                "text": "'masonry' | 'grid'"
+                "text": "'auto' | 'masonry' | 'grid'"
               },
-              "default": "'masonry'",
-              "description": "Layout mode for categories.\n- \"masonry\" (default): Original CSS multi-column layout for backwards compatibility\n- \"grid\": New CSS Grid with auto-fit columns and responsive wrapping",
+              "default": "'auto'",
+              "description": "Layout mode for categories.\n- \"auto\" (default): Original CSS multi-column layout with automatic column-width for backwards compatibility\n- \"masonry\": CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
               "attribute": "layout",
               "reflects": true
             },
@@ -1261,7 +1261,7 @@
                 "text": "number"
               },
               "default": "10",
-              "description": "Max number of columns to display when layout=\"grid\" (default: 10, effectively unlimited).\nHas no effect when layout=\"masonry\".",
+              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".\nHas no effect when layout=\"auto\" (default).",
               "attribute": "maxColumns"
             },
             {
@@ -1572,10 +1572,10 @@
             {
               "name": "layout",
               "type": {
-                "text": "'masonry' | 'grid'"
+                "text": "'auto' | 'masonry' | 'grid'"
               },
-              "default": "'masonry'",
-              "description": "Layout mode for categories.\n- \"masonry\" (default): Original CSS multi-column layout for backwards compatibility\n- \"grid\": New CSS Grid with auto-fit columns and responsive wrapping",
+              "default": "'auto'",
+              "description": "Layout mode for categories.\n- \"auto\" (default): Original CSS multi-column layout with automatic column-width for backwards compatibility\n- \"masonry\": CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
               "fieldName": "layout"
             },
             {
@@ -1584,7 +1584,7 @@
                 "text": "number"
               },
               "default": "10",
-              "description": "Max number of columns to display when layout=\"grid\" (default: 10, effectively unlimited).\nHas no effect when layout=\"masonry\".",
+              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".\nHas no effect when layout=\"auto\" (default).",
               "fieldName": "maxColumns"
             },
             {
@@ -2331,6 +2331,14 @@
               },
               "default": "''",
               "description": "Text for mobile \"Back\" button."
+            },
+            {
+              "kind": "field",
+              "name": "_viewChangeTimer",
+              "type": {
+                "text": "any"
+              },
+              "privacy": "private"
             },
             {
               "kind": "method",

@@ -48,6 +48,11 @@ export class HeaderNav extends LitElement {
    */
   private _attrObserver?: MutationObserver;
 
+  /** Tracks whether auto-open has already been triggered to prevent multiple triggers.
+   * @internal
+   */
+  private _autoOpenTriggered = false;
+
   /** Bound document click handler to allow proper add/remove of listener
    * @internal
    */
@@ -116,6 +121,15 @@ export class HeaderNav extends LitElement {
 
   private _handleSlotChange() {
     this._updateCategoriesVisibility();
+
+    // Trigger auto-open when slot content changes (handles late-loading content)
+    if (
+      !this.flyoutAutoCollapsed &&
+      this._isDesktop &&
+      !this._autoOpenTriggered
+    ) {
+      this._autoOpenFirstCategoricalLink();
+    }
   }
 
   private _handleClickOut(e: Event) {
@@ -126,6 +140,12 @@ export class HeaderNav extends LitElement {
 
   protected override firstUpdated(_changed: PropertyValueMap<this>): void {
     this._updateCategoriesVisibility();
+
+    // Auto-open first categorical link on initial render when flyoutAutoCollapsed is false.
+    // This handles the case where the nav is already visible (desktop) without a menuOpen toggle.
+    if (!this.flyoutAutoCollapsed && this._isDesktop) {
+      this._autoOpenFirstCategoricalLink();
+    }
   }
 
   override willUpdate(changedProps: PropertyValueMap<this>): void {
@@ -150,6 +170,11 @@ export class HeaderNav extends LitElement {
       if (this.menuOpen && !this.flyoutAutoCollapsed && this._isDesktop) {
         this._autoOpenFirstCategoricalLink();
       }
+
+      // Reset auto-open flag when nav closes so it can re-trigger on next open
+      if (!this.menuOpen) {
+        this._autoOpenTriggered = false;
+      }
     }
   }
 
@@ -157,26 +182,31 @@ export class HeaderNav extends LitElement {
    * @internal
    */
   private _autoOpenFirstCategoricalLink(): void {
-    // Use requestAnimationFrame to ensure DOM is ready
-    requestAnimationFrame(() => {
+    // Use setTimeout to ensure all components are fully initialized
+    // This needs to run after document click handlers have finished
+    setTimeout(() => {
       const links = this.querySelectorAll<HTMLElement & { open?: boolean }>(
         ':scope > kyn-header-link'
       );
 
       for (const link of links) {
         // Auto-open only if this link contains categorical nav
+        // Check both light DOM (querySelector) and shadow DOM (querySelectorDeep)
         // (kyn-header-categories for JSON-driven, kyn-header-category for slotted)
         const hasCategoricalNav =
-          link.querySelector('kyn-header-categories') !== null;
+          link.querySelector('kyn-header-categories') !== null ||
+          querySelectorDeep('kyn-header-categories', link) !== null;
         const hasSlottedCategory =
-          link.querySelector('kyn-header-category') !== null;
+          link.querySelector('kyn-header-category') !== null ||
+          querySelectorDeep('kyn-header-category', link) !== null;
 
         if (hasCategoricalNav || hasSlottedCategory) {
           link.open = true;
+          this._autoOpenTriggered = true;
           break;
         }
       }
-    });
+    }, 100);
   }
 
   override updated(changedProps: PropertyValueMap<this>): void {
