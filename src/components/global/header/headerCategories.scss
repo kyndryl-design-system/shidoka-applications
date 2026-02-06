@@ -2,7 +2,7 @@
 
 // Layout configuration
 $column-gap: 32px;
-$row-gap: 16px;
+$row-gap: 24px;
 $min-wrapper-width: 450px;
 $min-column-width: 150px;
 $max-column-width: 400px;
@@ -51,7 +51,7 @@ $column-width-3: 280px; // Three+ column flyout (per column)
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
-  margin: 0 0 16px;
+  margin: 0 0 $row-gap;
 }
 
 slot.header-categories__slot::slotted(*) {
@@ -59,13 +59,13 @@ slot.header-categories__slot::slotted(*) {
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
-  margin: 0 0 16px;
+  margin: 0 0 $row-gap;
 }
 
-// Compensate for the last item's trailing 16px bottom margin in column-based
+// Compensate for the last item's trailing bottom margin in column-based
 // layouts. Grid is excluded (it resets item margin to 0 and uses gap instead).
 :host(:not([layout='grid']):not([view='detail'])) .header-categories__inner {
-  margin-bottom: -16px;
+  margin-bottom: -$row-gap;
 }
 
 /* ---------------------------------------------------------------------

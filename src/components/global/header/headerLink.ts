@@ -598,7 +598,6 @@ export class HeaderLink extends LitElement {
     if (this.level === 1) {
       // get the height of the level 1 menu to use as submenu min-height
       let navMenuHeight = 0;
-      let navMenuWidth = 0;
       const headerNav = this.closest('kyn-header-nav') as HTMLElement | null;
       if (headerNav) {
         const navMenu = headerNav.shadowRoot?.querySelector(
@@ -606,7 +605,6 @@ export class HeaderLink extends LitElement {
         ) as HTMLElement | null;
         if (navMenu) {
           navMenuHeight = navMenu.offsetHeight;
-          navMenuWidth = navMenu.offsetWidth;
         }
       }
 
@@ -706,24 +704,19 @@ export class HeaderLink extends LitElement {
    */
   private _isInTruncatingNav(): boolean {
     // First try direct closest (works for top-level links)
-    let parentNav = this.closest('kyn-header-nav');
+    const parentNav = this.closest('kyn-header-nav');
     if (parentNav) {
       return parentNav.hasAttribute('truncate-links');
     }
 
     // For nested links, traverse up through shadow DOM boundaries
-    let node: Node | null = this.getRootNode();
-    while (node) {
-      if (node instanceof ShadowRoot) {
-        node = node.host;
-        parentNav = (node as Element).closest?.('kyn-header-nav');
-        if (parentNav) {
-          return parentNav.hasAttribute('truncate-links');
-        }
-        node = node.getRootNode();
-      } else {
-        break;
+    let root = this.getRootNode();
+    while (root instanceof ShadowRoot) {
+      const nav = root.host.closest?.('kyn-header-nav');
+      if (nav) {
+        return nav.hasAttribute('truncate-links');
       }
+      root = root.host.getRootNode();
     }
     return false;
   }
