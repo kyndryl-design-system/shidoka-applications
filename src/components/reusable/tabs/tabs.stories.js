@@ -247,21 +247,6 @@ export const Gallery = {
         <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
       </kyn-tabs>
 
-      <div class="heading kd-type--headline-07">Large</div>
-
-      <kyn-tabs
-        tabSize="lg"
-        @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
-      >
-        <kyn-tab slot="tabs" id="tab1" selected>Tab 1</kyn-tab>
-        <kyn-tab slot="tabs" id="tab2">Tab 2</kyn-tab>
-        <kyn-tab slot="tabs" id="tab3">Tab 3</kyn-tab>
-
-        <kyn-tab-panel tabId="tab1" visible>Tab 1 Content</kyn-tab-panel>
-        <kyn-tab-panel tabId="tab2">Tab 2 Content</kyn-tab-panel>
-        <kyn-tab-panel tabId="tab3">Tab 3 Content</kyn-tab-panel>
-      </kyn-tabs>
-
       <div class="heading kd-type--headline-07">AI</div>
 
       <kyn-tabs
