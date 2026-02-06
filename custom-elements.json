@@ -3259,6 +3259,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/accordion/accordion.ts",
       "declarations": [
         {
@@ -3671,69 +3734,6 @@
           "declaration": {
             "name": "AccordionItem",
             "module": "./accordionItem"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -11193,7 +11193,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "When true, the icon is only visible when the parent element is hovered.\nVisibility is controlled via CSS on the parent component.",
+              "description": "When true, the icon is only visible when the parent element is hovered.\nVisibility is controlled via CSS on the parent component.\nCan also be set via `--kyn-icon-selector-only-visible-on-hover: 1` on an ancestor.",
               "attribute": "onlyVisibleOnHover",
               "reflects": true
             },
@@ -11204,8 +11204,36 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "When true, checked items remain visible even when onlyVisibleOnHover is enabled.\nUseful for showing users which items they've already favorited.",
+              "description": "When true, checked items remain visible even when onlyVisibleOnHover is enabled.\nUseful for showing users which items they've already favorited.\nCan also be set via `--kyn-icon-selector-persist-when-checked: 1` on an ancestor.",
               "attribute": "persistWhenChecked"
+            },
+            {
+              "kind": "field",
+              "name": "animateSelection",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables a subtle pop/crossfade animation when toggling checked state.\nCan also be enabled for all descendants by setting the CSS custom property\n`--kyn-icon-selector-animate-selection: 1` on any ancestor element.",
+              "attribute": "animateSelection"
+            },
+            {
+              "kind": "field",
+              "name": "_shouldOnlyVisibleOnHover",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_shouldPersistWhenChecked",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
             },
             {
               "kind": "method",
@@ -11245,6 +11273,29 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "_cssOnlyVisibleOnHover",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "_cssPersistWhenChecked",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "_resolveFlags",
+              "privacy": "private"
             }
           ],
           "events": [
@@ -11308,7 +11359,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "When true, the icon is only visible when the parent element is hovered.\nVisibility is controlled via CSS on the parent component.",
+              "description": "When true, the icon is only visible when the parent element is hovered.\nVisibility is controlled via CSS on the parent component.\nCan also be set via `--kyn-icon-selector-only-visible-on-hover: 1` on an ancestor.",
               "fieldName": "onlyVisibleOnHover"
             },
             {
@@ -11317,8 +11368,17 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "When true, checked items remain visible even when onlyVisibleOnHover is enabled.\nUseful for showing users which items they've already favorited.",
+              "description": "When true, checked items remain visible even when onlyVisibleOnHover is enabled.\nUseful for showing users which items they've already favorited.\nCan also be set via `--kyn-icon-selector-persist-when-checked: 1` on an ancestor.",
               "fieldName": "persistWhenChecked"
+            },
+            {
+              "name": "animateSelection",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables a subtle pop/crossfade animation when toggling checked state.\nCan also be enabled for all descendants by setting the CSS custom property\n`--kyn-icon-selector-animate-selection: 1` on any ancestor element.",
+              "fieldName": "animateSelection"
             }
           ],
           "superclass": {

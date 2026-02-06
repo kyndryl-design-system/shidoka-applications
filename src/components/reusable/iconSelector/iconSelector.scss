@@ -13,6 +13,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  // Animated mode: stack icons with grid so they can crossfade
+  &.animate-selection {
+    display: inline-grid;
+    place-items: center;
+  }
   padding: 4px;
   margin: 0;
   border: none;
@@ -73,7 +79,7 @@
     fill: currentColor;
   }
 
-  // Show/hide icons based on checked state
+  // Default: instant toggle via display
   &--unchecked {
     display: flex;
 
@@ -88,5 +94,56 @@
     .icon-selector--checked & {
       display: flex;
     }
+  }
+
+  // Animated mode: crossfade + scale with pop
+  .animate-selection & {
+    grid-area: 1 / 1;
+    transition: opacity 200ms ease-out, transform 200ms ease-out;
+  }
+
+  .animate-selection &--unchecked {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .animate-selection .icon-selector--checked &--unchecked,
+  .animate-selection.icon-selector--checked &--unchecked {
+    display: flex;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .animate-selection &--checked {
+    display: flex;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .animate-selection .icon-selector--checked &--checked,
+  .animate-selection.icon-selector--checked &--checked {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+    animation: icon-pop 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@keyframes icon-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }

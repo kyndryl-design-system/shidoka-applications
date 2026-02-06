@@ -200,9 +200,13 @@ slot.header-categories__slot::slotted(*) {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; // Firefox
+  &::-webkit-scrollbar {
+    display: none; // Safari, Chrome
+  }
   .header-categories {
     &__inner {
-      overflow: auto;
+      overflow: visible;
     }
   }
 }
