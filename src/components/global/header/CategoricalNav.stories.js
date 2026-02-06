@@ -50,7 +50,7 @@ export const WithCategorizedNavManualHtml = {
             <span>${unsafeSVG(circleIcon)}</span>
             Application
 
-            <kyn-tabs tabSize="lg" slot="links">
+            <kyn-tabs tabSize="md" slot="links">
               <kyn-tab
                 slot="tabs"
                 id="tab1"
@@ -285,7 +285,7 @@ export const WithCategorizedNavManualHtml = {
             <span>${unsafeSVG(circleIcon)}</span>
             Application 2
 
-            <kyn-tabs tabSize="lg" slot="links">
+            <kyn-tabs tabSize="md" slot="links">
               <kyn-tab
                 slot="tabs"
                 id="tab1"
@@ -439,7 +439,7 @@ export const WithCategorizedNav = {
             <span>${unsafeSVG(circleIcon)}</span>
             Application
 
-            <kyn-tabs tabSize="lg" slot="links">
+            <kyn-tabs tabSize="md" slot="links">
               <kyn-tab
                 slot="tabs"
                 id="tab1"
@@ -514,7 +514,7 @@ export const WithCategorizedNav = {
             <span>${unsafeSVG(circleIcon)}</span>
             Application 2
 
-            <kyn-tabs tabSize="lg" slot="links">
+            <kyn-tabs tabSize="md" slot="links">
               <kyn-tab
                 slot="tabs"
                 id="tab1"

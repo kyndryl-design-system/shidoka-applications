@@ -283,7 +283,7 @@ export const FullImplementation = {
             Services
 
             <kyn-tabs
-              tabSize="lg"
+              tabSize="md"
               slot="links"
               style="width: 100%; max-width: none;"
             >
