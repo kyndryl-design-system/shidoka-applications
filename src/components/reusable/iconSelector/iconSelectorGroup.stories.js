@@ -17,18 +17,7 @@ export default {
       control: { type: 'select' },
       options: ['vertical', 'horizontal'],
     },
-    disabled: {
-      control: { type: 'boolean' },
-    },
-    onlyVisibleOnHover: {
-      control: { type: 'boolean' },
-    },
-    persistWhenChecked: {
-      control: { type: 'boolean' },
-    },
-    animateSelection: {
-      control: { type: 'boolean' },
-    },
+    value: { control: { type: 'object' } },
   },
   parameters: {
     design: {
@@ -42,6 +31,7 @@ export const Group = {
   args: {
     direction: 'vertical',
     disabled: false,
+    value: [],
     onlyVisibleOnHover: true,
     persistWhenChecked: true,
     animateSelection: true,
@@ -68,6 +58,7 @@ export const Group = {
       <kyn-icon-selector-group
         direction=${args.direction}
         ?disabled=${args.disabled}
+        .value=${args.value}
         ?onlyVisibleOnHover=${args.onlyVisibleOnHover}
         ?persistWhenChecked=${args.persistWhenChecked}
         ?animateSelection=${args.animateSelection}
@@ -102,13 +93,21 @@ export const Group = {
 export const GroupHorizontal = {
   args: {
     direction: 'horizontal',
+    value: [],
     disabled: false,
+    onlyVisibleOnHover: false,
+    persistWhenChecked: false,
+    animateSelection: false,
   },
   render: (args) => {
     return html`
       <kyn-icon-selector-group
         direction=${args.direction}
+        .value=${args.value}
         ?disabled=${args.disabled}
+        ?onlyVisibleOnHover=${args.onlyVisibleOnHover}
+        ?persistWhenChecked=${args.persistWhenChecked}
+        ?animateSelection=${args.animateSelection}
         @on-change=${(e) => action(e.type)({ value: e.detail.value })}
       >
         <kyn-icon-selector value="item-1">
@@ -132,6 +131,7 @@ export const GroupWithPreselected = {
   args: {
     direction: 'vertical',
     value: ['item-2'],
+    disabled: false,
     onlyVisibleOnHover: true,
     persistWhenChecked: true,
     animateSelection: true,
@@ -158,6 +158,7 @@ export const GroupWithPreselected = {
       <kyn-icon-selector-group
         direction=${args.direction}
         .value=${args.value}
+        ?disabled=${args.disabled}
         ?onlyVisibleOnHover=${args.onlyVisibleOnHover}
         ?persistWhenChecked=${args.persistWhenChecked}
         ?animateSelection=${args.animateSelection}

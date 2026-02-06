@@ -53,6 +53,10 @@
   // Only visible on hover: uses CSS custom property set by parent (e.g., header-link)
   &.only-visible-on-hover {
     opacity: var(--kyn-icon-selector-hover-opacity, 0);
+  }
+
+  // Enable smooth opacity transitions only after initial state is painted (prevents flash)
+  &.only-visible-on-hover.transitions-ready {
     transition: opacity 150ms ease-out;
   }
 
@@ -122,6 +126,11 @@
     display: flex;
     opacity: 1;
     transform: scale(1);
+  }
+
+  // Only play the pop animation on deliberate user toggles, not on re-renders
+  .animate-selection.just-toggled .icon-selector--checked &--checked,
+  .animate-selection.just-toggled.icon-selector--checked &--checked {
     animation: icon-pop 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 }

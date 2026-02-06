@@ -71,8 +71,16 @@ export class IconSelector extends LitElement {
 
   /** @internal Resolved flags (prop OR inherited CSS custom property). */
   private _shouldAnimate = false;
+  /** @internal Resolved flags (prop OR inherited CSS custom property). */
   private _shouldOnlyVisibleOnHover = false;
+  /** @internal Resolved flags (prop OR inherited CSS custom property). */
   private _shouldPersistWhenChecked = false;
+
+  /** @internal Suppresses opacity transition until initial state is painted. */
+  private _transitionsReady = false;
+
+  /** @internal Set on user interaction so animation only plays on deliberate toggles. */
+  private _justToggled = false;
 
   override render() {
     const classes = {
@@ -81,6 +89,8 @@ export class IconSelector extends LitElement {
       'only-visible-on-hover': this._shouldOnlyVisibleOnHover,
       'persist-when-checked': this._shouldPersistWhenChecked,
       'animate-selection': this._shouldAnimate,
+      'transitions-ready': this._transitionsReady,
+      'just-toggled': this._justToggled,
     };
 
     const currentLabel = this.checked ? this.checkedLabel : this.uncheckedLabel;
@@ -114,6 +124,7 @@ export class IconSelector extends LitElement {
     e.stopPropagation();
 
     this.checked = !this.checked;
+    this._justToggled = true;
     this._emitChange(e);
   }
 
@@ -124,6 +135,7 @@ export class IconSelector extends LitElement {
       e.preventDefault();
       e.stopPropagation();
       this.checked = !this.checked;
+      this._justToggled = true;
       this._emitChange(e);
     }
   }
@@ -152,12 +164,23 @@ export class IconSelector extends LitElement {
   };
 
   override firstUpdated() {
+    // Re-resolve in case connectedCallback ran before styles were computed.
     this._readCSSFlags();
     this._resolveFlags();
     this.requestUpdate();
   }
 
-  private _cssResolved = false;
+  override updated() {
+    // Enable opacity transitions one frame after the first render that includes
+    // the only-visible-on-hover class, so the initial opacity:0 is applied
+    // instantly (no flash) and subsequent hover interactions get smooth transitions.
+    if (this._shouldOnlyVisibleOnHover && !this._transitionsReady) {
+      requestAnimationFrame(() => {
+        this._transitionsReady = true;
+        this.requestUpdate();
+      });
+    }
+  }
 
   private _readCSSFlags() {
     const styles = getComputedStyle(this);
@@ -172,7 +195,6 @@ export class IconSelector extends LitElement {
     this._cssPersistWhenChecked = cssFlag(
       '--kyn-icon-selector-persist-when-checked'
     );
-    this._cssResolved = true;
   }
 
   override willUpdate(changedProps: Map<string, unknown>) {
@@ -187,7 +209,11 @@ export class IconSelector extends LitElement {
 
   /** @internal Cached CSS custom property values (read once in firstUpdated). */
   private _cssAnimate = false;
+
+  /** @internal Cached CSS custom property values (read once in firstUpdated). */
   private _cssOnlyVisibleOnHover = false;
+
+  /** @internal Cached CSS custom property values (read once in firstUpdated). */
   private _cssPersistWhenChecked = false;
 
   private _resolveFlags() {
