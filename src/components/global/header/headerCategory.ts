@@ -6,7 +6,7 @@ import HeaderCategoryScss from './headerCategory.scss?inline';
  * Header link category
  * @slot unnamed - Slot for links.
  * @slot icon - Slot for icon.
- * @slot more - Slot for "More" link (not indented).
+ * @slot more - Slot for "More" link (indented with category links).
  */
 @customElement('kyn-header-category')
 export class HeaderCategory extends LitElement {
@@ -80,8 +80,8 @@ export class HeaderCategory extends LitElement {
         </div>
         <div class="category__links ${shouldIndentLinks ? 'has-icon' : ''}">
           <slot></slot>
+          <slot name="more"></slot>
         </div>
-        <slot name="more"></slot>
       </div>
     `;
   }

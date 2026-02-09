@@ -139,16 +139,13 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Layout mode for categories.
-   * - "auto" (default): Original CSS multi-column layout with automatic column-width for backwards compatibility
-   * - "masonry": CSS multi-column with fixed column-count based on category count
+   * - "masonry" (default): CSS multi-column with fixed column-count based on category count
    * - "grid": CSS Grid with fixed columns and row-based wrapping
    */
   @property({ type: String, reflect: true })
-  accessor layout: 'auto' | 'masonry' | 'grid' = 'auto';
+  accessor layout: 'masonry' | 'grid' = 'masonry';
 
-  /** Max number of columns to display when layout="grid" or layout="masonry".
-   * Has no effect when layout="auto" (default).
-   */
+  /** Max number of columns to display when layout="grid" or layout="masonry". */
   @property({ type: Number })
   accessor maxColumns = 3;
 
@@ -401,9 +398,6 @@ export class HeaderCategories extends LitElement {
           requestAnimationFrame(() => this._updateDividers());
         });
       }
-    } else {
-      // Remove data-columns attribute for default auto-responsive mode
-      this.removeAttribute('data-columns');
     }
 
     // Always emit column count after render (for flyout width adjustment)
@@ -480,7 +474,7 @@ export class HeaderCategories extends LitElement {
                 <span
                   style="display: inline-flex; align-items: center; gap: 8px;"
                 >
-                  ${unsafeSVG(chevronRightIcon)} ${this._textStrings.more}
+                  ${this._textStrings.more} ${unsafeSVG(chevronRightIcon)}
                 </span>
               </kyn-header-link>
             `
@@ -645,7 +639,7 @@ export class HeaderCategories extends LitElement {
                   <span
                     style="display: inline-flex; align-items: center; gap: 8px;"
                   >
-                    ${unsafeSVG(chevronRightIcon)} ${this._textStrings.more}
+                    ${this._textStrings.more} ${unsafeSVG(chevronRightIcon)}
                   </span>
                 </kyn-header-link>
               `

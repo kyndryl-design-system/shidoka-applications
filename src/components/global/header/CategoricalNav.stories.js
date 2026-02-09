@@ -477,7 +477,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="grid"
+                  layout="masonry"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
@@ -498,7 +498,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="grid"
+                  layout="masonry"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
@@ -552,7 +552,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="grid"
+                  layout="masonry"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
@@ -573,7 +573,7 @@ export const WithCategorizedNav = {
                 ></kyn-search>
 
                 <kyn-header-categories
-                  layout="grid"
+                  layout="masonry"
                   maxColumns="5"
                   .tabsConfig=${megaNavConfig}
                   .activeMegaTabId=${renderArgs.activeMegaTabId}
@@ -614,4 +614,4 @@ export const WithCategorizedNav = {
     `;
   },
 };
-WithCategorizedNav.storyName = 'JSON-driven with linkRenderer';
+WithCategorizedNav.storyName = 'JSON Configured Example (masonry layout)';

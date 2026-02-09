@@ -69,6 +69,13 @@ export class HeaderLink extends LitElement {
   @property({ type: Number })
   accessor searchThreshold = 6;
 
+  /** Maximum number of links per column in plain (non-categorical) flyouts.
+   * When set to a positive number and the slotted link count exceeds this value,
+   * additional columns are created automatically. Default 0 (auto — no column splitting).
+   */
+  @property({ type: Number })
+  accessor linksPerColumn = 0;
+
   /** Hide the search input regardless of the number of child links. */
   @property({ type: Boolean })
   accessor hideSearch = false;
@@ -123,6 +130,12 @@ export class HeaderLink extends LitElement {
   /** Text for mobile "Back" button. */
   @state()
   accessor _searchTerm = '';
+
+  /** Number of slotted plain links (non-categorical), used for column calculation.
+   * @internal
+   */
+  @state()
+  accessor _slottedLinkCount = 0;
 
   /**
    * Queries any slotted HTML elements.
@@ -253,14 +266,38 @@ export class HeaderLink extends LitElement {
                 `
               : null}
 
-            <slot
-              name="links"
-              @slotchange=${this._handleLinksSlotChange}
-            ></slot>
+            <div
+              class="links-columns"
+              style=${styleMap(this._linksColumnStyles)}
+            >
+              <slot
+                name="links"
+                @slotchange=${this._handleLinksSlotChange}
+              ></slot>
+            </div>
           </div>
         </div>
       </div>
     `;
+  }
+
+  /** Compute inline styles for the links-columns wrapper.
+   * Only applies multi-column layout for plain (non-categorical) flyouts
+   * when the number of links exceeds linksPerColumn.
+   * @internal
+   */
+  private get _linksColumnStyles() {
+    if (
+      !this.hasCategorical &&
+      this.linksPerColumn > 0 &&
+      this._slottedLinkCount > this.linksPerColumn
+    ) {
+      const columnCount = Math.ceil(
+        this._slottedLinkCount / this.linksPerColumn
+      );
+      return { 'column-count': columnCount.toString() };
+    }
+    return {};
   }
 
   private _handleSearch(e: any) {
@@ -355,6 +392,11 @@ export class HeaderLink extends LitElement {
 
     this.hasCategorical = hasCategories || hasCategory;
     this.hasMultiColumn = hasCategories; // Only true for multi-column wrapper
+
+    // Count direct child plain links for column wrapping
+    const plainLinks = this.querySelectorAll(':scope > kyn-header-link');
+    this._slottedLinkCount = plainLinks.length;
+
     this.requestUpdate();
   }
 

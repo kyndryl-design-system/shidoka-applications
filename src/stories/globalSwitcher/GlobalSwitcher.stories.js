@@ -14,6 +14,8 @@ import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import adminIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user-settings.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
+import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/home.svg';
+import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/dashboard.svg';
 
 import navData from './example_global_switcher_data.json';
 
@@ -157,11 +159,14 @@ export const SlottedHTMLSwitcher = {
               style="display: flex; flex-direction: column; gap: 2px;"
             >
               <kyn-header-link href="#">
-                <span>Bridge Home</span>
-                ${starSelector()}
-              </kyn-header-link>
-              <kyn-header-link href="#">
-                <span>All Dashboards</span>
+                <span
+                  style="display: inline-flex; align-items: center; gap: 8px;"
+                >
+                  <span style="display: flex; flex-shrink: 0; margin-top: -2px;"
+                    >${unsafeSVG(homeIcon)}</span
+                  >
+                  Bridge Home
+                </span>
                 ${starSelector()}
               </kyn-header-link>
 
@@ -169,7 +174,11 @@ export const SlottedHTMLSwitcher = {
                 heading="Dashboards"
                 style="margin-top: 8px;"
               >
-                <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                <span slot="icon">${unsafeSVG(dashboardIcon)}</span>
+                <kyn-header-link href="#">
+                  <span>All Dashboards</span>
+                  ${starSelector()}
+                </kyn-header-link>
                 <kyn-header-link href="#">
                   <span>Actionable Insights</span>
                   ${starSelector()}
@@ -693,6 +702,8 @@ const iconMap = {
   'user-settings': adminIcon,
   launch: launchIcon,
   'circle-stroke': circleIcon,
+  home: homeIcon,
+  dashboard: dashboardIcon,
 };
 
 const renderLink = (link) => html`
@@ -701,7 +712,14 @@ const renderLink = (link) => html`
     ?truncate=${link.target === '_blank'}
     target=${link.target || ''}
   >
-    <span>${link.label}</span>
+    ${link.icon
+      ? html`<span style="display: inline-flex; align-items: center; gap: 8px;">
+          <span style="display: flex; flex-shrink: 0; margin-top: -2px;"
+            >${unsafeSVG(iconMap[link.icon])}</span
+          >
+          ${link.label}
+        </span>`
+      : html`<span>${link.label}</span>`}
     ${starSelector(link.starred || false)}
     ${link.target === '_blank'
       ? html`<span
@@ -714,7 +732,9 @@ const renderLink = (link) => html`
 
 const renderCategory = (cat) => html`
   <kyn-header-category heading=${cat.heading}>
-    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+    <span slot="icon"
+      >${unsafeSVG(cat.icon ? iconMap[cat.icon] : circleIcon)}</span
+    >
     ${cat.links.map((link) => renderLink(link))}
   </kyn-header-category>
 `;
@@ -749,7 +769,9 @@ const renderMixedSection = (section) => html`
       ${section.categories.map(
         (cat) => html`
           <kyn-header-category heading=${cat.heading} style="margin-top: 8px;">
-            <span slot="icon">${unsafeSVG(circleIcon)}</span>
+            <span slot="icon"
+              >${unsafeSVG(cat.icon ? iconMap[cat.icon] : circleIcon)}</span
+            >
             ${cat.links.map((link) => renderLink(link))}
           </kyn-header-category>
         `

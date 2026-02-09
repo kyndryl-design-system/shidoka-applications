@@ -1247,10 +1247,10 @@
               "kind": "field",
               "name": "layout",
               "type": {
-                "text": "'auto' | 'masonry' | 'grid'"
+                "text": "'masonry' | 'grid'"
               },
-              "default": "'auto'",
-              "description": "Layout mode for categories.\n- \"auto\" (default): Original CSS multi-column layout with automatic column-width for backwards compatibility\n- \"masonry\": CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
+              "default": "'masonry'",
+              "description": "Layout mode for categories.\n- \"masonry\" (default): CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
               "attribute": "layout",
               "reflects": true
             },
@@ -1261,7 +1261,7 @@
                 "text": "number"
               },
               "default": "3",
-              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".\nHas no effect when layout=\"auto\" (default).",
+              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".",
               "attribute": "maxColumns"
             },
             {
@@ -1572,10 +1572,10 @@
             {
               "name": "layout",
               "type": {
-                "text": "'auto' | 'masonry' | 'grid'"
+                "text": "'masonry' | 'grid'"
               },
-              "default": "'auto'",
-              "description": "Layout mode for categories.\n- \"auto\" (default): Original CSS multi-column layout with automatic column-width for backwards compatibility\n- \"masonry\": CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
+              "default": "'masonry'",
+              "description": "Layout mode for categories.\n- \"masonry\" (default): CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
               "fieldName": "layout"
             },
             {
@@ -1584,7 +1584,7 @@
                 "text": "number"
               },
               "default": "3",
-              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".\nHas no effect when layout=\"auto\" (default).",
+              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".",
               "fieldName": "maxColumns"
             },
             {
@@ -1651,7 +1651,7 @@
               "name": "icon"
             },
             {
-              "description": "Slot for \"More\" link (not indented).",
+              "description": "Slot for \"More\" link (indented with category links).",
               "name": "more"
             }
           ],
@@ -2245,6 +2245,16 @@
             },
             {
               "kind": "field",
+              "name": "linksPerColumn",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Maximum number of links per column in plain (non-categorical) flyouts.\nWhen set to a positive number and the slotted link count exceeds this value,\nadditional columns are created automatically. Default 0 (auto — no column splitting).",
+              "attribute": "linksPerColumn"
+            },
+            {
+              "kind": "field",
               "name": "hideSearch",
               "type": {
                 "text": "boolean"
@@ -2530,6 +2540,15 @@
               "default": "6",
               "description": "Number of child links required to show search input.",
               "fieldName": "searchThreshold"
+            },
+            {
+              "name": "linksPerColumn",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Maximum number of links per column in plain (non-categorical) flyouts.\nWhen set to a positive number and the slotted link count exceeds this value,\nadditional columns are created automatically. Default 0 (auto — no column splitting).",
+              "fieldName": "linksPerColumn"
             },
             {
               "name": "hideSearch",

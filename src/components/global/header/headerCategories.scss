@@ -2,7 +2,7 @@
 
 // Layout configuration
 $column-gap: 32px;
-$row-gap: 24px;
+$row-gap: 16px;
 $min-column-width: 150px;
 $max-column-width: 400px;
 
@@ -16,15 +16,6 @@ $column-width-2: 300px;
   width: 100%;
 }
 
-// Desktop sizing (masonry default)
-@media (min-width: 672px) {
-  :host {
-    padding-right: 10%;
-    width: calc(100vw - 230px);
-    max-width: calc(100vw - 230px);
-  }
-}
-
 .header-categories {
   width: 100%;
   max-width: 100%;
@@ -32,7 +23,6 @@ $column-width-2: 300px;
 
   &__inner {
     display: block;
-    column-width: 160px;
     column-gap: 32px;
     max-width: 100%;
     box-sizing: border-box;
@@ -65,25 +55,8 @@ slot.header-categories__slot::slotted(*) {
 }
 
 /* ---------------------------------------------------------------------
-   ROOT VIEW (MASONRY - default)
+   MASONRY LAYOUT (default)
    ------------------------------------------------------------------ */
-:host(:not([view='detail'])) .header-categories__inner {
-  column-width: 160px;
-}
-
-@media (min-width: 896px) {
-  :host(:not([view='detail'])) .header-categories__inner {
-    column-width: 180px;
-  }
-}
-
-@media (min-width: 1152px) {
-  :host(:not([view='detail'])) .header-categories__inner {
-    column-width: 200px;
-  }
-}
-
-/* --- MASONRY LAYOUT --- */
 :host([layout='masonry']) {
   width: 100%;
   min-width: $min-column-width;
@@ -96,7 +69,6 @@ slot.header-categories__slot::slotted(*) {
   }
 }
 
-// Override default column-width with column-count
 :host([layout='masonry']) .header-categories__inner {
   column-width: auto;
   column-gap: $column-gap;
@@ -104,8 +76,8 @@ slot.header-categories__slot::slotted(*) {
   // Position dividers absolutely so they don't affect column balancing
   --kyn-header-divider-position: absolute;
   --kyn-header-divider-bottom: -9px;
-  --kyn-header-divider-left: 8px;
-  --kyn-header-divider-right: 8px;
+  --kyn-header-divider-left: 0;
+  --kyn-header-divider-right: 0;
   --kyn-header-divider-margin: 0;
 }
 
