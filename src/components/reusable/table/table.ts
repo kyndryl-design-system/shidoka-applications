@@ -371,16 +371,6 @@ export class Table extends LitElement {
     this.style.width = `${totalWidth}px`;
   };
 
-  /**
-   * Locks the table width to its current size.
-   * Used during column resize to prevent reflow.
-   * @internal
-   */
-  public lockTableWidth = () => {
-    const currentWidth = this.offsetWidth;
-    this.style.width = `${currentWidth}px`;
-  };
-
   override render() {
     return html` <slot></slot> `;
   }

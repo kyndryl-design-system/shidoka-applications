@@ -841,10 +841,10 @@ export const ColumnFiltering: Story = {
   },
 };
 
-export const ResizeColumn: Story = {
+export const ColumnResize: Story = {
   render: () => {
     return html`
-      <h4>Important Information about Resize Column</h4>
+      <h4>Important Information about Column Resize</h4>
       <ul>
         <li>
           Columns can be resized by clicking and dragging the right edges of the
@@ -855,16 +855,17 @@ export const ResizeColumn: Story = {
         <li>
           <b>Note:</b> When <i>minWidth/maxWidth</i> and
           <i>resizeMinWidth/resizeMaxWidth</i>
-          both are provided, then minWidth/maxWidth takes precedence.
+          both are provided, then minWidth/maxWidth takes precedence(supports
+          'px'. e.g.'150px').
         </li>
       </ul>
       <kyn-table-toolbar
-        .tableTitle=${'Resize Column'}
+        .tableTitle=${'Column Resize'}
         .tableSubtitle=${'Table Subtitle'}
       >
       </kyn-table-toolbar>
       <kyn-table-container>
-        <kyn-table fixedLayout>
+        <kyn-table>
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th
@@ -900,6 +901,7 @@ export const ResizeColumn: Story = {
               >
               <kyn-th
                 resizable
+                width="150px"
                 .align=${'right'}
                 @on-column-resize=${(e: any) =>
                   action(e.type)({ ...e, detail: e.detail })}
@@ -908,6 +910,7 @@ export const ResizeColumn: Story = {
               <kyn-th
                 resizable
                 minWidth="180px"
+                width="200px"
                 .align=${'right'}
                 @on-column-resize=${(e: any) =>
                   action(e.type)({ ...e, detail: e.detail })}
