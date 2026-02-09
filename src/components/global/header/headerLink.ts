@@ -127,7 +127,9 @@ export class HeaderLink extends LitElement {
   @property({ type: Number, reflect: true, attribute: 'data-flyout-columns' })
   accessor flyoutColumns = 0;
 
-  /** Text for mobile "Back" button. */
+  /** Current search term for filtering links in the flyout.
+   * @internal
+   */
   @state()
   accessor _searchTerm = '';
 
