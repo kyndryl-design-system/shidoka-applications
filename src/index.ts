@@ -19,6 +19,10 @@ export {
 export { Footer } from './components/global/footer';
 export { UiShell } from './components/global/uiShell';
 export {
+  AccountSwitcher,
+  AccountSwitcherMenuItem,
+} from './components/global/accountSwitcher';
+export {
   RadioButton,
   RadioButtonGroup,
 } from './components/reusable/radioButton';

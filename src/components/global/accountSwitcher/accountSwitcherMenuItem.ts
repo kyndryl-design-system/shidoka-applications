@@ -45,7 +45,7 @@ export class AccountSwitcherMenuItem extends LitElement {
 
   /** Whether to show the favorite icon selector (item variant only). */
   @property({ type: Boolean })
-  accessor showFavorite = true;
+  accessor showFavorite = false;
 
   override render() {
     const isWorkspace = this.variant === 'workspace';

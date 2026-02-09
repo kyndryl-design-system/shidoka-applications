@@ -233,6 +233,7 @@ export class AccountSwitcher extends LitElement {
               name=${item.name}
               ?selected=${this._selectedItemId === item.id}
               ?favorited=${item.favorited}
+              showFavorite
               @on-click=${() => this._handleItemSelect(item)}
               @on-favorite-change=${(e: CustomEvent) =>
                 this._handleFavoriteChange(item, e)}
@@ -243,11 +244,15 @@ export class AccountSwitcher extends LitElement {
     `;
   }
 
-  private _handleCopyAccountId(e: CustomEvent) {
+  private async _handleCopyAccountId(e: CustomEvent) {
     e.detail.origEvent.preventDefault();
     if (this._copied || !this.currentAccount.accountId) return;
 
-    navigator.clipboard.writeText(this.currentAccount.accountId);
+    try {
+      await navigator.clipboard.writeText(this.currentAccount.accountId);
+    } catch {
+      return;
+    }
     this._copied = true;
 
     setTimeout(() => {

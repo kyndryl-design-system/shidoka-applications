@@ -66,7 +66,7 @@ export default {
 };
 
 const handleCopy = (value, e) => {
-  e.detail.event.preventDefault();
+  e.detail.origEvent.preventDefault();
   navigator.clipboard.writeText(value);
 };
 
