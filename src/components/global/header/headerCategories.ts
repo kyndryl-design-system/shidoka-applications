@@ -229,25 +229,6 @@ export class HeaderCategories extends LitElement {
   };
 
   /**
-   * Get the category count for flyout width determination.
-   * Uses category count (not rendered columns) to avoid feedback loops
-   * where narrow flyout causes single-column rendering.
-   * Only applicable for grid layout; masonry uses different column flow.
-   * @internal
-   */
-  private _getCategoryCountForFlyout(): number {
-    // Only detect for grid mode; masonry doesn't need flyout width adjustment
-    if (this.view !== ROOT_VIEW || this.layout !== 'grid') return 0;
-
-    // Use category count (not rendered columns) to avoid feedback loops
-    const categoryCount = this._isJsonMode
-      ? this._tabConfig?.categories?.length ?? 0
-      : this._slottedCategories.length;
-
-    return categoryCount;
-  }
-
-  /**
    * Update category count and emit event if changed.
    * Only emits for grid layout (masonry doesn't need flyout width adjustment).
    * @internal
