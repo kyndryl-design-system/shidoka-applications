@@ -9,26 +9,34 @@ import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
+import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
 
-// All items aggregated for Global Zone default view
-// Mark the first item as selected by default
-const allItems = Object.entries(exampleData.itemsByWorkspace)
-  .filter(([key]) => key !== 'global')
-  .flatMap(([, items]) => items)
-  .map((item, index) => ({ ...item, selected: index === 0 }));
+// Use the JSON's defaultSelectedWorkspace to determine initial view
+const defaultWorkspaceId = exampleData.defaultSelectedWorkspace;
+
+// All items aggregated across workspaces (used when Global Zone is selected)
+const allItems = Object.values(exampleData.itemsByWorkspace).flatMap(
+  (items) => items
+);
+
+// Default workspace items with the first item pre-selected
+const defaultItems = (
+  exampleData.itemsByWorkspace[defaultWorkspaceId] || allItems
+).map((item, index) => ({ ...item, selected: index === 0 }));
 
 // Workspaces with counts computed from actual items data
+// Mark the default workspace as selected
 const workspaces = exampleData.workspaces.map((workspace) => ({
   ...workspace,
   count:
     workspace.id === 'global'
       ? null
       : exampleData.itemsByWorkspace[workspace.id]?.length || 0,
+  selected: workspace.id === defaultWorkspaceId,
 }));
 
 // Current account derives its name from the selected item
-// In production, apps would manage this via their state management
-const selectedItem = allItems.find((item) => item.selected) || allItems[0];
+const selectedItem = defaultItems.find((item) => item.selected);
 
 // Full account info includes additional metadata (accountId, country)
 const fullCurrentAccount = {
@@ -86,7 +94,7 @@ export const FullAccountInfo = {
     <kyn-account-switcher
       .currentAccount=${fullCurrentAccount}
       .workspaces=${workspaces}
-      .items=${allItems}
+      .items=${defaultItems}
       @on-workspace-select=${handleWorkspaceSelect}
       @on-item-select=${handleItemSelect}
       @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
@@ -99,7 +107,7 @@ export const SimpleAccountInfo = {
     <kyn-account-switcher
       .currentAccount=${simpleCurrentAccount}
       .workspaces=${workspaces}
-      .items=${allItems}
+      .items=${defaultItems}
       @on-workspace-select=${handleWorkspaceSelect}
       @on-item-select=${handleItemSelect}
       @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
@@ -112,7 +120,7 @@ export const WithSearch = {
     <kyn-account-switcher
       .currentAccount=${fullCurrentAccount}
       .workspaces=${workspaces}
-      .items=${allItems}
+      .items=${defaultItems}
       showSearch
       @on-workspace-select=${handleWorkspaceSelect}
       @on-item-select=${handleItemSelect}
@@ -122,7 +130,7 @@ export const WithSearch = {
   `,
 };
 
-const truncateName = (name, maxLen = 10) =>
+const truncateName = (name, maxLen = 20) =>
   name.length > maxLen ? name.slice(0, maxLen) + '…' : name;
 
 const handleUIItemSelect = (e) => {
@@ -155,7 +163,26 @@ export const UIImplementation = {
       `,
   ],
   render: () => html`
-    <kyn-header rootUrl="/" appTitle="Application">
+    <kyn-header rootUrl="/" appTitle="Bridge">
+      <kyn-header-nav>
+        <kyn-header-link href="javascript:void(0)">
+          <span>${unsafeSVG(circleIcon)}</span>
+          Dashboard
+        </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)">
+          <span>${unsafeSVG(circleIcon)}</span>
+          Services
+        </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)">
+          <span>${unsafeSVG(circleIcon)}</span>
+          Reports
+        </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)">
+          <span>${unsafeSVG(circleIcon)}</span>
+          Administration
+        </kyn-header-link>
+      </kyn-header-nav>
+
       <kyn-header-flyouts>
         <kyn-header-flyout
           label=${truncateName(selectedItem?.name || '')}
@@ -179,23 +206,36 @@ export const UIImplementation = {
           <kyn-account-switcher
             .currentAccount=${fullCurrentAccount}
             .workspaces=${workspaces}
-            .items=${allItems}
+            .items=${defaultItems}
             @on-workspace-select=${handleWorkspaceSelect}
             @on-item-select=${handleUIItemSelect}
             @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
           ></kyn-account-switcher>
         </kyn-header-flyout>
 
-        <kyn-header-flyout label="Menu Label">
+        <kyn-header-flyout label="Notifications" hideMenuLabel>
+          <span slot="button">${unsafeSVG(filledNotificationIcon)}</span>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            System update scheduled
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            New report available
+          </kyn-header-link>
+        </kyn-header-flyout>
+
+        <kyn-header-flyout label="Help">
           <span slot="button">${unsafeSVG(helpIcon)}</span>
 
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
-            Example 1
+            Documentation
           </kyn-header-link>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
-            Example 2
+            Support
           </kyn-header-link>
         </kyn-header-flyout>
 
