@@ -13,6 +13,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  &.animate-selection {
+    display: inline-grid;
+    place-items: center;
+  }
   padding: 4px;
   margin: 0;
   border: none;
@@ -48,6 +53,10 @@
   // Only visible on hover: uses CSS custom property set by parent (e.g., header-link)
   &.only-visible-on-hover {
     opacity: var(--kyn-icon-selector-hover-opacity, 0);
+  }
+
+  // Enable smooth opacity transitions only after initial state is painted (prevents flash)
+  &.only-visible-on-hover.transitions-ready {
     transition: opacity 150ms ease-out;
   }
 
@@ -65,7 +74,6 @@
   color: currentColor;
   transition: color 150ms ease-out;
 
-  // Let slotted content determine its own dimensions
   ::slotted(svg),
   ::slotted(span),
   svg {
@@ -73,7 +81,6 @@
     fill: currentColor;
   }
 
-  // Show/hide icons based on checked state
   &--unchecked {
     display: flex;
 
@@ -88,5 +95,60 @@
     .icon-selector--checked & {
       display: flex;
     }
+  }
+
+  .animate-selection & {
+    grid-area: 1 / 1;
+    transition: opacity 200ms ease-out, transform 200ms ease-out;
+  }
+
+  .animate-selection &--unchecked {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .animate-selection .icon-selector--checked &--unchecked,
+  .animate-selection.icon-selector--checked &--unchecked {
+    display: flex;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .animate-selection &--checked {
+    display: flex;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .animate-selection .icon-selector--checked &--checked,
+  .animate-selection.icon-selector--checked &--checked {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  // Only play the pop animation on deliberate user toggles, not on re-renders
+  .animate-selection.just-toggled .icon-selector--checked &--checked,
+  .animate-selection.just-toggled.icon-selector--checked &--checked {
+    animation: icon-pop 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@keyframes icon-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
