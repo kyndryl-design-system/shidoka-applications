@@ -31,13 +31,6 @@ export class HeaderCategory extends LitElement {
   @property({ type: Boolean })
   accessor noAutoDivider = true;
 
-  /** Indent links to align with heading text when icon is present.
-   * Default: false for backwards compatibility.
-   * Set to true when using icon slot and you want links to align with heading text.
-   */
-  @property({ type: Boolean })
-  accessor indentLinks = false;
-
   /** @internal */
   @state()
   private accessor _hasIcon = false;
@@ -53,20 +46,8 @@ export class HeaderCategory extends LitElement {
   }
 
   private _checkForNextCategorySibling() {
-    // Check if there's a next sibling that's also a kyn-header-category
-    let nextSibling = this.nextElementSibling;
-    while (nextSibling) {
-      if (nextSibling.tagName === 'KYN-HEADER-CATEGORY') {
-        this._hasNextCategorySibling = true;
-        return;
-      }
-      // Skip text nodes and comments, but stop if we hit another element type
-      if (nextSibling.nodeType === Node.ELEMENT_NODE) {
-        break;
-      }
-      nextSibling = nextSibling.nextElementSibling;
-    }
-    this._hasNextCategorySibling = false;
+    this._hasNextCategorySibling =
+      this.nextElementSibling?.tagName === 'KYN-HEADER-CATEGORY' || false;
   }
 
   override connectedCallback() {

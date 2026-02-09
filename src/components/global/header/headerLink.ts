@@ -689,7 +689,10 @@ export class HeaderLink extends LitElement {
     document.addEventListener('click', this._handleDocumentClick);
     window.addEventListener('resize', this._debounceResize);
     // Listen for column count changes from slotted kyn-header-categories
-    this.addEventListener('column-count-change', this._handleColumnCountChange);
+    this.addEventListener(
+      'on-column-count-change',
+      this._handleColumnCountChange
+    );
     // Suppress flyout close during internal view transitions (e.g. "More" click)
     this.addEventListener('on-nav-change', this._handleNavChange);
     // Check for truncation inheritance after DOM is ready
@@ -740,7 +743,7 @@ export class HeaderLink extends LitElement {
     document.removeEventListener('click', this._handleDocumentClick);
     window.removeEventListener('resize', this._debounceResize);
     this.removeEventListener(
-      'column-count-change',
+      'on-column-count-change',
       this._handleColumnCountChange
     );
     this.removeEventListener('on-nav-change', this._handleNavChange);

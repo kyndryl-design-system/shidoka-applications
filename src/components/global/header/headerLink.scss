@@ -2,14 +2,13 @@
 @use './header-interactive.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
-// Fixed column width for single-column flyouts (non-categorical)
-// Matches the 1-column width in headerCategories.scss for consistency
+// Matches $column-width-1 in headerCategories.scss
 $single-column-width: 350px;
 
 :host {
   display: block;
   position: relative;
-  min-width: 0; // Allow host to shrink for text truncation in flex/grid containers
+  min-width: 0;
 }
 
 .nav-link {
@@ -28,9 +27,9 @@ $single-column-width: 350px;
   outline-offset: -2px;
   padding: 6px 12px 6px 8px;
   width: 100%;
-  min-width: 0; // Allow flex item to shrink below content size
+  min-width: 0;
 
-  // CSS custom property for iconSelector hover visibility (works at any nesting depth)
+  // Icon-selector hover visibility
   --kyn-icon-selector-hover-opacity: 0;
 
   &:hover,
@@ -83,17 +82,15 @@ $single-column-width: 350px;
     flex-shrink: 0;
   }
 
-  // Icon elements at the start of links (fixed size, don't grow)
+  // Fixed-size icon slots
   ::slotted(svg:first-child),
   ::slotted(span[slot='icon']) {
     width: 16px;
     height: 16px;
-    flex: 0 0 auto; // Don't grow or shrink - fixed size
+    flex: 0 0 auto;
   }
 
-  // Only-child spans: icons in parent nav (16px) vs text in flyout (truncate)
-  // Uses CSS custom property --kyn-header-link-in-flyout set by .wrapper
-  // When in flyout context, spans should truncate; otherwise fixed icon size
+  // Only-child spans: 16px icon in nav bar, flexible text in flyout
   ::slotted(span:first-child:only-child:not([slot])) {
     width: var(--kyn-header-span-only-width, 16px);
     height: var(--kyn-header-span-only-height, 16px);
@@ -103,9 +100,7 @@ $single-column-width: 350px;
     min-width: var(--kyn-header-span-only-min-width, auto);
   }
 
-  // Non-only-child spans (e.g., text with icon-selector sibling)
-  // In flyout context (--kyn-header-link-in-flyout set), allow them to flex and truncate
-  // In parent nav context, keep default sizing (icons stay 16x16)
+  // Text spans with siblings (e.g. icon-selector): flex in flyout, fixed in nav
   ::slotted(span:first-child:not(:only-child):not([slot])) {
     flex: var(--kyn-header-span-flex, 0 0 auto);
     min-width: var(--kyn-header-span-min-width, auto);
@@ -116,7 +111,7 @@ $single-column-width: 350px;
 
   @include typography.type-ui-02;
 
-  // Icon selector should be pushed to the right edge
+  // Push icon-selector to right edge
   ::slotted(kyn-icon-selector) {
     color: inherit;
     margin-left: auto;
@@ -136,7 +131,6 @@ $single-column-width: 350px;
   }
 }
 
-// All levels: arrow should be right-aligned
 .level--1 > .nav-link .arrow,
 .level--2 > .nav-link .arrow,
 .level--3 > .nav-link .arrow {
@@ -183,51 +177,44 @@ $single-column-width: 350px;
       padding: 16px;
       background-color: var(--kd-color-background-opacity-1);
       border-radius: 8px;
-      box-sizing: border-box;
-      align-self: stretch; // Fill parent height
-      flex: 1 1 auto; // Grow to fill available space
-      // Single-column flyout max-width for consistency
-      max-width: $single-column-width;
+      flex-grow: 1;
 
-      // Signal to nested header-links that they're in a flyout context
-      // These allow text spans to size naturally (not fixed 16px icon size)
+      // Flyout context: let text spans size naturally
       --kyn-header-link-in-flyout: 1;
       --kyn-header-span-only-width: auto;
       --kyn-header-span-only-height: auto;
-      --kyn-header-span-only-flex: 1 1 0%;
       --kyn-header-span-only-min-width: 0;
-      // For non-only-child spans (text with icon-selector sibling)
-      --kyn-header-span-flex: 1 1 0%;
-      --kyn-header-span-min-width: 0;
-      // Indent category links to align with heading text (icon + gap)
       --kyn-category-links-indent: 24px;
 
-      // Ensure slotted content respects wrapper bounds
       > ::slotted(*) {
         max-width: 100%;
         box-sizing: border-box;
       }
     }
 
-    // Level 2+ wrapper styling for nested flyouts
+    // Categorical nav: let text spans flex (default nav icons stay fixed)
+    :host([has-categorical]) &.level--1 .wrapper {
+      flex: 1 1 auto;
+      max-width: $single-column-width;
+      box-sizing: border-box;
+      align-self: stretch;
+      --kyn-header-span-flex: 1 1 0%;
+      --kyn-header-span-min-width: 0;
+    }
+
+    // Nested flyouts
     &.level--2 .wrapper,
     &.level--3 .wrapper {
-      flex: 0 1 auto; // Don't grow beyond content
+      flex: 0 1 auto;
       padding: 16px;
       background-color: var(--kd-color-background-opacity-1);
       border-radius: 8px;
       box-sizing: border-box;
 
-      // Also signal flyout context for nested flyouts
       --kyn-header-link-in-flyout: 1;
       --kyn-header-span-only-width: auto;
       --kyn-header-span-only-height: auto;
-      --kyn-header-span-only-flex: 1 1 0%;
       --kyn-header-span-only-min-width: 0;
-      // For non-only-child spans (text with icon-selector sibling)
-      --kyn-header-span-flex: 1 1 0%;
-      --kyn-header-span-min-width: 0;
-      // Truncation - inherits from nav's --kyn-truncate-* if set, otherwise defaults
       --kyn-header-span-only-overflow: var(--kyn-truncate-overflow, visible);
       --kyn-header-span-only-text-overflow: var(
         --kyn-truncate-text-overflow,
@@ -237,7 +224,6 @@ $single-column-width: 350px;
         --kyn-truncate-white-space,
         normal
       );
-      // Indent category links to align with heading text (icon + gap)
       --kyn-category-links-indent: 24px;
     }
   }
@@ -246,10 +232,8 @@ $single-column-width: 350px;
     display: none;
     background: var(--kd-color-background-menu-state-default);
 
-    // Basic nav (non-categorical): always show slotted content when present
     &.slotted {
-      display: inline-flex; // inline-flex shrinks to content
-      align-items: stretch; // Children fill height
+      display: flex;
       max-width: 100%;
 
       @media (min-width: 42rem) {
@@ -267,46 +251,57 @@ $single-column-width: 350px;
   }
 }
 
-// Multi-column categorical nav (desktop only): only show flyout content when menu is open
+// Multi-column categorical nav: toggle flyout visibility on open
 @media (min-width: 42rem) {
   :host([has-multi-column]) .menu .menu__content.slotted {
     display: none;
   }
 
   :host([has-multi-column]) .menu.open .menu__content.slotted {
-    display: inline-flex; // Shrink-wrap to content width
+    display: inline-flex;
     padding: 8px 8px 8px 230px;
-    left: auto; // Don't stretch to viewport edges
+    left: auto;
     right: auto;
-    max-width: calc(100vw - 16px); // Constrain to viewport
+    max-width: calc(100vw - 16px);
     align-items: stretch;
   }
 
-  // Remove max-width constraint on slotted content for multi-column nav
-  // Let kyn-header-categories control its own width based on column count
+  // Let kyn-header-categories control its own width
   :host([has-multi-column]) .menu.level--1 .wrapper > ::slotted(*) {
     max-width: none;
   }
 
-  // For multi-column nav, wrapper sizes to content (no extra space)
-  // Override single-column max-width - let kyn-header-categories control width
+  // Multi-column wrapper overrides single-column constraints
   :host([has-multi-column]) .menu.level--1 .wrapper {
-    flex: 1 1 0%; // Grow to fill available space, shrink if needed
-    max-width: none; // Remove single-column constraint for multi-column layouts
-    min-width: 150px; // At least one column width
+    flex: 1 1 0%;
+    max-width: none;
+    min-width: 150px;
     min-height: 250px;
     max-height: calc(100vh - var(--kd-header-height) - 32px);
-    overflow-x: hidden; // Never allow horizontal overflow — columns must fit within wrapper
-    overflow-y: auto; // Allow vertical scrolling
+    overflow-x: hidden;
+    overflow-y: auto;
     align-self: stretch;
-    padding-bottom: 34px; // Compensate for masonry's -24px margin-bottom + 16px visible gap
+    padding-bottom: 34px; // offsets masonry's negative margin-bottom
+  }
+
+  // Single-column categorical: shrink-wrap
+  :host([has-categorical]:not([has-multi-column]))
+    .menu
+    .menu__content.slotted {
+    display: inline-flex;
+    align-items: stretch;
   }
 }
 
 @media (min-width: 42rem) {
-  .level--2 .menu__content.slotted,
-  .level--3 .menu__content.slotted {
-    padding: 8px; // Symmetrical padding
+  .level--2 .menu__content.slotted {
+    padding-left: 8px;
+  }
+
+  // Symmetrical padding for categorical nested flyouts
+  :host([has-categorical]) .level--2 .menu__content.slotted,
+  :host([has-categorical]) .level--3 .menu__content.slotted {
+    padding: 8px;
   }
 }
 
@@ -345,7 +340,7 @@ kyn-text-input {
     transform: scaleX(0);
     transform-origin: right;
 
-    // On mobile, always render slotted content (hidden via transform) for animation
+    // Rendered but hidden via transform for slide animation
     &.slotted {
       display: flex;
       max-width: 100%;
@@ -353,12 +348,12 @@ kyn-text-input {
   }
 }
 
-// Single-column flyout width constraint (non-multi-column only)
-// Forces consistent width for simple flyouts like Favorites, Recently Viewed
-// Multi-column flyouts (with kyn-header-categories) size to their content
+// Single-column categorical flyout: fixed width
 @media (min-width: 42rem) {
-  :host(:not([has-multi-column])) .menu.level--1 .menu__content.slotted {
-    // Fixed width: 230px sidebar padding + 350px content + 8px right padding
+  :host([has-categorical]:not([has-multi-column]))
+    .menu.level--1
+    .menu__content.slotted {
+    // 230px sidebar offest + 350px content + 8px padding
     width: calc(230px + #{$single-column-width} + 8px);
   }
 }
@@ -367,29 +362,16 @@ kyn-text-input {
   margin-bottom: 8px;
 }
 
-/* ---------------------------------------------------------------------
-   TRUNCATION
-   Can be enabled via:
-   1. `truncate` prop on individual kyn-header-link
-   2. `truncate-links` prop on parent kyn-header-nav (detected via JS)
-   Both add .truncate class to .nav-link via classMap.
-
-   Uses CSS custom properties so the existing ::slotted span rules
-   (which use var() with fallback defaults) resolve to truncation
-   values. This avoids specificity battles with the more-specific
-   ::slotted(:first-child:not(:only-child)…) selectors.
-   ------------------------------------------------------------------ */
+/* --- TRUNCATION --- */
+// Enabled via `truncate` prop on kyn-header-link or `truncate-links` on kyn-header-nav.
+// Sets CSS custom properties so ::slotted span rules resolve to truncation values.
 
 .nav-link.truncate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  // Override CSS custom properties consumed by ::slotted span rules.
-  // Only set overflow/truncation properties here — flex sizing properties
-  // (--kyn-header-span-flex, --kyn-header-span-min-width, etc.) are set by
-  // .wrapper in flyout context and must NOT be overridden globally, otherwise
-  // sidebar icon spans grow and push text off-center.
+  // Only override overflow properties — flex sizing is set by .wrapper context
   --kyn-truncate-overflow: hidden;
   --kyn-truncate-text-overflow: ellipsis;
   --kyn-truncate-white-space: nowrap;

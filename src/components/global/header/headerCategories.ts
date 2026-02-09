@@ -259,14 +259,14 @@ export class HeaderCategories extends LitElement {
     // Only emit for grid layout
     if (this.layout !== 'grid') return;
 
-    const categoryCount = this._getCategoryCountForFlyout();
+    const columnCount = this._getColumnCount();
 
-    if (categoryCount !== this._lastEmittedColumnCount) {
-      this._lastEmittedColumnCount = categoryCount;
+    if (columnCount !== this._lastEmittedColumnCount) {
+      this._lastEmittedColumnCount = columnCount;
 
       this.dispatchEvent(
-        new CustomEvent('column-count-change', {
-          detail: { columnCount: categoryCount },
+        new CustomEvent('on-column-count-change', {
+          detail: { columnCount },
           composed: true,
           bubbles: true,
         })

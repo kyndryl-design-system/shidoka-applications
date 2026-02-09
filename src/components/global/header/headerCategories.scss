@@ -3,15 +3,12 @@
 // Layout configuration
 $column-gap: 32px;
 $row-gap: 24px;
-$min-wrapper-width: 450px;
 $min-column-width: 150px;
 $max-column-width: 400px;
 
-// Fixed column widths for consistency (based on column count)
-// These provide predictable flyout widths regardless of content length
-$column-width-1: 350px; // Single column flyout
-$column-width-2: 300px; // Two column flyout (per column)
-$column-width-3: 280px; // Three+ column flyout (per column)
+// Fixed column widths per column count
+$column-width-1: 350px;
+$column-width-2: 300px;
 
 :host {
   display: block;
@@ -62,8 +59,7 @@ slot.header-categories__slot::slotted(*) {
   margin: 0 0 $row-gap;
 }
 
-// Compensate for the last item's trailing bottom margin in column-based
-// layouts. Grid is excluded (it resets item margin to 0 and uses gap instead).
+// Negate trailing margin (grid uses gap instead)
 :host(:not([layout='grid']):not([view='detail'])) .header-categories__inner {
   margin-bottom: -$row-gap;
 }
@@ -87,31 +83,25 @@ slot.header-categories__slot::slotted(*) {
   }
 }
 
-/* ---------------------------------------------------------------------
-   MASONRY LAYOUT (opt-in via layout="masonry")
-   Uses CSS column-count for true masonry behavior where items flow
-   vertically in each column before moving to the next column.
-   Column count is controlled via data-columns attribute.
-   ------------------------------------------------------------------ */
+/* --- MASONRY LAYOUT --- */
 :host([layout='masonry']) {
-  width: 100%; // Fill available parent width; column-count divides it evenly
+  width: 100%;
   min-width: $min-column-width;
-  max-width: 100%; // Don't exceed parent
+  max-width: 100%;
 }
 
 @media (min-width: 672px) {
   :host([layout='masonry']) {
-    padding-right: 16px; // Room to breathe on right edge
+    padding-right: 16px;
   }
 }
 
-// Base masonry setup - override default column-width with column-count
+// Override default column-width with column-count
 :host([layout='masonry']) .header-categories__inner {
-  column-width: auto; // Disable auto column-width
+  column-width: auto;
   column-gap: $column-gap;
 
-  // Make category dividers layout-free (absolute positioned) so they don't
-  // affect column height balancing. Divider sits centered in the 16px item gap.
+  // Position dividers absolutely so they don't affect column balancing
   --kyn-header-divider-position: absolute;
   --kyn-header-divider-bottom: -9px;
   --kyn-header-divider-left: 8px;
@@ -119,10 +109,7 @@ slot.header-categories__slot::slotted(*) {
   --kyn-header-divider-margin: 0;
 }
 
-// Fixed column-count based on data-columns attribute.
-// All column counts omit column-width so columns flex to fill available
-// space — fixed column-width creates a min-content floor that causes
-// horizontal overflow when the flyout wrapper is narrower.
+// Column count driven by data-columns attribute
 :host([layout='masonry'][data-columns='1']) .header-categories__inner {
   column-count: 1;
 }
@@ -135,39 +122,26 @@ slot.header-categories__slot::slotted(*) {
   }
 }
 
-// Masonry items keep break-inside: avoid (default behavior)
-// No need to reset since that's the default
-
-/* ---------------------------------------------------------------------
-   GRID LAYOUT (opt-in via layout="grid")
-   Uses fixed column count from data-columns attribute to avoid
-   circular dependency between container width and auto-fit.
-   Items flow row-by-row (left to right, then wrap).
-   ------------------------------------------------------------------ */
+/* --- GRID LAYOUT --- */
 :host([layout='grid']) {
-  width: max-content; // Shrink-fit to actual grid width
+  width: max-content;
   min-width: $min-column-width;
-  max-width: 100%; // Don't exceed parent
+  max-width: 100%;
 }
 
 @media (min-width: 672px) {
   :host([layout='grid']) {
-    padding-right: 16px; // Room to breathe on right edge
+    padding-right: 16px;
   }
 }
 
-// Base grid setup
 :host([layout='grid']) .header-categories__inner {
   display: grid;
   gap: $row-gap $column-gap;
-  // Default: single column with max width for truncation (fallback)
   grid-template-columns: minmax($min-column-width, $max-column-width);
 }
 
-// Fixed column templates based on data-columns attribute.
-// 1-2 columns use fixed widths for consistent flyout sizing.
-// 3+ columns use 1fr so they share available width equally — fixed widths
-// (e.g. repeat(5, 280px) = 1400px) would overflow the container.
+// 1-2 columns use fixed widths; 3+ use 1fr to avoid overflow
 :host([layout='grid'][data-columns='1']) .header-categories__inner {
   grid-template-columns: $column-width-1;
 }
@@ -180,13 +154,13 @@ slot.header-categories__slot::slotted(*) {
   }
 }
 
-// Grid items: reset masonry-specific styles
+// Reset masonry-specific styles for grid items
 :host([layout='grid']) .header-categories__inner > * {
   break-inside: auto;
   -webkit-column-break-inside: auto;
   page-break-inside: auto;
   margin: 0;
-  min-width: 0; // Allow grid items to shrink for text truncation
+  min-width: 0;
 }
 
 /* ---------------------------------------------------------------------
@@ -197,9 +171,9 @@ slot.header-categories__slot::slotted(*) {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; // Firefox
+  scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none; // Safari, Chrome
+    display: none;
   }
   .header-categories {
     &__inner {
