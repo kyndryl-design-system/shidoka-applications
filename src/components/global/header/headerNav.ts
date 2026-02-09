@@ -37,6 +37,13 @@ export class HeaderNav extends LitElement {
   @property({ type: Boolean })
   accessor flyoutAutoCollapsed = true;
 
+  /** Which flyout to expand when flyoutAutoCollapsed is false.
+   * 'default' opens the first expandable item. Any other value matches
+   * against the id attribute of a child kyn-header-link.
+   */
+  @property({ type: String, attribute: 'default-open' })
+  accessor defaultOpen = 'default';
+
   /** When true, all links in flyouts will truncate long text with ellipsis.
    * This cascades to all nested kyn-header-link components via CSS custom property.
    */
@@ -213,19 +220,36 @@ export class HeaderNav extends LitElement {
         }
       }
 
-      for (const link of links) {
-        const hasCategoricalNav =
-          link.querySelector('kyn-header-categories') !== null ||
-          querySelectorDeep('kyn-header-categories', link) !== null;
-        const hasSlottedCategory =
-          link.querySelector('kyn-header-category') !== null ||
-          querySelectorDeep('kyn-header-category', link) !== null;
+      // Find the target link to open
+      let target: (HTMLElement & { open?: boolean }) | null = null;
 
-        if (hasCategoricalNav || hasSlottedCategory) {
-          link.open = true;
-          this._autoOpenTriggered = true;
-          break;
+      if (this.defaultOpen !== 'default') {
+        // Match by id
+        target = this.querySelector(
+          `:scope > kyn-header-link#${CSS.escape(this.defaultOpen)}`
+        );
+      }
+
+      if (!target) {
+        // Fall back to first expandable link (current behavior)
+        for (const link of links) {
+          const hasCategoricalNav =
+            link.querySelector('kyn-header-categories') !== null ||
+            querySelectorDeep('kyn-header-categories', link) !== null;
+          const hasSlottedCategory =
+            link.querySelector('kyn-header-category') !== null ||
+            querySelectorDeep('kyn-header-category', link) !== null;
+
+          if (hasCategoricalNav || hasSlottedCategory) {
+            target = link;
+            break;
+          }
         }
+      }
+
+      if (target) {
+        target.open = true;
+        this._autoOpenTriggered = true;
       }
     });
   }

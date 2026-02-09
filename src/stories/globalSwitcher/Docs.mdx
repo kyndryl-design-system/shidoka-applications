@@ -189,19 +189,20 @@ For links that open in a new tab, set `target="_blank"` and include a launch ico
 
 ## Key Properties
 
-| Component               | Property              | Type      | Default   | Description                                    |
-| ----------------------- | --------------------- | --------- | --------- | ---------------------------------------------- |
-| `kyn-header-nav`        | `flyoutAutoCollapsed` | `Boolean` | `true`    | When `false`, flyouts stay open on mouse leave |
-| `kyn-header-nav`        | `truncateLinks`       | `Boolean` | `false`   | Cascade truncation to all nested links         |
-| `kyn-header-link`       | `href`                | `String`  | `''`      | Link URL                                       |
-| `kyn-header-link`       | `target`              | `String`  | `'_self'` | Link target (`_self`, `_blank`)                |
-| `kyn-header-link`       | `hideSearch`          | `Boolean` | `false`   | Suppress search in flyout                      |
-| `kyn-header-link`       | `truncate`            | `Boolean` | `false`   | Truncate long text with ellipsis               |
-| `kyn-header-link`       | `searchThreshold`     | `Number`  | `6`       | Child link count to trigger search             |
-| `kyn-header-categories` | `layout`              | `String`  | `'auto'`  | `'auto'`, `'masonry'`, or `'grid'`             |
-| `kyn-header-categories` | `maxColumns`          | `Number`  | `3`       | Max columns (masonry/grid only)                |
-| `kyn-header-categories` | `maxRootLinks`        | `Number`  | `4`       | Links shown before "More" button               |
-| `kyn-header-category`   | `heading`             | `String`  | `''`      | Category heading text                          |
+| Component               | Property              | Type      | Default     | Description                                                                                                                                                         |
+| ----------------------- | --------------------- | --------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `kyn-header-nav`        | `flyoutAutoCollapsed` | `Boolean` | `true`      | When `false`, flyouts stay open on mouse leave                                                                                                                      |
+| `kyn-header-nav`        | `defaultOpen`         | `String`  | `'default'` | Which flyout to expand when `flyoutAutoCollapsed` is false. `'default'` opens the first expandable item; any other value matches a child `kyn-header-link` by `id`. |
+| `kyn-header-nav`        | `truncateLinks`       | `Boolean` | `false`     | Cascade truncation to all nested links                                                                                                                              |
+| `kyn-header-link`       | `href`                | `String`  | `''`        | Link URL                                                                                                                                                            |
+| `kyn-header-link`       | `target`              | `String`  | `'_self'`   | Link target (`_self`, `_blank`)                                                                                                                                     |
+| `kyn-header-link`       | `hideSearch`          | `Boolean` | `false`     | Suppress search in flyout                                                                                                                                           |
+| `kyn-header-link`       | `truncate`            | `Boolean` | `false`     | Truncate long text with ellipsis                                                                                                                                    |
+| `kyn-header-link`       | `searchThreshold`     | `Number`  | `6`         | Child link count to trigger search                                                                                                                                  |
+| `kyn-header-categories` | `layout`              | `String`  | `'auto'`    | `'auto'`, `'masonry'`, or `'grid'`                                                                                                                                  |
+| `kyn-header-categories` | `maxColumns`          | `Number`  | `3`         | Max columns (masonry/grid only)                                                                                                                                     |
+| `kyn-header-categories` | `maxRootLinks`        | `Number`  | `4`         | Links shown before "More" button                                                                                                                                    |
+| `kyn-header-category`   | `heading`             | `String`  | `''`        | Category heading text                                                                                                                                               |
 
 ## CSS Custom Properties
 
@@ -252,13 +253,14 @@ template is used to render it:
 
 Every section has these common fields:
 
-| Field          | Type      | Description                                                    |
-| -------------- | --------- | -------------------------------------------------------------- |
-| `type`         | `string`  | Rendering pattern (`simple`, `mixed`, `tabbed`, `categorical`) |
-| `label`        | `string`  | Display text for the top-level nav item                        |
-| `icon`         | `string`  | Icon identifier (resolved to an imported SVG via an icon map)  |
-| `hideSearch`   | `boolean` | Suppress the search input in the flyout                        |
-| `dividerAfter` | `boolean` | Render a `kyn-header-divider` after this section               |
+| Field          | Type      | Description                                                                                   |
+| -------------- | --------- | --------------------------------------------------------------------------------------------- |
+| `id`           | `string`  | Unique identifier; set as the `id` attribute on `kyn-header-link` for `defaultOpen` targeting |
+| `type`         | `string`  | Rendering pattern (`simple`, `mixed`, `tabbed`, `categorical`)                                |
+| `label`        | `string`  | Display text for the top-level nav item                                                       |
+| `icon`         | `string`  | Icon identifier (resolved to an imported SVG via an icon map)                                 |
+| `hideSearch`   | `boolean` | Suppress the search input in the flyout                                                       |
+| `dividerAfter` | `boolean` | Render a `kyn-header-divider` after this section                                              |
 
 Type-specific fields:
 

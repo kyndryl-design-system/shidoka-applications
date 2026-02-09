@@ -1,6 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
-import { useArgs } from 'storybook/preview-api';
 
 import '../../components/global/header';
 import '../../components/reusable/tabs';
@@ -43,22 +42,17 @@ export default {
 };
 
 export const SlottedHTMLSwitcher = {
-  args: {
-    ...args,
-    activeServicesTab: 'favorites',
-  },
   render: (renderArgs) => {
-    const [, updateArgs] = useArgs();
-
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <kyn-header-nav
           .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
+          default-open="favorites"
           truncate-links
           style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
         >
           <!-- FAVORITES -->
-          <kyn-header-link href="javascript:void(0)" hideSearch>
+          <kyn-header-link id="favorites" href="javascript:void(0)" hideSearch>
             <span>${unsafeSVG(starFilledIcon)}</span>
             Favorites
 
@@ -95,7 +89,11 @@ export const SlottedHTMLSwitcher = {
           </kyn-header-link>
 
           <!-- RECENTLY VIEWED -->
-          <kyn-header-link href="javascript:void(0)" hideSearch>
+          <kyn-header-link
+            id="recently-viewed"
+            href="javascript:void(0)"
+            hideSearch
+          >
             <span>${unsafeSVG(historyIcon)}</span>
             Recently Viewed
 
@@ -150,7 +148,7 @@ export const SlottedHTMLSwitcher = {
 
           <!-- CONSOLE -->
           <!-- Single column layout: use div wrapper instead of kyn-header-categories -->
-          <kyn-header-link href="javascript:void(0)" hideSearch>
+          <kyn-header-link id="console" href="javascript:void(0)" hideSearch>
             <span>${unsafeSVG(consoleIcon)}</span>
             Console
 
@@ -201,7 +199,7 @@ export const SlottedHTMLSwitcher = {
           </kyn-header-link>
 
           <!-- SERVICES -->
-          <kyn-header-link href="javascript:void(0)">
+          <kyn-header-link id="services" href="javascript:void(0)">
             <span>${unsafeSVG(servicesIcon)}</span>
             Services
 
@@ -210,30 +208,14 @@ export const SlottedHTMLSwitcher = {
               slot="links"
               style="width: 100%; max-width: none;"
             >
-              <kyn-tab
-                slot="tabs"
-                id="kyndryl"
-                ?selected=${renderArgs.activeServicesTab === 'kyndryl'}
-                @click=${() => updateArgs({ activeServicesTab: 'kyndryl' })}
-              >
+              <kyn-tab slot="tabs" id="kyndryl" selected>
                 Kyndryl Services
               </kyn-tab>
 
-              <kyn-tab
-                slot="tabs"
-                id="platform"
-                ?selected=${renderArgs.activeServicesTab === 'platform'}
-                @click=${() => updateArgs({ activeServicesTab: 'platform' })}
-              >
-                Platform Services
-              </kyn-tab>
+              <kyn-tab slot="tabs" id="platform"> Platform Services </kyn-tab>
 
               <!-- KYNDRYL SERVICES TAB -->
-              <kyn-tab-panel
-                tabId="kyndryl"
-                noPadding
-                ?visible=${renderArgs.activeServicesTab === 'kyndryl'}
-              >
+              <kyn-tab-panel tabId="kyndryl" noPadding visible>
                 <kyn-header-categories
                   layout="masonry"
                   .maxRootLinks=${Infinity}
@@ -367,11 +349,7 @@ export const SlottedHTMLSwitcher = {
               </kyn-tab-panel>
 
               <!-- PLATFORM SERVICES TAB -->
-              <kyn-tab-panel
-                tabId="platform"
-                noPadding
-                ?visible=${renderArgs.activeServicesTab === 'platform'}
-              >
+              <kyn-tab-panel tabId="platform" noPadding>
                 <kyn-header-categories
                   layout="masonry"
                   .maxRootLinks=${Infinity}
@@ -576,7 +554,7 @@ export const SlottedHTMLSwitcher = {
           </kyn-header-link>
 
           <!-- CATALOGS -->
-          <kyn-header-link href="javascript:void(0)" hideSearch>
+          <kyn-header-link id="catalogs" href="javascript:void(0)" hideSearch>
             <span>${unsafeSVG(catalogIcon)}</span>
             Catalogs
 
@@ -601,7 +579,11 @@ export const SlottedHTMLSwitcher = {
           </kyn-header-link>
 
           <!-- ADMINISTRATION -->
-          <kyn-header-link href="javascript:void(0)" hideSearch>
+          <kyn-header-link
+            id="administration"
+            href="javascript:void(0)"
+            hideSearch
+          >
             <span>${unsafeSVG(adminIcon)}</span>
             Administration
 
@@ -738,7 +720,11 @@ const renderCategory = (cat) => html`
 `;
 
 const renderSimpleSection = (section) => html`
-  <kyn-header-link href="javascript:void(0)" ?hideSearch=${section.hideSearch}>
+  <kyn-header-link
+    id=${section.id}
+    href="javascript:void(0)"
+    ?hideSearch=${section.hideSearch}
+  >
     <span>${unsafeSVG(iconMap[section.icon])}</span>
     ${section.label}
 
@@ -750,7 +736,11 @@ const renderSimpleSection = (section) => html`
 `;
 
 const renderMixedSection = (section) => html`
-  <kyn-header-link href="javascript:void(0)" ?hideSearch=${section.hideSearch}>
+  <kyn-header-link
+    id=${section.id}
+    href="javascript:void(0)"
+    ?hideSearch=${section.hideSearch}
+  >
     <span>${unsafeSVG(iconMap[section.icon])}</span>
     ${section.label}
 
@@ -768,31 +758,22 @@ const renderMixedSection = (section) => html`
   </kyn-header-link>
 `;
 
-const renderTabbedSection = (section, renderArgs, updateArgs) => html`
-  <kyn-header-link href="javascript:void(0)">
+const renderTabbedSection = (section) => html`
+  <kyn-header-link id=${section.id} href="javascript:void(0)">
     <span>${unsafeSVG(iconMap[section.icon])}</span>
     ${section.label}
 
     <kyn-tabs tabSize="md" slot="links" style="width: 100%; max-width: none;">
       ${section.tabs.map(
-        (tab) => html`
-          <kyn-tab
-            slot="tabs"
-            id=${tab.id}
-            ?selected=${renderArgs.activeServicesTab === tab.id}
-            @click=${() => updateArgs({ activeServicesTab: tab.id })}
-          >
+        (tab, i) => html`
+          <kyn-tab slot="tabs" id=${tab.id} ?selected=${i === 0}>
             ${tab.label}
           </kyn-tab>
         `
       )}
       ${section.tabs.map(
-        (tab) => html`
-          <kyn-tab-panel
-            tabId=${tab.id}
-            noPadding
-            ?visible=${renderArgs.activeServicesTab === tab.id}
-          >
+        (tab, i) => html`
+          <kyn-tab-panel tabId=${tab.id} noPadding ?visible=${i === 0}>
             <kyn-header-categories layout="masonry" .maxRootLinks=${Infinity}>
               ${tab.categories.map((cat) => renderCategory(cat))}
             </kyn-header-categories>
@@ -804,7 +785,11 @@ const renderTabbedSection = (section, renderArgs, updateArgs) => html`
 `;
 
 const renderCategoricalSection = (section) => html`
-  <kyn-header-link href="javascript:void(0)" ?hideSearch=${section.hideSearch}>
+  <kyn-header-link
+    id=${section.id}
+    href="javascript:void(0)"
+    ?hideSearch=${section.hideSearch}
+  >
     <span>${unsafeSVG(iconMap[section.icon])}</span>
     ${section.label}
 
@@ -819,14 +804,14 @@ const renderCategoricalSection = (section) => html`
   </kyn-header-link>
 `;
 
-const renderSection = (section, renderArgs, updateArgs) => {
+const renderSection = (section) => {
   switch (section.type) {
     case 'simple':
       return renderSimpleSection(section);
     case 'mixed':
       return renderMixedSection(section);
     case 'tabbed':
-      return renderTabbedSection(section, renderArgs, updateArgs);
+      return renderTabbedSection(section);
     case 'categorical':
       return renderCategoricalSection(section);
     default:
@@ -835,23 +820,16 @@ const renderSection = (section, renderArgs, updateArgs) => {
 };
 
 export const JSONSwitcher = {
-  args: {
-    ...args,
-    activeServicesTab: 'kyndryl',
-  },
   render: (renderArgs) => {
-    const [, updateArgs] = useArgs();
-
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
         <kyn-header-nav
           .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
+          default-open="favorites"
           truncate-links
           style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
         >
-          ${navData.sections.map((section) =>
-            renderSection(section, renderArgs, updateArgs)
-          )}
+          ${navData.sections.map((section) => renderSection(section))}
         </kyn-header-nav>
       </kyn-header>
     `;
