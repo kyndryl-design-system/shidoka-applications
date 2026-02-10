@@ -150,7 +150,6 @@ export class TableHeader extends LitElement {
 
   /**
    * Sets a resize minimum width for the cell(supports 'px'.e.g., '150px');
-   * Defaults to '0px' if not specified.
    */
   @property({ type: String })
   accessor resizeMinWidth = '0px';
@@ -293,7 +292,9 @@ export class TableHeader extends LitElement {
     this.headerLabel = nonWhitespaceNodes[0]?.textContent || '';
   }
 
-  // Handle Resize Start
+  /** Handle Resize Start
+   * @ignore
+   */
   private _handleResizeStart = (e: MouseEvent) => {
     if (!this.resizable) return;
 
@@ -319,12 +320,14 @@ export class TableHeader extends LitElement {
       void this.offsetWidth;
     }
 
-    // event listeners
+    // Add event listeners, when resize starts
     document.addEventListener('mousemove', this._handleResizeMove);
     document.addEventListener('mouseup', this._handleResizeEnd);
   };
 
-  // Handle Resize Move
+  /** Handle Resize Move
+   * @internal
+   */
   private _handleResizeMove = (e: MouseEvent) => {
     if (!this._isResizing) return;
 
@@ -408,7 +411,9 @@ export class TableHeader extends LitElement {
     );
   }
 
-  // Handle Resize End
+  /** Handle Resize End
+   * @internal
+   */
   private _handleResizeEnd = (e: MouseEvent) => {
     if (!this._isResizing) return;
 
@@ -418,7 +423,8 @@ export class TableHeader extends LitElement {
     this.style.removeProperty('--kyn-resize-handle-height');
 
     this._debounceResize(e);
-    // Remove event listeners
+
+    // Remove event listeners, when resize ends
     document.removeEventListener('mousemove', this._handleResizeMove);
     document.removeEventListener('mouseup', this._handleResizeEnd);
 
@@ -426,6 +432,10 @@ export class TableHeader extends LitElement {
     this.removeAttribute('data-resizing');
   };
 
+  /**
+   * Apply width to all header column cells based on the resized width.
+   * @ignore
+   */
   private _applyWidthToAllCells = (width: number) => {
     const roundedWidth = Math.round(width);
     const widthStr = `${roundedWidth}px`;
@@ -436,18 +446,30 @@ export class TableHeader extends LitElement {
     this.style.maxWidth = widthStr;
   };
 
+  /**
+   * Utility function to parse constraint values (min/max width) from string to number.
+   * @ignore
+   */
   private _parseConstraintValue = (value: string | number): number => {
     if (typeof value === 'number') return value;
     const numValue = parseFloat(value);
     return numValue;
   };
 
+  /**
+   * Get the index of the current column when resize.
+   * @ignore
+   */
   private _getColumnIndex = (): number => {
     const parent = this.closest('kyn-header-tr');
     if (!parent) return -1;
     return Array.from(parent.querySelectorAll('kyn-th')).indexOf(this);
   };
 
+  /**
+   * Lock every column to its exact current width to prevent any layout shifts during resizing.
+   * @ignore
+   */
   private _lockAllColumnsExactly = () => {
     const table = this.closest('kyn-table') as any;
     if (!table) return;
@@ -471,6 +493,10 @@ export class TableHeader extends LitElement {
     });
   };
 
+  /**
+   *
+   * @ignore
+   */
   private _updateTableWidthFromSnapshot = (resizedColumnWidth: number) => {
     const table = this.closest('kyn-table') as any;
     if (!table) return;
