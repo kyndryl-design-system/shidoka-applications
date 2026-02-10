@@ -813,12 +813,6 @@ export const ColumnFiltering: Story = {
           color: var(--kd-color-text-level-secondary);
           pointer-events: none;
         }
-        kyn-table-container {
-          overflow: visible;
-        }
-        kyn-thead {
-          overflow: visible;
-        }
         kyn-th {
           overflow: visible;
           kyn-text-input {
