@@ -58,17 +58,17 @@ export class AccountSwitcherMenuItem extends LitElement {
     };
 
     return html`
-      <button
+      <div
         class=${classMap(classes)}
-        role="option"
-        aria-selected=${this.selected ? 'true' : 'false'}
-        @click=${this._handleClick}
+        role="listitem"
+        aria-current=${this.selected ? 'true' : 'false'}
       >
-        <span class="menu-item__name">${this.name}</span>
-        ${isWorkspace
-          ? this._renderWorkspaceContent()
-          : this._renderItemContent()}
-      </button>
+        <button class="menu-item__select" @click=${this._handleClick}>
+          <span class="menu-item__name">${this.name}</span>
+          ${isWorkspace ? this._renderWorkspaceContent() : null}
+        </button>
+        ${!isWorkspace ? this._renderItemContent() : null}
+      </div>
     `;
   }
 

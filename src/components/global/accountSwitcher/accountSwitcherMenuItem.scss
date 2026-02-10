@@ -10,14 +10,7 @@
 
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 6px 8px;
-  border: none;
-  background: none;
-  text-align: left;
-  font: inherit;
-  color: inherit;
+  padding: 0;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 150ms ease-out, color 150ms ease-out,
@@ -25,8 +18,26 @@
   outline: 2px solid transparent;
   outline-offset: -2px;
 
-  &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
+  &__select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border: none;
+    background: none;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--kd-color-border-variants-focus);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
   }
 
   &__name {

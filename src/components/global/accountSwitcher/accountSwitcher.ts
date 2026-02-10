@@ -227,7 +227,7 @@ export class AccountSwitcher extends LitElement {
     return html`
       <div
         class="workspace-list"
-        role="listbox"
+        role="list"
         aria-label=${this._textStrings.workspaces}
       >
         ${this.workspaces.map(
@@ -260,11 +260,7 @@ export class AccountSwitcher extends LitElement {
 
   private _renderItemsList() {
     return html`
-      <div
-        class="items-list"
-        role="listbox"
-        aria-label=${this._textStrings.items}
-      >
+      <div class="items-list" role="list" aria-label=${this._textStrings.items}>
         ${this.items.map(
           (item) => html`
             <kyn-account-switcher-menu-item
