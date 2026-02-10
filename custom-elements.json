@@ -477,12 +477,28 @@
             {
               "kind": "field",
               "name": "textStrings",
-              "default": "{\n  current: 'Current',\n  workspaces: 'Workspaces',\n  search: 'Search',\n  items: 'Items',\n}",
+              "default": "{\n  current: 'Current',\n  workspaces: 'Workspaces',\n  search: 'Search',\n  items: 'Items',\n  backToWorkspaces: 'Workspaces',\n}",
               "description": "Text string customization.",
               "attribute": "textStrings",
               "type": {
                 "text": "object"
               }
+            },
+            {
+              "kind": "field",
+              "name": "view",
+              "type": {
+                "text": "'root' | 'detail'"
+              },
+              "default": "'root'",
+              "description": "Mobile drill-down view state. 'root' shows workspaces, 'detail' shows items.",
+              "attribute": "view",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_handleFlyoutToggle",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -529,6 +545,11 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleBackClick",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -648,6 +669,15 @@
               "default": "_defaultTextStrings",
               "description": "Text string customization.",
               "fieldName": "textStrings"
+            },
+            {
+              "name": "view",
+              "type": {
+                "text": "'root' | 'detail'"
+              },
+              "default": "'root'",
+              "description": "Mobile drill-down view state. 'root' shows workspaces, 'detail' shows items.",
+              "fieldName": "view"
             }
           ],
           "superclass": {
@@ -770,19 +800,6 @@
               "kind": "method",
               "name": "_handleClick",
               "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "KeyboardEvent"
-                  }
-                }
-              ]
             },
             {
               "kind": "method",

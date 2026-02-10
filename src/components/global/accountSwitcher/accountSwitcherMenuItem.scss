@@ -11,7 +11,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
   padding: 6px 8px;
+  border: none;
+  background: none;
+  text-align: left;
+  font: inherit;
+  color: inherit;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 150ms ease-out, color 150ms ease-out,
@@ -51,6 +57,10 @@
   &--workspace {
     .menu-item__name {
       max-width: 25ch;
+
+      @media (max-width: calc(42rem - 0.001px)) {
+        max-width: none;
+      }
     }
 
     &:hover:not(.menu-item--selected) {
@@ -88,6 +98,10 @@
   &--item {
     .menu-item__name {
       max-width: 40ch;
+
+      @media (max-width: calc(42rem - 0.001px)) {
+        max-width: none;
+      }
     }
 
     &:hover:not(.menu-item--selected) {

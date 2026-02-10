@@ -8,6 +8,7 @@ import AccountSwitcherScss from './accountSwitcher.scss?inline';
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 import '../../reusable/link';
 import '../../reusable/search';
@@ -18,6 +19,7 @@ const _defaultTextStrings = {
   workspaces: 'Workspaces',
   search: 'Search',
   items: 'Items',
+  backToWorkspaces: 'Workspaces',
 };
 
 export interface Workspace {
@@ -71,6 +73,10 @@ export class AccountSwitcher extends LitElement {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
+  /** Mobile drill-down view state. 'root' shows workspaces, 'detail' shows items. */
+  @property({ type: String, reflect: true })
+  accessor view: 'root' | 'detail' = 'root';
+
   /** Merged text strings.
    * @internal
    */
@@ -95,6 +101,29 @@ export class AccountSwitcher extends LitElement {
   @state()
   private accessor _selectedItemId: string | null = null;
 
+  private _handleFlyoutToggle = (e: Event) => {
+    const detail = (e as CustomEvent).detail;
+    if (!detail?.open) {
+      this.view = 'root';
+    }
+  };
+
+  override connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener(
+      'on-flyout-toggle',
+      this._handleFlyoutToggle as EventListener
+    );
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener(
+      'on-flyout-toggle',
+      this._handleFlyoutToggle as EventListener
+    );
+  }
+
   override render() {
     const hasFullAccountInfo =
       this.currentAccount.accountId || this.currentAccount.country;
@@ -112,6 +141,13 @@ export class AccountSwitcher extends LitElement {
           ${this._renderWorkspaceList()}
         </div>
         <div class="account-switcher__right">
+          <button
+            class="account-switcher__back"
+            @click=${this._handleBackClick}
+          >
+            <span>${unsafeSVG(arrowLeftIcon)}</span>
+            ${this._textStrings.backToWorkspaces}
+          </button>
           ${this.showSearch ? this._renderSearch() : null}
           ${this._renderItemsList()}
         </div>
@@ -191,7 +227,7 @@ export class AccountSwitcher extends LitElement {
     return html`
       <div
         class="workspace-list"
-        role="list"
+        role="listbox"
         aria-label=${this._textStrings.workspaces}
       >
         ${this.workspaces.map(
@@ -224,7 +260,11 @@ export class AccountSwitcher extends LitElement {
 
   private _renderItemsList() {
     return html`
-      <div class="items-list" role="list" aria-label=${this._textStrings.items}>
+      <div
+        class="items-list"
+        role="listbox"
+        aria-label=${this._textStrings.items}
+      >
         ${this.items.map(
           (item) => html`
             <kyn-account-switcher-menu-item
@@ -262,6 +302,7 @@ export class AccountSwitcher extends LitElement {
 
   private _handleWorkspaceSelect(workspace: Workspace) {
     this._selectedWorkspaceId = workspace.id;
+    this.view = 'detail';
 
     this.dispatchEvent(
       new CustomEvent('on-workspace-select', {
@@ -270,6 +311,10 @@ export class AccountSwitcher extends LitElement {
         composed: true,
       })
     );
+  }
+
+  private _handleBackClick() {
+    this.view = 'root';
   }
 
   private _handleItemSelect(item: AccountItem) {

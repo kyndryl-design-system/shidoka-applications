@@ -92,6 +92,7 @@ export default {
 export const FullAccountInfo = {
   render: () => html`
     <kyn-account-switcher
+      style="--kyn-account-switcher-max-height: 450px"
       .currentAccount=${fullCurrentAccount}
       .workspaces=${workspaces}
       .items=${defaultItems}
@@ -105,6 +106,7 @@ export const FullAccountInfo = {
 export const SimpleAccountInfo = {
   render: () => html`
     <kyn-account-switcher
+      style="--kyn-account-switcher-max-height: 450px"
       .currentAccount=${simpleCurrentAccount}
       .workspaces=${workspaces}
       .items=${defaultItems}
@@ -118,6 +120,7 @@ export const SimpleAccountInfo = {
 export const WithSearch = {
   render: () => html`
     <kyn-account-switcher
+      style="--kyn-account-switcher-max-height: 450px"
       .currentAccount=${fullCurrentAccount}
       .workspaces=${workspaces}
       .items=${defaultItems}
@@ -204,6 +207,7 @@ export const UIImplementation = {
           </span>
 
           <kyn-account-switcher
+            style="--kyn-account-switcher-max-height: 450px; width: 625px;"
             .currentAccount=${fullCurrentAccount}
             .workspaces=${workspaces}
             .items=${defaultItems}

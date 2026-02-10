@@ -58,19 +58,17 @@ export class AccountSwitcherMenuItem extends LitElement {
     };
 
     return html`
-      <div
+      <button
         class=${classMap(classes)}
-        role="listitem"
-        tabindex="0"
-        aria-current=${this.selected ? 'true' : 'false'}
+        role="option"
+        aria-selected=${this.selected ? 'true' : 'false'}
         @click=${this._handleClick}
-        @keydown=${this._handleKeydown}
       >
         <span class="menu-item__name">${this.name}</span>
         ${isWorkspace
           ? this._renderWorkspaceContent()
           : this._renderItemContent()}
-      </div>
+      </button>
     `;
   }
 
@@ -106,13 +104,6 @@ export class AccountSwitcherMenuItem extends LitElement {
         composed: true,
       })
     );
-  }
-
-  private _handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this._handleClick();
-    }
   }
 
   private _handleFavoriteChange(e: CustomEvent) {
