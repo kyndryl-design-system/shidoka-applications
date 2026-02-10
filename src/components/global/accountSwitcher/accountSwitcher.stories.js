@@ -98,7 +98,7 @@ const renderFullAccountHeader = (name) => html`
         <span
           style="
             max-width: 200px; overflow: hidden; text-overflow: ellipsis;
-            white-space: nowrap; color: var(--kd-color-text-level-primary);
+            white-space: nowrap; font-weight: 500; color: var(--kd-color-text-level-primary);
           "
           >${name}</span
         >

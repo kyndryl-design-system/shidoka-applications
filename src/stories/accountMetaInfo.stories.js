@@ -19,39 +19,43 @@ export default {
           .account-meta-info {
             display: flex;
             flex-direction: column;
+            gap: 2px;
+            padding-bottom: 12px;
+            margin: 0 auto 12px;
           }
 
           .account-meta-info__header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 8px;
+            font-size: 14px;
           }
 
           .account-meta-info__checkmark {
             display: flex;
             align-items: center;
             flex-shrink: 0;
+            margin-top: 0;
           }
 
           .account-meta-info__checkmark svg {
             fill: var(--kd-color-badge-heavy-background-success);
           }
 
+          .account-meta-info__content {
+            display: flex;
+            flex-direction: column;
+          }
+
           .account-meta-info__name {
-            font-weight: var(--kd-font-weight-medium);
+            font-weight: 500;
             font-size: 14px;
             line-height: 20px;
             color: var(--kd-color-text-level-primary);
-          }
-
-          .account-meta-info__details {
-            display: flex;
-            flex-direction: column;
-            margin-left: 24px; /* align with text after checkmark icon */
-          }
-
-          .account-meta-info__details kyn-link {
-            font-size: 14px;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
           .account-meta-info__country {
@@ -97,21 +101,21 @@ export const AccountSelected = {
           <span class="account-meta-info__checkmark">
             ${unsafeSVG(checkmarkIcon)}
           </span>
-          <span class="account-meta-info__name">
-            CurrentSelect...AccountName
-          </span>
-        </div>
-        <div class="account-meta-info__details">
-          <kyn-link
-            standalone
-            animationInactive
-            href="javascript:void(0)"
-            @on-click=${(e) => handleCopy(accountId, e)}
-          >
-            ${accountId}
-            <span slot="icon">${unsafeSVG(copyIcon)}</span>
-          </kyn-link>
-          <div class="account-meta-info__country">United States</div>
+          <div class="account-meta-info__content">
+            <span class="account-meta-info__name">
+              CurrentSelect...AccountName
+            </span>
+            <kyn-link
+              standalone
+              animationInactive
+              href="javascript:void(0)"
+              @on-click=${(e) => handleCopy(accountId, e)}
+            >
+              ${accountId}
+              <span slot="icon">${unsafeSVG(copyIcon)}</span>
+            </kyn-link>
+            <div class="account-meta-info__country">United States</div>
+          </div>
         </div>
       </div>
     `;
