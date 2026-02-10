@@ -820,7 +820,7 @@ export const ColumnFiltering: Story = {
           }
           kyn-dropdown {
             display: block;
-            min-width: 200px;
+            min-width: 150px;
           }
         }
 
