@@ -821,6 +821,9 @@ export const ColumnFiltering: Story = {
         }
         kyn-th {
           overflow: visible;
+          kyn-text-input {
+            display: block;
+          }
           kyn-dropdown {
             display: block;
             min-width: 200px;

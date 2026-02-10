@@ -303,7 +303,7 @@ export class TableHeader extends LitElement {
 
     this._isResizing = true;
     this._resizeStartX = e.clientX;
-    this._resizeStartWidth = this.offsetWidth;
+    this._resizeStartWidth = this.getBoundingClientRect().width;
 
     // Mark as resizing (hides sort icon, locks handle position)
     this.setAttribute('data-resizing', 'true');
@@ -396,7 +396,7 @@ export class TableHeader extends LitElement {
         composed: true,
         detail: {
           columnIndex: this._getColumnIndex(),
-          newWidth: `${this._resizedColumnWidth}px`,
+          newWidth: `${this._resizedColumnWidth.toFixed(2)}px`,
         },
       })
     );
@@ -437,8 +437,7 @@ export class TableHeader extends LitElement {
    * @ignore
    */
   private _applyWidthToAllCells = (width: number) => {
-    const roundedWidth = Math.round(width);
-    const widthStr = `${roundedWidth}px`;
+    const widthStr = `${width}px`;
 
     // Apply width to this header cell only - body cells have their own styles
     this.style.width = widthStr;
@@ -481,7 +480,7 @@ export class TableHeader extends LitElement {
 
     // Lock EVERY column to exact pixel width to prevent layout shifts
     columns.forEach((col, index) => {
-      const width = (col as any).offsetWidth;
+      const width = (col as HTMLElement).getBoundingClientRect().width;
 
       // Store the width for later calculation
       this._columnWidthsSnapshot.set(index, width);

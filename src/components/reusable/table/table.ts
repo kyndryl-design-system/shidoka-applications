@@ -367,8 +367,7 @@ export class Table extends LitElement {
         totalWidth += width;
       }
     });
-
-    this.style.width = `${totalWidth}px`;
+    this.style.width = `${totalWidth.toFixed(2)}px`;
   };
 
   override render() {
