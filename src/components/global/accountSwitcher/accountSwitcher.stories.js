@@ -89,7 +89,7 @@ const renderFullAccountHeader = (name) => html`
   >
     <div style="display: flex; align-items: flex-start; gap: 8px;">
       <span
-        style="display: flex; align-items: center; color: var(--kd-color-badge-heavy-background-success);"
+        style="display: flex; align-items: center; margin-top: 4px; color: var(--kd-color-badge-heavy-background-success);"
         >${unsafeSVG(checkmarkFilledIcon)}</span
       >
       <div style="display: flex; flex-direction: column;">
@@ -125,7 +125,7 @@ const renderSimpleAccountHeader = (name) => html`
   >
     <div style="display: flex; align-items: flex-start; gap: 8px;">
       <span
-        style="display: flex; align-items: center; color: var(--kd-color-badge-heavy-background-success);"
+        style="display: flex; align-items: center; margin-top: 4px; color: var(--kd-color-badge-heavy-background-success);"
         >${unsafeSVG(checkmarkFilledIcon)}</span
       >
       <span
