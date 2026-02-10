@@ -40,12 +40,12 @@ const selectedItem = defaultItems.find((item) => item.selected);
 
 // --- Helpers ---
 
-/** Render workspace menu items for the left slot. */
+/** Render workspace menu items for the workspaces slot. */
 const renderWorkspaces = (onWorkspaceClick) => html`
   ${workspaces.map(
     (ws) => html`
       <kyn-account-switcher-menu-item
-        slot="left"
+        slot="left-list"
         variant="workspace"
         value=${ws.id}
         name=${ws.name}
@@ -57,12 +57,12 @@ const renderWorkspaces = (onWorkspaceClick) => html`
   )}
 `;
 
-/** Render item menu items for the right slot. */
+/** Render item menu items for the items slot. */
 const renderItems = (items, onItemClick) => html`
   ${items.map(
     (item) => html`
       <kyn-account-switcher-menu-item
-        slot="right"
+        slot="right-list"
         variant="item"
         value=${item.id}
         name=${item.name}
@@ -154,9 +154,7 @@ const handleWorkspaceClick = (e, ws) => {
 
   // Update selected state on workspace items
   switcher
-    .querySelectorAll(
-      'kyn-account-switcher-menu-item[slot="left"][variant="workspace"]'
-    )
+    .querySelectorAll('kyn-account-switcher-menu-item[slot="left-list"]')
     .forEach((el) => {
       el.selected = el.value === ws.id;
     });
@@ -167,13 +165,13 @@ const handleWorkspaceClick = (e, ws) => {
 
   // Remove existing right-slot items
   switcher
-    .querySelectorAll('kyn-account-switcher-menu-item[slot="right"]')
+    .querySelectorAll('kyn-account-switcher-menu-item[slot="right-list"]')
     .forEach((el) => el.remove());
 
   // Append new items
   newItems.forEach((item) => {
     const el = document.createElement('kyn-account-switcher-menu-item');
-    el.slot = 'right';
+    el.slot = 'items';
     el.variant = 'item';
     el.value = item.id;
     el.name = item.name;
@@ -196,7 +194,7 @@ const handleItemClick = (e, item) => {
 
   // Update selected state on item menu items
   switcher
-    .querySelectorAll('kyn-account-switcher-menu-item[slot="right"]')
+    .querySelectorAll('kyn-account-switcher-menu-item[slot="right-list"]')
     .forEach((el) => {
       el.selected = el.value === item.id;
     });
@@ -283,9 +281,7 @@ const handleUIWorkspaceClick = (e, ws) => {
   switcher.view = 'detail';
 
   switcher
-    .querySelectorAll(
-      'kyn-account-switcher-menu-item[slot="left"][variant="workspace"]'
-    )
+    .querySelectorAll('kyn-account-switcher-menu-item[slot="left-list"]')
     .forEach((el) => {
       el.selected = el.value === ws.id;
     });
@@ -294,12 +290,12 @@ const handleUIWorkspaceClick = (e, ws) => {
     ws.id === 'global' ? allItems : exampleData.itemsByWorkspace[ws.id] || [];
 
   switcher
-    .querySelectorAll('kyn-account-switcher-menu-item[slot="right"]')
+    .querySelectorAll('kyn-account-switcher-menu-item[slot="right-list"]')
     .forEach((el) => el.remove());
 
   newItems.forEach((item) => {
     const el = document.createElement('kyn-account-switcher-menu-item');
-    el.slot = 'right';
+    el.slot = 'items';
     el.variant = 'item';
     el.value = item.id;
     el.name = item.name;

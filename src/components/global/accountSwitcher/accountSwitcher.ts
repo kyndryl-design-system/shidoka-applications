@@ -15,10 +15,12 @@ const _defaultTextStrings = {
 
 /**
  * Account Switcher shell component providing two-panel layout with mobile drill-down.
- * Consumers compose content via `left` and `right` named slots using sub-components
+ * Consumers compose content via named slots using sub-components
  * like `kyn-account-switcher-menu-item`.
- * @slot left - Content for the left panel (e.g. account info, workspace list).
- * @slot right - Content for the right panel (e.g. search, item list).
+ * @slot left - Non-list content for the left panel (e.g. account info header).
+ * @slot left-list - List items for the left panel (rendered inside role="list").
+ * @slot right - Non-list content for the right panel (e.g. search).
+ * @slot right-list - List items for the right panel (rendered inside role="list").
  */
 @customElement('kyn-account-switcher')
 export class AccountSwitcher extends LitElement {
@@ -71,6 +73,9 @@ export class AccountSwitcher extends LitElement {
       <div class="account-switcher">
         <div class="account-switcher__left">
           <slot name="left"></slot>
+          <div class="account-switcher__list" role="list">
+            <slot name="left-list"></slot>
+          </div>
         </div>
         <div class="account-switcher__right">
           <button
@@ -81,6 +86,9 @@ export class AccountSwitcher extends LitElement {
             ${this._textStrings.backToWorkspaces}
           </button>
           <slot name="right"></slot>
+          <div class="account-switcher__list" role="list">
+            <slot name="right-list"></slot>
+          </div>
         </div>
       </div>
     `;
