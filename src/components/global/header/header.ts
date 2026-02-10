@@ -117,12 +117,12 @@ export class Header extends LitElement {
     const slot = e.target as HTMLSlotElement;
     slot.assignedElements().forEach((el) => {
       el.querySelectorAll('svg').forEach((svg) => {
-        svg.style.height = '100%';
-        svg.style.width = 'auto';
+        svg.style.width = '100%';
+        svg.style.height = 'auto';
       });
       el.querySelectorAll('img').forEach((img) => {
-        img.style.height = '100%';
-        img.style.width = 'auto';
+        img.style.width = '100%';
+        img.style.height = 'auto';
       });
     });
   }

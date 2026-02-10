@@ -46,7 +46,9 @@ export const WithCategorizedNavManualHtml = {
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
+        <span slot="logo" style="--kyn-header-logo-width: 120px;"
+          >${unsafeSVG(bridgeLogo)}</span
+        >
         <kyn-header-nav .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
@@ -436,7 +438,9 @@ export const WithCategorizedNav = {
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
+        <span slot="logo" style="--kyn-header-logo-width: 120px;"
+          >${unsafeSVG(bridgeLogo)}</span
+        >
         <kyn-header-nav .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>

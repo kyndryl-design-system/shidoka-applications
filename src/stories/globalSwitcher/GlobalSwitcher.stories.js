@@ -48,7 +48,9 @@ export const SlottedHTMLSwitcher = {
   render: (renderArgs) => {
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
+        <span slot="logo" style="--kyn-header-logo-width: 120px;"
+          >${unsafeSVG(bridgeLogo)}</span
+        >
         <kyn-header-nav
           .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
           default-open="favorites"
@@ -847,7 +849,9 @@ export const JSONSwitcher = {
   render: (renderArgs) => {
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
-        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
+        <span slot="logo" style="--kyn-header-logo-width: 120px;"
+          >${unsafeSVG(bridgeLogo)}</span
+        >
         <kyn-header-nav
           .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
           default-open="favorites"
