@@ -1,105 +1,41 @@
-import { LitElement, html, unsafeCSS, PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { LitElement, html, unsafeCSS } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { deepmerge } from 'deepmerge-ts';
 
 import AccountSwitcherScss from './accountSwitcher.scss?inline';
 
-import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
-import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
-import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
-import '../../reusable/link';
-import '../../reusable/search';
 import './accountSwitcherMenuItem';
 
 const _defaultTextStrings = {
-  current: 'Current',
-  workspaces: 'Workspaces',
-  search: 'Search',
-  items: 'Items',
   backToWorkspaces: 'Workspaces',
 };
 
-export interface Workspace {
-  id: string;
-  name: string;
-  count?: number | null;
-  selected?: boolean;
-}
-
-export interface AccountItem {
-  id: string;
-  name: string;
-  selected?: boolean;
-  favorited?: boolean;
-}
-
-export interface CurrentAccount {
-  name: string;
-  accountId?: string;
-  country?: string;
-}
-
 /**
- * Account Switcher component for selecting accounts and workspaces.
- * @fires on-workspace-select - Emits when a workspace is selected. `detail: { workspace: Workspace }`
- * @fires on-item-select - Emits when an item is selected. `detail: { item: AccountItem }`
- * @fires on-favorite-change - Emits when an item's favorite status changes. `detail: { item: AccountItem, favorited: boolean }`
- * @fires on-search - Emits when search input changes. `detail: { value: string }`
+ * Account Switcher shell component providing two-panel layout with mobile drill-down.
+ * Consumers compose content via `left` and `right` named slots using sub-components
+ * like `kyn-account-switcher-menu-item`.
+ * @slot left - Content for the left panel (e.g. account info, workspace list).
+ * @slot right - Content for the right panel (e.g. search, item list).
  */
 @customElement('kyn-account-switcher')
 export class AccountSwitcher extends LitElement {
   static override styles = unsafeCSS(AccountSwitcherScss);
 
-  /** Current account information displayed at the top of the left panel. */
-  @property({ type: Object })
-  accessor currentAccount: CurrentAccount = { name: '' };
-
-  /** List of workspaces to display in the left panel. */
-  @property({ type: Array })
-  accessor workspaces: Workspace[] = [];
-
-  /** List of items (accounts, zones, etc.) to display in the right panel. */
-  @property({ type: Array })
-  accessor items: AccountItem[] = [];
-
-  /** Whether to show the search input in the right panel. */
-  @property({ type: Boolean })
-  accessor showSearch = false;
-
   /** Text string customization. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
-  /** Mobile drill-down view state. 'root' shows workspaces, 'detail' shows items. */
+  /** Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel. */
   @property({ type: String, reflect: true })
   accessor view: 'root' | 'detail' = 'root';
 
   /** Merged text strings.
    * @internal
    */
-  @state()
-  private accessor _textStrings = _defaultTextStrings;
-
-  /** Internal state for copy feedback.
-   * @internal
-   */
-  @state()
-  private accessor _copied = false;
-
-  /** Internal state for selected workspace (immediate visual feedback).
-   * @internal
-   */
-  @state()
-  private accessor _selectedWorkspaceId: string | null = null;
-
-  /** Internal state for selected item (immediate visual feedback).
-   * @internal
-   */
-  @state()
-  private accessor _selectedItemId: string | null = null;
+  private _textStrings = _defaultTextStrings;
 
   private _handleFlyoutToggle = (e: Event) => {
     const detail = (e as CustomEvent).detail;
@@ -124,21 +60,17 @@ export class AccountSwitcher extends LitElement {
     );
   }
 
-  override render() {
-    const hasFullAccountInfo =
-      this.currentAccount.accountId || this.currentAccount.country;
+  override willUpdate(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
 
+  override render() {
     return html`
       <div class="account-switcher">
         <div class="account-switcher__left">
-          ${!hasFullAccountInfo
-            ? html`<div class="section-header">
-                ${this._textStrings.current}
-              </div>`
-            : null}
-          ${this._renderCurrentAccount()}
-          <div class="section-header">${this._textStrings.workspaces}</div>
-          ${this._renderWorkspaceList()}
+          <slot name="left"></slot>
         </div>
         <div class="account-switcher__right">
           <button
@@ -148,202 +80,14 @@ export class AccountSwitcher extends LitElement {
             <span>${unsafeSVG(arrowLeftIcon)}</span>
             ${this._textStrings.backToWorkspaces}
           </button>
-          ${this.showSearch ? this._renderSearch() : null}
-          ${this._renderItemsList()}
+          <slot name="right"></slot>
         </div>
       </div>
     `;
-  }
-
-  override willUpdate(changedProperties: PropertyValues) {
-    // merge text strings
-    if (changedProperties.has('textStrings')) {
-      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
-
-    // initialize selected workspace from props on first load or when workspaces change
-    if (
-      changedProperties.has('workspaces') &&
-      this._selectedWorkspaceId === null
-    ) {
-      const selectedWorkspace = this.workspaces.find((w) => w.selected);
-      if (selectedWorkspace) {
-        this._selectedWorkspaceId = selectedWorkspace.id;
-      } else if (this.workspaces.length > 0) {
-        // Default to first workspace if none selected
-        this._selectedWorkspaceId = this.workspaces[0].id;
-      }
-    }
-
-    // initialize selected item from props on first load or when items change
-    if (changedProperties.has('items')) {
-      const selectedItem = this.items.find((i) => i.selected);
-      this._selectedItemId = selectedItem?.id ?? null;
-    }
-  }
-
-  private _renderCurrentAccount() {
-    return html`
-      <div class="account-meta-info">
-        <div class="account-meta-info__header">
-          <span class="account-meta-info__checkmark">
-            ${unsafeSVG(checkmarkFilledIcon)}
-          </span>
-          <div class="account-meta-info__content">
-            <span class="account-meta-info__name">
-              ${this.currentAccount.name}
-            </span>
-            ${this.currentAccount.accountId
-              ? html`
-                  <kyn-link
-                    standalone
-                    animationInactive
-                    href="javascript:void(0)"
-                    @on-click=${this._handleCopyAccountId}
-                  >
-                    ${this.currentAccount.accountId}
-                    <span slot="icon"
-                      >${unsafeSVG(
-                        this._copied ? checkmarkIcon : copyIcon
-                      )}</span
-                    >
-                  </kyn-link>
-                `
-              : null}
-            ${this.currentAccount.country
-              ? html`
-                  <span class="account-meta-info__country">
-                    ${this.currentAccount.country}
-                  </span>
-                `
-              : null}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  private _renderWorkspaceList() {
-    return html`
-      <div
-        class="workspace-list"
-        role="list"
-        aria-label=${this._textStrings.workspaces}
-      >
-        ${this.workspaces.map(
-          (workspace) => html`
-            <kyn-account-switcher-menu-item
-              variant="workspace"
-              value=${workspace.id}
-              name=${workspace.name}
-              .count=${workspace.count ?? null}
-              ?selected=${this._selectedWorkspaceId === workspace.id}
-              @on-click=${() => this._handleWorkspaceSelect(workspace)}
-            ></kyn-account-switcher-menu-item>
-          `
-        )}
-      </div>
-    `;
-  }
-
-  private _renderSearch() {
-    return html`
-      <div class="account-switcher__search">
-        <kyn-search
-          size="sm"
-          label=${this._textStrings.search}
-          @on-input=${this._handleSearch}
-        ></kyn-search>
-      </div>
-    `;
-  }
-
-  private _renderItemsList() {
-    return html`
-      <div class="items-list" role="list" aria-label=${this._textStrings.items}>
-        ${this.items.map(
-          (item) => html`
-            <kyn-account-switcher-menu-item
-              variant="item"
-              value=${item.id}
-              name=${item.name}
-              ?selected=${this._selectedItemId === item.id}
-              ?favorited=${item.favorited}
-              showFavorite
-              @on-click=${() => this._handleItemSelect(item)}
-              @on-favorite-change=${(e: CustomEvent) =>
-                this._handleFavoriteChange(item, e)}
-            ></kyn-account-switcher-menu-item>
-          `
-        )}
-      </div>
-    `;
-  }
-
-  private async _handleCopyAccountId(e: CustomEvent) {
-    e.detail.origEvent.preventDefault();
-    if (this._copied || !this.currentAccount.accountId) return;
-
-    try {
-      await navigator.clipboard.writeText(this.currentAccount.accountId);
-    } catch {
-      return;
-    }
-    this._copied = true;
-
-    setTimeout(() => {
-      this._copied = false;
-    }, 3000);
-  }
-
-  private _handleWorkspaceSelect(workspace: Workspace) {
-    this._selectedWorkspaceId = workspace.id;
-    this.view = 'detail';
-
-    this.dispatchEvent(
-      new CustomEvent('on-workspace-select', {
-        detail: { workspace },
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
   private _handleBackClick() {
     this.view = 'root';
-  }
-
-  private _handleItemSelect(item: AccountItem) {
-    this._selectedItemId = item.id;
-
-    this.dispatchEvent(
-      new CustomEvent('on-item-select', {
-        detail: { item },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _handleFavoriteChange(item: AccountItem, e: CustomEvent) {
-    e.stopPropagation();
-    this.dispatchEvent(
-      new CustomEvent('on-favorite-change', {
-        detail: { item, favorited: e.detail.favorited },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _handleSearch(e: CustomEvent) {
-    this.dispatchEvent(
-      new CustomEvent('on-search', {
-        detail: { value: e.detail.value },
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 }
 
