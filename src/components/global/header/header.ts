@@ -84,7 +84,7 @@ export class Header extends LitElement {
           aria-label="${this.rootUrl}"
           @click="${(e: Event) => this.handleRootLinkClick(e)}"
         >
-          <slot name="logo" @slotchange=${this.handleSlotChange}>
+          <slot name="logo" @slotchange=${this._handleLogoSlotChange}>
             ${unsafeHTML(logo)}
           </slot>
         </a>
@@ -106,6 +106,25 @@ export class Header extends LitElement {
 
   private handleSlotChange() {
     this.requestUpdate();
+  }
+
+  /** Auto-style SVGs and images inside the logo slot so they scale to the
+   *  container regardless of hardcoded width/height attributes.
+   *  @internal */
+  private _handleLogoSlotChange(e: Event) {
+    this.handleSlotChange();
+
+    const slot = e.target as HTMLSlotElement;
+    slot.assignedElements().forEach((el) => {
+      el.querySelectorAll('svg').forEach((svg) => {
+        svg.style.height = '100%';
+        svg.style.width = 'auto';
+      });
+      el.querySelectorAll('img').forEach((img) => {
+        img.style.height = '100%';
+        img.style.width = 'auto';
+      });
+    });
   }
 
   private handleRootLinkClick(e: Event) {

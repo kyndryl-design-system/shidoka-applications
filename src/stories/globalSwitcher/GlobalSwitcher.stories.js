@@ -14,6 +14,7 @@ import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import adminIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user-settings.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
+import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/home.svg';
 import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/dashboard.svg';
 
@@ -47,6 +48,7 @@ export const SlottedHTMLSwitcher = {
   render: (renderArgs) => {
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
         <kyn-header-nav
           .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
           default-open="favorites"
@@ -845,6 +847,7 @@ export const JSONSwitcher = {
   render: (renderArgs) => {
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
         <kyn-header-nav
           .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
           default-open="favorites"

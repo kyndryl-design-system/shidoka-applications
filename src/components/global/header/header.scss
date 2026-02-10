@@ -88,7 +88,18 @@
 
   svg {
     width: auto;
-    height: 20px;
+    height: var(--kyn-header-logo-height, 20px);
+  }
+
+  ::slotted(svg) {
+    width: auto;
+    height: var(--kyn-header-logo-height, 20px);
+  }
+
+  ::slotted(*) {
+    display: inline-flex;
+    align-items: center;
+    height: var(--kyn-header-logo-height, 20px);
   }
 }
 

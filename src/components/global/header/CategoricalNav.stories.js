@@ -9,6 +9,7 @@ import '../../reusable/tabs';
 
 import megaNavConfig from './sampleMegaNavCategories.json';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
+import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 
 import './Docs.mdx';
 
@@ -45,6 +46,7 @@ export const WithCategorizedNavManualHtml = {
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
         <kyn-header-nav .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
@@ -434,6 +436,7 @@ export const WithCategorizedNav = {
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <span slot="logo">${unsafeSVG(bridgeLogo)}</span>
         <kyn-header-nav .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
