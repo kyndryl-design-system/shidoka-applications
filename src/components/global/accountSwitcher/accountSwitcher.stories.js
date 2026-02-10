@@ -87,7 +87,9 @@ const renderFullAccountHeader = (name) => html`
       width: 100%; box-sizing: border-box;
     "
   >
-    <div style="display: flex; align-items: flex-start; gap: 8px;">
+    <div
+      style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px;"
+    >
       <span
         style="display: flex; align-items: center; margin-top: 4px; color: var(--kd-color-badge-heavy-background-success);"
         >${unsafeSVG(checkmarkFilledIcon)}</span
@@ -95,7 +97,7 @@ const renderFullAccountHeader = (name) => html`
       <div style="display: flex; flex-direction: column;">
         <span
           style="
-            max-width: 25ch; overflow: hidden; text-overflow: ellipsis;
+            max-width: 200px; overflow: hidden; text-overflow: ellipsis;
             white-space: nowrap; color: var(--kd-color-text-level-primary);
           "
           >${name}</span
@@ -123,14 +125,16 @@ const renderSimpleAccountHeader = (name) => html`
       width: 100%; box-sizing: border-box;
     "
   >
-    <div style="display: flex; align-items: flex-start; gap: 8px;">
+    <div
+      style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px;"
+    >
       <span
         style="display: flex; align-items: center; margin-top: 4px; color: var(--kd-color-badge-heavy-background-success);"
         >${unsafeSVG(checkmarkFilledIcon)}</span
       >
       <span
         style="
-          max-width: 25ch; overflow: hidden; text-overflow: ellipsis;
+          max-width: 200px; overflow: hidden; text-overflow: ellipsis;
           white-space: nowrap; color: var(--kd-color-text-level-primary);
         "
         >${name}</span

@@ -39,6 +39,9 @@ export class AccountSwitcher extends LitElement {
    */
   private _textStrings = _defaultTextStrings;
 
+  /**
+   * @internal
+   */
   private _handleFlyoutToggle = (e: Event) => {
     const detail = (e as CustomEvent).detail;
     if (!detail?.open) {
