@@ -773,13 +773,8 @@ export const ColumnFiltering: Story = {
             </kyn-header-tr>
           </kyn-thead>
           <kyn-tbody>
-            ${rows.length === 0
-              ? html`
-                  <div class="no-data">
-                    <kyn-tr> No records to display. </kyn-tr>
-                  </div>
-                `
-              : repeat(
+            ${rows.length > 0
+              ? repeat(
                   rows,
                   (row: any) => html`
                     <kyn-tr>
@@ -802,14 +797,17 @@ export const ColumnFiltering: Story = {
                       <kyn-td .align=${'right'}>${row.criticalityRisk}</kyn-td>
                     </kyn-tr>
                   `
-                )}
+                )
+              : null}
           </kyn-tbody>
         </kyn-table>
       </kyn-table-container>
+      ${rows.length === 0
+        ? html` <div class="no-data">No records to display.</div> `
+        : null}
       <style>
         .no-data {
           margin-top: 24px;
-          width: 100%;
           color: var(--kd-color-text-level-secondary);
           pointer-events: none;
         }
