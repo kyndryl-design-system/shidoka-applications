@@ -42,43 +42,7 @@ const selectedItem = defaultItems.find((item) => item.selected);
 
 // --- Helpers ---
 
-/** Render workspace menu items for the workspaces slot. */
-const renderWorkspaces = (onWorkspaceClick) => html`
-  ${workspaces.map(
-    (ws) => html`
-      <kyn-account-switcher-menu-item
-        slot="left-list"
-        variant="workspace"
-        value=${ws.id}
-        name=${ws.name}
-        .count=${ws.count ?? null}
-        ?selected=${ws.selected}
-        @on-click=${(e) => onWorkspaceClick(e, ws)}
-      ></kyn-account-switcher-menu-item>
-    `
-  )}
-`;
-
-/** render item menu items for the items slot. */
-const renderItems = (items, onItemClick) => html`
-  ${items.map(
-    (item) => html`
-      <kyn-account-switcher-menu-item
-        slot="right-list"
-        variant="item"
-        value=${item.id}
-        name=${item.name}
-        ?selected=${item.selected}
-        ?favorited=${item.favorited}
-        showFavorite
-        @on-click=${(e) => onItemClick(e, item)}
-        @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-      ></kyn-account-switcher-menu-item>
-    `
-  )}
-`;
-
-/** Copy to clipboard handler for the account ID link. */
+/** copy to clipboard handler for the account ID link. */
 const handleCopy = (value, e) => {
   e.detail.origEvent.preventDefault();
   navigator.clipboard.writeText(value);
@@ -91,45 +55,6 @@ const handleCopy = (value, e) => {
     }, 3000);
   }
 };
-
-/** account header with full metadata (name, account ID, country). */
-const renderFullAccountHeader = (name) => html`
-  <div slot="left" class="account-meta-info">
-    <div class="account-meta-info__header">
-      <span class="account-meta-info__checkmark"
-        >${unsafeSVG(checkmarkFilledIcon)}</span
-      >
-      <div class="account-meta-info__content">
-        <span class="account-meta-info__name" title=${name}>${name}</span>
-        <kyn-link
-          standalone
-          animationInactive
-          href="javascript:void(0)"
-          @on-click=${(e) =>
-            handleCopy(exampleData.accountDetails.accountId, e)}
-        >
-          ${exampleData.accountDetails.accountId}
-          <span slot="icon">${unsafeSVG(copyIcon)}</span>
-        </kyn-link>
-        <span class="account-meta-info__country"
-          >${exampleData.accountDetails.country}</span
-        >
-      </div>
-    </div>
-  </div>
-`;
-
-/** account header with just the name. */
-const renderSimpleAccountHeader = (name) => html`
-  <div slot="left" class="account-meta-info">
-    <div class="account-meta-info__header">
-      <span class="account-meta-info__checkmark"
-        >${unsafeSVG(checkmarkFilledIcon)}</span
-      >
-      <span class="account-meta-info__name" title=${name}>${name}</span>
-    </div>
-  </div>
-`;
 
 /** item click handler — updates selected state. */
 const handleItemClick = (e, item) => {
@@ -241,7 +166,7 @@ export default {
   args: {
     view: 'root',
     textStrings: { backToWorkspaces: 'Workspaces' },
-    '--kyn-account-switcher-max-height': '400px',
+    '--kyn-account-switcher-max-height': '441px',
   },
   decorators: [
     (story) => html`
@@ -319,9 +244,62 @@ export const FullAccountInfo = {
         '--kyn-account-switcher-max-height'
       ]}"
     >
-      ${renderFullAccountHeader(selectedItem?.name || '')}
-      ${renderWorkspaces(handleWorkspaceClick)}
-      ${renderItems(defaultItems, handleItemClick)}
+      <div slot="left" class="account-meta-info">
+        <div class="account-meta-info__header">
+          <span class="account-meta-info__checkmark"
+            >${unsafeSVG(checkmarkFilledIcon)}</span
+          >
+          <div class="account-meta-info__content">
+            <span
+              class="account-meta-info__name"
+              title=${selectedItem?.name || ''}
+              >${selectedItem?.name || ''}</span
+            >
+            <kyn-link
+              standalone
+              animationInactive
+              href="javascript:void(0)"
+              @on-click=${(e) =>
+                handleCopy(exampleData.accountDetails.accountId, e)}
+            >
+              ${exampleData.accountDetails.accountId}
+              <span slot="icon">${unsafeSVG(copyIcon)}</span>
+            </kyn-link>
+            <span class="account-meta-info__country"
+              >${exampleData.accountDetails.country}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      ${workspaces.map(
+        (ws) => html`
+          <kyn-account-switcher-menu-item
+            slot="left-list"
+            variant="workspace"
+            value=${ws.id}
+            name=${ws.name}
+            .count=${ws.count ?? null}
+            ?selected=${ws.selected}
+            @on-click=${(e) => handleWorkspaceClick(e, ws)}
+          ></kyn-account-switcher-menu-item>
+        `
+      )}
+      ${defaultItems.map(
+        (item) => html`
+          <kyn-account-switcher-menu-item
+            slot="right-list"
+            variant="item"
+            value=${item.id}
+            name=${item.name}
+            ?selected=${item.selected}
+            ?favorited=${item.favorited}
+            showFavorite
+            @on-click=${(e) => handleItemClick(e, item)}
+            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
+          ></kyn-account-switcher-menu-item>
+        `
+      )}
     </kyn-account-switcher>
   `,
 };
@@ -335,9 +313,47 @@ export const SimpleAccountInfo = {
         '--kyn-account-switcher-max-height'
       ]}"
     >
-      ${renderSimpleAccountHeader(selectedItem?.name || '')}
-      ${renderWorkspaces(handleWorkspaceClick)}
-      ${renderItems(defaultItems, handleItemClick)}
+      <div slot="left" class="account-meta-info">
+        <div class="account-meta-info__header">
+          <span class="account-meta-info__checkmark"
+            >${unsafeSVG(checkmarkFilledIcon)}</span
+          >
+          <span
+            class="account-meta-info__name"
+            title=${selectedItem?.name || ''}
+            >${selectedItem?.name || ''}</span
+          >
+        </div>
+      </div>
+
+      ${workspaces.map(
+        (ws) => html`
+          <kyn-account-switcher-menu-item
+            slot="left-list"
+            variant="workspace"
+            value=${ws.id}
+            name=${ws.name}
+            .count=${ws.count ?? null}
+            ?selected=${ws.selected}
+            @on-click=${(e) => handleWorkspaceClick(e, ws)}
+          ></kyn-account-switcher-menu-item>
+        `
+      )}
+      ${defaultItems.map(
+        (item) => html`
+          <kyn-account-switcher-menu-item
+            slot="right-list"
+            variant="item"
+            value=${item.id}
+            name=${item.name}
+            ?selected=${item.selected}
+            ?favorited=${item.favorited}
+            showFavorite
+            @on-click=${(e) => handleItemClick(e, item)}
+            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
+          ></kyn-account-switcher-menu-item>
+        `
+      )}
     </kyn-account-switcher>
   `,
 };
@@ -351,8 +367,48 @@ export const WithSearch = {
         '--kyn-account-switcher-max-height'
       ]}"
     >
-      ${renderFullAccountHeader(selectedItem?.name || '')}
-      ${renderWorkspaces(handleWorkspaceClick)}
+      <div slot="left" class="account-meta-info">
+        <div class="account-meta-info__header">
+          <span class="account-meta-info__checkmark"
+            >${unsafeSVG(checkmarkFilledIcon)}</span
+          >
+          <div class="account-meta-info__content">
+            <span
+              class="account-meta-info__name"
+              title=${selectedItem?.name || ''}
+              >${selectedItem?.name || ''}</span
+            >
+            <kyn-link
+              standalone
+              animationInactive
+              href="javascript:void(0)"
+              @on-click=${(e) =>
+                handleCopy(exampleData.accountDetails.accountId, e)}
+            >
+              ${exampleData.accountDetails.accountId}
+              <span slot="icon">${unsafeSVG(copyIcon)}</span>
+            </kyn-link>
+            <span class="account-meta-info__country"
+              >${exampleData.accountDetails.country}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      ${workspaces.map(
+        (ws) => html`
+          <kyn-account-switcher-menu-item
+            slot="left-list"
+            variant="workspace"
+            value=${ws.id}
+            name=${ws.name}
+            .count=${ws.count ?? null}
+            ?selected=${ws.selected}
+            @on-click=${(e) => handleWorkspaceClick(e, ws)}
+          ></kyn-account-switcher-menu-item>
+        `
+      )}
+
       <kyn-search
         slot="right"
         size="sm"
@@ -360,7 +416,22 @@ export const WithSearch = {
         class="account-switcher-search"
         @on-input=${(e) => action('on-search')(e.detail)}
       ></kyn-search>
-      ${renderItems(defaultItems, handleItemClick)}
+
+      ${defaultItems.map(
+        (item) => html`
+          <kyn-account-switcher-menu-item
+            slot="right-list"
+            variant="item"
+            value=${item.id}
+            name=${item.name}
+            ?selected=${item.selected}
+            ?favorited=${item.favorited}
+            showFavorite
+            @on-click=${(e) => handleItemClick(e, item)}
+            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
+          ></kyn-account-switcher-menu-item>
+        `
+      )}
     </kyn-account-switcher>
   `,
 };
@@ -476,9 +547,63 @@ export const UIImplementation = {
             class="ui-impl-switcher"
             style="--kyn-account-switcher-max-height: 441px;"
           >
-            ${renderFullAccountHeader(selectedItem?.name || '')}
-            ${renderWorkspaces(handleUIWorkspaceClick)}
-            ${renderItems(defaultItems, handleUIItemClick)}
+            <div slot="left" class="account-meta-info">
+              <div class="account-meta-info__header">
+                <span class="account-meta-info__checkmark"
+                  >${unsafeSVG(checkmarkFilledIcon)}</span
+                >
+                <div class="account-meta-info__content">
+                  <span
+                    class="account-meta-info__name"
+                    title=${selectedItem?.name || ''}
+                    >${selectedItem?.name || ''}</span
+                  >
+                  <kyn-link
+                    standalone
+                    animationInactive
+                    href="javascript:void(0)"
+                    @on-click=${(e) =>
+                      handleCopy(exampleData.accountDetails.accountId, e)}
+                  >
+                    ${exampleData.accountDetails.accountId}
+                    <span slot="icon">${unsafeSVG(copyIcon)}</span>
+                  </kyn-link>
+                  <span class="account-meta-info__country"
+                    >${exampleData.accountDetails.country}</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            ${workspaces.map(
+              (ws) => html`
+                <kyn-account-switcher-menu-item
+                  slot="left-list"
+                  variant="workspace"
+                  value=${ws.id}
+                  name=${ws.name}
+                  .count=${ws.count ?? null}
+                  ?selected=${ws.selected}
+                  @on-click=${(e) => handleUIWorkspaceClick(e, ws)}
+                ></kyn-account-switcher-menu-item>
+              `
+            )}
+            ${defaultItems.map(
+              (item) => html`
+                <kyn-account-switcher-menu-item
+                  slot="right-list"
+                  variant="item"
+                  value=${item.id}
+                  name=${item.name}
+                  ?selected=${item.selected}
+                  ?favorited=${item.favorited}
+                  showFavorite
+                  @on-click=${(e) => handleUIItemClick(e, item)}
+                  @on-favorite-change=${(e) =>
+                    action('on-favorite-change')(e.detail)}
+                ></kyn-account-switcher-menu-item>
+              `
+            )}
           </kyn-account-switcher>
         </kyn-header-flyout>
 

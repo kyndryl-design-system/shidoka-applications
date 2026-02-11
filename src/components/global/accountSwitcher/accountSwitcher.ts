@@ -1,11 +1,8 @@
 import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { deepmerge } from 'deepmerge-ts';
 
 import AccountSwitcherScss from './accountSwitcher.scss?inline';
-
-import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 import './accountSwitcherMenuItem';
 
@@ -21,6 +18,7 @@ const _defaultTextStrings = {
  * @slot left-list - List items for the left panel (rendered inside role="list").
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
+ * @cssprop [--kyn-account-switcher-max-height=none] - Maximum height of the switcher panel.
  */
 @customElement('kyn-account-switcher')
 export class AccountSwitcher extends LitElement {
@@ -81,13 +79,12 @@ export class AccountSwitcher extends LitElement {
           </div>
         </div>
         <div class="account-switcher__right">
-          <button
+          <kyn-account-switcher-menu-item
             class="account-switcher__back"
-            @click=${this._handleBackClick}
-          >
-            <span>${unsafeSVG(arrowLeftIcon)}</span>
-            ${this._textStrings.backToWorkspaces}
-          </button>
+            variant="back"
+            name=${this._textStrings.backToWorkspaces}
+            @on-click=${this._handleBackClick}
+          ></kyn-account-switcher-menu-item>
           <slot name="right"></slot>
           <div class="account-switcher__list" role="list">
             <slot name="right-list"></slot>

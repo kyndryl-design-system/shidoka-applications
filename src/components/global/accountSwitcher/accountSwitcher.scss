@@ -1,5 +1,4 @@
 @use '../../../common/scss/global.scss';
-@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
@@ -40,40 +39,9 @@
   overflow-y: auto;
 }
 
-/* Back breadcrumb — mobile only */
+/* Back button — mobile only, reuses menu-item variant="back" */
 .account-switcher__back {
-  @include typography.type-ui-03;
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0 8px 8px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  margin: 0;
-  font-weight: var(--kd-font-weight-medium);
-  text-transform: uppercase;
-  color: var(--kd-color-text-level-secondary);
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-  transition: color 150ms ease-out, outline-color 150ms ease-out;
-
-  span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-  }
-
-  &:hover {
-    color: var(--kd-color-text-level-primary);
-  }
-
-  &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
-  }
+  margin-bottom: 8px;
 
   @media (min-width: 52rem) {
     display: none;
@@ -156,6 +124,12 @@
 
     .account-switcher__right {
       transform: translateX(0);
+    }
+  }
+
+  @media (max-width: calc(42rem - 0.001px)) {
+    .account-switcher {
+      margin-top: 4px;
     }
   }
 }

@@ -64,6 +64,17 @@
     }
   }
 
+  &__back-icon {
+    display: flex;
+    align-items: center;
+    color: var(--kd-color-text-level-secondary);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
   // Workspace variant styles (left panel - 25ch max)
   &--workspace {
     .menu-item__name {
@@ -73,13 +84,18 @@
         max-width: none;
       }
     }
+  }
 
+  // Shared hover/active/selected for workspace + back variants
+  &--workspace,
+  &--back {
     &:hover:not(.menu-item--selected) {
       background: var(--kd-color-background-menu-state-hover);
 
       .menu-item__name,
       .menu-item__count,
-      .menu-item__chevron {
+      .menu-item__chevron,
+      .menu-item__back-icon {
         color: var(--kd-color-text-level-light);
       }
     }
@@ -89,7 +105,8 @@
 
       .menu-item__name,
       .menu-item__count,
-      .menu-item__chevron {
+      .menu-item__chevron,
+      .menu-item__back-icon {
         color: var(--kd-color-text-level-light);
       }
     }
@@ -99,7 +116,8 @@
 
       .menu-item__name,
       .menu-item__count,
-      .menu-item__chevron {
+      .menu-item__chevron,
+      .menu-item__back-icon {
         color: var(--kd-color-text-level-light);
       }
     }

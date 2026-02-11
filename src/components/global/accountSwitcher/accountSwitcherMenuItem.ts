@@ -5,6 +5,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 import AccountSwitcherMenuItemScss from './accountSwitcherMenuItem.scss?inline';
 
+import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
 import '../../reusable/iconSelector';
@@ -21,7 +22,7 @@ export class AccountSwitcherMenuItem extends LitElement {
 
   /** The variant of the menu item. */
   @property({ type: String })
-  accessor variant: 'workspace' | 'item' = 'item';
+  accessor variant: 'workspace' | 'item' | 'back' = 'item';
 
   /** The unique value/id of the item. */
   @property({ type: String })
@@ -49,25 +50,32 @@ export class AccountSwitcherMenuItem extends LitElement {
 
   override render() {
     const isWorkspace = this.variant === 'workspace';
+    const isBack = this.variant === 'back';
 
     const classes = {
       'menu-item': true,
       'menu-item--workspace': isWorkspace,
-      'menu-item--item': !isWorkspace,
+      'menu-item--back': isBack,
+      'menu-item--item': !isWorkspace && !isBack,
       'menu-item--selected': this.selected,
     };
 
     return html`
       <div
         class=${classMap(classes)}
-        role="listitem"
+        role=${isBack ? 'none' : 'listitem'}
         aria-current=${this.selected ? 'true' : 'false'}
       >
         <button class="menu-item__select" @click=${this._handleClick}>
+          ${isBack
+            ? html`<span class="menu-item__back-icon"
+                >${unsafeSVG(arrowLeftIcon)}</span
+              >`
+            : null}
           <span class="menu-item__name" title=${this.name}>${this.name}</span>
           ${isWorkspace ? this._renderWorkspaceContent() : null}
         </button>
-        ${!isWorkspace ? this._renderItemContent() : null}
+        ${!isWorkspace && !isBack ? this._renderItemContent() : null}
       </div>
     `;
   }
