@@ -85,10 +85,11 @@ export class TableHead extends LitElement {
     const sortedColumnKey = e.detail.sortKey;
 
     // unnamedSlotEls[0] is the kyn-tr element
-    const parentRow = this.unnamedSlotEls[0];
-
-    // Get all kyn-th children of that kyn-tr element
-    const allHeaders = Array.from(parentRow.querySelectorAll('kyn-th'));
+    const allHeaders: Array<any> = [];
+    for (const row of this.unnamedSlotEls) {
+      const headers = Array.from(row.querySelectorAll('kyn-th'));
+      allHeaders.push(...headers);
+    }
 
     for (const header of allHeaders) {
       if (header.sortKey !== sortedColumnKey) {

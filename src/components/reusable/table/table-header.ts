@@ -292,6 +292,189 @@ export class TableHeader extends LitElement {
     this.headerLabel = nonWhitespaceNodes[0]?.textContent || '';
   }
 
+  /**
+   * The group label text when this header is inside a kyn-th-group.
+   * Set automatically by the parent kyn-th-group component.
+   * @ignore
+   */
+  @state()
+  private accessor _groupLabel = '';
+
+  /**
+   * Whether this is the first child in a stacked header group.
+   * @ignore
+   */
+  @state()
+  private accessor _isGroupFirst = false;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    // Detect if this header is inside a stacked header group
+    if (this.closest('kyn-th-group')) {
+      this.setAttribute('stacked-child', '');
+    }
+
+    // Read any group attributes already set by kyn-th-group
+    this._syncGroupAttributes();
+
+    // Watch for attribute changes set by kyn-th-group
+    this._groupAttrObserver = new MutationObserver(() => {
+      this._syncGroupAttributes();
+    });
+    this._groupAttrObserver.observe(this, {
+      attributes: true,
+      attributeFilter: [
+        'data-group-label',
+        'stacked-child-first',
+        'stacked-child-last',
+        'stacked-child',
+      ],
+    });
+  }
+
+  /**
+   * Syncs internal state from group attributes and triggers measurement.
+   * @ignore
+   */
+  private _syncGroupAttributes() {
+    this._groupLabel = this.getAttribute('data-group-label') || '';
+    this._isGroupFirst = this.hasAttribute('stacked-child-first');
+
+    if (this._isGroupFirst && this._groupLabel) {
+      // Measure the spanning width after render
+      requestAnimationFrame(() => this._measureGroupSpanWidth());
+    }
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this._groupAttrObserver?.disconnect();
+    this._groupLabelResizeObserver?.disconnect();
+  }
+
+  /**
+   * MutationObserver for group attribute changes.
+   * @ignore
+   */
+  private _groupAttrObserver?: MutationObserver;
+
+  /**
+   * ResizeObserver for the group label bar to react to text wrapping.
+   * @ignore
+   */
+  private _groupLabelResizeObserver?: ResizeObserver;
+
+  /**
+   * Measures the total width of all kyn-th children in the same group
+   * and sets CSS custom properties so the first child's label can span
+   * across all sibling columns, centered.
+   * @ignore
+   */
+  private _measureGroupSpanWidth() {
+    const group = this.closest('kyn-th-group');
+    if (!group) return;
+
+    const siblings = Array.from(
+      group.querySelectorAll(':scope > kyn-th')
+    ) as HTMLElement[];
+    let totalWidth = 0;
+    siblings.forEach((el) => {
+      totalWidth += el.offsetWidth;
+    });
+
+    if (totalWidth > 0) {
+      group.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
+    }
+
+    // Measure the label bar height for consistent spacing across all siblings
+    const labelBar = this.shadowRoot?.querySelector(
+      '.group-label-bar'
+    ) as HTMLElement;
+    if (labelBar) {
+      const labelHeight = labelBar.offsetHeight;
+      // Set on parent group so all children inherit it
+      group.style.setProperty('--kyn-group-label-height', `${labelHeight}px`);
+    }
+
+    // Watch the host element (kyn-th cell) for size changes on viewport resize.
+    // When the cell resizes, re-measure the group width and label height.
+    if (!this._groupLabelResizeObserver) {
+      this._groupLabelResizeObserver = new ResizeObserver(() => {
+        this._updateGroupLabelDimensions();
+      });
+      // Observe the host element, not the label bar — the host resizes
+      // with the table while the absolute label bar has a fixed pixel width.
+      this._groupLabelResizeObserver.observe(this);
+    }
+  }
+
+  /**
+   * Called by ResizeObserver when the host cell resizes (on viewport change).
+   * Measures ALL group label heights in the same header row and applies
+   * the maximum height to all groups, ensuring uniform row height.
+   * Uses two rAF calls to ensure layout fully settles before measuring.
+   * @ignore
+   */
+  private _updateGroupLabelDimensions() {
+    const headerRow = this.closest('kyn-header-tr');
+    if (!headerRow) return;
+
+    // Find all groups in this header row
+    const allGroups = Array.from(
+      headerRow.querySelectorAll('kyn-th-group')
+    ) as HTMLElement[];
+
+    if (allGroups.length === 0) return;
+
+    // First rAF: Update widths for all groups
+    requestAnimationFrame(() => {
+      allGroups.forEach((grp) => {
+        const siblings = Array.from(
+          grp.querySelectorAll(':scope > kyn-th')
+        ) as HTMLElement[];
+        let totalWidth = 0;
+        siblings.forEach((el) => {
+          totalWidth += el.offsetWidth;
+        });
+        if (totalWidth > 0) {
+          grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
+        }
+      });
+
+      // Second rAF: Wait for width change to cause text wrapping,
+      // then measure heights from the FIRST child that actually has stacked-child-first attribute
+      requestAnimationFrame(() => {
+        let maxHeight = 0;
+
+        // Find the first-child of each group (marked with stacked-child-first)
+        allGroups.forEach((grp) => {
+          const firstChildElement = grp.querySelector(
+            ':scope > kyn-th[stacked-child-first]'
+          ) as HTMLElement;
+
+          if (firstChildElement && firstChildElement.shadowRoot) {
+            const labelBar = firstChildElement.shadowRoot.querySelector(
+              '.group-label-bar'
+            ) as HTMLElement;
+
+            if (labelBar) {
+              const labelHeight = labelBar.offsetHeight;
+              maxHeight = Math.max(maxHeight, labelHeight);
+            }
+          }
+        });
+
+        // Apply the maximum height to ALL groups in the row
+        // This ensures all column headers in the row have uniform height
+        if (maxHeight > 0) {
+          allGroups.forEach((grp) => {
+            grp.style.setProperty('--kyn-group-label-height', `${maxHeight}px`);
+          });
+        }
+      });
+    });
+  }
+
   /** Handle Resize Start
    * @ignore
    */
@@ -383,6 +566,9 @@ export class TableHeader extends LitElement {
     // Calculate table width = sum of all locked columns + new resized column width
     this._updateTableWidthFromSnapshot(newWidth);
 
+    // Update stacked header group widths during resize
+    this._updateStackedHeaderWidthsDuringResize();
+
     // Store the current resized column width for use in the debounced resize end handler
     this._resizedColumnWidth = newWidth;
   };
@@ -409,6 +595,37 @@ export class TableHeader extends LitElement {
       '--kyn-resize-handle-height',
       `${tableRect.height}px`
     );
+  }
+
+  /**
+   * Updates stacked header group label widths during column resize.
+   * Called during mousemove to keep stacked headers in sync with resizing columns.
+   * @ignore
+   */
+  private _updateStackedHeaderWidthsDuringResize() {
+    const headerRow = this.closest('kyn-header-tr');
+    if (!headerRow) return;
+
+    // Find all groups in this header row
+    const allGroups = Array.from(
+      headerRow.querySelectorAll('kyn-th-group')
+    ) as HTMLElement[];
+
+    if (allGroups.length === 0) return;
+
+    // Update widths for all groups based on current child widths
+    allGroups.forEach((grp) => {
+      const siblings = Array.from(
+        grp.querySelectorAll(':scope > kyn-th')
+      ) as HTMLElement[];
+      let totalWidth = 0;
+      siblings.forEach((el) => {
+        totalWidth += el.offsetWidth;
+      });
+      if (totalWidth > 0) {
+        grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
+      }
+    });
   }
 
   /** Handle Resize End
@@ -546,7 +763,17 @@ export class TableHeader extends LitElement {
         }
       : undefined;
 
+    // Show group-label-bar for ALL stacked children so the bar height
+    // is consistent. CSS controls visibility: first child shows text,
+    // other children hide text but keep the height.
+    const isStacked = this.hasAttribute('stacked-child');
+
     return html`
+      ${isStacked
+        ? html`<div class="group-label-bar">
+            ${this._groupLabel || html`&nbsp;`}
+          </div>`
+        : null}
       <div
         class="container"
         role=${ifDefined(role)}
