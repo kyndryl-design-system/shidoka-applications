@@ -38,6 +38,10 @@
   }
 }
 
+:host([data-resizing='true']) {
+  overflow: visible;
+}
+
 :host::before,
 :host::after {
   content: '';
@@ -79,6 +83,11 @@
   &--sorting-desc {
     transform: rotate(180deg);
   }
+}
+
+// Hide sort icon during resize
+:host([data-resizing='true']) .sort-icon {
+  visibility: hidden;
 }
 
 :host([sortable]) {
@@ -135,4 +144,29 @@
   padding: 8px;
   border-top: 1px solid var(--kd-color-border-variants-inverse);
   border-bottom: 1px solid var(--kd-color-border-level-tertiary);
+}
+
+// resize handle
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2.5px;
+  background: transparent;
+  cursor: col-resize;
+  height: var(--kyn-resize-handle-height, 100%);
+}
+
+.resize-handle:hover {
+  background: var(--kd-color-border-level-tertiary);
+}
+
+// Show resize handle background on hover of the entire kyn-th cell
+:host(:hover) .resize-handle {
+  background: var(--kd-color-border-level-tertiary);
+}
+
+// Show active background when data-resizing attribute is set
+:host([data-resizing='true']) .resize-handle {
+  background: var(--kd-color-border-variants-focus);
 }
