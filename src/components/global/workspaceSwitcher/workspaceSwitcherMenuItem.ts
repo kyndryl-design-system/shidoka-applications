@@ -97,6 +97,7 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
         class="menu-item__favorite"
         ?checked=${this.favorited}
         value=${this.value}
+        animateSelection
         onlyVisibleOnHover
         persistWhenChecked
         @on-change=${this._handleFavoriteChange}

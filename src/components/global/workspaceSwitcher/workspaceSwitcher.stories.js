@@ -56,7 +56,7 @@ const handleCopy = (value, e) => {
   }
 };
 
-/** item click handler — updates selected state. */
+/** item click handler — updates selected state and account meta info. */
 const handleItemClick = (e, item) => {
   action('on-item-select')({ item });
 
@@ -68,6 +68,12 @@ const handleItemClick = (e, item) => {
     .forEach((el) => {
       el.selected = el.value === item.id;
     });
+
+  const nameEl = switcher.querySelector('.account-meta-info__name');
+  if (nameEl) {
+    nameEl.textContent = item.name;
+    nameEl.title = item.name;
+  }
 };
 
 /**
@@ -242,13 +248,21 @@ export default {
             padding-right: 8px;
           }
 
+          .workspace-switcher-search {
+            padding: 4px 0 2px 0;
+          }
+        }
+
+        @media (min-width: 42rem) and (max-width: calc(52rem - 0.001px)) {
+          .account-meta-info__name {
+            max-width: 300px;
+          }
+        }
+
+        @media (max-width: calc(42rem - 0.001px)) {
           .account-meta-info__name {
             max-width: none;
             white-space: normal;
-          }
-
-          .workspace-switcher-search {
-            padding: 4px 0 2px 0;
           }
         }
       </style>
@@ -264,9 +278,6 @@ export const FullWorkspaceInfo = {
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
-      style="--kyn-workspace-switcher-max-height: ${args[
-        '--kyn-workspace-switcher-max-height'
-      ]}"
     >
       <div slot="left" class="account-meta-info">
         <div class="account-meta-info__header">
@@ -335,9 +346,6 @@ export const SimpleWorkspaceInfo = {
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
-      style="--kyn-workspace-switcher-max-height: ${args[
-        '--kyn-workspace-switcher-max-height'
-      ]}"
     >
       <div slot="left" class="account-meta-info">
         <div class="account-meta-info__header">
@@ -391,9 +399,6 @@ export const WithSearch = {
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
-      style="--kyn-workspace-switcher-max-height: ${args[
-        '--kyn-workspace-switcher-max-height'
-      ]}"
     >
       <div slot="left" class="account-meta-info">
         <div class="account-meta-info__header">

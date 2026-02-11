@@ -9,14 +9,13 @@
   display: flex;
   position: relative;
   width: 100%;
-  margin: -8px -12px;
   max-height: var(--kyn-workspace-switcher-max-height, none);
   background: var(--kd-color-background-container-default);
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Left panel — only in-flow child, drives the container height */
+/* Left panel — drives the container height */
 .workspace-switcher__left {
   display: flex;
   flex-direction: column;
@@ -144,6 +143,31 @@
 
     .workspace-switcher__right {
       transform: translateX(0);
+    }
+  }
+
+  @media (min-width: 52rem) {
+    .workspace-switcher {
+      margin: -8px -12px;
+    }
+  }
+
+  /* 42rem–52rem: flyout is a dropdown (no concrete height from parent).
+     Keep left pane in-flow so it drives container height automatically,
+     while right pane stays absolute and fills the container. */
+  @media (min-width: 42rem) {
+    :host {
+      height: auto;
+    }
+
+    .workspace-switcher {
+      height: auto;
+    }
+
+    .workspace-switcher__left {
+      position: relative;
+      inset: auto;
+      height: auto;
     }
   }
 
