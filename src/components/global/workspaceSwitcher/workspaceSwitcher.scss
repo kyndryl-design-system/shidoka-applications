@@ -40,7 +40,7 @@
   bottom: 0;
   right: 0;
   left: 275px;
-  padding: 12px 8px 0 12px;
+  padding: 12px 8px 12px 12px;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -90,16 +90,8 @@
 
 /* ===== Mobile drill-down ===== */
 @media (max-width: calc(52rem - 0.001px)) {
-  :host {
-    width: 100%;
-    overflow: hidden;
-  }
-
   .workspace-switcher {
     display: block;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
   }
 
   /* Both panels: full-width with slide transition */
@@ -107,22 +99,18 @@
   .workspace-switcher__right {
     width: 100%;
     transition: transform 200ms ease-out;
-    box-sizing: border-box;
   }
 
   /* Left pane stays in-flow to drive container height */
   .workspace-switcher__left {
     border-radius: 0;
-    padding: 12px;
     overflow-y: auto;
   }
 
-  /* Right pane absolute, fills container, scrolls independently */
+  /* Right pane fills container height, scrolls independently */
   .workspace-switcher__right {
-    position: absolute;
     inset: 0;
     padding: 12px;
-    overflow-y: auto;
   }
 
   /* Root view: left visible, right off-screen right */

@@ -132,37 +132,6 @@ export default {
     },
   },
   argTypes: {
-    view: {
-      options: ['root', 'detail'],
-      control: { type: 'select' },
-      description: 'Mobile drill-down view state.',
-      table: { defaultValue: { summary: 'root' } },
-    },
-    hideCurrentTitle: {
-      control: { type: 'boolean' },
-      description: 'Hides the "CURRENT" heading above the account info.',
-      table: { defaultValue: { summary: 'false' } },
-    },
-    hideWorkspacesTitle: {
-      control: { type: 'boolean' },
-      description:
-        'Hides the "WORKSPACES" heading above the workspace list. Use for accounts-only customers.',
-      table: { defaultValue: { summary: 'false' } },
-    },
-    textStrings: {
-      control: { type: 'object' },
-      description:
-        'Text string overrides. Keys: currentTitle, workspacesTitle, backToWorkspaces.',
-      table: {
-        defaultValue: {
-          summary: JSON.stringify({
-            currentTitle: 'CURRENT',
-            workspacesTitle: 'WORKSPACES',
-            backToWorkspaces: 'Workspaces',
-          }),
-        },
-      },
-    },
     '--kyn-workspace-switcher-max-height': {
       name: '--kyn-workspace-switcher-max-height',
       control: { type: 'text' },
@@ -186,7 +155,6 @@ export default {
     },
   },
   args: {
-    view: 'root',
     hideCurrentTitle: false,
     hideWorkspacesTitle: false,
     textStrings: {
@@ -274,7 +242,6 @@ export default {
 export const FullWorkspaceInfo = {
   render: (args) => html`
     <kyn-workspace-switcher
-      .view=${args.view}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -340,9 +307,11 @@ export const FullWorkspaceInfo = {
 };
 
 export const SimpleWorkspaceInfo = {
+  args: {
+    hideWorkspacesTitle: true,
+  },
   render: (args) => html`
     <kyn-workspace-switcher
-      .view=${args.view}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -369,6 +338,7 @@ export const SimpleWorkspaceInfo = {
             name=${ws.name}
             .count=${ws.count ?? null}
             ?selected=${ws.selected}
+            hideWorkspacesTitle
             @on-click=${(e) => handleWorkspaceClick(e, ws)}
           ></kyn-workspace-switcher-menu-item>
         `
@@ -395,7 +365,6 @@ export const SimpleWorkspaceInfo = {
 export const WithSearch = {
   render: (args) => html`
     <kyn-workspace-switcher
-      .view=${args.view}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -539,7 +508,7 @@ export const UIImplementation = {
         </div>
       `,
   ],
-  render: () => html`
+  render: (args) => html`
     <kyn-header rootUrl="/" appTitle="Bridge">
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
@@ -576,7 +545,11 @@ export const UIImplementation = {
             <span class="account-chevron">${unsafeSVG(chevronDownIcon)}</span>
           </span>
 
-          <kyn-workspace-switcher class="ui-impl-switcher">
+          <kyn-workspace-switcher
+            class="ui-impl-switcher"
+            ?hideCurrentTitle=${args.hideCurrentTitle}
+            ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
+          >
             <div slot="left" class="account-meta-info">
               <div class="account-meta-info__header">
                 <span class="account-meta-info__checkmark"

@@ -30,7 +30,9 @@ export class WorkspaceSwitcher extends LitElement {
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
 
-  /** Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel. */
+  /** Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel.
+   * @internal
+   */
   @property({ type: String, reflect: true })
   accessor view: 'root' | 'detail' = 'root';
 
