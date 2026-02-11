@@ -16,6 +16,7 @@ import arrowUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import styles from './table-header.scss?inline';
 
 import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
+import { debounce } from '../../..';
 
 /**
  * `kyn-th` Web Component.
@@ -24,6 +25,7 @@ import { SORT_DIRECTION, TABLE_CELL_ALIGN } from './defs';
  * Provides sorting functionality when enabled and allows alignment customization.
  *
  * @fires on-sort-changed - Dispatched when the sort direction is changed. `detail: {sortDirection: string, sortKey: string } `
+ * @fires on-column-resize - Dispatched when the column is resized. `detail: { columnIndex: number, newWidth: string }`
  * @slot unnamed - The content slot for adding header text or content.
  * @slot column-filter - slot for column filter.
  */
@@ -136,10 +138,75 @@ export class TableHeader extends LitElement {
   accessor minWidth = '';
 
   /**
+   * Enables resizing for this column.
+   * When true, a resize handle appears on the right edge of the column.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor resizable = false;
+
+  /** Assistive resize handle text for screen readers. */
+  @property({ type: String })
+  accessor assistiveResizeText = 'Column resize';
+
+  /**
+   * Sets a resize minimum width for the cell(supports 'px'.e.g., '150px');
+   */
+  @property({ type: String })
+  accessor resizeMinWidth = '0px';
+
+  /**
+   * Sets a resize maximum width for the cell (supports 'px'e.g., '150px');
+   */
+  @property({ type: String })
+  accessor resizeMaxWidth = '';
+
+  /**
    * @ignore
    */
   @queryAssignedNodes({ flatten: true })
   accessor listItems!: Array<Node>;
+
+  /**
+   * Indicates whether the column is currently being resized. Used to manage state during the resize operation.
+   * @internal
+   */
+  @state()
+  private accessor _isResizing = false;
+
+  /**
+   * Table height for extending resize handle during drag
+   * @ignore
+   */
+  @state()
+  private accessor _tableHeightDuringResize = 0;
+
+  /**
+   * The initial X-coordinate of the mouse when the resize operation starts. Used to calculate the change in width during resizing.
+   * @ignore
+   */
+  @state()
+  private accessor _resizeStartX = 0;
+
+  /**
+   * The initial width of the column when the resize operation starts. Used as a reference point to calculate the new width during resizing.
+   * @ignore
+   */
+  @state()
+  private accessor _resizeStartWidth = 0;
+
+  /**
+   * For keeping track of the initial widths of all columns before resizing starts.
+   * @ignore
+   */
+  @state()
+  private accessor _columnWidthsSnapshot: Map<number, number> = new Map();
+
+  /**
+   * Stores the current resized column width during drag
+   * @ignore
+   */
+  @state()
+  private accessor _resizedColumnWidth = 0;
 
   /**
    * Resets the sorting direction of the component to its default state.
@@ -225,6 +292,224 @@ export class TableHeader extends LitElement {
     this.headerLabel = nonWhitespaceNodes[0]?.textContent || '';
   }
 
+  /** Handle Resize Start
+   * @ignore
+   */
+  private _handleResizeStart = (e: MouseEvent) => {
+    if (!this.resizable) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    this._isResizing = true;
+    this._resizeStartX = e.clientX;
+    this._resizeStartWidth = this.getBoundingClientRect().width;
+
+    // Mark as resizing (hides sort icon, locks handle position)
+    this.setAttribute('data-resizing', 'true');
+
+    const table = this.closest('kyn-table') as any;
+    if (table) {
+      // Store table height to extend resize handle
+      this._handleResizeHandleHeight(table);
+
+      //  Lock ALL columns to their exact current widths - this freezes the layout completely
+      this._lockAllColumnsExactly();
+
+      // Force reflow to apply the lock immediately - prevents jump on first mousemove
+      void this.offsetWidth;
+    }
+
+    // Add event listeners, when resize starts
+    document.addEventListener('mousemove', this._handleResizeMove);
+    document.addEventListener('mouseup', this._handleResizeEnd);
+  };
+
+  /** Handle Resize Move
+   * @internal
+   */
+  private _handleResizeMove = (e: MouseEvent) => {
+    if (!this._isResizing) return;
+
+    e.preventDefault();
+
+    // Check if cursor is still within table bounds
+    const table = this.closest('kyn-table') as any;
+    if (table) {
+      const tableRect = table.getBoundingClientRect();
+      const resizingColumnIndex = this._getColumnIndex();
+      const headerRow = table.querySelector('kyn-header-tr');
+      const columns = headerRow
+        ? Array.from(headerRow.querySelectorAll('kyn-th'))
+        : [];
+      const isLastColumn = resizingColumnIndex === columns.length - 1;
+
+      // If cursor moved outside table bounds, stop resize
+      // Exception: Allow last column to expand right beyond table bounds
+      if (
+        e.clientX < tableRect.left ||
+        (e.clientX > tableRect.right && !isLastColumn) ||
+        e.clientY < tableRect.top ||
+        e.clientY > tableRect.bottom
+      ) {
+        // End resize operation
+        this._handleResizeEnd(e);
+        return;
+      }
+    }
+
+    const deltaX = e.clientX - this._resizeStartX;
+    let newWidth = this._resizeStartWidth + deltaX;
+
+    // Parse constraint values - minWidth takes precedence over resizeMinWidth
+    const minWidthValue = this.minWidth
+      ? this._parseConstraintValue(this.minWidth)
+      : this._parseConstraintValue(this.resizeMinWidth);
+    const maxWidthValue = this.maxWidth
+      ? this._parseConstraintValue(this.maxWidth)
+      : this._parseConstraintValue(this.resizeMaxWidth) || Infinity;
+
+    // Apply constraints
+    newWidth = Math.max(minWidthValue, Math.min(newWidth, maxWidthValue));
+
+    // Update resize handle height as table height changes during drag
+    if (table) {
+      this._handleResizeHandleHeight(table);
+    }
+
+    // Apply width ONLY to the resized column - nothing else changes
+    this._applyWidthToAllCells(newWidth);
+
+    // Calculate table width = sum of all locked columns + new resized column width
+    this._updateTableWidthFromSnapshot(newWidth);
+
+    // Store the current resized column width for use in the debounced resize end handler
+    this._resizedColumnWidth = newWidth;
+  };
+
+  /** @internal */
+  private _debounceResize = debounce(() => {
+    // Dispatch event with new column width
+    this.dispatchEvent(
+      new CustomEvent('on-column-resize', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          columnIndex: this._getColumnIndex(),
+          newWidth: `${this._resizedColumnWidth.toFixed(2)}px`,
+        },
+      })
+    );
+  });
+
+  private _handleResizeHandleHeight(table: any) {
+    const tableRect = table.getBoundingClientRect();
+    this._tableHeightDuringResize = tableRect.height;
+    this.style.setProperty(
+      '--kyn-resize-handle-height',
+      `${tableRect.height}px`
+    );
+  }
+
+  /** Handle Resize End
+   * @internal
+   */
+  private _handleResizeEnd = (e: MouseEvent) => {
+    if (!this._isResizing) return;
+
+    e.preventDefault();
+    this._isResizing = false;
+    this._tableHeightDuringResize = 0;
+    this.style.removeProperty('--kyn-resize-handle-height');
+
+    this._debounceResize(e);
+
+    // Remove event listeners, when resize ends
+    document.removeEventListener('mousemove', this._handleResizeMove);
+    document.removeEventListener('mouseup', this._handleResizeEnd);
+
+    // Remove resizing state (shows sort icon again)
+    this.removeAttribute('data-resizing');
+  };
+
+  /**
+   * Apply width to all header column cells based on the resized width.
+   * @ignore
+   */
+  private _applyWidthToAllCells = (width: number) => {
+    const widthStr = `${width}px`;
+
+    // Apply width to this header cell only - body cells have their own styles
+    this.style.width = widthStr;
+    this.style.minWidth = widthStr;
+    this.style.maxWidth = widthStr;
+  };
+
+  /**
+   * Utility function to parse constraint values (min/max width) from string to number.
+   * @ignore
+   */
+  private _parseConstraintValue = (value: string | number): number => {
+    if (typeof value === 'number') return value;
+    const numValue = parseFloat(value);
+    return numValue;
+  };
+
+  /**
+   * Get the index of the current column when resize.
+   * @ignore
+   */
+  private _getColumnIndex = (): number => {
+    const parent = this.closest('kyn-header-tr');
+    if (!parent) return -1;
+    return Array.from(parent.querySelectorAll('kyn-th')).indexOf(this);
+  };
+
+  /**
+   * Lock every column to its exact current width to prevent any layout shifts during resizing.
+   * @ignore
+   */
+  private _lockAllColumnsExactly = () => {
+    const table = this.closest('kyn-table') as any;
+    if (!table) return;
+
+    const headerRow = table.querySelector('kyn-header-tr');
+    if (!headerRow) return;
+
+    const columns = Array.from(headerRow.querySelectorAll('kyn-th'));
+
+    // Lock EVERY column to exact pixel width to prevent layout shifts
+    columns.forEach((col, index) => {
+      const width = (col as HTMLElement).getBoundingClientRect().width;
+
+      // Store the width for later calculation
+      this._columnWidthsSnapshot.set(index, width);
+
+      // Apply the lock immediately to prevent any layout shifts
+      (col as any).style.width = `${width}px`;
+      (col as any).style.minWidth = `${width}px`;
+      (col as any).style.maxWidth = `${width}px`;
+    });
+  };
+
+  /**
+   *
+   * @ignore
+   */
+  private _updateTableWidthFromSnapshot = (resizedColumnWidth: number) => {
+    const table = this.closest('kyn-table') as any;
+    if (!table) return;
+
+    const resizingColumnIndex = this._getColumnIndex();
+
+    // To updated table component width
+    table.updateTableWidthFromResize(
+      this._columnWidthsSnapshot,
+      resizingColumnIndex,
+      resizedColumnWidth
+    );
+  };
+
   override render() {
     const iconClasses = {
       'sort-icon': true,
@@ -288,6 +573,16 @@ export class TableHeader extends LitElement {
           ${this.assistiveText}
         </div>
       </div>
+      ${this.resizable
+        ? html`<div
+            class="resize-handle"
+            @mousedown=${this._handleResizeStart}
+            role="separator"
+            title=${this.assistiveResizeText}
+            aria-label=${this.assistiveResizeText}
+            aria-orientation="vertical"
+          ></div>`
+        : null}
       <slot name="column-filter"> </slot>
     `;
   }

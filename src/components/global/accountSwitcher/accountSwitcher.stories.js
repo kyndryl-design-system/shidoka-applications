@@ -78,35 +78,18 @@ const renderItems = (items, onItemClick) => html`
 
 /** Account header with full metadata (name, account ID, country). */
 const renderFullAccountHeader = (name) => html`
-  <div
-    slot="left"
-    style="
-      display: flex; flex-direction: column; gap: 2px;
-      padding-bottom: 12px; margin: 0 auto 12px;
-      border-bottom: 1px solid var(--kd-color-border-variants-light);
-      width: 100%; box-sizing: border-box;
-    "
-  >
-    <div
-      style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px;"
-    >
-      <span
-        style="display: flex; align-items: center; margin-top: 3px; color: var(--kd-color-badge-heavy-background-success);"
+  <div slot="left" class="account-meta-info">
+    <div class="account-meta-info__header">
+      <span class="account-meta-info__checkmark"
         >${unsafeSVG(checkmarkFilledIcon)}</span
       >
-      <div style="display: flex; flex-direction: column;">
-        <span
-          style="
-            max-width: 200px; overflow: hidden; text-overflow: ellipsis;
-            white-space: nowrap; font-weight: 500; color: var(--kd-color-text-level-primary);
-          "
-          >${name}</span
-        >
+      <div class="account-meta-info__content">
+        <span class="account-meta-info__name">${name}</span>
         <kyn-link standalone animationInactive href="javascript:void(0)">
           ${exampleData.accountDetails.accountId}
           <span slot="icon">${unsafeSVG(copyIcon)}</span>
         </kyn-link>
-        <span style="color: var(--kd-color-text-level-primary);"
+        <span class="account-meta-info__country"
           >${exampleData.accountDetails.country}</span
         >
       </div>
@@ -116,29 +99,12 @@ const renderFullAccountHeader = (name) => html`
 
 /** Account header with just the name. */
 const renderSimpleAccountHeader = (name) => html`
-  <div
-    slot="left"
-    style="
-      display: flex; flex-direction: column; gap: 2px;
-      padding-bottom: 12px; margin: 0 auto 12px;
-      border-bottom: 1px solid var(--kd-color-border-variants-light);
-      width: 100%; box-sizing: border-box;
-    "
-  >
-    <div
-      style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px;"
-    >
-      <span
-        style="display: flex; align-items: center; margin-top: 3px; color: var(--kd-color-badge-heavy-background-success);"
+  <div slot="left" class="account-meta-info">
+    <div class="account-meta-info__header">
+      <span class="account-meta-info__checkmark"
         >${unsafeSVG(checkmarkFilledIcon)}</span
       >
-      <span
-        style="
-          max-width: 200px; overflow: hidden; text-overflow: ellipsis;
-          white-space: nowrap; color: var(--kd-color-text-level-primary);
-        "
-        >${name}</span
-      >
+      <span class="account-meta-info__name">${name}</span>
     </div>
   </div>
 `;
@@ -175,7 +141,7 @@ const handleWorkspaceClick = (e, ws) => {
   // Append new items
   newItems.forEach((item) => {
     const el = document.createElement('kyn-account-switcher-menu-item');
-    el.slot = 'items';
+    el.slot = 'right-list';
     el.variant = 'item';
     el.value = item.id;
     el.name = item.name;
@@ -218,13 +184,90 @@ export default {
       url: '',
     },
   },
+  decorators: [
+    (story) => html`
+      <style>
+        .account-meta-info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          padding-bottom: 12px;
+          margin: 0 auto 12px;
+          border-bottom: 1px solid var(--kd-color-border-variants-light);
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .account-meta-info__header {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          font-size: 14px;
+        }
+
+        .account-meta-info__checkmark {
+          display: flex;
+          align-items: center;
+          flex-shrink: 0;
+          margin-top: 3px;
+          color: var(--kd-color-badge-heavy-background-success);
+        }
+
+        .account-meta-info__content {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .account-meta-info__name {
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-weight: 500;
+          color: var(--kd-color-text-level-primary);
+        }
+
+        .account-meta-info__country {
+          color: var(--kd-color-text-level-primary);
+        }
+
+        .account-name {
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .account-chevron {
+          display: flex;
+          transition: transform 0.2s;
+        }
+
+        @media (max-width: calc(42rem - 0.001px)) {
+          .account-meta-info {
+            padding-right: 8px;
+          }
+
+          .account-meta-info__name {
+            max-width: none;
+            white-space: normal;
+          }
+
+          .account-chevron {
+            display: none;
+          }
+        }
+      </style>
+      ${story()}
+    `,
+  ],
 };
 
 // --- Stories ---
 
 export const FullAccountInfo = {
   render: () => html`
-    <kyn-account-switcher style="--kyn-account-switcher-max-height: 450px">
+    <kyn-account-switcher style="--kyn-account-switcher-max-height: 438px">
       ${renderFullAccountHeader(selectedItem?.name || '')}
       ${renderWorkspaces(handleWorkspaceClick)}
       ${renderItems(defaultItems, handleItemClick)}
@@ -234,7 +277,7 @@ export const FullAccountInfo = {
 
 export const SimpleAccountInfo = {
   render: () => html`
-    <kyn-account-switcher style="--kyn-account-switcher-max-height: 450px">
+    <kyn-account-switcher style="--kyn-account-switcher-max-height: 438px">
       ${renderSimpleAccountHeader(selectedItem?.name || '')}
       ${renderWorkspaces(handleWorkspaceClick)}
       ${renderItems(defaultItems, handleItemClick)}
@@ -244,7 +287,7 @@ export const SimpleAccountInfo = {
 
 export const WithSearch = {
   render: () => html`
-    <kyn-account-switcher style="--kyn-account-switcher-max-height: 450px">
+    <kyn-account-switcher style="--kyn-account-switcher-max-height: 438px">
       ${renderFullAccountHeader(selectedItem?.name || '')}
       ${renderWorkspaces(handleWorkspaceClick)}
       <kyn-search
@@ -270,7 +313,7 @@ const handleUIItemClick = (e, item) => {
   const flyout = e.target.closest('kyn-header-flyout');
   if (flyout) {
     const nameEl = flyout.querySelector('.account-name');
-    if (nameEl) nameEl.textContent = truncateName(item.name);
+    if (nameEl) nameEl.textContent = item.name;
     flyout.label = truncateName(item.name);
   }
 };
@@ -299,7 +342,7 @@ const handleUIWorkspaceClick = (e, ws) => {
 
   newItems.forEach((item) => {
     const el = document.createElement('kyn-account-switcher-menu-item');
-    el.slot = 'items';
+    el.slot = 'right-list';
     el.variant = 'item';
     el.value = item.id;
     el.name = item.name;
@@ -356,20 +399,15 @@ export const UIImplementation = {
         <kyn-header-flyout
           label=${truncateName(selectedItem?.name || '')}
           hideMenuLabel
+          hideButtonLabel
           @on-flyout-toggle=${handleFlyoutToggle}
         >
           <span
             slot="button"
             style="display: flex; align-items: center; gap: 8px; font-size: 14px;"
           >
-            <span class="account-name"
-              >${truncateName(selectedItem?.name || '')}</span
-            >
-            <span
-              class="account-chevron"
-              style="display: flex; transition: transform 0.2s;"
-              >${unsafeSVG(chevronDownIcon)}</span
-            >
+            <span class="account-name">${selectedItem?.name || ''}</span>
+            <span class="account-chevron">${unsafeSVG(chevronDownIcon)}</span>
           </span>
 
           <kyn-account-switcher

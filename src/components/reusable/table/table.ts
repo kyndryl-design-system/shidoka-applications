@@ -345,6 +345,31 @@ export class Table extends LitElement {
     this._tableHeaderRow = this.querySelector('kyn-header-tr');
   }
 
+  /**
+   * Updates table width during column resize based on snapshot widths.
+   * Called from kyn-th during drag to calculate and apply table width.
+   * @param {Map<number, number>} columnWidthsSnapshot - Map of column index to width
+   * @param {number} resizingColumnIndex - Index of the column being resized
+   * @param {number} resizedColumnWidth - New width of the resizing column
+   * @internal
+   */
+  public updateTableWidthFromResize = (
+    columnWidthsSnapshot: Map<number, number>,
+    resizingColumnIndex: number,
+    resizedColumnWidth: number
+  ) => {
+    let totalWidth = 0;
+
+    columnWidthsSnapshot.forEach((width, index) => {
+      if (index === resizingColumnIndex) {
+        totalWidth += resizedColumnWidth;
+      } else {
+        totalWidth += width;
+      }
+    });
+    this.style.width = `${totalWidth.toFixed(2)}px`;
+  };
+
   override render() {
     return html` <slot></slot> `;
   }

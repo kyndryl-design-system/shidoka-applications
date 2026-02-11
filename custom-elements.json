@@ -1379,6 +1379,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -3333,69 +3396,6 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -24072,6 +24072,47 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "resizable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables resizing for this column.\nWhen true, a resize handle appears on the right edge of the column.",
+              "attribute": "resizable",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "assistiveResizeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Column resize'",
+              "description": "Assistive resize handle text for screen readers.",
+              "attribute": "assistiveResizeText"
+            },
+            {
+              "kind": "field",
+              "name": "resizeMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'0px'",
+              "description": "Sets a resize minimum width for the cell(supports 'px'.e.g., '150px');",
+              "attribute": "resizeMinWidth"
+            },
+            {
+              "kind": "field",
+              "name": "resizeMaxWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a resize maximum width for the cell (supports 'px'e.g., '150px');",
+              "attribute": "resizeMaxWidth"
+            },
+            {
               "kind": "method",
               "name": "resetSort",
               "description": "Resets the sorting direction of the component to its default state.\nUseful for initializing or clearing any applied sorting on the element."
@@ -24085,6 +24126,19 @@
             {
               "kind": "method",
               "name": "getTextContent"
+            },
+            {
+              "kind": "method",
+              "name": "_handleResizeHandleHeight",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "table",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
             }
           ],
           "events": [
@@ -24094,6 +24148,10 @@
                 "text": "CustomEvent"
               },
               "description": "Dispatched when the sort direction is changed. `detail: {sortDirection: string, sortKey: string } `"
+            },
+            {
+              "description": "Dispatched when the column is resized. `detail: { columnIndex: number, newWidth: string }`",
+              "name": "on-column-resize"
             }
           ],
           "attributes": [
@@ -24184,6 +24242,42 @@
               "default": "''",
               "description": "Sets a minimum width for the cell;\nAccepts standard CSS width values (e.g., '150px', '50%').",
               "fieldName": "minWidth"
+            },
+            {
+              "name": "resizable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables resizing for this column.\nWhen true, a resize handle appears on the right edge of the column.",
+              "fieldName": "resizable"
+            },
+            {
+              "name": "assistiveResizeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Column resize'",
+              "description": "Assistive resize handle text for screen readers.",
+              "fieldName": "assistiveResizeText"
+            },
+            {
+              "name": "resizeMinWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "'0px'",
+              "description": "Sets a resize minimum width for the cell(supports 'px'.e.g., '150px');",
+              "fieldName": "resizeMinWidth"
+            },
+            {
+              "name": "resizeMaxWidth",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets a resize maximum width for the cell (supports 'px'e.g., '150px');",
+              "fieldName": "resizeMaxWidth"
             }
           ],
           "superclass": {
