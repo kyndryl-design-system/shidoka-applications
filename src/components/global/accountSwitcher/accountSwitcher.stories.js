@@ -403,6 +403,7 @@ export const UIImplementation = {
           label=${truncateName(selectedItem?.name || '')}
           hideMenuLabel
           hideButtonLabel
+          noPadding
           @on-flyout-toggle=${handleFlyoutToggle}
         >
           <span
