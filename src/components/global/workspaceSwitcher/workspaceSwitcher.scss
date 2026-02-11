@@ -92,36 +92,37 @@
 @media (max-width: calc(52rem - 0.001px)) {
   :host {
     width: 100%;
-    height: var(--kyn-workspace-switcher-max-height, 100%);
     overflow: hidden;
   }
 
   .workspace-switcher {
     display: block;
     width: 100%;
-    height: 100%;
     position: relative;
     overflow: hidden;
   }
 
+  /* Both panels: full-width with slide transition */
   .workspace-switcher__left,
   .workspace-switcher__right {
-    position: absolute;
-    inset: 0;
     width: 100%;
-    height: 100%;
     transition: transform 200ms ease-out;
     box-sizing: border-box;
   }
 
+  /* Left pane stays in-flow to drive container height */
   .workspace-switcher__left {
     border-radius: 0;
     padding: 12px;
     overflow-y: auto;
   }
 
+  /* Right pane absolute, fills container, scrolls independently */
   .workspace-switcher__right {
+    position: absolute;
+    inset: 0;
     padding: 12px;
+    overflow-y: auto;
   }
 
   /* Root view: left visible, right off-screen right */
@@ -143,31 +144,6 @@
 
     .workspace-switcher__right {
       transform: translateX(0);
-    }
-  }
-
-  @media (min-width: 52rem) {
-    .workspace-switcher {
-      margin: -8px -12px;
-    }
-  }
-
-  /* 42rem–52rem: flyout is a dropdown (no concrete height from parent).
-     Keep left pane in-flow so it drives container height automatically,
-     while right pane stays absolute and fills the container. */
-  @media (min-width: 42rem) {
-    :host {
-      height: auto;
-    }
-
-    .workspace-switcher {
-      height: auto;
-    }
-
-    .workspace-switcher__left {
-      position: relative;
-      inset: auto;
-      height: auto;
     }
   }
 
