@@ -2,27 +2,29 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { deepmerge } from 'deepmerge-ts';
 
-import AccountSwitcherScss from './accountSwitcher.scss?inline';
+import WorkspaceSwitcherScss from './workspaceSwitcher.scss?inline';
 
-import './accountSwitcherMenuItem';
+import './workspaceSwitcherMenuItem';
 
 const _defaultTextStrings = {
+  currentTitle: 'CURRENT',
+  workspacesTitle: 'WORKSPACES',
   backToWorkspaces: 'Workspaces',
 };
 
 /**
- * Account Switcher shell component providing two-panel layout with mobile drill-down.
+ * Workspace Switcher shell component providing two-panel layout with mobile drill-down.
  * Consumers compose content via named slots using sub-components
- * like `kyn-account-switcher-menu-item`.
- * @slot left - Non-list content for the left panel (e.g. account info header).
+ * like `kyn-workspace-switcher-menu-item`.
+ * @slot left - Non-list content for the left panel (e.g. workspace info header).
  * @slot left-list - List items for the left panel (rendered inside role="list").
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
- * @cssprop [--kyn-account-switcher-max-height=none] - Maximum height of the switcher panel.
+ * @cssprop [--kyn-workspace-switcher-max-height=none] - Maximum height of the switcher panel.
  */
-@customElement('kyn-account-switcher')
-export class AccountSwitcher extends LitElement {
-  static override styles = unsafeCSS(AccountSwitcherScss);
+@customElement('kyn-workspace-switcher')
+export class WorkspaceSwitcher extends LitElement {
+  static override styles = unsafeCSS(WorkspaceSwitcherScss);
 
   /** Text string customization. */
   @property({ type: Object })
@@ -31,6 +33,14 @@ export class AccountSwitcher extends LitElement {
   /** Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel. */
   @property({ type: String, reflect: true })
   accessor view: 'root' | 'detail' = 'root';
+
+  /** Hides the heading above the account meta info. */
+  @property({ type: Boolean, reflect: true })
+  accessor hideCurrentTitle = false;
+
+  /** Hides the heading above the lower left-hand side list. Example: suppress for accounts-only customers. */
+  @property({ type: Boolean, reflect: true })
+  accessor hideWorkspacesTitle = false;
 
   /** Merged text strings.
    * @internal
@@ -71,22 +81,32 @@ export class AccountSwitcher extends LitElement {
 
   override render() {
     return html`
-      <div class="account-switcher">
-        <div class="account-switcher__left">
+      <div class="workspace-switcher">
+        <div class="workspace-switcher__left">
+          ${!this.hideCurrentTitle
+            ? html`<span class="workspace-switcher__title"
+                >${this._textStrings.currentTitle}</span
+              >`
+            : null}
           <slot name="left"></slot>
-          <div class="account-switcher__list" role="list">
+          ${!this.hideWorkspacesTitle
+            ? html`<span class="workspace-switcher__title"
+                >${this._textStrings.workspacesTitle}</span
+              >`
+            : null}
+          <div class="workspace-switcher__list" role="list">
             <slot name="left-list"></slot>
           </div>
         </div>
-        <div class="account-switcher__right">
-          <kyn-account-switcher-menu-item
-            class="account-switcher__back"
+        <div class="workspace-switcher__right">
+          <kyn-workspace-switcher-menu-item
+            class="workspace-switcher__back"
             variant="back"
             name=${this._textStrings.backToWorkspaces}
             @on-click=${this._handleBackClick}
-          ></kyn-account-switcher-menu-item>
+          ></kyn-workspace-switcher-menu-item>
           <slot name="right"></slot>
-          <div class="account-switcher__list" role="list">
+          <div class="workspace-switcher__list" role="list">
             <slot name="right-list"></slot>
           </div>
         </div>
@@ -101,6 +121,6 @@ export class AccountSwitcher extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-account-switcher': AccountSwitcher;
+    'kyn-workspace-switcher': WorkspaceSwitcher;
   }
 }

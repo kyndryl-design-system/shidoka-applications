@@ -427,343 +427,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/accountSwitcher/accountSwitcher.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Account Switcher shell component providing two-panel layout with mobile drill-down.\nConsumers compose content via named slots using sub-components\nlike `kyn-account-switcher-menu-item`.",
-          "name": "AccountSwitcher",
-          "slots": [
-            {
-              "description": "Non-list content for the left panel (e.g. account info header).",
-              "name": "left"
-            },
-            {
-              "description": "List items for the left panel (rendered inside role=\"list\").",
-              "name": "left-list"
-            },
-            {
-              "description": "Non-list content for the right panel (e.g. search).",
-              "name": "right"
-            },
-            {
-              "description": "List items for the right panel (rendered inside role=\"list\").",
-              "name": "right-list"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  backToWorkspaces: 'Workspaces',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "view",
-              "type": {
-                "text": "'root' | 'detail'"
-              },
-              "default": "'root'",
-              "description": "Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel.",
-              "attribute": "view",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "_handleBackClick",
-              "privacy": "private"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "view",
-              "type": {
-                "text": "'root' | 'detail'"
-              },
-              "default": "'root'",
-              "description": "Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel.",
-              "fieldName": "view"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-account-switcher",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AccountSwitcher",
-          "declaration": {
-            "name": "AccountSwitcher",
-            "module": "src/components/global/accountSwitcher/accountSwitcher.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-account-switcher",
-          "declaration": {
-            "name": "AccountSwitcher",
-            "module": "src/components/global/accountSwitcher/accountSwitcher.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/accountSwitcher/accountSwitcherMenuItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Account Switcher Menu Item component.\nUsed for both workspace items (left panel) and account items (right panel).",
-          "name": "AccountSwitcherMenuItem",
-          "members": [
-            {
-              "kind": "field",
-              "name": "variant",
-              "type": {
-                "text": "'workspace' | 'item'"
-              },
-              "default": "'item'",
-              "description": "The variant of the menu item.",
-              "attribute": "variant"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The unique value/id of the item.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The display name of the item.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "count",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "The count to display (workspace variant only).",
-              "attribute": "count"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is selected.",
-              "attribute": "selected"
-            },
-            {
-              "kind": "field",
-              "name": "favorited",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is favorited (item variant only).",
-              "attribute": "favorited"
-            },
-            {
-              "kind": "field",
-              "name": "showFavorite",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether to show the favorite icon selector (item variant only).",
-              "attribute": "showFavorite"
-            },
-            {
-              "kind": "method",
-              "name": "_renderWorkspaceContent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderItemContent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFavoriteChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-click",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when the item is clicked. `detail: { value: string }`"
-            },
-            {
-              "name": "on-favorite-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when favorite status changes. `detail: { value: string, favorited: boolean }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "variant",
-              "type": {
-                "text": "'workspace' | 'item'"
-              },
-              "default": "'item'",
-              "description": "The variant of the menu item.",
-              "fieldName": "variant"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The unique value/id of the item.",
-              "fieldName": "value"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The display name of the item.",
-              "fieldName": "name"
-            },
-            {
-              "name": "count",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "The count to display (workspace variant only).",
-              "fieldName": "count"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is selected.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "favorited",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is favorited (item variant only).",
-              "fieldName": "favorited"
-            },
-            {
-              "name": "showFavorite",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether to show the favorite icon selector (item variant only).",
-              "fieldName": "showFavorite"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-account-switcher-menu-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AccountSwitcherMenuItem",
-          "declaration": {
-            "name": "AccountSwitcherMenuItem",
-            "module": "src/components/global/accountSwitcher/accountSwitcherMenuItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-account-switcher-menu-item",
-          "declaration": {
-            "name": "AccountSwitcherMenuItem",
-            "module": "src/components/global/accountSwitcher/accountSwitcherMenuItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/accountSwitcher/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AccountSwitcher",
-          "declaration": {
-            "name": "AccountSwitcher",
-            "module": "./accountSwitcher"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "AccountSwitcherMenuItem",
-          "declaration": {
-            "name": "AccountSwitcherMenuItem",
-            "module": "./accountSwitcherMenuItem"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -2868,69 +2531,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/localNav/index.ts",
       "declarations": [],
       "exports": [
@@ -3415,6 +3015,453 @@
           "declaration": {
             "name": "LocalNavLink",
             "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/workspaceSwitcher/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WorkspaceSwitcher",
+          "declaration": {
+            "name": "WorkspaceSwitcher",
+            "module": "./workspaceSwitcher"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WorkspaceSwitcherMenuItem",
+          "declaration": {
+            "name": "WorkspaceSwitcherMenuItem",
+            "module": "./workspaceSwitcherMenuItem"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/workspaceSwitcher/workspaceSwitcher.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Workspace Switcher shell component providing two-panel layout with mobile drill-down.\nConsumers compose content via named slots using sub-components\nlike `kyn-workspace-switcher-menu-item`.",
+          "name": "WorkspaceSwitcher",
+          "cssProperties": [
+            {
+              "description": "Maximum height of the switcher panel.",
+              "name": "--kyn-workspace-switcher-max-height",
+              "default": "none"
+            }
+          ],
+          "slots": [
+            {
+              "description": "Non-list content for the left panel (e.g. workspace info header).",
+              "name": "left"
+            },
+            {
+              "description": "List items for the left panel (rendered inside role=\"list\").",
+              "name": "left-list"
+            },
+            {
+              "description": "Non-list content for the right panel (e.g. search).",
+              "name": "right"
+            },
+            {
+              "description": "List items for the right panel (rendered inside role=\"list\").",
+              "name": "right-list"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  currentTitle: 'CURRENT',\n  workspacesTitle: 'WORKSPACES',\n  backToWorkspaces: 'Workspaces',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "view",
+              "type": {
+                "text": "'root' | 'detail'"
+              },
+              "default": "'root'",
+              "description": "Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel.",
+              "attribute": "view",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideCurrentTitle",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the heading above the account meta info.",
+              "attribute": "hideCurrentTitle",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideWorkspacesTitle",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the heading above the lower left-hand side list. Example: suppress for accounts-only customers.",
+              "attribute": "hideWorkspacesTitle",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "_handleBackClick",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "view",
+              "type": {
+                "text": "'root' | 'detail'"
+              },
+              "default": "'root'",
+              "description": "Mobile drill-down view state. 'root' shows left panel, 'detail' shows right panel.",
+              "fieldName": "view"
+            },
+            {
+              "name": "hideCurrentTitle",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the heading above the account meta info.",
+              "fieldName": "hideCurrentTitle"
+            },
+            {
+              "name": "hideWorkspacesTitle",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the heading above the lower left-hand side list. Example: suppress for accounts-only customers.",
+              "fieldName": "hideWorkspacesTitle"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-workspace-switcher",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WorkspaceSwitcher",
+          "declaration": {
+            "name": "WorkspaceSwitcher",
+            "module": "src/components/global/workspaceSwitcher/workspaceSwitcher.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-workspace-switcher",
+          "declaration": {
+            "name": "WorkspaceSwitcher",
+            "module": "src/components/global/workspaceSwitcher/workspaceSwitcher.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Workspace Switcher Menu Item component.\nUsed for both workspace items (left panel) and account items (right panel).",
+          "name": "WorkspaceSwitcherMenuItem",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "'workspace' | 'item' | 'back'"
+              },
+              "default": "'item'",
+              "description": "The variant of the menu item.",
+              "attribute": "variant"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The unique value/id of the item.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The display name of the item.",
+              "attribute": "name"
+            },
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "The count to display (workspace variant only).",
+              "attribute": "count"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the item is selected.",
+              "attribute": "selected"
+            },
+            {
+              "kind": "field",
+              "name": "favorited",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the item is favorited (item variant only).",
+              "attribute": "favorited"
+            },
+            {
+              "kind": "field",
+              "name": "showFavorite",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the favorite icon selector (item variant only).",
+              "attribute": "showFavorite"
+            },
+            {
+              "kind": "method",
+              "name": "_renderWorkspaceContent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderItemContent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFavoriteChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-click",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when the item is clicked. `detail: { value: string }`"
+            },
+            {
+              "name": "on-favorite-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when favorite status changes. `detail: { value: string, favorited: boolean }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "'workspace' | 'item' | 'back'"
+              },
+              "default": "'item'",
+              "description": "The variant of the menu item.",
+              "fieldName": "variant"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The unique value/id of the item.",
+              "fieldName": "value"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The display name of the item.",
+              "fieldName": "name"
+            },
+            {
+              "name": "count",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "The count to display (workspace variant only).",
+              "fieldName": "count"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the item is selected.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "favorited",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the item is favorited (item variant only).",
+              "fieldName": "favorited"
+            },
+            {
+              "name": "showFavorite",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the favorite icon selector (item variant only).",
+              "fieldName": "showFavorite"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-workspace-switcher-menu-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "WorkspaceSwitcherMenuItem",
+          "declaration": {
+            "name": "WorkspaceSwitcherMenuItem",
+            "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-workspace-switcher-menu-item",
+          "declaration": {
+            "name": "WorkspaceSwitcherMenuItem",
+            "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]

@@ -6,7 +6,7 @@ import '../header';
 import '../../reusable/link';
 import '../../reusable/search';
 
-import exampleData from './example_account_switcher_data.json';
+import exampleData from './example_workspace_switcher_data.json';
 
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
@@ -42,7 +42,7 @@ const selectedItem = defaultItems.find((item) => item.selected);
 
 // --- Helpers ---
 
-/** copy to clipboard handler for the account ID link. */
+/** Copy to clipboard handler for the ID link. */
 const handleCopy = (value, e) => {
   e.detail.origEvent.preventDefault();
   navigator.clipboard.writeText(value);
@@ -60,11 +60,11 @@ const handleCopy = (value, e) => {
 const handleItemClick = (e, item) => {
   action('on-item-select')({ item });
 
-  const switcher = e.target.closest('kyn-account-switcher');
+  const switcher = e.target.closest('kyn-workspace-switcher');
   if (!switcher) return;
 
   switcher
-    .querySelectorAll('kyn-account-switcher-menu-item[slot="right-list"]')
+    .querySelectorAll('kyn-workspace-switcher-menu-item[slot="right-list"]')
     .forEach((el) => {
       el.selected = el.value === item.id;
     });
@@ -77,13 +77,13 @@ const handleItemClick = (e, item) => {
 const createWorkspaceClickHandler = (itemClickHandler) => (e, ws) => {
   action('on-workspace-select')({ workspace: ws });
 
-  const switcher = e.target.closest('kyn-account-switcher');
+  const switcher = e.target.closest('kyn-workspace-switcher');
   if (!switcher) return;
 
   switcher.view = 'detail';
 
   switcher
-    .querySelectorAll('kyn-account-switcher-menu-item[slot="left-list"]')
+    .querySelectorAll('kyn-workspace-switcher-menu-item[slot="left-list"]')
     .forEach((el) => {
       el.selected = el.value === ws.id;
     });
@@ -92,11 +92,11 @@ const createWorkspaceClickHandler = (itemClickHandler) => (e, ws) => {
     ws.id === 'global' ? allItems : exampleData.itemsByWorkspace[ws.id] || [];
 
   switcher
-    .querySelectorAll('kyn-account-switcher-menu-item[slot="right-list"]')
+    .querySelectorAll('kyn-workspace-switcher-menu-item[slot="right-list"]')
     .forEach((el) => el.remove());
 
   newItems.forEach((item) => {
-    const el = document.createElement('kyn-account-switcher-menu-item');
+    const el = document.createElement('kyn-workspace-switcher-menu-item');
     el.slot = 'right-list';
     el.variant = 'item';
     el.value = item.id;
@@ -114,10 +114,10 @@ const createWorkspaceClickHandler = (itemClickHandler) => (e, ws) => {
 const handleWorkspaceClick = createWorkspaceClickHandler(handleItemClick);
 
 export default {
-  title: 'Global Components/Account Switcher',
-  component: 'kyn-account-switcher',
+  title: 'Global Components/Workspace Switcher',
+  component: 'kyn-workspace-switcher',
   subcomponents: {
-    'kyn-account-switcher-menu-item': 'kyn-account-switcher-menu-item',
+    'kyn-workspace-switcher-menu-item': 'kyn-workspace-switcher-menu-item',
   },
   parameters: {
     design: {
@@ -132,17 +132,33 @@ export default {
       description: 'Mobile drill-down view state.',
       table: { defaultValue: { summary: 'root' } },
     },
+    hideCurrentTitle: {
+      control: { type: 'boolean' },
+      description: 'Hides the "CURRENT" heading above the account info.',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    hideWorkspacesTitle: {
+      control: { type: 'boolean' },
+      description:
+        'Hides the "WORKSPACES" heading above the workspace list. Use for accounts-only customers.',
+      table: { defaultValue: { summary: 'false' } },
+    },
     textStrings: {
       control: { type: 'object' },
-      description: 'Text string overrides. Keys: backToWorkspaces.',
+      description:
+        'Text string overrides. Keys: currentTitle, workspacesTitle, backToWorkspaces.',
       table: {
         defaultValue: {
-          summary: JSON.stringify({ backToWorkspaces: 'Workspaces' }),
+          summary: JSON.stringify({
+            currentTitle: 'CURRENT',
+            workspacesTitle: 'WORKSPACES',
+            backToWorkspaces: 'Workspaces',
+          }),
         },
       },
     },
-    '--kyn-account-switcher-max-height': {
-      name: '--kyn-account-switcher-max-height',
+    '--kyn-workspace-switcher-max-height': {
+      name: '--kyn-workspace-switcher-max-height',
       control: { type: 'text' },
       description: 'CSS custom property: max height of the switcher panel.',
       table: {
@@ -165,8 +181,14 @@ export default {
   },
   args: {
     view: 'root',
-    textStrings: { backToWorkspaces: 'Workspaces' },
-    '--kyn-account-switcher-max-height': '441px',
+    hideCurrentTitle: false,
+    hideWorkspacesTitle: false,
+    textStrings: {
+      currentTitle: 'CURRENT',
+      workspacesTitle: 'WORKSPACES',
+      backToWorkspaces: 'Workspaces',
+    },
+    '--kyn-workspace-switcher-max-height': 'none',
   },
   decorators: [
     (story) => html`
@@ -188,7 +210,7 @@ export default {
           display: flex;
           align-items: center;
           flex-shrink: 0;
-          margin-top: 3px;
+          margin-top: 4px;
           color: var(--kd-color-badge-heavy-background-success);
         }
 
@@ -210,7 +232,7 @@ export default {
           color: var(--kd-color-text-level-primary);
         }
 
-        .account-switcher-search {
+        .workspace-switcher-search {
           margin-bottom: 0;
           padding: 4px 8px 2px 0;
         }
@@ -225,7 +247,7 @@ export default {
             white-space: normal;
           }
 
-          .account-switcher-search {
+          .workspace-switcher-search {
             padding: 4px 0 2px 0;
           }
         }
@@ -235,13 +257,15 @@ export default {
   ],
 };
 
-export const FullAccountInfo = {
+export const FullWorkspaceInfo = {
   render: (args) => html`
-    <kyn-account-switcher
+    <kyn-workspace-switcher
       .view=${args.view}
       .textStrings=${args.textStrings}
-      style="--kyn-account-switcher-max-height: ${args[
-        '--kyn-account-switcher-max-height'
+      ?hideCurrentTitle=${args.hideCurrentTitle}
+      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
+      style="--kyn-workspace-switcher-max-height: ${args[
+        '--kyn-workspace-switcher-max-height'
       ]}"
     >
       <div slot="left" class="account-meta-info">
@@ -274,7 +298,7 @@ export const FullAccountInfo = {
 
       ${workspaces.map(
         (ws) => html`
-          <kyn-account-switcher-menu-item
+          <kyn-workspace-switcher-menu-item
             slot="left-list"
             variant="workspace"
             value=${ws.id}
@@ -282,12 +306,12 @@ export const FullAccountInfo = {
             .count=${ws.count ?? null}
             ?selected=${ws.selected}
             @on-click=${(e) => handleWorkspaceClick(e, ws)}
-          ></kyn-account-switcher-menu-item>
+          ></kyn-workspace-switcher-menu-item>
         `
       )}
       ${defaultItems.map(
         (item) => html`
-          <kyn-account-switcher-menu-item
+          <kyn-workspace-switcher-menu-item
             slot="right-list"
             variant="item"
             value=${item.id}
@@ -297,20 +321,22 @@ export const FullAccountInfo = {
             showFavorite
             @on-click=${(e) => handleItemClick(e, item)}
             @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-          ></kyn-account-switcher-menu-item>
+          ></kyn-workspace-switcher-menu-item>
         `
       )}
-    </kyn-account-switcher>
+    </kyn-workspace-switcher>
   `,
 };
 
-export const SimpleAccountInfo = {
+export const SimpleWorkspaceInfo = {
   render: (args) => html`
-    <kyn-account-switcher
+    <kyn-workspace-switcher
       .view=${args.view}
       .textStrings=${args.textStrings}
-      style="--kyn-account-switcher-max-height: ${args[
-        '--kyn-account-switcher-max-height'
+      ?hideCurrentTitle=${args.hideCurrentTitle}
+      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
+      style="--kyn-workspace-switcher-max-height: ${args[
+        '--kyn-workspace-switcher-max-height'
       ]}"
     >
       <div slot="left" class="account-meta-info">
@@ -328,7 +354,7 @@ export const SimpleAccountInfo = {
 
       ${workspaces.map(
         (ws) => html`
-          <kyn-account-switcher-menu-item
+          <kyn-workspace-switcher-menu-item
             slot="left-list"
             variant="workspace"
             value=${ws.id}
@@ -336,12 +362,12 @@ export const SimpleAccountInfo = {
             .count=${ws.count ?? null}
             ?selected=${ws.selected}
             @on-click=${(e) => handleWorkspaceClick(e, ws)}
-          ></kyn-account-switcher-menu-item>
+          ></kyn-workspace-switcher-menu-item>
         `
       )}
       ${defaultItems.map(
         (item) => html`
-          <kyn-account-switcher-menu-item
+          <kyn-workspace-switcher-menu-item
             slot="right-list"
             variant="item"
             value=${item.id}
@@ -351,20 +377,22 @@ export const SimpleAccountInfo = {
             showFavorite
             @on-click=${(e) => handleItemClick(e, item)}
             @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-          ></kyn-account-switcher-menu-item>
+          ></kyn-workspace-switcher-menu-item>
         `
       )}
-    </kyn-account-switcher>
+    </kyn-workspace-switcher>
   `,
 };
 
 export const WithSearch = {
   render: (args) => html`
-    <kyn-account-switcher
+    <kyn-workspace-switcher
       .view=${args.view}
       .textStrings=${args.textStrings}
-      style="--kyn-account-switcher-max-height: ${args[
-        '--kyn-account-switcher-max-height'
+      ?hideCurrentTitle=${args.hideCurrentTitle}
+      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
+      style="--kyn-workspace-switcher-max-height: ${args[
+        '--kyn-workspace-switcher-max-height'
       ]}"
     >
       <div slot="left" class="account-meta-info">
@@ -397,7 +425,7 @@ export const WithSearch = {
 
       ${workspaces.map(
         (ws) => html`
-          <kyn-account-switcher-menu-item
+          <kyn-workspace-switcher-menu-item
             slot="left-list"
             variant="workspace"
             value=${ws.id}
@@ -405,7 +433,7 @@ export const WithSearch = {
             .count=${ws.count ?? null}
             ?selected=${ws.selected}
             @on-click=${(e) => handleWorkspaceClick(e, ws)}
-          ></kyn-account-switcher-menu-item>
+          ></kyn-workspace-switcher-menu-item>
         `
       )}
 
@@ -413,13 +441,13 @@ export const WithSearch = {
         slot="right"
         size="sm"
         label="Search"
-        class="account-switcher-search"
+        class="workspace-switcher-search"
         @on-input=${(e) => action('on-search')(e.detail)}
       ></kyn-search>
 
       ${defaultItems.map(
         (item) => html`
-          <kyn-account-switcher-menu-item
+          <kyn-workspace-switcher-menu-item
             slot="right-list"
             variant="item"
             value=${item.id}
@@ -429,10 +457,10 @@ export const WithSearch = {
             showFavorite
             @on-click=${(e) => handleItemClick(e, item)}
             @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-          ></kyn-account-switcher-menu-item>
+          ></kyn-workspace-switcher-menu-item>
         `
       )}
-    </kyn-account-switcher>
+    </kyn-workspace-switcher>
   `,
 };
 
@@ -543,10 +571,7 @@ export const UIImplementation = {
             <span class="account-chevron">${unsafeSVG(chevronDownIcon)}</span>
           </span>
 
-          <kyn-account-switcher
-            class="ui-impl-switcher"
-            style="--kyn-account-switcher-max-height: 441px;"
-          >
+          <kyn-workspace-switcher class="ui-impl-switcher">
             <div slot="left" class="account-meta-info">
               <div class="account-meta-info__header">
                 <span class="account-meta-info__checkmark"
@@ -577,7 +602,7 @@ export const UIImplementation = {
 
             ${workspaces.map(
               (ws) => html`
-                <kyn-account-switcher-menu-item
+                <kyn-workspace-switcher-menu-item
                   slot="left-list"
                   variant="workspace"
                   value=${ws.id}
@@ -585,12 +610,12 @@ export const UIImplementation = {
                   .count=${ws.count ?? null}
                   ?selected=${ws.selected}
                   @on-click=${(e) => handleUIWorkspaceClick(e, ws)}
-                ></kyn-account-switcher-menu-item>
+                ></kyn-workspace-switcher-menu-item>
               `
             )}
             ${defaultItems.map(
               (item) => html`
-                <kyn-account-switcher-menu-item
+                <kyn-workspace-switcher-menu-item
                   slot="right-list"
                   variant="item"
                   value=${item.id}
@@ -601,10 +626,10 @@ export const UIImplementation = {
                   @on-click=${(e) => handleUIItemClick(e, item)}
                   @on-favorite-change=${(e) =>
                     action('on-favorite-change')(e.detail)}
-                ></kyn-account-switcher-menu-item>
+                ></kyn-workspace-switcher-menu-item>
               `
             )}
-          </kyn-account-switcher>
+          </kyn-workspace-switcher>
         </kyn-header-flyout>
 
         <kyn-header-flyout label="Notifications" hideMenuLabel>

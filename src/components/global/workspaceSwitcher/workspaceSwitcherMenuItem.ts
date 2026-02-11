@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
-import AccountSwitcherMenuItemScss from './accountSwitcherMenuItem.scss?inline';
+import WorkspaceSwitcherMenuItemScss from './workspaceSwitcherMenuItem.scss?inline';
 
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
@@ -11,14 +11,14 @@ import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrom
 import '../../reusable/iconSelector';
 
 /**
- * Account Switcher Menu Item component.
+ * Workspace Switcher Menu Item component.
  * Used for both workspace items (left panel) and account items (right panel).
  * @fires on-click - Emits when the item is clicked. `detail: { value: string }`
  * @fires on-favorite-change - Emits when favorite status changes. `detail: { value: string, favorited: boolean }`
  */
-@customElement('kyn-account-switcher-menu-item')
-export class AccountSwitcherMenuItem extends LitElement {
-  static override styles = unsafeCSS(AccountSwitcherMenuItemScss);
+@customElement('kyn-workspace-switcher-menu-item')
+export class WorkspaceSwitcherMenuItem extends LitElement {
+  static override styles = unsafeCSS(WorkspaceSwitcherMenuItemScss);
 
   /** The variant of the menu item. */
   @property({ type: String })
@@ -128,6 +128,6 @@ export class AccountSwitcherMenuItem extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kyn-account-switcher-menu-item': AccountSwitcherMenuItem;
+    'kyn-workspace-switcher-menu-item': WorkspaceSwitcherMenuItem;
   }
 }
