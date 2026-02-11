@@ -9,6 +9,7 @@ import '../../reusable/search';
 import exampleData from './example_account_switcher_data.json';
 
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
@@ -77,6 +78,20 @@ const renderItems = (items, onItemClick) => html`
   )}
 `;
 
+/** Copy to clipboard handler for the account ID link. */
+const handleCopy = (value, e) => {
+  e.detail.origEvent.preventDefault();
+  navigator.clipboard.writeText(value);
+
+  const iconSpan = e.target.querySelector('[slot="icon"]');
+  if (iconSpan) {
+    iconSpan.innerHTML = checkmarkIcon;
+    setTimeout(() => {
+      iconSpan.innerHTML = copyIcon;
+    }, 3000);
+  }
+};
+
 /** account header with full metadata (name, account ID, country). */
 const renderFullAccountHeader = (name) => html`
   <div slot="left" class="account-meta-info">
@@ -86,7 +101,13 @@ const renderFullAccountHeader = (name) => html`
       >
       <div class="account-meta-info__content">
         <span class="account-meta-info__name" title=${name}>${name}</span>
-        <kyn-link standalone animationInactive href="javascript:void(0)">
+        <kyn-link
+          standalone
+          animationInactive
+          href="javascript:void(0)"
+          @on-click=${(e) =>
+            handleCopy(exampleData.accountDetails.accountId, e)}
+        >
           ${exampleData.accountDetails.accountId}
           <span slot="icon">${unsafeSVG(copyIcon)}</span>
         </kyn-link>
