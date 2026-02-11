@@ -5,6 +5,7 @@ import './index';
 import '../header';
 import '../../reusable/link';
 import '../../reusable/search';
+
 import exampleData from './example_account_switcher_data.json';
 
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
@@ -57,7 +58,7 @@ const renderWorkspaces = (onWorkspaceClick) => html`
   )}
 `;
 
-/** Render item menu items for the items slot. */
+/** render item menu items for the items slot. */
 const renderItems = (items, onItemClick) => html`
   ${items.map(
     (item) => html`
@@ -76,7 +77,7 @@ const renderItems = (items, onItemClick) => html`
   )}
 `;
 
-/** Account header with full metadata (name, account ID, country). */
+/** account header with full metadata (name, account ID, country). */
 const renderFullAccountHeader = (name) => html`
   <div slot="left" class="account-meta-info">
     <div class="account-meta-info__header">
@@ -84,7 +85,7 @@ const renderFullAccountHeader = (name) => html`
         >${unsafeSVG(checkmarkFilledIcon)}</span
       >
       <div class="account-meta-info__content">
-        <span class="account-meta-info__name">${name}</span>
+        <span class="account-meta-info__name" title=${name}>${name}</span>
         <kyn-link standalone animationInactive href="javascript:void(0)">
           ${exampleData.accountDetails.accountId}
           <span slot="icon">${unsafeSVG(copyIcon)}</span>
@@ -97,14 +98,14 @@ const renderFullAccountHeader = (name) => html`
   </div>
 `;
 
-/** Account header with just the name. */
+/** account header with just the name. */
 const renderSimpleAccountHeader = (name) => html`
   <div slot="left" class="account-meta-info">
     <div class="account-meta-info__header">
       <span class="account-meta-info__checkmark"
         >${unsafeSVG(checkmarkFilledIcon)}</span
       >
-      <span class="account-meta-info__name">${name}</span>
+      <span class="account-meta-info__name" title=${name}>${name}</span>
     </div>
   </div>
 `;
@@ -119,26 +120,21 @@ const handleWorkspaceClick = (e, ws) => {
   const switcher = e.target.closest('kyn-account-switcher');
   if (!switcher) return;
 
-  // Transition to detail view (mobile drill-down)
   switcher.view = 'detail';
 
-  // Update selected state on workspace items
   switcher
     .querySelectorAll('kyn-account-switcher-menu-item[slot="left-list"]')
     .forEach((el) => {
       el.selected = el.value === ws.id;
     });
 
-  // Determine new items
   const newItems =
     ws.id === 'global' ? allItems : exampleData.itemsByWorkspace[ws.id] || [];
 
-  // Remove existing right-slot items
   switcher
     .querySelectorAll('kyn-account-switcher-menu-item[slot="right-list"]')
     .forEach((el) => el.remove());
 
-  // Append new items
   newItems.forEach((item) => {
     const el = document.createElement('kyn-account-switcher-menu-item');
     el.slot = 'right-list';
@@ -155,22 +151,19 @@ const handleWorkspaceClick = (e, ws) => {
   });
 };
 
-/** Item click handler — updates selected state. */
+/** item click handler — updates selected state. */
 const handleItemClick = (e, item) => {
   action('on-item-select')({ item });
 
   const switcher = e.target.closest('kyn-account-switcher');
   if (!switcher) return;
 
-  // Update selected state on item menu items
   switcher
     .querySelectorAll('kyn-account-switcher-menu-item[slot="right-list"]')
     .forEach((el) => {
       el.selected = el.value === item.id;
     });
 };
-
-// --- Story config ---
 
 export default {
   title: 'Global Components/Account Switcher',
@@ -191,11 +184,6 @@ export default {
           display: flex;
           flex-direction: column;
           gap: 2px;
-          padding-bottom: 12px;
-          margin: 0 auto 12px;
-          border-bottom: 1px solid var(--kd-color-border-variants-light);
-          width: 100%;
-          box-sizing: border-box;
         }
 
         .account-meta-info__header {
@@ -231,19 +219,7 @@ export default {
           color: var(--kd-color-text-level-primary);
         }
 
-        .account-name {
-          max-width: 200px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .account-chevron {
-          display: flex;
-          transition: transform 0.2s;
-        }
-
-        @media (max-width: calc(42rem - 0.001px)) {
+        @media (max-width: calc(52rem - 0.001px)) {
           .account-meta-info {
             padding-right: 8px;
           }
@@ -252,10 +228,6 @@ export default {
             max-width: none;
             white-space: normal;
           }
-
-          .account-chevron {
-            display: none;
-          }
         }
       </style>
       ${story()}
@@ -263,11 +235,9 @@ export default {
   ],
 };
 
-// --- Stories ---
-
 export const FullAccountInfo = {
   render: () => html`
-    <kyn-account-switcher style="--kyn-account-switcher-max-height: 438px">
+    <kyn-account-switcher style="--kyn-account-switcher-max-height: 400px">
       ${renderFullAccountHeader(selectedItem?.name || '')}
       ${renderWorkspaces(handleWorkspaceClick)}
       ${renderItems(defaultItems, handleItemClick)}
@@ -277,7 +247,7 @@ export const FullAccountInfo = {
 
 export const SimpleAccountInfo = {
   render: () => html`
-    <kyn-account-switcher style="--kyn-account-switcher-max-height: 438px">
+    <kyn-account-switcher style="--kyn-account-switcher-max-height: 400px">
       ${renderSimpleAccountHeader(selectedItem?.name || '')}
       ${renderWorkspaces(handleWorkspaceClick)}
       ${renderItems(defaultItems, handleItemClick)}
@@ -287,7 +257,7 @@ export const SimpleAccountInfo = {
 
 export const WithSearch = {
   render: () => html`
-    <kyn-account-switcher style="--kyn-account-switcher-max-height: 438px">
+    <kyn-account-switcher style="--kyn-account-switcher-max-height: 400px">
       ${renderFullAccountHeader(selectedItem?.name || '')}
       ${renderWorkspaces(handleWorkspaceClick)}
       <kyn-search
@@ -302,7 +272,7 @@ export const WithSearch = {
   `,
 };
 
-// --- UIImplementation with header flyout ---
+// --- header flyout ---
 
 const truncateName = (name, maxLen = 20) =>
   name.length > maxLen ? name.slice(0, maxLen) + '…' : name;
@@ -318,7 +288,6 @@ const handleUIItemClick = (e, item) => {
   }
 };
 
-/** Workspace click handler for UIImplementation — uses the UIItemClick handler. */
 const handleUIWorkspaceClick = (e, ws) => {
   action('on-workspace-select')({ workspace: ws });
 
@@ -367,6 +336,40 @@ export const UIImplementation = {
   decorators: [
     (story) =>
       html`
+        <style>
+          .account-name {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .account-chevron {
+            display: flex;
+            transition: transform 0.2s;
+          }
+
+          .ui-impl-switcher {
+            width: 625px;
+          }
+
+          @media (max-width: calc(52rem - 0.001px)) {
+            .ui-impl-switcher {
+              max-width: 375px;
+            }
+
+            .account-chevron {
+              display: none;
+            }
+          }
+
+          @media (max-width: calc(42rem - 0.001px)) {
+            .ui-impl-switcher {
+              width: 100%;
+              max-width: none;
+            }
+          }
+        </style>
         <div
           style="height: 100vh; min-height: 500px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
         >
@@ -411,7 +414,8 @@ export const UIImplementation = {
           </span>
 
           <kyn-account-switcher
-            style="--kyn-account-switcher-max-height: 450px; width: 625px;"
+            class="ui-impl-switcher"
+            style="--kyn-account-switcher-max-height: 441px;"
           >
             ${renderFullAccountHeader(selectedItem?.name || '')}
             ${renderWorkspaces(handleUIWorkspaceClick)}

@@ -64,7 +64,7 @@ export class AccountSwitcherMenuItem extends LitElement {
         aria-current=${this.selected ? 'true' : 'false'}
       >
         <button class="menu-item__select" @click=${this._handleClick}>
-          <span class="menu-item__name">${this.name}</span>
+          <span class="menu-item__name" title=${this.name}>${this.name}</span>
           ${isWorkspace ? this._renderWorkspaceContent() : null}
         </button>
         ${!isWorkspace ? this._renderItemContent() : null}

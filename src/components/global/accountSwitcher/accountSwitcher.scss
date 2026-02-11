@@ -3,7 +3,6 @@
 
 :host {
   display: block;
-  margin: -8px -12px;
 }
 
 .account-switcher {
@@ -36,7 +35,7 @@
   flex-direction: column;
   gap: 8px;
   flex: 1;
-  padding: 12px 12px 0 12px;
+  padding: 12px 8px 0 12px;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -76,7 +75,7 @@
     outline-color: var(--kd-color-border-variants-focus);
   }
 
-  @media (min-width: 42rem) {
+  @media (min-width: 52rem) {
     display: none;
   }
 }
@@ -89,8 +88,16 @@
   width: 100%;
 }
 
+/* Left-slot separator — universal header/list divider */
+::slotted([slot='left']) {
+  width: 100%;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--kd-color-border-variants-light);
+  box-sizing: border-box;
+}
+
 /* Ensure slotted content fills available space */
-::slotted([slot='left']),
 ::slotted([slot='left-list']),
 ::slotted([slot='right']),
 ::slotted([slot='right-list']) {
@@ -98,9 +105,9 @@
 }
 
 /* ===== Mobile drill-down ===== */
-@media (max-width: calc(42rem - 0.001px)) {
+@media (max-width: calc(52rem - 0.001px)) {
   :host {
-    margin: 0;
+    width: 100%;
     height: var(--kyn-account-switcher-max-height, 100%);
     overflow: hidden;
   }
