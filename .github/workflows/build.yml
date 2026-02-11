@@ -106,7 +106,11 @@ jobs:
       #       "npx wait-on tcp:6006 && npm run test"
 
       - name: Run tests
-        run: npm run test || npm run test
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 2
+          command: npm run test
 
       - name: Run unit tests
         run: npm run test:unit
