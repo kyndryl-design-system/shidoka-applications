@@ -314,6 +314,31 @@ export class TableHeader extends LitElement {
       this.setAttribute('stacked-child', '');
     }
 
+    // Check if parent kyn-header-tr is not expandable
+    const headerRow = this.closest('kyn-header-tr') as any;
+    if (headerRow && !headerRow.hasAttribute('expandable')) {
+      this.setAttribute('data-header-not-expandable', '');
+    } else if (headerRow) {
+      this.removeAttribute('data-header-not-expandable');
+    }
+
+    // Check if this is the first kyn-th in the entire header row
+    if (headerRow) {
+      const allHeaders = Array.from(headerRow.querySelectorAll('kyn-th'));
+      if (allHeaders[0] === this) {
+        this.setAttribute('data-first-in-row', '');
+      } else {
+        this.removeAttribute('data-first-in-row');
+      }
+
+      // Check if this is the last kyn-th in the entire header row
+      // if (allHeaders[allHeaders.length - 1] === this) {
+      //   this.setAttribute('data-last-in-row', '');
+      // } else {
+      //   this.removeAttribute('data-last-in-row');
+      // }
+    }
+
     // Read any group attributes already set by kyn-th-group
     this._syncGroupAttributes();
 

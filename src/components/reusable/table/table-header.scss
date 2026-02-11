@@ -209,7 +209,7 @@
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background: var(--kd-color-background-container-soft);
+    background: var(--kd-color-background-table-header);
     box-sizing: border-box;
   }
 }
@@ -230,6 +230,13 @@
   .container {
     margin-top: var(--kyn-group-label-height, 42px);
   }
+}
+
+// Apply rounded corners and shadow to FIRST child in row only when parent header is not expandable
+:host([stacked-child-first][data-header-not-expandable][data-first-in-row])
+  .group-label-bar {
+  border-top-left-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
 }
 
 // Non-first children: hide the label bar entirely and use margin-top
@@ -264,4 +271,10 @@
 // Group boundary: right border on the last child of each group
 :host([stacked-child-last]:not(:last-of-type)) {
   border-right: 1px solid var(--kd-color-border-level-tertiary);
+}
+
+// Rounded corners and shadow for LAST child in row only when parent header is not expandable
+:host([stacked-child-last]) .group-label-bar {
+  border-top-right-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
 }

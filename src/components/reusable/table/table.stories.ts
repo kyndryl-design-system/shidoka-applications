@@ -957,11 +957,12 @@ export const StackedHeader: Story = {
         <kyn-table>
           <kyn-thead>
             <!-- Grouped Header Row -->
-            <kyn-header-tr expandable .expandableColumnWidth=${'64px'}>
-              <!-- <kyn-th resizable sortable sortKey="id" .align=${'center'}
+            <!-- <kyn-header-tr expandable .expandableColumnWidth=${'64px'}> -->
+            <!-- <kyn-th resizable sortable sortKey="id" .align=${'center'}
                 >ID</kyn-th
               > -->
-              <kyn-th-group label=" Personal Info">
+            <kyn-header-tr>
+              <kyn-th-group label="Personal Info">
                 <kyn-th resizable sortable sortKey="id">ID</kyn-th>
                 <kyn-th resizable sortable sortKey="firstName"
                   >First Name</kyn-th
@@ -982,7 +983,7 @@ export const StackedHeader: Story = {
               characters,
               (row: any) => row.id,
               (row: any) => html`
-                <kyn-tr .rowId=${row.id} key="row-${row.id}" expandable>
+                <kyn-tr .rowId=${row.id} key="row-${row.id}">
                   <!-- <kyn-td>Testing</kyn-td> -->
                   <kyn-td>${row.id}</kyn-td>
                   <kyn-td>${row.firstName}</kyn-td>
@@ -991,11 +992,11 @@ export const StackedHeader: Story = {
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
                   <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
-                <kyn-expanded-tr .colSpan=${8}>
+                <!-- <kyn-expanded-tr .colSpan=${8}>
                   <div class="center-content">
                     Put your expanded table content here
                   </div>
-                </kyn-expanded-tr>
+                </kyn-expanded-tr> -->
               `
             )}
           </kyn-tbody>
