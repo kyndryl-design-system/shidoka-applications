@@ -31,6 +31,25 @@ export class HeaderNav extends LitElement {
   @property({ type: String, reflect: true })
   override accessor slot = 'left';
 
+  /** When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).
+   * When false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.
+   */
+  @property({ type: Boolean })
+  accessor flyoutAutoCollapsed = true;
+
+  /** Which flyout to expand when flyoutAutoCollapsed is false.
+   * 'default' opens the first expandable item. Any other value matches
+   * against the id attribute of a child kyn-header-link.
+   */
+  @property({ type: String, attribute: 'default-open' })
+  accessor defaultOpen = 'default';
+
+  /** When true, all links in flyouts will truncate long text with ellipsis.
+   * This cascades to all nested kyn-header-link components via CSS custom property.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'truncate-links' })
+  accessor truncateLinks = false;
+
   /** Boolean value reflecting whether the navigation has categories.
    * @internal
    */
@@ -41,6 +60,11 @@ export class HeaderNav extends LitElement {
    * @internal
    */
   private _attrObserver?: MutationObserver;
+
+  /** Tracks whether auto-open has already been triggered to prevent multiple triggers.
+   * @internal
+   */
+  private _autoOpenTriggered = false;
 
   /** Bound document click handler to allow proper add/remove of listener
    * @internal
@@ -110,6 +134,15 @@ export class HeaderNav extends LitElement {
 
   private _handleSlotChange() {
     this._updateCategoriesVisibility();
+
+    // Trigger auto-open when slot content changes (handles late-loading content)
+    if (
+      !this.flyoutAutoCollapsed &&
+      this._isDesktop &&
+      !this._autoOpenTriggered
+    ) {
+      this._autoOpenFirstCategoricalLink();
+    }
   }
 
   private _handleClickOut(e: Event) {
@@ -120,6 +153,12 @@ export class HeaderNav extends LitElement {
 
   protected override firstUpdated(_changed: PropertyValueMap<this>): void {
     this._updateCategoriesVisibility();
+
+    // Auto-open first categorical link on initial render when flyoutAutoCollapsed is false.
+    // This handles the case where the nav is already visible (desktop) without a menuOpen toggle.
+    if (!this.flyoutAutoCollapsed && this._isDesktop) {
+      this._autoOpenFirstCategoricalLink();
+    }
   }
 
   override willUpdate(changedProps: PropertyValueMap<this>): void {
@@ -138,7 +177,81 @@ export class HeaderNav extends LitElement {
       this.ownerDocument?.dispatchEvent(
         new CustomEvent('on-nav-toggle', { detail })
       );
+
+      // Auto-open first link's flyout when nav opens and flyoutAutoCollapsed is false
+      // Only applies to categorical nav (when kyn-header-categories is present)
+      if (this.menuOpen && !this.flyoutAutoCollapsed && this._isDesktop) {
+        this._autoOpenFirstCategoricalLink();
+      }
+
+      // Reset auto-open flag when nav closes so it can re-trigger on next open
+      if (!this.menuOpen) {
+        this._autoOpenTriggered = false;
+      }
     }
+  }
+
+  /** Auto-open the first header link that contains categorical nav
+   * @internal
+   */
+  private _autoOpenFirstCategoricalLink(): void {
+    // Use rAF to ensure child elements have completed their first Lit render
+    // cycle before we try to open them. This is ~16ms (one frame) vs the
+    // previous setTimeout(100) which caused a visible two-step open.
+    requestAnimationFrame(() => {
+      const links = this.querySelectorAll<HTMLElement & { open?: boolean }>(
+        ':scope > kyn-header-link'
+      );
+
+      // Clear any pending pointer-event timers on all sibling links.
+      // When the nav first paints, links can appear under the cursor,
+      // firing pointerenter which queues a 150ms timer to open that link
+      // and close others. Without clearing, that timer fires after our
+      // auto-open and immediately closes the flyout.
+      for (const link of links) {
+        const l = link as any;
+        if (l._enterTimer) {
+          clearTimeout(l._enterTimer);
+          l._enterTimer = undefined;
+        }
+        if (l._leaveTimer) {
+          clearTimeout(l._leaveTimer);
+          l._leaveTimer = undefined;
+        }
+      }
+
+      // Find the target link to open
+      let target: (HTMLElement & { open?: boolean }) | null = null;
+
+      if (this.defaultOpen !== 'default') {
+        // Match by id
+        target = this.querySelector(
+          `:scope > kyn-header-link#${CSS.escape(this.defaultOpen)}`
+        );
+      }
+
+      if (!target) {
+        // Fall back to first expandable link (current behavior)
+        for (const link of links) {
+          const hasCategoricalNav =
+            link.querySelector('kyn-header-categories') !== null ||
+            querySelectorDeep('kyn-header-categories', link) !== null;
+          const hasSlottedCategory =
+            link.querySelector('kyn-header-category') !== null ||
+            querySelectorDeep('kyn-header-category', link) !== null;
+
+          if (hasCategoricalNav || hasSlottedCategory) {
+            target = link;
+            break;
+          }
+        }
+      }
+
+      if (target) {
+        target.open = true;
+        this._autoOpenTriggered = true;
+      }
+    });
   }
 
   override updated(changedProps: PropertyValueMap<this>): void {

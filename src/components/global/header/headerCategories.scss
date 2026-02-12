@@ -1,17 +1,19 @@
 @use '../../../common/scss/global.scss';
 
+// Layout configuration
+$column-gap: 32px;
+$row-gap: 16px;
+$min-column-width: 150px;
+$max-column-width: 400px;
+
+// Fixed column widths per column count
+$column-width-1: 350px;
+$column-width-2: 300px;
+
 :host {
   display: block;
   box-sizing: border-box;
   width: 100%;
-}
-
-@media (min-width: 672px) {
-  :host {
-    padding-right: 10%;
-    width: calc(100vw - 230px);
-    max-width: calc(100vw - 230px);
-  }
 }
 
 .header-categories {
@@ -21,7 +23,6 @@
 
   &__inner {
     display: block;
-    column-width: 160px;
     column-gap: 32px;
     max-width: 100%;
     box-sizing: border-box;
@@ -37,7 +38,7 @@
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
-  margin: 0 0 16px;
+  margin: 0 0 $row-gap;
 }
 
 slot.header-categories__slot::slotted(*) {
@@ -45,26 +46,93 @@ slot.header-categories__slot::slotted(*) {
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
-  margin: 0 0 16px;
+  margin: 0 0 $row-gap;
+}
+
+// Negate trailing margin (grid uses gap instead)
+:host(:not([layout='grid']):not([view='detail'])) .header-categories__inner {
+  margin-bottom: -$row-gap;
 }
 
 /* ---------------------------------------------------------------------
-   ROOT VIEW (MASONRY)
+   MASONRY LAYOUT (default)
    ------------------------------------------------------------------ */
-:host(:not([view='detail'])) .header-categories__inner {
-  column-width: 160px;
+:host([layout='masonry']) {
+  width: 100%;
+  min-width: $min-column-width;
+  max-width: 100%;
 }
 
-@media (min-width: 896px) {
-  :host(:not([view='detail'])) .header-categories__inner {
-    column-width: 180px;
+@media (min-width: 672px) {
+  :host([layout='masonry']) {
+    padding-right: 16px;
   }
 }
 
-@media (min-width: 1152px) {
-  :host(:not([view='detail'])) .header-categories__inner {
-    column-width: 200px;
+:host([layout='masonry']) .header-categories__inner {
+  column-width: auto;
+  column-gap: $column-gap;
+
+  // Position dividers absolutely so they don't affect column balancing
+  --kyn-header-divider-position: absolute;
+  --kyn-header-divider-bottom: -9px;
+  --kyn-header-divider-left: 0;
+  --kyn-header-divider-right: 0;
+  --kyn-header-divider-margin: 0;
+}
+
+// Column count driven by data-columns attribute
+:host([layout='masonry'][data-columns='1']) .header-categories__inner {
+  column-count: 1;
+}
+:host([layout='masonry'][data-columns='2']) .header-categories__inner {
+  column-count: 2;
+}
+@for $i from 3 through 10 {
+  :host([layout='masonry'][data-columns='#{$i}']) .header-categories__inner {
+    column-count: $i;
   }
+}
+
+/* --- GRID LAYOUT --- */
+:host([layout='grid']) {
+  width: max-content;
+  min-width: $min-column-width;
+  max-width: 100%;
+}
+
+@media (min-width: 672px) {
+  :host([layout='grid']) {
+    padding-right: 16px;
+  }
+}
+
+:host([layout='grid']) .header-categories__inner {
+  display: grid;
+  gap: $row-gap $column-gap;
+  grid-template-columns: minmax($min-column-width, $max-column-width);
+}
+
+// 1-2 columns use fixed widths; 3+ use 1fr to avoid overflow
+:host([layout='grid'][data-columns='1']) .header-categories__inner {
+  grid-template-columns: $column-width-1;
+}
+:host([layout='grid'][data-columns='2']) .header-categories__inner {
+  grid-template-columns: repeat(2, $column-width-2);
+}
+@for $i from 3 through 10 {
+  :host([layout='grid'][data-columns='#{$i}']) .header-categories__inner {
+    grid-template-columns: repeat($i, 1fr);
+  }
+}
+
+// Reset masonry-specific styles for grid items
+:host([layout='grid']) .header-categories__inner > * {
+  break-inside: auto;
+  -webkit-column-break-inside: auto;
+  page-break-inside: auto;
+  margin: 0;
+  min-width: 0;
 }
 
 /* ---------------------------------------------------------------------
@@ -75,9 +143,13 @@ slot.header-categories__slot::slotted(*) {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .header-categories {
     &__inner {
-      overflow: auto;
+      overflow: visible;
     }
   }
 }
@@ -85,7 +157,7 @@ slot.header-categories__slot::slotted(*) {
 :host([view='detail']) .header-detail-columns {
   display: flex;
   align-items: flex-start;
-  gap: 0 32px;
+  gap: 0 $column-gap;
   width: max-content;
   box-sizing: border-box;
 }

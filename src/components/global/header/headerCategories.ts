@@ -12,6 +12,7 @@ import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/c
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { debounce } from '../../../common/helpers/helpers';
 import type { HeaderLinkTarget } from './headerLink';
 
 const _defaultTextStrings = {
@@ -66,9 +67,16 @@ const DETAIL_VIEW: HeaderView = 'detail';
 
 const VOID_HREF = '#';
 
+/**
+ * Pixel tolerance for grouping categories into visual columns.
+ * Accounts for sub-pixel rendering differences across browsers.
+ */
+const COLUMN_GROUPING_TOLERANCE_PX = 10;
+
 interface SlottedLinkData {
   href: string;
   inner: string;
+  textContent: string;
   target?: string;
   rel?: string;
 }
@@ -77,6 +85,7 @@ interface SlottedCategoryData {
   id: string;
   heading: string;
   links: SlottedLinkData[];
+  iconHtml?: string;
 }
 
 /**
@@ -129,6 +138,18 @@ export class HeaderCategories extends LitElement {
   accessor maxRootLinks = 4;
 
   /**
+   * Layout mode for categories.
+   * - "masonry" (default): CSS multi-column with fixed column-count based on category count
+   * - "grid": CSS Grid with fixed columns and row-based wrapping
+   */
+  @property({ type: String, reflect: true })
+  accessor layout: 'masonry' | 'grid' = 'masonry';
+
+  /** Max number of columns to display when layout="grid" or layout="masonry". */
+  @property({ type: Number })
+  accessor maxColumns = 3;
+
+  /**
    * Optional text overrides, merged with defaults.
    * e.g. <kyn-header-categories .textStrings=${{ more: 'More items' }}>
    */
@@ -177,6 +198,59 @@ export class HeaderCategories extends LitElement {
 
   /** @internal */
   private _buildSlottedTimeout?: number;
+
+  /** @internal */
+  private _resizeObserver?: ResizeObserver;
+
+  /** Debounced divider update to prevent jank during rapid resize (grid and masonry modes)
+   * @internal
+   */
+  private _debouncedUpdateDividers = debounce((_e: Event) => {
+    if (
+      this.view === ROOT_VIEW &&
+      (this.layout === 'grid' || this.layout === 'masonry')
+    ) {
+      this._updateDividers();
+    }
+  }, 100);
+
+  /** Tracks the last emitted column count to avoid duplicate events
+   * @internal
+   */
+  private _lastEmittedColumnCount = 0;
+
+  /** Wrapper for ResizeObserver callback
+   * @internal
+   */
+  private _handleResize = (): void => {
+    // Create a synthetic event for the debounced function
+    this._debouncedUpdateDividers(new Event('resize'));
+    // Category count doesn't change on resize, so no need to re-emit
+  };
+
+  /**
+   * Update category count and emit event if changed.
+   * Only emits for grid layout (masonry doesn't need flyout width adjustment).
+   * @internal
+   */
+  private _updateAndEmitColumnCount(): void {
+    // Only emit for grid layout
+    if (this.layout !== 'grid') return;
+
+    const columnCount = this._getColumnCount();
+
+    if (columnCount !== this._lastEmittedColumnCount) {
+      this._lastEmittedColumnCount = columnCount;
+
+      this.dispatchEvent(
+        new CustomEvent('on-column-count-change', {
+          detail: { columnCount },
+          composed: true,
+          bubbles: true,
+        })
+      );
+    }
+  }
 
   /** @internal */
   private readonly _boundHandleNavToggle = (e: Event): void =>
@@ -289,6 +363,28 @@ export class HeaderCategories extends LitElement {
         this.view = nextView;
       }
     }
+
+    // Grid and masonry modes: update data-columns attribute
+    if (this.layout === 'grid' || this.layout === 'masonry') {
+      const columnCount = this._getColumnCount();
+      this.setAttribute('data-columns', String(columnCount));
+
+      // Update dividers after render when in root view (grid and masonry modes).
+      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
+      // so post-render correction won't cause reflow.
+      if (this.view === ROOT_VIEW) {
+        // Use double requestAnimationFrame to ensure layout is fully computed
+        // The first rAF runs after the browser paints, the second ensures layout reflow is complete
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => this._updateDividers());
+        });
+      }
+    }
+
+    // Always emit column count after render (for flyout width adjustment)
+    if (this.view === ROOT_VIEW) {
+      this._updateAndEmitColumnCount();
+    }
   }
 
   private renderLinkContent(
@@ -322,7 +418,8 @@ export class HeaderCategories extends LitElement {
     const links = category.links ?? [];
 
     return html`
-      <kyn-header-category heading=${category.heading}>
+      <kyn-header-category heading=${category.heading} showDivider>
+        <span slot="icon">${unsafeSVG(circleIcon)}</span>
         ${links.slice(0, this.maxRootLinks).map((link) => {
           const target = this.normalizeHeaderLinkTarget(link.target);
           return html`
@@ -330,6 +427,8 @@ export class HeaderCategories extends LitElement {
               href=${link.href ?? VOID_HREF}
               target=${target}
               rel=${ifDefined(link.rel)}
+              .linkTitle=${link.label}
+              ?truncate=${this.layout === 'grid' || this.layout === 'masonry'}
             >
               ${this.renderLinkContent(link, {
                 tabId,
@@ -342,6 +441,7 @@ export class HeaderCategories extends LitElement {
         ${links.length > this.maxRootLinks
           ? html`
               <kyn-header-link
+                slot="more"
                 href=${VOID_HREF}
                 @click=${(e: Event) =>
                   this.openCategoryDetail(tabId, category.id, e)}
@@ -352,10 +452,11 @@ export class HeaderCategories extends LitElement {
                   }
                 }}
               >
-                <span style="margin-right: 8px;">
-                  ${unsafeSVG(chevronRightIcon)}
+                <span
+                  style="display: inline-flex; align-items: center; gap: 8px;"
+                >
+                  ${this._textStrings.more} ${unsafeSVG(chevronRightIcon)}
                 </span>
-                <span>${this._textStrings.more}</span>
               </kyn-header-link>
             `
           : null}
@@ -385,6 +486,7 @@ export class HeaderCategories extends LitElement {
       <kyn-header-category
         heading=${`${category.heading} – ${this._textStrings.more}`}
       >
+        <span slot="icon">${unsafeSVG(circleIcon)}</span>
         <div
           id=${`detail-${category.id}`}
           class="header-detail-columns ${isSingleColumn
@@ -403,6 +505,9 @@ export class HeaderCategories extends LitElement {
                       href=${link.href ?? VOID_HREF}
                       target=${target}
                       rel=${ifDefined(link.rel)}
+                      .linkTitle=${link.label}
+                      ?truncate=${this.layout === 'grid' ||
+                      this.layout === 'masonry'}
                     >
                       ${this.renderLinkContent(link, {
                         tabId: this.activeMegaTabId,
@@ -436,6 +541,10 @@ export class HeaderCategories extends LitElement {
       const id = categoryEl.getAttribute('id') ?? `category-${index + 1}`;
       const heading = categoryEl.getAttribute('heading') ?? '';
 
+      // Extract icon slot content
+      const iconSlot = categoryEl.querySelector('[slot="icon"]');
+      const iconHtml = iconSlot ? iconSlot.innerHTML : undefined;
+
       const allLinks = Array.from(
         categoryEl.querySelectorAll<HTMLElement>('kyn-header-link')
       ).filter((link) => link.parentElement === categoryEl) as HTMLElement[];
@@ -449,12 +558,14 @@ export class HeaderCategories extends LitElement {
         target: l.getAttribute('target') ?? undefined,
         rel: l.getAttribute('rel') ?? undefined,
         inner: l.innerHTML,
+        textContent: l.textContent?.trim() ?? '',
       }));
 
       return {
         id,
         heading,
         links,
+        iconHtml,
       } as SlottedCategoryData;
     });
 
@@ -464,10 +575,12 @@ export class HeaderCategories extends LitElement {
   private renderSlottedRoot() {
     const categories = this._slottedCategories;
     if (!categories.length) return null;
-
     return html`${categories.map(
       (category) => html`
-        <kyn-header-category heading=${category.heading}>
+        <kyn-header-category heading=${category.heading} showDivider>
+          ${category.iconHtml
+            ? html`<span slot="icon">${unsafeHTML(category.iconHtml)}</span>`
+            : null}
           ${category.links.slice(0, this.maxRootLinks).map((link) => {
             const target = this.normalizeHeaderLinkTarget(link.target);
             return html`
@@ -475,6 +588,8 @@ export class HeaderCategories extends LitElement {
                 href=${link.href}
                 target=${target}
                 rel=${ifDefined(link.rel)}
+                .linkTitle=${link.textContent}
+                ?truncate=${this.layout === 'grid' || this.layout === 'masonry'}
               >
                 ${unsafeHTML(link.inner)}
               </kyn-header-link>
@@ -483,6 +598,7 @@ export class HeaderCategories extends LitElement {
           ${category.links.length > this.maxRootLinks
             ? html`
                 <kyn-header-link
+                  slot="more"
                   href=${VOID_HREF}
                   @click=${(e: Event) =>
                     this.openCategoryDetail(
@@ -501,10 +617,11 @@ export class HeaderCategories extends LitElement {
                     }
                   }}
                 >
-                  <span style="margin-right: 8px;">
-                    ${unsafeSVG(chevronRightIcon)}
+                  <span
+                    style="display: inline-flex; align-items: center; gap: 8px;"
+                  >
+                    ${this._textStrings.more} ${unsafeSVG(chevronRightIcon)}
                   </span>
-                  <span>${this._textStrings.more}</span>
                 </kyn-header-link>
               `
             : null}
@@ -543,6 +660,9 @@ export class HeaderCategories extends LitElement {
       <kyn-header-category
         heading=${`${categoryItem.heading} – ${this._textStrings.more}`}
       >
+        ${categoryItem.iconHtml
+          ? html`<span slot="icon">${unsafeHTML(categoryItem.iconHtml)}</span>`
+          : null}
         <div
           id=${`detail-${categoryItem.id}`}
           class="header-detail-columns ${isSingleColumn
@@ -561,6 +681,9 @@ export class HeaderCategories extends LitElement {
                       href=${link.href}
                       target=${target}
                       rel=${ifDefined(link.rel)}
+                      .linkTitle=${link.textContent}
+                      ?truncate=${this.layout === 'grid' ||
+                      this.layout === 'masonry'}
                     >
                       ${unsafeHTML(link.inner)}
                     </kyn-header-link>
@@ -589,8 +712,130 @@ export class HeaderCategories extends LitElement {
     }, 40);
   }
 
+  /**
+   * After render, detect which categories are in the last visual row
+   * and disable their dividers. CSS Grid determines row breaks dynamically,
+   * so we must inspect rendered positions.
+   * @internal
+   */
+  private _updateDividers(): void {
+    if (this.view !== ROOT_VIEW) return;
+    if (this.layout !== 'grid' && this.layout !== 'masonry') return;
+
+    const inner = this.shadowRoot?.querySelector('.header-categories__inner');
+    if (!inner) return;
+
+    const categories = Array.from(
+      inner.querySelectorAll<HTMLElement>('kyn-header-category')
+    );
+
+    if (!categories.length) return;
+
+    // Reset all categories: remove noAutoDivider to allow auto-detection
+    categories.forEach((cat) => {
+      cat.removeAttribute('noautodivider');
+    });
+
+    // Get bounding rects
+    const categoryData = categories.map((cat) => ({
+      el: cat,
+      rect: cat.getBoundingClientRect(),
+    }));
+
+    if (this.layout === 'grid') {
+      // Grid: group by row (Y-position), hide dividers on the last row
+      const rowMap = new Map<number, typeof categoryData>();
+
+      for (const item of categoryData) {
+        const y = item.rect.top;
+        let foundRow = false;
+
+        for (const [rowY] of rowMap) {
+          if (Math.abs(y - rowY) <= COLUMN_GROUPING_TOLERANCE_PX) {
+            rowMap.get(rowY)!.push(item);
+            foundRow = true;
+            break;
+          }
+        }
+
+        if (!foundRow) {
+          rowMap.set(y, [item]);
+        }
+      }
+
+      let lastRowY = -Infinity;
+      for (const [rowY] of rowMap) {
+        if (rowY > lastRowY) {
+          lastRowY = rowY;
+        }
+      }
+
+      const lastRowCategories = rowMap.get(lastRowY);
+      if (lastRowCategories) {
+        for (const item of lastRowCategories) {
+          item.el.removeAttribute('showdivider');
+          item.el.setAttribute('noautodivider', '');
+        }
+      }
+    } else {
+      // Masonry: group by column (X-position), hide dividers on the last item in each column.
+      // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
+      // so this correction won't cause reflow.
+      const colMap = new Map<number, typeof categoryData>();
+
+      for (const item of categoryData) {
+        const x = item.rect.left;
+        let foundCol = false;
+
+        for (const [colX] of colMap) {
+          if (Math.abs(x - colX) <= COLUMN_GROUPING_TOLERANCE_PX) {
+            colMap.get(colX)!.push(item);
+            foundCol = true;
+            break;
+          }
+        }
+
+        if (!foundCol) {
+          colMap.set(x, [item]);
+        }
+      }
+
+      for (const [, colItems] of colMap) {
+        let lastItem = colItems[0];
+        for (const item of colItems) {
+          if (item.rect.bottom > lastItem.rect.bottom) {
+            lastItem = item;
+          }
+        }
+        lastItem.el.removeAttribute('showdivider');
+        lastItem.el.setAttribute('noautodivider', '');
+      }
+    }
+  }
+
+  /**
+   * Get the number of columns to display (grid and masonry modes).
+   * Returns the minimum of category count and maxColumns.
+   * @internal
+   */
+  private _getColumnCount(): number {
+    if (
+      this.view !== ROOT_VIEW ||
+      (this.layout !== 'grid' && this.layout !== 'masonry')
+    )
+      return 1;
+
+    const categoryCount = this._isJsonMode
+      ? this._tabConfig?.categories?.length ?? 0
+      : this._slottedCategories.length;
+
+    // Return the minimum of actual category count and maxColumns
+    return Math.min(Math.max(1, categoryCount), this.maxColumns);
+  }
+
   override render() {
     const view = this.view;
+    const columnCount = this.layout === 'grid' ? this._getColumnCount() : null;
 
     const inner = this._isJsonMode
       ? view === ROOT_VIEW
@@ -602,7 +847,12 @@ export class HeaderCategories extends LitElement {
 
     return html`
       <div class="header-categories" data-view=${view}>
-        <div class="header-categories__inner">${inner ?? html``}</div>
+        <div
+          class="header-categories__inner"
+          data-columns=${ifDefined(columnCount ?? undefined)}
+        >
+          ${inner ?? html``}
+        </div>
 
         <!-- hidden slot used only to observe light DOM changes (edge case) -->
         <slot
@@ -644,6 +894,12 @@ export class HeaderCategories extends LitElement {
 
     // initial build for slotted mode
     this._buildSlottedCategories();
+
+    // Set up ResizeObserver to update dividers when columns reflow (grid mode only, debounced)
+    if (typeof ResizeObserver !== 'undefined') {
+      this._resizeObserver = new ResizeObserver(this._handleResize);
+      this._resizeObserver.observe(this);
+    }
   }
 
   override disconnectedCallback(): void {
@@ -655,6 +911,11 @@ export class HeaderCategories extends LitElement {
     if (this._buildSlottedTimeout) {
       window.clearTimeout(this._buildSlottedTimeout);
       this._buildSlottedTimeout = undefined;
+    }
+
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+      this._resizeObserver = undefined;
     }
 
     super.disconnectedCallback();

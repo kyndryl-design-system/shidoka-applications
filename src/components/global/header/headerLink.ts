@@ -8,6 +8,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { debounce } from '../../../common/helpers/helpers';
 import HeaderLinkScss from './headerLink.scss?inline';
 import '../../reusable/textInput';
@@ -68,6 +69,17 @@ export class HeaderLink extends LitElement {
   @property({ type: Number })
   accessor searchThreshold = 6;
 
+  /** Maximum number of links per column in plain (non-categorical) flyouts.
+   * When set to a positive number and the slotted link count exceeds this value,
+   * additional columns are created automatically. Default 0 (auto — no column splitting).
+   */
+  @property({ type: Number })
+  accessor linksPerColumn = 0;
+
+  /** Hide the search input regardless of the number of child links. */
+  @property({ type: Boolean })
+  accessor hideSearch = false;
+
   /** Text for mobile "Back" button. */
   @property({ type: String })
   accessor backText = 'Back';
@@ -76,9 +88,56 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean })
   accessor leftPadding = false;
 
-  /** Text for mobile "Back" button. */
+  /** Title attribute for the link, shown as a tooltip on hover. Useful for truncated text. */
+  @property({ type: String, attribute: 'link-title' })
+  accessor linkTitle = '';
+
+  /** When true, long text truncates with ellipsis. Default: false (text wraps normally). */
+  @property({ type: Boolean, reflect: true })
+  accessor truncate = false;
+
+  /** Auto-derived title from slot content, used if linkTitle is not set.
+   * @internal
+   */
+  @state()
+  accessor _autoTitle = '';
+
+  /** When true (default), the flyout auto-closes when the mouse leaves (original behavior).
+   * When false, the flyout stays open and doesn't auto-close on mouse leave.
+   */
+  @property({ type: Boolean })
+  accessor flyoutAutoCollapsed = true;
+
+  /** Indicates whether this link contains categorical navigation (kyn-header-categories or kyn-header-category).
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'has-categorical' })
+  accessor hasCategorical = false;
+
+  /** Indicates whether this link contains multi-column categorical navigation (kyn-header-categories wrapper).
+   * Used to distinguish multi-column flyouts from single-column category lists.
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'has-multi-column' })
+  accessor hasMultiColumn = false;
+
+  /** Number of columns in the categorical flyout (for width adjustment).
+   * @internal
+   */
+  @property({ type: Number, reflect: true, attribute: 'data-flyout-columns' })
+  accessor flyoutColumns = 0;
+
+  /** Current search term for filtering links in the flyout.
+   * @internal
+   */
   @state()
   accessor _searchTerm = '';
+
+  /** Number of slotted plain links (non-categorical), used for column calculation.
+   * @internal
+   */
+  @state()
+  accessor _slottedLinkCount = 0;
 
   /**
    * Queries any slotted HTML elements.
@@ -98,6 +157,18 @@ export class HeaderLink extends LitElement {
   @state()
   accessor _leaveTimer: any;
 
+  /** Suppresses pointer-leave close during internal view transitions (e.g. "More" click).
+   * @internal
+   */
+  private _viewChangeInProgress = false;
+  private _viewChangeTimer: any;
+
+  /** Cached truncation state from parent nav
+   * @internal
+   */
+  @state()
+  accessor _inheritedTruncate = false;
+
   /** Menu positioning
    * @internal
    */
@@ -112,11 +183,15 @@ export class HeaderLink extends LitElement {
       open: this.open || (this.level === 1 && this.isActive),
     };
 
+    // Check if truncation should be applied (individual prop or inherited from nav)
+    const shouldTruncate = this.truncate || this._inheritedTruncate;
+
     const linkClasses = {
       'nav-link': true,
       active: this.isActive,
       interactive: this.level == 1,
       'padding-left': this.leftPadding,
+      truncate: shouldTruncate,
     };
 
     const menuClasses = {
@@ -128,6 +203,13 @@ export class HeaderLink extends LitElement {
       ':scope > kyn-header-link, :scope > kyn-header-category > kyn-header-link'
     );
 
+    const showSearch = !this.hideSearch && Links.length >= this.searchThreshold;
+
+    const wrapperClasses = {
+      wrapper: true,
+      'no-search': !showSearch,
+    };
+
     return html`
       <div
         class="${classMap(classes)}"
@@ -138,11 +220,16 @@ export class HeaderLink extends LitElement {
           target=${this.target}
           rel=${this.rel}
           href=${this.href}
+          title=${ifDefined(
+            this.linkTitle ||
+              (this.slottedEls.length === 0 ? this._autoTitle : '') ||
+              undefined
+          )}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
           @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
         >
-          <slot></slot>
+          <slot @slotchange=${this._handleDefaultSlotChange}></slot>
 
           ${this.slottedEls.length
             ? html` <span class="arrow">${unsafeSVG(arrowIcon)}</span> `
@@ -153,7 +240,7 @@ export class HeaderLink extends LitElement {
           class=${classMap(menuClasses)}
           style=${styleMap(this.menuPosition)}
         >
-          <div class="wrapper">
+          <div class=${classMap(wrapperClasses)}>
             <button
               class="go-back"
               type="button"
@@ -162,7 +249,7 @@ export class HeaderLink extends LitElement {
               <span>${unsafeSVG(backIcon)}</span>
               ${this.backText}
             </button>
-            ${Links.length >= this.searchThreshold
+            ${showSearch
               ? html`
                   <kyn-text-input
                     hideLabel
@@ -181,14 +268,38 @@ export class HeaderLink extends LitElement {
                 `
               : null}
 
-            <slot
-              name="links"
-              @slotchange=${this._handleLinksSlotChange}
-            ></slot>
+            <div
+              class="links-columns"
+              style=${styleMap(this._linksColumnStyles)}
+            >
+              <slot
+                name="links"
+                @slotchange=${this._handleLinksSlotChange}
+              ></slot>
+            </div>
           </div>
         </div>
       </div>
     `;
+  }
+
+  /** Compute inline styles for the links-columns wrapper.
+   * Only applies multi-column layout for plain (non-categorical) flyouts
+   * when the number of links exceeds linksPerColumn.
+   * @internal
+   */
+  private get _linksColumnStyles() {
+    if (
+      !this.hasCategorical &&
+      this.linksPerColumn > 0 &&
+      this._slottedLinkCount > this.linksPerColumn
+    ) {
+      const columnCount = Math.ceil(
+        this._slottedLinkCount / this.linksPerColumn
+      );
+      return { 'column-count': columnCount.toString() };
+    }
+    return {};
   }
 
   private _handleSearch(e: any) {
@@ -219,6 +330,17 @@ export class HeaderLink extends LitElement {
     });
 
     this._positionMenu();
+  }
+
+  /** Extract text content from the default slot to use as auto-title */
+  private _handleDefaultSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    const nodes = slot.assignedNodes({ flatten: true });
+    let textContent = '';
+    for (const node of nodes) {
+      textContent += node.textContent?.trim() ?? '';
+    }
+    this._autoTitle = textContent.trim();
   }
 
   private _handleBack(e?: Event) {
@@ -266,8 +388,29 @@ export class HeaderLink extends LitElement {
   }
 
   private _handleLinksSlotChange() {
+    // Detect if this link contains categorical navigation
+    const hasCategories = this.querySelector('kyn-header-categories') !== null;
+    const hasCategory = this.querySelector('kyn-header-category') !== null;
+
+    this.hasCategorical = hasCategories || hasCategory;
+    this.hasMultiColumn = hasCategories; // Only true for multi-column wrapper
+
+    // Count direct child plain links for column wrapping
+    const plainLinks = this.querySelectorAll(':scope > kyn-header-link');
+    this._slottedLinkCount = plainLinks.length;
+
     this.requestUpdate();
   }
+
+  /** Handle column count changes from slotted kyn-header-categories
+   * @internal
+   */
+  private _handleColumnCountChange = (e: Event) => {
+    const detail = (e as CustomEvent<{ columnCount: number }>).detail;
+    if (detail?.columnCount !== undefined) {
+      this.flyoutColumns = detail.columnCount;
+    }
+  };
 
   private get _isDesktopViewport(): boolean {
     if (typeof window === 'undefined') return true;
@@ -282,13 +425,104 @@ export class HeaderLink extends LitElement {
     ) {
       clearTimeout(this._leaveTimer);
 
+      // close other open sibling links immediately when entering any link with submenus
+      this._closeOtherOpenLinks();
+
       this._enterTimer = setTimeout(() => {
+        // Close siblings again right before opening to prevent race conditions
+        this._closeOtherOpenLinks();
         this.open = true;
       }, 150);
     }
   }
 
+  /** close other open header links at the same level
+   * @internal
+   */
+  private _closeOtherOpenLinks(): void {
+    // Strategy: Close all sibling header-links that are currently open
+    // This handles the sidebar nav where links are direct children of header-nav
+
+    // For level 1 links (main sidebar), find siblings via parent
+    if (this.level === 1) {
+      const parent = this.parentElement;
+      if (parent) {
+        // Find ALL level 1 links (not just open ones) to clear pending timers
+        const siblingLinks = parent.querySelectorAll<
+          HTMLElement & { open?: boolean; _enterTimer?: any }
+        >(':scope > kyn-header-link');
+
+        siblingLinks.forEach((link) => {
+          if (link !== this) {
+            // Clear any pending timers
+            if ((link as any)._enterTimer) {
+              clearTimeout((link as any)._enterTimer);
+              (link as any)._enterTimer = undefined;
+            }
+            if ((link as any)._leaveTimer) {
+              clearTimeout((link as any)._leaveTimer);
+              (link as any)._leaveTimer = undefined;
+            }
+            // Force close - set property, remove attribute, and force re-render
+            if ((link as any).open) {
+              (link as any).open = false;
+              link.removeAttribute('open');
+              (link as any).requestUpdate?.();
+            }
+          }
+        });
+      }
+      return;
+    }
+
+    // For nested links, find the nearest container and close same-level links
+    const navContainer =
+      this.closest('kyn-header-nav') ||
+      this.closest('kyn-tab-panel') ||
+      this.closest('.menu__content');
+
+    if (navContainer) {
+      const allLinks = navContainer.querySelectorAll<
+        HTMLElement & { open?: boolean; level?: number; _enterTimer?: any }
+      >('kyn-header-link');
+
+      allLinks.forEach((link) => {
+        if (link !== this && (link as any).level === this.level) {
+          // Clear any pending timers
+          if ((link as any)._enterTimer) {
+            clearTimeout((link as any)._enterTimer);
+            (link as any)._enterTimer = undefined;
+          }
+          if ((link as any)._leaveTimer) {
+            clearTimeout((link as any)._leaveTimer);
+            (link as any)._leaveTimer = undefined;
+          }
+          // Force close - set property, remove attribute, and force re-render
+          if ((link as any).open) {
+            (link as any).open = false;
+            link.removeAttribute('open');
+            (link as any).requestUpdate?.();
+          }
+        }
+      });
+    }
+  }
+
   private handlePointerLeave(e: PointerEvent) {
+    // Suppress close during internal view transitions (e.g. "More" → detail view).
+    // The flyout resizes and the cursor may end up outside, but the user's intent
+    // was to drill in — not to leave.
+    if (this._viewChangeInProgress) {
+      return;
+    }
+
+    // check both the link's own prop and parent nav's prop
+    // if either is false, don't auto-close the flyout
+    const shouldAutoCollapse = this._shouldAutoCollapse();
+    if (!shouldAutoCollapse) {
+      return;
+    }
+
     if (
       e.pointerType === 'mouse' &&
       this.slottedEls.length &&
@@ -302,12 +536,40 @@ export class HeaderLink extends LitElement {
     }
   }
 
+  /** check if flyout should auto-collapse based on own prop and parent nav's prop
+   * only applies to links containing categorical nav (kyn-header-categories)
+   * @internal
+   */
+  private _shouldAutoCollapse(): boolean {
+    // Non-categorical links always auto-collapse (preserve original behavior)
+    if (!this.hasCategorical) {
+      return true;
+    }
+
+    if (this.flyoutAutoCollapsed) {
+      return true;
+    }
+
+    const parentNav = this.closest('kyn-header-nav') as
+      | (HTMLElement & { flyoutAutoCollapsed?: boolean })
+      | null;
+    if (parentNav && parentNav.flyoutAutoCollapsed) {
+      return true;
+    }
+
+    return false;
+  }
+
   private handleClick(e: Event) {
     let preventDefault = false;
 
     if (this.slottedEls.length) {
       preventDefault = true;
       e.preventDefault();
+      // Close other open links before toggling this one
+      if (!this.open) {
+        this._closeOtherOpenLinks();
+      }
       this.open = !this.open;
     }
 
@@ -353,6 +615,9 @@ export class HeaderLink extends LitElement {
     this.level = level;
   }
 
+  /** Threshold in pixels - if flyout is within this distance of nav width, stretch to match */
+  private static readonly STRETCH_THRESHOLD = 150;
+
   private _positionMenu() {
     const linkBounds = this.getBoundingClientRect?.();
     const menuEl =
@@ -387,10 +652,33 @@ export class HeaderLink extends LitElement {
         }
       }
 
+      // Only enforce min-height for multi-column mega nav flyouts
+      // (kyn-header-categories), not simple category lists
+      const hasMegaNav = this.querySelector('kyn-header-categories') !== null;
+
+      // Calculate if flyout should stretch to fill available viewport width
+      // Only stretch if the difference is below the threshold
+      let stretchWidth: string | undefined;
+      if (hasMegaNav) {
+        const flyoutNaturalWidth = menuBounds.width;
+        const rightMargin = 16; // Margin from viewport edge
+        const availableWidth = window.innerWidth - rightMargin;
+        const widthDifference = availableWidth - flyoutNaturalWidth;
+
+        if (
+          widthDifference > 0 &&
+          widthDifference <= HeaderLink.STRETCH_THRESHOLD
+        ) {
+          // Stretch flyout to fill available width
+          stretchWidth = availableWidth + 'px';
+        }
+      }
+
       this.menuPosition = {
         top: HeaderHeight + 'px',
         left: '0px',
         minHeight: navMenuHeight + 'px',
+        ...(stretchWidth ? { width: stretchWidth } : {}),
       };
     } else {
       const top = topCandidate < HeaderHeight ? HeaderHeight : topCandidate;
@@ -416,12 +704,68 @@ export class HeaderLink extends LitElement {
     }
   }
 
+  override updated(changedProps: any) {
+    // Re-position after render when the menu has its actual dimensions
+    if (changedProps.has('open') && this.open) {
+      // Use rAF to ensure the DOM has painted
+      requestAnimationFrame(() => {
+        this._positionMenu();
+      });
+    }
+  }
+
   private _handleDocumentClick = (e: Event) => this.handleClickOut(e);
+
+  /** Suppress pointer-leave close when categories switch views (root ↔ detail).
+   * @internal
+   */
+  private _handleNavChange = () => {
+    this._viewChangeInProgress = true;
+    clearTimeout(this._viewChangeTimer);
+    // Allow enough time for the flyout to finish resizing before re-enabling close
+    this._viewChangeTimer = setTimeout(() => {
+      this._viewChangeInProgress = false;
+    }, 500);
+  };
 
   override connectedCallback() {
     super.connectedCallback();
     document.addEventListener('click', this._handleDocumentClick);
     window.addEventListener('resize', this._debounceResize);
+    // Listen for column count changes from slotted kyn-header-categories
+    this.addEventListener(
+      'on-column-count-change',
+      this._handleColumnCountChange
+    );
+    // Suppress flyout close during internal view transitions (e.g. "More" click)
+    this.addEventListener('on-nav-change', this._handleNavChange);
+    // Check for truncation inheritance after DOM is ready
+    queueMicrotask(() => {
+      this._inheritedTruncate = this._isInTruncatingNav();
+    });
+  }
+
+  /** Check if this link is inside a nav with truncate-links attribute
+   * Uses getRootNode to traverse up through shadow DOM boundaries
+   * @internal
+   */
+  private _isInTruncatingNav(): boolean {
+    // First try direct closest (works for top-level links)
+    const parentNav = this.closest('kyn-header-nav');
+    if (parentNav) {
+      return parentNav.hasAttribute('truncate-links');
+    }
+
+    // For nested links, traverse up through shadow DOM boundaries
+    let root = this.getRootNode();
+    while (root instanceof ShadowRoot) {
+      const nav = root.host.closest?.('kyn-header-nav');
+      if (nav) {
+        return nav.hasAttribute('truncate-links');
+      }
+      root = root.host.getRootNode();
+    }
+    return false;
   }
 
   override disconnectedCallback() {
@@ -435,8 +779,18 @@ export class HeaderLink extends LitElement {
       this._leaveTimer = undefined;
     }
 
+    if (this._viewChangeTimer) {
+      clearTimeout(this._viewChangeTimer);
+      this._viewChangeTimer = undefined;
+    }
+
     document.removeEventListener('click', this._handleDocumentClick);
     window.removeEventListener('resize', this._debounceResize);
+    this.removeEventListener(
+      'on-column-count-change',
+      this._handleColumnCountChange
+    );
+    this.removeEventListener('on-nav-change', this._handleNavChange);
     super.disconnectedCallback();
   }
 }

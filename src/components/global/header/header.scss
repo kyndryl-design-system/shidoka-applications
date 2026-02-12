@@ -74,6 +74,7 @@
   display: flex;
   align-items: center;
   text-decoration: none;
+  margin-top: 2px;
 
   &:hover {
     color: var(--kd-color-text-link-level-hover);
@@ -88,6 +89,17 @@
   svg {
     width: auto;
     height: 20px;
+  }
+
+  ::slotted(svg) {
+    width: var(--kyn-header-logo-width, auto);
+    height: auto;
+  }
+
+  ::slotted(*) {
+    display: inline-flex;
+    align-items: center;
+    width: var(--kyn-header-logo-width, auto);
   }
 }
 
