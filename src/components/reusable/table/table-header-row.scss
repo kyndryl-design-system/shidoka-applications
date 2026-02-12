@@ -24,6 +24,17 @@
   }
 }
 
+:host([expandable]) {
+  ::slotted(kyn-th:first-child) {
+    border-top-left-radius: 0px;
+    box-shadow: none;
+  }
+}
+
+.expandable-header-column {
+  border-top-left-radius: 8px;
+}
+
 .checkbox-header-column {
   border-top-left-radius: 8px;
   padding: 0 14px 0 10px;
@@ -32,4 +43,8 @@
     content: '';
     width: 6px;
   }
+}
+
+:host([expandable]) .checkbox-header-column {
+  border-top-left-radius: 0px;
 }

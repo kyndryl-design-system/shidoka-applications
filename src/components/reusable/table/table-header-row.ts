@@ -85,6 +85,7 @@ export class TableHeaderRow extends TableRow {
             .align="${'center'}"
             .width=${this.expandableColumnWidth}
             visiblyHidden
+            class="expandable-header-column"
             >Expandable Header Column
           </kyn-th>`
         : null}
