@@ -9,7 +9,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: '', // When available
     },
   },
   decorators: [
