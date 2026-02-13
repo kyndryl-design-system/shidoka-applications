@@ -162,7 +162,8 @@
 }
 
 // Show resize handle background on hover of the entire kyn-th cell
-:host(:hover) .resize-handle {
+// For stacked children, only show for non-first children (first child has group label)
+:host([stacked-child]:not([stacked-child-first]):hover) .resize-handle {
   background: var(--kd-color-border-level-tertiary);
 }
 
@@ -178,9 +179,24 @@
   height: calc(100% - var(--kyn-group-label-height, 42px));
 }
 
-:host([stacked-child][data-resizing='true']) .resize-handle {
+// During resizing of stacked children, constrain to exclude group label area (except for last column)
+:host([stacked-child]:not([stacked-child-last])[data-resizing='true'])
+  .resize-handle {
+  top: var(--kyn-group-label-height, 42px);
+  height: calc(
+    var(--kyn-resize-handle-height, 100%) - var(--kyn-group-label-height, 42px)
+  );
+  background: var(--kd-color-border-variants-focus);
+}
+
+// Last column of stacked group gets full height during resize
+:host([stacked-child][stacked-child-last][data-resizing='true'])
+  .resize-handle {
   top: 0;
   height: var(--kyn-resize-handle-height, 100%);
+  background: var(--kd-color-border-variants-focus);
+  // Use transform3d to enable hardware acceleration and prevent flicker
+  transform: translateZ(0);
 }
 
 // ==============================
@@ -196,19 +212,16 @@
 // - overflow:visible on stacked children allows the label to extend beyond the cell.
 
 :host([stacked-child]) {
-  vertical-align: top;
+  // vertical-align: top;
   // Allow the group label to overflow beyond this cell
   overflow: visible;
 
   .group-label-bar {
     @include typography.type-ui-02;
-    font-weight: var(--kd-font-weight-medium);
     color: var(--kd-color-text-level-primary);
+    font-weight: var(--kd-color-font-weight-medium);
     padding: var(--kd-spacing-12) var(--kd-spacing-16);
     border-bottom: 1px solid var(--kd-color-border-level-tertiary);
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
     background: var(--kd-color-background-table-header);
     box-sizing: border-box;
   }
@@ -223,6 +236,7 @@
     top: 0;
     left: 0;
     width: var(--kyn-group-label-width, 100%);
+    min-width: 100%;
     z-index: 1;
   }
 
@@ -268,13 +282,9 @@
   padding: var(--kd-spacing-8) var(--kd-spacing-4);
 }
 
-// Group boundary: right border on the last child of each group
-:host([stacked-child-last]:not(:last-of-type)) {
-  border-right: 1px solid var(--kd-color-border-level-tertiary);
-}
-
-// Rounded corners and shadow for LAST child in row only when parent header is not expandable
-:host([stacked-child-last]) .group-label-bar {
+// Rounded corners and shadow for LAST child in the entire row only when parent header is not expandable
+// Only apply to stacked-child-last that is also marked as last in the entire row
+:host([stacked-child-last][data-last-in-row]) .group-label-bar {
   border-top-right-radius: 8px;
   box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
 }

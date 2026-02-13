@@ -332,11 +332,11 @@ export class TableHeader extends LitElement {
       }
 
       // Check if this is the last kyn-th in the entire header row
-      // if (allHeaders[allHeaders.length - 1] === this) {
-      //   this.setAttribute('data-last-in-row', '');
-      // } else {
-      //   this.removeAttribute('data-last-in-row');
-      // }
+      if (allHeaders[allHeaders.length - 1] === this) {
+        this.setAttribute('data-last-in-row', '');
+      } else {
+        this.removeAttribute('data-last-in-row');
+      }
     }
 
     // Read any group attributes already set by kyn-th-group
@@ -369,6 +369,26 @@ export class TableHeader extends LitElement {
       // Measure the spanning width after render
       requestAnimationFrame(() => this._measureGroupSpanWidth());
     }
+
+    // For ALL stacked children (not just first), set up observer to update group dimensions on resize
+    if (this.hasAttribute('stacked-child') && this._groupLabel) {
+      this._setupGroupResizeObserver();
+    }
+  }
+
+  /**
+   * Sets up a ResizeObserver for all stacked children to trigger group dimension updates.
+   * @ignore
+   */
+  private _setupGroupResizeObserver() {
+    if (this._groupLabelResizeObserver) {
+      return; // Already set up
+    }
+
+    this._groupLabelResizeObserver = new ResizeObserver(() => {
+      this._updateGroupLabelDimensions();
+    });
+    this._groupLabelResizeObserver.observe(this);
   }
 
   override disconnectedCallback() {
@@ -404,7 +424,7 @@ export class TableHeader extends LitElement {
     ) as HTMLElement[];
     let totalWidth = 0;
     siblings.forEach((el) => {
-      totalWidth += el.offsetWidth;
+      totalWidth += el.getBoundingClientRect().width;
     });
 
     if (totalWidth > 0) {
@@ -416,20 +436,9 @@ export class TableHeader extends LitElement {
       '.group-label-bar'
     ) as HTMLElement;
     if (labelBar) {
-      const labelHeight = labelBar.offsetHeight;
+      const labelHeight = labelBar.getBoundingClientRect().height;
       // Set on parent group so all children inherit it
       group.style.setProperty('--kyn-group-label-height', `${labelHeight}px`);
-    }
-
-    // Watch the host element (kyn-th cell) for size changes on viewport resize.
-    // When the cell resizes, re-measure the group width and label height.
-    if (!this._groupLabelResizeObserver) {
-      this._groupLabelResizeObserver = new ResizeObserver(() => {
-        this._updateGroupLabelDimensions();
-      });
-      // Observe the host element, not the label bar — the host resizes
-      // with the table while the absolute label bar has a fixed pixel width.
-      this._groupLabelResizeObserver.observe(this);
     }
   }
 
@@ -459,7 +468,7 @@ export class TableHeader extends LitElement {
         ) as HTMLElement[];
         let totalWidth = 0;
         siblings.forEach((el) => {
-          totalWidth += el.offsetWidth;
+          totalWidth += el.getBoundingClientRect().width;
         });
         if (totalWidth > 0) {
           grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
@@ -591,6 +600,11 @@ export class TableHeader extends LitElement {
     // Calculate table width = sum of all locked columns + new resized column width
     this._updateTableWidthFromSnapshot(newWidth);
 
+    // Update group label dimensions during resize to prevent gaps
+    if (this.hasAttribute('stacked-child')) {
+      this._updateGroupLabelDimensions();
+    }
+
     // Store the current resized column width for use in the debounced resize end handler
     this._resizedColumnWidth = newWidth;
   };
@@ -613,10 +627,29 @@ export class TableHeader extends LitElement {
   private _handleResizeHandleHeight(table: any) {
     const tableRect = table.getBoundingClientRect();
     this._tableHeightDuringResize = tableRect.height;
-    this.style.setProperty(
-      '--kyn-resize-handle-height',
-      `${tableRect.height}px`
-    );
+
+    // For stacked children, only extend handle if not overlapping with group label
+    // to prevent flickering during resize - EXCEPT for the last column in the group
+    let handleHeight = tableRect.height;
+    if (this.hasAttribute('stacked-child')) {
+      // Check if this is the last column in the stacked group
+      const isLastInGroup = this.hasAttribute('stacked-child-last');
+
+      // Allow full height for last column, constrain others to avoid flicker
+      if (!isLastInGroup) {
+        const groupLabelHeightStr = getComputedStyle(this).getPropertyValue(
+          '--kyn-group-label-height'
+        );
+        const groupLabelHeight = parseFloat(groupLabelHeightStr) || 42;
+        // Limit handle height to table height minus group label to avoid flicker
+        handleHeight = Math.max(
+          tableRect.height - groupLabelHeight,
+          tableRect.height
+        );
+      }
+    }
+
+    this.style.setProperty('--kyn-resize-handle-height', `${handleHeight}px`);
   }
 
   /** Handle Resize End
