@@ -290,7 +290,7 @@ export class QueryBuilderGroup extends LitElement {
           @on-click=${this._handleAddRule}
         >
           <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
-          ${this.textStrings.addRule || 'Add rule'}
+          ${this.textStrings.addRule || 'Add Rule'}
         </kyn-button>
       </div>
     `;
