@@ -591,9 +591,6 @@ export class TableHeader extends LitElement {
     // Calculate table width = sum of all locked columns + new resized column width
     this._updateTableWidthFromSnapshot(newWidth);
 
-    // Update stacked header group widths during resize
-    this._updateStackedHeaderWidthsDuringResize();
-
     // Store the current resized column width for use in the debounced resize end handler
     this._resizedColumnWidth = newWidth;
   };
@@ -620,37 +617,6 @@ export class TableHeader extends LitElement {
       '--kyn-resize-handle-height',
       `${tableRect.height}px`
     );
-  }
-
-  /**
-   * Updates stacked header group label widths during column resize.
-   * Called during mousemove to keep stacked headers in sync with resizing columns.
-   * @ignore
-   */
-  private _updateStackedHeaderWidthsDuringResize() {
-    const headerRow = this.closest('kyn-header-tr');
-    if (!headerRow) return;
-
-    // Find all groups in this header row
-    const allGroups = Array.from(
-      headerRow.querySelectorAll('kyn-th-group')
-    ) as HTMLElement[];
-
-    if (allGroups.length === 0) return;
-
-    // Update widths for all groups based on current child widths
-    allGroups.forEach((grp) => {
-      const siblings = Array.from(
-        grp.querySelectorAll(':scope > kyn-th')
-      ) as HTMLElement[];
-      let totalWidth = 0;
-      siblings.forEach((el) => {
-        totalWidth += el.offsetWidth;
-      });
-      if (totalWidth > 0) {
-        grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
-      }
-    });
   }
 
   /** Handle Resize End

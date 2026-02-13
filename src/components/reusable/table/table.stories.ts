@@ -962,6 +962,9 @@ export const StackedHeader: Story = {
                 >ID</kyn-th
               > -->
             <kyn-header-tr>
+              <!-- <kyn-th resizable sortable sortKey="id"
+                >First Name Name Long</kyn-th
+              > -->
               <kyn-th-group label="Personal Info">
                 <kyn-th resizable sortable sortKey="id">ID</kyn-th>
                 <kyn-th resizable sortable sortKey="firstName"
@@ -969,12 +972,22 @@ export const StackedHeader: Story = {
                 >
                 <kyn-th resizable sortable sortKey="lastName">Last Name</kyn-th>
               </kyn-th-group>
-              <kyn-th-group label="Employment Details">
+              <kyn-th-group label="Other Info">
                 <kyn-th resizable>Birthday</kyn-th>
                 <kyn-th .align=${'right'} resizable>Age</kyn-th>
               </kyn-th-group>
               <kyn-th-group label="Financial Info">
                 <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
+              </kyn-th-group>
+
+              <kyn-th-group label="Others">
+                <kyn-th resizable>Birthday</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Others">
+                <kyn-th resizable>Birthday</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Others">
+                <kyn-th resizable>Birthday</kyn-th>
               </kyn-th-group>
             </kyn-header-tr>
           </kyn-thead>
@@ -991,6 +1004,9 @@ export const StackedHeader: Story = {
                   <kyn-td>${row.birthday}</kyn-td>
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
                   <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
+                  <kyn-td>${row.id}</kyn-td>
+                  <kyn-td>45</kyn-td>
+                  <kyn-td>45</kyn-td>
                 </kyn-tr>
                 <!-- <kyn-expanded-tr .colSpan=${8}>
                   <div class="center-content">

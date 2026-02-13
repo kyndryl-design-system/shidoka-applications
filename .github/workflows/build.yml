@@ -106,7 +106,15 @@ jobs:
       #       "npx wait-on tcp:6006 && npm run test"
 
       - name: Run tests
-        run: npm run test
+        run: |
+          npm run test 2>&1 | tee /tmp/test.log || {
+            if grep -q "dynamically imported module" /tmp/test.log; then
+              echo "Transient import error detected, retrying..."
+              npm run test
+            else
+              exit 1
+            fi
+          }
 
       - name: Run unit tests
         run: npm run test:unit

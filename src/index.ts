@@ -119,3 +119,8 @@ export { ColorInput } from './components/reusable/colorInput';
 export { MetaData } from './components/reusable/metaData';
 export { Divider } from './components/reusable/divider';
 export { StatusButton } from './components/reusable/statusButton';
+export {
+  QueryBuilder,
+  QueryBuilderGroup,
+  QueryBuilderRule,
+} from './components/reusable/queryBuilder';
