@@ -191,7 +191,7 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind=${'outline'}
+                            kind=${'secondary'}
                             ?disabled=${this.secondaryDisabled}
                             @click=${(e: Event) =>
                               this._closeModal(e, 'secondary')}
@@ -206,7 +206,7 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="cancel"
-                            kind="secondary"
+                            kind=${this.aiConnected ? 'ghost-ai' : 'ghost'}
                             @click=${(e: Event) =>
                               this._closeModal(e, 'cancel')}
                           >
