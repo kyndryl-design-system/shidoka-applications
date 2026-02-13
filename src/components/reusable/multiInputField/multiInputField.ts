@@ -255,6 +255,7 @@ export class MultiInputField extends FormMixin(LitElement) {
       <kyn-tag
         class="indiv-tag"
         tagColor=${tagColor}
+        label=${item}
         noTruncation
         ?clickable=${!this.readonly && !this.disabled}
         ?disabled=${this.disabled}
@@ -262,7 +263,6 @@ export class MultiInputField extends FormMixin(LitElement) {
         @on-close=${() => this.removeAt(index)}
       >
         ${showIcon ? html`${unsafeSVG(iconSvg)}` : ''}
-        <span>${item}</span>
       </kyn-tag>
     `;
   }

@@ -39,10 +39,6 @@ export const ChatModal = {
       updateArgs({ selectedTabId: e.detail.selectedTabId });
     };
 
-    const emitChange = (tabId) => () => {
-      updateArgs({ selectedTabId: tabId });
-    };
-
     return html`
       <kyn-modal
         size="xl"
@@ -138,6 +134,7 @@ const navTabs = (handleTabChange) => html`
 `;
 
 // NOTE: Keep for likely future variant
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const buttonNavTabs = (emitChange, selectedTabId, updateArgs) => html`
   <div
     slot="header-inline"

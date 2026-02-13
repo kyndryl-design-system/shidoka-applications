@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import '../components/reusable/card';
 
-import './sampleCardComponents/vitalCard.sample.ts';
+import './sampleCardComponents/vitalCard.sample.js';
 
 export default {
   title: 'Patterns/Vital Card',
@@ -31,7 +31,7 @@ export const Default = {
   },
 };
 
-export const vitalCardWithTitleTooltip = {
+export const VitalCardWithTitleTooltip = {
   render: () => {
     return html` <kyn-card type="normal">
       <vital-card-sample-component

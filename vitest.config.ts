@@ -48,6 +48,10 @@ export default defineConfig({
     ],
   },
 
+  optimizeDeps: {
+    include: ['flatpickr'],
+  },
+
   server: {
     fs: {
       allow: ['..'],
