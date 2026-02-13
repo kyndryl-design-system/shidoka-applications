@@ -19,6 +19,10 @@ export {
 export { Footer } from './components/global/footer';
 export { UiShell } from './components/global/uiShell';
 export {
+  WorkspaceSwitcher,
+  WorkspaceSwitcherMenuItem,
+} from './components/global/workspaceSwitcher';
+export {
   RadioButton,
   RadioButtonGroup,
 } from './components/reusable/radioButton';

@@ -1,0 +1,178 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+.menu-item {
+  @include typography.type-ui-02;
+
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+
+  &__select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border: none;
+    background: none;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+
+    &:focus-visible {
+      outline: 2px solid var(--kd-color-border-variants-focus);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  &__name {
+    flex: 1;
+    color: var(--kd-color-text-level-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__count {
+    color: var(--kd-color-text-level-secondary);
+    font-weight: 400;
+  }
+
+  &__chevron {
+    display: flex;
+    align-items: center;
+    color: var(--kd-color-text-level-secondary);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__back-icon {
+    display: flex;
+    align-items: center;
+    color: var(--kd-color-text-level-secondary);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // Workspace variant styles (left panel - 25ch max)
+  &--workspace {
+    .menu-item__name {
+      max-width: 25ch;
+
+      @media (max-width: calc(52rem - 0.001px)) {
+        max-width: none;
+      }
+    }
+  }
+
+  // Shared hover/active/selected for workspace + back variants
+  &--workspace,
+  &--back {
+    &:hover:not(.menu-item--selected) {
+      background: var(--kd-color-background-menu-state-hover);
+
+      .menu-item__name,
+      .menu-item__count,
+      .menu-item__chevron,
+      .menu-item__back-icon {
+        color: var(--kd-color-text-level-light);
+      }
+    }
+
+    &:active:not(.menu-item--selected) {
+      background: var(--kd-color-background-menu-state-pressed);
+
+      .menu-item__name,
+      .menu-item__count,
+      .menu-item__chevron,
+      .menu-item__back-icon {
+        color: var(--kd-color-text-level-light);
+      }
+    }
+
+    &.menu-item--selected {
+      background: var(--kd-color-background-menu-state-hover);
+
+      .menu-item__name,
+      .menu-item__count,
+      .menu-item__chevron,
+      .menu-item__back-icon {
+        color: var(--kd-color-text-level-light);
+      }
+    }
+  }
+
+  // Item variant styles (right panel - 40ch max)
+  &--item {
+    padding-right: 8px;
+    .menu-item__name {
+      max-width: 40ch;
+
+      @media (max-width: calc(52rem - 0.001px)) {
+        max-width: none;
+      }
+    }
+
+    &:hover:not(.menu-item--selected) {
+      --kyn-icon-selector-hover-opacity: 1;
+      background: var(--kd-color-background-menu-state-hover);
+
+      .menu-item__name,
+      .menu-item__favorite {
+        color: var(--kd-color-text-level-light);
+      }
+    }
+
+    &:active:not(.menu-item--selected) {
+      background: var(--kd-color-background-menu-state-pressed);
+
+      .menu-item__name,
+      .menu-item__favorite {
+        color: var(--kd-color-text-level-light);
+      }
+    }
+
+    &.menu-item--selected {
+      background: var(--kd-color-background-menu-state-open);
+
+      .menu-item__name {
+        color: var(--kd-color-text-level-primary);
+        font-weight: 500;
+      }
+
+      &:hover {
+        --kyn-icon-selector-hover-opacity: 1;
+
+        .menu-item__favorite {
+          color: var(--kd-color-text-level-primary);
+        }
+      }
+    }
+
+    // Favorite icon selector
+    .menu-item__favorite {
+      color: var(--kd-color-text-level-secondary);
+    }
+  }
+}
