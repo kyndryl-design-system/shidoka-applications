@@ -35,6 +35,7 @@ const meta: Meta = {
     'kyn-table-container': 'kyn-table-container',
     'kyn-table-toolbar': 'kyn-table-toolbar',
     'kyn-th': 'kyn-th',
+    'kyn-th-group': 'kyn-th-group',
     'kyn-tr': 'kyn-tr',
     'kyn-expanded-tr': 'kyn-expanded-tr',
     'kyn-td': 'kyn-td',
@@ -932,6 +933,78 @@ export const ColumnResize: Story = {
         </kyn-table>
       </kyn-table-container>
       <br />
+    `;
+  },
+};
+
+export const StackedHeader: Story = {
+  render: () => {
+    return html`
+      <style>
+        .center-content {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 140px;
+        }
+      </style>
+      <kyn-table-toolbar
+        .tableTitle=${'Stacked Header'}
+        .tableSubtitle=${'Multiple header rows with column grouping'}
+      >
+      </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <!-- Grouped Header Row -->
+            <kyn-header-tr>
+              <!-- <kyn-th resizable sortable sortKey="id" .align=${'center'}
+                >ID</kyn-th
+              > -->
+              <!-- <kyn-header-tr> -->
+              <!-- <kyn-th resizable sortable sortKey="id"
+                >First Name Name Long</kyn-th
+              > -->
+              <kyn-th-group label="Personal Info">
+                <kyn-th sortable sortKey="id" resizable>ID </kyn-th>
+                <kyn-th sortable sortKey="firstName" resizable
+                  >First Name</kyn-th
+                >
+                <kyn-th sortable sortKey="lastName" resizable>Last Name</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Other Info">
+                <kyn-th resizable>Birthday</kyn-th>
+                <kyn-th resizable .align=${'right'}>Age</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Financial Info">
+                <kyn-th resizable .align=${'right'}>Account Deposits($)</kyn-th>
+              </kyn-th-group>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id}>
+                  <!-- <kyn-td>Testing</kyn-td> -->
+                  <kyn-td>${row.id}</kyn-td>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
+                </kyn-tr>
+                <!-- <kyn-expanded-tr .colSpan=${6}>
+                  <div class="center-content">
+                    Put your expanded table content here
+                  </div>
+                </kyn-expanded-tr> -->
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
     `;
   },
 };

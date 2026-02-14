@@ -162,11 +162,129 @@
 }
 
 // Show resize handle background on hover of the entire kyn-th cell
-:host(:hover) .resize-handle {
+// For stacked children, only show for non-first children (first child has group label)
+:host([stacked-child]:not([stacked-child-first]):hover) .resize-handle {
   background: var(--kd-color-border-level-tertiary);
 }
 
 // Show active background when data-resizing attribute is set
 :host([data-resizing='true']) .resize-handle {
   background: var(--kd-color-border-variants-focus);
+}
+
+// For stacked children, constrain resize handle to not extend into group label bar during hover
+// But allow full height when actively resizing
+:host([stacked-child]:not([data-resizing='true'])) .resize-handle {
+  top: var(--kyn-group-label-height, 42px);
+  height: calc(100% - var(--kyn-group-label-height, 42px));
+}
+
+// During resizing of stacked children, constrain to exclude group label area (except for last column)
+:host([stacked-child]:not([stacked-child-last])[data-resizing='true'])
+  .resize-handle {
+  top: var(--kyn-group-label-height, 42px);
+  height: calc(
+    var(--kyn-resize-handle-height, 100%) - var(--kyn-group-label-height, 42px)
+  );
+  background: var(--kd-color-border-variants-focus);
+}
+
+// Last column of stacked group gets full height during resize
+:host([stacked-child][stacked-child-last][data-resizing='true'])
+  .resize-handle {
+  top: 0;
+  height: var(--kyn-resize-handle-height, 100%);
+  background: var(--kd-color-border-variants-focus);
+  // Use transform3d to enable hardware acceleration and prevent flicker
+  transform: translateZ(0);
+}
+
+// ==============================
+// Stacked header (kyn-th inside kyn-th-group)
+// ==============================
+
+// Strategy:
+// - The first child in each group renders a .group-label-bar that is absolutely
+//   positioned and spans the full width of all sibling columns (via JS-measured
+//   --kyn-group-label-width). This label is centered across the entire group.
+// - Non-first children render an invisible .group-label-bar spacer of the same
+//   height so all cells have consistent top padding.
+// - overflow:visible on stacked children allows the label to extend beyond the cell.
+
+:host([stacked-child]) {
+  // vertical-align: top;
+  // Allow the group label to overflow beyond this cell
+  overflow: visible;
+
+  .group-label-bar {
+    @include typography.type-ui-02;
+    color: var(--kd-color-text-level-primary);
+    font-weight: var(--kd-color-font-weight-medium);
+    padding: var(--kd-spacing-12) var(--kd-spacing-16);
+    border-bottom: 1px solid var(--kd-color-border-level-tertiary);
+    background: var(--kd-color-background-table-header);
+    box-sizing: border-box;
+  }
+}
+
+// The first child positions its label absolutely to span the full group width.
+:host([stacked-child-first]) {
+  position: relative;
+
+  .group-label-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--kyn-group-label-width, 100%);
+    min-width: 100%;
+    z-index: 1;
+  }
+
+  // Push .container down to make room for the label
+  .container {
+    margin-top: var(--kyn-group-label-height, 42px);
+  }
+}
+
+// Apply rounded corners and shadow to FIRST child in row only when parent header is not expandable
+:host([stacked-child-first][data-header-not-expandable][data-first-in-row])
+  .group-label-bar {
+  border-top-left-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
+}
+
+// Non-first children: hide the label bar entirely and use margin-top
+// driven by --kyn-group-label-height (set by JS ResizeObserver on the
+// first child) so all children stay aligned even when text wraps.
+:host([stacked-child]:not([stacked-child-first])) {
+  .group-label-bar {
+    display: none;
+  }
+
+  .container {
+    margin-top: var(--kyn-group-label-height, 42px);
+  }
+}
+
+:host([stacked-child][data-group-align='left']) .group-label-bar {
+  text-align: left;
+}
+
+:host([stacked-child][data-group-align='center']) .group-label-bar {
+  text-align: center;
+}
+
+:host([stacked-child][data-group-align='right']) .group-label-bar {
+  text-align: right;
+}
+
+:host([dense][stacked-child]) .group-label-bar {
+  padding: var(--kd-spacing-8) var(--kd-spacing-4);
+}
+
+// Rounded corners and shadow for LAST child in the entire row only when parent header is not expandable
+// Only apply to stacked-child-last that is also marked as last in the entire row
+:host([stacked-child-last][data-last-in-row]) .group-label-bar {
+  border-top-right-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
 }
