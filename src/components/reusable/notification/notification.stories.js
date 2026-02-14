@@ -13,7 +13,7 @@ const notificationBodyMsg =
   'Message, this is an additional line Ipsum iMessage, Lorem Ipsum is simply dummy and typesetting industry.';
 
 export default {
-  title: 'Components/Notification',
+  title: 'Components/Feedback & Status/Notification',
   component: 'kyn-notification',
   subcomponents: {
     'kyn-notification-container': 'kyn-notification-container',

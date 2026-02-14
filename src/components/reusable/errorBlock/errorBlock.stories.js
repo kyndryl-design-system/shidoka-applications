@@ -6,7 +6,7 @@ import '../button';
 import warningImg from '@kyndryl-design-system/shidoka-foundation/assets/svg/mascot/warning.svg';
 
 export default {
-  title: 'Components/Error Block',
+  title: 'Components/Feedback & Status/Error Block',
   component: 'kyn-error',
   parameters: {
     design: {

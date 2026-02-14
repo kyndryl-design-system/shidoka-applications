@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 
 export default {
-  title: 'Components/Code View/Inline',
+  title: 'Components/Data Display/Code View/Inline',
   component: 'kyn-inline-code-view',
   parameters: {
     design: {

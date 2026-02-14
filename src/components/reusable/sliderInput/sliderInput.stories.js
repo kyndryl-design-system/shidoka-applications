@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
-  title: 'Components/Slider Input',
+  title: 'Components/Form Inputs/Slider Input',
   component: 'kyn-slider-input',
   argTypes: {
     value: {

@@ -4,7 +4,7 @@ import { ValidationArgs } from '../../../common/helpers/helpers';
 import './index';
 
 export default {
-  title: 'Components/Color Input',
+  title: 'Components/Form Inputs/Color Input',
   component: 'kyn-color-input',
   argTypes: {
     ...ValidationArgs,

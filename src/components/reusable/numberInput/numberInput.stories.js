@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
-  title: 'Components/Number Input',
+  title: 'Components/Form Inputs/Number Input',
   component: 'kyn-number-input',
   argTypes: {
     size: {

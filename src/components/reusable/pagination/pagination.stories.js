@@ -3,7 +3,7 @@ import './index';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Pagination',
+  title: 'Components/Navigation/Pagination',
   component: 'kyn-pagination',
   parameters: {
     design: {

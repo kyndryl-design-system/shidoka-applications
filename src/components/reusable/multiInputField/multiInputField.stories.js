@@ -9,7 +9,7 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 
 export default {
-  title: 'Components/Multi Input Field',
+  title: 'Components/Form Inputs/Multi Input Field',
   component: 'kyn-multi-input-field',
   argTypes: {
     inputType: { control: 'select', options: ['email', 'default'] },

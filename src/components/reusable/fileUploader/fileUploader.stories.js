@@ -5,7 +5,7 @@ import './index';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
-  title: 'Components/File Uploader',
+  title: 'Components/Form Inputs/File Uploader',
   component: 'kyn-file-uploader',
   subcomponents: {
     FileUploaderListContainer: 'kyn-file-uploader-list-container',

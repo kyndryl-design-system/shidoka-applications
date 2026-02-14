@@ -9,7 +9,7 @@ import '../modal';
 import '../sideDrawer';
 
 export default {
-  title: 'Components/Date Picker',
+  title: 'Components/Form Inputs/Date Picker',
   component: 'kyn-date-picker',
   parameters: {
     design: {
