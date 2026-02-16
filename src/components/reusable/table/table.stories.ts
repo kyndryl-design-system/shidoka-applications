@@ -889,7 +889,7 @@ export const ColumnResize: Story = {
               >
               <kyn-th
                 resizable
-                minWidth="150px"
+                resizeMinWidth="150px"
                 resizeMaxWidth="300px"
                 @on-column-resize=${(e: any) =>
                   action(e.type)({ ...e, detail: e.detail })}
@@ -1035,20 +1035,50 @@ export const StackedHeader: Story = {
                   resizable
                   sortable
                   sortKey="id"
+                  width="100px"
+                  resizeMaxWidth="300px"
                   @on-sort-changed=${handleSortByIdNumber}
                   >ID</kyn-th
                 >
-                <kyn-th sortable sortKey="firstName" resizable
+                <kyn-th
+                  sortable
+                  sortKey="firstName"
+                  resizable
+                  width="250px"
+                  resizeMinWidth="250px"
                   >First Name</kyn-th
                 >
-                <kyn-th sortable sortKey="lastName" resizable>Last Name</kyn-th>
+                <kyn-th
+                  sortable
+                  sortKey="lastName"
+                  resizable
+                  width="250px"
+                  resizeMinWidth="250px"
+                  >Last Name</kyn-th
+                >
               </kyn-th-group>
               <kyn-th-group label="Other Info">
-                <kyn-th resizable>Birthday</kyn-th>
-                <kyn-th resizable .align=${'right'}>Age</kyn-th>
+                <kyn-th resizable resizeMinWidth="150px" resizeMaxWidth="300px"
+                  >Birthday</kyn-th
+                >
+                <kyn-th
+                  resizable
+                  .align=${'right'}
+                  width="120px"
+                  resizeMinWidth="120px"
+                  resizeMaxWidth="300px"
+                  >Age</kyn-th
+                >
               </kyn-th-group>
               <kyn-th-group label="Financial Info">
-                <kyn-th resizable .align=${'right'}>Account Deposits($)</kyn-th>
+                <kyn-th
+                  resizable
+                  .align=${'right'}
+                  width="280px"
+                  resizeMinWidth="250px"
+                  resizeMaxWidth="450px"
+                  >Account Deposits($)</kyn-th
+                >
               </kyn-th-group>
             </kyn-header-tr>
           </kyn-thead>
@@ -1065,7 +1095,7 @@ export const StackedHeader: Story = {
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
                   <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
-                <kyn-expanded-tr .colSpan=${7}>
+                <kyn-expanded-tr .colSpan=${3}>
                   <div class="center-content">
                     Put your expanded table content here
                   </div>

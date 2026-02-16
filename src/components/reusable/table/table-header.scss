@@ -157,19 +157,23 @@
   height: var(--kyn-resize-handle-height, 100%);
 }
 
-.resize-handle:hover {
-  background: var(--kd-color-border-level-tertiary);
-}
-
-// Show resize handle background on hover of the entire kyn-th cell
-// For stacked children, only show for non-first children (first child has group label)
 :host([stacked-child]:not([stacked-child-first]):hover) .resize-handle {
   background: var(--kd-color-border-level-tertiary);
 }
 
-// Show active background when data-resizing attribute is set
+// For stacked first child, show resize handle when hovering container OR when hovering the resize handle itself
+:host([stacked-child-first]) .container:hover ~ .resize-handle,
+:host([stacked-child-first]) .resize-handle:hover {
+  background: var(--kd-color-border-level-tertiary);
+}
+
+// For non-stacked headers, show resize handle on hover
+:host(:not([stacked-child]):hover) .resize-handle {
+  background: var(--kd-color-border-level-tertiary);
+}
+
 :host([data-resizing='true']) .resize-handle {
-  background: var(--kd-color-border-variants-focus);
+  background: var(--kd-color-border-variants-focus) !important;
 }
 
 // For stacked children, constrain resize handle to not extend into group label bar during hover
@@ -177,26 +181,6 @@
 :host([stacked-child]:not([data-resizing='true'])) .resize-handle {
   top: var(--kyn-group-label-height, 42px);
   height: calc(100% - var(--kyn-group-label-height, 42px));
-}
-
-// During resizing of stacked children, constrain to exclude group label area (except for last column)
-:host([stacked-child]:not([stacked-child-last])[data-resizing='true'])
-  .resize-handle {
-  top: var(--kyn-group-label-height, 42px);
-  height: calc(
-    var(--kyn-resize-handle-height, 100%) - var(--kyn-group-label-height, 42px)
-  );
-  background: var(--kd-color-border-variants-focus);
-}
-
-// Last column of stacked group gets full height during resize
-:host([stacked-child][stacked-child-last][data-resizing='true'])
-  .resize-handle {
-  top: 0;
-  height: var(--kyn-resize-handle-height, 100%);
-  background: var(--kd-color-border-variants-focus);
-  // Use transform3d to enable hardware acceleration and prevent flicker
-  transform: translateZ(0);
 }
 
 // Stacked header (kyn-th inside kyn-th-group)

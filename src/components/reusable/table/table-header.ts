@@ -312,17 +312,16 @@ export class TableHeader extends LitElement {
     // Detect if this header is inside a stacked header group
     if (this.closest('kyn-th-group')) {
       this.setAttribute('stacked-child', '');
-    }
 
-    // Check if parent kyn-header-tr is not expandable
-    const headerRow = this.closest('kyn-header-tr') as any;
-    if (headerRow && !headerRow.hasAttribute('expandable')) {
-      this.setAttribute('data-header-not-expandable', '');
-    } else if (headerRow) {
-      this.removeAttribute('data-header-not-expandable');
+      // Only set data-header-not-expandable on stacked children
+      const headerRow = this.closest('kyn-header-tr') as any;
+      if (headerRow && !headerRow.hasAttribute('expandable')) {
+        this.setAttribute('data-header-not-expandable', '');
+      }
     }
 
     // Check if this is the first kyn-th in the entire header row
+    const headerRow = this.closest('kyn-header-tr') as any;
     if (headerRow) {
       this._updateHeaderRowAttributes(headerRow);
     }
@@ -371,7 +370,7 @@ export class TableHeader extends LitElement {
   }
 
   /**
-   * Updates header row attributes like data-first-in-row, data-last-in-row, and data-last-group.
+   * Updates header row attributes like data-first-in-row, and data-last-group.
    * Should be called whenever the DOM structure changes.
    * @ignore
    */
@@ -380,17 +379,22 @@ export class TableHeader extends LitElement {
       headerRow.querySelectorAll('kyn-th')
     ) as Element[];
 
-    if (allHeaders[0] === this) {
+    // Only set data-first-in-row on stacked children
+    if (allHeaders[0] === this && this.hasAttribute('stacked-child')) {
       this.setAttribute('data-first-in-row', '');
     } else {
       this.removeAttribute('data-first-in-row');
     }
 
-    if (allHeaders[allHeaders.length - 1] === this) {
-      this.setAttribute('data-last-in-row', '');
-    } else {
-      this.removeAttribute('data-last-in-row');
-    }
+    // Only set data-last-in-row on stacked children
+    // if (
+    //   allHeaders[allHeaders.length - 1] === this &&
+    //   this.hasAttribute('stacked-child')
+    // ) {
+    //   this.setAttribute('data-last-in-row', '');
+    // } else {
+    //   this.removeAttribute('data-last-in-row');
+    // }
 
     // Mark the first child of the last stacked group
     const stackedFirstChildren = allHeaders.filter((h) =>
