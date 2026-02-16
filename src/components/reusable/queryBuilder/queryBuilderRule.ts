@@ -219,8 +219,8 @@ export class QueryBuilderRule extends LitElement {
       <kyn-dropdown
         class="qb-rule__field"
         name=${`${this.rule.id}-field`}
-        label=${this.textStrings.selectField || 'Select field'}
-        placeholder=${this.textStrings.selectField || 'Select field'}
+        label=${this.textStrings.selectField || 'Select Field'}
+        placeholder=${this.textStrings.selectField || 'Select Field'}
         size=${this.size}
         hideTags
         hideLabel
@@ -244,8 +244,8 @@ export class QueryBuilderRule extends LitElement {
       <kyn-dropdown
         class="qb-rule__operator"
         name=${`${this.rule.id}-operator`}
-        label=${this.textStrings.selectOperator || 'Select operator'}
-        placeholder=${this.textStrings.selectOperator || 'Select operator'}
+        label=${this.textStrings.selectOperator || 'Select Operator'}
+        placeholder=${this.textStrings.selectOperator || 'Select Operator'}
         size=${this.size}
         hideTags
         hideLabel
@@ -675,7 +675,7 @@ export class QueryBuilderRule extends LitElement {
               <kyn-button
                 kind="outline"
                 size=${sizeToButtonSize[this.size]}
-                description=${this.textStrings.addRule || 'Add rule'}
+                description=${this.textStrings.addRule || 'Add Rule'}
                 ?disabled=${this.disabled || this.rule.disabled}
                 @on-click=${this._handleAddRule}
               >
