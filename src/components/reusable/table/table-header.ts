@@ -318,6 +318,11 @@ export class TableHeader extends LitElement {
       if (headerRow && !headerRow.hasAttribute('expandable')) {
         this.setAttribute('data-header-not-expandable', '');
       }
+
+      // Check if header row has checkboxSelection
+      if (headerRow && headerRow.hasAttribute('checkboxSelection')) {
+        this.setAttribute('data-checkbox-selection', '');
+      }
     }
 
     // Check if this is the first kyn-th in the entire header row

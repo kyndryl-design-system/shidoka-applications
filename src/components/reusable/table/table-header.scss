@@ -269,3 +269,18 @@
   border-top-right-radius: 8px;
   box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
 }
+
+// Remove border radius for first and last group when checkboxSelection/expandable
+:host(
+    [stacked-child-first][data-header-not-expandable][data-first-in-row][data-checkbox-selection]
+  )
+  .group-label-bar {
+  border-top-left-radius: 0;
+}
+
+:host(
+    [stacked-child-first][data-header-not-expandable][data-last-group][data-checkbox-selection]
+  )
+  .group-label-bar {
+  border-top-left-radius: 0;
+}
