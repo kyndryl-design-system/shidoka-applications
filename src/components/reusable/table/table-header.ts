@@ -422,13 +422,28 @@ export class TableHeader extends LitElement {
       this._updateGroupLabelDimensions();
     });
     this._groupLabelResizeObserver.observe(this);
+
+    // listen for window resize to catch viewport changes
+    window.addEventListener('resize', this._handleWindowResize);
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     this._groupAttrObserver?.disconnect();
     this._groupLabelResizeObserver?.disconnect();
+    window.removeEventListener('resize', this._handleWindowResize);
   }
+
+  /**
+   * Handle window resize to update group label dimensions.
+   * @ignore
+   */
+  private _handleWindowResize = () => {
+    const headerRow = this.closest('kyn-header-tr');
+    if (headerRow && this.hasAttribute('stacked-child')) {
+      this._updateGroupLabelDimensions();
+    }
+  };
 
   /**
    * MutationObserver for group attribute changes.
@@ -479,7 +494,7 @@ export class TableHeader extends LitElement {
    * Called by ResizeObserver when the host cell resizes (on viewport change).
    * Measures ALL group label heights in the same header row and applies
    * the maximum height to all groups, ensuring uniform row height.
-   * two rAF calls to ensure layout fully settles before measuring.
+   * rAF calls to ensure layout fully settles before measuring.
    * @ignore
    */
   private _updateGroupLabelDimensions() {
@@ -505,38 +520,6 @@ export class TableHeader extends LitElement {
         });
         if (totalWidth > 0) {
           grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
-        }
-      });
-
-      // Second rAF: Wait for width change to cause text wrapping,
-      // then measure heights from the FIRST child that actually has stacked-child-first attribute
-      requestAnimationFrame(() => {
-        let maxHeight = 0;
-
-        // Find the first-child of each group (marked with stacked-child-first)
-        allGroups.forEach((grp) => {
-          const firstChildElement = grp.querySelector(
-            ':scope > kyn-th[stacked-child-first]'
-          ) as HTMLElement;
-
-          if (firstChildElement && firstChildElement.shadowRoot) {
-            const labelBar = firstChildElement.shadowRoot.querySelector(
-              '.group-label-bar'
-            ) as HTMLElement;
-
-            if (labelBar) {
-              const labelHeight = labelBar.offsetHeight;
-              maxHeight = Math.max(maxHeight, labelHeight);
-            }
-          }
-        });
-
-        // Apply the maximum height to ALL groups in the row
-        // This ensures all column headers in the row have uniform height
-        if (maxHeight > 0) {
-          allGroups.forEach((grp) => {
-            grp.style.setProperty('--kyn-group-label-height', `${maxHeight}px`);
-          });
         }
       });
     });

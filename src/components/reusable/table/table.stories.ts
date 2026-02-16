@@ -938,7 +938,30 @@ export const ColumnResize: Story = {
 };
 
 export const StackedHeader: Story = {
-  render: () => {
+  args: {
+    rows: characters,
+  },
+  render: function (args) {
+    const [{ rows }, updateArgs] = useArgs();
+    let tableData = rows;
+
+    const handleSortByIdNumber = (e: Event) => {
+      action(e.type)({ ...e, detail: (e as CustomEvent).detail });
+      const detail = (e as CustomEvent).detail;
+      const sortKey = detail.sortKey;
+      const sortDirection = detail.sortDirection;
+      const sorted = [...characters];
+
+      // Sorting the data
+      const direction = sortDirection === 'asc' ? 1 : -1;
+      sorted.sort((a: any, b: any) => {
+        return (a[sortKey] - b[sortKey]) * direction;
+      });
+
+      tableData = sorted;
+      updateArgs({ rows: sorted });
+    };
+
     return html`
       <style>
         .center-content {
@@ -959,17 +982,15 @@ export const StackedHeader: Story = {
             <kyn-header-tr>
               <kyn-th-group label="Personal Info">
                 <kyn-th .align=${'center'}>ID</kyn-th>
-                <kyn-th sortable sortKey="firstName" resizable
-                  >First Name</kyn-th
-                >
-                <kyn-th sortable sortKey="lastName" resizable>Last Name</kyn-th>
+                <kyn-th>First Name</kyn-th>
+                <kyn-th>Last Name</kyn-th>
               </kyn-th-group>
               <kyn-th-group label="Other Info">
-                <kyn-th resizable>Birthday</kyn-th>
-                <kyn-th resizable .align=${'right'}>Age</kyn-th>
+                <kyn-th>Birthday</kyn-th>
+                <kyn-th .align=${'right'}>Age</kyn-th>
               </kyn-th-group>
               <kyn-th-group label="Financial Info">
-                <kyn-th resizable .align=${'right'}>Account Deposits($)</kyn-th>
+                <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
               </kyn-th-group>
             </kyn-header-tr>
           </kyn-thead>
@@ -1009,7 +1030,14 @@ export const StackedHeader: Story = {
               .expandableColumnWidth=${'64px'}
             >
               <kyn-th-group label="Personal Info">
-                <kyn-th .align=${'center'}>ID</kyn-th>
+                <kyn-th
+                  .align=${'center'}
+                  resizable
+                  sortable
+                  sortKey="id"
+                  @on-sort-changed=${handleSortByIdNumber}
+                  >ID</kyn-th
+                >
                 <kyn-th sortable sortKey="firstName" resizable
                   >First Name</kyn-th
                 >
@@ -1026,7 +1054,7 @@ export const StackedHeader: Story = {
           </kyn-thead>
           <kyn-tbody>
             ${repeat(
-              characters,
+              tableData,
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr .rowId=${row.id} expandable checkboxSelection>
@@ -1037,7 +1065,7 @@ export const StackedHeader: Story = {
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
                   <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
-                <kyn-expanded-tr .colSpan=${6}>
+                <kyn-expanded-tr .colSpan=${7}>
                   <div class="center-content">
                     Put your expanded table content here
                   </div>
