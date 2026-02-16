@@ -58,6 +58,10 @@ export class HeaderFlyout extends LitElement {
   @property({ type: String })
   accessor backText = 'Back';
 
+  /** Removes padding from the flyout menu. */
+  @property({ type: Boolean })
+  accessor noPadding = false;
+
   /**
    * Queries any slotted HTML elements.
    * @ignore
@@ -75,6 +79,7 @@ export class HeaderFlyout extends LitElement {
       menu__content: true,
       'menu__content--left': this.anchorLeft,
       slotted: this.slottedElements.length,
+      'no-padding': this.noPadding,
     };
 
     return html`

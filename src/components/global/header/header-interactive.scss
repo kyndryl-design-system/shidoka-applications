@@ -85,7 +85,7 @@
     flex-direction: column;
     gap: 2px;
 
-    &.slotted {
+    &.slotted:not(.no-padding) {
       padding: 8px 12px;
     }
 
@@ -193,5 +193,14 @@
 
   @media (min-width: 42rem) {
     display: none;
+
+    .menu__content.no-padding & {
+      padding: 0;
+
+      .go-back {
+        margin: 0 8px;
+        width: calc(100% - 16px);
+      }
+    }
   }
 }

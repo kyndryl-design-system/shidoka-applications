@@ -64,6 +64,19 @@
   &.only-visible-on-hover.persist-when-checked.icon-selector--checked {
     opacity: 1;
   }
+
+  // When disabled + onlyVisibleOnHover: fully hidden, non-interactive
+  &.only-visible-on-hover[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // Exception: checked + persistWhenChecked → visible but non-interactive
+  &.only-visible-on-hover.persist-when-checked.icon-selector--checked[disabled] {
+    opacity: 1;
+    pointer-events: none;
+    cursor: default;
+  }
 }
 
 .icon {
