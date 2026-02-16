@@ -294,7 +294,7 @@ export class TableHeader extends LitElement {
 
   /**
    * The group label text when this header is inside a kyn-th-group.
-   * Set automatically by the parent kyn-th-group component.
+   * Set by the parent kyn-th-group component.
    * @ignore
    */
   @state()
@@ -324,19 +324,7 @@ export class TableHeader extends LitElement {
 
     // Check if this is the first kyn-th in the entire header row
     if (headerRow) {
-      const allHeaders = Array.from(headerRow.querySelectorAll('kyn-th'));
-      if (allHeaders[0] === this) {
-        this.setAttribute('data-first-in-row', '');
-      } else {
-        this.removeAttribute('data-first-in-row');
-      }
-
-      // Check if this is the last kyn-th in the entire header row
-      if (allHeaders[allHeaders.length - 1] === this) {
-        this.setAttribute('data-last-in-row', '');
-      } else {
-        this.removeAttribute('data-last-in-row');
-      }
+      this._updateHeaderRowAttributes(headerRow);
     }
 
     // Read any group attributes already set by kyn-th-group
@@ -374,6 +362,51 @@ export class TableHeader extends LitElement {
     if (this.hasAttribute('stacked-child') && this._groupLabel) {
       this._setupGroupResizeObserver();
     }
+
+    // Update header row attributes whenever group attributes change
+    const headerRow = this.closest('kyn-header-tr');
+    if (headerRow) {
+      this._updateHeaderRowAttributes(headerRow);
+    }
+  }
+
+  /**
+   * Updates header row attributes like data-first-in-row, data-last-in-row, and data-last-group.
+   * Should be called whenever the DOM structure changes.
+   * @ignore
+   */
+  private _updateHeaderRowAttributes(headerRow: Element) {
+    const allHeaders = Array.from(
+      headerRow.querySelectorAll('kyn-th')
+    ) as Element[];
+
+    if (allHeaders[0] === this) {
+      this.setAttribute('data-first-in-row', '');
+    } else {
+      this.removeAttribute('data-first-in-row');
+    }
+
+    if (allHeaders[allHeaders.length - 1] === this) {
+      this.setAttribute('data-last-in-row', '');
+    } else {
+      this.removeAttribute('data-last-in-row');
+    }
+
+    // Mark the first child of the last stacked group
+    const stackedFirstChildren = allHeaders.filter((h) =>
+      h.hasAttribute('stacked-child-first')
+    );
+    if (stackedFirstChildren.length > 0) {
+      const lastGroupFirst =
+        stackedFirstChildren[stackedFirstChildren.length - 1];
+      if (this === lastGroupFirst) {
+        this.setAttribute('data-last-group', '');
+      } else {
+        this.removeAttribute('data-last-group');
+      }
+    } else {
+      this.removeAttribute('data-last-group');
+    }
   }
 
   /**
@@ -382,7 +415,7 @@ export class TableHeader extends LitElement {
    */
   private _setupGroupResizeObserver() {
     if (this._groupLabelResizeObserver) {
-      return; // Already set up
+      return;
     }
 
     this._groupLabelResizeObserver = new ResizeObserver(() => {
@@ -446,7 +479,7 @@ export class TableHeader extends LitElement {
    * Called by ResizeObserver when the host cell resizes (on viewport change).
    * Measures ALL group label heights in the same header row and applies
    * the maximum height to all groups, ensuring uniform row height.
-   * Uses two rAF calls to ensure layout fully settles before measuring.
+   * two rAF calls to ensure layout fully settles before measuring.
    * @ignore
    */
   private _updateGroupLabelDimensions() {
@@ -460,7 +493,7 @@ export class TableHeader extends LitElement {
 
     if (allGroups.length === 0) return;
 
-    // First rAF: Update widths for all groups
+    //Update widths for all groups
     requestAnimationFrame(() => {
       allGroups.forEach((grp) => {
         const siblings = Array.from(
@@ -787,9 +820,7 @@ export class TableHeader extends LitElement {
         }
       : undefined;
 
-    // Show group-label-bar for ALL stacked children so the bar height
-    // is consistent. CSS controls visibility: first child shows text,
-    // other children hide text but keep the height.
+    // Show group-label-bar for ALL stacked children
     const isStacked = this.hasAttribute('stacked-child');
 
     return html`

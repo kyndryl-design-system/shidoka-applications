@@ -6,27 +6,10 @@ import { TABLE_CELL_ALIGN } from './defs';
 
 /**
  * `kyn-th-group` Web Component.
- *
  * Represents a stacked/grouped header that spans multiple columns.
  * Uses `display: contents` so it is invisible to the CSS table layout,
  * allowing its child `kyn-th` elements to participate directly as table-cells.
  * The group label is passed to children, which render it above their content.
- *
- * Usage:
- * ```html
- * <kyn-thead>
- *   <kyn-header-tr>
- *     <kyn-th-group label="Personal Info">
- *       <kyn-th sortable sortKey="firstName">First Name</kyn-th>
- *       <kyn-th sortable sortKey="lastName">Last Name</kyn-th>
- *     </kyn-th-group>
- *     <kyn-th-group label="Employment">
- *       <kyn-th>Job Title</kyn-th>
- *       <kyn-th>Department</kyn-th>
- *     </kyn-th-group>
- *   </kyn-header-tr>
- * </kyn-thead>
- * ```
  *
  * @slot unnamed - Slot for child `kyn-th` elements that belong to this group.
  */
@@ -63,7 +46,7 @@ export class TableHeaderGroup extends LitElement {
       el.setAttribute('data-group-label', this.label || '');
       el.setAttribute('data-group-align', this.align || 'center');
 
-      // Mark first / last child in the group for border styling
+      // first / last child in the group for border styling
       if (index === 0) {
         el.setAttribute('stacked-child-first', '');
       } else {

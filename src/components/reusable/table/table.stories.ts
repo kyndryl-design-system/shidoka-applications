@@ -956,17 +956,9 @@ export const StackedHeader: Story = {
       <kyn-table-container>
         <kyn-table>
           <kyn-thead>
-            <!-- Grouped Header Row -->
             <kyn-header-tr>
-              <!-- <kyn-th resizable sortable sortKey="id" .align=${'center'}
-                >ID</kyn-th
-              > -->
-              <!-- <kyn-header-tr> -->
-              <!-- <kyn-th resizable sortable sortKey="id"
-                >First Name Name Long</kyn-th
-              > -->
               <kyn-th-group label="Personal Info">
-                <kyn-th sortable sortKey="id" resizable>ID </kyn-th>
+                <kyn-th .align=${'center'}>ID</kyn-th>
                 <kyn-th sortable sortKey="firstName" resizable
                   >First Name</kyn-th
                 >
@@ -987,19 +979,69 @@ export const StackedHeader: Story = {
               (row: any) => row.id,
               (row: any) => html`
                 <kyn-tr .rowId=${row.id}>
-                  <!-- <kyn-td>Testing</kyn-td> -->
-                  <kyn-td>${row.id}</kyn-td>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td>${row.firstName}</kyn-td>
                   <kyn-td>${row.lastName}</kyn-td>
                   <kyn-td>${row.birthday}</kyn-td>
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
                   <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
-                <!-- <kyn-expanded-tr .colSpan=${6}>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+
+      <br />
+      <br />
+
+      <kyn-table-toolbar
+        .tableTitle=${'Stacked Header with Expandable Rows and CheckboxSelection'}
+        .tableSubtitle=${'Multiple header rows with column grouping'}
+      >
+      </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <kyn-header-tr
+              expandable
+              checkboxSelection
+              .expandableColumnWidth=${'64px'}
+            >
+              <kyn-th-group label="Personal Info">
+                <kyn-th .align=${'center'}>ID</kyn-th>
+                <kyn-th sortable sortKey="firstName" resizable
+                  >First Name</kyn-th
+                >
+                <kyn-th sortable sortKey="lastName" resizable>Last Name</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Other Info">
+                <kyn-th resizable>Birthday</kyn-th>
+                <kyn-th resizable .align=${'right'}>Age</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Financial Info">
+                <kyn-th resizable .align=${'right'}>Account Deposits($)</kyn-th>
+              </kyn-th-group>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id} expandable checkboxSelection>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
+                </kyn-tr>
+                <kyn-expanded-tr .colSpan=${6}>
                   <div class="center-content">
                     Put your expanded table content here
                   </div>
-                </kyn-expanded-tr> -->
+                </kyn-expanded-tr>
               `
             )}
           </kyn-tbody>

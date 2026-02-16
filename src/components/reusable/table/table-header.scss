@@ -199,29 +199,20 @@
   transform: translateZ(0);
 }
 
-// ==============================
 // Stacked header (kyn-th inside kyn-th-group)
-// ==============================
 
-// Strategy:
 // - The first child in each group renders a .group-label-bar that is absolutely
 //   positioned and spans the full width of all sibling columns (via JS-measured
-//   --kyn-group-label-width). This label is centered across the entire group.
-// - Non-first children render an invisible .group-label-bar spacer of the same
-//   height so all cells have consistent top padding.
-// - overflow:visible on stacked children allows the label to extend beyond the cell.
+//   --kyn-group-label-width).
 
 :host([stacked-child]) {
-  // vertical-align: top;
-  // Allow the group label to overflow beyond this cell
   overflow: visible;
 
   .group-label-bar {
     @include typography.type-ui-02;
     color: var(--kd-color-text-level-primary);
-    font-weight: var(--kd-color-font-weight-medium);
-    padding: var(--kd-spacing-12) var(--kd-spacing-16);
-    border-bottom: 1px solid var(--kd-color-border-level-tertiary);
+    font-weight: var(--kd-font-weight-medium);
+    padding: var(--kd-spacing-8) var(--kd-spacing-16);
     background: var(--kd-color-background-table-header);
     box-sizing: border-box;
   }
@@ -254,8 +245,7 @@
 }
 
 // Non-first children: hide the label bar entirely and use margin-top
-// driven by --kyn-group-label-height (set by JS ResizeObserver on the
-// first child) so all children stay aligned even when text wraps.
+
 :host([stacked-child]:not([stacked-child-first])) {
   .group-label-bar {
     display: none;
@@ -282,9 +272,16 @@
   padding: var(--kd-spacing-8) var(--kd-spacing-4);
 }
 
-// Rounded corners and shadow for LAST child in the entire row only when parent header is not expandable
-// Only apply to stacked-child-last that is also marked as last in the entire row
-:host([stacked-child-last][data-last-in-row]) .group-label-bar {
+// Rounded corners for LAST group in stacked header
+
+:host([stacked-child-first][data-header-not-expandable][data-last-group])
+  .group-label-bar {
+  border-top-right-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
+}
+
+:host([stacked-child-first]:not([data-header-not-expandable])[data-last-group])
+  .group-label-bar {
   border-top-right-radius: 8px;
   box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
 }
