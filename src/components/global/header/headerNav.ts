@@ -14,6 +14,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cl
 /**
  * Container for header navigation links.
  * @slot unnamed - This element has a slot.
+ * @fires on-nav-toggle - Fires when the nav menu opens or closes. Detail: `{ open }`.
  */
 @customElement('kyn-header-nav')
 export class HeaderNav extends LitElement {

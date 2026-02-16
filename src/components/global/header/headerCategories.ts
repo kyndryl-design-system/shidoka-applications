@@ -115,6 +115,9 @@ interface SlottedCategoryData {
  *       - inject a "More" link when there are additional links
  *   - "More" switches to a detail view for that category, and the Back button
  *     returns to the root view.
+ *
+ * @fires on-nav-change - Fires when the active category/tab view changes. Detail: `{ activeMegaTabId, activeMegaCategoryId, view }`.
+ * @fires on-column-count-change - Fires when the computed column count changes on resize. Detail: `{ columnCount }`.
  */
 
 @customElement('kyn-header-categories')
