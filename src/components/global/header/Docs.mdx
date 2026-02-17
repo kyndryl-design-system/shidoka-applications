@@ -175,7 +175,26 @@ built-in icon + label layout for that link.
 
 ---
 
+## CSS Custom Properties
+
+The following CSS custom properties can be set on `kyn-header-categories` to customize column sizing:
+
+| Property                             | Default                           | Description                                                                                                          |
+| ------------------------------------ | --------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `--kyn-header-category-column-width` | `300px` (2-col) / `350px` (1-col) | Width of each column. Applies to 1 and 2 column layouts. 3+ columns use equal-width (`1fr`) to fill available space. |
+| `--kyn-header-category-column-gap`   | `32px`                            | Horizontal gap between columns.                                                                                      |
+
+```css
+/* Example: wider columns */
+kyn-header-categories {
+  --kyn-header-category-column-width: 400px;
+  --kyn-header-category-column-gap: 48px;
+}
+```
+
+---
+
 ## Troubleshooting
 
 - If nothing renders in JSON mode, confirm your `tabsConfig` keys match `activeMegaTabId`.
-- If your renderer isn’t applied, ensure `linkRenderer` is passed as a JavaScript function prop, not as a quoted string
+- If your renderer isn't applied, ensure `linkRenderer` is passed as a JavaScript function prop, not as a quoted string

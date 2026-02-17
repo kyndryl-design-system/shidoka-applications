@@ -367,6 +367,17 @@ kyn-text-input {
   }
 }
 
+// Two-column categorical flyout: constrained width (~2x single-column)
+@media (min-width: 42rem) {
+  :host([has-multi-column][data-flyout-columns='2'])
+    .menu.open
+    .menu__content.slotted {
+    // 230px sidebar + 2×350px columns + 32px gap + 16px padding
+    width: calc(230px + 2 * #{$single-column-width} + 32px + 16px);
+    max-width: calc(230px + 2 * #{$single-column-width} + 32px + 16px);
+  }
+}
+
 .go-back {
   margin-bottom: 8px;
 }

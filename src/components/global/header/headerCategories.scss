@@ -6,7 +6,7 @@ $row-gap: 16px;
 $min-column-width: 150px;
 $max-column-width: 400px;
 
-// Fixed column widths per column count
+// Fixed column widths per column count (defaults for CSS custom properties)
 $column-width-1: 350px;
 $column-width-2: 300px;
 
@@ -71,7 +71,7 @@ slot.header-categories__slot::slotted(*) {
 
 :host([layout='masonry']) .header-categories__inner {
   column-width: auto;
-  column-gap: $column-gap;
+  column-gap: var(--kyn-header-category-column-gap, $column-gap);
 
   // Position dividers absolutely so they don't affect column balancing
   --kyn-header-divider-position: absolute;
@@ -84,6 +84,13 @@ slot.header-categories__slot::slotted(*) {
 // Column count driven by data-columns attribute
 :host([layout='masonry'][data-columns='1']) .header-categories__inner {
   column-count: 1;
+}
+:host([layout='masonry'][data-columns='2']) {
+  width: auto;
+  max-width: calc(
+    2 * var(--kyn-header-category-column-width, #{$column-width-2}) +
+      var(--kyn-header-category-column-gap, #{$column-gap})
+  );
 }
 :host([layout='masonry'][data-columns='2']) .header-categories__inner {
   column-count: 2;
@@ -109,16 +116,22 @@ slot.header-categories__slot::slotted(*) {
 
 :host([layout='grid']) .header-categories__inner {
   display: grid;
-  gap: $row-gap $column-gap;
+  gap: $row-gap var(--kyn-header-category-column-gap, $column-gap);
   grid-template-columns: minmax($min-column-width, $max-column-width);
 }
 
 // 1-2 columns use fixed widths; 3+ use 1fr to avoid overflow
 :host([layout='grid'][data-columns='1']) .header-categories__inner {
-  grid-template-columns: $column-width-1;
+  grid-template-columns: var(
+    --kyn-header-category-column-width,
+    $column-width-1
+  );
 }
 :host([layout='grid'][data-columns='2']) .header-categories__inner {
-  grid-template-columns: repeat(2, $column-width-2);
+  grid-template-columns: repeat(
+    2,
+    var(--kyn-header-category-column-width, $column-width-2)
+  );
 }
 @for $i from 3 through 10 {
   :host([layout='grid'][data-columns='#{$i}']) .header-categories__inner {

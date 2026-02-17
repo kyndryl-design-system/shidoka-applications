@@ -658,8 +658,9 @@ export class HeaderLink extends LitElement {
 
       // Calculate if flyout should stretch to fill available viewport width
       // Only stretch if the difference is below the threshold
+      // Skip stretching for 2-column layouts to keep them constrained
       let stretchWidth: string | undefined;
-      if (hasMegaNav) {
+      if (hasMegaNav && this.flyoutColumns !== 2) {
         const flyoutNaturalWidth = menuBounds.width;
         const rightMargin = 16; // Margin from viewport edge
         const availableWidth = window.innerWidth - rightMargin;
