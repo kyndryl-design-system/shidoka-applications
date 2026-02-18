@@ -122,6 +122,14 @@ export class QueryBuilder extends LitElement {
   @property({ type: String })
   accessor size: QueryBuilderSize = 'xs';
 
+  /**
+   * Minimum number of dropdown options before a search input is shown.
+   * Applies to field, value, and multi-select dropdowns within rules.
+   * When `0`, search is always shown. Default `25`.
+   */
+  @property({ type: Number })
+  accessor searchThreshold = 25;
+
   /** Text string customization for i18n. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -167,6 +175,7 @@ export class QueryBuilder extends LitElement {
             .depth=${0}
             .maxDepth=${this.maxDepth}
             .size=${this.size}
+            .searchThreshold=${this.searchThreshold}
             isRoot
             ?showCloneButton=${this.showCloneButtons}
             ?showLockButton=${this.showLockButtons}
