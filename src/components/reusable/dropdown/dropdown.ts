@@ -85,6 +85,16 @@ export class Dropdown extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor searchable = false;
 
+  /**
+   * Minimum number of options required before the search input is shown.
+   * Only applies when `searchable` is `true`. When set, the search input
+   * will only render if the number of slotted options meets or exceeds
+   * this threshold. If `0` or not set, search is always shown when
+   * `searchable` is `true`.
+   */
+  @property({ type: Number })
+  accessor searchThreshold = 0;
+
   /** Makes the dropdown enhanced. */
   @property({ type: Boolean })
   accessor enhanced = false;
@@ -226,6 +236,18 @@ export class Dropdown extends FormMixin(LitElement) {
         'kyn-dropdown-option, kyn-enhanced-dropdown-option'
       )
     );
+  }
+
+  /**
+   * Whether the search input should be visible. Returns `true` when
+   * `searchable` is enabled and the option count meets or exceeds
+   * `searchThreshold` (or threshold is unset/0).
+   * @ignore
+   */
+  protected get _isSearchVisible(): boolean {
+    if (!this.searchable) return false;
+    if (!this.searchThreshold) return true;
+    return this.options.length >= this.searchThreshold;
   }
 
   /**
@@ -455,7 +477,7 @@ export class Dropdown extends FormMixin(LitElement) {
         ?readonly=${!this.disabled && this.readonly}
         ?open=${this.open}
         ?inline=${this.inline}
-        ?searchable=${this.searchable}
+        ?searchable=${this._isSearchVisible}
       >
         <label
           id="label-${this.name}"
@@ -512,10 +534,11 @@ export class Dropdown extends FormMixin(LitElement) {
                 ?disabled=${this.disabled}
                 ?invalid=${this._isInvalid}
                 tabindex=${ifDefined(
-                  this.disabled ? undefined : this.searchable ? -1 : 0
+                  this.disabled ? undefined : this._isSearchVisible ? -1 : 0
                 )}
                 @mousedown=${(e: MouseEvent) => {
-                  if (!this.searchable && !this.readonly) e.preventDefault();
+                  if (!this._isSearchVisible && !this.readonly)
+                    e.preventDefault();
                 }}
                 aria-readonly=${this.readonly}
                 @blur=${(e: any) => e.stopPropagation()}
@@ -538,7 +561,7 @@ export class Dropdown extends FormMixin(LitElement) {
                       </button>
                     `
                   : null}
-                ${this.searchable
+                ${this._isSearchVisible
                   ? html`
                       <input
                         class="search"
@@ -869,7 +892,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
   override firstUpdated() {
     if (this.placeholder === '') {
-      if (this.searchable) {
+      if (this._isSearchVisible) {
         this.placeholder = 'Search';
       } else {
         this.placeholder = this.multiple ? 'Select items' : 'Select an option';
@@ -959,7 +982,7 @@ export class Dropdown extends FormMixin(LitElement) {
     if (!this.canOpen()) return;
 
     this.open = !this.open;
-    if (this.searchable) this.searchEl.focus();
+    if (this._isSearchVisible) this.searchEl.focus();
     else this.buttonEl.focus();
   }
 
@@ -1174,7 +1197,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
       if (keyCode === ESCAPE_KEY_CODE) {
         this.open = false;
-        (this.searchable ? this.searchEl : this.buttonEl)?.focus?.();
+        (this._isSearchVisible ? this.searchEl : this.buttonEl)?.focus?.();
         this.assistiveText = 'Dropdown menu options.';
         return;
       }
@@ -1347,7 +1370,7 @@ export class Dropdown extends FormMixin(LitElement) {
       case ESCAPE_KEY_CODE: {
         this.open = false;
 
-        if (this.searchable) {
+        if (this._isSearchVisible) {
           this.searchEl?.focus?.();
         } else {
           this.buttonEl?.focus?.();
@@ -1692,7 +1715,7 @@ export class Dropdown extends FormMixin(LitElement) {
 
     // reset focus
     if (!this.multiple)
-      (this.searchable ? this.searchEl : this.buttonEl).focus();
+      (this._isSearchVisible ? this.searchEl : this.buttonEl).focus();
   }
 
   private _validate(interacted: boolean, report: boolean) {
@@ -1811,7 +1834,7 @@ export class Dropdown extends FormMixin(LitElement) {
       if (this.open) {
         this.options.forEach((o) => (o.highlighted = false));
 
-        if (!this.searchable && this.listboxEl) {
+        if (!this._isSearchVisible && this.listboxEl) {
           this.listboxEl.focus({ preventScroll: true });
           this.assistiveText =
             'Selecting items. Use up and down arrow keys to navigate.';
@@ -1849,7 +1872,7 @@ export class Dropdown extends FormMixin(LitElement) {
       this.updateChildOptions();
     }
 
-    if (changedProps.has('open') && this.open && !this.searchable) {
+    if (changedProps.has('open') && this.open && !this._isSearchVisible) {
       this.listboxEl?.focus({ preventScroll: true });
     }
   }
@@ -2020,7 +2043,7 @@ export class Dropdown extends FormMixin(LitElement) {
       }
     }
 
-    if (this.searchable && this.text) {
+    if (this._isSearchVisible && this.text) {
       this.searchText = this.text === this.placeholder ? '' : this.text;
       this.searchEl.value = this.searchText;
     }
