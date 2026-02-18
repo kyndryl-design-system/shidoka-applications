@@ -87,10 +87,11 @@ export class Dropdown extends FormMixin(LitElement) {
 
   /**
    * Minimum number of options required before the search input is shown.
-   * Only applies when `searchable` is `true`. When set, the search input
-   * will only render if the number of slotted options meets or exceeds
-   * this threshold. If `0` or not set, search is always shown when
-   * `searchable` is `true`.
+   * When set to a value greater than `0`, the search input will only
+   * render if the number of slotted options meets or exceeds this
+   * threshold — this implicitly enables search without needing
+   * `searchable`. When `0` or not set, search visibility is controlled
+   * solely by the `searchable` prop.
    */
   @property({ type: Number })
   accessor searchThreshold = 0;
@@ -239,12 +240,17 @@ export class Dropdown extends FormMixin(LitElement) {
   }
 
   /**
-   * Whether the search input should be visible. Returns `true` when
-   * `searchable` is enabled and the option count meets or exceeds
-   * `searchThreshold` (or threshold is unset/0).
+   * Whether the search input should be visible. Returns `true` when:
+   * - `searchable` is `true` and no threshold is set (always show), or
+   * - `searchable` is `true` and options count meets the threshold, or
+   * - `searchThreshold` > 0 and options count meets the threshold
+   *   (implicitly enables search without needing `searchable`).
    * @ignore
    */
   protected get _isSearchVisible(): boolean {
+    if (this.searchThreshold && this.options.length >= this.searchThreshold) {
+      return true;
+    }
     if (!this.searchable) return false;
     if (!this.searchThreshold) return true;
     return this.options.length >= this.searchThreshold;

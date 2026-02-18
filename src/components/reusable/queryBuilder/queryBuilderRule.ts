@@ -226,7 +226,6 @@ export class QueryBuilderRule extends LitElement {
         label=${this.textStrings.selectField || 'Select Field'}
         placeholder=${this.textStrings.selectField || 'Select Field'}
         size=${this.size}
-        searchable
         filterSearch
         searchThreshold=${this.searchThreshold}
         hideTags
@@ -490,7 +489,6 @@ export class QueryBuilderRule extends LitElement {
         name=${`${this.rule.id}-value`}
         label=${field.label || this.textStrings.selectValue || 'Select value'}
         size=${this.size}
-        searchable
         filterSearch
         searchThreshold=${this.searchThreshold}
         hideTags
@@ -525,7 +523,6 @@ export class QueryBuilderRule extends LitElement {
         name=${`${this.rule.id}-value`}
         label=${field.label || this.textStrings.selectValues || 'Select values'}
         size=${this.size}
-        searchable
         filterSearch
         searchThreshold=${this.searchThreshold}
         multiple
