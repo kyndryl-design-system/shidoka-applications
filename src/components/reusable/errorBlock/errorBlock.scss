@@ -11,11 +11,14 @@
   place-items: center;
 
   .error-title {
+    margin: 16px 0 8px;
+
     p {
       @include typography.type-headline-01;
       font-weight: var(--kd-font-weight-bold);
       color: var(--kd-color-text-variant-brand);
       text-align: center;
+      margin: 0;
     }
   }
 
@@ -27,11 +30,12 @@
   .error-action-buttons {
     display: flex;
     gap: 16px;
-    flex-wrap: wrap;
     justify-content: center;
 
     @media (max-width: calc(42rem - 0.001px)) {
-      kyn-button {
+      flex-wrap: wrap;
+
+      ::slotted(kyn-button) {
         width: 100%;
         flex-grow: 1;
       }
