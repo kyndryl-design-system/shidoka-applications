@@ -30,16 +30,15 @@
     height: 1px;
     background: var(--kd-color-border-level-tertiary);
 
-    // Default: in-flow divider flush with link hover area (single-column nav flyouts, etc.)
-    margin: 6px 0;
+    // Default: in-flow divider inset from edges (standard nav flyouts)
+    margin: var(--kyn-header-divider-margin, 6px 8px);
 
-    // Masonry override via CSS custom properties: absolute positioning
+    // Masonry/grid override via CSS custom properties: absolute positioning
     // removes divider from layout flow so it doesn't affect column balancing.
     position: var(--kyn-header-divider-position, static);
     bottom: var(--kyn-header-divider-bottom, auto);
     left: var(--kyn-header-divider-left, auto);
     right: var(--kyn-header-divider-right, auto);
-    margin: var(--kyn-header-divider-margin, 6px 0);
   }
 }
 
@@ -67,7 +66,7 @@
   color: var(--kd-color-text-variant-brand);
   font-weight: var(--kd-font-weight-medium);
   text-transform: uppercase;
-  padding: 7px 6px 0 8px;
+  padding: 7px 6px var(--kyn-header-category-heading-pb, 7px) 8px;
 
   &.left-padding {
     padding-left: 36px;

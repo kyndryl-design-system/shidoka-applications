@@ -142,11 +142,12 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Layout mode for categories.
-   * - "masonry" (default): CSS multi-column with fixed column-count based on category count
+   * - "" (default): Legacy responsive column-width layout for standard mega-nav
+   * - "masonry": CSS multi-column with fixed column-count based on category count
    * - "grid": CSS Grid with fixed columns and row-based wrapping
    */
   @property({ type: String, reflect: true })
-  accessor layout: 'masonry' | 'grid' = 'masonry';
+  accessor layout: 'masonry' | 'grid' | '' = '';
 
   /** Max number of columns to display when layout="grid" or layout="masonry". */
   @property({ type: Number })

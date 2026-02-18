@@ -108,14 +108,20 @@ export class Header extends LitElement {
     this.requestUpdate();
   }
 
-  /** Auto-style SVGs and images inside the logo slot so they scale to the
-   *  container regardless of hardcoded width/height attributes.
+  /** Auto-style nested SVGs/images inside wrapper elements in the logo slot
+   *  so they scale to fill their container. Directly-slotted SVGs and images
+   *  are handled by ::slotted() CSS rules which respect --kyn-header-logo-width.
    *  @internal */
   private _handleLogoSlotChange(e: Event) {
     this.handleSlotChange();
 
     const slot = e.target as HTMLSlotElement;
     slot.assignedElements().forEach((el) => {
+      // Skip directly-slotted SVGs/IMGs — these are styled via ::slotted()
+      // CSS rules which properly respect --kyn-header-logo-width
+      if (el instanceof SVGElement || el instanceof HTMLImageElement) return;
+
+      // For nested SVGs/imgs inside wrapper elements, scale to fill container
       el.querySelectorAll('svg').forEach((svg) => {
         svg.style.width = '100%';
         svg.style.height = 'auto';
