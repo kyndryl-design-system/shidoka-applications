@@ -358,8 +358,8 @@ export class TableHeader extends LitElement {
     this._isGroupFirst = this.hasAttribute('stacked-child-first');
 
     if (this._isGroupFirst && this._groupLabel) {
-      // Measure the spanning width after render
-      requestAnimationFrame(() => this._measureGroupSpanWidth());
+      // Measure the group label height
+      requestAnimationFrame(() => this._measureGroupHeight());
     }
 
     // For ALL stacked children (not just first), set up observer to update group dimensions on resize
@@ -485,26 +485,25 @@ export class TableHeader extends LitElement {
   private _groupLabelResizeObserver?: ResizeObserver;
 
   /**
-   * Measures the total width of all kyn-th children in the same group
-   * and sets CSS custom properties so the first child's label can span
-   * across all sibling columns, centered.
+   * Measure the label bar height for consistent spacing across all siblings
    * @ignore
    */
-  private _measureGroupSpanWidth() {
+  private _measureGroupHeight() {
     const group = this.closest('kyn-th-group');
     if (!group) return;
 
-    const siblings = Array.from(
-      group.querySelectorAll(':scope > kyn-th')
-    ) as HTMLElement[];
-    let totalWidth = 0;
-    siblings.forEach((el) => {
-      totalWidth += el.getBoundingClientRect().width;
-    });
+    // this._setGroupLabelWidth([group]);  // Remove it
+    // const siblings = Array.from(
+    //   group.querySelectorAll(':scope > kyn-th')
+    // ) as HTMLElement[];
+    // let totalWidth = 0;
+    // siblings.forEach((el) => {
+    //   totalWidth += el.getBoundingClientRect().width;
+    // });
 
-    if (totalWidth > 0) {
-      group.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
-    }
+    // if (totalWidth > 0) {
+    //   group.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
+    // }
 
     // Measure the label bar height for consistent spacing across all siblings
     const labelBar = this.shadowRoot?.querySelector(

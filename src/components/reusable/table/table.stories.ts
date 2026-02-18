@@ -1035,7 +1035,7 @@ export const StackedHeader: Story = {
                   resizable
                   sortable
                   sortKey="id"
-                  width="100px"
+                  minWidth="100px"
                   resizeMaxWidth="300px"
                   @on-sort-changed=${handleSortByIdNumber}
                   >ID</kyn-th
@@ -1044,16 +1044,11 @@ export const StackedHeader: Story = {
                   sortable
                   sortKey="firstName"
                   resizable
-                  width="250px"
+                  minWidth="250px"
                   resizeMinWidth="250px"
                   >First Name</kyn-th
                 >
-                <kyn-th
-                  sortable
-                  sortKey="lastName"
-                  resizable
-                  width="250px"
-                  resizeMinWidth="250px"
+                <kyn-th sortable sortKey="lastName" resizable minWidth="250px"
                   >Last Name</kyn-th
                 >
               </kyn-th-group>
@@ -1064,9 +1059,8 @@ export const StackedHeader: Story = {
                 <kyn-th
                   resizable
                   .align=${'right'}
-                  width="120px"
-                  resizeMinWidth="120px"
-                  resizeMaxWidth="300px"
+                  minWidth="120px"
+                  resizeMaxWidth="200px"
                   >Age</kyn-th
                 >
               </kyn-th-group>
@@ -1074,8 +1068,7 @@ export const StackedHeader: Story = {
                 <kyn-th
                   resizable
                   .align=${'right'}
-                  width="280px"
-                  resizeMinWidth="250px"
+                  minWidth="120px"
                   resizeMaxWidth="450px"
                   >Account Deposits($)</kyn-th
                 >
