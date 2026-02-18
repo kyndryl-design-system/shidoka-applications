@@ -280,6 +280,12 @@ export class TableHeader extends LitElement {
     if (this.minWidth && changedProperties.has('minWidth')) {
       this.style.setProperty('--kyn-th-min-width', this.minWidth);
     }
+
+    // Check if group label is truncated after render
+    if (this._isGroupFirst && this._groupLabel) {
+      console.log('Checking truncation for', this._groupLabel);
+      requestAnimationFrame(() => this._checkGroupLabelTruncation());
+    }
   }
 
   getTextContent() {
@@ -306,6 +312,14 @@ export class TableHeader extends LitElement {
    */
   @state()
   private accessor _isGroupFirst = false;
+
+  /**
+   * Whether the group label text is truncated.
+   * Used to determine if a title attribute should be shown.
+   * @ignore
+   */
+  @state()
+  private accessor _isGroupLabelTruncated = false;
 
   override connectedCallback() {
     super.connectedCallback();
@@ -372,6 +386,21 @@ export class TableHeader extends LitElement {
     if (headerRow) {
       this._updateHeaderRowAttributes(headerRow);
     }
+  }
+
+  /**
+   * Checks if the group label text is truncated.
+   * @ignore
+   */
+  private _checkGroupLabelTruncation() {
+    const groupLabelBar = this.shadowRoot?.querySelector('.group-label-bar');
+    if (!groupLabelBar) {
+      this._isGroupLabelTruncated = false;
+      return;
+    }
+
+    const isTruncated = groupLabelBar.scrollWidth > groupLabelBar.clientWidth;
+    this._isGroupLabelTruncated = isTruncated;
   }
 
   /**
@@ -469,6 +498,10 @@ export class TableHeader extends LitElement {
     const headerRow = this.closest('kyn-header-tr');
     if (headerRow && this.hasAttribute('stacked-child')) {
       this._updateGroupLabelDimensions();
+      // Check truncation when window resizes
+      if (this._isGroupFirst && this._groupLabel) {
+        this._checkGroupLabelTruncation();
+      }
     }
   };
 
@@ -834,7 +867,10 @@ export class TableHeader extends LitElement {
 
     return html`
       ${isStacked
-        ? html`<div class="group-label-bar">
+        ? html`<div
+            class="group-label-bar"
+            title=${this._isGroupLabelTruncated ? this._groupLabel : ''}
+          >
             ${this._groupLabel || html`&nbsp;`}
           </div>`
         : null}

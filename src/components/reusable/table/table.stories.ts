@@ -985,11 +985,15 @@ export const StackedHeader: Story = {
                 <kyn-th>First Name</kyn-th>
                 <kyn-th>Last Name</kyn-th>
               </kyn-th-group>
-              <kyn-th-group label="Other Info">
+              <kyn-th-group
+                label="Other Info Informações financeiras Informações financeiras"
+              >
                 <kyn-th>Birthday</kyn-th>
                 <kyn-th .align=${'right'}>Age</kyn-th>
               </kyn-th-group>
-              <kyn-th-group label="Informações financeiras">
+              <kyn-th-group
+                label="Informações financeiras Informações financeiras Informações financeiras"
+              >
                 <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
               </kyn-th-group>
             </kyn-header-tr>
