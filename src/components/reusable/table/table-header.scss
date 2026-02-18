@@ -213,6 +213,9 @@
     width: var(--kyn-group-label-width, 100%);
     min-width: 100%;
     z-index: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   // Push .container down to make room for the label
@@ -268,6 +271,23 @@
   .group-label-bar {
   border-top-right-radius: 8px;
   box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
+}
+
+// Remove top-right border radius when non-grouped kyn-th is present after last group
+:host(
+    [stacked-child-first][data-header-not-expandable][data-last-group][data-has-following-th]
+  )
+  .group-label-bar {
+  border-top-right-radius: 0px;
+}
+
+:host(
+    [stacked-child-first]:not(
+        [data-header-not-expandable]
+      )[data-last-group][data-has-following-th]
+  )
+  .group-label-bar {
+  border-top-right-radius: 0px;
 }
 
 // Remove border radius for first and last group when checkboxSelection/expandable

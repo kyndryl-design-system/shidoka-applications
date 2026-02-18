@@ -391,16 +391,6 @@ export class TableHeader extends LitElement {
       this.removeAttribute('data-first-in-row');
     }
 
-    // Only set data-last-in-row on stacked children
-    // if (
-    //   allHeaders[allHeaders.length - 1] === this &&
-    //   this.hasAttribute('stacked-child')
-    // ) {
-    //   this.setAttribute('data-last-in-row', '');
-    // } else {
-    //   this.removeAttribute('data-last-in-row');
-    // }
-
     // Mark the first child of the last stacked group
     const stackedFirstChildren = allHeaders.filter((h) =>
       h.hasAttribute('stacked-child-first')
@@ -410,12 +400,40 @@ export class TableHeader extends LitElement {
         stackedFirstChildren[stackedFirstChildren.length - 1];
       if (this === lastGroupFirst) {
         this.setAttribute('data-last-group', '');
+
+        // Check if there's a kyn-th after stacked group
+        const hasFollowingNonGroupedTh =
+          this._hasFollowingNonGroupedTh(allHeaders);
+        if (hasFollowingNonGroupedTh) {
+          this.setAttribute('data-has-following-th', '');
+        } else {
+          this.removeAttribute('data-has-following-th');
+        }
       } else {
         this.removeAttribute('data-last-group');
+        this.removeAttribute('data-has-following-th');
       }
     } else {
       this.removeAttribute('data-last-group');
+      this.removeAttribute('data-has-following-th');
     }
+  }
+
+  /**
+   * Checks if there's a non-stacked kyn-th following the current element.
+   * @ignore
+   */
+  private _hasFollowingNonGroupedTh(allHeaders: Element[]): boolean {
+    const currentIndex = allHeaders.indexOf(this);
+    if (currentIndex === -1) return false;
+
+    // Look for any kyn-th after current index that is NOT a stacked-child
+    for (let i = currentIndex + 1; i < allHeaders.length; i++) {
+      if (!allHeaders[i].hasAttribute('stacked-child')) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
