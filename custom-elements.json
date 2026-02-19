@@ -1043,7 +1043,7 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Fires when the computed column count changes on resize. Detail: `{ columnCount }`."
+              "description": "@internal Fires when the computed column count changes on resize. Detail: `{ columnCount }`."
             },
             {
               "name": "on-nav-change",
@@ -1128,14 +1128,6 @@
       ],
       "exports": [
         {
-          "kind": "js",
-          "name": "HeaderCategories",
-          "declaration": {
-            "name": "HeaderCategories",
-            "module": "src/components/global/header/headerCategories.ts"
-          }
-        },
-        {
           "kind": "custom-element-definition",
           "name": "kyn-header-categories",
           "declaration": {
@@ -1199,16 +1191,6 @@
               "attribute": "showDivider"
             },
             {
-              "kind": "field",
-              "name": "noAutoDivider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "Disable automatic divider detection (default: true for backwards compatibility).\nWhen true, only shows divider if showDivider is explicitly set.\nWhen false, dividers auto-detect based on sibling categories.",
-              "attribute": "noAutoDivider"
-            },
-            {
               "kind": "method",
               "name": "_handleIconSlotChange",
               "privacy": "private",
@@ -1254,15 +1236,6 @@
               "default": "false",
               "description": "Show bottom border/divider. Set to true to force show, false to force hide. By default, dividers are automatically shown when followed by another category.",
               "fieldName": "showDivider"
-            },
-            {
-              "name": "noAutoDivider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "Disable automatic divider detection (default: true for backwards compatibility).\nWhen true, only shows divider if showDivider is explicitly set.\nWhen false, dividers auto-detect based on sibling categories.",
-              "fieldName": "noAutoDivider"
             }
           ],
           "superclass": {
@@ -1816,16 +1789,6 @@
             },
             {
               "kind": "field",
-              "name": "linkTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title attribute for the link, shown as a tooltip on hover. Useful for truncated text.",
-              "attribute": "link-title"
-            },
-            {
-              "kind": "field",
               "name": "truncate",
               "type": {
                 "text": "boolean"
@@ -1834,16 +1797,6 @@
               "description": "When true, long text truncates with ellipsis. Default: false (text wraps normally).",
               "attribute": "truncate",
               "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "flyoutAutoCollapsed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "When true (default), the flyout auto-closes when the mouse leaves (original behavior).\nWhen false, the flyout stays open and doesn't auto-close on mouse leave.",
-              "attribute": "flyoutAutoCollapsed"
             },
             {
               "kind": "field",
@@ -2100,15 +2053,6 @@
               "fieldName": "leftPadding"
             },
             {
-              "name": "link-title",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title attribute for the link, shown as a tooltip on hover. Useful for truncated text.",
-              "fieldName": "linkTitle"
-            },
-            {
               "name": "truncate",
               "type": {
                 "text": "boolean"
@@ -2116,15 +2060,6 @@
               "default": "false",
               "description": "When true, long text truncates with ellipsis. Default: false (text wraps normally).",
               "fieldName": "truncate"
-            },
-            {
-              "name": "flyoutAutoCollapsed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "When true (default), the flyout auto-closes when the mouse leaves (original behavior).\nWhen false, the flyout stays open and doesn't auto-close on mouse leave.",
-              "fieldName": "flyoutAutoCollapsed"
             }
           ],
           "superclass": {
@@ -2171,23 +2106,13 @@
           "members": [
             {
               "kind": "field",
-              "name": "flyoutAutoCollapsed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).\nWhen false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.",
-              "attribute": "flyoutAutoCollapsed"
-            },
-            {
-              "kind": "field",
-              "name": "defaultOpen",
+              "name": "autoOpenFlyout",
               "type": {
                 "text": "string"
               },
-              "default": "'default'",
-              "description": "Which flyout to expand when flyoutAutoCollapsed is false.\n'default' opens the first expandable item. Any other value matches\nagainst the id attribute of a child kyn-header-link.",
-              "attribute": "default-open"
+              "default": "''",
+              "description": "Controls which flyout (if any) auto-opens when the nav renders.\n- '' (empty, default): original behavior — flyouts auto-collapse on mouse leave, nothing auto-opens.\n- 'default': auto-open the first categorical flyout; flyouts stay open on mouse leave.\n- '<id>': auto-open the flyout whose kyn-header-link id matches; flyouts stay open on mouse leave.",
+              "attribute": "auto-open-flyout"
             },
             {
               "kind": "field",
@@ -2245,22 +2170,13 @@
           ],
           "attributes": [
             {
-              "name": "flyoutAutoCollapsed",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "true",
-              "description": "When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).\nWhen false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.",
-              "fieldName": "flyoutAutoCollapsed"
-            },
-            {
-              "name": "default-open",
+              "name": "auto-open-flyout",
               "type": {
                 "text": "string"
               },
-              "default": "'default'",
-              "description": "Which flyout to expand when flyoutAutoCollapsed is false.\n'default' opens the first expandable item. Any other value matches\nagainst the id attribute of a child kyn-header-link.",
-              "fieldName": "defaultOpen"
+              "default": "''",
+              "description": "Controls which flyout (if any) auto-opens when the nav renders.\n- '' (empty, default): original behavior — flyouts auto-collapse on mouse leave, nothing auto-opens.\n- 'default': auto-open the first categorical flyout; flyouts stay open on mouse leave.\n- '<id>': auto-open the flyout whose kyn-header-link id matches; flyouts stay open on mouse leave.",
+              "fieldName": "autoOpenFlyout"
             },
             {
               "name": "truncate-links",
@@ -3291,6 +3207,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/workspaceSwitcher/index.ts",
       "declarations": [],
       "exports": [
@@ -3649,69 +3628,6 @@
           "declaration": {
             "name": "WorkspaceSwitcherMenuItem",
             "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]

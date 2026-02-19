@@ -30,7 +30,6 @@ const starSelector = (checked = false) => html`
 const args = {
   rootUrl: '/',
   appTitle: 'Application',
-  flyoutAutoCollapsed: false,
 };
 
 export default {
@@ -52,8 +51,7 @@ export const SlottedHTMLSwitcher = {
           >${unsafeSVG(bridgeLogo)}</span
         >
         <kyn-header-nav
-          .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
-          default-open="favorites"
+          auto-open-flyout="favorites"
           truncate-links
           style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
         >
@@ -853,8 +851,7 @@ export const JSONSwitcher = {
           >${unsafeSVG(bridgeLogo)}</span
         >
         <kyn-header-nav
-          .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}
-          default-open="favorites"
+          auto-open-flyout="favorites"
           truncate-links
           style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
         >

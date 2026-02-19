@@ -16,7 +16,7 @@ import './Docs.mdx';
 const args = {
   rootUrl: '/',
   appTitle: 'Application',
-  flyoutAutoCollapsed: false,
+  autoOpenFlyout: 'default',
 };
 
 export default {
@@ -59,7 +59,7 @@ export const WithCategorizedNav = {
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
-        <kyn-header-nav .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
+        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
             Application
@@ -258,7 +258,7 @@ export const WithCategorizedNavManualHtml = {
         <span slot="logo" style="--kyn-header-logo-width: 120px;"
           >${unsafeSVG(bridgeLogo)}</span
         >
-        <kyn-header-nav .flyoutAutoCollapsed=${renderArgs.flyoutAutoCollapsed}>
+        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>
             Application

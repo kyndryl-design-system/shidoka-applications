@@ -32,18 +32,13 @@ export class HeaderNav extends LitElement {
   @property({ type: String, reflect: true })
   override accessor slot = 'left';
 
-  /** When true (default), flyouts auto-close on mouse leave and remain collapsed until user interaction (original behavior).
-   * When false, the first categorical link's flyout auto-opens when the nav opens, and flyouts stay open on mouse leave.
+  /** Controls which flyout (if any) auto-opens when the nav renders.
+   * - '' (empty, default): original behavior — flyouts auto-collapse on mouse leave, nothing auto-opens.
+   * - 'default': auto-open the first categorical flyout; flyouts stay open on mouse leave.
+   * - '<id>': auto-open the flyout whose kyn-header-link id matches; flyouts stay open on mouse leave.
    */
-  @property({ type: Boolean })
-  accessor flyoutAutoCollapsed = true;
-
-  /** Which flyout to expand when flyoutAutoCollapsed is false.
-   * 'default' opens the first expandable item. Any other value matches
-   * against the id attribute of a child kyn-header-link.
-   */
-  @property({ type: String, attribute: 'default-open' })
-  accessor defaultOpen = 'default';
+  @property({ type: String, attribute: 'auto-open-flyout' })
+  accessor autoOpenFlyout = '';
 
   /** When true, all links in flyouts will truncate long text with ellipsis.
    * This cascades to all nested kyn-header-link components via CSS custom property.
@@ -137,11 +132,7 @@ export class HeaderNav extends LitElement {
     this._updateCategoriesVisibility();
 
     // Trigger auto-open when slot content changes (handles late-loading content)
-    if (
-      !this.flyoutAutoCollapsed &&
-      this._isDesktop &&
-      !this._autoOpenTriggered
-    ) {
+    if (this.autoOpenFlyout && this._isDesktop && !this._autoOpenTriggered) {
       this._autoOpenFirstCategoricalLink();
     }
   }
@@ -155,9 +146,9 @@ export class HeaderNav extends LitElement {
   protected override firstUpdated(_changed: PropertyValueMap<this>): void {
     this._updateCategoriesVisibility();
 
-    // Auto-open first categorical link on initial render when flyoutAutoCollapsed is false.
+    // Auto-open first categorical link on initial render when autoOpenFlyout is set.
     // This handles the case where the nav is already visible (desktop) without a menuOpen toggle.
-    if (!this.flyoutAutoCollapsed && this._isDesktop) {
+    if (this.autoOpenFlyout && this._isDesktop) {
       this._autoOpenFirstCategoricalLink();
     }
   }
@@ -179,9 +170,9 @@ export class HeaderNav extends LitElement {
         new CustomEvent('on-nav-toggle', { detail })
       );
 
-      // Auto-open first link's flyout when nav opens and flyoutAutoCollapsed is false
+      // Auto-open first link's flyout when nav opens and autoOpenFlyout is set
       // Only applies to categorical nav (when kyn-header-categories is present)
-      if (this.menuOpen && !this.flyoutAutoCollapsed && this._isDesktop) {
+      if (this.menuOpen && this.autoOpenFlyout && this._isDesktop) {
         this._autoOpenFirstCategoricalLink();
       }
 
@@ -224,10 +215,10 @@ export class HeaderNav extends LitElement {
       // Find the target link to open
       let target: (HTMLElement & { open?: boolean }) | null = null;
 
-      if (this.defaultOpen !== 'default') {
+      if (this.autoOpenFlyout && this.autoOpenFlyout !== 'default') {
         // Match by id
         target = this.querySelector(
-          `:scope > kyn-header-link#${CSS.escape(this.defaultOpen)}`
+          `:scope > kyn-header-link#${CSS.escape(this.autoOpenFlyout)}`
         );
       }
 

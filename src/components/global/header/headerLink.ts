@@ -88,7 +88,9 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean })
   accessor leftPadding = false;
 
-  /** Title attribute for the link, shown as a tooltip on hover. Useful for truncated text. */
+  /** Title attribute for the link, shown as a tooltip on hover. Useful for truncated text.
+   * @internal
+   */
   @property({ type: String, attribute: 'link-title' })
   accessor linkTitle = '';
 
@@ -101,12 +103,6 @@ export class HeaderLink extends LitElement {
    */
   @state()
   accessor _autoTitle = '';
-
-  /** When true (default), the flyout auto-closes when the mouse leaves (original behavior).
-   * When false, the flyout stays open and doesn't auto-close on mouse leave.
-   */
-  @property({ type: Boolean })
-  accessor flyoutAutoCollapsed = true;
 
   /** Indicates whether this link contains categorical navigation (kyn-header-categories or kyn-header-category).
    * @internal
@@ -536,8 +532,8 @@ export class HeaderLink extends LitElement {
     }
   }
 
-  /** check if flyout should auto-collapse based on own prop and parent nav's prop
-   * only applies to links containing categorical nav (kyn-header-categories)
+  /** Check if flyout should auto-collapse based on parent nav's autoOpenFlyout.
+   * Only applies to links containing categorical nav (kyn-header-categories).
    * @internal
    */
   private _shouldAutoCollapse(): boolean {
@@ -546,18 +542,16 @@ export class HeaderLink extends LitElement {
       return true;
     }
 
-    if (this.flyoutAutoCollapsed) {
-      return true;
-    }
-
     const parentNav = this.closest('kyn-header-nav') as
-      | (HTMLElement & { flyoutAutoCollapsed?: boolean })
+      | (HTMLElement & { autoOpenFlyout?: string })
       | null;
-    if (parentNav && parentNav.flyoutAutoCollapsed) {
-      return true;
+
+    // If parent nav has autoOpenFlyout set (truthy), don't auto-collapse
+    if (parentNav?.autoOpenFlyout) {
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   private handleClick(e: Event) {

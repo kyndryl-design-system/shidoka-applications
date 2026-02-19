@@ -27,6 +27,7 @@ export class HeaderCategory extends LitElement {
   /** Disable automatic divider detection (default: true for backwards compatibility).
    * When true, only shows divider if showDivider is explicitly set.
    * When false, dividers auto-detect based on sibling categories.
+   * @internal
    */
   @property({ type: Boolean })
   accessor noAutoDivider = true;
