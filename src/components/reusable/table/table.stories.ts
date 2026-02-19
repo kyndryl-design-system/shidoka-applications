@@ -985,15 +985,11 @@ export const StackedHeader: Story = {
                 <kyn-th>First Name</kyn-th>
                 <kyn-th>Last Name</kyn-th>
               </kyn-th-group>
-              <kyn-th-group
-                label="Other Info Informações financeiras Informações financeiras"
-              >
+              <kyn-th-group label="Other Info">
                 <kyn-th>Birthday</kyn-th>
                 <kyn-th .align=${'right'}>Age</kyn-th>
               </kyn-th-group>
-              <kyn-th-group
-                label="Informações financeiras Informações financeiras Informações financeiras"
-              >
+              <kyn-th-group label="Financial Info">
                 <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
               </kyn-th-group>
             </kyn-header-tr>
@@ -1021,61 +1017,31 @@ export const StackedHeader: Story = {
       <br />
 
       <kyn-table-toolbar
-        .tableTitle=${'Stacked Header with Expandable Rows and CheckboxSelection'}
+        .tableTitle=${'Stacked Header with Checkbox and Expandable Rows'}
         .tableSubtitle=${'Multiple header rows with column grouping'}
       >
       </kyn-table-toolbar>
       <kyn-table-container>
         <kyn-table>
           <kyn-thead>
-            <kyn-header-tr
-              expandable
-              checkboxSelection
-              .expandableColumnWidth=${'64px'}
-            >
+            <kyn-header-tr expandable checkboxSelection>
               <kyn-th-group label="Personal Info">
                 <kyn-th
                   .align=${'center'}
-                  resizable
                   sortable
                   sortKey="id"
-                  minWidth="100px"
-                  resizeMaxWidth="300px"
                   @on-sort-changed=${handleSortByIdNumber}
                   >ID</kyn-th
                 >
-                <kyn-th
-                  sortable
-                  sortKey="firstName"
-                  resizable
-                  minWidth="250px"
-                  resizeMinWidth="250px"
-                  >First Name</kyn-th
-                >
-                <kyn-th sortable sortKey="lastName" resizable minWidth="250px"
-                  >Last Name</kyn-th
-                >
+                <kyn-th>First Name</kyn-th>
+                <kyn-th>Last Name</kyn-th>
               </kyn-th-group>
               <kyn-th-group label="Other Info">
-                <kyn-th resizable resizeMinWidth="150px" resizeMaxWidth="300px"
-                  >Birthday</kyn-th
-                >
-                <kyn-th
-                  resizable
-                  .align=${'right'}
-                  minWidth="120px"
-                  resizeMaxWidth="200px"
-                  >Age</kyn-th
-                >
+                <kyn-th>Birthday</kyn-th>
+                <kyn-th .align=${'right'}>Age</kyn-th>
               </kyn-th-group>
               <kyn-th-group label="Financial Info">
-                <kyn-th
-                  resizable
-                  .align=${'right'}
-                  minWidth="120px"
-                  resizeMaxWidth="450px"
-                  >Account Deposits($)</kyn-th
-                >
+                <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
               </kyn-th-group>
             </kyn-header-tr>
           </kyn-thead>
@@ -1084,7 +1050,7 @@ export const StackedHeader: Story = {
               tableData,
               (row: any) => row.id,
               (row: any) => html`
-                <kyn-tr .rowId=${row.id} expandable checkboxSelection>
+                <kyn-tr .rowId=${row.id} checkboxSelection expandable>
                   <kyn-td .align=${'center'}>${row.id}</kyn-td>
                   <kyn-td>${row.firstName}</kyn-td>
                   <kyn-td>${row.lastName}</kyn-td>
@@ -1094,7 +1060,7 @@ export const StackedHeader: Story = {
                 </kyn-tr>
                 <kyn-expanded-tr .colSpan=${8}>
                   <div class="center-content">
-                    Put your expanded table content here
+                    Put your expanded table content here for ID ${row.id}
                   </div>
                 </kyn-expanded-tr>
               `

@@ -104,6 +104,10 @@ export class QueryBuilderRule extends LitElement {
   @property({ type: String })
   accessor size: QueryBuilderSize = 'xs';
 
+  /** Minimum number of dropdown options before search is shown. */
+  @property({ type: Number })
+  accessor searchThreshold = 25;
+
   /** Get the currently selected field configuration */
   private get selectedField(): QueryField | undefined {
     return this.fields.find((f) => f.name === this.rule.field);
@@ -222,6 +226,8 @@ export class QueryBuilderRule extends LitElement {
         label=${this.textStrings.selectField || 'Select Field'}
         placeholder=${this.textStrings.selectField || 'Select Field'}
         size=${this.size}
+        filterSearch
+        searchThreshold=${this.searchThreshold}
         hideTags
         hideLabel
         .value=${this.rule.field}
@@ -483,6 +489,8 @@ export class QueryBuilderRule extends LitElement {
         name=${`${this.rule.id}-value`}
         label=${field.label || this.textStrings.selectValue || 'Select value'}
         size=${this.size}
+        filterSearch
+        searchThreshold=${this.searchThreshold}
         hideTags
         hideLabel
         placeholder=${field.placeholder ||
@@ -515,6 +523,8 @@ export class QueryBuilderRule extends LitElement {
         name=${`${this.rule.id}-value`}
         label=${field.label || this.textStrings.selectValues || 'Select values'}
         size=${this.size}
+        filterSearch
+        searchThreshold=${this.searchThreshold}
         multiple
         hideLabel
         placeholder=${field.placeholder ||

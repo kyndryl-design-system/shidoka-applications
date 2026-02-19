@@ -427,6 +427,131 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/footer/footer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Footer component.",
+          "name": "Footer",
+          "slots": [
+            {
+              "description": "Default slot, for links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the logo, will overwrite the default logo.",
+              "name": "logo"
+            },
+            {
+              "description": "Slot for the copyright text.",
+              "name": "copyright"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "attribute": "rootUrl"
+            },
+            {
+              "kind": "field",
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "attribute": "logoAriaLabel"
+            },
+            {
+              "kind": "method",
+              "name": "handleRootLinkClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`",
+              "name": "on-root-link-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rootUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'/'",
+              "description": "URL for the footer logo link. Should target the application home page.",
+              "fieldName": "rootUrl"
+            },
+            {
+              "name": "logoAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for logo link.",
+              "fieldName": "logoAriaLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-footer",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "src/components/global/footer/footer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/footer/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Footer",
+          "declaration": {
+            "name": "Footer",
+            "module": "./footer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -2400,131 +2525,6 @@
           "declaration": {
             "name": "HeaderNotificationPanel",
             "module": "./headerNotificationPanel"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/footer.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Footer component.",
-          "name": "Footer",
-          "slots": [
-            {
-              "description": "Default slot, for links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the logo, will overwrite the default logo.",
-              "name": "logo"
-            },
-            {
-              "description": "Slot for the copyright text.",
-              "name": "copyright"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "attribute": "rootUrl"
-            },
-            {
-              "kind": "field",
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "attribute": "logoAriaLabel"
-            },
-            {
-              "kind": "method",
-              "name": "handleRootLinkClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the logo link click event and emits the original event. `detail:{ origEvent: Event}`",
-              "name": "on-root-link-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "rootUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "'/'",
-              "description": "URL for the footer logo link. Should target the application home page.",
-              "fieldName": "rootUrl"
-            },
-            {
-              "name": "logoAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for logo link.",
-              "fieldName": "logoAriaLabel"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-footer",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "src/components/global/footer/footer.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/footer/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Footer",
-          "declaration": {
-            "name": "Footer",
-            "module": "./footer"
           }
         }
       ]
@@ -5849,310 +5849,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/colorInput/colorInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Color input.",
-          "name": "ColorInput",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input required state.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n  pleaseSelectColor: 'Please select a color',\n  invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',\n  colorTextInput: 'Color text input',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "attribute": "autoComplete"
-            },
-            {
-              "kind": "method",
-              "name": "handleColorChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleTextInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details. `detail:{ value: string, origEvent: Event }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input required state.",
-              "fieldName": "required"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "fieldName": "autoComplete"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-color-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ColorInput",
-          "declaration": {
-            "name": "ColorInput",
-            "module": "src/components/reusable/colorInput/colorInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-color-input",
-          "declaration": {
-            "name": "ColorInput",
-            "module": "src/components/reusable/colorInput/colorInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/colorInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ColorInput",
-          "declaration": {
-            "name": "ColorInput",
-            "module": "./colorInput"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/checkbox/checkbox.ts",
       "declarations": [
         {
@@ -6879,6 +6575,310 @@
           "declaration": {
             "name": "CheckboxSubgroup",
             "module": "./checkboxSubgroup"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/colorInput/colorInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Color input.",
+          "name": "ColorInput",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input required state.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  errorText: 'Error',\n  pleaseSelectColor: 'Please select a color',\n  invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',\n  colorTextInput: 'Color text input',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "attribute": "autoComplete"
+            },
+            {
+              "kind": "method",
+              "name": "handleColorChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTextInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ value: string, origEvent: Event }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input required state.",
+              "fieldName": "required"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "fieldName": "autoComplete"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-color-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ColorInput",
+          "declaration": {
+            "name": "ColorInput",
+            "module": "src/components/reusable/colorInput/colorInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-color-input",
+          "declaration": {
+            "name": "ColorInput",
+            "module": "src/components/reusable/colorInput/colorInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/colorInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ColorInput",
+          "declaration": {
+            "name": "ColorInput",
+            "module": "./colorInput"
           }
         }
       ]
@@ -8896,6 +8896,16 @@
             },
             {
               "kind": "field",
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Minimum number of options required before the search input is shown.\nWhen set to a value greater than `0`, the search input will only\nrender if the number of slotted options meets or exceeds this\nthreshold — this implicitly enables search without needing\n`searchable`. When `0` or not set, search visibility is controlled\nsolely by the `searchable` prop.",
+              "attribute": "searchThreshold"
+            },
+            {
+              "kind": "field",
               "name": "enhanced",
               "type": {
                 "text": "boolean"
@@ -9588,6 +9598,15 @@
               "default": "false",
               "description": "Makes the dropdown searchable.",
               "fieldName": "searchable"
+            },
+            {
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Minimum number of options required before the search input is shown.\nWhen set to a value greater than `0`, the search input will only\nrender if the number of slotted options meets or exceeds this\nthreshold — this implicitly enables search without needing\n`searchable`. When `0` or not set, search visibility is controlled\nsolely by the `searchable` prop.",
+              "fieldName": "searchThreshold"
             },
             {
               "name": "enhanced",
@@ -10577,93 +10596,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/errorBlock.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Error block.",
-          "name": "ErrorBlock",
-          "slots": [
-            {
-              "description": "Slot for the error description.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for the error image.",
-              "name": "image"
-            },
-            {
-              "description": "Slot for the action buttons.",
-              "name": "actions"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "attribute": "titleText"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "titleText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Title text",
-              "fieldName": "titleText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-error-block",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-error-block",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "src/components/reusable/errorBlock/errorBlock.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/errorBlock/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ErrorBlock",
-          "declaration": {
-            "name": "ErrorBlock",
-            "module": "./errorBlock"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/fileUploader/fileUploader.ts",
       "declarations": [
         {
@@ -11115,6 +11047,158 @@
           "declaration": {
             "name": "FileUploaderListContainer",
             "module": "./fileUploaderListContainer"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/errorBlock/errorBlock.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Error block.",
+          "name": "ErrorBlock",
+          "slots": [
+            {
+              "description": "Slot for the error description.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for the error image.",
+              "name": "image"
+            },
+            {
+              "description": "Slot for the action buttons.",
+              "name": "actions"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title text",
+              "attribute": "titleText"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "titleText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Title text",
+              "fieldName": "titleText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-error-block",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ErrorBlock",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-error-block",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "src/components/reusable/errorBlock/errorBlock.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/errorBlock/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ErrorBlock",
+          "declaration": {
+            "name": "ErrorBlock",
+            "module": "./errorBlock"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/globalFilter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).",
+          "name": "GlobalFilter",
+          "slots": [
+            {
+              "description": "Left slot, intended for search input and modal.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Right slot, intended for action buttons and overflow menu.",
+              "name": "actions"
+            },
+            {
+              "description": "Slot below the filter bar, for tag group.",
+              "name": "tags"
+            }
+          ],
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-global-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-global-filter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/globalFilter/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GlobalFilter",
+          "declaration": {
+            "name": "GlobalFilter",
+            "module": "./globalFilter"
           }
         }
       ]
@@ -11636,65 +11720,98 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/globalFilter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "DEPRECATED. See [Patterns/Search & Action Bar](/docs/patterns-search-action-bar--docs).",
-          "name": "GlobalFilter",
-          "slots": [
-            {
-              "description": "Left slot, intended for search input and modal.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Right slot, intended for action buttons and overflow menu.",
-              "name": "actions"
-            },
-            {
-              "description": "Slot below the filter bar, for tag group.",
-              "name": "tags"
-            }
-          ],
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-global-filter",
-          "customElement": true
-        }
-      ],
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "GlobalFilter",
+          "name": "InlineCodeView",
           "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-global-filter",
-          "declaration": {
-            "name": "GlobalFilter",
-            "module": "src/components/reusable/globalFilter/globalFilter.ts"
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/globalFilter/index.ts",
-      "declarations": [],
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "attribute": "snippetFontSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "fieldName": "snippetFontSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
       "exports": [
         {
           "kind": "js",
-          "name": "GlobalFilter",
+          "name": "InlineCodeView",
           "declaration": {
-            "name": "GlobalFilter",
-            "module": "./globalFilter"
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -11879,104 +11996,6 @@
           "declaration": {
             "name": "InlineConfirm",
             "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "./inlineCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
-          "name": "InlineCodeView",
-          "slots": [
-            {
-              "description": "inline code snippet slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "attribute": "snippetFontSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "fieldName": "snippetFontSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-code-view",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]
@@ -17784,6 +17803,16 @@
             },
             {
               "kind": "field",
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "25",
+              "description": "Minimum number of dropdown options before a search input is shown.\nApplies to field, value, and multi-select dropdowns within rules.\nWhen `0`, search is always shown. Default `25`.",
+              "attribute": "searchThreshold"
+            },
+            {
+              "kind": "field",
               "name": "textStrings",
               "default": "{\n  and: 'AND',\n  or: 'OR',\n  removeGroup: 'Remove group',\n  cloneGroup: 'Clone group',\n  addRule: 'Add Rule',\n  addGroup: 'Group',\n  lockGroup: 'Lock group',\n  unlockGroup: 'Unlock group',\n  removeRule: 'Remove rule',\n  cloneRule: 'Clone rule',\n  lockRule: 'Lock rule',\n  unlockRule: 'Unlock rule',\n  dragToReorder: 'Drag to reorder',\n  selectField: 'Select Field',\n  selectOperator: 'Select Operator',\n  value: 'Value',\n  selectValue: 'Select value',\n  selectValues: 'Select values',\n  selectDate: 'Select date',\n  selectDateTime: 'Select date/time',\n  selectTime: 'Select time',\n  min: 'Min',\n  max: 'Max',\n  start: 'Start',\n  end: 'End',\n  from: 'From',\n  to: 'To',\n  validationErrors: 'Validation errors',\n  validationErrorCount: '{count} validation error(s)',\n}",
               "description": "Text string customization for i18n.",
@@ -18048,6 +18077,15 @@
               "fieldName": "size"
             },
             {
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "25",
+              "description": "Minimum number of dropdown options before a search input is shown.\nApplies to field, value, and multi-select dropdowns within rules.\nWhen `0`, search is always shown. Default `25`.",
+              "fieldName": "searchThreshold"
+            },
+            {
               "name": "textStrings",
               "default": "_defaultTextStrings",
               "description": "Text string customization for i18n.",
@@ -18227,6 +18265,16 @@
               "default": "'xs'",
               "description": "Size of child components",
               "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "25",
+              "description": "Minimum number of dropdown options before search is shown.",
+              "attribute": "searchThreshold"
             },
             {
               "kind": "field",
@@ -18792,6 +18840,15 @@
               "default": "'xs'",
               "description": "Size of child components",
               "fieldName": "size"
+            },
+            {
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "25",
+              "description": "Minimum number of dropdown options before search is shown.",
+              "fieldName": "searchThreshold"
             }
           ],
           "superclass": {
@@ -18950,6 +19007,16 @@
               "default": "'xs'",
               "description": "Size of child components",
               "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "25",
+              "description": "Minimum number of dropdown options before search is shown.",
+              "attribute": "searchThreshold"
             },
             {
               "kind": "field",
@@ -19507,6 +19574,15 @@
               "default": "'xs'",
               "description": "Size of child components",
               "fieldName": "size"
+            },
+            {
+              "name": "searchThreshold",
+              "type": {
+                "text": "number"
+              },
+              "default": "25",
+              "description": "Minimum number of dropdown options before search is shown.",
+              "fieldName": "searchThreshold"
             }
           ],
           "superclass": {
