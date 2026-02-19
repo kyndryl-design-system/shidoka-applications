@@ -219,55 +219,57 @@ dialog.ai-connected {
   @extend .gradient-bkg;
 }
 
-/* ===== Resizable drag handle ===== */
+/* ===== Resizable drag handle, only for large enough screens ===== */
 
-.drag-handle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 8px;
-  cursor: ew-resize;
-  background: transparent;
-  border-radius: 8px 0 0 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 150ms ease-out;
-  z-index: 2;
+@media (min-width: 28rem) {
+  .drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: ew-resize;
+    background: transparent;
+    border-radius: 8px 0 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 150ms ease-out;
+    z-index: 2;
 
-  &:hover {
-    background: var(--kd-color-border-level-tertiary);
+    &:hover {
+      background: var(--kd-color-border-level-tertiary);
 
-    .drag-lines {
-      &::before,
-      &::after {
-        background: var(--kd-color-icon-tertiary);
+      .drag-lines {
+        &::before,
+        &::after {
+          background: var(--kd-color-icon-tertiary);
+        }
       }
+    }
+
+    &.dragging {
+      background: var(--kd-color-border-button-secondary-state-default);
     }
   }
 
-  &.dragging {
-    background: var(--kd-color-border-button-secondary-state-default);
-  }
-}
+  .drag-lines {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 2px;
+    height: 32px;
+    width: 100%;
 
-.drag-lines {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: center;
-  gap: 2px;
-  height: 32px;
-  width: 100%;
-
-  &::before,
-  &::after {
-    content: '';
-    display: block;
-    width: 1px;
-    height: 100%;
-    background: var(--kd-color-icon-secondary);
-    transition: background-color 150ms ease-out;
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 100%;
+      background: var(--kd-color-icon-secondary);
+      transition: background-color 150ms ease-out;
+    }
   }
 }
