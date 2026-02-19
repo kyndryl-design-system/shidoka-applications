@@ -525,19 +525,6 @@ export class TableHeader extends LitElement {
     const group = this.closest('kyn-th-group');
     if (!group) return;
 
-    // this._setGroupLabelWidth([group]);  // Remove it
-    // const siblings = Array.from(
-    //   group.querySelectorAll(':scope > kyn-th')
-    // ) as HTMLElement[];
-    // let totalWidth = 0;
-    // siblings.forEach((el) => {
-    //   totalWidth += el.getBoundingClientRect().width;
-    // });
-
-    // if (totalWidth > 0) {
-    //   group.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
-    // }
-
     // Measure the label bar height for consistent spacing across all siblings
     const labelBar = this.shadowRoot?.querySelector(
       '.group-label-bar'
@@ -727,6 +714,27 @@ export class TableHeader extends LitElement {
     this.style.setProperty('--kyn-resize-handle-height', `${handleHeight}px`);
   }
 
+  /**
+   * Handle resize handle hover - set height to table height
+   * @internal
+   */
+  private _handleResizeHandleHover = () => {
+    const table = this.closest('kyn-table') as any;
+    if (table && this.resizable) {
+      this._handleResizeHandleHeight(table);
+    }
+  };
+
+  /**
+   * Handle resize handle leave - reset height
+   * @internal
+   */
+  private _handleResizeHandleLeave = () => {
+    if (!this._isResizing) {
+      this.style.removeProperty('--kyn-resize-handle-height');
+    }
+  };
+
   /** Handle Resize End
    * @internal
    */
@@ -736,7 +744,6 @@ export class TableHeader extends LitElement {
     e.preventDefault();
     this._isResizing = false;
     this._tableHeightDuringResize = 0;
-    this.style.removeProperty('--kyn-resize-handle-height');
 
     this._debounceResize(e);
 
@@ -746,6 +753,23 @@ export class TableHeader extends LitElement {
 
     // Remove resizing state (shows sort icon again)
     this.removeAttribute('data-resizing');
+
+    // If mouse is still over the header, restore the height
+    const rect = this.getBoundingClientRect();
+    const isStillHovering =
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom;
+
+    if (isStillHovering) {
+      const table = this.closest('kyn-table') as any;
+      if (table) {
+        this._handleResizeHandleHeight(table);
+      }
+    } else {
+      this.style.removeProperty('--kyn-resize-handle-height');
+    }
   };
 
   /**
@@ -904,6 +928,8 @@ export class TableHeader extends LitElement {
         ? html`<div
             class="resize-handle"
             @mousedown=${this._handleResizeStart}
+            @mouseenter=${this._handleResizeHandleHover}
+            @mouseleave=${this._handleResizeHandleLeave}
             role="separator"
             title=${this.assistiveResizeText}
             aria-label=${this.assistiveResizeText}

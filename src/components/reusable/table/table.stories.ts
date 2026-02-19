@@ -1092,7 +1092,7 @@ export const StackedHeader: Story = {
                   <kyn-td .align=${'right'}>${row.age}</kyn-td>
                   <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
-                <kyn-expanded-tr .colSpan=${3}>
+                <kyn-expanded-tr .colSpan=${8}>
                   <div class="center-content">
                     Put your expanded table content here
                   </div>

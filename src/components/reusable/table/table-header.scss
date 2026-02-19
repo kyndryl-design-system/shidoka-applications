@@ -42,6 +42,16 @@
   overflow: visible;
 }
 
+// Also show overflow for resizable columns on hover to display the extended resize-handle
+:host([resizable]) .resize-handle:hover,
+:host([resizable]) .resize-handle:focus-visible {
+  overflow: visible;
+}
+
+:host([resizable]:hover) {
+  overflow: visible;
+}
+
 :host::before,
 :host::after {
   content: '';
@@ -146,15 +156,21 @@
   border-bottom: 1px solid var(--kd-color-border-level-tertiary);
 }
 
-// resize handle
+// resize handle always visible for resizable columns
 .resize-handle {
   position: absolute;
   right: 0;
   top: 0;
-  width: 2.5px;
-  background: transparent;
+  width: 1px;
   cursor: col-resize;
   height: var(--kyn-resize-handle-height, 100%);
+  &:hover {
+    width: 2.5px;
+  }
+}
+
+:host([resizable]) .resize-handle {
+  background: var(--kd-color-border-level-tertiary);
 }
 
 :host([stacked-child]:not([stacked-child-first]):hover) .resize-handle {
@@ -174,13 +190,20 @@
 
 :host([data-resizing='true']) .resize-handle {
   background: var(--kd-color-border-variants-focus) !important;
+  width: 2.5px !important;
 }
 
-// For stacked children, constrain resize handle to not extend into group label bar during hover
 // But allow full height when actively resizing
 :host([stacked-child]:not([data-resizing='true'])) .resize-handle {
   top: var(--kyn-group-label-height, 42px);
   height: calc(100% - var(--kyn-group-label-height, 42px));
+}
+
+// For stacked children on hover, show full height resize-handle
+:host([stacked-child]) .resize-handle:hover,
+:host([stacked-child]) .resize-handle:focus-visible {
+  top: 0;
+  height: 100vh;
 }
 
 // Stacked header (kyn-th inside kyn-th-group)
