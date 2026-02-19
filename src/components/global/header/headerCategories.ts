@@ -117,7 +117,6 @@ interface SlottedCategoryData {
  *     returns to the root view.
  *
  * @fires on-nav-change - Fires when the active category/tab view changes. Detail: `{ activeMegaTabId, activeMegaCategoryId, view }`.
- * @fires on-column-count-change - @internal Fires when the computed column count changes on resize. Detail: `{ columnCount }`.
  */
 
 @customElement('kyn-header-categories')
