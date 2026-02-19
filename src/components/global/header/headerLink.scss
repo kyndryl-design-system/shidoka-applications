@@ -27,6 +27,7 @@ $single-column-width: 350px;
   outline-offset: -2px;
   padding: 6px 12px 6px 8px;
   width: 100%;
+  box-sizing: border-box;
   min-width: 0;
 
   // Icon-selector hover visibility
@@ -232,6 +233,7 @@ $single-column-width: 350px;
   &__content {
     display: none;
     background: var(--kd-color-background-menu-state-default);
+    box-sizing: border-box;
 
     &.slotted:not(.no-padding) {
       display: flex;
@@ -265,6 +267,7 @@ $single-column-width: 350px;
     right: auto;
     max-width: calc(100vw - 16px);
     align-items: stretch;
+    overflow-x: auto;
   }
 
   // Let kyn-header-categories control its own width
@@ -279,7 +282,7 @@ $single-column-width: 350px;
     min-width: 150px;
     min-height: 250px;
     max-height: calc(100vh - var(--kd-header-height) - 32px);
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
     align-self: stretch;
     padding-bottom: 34px; // offsets masonry's negative margin-bottom

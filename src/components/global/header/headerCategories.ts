@@ -431,7 +431,6 @@ export class HeaderCategories extends LitElement {
               target=${target}
               rel=${ifDefined(link.rel)}
               .linkTitle=${link.label}
-              ?truncate=${this.layout === 'grid' || this.layout === 'masonry'}
             >
               ${this.renderLinkContent(link, {
                 tabId,
@@ -509,8 +508,6 @@ export class HeaderCategories extends LitElement {
                       target=${target}
                       rel=${ifDefined(link.rel)}
                       .linkTitle=${link.label}
-                      ?truncate=${this.layout === 'grid' ||
-                      this.layout === 'masonry'}
                     >
                       ${this.renderLinkContent(link, {
                         tabId: this.activeMegaTabId,
@@ -592,7 +589,6 @@ export class HeaderCategories extends LitElement {
                 target=${target}
                 rel=${ifDefined(link.rel)}
                 .linkTitle=${link.textContent}
-                ?truncate=${this.layout === 'grid' || this.layout === 'masonry'}
               >
                 ${unsafeHTML(link.inner)}
               </kyn-header-link>
@@ -685,8 +681,6 @@ export class HeaderCategories extends LitElement {
                       target=${target}
                       rel=${ifDefined(link.rel)}
                       .linkTitle=${link.textContent}
-                      ?truncate=${this.layout === 'grid' ||
-                      this.layout === 'masonry'}
                     >
                       ${unsafeHTML(link.inner)}
                     </kyn-header-link>

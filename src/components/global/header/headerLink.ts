@@ -651,16 +651,20 @@ export class HeaderLink extends LitElement {
       const hasMegaNav = this.querySelector('kyn-header-categories') !== null;
 
       // Calculate if flyout should stretch to fill available viewport width
-      // Only stretch if the difference is below the threshold
-      // Skip stretching for 2-column layouts to keep them constrained
+      // Clamp oversized flyouts to the viewport and optionally stretch
+      // near-edge flyouts for cleaner right alignment.
       let stretchWidth: string | undefined;
-      if (hasMegaNav && this.flyoutColumns !== 2) {
+      if (hasMegaNav) {
         const flyoutNaturalWidth = menuBounds.width;
         const rightMargin = 16; // Margin from viewport edge
         const availableWidth = window.innerWidth - rightMargin;
         const widthDifference = availableWidth - flyoutNaturalWidth;
 
-        if (
+        if (flyoutNaturalWidth > availableWidth) {
+          // Prevent right-side clipping on smaller viewports.
+          stretchWidth = availableWidth + 'px';
+        } else if (
+          this.flyoutColumns !== 2 &&
           widthDifference > 0 &&
           widthDifference <= HeaderLink.STRETCH_THRESHOLD
         ) {
