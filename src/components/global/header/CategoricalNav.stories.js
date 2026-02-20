@@ -242,6 +242,122 @@ export const WithCategorizedNav = {
 WithCategorizedNav.storyName = 'JSON Configured Example (masonry layout)';
 
 // -----------------------------------------------------------------------------
+// JSON-driven categorized nav with grid layout (full-width)
+// -----------------------------------------------------------------------------
+export const WithCategorizedNavJsonGrid = {
+  args: {
+    ...args,
+    activeMegaTabId: 'tab1',
+    activeMegaCategoryId: null,
+  },
+  render: (renderArgs) => {
+    const [, updateArgs] = useArgs();
+
+    const handleMegaChange = (e) => {
+      const { activeMegaTabId, activeMegaCategoryId } = e.detail;
+      updateArgs({ activeMegaTabId, activeMegaCategoryId });
+    };
+
+    const renderMegaLinkPlainString = (link /*, ctx */) => {
+      return link.label;
+    };
+
+    return html`
+      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <span slot="logo" style="--kyn-header-logo-width: 120px;"
+          >${unsafeSVG(bridgeLogo)}</span
+        >
+        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Application
+
+            <kyn-tabs tabSize="md" slot="links">
+              <kyn-tab
+                slot="tabs"
+                id="tab1"
+                ?selected=${renderArgs.activeMegaTabId === 'tab1'}
+                @click=${() =>
+                  updateArgs({
+                    activeMegaTabId: 'tab1',
+                    activeMegaCategoryId: null,
+                  })}
+              >
+                Tab 1
+              </kyn-tab>
+
+              <kyn-tab
+                slot="tabs"
+                id="tab2"
+                ?selected=${renderArgs.activeMegaTabId === 'tab2'}
+                @click=${() =>
+                  updateArgs({
+                    activeMegaTabId: 'tab2',
+                    activeMegaCategoryId: null,
+                  })}
+              >
+                Tab 2
+              </kyn-tab>
+
+              <kyn-tab-panel
+                tabId="tab1"
+                noPadding
+                ?visible=${renderArgs.activeMegaTabId === 'tab1'}
+              >
+                <kyn-search
+                  label="Filter items... (Application controlled)"
+                  style="display: block; margin-bottom: 16px;"
+                ></kyn-search>
+
+                <kyn-header-categories
+                  layout="grid"
+                  maxColumns="4"
+                  hide-category-dividers
+                  .tabsConfig=${megaNavConfig}
+                  .activeMegaTabId=${renderArgs.activeMegaTabId}
+                  .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                  .linkRenderer=${renderMegaLinkPlainString}
+                  @on-nav-change=${handleMegaChange}
+                ></kyn-header-categories>
+              </kyn-tab-panel>
+
+              <kyn-tab-panel
+                tabId="tab2"
+                noPadding
+                ?visible=${renderArgs.activeMegaTabId === 'tab2'}
+              >
+                <kyn-search
+                  label="Filter items... (Application controlled)"
+                  style="display: block; margin-bottom: 16px;"
+                ></kyn-search>
+
+                <kyn-header-categories
+                  layout="grid"
+                  maxColumns="4"
+                  hide-category-dividers
+                  .tabsConfig=${megaNavConfig}
+                  .activeMegaTabId=${renderArgs.activeMegaTabId}
+                  .activeMegaCategoryId=${renderArgs.activeMegaCategoryId}
+                  .linkRenderer=${renderMegaLinkPlainString}
+                  @on-nav-change=${handleMegaChange}
+                ></kyn-header-categories>
+              </kyn-tab-panel>
+            </kyn-tabs>
+          </kyn-header-link>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 1
+          </kyn-header-link>
+        </kyn-header-nav>
+      </kyn-header>
+    `;
+  },
+};
+WithCategorizedNavJsonGrid.storyName =
+  'JSON Configured Example (grid layout, full-width)';
+
+// -----------------------------------------------------------------------------
 // Fully manual HTML variant (no JSON) - slot driven, masonry layout
 // -----------------------------------------------------------------------------
 
@@ -625,7 +741,7 @@ WithCategorizedNavManualHtml.storyName =
   'Slotted HTML Example (masonry layout)';
 
 // -----------------------------------------------------------------------------
-// Grid layout variant - fixed-width columns that don't stretch full viewport
+// Slotted HTML grid layout - fixed-width (2 columns, compact)
 // -----------------------------------------------------------------------------
 
 export const WithCategorizedNavGrid = {
@@ -677,7 +793,7 @@ export const WithCategorizedNavGrid = {
 
                 <kyn-header-categories
                   layout="grid"
-                  maxColumns="4"
+                  maxColumns="2"
                   hide-category-dividers
                 >
                   <kyn-header-category heading="Category 1">
@@ -708,19 +824,6 @@ export const WithCategorizedNavGrid = {
                     <kyn-header-link href="#">Sub Link 3</kyn-header-link>
                     <kyn-header-link href="#">Sub Link 4</kyn-header-link>
                   </kyn-header-category>
-
-                  <kyn-header-category heading="Category 5">
-                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
-                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
-                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
-                  </kyn-header-category>
-
-                  <kyn-header-category heading="Category 6">
-                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
-                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
-                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
-                    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
-                  </kyn-header-category>
                 </kyn-header-categories>
               </kyn-tab-panel>
 
@@ -736,7 +839,7 @@ export const WithCategorizedNavGrid = {
 
                 <kyn-header-categories
                   layout="grid"
-                  maxColumns="4"
+                  maxColumns="2"
                   hide-category-dividers
                 >
                   <kyn-header-category heading="T2 - Category 1">
@@ -764,4 +867,5 @@ export const WithCategorizedNavGrid = {
     `;
   },
 };
-WithCategorizedNavGrid.storyName = 'Grid Layout Example (fixed-width columns)';
+WithCategorizedNavGrid.storyName =
+  'Slotted HTML Example (grid layout, fixed-width)';

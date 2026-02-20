@@ -709,7 +709,7 @@
           "name": "HeaderCategories",
           "cssProperties": [
             {
-              "description": "Width of each column. Applies to 1 and 2 column layouts. 3+ columns use equal-width (`1fr`) to fill available space.",
+              "description": "Width of each column. Applies to 1 and 2 column layouts. Also used for 3+ when `fixed-column-widths` is enabled.",
               "name": "--kyn-header-category-column-width",
               "default": "300px"
             },
@@ -795,6 +795,17 @@
               "default": "3",
               "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".",
               "attribute": "maxColumns"
+            },
+            {
+              "kind": "field",
+              "name": "fixedColumnWidths",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, 3+ columns use fixed column widths instead of stretching to fill\nthe full flyout width. The flyout remains constrained by viewport max-width.",
+              "attribute": "fixed-column-widths",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -1158,6 +1169,15 @@
               "default": "3",
               "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".",
               "fieldName": "maxColumns"
+            },
+            {
+              "name": "fixed-column-widths",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, 3+ columns use fixed column widths instead of stretching to fill\nthe full flyout width. The flyout remains constrained by viewport max-width.",
+              "fieldName": "fixedColumnWidths"
             },
             {
               "name": "show-category-icons",
@@ -2017,18 +2037,6 @@
               "kind": "method",
               "name": "determineLevel",
               "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "STRETCH_THRESHOLD",
-              "type": {
-                "text": "number"
-              },
-              "privacy": "private",
-              "static": true,
-              "readonly": true,
-              "default": "150",
-              "description": "Threshold in pixels - if flyout is within this distance of nav width, stretch to match"
             },
             {
               "kind": "method",

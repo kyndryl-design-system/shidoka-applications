@@ -120,7 +120,7 @@ interface SlottedCategoryData {
  *     returns to the root view.
  *
  * @fires on-nav-change - Fires when the active category/tab view changes. Detail: `{ activeMegaTabId, activeMegaCategoryId, view }`.
- * @cssprop [--kyn-header-category-column-width=300px] - Width of each column. Applies to 1 and 2 column layouts. 3+ columns use equal-width (`1fr`) to fill available space.
+ * @cssprop [--kyn-header-category-column-width=300px] - Width of each column. Applies to 1 and 2 column layouts. Also used for 3+ when `fixed-column-widths` is enabled.
  * @cssprop [--kyn-header-category-column-gap=32px] - Horizontal gap between columns.
  */
 
@@ -160,6 +160,13 @@ export class HeaderCategories extends LitElement {
   /** Max number of columns to display when layout="grid" or layout="masonry". */
   @property({ type: Number })
   accessor maxColumns = 3;
+
+  /**
+   * When true, 3+ columns use fixed column widths instead of stretching to fill
+   * the full flyout width. The flyout remains constrained by viewport max-width.
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'fixed-column-widths' })
+  accessor fixedColumnWidths = false;
 
   /** When true, category headings render with the default design-system icon when none is provided. */
   @property({ type: Boolean, attribute: 'show-category-icons' })
@@ -217,7 +224,7 @@ export class HeaderCategories extends LitElement {
   accessor _slottedCategories: SlottedCategoryData[] = [];
 
   /** @internal */
-  private _buildSlottedTimeout?: number;
+  private _buildSlottedRaf?: number;
 
   /** @internal */
   private _resizeObserver?: ResizeObserver;
@@ -250,12 +257,18 @@ export class HeaderCategories extends LitElement {
 
   /**
    * Update category count and emit event if changed.
-   * Only emits for grid layout (masonry doesn't need flyout width adjustment).
+   * Emits for grid and masonry layouts so the parent flyout can adjust width.
    * @internal
    */
   private _updateAndEmitColumnCount(): void {
-    // Only emit for grid layout
-    if (this.layout !== 'grid') return;
+    if (this.layout !== 'grid' && this.layout !== 'masonry') return;
+
+    // Only emit when visible. Multiple kyn-header-categories may exist inside
+    // the same flyout (one per tab panel). Without this guard, a hidden tab's
+    // smaller column count overwrites the visible tab's count, preventing the
+    // flyout from stretching.
+    const tabPanel = this.closest('kyn-tab-panel');
+    if (tabPanel && !tabPanel.hasAttribute('visible')) return;
 
     const columnCount = this._getColumnCount();
 
@@ -264,7 +277,10 @@ export class HeaderCategories extends LitElement {
 
       this.dispatchEvent(
         new CustomEvent('on-column-count-change', {
-          detail: { columnCount },
+          detail: {
+            columnCount,
+            fixedColumnWidths: this.fixedColumnWidths,
+          },
           composed: true,
           bubbles: true,
         })
@@ -368,6 +384,23 @@ export class HeaderCategories extends LitElement {
   private _handleNavToggle(e: CustomEvent<{ open?: boolean }>): void {
     const isOpen = Boolean(e.detail?.open);
 
+    if (isOpen) {
+      if (
+        this.view === ROOT_VIEW &&
+        (this.layout === 'grid' || this.layout === 'masonry')
+      ) {
+        // Recompute once visible; hidden measurements can be stale/zero.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            this.setAttribute('data-columns', String(this._getColumnCount()));
+            this._updateDividers();
+            this._updateAndEmitColumnCount();
+          });
+        });
+      }
+      return;
+    }
+
     if (!isOpen) {
       this.setRootView(this.activeMegaTabId);
     }
@@ -379,6 +412,12 @@ export class HeaderCategories extends LitElement {
         ..._defaultTextStrings,
         ...(this.textStrings ?? {}),
       };
+    }
+
+    // Keep data-columns in sync before render so layout CSS has the
+    // correct column count on first paint.
+    if (this.layout === 'grid' || this.layout === 'masonry') {
+      this.setAttribute('data-columns', String(this._getColumnCount()));
     }
   }
 
@@ -392,11 +431,7 @@ export class HeaderCategories extends LitElement {
       }
     }
 
-    // Grid and masonry modes: update data-columns attribute
     if (this.layout === 'grid' || this.layout === 'masonry') {
-      const columnCount = this._getColumnCount();
-      this.setAttribute('data-columns', String(columnCount));
-
       // Update dividers after render when in root view (grid and masonry modes).
       // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
       // so post-render correction won't cause reflow.
@@ -748,13 +783,13 @@ export class HeaderCategories extends LitElement {
       return;
     }
 
-    if (this._buildSlottedTimeout) {
-      window.clearTimeout(this._buildSlottedTimeout);
+    if (this._buildSlottedRaf != null) {
+      window.cancelAnimationFrame(this._buildSlottedRaf);
     }
-    this._buildSlottedTimeout = window.setTimeout(() => {
+    this._buildSlottedRaf = window.requestAnimationFrame(() => {
       this._buildSlottedCategories();
-      this._buildSlottedTimeout = undefined;
-    }, 40);
+      this._buildSlottedRaf = undefined;
+    });
   }
 
   /**
@@ -767,6 +802,8 @@ export class HeaderCategories extends LitElement {
     if (this.view !== ROOT_VIEW) return;
     if (this.layout !== 'grid' && this.layout !== 'masonry') return;
     if (this.hideCategoryDividers) return;
+    const hostRect = this.getBoundingClientRect();
+    if (hostRect.width === 0 || hostRect.height === 0) return;
 
     const inner = this.shadowRoot?.querySelector('.header-categories__inner');
     if (!inner) return;
@@ -877,7 +914,8 @@ export class HeaderCategories extends LitElement {
 
     const categoryCount = this._isJsonMode
       ? this._tabConfig?.categories?.length ?? 0
-      : this._slottedCategories.length;
+      : this._slottedCategories.length ||
+        this.querySelectorAll(':scope > kyn-header-category').length;
 
     // Return the minimum of actual category count and maxColumns
     return Math.min(Math.max(1, categoryCount), this.maxColumns);
@@ -885,7 +923,10 @@ export class HeaderCategories extends LitElement {
 
   override render() {
     const view = this.view;
-    const columnCount = this.layout === 'grid' ? this._getColumnCount() : null;
+    const columnCount =
+      this.layout === 'grid' || this.layout === 'masonry'
+        ? this._getColumnCount()
+        : null;
 
     const inner = this._isJsonMode
       ? view === ROOT_VIEW
@@ -958,9 +999,9 @@ export class HeaderCategories extends LitElement {
       this._boundHandleNavToggle as EventListener
     );
 
-    if (this._buildSlottedTimeout) {
-      window.clearTimeout(this._buildSlottedTimeout);
-      this._buildSlottedTimeout = undefined;
+    if (this._buildSlottedRaf != null) {
+      window.cancelAnimationFrame(this._buildSlottedRaf);
+      this._buildSlottedRaf = undefined;
     }
 
     if (this._resizeObserver) {

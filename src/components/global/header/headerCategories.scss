@@ -137,6 +137,15 @@ slot.header-categories__slot::slotted(*) {
   :host([layout='masonry'][data-columns='#{$i}']) .header-categories__inner {
     column-count: $i;
   }
+  :host([layout='masonry'][data-columns='#{$i}'][fixed-column-widths]) {
+    width: auto;
+    max-width: calc(
+      #{$i} *
+        var(--kyn-header-category-column-width) +
+        (#{$i} - 1) *
+        var(--kyn-header-category-column-gap)
+    );
+  }
 }
 
 /* --- GRID LAYOUT --- */
@@ -163,7 +172,7 @@ slot.header-categories__slot::slotted(*) {
   --kyn-header-divider-margin: 0;
 }
 
-// 1-2 columns use fixed widths; 3+ use 1fr to avoid overflow
+// 1-2 columns use fixed widths; 3+ use 1fr to fill available space
 :host([layout='grid'][data-columns='1']) .header-categories__inner {
   grid-template-columns: var(--kyn-header-category-column-width);
 }
@@ -171,8 +180,25 @@ slot.header-categories__slot::slotted(*) {
   grid-template-columns: repeat(2, var(--kyn-header-category-column-width));
 }
 @for $i from 3 through 10 {
-  :host([layout='grid'][data-columns='#{$i}']) .header-categories__inner {
+  :host([layout='grid'][data-columns='#{$i}']:not([fixed-column-widths])) {
+    width: 100%;
+  }
+  :host([layout='grid'][data-columns='#{$i}']:not([fixed-column-widths]))
+    .header-categories__inner {
     grid-template-columns: repeat($i, 1fr);
+  }
+  :host([layout='grid'][data-columns='#{$i}'][fixed-column-widths]) {
+    width: auto;
+    max-width: calc(
+      #{$i} *
+        var(--kyn-header-category-column-width) +
+        (#{$i} - 1) *
+        var(--kyn-header-category-column-gap)
+    );
+  }
+  :host([layout='grid'][data-columns='#{$i}'][fixed-column-widths])
+    .header-categories__inner {
+    grid-template-columns: repeat($i, var(--kyn-header-category-column-width));
   }
 }
 

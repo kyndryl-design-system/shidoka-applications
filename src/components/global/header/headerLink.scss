@@ -382,6 +382,22 @@ kyn-text-input {
   }
 }
 
+// 3+ column categorical flyout: stretch to full viewport width.
+// CSS-driven so it applies as soon as data-flyout-columns is reflected,
+// with no dependency on JS positioning timing.
+@media (min-width: 42rem) {
+  :host(
+      [has-multi-column]:not([fixed-column-widths])[data-flyout-columns]:not(
+          [data-flyout-columns='0']
+        ):not([data-flyout-columns='1']):not([data-flyout-columns='2'])
+    )
+    .menu.open
+    .menu__content.slotted {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+  }
+}
+
 .go-back {
   margin-bottom: 8px;
 }

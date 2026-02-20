@@ -123,6 +123,12 @@ export class HeaderLink extends LitElement {
   @property({ type: Number, reflect: true, attribute: 'data-flyout-columns' })
   accessor flyoutColumns = 0;
 
+  /** Mirrors `fixed-column-widths` from nested kyn-header-categories.
+   * @internal
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'fixed-column-widths' })
+  accessor fixedColumnWidths = false;
+
   /** Current search term for filtering links in the flyout.
    * @internal
    */
@@ -393,9 +399,23 @@ export class HeaderLink extends LitElement {
     // Detect if this link contains categorical navigation
     const hasCategories = this.querySelector('kyn-header-categories') !== null;
     const hasCategory = this.querySelector('kyn-header-category') !== null;
+    const categoriesEl =
+      this.querySelector('kyn-tab-panel[visible] kyn-header-categories') ||
+      this.querySelector('kyn-header-categories');
 
     this.hasCategorical = hasCategories || hasCategory;
     this.hasMultiColumn = hasCategories; // Only true for multi-column wrapper
+    this.fixedColumnWidths =
+      categoriesEl?.hasAttribute('fixed-column-widths') ?? false;
+
+    // Prime flyout column count before open so width/layout CSS can apply
+    // without a second-pass visual snap.
+    if (categoriesEl) {
+      const dataCol = categoriesEl.getAttribute('data-columns');
+      this.flyoutColumns = dataCol ? parseInt(dataCol, 10) || 0 : 0;
+    } else {
+      this.flyoutColumns = 0;
+    }
 
     // Count direct child plain links for column wrapping
     const plainLinks = this.querySelectorAll(':scope > kyn-header-link');
@@ -408,9 +428,15 @@ export class HeaderLink extends LitElement {
    * @internal
    */
   private _handleColumnCountChange = (e: Event) => {
-    const detail = (e as CustomEvent<{ columnCount: number }>).detail;
+    const detail = (
+      e as CustomEvent<{
+        columnCount: number;
+        fixedColumnWidths?: boolean;
+      }>
+    ).detail;
     if (detail?.columnCount !== undefined) {
       this.flyoutColumns = detail.columnCount;
+      this.fixedColumnWidths = Boolean(detail.fixedColumnWidths);
     }
   };
 
@@ -615,9 +641,6 @@ export class HeaderLink extends LitElement {
     this.level = level;
   }
 
-  /** Threshold in pixels - if flyout is within this distance of nav width, stretch to match */
-  private static readonly STRETCH_THRESHOLD = 150;
-
   private _positionMenu() {
     const linkBounds = this.getBoundingClientRect?.();
     const menuEl =
@@ -640,50 +663,14 @@ export class HeaderLink extends LitElement {
         : linkHalf - menuHalf;
 
     if (this.level === 1) {
-      // get the height of the level 1 menu to use as submenu min-height
-      let navMenuHeight = 0;
-      const headerNav = this.closest('kyn-header-nav') as HTMLElement | null;
-      if (headerNav) {
-        const navMenu = headerNav.shadowRoot?.querySelector(
-          '.menu__content'
-        ) as HTMLElement | null;
-        if (navMenu) {
-          navMenuHeight = navMenu.offsetHeight;
-        }
-      }
-
-      // Only enforce min-height for multi-column mega nav flyouts
-      // (kyn-header-categories), not simple category lists
-      const hasMegaNav = this.querySelector('kyn-header-categories') !== null;
-
-      // Calculate if flyout should stretch to fill available viewport width
-      // Clamp oversized flyouts to the viewport and optionally stretch
-      // near-edge flyouts for cleaner right alignment.
-      let stretchWidth: string | undefined;
-      if (hasMegaNav) {
-        const flyoutNaturalWidth = menuBounds.width;
-        const rightMargin = 16; // Margin from viewport edge
-        const availableWidth = window.innerWidth - rightMargin;
-        const widthDifference = availableWidth - flyoutNaturalWidth;
-
-        if (flyoutNaturalWidth > availableWidth) {
-          // Prevent right-side clipping on smaller viewports.
-          stretchWidth = availableWidth + 'px';
-        } else if (
-          this.flyoutColumns !== 2 &&
-          widthDifference > 0 &&
-          widthDifference <= HeaderLink.STRETCH_THRESHOLD
-        ) {
-          // Stretch flyout to fill available width
-          stretchWidth = availableWidth + 'px';
-        }
-      }
+      // Use this flyout's own measured height for min-height. Avoid coupling
+      // to sibling flyouts, which can cause layout jumps when switching links.
+      const navMenuHeight = Math.round(menuBounds.height);
 
       this.menuPosition = {
         top: HeaderHeight + 'px',
         left: '0px',
         minHeight: navMenuHeight + 'px',
-        ...(stretchWidth ? { width: stretchWidth } : {}),
       };
     } else {
       const top = topCandidate < HeaderHeight ? HeaderHeight : topCandidate;
@@ -697,16 +684,27 @@ export class HeaderLink extends LitElement {
   /** @internal */
   private _debounceResize = debounce(() => {
     this.determineLevel();
+    if (this.open) {
+      this._positionMenu();
+    }
   });
 
   override firstUpdated() {
     this.determineLevel();
+    this._handleLinksSlotChange();
   }
 
   override updated(changedProps: any) {
     // Re-position after render when the menu has its actual dimensions
     if (changedProps.has('open') && this.open) {
       // Use rAF to ensure the DOM has painted
+      requestAnimationFrame(() => {
+        this._positionMenu();
+      });
+    }
+
+    // Re-position when column count changes (categories may render after flyout opens)
+    if (changedProps.has('flyoutColumns') && this.open) {
       requestAnimationFrame(() => {
         this._positionMenu();
       });
