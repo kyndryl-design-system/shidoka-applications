@@ -84,7 +84,7 @@ export class Header extends LitElement {
           aria-label="${this.rootUrl}"
           @click="${(e: Event) => this.handleRootLinkClick(e)}"
         >
-          <slot name="logo" @slotchange=${this._handleLogoSlotChange}>
+          <slot name="logo" @slotchange=${this.handleSlotChange}>
             ${unsafeHTML(logo)}
           </slot>
         </a>
@@ -106,32 +106,6 @@ export class Header extends LitElement {
 
   private handleSlotChange() {
     this.requestUpdate();
-  }
-
-  /** Apply fallback sizing for nested SVGs/images inside wrapper elements in
-   *  the logo slot. Directly slotted SVGs/images are handled by ::slotted()
-   *  CSS rules which respect --kyn-header-logo-width. This fallback only
-   *  applies when consumers have not already styled width/height themselves.
-   *  @internal */
-  private _handleLogoSlotChange(e: Event) {
-    this.handleSlotChange();
-
-    const slot = e.target as HTMLSlotElement;
-    slot.assignedElements().forEach((el) => {
-      // Skip directly-slotted SVGs/IMGs — these are styled via ::slotted()
-      // CSS rules which properly respect --kyn-header-logo-width
-      if (el instanceof SVGElement || el instanceof HTMLImageElement) return;
-
-      // For nested SVGs/imgs inside wrapper elements, provide default sizing without overriding explicit consumer styles.
-      el.querySelectorAll('svg').forEach((svg) => {
-        if (!svg.style.width) svg.style.width = '100%';
-        if (!svg.style.height) svg.style.height = 'auto';
-      });
-      el.querySelectorAll('img').forEach((img) => {
-        if (!img.style.width) img.style.width = '100%';
-        if (!img.style.height) img.style.height = 'auto';
-      });
-    });
   }
 
   private handleRootLinkClick(e: Event) {
