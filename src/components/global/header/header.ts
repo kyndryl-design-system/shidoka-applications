@@ -108,9 +108,10 @@ export class Header extends LitElement {
     this.requestUpdate();
   }
 
-  /** Auto-style nested SVGs/images inside wrapper elements in the logo slot
-   *  so they scale to fill their container. Directly-slotted SVGs and images
-   *  are handled by ::slotted() CSS rules which respect --kyn-header-logo-width.
+  /** Apply fallback sizing for nested SVGs/images inside wrapper elements in
+   *  the logo slot. Directly slotted SVGs/images are handled by ::slotted()
+   *  CSS rules which respect --kyn-header-logo-width. This fallback only
+   *  applies when consumers have not already styled width/height themselves.
    *  @internal */
   private _handleLogoSlotChange(e: Event) {
     this.handleSlotChange();
@@ -121,14 +122,14 @@ export class Header extends LitElement {
       // CSS rules which properly respect --kyn-header-logo-width
       if (el instanceof SVGElement || el instanceof HTMLImageElement) return;
 
-      // For nested SVGs/imgs inside wrapper elements, scale to fill container
+      // For nested SVGs/imgs inside wrapper elements, provide default sizing without overriding explicit consumer styles.
       el.querySelectorAll('svg').forEach((svg) => {
-        svg.style.width = '100%';
-        svg.style.height = 'auto';
+        if (!svg.style.width) svg.style.width = '100%';
+        if (!svg.style.height) svg.style.height = 'auto';
       });
       el.querySelectorAll('img').forEach((img) => {
-        img.style.width = '100%';
-        img.style.height = 'auto';
+        if (!img.style.width) img.style.width = '100%';
+        if (!img.style.height) img.style.height = 'auto';
       });
     });
   }

@@ -707,6 +707,18 @@
           "kind": "class",
           "description": "Header categories wrapper for mega menu.",
           "name": "HeaderCategories",
+          "cssProperties": [
+            {
+              "description": "Width of each column. Applies to 1 and 2 column layouts. 3+ columns use equal-width (`1fr`) to fill available space.",
+              "name": "--kyn-header-category-column-width",
+              "default": "300px"
+            },
+            {
+              "description": "Horizontal gap between columns.",
+              "name": "--kyn-header-category-column-gap",
+              "default": "32px"
+            }
+          ],
           "slots": [
             {
               "description": "Slot for header category elements. Controlled via `activeMegaTabId` / `activeMegaCategoryId` but encapsulates all categorical/mega-nav view behavior (root/detail, \"More\", \"Back\"). Emits `on-nav-change` so parents can mirror state for tabs, routing, etc. Modes: - JSON mode - Provide `tabsConfig` and categories/links are rendered from config. - Each link may specify `href`, `target`, and `rel`. - Optional `linkRenderer` hook can be supplied to fully control the slotted content inside each `<kyn-header-link>`. - Slotted/manual mode - Omit `tabsConfig` and slot `<kyn-header-category>` / `<kyn-header-link>` elements directly in the light DOM. - Slotted `<kyn-header-link>` `href`, `target`, and `rel` attributes are preserved. - Root view will: - limit visible links per category at `maxRootLinks` - inject a \"More\" link when there are additional links - \"More\" switches to a detail view for that category, and the Back button returns to the root view.",

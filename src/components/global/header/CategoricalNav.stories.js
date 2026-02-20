@@ -242,7 +242,7 @@ export const WithCategorizedNav = {
 WithCategorizedNav.storyName = 'JSON Configured Example (masonry layout)';
 
 // -----------------------------------------------------------------------------
-// Fully manual HTML variant (no JSON) - slot driven
+// Fully manual HTML variant (no JSON) - slot driven, masonry layout
 // -----------------------------------------------------------------------------
 
 export const WithCategorizedNavManualHtml = {
@@ -292,7 +292,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories layout="grid" maxColumns="5">
+                <kyn-header-categories layout="masonry" maxColumns="5">
                   <!-- CATEGORY 1 -->
                   <kyn-header-category heading="Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -473,7 +473,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories layout="grid" maxColumns="5">
+                <kyn-header-categories layout="masonry" maxColumns="5">
                   <kyn-header-category heading="T2 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -527,7 +527,7 @@ export const WithCategorizedNavManualHtml = {
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
 
-                <kyn-header-categories layout="grid" maxColumns="5">
+                <kyn-header-categories layout="masonry" maxColumns="5">
                   <!-- APP2 CATEGORY A -->
                   <kyn-header-category heading="App2 Category A">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -571,7 +571,7 @@ export const WithCategorizedNavManualHtml = {
                 ></kyn-search>
 
                 <!-- iterating through array here to show how the details view handles many links -->
-                <kyn-header-categories layout="grid" maxColumns="5">
+                <kyn-header-categories layout="masonry" maxColumns="5">
                   <kyn-header-category heading="T4 - Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     ${Array.from({ length: 40 }).map(
@@ -621,4 +621,147 @@ export const WithCategorizedNavManualHtml = {
     `;
   },
 };
-WithCategorizedNavManualHtml.storyName = 'Slotted HTML Example (grid layout)';
+WithCategorizedNavManualHtml.storyName =
+  'Slotted HTML Example (masonry layout)';
+
+// -----------------------------------------------------------------------------
+// Grid layout variant - fixed-width columns that don't stretch full viewport
+// -----------------------------------------------------------------------------
+
+export const WithCategorizedNavGrid = {
+  args: {
+    ...args,
+    activeMegaTabId: 'tab1',
+  },
+  render: (renderArgs) => {
+    const [, updateArgs] = useArgs();
+
+    return html`
+      <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
+        <span slot="logo" style="--kyn-header-logo-width: 120px;"
+          >${unsafeSVG(bridgeLogo)}</span
+        >
+        <kyn-header-nav auto-open-flyout=${renderArgs.autoOpenFlyout}>
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Application
+
+            <kyn-tabs tabSize="md" slot="links">
+              <kyn-tab
+                slot="tabs"
+                id="tab1"
+                ?selected=${renderArgs.activeMegaTabId === 'tab1'}
+                @click=${() => updateArgs({ activeMegaTabId: 'tab1' })}
+              >
+                Tab 1
+              </kyn-tab>
+
+              <kyn-tab
+                slot="tabs"
+                id="tab2"
+                ?selected=${renderArgs.activeMegaTabId === 'tab2'}
+                @click=${() => updateArgs({ activeMegaTabId: 'tab2' })}
+              >
+                Tab 2
+              </kyn-tab>
+
+              <kyn-tab-panel
+                tabId="tab1"
+                noPadding
+                ?visible=${renderArgs.activeMegaTabId === 'tab1'}
+              >
+                <kyn-search
+                  label="Filter items... (Application controlled)"
+                  style="display: block; margin-bottom: 16px;"
+                ></kyn-search>
+
+                <kyn-header-categories
+                  layout="grid"
+                  maxColumns="4"
+                  hide-category-dividers
+                >
+                  <kyn-header-category heading="Category 1">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 4</kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category heading="Category 2">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category heading="Category 3">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category heading="Category 4">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 4</kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category heading="Category 5">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category heading="Category 6">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
+                  </kyn-header-category>
+                </kyn-header-categories>
+              </kyn-tab-panel>
+
+              <kyn-tab-panel
+                tabId="tab2"
+                noPadding
+                ?visible=${renderArgs.activeMegaTabId === 'tab2'}
+              >
+                <kyn-search
+                  label="Filter items... (Application controlled)"
+                  style="display: block; margin-bottom: 16px;"
+                ></kyn-search>
+
+                <kyn-header-categories
+                  layout="grid"
+                  maxColumns="4"
+                  hide-category-dividers
+                >
+                  <kyn-header-category heading="T2 - Category 1">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 2</kyn-header-link>
+                    <kyn-header-link href="#">Sub Link 3</kyn-header-link>
+                  </kyn-header-category>
+
+                  <kyn-header-category heading="T2 - Category 2">
+                    <span slot="icon">${unsafeSVG(circleIcon)}</span>
+                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                  </kyn-header-category>
+                </kyn-header-categories>
+              </kyn-tab-panel>
+            </kyn-tabs>
+          </kyn-header-link>
+
+          <kyn-header-link href="javascript:void(0)">
+            <span>${unsafeSVG(circleIcon)}</span>
+            Link 1
+          </kyn-header-link>
+        </kyn-header-nav>
+      </kyn-header>
+    `;
+  },
+};
+WithCategorizedNavGrid.storyName = 'Grid Layout Example (fixed-width columns)';
