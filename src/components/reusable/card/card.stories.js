@@ -4,7 +4,7 @@ import { action } from 'storybook/actions';
 import './card.sample';
 
 export default {
-  title: 'Components/Card',
+  title: 'Components/Layout & Structure/Card',
   component: 'kyn-card',
   argTypes: {
     type: {

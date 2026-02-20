@@ -7,7 +7,7 @@ import { ValidationArgs } from '../../../common/helpers/helpers';
 import currencyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cost.svg';
 
 export default {
-  title: 'Components/Text Input',
+  title: 'Components/Form Inputs/Text Input',
   component: 'kyn-text-input',
   argTypes: {
     type: {

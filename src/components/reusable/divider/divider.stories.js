@@ -6,7 +6,7 @@ import '../metaData';
 import { LinkWithIcon as Link } from '../link/Link.stories.js';
 
 export default {
-  title: 'Components/Divider',
+  title: 'Components/Layout & Structure/Divider',
   component: 'kyn-divider',
   parameters: {
     design: {

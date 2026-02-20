@@ -13,7 +13,7 @@ import errorFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 export default {
-  title: 'Components/Accordion',
+  title: 'Components/Layout & Structure/Accordion',
   component: 'kyn-accordion',
   subcomponents: { 'kyn-accordion-item': 'kyn-accordion-item' },
   parameters: {

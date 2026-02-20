@@ -4,7 +4,7 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
 import './index';
 
 export default {
-  title: 'Components/Badge',
+  title: 'Components/Indicators & Utilities/Badge',
   component: 'kyn-badge',
   argTypes: {
     size: {

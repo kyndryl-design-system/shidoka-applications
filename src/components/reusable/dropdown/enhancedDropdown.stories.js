@@ -14,7 +14,7 @@ import branchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/b
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 
 export default {
-  title: 'Components/Dropdown/Enhanced Dropdown',
+  title: 'Components/Form Inputs/Dropdown/Enhanced Dropdown',
   component: 'kyn-dropdown',
   subcomponents: {
     EnhancedDropdownOption: 'kyn-enhanced-dropdown-option',

@@ -14,7 +14,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
 export default {
-  title: 'Components/Link',
+  title: 'Components/Navigation/Link',
   component: 'kyn-link',
   parameters: {
     design: {

@@ -10,7 +10,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { characters } from '../table/story-helpers/ultils.sample';
 
 export default {
-  title: 'Components/Meta Data',
+  title: 'Components/Data Display/Meta Data',
   component: 'kyn-meta-data',
   parameters: {
     design: {

@@ -6,7 +6,7 @@ import '../button';
 import '../textInput';
 
 export default {
-  title: 'Components/Modal',
+  title: 'Components/Overlays & Floating UI/Modal',
   component: 'kyn-modal',
   argTypes: {
     size: {

@@ -10,7 +10,7 @@ import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../../reusable/table';
 
 export default {
-  title: 'Components/Widget/Gridstack',
+  title: 'Components/Layout & Structure/Widget/Gridstack',
   component: 'kyn-widget-gridstack',
   parameters: {
     design: {

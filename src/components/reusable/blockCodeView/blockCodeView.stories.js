@@ -99,7 +99,7 @@ print(john.introduce())`,
 };
 
 export default {
-  title: 'Components/Code View/Block',
+  title: 'Components/Data Display/Code View/Block',
   component: 'kyn-block-code-view',
   parameters: {
     design: {
