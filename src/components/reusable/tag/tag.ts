@@ -137,7 +137,7 @@ export class Tag extends LitElement {
 
     return html`
       <div
-        class="${classMap(this._chechForNewTag() ? newTagClasses : tagClasses)}"
+        class="${classMap(this._checkForNewTag() ? newTagClasses : tagClasses)}"
         tagSize="${this.tagSize}"
         ?disabled="${this.disabled}"
         ?filter=${this.filter}
@@ -147,10 +147,10 @@ export class Tag extends LitElement {
         @click=${(e: any) => this.handleTagClick(e, this.label)}
         @keydown=${(e: any) => this.handleTagPress(e, this.label)}
       >
-        ${this._chechForNewTag() ? html`<slot></slot>` : ''}
+        ${this._checkForNewTag() ? html`<slot></slot>` : ''}
         <span
           class="${classMap(
-            this._chechForNewTag() ? newLabelClasses : labelClasses
+            this._checkForNewTag() ? newLabelClasses : labelClasses
           )}"
           aria-disabled=${this.disabled}
           >${this.label}</span
@@ -159,7 +159,7 @@ export class Tag extends LitElement {
           ? html`
               <button
                 class="${classMap(
-                  this._chechForNewTag() ? newIconClasses : iconClasses
+                  this._checkForNewTag() ? newIconClasses : iconClasses
                 )}"
                 ?disabled="${this.disabled}"
                 title="${this.clearTagText} ${this.label}"
@@ -175,7 +175,7 @@ export class Tag extends LitElement {
     `;
   }
 
-  private _chechForNewTag() {
+  private _checkForNewTag() {
     const newTags = ['default', 'spruce', 'sea', 'lilac', 'ai', 'red'];
     if (newTags.includes(this.tagColor)) {
       return true;
@@ -185,8 +185,8 @@ export class Tag extends LitElement {
   }
 
   private _isTagClickable() {
-    if (this._chechForNewTag()) {
-      return !this.filter;
+    if (this._checkForNewTag()) {
+      return !this.filter && this.clickable;
     } else {
       return this.clickable;
     }
