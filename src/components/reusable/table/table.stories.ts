@@ -972,7 +972,7 @@ export const StackedHeader: Story = {
         }
       </style>
       <kyn-table-toolbar
-        .tableTitle=${'Stacked Header'}
+        .tableTitle=${'Stacked Header With Resizable Columns'}
         .tableSubtitle=${'Multiple header rows with column grouping'}
       >
       </kyn-table-toolbar>
@@ -981,9 +981,9 @@ export const StackedHeader: Story = {
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th-group label="Personal Info">
-                <kyn-th .align=${'center'}>ID</kyn-th>
-                <kyn-th>First Name</kyn-th>
-                <kyn-th>Last Name</kyn-th>
+                <kyn-th .align=${'center'} resizable>ID</kyn-th>
+                <kyn-th resizable>First Name</kyn-th>
+                <kyn-th resizable>Last Name</kyn-th>
               </kyn-th-group>
               <kyn-th-group label="Other Info">
                 <kyn-th>Birthday</kyn-th>
