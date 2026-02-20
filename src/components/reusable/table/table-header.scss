@@ -42,6 +42,16 @@
   overflow: visible;
 }
 
+// Also show overflow for resizable columns on hover to display the extended resize-handle
+:host([resizable]) .resize-handle:hover,
+:host([resizable]) .resize-handle:focus-visible {
+  overflow: visible;
+}
+
+:host([resizable]:hover) {
+  overflow: visible;
+}
+
 :host::before,
 :host::after {
   content: '';
@@ -146,27 +156,175 @@
   border-bottom: 1px solid var(--kd-color-border-level-tertiary);
 }
 
-// resize handle
+// resize handle always visible for resizable columns
 .resize-handle {
   position: absolute;
   right: 0;
   top: 0;
-  width: 2.5px;
-  background: transparent;
+  width: 1px;
   cursor: col-resize;
   height: var(--kyn-resize-handle-height, 100%);
+  &:hover {
+    width: 2.5px;
+  }
 }
 
-.resize-handle:hover {
+:host([resizable]) .resize-handle {
   background: var(--kd-color-border-level-tertiary);
 }
 
-// Show resize handle background on hover of the entire kyn-th cell
-:host(:hover) .resize-handle {
+:host([stacked-child]:not([stacked-child-first]):hover) .resize-handle {
   background: var(--kd-color-border-level-tertiary);
 }
 
-// Show active background when data-resizing attribute is set
+// For stacked first child, show resize handle when hovering container OR when hovering the resize handle itself
+:host([stacked-child-first]) .container:hover ~ .resize-handle,
+:host([stacked-child-first]) .resize-handle:hover {
+  background: var(--kd-color-border-level-tertiary);
+}
+
+// For non-stacked headers, show resize handle on hover
+:host(:not([stacked-child]):hover) .resize-handle {
+  background: var(--kd-color-border-level-tertiary);
+}
+
 :host([data-resizing='true']) .resize-handle {
-  background: var(--kd-color-border-variants-focus);
+  background: var(--kd-color-border-variants-focus) !important;
+  width: 2.5px !important;
+}
+
+// But allow full height when actively resizing
+:host([stacked-child]:not([data-resizing='true'])) .resize-handle {
+  top: var(--kyn-group-label-height, 42px);
+  height: calc(100% - var(--kyn-group-label-height, 42px));
+}
+
+// For stacked children on hover, show full height resize-handle
+:host([stacked-child]) .resize-handle:hover,
+:host([stacked-child]) .resize-handle:focus-visible {
+  top: 0;
+  height: 100vh;
+}
+
+// Stacked header (kyn-th inside kyn-th-group)
+
+// - The first child in each group renders a .group-label-bar that is absolutely
+//   positioned and spans the full width of all sibling columns (via JS-measured
+//   --kyn-group-label-width).
+
+:host([stacked-child]) {
+  overflow: visible;
+
+  .group-label-bar {
+    @include typography.type-ui-02;
+    color: var(--kd-color-text-level-primary);
+    font-weight: var(--kd-font-weight-medium);
+    padding: var(--kd-spacing-8) var(--kd-spacing-16);
+    background: var(--kd-color-background-table-header);
+    box-sizing: border-box;
+  }
+}
+
+// The first child positions its label absolutely to span the full group width.
+:host([stacked-child-first]) {
+  position: relative;
+
+  .group-label-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--kyn-group-label-width, 100%);
+    min-width: 100%;
+    z-index: 1;
+    border-right: 1px solid var(--kd-color-border-level-tertiary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // Push .container down to make room for the label
+  .container {
+    margin-top: var(--kyn-group-label-height, 42px);
+  }
+}
+
+// Apply rounded corners and shadow to FIRST child in row only when parent header is not expandable
+:host([stacked-child-first][data-header-not-expandable][data-first-in-row])
+  .group-label-bar {
+  border-top-left-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
+}
+
+// Non-first children: hide the label bar entirely and use margin-top
+
+:host([stacked-child]:not([stacked-child-first])) {
+  .group-label-bar {
+    display: none;
+  }
+
+  .container {
+    margin-top: var(--kyn-group-label-height, 42px);
+  }
+}
+
+:host([stacked-child][data-group-align='left']) .group-label-bar {
+  text-align: left;
+}
+
+:host([stacked-child][data-group-align='center']) .group-label-bar {
+  text-align: center;
+}
+
+:host([stacked-child][data-group-align='right']) .group-label-bar {
+  text-align: right;
+}
+
+:host([dense][stacked-child]) .group-label-bar {
+  padding: var(--kd-spacing-8) var(--kd-spacing-4);
+}
+
+// Rounded corners for LAST group in stacked header
+
+:host([stacked-child-first][data-header-not-expandable][data-last-group])
+  .group-label-bar {
+  border-top-right-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
+}
+
+:host([stacked-child-first]:not([data-header-not-expandable])[data-last-group])
+  .group-label-bar {
+  border-top-right-radius: 8px;
+  box-shadow: 0 -8px 0 0 var(--kd-color-background-page-default);
+}
+
+// Remove top-right border radius when non-grouped kyn-th is present after last group
+:host(
+    [stacked-child-first][data-header-not-expandable][data-last-group][data-has-following-th]
+  )
+  .group-label-bar {
+  border-top-right-radius: 0px;
+}
+
+:host(
+    [stacked-child-first]:not(
+        [data-header-not-expandable]
+      )[data-last-group][data-has-following-th]
+  )
+  .group-label-bar {
+  border-top-right-radius: 0px;
+}
+
+// Remove border radius for first and last group when checkboxSelection/expandable
+:host(
+    [stacked-child-first][data-header-not-expandable][data-first-in-row][data-checkbox-selection]
+  )
+  .group-label-bar {
+  border-top-left-radius: 0;
+}
+
+:host(
+    [stacked-child-first][data-header-not-expandable][data-last-group][data-checkbox-selection]
+  )
+  .group-label-bar {
+  border-top-left-radius: 0;
 }
