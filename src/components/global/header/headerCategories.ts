@@ -58,6 +58,7 @@ export interface MegaTabsConfig {
 export interface HeaderMegaChangeDetail {
   activeMegaTabId: string;
   activeMegaCategoryId: string | null;
+  view: HeaderView;
 }
 
 type HeaderView = 'root' | 'detail';
@@ -86,6 +87,8 @@ interface SlottedCategoryData {
   heading: string;
   links: SlottedLinkData[];
   iconHtml?: string;
+  showDivider: boolean;
+  noAutoDivider: boolean;
 }
 
 /**
@@ -151,6 +154,14 @@ export class HeaderCategories extends LitElement {
   /** Max number of columns to display when layout="grid" or layout="masonry". */
   @property({ type: Number })
   accessor maxColumns = 3;
+
+  /** When true, category headings render with the default design-system icon when none is provided. */
+  @property({ type: Boolean, attribute: 'show-category-icons' })
+  accessor showCategoryIcons = false;
+
+  /** When true, hide dividers in root-view categories. */
+  @property({ type: Boolean, attribute: 'hide-category-dividers' })
+  accessor hideCategoryDividers = false;
 
   /**
    * Optional text overrides, merged with defaults.
@@ -286,10 +297,18 @@ export class HeaderCategories extends LitElement {
     return '_self';
   }
 
+  /** Resolve max root links, where non-positive values indicate "no limit". */
+  private get _rootLinksLimit(): number {
+    return this.maxRootLinks <= 0
+      ? Number.POSITIVE_INFINITY
+      : this.maxRootLinks;
+  }
+
   private _emitChange(): void {
     const detail: HeaderMegaChangeDetail = {
       activeMegaTabId: this.activeMegaTabId,
       activeMegaCategoryId: this.activeMegaCategoryId,
+      view: this.view,
     };
 
     this.dispatchEvent(
@@ -419,11 +438,18 @@ export class HeaderCategories extends LitElement {
     if (!category) return null;
 
     const links = category.links ?? [];
+    const rootLinksLimit = this._rootLinksLimit;
 
     return html`
-      <kyn-header-category heading=${category.heading} showDivider>
-        <span slot="icon">${unsafeSVG(circleIcon)}</span>
-        ${links.slice(0, this.maxRootLinks).map((link) => {
+      <kyn-header-category
+        heading=${category.heading}
+        ?showDivider=${!this.hideCategoryDividers}
+        ?data-auto-divider=${!this.hideCategoryDividers}
+      >
+        ${this.showCategoryIcons
+          ? html`<span slot="icon">${unsafeSVG(circleIcon)}</span>`
+          : null}
+        ${links.slice(0, rootLinksLimit).map((link) => {
           const target = this.normalizeHeaderLinkTarget(link.target);
           return html`
             <kyn-header-link
@@ -440,7 +466,7 @@ export class HeaderCategories extends LitElement {
             </kyn-header-link>
           `;
         })}
-        ${links.length > this.maxRootLinks
+        ${links.length > rootLinksLimit
           ? html`
               <kyn-header-link
                 slot="more"
@@ -488,7 +514,9 @@ export class HeaderCategories extends LitElement {
       <kyn-header-category
         heading=${`${category.heading} – ${this._textStrings.more}`}
       >
-        <span slot="icon">${unsafeSVG(circleIcon)}</span>
+        ${this.showCategoryIcons
+          ? html`<span slot="icon">${unsafeSVG(circleIcon)}</span>`
+          : null}
         <div
           id=${`detail-${category.id}`}
           class="header-detail-columns ${isSingleColumn
@@ -566,6 +594,8 @@ export class HeaderCategories extends LitElement {
         heading,
         links,
         iconHtml,
+        showDivider: categoryEl.hasAttribute('showdivider'),
+        noAutoDivider: categoryEl.hasAttribute('noautodivider'),
       } as SlottedCategoryData;
     });
 
@@ -575,13 +605,23 @@ export class HeaderCategories extends LitElement {
   private renderSlottedRoot() {
     const categories = this._slottedCategories;
     if (!categories.length) return null;
+    const rootLinksLimit = this._rootLinksLimit;
     return html`${categories.map(
       (category) => html`
-        <kyn-header-category heading=${category.heading} showDivider>
+        <kyn-header-category
+          heading=${category.heading}
+          ?showDivider=${!this.hideCategoryDividers}
+          .noAutoDivider=${this.hideCategoryDividers
+            ? true
+            : category.noAutoDivider}
+          ?data-auto-divider=${!this.hideCategoryDividers}
+        >
           ${category.iconHtml
             ? html`<span slot="icon">${unsafeHTML(category.iconHtml)}</span>`
+            : this.showCategoryIcons
+            ? html`<span slot="icon">${unsafeSVG(circleIcon)}</span>`
             : null}
-          ${category.links.slice(0, this.maxRootLinks).map((link) => {
+          ${category.links.slice(0, rootLinksLimit).map((link) => {
             const target = this.normalizeHeaderLinkTarget(link.target);
             return html`
               <kyn-header-link
@@ -594,7 +634,7 @@ export class HeaderCategories extends LitElement {
               </kyn-header-link>
             `;
           })}
-          ${category.links.length > this.maxRootLinks
+          ${category.links.length > rootLinksLimit
             ? html`
                 <kyn-header-link
                   slot="more"
@@ -661,6 +701,8 @@ export class HeaderCategories extends LitElement {
       >
         ${categoryItem.iconHtml
           ? html`<span slot="icon">${unsafeHTML(categoryItem.iconHtml)}</span>`
+          : this.showCategoryIcons
+          ? html`<span slot="icon">${unsafeSVG(circleIcon)}</span>`
           : null}
         <div
           id=${`detail-${categoryItem.id}`}
@@ -718,18 +760,23 @@ export class HeaderCategories extends LitElement {
   private _updateDividers(): void {
     if (this.view !== ROOT_VIEW) return;
     if (this.layout !== 'grid' && this.layout !== 'masonry') return;
+    if (this.hideCategoryDividers) return;
 
     const inner = this.shadowRoot?.querySelector('.header-categories__inner');
     if (!inner) return;
 
     const categories = Array.from(
-      inner.querySelectorAll<HTMLElement>('kyn-header-category')
+      inner.querySelectorAll<HTMLElement>(
+        'kyn-header-category[data-auto-divider]'
+      )
     );
 
     if (!categories.length) return;
 
-    // Reset all categories: remove noAutoDivider to allow auto-detection
+    // Reset managed categories so a later reflow can recompute last-row/last-column
+    // divider visibility from a consistent baseline.
     categories.forEach((cat) => {
+      cat.setAttribute('showdivider', '');
       cat.removeAttribute('noautodivider');
     });
 

@@ -165,6 +165,12 @@ export class HeaderLink extends LitElement {
   @state()
   accessor _inheritedTruncate = false;
 
+  /** Observer for `truncate-links` changes on the owning nav.
+   * @internal
+   */
+  private _truncateObserver?: MutationObserver;
+  private _observedNav: HTMLElement | null = null;
+
   /** Menu positioning
    * @internal
    */
@@ -697,12 +703,6 @@ export class HeaderLink extends LitElement {
     this.determineLevel();
   }
 
-  override willUpdate(changedProps: any) {
-    if (changedProps.has('open') && this.open) {
-      this._positionMenu();
-    }
-  }
-
   override updated(changedProps: any) {
     // Re-position after render when the menu has its actual dimensions
     if (changedProps.has('open') && this.open) {
@@ -740,8 +740,65 @@ export class HeaderLink extends LitElement {
     this.addEventListener('on-nav-change', this._handleNavChange);
     // Check for truncation inheritance after DOM is ready
     queueMicrotask(() => {
-      this._inheritedTruncate = this._isInTruncatingNav();
+      this._observeParentNavTruncate();
     });
+  }
+
+  /** Find the closest owning nav across shadow boundaries.
+   * @internal
+   */
+  private _resolveOwningNav(): HTMLElement | null {
+    const parentNav = this.closest('kyn-header-nav');
+    if (parentNav) return parentNav as HTMLElement;
+
+    let root = this.getRootNode();
+    while (root instanceof ShadowRoot) {
+      const nav = root.host.closest?.('kyn-header-nav');
+      if (nav) {
+        return nav as HTMLElement;
+      }
+      root = root.host.getRootNode();
+    }
+
+    return null;
+  }
+
+  /** Sync inherited truncate state with the owning nav.
+   * @internal
+   */
+  private _syncInheritedTruncate = (): void => {
+    this._inheritedTruncate = this._isInTruncatingNav();
+  };
+
+  /** Observe `truncate-links` changes on the owning nav.
+   * @internal
+   */
+  private _observeParentNavTruncate(): void {
+    const nav = this._resolveOwningNav();
+
+    if (this._observedNav === nav) {
+      this._syncInheritedTruncate();
+      return;
+    }
+
+    if (this._truncateObserver) {
+      this._truncateObserver.disconnect();
+      this._truncateObserver = undefined;
+    }
+
+    this._observedNav = nav;
+
+    if (nav) {
+      this._truncateObserver = new MutationObserver(() => {
+        this._syncInheritedTruncate();
+      });
+      this._truncateObserver.observe(nav, {
+        attributes: true,
+        attributeFilter: ['truncate-links'],
+      });
+    }
+
+    this._syncInheritedTruncate();
   }
 
   /** Check if this link is inside a nav with truncate-links attribute
@@ -749,22 +806,7 @@ export class HeaderLink extends LitElement {
    * @internal
    */
   private _isInTruncatingNav(): boolean {
-    // First try direct closest (works for top-level links)
-    const parentNav = this.closest('kyn-header-nav');
-    if (parentNav) {
-      return parentNav.hasAttribute('truncate-links');
-    }
-
-    // For nested links, traverse up through shadow DOM boundaries
-    let root = this.getRootNode();
-    while (root instanceof ShadowRoot) {
-      const nav = root.host.closest?.('kyn-header-nav');
-      if (nav) {
-        return nav.hasAttribute('truncate-links');
-      }
-      root = root.host.getRootNode();
-    }
-    return false;
+    return this._resolveOwningNav()?.hasAttribute('truncate-links') ?? false;
   }
 
   override disconnectedCallback() {
@@ -790,6 +832,11 @@ export class HeaderLink extends LitElement {
       this._handleColumnCountChange
     );
     this.removeEventListener('on-nav-change', this._handleNavChange);
+    if (this._truncateObserver) {
+      this._truncateObserver.disconnect();
+      this._truncateObserver = undefined;
+    }
+    this._observedNav = null;
     super.disconnectedCallback();
   }
 }

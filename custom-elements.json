@@ -776,6 +776,26 @@
             },
             {
               "kind": "field",
+              "name": "showCategoryIcons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, category headings render with the default design-system icon when none is provided.",
+              "attribute": "show-category-icons"
+            },
+            {
+              "kind": "field",
+              "name": "hideCategoryDividers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, hide dividers in root-view categories.",
+              "attribute": "hide-category-dividers"
+            },
+            {
+              "kind": "field",
               "name": "textStrings",
               "type": {
                 "text": "Partial<HeaderTextStrings> | null"
@@ -845,6 +865,16 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "_rootLinksLimit",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "description": "Resolve max root links, where non-positive values indicate \"no limit\".",
+              "readonly": true
             },
             {
               "kind": "method",
@@ -1042,8 +1072,7 @@
               "name": "on-column-count-change",
               "type": {
                 "text": "CustomEvent"
-              },
-              "description": "@internal Fires when the computed column count changes on resize. Detail: `{ columnCount }`."
+              }
             },
             {
               "name": "on-nav-change",
@@ -1100,6 +1129,24 @@
               "fieldName": "maxColumns"
             },
             {
+              "name": "show-category-icons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, category headings render with the default design-system icon when none is provided.",
+              "fieldName": "showCategoryIcons"
+            },
+            {
+              "name": "hide-category-dividers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, hide dividers in root-view categories.",
+              "fieldName": "hideCategoryDividers"
+            },
+            {
               "name": "textStrings",
               "type": {
                 "text": "Partial<HeaderTextStrings> | null"
@@ -1127,6 +1174,14 @@
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "HeaderCategories",
+          "declaration": {
+            "name": "HeaderCategories",
+            "module": "src/components/global/header/headerCategories.ts"
+          }
+        },
         {
           "kind": "custom-element-definition",
           "name": "kyn-header-categories",
@@ -1805,6 +1860,15 @@
                 "text": "any"
               },
               "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_observedNav",
+              "type": {
+                "text": "HTMLElement | null"
+              },
+              "privacy": "private",
+              "default": "null"
             },
             {
               "kind": "method",
