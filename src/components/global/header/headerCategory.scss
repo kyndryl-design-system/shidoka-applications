@@ -3,21 +3,42 @@
 
 :host {
   display: block;
+  min-width: 0; // Allow host to shrink in grid/flex containers
+
+  // Signal to nested header-links that they're in a flyout/category context
+  // These allow text spans to size naturally (not fixed 16px icon size)
+  --kyn-header-span-only-width: auto;
+  --kyn-header-span-only-height: auto;
+  --kyn-header-span-only-flex: 1 1 0%;
+  --kyn-header-span-only-min-width: 0;
+  // For non-only-child spans (text with icon-selector sibling)
+  --kyn-header-span-flex: 1 1 0%;
+  --kyn-header-span-min-width: 0;
 }
 
 .category {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  position: relative;
 
   &.divider::after {
     content: '';
     display: block;
     background: none;
     border: none;
-    margin: 6px 8px;
     height: 1px;
     background: var(--kd-color-border-level-tertiary);
+
+    // Default: in-flow divider inset from edges (standard nav flyouts)
+    margin: var(--kyn-header-divider-margin, 6px 8px);
+
+    // Masonry/grid override via CSS custom properties: absolute positioning
+    // removes divider from layout flow so it doesn't affect column balancing.
+    position: var(--kyn-header-divider-position, static);
+    bottom: var(--kyn-header-divider-bottom, auto);
+    left: var(--kyn-header-divider-left, auto);
+    right: var(--kyn-header-divider-right, auto);
   }
 }
 
@@ -25,6 +46,14 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0; // Allow flex container to shrink for text truncation
+
+  // Indent links to align with heading text when icon is present (flyout only)
+  // Uses CSS custom property set by flyout wrapper (headerLink .wrapper or headerCategories)
+  // 8px (heading padding) + 16px (icon) + 8px (gap) = 32px
+  &.has-icon {
+    padding-left: var(--kyn-category-links-indent, 0);
+  }
 }
 
 .heading {
@@ -33,13 +62,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: fit-content; // Don't stretch to fill parent column
   color: var(--kd-color-text-variant-brand);
   font-weight: var(--kd-font-weight-medium);
   text-transform: uppercase;
-  padding: 7px 6px 7px 8px;
+  padding: 7px 6px var(--kyn-header-category-heading-pb, 7px) 8px;
 
   &.left-padding {
     padding-left: 36px;
+  }
+
+  // Hide heading when empty (no text and no icon)
+  &.empty {
+    display: none;
   }
 }
 
@@ -49,4 +84,5 @@ slot[name='icon']::slotted(*) {
   justify-content: center;
   width: 16px;
   height: 16px;
+  color: var(--kd-color-icon-primary);
 }

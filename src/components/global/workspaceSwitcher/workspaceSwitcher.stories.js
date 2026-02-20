@@ -16,6 +16,7 @@ import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
+import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 
 // --- Data setup ---
 
@@ -510,6 +511,9 @@ export const UIImplementation = {
   ],
   render: (args) => html`
     <kyn-header rootUrl="/" appTitle="Bridge">
+      <span slot="logo" style="--kyn-header-logo-width: 120px;">
+        ${unsafeSVG(bridgeLogo)}
+      </span>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
           <span>${unsafeSVG(circleIcon)}</span>
