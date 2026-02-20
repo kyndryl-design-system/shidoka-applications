@@ -1,6 +1,6 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { LitElement, html, css, unsafeCSS } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -15,6 +15,7 @@ import SideDrawerScss from './sideDrawer.scss?inline';
  * @slot anchor - Slot for the anchor button content.
  * @fires on-close - Emits the drawer close event with `returnValue` (`'ok'` or `'cancel'`).`detail:{ origEvent: PointerEvent,returnValue: string }`
  * @fires on-open - Emits the drawer open event.
+ * @fires on-resize - Emits when the drawer is resized via drag. `detail: { width: number }`
  */
 
 @customElement('kyn-side-drawer')
@@ -118,6 +119,23 @@ export class SideDrawer extends LitElement {
   @property({ type: Boolean })
   accessor noBackdrop = false;
 
+  /** Allow the drawer to be resized by dragging the left edge. Width is constrained between 384px and 1024px. */
+  @property({ type: Boolean })
+  accessor resizable = false;
+
+  /** @internal - tracks active drag state for handle styling */
+  @state()
+  private accessor _dragging = false;
+
+  /** @internal */
+  private _resizeStartX = 0;
+  /** @internal */
+  private _resizeStartWidth = 0;
+  /** @internal */
+  private _boundOnDragMove!: (e: PointerEvent) => void;
+  /** @internal */
+  private _boundOnDragEnd!: (e: PointerEvent) => void;
+
   /** The dialog element
    * @internal
    */
@@ -131,6 +149,7 @@ export class SideDrawer extends LitElement {
       [`size--${this.size}`]: this.size,
       'ai-connected': this.aiConnected,
       'gradient-bkg': this.aiConnected && this.gradientBackground,
+      resizable: this.resizable,
     };
 
     const dialogFooterClasses = {
@@ -154,6 +173,17 @@ export class SideDrawer extends LitElement {
         tabindex="-1"
         @cancel=${(e: Event) => this._closeDrawer(e, 'cancel')}
       >
+        ${this.resizable
+          ? html`
+              <div
+                class="drag-handle ${this._dragging ? 'dragging' : ''}"
+                @pointerdown=${this._onDragStart}
+                aria-hidden="true"
+              >
+                <span class="drag-lines"></span>
+              </div>
+            `
+          : null}
         <form method="dialog">
           <!--  Header -->
           <header>
@@ -269,6 +299,39 @@ export class SideDrawer extends LitElement {
   private _emitOpenEvent() {
     const event = new CustomEvent('on-open');
     this.dispatchEvent(event);
+  }
+
+  private _onDragStart(e: PointerEvent) {
+    if (!this.resizable) return;
+    e.preventDefault();
+
+    this._resizeStartX = e.clientX;
+    this._resizeStartWidth = this._dialog.offsetWidth;
+    this._dragging = true;
+
+    this._boundOnDragMove = this._onDragMove.bind(this);
+    this._boundOnDragEnd = this._onDragEnd.bind(this);
+
+    window.addEventListener('pointermove', this._boundOnDragMove);
+    window.addEventListener('pointerup', this._boundOnDragEnd);
+  }
+
+  private _onDragMove(e: PointerEvent) {
+    const delta = this._resizeStartX - e.clientX;
+    const newWidth = Math.min(
+      1024,
+      Math.max(384, this._resizeStartWidth + delta)
+    );
+    this._dialog.style.width = `${newWidth}px`;
+  }
+
+  private _onDragEnd(e: PointerEvent) {
+    this._dragging = false;
+    window.removeEventListener('pointermove', this._boundOnDragMove);
+    window.removeEventListener('pointerup', this._boundOnDragEnd);
+
+    const width = this._dialog.offsetWidth;
+    this.dispatchEvent(new CustomEvent('on-resize', { detail: { width } }));
   }
 
   override updated(changedProps: any) {

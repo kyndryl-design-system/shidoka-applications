@@ -16,6 +16,14 @@ export default {
     maxDepth: {
       control: { type: 'number', min: 1, max: 10 },
     },
+    searchThreshold: {
+      control: { type: 'number', min: 0 },
+      description:
+        'Minimum number of dropdown options before search is shown. 0 = always show search.',
+      table: {
+        defaultValue: { summary: '25' },
+      },
+    },
     size: {
       options: ['xs', 'sm', 'md', 'lg'],
       control: { type: 'select' },
@@ -23,6 +31,18 @@ export default {
       table: {
         defaultValue: { summary: 'xs' },
       },
+    },
+    showCloneButtons: {
+      control: { type: 'boolean' },
+    },
+    showLockButtons: {
+      control: { type: 'boolean' },
+    },
+    disableDragAndDrop: {
+      control: { type: 'boolean' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
     },
   },
   parameters: {
@@ -234,6 +254,7 @@ const args = {
   showCloneButtons: false,
   showLockButtons: false,
   maxDepth: 5,
+  searchThreshold: 25,
   disableDragAndDrop: false,
   disabled: false,
   size: 'xs',
@@ -248,6 +269,7 @@ export const Default = {
       <kyn-query-builder
         .fields=${args.fields}
         .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -276,6 +298,7 @@ export const WithInitialQuery = {
         .fields=${args.fields}
         .query=${args.query}
         .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -304,6 +327,7 @@ export const NestedGroups = {
         .fields=${args.fields}
         .query=${args.query}
         .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -334,6 +358,7 @@ export const WithAllOptions = {
         .fields=${args.fields}
         .query=${args.query}
         .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -399,6 +424,7 @@ export const Disabled = {
         .fields=${args.fields}
         .query=${args.query}
         .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -433,6 +459,7 @@ export const WithQueryOutput = {
         .fields=${args.fields}
         .query=${args.query}
         .size=${args.size}
+        .searchThreshold=${args.searchThreshold}
         ?showCloneButtons=${args.showCloneButtons}
         ?showLockButtons=${args.showLockButtons}
         .maxDepth=${args.maxDepth}
@@ -777,6 +804,89 @@ export const WithSideDrawer = {
           margin-top: 8px;
         }
       </style>
+    `;
+  },
+};
+
+// Generate a large set of fields to demonstrate searchable dropdowns
+const manyFields = [
+  ...Array.from({ length: 30 }, (_, i) => ({
+    name: `textField${i + 1}`,
+    label: `Text Field ${i + 1}`,
+    dataType: 'text',
+  })),
+  ...Array.from({ length: 10 }, (_, i) => ({
+    name: `numberField${i + 1}`,
+    label: `Number Field ${i + 1}`,
+    dataType: 'number',
+  })),
+  {
+    name: 'largeSelect',
+    label: 'Large Select',
+    dataType: 'select',
+    values: Array.from({ length: 50 }, (_, i) => ({
+      value: `option${i + 1}`,
+      label: `Option ${i + 1}`,
+    })),
+  },
+];
+
+const searchThresholdQuery = {
+  id: 'root',
+  combinator: 'and',
+  rules: [
+    {
+      id: 'rule-1',
+      field: 'textField1',
+      operator: 'contains',
+      value: 'example',
+    },
+    {
+      id: 'rule-2',
+      field: 'largeSelect',
+      operator: 'equal',
+      value: 'option5',
+    },
+  ],
+};
+
+export const SearchableDropdowns = {
+  args: {
+    ...args,
+    fields: manyFields,
+    query: searchThresholdQuery,
+    searchThreshold: 10,
+  },
+  render: (args) => {
+    return html`
+      <div>
+        <p
+          style="margin-bottom: 16px; color: var(--kd-color-text-level-secondary);"
+        >
+          This story has 40+ fields and a select field with 50 options. The
+          <code>searchThreshold</code> controls when dropdown search appears.
+          Try adjusting it in the controls panel — set it to <code>0</code> to
+          always show search, or higher to hide it for smaller lists.
+        </p>
+        <kyn-query-builder
+          .fields=${args.fields}
+          .query=${args.query}
+          .size=${args.size}
+          .searchThreshold=${args.searchThreshold}
+          ?showCloneButtons=${args.showCloneButtons}
+          ?showLockButtons=${args.showLockButtons}
+          .maxDepth=${args.maxDepth}
+          ?disableDragAndDrop=${args.disableDragAndDrop}
+          ?disabled=${args.disabled}
+          @on-query-change=${(e) => {
+            action('on-query-change')(e.detail);
+            console.log(
+              'Query changed:',
+              JSON.stringify(e.detail.query, null, 2)
+            );
+          }}
+        ></kyn-query-builder>
+      </div>
     `;
   },
 };

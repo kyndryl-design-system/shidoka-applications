@@ -27,6 +27,30 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
+    searchable: {
+      control: { type: 'boolean' },
+    },
+    searchThreshold: {
+      control: { type: 'number', min: 0 },
+    },
+    filterSearch: {
+      control: { type: 'boolean' },
+    },
+    enhanced: {
+      control: { type: 'boolean' },
+    },
+    multiple: {
+      control: { type: 'boolean' },
+    },
+    allowAddOption: {
+      control: { type: 'boolean' },
+    },
+    preventDuplicateAddOption: {
+      control: { type: 'boolean' },
+    },
+    allowDuplicateSelections: {
+      control: { type: 'boolean' },
+    },
     'kind-changed': {
       table: { disable: true },
       control: false,
@@ -49,6 +73,11 @@ const args = {
   inline: false,
   name: 'example',
   open: false,
+  searchable: false,
+  searchThreshold: 0,
+  filterSearch: false,
+  enhanced: false,
+  multiple: false,
   required: false,
   disabled: false,
   readonly: false,
@@ -56,6 +85,9 @@ const args = {
   hideLabel: false,
   selectAll: false,
   selectAllText: 'Select all',
+  allowAddOption: false,
+  preventDuplicateAddOption: true,
+  allowDuplicateSelections: true,
   invalidText: '',
   caption: '',
   searchText: '',
@@ -185,7 +217,7 @@ export const AI = {
 };
 
 export const SingleSearchable = {
-  args: { ...args, filterSearch: false },
+  args: { ...args, searchable: true, filterSearch: false, searchThreshold: 0 },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -196,7 +228,8 @@ export const SingleSearchable = {
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
-        searchable
+        ?searchable=${args.searchable}
+        searchThreshold=${args.searchThreshold}
         ?hideLabel=${args.hideLabel}
         ?filterSearch=${args.filterSearch}
         ?required=${args.required}
@@ -208,6 +241,7 @@ export const SingleSearchable = {
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
         value=${args.value}
+        openDirection=${args.openDirection}
         @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-search=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
@@ -296,7 +330,14 @@ export const MultiSelect = {
 };
 
 export const MultiSelectSearchable = {
-  args: { ...args, filterSearch: false, value: [] },
+  args: {
+    ...args,
+    searchable: true,
+    filterSearch: false,
+    searchThreshold: 0,
+    multiple: true,
+    value: [],
+  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -307,9 +348,10 @@ export const MultiSelectSearchable = {
         ?inline=${args.inline}
         name=${args.name}
         ?open=${args.open}
-        searchable
+        ?searchable=${args.searchable}
+        searchThreshold=${args.searchThreshold}
         ?filterSearch=${args.filterSearch}
-        multiple
+        ?multiple=${args.multiple}
         ?hideLabel=${args.hideLabel}
         ?required=${args.required}
         ?disabled=${args.disabled}
@@ -323,6 +365,7 @@ export const MultiSelectSearchable = {
         searchText=${args.searchText}
         .textStrings=${args.textStrings}
         .value=${args.value}
+        openDirection=${args.openDirection}
         @on-change=${(e) => {
           const selectedValues = e.detail.value;
           args.value = selectedValues;

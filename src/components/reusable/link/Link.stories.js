@@ -53,6 +53,7 @@ const args = {
   standalone: false,
   iconLeft: false,
   linkFontWeight: 'default',
+  animationInactive: false,
   'on-click': fn(),
 };
 
@@ -93,6 +94,7 @@ export const LinkWithIcon = {
       id="test"
       ?standalone=${args.standalone}
       ?iconLeft=${args.iconLeft}
+      ?animationInactive=${args.animationInactive}
       href=${args.href}
       target=${args.target}
       kind=${args.kind}

@@ -104,6 +104,10 @@ export class QueryBuilderGroup extends LitElement {
   @property({ type: String })
   accessor size: QueryBuilderSize = 'xs';
 
+  /** Minimum number of dropdown options before search is shown. */
+  @property({ type: Number })
+  accessor searchThreshold = 25;
+
   /** Current drag over index for drop indicator */
   @state()
   accessor _dragOverIndex: number | null = null;
@@ -290,7 +294,7 @@ export class QueryBuilderGroup extends LitElement {
           @on-click=${this._handleAddRule}
         >
           <span slot="icon">${unsafeSVG(addSimpleIcon)}</span>
-          ${this.textStrings.addRule || 'Add rule'}
+          ${this.textStrings.addRule || 'Add Rule'}
         </kyn-button>
       </div>
     `;
@@ -326,6 +330,7 @@ export class QueryBuilderGroup extends LitElement {
             .maxDepth=${this.maxDepth}
             .siblingCount=${this.group.rules.length}
             .size=${this.size}
+            .searchThreshold=${this.searchThreshold}
             ?showCloneButton=${this.showCloneButton}
             ?showLockButton=${this.showLockButton}
             ?disableDragAndDrop=${this.disableDragAndDrop}
@@ -357,6 +362,7 @@ export class QueryBuilderGroup extends LitElement {
           .parentPath=${this.path}
           .siblingCount=${this.group.rules.length}
           .size=${this.size}
+          .searchThreshold=${this.searchThreshold}
           ?isLast=${isLastRule}
           ?showCloneButton=${this.showCloneButton}
           ?showLockButton=${this.showLockButton}

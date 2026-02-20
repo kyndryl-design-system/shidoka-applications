@@ -34,6 +34,7 @@ const args = {
   secondaryButtonText: 'Secondary',
   hideCancelButton: false,
   gradientBackground: false,
+  resizable: false,
 };
 
 export const SideDrawer = {
@@ -54,8 +55,10 @@ export const SideDrawer = {
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
+        ?resizable=${args.resizable}
         @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
         @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <kyn-button slot="anchor">Open Drawer</kyn-button>
 
@@ -245,6 +248,53 @@ export const AIConnected = {
           interdum quam, sit amet volutpat justo magna quis justo. Aliquam
           dapibus mi a arcu consequat, sed placerat metus bibendum. Suspendisse
           pretium nibh
+        </div>
+      </kyn-side-drawer>
+    `;
+  },
+};
+
+export const Resizable = {
+  args: { ...args, resizable: true },
+  render: (args) => {
+    return html`
+      <kyn-side-drawer
+        ?open=${args.open}
+        size=${args.size}
+        titleText=${args.titleText}
+        labelText=${args.labelText}
+        submitBtnText=${args.submitBtnText}
+        cancelBtnText=${args.cancelBtnText}
+        ?submitBtnDisabled=${args.submitBtnDisabled}
+        ?hideFooter=${args.hideFooter}
+        ?gradientBackground=${args.gradientBackground}
+        ?destructive=${args.destructive}
+        ?showSecondaryButton=${args.showSecondaryButton}
+        secondaryButtonText=${args.secondaryButtonText}
+        ?hideCancelButton=${args.hideCancelButton}
+        ?resizable=${args.resizable}
+        @on-close=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-open=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+        <kyn-button slot="anchor">Open Drawer</kyn-button>
+
+        <div>
+          This drawer can be resized by dragging the handle on its left edge.
+          The width is constrained between 384px and 1024px. Check the
+          <strong>Actions</strong> panel to see the <code>on-resize</code> event
+          fired when you finish dragging.
+        </div>
+        <br />
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus,
+          purus vitae egestas mollis, augue augue interdum quam, sit amet
+          volutpat justo magna quis justo. Aliquam dapibus mi a arcu consequat,
+          sed placerat metus bibendum. Suspendisse pretium nibh Lorem ipsum
+          dolor sit amet, consectetur adipiscing elit. Proin cursus, purus vitae
+          egestas mollis, augue augue interdum quam, sit amet volutpat justo
+          magna quis justo. Aliquam dapibus mi a arcu consequat, sed placerat
+          metus bibendum. Suspendisse pretium nibh
         </div>
       </kyn-side-drawer>
     `;

@@ -51,6 +51,10 @@ export class Link extends LitElement {
   @property({ type: String })
   accessor linkFontWeight: 'lighter' | 'default' = 'default';
 
+  /** Disables the hover animation on the icon. */
+  @property({ type: Boolean })
+  accessor animationInactive = false;
+
   override render() {
     const classes = this.returnClassMap();
 
@@ -79,6 +83,7 @@ export class Link extends LitElement {
       'icon-left': this.iconLeft,
       'kyn-link-text-ai': this.kind === LINK_TYPES.AI_CONNECTED,
       'kyn-link-text-font-lighter': this.linkFontWeight === 'lighter',
+      'animation-inactive': this.animationInactive,
     };
 
     if (this.disabled) {
