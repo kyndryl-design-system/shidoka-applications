@@ -114,7 +114,7 @@ interface SlottedCategoryData {
  *   - Slotted `<kyn-header-link>` `href`, `target`, and `rel` attributes are
  *     preserved.
  *   - Root view will:
- *       - truncate visible links per category at `maxRootLinks`
+ *       - limit visible links per category at `maxRootLinks`
  *       - inject a "More" link when there are additional links
  *   - "More" switches to a detail view for that category, and the Back button
  *     returns to the root view.
@@ -141,6 +141,10 @@ export class HeaderCategories extends LitElement {
   /** Max number of links to render in root columns before showing "More". */
   @property({ type: Number })
   accessor maxRootLinks = 4;
+
+  /** Controls whether root-view categories are limited by `maxRootLinks` before showing "More". */
+  @property({ type: Boolean, attribute: 'limit-root-links' })
+  accessor limitRootLinks = true;
 
   /**
    * Layout mode for categories.
@@ -297,9 +301,9 @@ export class HeaderCategories extends LitElement {
     return '_self';
   }
 
-  /** Resolve max root links, where non-positive values indicate "no limit". */
+  /** Resolve max root links. Disabling limiting, or using non-positive values, means "no limit". */
   private get _rootLinksLimit(): number {
-    return this.maxRootLinks <= 0
+    return !this.limitRootLinks || this.maxRootLinks <= 0
       ? Number.POSITIVE_INFINITY
       : this.maxRootLinks;
   }

@@ -84,7 +84,7 @@ A `div` wrapper combining loose links with a categorized group beneath them.
     <kyn-tab slot="tabs" id="tab-a" selected>Tab A</kyn-tab>
     <kyn-tab slot="tabs" id="tab-b">Tab B</kyn-tab>
     <kyn-tab-panel tabId="tab-a" noPadding visible>
-      <kyn-header-categories layout="masonry" .maxRootLinks="${0}">
+      <kyn-header-categories layout="masonry" .limitRootLinks="${false}">
         <kyn-header-category heading="Category 1">
           <span slot="icon">{icon}</span>
           <kyn-header-link href="#"><span>Link 1</span></kyn-header-link>
@@ -107,7 +107,7 @@ A `div` wrapper combining loose links with a categorized group beneath them.
     slot="links"
     layout="masonry"
     maxColumns="2"
-    .maxRootLinks="${0}"
+    .limitRootLinks="${false}"
   >
     <kyn-header-category heading="Access Management">
       <span slot="icon">{icon}</span>
@@ -167,7 +167,8 @@ Set `target="_blank"` and include a launch icon:
 | `kyn-header-link`       | `truncate`        | `false` | Truncate text with ellipsis                                                                            |
 | `kyn-header-categories` | `layout`          | `''`    | `'masonry'` or `'grid'` (empty = legacy responsive columns)                                            |
 | `kyn-header-categories` | `maxColumns`      | `3`     | Column cap for masonry/grid layout                                                                     |
-| `kyn-header-categories` | `maxRootLinks`    | `4`     | Links shown before "More" button (`0` or negative = no limit)                                          |
+| `kyn-header-categories` | `limitRootLinks`  | `true`  | Enable/disable root-link count limiting and "More" behavior                                            |
+| `kyn-header-categories` | `maxRootLinks`    | `4`     | Links shown before "More" button (used when `limitRootLinks=true`)                                     |
 
 ## Data-Driven Rendering
 

@@ -227,7 +227,10 @@ export const SlottedHTMLSwitcher = {
 
               <!-- KYNDRYL SERVICES TAB -->
               <kyn-tab-panel tabId="kyndryl" noPadding visible>
-                <kyn-header-categories layout="masonry" .maxRootLinks=${0}>
+                <kyn-header-categories
+                  layout="masonry"
+                  .limitRootLinks=${false}
+                >
                   <kyn-header-category heading="Applications, Data, & AI">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
                     <kyn-header-link href="#">
@@ -358,7 +361,10 @@ export const SlottedHTMLSwitcher = {
 
               <!-- PLATFORM SERVICES TAB -->
               <kyn-tab-panel tabId="platform" noPadding>
-                <kyn-header-categories layout="masonry" .maxRootLinks=${0}>
+                <kyn-header-categories
+                  layout="masonry"
+                  .limitRootLinks=${false}
+                >
                   <kyn-header-category
                     heading="Application & Business Services"
                   >
@@ -596,7 +602,7 @@ export const SlottedHTMLSwitcher = {
               slot="links"
               layout="masonry"
               maxColumns="2"
-              .maxRootLinks=${0}
+              .limitRootLinks=${false}
             >
               <kyn-header-category heading="Access Management">
                 <span slot="icon">${unsafeSVG(circleIcon)}</span>
@@ -792,7 +798,7 @@ const renderTabbedSection = (section) => html`
       ${section.tabs.map(
         (tab, i) => html`
           <kyn-tab-panel tabId=${tab.id} noPadding ?visible=${i === 0}>
-            <kyn-header-categories layout="masonry" .maxRootLinks=${0}>
+            <kyn-header-categories layout="masonry" .limitRootLinks=${false}>
               ${tab.categories.map((cat) => renderCategory(cat))}
             </kyn-header-categories>
           </kyn-tab-panel>
@@ -815,7 +821,7 @@ const renderCategoricalSection = (section) => html`
       slot="links"
       layout="masonry"
       maxColumns=${section.maxColumns || 3}
-      .maxRootLinks=${0}
+      .limitRootLinks=${false}
     >
       ${section.categories.map((cat) => renderCategory(cat))}
     </kyn-header-categories>
