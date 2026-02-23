@@ -15,6 +15,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cl
  * Container for header navigation links.
  * @slot unnamed - This element has a slot.
  * @fires on-nav-toggle - Fires when the nav menu opens or closes. Detail: `{ open }`.
+ * @cssprop [--kyn-global-switcher-max-height=calc(100vh - var(--kd-header-reserved-space) - 16px)] - Max height for global-switcher flyout panels, including categorical nav wrappers.
  */
 @customElement('kyn-header-nav')
 export class HeaderNav extends LitElement {
@@ -163,11 +164,6 @@ export class HeaderNav extends LitElement {
           bubbles: true,
           detail,
         })
-      );
-
-      // dispatch to document for other components to listen
-      this.ownerDocument?.dispatchEvent(
-        new CustomEvent('on-nav-toggle', { detail })
       );
 
       // Auto-open first link's flyout when nav opens and autoOpenFlyout is set

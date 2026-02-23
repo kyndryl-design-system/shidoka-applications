@@ -2200,6 +2200,13 @@
           "kind": "class",
           "description": "Container for header navigation links.",
           "name": "HeaderNav",
+          "cssProperties": [
+            {
+              "description": "Max height for global-switcher flyout panels, including categorical nav wrappers.",
+              "name": "--kyn-global-switcher-max-height",
+              "default": "calc(100vh - var(--kd-header-reserved-space) - 16px)"
+            }
+          ],
           "slots": [
             {
               "description": "This element has a slot.",
@@ -23229,6 +23236,14 @@
             "name": "TableSkeleton",
             "module": "./table.skeleton"
           }
+        },
+        {
+          "kind": "js",
+          "name": "TableHeaderGroup",
+          "declaration": {
+            "name": "TableHeaderGroup",
+            "module": "./table-header-group"
+          }
         }
       ]
     },
@@ -23852,6 +23867,88 @@
           "declaration": {
             "name": "TableHead",
             "module": "src/components/reusable/table/table-head.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/table/table-header-group.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-th-group` Web Component.\nRepresents a stacked/grouped header that spans multiple columns.\nUses `display: contents` so it is invisible to the CSS table layout,\nallowing its child `kyn-th` elements to participate directly as table-cells.\nThe group label is passed to children, which render it above their content.",
+          "name": "TableHeaderGroup",
+          "slots": [
+            {
+              "description": "Slot for child `kyn-th` elements that belong to this group.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The label/title displayed in the stacked (parent) header row.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "align",
+              "type": {
+                "text": "TABLE_CELL_ALIGN"
+              },
+              "description": "Specifies the alignment of the group header label.\nOptions: 'left', 'center', 'right'",
+              "attribute": "align",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The label/title displayed in the stacked (parent) header row.",
+              "fieldName": "label"
+            },
+            {
+              "name": "align",
+              "type": {
+                "text": "TABLE_CELL_ALIGN"
+              },
+              "description": "Specifies the alignment of the group header label.\nOptions: 'left', 'center', 'right'",
+              "fieldName": "align"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-th-group",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TableHeaderGroup",
+          "declaration": {
+            "name": "TableHeaderGroup",
+            "module": "src/components/reusable/table/table-header-group.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-th-group",
+          "declaration": {
+            "name": "TableHeaderGroup",
+            "module": "src/components/reusable/table/table-header-group.ts"
           }
         }
       ]
@@ -26555,7 +26652,7 @@
             },
             {
               "kind": "method",
-              "name": "_chechForNewTag",
+              "name": "_checkForNewTag",
               "privacy": "private"
             },
             {

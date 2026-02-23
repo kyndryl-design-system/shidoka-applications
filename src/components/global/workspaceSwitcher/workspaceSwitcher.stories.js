@@ -120,6 +120,9 @@ const createWorkspaceClickHandler = (itemClickHandler) => (e, ws) => {
 
 const handleWorkspaceClick = createWorkspaceClickHandler(handleItemClick);
 
+const getSwitcherStyle = (args) =>
+  `--kyn-workspace-switcher-max-height: ${args['--kyn-workspace-switcher-max-height']};`;
+
 export default {
   title: 'Global Components/Workspace Switcher',
   component: 'kyn-workspace-switcher',
@@ -243,6 +246,7 @@ export default {
 export const FullWorkspaceInfo = {
   render: (args) => html`
     <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -313,6 +317,7 @@ export const SimpleWorkspaceInfo = {
   },
   render: (args) => html`
     <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -366,6 +371,7 @@ export const SimpleWorkspaceInfo = {
 export const WithSearch = {
   render: (args) => html`
     <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -550,6 +556,7 @@ export const UIImplementation = {
           </span>
 
           <kyn-workspace-switcher
+            style=${getSwitcherStyle(args)}
             class="ui-impl-switcher"
             ?hideCurrentTitle=${args.hideCurrentTitle}
             ?hideWorkspacesTitle=${args.hideWorkspacesTitle}

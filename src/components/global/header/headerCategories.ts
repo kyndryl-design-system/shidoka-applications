@@ -229,6 +229,11 @@ export class HeaderCategories extends LitElement {
   /** @internal */
   private _resizeObserver?: ResizeObserver;
 
+  /** Owning nav used for scoped on-nav-toggle subscription.
+   * @internal
+   */
+  private _owningNav: HTMLElement | null = null;
+
   /** Debounced divider update to prevent jank during rapid resize (grid and masonry modes)
    * @internal
    */
@@ -291,6 +296,25 @@ export class HeaderCategories extends LitElement {
   /** @internal */
   private readonly _boundHandleNavToggle = (e: Event): void =>
     this._handleNavToggle(e as CustomEvent<{ open?: boolean }>);
+
+  /** Find the closest owning header nav across shadow boundaries.
+   * @internal
+   */
+  private _resolveOwningNav(): HTMLElement | null {
+    const parentNav = this.closest('kyn-header-nav');
+    if (parentNav) return parentNav as HTMLElement;
+
+    let root = this.getRootNode();
+    while (root instanceof ShadowRoot) {
+      const nav = root.host.closest?.('kyn-header-nav');
+      if (nav) {
+        return nav as HTMLElement;
+      }
+      root = root.host.getRootNode();
+    }
+
+    return null;
+  }
 
   /** @internal */
   private get _isJsonMode(): boolean {
@@ -978,7 +1002,8 @@ export class HeaderCategories extends LitElement {
   override connectedCallback(): void {
     super.connectedCallback();
 
-    this.ownerDocument?.addEventListener(
+    this._owningNav = this._resolveOwningNav();
+    this._owningNav?.addEventListener(
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
@@ -994,10 +1019,11 @@ export class HeaderCategories extends LitElement {
   }
 
   override disconnectedCallback(): void {
-    this.ownerDocument?.removeEventListener(
+    this._owningNav?.removeEventListener(
       'on-nav-toggle',
       this._boundHandleNavToggle as EventListener
     );
+    this._owningNav = null;
 
     if (this._buildSlottedRaf != null) {
       window.cancelAnimationFrame(this._buildSlottedRaf);

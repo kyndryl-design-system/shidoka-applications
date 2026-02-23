@@ -123,6 +123,18 @@ export class Header extends LitElement {
     this._flyoutsOpen = e.detail.open || e.detail.childrenOpen;
   }
 
+  /** Bound nav toggle handler for add/remove symmetry.
+   * @internal
+   */
+  private readonly _boundHandleNavToggle = (e: Event) =>
+    this._handleNavToggle(e);
+
+  /** Bound flyouts toggle handler for add/remove symmetry.
+   * @internal
+   */
+  private readonly _boundHandleFlyoutsToggle = (e: Event) =>
+    this._handleFlyoutsToggle(e);
+
   /** Morph header on scroll.
    * @internal */
   private _handleScroll() {
@@ -145,22 +157,26 @@ export class Header extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('on-nav-toggle', (e: Event) =>
-      this._handleNavToggle(e)
+    this.addEventListener(
+      'on-nav-toggle',
+      this._boundHandleNavToggle as EventListener
     );
-    document.addEventListener('on-flyouts-toggle', (e: Event) =>
-      this._handleFlyoutsToggle(e)
+    this.addEventListener(
+      'on-flyouts-toggle',
+      this._boundHandleFlyoutsToggle as EventListener
     );
 
     window.addEventListener('scroll', this._debounceScroll);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('on-nav-toggle', (e: Event) =>
-      this._handleNavToggle(e)
+    this.removeEventListener(
+      'on-nav-toggle',
+      this._boundHandleNavToggle as EventListener
     );
-    document.removeEventListener('on-flyouts-toggle', (e: Event) =>
-      this._handleFlyoutsToggle(e)
+    this.removeEventListener(
+      'on-flyouts-toggle',
+      this._boundHandleFlyoutsToggle as EventListener
     );
 
     window.removeEventListener('scroll', this._debounceScroll);

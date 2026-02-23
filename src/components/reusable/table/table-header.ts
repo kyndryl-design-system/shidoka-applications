@@ -280,6 +280,12 @@ export class TableHeader extends LitElement {
     if (this.minWidth && changedProperties.has('minWidth')) {
       this.style.setProperty('--kyn-th-min-width', this.minWidth);
     }
+
+    // Check if group label is truncated after render
+    if (this._isGroupFirst && this._groupLabel) {
+      console.log('Checking truncation for', this._groupLabel);
+      requestAnimationFrame(() => this._checkGroupLabelTruncation());
+    }
   }
 
   getTextContent() {
@@ -290,6 +296,279 @@ export class TableHeader extends LitElement {
     });
 
     this.headerLabel = nonWhitespaceNodes[0]?.textContent || '';
+  }
+
+  /**
+   * The group label text when this header is inside a kyn-th-group.
+   * Set by the parent kyn-th-group component.
+   * @ignore
+   */
+  @state()
+  private accessor _groupLabel = '';
+
+  /**
+   * Whether this is the first child in a stacked header group.
+   * @ignore
+   */
+  @state()
+  private accessor _isGroupFirst = false;
+
+  /**
+   * Whether the group label text is truncated.
+   * Used to determine if a title attribute should be shown.
+   * @ignore
+   */
+  @state()
+  private accessor _isGroupLabelTruncated = false;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    // Detect if this header is inside a stacked header group
+    if (this.closest('kyn-th-group')) {
+      this.setAttribute('stacked-child', '');
+
+      // Only set data-header-not-expandable on stacked children
+      const headerRow = this.closest('kyn-header-tr') as any;
+      if (headerRow && !headerRow.hasAttribute('expandable')) {
+        this.setAttribute('data-header-not-expandable', '');
+      }
+
+      // Check if header row has checkboxSelection
+      if (headerRow && headerRow.hasAttribute('checkboxSelection')) {
+        this.setAttribute('data-checkbox-selection', '');
+      }
+    }
+
+    // Check if this is the first kyn-th in the entire header row
+    const headerRow = this.closest('kyn-header-tr') as any;
+    if (headerRow) {
+      this._updateHeaderRowAttributes(headerRow);
+    }
+
+    // Read any group attributes already set by kyn-th-group
+    this._syncGroupAttributes();
+
+    // Watch for attribute changes set by kyn-th-group
+    this._groupAttrObserver = new MutationObserver(() => {
+      this._syncGroupAttributes();
+    });
+    this._groupAttrObserver.observe(this, {
+      attributes: true,
+      attributeFilter: [
+        'data-group-label',
+        'stacked-child-first',
+        'stacked-child-last',
+        'stacked-child',
+      ],
+    });
+  }
+
+  /**
+   * Syncs internal state from group attributes and triggers measurement.
+   * @ignore
+   */
+  private _syncGroupAttributes() {
+    this._groupLabel = this.getAttribute('data-group-label') || '';
+    this._isGroupFirst = this.hasAttribute('stacked-child-first');
+
+    if (this._isGroupFirst && this._groupLabel) {
+      // Measure the group label height
+      requestAnimationFrame(() => this._measureGroupHeight());
+    }
+
+    // For ALL stacked children (not just first), set up observer to update group dimensions on resize
+    if (this.hasAttribute('stacked-child') && this._groupLabel) {
+      this._setupGroupResizeObserver();
+    }
+
+    // Update header row attributes whenever group attributes change
+    const headerRow = this.closest('kyn-header-tr');
+    if (headerRow) {
+      this._updateHeaderRowAttributes(headerRow);
+    }
+  }
+
+  /**
+   * Checks if the group label text is truncated.
+   * @ignore
+   */
+  private _checkGroupLabelTruncation() {
+    const groupLabelBar = this.shadowRoot?.querySelector('.group-label-bar');
+    if (!groupLabelBar) {
+      this._isGroupLabelTruncated = false;
+      return;
+    }
+
+    const isTruncated = groupLabelBar.scrollWidth > groupLabelBar.clientWidth;
+    this._isGroupLabelTruncated = isTruncated;
+  }
+
+  /**
+   * Updates header row attributes like data-first-in-row, and data-last-group.
+   * Should be called whenever the DOM structure changes.
+   * @ignore
+   */
+  private _updateHeaderRowAttributes(headerRow: Element) {
+    const allHeaders = Array.from(
+      headerRow.querySelectorAll('kyn-th')
+    ) as Element[];
+
+    // Only set data-first-in-row on stacked children
+    if (allHeaders[0] === this && this.hasAttribute('stacked-child')) {
+      this.setAttribute('data-first-in-row', '');
+    } else {
+      this.removeAttribute('data-first-in-row');
+    }
+
+    // Mark the first child of the last stacked group
+    const stackedFirstChildren = allHeaders.filter((h) =>
+      h.hasAttribute('stacked-child-first')
+    );
+    if (stackedFirstChildren.length > 0) {
+      const lastGroupFirst =
+        stackedFirstChildren[stackedFirstChildren.length - 1];
+      if (this === lastGroupFirst) {
+        this.setAttribute('data-last-group', '');
+
+        // Check if there's a kyn-th after stacked group
+        const hasFollowingNonGroupedTh =
+          this._hasFollowingNonGroupedTh(allHeaders);
+        if (hasFollowingNonGroupedTh) {
+          this.setAttribute('data-has-following-th', '');
+        } else {
+          this.removeAttribute('data-has-following-th');
+        }
+      } else {
+        this.removeAttribute('data-last-group');
+        this.removeAttribute('data-has-following-th');
+      }
+    } else {
+      this.removeAttribute('data-last-group');
+      this.removeAttribute('data-has-following-th');
+    }
+  }
+
+  /**
+   * Checks if there's a non-stacked kyn-th following the current element.
+   * @ignore
+   */
+  private _hasFollowingNonGroupedTh(allHeaders: Element[]): boolean {
+    const currentIndex = allHeaders.indexOf(this);
+    if (currentIndex === -1) return false;
+
+    // Look for any kyn-th after current index that is NOT a stacked-child
+    for (let i = currentIndex + 1; i < allHeaders.length; i++) {
+      if (!allHeaders[i].hasAttribute('stacked-child')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Sets up a ResizeObserver for all stacked children to trigger group dimension updates.
+   * @ignore
+   */
+  private _setupGroupResizeObserver() {
+    if (this._groupLabelResizeObserver) {
+      return;
+    }
+
+    this._groupLabelResizeObserver = new ResizeObserver(() => {
+      this._updateGroupLabelDimensions();
+    });
+    this._groupLabelResizeObserver.observe(this);
+
+    // listen for window resize to catch viewport changes
+    window.addEventListener('resize', this._handleWindowResize);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this._groupAttrObserver?.disconnect();
+    this._groupLabelResizeObserver?.disconnect();
+    window.removeEventListener('resize', this._handleWindowResize);
+  }
+
+  /**
+   * Handle window resize to update group label dimensions.
+   * @ignore
+   */
+  private _handleWindowResize = () => {
+    const headerRow = this.closest('kyn-header-tr');
+    if (headerRow && this.hasAttribute('stacked-child')) {
+      this._updateGroupLabelDimensions();
+      // Check truncation when window resizes
+      if (this._isGroupFirst && this._groupLabel) {
+        this._checkGroupLabelTruncation();
+      }
+    }
+  };
+
+  /**
+   * MutationObserver for group attribute changes.
+   * @ignore
+   */
+  private _groupAttrObserver?: MutationObserver;
+
+  /**
+   * ResizeObserver for the group label bar to react to text wrapping.
+   * @ignore
+   */
+  private _groupLabelResizeObserver?: ResizeObserver;
+
+  /**
+   * Measure the label bar height for consistent spacing across all siblings
+   * @ignore
+   */
+  private _measureGroupHeight() {
+    const group = this.closest('kyn-th-group');
+    if (!group) return;
+
+    // Measure the label bar height for consistent spacing across all siblings
+    const labelBar = this.shadowRoot?.querySelector(
+      '.group-label-bar'
+    ) as HTMLElement;
+    if (labelBar) {
+      const labelHeight = labelBar.getBoundingClientRect().height;
+      // Set on parent group so all children inherit it
+      group.style.setProperty('--kyn-group-label-height', `${labelHeight}px`);
+    }
+  }
+
+  /**
+   * Called by ResizeObserver when the host cell resizes (on viewport change).
+   * Measures ALL group label heights in the same header row and applies
+   * the maximum height to all groups, ensuring uniform row height.
+   * rAF calls to ensure layout fully settles before measuring.
+   * @ignore
+   */
+  private _updateGroupLabelDimensions() {
+    const headerRow = this.closest('kyn-header-tr');
+    if (!headerRow) return;
+
+    // Find all groups in this header row
+    const allGroups = Array.from(
+      headerRow.querySelectorAll('kyn-th-group')
+    ) as HTMLElement[];
+
+    if (allGroups.length === 0) return;
+
+    //Update widths for all groups
+    requestAnimationFrame(() => {
+      allGroups.forEach((grp) => {
+        const siblings = Array.from(
+          grp.querySelectorAll(':scope > kyn-th')
+        ) as HTMLElement[];
+        let totalWidth = 0;
+        siblings.forEach((el) => {
+          totalWidth += el.getBoundingClientRect().width;
+        });
+        if (totalWidth > 0) {
+          grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
+        }
+      });
+    });
   }
 
   /** Handle Resize Start
@@ -383,6 +662,11 @@ export class TableHeader extends LitElement {
     // Calculate table width = sum of all locked columns + new resized column width
     this._updateTableWidthFromSnapshot(newWidth);
 
+    // Update group label dimensions during resize to prevent gaps
+    if (this.hasAttribute('stacked-child')) {
+      this._updateGroupLabelDimensions();
+    }
+
     // Store the current resized column width for use in the debounced resize end handler
     this._resizedColumnWidth = newWidth;
   };
@@ -405,11 +689,51 @@ export class TableHeader extends LitElement {
   private _handleResizeHandleHeight(table: any) {
     const tableRect = table.getBoundingClientRect();
     this._tableHeightDuringResize = tableRect.height;
-    this.style.setProperty(
-      '--kyn-resize-handle-height',
-      `${tableRect.height}px`
-    );
+
+    // For stacked children, only extend handle if not overlapping with group label
+    // to prevent flickering during resize - EXCEPT for the last column in the group
+    let handleHeight = tableRect.height;
+    if (this.hasAttribute('stacked-child')) {
+      // Check if this is the last column in the stacked group
+      const isLastInGroup = this.hasAttribute('stacked-child-last');
+
+      // Allow full height for last column, constrain others to avoid flicker
+      if (!isLastInGroup) {
+        const groupLabelHeightStr = getComputedStyle(this).getPropertyValue(
+          '--kyn-group-label-height'
+        );
+        const groupLabelHeight = parseFloat(groupLabelHeightStr) || 42;
+        // Limit handle height to table height minus group label to avoid flicker
+        handleHeight = Math.max(
+          tableRect.height - groupLabelHeight,
+          tableRect.height
+        );
+      }
+    }
+
+    this.style.setProperty('--kyn-resize-handle-height', `${handleHeight}px`);
   }
+
+  /**
+   * Handle resize handle hover - set height to table height
+   * @internal
+   */
+  private _handleResizeHandleHover = () => {
+    const table = this.closest('kyn-table') as any;
+    if (table && this.resizable) {
+      this._handleResizeHandleHeight(table);
+    }
+  };
+
+  /**
+   * Handle resize handle leave - reset height
+   * @internal
+   */
+  private _handleResizeHandleLeave = () => {
+    if (!this._isResizing) {
+      this.style.removeProperty('--kyn-resize-handle-height');
+    }
+  };
 
   /** Handle Resize End
    * @internal
@@ -420,7 +744,6 @@ export class TableHeader extends LitElement {
     e.preventDefault();
     this._isResizing = false;
     this._tableHeightDuringResize = 0;
-    this.style.removeProperty('--kyn-resize-handle-height');
 
     this._debounceResize(e);
 
@@ -430,6 +753,23 @@ export class TableHeader extends LitElement {
 
     // Remove resizing state (shows sort icon again)
     this.removeAttribute('data-resizing');
+
+    // If mouse is still over the header, restore the height
+    const rect = this.getBoundingClientRect();
+    const isStillHovering =
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom;
+
+    if (isStillHovering) {
+      const table = this.closest('kyn-table') as any;
+      if (table) {
+        this._handleResizeHandleHeight(table);
+      }
+    } else {
+      this.style.removeProperty('--kyn-resize-handle-height');
+    }
   };
 
   /**
@@ -546,7 +886,18 @@ export class TableHeader extends LitElement {
         }
       : undefined;
 
+    // Show group-label-bar for ALL stacked children
+    const isStacked = this.hasAttribute('stacked-child');
+
     return html`
+      ${isStacked
+        ? html`<div
+            class="group-label-bar"
+            title=${this._isGroupLabelTruncated ? this._groupLabel : ''}
+          >
+            ${this._groupLabel || html`&nbsp;`}
+          </div>`
+        : null}
       <div
         class="container"
         role=${ifDefined(role)}
@@ -577,6 +928,8 @@ export class TableHeader extends LitElement {
         ? html`<div
             class="resize-handle"
             @mousedown=${this._handleResizeStart}
+            @mouseenter=${this._handleResizeHandleHover}
+            @mouseleave=${this._handleResizeHandleLeave}
             role="separator"
             title=${this.assistiveResizeText}
             aria-label=${this.assistiveResizeText}

@@ -51,6 +51,16 @@ export class HeaderFlyouts extends LitElement {
     this._emitFlyoutsToggle();
   }
 
+  /** Bound outside-click handler for add/remove symmetry.
+   * @internal
+   */
+  private readonly _boundHandleClickOut = (e: Event) => this._handleClickOut(e);
+
+  /** Bound child-flyout toggle handler for add/remove symmetry.
+   * @internal
+   */
+  private readonly _boundHandleFlyoutToggle = () => this._handleFlyoutToggle();
+
   private _emitFlyoutsToggle() {
     const Flyouts: Array<any> = querySelectorAllDeep('kyn-header-flyout', this);
 
@@ -74,16 +84,18 @@ export class HeaderFlyouts extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('click', (e) => this._handleClickOut(e));
-    document.addEventListener('on-flyout-toggle', () =>
-      this._handleFlyoutToggle()
+    document.addEventListener('click', this._boundHandleClickOut);
+    this.addEventListener(
+      'on-flyout-toggle',
+      this._boundHandleFlyoutToggle as EventListener
     );
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this._handleClickOut(e));
-    document.removeEventListener('on-flyout-toggle', () =>
-      this._handleFlyoutToggle()
+    document.removeEventListener('click', this._boundHandleClickOut);
+    this.removeEventListener(
+      'on-flyout-toggle',
+      this._boundHandleFlyoutToggle as EventListener
     );
 
     super.disconnectedCallback();
