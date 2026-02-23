@@ -677,6 +677,7 @@ export class HeaderLink extends LitElement {
       this.menuPosition = {
         top: HeaderHeight + 'px',
         left: '0px',
+        zIndex: '-1',
         minHeight:
           (shouldUseParentNavMinHeight ? parentNavHeight : navMenuHeight) +
           'px',
