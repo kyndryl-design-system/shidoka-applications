@@ -1,3 +1,5 @@
+import { mergeConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import remarkGfm from 'remark-gfm';
 import fs from 'fs';
 
@@ -89,12 +91,17 @@ export default {
   staticDirs: ['./static'],
 
   viteFinal: async (config) => {
-    const { mergeConfig } = await import('vite');
-    // Merge custom configuration into the default config
     return mergeConfig(config, {
-      // Add storybook-specific dependencies to pre-optimization
       assetsInclude: ['**/*.svg'],
-      plugins: [vitePluginRawSvg()],
+      plugins: [
+        vitePluginRawSvg(),
+        VitePWA({
+          registerType: 'autoUpdate',
+          workbox: {
+            maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
+          },
+        }),
+      ],
     });
   },
 
