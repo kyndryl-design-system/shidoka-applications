@@ -369,8 +369,9 @@ kyn-text-input {
   :host([has-categorical]:not([has-multi-column]))
     .menu.level--1
     .menu__content.slotted {
-    // 230px sidebar offset + 350px content + 8px padding
-    width: calc(230px + #{$single-column-width} + 8px);
+    // 230px sidebar offset + 350px content + 8px padding, capped to header width
+    width: min(calc(230px + #{$single-column-width} + 8px), calc(100vw - 16px));
+    max-width: calc(100vw - 16px);
   }
 }
 
@@ -379,9 +380,12 @@ kyn-text-input {
   :host([has-multi-column][data-flyout-columns='2'])
     .menu.open
     .menu__content.slotted {
-    // 230px sidebar + 2×350px columns + 32px gap + 16px padding
-    width: calc(230px + 2 * #{$single-column-width} + 32px + 16px);
-    max-width: calc(230px + 2 * #{$single-column-width} + 32px + 16px);
+    // 230px sidebar + 2×350px columns + 32px gap + 16px padding, capped to header width
+    width: min(
+      calc(230px + 2 * #{$single-column-width} + 32px + 16px),
+      calc(100vw - 16px)
+    );
+    max-width: calc(100vw - 16px);
   }
 }
 

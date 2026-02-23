@@ -670,13 +670,22 @@ export class HeaderLink extends LitElement {
       const parentNav = this.closest('kyn-header-nav') as HTMLElement | null;
       const parentNavMenu =
         parentNav?.shadowRoot?.querySelector<HTMLElement>('.menu__content');
+      const headerHost = this.closest('kyn-header') as HTMLElement | null;
+      const headerFrame =
+        headerHost?.shadowRoot?.querySelector<HTMLElement>('.header');
+      const headerBounds = headerFrame?.getBoundingClientRect();
+      const headerLeft = Math.round(headerBounds?.left ?? 0);
+      const headerWidth = Math.round(
+        headerBounds?.width ?? Math.max(0, window.innerWidth - 16)
+      );
       const parentNavHeight = Math.round(parentNavMenu?.scrollHeight ?? 0);
       const shouldUseParentNavMinHeight =
         this.hasCategorical && parentNavHeight > 0;
 
       this.menuPosition = {
         top: HeaderHeight + 'px',
-        left: '0px',
+        left: headerLeft + 'px',
+        maxWidth: headerWidth + 'px',
         zIndex: '-1',
         minHeight:
           (shouldUseParentNavMinHeight ? parentNavHeight : navMenuHeight) +
