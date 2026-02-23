@@ -27,6 +27,7 @@ import '../../reusable/textInput';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 
 const meta: Meta = {
   title: 'Components/Data Table',
@@ -937,6 +938,22 @@ export const ColumnResize: Story = {
   },
 };
 
+const getExampleContent = () => html`
+  <div
+    class="example"
+    style="flex-direction: column;
+          margin: 16px 8px;"
+  >
+    <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+      ${unsafeSVG(lgCube)}
+    </div>
+    <div class="kd-type--ui-01 kd-type--weight-medium">Expansion Slot</div>
+    <p class="kd-type--ui-04 kd-type--weight-light">
+      Swap this with your own component.
+    </p>
+  </div>
+`;
+
 export const StackedHeader: Story = {
   args: {
     rows: characters,
@@ -964,11 +981,19 @@ export const StackedHeader: Story = {
 
     return html`
       <style>
-        .center-content {
+        .example {
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: center;
+          background: var(--kd-color-background-container-subtle);
+          border: 1px dashed var(--kd-color-utility-variant-border);
           height: 140px;
+          border-radius: 4px;
+
+          svg {
+            height: 52px;
+            width: 52px;
+          }
         }
       </style>
       <kyn-table-toolbar
@@ -1059,9 +1084,7 @@ export const StackedHeader: Story = {
                   <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
                 </kyn-tr>
                 <kyn-expanded-tr .colSpan=${8}>
-                  <div class="center-content">
-                    Put your expanded table content here for ID ${row.id}
-                  </div>
+                  ${getExampleContent()}
                 </kyn-expanded-tr>
               `
             )}
