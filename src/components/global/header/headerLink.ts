@@ -663,14 +663,23 @@ export class HeaderLink extends LitElement {
         : linkHalf - menuHalf;
 
     if (this.level === 1) {
-      // Use this flyout's own measured height for min-height. Avoid coupling
-      // to sibling flyouts, which can cause layout jumps when switching links.
+      // For categorical/global-switcher flyouts, set a floor based on the
+      // parent nav menu's intrinsic content height so the right pane aligns
+      // with the left nav, but can still grow/shrink naturally above that floor.
       const navMenuHeight = Math.round(menuBounds.height);
+      const parentNav = this.closest('kyn-header-nav') as HTMLElement | null;
+      const parentNavMenu =
+        parentNav?.shadowRoot?.querySelector<HTMLElement>('.menu__content');
+      const parentNavHeight = Math.round(parentNavMenu?.scrollHeight ?? 0);
+      const shouldUseParentNavMinHeight =
+        this.hasCategorical && parentNavHeight > 0;
 
       this.menuPosition = {
         top: HeaderHeight + 'px',
         left: '0px',
-        minHeight: navMenuHeight + 'px',
+        minHeight:
+          (shouldUseParentNavMinHeight ? parentNavHeight : navMenuHeight) +
+          'px',
       };
     } else {
       const top = topCandidate < HeaderHeight ? HeaderHeight : topCandidate;
