@@ -102,12 +102,12 @@ export default {
             skipWaiting: true,
             cleanupOutdatedCaches: true,
             maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
-            manifest: {
-              name: 'Shidoka Applications Storybook',
-              short_name: 'Shidoka Applications',
-              background_color: '#1d2125',
-              theme_color: '#ff462d',
-            },
+          },
+          manifest: {
+            name: 'Shidoka Applications Storybook',
+            short_name: 'Shidoka Applications',
+            background_color: '#1d2125',
+            theme_color: '#ff462d',
           },
         }),
       ],
