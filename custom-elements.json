@@ -707,9 +707,21 @@
           "kind": "class",
           "description": "Header categories wrapper for mega menu.",
           "name": "HeaderCategories",
+          "cssProperties": [
+            {
+              "description": "Width of each column. Applies to 1 and 2 column layouts. Also used for 3+ when `fixed-column-widths` is enabled.",
+              "name": "--kyn-header-category-column-width",
+              "default": "300px"
+            },
+            {
+              "description": "Horizontal gap between columns.",
+              "name": "--kyn-header-category-column-gap",
+              "default": "32px"
+            }
+          ],
           "slots": [
             {
-              "description": "Slot for header category elements. Controlled via `activeMegaTabId` / `activeMegaCategoryId` but encapsulates all categorical/mega-nav view behavior (root/detail, \"More\", \"Back\"). Emits `on-nav-change` so parents can mirror state for tabs, routing, etc. Modes: - JSON mode - Provide `tabsConfig` and categories/links are rendered from config. - Each link may specify `href`, `target`, and `rel`. - Optional `linkRenderer` hook can be supplied to fully control the slotted content inside each `<kyn-header-link>`. - Slotted/manual mode - Omit `tabsConfig` and slot `<kyn-header-category>` / `<kyn-header-link>` elements directly in the light DOM. - Slotted `<kyn-header-link>` `href`, `target`, and `rel` attributes are preserved. - Root view will: - truncate visible links per category at `maxRootLinks` - inject a \"More\" link when there are additional links - \"More\" switches to a detail view for that category, and the Back button returns to the root view.",
+              "description": "Slot for header category elements. Controlled via `activeMegaTabId` / `activeMegaCategoryId` but encapsulates all categorical/mega-nav view behavior (root/detail, \"More\", \"Back\"). Emits `on-nav-change` so parents can mirror state for tabs, routing, etc. Modes: - JSON mode - Provide `tabsConfig` and categories/links are rendered from config. - Each link may specify `href`, `target`, and `rel`. - Optional `linkRenderer` hook can be supplied to fully control the slotted content inside each `<kyn-header-link>`. - Slotted/manual mode - Omit `tabsConfig` and slot `<kyn-header-category>` / `<kyn-header-link>` elements directly in the light DOM. - Slotted `<kyn-header-link>` `href`, `target`, and `rel` attributes are preserved. - Root view will: - limit visible links per category at `maxRootLinks` - inject a \"More\" link when there are additional links - \"More\" switches to a detail view for that category, and the Back button returns to the root view.",
               "name": "unnamed"
             }
           ],
@@ -752,6 +764,68 @@
               "default": "4",
               "description": "Max number of links to render in root columns before showing \"More\".",
               "attribute": "maxRootLinks"
+            },
+            {
+              "kind": "field",
+              "name": "limitRootLinks",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls whether root-view categories are limited by `maxRootLinks` before showing \"More\".",
+              "attribute": "limit-root-links"
+            },
+            {
+              "kind": "field",
+              "name": "layout",
+              "type": {
+                "text": "'masonry' | 'grid' | ''"
+              },
+              "default": "''",
+              "description": "Layout mode for categories.\n- \"\" (default): Legacy responsive column-width layout for standard mega-nav\n- \"masonry\": CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
+              "attribute": "layout",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxColumns",
+              "type": {
+                "text": "number"
+              },
+              "default": "3",
+              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".",
+              "attribute": "maxColumns"
+            },
+            {
+              "kind": "field",
+              "name": "fixedColumnWidths",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, 3+ columns use fixed column widths instead of stretching to fill\nthe full flyout width. The flyout remains constrained by viewport max-width.",
+              "attribute": "fixed-column-widths",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "showCategoryIcons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, category headings render with the default design-system icon when none is provided.",
+              "attribute": "show-category-icons"
+            },
+            {
+              "kind": "field",
+              "name": "hideCategoryDividers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, hide dividers in root-view categories.",
+              "attribute": "hide-category-dividers"
             },
             {
               "kind": "field",
@@ -824,6 +898,16 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "_rootLinksLimit",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "description": "Resolve max root links. Disabling limiting, or using non-positive values, means \"no limit\".",
+              "readonly": true
             },
             {
               "kind": "method",
@@ -1018,10 +1102,17 @@
           ],
           "events": [
             {
-              "name": "on-nav-change",
+              "name": "on-column-count-change",
               "type": {
                 "text": "CustomEvent"
               }
+            },
+            {
+              "name": "on-nav-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fires when the active category/tab view changes. Detail: `{ activeMegaTabId, activeMegaCategoryId, view }`."
             }
           ],
           "attributes": [
@@ -1051,6 +1142,60 @@
               "default": "4",
               "description": "Max number of links to render in root columns before showing \"More\".",
               "fieldName": "maxRootLinks"
+            },
+            {
+              "name": "limit-root-links",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls whether root-view categories are limited by `maxRootLinks` before showing \"More\".",
+              "fieldName": "limitRootLinks"
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "'masonry' | 'grid' | ''"
+              },
+              "default": "''",
+              "description": "Layout mode for categories.\n- \"\" (default): Legacy responsive column-width layout for standard mega-nav\n- \"masonry\": CSS multi-column with fixed column-count based on category count\n- \"grid\": CSS Grid with fixed columns and row-based wrapping",
+              "fieldName": "layout"
+            },
+            {
+              "name": "maxColumns",
+              "type": {
+                "text": "number"
+              },
+              "default": "3",
+              "description": "Max number of columns to display when layout=\"grid\" or layout=\"masonry\".",
+              "fieldName": "maxColumns"
+            },
+            {
+              "name": "fixed-column-widths",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, 3+ columns use fixed column widths instead of stretching to fill\nthe full flyout width. The flyout remains constrained by viewport max-width.",
+              "fieldName": "fixedColumnWidths"
+            },
+            {
+              "name": "show-category-icons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, category headings render with the default design-system icon when none is provided.",
+              "fieldName": "showCategoryIcons"
+            },
+            {
+              "name": "hide-category-dividers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, hide dividers in root-view categories.",
+              "fieldName": "hideCategoryDividers"
             },
             {
               "name": "textStrings",
@@ -1114,6 +1259,10 @@
             {
               "description": "Slot for icon.",
               "name": "icon"
+            },
+            {
+              "description": "Slot for \"More\" link (indented with category links).",
+              "name": "more"
             }
           ],
           "members": [
@@ -1144,8 +1293,26 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Show bottom border/divider.",
+              "description": "Show bottom border/divider. Set to true to force show, false to force hide. By default, dividers are automatically shown when followed by another category.",
               "attribute": "showDivider"
+            },
+            {
+              "kind": "method",
+              "name": "_handleIconSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_checkForNextCategorySibling",
+              "privacy": "private"
             }
           ],
           "attributes": [
@@ -1173,7 +1340,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Show bottom border/divider.",
+              "description": "Show bottom border/divider. Set to true to force show, false to force hide. By default, dividers are automatically shown when followed by another category.",
               "fieldName": "showDivider"
             }
           ],
@@ -1688,6 +1855,26 @@
             },
             {
               "kind": "field",
+              "name": "linksPerColumn",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Maximum number of links per column in plain (non-categorical) flyouts.\nWhen set to a positive number and the slotted link count exceeds this value,\nadditional columns are created automatically. Default 0 (auto — no column splitting).",
+              "attribute": "linksPerColumn"
+            },
+            {
+              "kind": "field",
+              "name": "hideSearch",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the search input regardless of the number of child links.",
+              "attribute": "hideSearch"
+            },
+            {
+              "kind": "field",
               "name": "backText",
               "type": {
                 "text": "string"
@@ -1708,12 +1895,31 @@
             },
             {
               "kind": "field",
-              "name": "_searchTerm",
+              "name": "truncate",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "''",
-              "description": "Text for mobile \"Back\" button."
+              "default": "false",
+              "description": "When true, long text truncates with ellipsis. Default: false (text wraps normally).",
+              "attribute": "truncate",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_viewChangeTimer",
+              "type": {
+                "text": "any"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "_observedNav",
+              "type": {
+                "text": "HTMLElement | null"
+              },
+              "privacy": "private",
+              "default": "null"
             },
             {
               "kind": "method",
@@ -1732,6 +1938,20 @@
               "kind": "method",
               "name": "_searchFilter",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleDefaultSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ],
+              "description": "Extract text content from the default slot to use as auto-title"
             },
             {
               "kind": "method",
@@ -1900,6 +2120,24 @@
               "fieldName": "searchThreshold"
             },
             {
+              "name": "linksPerColumn",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Maximum number of links per column in plain (non-categorical) flyouts.\nWhen set to a positive number and the slotted link count exceeds this value,\nadditional columns are created automatically. Default 0 (auto — no column splitting).",
+              "fieldName": "linksPerColumn"
+            },
+            {
+              "name": "hideSearch",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hide the search input regardless of the number of child links.",
+              "fieldName": "hideSearch"
+            },
+            {
               "name": "backText",
               "type": {
                 "text": "string"
@@ -1916,6 +2154,15 @@
               "default": "false",
               "description": "Add left padding when icon is not provided to align text with links that do have icons.",
               "fieldName": "leftPadding"
+            },
+            {
+              "name": "truncate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, long text truncates with ellipsis. Default: false (text wraps normally).",
+              "fieldName": "truncate"
             }
           ],
           "superclass": {
@@ -1953,6 +2200,13 @@
           "kind": "class",
           "description": "Container for header navigation links.",
           "name": "HeaderNav",
+          "cssProperties": [
+            {
+              "description": "Max height for global-switcher flyout panels, including categorical nav wrappers.",
+              "name": "--kyn-global-switcher-max-height",
+              "default": "calc(100vh - var(--kd-header-reserved-space) - 16px)"
+            }
+          ],
           "slots": [
             {
               "description": "This element has a slot.",
@@ -1960,6 +2214,27 @@
             }
           ],
           "members": [
+            {
+              "kind": "field",
+              "name": "autoOpenFlyout",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Controls which flyout (if any) auto-opens when the nav renders.\n- '' (empty, default): original behavior — flyouts auto-collapse on mouse leave, nothing auto-opens.\n- 'default': auto-open the first categorical flyout; flyouts stay open on mouse leave.\n- '<id>': auto-open the flyout whose kyn-header-link id matches; flyouts stay open on mouse leave.",
+              "attribute": "auto-open-flyout"
+            },
+            {
+              "kind": "field",
+              "name": "truncateLinks",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, all links in flyouts will truncate long text with ellipsis.\nThis cascades to all nested kyn-header-link components via CSS custom property.",
+              "attribute": "truncate-links",
+              "reflects": true
+            },
             {
               "kind": "method",
               "name": "_toggleMenuOpen",
@@ -1999,7 +2274,28 @@
               "name": "on-nav-toggle",
               "type": {
                 "text": "CustomEvent"
-              }
+              },
+              "description": "Fires when the nav menu opens or closes. Detail: `{ open }`."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "auto-open-flyout",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Controls which flyout (if any) auto-opens when the nav renders.\n- '' (empty, default): original behavior — flyouts auto-collapse on mouse leave, nothing auto-opens.\n- 'default': auto-open the first categorical flyout; flyouts stay open on mouse leave.\n- '<id>': auto-open the flyout whose kyn-header-link id matches; flyouts stay open on mouse leave.",
+              "fieldName": "autoOpenFlyout"
+            },
+            {
+              "name": "truncate-links",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, all links in flyouts will truncate long text with ellipsis.\nThis cascades to all nested kyn-header-link components via CSS custom property.",
+              "fieldName": "truncateLinks"
             }
           ],
           "superclass": {
@@ -3021,69 +3317,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/workspaceSwitcher/index.ts",
       "declarations": [],
       "exports": [
@@ -3442,6 +3675,69 @@
           "declaration": {
             "name": "WorkspaceSwitcherMenuItem",
             "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -21487,184 +21783,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/statusButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StatusButton",
-          "declaration": {
-            "name": "StatusButton",
-            "module": "./statusButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/statusButton/statusButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Status Button.",
-          "name": "StatusButton",
-          "slots": [
-            {
-              "description": "Slot for icon.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Status label (Required).",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify selected state.",
-              "attribute": "selected"
-            },
-            {
-              "kind": "field",
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "STATUS_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the status.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "method",
-              "name": "handleBtnClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the selected value and original event details.`detail:{ origEvent: PointerEvent,value: string }`",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Status label (Required).",
-              "fieldName": "label"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify selected state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "STATUS_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the status.",
-              "fieldName": "kind"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-status-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StatusButton",
-          "declaration": {
-            "name": "StatusButton",
-            "module": "src/components/reusable/statusButton/statusButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-status-btn",
-          "declaration": {
-            "name": "StatusButton",
-            "module": "src/components/reusable/statusButton/statusButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/splitButton/defs.ts",
       "declarations": [],
       "exports": []
@@ -22221,6 +22339,184 @@
           "declaration": {
             "name": "SplitButtonOption",
             "module": "src/components/reusable/splitButton/splitButtonOption.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/statusButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StatusButton",
+          "declaration": {
+            "name": "StatusButton",
+            "module": "./statusButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/statusButton/statusButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Status Button.",
+          "name": "StatusButton",
+          "slots": [
+            {
+              "description": "Slot for icon.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Status label (Required).",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify selected state.",
+              "attribute": "selected"
+            },
+            {
+              "kind": "field",
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "STATUS_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the status.",
+              "attribute": "kind"
+            },
+            {
+              "kind": "method",
+              "name": "handleBtnClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the selected value and original event details.`detail:{ origEvent: PointerEvent,value: string }`",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Status label (Required).",
+              "fieldName": "label"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Specify selected state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "STATUS_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the status.",
+              "fieldName": "kind"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-status-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StatusButton",
+          "declaration": {
+            "name": "StatusButton",
+            "module": "src/components/reusable/statusButton/statusButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-status-btn",
+          "declaration": {
+            "name": "StatusButton",
+            "module": "src/components/reusable/statusButton/statusButton.ts"
           }
         }
       ]

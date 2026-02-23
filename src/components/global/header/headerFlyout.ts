@@ -165,6 +165,11 @@ export class HeaderFlyout extends LitElement {
     }
   }
 
+  /** Bound outside-click handler for add/remove symmetry.
+   * @internal
+   */
+  private readonly _boundHandleClickOut = (e: Event) => this.handleClickOut(e);
+
   override willUpdate(changedProps: any) {
     if (changedProps.has('open')) {
       const event = new CustomEvent('on-flyout-toggle', {
@@ -179,11 +184,11 @@ export class HeaderFlyout extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
 
-    document.addEventListener('click', (e) => this.handleClickOut(e));
+    document.addEventListener('click', this._boundHandleClickOut);
   }
 
   override disconnectedCallback() {
-    document.removeEventListener('click', (e) => this.handleClickOut(e));
+    document.removeEventListener('click', this._boundHandleClickOut);
 
     super.disconnectedCallback();
   }

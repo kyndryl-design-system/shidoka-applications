@@ -16,6 +16,7 @@ import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
+import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 
 // --- Data setup ---
 
@@ -118,6 +119,9 @@ const createWorkspaceClickHandler = (itemClickHandler) => (e, ws) => {
 };
 
 const handleWorkspaceClick = createWorkspaceClickHandler(handleItemClick);
+
+const getSwitcherStyle = (args) =>
+  `--kyn-workspace-switcher-max-height: ${args['--kyn-workspace-switcher-max-height']};`;
 
 export default {
   title: 'Global Components/Workspace Switcher',
@@ -242,6 +246,7 @@ export default {
 export const FullWorkspaceInfo = {
   render: (args) => html`
     <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -312,6 +317,7 @@ export const SimpleWorkspaceInfo = {
   },
   render: (args) => html`
     <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -365,6 +371,7 @@ export const SimpleWorkspaceInfo = {
 export const WithSearch = {
   render: (args) => html`
     <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
       .textStrings=${args.textStrings}
       ?hideCurrentTitle=${args.hideCurrentTitle}
       ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
@@ -510,6 +517,9 @@ export const UIImplementation = {
   ],
   render: (args) => html`
     <kyn-header rootUrl="/" appTitle="Bridge">
+      <span slot="logo" style="--kyn-header-logo-width: 120px;">
+        ${unsafeSVG(bridgeLogo)}
+      </span>
       <kyn-header-nav>
         <kyn-header-link href="javascript:void(0)">
           <span>${unsafeSVG(circleIcon)}</span>
@@ -546,6 +556,7 @@ export const UIImplementation = {
           </span>
 
           <kyn-workspace-switcher
+            style=${getSwitcherStyle(args)}
             class="ui-impl-switcher"
             ?hideCurrentTitle=${args.hideCurrentTitle}
             ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
