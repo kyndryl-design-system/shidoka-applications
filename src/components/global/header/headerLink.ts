@@ -663,33 +663,23 @@ export class HeaderLink extends LitElement {
         : linkHalf - menuHalf;
 
     if (this.level === 1) {
-      // For categorical/global-switcher flyouts, set a floor based on the
-      // parent nav menu's intrinsic content height so the right pane aligns
-      // with the left nav, but can still grow/shrink naturally above that floor.
-      const navMenuHeight = Math.round(menuBounds.height);
-      const parentNav = this.closest('kyn-header-nav') as HTMLElement | null;
-      const parentNavMenu =
-        parentNav?.shadowRoot?.querySelector<HTMLElement>('.menu__content');
-      const headerHost = this.closest('kyn-header') as HTMLElement | null;
-      const headerFrame =
-        headerHost?.shadowRoot?.querySelector<HTMLElement>('.header');
-      const headerBounds = headerFrame?.getBoundingClientRect();
-      const headerLeft = Math.round(headerBounds?.left ?? 0);
-      const headerWidth = Math.round(
-        headerBounds?.width ?? Math.max(0, window.innerWidth - 16)
-      );
-      const parentNavHeight = Math.round(parentNavMenu?.scrollHeight ?? 0);
-      const shouldUseParentNavMinHeight =
-        this.hasCategorical && parentNavHeight > 0;
+      // Keep level-1 flyouts pinned to the nav rail origin (legacy behavior).
+      // This avoids viewport/header bound drift and keeps panels consistently aligned.
+      let navMenuHeight = 0;
+      const headerNav = this.closest('kyn-header-nav') as HTMLElement | null;
+      if (headerNav) {
+        const navMenu = headerNav.shadowRoot?.querySelector(
+          '.menu__content'
+        ) as HTMLElement | null;
+        if (navMenu) {
+          navMenuHeight = navMenu.offsetHeight;
+        }
+      }
 
       this.menuPosition = {
         top: HeaderHeight + 'px',
-        left: headerLeft + 'px',
-        maxWidth: headerWidth + 'px',
-        zIndex: '-1',
-        minHeight:
-          (shouldUseParentNavMinHeight ? parentNavHeight : navMenuHeight) +
-          'px',
+        left: '0px',
+        minHeight: navMenuHeight + 'px',
       };
     } else {
       const top = topCandidate < HeaderHeight ? HeaderHeight : topCandidate;
