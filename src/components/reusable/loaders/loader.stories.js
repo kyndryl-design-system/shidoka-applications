@@ -3,7 +3,7 @@ import './index';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Loaders/Loader',
+  title: 'Components/Feedback & Status/Loaders/Loader',
   component: 'kyn-loader',
   parameters: {
     design: {

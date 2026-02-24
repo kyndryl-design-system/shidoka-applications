@@ -74,7 +74,7 @@ const handleCopy = (value, e) => {
   navigator.clipboard.writeText(value);
 };
 
-export const NonAccountSelected = {
+export const NoAccountSelected = {
   render: () => {
     return html`
       <div class="account-meta-info">

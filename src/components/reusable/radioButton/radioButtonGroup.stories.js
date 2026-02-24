@@ -4,7 +4,7 @@ import { action } from 'storybook/actions';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
-  title: 'Components/Radio Button',
+  title: 'Components/Form Inputs/Radio Button',
   component: 'kyn-radio-button-group',
   subcomponents: {
     'kyn-radio-button': 'kyn-radio-button',

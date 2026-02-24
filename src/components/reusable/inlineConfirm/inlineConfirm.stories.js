@@ -7,7 +7,7 @@ import '../button';
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/delete.svg';
 
 export default {
-  title: 'Components/Inline Confirm',
+  title: 'Components/Buttons & Actions/Inline Confirm',
   component: 'kyn-inline-confirm',
   parameters: {
     design: {

@@ -3,7 +3,7 @@ import { action } from 'storybook/actions';
 import './index';
 
 export default {
-  title: 'Components/Tooltip',
+  title: 'Components/Overlays & Floating UI/Tooltip',
   component: 'kyn-tooltip',
   parameters: {
     design: {

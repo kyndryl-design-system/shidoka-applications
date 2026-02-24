@@ -12,7 +12,7 @@ import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
 
 export default {
-  title: 'Components/Widget',
+  title: 'Components/Layout & Structure/Widget',
   component: 'kyn-widget',
   subcomponents: {
     'kyn-widget-drag-handle': 'kyn-widget-drag-handle',

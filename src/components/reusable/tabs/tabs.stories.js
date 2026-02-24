@@ -12,7 +12,7 @@ import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
 export default {
-  title: 'Components/Tabs',
+  title: 'Components/Layout & Structure/Tabs',
   component: 'kyn-tabs',
   argTypes: {
     tabSize: {

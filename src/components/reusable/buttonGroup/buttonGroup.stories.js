@@ -18,7 +18,7 @@ import consoleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/
 import deleteIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
 
 export default {
-  title: 'Components/Button Group',
+  title: 'Components/Buttons & Actions/Button Group',
   component: 'kyn-button-group',
   parameters: {
     controls: {

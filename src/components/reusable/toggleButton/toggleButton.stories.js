@@ -7,7 +7,7 @@ import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
-  title: 'Components/Toggle Button',
+  title: 'Components/Form Inputs/Toggle Button',
   component: 'kyn-toggle-button',
   parameters: {
     design: {

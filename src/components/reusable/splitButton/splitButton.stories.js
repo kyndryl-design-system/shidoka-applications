@@ -12,7 +12,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
 export default {
-  title: 'Components/Split Button',
+  title: 'Components/Buttons & Actions/Split Button',
   component: 'kyn-split-btn',
   subcomponents: {
     SplitButtonOption: 'kyn-splitbutton-option',
