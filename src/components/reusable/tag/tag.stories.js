@@ -5,7 +5,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 export default {
-  title: 'Components/Indicators & Utilities/Tag',
+  title: 'Components/Indicators & Labels/Tag',
   component: 'kyn-tag',
   argTypes: {
     tagSize: {

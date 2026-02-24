@@ -3,7 +3,7 @@ import './index';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Indicators & Utilities/Tag',
+  title: 'Components/Indicators & Labels/Tag',
   component: 'kyn-tag-group',
   subcomponents: {
     Tag: 'kyn-tag',

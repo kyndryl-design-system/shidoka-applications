@@ -5,7 +5,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 export default {
-  title: 'Components/Indicators & Utilities/Status Button',
+  title: 'Components/Indicators & Labels/Status Button',
   component: 'kyn-status-btn',
   argTypes: {
     kind: {
