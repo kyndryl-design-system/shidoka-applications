@@ -243,208 +243,6 @@ export default {
   ],
 };
 
-export const FullWorkspaceInfo = {
-  render: (args) => html`
-    <kyn-workspace-switcher
-      style=${getSwitcherStyle(args)}
-      .textStrings=${args.textStrings}
-      ?hideCurrentTitle=${args.hideCurrentTitle}
-      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
-    >
-      <div slot="left" class="account-meta-info">
-        <div class="account-meta-info__header">
-          <span class="account-meta-info__checkmark"
-            >${unsafeSVG(checkmarkFilledIcon)}</span
-          >
-          <div class="account-meta-info__content">
-            <span
-              class="account-meta-info__name"
-              title=${selectedItem?.name || ''}
-              >${selectedItem?.name || ''}</span
-            >
-            <kyn-link
-              standalone
-              animationInactive
-              href="javascript:void(0)"
-              @on-click=${(e) =>
-                handleCopy(exampleData.accountDetails.accountId, e)}
-            >
-              ${exampleData.accountDetails.accountId}
-              <span slot="icon">${unsafeSVG(copyIcon)}</span>
-            </kyn-link>
-            <span class="account-meta-info__country"
-              >${exampleData.accountDetails.country}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      ${workspaces.map(
-        (ws) => html`
-          <kyn-workspace-switcher-menu-item
-            slot="left-list"
-            variant="workspace"
-            value=${ws.id}
-            name=${ws.name}
-            .count=${ws.count ?? null}
-            ?selected=${ws.selected}
-            @on-click=${(e) => handleWorkspaceClick(e, ws)}
-          ></kyn-workspace-switcher-menu-item>
-        `
-      )}
-      ${defaultItems.map(
-        (item) => html`
-          <kyn-workspace-switcher-menu-item
-            slot="right-list"
-            variant="item"
-            value=${item.id}
-            name=${item.name}
-            ?selected=${item.selected}
-            ?favorited=${item.favorited}
-            showFavorite
-            @on-click=${(e) => handleItemClick(e, item)}
-            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-          ></kyn-workspace-switcher-menu-item>
-        `
-      )}
-    </kyn-workspace-switcher>
-  `,
-};
-
-export const SimpleWorkspaceInfo = {
-  args: {
-    hideWorkspacesTitle: true,
-  },
-  render: (args) => html`
-    <kyn-workspace-switcher
-      style=${getSwitcherStyle(args)}
-      .textStrings=${args.textStrings}
-      ?hideCurrentTitle=${args.hideCurrentTitle}
-      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
-    >
-      <div slot="left" class="account-meta-info">
-        <div class="account-meta-info__header">
-          <span class="account-meta-info__checkmark"
-            >${unsafeSVG(checkmarkFilledIcon)}</span
-          >
-          <span
-            class="account-meta-info__name"
-            title=${selectedItem?.name || ''}
-            >${selectedItem?.name || ''}</span
-          >
-        </div>
-      </div>
-
-      ${workspaces.map(
-        (ws) => html`
-          <kyn-workspace-switcher-menu-item
-            slot="left-list"
-            variant="workspace"
-            value=${ws.id}
-            name=${ws.name}
-            .count=${ws.count ?? null}
-            ?selected=${ws.selected}
-            hideWorkspacesTitle
-            @on-click=${(e) => handleWorkspaceClick(e, ws)}
-          ></kyn-workspace-switcher-menu-item>
-        `
-      )}
-      ${defaultItems.map(
-        (item) => html`
-          <kyn-workspace-switcher-menu-item
-            slot="right-list"
-            variant="item"
-            value=${item.id}
-            name=${item.name}
-            ?selected=${item.selected}
-            ?favorited=${item.favorited}
-            showFavorite
-            @on-click=${(e) => handleItemClick(e, item)}
-            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-          ></kyn-workspace-switcher-menu-item>
-        `
-      )}
-    </kyn-workspace-switcher>
-  `,
-};
-
-export const WithSearch = {
-  render: (args) => html`
-    <kyn-workspace-switcher
-      style=${getSwitcherStyle(args)}
-      .textStrings=${args.textStrings}
-      ?hideCurrentTitle=${args.hideCurrentTitle}
-      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
-    >
-      <div slot="left" class="account-meta-info">
-        <div class="account-meta-info__header">
-          <span class="account-meta-info__checkmark"
-            >${unsafeSVG(checkmarkFilledIcon)}</span
-          >
-          <div class="account-meta-info__content">
-            <span
-              class="account-meta-info__name"
-              title=${selectedItem?.name || ''}
-              >${selectedItem?.name || ''}</span
-            >
-            <kyn-link
-              standalone
-              animationInactive
-              href="javascript:void(0)"
-              @on-click=${(e) =>
-                handleCopy(exampleData.accountDetails.accountId, e)}
-            >
-              ${exampleData.accountDetails.accountId}
-              <span slot="icon">${unsafeSVG(copyIcon)}</span>
-            </kyn-link>
-            <span class="account-meta-info__country"
-              >${exampleData.accountDetails.country}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      ${workspaces.map(
-        (ws) => html`
-          <kyn-workspace-switcher-menu-item
-            slot="left-list"
-            variant="workspace"
-            value=${ws.id}
-            name=${ws.name}
-            .count=${ws.count ?? null}
-            ?selected=${ws.selected}
-            @on-click=${(e) => handleWorkspaceClick(e, ws)}
-          ></kyn-workspace-switcher-menu-item>
-        `
-      )}
-
-      <kyn-search
-        slot="right"
-        size="sm"
-        label="Search"
-        class="workspace-switcher-search"
-        @on-input=${(e) => action('on-search')(e.detail)}
-      ></kyn-search>
-
-      ${defaultItems.map(
-        (item) => html`
-          <kyn-workspace-switcher-menu-item
-            slot="right-list"
-            variant="item"
-            value=${item.id}
-            name=${item.name}
-            ?selected=${item.selected}
-            ?favorited=${item.favorited}
-            showFavorite
-            @on-click=${(e) => handleItemClick(e, item)}
-            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-          ></kyn-workspace-switcher-menu-item>
-        `
-      )}
-    </kyn-workspace-switcher>
-  `,
-};
-
 // --- header flyout ---
 
 const truncateName = (name, maxLen = 20) =>
@@ -667,5 +465,207 @@ export const UIImplementation = {
         </kyn-header-flyout>
       </kyn-header-flyouts>
     </kyn-header>
+  `,
+};
+
+export const FullWorkspaceInfo = {
+  render: (args) => html`
+    <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
+      .textStrings=${args.textStrings}
+      ?hideCurrentTitle=${args.hideCurrentTitle}
+      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
+    >
+      <div slot="left" class="account-meta-info">
+        <div class="account-meta-info__header">
+          <span class="account-meta-info__checkmark"
+            >${unsafeSVG(checkmarkFilledIcon)}</span
+          >
+          <div class="account-meta-info__content">
+            <span
+              class="account-meta-info__name"
+              title=${selectedItem?.name || ''}
+              >${selectedItem?.name || ''}</span
+            >
+            <kyn-link
+              standalone
+              animationInactive
+              href="javascript:void(0)"
+              @on-click=${(e) =>
+                handleCopy(exampleData.accountDetails.accountId, e)}
+            >
+              ${exampleData.accountDetails.accountId}
+              <span slot="icon">${unsafeSVG(copyIcon)}</span>
+            </kyn-link>
+            <span class="account-meta-info__country"
+              >${exampleData.accountDetails.country}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      ${workspaces.map(
+        (ws) => html`
+          <kyn-workspace-switcher-menu-item
+            slot="left-list"
+            variant="workspace"
+            value=${ws.id}
+            name=${ws.name}
+            .count=${ws.count ?? null}
+            ?selected=${ws.selected}
+            @on-click=${(e) => handleWorkspaceClick(e, ws)}
+          ></kyn-workspace-switcher-menu-item>
+        `
+      )}
+      ${defaultItems.map(
+        (item) => html`
+          <kyn-workspace-switcher-menu-item
+            slot="right-list"
+            variant="item"
+            value=${item.id}
+            name=${item.name}
+            ?selected=${item.selected}
+            ?favorited=${item.favorited}
+            showFavorite
+            @on-click=${(e) => handleItemClick(e, item)}
+            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
+          ></kyn-workspace-switcher-menu-item>
+        `
+      )}
+    </kyn-workspace-switcher>
+  `,
+};
+
+export const SimpleWorkspaceInfo = {
+  args: {
+    hideWorkspacesTitle: true,
+  },
+  render: (args) => html`
+    <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
+      .textStrings=${args.textStrings}
+      ?hideCurrentTitle=${args.hideCurrentTitle}
+      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
+    >
+      <div slot="left" class="account-meta-info">
+        <div class="account-meta-info__header">
+          <span class="account-meta-info__checkmark"
+            >${unsafeSVG(checkmarkFilledIcon)}</span
+          >
+          <span
+            class="account-meta-info__name"
+            title=${selectedItem?.name || ''}
+            >${selectedItem?.name || ''}</span
+          >
+        </div>
+      </div>
+
+      ${workspaces.map(
+        (ws) => html`
+          <kyn-workspace-switcher-menu-item
+            slot="left-list"
+            variant="workspace"
+            value=${ws.id}
+            name=${ws.name}
+            .count=${ws.count ?? null}
+            ?selected=${ws.selected}
+            hideWorkspacesTitle
+            @on-click=${(e) => handleWorkspaceClick(e, ws)}
+          ></kyn-workspace-switcher-menu-item>
+        `
+      )}
+      ${defaultItems.map(
+        (item) => html`
+          <kyn-workspace-switcher-menu-item
+            slot="right-list"
+            variant="item"
+            value=${item.id}
+            name=${item.name}
+            ?selected=${item.selected}
+            ?favorited=${item.favorited}
+            showFavorite
+            @on-click=${(e) => handleItemClick(e, item)}
+            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
+          ></kyn-workspace-switcher-menu-item>
+        `
+      )}
+    </kyn-workspace-switcher>
+  `,
+};
+
+export const WithSearch = {
+  render: (args) => html`
+    <kyn-workspace-switcher
+      style=${getSwitcherStyle(args)}
+      .textStrings=${args.textStrings}
+      ?hideCurrentTitle=${args.hideCurrentTitle}
+      ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
+    >
+      <div slot="left" class="account-meta-info">
+        <div class="account-meta-info__header">
+          <span class="account-meta-info__checkmark"
+            >${unsafeSVG(checkmarkFilledIcon)}</span
+          >
+          <div class="account-meta-info__content">
+            <span
+              class="account-meta-info__name"
+              title=${selectedItem?.name || ''}
+              >${selectedItem?.name || ''}</span
+            >
+            <kyn-link
+              standalone
+              animationInactive
+              href="javascript:void(0)"
+              @on-click=${(e) =>
+                handleCopy(exampleData.accountDetails.accountId, e)}
+            >
+              ${exampleData.accountDetails.accountId}
+              <span slot="icon">${unsafeSVG(copyIcon)}</span>
+            </kyn-link>
+            <span class="account-meta-info__country"
+              >${exampleData.accountDetails.country}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      ${workspaces.map(
+        (ws) => html`
+          <kyn-workspace-switcher-menu-item
+            slot="left-list"
+            variant="workspace"
+            value=${ws.id}
+            name=${ws.name}
+            .count=${ws.count ?? null}
+            ?selected=${ws.selected}
+            @on-click=${(e) => handleWorkspaceClick(e, ws)}
+          ></kyn-workspace-switcher-menu-item>
+        `
+      )}
+
+      <kyn-search
+        slot="right"
+        size="sm"
+        label="Search"
+        class="workspace-switcher-search"
+        @on-input=${(e) => action('on-search')(e.detail)}
+      ></kyn-search>
+
+      ${defaultItems.map(
+        (item) => html`
+          <kyn-workspace-switcher-menu-item
+            slot="right-list"
+            variant="item"
+            value=${item.id}
+            name=${item.name}
+            ?selected=${item.selected}
+            ?favorited=${item.favorited}
+            showFavorite
+            @on-click=${(e) => handleItemClick(e, item)}
+            @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
+          ></kyn-workspace-switcher-menu-item>
+        `
+      )}
+    </kyn-workspace-switcher>
   `,
 };
