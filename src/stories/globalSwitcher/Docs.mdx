@@ -1,0 +1,206 @@
+import { Meta, Title, Canvas } from '@storybook/addon-docs/blocks';
+import * as GlobalSwitcherStories from './GlobalSwitcher.stories.js';
+
+<Meta of={GlobalSwitcherStories} name="Docs" />
+
+<Title>Global Switcher</Title>
+
+A **pattern** (not a standalone component) for composing mega-navigation inside the Shidoka header.
+It assembles header primitives into flyout sections — dropdowns, tabbed catalogs, multi-column menus, and more.
+
+## Pattern Structure
+
+```
+kyn-header
+└── kyn-header-nav
+    ├── kyn-header-link              ← flyout trigger
+    │   └── slot="links"
+    │       ├── kyn-header-category  ← simple dropdown
+    │       ├── div wrapper          ← mixed layout
+    │       ├── kyn-tabs             ← tabbed mega-nav
+    │       └── kyn-header-categories← multi-column mega-nav
+    └── kyn-header-divider           ← separator between groups
+```
+
+## Quick Start
+
+```html
+<kyn-header rootUrl="/" appTitle="My Application">
+  <kyn-header-nav>
+    <!-- each top-level kyn-header-link becomes a flyout trigger -->
+    <!-- slot="links" content determines the flyout type -->
+  </kyn-header-nav>
+</kyn-header>
+```
+
+## Flyout Height
+
+Set a max height for global-switcher flyouts (including categorical nav) with CSS custom properties:
+
+```html
+<kyn-header-nav
+  style="
+    --kyn-global-switcher-max-height: 70vh;
+  "
+>
+  ...
+</kyn-header-nav>
+```
+
+- Set `--kyn-global-switcher-max-height` on `kyn-header-nav` (all flyouts) or on a specific `kyn-header-link` (single flyout).
+
+## Section Patterns
+
+Every flyout starts with a `kyn-header-link` trigger. What you slot into `slot="links"` determines the layout.
+
+### Simple Dropdown
+
+A flat `kyn-header-category` — best for short lists like Favorites or Recently Viewed.
+
+```html
+<kyn-header-link href="javascript:void(0)">
+  <span>{icon}</span>
+  Favorites
+  <kyn-header-category slot="links">
+    <kyn-header-link href="/page-a"><span>Page A</span></kyn-header-link>
+    <kyn-header-link href="/page-b"><span>Page B</span></kyn-header-link>
+  </kyn-header-category>
+</kyn-header-link>
+```
+
+### Mixed Layout
+
+A `div` wrapper combining loose links with a categorized group beneath them.
+
+```html
+<kyn-header-link href="javascript:void(0)">
+  <span>{icon}</span>
+  Console
+  <div slot="links" style="display: flex; flex-direction: column; gap: 2px;">
+    <kyn-header-link href="/home"><span>Bridge Home</span></kyn-header-link>
+    <kyn-header-category heading="Dashboards" style="margin-top: 8px;">
+      <span slot="icon">{icon}</span>
+      <kyn-header-link href="/insights"
+        ><span>Actionable Insights</span></kyn-header-link
+      >
+    </kyn-header-category>
+  </div>
+</kyn-header-link>
+```
+
+### Tabbed Mega-Nav
+
+`kyn-tabs` with `kyn-header-categories` inside each panel, for large service catalogs.
+
+```html
+<kyn-header-link href="javascript:void(0)">
+  <span>{icon}</span>
+  Services
+  <kyn-tabs tabSize="md" slot="links" style="width: 100%; max-width: none;">
+    <kyn-tab slot="tabs" id="tab-a" selected>Tab A</kyn-tab>
+    <kyn-tab slot="tabs" id="tab-b">Tab B</kyn-tab>
+    <kyn-tab-panel tabId="tab-a" noPadding visible>
+      <kyn-header-categories layout="masonry" .limitRootLinks="${false}">
+        <kyn-header-category heading="Category 1">
+          <span slot="icon">{icon}</span>
+          <kyn-header-link href="#"><span>Link 1</span></kyn-header-link>
+        </kyn-header-category>
+      </kyn-header-categories>
+    </kyn-tab-panel>
+  </kyn-tabs>
+</kyn-header-link>
+```
+
+### Multi-Column Mega-Nav
+
+`kyn-header-categories` directly in `slot="links"` — for categorized admin-style menus.
+
+```html
+<kyn-header-link href="javascript:void(0)">
+  <span>{icon}</span>
+  Administration
+  <kyn-header-categories
+    slot="links"
+    layout="masonry"
+    maxColumns="2"
+    .limitRootLinks="${false}"
+  >
+    <kyn-header-category heading="Access Management">
+      <span slot="icon">{icon}</span>
+      <kyn-header-link href="#"
+        ><span>Access Management Tool</span></kyn-header-link
+      >
+    </kyn-header-category>
+  </kyn-header-categories>
+</kyn-header-link>
+```
+
+## Favorites (Icon Selectors)
+
+Add `kyn-icon-selector` inside leaf links for star-toggle behavior.
+Set these CSS custom properties on `kyn-header-nav` for hover-to-reveal animation:
+
+```html
+<kyn-header-nav
+  style="
+  --kyn-icon-selector-animate-selection: 1;
+  --kyn-icon-selector-only-visible-on-hover: 1;
+  --kyn-icon-selector-persist-when-checked: 1;
+"
+>
+  <!-- inside any leaf link: -->
+  <kyn-header-link href="/page">
+    <span>Page Name</span>
+    <kyn-icon-selector>
+      <span slot="icon-unchecked">{starOutline}</span>
+      <span slot="icon-checked">{starFilled}</span>
+    </kyn-icon-selector>
+  </kyn-header-link>
+</kyn-header-nav>
+```
+
+## External Links
+
+Set `target="_blank"` and include a launch icon:
+
+```html
+<kyn-header-link href="https://external.example.com" target="_blank" truncate>
+  <span>External Tool</span>
+  <span style="display: flex; width: 16px; height: 16px; flex-shrink: 0;"
+    >{launchIcon}</span
+  >
+</kyn-header-link>
+```
+
+## Key Properties
+
+| Component               | Property            | Default | Description                                                                                            |
+| ----------------------- | ------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| `kyn-header-nav`        | `autoOpenFlyout`    | `''`    | `'default'` auto-opens first flyout; `'<id>'` opens matching flyout; keeps flyouts open on mouse leave |
+| `kyn-header-nav`        | `truncateLinks`     | `false` | Cascade truncation to all nested links                                                                 |
+| `kyn-header-link`       | `hideSearch`        | `false` | Suppress search in flyout                                                                              |
+| `kyn-header-link`       | `searchThreshold`   | `6`     | Child count before search appears                                                                      |
+| `kyn-header-link`       | `truncate`          | `false` | Truncate text with ellipsis                                                                            |
+| `kyn-header-categories` | `layout`            | `''`    | `'masonry'` or `'grid'` (empty = legacy responsive columns)                                            |
+| `kyn-header-categories` | `maxColumns`        | `3`     | Column cap for masonry/grid layout                                                                     |
+| `kyn-header-categories` | `fixedColumnWidths` | `false` | For 3+ columns, keep fixed column widths instead of stretching to full flyout width                    |
+| `kyn-header-categories` | `limitRootLinks`    | `true`  | Enable/disable root-link count limiting and "More" behavior                                            |
+| `kyn-header-categories` | `maxRootLinks`      | `4`     | Links shown before "More" button (used when `limitRootLinks=true`)                                     |
+
+## Data-Driven Rendering
+
+Two stories demonstrate different authoring approaches:
+
+- **SlottedHTMLSwitcher** — hand-written slotted HTML. Copy-paste when prototyping.
+- **JSONSwitcher** — driven by `example_global_switcher_data.json`. Reference this for production integrations that fetch nav config from a service.
+
+The JSON data exports a `sections` array. Each section's `type` maps to a pattern:
+
+| `type`        | Pattern               | Example             |
+| ------------- | --------------------- | ------------------- |
+| `simple`      | Simple Dropdown       | Favorites, Catalogs |
+| `mixed`       | Mixed Layout          | Console             |
+| `tabbed`      | Tabbed Mega-Nav       | Services            |
+| `categorical` | Multi-Column Mega-Nav | Administration      |
+
+See `example_global_switcher_data.json` for the full data shape and available fields.

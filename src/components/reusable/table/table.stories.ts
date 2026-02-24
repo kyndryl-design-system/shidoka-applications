@@ -27,6 +27,7 @@ import '../../reusable/textInput';
 
 import maleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 
 const meta: Meta = {
   title: 'Components/Data Display/Data Table',
@@ -35,6 +36,7 @@ const meta: Meta = {
     'kyn-table-container': 'kyn-table-container',
     'kyn-table-toolbar': 'kyn-table-toolbar',
     'kyn-th': 'kyn-th',
+    'kyn-th-group': 'kyn-th-group',
     'kyn-tr': 'kyn-tr',
     'kyn-expanded-tr': 'kyn-expanded-tr',
     'kyn-td': 'kyn-td',
@@ -888,7 +890,7 @@ export const ColumnResize: Story = {
               >
               <kyn-th
                 resizable
-                minWidth="150px"
+                resizeMinWidth="150px"
                 resizeMaxWidth="300px"
                 @on-column-resize=${(e: any) =>
                   action(e.type)({ ...e, detail: e.detail })}
@@ -932,6 +934,163 @@ export const ColumnResize: Story = {
         </kyn-table>
       </kyn-table-container>
       <br />
+    `;
+  },
+};
+
+const getExampleContent = () => html`
+  <div
+    class="example"
+    style="flex-direction: column;
+          margin: 16px 8px;"
+  >
+    <div class="cube-icon" style="color:var(--kd-color-icon-brand);">
+      ${unsafeSVG(lgCube)}
+    </div>
+    <div class="kd-type--ui-01 kd-type--weight-medium">Expansion Slot</div>
+    <p class="kd-type--ui-04 kd-type--weight-light">
+      Swap this with your own component.
+    </p>
+  </div>
+`;
+
+export const StackedHeader: Story = {
+  args: {
+    rows: characters,
+  },
+  render: function (args) {
+    const [{ rows }, updateArgs] = useArgs();
+    let tableData = rows;
+
+    const handleSortByIdNumber = (e: Event) => {
+      action(e.type)({ ...e, detail: (e as CustomEvent).detail });
+      const detail = (e as CustomEvent).detail;
+      const sortKey = detail.sortKey;
+      const sortDirection = detail.sortDirection;
+      const sorted = [...characters];
+
+      // Sorting the data
+      const direction = sortDirection === 'asc' ? 1 : -1;
+      sorted.sort((a: any, b: any) => {
+        return (a[sortKey] - b[sortKey]) * direction;
+      });
+
+      tableData = sorted;
+      updateArgs({ rows: sorted });
+    };
+
+    return html`
+      <style>
+        .example {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--kd-color-background-container-subtle);
+          border: 1px dashed var(--kd-color-utility-variant-border);
+          height: 140px;
+          border-radius: 4px;
+
+          svg {
+            height: 52px;
+            width: 52px;
+          }
+        }
+      </style>
+      <kyn-table-toolbar
+        .tableTitle=${'Stacked Header'}
+        .tableSubtitle=${'Multiple header rows with column grouping'}
+      >
+      </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th-group label="Personal Info">
+                <kyn-th .align=${'center'}>ID</kyn-th>
+                <kyn-th>First Name</kyn-th>
+                <kyn-th>Last Name</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Other Info">
+                <kyn-th>Birthday</kyn-th>
+                <kyn-th .align=${'right'}>Age</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Financial Info">
+                <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
+              </kyn-th-group>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              characters,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id}>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+
+      <br />
+      <br />
+
+      <kyn-table-toolbar
+        .tableTitle=${'Stacked Header with Checkbox and Expandable Rows'}
+        .tableSubtitle=${'Multiple header rows with column grouping'}
+      >
+      </kyn-table-toolbar>
+      <kyn-table-container>
+        <kyn-table>
+          <kyn-thead>
+            <kyn-header-tr expandable checkboxSelection>
+              <kyn-th-group label="Personal Info">
+                <kyn-th
+                  .align=${'center'}
+                  sortable
+                  sortKey="id"
+                  @on-sort-changed=${handleSortByIdNumber}
+                  >ID</kyn-th
+                >
+                <kyn-th>First Name</kyn-th>
+                <kyn-th>Last Name</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Other Info">
+                <kyn-th>Birthday</kyn-th>
+                <kyn-th .align=${'right'}>Age</kyn-th>
+              </kyn-th-group>
+              <kyn-th-group label="Financial Info">
+                <kyn-th .align=${'right'}>Account Deposits($)</kyn-th>
+              </kyn-th-group>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              tableData,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id} checkboxSelection expandable>
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td>${row.firstName}</kyn-td>
+                  <kyn-td>${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.deposits}</kyn-td>
+                </kyn-tr>
+                <kyn-expanded-tr .colSpan=${8}>
+                  ${getExampleContent()}
+                </kyn-expanded-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
     `;
   },
 };

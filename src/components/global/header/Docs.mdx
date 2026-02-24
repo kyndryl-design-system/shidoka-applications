@@ -138,6 +138,22 @@ Use this if you prefer full manual markup instead of JSON configuration.
 </kyn-header-categories>
 ```
 
+### Width behavior for 3+ columns
+
+- Default behavior: 3+ columns stretch to fill the flyout width with equal-width columns.
+- Opt-in fixed widths: add `fixed-column-widths` on `kyn-header-categories`.
+
+```html
+<kyn-header-categories
+  layout="grid"
+  maxColumns="4"
+  fixed-column-widths
+  style="--kyn-header-category-column-width: 280px;"
+>
+  ...
+</kyn-header-categories>
+```
+
 ---
 
 ## linkRenderer API
@@ -178,4 +194,4 @@ built-in icon + label layout for that link.
 ## Troubleshooting
 
 - If nothing renders in JSON mode, confirm your `tabsConfig` keys match `activeMegaTabId`.
-- If your renderer isn’t applied, ensure `linkRenderer` is passed as a JavaScript function prop, not as a quoted string
+- If your renderer isn't applied, ensure `linkRenderer` is passed as a JavaScript function prop, not as a quoted string
