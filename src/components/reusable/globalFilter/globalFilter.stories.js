@@ -7,7 +7,7 @@ import '../loaders/skeleton';
 import './globalFilter.skeleton.sample';
 
 export default {
-  title: 'Components/Global Filter - Deprecated',
+  title: 'Components/Search & Filtering/Global Filter - Deprecated',
   component: 'kyn-global-filter',
   parameters: {
     design: {

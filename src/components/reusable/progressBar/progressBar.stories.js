@@ -7,7 +7,7 @@ import '../tooltip';
 import informationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
-  title: 'Components/Progress Bar',
+  title: 'Components/Feedback & Status/Progress Bar',
   component: 'kyn-progress-bar',
   parameters: {
     design: {

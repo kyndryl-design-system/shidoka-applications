@@ -9,7 +9,7 @@ import '../modal';
 import '../tabs';
 
 export default {
-  title: 'Components/Timepicker',
+  title: 'Components/Form Inputs/Timepicker',
   component: 'kyn-time-picker',
   parameters: {
     design: {

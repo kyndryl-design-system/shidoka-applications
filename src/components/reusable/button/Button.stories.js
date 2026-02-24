@@ -21,7 +21,7 @@ import { createOptionsArray } from '../../../common/helpers/helpers';
 const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
 
 export default {
-  title: 'Components/Button',
+  title: 'Components/Buttons & Actions/Button',
   component: 'kyn-button',
 
   argTypes: {

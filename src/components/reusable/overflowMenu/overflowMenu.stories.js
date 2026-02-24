@@ -3,7 +3,7 @@ import './index';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Overflow Menu',
+  title: 'Components/Overlays & Floating UI/Overflow Menu',
   component: 'kyn-overflow-menu',
   subcomponents: {
     'kyn-overflow-menu-item': 'kyn-overflow-menu-item',

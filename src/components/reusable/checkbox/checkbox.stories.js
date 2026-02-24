@@ -3,7 +3,7 @@ import './index';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Checkbox',
+  title: 'Components/Form Inputs/Checkbox',
   component: 'kyn-checkbox',
   parameters: {
     design: {

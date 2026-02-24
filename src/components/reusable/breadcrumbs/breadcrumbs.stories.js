@@ -4,7 +4,7 @@ import '../overflowMenu';
 import './';
 
 export default {
-  title: 'Components/Breadcrumbs',
+  title: 'Components/Navigation/Breadcrumbs',
   component: 'kyn-breadcrumbs',
   parameters: {
     design: {

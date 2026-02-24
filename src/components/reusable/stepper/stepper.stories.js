@@ -6,7 +6,7 @@ import './index';
 import '../tooltip';
 
 export default {
-  title: 'Components/Stepper',
+  title: 'Components/Layout & Structure/Stepper',
   component: 'kyn-stepper',
   subcomponents: {
     StepperItem: 'kyn-stepper-item',

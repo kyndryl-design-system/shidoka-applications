@@ -7,7 +7,7 @@ import './index';
 import '../button';
 
 export default {
-  title: 'Components/Button/With Floating Container',
+  title: 'Components/Buttons & Actions/Button/With Floating Container',
   component: 'kyn-button-float-container',
   parameters: {
     design: {

@@ -7,7 +7,7 @@ import starOutlineIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome
 import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
 
 export default {
-  title: 'Components/Icon Selector',
+  title: 'Components/Buttons & Actions/Icon Selector',
   component: 'kyn-icon-selector',
   argTypes: {
     onlyVisibleOnHover: { table: { disable: true } },

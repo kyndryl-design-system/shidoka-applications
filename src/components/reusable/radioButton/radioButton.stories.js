@@ -3,7 +3,7 @@ import './index';
 import { action } from 'storybook/actions';
 
 export default {
-  title: 'Components/Radio Button',
+  title: 'Components/Form Inputs/Radio Button',
   component: 'kyn-radio-button',
   parameters: {
     design: {

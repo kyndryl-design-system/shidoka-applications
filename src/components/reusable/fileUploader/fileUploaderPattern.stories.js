@@ -5,7 +5,7 @@ import './index';
 import './fileUploader.sample';
 
 export default {
-  title: 'Components/File Uploader/Patterns',
+  title: 'Components/Form Inputs/File Uploader/Patterns',
 };
 
 const args = {

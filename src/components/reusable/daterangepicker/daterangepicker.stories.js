@@ -9,7 +9,7 @@ import '../modal';
 import '../accordion';
 
 export default {
-  title: 'Components/Date Range Picker',
+  title: 'Components/Form Inputs/Date Range Picker',
   component: 'kyn-date-range-picker',
   parameters: {
     design: {

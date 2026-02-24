@@ -30,7 +30,7 @@ import femaleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/u
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 
 const meta: Meta = {
-  title: 'Components/Data Table',
+  title: 'Components/Data Display/Data Table',
   component: 'kyn-table',
   subcomponents: {
     'kyn-table-container': 'kyn-table-container',

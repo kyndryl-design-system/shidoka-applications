@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 export default {
-  title: 'Components/Text Area',
+  title: 'Components/Form Inputs/Text Area',
   component: 'kyn-text-area',
   parameters: {
     design: {

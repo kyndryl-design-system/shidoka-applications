@@ -9,7 +9,7 @@ import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
-  title: 'Components/Dropdown',
+  title: 'Components/Form Inputs/Dropdown',
   component: 'kyn-dropdown',
   subcomponents: {
     DropdownOption: 'kyn-dropdown-option',
