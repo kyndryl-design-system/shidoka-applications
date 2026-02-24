@@ -102,6 +102,17 @@ export default {
             skipWaiting: true,
             cleanupOutdatedCaches: true,
             maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
+            // Prevent the service worker from intercepting Storybook's internal communication
+            navigateFallbackDenylist: [
+              /^\/iframe.html$/, // Storybook Preview iframe
+              /^\/index.html$/, // Storybook Manager
+              /^\/favicon.ico$/,
+              /(\.stories\.(js|jsx|ts|tsx|mdx))$/, // Story files
+            ],
+          },
+          devOptions: {
+            // Keep this false to avoid the setFilter error in development
+            enabled: false,
           },
           manifest: {
             name: 'Shidoka Applications Storybook',
