@@ -14,6 +14,7 @@ const _defaultTextStrings = {
 
 /**
  * Workspace Switcher shell component providing two-panel layout with mobile drill-down.
+ * Component fits to 100% of the width and height of its container and surfaces two panels for content composition via slots.
  * Consumers compose content via named slots using sub-components
  * like `kyn-workspace-switcher-menu-item`.
  * @slot left - Non-list content for the left panel (e.g. workspace info header).

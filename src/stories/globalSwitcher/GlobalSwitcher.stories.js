@@ -33,7 +33,7 @@ const args = {
 };
 
 export default {
-  title: 'Patterns/Global Switcher',
+  title: 'Global Components/Header/Global Switcher',
   parameters: {
     design: {
       type: 'figma',
