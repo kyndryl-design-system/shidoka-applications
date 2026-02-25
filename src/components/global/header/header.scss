@@ -57,8 +57,11 @@
   }
 }
 
-// Slotted elements (e.g. kyn-header-nav) need explicit stacking too.
-::slotted(*) {
+// Critical slotted header children need explicit stacking too.
+::slotted(kyn-header-nav),
+::slotted(kyn-header-flyouts),
+::slotted(kyn-button),
+::slotted([slot='center']) {
   position: relative;
   z-index: 1;
 }
