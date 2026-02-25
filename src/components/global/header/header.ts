@@ -81,6 +81,8 @@ export class Header extends LitElement {
 
     return html`
       <header class="${classMap(classes)}">
+        <div class="background"></div>
+
         <slot name="left" @slotchange=${this.handleSlotChange}></slot>
 
         <a
@@ -101,8 +103,6 @@ export class Header extends LitElement {
         <div class="header__right">
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
-
-        <div class="background"></div>
       </header>
 
       <div class="overlay"></div>
