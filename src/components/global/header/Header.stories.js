@@ -34,7 +34,7 @@ export default {
     (story) =>
       html`
         <div
-          style="height: 100vh; min-height: 250px; margin: var(--kd-negative-page-gutter);"
+          style="height: 100vh; min-height: 250px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
         >
           ${story()}
         </div>
