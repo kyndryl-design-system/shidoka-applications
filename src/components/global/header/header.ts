@@ -67,6 +67,11 @@ export class Header extends LitElement {
   @query('header')
   accessor _headerEl!: HTMLElement;
 
+  /** Media query used to detect desktop/mobile breakpoint transitions.
+   * @internal
+   */
+  private _desktopMediaQuery?: MediaQueryList;
+
   override render() {
     const classes = {
       header: true,
@@ -150,6 +155,45 @@ export class Header extends LitElement {
     this._handleScroll();
   });
 
+  /** close transient menu state when crossing 42rem breakpoint.
+   * opening dev tools changes viewport width and can otherwise leave mixed styles/state.
+   * @internal
+   */
+  private _resetOpenMenusOnBreakpointChange() {
+    const navs = this.querySelectorAll<HTMLElement & { menuOpen?: boolean }>(
+      'kyn-header-nav'
+    );
+    navs.forEach((nav) => {
+      if ('menuOpen' in nav) {
+        nav.menuOpen = false;
+      }
+    });
+
+    const flyoutContainers = this.querySelectorAll<
+      HTMLElement & { open?: boolean }
+    >('kyn-header-flyouts');
+    flyoutContainers.forEach((container) => {
+      if ('open' in container) {
+        container.open = false;
+      }
+    });
+
+    const openableMenus = this.querySelectorAll<
+      HTMLElement & { open?: boolean }
+    >('kyn-header-flyout, kyn-header-link');
+    openableMenus.forEach((menu) => {
+      if ('open' in menu) {
+        menu.open = false;
+      }
+      menu.removeAttribute('open');
+    });
+  }
+
+  /** @internal */
+  private readonly _handleBreakpointChange = () => {
+    this._resetOpenMenusOnBreakpointChange();
+  };
+
   override firstUpdated() {
     this._handleScroll();
   }
@@ -166,6 +210,12 @@ export class Header extends LitElement {
       this._boundHandleFlyoutsToggle as EventListener
     );
 
+    this._desktopMediaQuery = window.matchMedia('(min-width: 42rem)');
+    this._desktopMediaQuery.addEventListener(
+      'change',
+      this._handleBreakpointChange
+    );
+
     window.addEventListener('scroll', this._debounceScroll);
   }
 
@@ -178,6 +228,12 @@ export class Header extends LitElement {
       'on-flyouts-toggle',
       this._boundHandleFlyoutsToggle as EventListener
     );
+
+    this._desktopMediaQuery?.removeEventListener(
+      'change',
+      this._handleBreakpointChange
+    );
+    this._desktopMediaQuery = undefined;
 
     window.removeEventListener('scroll', this._debounceScroll);
 
