@@ -70,6 +70,8 @@
     cursor: pointer;
   }
 
+  // z-index: closed -1, open initial; do not transition or use 0→-1 on open
+  // (Safari recomposites and fires spurious pointerleave — Issue 2).
   &__content {
     position: fixed;
     top: var(--kd-header-height);
@@ -83,8 +85,7 @@
     transform: none;
     visibility: hidden;
     opacity: 0;
-    z-index: 0;
-    pointer-events: none;
+    z-index: -1;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -150,9 +151,9 @@
     .menu__content {
       visibility: visible;
       opacity: 1;
+      // Promote to own layer so background doesn’t disappear when DevTools opens (Chrome repaint).
       transform: none;
-      z-index: 1;
-      pointer-events: auto;
+      z-index: initial;
     }
   }
 }

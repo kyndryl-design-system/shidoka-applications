@@ -182,10 +182,19 @@ export class Header extends LitElement {
       HTMLElement & { open?: boolean }
     >('kyn-header-flyout, kyn-header-link');
     openableMenus.forEach((menu) => {
+      // Clear pending hover timers so they don't re-open after the reset.
+      const m = menu as any;
+      if (m._enterTimer) {
+        clearTimeout(m._enterTimer);
+        m._enterTimer = undefined;
+      }
+      if (m._leaveTimer) {
+        clearTimeout(m._leaveTimer);
+        m._leaveTimer = undefined;
+      }
       if ('open' in menu) {
         menu.open = false;
       }
-      menu.removeAttribute('open');
     });
   }
 
