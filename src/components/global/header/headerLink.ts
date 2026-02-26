@@ -221,8 +221,8 @@ export class HeaderLink extends LitElement {
     return html`
       <div
         class="${classMap(classes)}"
-        @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
-        @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
+        @mouseleave=${(e: MouseEvent) => this.handlePointerLeave(e)}
+        @mouseenter=${(e: MouseEvent) => this.handlePointerEnter(e)}
       >
         <a
           target=${this.target}
@@ -235,7 +235,7 @@ export class HeaderLink extends LitElement {
           )}
           class=${classMap(linkClasses)}
           @click=${(e: Event) => this.handleClick(e)}
-          @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
+          @mouseenter=${(e: MouseEvent) => this.handlePointerEnter(e)}
         >
           <slot @slotchange=${this._handleDefaultSlotChange}></slot>
 
@@ -445,12 +445,8 @@ export class HeaderLink extends LitElement {
     return window.innerWidth >= 672;
   }
 
-  private handlePointerEnter(e: PointerEvent) {
-    if (
-      e.pointerType === 'mouse' &&
-      this.slottedEls.length &&
-      this._isDesktopViewport
-    ) {
+  private handlePointerEnter(_e: MouseEvent) {
+    if (this.slottedEls.length && this._isDesktopViewport) {
       clearTimeout(this._leaveTimer);
 
       // close other open sibling links immediately when entering any link with submenus
@@ -536,7 +532,7 @@ export class HeaderLink extends LitElement {
     }
   }
 
-  private handlePointerLeave(e: PointerEvent) {
+  private handlePointerLeave(_e: MouseEvent) {
     // Suppress close during internal view transitions (e.g. "More" → detail view).
     // The flyout resizes and the cursor may end up outside, but the user's intent
     // was to drill in — not to leave.
@@ -552,13 +548,17 @@ export class HeaderLink extends LitElement {
     }
 
     if (
-      e.pointerType === 'mouse' &&
       this.slottedEls.length &&
       this._searchTerm === '' &&
       this._isDesktopViewport
     ) {
       clearTimeout(this._enterTimer);
       this._leaveTimer = setTimeout(() => {
+        // Safari fires spurious mouseleave on the shadow-DOM wrapper when
+        // the flyout renders at z-index: -1.  The host element lives in
+        // the light DOM where hit-testing is reliable — if it's still
+        // hovered the user hasn't actually left.
+        if (this.matches(':hover')) return;
         this.open = false;
       }, 150);
     }
@@ -704,12 +704,16 @@ export class HeaderLink extends LitElement {
   }
 
   override updated(changedProps: any) {
-    // Re-position after render when the menu has its actual dimensions
-    if (changedProps.has('open') && this.open) {
-      // Use rAF to ensure the DOM has painted
-      requestAnimationFrame(() => {
-        this._positionMenu();
-      });
+    if (changedProps.has('open')) {
+      if (this.open) {
+        // Re-position after render when the menu has its actual dimensions
+        requestAnimationFrame(() => {
+          this._positionMenu();
+        });
+      } else {
+        // Clear stale inline styles so they don't override CSS rules.
+        this.menuPosition = {};
+      }
     }
 
     // Re-position when column count changes (categories may render after flyout opens)
