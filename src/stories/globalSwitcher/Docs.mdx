@@ -5,7 +5,7 @@ import * as GlobalSwitcherStories from './GlobalSwitcher.stories.js';
 
 <Title>Global Switcher</Title>
 
-A **pattern** (not a standalone component) for composing mega-navigation inside the Shidoka header.
+A **pattern** (not a standalone component) for composing categorical navigation inside the Shidoka header.
 It assembles header primitives into flyout sections — dropdowns, tabbed catalogs, multi-column menus, and more.
 
 ## Pattern Structure
@@ -17,8 +17,8 @@ kyn-header
     │   └── slot="links"
     │       ├── kyn-header-category  ← simple dropdown
     │       ├── div wrapper          ← mixed layout
-    │       ├── kyn-tabs             ← tabbed mega-nav
-    │       └── kyn-header-categories← multi-column mega-nav
+    │       ├── kyn-tabs             ← tabbed categorical nav
+    │       └── kyn-header-categories← multi-column categorical nav
     └── kyn-header-divider           ← separator between groups
 ```
 
@@ -88,7 +88,7 @@ A `div` wrapper combining loose links with a categorized group beneath them.
 </kyn-header-link>
 ```
 
-### Tabbed Mega-Nav
+### Tabbed Categorical Nav
 
 `kyn-tabs` with `kyn-header-categories` inside each panel, for large service catalogs.
 
@@ -111,7 +111,7 @@ A `div` wrapper combining loose links with a categorized group beneath them.
 </kyn-header-link>
 ```
 
-### Multi-Column Mega-Nav
+### Multi-Column Categorical Nav
 
 `kyn-header-categories` directly in `slot="links"` — for categorized admin-style menus.
 
@@ -196,11 +196,11 @@ Two stories demonstrate different authoring approaches:
 
 The JSON data exports a `sections` array. Each section's `type` maps to a pattern:
 
-| `type`        | Pattern               | Example             |
-| ------------- | --------------------- | ------------------- |
-| `simple`      | Simple Dropdown       | Favorites, Catalogs |
-| `mixed`       | Mixed Layout          | Console             |
-| `tabbed`      | Tabbed Mega-Nav       | Services            |
-| `categorical` | Multi-Column Mega-Nav | Administration      |
+| `type`        | Pattern                      | Example             |
+| ------------- | ---------------------------- | ------------------- |
+| `simple`      | Simple Dropdown              | Favorites, Catalogs |
+| `mixed`       | Mixed Layout                 | Console             |
+| `tabbed`      | Tabbed Categorical Nav       | Services            |
+| `categorical` | Multi-Column Categorical Nav | Administration      |
 
 See `example_global_switcher_data.json` for the full data shape and available fields.

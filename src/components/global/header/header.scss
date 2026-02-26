@@ -12,7 +12,6 @@
   align-items: center;
   gap: 16px;
   position: fixed;
-  isolation: isolate;
   top: 0;
   right: 0;
   left: 0;
@@ -46,6 +45,24 @@
     gap: 24px;
     margin-left: auto;
   }
+
+  // Keep header content above the decorative background layer.
+  slot,
+  .logo-link,
+  .title,
+  .header__right {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Critical slotted header children need explicit stacking too.
+::slotted(kyn-header-nav),
+::slotted(kyn-header-flyouts),
+::slotted(kyn-button),
+::slotted([slot='center']) {
+  position: relative;
+  z-index: 1;
 }
 
 .background {
@@ -55,7 +72,7 @@
   left: 0;
   bottom: 0;
   background: var(--kd-color-background-container-default);
-  z-index: -1;
+  z-index: 0;
 
   @media screen and (min-width: 42rem) {
     transition: inset 150ms ease-out, border-radius 150ms ease-out;
