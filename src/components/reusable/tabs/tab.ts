@@ -7,26 +7,38 @@ import TabScss from './tab.scss?inline';
 export class Tab extends LitElement {
   static override styles = unsafeCSS(TabScss);
 
+  /** Matching Tab ID, required. */
   @property({ type: String, reflect: true })
   override accessor id = '';
 
+  /** Determines selected state. */
   @property({ type: Boolean, reflect: true })
   accessor selected = false;
 
+  /** Determines disabled state. */
   @property({ type: Boolean })
   accessor disabled = false;
 
+  /**
+   * Tab size.
+   * @ignore
+   */
   @state()
   private accessor _size = 'md';
 
+  /** Determines vertical state. */
   @property({ type: Boolean, reflect: true, attribute: 'vertical' })
   accessor vertical = false;
 
   // Keep private state for backward compatibility
+  /** Get vertical state.
+   * @internal
+   */
   private get _vertical(): boolean {
     return this.vertical;
   }
 
+  /** AI connected state. */
   @property({
     type: Boolean,
     reflect: true,
@@ -38,18 +50,23 @@ export class Tab extends LitElement {
   })
   accessor aiConnected = false;
 
+  /** aria role. */
   @property({ type: String, reflect: true })
   override accessor role = 'tab';
 
+  /** Tab index. */
   @property({ type: Number, reflect: true })
   override accessor tabIndex = 0;
 
+  /** Aria selected state. */
   @property({ type: String, reflect: true })
   accessor 'aria-selected' = 'false';
 
+  /** Aria controls state. */
   @property({ type: String, reflect: true })
   accessor 'aria-controls' = '';
 
+  /** Aria disabled state. */
   @property({ type: String, reflect: true })
   accessor 'aria-disabled' = 'false';
 
@@ -96,6 +113,9 @@ export class Tab extends LitElement {
     }
   }
 
+  /** Handle click on tab selected
+   * @internal
+   */
   private _handleClick = (e: Event) => {
     if (!this.selected && !this.disabled) {
       const event = new CustomEvent('tab-activated', {
