@@ -1,3 +1,4 @@
+@use '../../../common/scss/global.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/elevation.scss';
 
@@ -46,6 +47,8 @@
     background: transparent;
     visibility: hidden;
 
+    pointer-events: none;
+
     .open + &,
     .child-open + & {
       background: var(--kd-color-background-opacity-inverse-backdrop);
@@ -67,6 +70,8 @@
     cursor: pointer;
   }
 
+  // z-index: closed -1, open initial; do not transition or use 0→-1 on open
+  // (Safari recomposites and fires spurious pointerleave — Issue 2).
   &__content {
     position: fixed;
     top: var(--kd-header-height);
@@ -80,7 +85,7 @@
     transform: none;
     visibility: hidden;
     opacity: 0;
-    z-index: 0;
+    z-index: -1;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -147,8 +152,7 @@
       visibility: visible;
       opacity: 1;
       transform: none;
-      z-index: 1;
-      pointer-events: auto;
+      z-index: initial;
     }
   }
 }

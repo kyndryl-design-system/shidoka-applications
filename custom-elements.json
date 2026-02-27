@@ -3317,69 +3317,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/workspaceSwitcher/index.ts",
       "declarations": [],
       "exports": [
@@ -3738,6 +3675,69 @@
           "declaration": {
             "name": "WorkspaceSwitcherMenuItem",
             "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -12016,6 +12016,104 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "./inlineCodeView"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
+          "name": "InlineCodeView",
+          "slots": [
+            {
+              "description": "inline code snippet slot.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "attribute": "darkTheme"
+            },
+            {
+              "kind": "field",
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "attribute": "snippetFontSize"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "darkTheme",
+              "type": {
+                "text": "'light' | 'dark' | 'default'"
+              },
+              "default": "'default'",
+              "description": "Sets background and text theming.",
+              "fieldName": "darkTheme"
+            },
+            {
+              "name": "snippetFontSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
+              "fieldName": "snippetFontSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-inline-code-view",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "InlineCodeView",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-inline-code-view",
+          "declaration": {
+            "name": "InlineCodeView",
+            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/inlineConfirm/index.ts",
       "declarations": [],
       "exports": [
@@ -12194,104 +12292,6 @@
           "declaration": {
             "name": "InlineConfirm",
             "module": "src/components/reusable/inlineConfirm/inlineConfirm.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "./inlineCodeView"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/inlineCodeView/inlineCodeView.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`<kyn-inline-code-view>` component to display code snippets inline within HTML content.",
-          "name": "InlineCodeView",
-          "slots": [
-            {
-              "description": "inline code snippet slot.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "attribute": "darkTheme"
-            },
-            {
-              "kind": "field",
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "attribute": "snippetFontSize"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "darkTheme",
-              "type": {
-                "text": "'light' | 'dark' | 'default'"
-              },
-              "default": "'default'",
-              "description": "Sets background and text theming.",
-              "fieldName": "darkTheme"
-            },
-            {
-              "name": "snippetFontSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "14",
-              "description": "Font size value (px) to match code snippet font-size of surrounding text (min, default 14px).",
-              "fieldName": "snippetFontSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-inline-code-view",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "InlineCodeView",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-inline-code-view",
-          "declaration": {
-            "name": "InlineCodeView",
-            "module": "src/components/reusable/inlineCodeView/inlineCodeView.ts"
           }
         }
       ]

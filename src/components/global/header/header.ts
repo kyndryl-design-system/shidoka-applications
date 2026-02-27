@@ -12,6 +12,13 @@ import { debounce } from '../../../common/helpers/helpers';
 import HeaderScss from './header.scss?inline';
 import logo from '@kyndryl-design-system/shidoka-foundation/assets/svg/kyndryl-logo.svg';
 
+/** Menu elements (flyout/link) that have open state and hover timers for breakpoint reset. */
+type OpenableMenu = HTMLElement & {
+  open?: boolean;
+  _enterTimer?: ReturnType<typeof setTimeout>;
+  _leaveTimer?: ReturnType<typeof setTimeout>;
+};
+
 /**
  * The global Header component.
  * @fires on-menu-toggle - Captures the menu toggle click event and emits the menu open state in the detail. `detail:{ origEvent: Event}`
@@ -81,6 +88,8 @@ export class Header extends LitElement {
 
     return html`
       <header class="${classMap(classes)}">
+        <div class="background"></div>
+
         <slot name="left" @slotchange=${this.handleSlotChange}></slot>
 
         <a
@@ -101,8 +110,6 @@ export class Header extends LitElement {
         <div class="header__right">
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
-
-        <div class="background"></div>
       </header>
 
       <div class="overlay"></div>
@@ -178,14 +185,22 @@ export class Header extends LitElement {
       }
     });
 
-    const openableMenus = this.querySelectorAll<
-      HTMLElement & { open?: boolean }
-    >('kyn-header-flyout, kyn-header-link');
+    const openableMenus = this.querySelectorAll<OpenableMenu>(
+      'kyn-header-flyout, kyn-header-link'
+    );
     openableMenus.forEach((menu) => {
+      // Clear pending hover timers so they don't re-open after the reset.
+      if (menu._enterTimer) {
+        clearTimeout(menu._enterTimer);
+        menu._enterTimer = undefined;
+      }
+      if (menu._leaveTimer) {
+        clearTimeout(menu._leaveTimer);
+        menu._leaveTimer = undefined;
+      }
       if ('open' in menu) {
         menu.open = false;
       }
-      menu.removeAttribute('open');
     });
   }
 

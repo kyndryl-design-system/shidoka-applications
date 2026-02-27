@@ -7,6 +7,8 @@
   display: block;
 }
 
+// Do not add transition to z-index: Chrome DevTools recomposites on z-index changes
+// and the Styles panel flickers / CSS vars appear to reset (Issue 1).
 .header {
   display: flex;
   align-items: center;
@@ -17,8 +19,8 @@
   left: 0;
   height: var(--kd-header-height);
   padding: 4px 12px 4px 20px;
-  transition: z-index 150ms ease-out;
   z-index: var(--kd-z-header);
+  isolation: isolate;
 
   &.child-open {
     z-index: calc(var(--kd-z-header) + 20);
@@ -27,7 +29,7 @@
   @media screen and (min-width: 42rem) {
     margin: 0 8px;
     padding-right: calc(var(--kd-page-gutter) - 8px);
-    transition: z-index 150ms ease-out, transform 150ms ease-out;
+    transition: transform 150ms ease-out;
     transform: translateY(8px);
 
     &.scrolled {
@@ -45,26 +47,9 @@
     gap: 24px;
     margin-left: auto;
   }
-
-  // Keep header content above the decorative background layer.
-  slot,
-  .logo-link,
-  .title,
-  .header__right {
-    position: relative;
-    z-index: 1;
-  }
 }
 
-// Critical slotted header children need explicit stacking too.
-::slotted(kyn-header-nav),
-::slotted(kyn-header-flyouts),
-::slotted(kyn-button),
-::slotted([slot='center']) {
-  position: relative;
-  z-index: 1;
-}
-
+// Background is first in DOM; z-index: -1 keeps it behind content (no stacking context on nav).
 .background {
   position: absolute;
   top: 0;
@@ -72,7 +57,8 @@
   left: 0;
   bottom: 0;
   background: var(--kd-color-background-container-default);
-  z-index: 0;
+  z-index: -1;
+  pointer-events: none;
 
   @media screen and (min-width: 42rem) {
     transition: inset 150ms ease-out, border-radius 150ms ease-out;
