@@ -152,7 +152,7 @@ export class ButtonGroup extends LitElement {
       }
     }
 
-    if (changed.has('kind')) {
+    if (changed.has('kind') || changed.has('vertical')) {
       this._attachClickListeners();
       this._syncSelection();
     }
