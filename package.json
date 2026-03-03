@@ -24,9 +24,15 @@
     "lint:lit-analyzer": "lit-analyzer",
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "analyze": "cem analyze --litelement --globs \"src/components/**/*.ts\" --exclude \"src/**/(*.stories|*.sample).ts\"",
+    "generate-component-registry": "node story-ui/scripts/generate-component-registry.js",
+    "story-ui": "export $(grep -v '^#' .env | xargs) && story-ui start --port 4001",
+    "remove-generated-stories": "node story-ui/scripts/remove-generated-stories.js",
+    "remove-generated-stories:all": "node story-ui/scripts/remove-generated-stories.js --mappings",
     "test": "vitest run --project=storybook",
     "test:unit": "vitest run --project=unit",
-    "prepare": "npx husky install"
+    "prepare": "npx husky install",
+    "postinstall": "node story-ui/scripts/patch-story-ui.js",
+    "storybook-with-ui": "npm run generate-component-registry && STORY_UI=true npx concurrently \"npm run storybook\" \"npm run story-ui\""
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.1",
@@ -65,6 +71,7 @@
     "@storybook/addon-themes": "^10.2.13",
     "@storybook/addon-vitest": "^10.2.13",
     "@storybook/web-components-vite": "^10.2.13",
+    "@tpitre/story-ui": "^4.12.0",
     "@types/prismjs": "^1.26.4",
     "@types/query-selector-shadow-dom": "^1.0.4",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
@@ -82,6 +89,10 @@
     "lit-analyzer": "^2.0.3",
     "playwright": "^1.58.0",
     "postcss": "^8.4.21",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "prettier": "^2.8.2",
     "remark-gfm": "^4.0.0",
     "resolve-url-loader": "^5.0.0",
@@ -97,7 +108,8 @@
     "sass-embedded": "^1.89.2",
     "storybook": "^10.2.13",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "concurrently": "^8.2.0"
   },
   "customElements": "custom-elements.json",
   "lint-staged": {
