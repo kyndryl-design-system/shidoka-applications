@@ -120,13 +120,15 @@ async function generateComponent(componentName, folderType) {
 
   // 2. Create component.ts
   const componentContent = `import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property,state, query } from 'lit/decorators.js';
 
 import styles from './${camelCase}.scss?inline';
 
 /**
  * \`kyn-${kebabCase}\` Web Component.
  * ${componentName} component description.
+ * @fires on-click - Captures the click event and emits a custom event.
+ * @slot unnamed - Slot for child components.
  */
 @customElement('kyn-${kebabCase}')
 export class ${pascalCase} extends LitElement {
@@ -139,8 +141,43 @@ export class ${pascalCase} extends LitElement {
   @property({ type: String })
   accessor label = '';
 
+  /** exposed reactive boolean property */
+  @property({ type: Boolean })
+  accessor booleanProp = false; // booleans must always default to false
+
+  /** exposed reactive array property */
+  @property({ type: Array })
+  accessor arrayProp = [];
+
+  /** internal reactive property
+   * @internal
+   */
+  @state()
+  accessor _internalProp = 'Internal Prop'; // use an underscore to signify internal variables/methods
+
+  /** .component element reference. does not get updated until after Lit update lifecycle completes
+   * @internal
+   */
+  @query('.component')
+  accessor _component!: HTMLElement;
+
   override render() {
-    return html\`<div class="container">\${this.label}</div>\`;
+    return html\`<div class="container">
+    <label class="label-text" for="label">\${this.label}</label>
+        \${this._internalProp}
+        <div class="slot-container"><slot></slot></div>
+        <button class="btn-content" @click=\${(e: any) => this._handleClick(e)}>Button</button>
+    </div>\`;
+  }
+
+  /** click event handler */
+  private _handleClick(e: Event) {
+    const Event = new CustomEvent('on-click', {
+      detail: {
+        origEvent: e,
+      },
+    });
+    this.dispatchEvent(Event);
   }
 }
 
@@ -157,9 +194,47 @@ declare global {
   console.log(`✓ Created ${camelCase}.ts`);
 
   // 3. Create component.scss
-  const scssContent = `.container {
-  display: flex;
-  flex-direction: column;
+  const scssContent = `@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  /* web components are display: inline; by default */
+  display: block;
+}
+.container {
+  .label-text {
+    @include typography.type-ui-02;
+    color: var(--kd-color-text-forms-label-primary);
+    font-weight: var(--kd-font-weight-medium);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+    cursor: default;
+  }
+
+  .slot-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--kd-color-background-container-subtle);
+    border: 1px dashed var(--kd-color-utility-variant-border);
+    height: 140px;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .btn-content {
+    width: 160px;
+    height: 32px;
+    background-color: var(--kd-color-background-button-primary-state-default);
+    color: var(--kd-color-text-button-dark-primary);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 }
 `;
   fs.writeFileSync(path.join(componentDir, `${camelCase}.scss`), scssContent);
@@ -168,29 +243,32 @@ declare global {
   // 4. Create component.stories.js
   const storiesContent = `import { html } from 'lit';
 import './index';
+import { action } from 'storybook/actions';
 
 export default {
-  title: '${pascalCase}',
+  title: '${pascalCase}', // modify as needed to fit into Storybook hierarchy e.g. 'Components/${pascalCase}'
   component: 'kyn-${kebabCase}',
-  argTypes: {
-    label: { control: 'text' },
-  },
   parameters: {
     design: {
       type: 'figma',
-      url: '',
+      url: '', // figma reference link
     },
   },
 };
 
 const args = {
-  label: '${componentName}',
+  unnamed: 'Slot content!', // slot content
+  label: 'Label', // string prop
+  booleanProp: false, // boolean prop
+  arrayProp: [], // an array prop
 };
 
 export const Default = {
   args,
   render: (args) => {
-    return html\` <kyn-${kebabCase} label=\${args.label}></kyn-${kebabCase}> \`;
+    return html\` <kyn-${kebabCase} label=\${args.label} ?booleanProp=\${args.booleanProp}
+        .arrayProp=\${args.arrayProp}
+        @on-click=\${action('on-click')}>\${args.unnamed}</kyn-${kebabCase}> \`;
   },
 };
 `;
@@ -199,6 +277,17 @@ export const Default = {
     storiesContent
   );
   console.log(`✓ Created ${camelCase}.stories.js`);
+
+  // 5. Update root index.ts to export the new component
+  const rootIndexPath = path.join(__dirname, '../src/index.ts');
+  const exportStatement = `export { ${pascalCase} } from './components/${folderType}/${camelCase}';\n`;
+
+  try {
+    fs.appendFileSync(rootIndexPath, exportStatement);
+    console.log(`✓ Added export to src/index.ts`);
+  } catch (error) {
+    console.warn(`⚠️  Could not update src/index.ts: ${error.message}`);
+  }
 
   console.log(`\n✓ Component "${camelCase}" created successfully!`);
   console.log(`📁 Location: src/components/${folderType}/${camelCase}/`);
