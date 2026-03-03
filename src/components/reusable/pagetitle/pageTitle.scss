@@ -66,3 +66,155 @@
   max-height: 56px;
   margin-right: 16px;
 }
+
+// Contextual dropdown variant
+.contextual-wrapper {
+  position: relative;
+}
+
+.contextual-trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  box-sizing: border-box;
+
+  &:focus-visible {
+    outline: 2px solid var(--kd-color-border-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.chevron-icon {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 150ms ease-out;
+
+  svg {
+    fill: currentColor;
+  }
+
+  &--open {
+    transform: rotate(-180deg);
+  }
+}
+
+// Panel — matches dropdown .options
+.contextual-dropdown {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  width: 100%;
+  min-width: 120px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--kd-color-background-menu-state-default);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  outline: 2px solid transparent;
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0;
+  visibility: hidden;
+  z-index: -1;
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    outline-color 150ms ease-out, visibility 150ms ease-out;
+
+  &--open {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    z-index: 11;
+  }
+}
+
+// Option items — matches dropdown .menu-item + .option
+.contextual-option {
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: none;
+  border: none;
+  outline-offset: -1px;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  height: 48px;
+  gap: 8px;
+  box-sizing: border-box;
+
+  background-color: var(--kd-color-background-menu-state-default);
+  color: var(--kd-color-text-level-primary);
+  transition: background-color 150ms ease-out;
+
+  .contextual-option-text {
+    @include typography.type-body-02;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .check-icon {
+    display: flex;
+    margin-left: auto;
+    color: var(--kd-color-icon-primary);
+
+    svg {
+      fill: currentColor;
+    }
+  }
+
+  // Hover
+  &:hover:not(:active) {
+    background-color: var(--kd-color-background-menu-state-hover);
+    color: var(--kd-color-text-level-light);
+
+    .contextual-option-text {
+      color: var(--kd-color-text-level-light);
+    }
+
+    .check-icon {
+      color: var(--kd-color-icon-light);
+    }
+  }
+
+  // Focus
+  &:not(:hover):focus,
+  &:not(:hover):focus-visible {
+    outline: 1px solid var(--kd-color-border-variants-focus);
+    background-color: var(--kd-color-background-menu-state-focused);
+  }
+
+  // Pressed
+  &:active {
+    background: var(--kd-color-background-menu-state-pressed);
+    color: var(--kd-color-text-level-light);
+    border-color: transparent;
+
+    .contextual-option-text {
+      color: var(--kd-color-text-level-light);
+    }
+
+    .check-icon {
+      color: var(--kd-color-icon-light);
+    }
+  }
+
+  // Selected
+  &--selected {
+    background-color: var(--kd-color-background-menu-state-open);
+  }
+}

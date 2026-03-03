@@ -16018,7 +16018,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Page title text (required).",
+              "description": "Page title text (required). Used as fallback when no contextual item is selected.",
               "attribute": "pageTitle"
             },
             {
@@ -16050,6 +16050,170 @@
               "default": "false",
               "description": "Set this to `true` for AI theme.",
               "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "contextual",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables the contextual dropdown variant with a chevron toggle.",
+              "attribute": "contextual",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the contextual dropdown is open.",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "contextualItems",
+              "type": {
+                "text": "ContextualItem[]"
+              },
+              "default": "[]",
+              "description": "Items for the contextual dropdown. Each item has `value` and `text`.",
+              "attribute": "contextualItems"
+            },
+            {
+              "kind": "field",
+              "name": "selectedValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The value of the currently selected contextual item. Auto-selects first item if not set.",
+              "attribute": "selectedValue",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_onDocumentClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSelectedItem",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "ContextualItem | undefined"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_getDisplayTitle",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_emitChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "ContextualItem"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleDropdown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeDropdown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_selectItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "ContextualItem"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleItemKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "ContextualItem"
+                  }
+                },
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleTriggerKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_renderContextualTitle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "classes",
+                  "type": {
+                    "text": "Record<string, boolean>"
+                  }
+                },
+                {
+                  "name": "displayTitle",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when a contextual dropdown item is selected. Detail: `{ value: string, text: string }`."
             }
           ],
           "attributes": [
@@ -16068,7 +16232,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Page title text (required).",
+              "description": "Page title text (required). Used as fallback when no contextual item is selected.",
               "fieldName": "pageTitle"
             },
             {
@@ -16097,6 +16261,42 @@
               "default": "false",
               "description": "Set this to `true` for AI theme.",
               "fieldName": "aiConnected"
+            },
+            {
+              "name": "contextual",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables the contextual dropdown variant with a chevron toggle.",
+              "fieldName": "contextual"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the contextual dropdown is open.",
+              "fieldName": "open"
+            },
+            {
+              "name": "contextualItems",
+              "type": {
+                "text": "ContextualItem[]"
+              },
+              "default": "[]",
+              "description": "Items for the contextual dropdown. Each item has `value` and `text`.",
+              "fieldName": "contextualItems"
+            },
+            {
+              "name": "selectedValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The value of the currently selected contextual item. Auto-selects first item if not set.",
+              "fieldName": "selectedValue"
             }
           ],
           "superclass": {
