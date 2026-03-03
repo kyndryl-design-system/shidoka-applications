@@ -283,8 +283,19 @@ export const Default = {
   const exportStatement = `export { ${pascalCase} } from './components/${folderType}/${camelCase}';\n`;
 
   try {
-    fs.appendFileSync(rootIndexPath, exportStatement);
-    console.log(`✓ Added export to src/index.ts`);
+    // Read current index.ts content
+    const indexContent = fs.readFileSync(rootIndexPath, 'utf-8');
+
+    // Check if export already exists
+    if (
+      indexContent.includes(`from './components/${folderType}/${camelCase}'`)
+    ) {
+      console.log(`⚠️  Export already exists in src/index.ts`);
+    } else {
+      // Append export to file
+      fs.appendFileSync(rootIndexPath, exportStatement);
+      console.log(`✓ Added export to src/index.ts`);
+    }
   } catch (error) {
     console.warn(`⚠️  Could not update src/index.ts: ${error.message}`);
   }
