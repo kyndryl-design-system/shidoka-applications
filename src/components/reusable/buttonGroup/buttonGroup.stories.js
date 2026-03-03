@@ -24,6 +24,10 @@ export default {
     controls: {
       exclude: ['_visibleStart', '_buttons'],
     },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library?node-id=35345-25182&p=f&t=sG3ed3scMJPonWcZ-0',
+    },
   },
   argTypes: {
     // always available props
