@@ -22,7 +22,7 @@ export default {
     showActiveHelperText: { control: 'boolean' },
     status: {
       control: 'select',
-      options: ['active', 'success', 'error'],
+      options: ['active', 'success', 'warning', 'error'],
     },
   },
 };
