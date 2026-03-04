@@ -24,10 +24,15 @@ export default {
     controls: {
       exclude: ['_visibleStart', '_buttons'],
     },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library?node-id=35345-25182&p=f&t=sG3ed3scMJPonWcZ-0',
+    },
   },
   argTypes: {
     // always available props
     selectedIndex: { control: 'number' },
+    vertical: { control: 'boolean' },
     kind: {
       control: 'select',
       options: Object.values(BUTTON_GROUP_KINDS),
@@ -86,6 +91,7 @@ const Template = (args) => {
     <kyn-button-group
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
+      ?vertical=${args.vertical}
       .totalPages=${args.totalPages}
       .textStrings=${args.textStrings}
       .maxVisible=${args.maxVisible}
@@ -113,6 +119,7 @@ const IconTemplate = (args) => {
     <kyn-button-group
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
+      ?vertical=${args.vertical}
       .totalPages=${args.totalPages}
       .textStrings=${args.textStrings}
       .maxVisible=${args.maxVisible}
@@ -140,6 +147,7 @@ const CustomIconTemplate = (args) => {
     <kyn-button-group
       .kind=${args.kind}
       .selectedIndex=${args.selectedIndex}
+      ?vertical=${args.vertical}
       .totalPages=${args.totalPages}
       .textStrings=${args.textStrings}
       .maxVisible=${args.maxVisible}
@@ -161,6 +169,7 @@ export const Default = {
   args: {
     kind: BUTTON_GROUP_KINDS.DEFAULT,
     selectedIndex: 0,
+    vertical: false,
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
@@ -175,6 +184,7 @@ export const Icons = {
   args: {
     kind: BUTTON_GROUP_KINDS.ICONS,
     selectedIndex: 0,
+    vertical: false,
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
@@ -241,6 +251,36 @@ export const CustomIconArray = {
   args: {
     kind: BUTTON_GROUP_KINDS.ICONS,
     selectedIndex: 0,
+    totalPages: 1,
+    maxVisible: 5,
+    clickIncrementBy: 1,
+    textStrings: {
+      indivGroupItemDescription: '',
+    },
+  },
+};
+
+export const Vertical = {
+  render: Template,
+  args: {
+    kind: BUTTON_GROUP_KINDS.DEFAULT,
+    selectedIndex: 0,
+    vertical: true,
+    totalPages: 1,
+    maxVisible: 5,
+    clickIncrementBy: 1,
+    textStrings: {
+      indivGroupItemDescription: '',
+    },
+  },
+};
+
+export const VerticalIcons = {
+  render: IconTemplate,
+  args: {
+    kind: BUTTON_GROUP_KINDS.ICONS,
+    selectedIndex: 0,
+    vertical: true,
     totalPages: 1,
     maxVisible: 5,
     clickIncrementBy: 1,
