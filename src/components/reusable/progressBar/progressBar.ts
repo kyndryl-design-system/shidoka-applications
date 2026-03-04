@@ -47,7 +47,7 @@ export class ProgressBar extends LitElement {
   @property({ type: Number })
   accessor value: number | null = null;
 
-  /** Sets manual max value (default = 100). */
+  /** Sets manual max value. */
   @property({ type: Number })
   accessor max = 100;
 
