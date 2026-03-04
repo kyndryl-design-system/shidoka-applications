@@ -52,19 +52,31 @@ export class PageTitle extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor open = false;
 
-  /** The value of the currently selected contextual item. Auto-selects first item if not set. */
+  /** The value of the currently selected contextual item. Auto-selects first item if not set.
+   * @internal
+   */
   @property({ type: String, reflect: true })
   accessor selectedValue = '';
 
+  /**
+   * Array of assigned `kyn-pagetitle-option` elements in the unnamed slot. Used for managing selection state and keyboard navigation.
+   * @internal
+   */
   @queryAssignedElements({ selector: 'kyn-pagetitle-option' })
   accessor _options!: Array<PageTitleOption>;
 
+  /**
+   * @ignore
+   */
   private _onDocumentClick = (e: Event) => {
     if (!e.composedPath().includes(this)) {
       this._closeDropdown();
     }
   };
 
+  /**
+   * @ignore
+   */
   private _handleOptionClick = (e: Event) => {
     const detail = (e as CustomEvent).detail;
     e.stopPropagation();
