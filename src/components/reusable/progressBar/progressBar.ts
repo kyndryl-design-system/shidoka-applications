@@ -128,7 +128,9 @@ export class ProgressBar extends LitElement {
 
     const widthStyle = this._isIndeterminate
       ? 'width: 55px;'
-      : currentStatus === ProgressStatus.ERROR && currentValue != null
+      : (currentStatus === ProgressStatus.ERROR ||
+          currentStatus === ProgressStatus.WARNING) &&
+        currentValue != null
       ? `width: ${currentValue}%`
       : `width: ${this._percentage}%`;
 
