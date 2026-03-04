@@ -185,10 +185,6 @@
   margin-bottom: var(--kd-spacing-24, 1.5rem);
 }
 
-.sui-sidebar-btn-label {
-  margin-left: var(--kd-spacing-8, 0.5rem);
-}
-
 /* Sidebar chat list - flex grow to fill space */
 .sui-sidebar-chats {
   flex: 1;
@@ -737,6 +733,7 @@
   align-items: center;
   flex-shrink: 0;
   min-width: 36px;
+  font-weight: 400;
   min-height: 36px;
 }
 
@@ -1164,11 +1161,19 @@
    Error Message
    ============================================ */
 .sui-error {
-  background: color-mix(in srgb, var(--destructive) 15%, transparent);
-  color: var(--destructive);
+  background: #fef2f2;
+  color: #7f1d1d;
+  border: 1px solid #fecaca;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg);
   font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.dark .sui-error {
+  background: rgba(185, 28, 28, 0.15);
+  color: #fca5a5;
+  border-color: rgba(185, 28, 28, 0.3);
 }
 
 /* ============================================
@@ -1628,4 +1633,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.css-1xcvvxl :where(span:not(.sb-anchor, .sb-unstyled, .sb-unstyled span)) {
+  margin-right: 10px;
 }

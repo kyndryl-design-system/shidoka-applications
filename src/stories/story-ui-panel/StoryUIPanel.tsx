@@ -1121,6 +1121,7 @@ interface ShidokaButtonProps {
   style?: React.CSSProperties;
   'aria-label'?: string;
   title?: string;
+  iconPosition?: 'left' | 'right' | 'center';
 }
 
 const ShidokaButton: React.FC<ShidokaButtonProps> = ({
@@ -1134,6 +1135,7 @@ const ShidokaButton: React.FC<ShidokaButtonProps> = ({
   style,
   'aria-label': ariaLabel,
   title,
+  iconPosition,
 }) => {
   const ref = useRef<
     | (HTMLElement & {
@@ -1166,6 +1168,7 @@ const ShidokaButton: React.FC<ShidokaButtonProps> = ({
       style,
       'aria-label': ariaLabel,
       title,
+      iconPosition,
     },
     children
   );
@@ -2733,21 +2736,26 @@ function StoryUIPanel({ mcpPort }: StoryUIPanelProps) {
             {/* Toggle */}
             <ShidokaButton
               kind="ghost"
-              onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
+              iconPosition="left"
+              onClick={() => {
+                setContextMenuId(null);
+                dispatch({ type: 'TOGGLE_SIDEBAR' });
+              }}
               className="sui-sidebar-btn-hide"
             >
-              {Icons.panelLeft}
-              <span className="sui-sidebar-btn-label">Hide sidebar</span>
+              Hide sidebar
+              <span slot="icon">{Icons.panelLeft}</span>
             </ShidokaButton>
 
             {/* New Chat */}
             <ShidokaButton
               kind="primary"
+              iconPosition="left"
               onClick={handleNewChat}
               className="sui-sidebar-btn-new"
             >
-              {Icons.plus}
-              <span className="sui-sidebar-btn-label">New Chat</span>
+              New Chat
+              <span slot="icon">{Icons.plus}</span>
             </ShidokaButton>
 
             {/* Chat history */}

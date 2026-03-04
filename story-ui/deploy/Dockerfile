@@ -6,7 +6,7 @@
 #   STORY_UI_PRODUCTION    — true (uses in-memory mode, no filesystem writes)
 #   STORY_UI_ALLOWED_ORIGINS — Netlify preview URL pattern
 
-FROM node:22-slim
+FROM node:22-alpine
 
 WORKDIR /app
 

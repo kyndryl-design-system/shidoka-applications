@@ -109,13 +109,29 @@ lines.push('- `<kyn-accordion>`: showNumbers, compact');
 lines.push('- `<kyn-tabs>`: (contains kyn-tab and kyn-tab-panel)');
 lines.push('');
 
-// Write
+// Write to story-ui/docs/guidelines/
 const outDir = join(ROOT, 'story-ui', 'docs', 'guidelines');
 mkdirSync(outDir, { recursive: true });
 
 const outPath = join(outDir, 'component-registry.md');
 writeFileSync(outPath, lines.join('\n'));
 
+// Also write to story-ui-docs/ (DocumentationLoader picks this up automatically)
+const docsDir = join(ROOT, 'story-ui-docs');
+mkdirSync(docsDir, { recursive: true });
+writeFileSync(join(docsDir, 'component-registry.md'), lines.join('\n'));
+
+// Copy considerations if it exists
+import { existsSync, copyFileSync } from 'fs';
+const considerationsSrc = join(ROOT, 'story-ui', 'story-ui-considerations.md');
+const considerationsDst = join(docsDir, 'considerations.md');
+if (existsSync(considerationsSrc)) {
+  copyFileSync(considerationsSrc, considerationsDst);
+}
+
 console.log(`✓ Generated ${outPath}`);
+console.log(
+  `✓ Copied to ${docsDir}/component-registry.md (for DocumentationLoader)`
+);
 console.log(`  ${tagSet.size} components, ${sortedPaths.length} import paths`);
 console.log(`  ${lines.length} lines (compact for small LLM context windows)`);
