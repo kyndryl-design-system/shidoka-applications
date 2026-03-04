@@ -1,0 +1,86 @@
+@use '../../../common/scss/global.scss';
+@use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
+
+:host {
+  display: block;
+}
+
+div[role='option'] {
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: none;
+  border: none;
+  outline-offset: -1px;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  height: 48px;
+  gap: 8px;
+  box-sizing: border-box;
+
+  background-color: var(--kd-color-background-menu-state-default);
+  color: var(--kd-color-text-level-primary);
+  transition: background-color 150ms ease-out;
+
+  .option-text {
+    @include typography.type-body-02;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .check-icon {
+    display: flex;
+    margin-left: auto;
+    color: var(--kd-color-icon-primary);
+
+    svg {
+      fill: currentColor;
+    }
+  }
+
+  // Hover
+  &:hover:not(:active) {
+    background-color: var(--kd-color-background-menu-state-hover);
+    color: var(--kd-color-text-level-light);
+
+    .option-text {
+      color: var(--kd-color-text-level-light);
+    }
+
+    .check-icon {
+      color: var(--kd-color-icon-light);
+    }
+  }
+
+  // Focus
+  &:not(:hover):focus,
+  &:not(:hover):focus-visible {
+    outline: 1px solid var(--kd-color-border-variants-focus);
+    background-color: var(--kd-color-background-menu-state-focused);
+  }
+
+  // Pressed
+  &:active {
+    background: var(--kd-color-background-menu-state-pressed);
+    color: var(--kd-color-text-level-light);
+    border-color: transparent;
+
+    .option-text {
+      color: var(--kd-color-text-level-light);
+    }
+
+    .check-icon {
+      color: var(--kd-color-icon-light);
+    }
+  }
+}
+
+// Selected state
+:host([selected]) div[role='option'] {
+  background-color: var(--kd-color-background-menu-state-open);
+}

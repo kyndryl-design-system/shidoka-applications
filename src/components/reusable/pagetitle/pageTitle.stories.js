@@ -7,16 +7,13 @@ import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/
 export default {
   title: 'Components/Layout & Structure/Page Title',
   component: 'kyn-page-title',
+  subcomponents: {
+    PageTitleOption: 'kyn-pagetitle-option',
+  },
   argTypes: {
     type: {
       options: ['primary', 'secondary', 'tertiary'],
       control: { type: 'select' },
-    },
-    contextual: {
-      control: { type: 'boolean' },
-    },
-    open: {
-      control: { type: 'boolean' },
     },
   },
   parameters: {
@@ -102,12 +99,6 @@ const handleChange = (e) => {
   action(e.type)({ ...e, detail: e.detail });
 };
 
-const contextualItems = [
-  { value: 'app-1', text: 'Application 1' },
-  { value: 'app-2', text: 'Application 2' },
-  { value: 'app-3', text: 'Application 3' },
-];
-
 export const Contextual = {
   args: {
     ...args,
@@ -124,9 +115,11 @@ export const Contextual = {
         ?aiConnected=${args.aiConnected}
         ?contextual=${args.contextual}
         ?open=${args.open}
-        .contextualItems=${contextualItems}
         @on-change=${handleChange}
       >
+        <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
       </kyn-page-title>
     `;
   },
@@ -149,9 +142,11 @@ export const ContextualWithSubtitle = {
         ?aiConnected=${args.aiConnected}
         ?contextual=${args.contextual}
         ?open=${args.open}
-        .contextualItems=${contextualItems}
         @on-change=${handleChange}
       >
+        <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
       </kyn-page-title>
     `;
   },
