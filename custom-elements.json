@@ -3317,69 +3317,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/workspaceSwitcher/index.ts",
       "declarations": [],
       "exports": [
@@ -3738,6 +3675,69 @@
           "declaration": {
             "name": "WorkspaceSwitcherMenuItem",
             "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -16002,6 +16002,14 @@
             "name": "PageTitle",
             "module": "./pageTitle"
           }
+        },
+        {
+          "kind": "js",
+          "name": "PageTitleOption",
+          "declaration": {
+            "name": "PageTitleOption",
+            "module": "./pageTitleOption"
+          }
         }
       ]
     },
@@ -16011,12 +16019,16 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Page Title\n\nIf the contextual variant is used to trigger navigation, consider using anchor elements instead, as buttons do not convey destination information.",
+          "description": "Page Title\n\nIf the contextual variant is used to trigger navigation, consider using anchor elements instead, as buttons do not convey destination information to assistive technology users.",
           "name": "PageTitle",
           "slots": [
             {
               "description": "Slot for icon. Use size 56 * 56 as per UX guidelines.",
               "name": "icon"
+            },
+            {
+              "description": "Slot for `kyn-pagetitle-option` elements when using the contextual variant.",
+              "name": "unnamed"
             }
           ],
           "members": [
@@ -16094,16 +16106,6 @@
             },
             {
               "kind": "field",
-              "name": "contextualItems",
-              "type": {
-                "text": "ContextualItem[]"
-              },
-              "default": "[]",
-              "description": "Items for the contextual dropdown. Each item has `value` and `text`.",
-              "attribute": "contextualItems"
-            },
-            {
-              "kind": "field",
               "name": "selectedValue",
               "type": {
                 "text": "string"
@@ -16115,18 +16117,30 @@
             },
             {
               "kind": "field",
+              "name": "_options",
+              "type": {
+                "text": "Array<PageTitleOption>"
+              }
+            },
+            {
+              "kind": "field",
               "name": "_onDocumentClick",
               "privacy": "private"
             },
             {
+              "kind": "field",
+              "name": "_handleOptionClick",
+              "privacy": "private"
+            },
+            {
               "kind": "method",
-              "name": "_getSelectedItem",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "ContextualItem | undefined"
-                }
-              }
+              "name": "_syncOptions",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -16146,7 +16160,7 @@
                 {
                   "name": "item",
                   "type": {
-                    "text": "ContextualItem"
+                    "text": "{ value: string; text: string }"
                   }
                 }
               ]
@@ -16163,28 +16177,9 @@
             },
             {
               "kind": "method",
-              "name": "_selectItem",
+              "name": "_handleTriggerKeydown",
               "privacy": "private",
               "parameters": [
-                {
-                  "name": "item",
-                  "type": {
-                    "text": "ContextualItem"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleItemKeydown",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "item",
-                  "type": {
-                    "text": "ContextualItem"
-                  }
-                },
                 {
                   "name": "e",
                   "type": {
@@ -16195,7 +16190,7 @@
             },
             {
               "kind": "method",
-              "name": "_handleTriggerKeydown",
+              "name": "_handleListboxKeydown",
               "privacy": "private",
               "parameters": [
                 {
@@ -16300,15 +16295,6 @@
               "fieldName": "open"
             },
             {
-              "name": "contextualItems",
-              "type": {
-                "text": "ContextualItem[]"
-              },
-              "default": "[]",
-              "description": "Items for the contextual dropdown. Each item has `value` and `text`.",
-              "fieldName": "contextualItems"
-            },
-            {
               "name": "selectedValue",
               "type": {
                 "text": "string"
@@ -16341,6 +16327,121 @@
           "declaration": {
             "name": "PageTitle",
             "module": "src/components/reusable/pagetitle/pageTitle.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagetitle/pageTitleOption.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Page title contextual dropdown option.",
+          "name": "PageTitleOption",
+          "slots": [
+            {
+              "description": "Slot for option text.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Option value.",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option selected state.",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Option value.",
+              "fieldName": "value"
+            },
+            {
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option selected state.",
+              "fieldName": "selected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagetitle-option",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageTitleOption",
+          "declaration": {
+            "name": "PageTitleOption",
+            "module": "src/components/reusable/pagetitle/pageTitleOption.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagetitle-option",
+          "declaration": {
+            "name": "PageTitleOption",
+            "module": "src/components/reusable/pagetitle/pageTitleOption.ts"
           }
         }
       ]
