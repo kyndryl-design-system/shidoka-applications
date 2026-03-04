@@ -59,7 +59,7 @@ export class PageTitle extends LitElement {
   accessor selectedValue = '';
 
   /**
-   * Array of assigned `kyn-pagetitle-option` elements in the unnamed slot. Used for managing selection state and keyboard navigation.
+   * Slotted `kyn-pagetitle-option` elements.
    * @internal
    */
   @queryAssignedElements({ selector: 'kyn-pagetitle-option' })
