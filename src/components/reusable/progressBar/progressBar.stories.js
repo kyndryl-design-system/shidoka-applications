@@ -102,3 +102,13 @@ Error.args = {
   value: 22,
   hideLabel: false,
 };
+
+export const Warning = Template.bind({});
+Warning.args = {
+  ...Default.args,
+  status: 'warning',
+  label: 'Warning Progress Bar',
+  helperText: 'Warning: Text message.',
+  value: 22,
+  hideLabel: false,
+};
