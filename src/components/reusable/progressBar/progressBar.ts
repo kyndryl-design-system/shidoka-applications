@@ -8,6 +8,7 @@ import '../loaders';
 import '../tooltip';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 import ProgressBarStyles from './progressBar.scss?inline';
 
@@ -15,6 +16,7 @@ enum ProgressStatus {
   ACTIVE = 'active',
   SUCCESS = 'success',
   ERROR = 'error',
+  WARNING = 'warning',
 }
 
 /**
@@ -39,13 +41,13 @@ export class ProgressBar extends LitElement {
 
   /** Sets progress bar status mode. */
   @property({ type: String })
-  accessor status: 'active' | 'success' | 'error' = 'active';
+  accessor status: 'active' | 'success' | 'warning' | 'error' = 'active';
 
   /** Sets initial progress bar value (optionally hard-coded). */
   @property({ type: Number })
   accessor value: number | null = null;
 
-  /** Sets manual max value (default = 100). */
+  /** Sets manual max value. */
   @property({ type: Number })
   accessor max = 100;
 
@@ -126,7 +128,9 @@ export class ProgressBar extends LitElement {
 
     const widthStyle = this._isIndeterminate
       ? 'width: 55px;'
-      : currentStatus === ProgressStatus.ERROR && currentValue != null
+      : (currentStatus === ProgressStatus.ERROR ||
+          currentStatus === ProgressStatus.WARNING) &&
+        currentValue != null
       ? `width: ${currentValue}%`
       : `width: ${this._percentage}%`;
 
@@ -180,6 +184,8 @@ export class ProgressBar extends LitElement {
       return html`<span class="${currentStatus}-icon"
         >${currentStatus === ProgressStatus.SUCCESS
           ? unsafeSVG(checkmarkIcon)
+          : currentStatus === ProgressStatus.WARNING
+          ? unsafeSVG(warningIcon)
           : unsafeSVG(errorIcon)}</span
       >`;
     }
@@ -240,6 +246,10 @@ export class ProgressBar extends LitElement {
   private getCurrentStatus(currentValue: number | null): ProgressStatus {
     if (this.status === ProgressStatus.ERROR) {
       return ProgressStatus.ERROR;
+    }
+
+    if (this.status === ProgressStatus.WARNING) {
+      return ProgressStatus.WARNING;
     }
 
     if (this.status === ProgressStatus.SUCCESS || currentValue === this.max) {
