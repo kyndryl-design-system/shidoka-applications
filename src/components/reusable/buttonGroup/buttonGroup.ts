@@ -56,6 +56,10 @@ export class ButtonGroup extends LitElement {
   accessor kind: 'default' | 'pagination' | 'icons' =
     BUTTON_GROUP_KINDS.DEFAULT;
 
+  /** Display button group vertically. */
+  @property({ type: Boolean })
+  accessor vertical = false;
+
   /** zero-based: default button index; for pagination, page-1 */
   @property({ type: Number })
   accessor selectedIndex = 0;
@@ -148,14 +152,17 @@ export class ButtonGroup extends LitElement {
       }
     }
 
-    if (changed.has('kind')) {
+    if (changed.has('kind') || changed.has('vertical')) {
       this._attachClickListeners();
       this._syncSelection();
     }
   }
 
   private _renderDefault() {
-    const cls = { 'kd-btn-group': true };
+    const cls = {
+      'kd-btn-group': true,
+      'kd-btn-group--vertical': this.vertical,
+    };
     return html`
       <div class=${classMap(cls)} role="radiogroup">
         <slot @slotchange=${() => this._handleSlotChange()}></slot>
@@ -164,7 +171,11 @@ export class ButtonGroup extends LitElement {
   }
 
   private _renderIcons() {
-    const cls = { 'kd-btn-group': true, 'kd-btn-group--icons': true };
+    const cls = {
+      'kd-btn-group': true,
+      'kd-btn-group--icons': true,
+      'kd-btn-group--vertical': this.vertical,
+    };
     return html`
       <div class=${classMap(cls)} role="radiogroup">
         <slot @slotchange=${() => this._handleSlotChange()}></slot>
@@ -327,8 +338,10 @@ export class ButtonGroup extends LitElement {
         'kd-btn--group-single',
         'kd-btn--group-first',
         'kd-btn--group-middle',
-        'kd-btn--group-last'
+        'kd-btn--group-last',
+        'kd-btn--group-vertical'
       );
+      if (this.vertical) btn.classList.add('kd-btn--group-vertical');
       if (total === 1) btn.classList.add('kd-btn--group-single');
       else if (idx === 0) btn.classList.add('kd-btn--group-first');
       else if (idx === total - 1) btn.classList.add('kd-btn--group-last');
