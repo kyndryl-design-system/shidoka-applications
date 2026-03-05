@@ -22,7 +22,7 @@ export default {
     showActiveHelperText: { control: 'boolean' },
     status: {
       control: 'select',
-      options: ['active', 'success', 'error'],
+      options: ['active', 'success', 'warning', 'error'],
     },
   },
 };
@@ -99,6 +99,16 @@ Error.args = {
   status: 'error',
   label: 'Error Progress Bar',
   helperText: 'Error: Operation failed.',
+  value: 22,
+  hideLabel: false,
+};
+
+export const Warning = Template.bind({});
+Warning.args = {
+  ...Default.args,
+  status: 'warning',
+  label: 'Warning Progress Bar',
+  helperText: 'Warning: Text message.',
   value: 22,
   hideLabel: false,
 };
