@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import mermaid from 'mermaid';
 import {
@@ -6,7 +6,9 @@ import {
   getColorScheme,
   getPreferredColorScheme,
 } from '@kyndryl-design-system/shidoka-foundation/common/helpers/color';
-// import Styles from './mermaid.scss?inline';
+import Styles from './mermaid.scss?inline';
+
+import { monochrome24 } from '@kyndryl-design-system/shidoka-icons';
 
 /**
  * Mermaid diagram.
@@ -14,7 +16,7 @@ import {
  */
 @customElement('kyn-mermaid')
 export class MermaidDiagram extends LitElement {
-  // static override styles = unsafeCSS(Styles);
+  static override styles = unsafeCSS(Styles);
 
   /** Mermaid configuration object. */
   @property({ type: Object })
@@ -100,6 +102,19 @@ export class MermaidDiagram extends LitElement {
     this._renderDiagram();
   }
 
+  protected override firstUpdated(_changedProperties: PropertyValues): void {
+    mermaid.registerIconPacks([
+      {
+        name: monochrome24.prefix,
+        icons: monochrome24,
+      },
+      // {
+      //   name: duotone64.prefix,
+      //   icons: duotone64,
+      // },
+    ]);
+  }
+
   override updated(changedProperties: Map<string, unknown>) {
     // re-render diagram when config is changed
     if (changedProperties.has('mermaidConfig')) {
@@ -130,6 +145,10 @@ export class MermaidDiagram extends LitElement {
     const raw: Record<string, string> = {
       darkMode: darkTheme,
 
+      // typography
+      fontFamily: 'Roboto',
+      fontSize: '14px',
+
       // primary nodes
       primaryColor: getTokenThemeVal('--kd-color-background-container-default'),
       primaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
@@ -141,7 +160,7 @@ export class MermaidDiagram extends LitElement {
       secondaryColor: getTokenThemeVal(
         '--kd-color-background-container-secondary'
       ),
-      secondaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
+      // secondaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
       secondaryBorderColor: getTokenThemeVal(
         '--kd-color-background-container-secondary'
       ),
@@ -150,18 +169,19 @@ export class MermaidDiagram extends LitElement {
       tertiaryColor: getTokenThemeVal(
         '--kd-color-background-container-tertiary'
       ),
-      tertiaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
+      // tertiaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
       tertiaryBorderColor: getTokenThemeVal(
         '--kd-color-background-container-tertiary'
       ),
 
       // text / lines
-      textColor: getTokenThemeVal('--kd-color-text-level-primary'),
+      // textColor: getTokenThemeVal('--kd-color-text-level-primary'),
       lineColor: getTokenThemeVal('--kd-color-border-level-secondary'),
 
-      // typography
-      fontFamily: 'Roboto',
-      fontSize: '14px',
+      // flowchart
+      edgeLabelBackground: getTokenThemeVal(
+        '--kd-color-background-container-secondary'
+      ),
     };
 
     // Remove entries that failed to resolve so mermaid uses its own defaults
@@ -183,11 +203,14 @@ export class MermaidDiagram extends LitElement {
     if (!text) return;
 
     try {
-      console.log('init');
       mermaid.initialize({
         startOnLoad: false,
+        securityLevel: 'loose', // allow html in labels for icons
         theme: 'base',
         themeVariables: this._getThemeVariables(),
+        architecture: {
+          iconSize: 64,
+        },
         ...this.mermaidConfig,
       });
 

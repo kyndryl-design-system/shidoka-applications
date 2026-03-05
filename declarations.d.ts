@@ -4,6 +4,8 @@ declare module '*.scss' {
   export default styles;
 }
 
+declare module '@kyndryl-design-system/shidoka-icons';
+
 declare module '*.svg';
 
 declare module '*?raw' {

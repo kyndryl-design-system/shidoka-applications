@@ -59,12 +59,12 @@ export const Architecture = {
   args: {
     ...args,
     unnamed: `architecture-beta
-    group api(cloud)[API]
+    group api(kd-mono-24:cloud)[API]
 
-    service db(database)[Database] in api
-    service disk1(disk)[Storage] in api
-    service disk2(disk)[Storage] in api
-    service server(server)[Server] in api
+    service db(kd-mono-24:database-2)[Database] in api
+    service disk1(kd-mono-24:save)[Storage] in api
+    service disk2(kd-mono-24:save)[Storage] in api
+    service server(kd-mono-24:computer)[Server] in api
 
     db:L -- R:server
     disk1:T -- B:server
