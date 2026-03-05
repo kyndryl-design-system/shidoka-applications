@@ -143,7 +143,7 @@ export class MermaidDiagram extends LitElement {
     }
 
     const raw: Record<string, string> = {
-      darkMode: darkTheme,
+      // darkMode: darkTheme,
 
       // typography
       fontFamily: 'Roboto',
