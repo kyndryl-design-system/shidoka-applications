@@ -114,7 +114,7 @@ Warning.args = {
   status: 'warning',
   label: 'Warning Progress Bar',
   helperText: 'Warning text message.',
-  value: 22,
+  value: 70,
   hideLabel: false,
   showPercentageValue: true,
 };
