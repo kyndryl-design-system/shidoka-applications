@@ -20,7 +20,7 @@ enum ProgressStatus {
 }
 
 /**
- * Progress Bar component.
+ * Progress bar component.
  * @slot unnamed - Slot for tooltip text content.
  */
 @customElement('kyn-progress-bar')
