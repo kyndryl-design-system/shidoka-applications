@@ -127,7 +127,10 @@ export class MermaidDiagram extends LitElement {
    * Uses `theme: 'base'` so every variable is respected.
    * Any token that fails to resolve is omitted so mermaid uses its own default.
    */
-  private _getThemeVariables(): Record<string, string> {
+  private _getThemeVariables(): Record<
+    string,
+    string | Record<string, string>
+  > {
     // get current color theme
     let darkTheme = 'false';
     if (getColorScheme() === 'light dark') {
@@ -142,7 +145,7 @@ export class MermaidDiagram extends LitElement {
       darkTheme = 'false';
     }
 
-    const raw: Record<string, string> = {
+    const raw: Record<string, string | Record<string, string>> = {
       // darkMode: darkTheme,
 
       // typography
@@ -152,36 +155,39 @@ export class MermaidDiagram extends LitElement {
       // primary nodes
       primaryColor: getTokenThemeVal('--kd-color-background-container-default'),
       primaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
-      primaryBorderColor: getTokenThemeVal(
-        '--kd-color-background-container-default'
-      ),
+      primaryBorderColor: getTokenThemeVal('--kd-color-border-forms-default'),
 
       // secondary nodes
       secondaryColor: getTokenThemeVal(
-        '--kd-color-background-container-secondary'
+        '--kd-color-background-container-tertiary'
       ),
       // secondaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
-      secondaryBorderColor: getTokenThemeVal(
-        '--kd-color-background-container-secondary'
-      ),
+      // secondaryBorderColor: getTokenThemeVal(
+      //   '--kd-color-background-container-secondary'
+      // ),
 
       // tertiary nodes
-      tertiaryColor: getTokenThemeVal(
-        '--kd-color-background-container-tertiary'
-      ),
+      tertiaryColor: getTokenThemeVal('--kd-color-background-accent-tertiary'),
       // tertiaryTextColor: getTokenThemeVal('--kd-color-text-level-primary'),
-      tertiaryBorderColor: getTokenThemeVal(
-        '--kd-color-background-container-tertiary'
-      ),
+      // tertiaryBorderColor: getTokenThemeVal(
+      //   '--kd-color-background-container-tertiary'
+      // ),
 
       // text / lines
       // textColor: getTokenThemeVal('--kd-color-text-level-primary'),
-      lineColor: getTokenThemeVal('--kd-color-border-level-secondary'),
+      lineColor: getTokenThemeVal('--kd-color-border-forms-default'),
+
+      // git graph
+      commitLabelColor: getTokenThemeVal('--kd-color-text-level-primary'),
 
       // flowchart
       edgeLabelBackground: getTokenThemeVal(
-        '--kd-color-background-container-secondary'
+        '--kd-color-background-accent-tertiary'
       ),
+
+      xyChart: {
+        backgroundColor: 'transparent',
+      },
     };
 
     // Remove entries that failed to resolve so mermaid uses its own defaults
