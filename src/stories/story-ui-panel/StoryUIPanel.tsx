@@ -1,0 +1,3333 @@
+/**
+ * StoryUIPanel - AI-powered Storybook story generator
+ *
+ * Uses Shidoka design system components where possible.
+ * Supports light and dark modes based on Storybook theme.
+ */
+
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useReducer,
+} from 'react';
+import './StoryUIPanel.css';
+
+// Register Shidoka components so the panel can use them (kyn-button, kyn-tag, kyn-block-code-view, kyn-progress-bar, kyn-overflow-menu)
+import '../../components/reusable/button/button';
+import '../../components/reusable/tag/tag';
+import '../../components/reusable/blockCodeView';
+import '../../components/reusable/progressBar';
+import '../../components/reusable/overflowMenu';
+import '../../components/reusable/dropdown';
+
+// Shidoka success icon for Created/Updated notifications
+import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
+
+// ============================================
+// Types & Interfaces
+// ============================================
+
+interface Message {
+  role: 'user' | 'ai';
+  content: string;
+  isStreaming?: boolean;
+  streamingData?: StreamingState;
+  attachedImages?: AttachedImage[];
+}
+
+interface ChatSession {
+  id: string;
+  title: string;
+  fileName: string;
+  conversation: Message[];
+  lastUpdated: number;
+}
+
+interface AttachedImage {
+  id: string;
+  file: File;
+  preview: string;
+  base64: string;
+  mediaType: string;
+}
+
+interface IntentPreview {
+  title: string;
+  components: string[];
+  approach: string;
+}
+
+interface ProgressUpdate {
+  phase: string;
+  step: number;
+  totalSteps: number;
+  message: string;
+}
+
+interface ValidationFeedback {
+  isValid: boolean;
+  errors?: string[];
+  autoFixApplied?: boolean;
+}
+
+interface RetryInfo {
+  attempt: number;
+  maxAttempts: number;
+  reason: string;
+}
+
+interface ComponentUsage {
+  name: string;
+  reason?: string;
+}
+
+interface LayoutChoice {
+  pattern: string;
+  reason: string;
+}
+
+interface StyleChoice {
+  property: string;
+  value: string;
+  reason?: string;
+}
+
+interface CompletionFeedback {
+  success: boolean;
+  isFallback?: boolean; // True when a fallback error placeholder was created
+  storyId?: string;
+  fileName?: string;
+  title?: string;
+  code?: string;
+  summary: { action: string; details: string };
+  componentsUsed: ComponentUsage[];
+  layoutChoices: LayoutChoice[];
+  styleChoices?: StyleChoice[];
+  validation?: ValidationFeedback;
+  suggestions?: string[];
+  metrics?: { totalTimeMs: number; llmCallsCount: number };
+}
+
+interface ErrorFeedback {
+  message: string;
+  details?: string;
+  suggestion?: string;
+}
+
+interface StreamingState {
+  intent?: IntentPreview;
+  progress?: ProgressUpdate;
+  validation?: ValidationFeedback;
+  retry?: RetryInfo;
+  completion?: CompletionFeedback;
+  error?: ErrorFeedback;
+}
+
+interface OrphanStory {
+  id: string;
+  title: string;
+  fileName: string;
+}
+
+interface GeneratedStoryRef {
+  id: string;
+  fileName: string;
+  title: string;
+}
+
+interface ProviderInfo {
+  type: string;
+  name: string;
+  configured: boolean;
+  models: string[];
+}
+
+interface ProvidersResponse {
+  providers: ProviderInfo[];
+  current?: { provider: string; model: string };
+}
+
+interface StreamEvent {
+  type: 'intent' | 'progress' | 'validation' | 'retry' | 'completion' | 'error';
+  data: unknown;
+}
+
+// ============================================
+// State Reducer
+// ============================================
+
+interface PanelState {
+  sidebarOpen: boolean;
+  showCode: boolean;
+  isDragging: boolean;
+  loading: boolean;
+  isBulkDeleting: boolean;
+  conversation: Message[];
+  recentChats: ChatSession[];
+  orphanStories: OrphanStory[];
+  allGeneratedStories: GeneratedStoryRef[];
+  activeChatId: string | null;
+  activeTitle: string;
+  input: string;
+  attachedImages: AttachedImage[];
+  selectedStoryIds: Set<string>;
+  availableProviders: ProviderInfo[];
+  selectedProvider: string;
+  selectedModel: string;
+  connectionStatus: { connected: boolean; error?: string };
+  streamingState: StreamingState | null;
+  error: string | null;
+  considerations: string;
+  isDarkMode: boolean;
+  storybookMcpAvailable: boolean;
+  useStorybookMcp: boolean;
+}
+
+type PanelAction =
+  | { type: 'TOGGLE_SIDEBAR' }
+  | { type: 'SET_SIDEBAR'; payload: boolean }
+  | { type: 'TOGGLE_CODE' }
+  | { type: 'SET_DRAGGING'; payload: boolean }
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'SET_BULK_DELETING'; payload: boolean }
+  | { type: 'SET_CONVERSATION'; payload: Message[] }
+  | { type: 'ADD_MESSAGE'; payload: Message }
+  | { type: 'SET_RECENT_CHATS'; payload: ChatSession[] }
+  | { type: 'SET_ORPHAN_STORIES'; payload: OrphanStory[] }
+  | { type: 'SET_ALL_GENERATED_STORIES'; payload: GeneratedStoryRef[] }
+  | { type: 'SET_ACTIVE_CHAT'; payload: { id: string | null; title: string } }
+  | { type: 'SET_INPUT'; payload: string }
+  | { type: 'SET_ATTACHED_IMAGES'; payload: AttachedImage[] }
+  | { type: 'ADD_ATTACHED_IMAGE'; payload: AttachedImage }
+  | { type: 'REMOVE_ATTACHED_IMAGE'; payload: string }
+  | { type: 'CLEAR_ATTACHED_IMAGES' }
+  | { type: 'SET_SELECTED_STORY_IDS'; payload: Set<string> }
+  | { type: 'TOGGLE_STORY_SELECTION'; payload: string }
+  | { type: 'SET_PROVIDERS'; payload: ProviderInfo[] }
+  | { type: 'SET_SELECTED_PROVIDER'; payload: string }
+  | { type: 'SET_SELECTED_MODEL'; payload: string }
+  | {
+      type: 'SET_CONNECTION_STATUS';
+      payload: { connected: boolean; error?: string };
+    }
+  | { type: 'SET_STREAMING_STATE'; payload: StreamingState | null }
+  | { type: 'UPDATE_STREAMING_STATE'; payload: Partial<StreamingState> }
+  | { type: 'SET_ERROR'; payload: string | null }
+  | { type: 'SET_CONSIDERATIONS'; payload: string }
+  | { type: 'SET_DARK_MODE'; payload: boolean }
+  | { type: 'SET_STORYBOOK_MCP_AVAILABLE'; payload: boolean }
+  | { type: 'SET_USE_STORYBOOK_MCP'; payload: boolean }
+  | { type: 'NEW_CHAT' };
+
+const initialState: PanelState = {
+  sidebarOpen: true,
+  showCode: false,
+  isDragging: false,
+  loading: false,
+  isBulkDeleting: false,
+  conversation: [],
+  recentChats: [],
+  orphanStories: [],
+  allGeneratedStories: [],
+  activeChatId: null,
+  activeTitle: '',
+  input: '',
+  attachedImages: [],
+  selectedStoryIds: new Set(),
+  availableProviders: [],
+  selectedProvider: '',
+  selectedModel: '',
+  connectionStatus: { connected: false },
+  streamingState: null,
+  error: null,
+  considerations: '',
+  isDarkMode: false,
+  storybookMcpAvailable: false,
+  useStorybookMcp: true, // Default to enabled when available
+};
+
+function panelReducer(state: PanelState, action: PanelAction): PanelState {
+  switch (action.type) {
+    case 'TOGGLE_SIDEBAR':
+      return { ...state, sidebarOpen: !state.sidebarOpen };
+    case 'SET_SIDEBAR':
+      return { ...state, sidebarOpen: action.payload };
+    case 'TOGGLE_CODE':
+      return { ...state, showCode: !state.showCode };
+    case 'SET_DRAGGING':
+      return { ...state, isDragging: action.payload };
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    case 'SET_BULK_DELETING':
+      return { ...state, isBulkDeleting: action.payload };
+    case 'SET_CONVERSATION':
+      return { ...state, conversation: action.payload };
+    case 'ADD_MESSAGE':
+      return {
+        ...state,
+        conversation: [...state.conversation, action.payload],
+      };
+    case 'SET_RECENT_CHATS':
+      return { ...state, recentChats: action.payload };
+    case 'SET_ORPHAN_STORIES':
+      return { ...state, orphanStories: action.payload };
+    case 'SET_ALL_GENERATED_STORIES':
+      return { ...state, allGeneratedStories: action.payload };
+    case 'SET_ACTIVE_CHAT':
+      return {
+        ...state,
+        activeChatId: action.payload.id,
+        activeTitle: action.payload.title,
+      };
+    case 'SET_INPUT':
+      return { ...state, input: action.payload };
+    case 'SET_ATTACHED_IMAGES':
+      return { ...state, attachedImages: action.payload };
+    case 'ADD_ATTACHED_IMAGE':
+      return {
+        ...state,
+        attachedImages: [...state.attachedImages, action.payload],
+      };
+    case 'REMOVE_ATTACHED_IMAGE':
+      return {
+        ...state,
+        attachedImages: state.attachedImages.filter(
+          (img) => img.id !== action.payload
+        ),
+      };
+    case 'CLEAR_ATTACHED_IMAGES':
+      return { ...state, attachedImages: [] };
+    case 'SET_SELECTED_STORY_IDS':
+      return { ...state, selectedStoryIds: action.payload };
+    case 'TOGGLE_STORY_SELECTION': {
+      const newSet = new Set(state.selectedStoryIds);
+      if (newSet.has(action.payload)) {
+        newSet.delete(action.payload);
+      } else {
+        newSet.add(action.payload);
+      }
+      return { ...state, selectedStoryIds: newSet };
+    }
+    case 'SET_PROVIDERS':
+      return { ...state, availableProviders: action.payload };
+    case 'SET_SELECTED_PROVIDER':
+      return { ...state, selectedProvider: action.payload };
+    case 'SET_SELECTED_MODEL':
+      return { ...state, selectedModel: action.payload };
+    case 'SET_CONNECTION_STATUS':
+      return { ...state, connectionStatus: action.payload };
+    case 'SET_STREAMING_STATE':
+      return { ...state, streamingState: action.payload };
+    case 'UPDATE_STREAMING_STATE':
+      return {
+        ...state,
+        streamingState: { ...state.streamingState, ...action.payload },
+      };
+    case 'SET_ERROR':
+      return { ...state, error: action.payload };
+    case 'SET_CONSIDERATIONS':
+      return { ...state, considerations: action.payload };
+    case 'SET_DARK_MODE':
+      return { ...state, isDarkMode: action.payload };
+    case 'SET_STORYBOOK_MCP_AVAILABLE':
+      return { ...state, storybookMcpAvailable: action.payload };
+    case 'SET_USE_STORYBOOK_MCP':
+      return { ...state, useStorybookMcp: action.payload };
+    case 'NEW_CHAT':
+      return {
+        ...state,
+        conversation: [],
+        activeChatId: null,
+        activeTitle: '',
+      };
+    default:
+      return state;
+  }
+}
+
+// ============================================
+// Constants
+// ============================================
+
+const USE_STREAMING = true;
+const MAX_RECENT_CHATS = 20;
+const CHAT_STORAGE_KEY = 'story-ui-chats';
+const PROVIDER_PREFS_KEY = 'story-ui-provider-prefs';
+const MAX_IMAGES = 4;
+const MAX_IMAGE_SIZE_MB = 20;
+
+// ============================================
+// Helper Functions
+// ============================================
+
+function getApiBaseUrl(): string {
+  if (
+    typeof import.meta !== 'undefined' &&
+    (import.meta as any).env?.VITE_STORY_UI_EDGE_URL
+  ) {
+    return (import.meta as any).env.VITE_STORY_UI_EDGE_URL;
+  }
+  if (typeof window !== 'undefined') {
+    if ((window as any).__STORY_UI_EDGE_URL__) {
+      return (window as any).__STORY_UI_EDGE_URL__;
+    }
+    const hostname = window.location.hostname;
+    const isLocalhost =
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('10.');
+    // Always target the Story UI server on localhost so /mcp and /mcp/considerations work even when Storybook is started without the proxy (e.g. npm run storybook only). Requires the Story UI server to be running (npm run story-ui or npm run storybook-with-ui).
+    if (isLocalhost) {
+      const port =
+        (import.meta as any).env?.VITE_STORY_UI_PORT ||
+        (window as any).__STORY_UI_PORT__ ||
+        (window as any).STORY_UI_MCP_PORT ||
+        '4001';
+      return `http://localhost:${port}`;
+    }
+    // Cloud deployment
+    return window.location.origin;
+  }
+  let port = '4001';
+  if (
+    typeof import.meta !== 'undefined' &&
+    (import.meta as any).env?.VITE_STORY_UI_PORT
+  ) {
+    port = (import.meta as any).env.VITE_STORY_UI_PORT;
+  } else if (typeof window !== 'undefined') {
+    if ((window as any).__STORY_UI_PORT__) {
+      port = (window as any).__STORY_UI_PORT__;
+    } else if ((window as any).STORY_UI_MCP_PORT) {
+      port = (window as any).STORY_UI_MCP_PORT;
+    }
+  }
+  return `http://localhost:${port}`;
+}
+
+const API_BASE = getApiBaseUrl();
+const MCP_API = `${API_BASE}/mcp/generate-story`;
+const MCP_STREAM_API = `${API_BASE}/mcp/generate-story-stream`;
+const PROVIDERS_API = `${API_BASE}/mcp/providers`;
+const STORIES_API = `${API_BASE}/story-ui/stories`;
+const ORPHAN_STORIES_API = `${API_BASE}/story-ui/orphan-stories`;
+const CONSIDERATIONS_API = `${API_BASE}/story-ui/considerations`;
+
+function isEdgeMode(): boolean {
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const isLocalhost =
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('10.');
+    return !isLocalhost;
+  }
+  return false;
+}
+
+function getConnectionDisplayText(): string {
+  const baseUrl = getApiBaseUrl();
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname.includes('railway.app')) return 'Railway Cloud';
+    if (hostname.includes('workers.dev')) return 'Cloudflare Edge';
+    if (hostname.includes('southleft.com')) return 'Southleft Cloud';
+    const isLocalhost =
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('10.');
+    if (!isLocalhost) return `Cloud (${hostname})`;
+  }
+  const port = baseUrl.match(/:(\d+)/)?.[1] || '4001';
+  return `localhost:${port}`;
+}
+
+function loadChats(): ChatSession[] {
+  try {
+    const stored = localStorage.getItem(CHAT_STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch (e) {
+    console.error('Failed to load chats:', e);
+  }
+  return [];
+}
+
+function saveChats(chats: ChatSession[]): void {
+  try {
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chats));
+  } catch (e) {
+    console.error('Failed to save chats:', e);
+  }
+}
+
+interface ProviderPrefs {
+  provider: string;
+  model: string;
+}
+
+function loadProviderPrefs(): ProviderPrefs | null {
+  try {
+    const stored = localStorage.getItem(PROVIDER_PREFS_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch (e) {
+    console.error('Failed to load provider preferences:', e);
+  }
+  return null;
+}
+
+function saveProviderPrefs(provider: string, model: string): void {
+  try {
+    localStorage.setItem(
+      PROVIDER_PREFS_KEY,
+      JSON.stringify({ provider, model })
+    );
+  } catch (e) {
+    console.error('Failed to save provider preferences:', e);
+  }
+}
+
+// Storage key for Storybook MCP preference
+const STORYBOOK_MCP_PREF_KEY = 'story-ui-use-storybook-mcp';
+
+/**
+ * Detect if Storybook MCP addon is available.
+ * Checks for the MCP endpoint that @storybook/addon-mcp exposes.
+ * The addon returns SSE (Server-Sent Events) responses, not JSON.
+ */
+async function detectStorybookMcp(): Promise<boolean> {
+  try {
+    // Try to detect Storybook MCP on the same origin (works when running in Storybook)
+    const storybookOrigin =
+      typeof window !== 'undefined' ? window.location.origin : '';
+    const mcpEndpoint = `${storybookOrigin}/mcp`;
+
+    const response = await fetch(mcpEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'tools/list',
+        params: {},
+      }),
+    });
+
+    if (!response.ok) return false;
+
+    // Storybook MCP addon returns SSE (Server-Sent Events) responses
+    // Check content-type or read a small portion to verify it's SSE format
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('text/event-stream')) {
+      console.log('[StoryUI] Storybook MCP addon detected (SSE endpoint)');
+      return true;
+    }
+
+    // Also check by reading a portion of the response
+    const text = await response.text();
+    if (text.startsWith('event:') || text.startsWith('data:')) {
+      console.log('[StoryUI] Storybook MCP addon detected (SSE response)');
+      return true;
+    }
+
+    // Try parsing as JSON as fallback (some implementations may return JSON)
+    try {
+      const data = JSON.parse(text);
+      if (data && data.result && Array.isArray(data.result.tools)) {
+        console.log('[StoryUI] Storybook MCP addon detected (JSON response)');
+        return true;
+      }
+    } catch {
+      // Not JSON, but might still be valid SSE that we missed
+    }
+
+    return false;
+  } catch (e) {
+    // Not available - this is normal if addon-mcp isn't installed
+    return false;
+  }
+}
+
+function loadStorybookMcpPref(): boolean {
+  try {
+    const stored = localStorage.getItem(STORYBOOK_MCP_PREF_KEY);
+    if (stored !== null) return JSON.parse(stored);
+  } catch (e) {
+    console.error('Failed to load Storybook MCP preference:', e);
+  }
+  return true; // Default to enabled
+}
+
+function saveStorybookMcpPref(enabled: boolean): void {
+  try {
+    localStorage.setItem(STORYBOOK_MCP_PREF_KEY, JSON.stringify(enabled));
+  } catch (e) {
+    console.error('Failed to save Storybook MCP preference:', e);
+  }
+}
+
+async function testMCPConnection(): Promise<{
+  connected: boolean;
+  error?: string;
+}> {
+  try {
+    const response = await fetch(PROVIDERS_API, { method: 'GET' });
+    if (response.ok) return { connected: true };
+    return { connected: false, error: `Server returned ${response.status}` };
+  } catch (e) {
+    return { connected: false, error: 'Cannot connect to MCP server' };
+  }
+}
+
+// Simply load chats from localStorage - don't filter based on server state
+// Chats should persist independently of whether story files exist
+async function syncWithActualStories(): Promise<ChatSession[]> {
+  return loadChats();
+}
+
+async function _fetchOrphanStories(): Promise<OrphanStory[]> {
+  try {
+    const response = await fetch(STORIES_API);
+    if (!response.ok) return [];
+    const data = await response.json();
+    const serverStories = data.stories || [];
+    const localChats = loadChats();
+    const chatIds = new Set(localChats.map((c) => c.id));
+    return serverStories
+      .filter((s: any) => !chatIds.has(s.id))
+      .map((s: any) => ({ id: s.id, title: s.title, fileName: s.fileName }));
+  } catch (e) {
+    return [];
+  }
+}
+
+async function deleteStoryAndChat(chatId: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${STORIES_API}/${chatId}`, {
+      method: 'DELETE',
+    });
+    // Delete chat from localStorage if:
+    // - Story was successfully deleted (200/204)
+    // - Story doesn't exist (404) - orphan chat case
+    if (response.ok || response.status === 404) {
+      const chats = loadChats().filter((c) => c.id !== chatId);
+      saveChats(chats);
+      return true;
+    }
+    return false;
+  } catch (e) {
+    // On network error, still allow removing the chat from localStorage
+    // since the story file may not exist anyway
+    const chats = loadChats().filter((c) => c.id !== chatId);
+    saveChats(chats);
+    return true;
+  }
+}
+
+function _formatTime(timestamp: number): string {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  if (days < 7) return `${days}d ago`;
+  return new Date(timestamp).toLocaleDateString();
+}
+
+function getModelDisplayName(model: string): string {
+  const displayNames: Record<string, string> = {
+    // Claude models
+    'claude-opus-4-5-20251101': 'Claude Opus 4.5',
+    'claude-sonnet-4-5-20250929': 'Claude Sonnet 4.5',
+    'claude-haiku-4-5-20251001': 'Claude Haiku 4.5',
+    'claude-sonnet-4-20250514': 'Claude Sonnet 4',
+    // OpenAI models
+    'gpt-5.2': 'GPT-5.2',
+    'gpt-5.1': 'GPT-5.1',
+    'gpt-4o': 'GPT-4o',
+    'gpt-4o-mini': 'GPT-4o Mini',
+    o1: 'o1',
+    // Gemini models
+    'gemini-3-pro-preview': 'Gemini 3 Pro Preview',
+    'gemini-2.5-pro': 'Gemini 2.5 Pro',
+    'gemini-2.5-flash': 'Gemini 2.5 Flash',
+    'gemini-2.0-flash': 'Gemini 2.0 Flash',
+    'gemini-1.5-pro': 'Gemini 1.5 Pro',
+  };
+  return displayNames[model] || model;
+}
+
+// ============================================
+// Icons (Lucide-style SVG)
+// ============================================
+
+const Icons = {
+  plus: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg>
+  ),
+  messageSquare: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+  panelLeft: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M9 3v18" />
+    </svg>
+  ),
+  x: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  ),
+  image: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+      <circle cx="9" cy="9" r="2" />
+      <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+    </svg>
+  ),
+  send: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m22 2-7 20-4-9-9-4Z" />
+      <path d="M22 2 11 13" />
+    </svg>
+  ),
+  chevronDown: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  ),
+  trash: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 6h18" />
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+    </svg>
+  ),
+  sparkles: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+      <path d="M5 3v4" />
+      <path d="M19 17v4" />
+      <path d="M3 5h4" />
+      <path d="M17 19h4" />
+    </svg>
+  ),
+  moreVertical: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="12" cy="5" r="1" />
+      <circle cx="12" cy="19" r="1" />
+    </svg>
+  ),
+  pencil: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+      <path d="m15 5 4 4" />
+    </svg>
+  ),
+  check: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  ),
+  checkCircle: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <path d="M22 4 12 14.01l-3-3" />
+    </svg>
+  ),
+  xCircle: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="m15 9-6 6" />
+      <path d="m9 9 6 6" />
+    </svg>
+  ),
+  lightbulb: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+    </svg>
+  ),
+  wrench: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+    </svg>
+  ),
+};
+
+// ============================================
+// Markdown Renderer
+// ============================================
+
+function renderMarkdown(content: string): React.ReactNode {
+  const elements: React.ReactNode[] = [];
+  let key = 0;
+
+  // Split content into blocks (paragraphs, lists, headings)
+  const blocks = content.split(/\n\n+/);
+
+  blocks.forEach((block) => {
+    if (!block.trim()) return;
+
+    // Check for headings (# ## ###)
+    const headingMatch = block.match(/^(#{1,6})\s+(.+)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const text = headingMatch[2];
+      const inlineContent = parseInline(text);
+
+      switch (level) {
+        case 1:
+          elements.push(<h1 key={key++}>{inlineContent}</h1>);
+          break;
+        case 2:
+          elements.push(<h2 key={key++}>{inlineContent}</h2>);
+          break;
+        case 3:
+          elements.push(<h3 key={key++}>{inlineContent}</h3>);
+          break;
+        case 4:
+          elements.push(<h4 key={key++}>{inlineContent}</h4>);
+          break;
+        case 5:
+          elements.push(<h5 key={key++}>{inlineContent}</h5>);
+          break;
+        case 6:
+          elements.push(<h6 key={key++}>{inlineContent}</h6>);
+          break;
+      }
+      return;
+    }
+
+    // Check for ordered lists (1. 2. 3.)
+    const orderedListMatch = block.match(/^(\d+\.\s+.+)$/m);
+    if (orderedListMatch) {
+      const items = block.split('\n').filter((line) => /^\d+\.\s+/.test(line));
+      const listItems = items.map((item, i) => {
+        const text = item.replace(/^\d+\.\s+/, '');
+        return <li key={i}>{parseInline(text)}</li>;
+      });
+      elements.push(<ol key={key++}>{listItems}</ol>);
+      return;
+    }
+
+    // Check for unordered lists (- or *)
+    const unorderedListMatch = block.match(/^[-*]\s+.+$/m);
+    if (unorderedListMatch) {
+      const items = block.split('\n').filter((line) => /^[-*]\s+/.test(line));
+      const listItems = items.map((item, i) => {
+        const text = item.replace(/^[-*]\s+/, '');
+        return <li key={i}>{parseInline(text)}</li>;
+      });
+      elements.push(<ul key={key++}>{listItems}</ul>);
+      return;
+    }
+
+    // Regular paragraph with line breaks preserved
+    const lines = block.split('\n');
+    const paragraphElements = lines.map((line, i) => (
+      <React.Fragment key={i}>
+        {parseInline(line)}
+        {i < lines.length - 1 && <br />}
+      </React.Fragment>
+    ));
+    elements.push(<p key={key++}>{paragraphElements}</p>);
+  });
+
+  return <div className="sui-markdown">{elements}</div>;
+}
+
+// Parse inline markdown elements and status icons
+function parseInline(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  let remaining = text;
+
+  // Replace status markers with icon components
+  // Use {{ICON:n}} format to avoid conflict with markdown underscore patterns
+  const iconReplacements = [
+    {
+      pattern: /\[SUCCESS\]/g,
+      index: 0,
+      icon: (
+        <span
+          key="icon-0"
+          className="sui-icon-inline sui-icon-success"
+          aria-label="Success"
+          dangerouslySetInnerHTML={{ __html: checkmarkFilledIcon }}
+        />
+      ),
+    },
+    {
+      pattern: /\[ERROR\]/g,
+      index: 1,
+      icon: (
+        <span
+          key="icon-1"
+          className="sui-icon-inline sui-icon-error"
+          aria-label="Error"
+        >
+          {Icons.xCircle}
+        </span>
+      ),
+    },
+    {
+      pattern: /\[TIP\]/g,
+      index: 2,
+      icon: (
+        <span
+          key="icon-2"
+          className="sui-icon-inline sui-icon-tip"
+          aria-label="Tip"
+        >
+          {Icons.lightbulb}
+        </span>
+      ),
+    },
+    {
+      pattern: /\[WRENCH\]/g,
+      index: 3,
+      icon: (
+        <span
+          key="icon-3"
+          className="sui-icon-inline sui-icon-wrench"
+          aria-label="Auto-fixed"
+        >
+          {Icons.wrench}
+        </span>
+      ),
+    },
+  ];
+
+  iconReplacements.forEach(({ pattern, index, icon }) => {
+    remaining = remaining.replace(pattern, `{{ICON:${index}}}`);
+    parts[index] = icon;
+  });
+
+  // Parse bold, code, italic, and icon placeholders
+  // Icon placeholder {{ICON:n}} uses curly braces to avoid markdown conflicts
+  const regex = /(\*\*[^*]+\*\*|`[^`]+`|_[^_]+_|\{\{ICON:\d+\}\})/g;
+  const tokens = remaining.split(regex);
+
+  return tokens
+    .map((token, i) => {
+      if (token.startsWith('**') && token.endsWith('**')) {
+        return <strong key={`inline-${i}`}>{token.slice(2, -2)}</strong>;
+      }
+      if (token.startsWith('`') && token.endsWith('`')) {
+        return <code key={`inline-${i}`}>{token.slice(1, -1)}</code>;
+      }
+      if (
+        token.startsWith('_') &&
+        token.endsWith('_') &&
+        !token.startsWith('{{')
+      ) {
+        return <em key={`inline-${i}`}>{token.slice(1, -1)}</em>;
+      }
+      if (token.startsWith('{{ICON:')) {
+        const iconIndex = parseInt(
+          token.match(/\{\{ICON:(\d+)\}\}/)?.[1] || '0'
+        );
+        return parts[iconIndex] || token;
+      }
+      return token;
+    })
+    .filter(Boolean);
+}
+
+// ============================================
+// Sub-Components
+// ============================================
+
+/** Kept for potential reuse; panel uses kyn-tag for connection badge */
+const _Badge: React.FC<{
+  variant?: string;
+  children: React.ReactNode;
+  className?: string;
+}> = ({ variant = 'default', children, className = '' }) => (
+  <span className={`sui-badge sui-badge-${variant} ${className}`}>
+    {children}
+  </span>
+);
+
+/** Wrapper for kyn-button so we can use onClick (Shidoka fires 'on-click' custom event) */
+interface ShidokaButtonProps {
+  kind?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'ghost'
+    | 'ghost-destructive'
+    | 'danger';
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
+  type?: 'button' | 'submit';
+  onClick?: (e: Event) => void;
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  'aria-label'?: string;
+  title?: string;
+  iconPosition?: 'left' | 'right' | 'center';
+}
+
+const ShidokaButton: React.FC<ShidokaButtonProps> = ({
+  kind = 'primary',
+  size = 'medium',
+  disabled,
+  type = 'button',
+  onClick,
+  children,
+  className = '',
+  style,
+  'aria-label': ariaLabel,
+  title,
+  iconPosition,
+}) => {
+  const ref = useRef<
+    | (HTMLElement & {
+        addEventListener: (type: string, fn: (e: CustomEvent) => void) => void;
+        disabled?: boolean;
+      })
+    | null
+  >(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !onClick) return;
+    const handler = (e: CustomEvent) =>
+      onClick((e.detail?.origEvent as Event) || (e as unknown as Event));
+    el.addEventListener('on-click', handler as EventListener);
+    return () => el.removeEventListener('on-click', handler as EventListener);
+  }, [onClick]);
+  // Sync disabled: React doesn't always update boolean props on custom elements, so set the property explicitly
+  useEffect(() => {
+    if (ref.current) ref.current.disabled = disabled ?? false;
+  }, [disabled]);
+  return React.createElement(
+    'kyn-button',
+    {
+      ref,
+      kind,
+      size,
+      type,
+      disabled,
+      className,
+      style,
+      'aria-label': ariaLabel,
+      title,
+      iconPosition,
+    },
+    children
+  );
+};
+
+interface ProgressIndicatorProps {
+  streamingState: StreamingState;
+  apiBaseUrl?: string;
+}
+
+const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
+  streamingState,
+  apiBaseUrl = '',
+}) => {
+  const { progress, retry, completion, error } = streamingState;
+  const [fetchedCode, setFetchedCode] = useState<string | null>(null);
+
+  // When completion has fileName but no code, fetch file content from Story UI server (GET /mcp/stories/:storyId/content).
+  useEffect(() => {
+    if (!completion?.fileName || completion.code != null) {
+      setFetchedCode(null);
+      return;
+    }
+    if (!apiBaseUrl) return;
+    let cancelled = false;
+    const storyId = completion.fileName.replace(
+      /\.stories\.(tsx|ts|svelte|js)$/i,
+      ''
+    );
+    fetch(`${apiBaseUrl}/mcp/stories/${encodeURIComponent(storyId)}/content`)
+      .then((res) => (res.ok ? res.text() : null))
+      .then((text) => {
+        if (!cancelled && text) setFetchedCode(text);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [completion?.fileName, completion?.code, apiBaseUrl]);
+
+  if (error) {
+    return (
+      <div className="sui-error" role="alert">
+        <strong>{error.message}</strong>
+        {error.details && <div>{error.details}</div>}
+        {error.suggestion && <div>{error.suggestion}</div>}
+      </div>
+    );
+  }
+  if (completion) {
+    // Determine status icon and class based on success and fallback state
+    const isFallback = completion.isFallback === true;
+    const statusIcon = completion.success
+      ? '\u2705'
+      : isFallback
+      ? '\u26A0\uFE0F'
+      : '\u274C';
+    const statusClass = completion.success
+      ? ''
+      : isFallback
+      ? 'sui-completion-fallback'
+      : 'sui-completion-error';
+    const displayCode =
+      completion.code && completion.code.trim().length > 0
+        ? completion.code
+        : fetchedCode;
+    const hasCode = displayCode != null && displayCode.trim().length > 0;
+
+    return (
+      <div className={`sui-completion ${statusClass}`}>
+        <div className="sui-completion-header">
+          <span>{statusIcon}</span>
+          <span>
+            {completion.summary.action}: {completion.title}
+          </span>
+        </div>
+        {isFallback && (
+          <div className="sui-completion-fallback-warning">
+            <strong>Error Placeholder Created</strong>
+            <p>
+              Generation failed after retries. A placeholder story was saved
+              that you may want to delete or regenerate.
+            </p>
+          </div>
+        )}
+        {completion.componentsUsed.length > 0 && (
+          <div className="sui-completion-components">
+            {completion.componentsUsed.map((comp, i) => (
+              <span key={i} className="sui-completion-tag">
+                {comp.name}
+              </span>
+            ))}
+          </div>
+        )}
+        {hasCode && (
+          <div className="sui-completion-code">
+            {React.createElement('kyn-block-code-view', {
+              codeViewLabel: 'Generated story',
+              copyOptionVisible: true,
+              copyButtonText: 'Copy',
+              language: 'typescript',
+              codeSnippet: displayCode,
+              darkTheme: 'default',
+              lineNumbers: true,
+              maxHeight: 320,
+            })}
+          </div>
+        )}
+        {completion.metrics && (
+          <div className="sui-completion-metrics">
+            <span>{(completion.metrics.totalTimeMs / 1000).toFixed(1)}s</span>
+            <span>
+              {completion.metrics.llmCallsCount}{' '}
+              {completion.metrics.llmCallsCount === 1
+                ? 'generation'
+                : 'generations'}
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  }
+  const step = progress?.step ?? 0;
+  const total = Math.max(progress?.totalSteps ?? 1, 1);
+  const value = progress ? Math.min(step, total) : 0;
+
+  return (
+    <div className="sui-progress-wrapper">
+      {React.createElement('kyn-progress-bar', {
+        status: 'active',
+        value: progress ? value : null,
+        max: progress ? total : null,
+        label: progress?.message || "We're generating your story...",
+        helperText: progress ? `${step}/${total}` : '',
+        progressBarId: 'story-ui-generation-progress',
+        showInlineLoadStatus: true,
+        showActiveHelperText: false,
+      })}
+      {retry && (
+        <div className="sui-progress-retry">
+          Retry {retry.attempt}/{retry.maxAttempts}: {retry.reason}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ============================================
+// Main Component
+// ============================================
+
+interface StoryUIPanelProps {
+  mcpPort?: number | string;
+}
+
+function StoryUIPanel({ mcpPort }: StoryUIPanelProps) {
+  const [state, dispatch] = useReducer(panelReducer, initialState);
+  const [contextMenuId, setContextMenuId] = useState<string | null>(null);
+  const [renamingChatId, setRenamingChatId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState('');
+  const [orphanCount, setOrphanCount] = useState<number>(0);
+  const [isDeletingOrphans, setIsDeletingOrphans] = useState<boolean>(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatAreaRef = useRef<HTMLElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const sidebarContentRef = useRef<HTMLDivElement>(null);
+  const providerDropdownRef = useRef<(HTMLElement & { value: string }) | null>(
+    null
+  );
+  const modelDropdownRef = useRef<(HTMLElement & { value: string }) | null>(
+    null
+  );
+
+  // Auto-resize textarea based on content
+  const adjustTextareaHeight = useCallback(() => {
+    const textarea = inputRef.current;
+    if (textarea) {
+      // Reset height to auto to get the correct scrollHeight
+      textarea.style.height = 'auto';
+      // Set height to scrollHeight, capped at max-height (200px)
+      const maxHeight = 200;
+      const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+      textarea.style.height = `${newHeight}px`;
+    }
+  }, []);
+
+  // Adjust height when input changes
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [state.input, adjustTextareaHeight]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const hasShownRefreshHint = useRef(false);
+
+  // Track stories for MCP external generation detection
+  // Used to detect when stories are created via MCP remote (Claude Desktop)
+  // and trigger automatic refresh since MCP has no browser context
+  const panelGeneratedStoryIds = useRef<Set<string>>(new Set());
+  const knownStoryIds = useRef<Set<string>>(new Set());
+  const isPollingInitialized = useRef(false);
+
+  // Set port override if provided
+  useEffect(() => {
+    if (mcpPort && typeof window !== 'undefined') {
+      (window as any).STORY_UI_MCP_PORT = String(mcpPort);
+    }
+  }, [mcpPort]);
+
+  // Poll for MCP-generated stories only when Story UI server is connected (avoids ERR_CONNECTION_REFUSED in console)
+  useEffect(() => {
+    if (!state.connectionStatus.connected) return;
+
+    const POLL_INTERVAL_MS = 5000;
+    const pollForExternalStories = async () => {
+      try {
+        const baseUrl = getApiBaseUrl();
+        const response = await fetch(`${baseUrl}/story-ui/stories`);
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const currentStoryIds = new Set<string>(
+          data.stories?.map((s: { id: string }) => s.id) || []
+        );
+
+        if (!isPollingInitialized.current) {
+          knownStoryIds.current = currentStoryIds;
+          isPollingInitialized.current = true;
+          console.log(
+            '[Story UI] MCP story polling initialized with',
+            currentStoryIds.size,
+            'stories'
+          );
+          return;
+        }
+
+        for (const storyId of currentStoryIds) {
+          if (
+            !knownStoryIds.current.has(storyId) &&
+            !panelGeneratedStoryIds.current.has(storyId)
+          ) {
+            console.log(
+              '[Story UI] Detected externally generated story:',
+              storyId
+            );
+            knownStoryIds.current = currentStoryIds;
+            setTimeout(() => {
+              try {
+                if (window.top && window.top !== window)
+                  window.top.location.reload();
+                else if (window.parent && window.parent !== window)
+                  window.parent.location.reload();
+                else window.location.reload();
+              } catch {
+                console.warn(
+                  '[Story UI] Could not auto-refresh for MCP-generated story'
+                );
+              }
+            }, 1000);
+            return;
+          }
+        }
+        knownStoryIds.current = currentStoryIds;
+      } catch {
+        // Server unavailable - ignore (e.g. server stopped mid-session)
+      }
+    };
+
+    const intervalId = setInterval(pollForExternalStories, POLL_INTERVAL_MS);
+    pollForExternalStories();
+    return () => clearInterval(intervalId);
+  }, [state.connectionStatus.connected]);
+
+  // Detect Storybook MCP addon availability (only when panel uses same origin; skip when using Story UI server on 4001 to avoid 404)
+  useEffect(() => {
+    const checkStorybookMcp = async () => {
+      const apiBase = getApiBaseUrl();
+      if (apiBase !== '' && apiBase !== undefined) {
+        // Panel is targeting a different origin (e.g. http://localhost:4001), so Storybook MCP addon isn't used; skip probe to avoid 404
+        dispatch({ type: 'SET_STORYBOOK_MCP_AVAILABLE', payload: false });
+        return;
+      }
+      const available = await detectStorybookMcp();
+      dispatch({ type: 'SET_STORYBOOK_MCP_AVAILABLE', payload: available });
+
+      // Load saved preference if MCP is available
+      if (available) {
+        const savedPref = loadStorybookMcpPref();
+        dispatch({ type: 'SET_USE_STORYBOOK_MCP', payload: savedPref });
+      }
+    };
+
+    checkStorybookMcp();
+  }, []);
+
+  // Detect Storybook MANAGER theme (not preview background)
+  // This ensures Story UI follows Storybook's overall theme, not the story preview background toggle
+  useEffect(() => {
+    const detectManagerTheme = () => {
+      let managerIsDark = false;
+
+      // Strategy 1: Check parent frame for Storybook manager theme (Storybook 8+)
+      // The manager theme is set in .storybook/manager.tsx via addons.setConfig({ theme: themes.dark })
+      try {
+        if (window.parent !== window) {
+          const parentBody = window.parent.document.body;
+          const parentHtml = window.parent.document.documentElement;
+
+          // Check for Storybook's dark theme class (most reliable)
+          if (
+            parentBody.classList.contains('sb-dark') ||
+            parentHtml.classList.contains('sb-dark') ||
+            parentHtml.getAttribute('data-theme') === 'dark' ||
+            parentBody.getAttribute('data-theme') === 'dark'
+          ) {
+            managerIsDark = true;
+          }
+
+          // Check Storybook manager sidebar/header background color as fallback
+          // The manager UI elements use the theme colors, not the preview background
+          const managerEl = window.parent.document.querySelector(
+            '.sb-sidebar, [class*="sidebar"], .sb-bar'
+          );
+          if (managerEl && !managerIsDark) {
+            const bgColor = window.getComputedStyle(managerEl).backgroundColor;
+            const rgb = bgColor.match(/\d+/g);
+            if (rgb && rgb.length >= 3) {
+              const luminance =
+                (0.299 * parseInt(rgb[0]) +
+                  0.587 * parseInt(rgb[1]) +
+                  0.114 * parseInt(rgb[2])) /
+                255;
+              managerIsDark = luminance < 0.5;
+            }
+          }
+        }
+      } catch {
+        // Cross-origin access not allowed, fall back to system preference
+      }
+
+      // Strategy 2: If not in iframe or can't detect, use system preference
+      if (!managerIsDark) {
+        const systemPrefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)'
+        ).matches;
+        managerIsDark = systemPrefersDark;
+      }
+
+      dispatch({ type: 'SET_DARK_MODE', payload: managerIsDark });
+    };
+
+    detectManagerTheme();
+
+    // Poll for changes (manager theme changes are rare but possible)
+    const intervalId = setInterval(detectManagerTheme, 1000);
+
+    // Listen for system preference changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', detectManagerTheme);
+
+    // Observe parent document for theme changes if accessible
+    let parentObserver: MutationObserver | null = null;
+    try {
+      if (window.parent !== window) {
+        parentObserver = new MutationObserver(detectManagerTheme);
+        parentObserver.observe(window.parent.document.body, {
+          attributes: true,
+          attributeFilter: ['class', 'data-theme'],
+        });
+        parentObserver.observe(window.parent.document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class', 'data-theme'],
+        });
+      }
+    } catch {
+      // Cross-origin, ignore
+    }
+
+    return () => {
+      clearInterval(intervalId);
+      mediaQuery.removeEventListener('change', detectManagerTheme);
+      parentObserver?.disconnect();
+    };
+  }, []);
+
+  // Initialize on mount
+  useEffect(() => {
+    const initialize = async () => {
+      const connectionTest = await testMCPConnection();
+      dispatch({ type: 'SET_CONNECTION_STATUS', payload: connectionTest });
+      if (connectionTest.connected) {
+        try {
+          const res = await fetch(PROVIDERS_API);
+          if (res.ok) {
+            const data: ProvidersResponse = await res.json();
+            const configuredProviders = data.providers.filter(
+              (p) => p.configured
+            );
+            // If the server's current model isn't in the provider's hardcoded list,
+            // add it so the dropdown shows the actual model being used
+            if (data.current) {
+              const currentProvider = configuredProviders.find(
+                (p) => p.type === data.current!.provider.toLowerCase()
+              );
+              if (currentProvider) {
+                if (!currentProvider.models.includes(data.current.model)) {
+                  currentProvider.models.unshift(data.current.model);
+                }
+                // Rename "OpenAI" to "OpenRouter" when using an OpenRouter-compatible endpoint
+                if (currentProvider.name === 'OpenAI' && data.current.model && !data.current.model.startsWith('gpt')) {
+                  currentProvider.name = 'OpenRouter';
+                }
+              }
+            }
+            dispatch({ type: 'SET_PROVIDERS', payload: configuredProviders });
+
+            // Check for saved provider preferences first
+            const savedPrefs = loadProviderPrefs();
+            if (savedPrefs) {
+              // Verify saved provider is still configured
+              const savedProviderExists = configuredProviders.some(
+                (p) => p.type === savedPrefs.provider
+              );
+              if (savedProviderExists) {
+                dispatch({
+                  type: 'SET_SELECTED_PROVIDER',
+                  payload: savedPrefs.provider,
+                });
+                // Verify saved model exists for this provider
+                const providerInfo = configuredProviders.find(
+                  (p) => p.type === savedPrefs.provider
+                );
+                if (providerInfo?.models.includes(savedPrefs.model)) {
+                  dispatch({
+                    type: 'SET_SELECTED_MODEL',
+                    payload: savedPrefs.model,
+                  });
+                } else if (providerInfo?.models.length) {
+                  // Model no longer available, use first model of saved provider
+                  dispatch({
+                    type: 'SET_SELECTED_MODEL',
+                    payload: providerInfo.models[0],
+                  });
+                }
+              } else if (data.current) {
+                // Saved provider no longer configured, fall back to server default
+                dispatch({
+                  type: 'SET_SELECTED_PROVIDER',
+                  payload: data.current.provider.toLowerCase(),
+                });
+                dispatch({
+                  type: 'SET_SELECTED_MODEL',
+                  payload: data.current.model,
+                });
+              }
+            } else if (data.current) {
+              // No saved preferences, use server default
+              dispatch({
+                type: 'SET_SELECTED_PROVIDER',
+                payload: data.current.provider.toLowerCase(),
+              });
+              dispatch({
+                type: 'SET_SELECTED_MODEL',
+                payload: data.current.model,
+              });
+            }
+          }
+        } catch (e) {
+          console.error('Failed to fetch providers:', e);
+        }
+        try {
+          const res = await fetch(CONSIDERATIONS_API);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.hasConsiderations && data.considerations) {
+              dispatch({
+                type: 'SET_CONSIDERATIONS',
+                payload: data.considerations,
+              });
+            }
+          }
+        } catch (e) {
+          console.error('Failed to fetch considerations:', e);
+        }
+        const syncedChats = await syncWithActualStories();
+        const sortedChats = syncedChats
+          .sort((a, b) => b.lastUpdated - a.lastUpdated)
+          .slice(0, MAX_RECENT_CHATS);
+        dispatch({ type: 'SET_RECENT_CHATS', payload: sortedChats });
+        if (sortedChats.length > 0) {
+          dispatch({
+            type: 'SET_CONVERSATION',
+            payload: sortedChats[0].conversation,
+          });
+          dispatch({
+            type: 'SET_ACTIVE_CHAT',
+            payload: { id: sortedChats[0].id, title: sortedChats[0].title },
+          });
+        }
+      } else {
+        const localChats = loadChats();
+        dispatch({ type: 'SET_RECENT_CHATS', payload: localChats });
+      }
+    };
+    initialize();
+  }, []);
+
+  // Scroll to bottom on new messages
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [state.conversation, state.loading]);
+
+  // Save provider preferences when they change
+  useEffect(() => {
+    if (state.selectedProvider && state.selectedModel) {
+      saveProviderPrefs(state.selectedProvider, state.selectedModel);
+    }
+  }, [state.selectedProvider, state.selectedModel]);
+
+  // File handling
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        resolve(result.split(',')[1]);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    const errors: string[] = [];
+    for (
+      let i = 0;
+      i < files.length && state.attachedImages.length + i < MAX_IMAGES;
+      i++
+    ) {
+      const file = files[i];
+      if (!file.type.startsWith('image/')) {
+        errors.push(`${file.name}: Not an image file`);
+        continue;
+      }
+      if (file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+        errors.push(
+          `${file.name}: File too large (max ${MAX_IMAGE_SIZE_MB}MB)`
+        );
+        continue;
+      }
+      try {
+        const base64 = await fileToBase64(file);
+        const preview = URL.createObjectURL(file);
+        dispatch({
+          type: 'ADD_ATTACHED_IMAGE',
+          payload: {
+            id: `${Date.now()}-${i}`,
+            file,
+            preview,
+            base64,
+            mediaType: file.type || 'image/png',
+          },
+        });
+      } catch {
+        errors.push(`${file.name}: Failed to process`);
+      }
+    }
+    if (errors.length > 0)
+      dispatch({ type: 'SET_ERROR', payload: errors.join('\n') });
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const removeAttachedImage = (id: string) => {
+    const img = state.attachedImages.find((i) => i.id === id);
+    if (img) URL.revokeObjectURL(img.preview);
+    dispatch({ type: 'REMOVE_ATTACHED_IMAGE', payload: id });
+  };
+
+  const clearAttachedImages = () => {
+    state.attachedImages.forEach((img) => URL.revokeObjectURL(img.preview));
+    dispatch({ type: 'CLEAR_ATTACHED_IMAGES' });
+  };
+
+  // Drag and drop handlers
+  const handleDragEnter = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.dataTransfer.types.includes('Files'))
+      dispatch({ type: 'SET_DRAGGING', payload: true });
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!e.currentTarget.contains(e.relatedTarget as Node))
+      dispatch({ type: 'SET_DRAGGING', payload: false });
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDrop = useCallback(
+    async (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dispatch({ type: 'SET_DRAGGING', payload: false });
+      const files = Array.from(e.dataTransfer.files);
+      const imageFiles = files.filter((f) => f.type.startsWith('image/'));
+      if (imageFiles.length === 0) {
+        dispatch({
+          type: 'SET_ERROR',
+          payload: 'Please drop image files only',
+        });
+        return;
+      }
+      const errors: string[] = [];
+      for (
+        let i = 0;
+        i < imageFiles.length && state.attachedImages.length + i < MAX_IMAGES;
+        i++
+      ) {
+        const file = imageFiles[i];
+        if (file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+          errors.push(`${file.name}: File too large`);
+          continue;
+        }
+        try {
+          const base64 = await fileToBase64(file);
+          const preview = URL.createObjectURL(file);
+          dispatch({
+            type: 'ADD_ATTACHED_IMAGE',
+            payload: {
+              id: `${Date.now()}-${i}`,
+              file,
+              preview,
+              base64,
+              mediaType: file.type || 'image/png',
+            },
+          });
+        } catch {
+          errors.push(`${file.name}: Failed to process`);
+        }
+      }
+      if (errors.length > 0)
+        dispatch({ type: 'SET_ERROR', payload: errors.join('\n') });
+    },
+    [state.attachedImages.length]
+  );
+
+  // Paste handler
+  const handlePaste = useCallback(
+    async (e: React.ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      const imageItems: DataTransferItem[] = [];
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith('image/')) imageItems.push(items[i]);
+      }
+      if (imageItems.length === 0) return;
+      e.preventDefault();
+      if (state.attachedImages.length >= MAX_IMAGES) {
+        dispatch({
+          type: 'SET_ERROR',
+          payload: `Maximum ${MAX_IMAGES} images allowed`,
+        });
+        return;
+      }
+      for (
+        let i = 0;
+        i < imageItems.length && state.attachedImages.length + i < MAX_IMAGES;
+        i++
+      ) {
+        const file = imageItems[i].getAsFile();
+        if (!file) continue;
+        try {
+          const base64 = await fileToBase64(file);
+          const preview = URL.createObjectURL(file);
+          const timestamp = new Date()
+            .toISOString()
+            .slice(11, 19)
+            .replace(/:/g, '-');
+          dispatch({
+            type: 'ADD_ATTACHED_IMAGE',
+            payload: {
+              id: `paste-${Date.now()}-${i}`,
+              file: new File([file], `pasted-image-${timestamp}.png`, {
+                type: file.type,
+              }),
+              preview,
+              base64,
+              mediaType: file.type || 'image/png',
+            },
+          });
+        } catch {
+          dispatch({
+            type: 'SET_ERROR',
+            payload: 'Failed to process pasted image',
+          });
+        }
+      }
+    },
+    [state.attachedImages.length]
+  );
+
+  // Build response message
+  const buildConversationalResponse = (
+    completion: CompletionFeedback,
+    isUpdate: boolean
+  ): string => {
+    const parts: string[] = [];
+    const isFallback = completion.isFallback === true;
+    const statusMarker = completion.success
+      ? '[SUCCESS]'
+      : isFallback
+      ? '[WARNING]'
+      : '[ERROR]';
+    // Show "Failed:" when success is false, otherwise "Created:" or "Updated:"
+    const actionWord = completion.success
+      ? isUpdate
+        ? 'Updated'
+        : 'Created'
+      : isFallback
+      ? 'Placeholder'
+      : 'Failed';
+    parts.push(`${statusMarker} **${actionWord}: "${completion.title}"**`);
+
+    // Add fallback-specific warning
+    if (isFallback) {
+      parts.push(
+        `\n\n⚠️ **Generation failed** - An error placeholder was saved. You may want to delete this story and try again with a simpler request.`
+      );
+    }
+    const componentCount = completion.componentsUsed?.length || 0;
+    if (componentCount > 0) {
+      const names = completion.componentsUsed
+        .slice(0, 5)
+        .map((c) => `\`${c.name}\``)
+        .join(', ');
+      parts.push(`\nBuilt with ${names}${componentCount > 5 ? '...' : ''}.`);
+    }
+    if (completion.layoutChoices?.length > 0) {
+      const layout = completion.layoutChoices[0];
+      parts.push(`\n\n**Layout:** ${layout.pattern} - ${layout.reason}.`);
+    }
+    if (completion.validation?.autoFixApplied) {
+      parts.push(
+        `\n\n[WRENCH] **Auto-fixed:** Minor syntax issues were automatically corrected.`
+      );
+    }
+    if (
+      completion.suggestions &&
+      completion.suggestions.length > 0 &&
+      !completion.suggestions[0]
+        .toLowerCase()
+        .includes('review the generated code')
+    ) {
+      parts.push(`\n\n[TIP] **Tip:** ${completion.suggestions[0]}`);
+    }
+    if (!isUpdate && !hasShownRefreshHint.current) {
+      parts.push(
+        isEdgeMode()
+          ? `\n\n_Story saved to cloud._`
+          : `\n\n_Storybook will auto-refresh in 2 seconds to register the new story..._`
+      );
+      hasShownRefreshHint.current = true;
+    }
+    if (completion.metrics?.totalTimeMs) {
+      parts.push(
+        `\n\n_${(completion.metrics.totalTimeMs / 1000).toFixed(1)}s_`
+      );
+    }
+    return parts.join('');
+  };
+
+  /**
+   * Trigger a Storybook refresh to fix Vite HMR issues with new story files.
+   * This is a workaround for the known Storybook + Vite bug where new story files
+   * aren't properly registered in Vite's import map until a page refresh.
+   * See: https://github.com/storybookjs/storybook/issues/30431
+   */
+  const triggerStorybookRefresh = useCallback(
+    (storyTitle: string, delayMs = 2000) => {
+      // Only refresh for new stories (not updates) to avoid disrupting workflow
+      console.log(
+        `[Story UI] Scheduling Storybook refresh in ${delayMs}ms for new story: ${storyTitle}`
+      );
+
+      setTimeout(() => {
+        try {
+          // Try to refresh the parent Storybook frame
+          if (window.top && window.top !== window) {
+            console.log(
+              '[Story UI] Refreshing Storybook to register new story file...'
+            );
+            window.top.location.reload();
+          } else if (window.parent && window.parent !== window) {
+            console.log('[Story UI] Refreshing parent frame...');
+            window.parent.location.reload();
+          } else {
+            // Fallback: refresh current window
+            console.log('[Story UI] Refreshing current window...');
+            window.location.reload();
+          }
+        } catch (error) {
+          // Cross-origin restrictions may prevent programmatic refresh
+          console.warn(
+            '[Story UI] Could not auto-refresh Storybook. Please refresh manually (Cmd/Ctrl + R).'
+          );
+        }
+      }, delayMs);
+    },
+    []
+  );
+
+  // Fetch full list of generated stories (for sidebar "delete from Storybook" list)
+  const fetchAllGeneratedStories = useCallback(async () => {
+    if (!state.connectionStatus.connected) return;
+    try {
+      const response = await fetch(STORIES_API);
+      if (!response.ok) return;
+      const data = await response.json();
+      const list: GeneratedStoryRef[] = (data.stories || []).map(
+        (s: { id: string; fileName: string; title: string }) => ({
+          id: s.id,
+          fileName: s.fileName,
+          title: s.title,
+        })
+      );
+      dispatch({ type: 'SET_ALL_GENERATED_STORIES', payload: list });
+    } catch (e) {
+      console.error('Failed to fetch generated stories:', e);
+    }
+  }, [state.connectionStatus.connected]);
+
+  useEffect(() => {
+    fetchAllGeneratedStories();
+  }, [fetchAllGeneratedStories]);
+
+  // Sync Shidoka dropdown values from state and listen for on-change
+  useEffect(() => {
+    if (providerDropdownRef.current)
+      providerDropdownRef.current.value = state.selectedProvider || '';
+    if (modelDropdownRef.current)
+      modelDropdownRef.current.value = state.selectedModel || '';
+  }, [state.selectedProvider, state.selectedModel]);
+
+  useEffect(() => {
+    const providerEl = providerDropdownRef.current;
+    const modelEl = modelDropdownRef.current;
+    if (!providerEl || !modelEl) return;
+
+    const onProviderChange = (e: Event) => {
+      const ev = e as CustomEvent<{ value: string }>;
+      const newProvider = ev.detail?.value ?? '';
+      dispatch({ type: 'SET_SELECTED_PROVIDER', payload: newProvider });
+      const provider = state.availableProviders.find(
+        (p) => p.type === newProvider
+      );
+      if (provider?.models.length)
+        dispatch({ type: 'SET_SELECTED_MODEL', payload: provider.models[0] });
+    };
+    const onModelChange = (e: Event) => {
+      const ev = e as CustomEvent<{ value: string }>;
+      dispatch({ type: 'SET_SELECTED_MODEL', payload: ev.detail?.value ?? '' });
+    };
+
+    providerEl.addEventListener('on-change', onProviderChange);
+    modelEl.addEventListener('on-change', onModelChange);
+    return () => {
+      providerEl.removeEventListener('on-change', onProviderChange);
+      modelEl.removeEventListener('on-change', onModelChange);
+    };
+  }, [state.availableProviders]);
+
+  // Finalize streaming
+  const finalizeStreamingConversation = useCallback(
+    (
+      newConversation: Message[],
+      completion: CompletionFeedback,
+      userInput: string
+    ) => {
+      // DEBUG: Trace completion data
+      console.log('[StoryUI DEBUG] finalizeStreamingConversation completion:', {
+        success: completion.success,
+        storyId: completion.storyId,
+        fileName: completion.fileName,
+        title: completion.title,
+        action: completion.summary?.action,
+      });
+
+      // Track this story as panel-generated to prevent false MCP detection
+      // The story ID is the fileName without .stories.tsx extension
+      if (completion.success && completion.fileName) {
+        const storyId = completion.fileName.replace('.stories.tsx', '');
+        panelGeneratedStoryIds.current.add(storyId);
+        console.log('[Story UI] Tracking panel-generated story:', storyId);
+      }
+
+      const isUpdate = completion.summary.action === 'updated';
+      const responseMessage = buildConversationalResponse(completion, isUpdate);
+      const aiMsg: Message = { role: 'ai', content: responseMessage };
+      const updatedConversation = [...newConversation, aiMsg];
+      dispatch({ type: 'SET_CONVERSATION', payload: updatedConversation });
+      const isExistingSession =
+        state.activeChatId && state.conversation.length > 0;
+      // DEBUG: Trace session detection
+      console.log('[StoryUI DEBUG] isExistingSession check:', {
+        activeChatId: state.activeChatId,
+        conversationLength: state.conversation.length,
+        isExistingSession,
+      });
+
+      if (isExistingSession && state.activeChatId) {
+        // Load existing session to preserve fileName if completion doesn't include it
+        // This fixes the bug where iterations would corrupt fileName with storyId
+        const chats = loadChats();
+        const chatIndex = chats.findIndex((c) => c.id === state.activeChatId);
+        const existingFileName =
+          chatIndex !== -1 ? chats[chatIndex].fileName : '';
+
+        const updatedSession: ChatSession = {
+          id: state.activeChatId,
+          title: state.activeTitle,
+          // Use completion.fileName if provided, otherwise preserve existing fileName
+          // NEVER fall back to storyId (activeChatId) as that corrupts the fileName
+          fileName: completion.fileName || existingFileName || '',
+          conversation: updatedConversation,
+          lastUpdated: Date.now(),
+        };
+        // DEBUG: Trace what's being saved for UPDATE
+        console.log('[StoryUI DEBUG] Saving UPDATED session:', {
+          id: updatedSession.id,
+          title: updatedSession.title,
+          fileName: updatedSession.fileName,
+          completionFileName: completion.fileName,
+          existingFileName,
+        });
+        if (chatIndex !== -1) chats[chatIndex] = updatedSession;
+        saveChats(chats);
+        dispatch({ type: 'SET_RECENT_CHATS', payload: chats });
+      } else {
+        // FIX: Use fileName as chat ID (not storyId) so delete endpoint can find the actual file
+        // storyId is like "story-a1b2c3d4" but fileName is "Button-a1b2c3d4.stories.tsx"
+        const chatId =
+          completion.fileName || completion.storyId || Date.now().toString();
+        const chatTitle = completion.title || userInput;
+        dispatch({
+          type: 'SET_ACTIVE_CHAT',
+          payload: { id: chatId, title: chatTitle },
+        });
+        const newSession: ChatSession = {
+          id: chatId,
+          title: chatTitle,
+          fileName: completion.fileName || '',
+          conversation: updatedConversation,
+          lastUpdated: Date.now(),
+        };
+        // DEBUG: Trace what's being saved
+        console.log('[StoryUI DEBUG] Saving NEW session:', {
+          id: newSession.id,
+          title: newSession.title,
+          fileName: newSession.fileName,
+        });
+        const chats = loadChats().filter((c) => c.id !== chatId);
+        chats.unshift(newSession);
+        if (chats.length > MAX_RECENT_CHATS) chats.splice(MAX_RECENT_CHATS);
+        saveChats(chats);
+        dispatch({ type: 'SET_RECENT_CHATS', payload: chats });
+
+        // Auto-refresh Storybook for NEW stories to fix Vite HMR import map issue
+        // This fixes the "importers[path] is not a function" error
+        if (completion.success && completion.title) {
+          triggerStorybookRefresh(completion.title);
+        }
+      }
+      if (completion.success) fetchAllGeneratedStories();
+    },
+    [
+      state.activeChatId,
+      state.activeTitle,
+      state.conversation.length,
+      triggerStorybookRefresh,
+      fetchAllGeneratedStories,
+    ]
+  );
+
+  // Handle send
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!state.input.trim() && state.attachedImages.length === 0) return;
+    const userInput =
+      state.input.trim() ||
+      (state.attachedImages.length > 0
+        ? 'Create a component that matches this design'
+        : '');
+    dispatch({ type: 'SET_ERROR', payload: null });
+    dispatch({ type: 'SET_LOADING', payload: true });
+    dispatch({ type: 'SET_STREAMING_STATE', payload: null });
+    const connectionTest = await testMCPConnection();
+    dispatch({ type: 'SET_CONNECTION_STATUS', payload: connectionTest });
+    if (!connectionTest.connected) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: `Cannot connect to MCP server: ${
+          connectionTest.error || 'Server not running'
+        }`,
+      });
+      dispatch({ type: 'SET_LOADING', payload: false });
+      return;
+    }
+    const imagesToSend = [...state.attachedImages];
+    const hasImages = imagesToSend.length > 0;
+    const userMessage: Message = {
+      role: 'user',
+      content: userInput,
+      attachedImages: hasImages ? imagesToSend : undefined,
+    };
+    const newConversation: Message[] = [...state.conversation, userMessage];
+    dispatch({ type: 'SET_CONVERSATION', payload: newConversation });
+    dispatch({ type: 'SET_INPUT', payload: '' });
+    clearAttachedImages();
+
+    // Get the actual fileName from localStorage (not React state which may be stale)
+    // This ensures updates overwrite the correct file instead of creating duplicates
+    const freshChats = loadChats();
+    const activeChat = freshChats.find((c) => c.id === state.activeChatId);
+    const activeFileName = activeChat?.fileName || undefined;
+
+    // DEBUG: Trace fileName lookup for iteration bug
+    console.log('[StoryUI DEBUG] handleSend fileName lookup:', {
+      activeChatId: state.activeChatId,
+      freshChatsCount: freshChats.length,
+      freshChatsIds: freshChats.map((c) => c.id),
+      foundChat: activeChat
+        ? { id: activeChat.id, fileName: activeChat.fileName }
+        : null,
+      activeFileName,
+    });
+
+    if (USE_STREAMING) {
+      try {
+        if (abortControllerRef.current) abortControllerRef.current.abort();
+        abortControllerRef.current = new AbortController();
+        dispatch({ type: 'SET_STREAMING_STATE', payload: {} });
+        // DEBUG: Log exact request body before sending
+        const requestBody = {
+          prompt: userInput,
+          conversation: newConversation,
+          fileName: activeFileName,
+          isUpdate: state.activeChatId && state.conversation.length > 0,
+          originalTitle: state.activeTitle || undefined,
+          storyId: state.activeChatId || undefined,
+          _debug: {
+            activeChatId: state.activeChatId,
+            freshChatsCount: freshChats.length,
+            foundChatFileName: activeChat?.fileName,
+            activeFileName,
+          },
+          images: hasImages
+            ? imagesToSend.map((img) => ({
+                type: 'base64' as const,
+                data: img.base64,
+                mediaType: img.file.type,
+              }))
+            : undefined,
+          visionMode: hasImages ? 'screenshot_to_story' : undefined,
+          provider: state.selectedProvider || undefined,
+          model: state.selectedModel || undefined,
+          considerations: state.considerations || undefined,
+          useStorybookMcp: state.storybookMcpAvailable && state.useStorybookMcp,
+        };
+        console.log('[StoryUI DEBUG] Request body being sent:', {
+          fileName: requestBody.fileName,
+          storyId: requestBody.storyId,
+          isUpdate: requestBody.isUpdate,
+          activeChatId: state.activeChatId,
+        });
+        const response = await fetch(MCP_STREAM_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody),
+          signal: abortControllerRef.current.signal,
+        });
+        if (!response.ok)
+          throw new Error(`Streaming request failed: ${response.status}`);
+        const reader = response.body?.getReader();
+        if (!reader) throw new Error('No response body');
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let completionData: CompletionFeedback | null = null;
+        let errorData: ErrorFeedback | null = null;
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const event: StreamEvent = JSON.parse(line.slice(6));
+                switch (event.type) {
+                  case 'intent':
+                    dispatch({
+                      type: 'UPDATE_STREAMING_STATE',
+                      payload: { intent: event.data as IntentPreview },
+                    });
+                    break;
+                  case 'progress':
+                    dispatch({
+                      type: 'UPDATE_STREAMING_STATE',
+                      payload: { progress: event.data as ProgressUpdate },
+                    });
+                    break;
+                  case 'validation':
+                    dispatch({
+                      type: 'UPDATE_STREAMING_STATE',
+                      payload: { validation: event.data as ValidationFeedback },
+                    });
+                    break;
+                  case 'retry':
+                    dispatch({
+                      type: 'UPDATE_STREAMING_STATE',
+                      payload: { retry: event.data as RetryInfo },
+                    });
+                    break;
+                  case 'completion':
+                    completionData = event.data as CompletionFeedback;
+                    dispatch({
+                      type: 'UPDATE_STREAMING_STATE',
+                      payload: { completion: completionData },
+                    });
+                    break;
+                  case 'error':
+                    errorData = event.data as ErrorFeedback;
+                    dispatch({
+                      type: 'UPDATE_STREAMING_STATE',
+                      payload: { error: errorData },
+                    });
+                    break;
+                }
+              } catch {
+                console.warn('Failed to parse SSE event:', line);
+              }
+            }
+          }
+        }
+        if (completionData) {
+          finalizeStreamingConversation(
+            newConversation,
+            completionData,
+            userInput
+          );
+        } else if (errorData) {
+          dispatch({ type: 'SET_ERROR', payload: errorData.message });
+          const errorConversation = [
+            ...newConversation,
+            {
+              role: 'ai' as const,
+              content: `Error: ${errorData.message}\n\n${
+                errorData.suggestion || ''
+              }`,
+            },
+          ];
+          dispatch({ type: 'SET_CONVERSATION', payload: errorConversation });
+        }
+      } catch (err: unknown) {
+        if ((err as Error).name === 'AbortError') return;
+        console.warn('Streaming failed, falling back to non-streaming:', err);
+        dispatch({ type: 'SET_STREAMING_STATE', payload: null });
+        try {
+          const res = await fetch(MCP_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prompt: userInput,
+              conversation: newConversation,
+              fileName: activeFileName,
+              isUpdate: state.activeChatId && state.conversation.length > 0,
+              originalTitle: state.activeTitle || undefined,
+              storyId: state.activeChatId || undefined,
+              provider: state.selectedProvider || undefined,
+              model: state.selectedModel || undefined,
+              considerations: state.considerations || undefined,
+              useStorybookMcp:
+                state.storybookMcpAvailable && state.useStorybookMcp,
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok || !data.success)
+            throw new Error(data.error || 'Story generation failed');
+          const responseMessage = `[SUCCESS] **Created: "${data.title}"**\n\nStory generated successfully.`;
+          const aiMsg: Message = { role: 'ai', content: responseMessage };
+          const updatedConversation = [...newConversation, aiMsg];
+          dispatch({ type: 'SET_CONVERSATION', payload: updatedConversation });
+        } catch (fallbackErr: unknown) {
+          const errorMessage =
+            fallbackErr instanceof Error
+              ? fallbackErr.message
+              : 'Unknown error';
+          dispatch({ type: 'SET_ERROR', payload: errorMessage });
+          const errorConversation = [
+            ...newConversation,
+            { role: 'ai' as const, content: `Error: ${errorMessage}` },
+          ];
+          dispatch({ type: 'SET_CONVERSATION', payload: errorConversation });
+        }
+      } finally {
+        dispatch({ type: 'SET_LOADING', payload: false });
+        dispatch({ type: 'SET_STREAMING_STATE', payload: null });
+        abortControllerRef.current = null;
+      }
+    }
+  };
+
+  // Chat management
+  const handleSelectChat = (chat: ChatSession) => {
+    dispatch({ type: 'SET_CONVERSATION', payload: chat.conversation });
+    dispatch({
+      type: 'SET_ACTIVE_CHAT',
+      payload: { id: chat.id, title: chat.title },
+    });
+    chatAreaRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNewChat = () => dispatch({ type: 'NEW_CHAT' });
+
+  const handleDeleteChat = async (chatId: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setContextMenuId(null);
+    if (confirm('Delete this story and chat? This action cannot be undone.')) {
+      const success = await deleteStoryAndChat(chatId);
+      if (success) {
+        const updatedChats = state.recentChats.filter(
+          (chat) => chat.id !== chatId
+        );
+        dispatch({ type: 'SET_RECENT_CHATS', payload: updatedChats });
+        if (state.activeChatId === chatId) {
+          if (updatedChats.length > 0) {
+            dispatch({
+              type: 'SET_CONVERSATION',
+              payload: updatedChats[0].conversation,
+            });
+            dispatch({
+              type: 'SET_ACTIVE_CHAT',
+              payload: { id: updatedChats[0].id, title: updatedChats[0].title },
+            });
+          } else {
+            handleNewChat();
+          }
+        }
+        fetchAllGeneratedStories();
+      } else {
+        alert('Failed to delete story. Please try again.');
+      }
+    }
+  };
+
+  // Check for orphan stories (stories without associated chats)
+  const checkOrphanStories = useCallback(async () => {
+    if (!state.connectionStatus.connected) return;
+    try {
+      const chatFileNames = state.recentChats.map((chat) => chat.fileName);
+      const response = await fetch(ORPHAN_STORIES_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatFileNames }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setOrphanCount(data.count || 0);
+      }
+    } catch (error) {
+      console.error('Failed to check orphan stories:', error);
+    }
+  }, [state.connectionStatus.connected, state.recentChats]);
+
+  // Delete all orphan stories
+  const handleDeleteOrphans = async () => {
+    if (orphanCount === 0) return;
+    if (
+      !confirm(
+        `Delete ${orphanCount} orphan ${
+          orphanCount === 1 ? 'story' : 'stories'
+        }? These are generated story files without associated chats.`
+      )
+    ) {
+      return;
+    }
+    setIsDeletingOrphans(true);
+    try {
+      const chatFileNames = state.recentChats.map((chat) => chat.fileName);
+      const response = await fetch(ORPHAN_STORIES_API, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatFileNames }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setOrphanCount(0);
+        if (data.count > 0) {
+          // Show success message briefly
+          alert(
+            `Deleted ${data.count} orphan ${
+              data.count === 1 ? 'story' : 'stories'
+            }.`
+          );
+        }
+      } else {
+        alert('Failed to delete orphan stories. Please try again.');
+      }
+    } catch (error) {
+      console.error('Failed to delete orphan stories:', error);
+      alert('Failed to delete orphan stories. Please try again.');
+    } finally {
+      setIsDeletingOrphans(false);
+    }
+  };
+
+  // Check for orphans when chats change or connection is established
+  useEffect(() => {
+    checkOrphanStories();
+  }, [checkOrphanStories]);
+
+  const [deletingStoryId, setDeletingStoryId] = useState<string | null>(null);
+
+  const handleDeleteGeneratedStory = async (storyId: string) => {
+    if (
+      !confirm(
+        'Remove this story from the generated folder? It will disappear from the Storybook sidebar after you refresh.'
+      )
+    )
+      return;
+    setDeletingStoryId(storyId);
+    try {
+      const response = await fetch(`${STORIES_API}/${storyId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok || response.status === 404) {
+        // Match chat by id, fileName, or storyId — the generated story list
+        // uses server-provided IDs which may differ from chat session IDs
+        const chats = loadChats().filter(
+          (c) => c.id !== storyId && c.fileName !== storyId
+        );
+        saveChats(chats);
+        dispatch({ type: 'SET_RECENT_CHATS', payload: chats });
+        if (state.activeChatId === storyId || !chats.find((c) => c.id === state.activeChatId)) {
+          if (chats.length > 0) {
+            dispatch({
+              type: 'SET_CONVERSATION',
+              payload: chats[0].conversation,
+            });
+            dispatch({
+              type: 'SET_ACTIVE_CHAT',
+              payload: { id: chats[0].id, title: chats[0].title },
+            });
+          } else {
+            handleNewChat();
+          }
+        }
+        await fetchAllGeneratedStories();
+        checkOrphanStories();
+      } else {
+        alert('Failed to delete story. Please try again.');
+      }
+    } catch (e) {
+      console.error('Failed to delete story:', e);
+      alert('Failed to delete story. Please try again.');
+    } finally {
+      setDeletingStoryId(null);
+    }
+  };
+
+  const handleStartRename = (
+    chatId: string,
+    currentTitle: string,
+    e?: React.MouseEvent
+  ) => {
+    if (e) e.stopPropagation();
+    setContextMenuId(null);
+    setRenamingChatId(chatId);
+    setRenameValue(currentTitle);
+  };
+
+  const handleConfirmRename = (chatId: string) => {
+    if (!renameValue.trim()) {
+      setRenamingChatId(null);
+      return;
+    }
+    const chats = loadChats();
+    const chatIndex = chats.findIndex((c) => c.id === chatId);
+    if (chatIndex !== -1) {
+      const fileName = chats[chatIndex].fileName;
+      chats[chatIndex].title = renameValue.trim();
+      saveChats(chats);
+      dispatch({ type: 'SET_RECENT_CHATS', payload: chats });
+      if (state.activeChatId === chatId) {
+        dispatch({
+          type: 'SET_ACTIVE_CHAT',
+          payload: { id: chatId, title: renameValue.trim() },
+        });
+      }
+      // Sync the new title to the Generated sidebar item for this story
+      if (
+        fileName &&
+        state.allGeneratedStories.some((s) => s.fileName === fileName)
+      ) {
+        const updatedStories = state.allGeneratedStories.map((s) =>
+          s.fileName === fileName ? { ...s, title: renameValue.trim() } : s
+        );
+        dispatch({
+          type: 'SET_ALL_GENERATED_STORIES',
+          payload: updatedStories,
+        });
+      }
+    }
+    setRenamingChatId(null);
+    setRenameValue('');
+  };
+
+  const handleCancelRename = () => {
+    setRenamingChatId(null);
+    setRenameValue('');
+  };
+
+  // Sync Shidoka overflow menu open/close and item clicks (custom events from kyn-overflow-menu)
+  useEffect(() => {
+    const el = sidebarContentRef.current;
+    if (!el) return;
+
+    const onToggle = (e: Event) => {
+      const ev = e as CustomEvent<{ open: boolean }>;
+      const menu = e.target as HTMLElement;
+      if (menu.tagName?.toLowerCase() !== 'kyn-overflow-menu') return;
+      const chatId = menu.getAttribute('data-chat-id');
+      if (chatId !== null) setContextMenuId(ev.detail?.open ? chatId : null);
+    };
+
+    const onItemClick = (e: Event) => {
+      const item = e.target as HTMLElement;
+      if (item.tagName?.toLowerCase() !== 'kyn-overflow-menu-item') return;
+      const menu = item.closest('kyn-overflow-menu');
+      const chatId = menu?.getAttribute('data-chat-id');
+      const chatTitle = menu?.getAttribute('data-chat-title') ?? '';
+      const action = item.getAttribute('data-action');
+      if (chatId && action === 'rename') handleStartRename(chatId, chatTitle);
+      if (chatId && action === 'delete') handleDeleteChat(chatId);
+    };
+
+    el.addEventListener('on-toggle', onToggle);
+    el.addEventListener('on-click', onItemClick);
+    return () => {
+      el.removeEventListener('on-toggle', onToggle);
+      el.removeEventListener('on-click', onItemClick);
+    };
+  }, [handleStartRename, handleDeleteChat]);
+
+  // Keep overflow menus in sync: only the menu for contextMenuId is open (fixes auto-expand on load)
+  useEffect(() => {
+    const el = sidebarContentRef.current;
+    if (!el) return;
+    const menus = el.querySelectorAll<HTMLElement & { open?: boolean }>(
+      'kyn-overflow-menu'
+    );
+    menus.forEach((menu) => {
+      const chatId = menu.getAttribute('data-chat-id');
+      menu.open = contextMenuId !== null && contextMenuId === chatId;
+    });
+  }, [contextMenuId, state.recentChats.length]);
+
+  // Orphan story handlers
+  const _toggleSelectAll = () => {
+    if (state.selectedStoryIds.size === state.orphanStories.length) {
+      dispatch({ type: 'SET_SELECTED_STORY_IDS', payload: new Set() });
+    } else {
+      dispatch({
+        type: 'SET_SELECTED_STORY_IDS',
+        payload: new Set(state.orphanStories.map((s) => s.id)),
+      });
+    }
+  };
+
+  const _handleBulkDelete = async () => {
+    if (state.selectedStoryIds.size === 0) return;
+    const count = state.selectedStoryIds.size;
+    if (
+      !confirm(`Delete ${count} selected ${count === 1 ? 'story' : 'stories'}?`)
+    )
+      return;
+    dispatch({ type: 'SET_BULK_DELETING', payload: true });
+    try {
+      const response = await fetch(`${STORIES_API}/delete-bulk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: Array.from(state.selectedStoryIds) }),
+      });
+      if (response.ok) {
+        dispatch({
+          type: 'SET_ORPHAN_STORIES',
+          payload: state.orphanStories.filter(
+            (s) => !state.selectedStoryIds.has(s.id)
+          ),
+        });
+        dispatch({ type: 'SET_SELECTED_STORY_IDS', payload: new Set() });
+      } else {
+        alert('Failed to delete some stories.');
+      }
+    } catch {
+      alert('Failed to delete stories.');
+    } finally {
+      dispatch({ type: 'SET_BULK_DELETING', payload: false });
+    }
+  };
+
+  const _handleClearAll = async () => {
+    if (state.orphanStories.length === 0) return;
+    if (!confirm(`Delete ALL ${state.orphanStories.length} generated stories?`))
+      return;
+    dispatch({ type: 'SET_BULK_DELETING', payload: true });
+    try {
+      const response = await fetch(STORIES_API, { method: 'DELETE' });
+      if (response.ok) {
+        dispatch({ type: 'SET_ORPHAN_STORIES', payload: [] });
+        dispatch({ type: 'SET_SELECTED_STORY_IDS', payload: new Set() });
+      } else {
+        alert('Failed to clear stories.');
+      }
+    } catch {
+      alert('Failed to clear stories.');
+    } finally {
+      dispatch({ type: 'SET_BULK_DELETING', payload: false });
+    }
+  };
+
+  const _handleDeleteOrphan = async (storyId: string) => {
+    try {
+      const response = await fetch(`${STORIES_API}/${storyId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        dispatch({
+          type: 'SET_ORPHAN_STORIES',
+          payload: state.orphanStories.filter((s) => s.id !== storyId),
+        });
+        const newSet = new Set(state.selectedStoryIds);
+        newSet.delete(storyId);
+        dispatch({ type: 'SET_SELECTED_STORY_IDS', payload: newSet });
+      }
+    } catch (err) {
+      console.error('Error deleting orphan story:', err);
+    }
+  };
+
+  // ============================================
+  // Render
+  // ============================================
+
+  return (
+    <div className={`sui-root ${state.isDarkMode ? 'dark' : ''}`}>
+      {/* Sidebar */}
+      <aside
+        className={`sui-sidebar ${state.sidebarOpen ? '' : 'collapsed'}`}
+        aria-label="Chat history"
+      >
+        {state.sidebarOpen && (
+          <div className="sui-sidebar-content" ref={sidebarContentRef}>
+            {/* Toggle */}
+            <ShidokaButton
+              kind="ghost"
+              iconPosition="left"
+              onClick={() => {
+                setContextMenuId(null);
+                dispatch({ type: 'TOGGLE_SIDEBAR' });
+              }}
+              className="sui-sidebar-btn-hide"
+            >
+              Hide sidebar
+              <span slot="icon">{Icons.panelLeft}</span>
+            </ShidokaButton>
+
+            {/* New Chat */}
+            <ShidokaButton
+              kind="primary"
+              iconPosition="left"
+              onClick={handleNewChat}
+              className="sui-sidebar-btn-new"
+            >
+              New Chat
+              <span slot="icon">{Icons.plus}</span>
+            </ShidokaButton>
+
+            {/* Chat history */}
+            <div className="sui-sidebar-chats">
+              {state.recentChats.map((chat) => (
+                <div
+                  key={chat.id}
+                  className={`sui-chat-item ${
+                    state.activeChatId === chat.id ? 'active' : ''
+                  } ${contextMenuId === chat.id ? 'menu-open' : ''}`}
+                  onClick={() =>
+                    renamingChatId !== chat.id && handleSelectChat(chat)
+                  }
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) =>
+                    e.key === 'Enter' &&
+                    renamingChatId !== chat.id &&
+                    handleSelectChat(chat)
+                  }
+                >
+                  {renamingChatId === chat.id ? (
+                    <div className="sui-chat-item-rename">
+                      <input
+                        type="text"
+                        className="sui-rename-input"
+                        value={renameValue}
+                        onChange={(e) => setRenameValue(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleConfirmRename(chat.id);
+                          if (e.key === 'Escape') handleCancelRename();
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        autoFocus
+                      />
+                      <ShidokaButton
+                        kind="ghost"
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleConfirmRename(chat.id);
+                        }}
+                        aria-label="Save"
+                      >
+                        {Icons.check}
+                      </ShidokaButton>
+                      <ShidokaButton
+                        kind="ghost"
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCancelRename();
+                        }}
+                        aria-label="Cancel"
+                      >
+                        {Icons.x}
+                      </ShidokaButton>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="sui-chat-item-title">{chat.title}</div>
+                      <div
+                        className="sui-chat-item-actions"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {React.createElement(
+                          'kyn-overflow-menu',
+                          {
+                            open: contextMenuId === chat.id,
+                            verticalDots: true,
+                            anchorRight: true,
+                            assistiveText: 'More options',
+                            'data-chat-id': chat.id,
+                            'data-chat-title': chat.title,
+                          },
+                          React.createElement(
+                            'kyn-overflow-menu-item',
+                            { 'data-action': 'rename' },
+                            React.createElement('span', null, 'Rename')
+                          ),
+                          React.createElement(
+                            'kyn-overflow-menu-item',
+                            { 'data-action': 'delete', destructive: true },
+                            React.createElement('span', null, 'Delete')
+                          )
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Generated stories in Storybook — delete from here to remove from sidebar */}
+            {state.allGeneratedStories.length > 0 && (
+              <div className="sui-generated-list">
+                <div className="sui-generated-list-heading">
+                  In Storybook sidebar
+                </div>
+                <p className="sui-generated-list-hint">
+                  Remove a story to drop it from the Generated section. Refresh
+                  Storybook to see changes.
+                </p>
+                <ul className="sui-generated-list-ul">
+                  {state.allGeneratedStories.map((story) => (
+                    <li key={story.id} className="sui-generated-list-item">
+                      <span
+                        className="sui-generated-list-title"
+                        title={story.fileName}
+                      >
+                        {story.title}
+                      </span>
+                      <ShidokaButton
+                        type="button"
+                        kind="ghost-destructive"
+                        size="small"
+                        className="sui-generated-list-delete"
+                        onClick={() => handleDeleteGeneratedStory(story.id)}
+                        disabled={deletingStoryId === story.id}
+                        aria-label={`Delete ${story.title}`}
+                        title="Remove from generated folder"
+                      >
+                        {deletingStoryId === story.id ? (
+                          <span className="sui-orphan-spinner" />
+                        ) : (
+                          Icons.trash
+                        )}
+                      </ShidokaButton>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Orphan Stories Footer */}
+            {orphanCount > 0 && (
+              <div className="sui-orphan-footer">
+                <ShidokaButton
+                  kind="ghost-destructive"
+                  className="sui-orphan-delete-btn"
+                  onClick={handleDeleteOrphans}
+                  disabled={isDeletingOrphans}
+                  title={`${orphanCount} story ${
+                    orphanCount === 1 ? 'file has' : 'files have'
+                  } no associated chat`}
+                >
+                  {isDeletingOrphans ? (
+                    <>
+                      <span className="sui-orphan-spinner" />
+                      <span className="sui-orphan-delete-btn-label">
+                        Deleting...
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {Icons.trash}
+                      <span className="sui-orphan-delete-btn-label">
+                        {orphanCount} orphan{' '}
+                        {orphanCount === 1 ? 'story' : 'stories'}
+                      </span>
+                    </>
+                  )}
+                </ShidokaButton>
+              </div>
+            )}
+          </div>
+        )}
+        {!state.sidebarOpen && (
+          <div
+            style={{
+              padding: '12px',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <ShidokaButton
+              kind="ghost"
+              onClick={() => dispatch({ type: 'SET_SIDEBAR', payload: true })}
+              aria-label="Show sidebar"
+            >
+              {Icons.panelLeft}
+            </ShidokaButton>
+          </div>
+        )}
+      </aside>
+
+      {/* Main */}
+      <main
+        className="sui-main"
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        {/* Drop overlay */}
+        {state.isDragging && (
+          <div className="sui-drop-overlay">
+            <div className="sui-drop-overlay-text">
+              {Icons.image}
+              <span>Drop images here</span>
+            </div>
+          </div>
+        )}
+
+        {/* Header */}
+        <header className="sui-header">
+          <div className="sui-header-left">
+            <span className="sui-header-title">Story UI</span>
+            {React.createElement('kyn-tag', {
+              tagColor: state.connectionStatus.connected ? 'spruce' : 'red',
+              tagSize: 'sm',
+              label: state.connectionStatus.connected
+                ? getConnectionDisplayText()
+                : 'Disconnected',
+            })}
+            {!state.connectionStatus.connected && (
+              <span className="sui-header-hint">
+                Run <code>npm run story-ui</code> to connect.
+              </span>
+            )}
+          </div>
+          <div className="sui-header-right">
+            {state.connectionStatus.connected &&
+              state.availableProviders.length > 0 && (
+                <>
+                  {React.createElement(
+                    'kyn-dropdown',
+                    {
+                      ref: providerDropdownRef,
+                      label: 'Provider',
+                      hideLabel: true,
+                      size: 'sm',
+                      value: state.selectedProvider || '',
+                      placeholder: 'Provider',
+                      style: { minWidth: '140px' },
+                    },
+                    state.availableProviders.map((p) =>
+                      React.createElement(
+                        'kyn-dropdown-option',
+                        { key: p.type, value: p.type },
+                        p.name
+                      )
+                    )
+                  )}
+                  {React.createElement(
+                    'kyn-dropdown',
+                    {
+                      ref: modelDropdownRef,
+                      label: 'Model',
+                      hideLabel: true,
+                      size: 'sm',
+                      value: state.selectedModel || '',
+                      placeholder: 'Model',
+                      style: { minWidth: '180px' },
+                    },
+                    (
+                      state.availableProviders.find(
+                        (p) => p.type === state.selectedProvider
+                      )?.models ?? []
+                    ).map((model) =>
+                      React.createElement(
+                        'kyn-dropdown-option',
+                        { key: model, value: model },
+                        getModelDisplayName(model)
+                      )
+                    )
+                  )}
+                </>
+              )}
+            {/* Storybook MCP Toggle - only shown when MCP addon is detected */}
+            {state.storybookMcpAvailable && (
+              <div
+                className="sui-mcp-toggle"
+                title="Use Storybook MCP context for enhanced component generation"
+              >
+                <label className="sui-toggle-label">
+                  <span className="sui-toggle-text">MCP Context</span>
+                  <div className="sui-toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={state.useStorybookMcp}
+                      onChange={(e) => {
+                        const enabled = e.target.checked;
+                        dispatch({
+                          type: 'SET_USE_STORYBOOK_MCP',
+                          payload: enabled,
+                        });
+                        saveStorybookMcpPref(enabled);
+                      }}
+                      aria-label="Use Storybook MCP context"
+                    />
+                    <span className="sui-toggle-slider" />
+                  </div>
+                </label>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Chat area */}
+        <section
+          ref={chatAreaRef}
+          className="sui-chat-area"
+          role="log"
+          aria-live="polite"
+        >
+          {state.error && (
+            <div className="sui-error" role="alert" style={{ margin: '24px' }}>
+              {state.error}
+            </div>
+          )}
+
+          {state.conversation.length === 0 && !state.loading ? (
+            <div className="sui-welcome">
+              <h2 className="sui-welcome-greeting">
+                What would you like to create?
+              </h2>
+              <p className="sui-welcome-subtitle">
+                Describe any UI component and I'll generate a Storybook story
+              </p>
+              <div className="sui-welcome-chips">
+                <ShidokaButton
+                  kind="secondary"
+                  size="small"
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_INPUT',
+                      payload:
+                        'Create a responsive card with image, title, and description',
+                    })
+                  }
+                >
+                  Card
+                </ShidokaButton>
+                <ShidokaButton
+                  kind="secondary"
+                  size="small"
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_INPUT',
+                      payload:
+                        'Create a navigation bar with logo and menu links',
+                    })
+                  }
+                >
+                  Navbar
+                </ShidokaButton>
+                <ShidokaButton
+                  kind="secondary"
+                  size="small"
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_INPUT',
+                      payload: 'Create a form with input fields and validation',
+                    })
+                  }
+                >
+                  Form
+                </ShidokaButton>
+                <ShidokaButton
+                  kind="secondary"
+                  size="small"
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_INPUT',
+                      payload:
+                        'Create a hero section with headline and call-to-action',
+                    })
+                  }
+                >
+                  Hero
+                </ShidokaButton>
+                <ShidokaButton
+                  kind="secondary"
+                  size="small"
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_INPUT',
+                      payload:
+                        'Create a button group with primary and secondary actions',
+                    })
+                  }
+                >
+                  Buttons
+                </ShidokaButton>
+                <ShidokaButton
+                  kind="secondary"
+                  size="small"
+                  onClick={() =>
+                    dispatch({
+                      type: 'SET_INPUT',
+                      payload:
+                        'Create a modal dialog with header, content, and footer',
+                    })
+                  }
+                >
+                  Modal
+                </ShidokaButton>
+              </div>
+            </div>
+          ) : (
+            <div className="sui-chat-messages">
+              {state.conversation.map((msg, i) => (
+                <article
+                  key={i}
+                  className={`sui-message ${
+                    msg.role === 'user' ? 'sui-message-user' : 'sui-message-ai'
+                  }`}
+                >
+                  <div className="sui-message-bubble">
+                    {msg.role === 'ai'
+                      ? renderMarkdown(msg.content)
+                      : msg.content}
+                    {msg.role === 'user' &&
+                      msg.attachedImages &&
+                      msg.attachedImages.length > 0 && (
+                        <div className="sui-message-images">
+                          {msg.attachedImages.map((img) => (
+                            <img
+                              key={img.id}
+                              src={
+                                img.base64
+                                  ? `data:${img.mediaType};base64,${img.base64}`
+                                  : img.preview
+                              }
+                              alt="attached"
+                              className="sui-message-image"
+                            />
+                          ))}
+                        </div>
+                      )}
+                  </div>
+                </article>
+              ))}
+              {state.loading && (
+                <div className="sui-message sui-message-ai">
+                  {state.streamingState ? (
+                    <ProgressIndicator
+                      streamingState={state.streamingState}
+                      apiBaseUrl={getApiBaseUrl()}
+                    />
+                  ) : (
+                    <div className="sui-progress">
+                      <span className="sui-progress-label">
+                        Please give us a moment while we generate your story
+                        <span className="sui-loading" />
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div ref={chatEndRef} />
+            </div>
+          )}
+        </section>
+
+        {/* Input area */}
+        <div className="sui-input-area">
+          <div className="sui-input-container">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: 'none' }}
+              onChange={handleFileSelect}
+            />
+            {state.attachedImages.length > 0 && (
+              <div className="sui-image-previews">
+                <span className="sui-image-preview-label">
+                  {Icons.image} {state.attachedImages.length} image
+                  {state.attachedImages.length > 1 ? 's' : ''}
+                </span>
+                {state.attachedImages.map((img) => (
+                  <div key={img.id} className="sui-image-preview-item">
+                    <img
+                      src={img.preview}
+                      alt="preview"
+                      className="sui-image-preview-thumb"
+                    />
+                    <button
+                      className="sui-image-preview-remove"
+                      onClick={() => removeAttachedImage(img.id)}
+                      aria-label="Remove"
+                    >
+                      {Icons.x}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <form
+              onSubmit={handleSend}
+              className="sui-input-form"
+              style={
+                state.attachedImages.length > 0
+                  ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 }
+                  : undefined
+              }
+            >
+              <button
+                type="button"
+                className="sui-input-form-upload"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={
+                  state.loading || state.attachedImages.length >= MAX_IMAGES
+                }
+                aria-label="Attach images"
+              >
+                {Icons.image}
+              </button>
+              <textarea
+                ref={inputRef}
+                rows={1}
+                className="sui-input-form-field"
+                value={state.input}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_INPUT', payload: e.target.value })
+                }
+                onKeyDown={(e) => {
+                  // Submit on Enter, newline on Shift+Enter
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (
+                      !state.loading &&
+                      (state.input.trim() || state.attachedImages.length > 0)
+                    ) {
+                      handleSend(e as unknown as React.FormEvent);
+                    }
+                  }
+                }}
+                onPaste={handlePaste}
+                placeholder={
+                  state.attachedImages.length > 0
+                    ? 'Describe what to create from these images...'
+                    : 'Describe a UI component...'
+                }
+              />
+              <ShidokaButton
+                type="button"
+                kind="primary"
+                size="medium"
+                className="sui-input-form-send"
+                disabled={
+                  state.loading ||
+                  (!state.input.trim() && state.attachedImages.length === 0)
+                }
+                onClick={() =>
+                  handleSend({ preventDefault: () => {} } as React.FormEvent)
+                }
+                aria-label="Send"
+              >
+                {Icons.send}
+              </ShidokaButton>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default StoryUIPanel;
+export { StoryUIPanel };
