@@ -20,7 +20,7 @@ enum ProgressStatus {
 }
 
 /**
- * `<kyn-progress-bar>` -- progress bar status indicator component.
+ * Progress bar component.
  * @slot unnamed - Slot for tooltip text content.
  */
 @customElement('kyn-progress-bar')
@@ -66,6 +66,10 @@ export class ProgressBar extends LitElement {
   /** Visually hide the label. */
   @property({ type: Boolean })
   accessor hideLabel = false;
+
+  /** Sets visibility of percentage value.*/
+  @property({ type: Boolean })
+  accessor hidePercentageValue = false;
 
   /** Incrementing percentage count value.
    * @internal
@@ -180,14 +184,19 @@ export class ProgressBar extends LitElement {
     currentStatus: ProgressStatus,
     currentValue: number | null
   ) {
+    const showPercentageValue = !this.hidePercentageValue;
+
     if (currentStatus !== ProgressStatus.ACTIVE) {
-      return html`<span class="${currentStatus}-icon"
-        >${currentStatus === ProgressStatus.SUCCESS
-          ? unsafeSVG(checkmarkIcon)
-          : currentStatus === ProgressStatus.WARNING
-          ? unsafeSVG(warningIcon)
-          : unsafeSVG(errorIcon)}</span
-      >`;
+      return html`<p>
+        ${showPercentageValue ? html`${this._percentage}%` : null}
+        <span class="${currentStatus}-icon"
+          >${currentStatus === ProgressStatus.SUCCESS
+            ? unsafeSVG(checkmarkIcon)
+            : currentStatus === ProgressStatus.WARNING
+            ? unsafeSVG(warningIcon)
+            : unsafeSVG(errorIcon)}</span
+        >
+      </p>`;
     }
 
     const hardcodedProgressReached =
@@ -195,7 +204,7 @@ export class ProgressBar extends LitElement {
 
     if (this.showInlineLoadStatus && !hardcodedProgressReached) {
       return html`<p>
-        <span>${this._percentage}%</span>
+        ${showPercentageValue ? html`<span>${this._percentage}%</span>` : null}
         <kyn-loader-inline status="active"></kyn-loader-inline>
       </p>`;
     }
