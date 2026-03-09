@@ -1,0 +1,18 @@
+---
+description: When generating Shidoka pages or templates, use design system context from MCP
+globs: src/stories/generated/**/*.ts,**/*page*.ts,**/*template*.ts
+alwaysApply: false
+---
+
+# Shidoka page/template generation
+
+When the user asks to **build a page**, **create a template**, or **generate a Storybook story** that uses Shidoka components (kyn-*):
+
+1. **Call the MCP tool** `get_shidoka_design_context` to retrieve the authoritative Shidoka design system context (considerations, component registry, page-template-builder layout and spacing rules).
+2. **Generate code** that strictly follows that context:
+   - Only use `kyn-*` tags and attributes listed in the registry.
+   - Use only import paths from the context.
+   - Follow page-template-builder for full-page layouts: shell order (header → main → footer), main padding `style="padding: var(--kd-page-gutter, 1rem);"`, toolbar spacing, side drawer inside main with anchor button, table wrapper, fullscreen decorator with only `min-height: 100vh; width: 100%;` (no negative margin).
+   - Do not add `open` to kyn-side-drawer unless the user asks for the drawer open by default.
+3. **Write output** to `src/stories/generated/` for Storybook stories (use a kebab-case filename and a stable id in the meta), or to the path the user specifies.
+4. **Do not** use `<my-button>`, `<button>`, native `<table>`, or any tag/import not in the design system context.

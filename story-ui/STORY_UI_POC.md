@@ -95,6 +95,18 @@ You can use Story UI from Claude Desktop or other MCP clients:
 - **Local:** after `npm run story-ui`, MCP endpoint: `http://localhost:4001/mcp-remote/mcp`
 - Add as a custom connector in Claude Desktop (Settings → Connectors) or via Claude Code.
 
+### Cursor MCP workflow (design system constraint)
+
+For a **streamlined workflow in Cursor** that constrains the AI to the Shidoka Design System when generating pages/templates (without opening the Story UI panel), see **story-ui/docs/CURSOR-MCP-WORKFLOW.md**. It describes:
+
+- A small **Shidoka MCP server** (`story-ui/mcp-server/`) that exposes the tool `get_shidoka_design_context` (considerations + registry + page-template-builder).
+- **.cursor/mcp.json** and **.cursor/rules/shidoka-generation.mdc** so Cursor uses that context when you ask to build a page or template.
+- Same single source of truth (`npm run generate-component-registry` → story-ui-docs/); no model “training,” only context injection.
+
+### Shidoka Studio (Cursor MCP, in development)
+
+**Shidoka Studio** is the Shidoka → Cursor MCP path: an MCP server that exposes `get_shidoka_design_context` so Cursor can generate pages/templates constrained to the design system. Right now it lives in-repo (`story-ui/mcp-server/` for design-system devs, and `packages/shidoka-studio/` as a future distributable); **npm publishing is not set up yet** — treat it as in development. When you’re ready to distribute, it could be published as its own **npm package** or potentially a **Cursor extension**; see **story-ui/docs/SHIDOKA-STUDIO-PACKAGING.md** for the packaging idea (consumer + publisher view).
+
 ## Troubleshooting
 
 - **npm install hangs or fails with SELF_SIGNED_CERT_IN_CHAIN** – The project `.npmrc` sets `strict-ssl=false` so installs work behind corporate proxies. For a more secure setup, use your org’s CA: `npm config set cafile /path/to/corporate-ca.pem` or set `NODE_EXTRA_CA_CERTS=/path/to/ca.pem`; then you can remove `strict-ssl=false` from `.npmrc`.
