@@ -6,6 +6,14 @@ You don’t need the design system repo. Install this package and add one block 
 
 ---
 
+## For internal app developers
+
+If you're building an application with Shidoka (Vue, Next.js, React, Svelte, Vanilla JS, etc.) and already use the design system components in your app, **Shidoka Studio is a separate dev tool**: it runs locally and tells Cursor how to generate pages that use Shidoka correctly. Install it as a dev dependency in your app repo and configure Cursor once; framework-agnostic—Cursor will infer output format and paths from your project.
+
+**If your org uses a private npm registry:** Install the same way you install other `@kyndryl-design-system` packages (ensure your `.npmrc` and registry are set up). Then follow **Configure Cursor** below.
+
+---
+
 ## Install
 
 **Project (recommended):**
@@ -19,6 +27,33 @@ npm install -D @kyndryl-design-system/shidoka-studio
 ```bash
 npm install -g @kyndryl-design-system/shidoka-studio
 ```
+
+**Optional — auto-configure Cursor:** From your project root, run once to add Shidoka Studio to `.cursor/mcp.json` (creates the file or merges with existing MCP servers):
+
+```bash
+npx shidoka-studio-setup
+```
+
+**Side-load (no registry):** You can distribute the package without publishing to any registry.
+
+1. **You (releaser)** — From the design-system repo root, build and pack once:
+
+   ```bash
+   npm run build:shidoka-studio
+   cd packages/shidoka-studio && npm pack
+   ```
+
+   That creates **`kyndryl-design-system-shidoka-studio-1.0.0.tgz`** (version from package.json). Share that file (internal drive, CI artifact, or internal URL).
+
+2. **Consumers** — From their app repo, install the tarball:
+
+   ```bash
+   npm install -D /path/to/kyndryl-design-system-shidoka-studio-1.0.0.tgz
+   ```
+
+   Or with a URL if you host the file: `npm install -D https://your-server.com/.../kyndryl-design-system-shidoka-studio-1.0.0.tgz`
+
+   Then add the MCP block to `.cursor/mcp.json` (same as below; Cursor will run the installed package).
 
 ---
 
@@ -98,6 +133,12 @@ Set these in your environment or in Cursor’s MCP server config if it supports 
 
 - Node.js 18+
 - Cursor with MCP support (project-level config: `.cursor/mcp.json`)
+
+---
+
+## Publishing
+
+**Do not publish this package to the public npm registry (npmjs.com) without explicit permission.** The package includes a `prepublishOnly` guard that blocks publish when the registry is npmjs.org. Use your organization's private registry for internal distribution.
 
 ---
 

@@ -123,7 +123,10 @@ Sizing and API come from the design-system context (CSS custom properties, slot 
 
 Generated output should be copy-pasteable. For full-page prompts, apply the layout order and spacing above and produce complete, working examples that use only registered components with correct attributes and imports.
 
-**Where to put generated stories:** In **shidoka-applications**, write generated Storybook stories to **src/stories/pages/generated/** (e.g. `src/stories/pages/generated/MyPage.stories.js`). This folder is cleared on `npm run dev` and on `git push`; generated files are for testing only. Use import paths relative to that folder: `../../boilerplate/workspaceSwitcherBoilerplate.js`, `../../../components/global/...`, `../../../components/reusable/...`. Canonical page stories live in `src/stories/pages/` (not in `generated/`) and are not cleared.
+**Where to put generated page output:**
+
+- **When running locally in the shidoka-applications repo (design-system repo):** Always write generated Storybook page stories to **src/stories/pages/generated/** (e.g. `src/stories/pages/generated/MyPage.stories.js`). This folder is cleared on `npm run dev` and on `git push`; generated files are for testing only and must not be committed. Use import paths relative to that folder: `../../boilerplate/workspaceSwitcherBoilerplate.js`, `../../../components/global/...`, `../../../components/reusable/...`. Do not write generated pages to `src/stories/pages/` (that directory is for canonical, hand-authored stories only).
+- **When generating for an external/consuming application:** Infer the output path and file format from the project structure (e.g. `src/views/`, `app/(dashboard)/`, `pages/`, `src/pages/`) and use import paths appropriate to that app. Do not use the shidoka-applications path; the MCP/LLM should detect that the workspace is not the design-system repo and place the file where it fits the consuming app’s layout.
 
 ## Consuming applications (styling)
 
