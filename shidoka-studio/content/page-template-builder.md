@@ -50,7 +50,7 @@ Never place the side-drawer anchor button directly under the page title with no 
 
 ## 4. Data table (required wrapper)
 
-Data tables must live inside a **scrollable wrapper** so they don’t overflow the viewport. Put **kyn-table-container** (and **kyn-table** inside it) inside this div:
+Data tables must live inside a **scrollable wrapper** so they don't overflow the viewport. Put **kyn-table-container** (and **kyn-table** inside it) inside this div:
 
 ```html
 <div

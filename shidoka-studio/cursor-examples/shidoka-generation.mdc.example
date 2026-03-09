@@ -1,0 +1,14 @@
+---
+description: When generating Shidoka pages or templates, use design system context from MCP
+globs: src/stories/**/*.ts,src/stories/**/*.js,**/*page*.*,**/*template*.*,src/views/**/*.*,app/**/page.*
+alwaysApply: false
+---
+
+# Shidoka page/template generation
+
+When the user asks to **build a page**, **create a template**, or **generate a view** that uses Shidoka components (kyn-*):
+
+1. **Call the MCP tool** `get_shidoka_design_context` to retrieve the Shidoka design system context (considerations, component registry, page-template-builder).
+2. **Generate code** that strictly follows that context: only `kyn-*` tags and registry import paths; follow page-template-builder for full-page layouts (shell order, main padding, toolbar spacing, side drawer, no `open` by default, fullscreen decorator without negative margin).
+3. **Output format and path** depend on the project. Infer from the workspace: if the project has Storybook and `src/stories/`, emit a Storybook story (e.g. `*.stories.js` or `*.stories.ts`); if it has Vue and `src/views/`, emit a `.vue` SFC; if Next.js with `app/`, emit `app/…/page.tsx`; if Next.js with `pages/`, emit `pages/….tsx`. Prefer the path or format the user specifies in the prompt. If the project has a Cursor rule or README that defines where Shidoka-generated output goes, follow that. Do **not** assume story format unless the project has Storybook.
+4. **Do not** use `<my-button>`, `<button>`, native `<table>`, or any tag/import not in the design system context.

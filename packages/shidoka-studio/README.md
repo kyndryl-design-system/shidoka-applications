@@ -65,6 +65,8 @@ In Cursor chat, ask for a Shidoka page or template, for example:
 
 Cursor will use the **get_shidoka_design_context** tool and generate code that follows the design system.
 
+**What file format is generated?** The MCP does not dictate format. Cursor infers from your project: if you have Storybook and `src/stories/`, you’ll get a `.stories.js` (or `.stories.ts`) under PAGES; if you have Vue, Next.js, or another framework, the model will emit the appropriate file type (e.g. `.vue`, `app/…/page.tsx`). To avoid the wrong format, specify it in your prompt (e.g. "Generate as a Vue component at `src/views/SettingsPage.vue`") or in a project Cursor rule.
+
 ---
 
 ## Optional: Cursor rule

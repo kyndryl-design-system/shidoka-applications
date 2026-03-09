@@ -4,13 +4,12 @@
  *
  * Single source of truth: custom-elements.json (CEM). All component data is derived from it.
  *
- * Generates:
- *   story-ui/docs/guidelines/component-registry.md  (compact tag + import; key attrs from CEM)
- *   story-ui-docs/design-system-context.md         (full CEM-derived reference for LLM)
- *   story-ui-docs/component-registry.md            (same compact registry)
- *   story-ui-docs/component-api.json               (CEM-derived JSON for tooling/MCP)
+ * Generates into shidoka-studio/context-src/:
+ *   - design-system-context.md, component-registry.md, component-api.json (from CEM)
+ *   - considerations.md, page-template-builder.md (copied from shidoka-studio/content/)
  *
- * Usage:  node story-ui/scripts/generate-component-registry.js
+ * Usage: node shidoka-studio/scripts/generate-component-registry.js
+ * From repo root: npm run generate-component-registry
  */
 
 import {
@@ -25,6 +24,9 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
+const SHIDOKA_STUDIO = join(ROOT, 'shidoka-studio');
+const CONTEXT_SRC = join(SHIDOKA_STUDIO, 'context-src');
+const CONTENT = join(SHIDOKA_STUDIO, 'content');
 
 const cem = JSON.parse(
   readFileSync(join(ROOT, 'custom-elements.json'), 'utf8')
@@ -132,19 +134,11 @@ for (const tag of keyTags) {
 }
 lines.push('');
 
-// Write to story-ui/docs/guidelines/
-const outDir = join(ROOT, 'story-ui', 'docs', 'guidelines');
-mkdirSync(outDir, { recursive: true });
+// Output directory: shidoka-studio/context-src
+mkdirSync(CONTEXT_SRC, { recursive: true });
+writeFileSync(join(CONTEXT_SRC, 'component-registry.md'), lines.join('\n'));
 
-const outPath = join(outDir, 'component-registry.md');
-writeFileSync(outPath, lines.join('\n'));
-
-// Also write to story-ui-docs/ (Story UI server / DocumentationLoader uses this)
-const docsDir = join(ROOT, 'story-ui-docs');
-mkdirSync(docsDir, { recursive: true });
-writeFileSync(join(docsDir, 'component-registry.md'), lines.join('\n'));
-
-// Build rich design-system-context.md from CEM for MCP/LLM (authoritative attributes, slots, events)
+// Build rich design-system-context.md from CEM for MCP/LLM
 const contextLines = [
   '# Shidoka Design System — Context for LLM',
   '',
@@ -178,11 +172,11 @@ for (const [tag, meta] of sortedTags) {
 }
 
 writeFileSync(
-  join(docsDir, 'design-system-context.md'),
+  join(CONTEXT_SRC, 'design-system-context.md'),
   contextLines.join('\n')
 );
 
-// Emit CEM-derived JSON for tooling / MCP (custom-elements.json remains the source of truth)
+// Emit CEM-derived JSON for tooling / MCP
 const componentApi = {};
 for (const [tag, meta] of componentMeta) {
   componentApi[tag] = {
@@ -194,7 +188,7 @@ for (const [tag, meta] of componentMeta) {
   };
 }
 writeFileSync(
-  join(docsDir, 'component-api.json'),
+  join(CONTEXT_SRC, 'component-api.json'),
   JSON.stringify(
     { source: 'custom-elements.json', components: componentApi },
     null,
@@ -202,33 +196,32 @@ writeFileSync(
   )
 );
 
-// Copy considerations (rules CEM doesn't encode) and page-template-builder (layout/spacing for full-page prompts)
-const considerationsSrc = join(ROOT, 'story-ui', 'story-ui-considerations.md');
-const considerationsDst = join(docsDir, 'considerations.md');
+// Copy considerations and page-template-builder from shidoka-studio/content/
+const considerationsSrc = join(CONTENT, 'considerations.md');
+const considerationsDst = join(CONTEXT_SRC, 'considerations.md');
 if (existsSync(considerationsSrc)) {
   copyFileSync(considerationsSrc, considerationsDst);
 }
-const pageTemplateSrc = join(
-  ROOT,
-  'story-ui',
-  'docs',
-  'patterns',
-  'page-template-builder.md'
-);
-const pageTemplateDst = join(docsDir, 'page-template-builder.md');
+const pageTemplateSrc = join(CONTENT, 'page-template-builder.md');
+const pageTemplateDst = join(CONTEXT_SRC, 'page-template-builder.md');
 if (existsSync(pageTemplateSrc)) {
   copyFileSync(pageTemplateSrc, pageTemplateDst);
 }
 
-console.log(`✓ Generated ${outPath}`);
-console.log(`✓ Written ${docsDir}/component-registry.md`);
-console.log(`✓ Written ${docsDir}/design-system-context.md (from CEM)`);
-console.log(`✓ Written ${docsDir}/component-api.json (from CEM)`);
+console.log('✓ Written shidoka-studio/context-src/component-registry.md');
+console.log(
+  '✓ Written shidoka-studio/context-src/design-system-context.md (from CEM)'
+);
+console.log(
+  '✓ Written shidoka-studio/context-src/component-api.json (from CEM)'
+);
 if (existsSync(considerationsSrc))
-  console.log(`✓ Copied considerations → ${docsDir}/considerations.md`);
+  console.log(
+    '✓ Copied considerations → shidoka-studio/context-src/considerations.md'
+  );
 if (existsSync(pageTemplateSrc))
   console.log(
-    `✓ Copied page-template-builder → ${docsDir}/page-template-builder.md`
+    '✓ Copied page-template-builder → shidoka-studio/context-src/page-template-builder.md'
   );
-console.log(`  Source of truth: custom-elements.json`);
+console.log('  Source of truth: custom-elements.json');
 console.log(`  ${tagSet.size} components, ${sortedPaths.length} import paths`);
