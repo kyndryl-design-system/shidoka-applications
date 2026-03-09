@@ -54,7 +54,7 @@ function bestImportPath(cemPath) {
 // Group tags by import path and collect full CEM metadata per component
 const tagsByImportPath = new Map();
 const tagSet = new Set();
-/** @type {Map<string, { importPath: string, attributes: string[], slots: string[], events: string[], description?: string }>} */
+/** @type {Map<string, { importPath: string, attributes: string[], slots: string[], slotDescriptions: Record<string,string>, events: string[], description?: string, cssProperties: Array<{ name: string, description?: string }> }>} */
 const componentMeta = new Map();
 
 for (const mod of cem.modules) {
@@ -70,13 +70,24 @@ for (const mod of cem.modules) {
     const slots = (decl.slots || []).map((s) =>
       s.name === '' ? 'default' : s.name
     );
+    const slotDescriptions = {};
+    for (const s of decl.slots || []) {
+      const key = s.name === '' ? 'default' : s.name;
+      if (s.description) slotDescriptions[key] = s.description;
+    }
     const events = (decl.events || []).map((e) => e.name);
+    const cssProperties = (decl.cssProperties || []).map((p) => ({
+      name: p.name,
+      description: p.description,
+    }));
     componentMeta.set(tagName, {
       importPath,
       attributes: attrs,
       slots,
+      slotDescriptions,
       events,
       description: decl.description,
+      cssProperties,
     });
   }
 }
@@ -114,8 +125,10 @@ const keyTags = [
   'kyn-table',
   'kyn-ui-shell',
   'kyn-header',
+  'kyn-header-flyout',
   'kyn-footer',
   'kyn-side-drawer',
+  'kyn-workspace-switcher',
   'kyn-accordion',
   'kyn-tabs',
   'kyn-tab',
@@ -158,12 +171,26 @@ for (const [tag, meta] of sortedTags) {
   contextLines.push(`- **Import:** \`import '${meta.importPath}';\``);
   if (meta.attributes.length)
     contextLines.push(`- **Attributes:** ${meta.attributes.join(', ')}`);
-  if (meta.slots.length)
-    contextLines.push(
-      `- **Slots:** ${meta.slots
-        .map((s) => (s === 'default' ? '(default)' : s))
-        .join(', ')}`
-    );
+  if (meta.slots.length) {
+    const slotList = meta.slots
+      .map((s) => (s === 'default' ? '(default)' : s))
+      .join(', ');
+    contextLines.push(`- **Slots:** ${slotList}`);
+    if (Object.keys(meta.slotDescriptions || {}).length) {
+      for (const [slotName, desc] of Object.entries(meta.slotDescriptions)) {
+        const label = slotName === 'default' ? '(default)' : slotName;
+        contextLines.push(`  - \`${label}\`: ${desc}`);
+      }
+    }
+  }
+  if (meta.cssProperties?.length) {
+    contextLines.push(`- **CSS custom properties:**`);
+    for (const cp of meta.cssProperties) {
+      contextLines.push(
+        `  - \`${cp.name}\`: ${cp.description || '(see component)'}`
+      );
+    }
+  }
   if (meta.events.length)
     contextLines.push(`- **Events:** ${meta.events.join(', ')}`);
   if (meta.description)
@@ -183,6 +210,10 @@ for (const [tag, meta] of componentMeta) {
     importPath: meta.importPath,
     attributes: meta.attributes,
     slots: meta.slots,
+    ...(Object.keys(meta.slotDescriptions || {}).length && {
+      slotDescriptions: meta.slotDescriptions,
+    }),
+    ...(meta.cssProperties?.length && { cssProperties: meta.cssProperties }),
     events: meta.events,
     ...(meta.description && { description: meta.description }),
   };

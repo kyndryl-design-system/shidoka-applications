@@ -1,8 +1,10 @@
 # Shidoka Design System Considerations
 
-**Source of truth for component API: custom-elements.json (CEM).** All tags, attributes, slots, events, and import paths are defined there. The design-system context (e.g. `design-system-context.md`, `component-api.json`) is generated from CEM — do not guess; use only what appears in that context.
+**Source of truth for component API: custom-elements.json (CEM).** All tags, attributes, slots, events, CSS custom properties, and import paths are defined there. The design-system context (`design-system-context.md`) and structured API (`component-api.json`) are generated from CEM — do not guess; use only what appears in that context. The distributed package includes both so the LLM and tooling can use components as designed.
 
-**This file adds only what CEM does not encode:** intent mapping (user says X → use component Y), Shidoka-specific usage rules (e.g. table structure, modal/drawer visibility, layout and spacing), and forbidden patterns. The LLM should receive both the CEM-derived context and this considerations file.
+**Use components as designed.** Infer sizing, behavior, and composition from the CEM-derived context: component descriptions, slot descriptions, CSS custom properties (e.g. `--kyn-workspace-switcher-max-height`), attributes, and events. Do not rely on app-specific boilerplate files for API or sizing; the design system is the authority.
+
+**This file adds only what CEM does not encode:** intent mapping (user says X → use component Y), layout and spacing rules (shell order, main padding, table structure), and forbidden patterns.
 
 ## Adaptability (no one-off example files)
 
@@ -39,7 +41,7 @@ Do **not** create or rely on hand-authored example stories for each pattern (e.g
 - **kyn-modal:** Requires `open` (boolean) to be visible. Use `titleText`, `size` (sm, md, lg, xl), `okText`, `cancelText` as needed.
 - **kyn-side-drawer:** Place **inside** `<main>`. Use `<kyn-button slot="anchor" kind="tertiary">Label</kyn-button>` as the trigger (user's label e.g. "OPEN SESAME"). Use `titleText`, `labelText`, `size` (sm, md, lg). **Do not add the `open` attribute** unless the user explicitly asks for the drawer to be open by default; the drawer is closed by default and opens on anchor click.
 - **kyn-button:** Use `kind` (not `variant`). Values: primary, secondary, tertiary, ghost, primary-destructive, secondary-destructive, tertiary-destructive, ghost-destructive, primary-ai, ghost-ai.
-- **kyn-workspace-switcher:** When used inside a header flyout (e.g. `kyn-header-flyout`), size the overlay with inline style: `min-width: 520px`, `width: 520px`, `max-width: 90vw`, and `--kyn-workspace-switcher-max-height: none` so the panel is wide enough and height is driven by the left pane content. Do not set min-height.
+- **kyn-workspace-switcher:** Use inside `kyn-header-flyout`. The component fits 100% of its container (see CEM description); size the overlay via the container and the component's CSS custom properties (e.g. `--kyn-workspace-switcher-max-height`) as listed in the design-system context. Use slot `left` for the CURRENT area (see slot descriptions in design-system context). Infer all sizing and API from CEM—do not depend on a boilerplate file for dimensions or attributes.
 - **Tables:** Use only `kyn-*` table elements — see "Table structure" below. Never use native `<table>`, `<tr>`, `<td>`, etc.
 
 ## Table structure (CRITICAL)
@@ -92,11 +94,13 @@ For prompts like "build a page with ui-shell, header, local nav, footer, data ta
 
 Full reference: **shidoka-studio/content/page-template-builder.md** (or the built context in shidoka-studio/context/).
 
-## Workspace switcher and global switcher boilerplate (scaffold)
+## Workspace switcher and global switcher
 
-**When the user says "build a workspace switcher" (or a page that includes one),** implement all of the following unless they specify otherwise:
+**Infer from the design-system context.** Use the CEM-derived component reference for `kyn-workspace-switcher` and `kyn-workspace-switcher-menu-item` (slots, attributes, CSS custom properties, descriptions). Size the switcher from its container and the component's CSS custom properties; do not rely on a boilerplate file for width, min-width, or height.
 
-1. **Size:** Switcher overlay `min-width: 520px`, `width: 520px`, `max-width: 90vw`, `--kyn-workspace-switcher-max-height: none` so the panel is wide enough and height fits content (see kyn-workspace-switcher bullet above).
+Sizing and API come from the design-system context (CSS custom properties, slot descriptions); the rules below are behavioral and composition only.
+
+1. **Placement:** Use `kyn-workspace-switcher` inside `kyn-header-flyout`. Set **hide-menu-label** (and **hide-back-button** for dropdown-style) on the flyout.
 2. **Workspace counts:** Each left-list workspace item (e.g. Global Zone (All), Account Tenants, Compute Zones) must show a **count** (`.count` on `kyn-workspace-switcher-menu-item`). Global Zone (All) count = sum of all other workspace counts; its `itemsByWorkspace.global` = union of all child workspace items.
 3. **Nav rail (header trigger):** The selected account **name** (not id) is shown in the flyout trigger. Use a span with `id="workspace-trigger-label"` and wire it so it updates when the user selects an item (use the menu item's `.name` property, not `getAttribute('name')`). **Truncate long names** in the nav rail with ellipsis: on the trigger label span use `style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"` (or similar) and set the element's `title` to the full name for tooltip.
 4. **Chevron (native only):** The flyout trigger uses **kyn-header-flyout**, which already shows a down chevron when closed and an up chevron when open. **Do not** add any chevron icon, SVG, or extra markup in the trigger (e.g. in `slot="button"`). Use only the native workspace-switcher/flyout chevron so there is never a duplicate.

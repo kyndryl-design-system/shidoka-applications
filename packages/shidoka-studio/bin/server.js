@@ -113,7 +113,7 @@ server.registerTool(
   {
     title: 'Get Shidoka design system context',
     description:
-      'Returns the full Shidoka Design System context: considerations (intent mapping, component rules, forbidden patterns), component registry (kyn-* tags and import paths), and page-template-builder (shell order, main padding, toolbar spacing, side drawer, table wrapper). Use this when generating pages, templates, or Storybook stories so output uses only Shidoka components and follows layout/spacing rules.',
+      'Returns the full Shidoka Design System context derived from custom-elements.json (CEM): considerations (intent mapping, layout rules, forbidden patterns), component registry and design-system context (kyn-* tags, attributes, slots, slot descriptions, CSS custom properties, import paths), and page-template-builder (shell order, main padding, table wrapper). Use components as designed—infer sizing, behavior, and composition from this context. Use this when generating pages, templates, or Storybook stories so output uses only Shidoka components and follows layout rules.',
     inputSchema: undefined,
   },
   async () => {

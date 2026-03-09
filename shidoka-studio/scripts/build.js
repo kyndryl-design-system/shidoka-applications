@@ -24,6 +24,7 @@ const FILES = [
   'component-registry.md',
   'page-template-builder.md',
   'design-system-context.md',
+  'component-api.json',
 ];
 
 if (!existsSync(CONTEXT_SRC)) {
