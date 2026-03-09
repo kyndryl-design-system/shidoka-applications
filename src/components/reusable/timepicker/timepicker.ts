@@ -33,7 +33,7 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/time.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
