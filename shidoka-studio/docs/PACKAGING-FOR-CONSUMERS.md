@@ -84,6 +84,15 @@ If you only say "generate a Settings view," you may get a valid Shidoka componen
 
 **Optional:** In your app repo, add a Cursor rule (e.g. `.cursor/rules/shidoka-views.mdc`) that states where Shidoka-generated views live and how routing works (e.g. "New Shidoka pages go in `src/views/`; add a route in `src/router/index.js` with path and component."). Then the first-time prompt can be shorter and the AI will still wire the view.
 
+### Styling: required CSS and avoiding overrides
+
+Your app must load Shidoka Foundation (and any applications/charts global CSS) so tokens and layout work. To prevent your application’s styles from overwriting the design system, use **CSS cascade layers** so Shidoka has higher precedence than app globals.
+
+- **Required styles:** `@kyndryl-design-system/shidoka-foundation`: import `css/root.css` and `css/index.css` in your app entry. Add any applications or charts global CSS if you use those packages.
+- **Layer order:** Declare `@layer app, shidoka` and load Shidoka into the `shidoka` layer and your app’s global styles into the `app` layer so Shidoka isn’t overwritten.
+
+Full setup and examples: **shidoka-studio/docs/STYLING-FOR-CONSUMERS.md**.
+
 ---
 
 ## Publisher perspective (design system team)

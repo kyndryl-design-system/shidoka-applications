@@ -155,7 +155,9 @@ html`
       </div>
     </main>
     <kyn-footer rootUrl="/" logoAriaLabel="Home">
-      <span slot="copyright">© ${new Date().getFullYear()}</span>
+      <span slot="copyright"
+        >Copyright © ${new Date().getFullYear()} Kyndryl Inc. All rights reserved.</span
+      >
     </kyn-footer>
   </kyn-ui-shell>
 `;

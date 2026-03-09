@@ -36,7 +36,7 @@ This folder owns the **Cursor MCP workflow**: server, docs, packaging options, a
    ```bash
    node shidoka-studio/server/index.js
    ```
-   Or from root: `npm run mcp:shidoka` (points at this server).
+   Or from repo root run the server directly: `node shidoka-studio/server/index.js` (e.g. to debug or see logs).
 
 **Optional:** Set `SHIDOKA_STUDIO_CONTEXT_PATH` to `./shidoka-studio/context-src` (from repo root) so the server reads context directly from the generator output without copying into `shidoka-studio/context`.
 

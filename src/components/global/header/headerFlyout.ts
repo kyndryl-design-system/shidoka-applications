@@ -37,7 +37,7 @@ export class HeaderFlyout extends LitElement {
   accessor label = '';
 
   /** Hide the label at the top of the flyout menu. */
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor hideMenuLabel = false;
 
   /** Hide the label in the mobile button. */
@@ -62,6 +62,10 @@ export class HeaderFlyout extends LitElement {
   /** Removes padding from the flyout menu. */
   @property({ type: Boolean })
   accessor noPadding = false;
+
+  /** When true, hides the back (left arrow) button. Use for dropdown-style flyouts (e.g. workspace switcher) where the back button is not used. */
+  @property({ type: Boolean, reflect: true, attribute: 'hide-back-button' })
+  accessor hideBackButton = false;
 
   /**
    * Queries any slotted HTML elements.
@@ -137,11 +141,14 @@ export class HeaderFlyout extends LitElement {
             `}
 
         <div class=${classMap(contentClasses)}>
-          <button class="go-back" @click=${() => this._handleBack()}>
-            <span>${unsafeSVG(backIcon)}</span>
-            ${this.backText}
-          </button>
-
+          ${!this.hideBackButton
+            ? html`
+                <button class="go-back" @click=${() => this._handleBack()}>
+                  <span>${unsafeSVG(backIcon)}</span>
+                  ${this.backText}
+                </button>
+              `
+            : null}
           ${!this.hideMenuLabel
             ? html`
                 <div class="menu-label">

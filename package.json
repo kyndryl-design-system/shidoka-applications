@@ -13,7 +13,8 @@
     "url": "https://github.com/kyndryl-design-system/shidoka-applications.git"
   },
   "scripts": {
-    "dev": "npm run clear:generated-stories && npm run storybook",
+    "dev": "npm run storybook",
+    "shidoka-studio": "npm run build:shidoka-studio && npm run dev",
     "storybook": "storybook dev -p 6006",
     "clear:generated-stories": "node shidoka-studio/scripts/clear-generated-stories.js",
     "build-storybook": "storybook build",
@@ -29,8 +30,7 @@
     "test": "vitest run --project=storybook",
     "test:unit": "vitest run --project=unit",
     "prepare": "npx husky install",
-    "mcp:shidoka": "node shidoka-studio/server/index.js",
-    "build:shidoka-studio": "npm run generate-component-registry && node shidoka-studio/scripts/build.js"
+    "build:shidoka-studio": "npm run generate-component-registry && node shidoka-studio/scripts/build.js && npm run clear:generated-stories"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.1",
