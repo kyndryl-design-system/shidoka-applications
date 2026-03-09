@@ -69,7 +69,7 @@ export class ProgressBar extends LitElement {
 
   /** Sets visibility of percentage value.*/
   @property({ type: Boolean })
-  accessor showPercentageValue = false;
+  accessor hidePercentageValue = false;
 
   /** Incrementing percentage count value.
    * @internal
@@ -184,11 +184,11 @@ export class ProgressBar extends LitElement {
     currentStatus: ProgressStatus,
     currentValue: number | null
   ) {
-    const shouldShowPercentage = this.showPercentageValue;
+    const showPercentageValue = !this.hidePercentageValue;
 
     if (currentStatus !== ProgressStatus.ACTIVE) {
       return html`<p>
-        ${shouldShowPercentage ? html`${this._percentage}%` : null}
+        ${showPercentageValue ? html`${this._percentage}%` : null}
         <span class="${currentStatus}-icon"
           >${currentStatus === ProgressStatus.SUCCESS
             ? unsafeSVG(checkmarkIcon)
@@ -204,7 +204,7 @@ export class ProgressBar extends LitElement {
 
     if (this.showInlineLoadStatus && !hardcodedProgressReached) {
       return html`<p>
-        ${shouldShowPercentage ? html`<span>${this._percentage}%</span>` : null}
+        ${showPercentageValue ? html`<span>${this._percentage}%</span>` : null}
         <kyn-loader-inline status="active"></kyn-loader-inline>
       </p>`;
     }
