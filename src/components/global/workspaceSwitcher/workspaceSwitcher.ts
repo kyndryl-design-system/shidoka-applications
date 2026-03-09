@@ -22,6 +22,7 @@ const _defaultTextStrings = {
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
  * @cssprop [--kyn-workspace-switcher-max-height=none] - Maximum height of the switcher panel.
+ * @cssprop [--kyn-workspace-switcher-min-width=560px] - Minimum width (desktop); left/right panes each get ~50% with space to the right of the list.
  */
 @customElement('kyn-workspace-switcher')
 export class WorkspaceSwitcher extends LitElement {

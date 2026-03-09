@@ -86,6 +86,29 @@ Use **kyn-thead**, **kyn-header-tr**, **kyn-th**, **kyn-tbody**, **kyn-tr**, **k
 
 **Do NOT add the `open` attribute** to kyn-side-drawer unless the user explicitly asks for "drawer open by default" or "drawer expanded on load". By default the drawer is closed and opens when the user clicks the anchor button. Use the exact label text the user asks for (e.g. "OPEN SESAME", "Open Message").
 
+## 5b. Workspace switcher in header (when included)
+
+When the page includes a **workspace switcher** in the header, use **kyn-header-flyout** with a **span** in `slot="button"` (with `id="workspace-trigger-label"`) and **kyn-workspace-switcher** as the panel content.
+
+- **Trigger:** Put a span in `slot="button"` with `id="workspace-trigger-label"` and the label text inside. Example:
+  ```html
+  <kyn-header-flyout label="…" hideMenuLabel hideButtonLabel noPadding>
+    <span
+      id="workspace-trigger-label"
+      slot="button"
+      style="display: flex; align-items: center; font-size: 14px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+      title="…"
+      >Selected name only</span
+    >
+    <kyn-workspace-switcher
+      id="workspace-switcher"
+      style="width: 100%; max-height: var(--kyn-workspace-switcher-max-height, 70vh);"
+      >…</kyn-workspace-switcher
+    >
+  </kyn-header-flyout>
+  ```
+- Set **hide-menu-label** and **hide-back-button** on the flyout. Wire the label via `id="workspace-trigger-label"` and boilerplate `setupWorkspaceSwitcher` (see considerations.md).
+
 ## 6. Full-page Storybook story (meta + decorator)
 
 For full-page layouts, set **parameters.layout** to `'fullscreen'` and use a **decorator** so the story has full height. The decorator must **not** use negative margin (that would cancel the main content indent). Use only min-height and width:

@@ -28,10 +28,6 @@ export class HeaderFlyout extends LitElement {
   @property({ type: Boolean })
   accessor anchorLeft = false;
 
-  /** Hides the arrow. */
-  @property({ type: Boolean })
-  accessor hideArrow = false;
-
   /** Menu & button label. */
   @property({ type: String })
   accessor label = '';

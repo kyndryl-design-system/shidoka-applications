@@ -1,6 +1,6 @@
 ---
 description: When generating Shidoka pages or templates, use design system context from MCP
-globs: src/stories/generated/**/*.ts,**/*page*.ts,**/*template*.ts
+globs: src/stories/generated/**/*.ts,src/stories/pages/generated/**/*.stories.js,**/*page*.ts,**/*template*.ts
 alwaysApply: false
 ---
 
@@ -14,6 +14,6 @@ When the user asks to **build a page**, **create a template**, or **generate a S
    - Use only import paths from the context.
    - Follow page-template-builder for full-page layouts: shell order (header → main → footer), main padding `style="padding: var(--kd-page-gutter, 1rem);"`, toolbar spacing, side drawer inside main with anchor button, table wrapper, fullscreen decorator with only `min-height: 100vh; width: 100%;` (no negative margin).
    - Do not add `open` to kyn-side-drawer unless the user asks for the drawer open by default.
-   - **Workspace switcher:** In the nav rail trigger (kyn-header-flyout), put only the label span (`id="workspace-trigger-label"`) in `slot="button"`. Do not add a chevron icon or SVG—kyn-header-flyout provides the chevron natively (one chevron only). Always set **hide-menu-label** on that kyn-header-flyout so the panel never shows a "WORKSPACE" (or other) label at the top.
+   - **Workspace switcher:** Use a **span** in the flyout’s `slot="button"` with `id="workspace-trigger-label"` and the label inside. Always set **hide-menu-label** and **hide-back-button** on that kyn-header-flyout.
 3. **Write output** to `src/stories/generated/` for Storybook stories (use a kebab-case filename and a stable id in the meta), or to the path the user specifies.
 4. **Do not** use `<my-button>`, `<button>`, native `<table>`, or any tag/import not in the design system context.
