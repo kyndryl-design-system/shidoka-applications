@@ -83,6 +83,13 @@ $single-column-width: 350px;
     flex-shrink: 0;
   }
 
+  // Spans that wrap icons (e.g. <span>${unsafeSVG(icon)}</span>) — align icon with text
+  ::slotted(span:first-child:not([slot])) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   // Fixed-size icon slots
   ::slotted(svg:first-child),
   ::slotted(span[slot='icon']) {
@@ -126,9 +133,13 @@ $single-column-width: 350px;
 
 .arrow {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   svg {
     display: block;
+    vertical-align: middle;
   }
 }
 

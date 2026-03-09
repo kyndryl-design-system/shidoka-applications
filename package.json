@@ -13,8 +13,9 @@
     "url": "https://github.com/kyndryl-design-system/shidoka-applications.git"
   },
   "scripts": {
-    "dev": "npm run storybook",
+    "dev": "npm run clear:generated-stories && npm run storybook",
     "storybook": "storybook dev -p 6006",
+    "clear:generated-stories": "node shidoka-studio/scripts/clear-generated-stories.js",
     "build-storybook": "storybook build",
     "build": "rollup -c && npm run sass-build",
     "sass-utility": "sass --no-source-map --style=compressed src/common/scss/utility:dist/common/css",

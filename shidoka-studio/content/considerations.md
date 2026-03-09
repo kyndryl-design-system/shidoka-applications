@@ -39,7 +39,7 @@ Do **not** create or rely on hand-authored example stories for each pattern (e.g
 - **kyn-modal:** Requires `open` (boolean) to be visible. Use `titleText`, `size` (sm, md, lg, xl), `okText`, `cancelText` as needed.
 - **kyn-side-drawer:** Place **inside** `<main>`. Use `<kyn-button slot="anchor" kind="tertiary">Label</kyn-button>` as the trigger (user's label e.g. "OPEN SESAME"). Use `titleText`, `labelText`, `size` (sm, md, lg). **Do not add the `open` attribute** unless the user explicitly asks for the drawer to be open by default; the drawer is closed by default and opens on anchor click.
 - **kyn-button:** Use `kind` (not `variant`). Values: primary, secondary, tertiary, ghost, primary-destructive, secondary-destructive, tertiary-destructive, ghost-destructive, primary-ai, ghost-ai.
-- **kyn-workspace-switcher:** When used inside a header flyout (e.g. `kyn-header-flyout`), size the overlay to fit its content so the left pane height and total width are not cramped. Apply inline style: `min-width: 520px` (the component’s left pane is 275px; 520px fits both panes), `width: max-content`, `max-width: 90vw`, `--kyn-workspace-switcher-max-height: min(480px, 70vh)`, and `min-height: 280px`. This makes the overlay height follow the left pane and total width fit the content.
+- **kyn-workspace-switcher:** When used inside a header flyout (e.g. `kyn-header-flyout`), size the overlay with inline style: `min-width: 520px`, `width: 520px`, `max-width: 90vw`, and `--kyn-workspace-switcher-max-height: none` so the panel is wide enough and height is driven by the left pane content. Do not set min-height.
 - **Tables:** Use only `kyn-*` table elements — see "Table structure" below. Never use native `<table>`, `<tr>`, `<td>`, etc.
 
 ## Table structure (CRITICAL)
@@ -92,6 +92,21 @@ For prompts like "build a page with ui-shell, header, local nav, footer, data ta
 
 Full reference: **shidoka-studio/content/page-template-builder.md** (or the built context in shidoka-studio/context/).
 
+## Workspace switcher and global switcher boilerplate (scaffold)
+
+**When the user says "build a workspace switcher" (or a page that includes one),** implement all of the following unless they specify otherwise:
+
+1. **Size:** Switcher overlay `min-width: 520px`, `width: 520px`, `max-width: 90vw`, `--kyn-workspace-switcher-max-height: none` so the panel is wide enough and height fits content (see kyn-workspace-switcher bullet above).
+2. **Workspace counts:** Each left-list workspace item (e.g. Global Zone (All), Account Tenants, Compute Zones) must show a **count** (`.count` on `kyn-workspace-switcher-menu-item`). Global Zone (All) count = sum of all other workspace counts; its `itemsByWorkspace.global` = union of all child workspace items.
+3. **Nav rail (header trigger):** The selected account **name** (not id) is shown in the flyout trigger. Use a span with `id="workspace-trigger-label"` and wire it so it updates when the user selects an item (use the menu item's `.name` property, not `getAttribute('name')`). **Truncate long names** in the nav rail with ellipsis: on the trigger label span use `style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"` (or similar) and set the element's `title` to the full name for tooltip.
+4. **Chevron (native only):** The flyout trigger uses **kyn-header-flyout**, which already shows a down chevron when closed and an up chevron when open. **Do not** add any chevron icon, SVG, or extra markup in the trigger (e.g. in `slot="button"`). Use only the native workspace-switcher/flyout chevron so there is never a duplicate.
+5. **Account meta info (CURRENT):** Use the **Patterns/Account Meta Info** structure and styles (see **src/stories/accountMetaInfo.stories.js**). In the switcher's **slot="left"**: same BEM structure (`.account-meta-info`, `__header`, `__checkmark`, `__content`, `__name`, `__country`), checkmark icon, selected account name (class `account-meta-info__name` so setup can update it; pattern CSS truncates long names with ellipsis), account ID with copy icon (**kyn-link** + icon), and country. Wire selection to update the name when the user picks a different account.
+
+**Unless the user supplies their own workspace JSON or global switcher nav data**, use the default boilerplate so consuming devs get a working scaffold:
+
+- **Workspace switcher (default):** Use the canonical boilerplate: workspaces **Global Zone (All)** (count = sum of all other workspace counts, e.g. 6 when there are Account Tenants 3 + Compute Zones 3), **Account Tenants**, **Compute Zones**; **itemsByWorkspace** with `global` = union of all child workspace items, and `tenants` / `compute` each with their own items. Wire switch behavior so left-list clicks set `switcher.view = 'detail'`, update left selection, and repopulate right-list from data; right-list clicks update selection and the trigger label (`#workspace-trigger-label`). In **shidoka-applications**, the boilerplate lives in **src/stories/boilerplate/workspaceSwitcherBoilerplate.js**: import `defaultWorkspaceSwitcherData` and `setupWorkspaceSwitcher`, give the switcher `id="workspace-switcher"` and the trigger label `id="workspace-trigger-label"`, and call `setupWorkspaceSwitcher(canvasElement)` from the story’s `play` (or pass custom data as second arg). When generating a new app or page, either reference this module path or replicate its data shape and setup logic so the workspace switcher is the default scaffold.
+- **Global switcher:** If the user does not supply nav JSON, use a minimal scaffold: one **kyn-header-link** with **kyn-header-category** slot="links" and a few placeholder links (e.g. Connections Management, Discovered Data, Visualization & Analytics, Topology, Settings). The user can replace with their own nav data or API later.
+
 ## Layout patterns
 
 - Page/template: follow "Page / template builder" above; see **shidoka-studio/content/page-template-builder.md** for the complete pattern.
@@ -100,3 +115,5 @@ Full reference: **shidoka-studio/content/page-template-builder.md** (or the buil
 ## Template / page generator
 
 Generated output should be copy-pasteable. For full-page prompts, apply the layout order and spacing above and produce complete, working examples that use only registered components with correct attributes and imports.
+
+**Where to put generated stories:** In **shidoka-applications**, write generated Storybook stories to **src/stories/pages/generated/** (e.g. `src/stories/pages/generated/MyPage.stories.js`). This folder is cleared on `npm run dev` and on `git push`; generated files are for testing only. Use import paths relative to that folder: `../../boilerplate/workspaceSwitcherBoilerplate.js`, `../../../components/global/...`, `../../../components/reusable/...`. Canonical page stories live in `src/stories/pages/` (not in `generated/`) and are not cleared.

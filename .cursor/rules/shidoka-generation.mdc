@@ -14,5 +14,6 @@ When the user asks to **build a page**, **create a template**, or **generate a S
    - Use only import paths from the context.
    - Follow page-template-builder for full-page layouts: shell order (header → main → footer), main padding `style="padding: var(--kd-page-gutter, 1rem);"`, toolbar spacing, side drawer inside main with anchor button, table wrapper, fullscreen decorator with only `min-height: 100vh; width: 100%;` (no negative margin).
    - Do not add `open` to kyn-side-drawer unless the user asks for the drawer open by default.
+   - **Workspace switcher:** In the nav rail trigger (kyn-header-flyout), put only the label span (`id="workspace-trigger-label"`) in `slot="button"`. Do not add a chevron icon or SVG—kyn-header-flyout provides the chevron natively (one chevron only).
 3. **Write output** to `src/stories/generated/` for Storybook stories (use a kebab-case filename and a stable id in the meta), or to the path the user specifies.
 4. **Do not** use `<my-button>`, `<button>`, native `<table>`, or any tag/import not in the design system context.

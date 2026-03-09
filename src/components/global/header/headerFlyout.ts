@@ -7,7 +7,8 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderFlyoutScss from './headerFlyout.scss?inline';
-import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import chevronUpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-up.svg';
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 /**
@@ -103,8 +104,10 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <span slot="button" class="arrow">
-                  ${unsafeSVG(chevronIcon)}
+                <span slot="button" class="arrow" aria-hidden="true">
+                  ${this.open
+                    ? unsafeSVG(chevronUpIcon)
+                    : unsafeSVG(chevronDownIcon)}
                 </span>
               </a>
             `
@@ -125,8 +128,10 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <span slot="button" class="arrow">
-                  ${unsafeSVG(chevronIcon)}
+                <span slot="button" class="arrow" aria-hidden="true">
+                  ${this.open
+                    ? unsafeSVG(chevronUpIcon)
+                    : unsafeSVG(chevronDownIcon)}
                 </span>
               </button>
             `}
