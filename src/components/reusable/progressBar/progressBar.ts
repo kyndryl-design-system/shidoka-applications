@@ -69,7 +69,7 @@ export class ProgressBar extends LitElement {
 
   /** Sets visibility of percentage value.*/
   @property({ type: Boolean })
-  accessor showPercentageValue = true;
+  accessor showPercentageValue = false;
 
   /** Incrementing percentage count value.
    * @internal
