@@ -2,7 +2,6 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import './index';
-
 import '../button';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
 import '../overflowMenu';
@@ -11,11 +10,25 @@ import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16
 import lgCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/cube.svg';
 import smCube from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cube.svg';
 
+import { WIDGET_STATUS } from './defs';
+import { createOptionsArray } from '../../../common/helpers/helpers';
+
+const createSelectOptions = (defs) => [null, ...createOptionsArray(defs)];
+
 export default {
   title: 'Components/Layout & Structure/Widget',
   component: 'kyn-widget',
   subcomponents: {
     'kyn-widget-drag-handle': 'kyn-widget-drag-handle',
+  },
+  argTypes: {
+    widgetStatus: {
+      options: createSelectOptions(WIDGET_STATUS),
+      control: { type: 'select', labels: { null: WIDGET_STATUS.DEFAULT } },
+      table: {
+        defaultValue: { summary: WIDGET_STATUS.DEFAULT },
+      },
+    },
   },
   parameters: {
     design: {
@@ -72,6 +85,7 @@ const args = {
   removeHeader: false,
   showStatusBadge: false,
   statusBadgeLabel: 'Update',
+  widgetStatus: 'default',
 };
 
 const getExampleContent = () => html`
@@ -103,6 +117,7 @@ export const Widget = {
             ?removeHeader=${args.removeHeader}
             ?showStatusBadge=${args.showStatusBadge}
             statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -139,6 +154,7 @@ export const SelectableWidget = {
             ?removeHeader=${args.removeHeader}
             ?showStatusBadge=${args.showStatusBadge}
             statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -166,6 +182,7 @@ export const WithActions = {
             ?removeHeader=${args.removeHeader}
             ?showStatusBadge=${args.showStatusBadge}
             statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-button
@@ -219,6 +236,7 @@ export const WithBadge = {
             ?removeHeader=${args.removeHeader}
             ?showStatusBadge=${args.showStatusBadge}
             statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             <kyn-overflow-menu
@@ -256,6 +274,7 @@ export const WithFooter = {
             ?removeHeader=${args.removeHeader}
             ?showStatusBadge=${args.showStatusBadge}
             statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -287,6 +306,7 @@ export const WithFooter = {
             ?removeHeader=${args.removeHeader}
             ?showStatusBadge=${args.showStatusBadge}
             statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
@@ -341,6 +361,7 @@ export const WithChart = {
           ?selected=${args.selected}
           ?compact=${args.compact}
           ?removeHeader=${args.removeHeader}
+          widgetStatus=${args.widgetStatus}
           @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
           <kd-chart

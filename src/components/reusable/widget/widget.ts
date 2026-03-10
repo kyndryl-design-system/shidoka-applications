@@ -5,6 +5,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
 import Styles from './widget.scss?inline';
 import '../badge';
+import { WIDGET_STATUS } from './defs';
 
 /**
  * Widget.
@@ -59,6 +60,10 @@ export class Widget extends LitElement {
   @property({ type: String })
   accessor statusBadgeLabel = 'Update';
 
+  /** Widget status. */
+  @property({ type: String })
+  accessor widgetStatus: WIDGET_STATUS = WIDGET_STATUS.DEFAULT;
+
   /** Slotted chart element.
    * @internal
    */
@@ -74,6 +79,7 @@ export class Widget extends LitElement {
       selectable: this.selectable,
       selected: this.selected,
       compact: this.compact,
+      [`status-${this.widgetStatus}`]: true,
     };
 
     return html`
