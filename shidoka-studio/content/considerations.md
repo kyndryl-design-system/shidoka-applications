@@ -2,6 +2,10 @@
 
 **Source of truth for component API: custom-elements.json (CEM).** All tags, attributes, slots, events, CSS custom properties, and import paths are defined there. The design-system context (`design-system-context.md`) and structured API (`component-api.json`) are generated from CEM — do not guess; use only what appears in that context. The distributed package includes both so the LLM and tooling can use components as designed.
 
+## Consuming applications: Cursor has full access
+
+When a developer works **outside** the shidoka-applications repo (e.g. a Vue, Next.js, or React app) and has installed `@kyndryl-design-system/shidoka-studio` and `@kyndryl-design-system/shidoka-applications` via npm, **Cursor still has everything it needs.** The Shidoka Studio package ships with a **bundled snapshot** of this context (considerations, component registry, design-system context, page-template-builder) in its `context/` folder. When the user asks to build a page, Cursor calls the MCP tool `get_shidoka_design_context`; the MCP server (running from `node_modules`) returns that bundled context. No design-system repo or source code is required. **Imports in a consuming app:** Do not use design-system repo paths (e.g. `../../components/...`). Use the installed package: e.g. `import '@kyndryl-design-system/shidoka-applications'` or the package’s documented entry points / subpath exports. Infer output path and file format from the consuming app’s structure (e.g. `src/views/`, `app/`, `pages/`).
+
 **Use components as designed.** Infer sizing, behavior, and composition from the CEM-derived context: component descriptions, slot descriptions, CSS custom properties (e.g. `--kyn-workspace-switcher-max-height`), attributes, and events. Do not rely on app-specific boilerplate files for API or sizing; the design system is the authority.
 
 **This file adds only what CEM does not encode:** intent mapping (user says X → use component Y), layout and spacing rules (shell order, main padding, table structure), and forbidden patterns.
@@ -14,11 +18,33 @@ Do **not** create or rely on hand-authored example stories for each pattern (e.g
 
 **Only use tags, attributes, slots, and import paths that come from the CEM-derived context.** If something is not listed there, it does not exist in this project.
 
+## Import path resolution (use first)
+
+**Decide which context you are in, then use the matching import style.** This makes generated code work in the shidoka-applications repo (development) and in external projects (npm-installed packages).
+
+### 1. Detect workspace
+
+- **Design-system repo:** The workspace root has a `custom-elements.json` file **or** the root `package.json` has `"name": "@kyndryl-design-system/shidoka-applications"`. (You are developing/optimizing Shidoka Studio or components.)
+- **Consuming app:** Any other workspace. (The app has installed the Shidoka packages via npm.)
+
+### 2. Use the correct import style
+
+**If design-system repo:** Import Shidoka components using **relative paths** from the file you are writing to `src/components/`. Use the **table in "Import paths for story files"** below (e.g. file in `src/stories/pages/generated/` → prefix `../../../components/`; file in `src/stories/pages/` → prefix `../../components/`). Do not use three `../` from `src/stories/pages/` (that goes above `src/` and breaks). Example: from `src/stories/pages/generated/MyPage.stories.js` use `import '../../../components/global/uiShell';`, `import '../../../components/reusable/button';`. For JSON (e.g. workspace switcher data) use the same relative prefix (e.g. `../../../components/global/workspaceSwitcher/example_workspace_switcher_data.json`).
+
+**If consuming app:** Do **not** use any path containing `../components/` or `../../components/` for Shidoka components. Use the **npm package** only: `import '@kyndryl-design-system/shidoka-applications';` (single entry; the package registers the `kyn-*` custom elements). Add this once in the app entry or in the file that renders the page. If the app uses charts: `import '@kyndryl-design-system/shidoka-charts/components/chart';`. Use the **same tags and attributes** as in the design-system context; only the import style changes.
+
+### 3. Summary table
+
+| Context            | Component imports                                                         | Notes                                       |
+| ------------------ | ------------------------------------------------------------------------- | ------------------------------------------- |
+| Design-system repo | Relative: `../../components/` or `../../../components/` (see table below) | Depends on file location; wrong depth fails |
+| Consuming app      | Package: `import '@kyndryl-design-system/shidoka-applications';`          | One import; then use `<kyn-*>` tags only    |
+
 ## Framework and imports
 
 - **Framework:** Lit web components, tag prefix `kyn-`
 - **Lit import:** `import { html } from 'lit';` — the ONLY allowed lit import
-- **Component imports:** use relative paths appropriate to the consuming app (e.g. `import '../../components/reusable/button/index';` in this repo; in other apps use their paths from the registry).
+- **Component imports:** Resolve using **Import path resolution** above (design-system repo = relative paths from the table below; consuming app = package import only).
 - **Component count:** 117+ components — from `kyn-accordion` to `kyn-workspace-switcher` (exact count in design-system-context.md)
 
 ### Import paths for story files (shidoka-applications) — CRITICAL
@@ -36,7 +62,9 @@ Do **not** create or rely on hand-authored example stories for each pattern (e.g
 
 ## Intent mapping (user says → use this)
 
-| User says                   | Use                                                                                                                   | Import                                                    |
+**Import column:** Use only in the **design-system repo** (relative path from the file you are writing). In a **consuming app**, use the package import from "Import path resolution" instead; the tags (e.g. `<kyn-button>`) and attributes are the same.
+
+| User says                   | Use                                                                                                                   | Import (design-system repo only)                          |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | "button" / "primary button" | `<kyn-button kind="primary">Label</kyn-button>`                                                                       | `../../components/reusable/button/index`                  |
 | "ghost button"              | `<kyn-button kind="ghost">Label</kyn-button>`                                                                         | `../../components/reusable/button/index`                  |

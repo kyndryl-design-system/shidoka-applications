@@ -43,6 +43,8 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+**Consuming apps:** When the developer works in a different repo (e.g. a Vue or Next app) with `shidoka-studio` and `shidoka-applications` installed from npm, Cursor still has full access. The published `shidoka-studio` package includes the **bundled context** (`context/` folder). The MCP server runs from `node_modules` and serves that same context via `get_shidoka_design_context`; no design-system repo or source is required. The only difference is import paths: in a consuming app the model should use the installed package (e.g. `@kyndryl-design-system/shidoka-applications`) instead of repo-relative paths.
+
 ---
 
 ## 1. Design system sources

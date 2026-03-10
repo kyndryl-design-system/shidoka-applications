@@ -159,6 +159,8 @@ const contextLines = [
   '',
   'Only use kyn-* tags and attributes/slots/events listed below. Invented tags or attributes will break the build.',
   '',
+  '**Import paths:** The "Import (design-system repo)" lines below are for the shidoka-applications repo only. In a consuming app (npm-installed packages), use the package import once; see considerations "Import path resolution".',
+  '',
   '## Component reference (from CEM)',
   '',
 ];
@@ -168,7 +170,9 @@ const sortedTags = [...componentMeta.entries()].sort((a, b) =>
 );
 for (const [tag, meta] of sortedTags) {
   contextLines.push(`### \`<${tag}>\``);
-  contextLines.push(`- **Import:** \`import '${meta.importPath}';\``);
+  contextLines.push(
+    `- **Import (design-system repo):** \`import '${meta.importPath}';\` (in consuming app use \`import '@kyndryl-design-system/shidoka-applications';\` once)`
+  );
   if (meta.attributes.length)
     contextLines.push(`- **Attributes:** ${meta.attributes.join(', ')}`);
   if (meta.slots.length) {
