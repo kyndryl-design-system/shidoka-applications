@@ -12,6 +12,7 @@ import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monoch
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
+import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
@@ -260,6 +261,13 @@ const handleUIItemClick = (e, item) => {
 
 const handleUIWorkspaceClick = createWorkspaceClickHandler(handleUIItemClick);
 
+const handleFlyoutToggle = (e) => {
+  const chevron = e.target.querySelector('.account-chevron');
+  if (chevron) {
+    chevron.style.transform = e.detail.open ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+};
+
 export const UIImplementation = {
   decorators: [
     (story) =>
@@ -272,6 +280,11 @@ export const UIImplementation = {
             white-space: nowrap;
           }
 
+          .account-chevron {
+            display: flex;
+            transition: transform 0.2s;
+          }
+
           .ui-impl-switcher {
             width: 625px;
           }
@@ -279,6 +292,10 @@ export const UIImplementation = {
           @media (max-width: calc(52rem - 0.001px)) {
             .ui-impl-switcher {
               max-width: 375px;
+            }
+
+            .account-chevron {
+              display: none;
             }
           }
 
@@ -326,13 +343,14 @@ export const UIImplementation = {
           hideMenuLabel
           hideButtonLabel
           noPadding
+          @on-flyout-toggle=${handleFlyoutToggle}
         >
           <span
-            id="workspace-trigger-label"
             slot="button"
-            style="display: flex; align-items: center; font-size: 14px;"
+            style="display: flex; align-items: center; gap: 8px; font-size: 14px;"
           >
             <span class="account-name">${selectedItem?.name || ''}</span>
+            <span class="account-chevron">${unsafeSVG(chevronDownIcon)}</span>
           </span>
 
           <kyn-workspace-switcher

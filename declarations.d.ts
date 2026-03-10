@@ -26,27 +26,3 @@ declare module 'flatpickr/dist/esm/plugins/*.js' {
   const plugin: any;
   export default plugin;
 }
-
-// Minimal React types when @types/react is missing or empty (avoids TS2688)
-declare module 'react' {
-  export const createElement: any;
-  export const useState: any;
-  export const useEffect: any;
-  export const useRef: any;
-  export const useCallback: any;
-  export const useReducer: any;
-  export const useMemo: any;
-  export default any;
-}
-declare module 'react/jsx-runtime' {
-  export const jsx: any;
-  export const jsxs: any;
-  export const Fragment: any;
-}
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      [elem: string]: any;
-    }
-  }
-}

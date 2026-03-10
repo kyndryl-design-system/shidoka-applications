@@ -9,28 +9,28 @@
   display: flex;
   position: relative;
   width: 100%;
-  min-width: var(--kyn-workspace-switcher-min-width, 560px);
   max-height: var(--kyn-workspace-switcher-max-height, none);
   background: var(--kd-color-background-container-default);
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Left panel — 50% width, drives the container height */
+/* Left panel — drives the container height */
 .workspace-switcher__left {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  flex: 0 0 50%;
-  min-width: 0;
+  width: 275px;
+  flex-shrink: 0;
   padding: 12px;
   background: var(--kd-color-background-opacity-1);
   border-radius: 8px 0 0 8px;
   box-sizing: border-box;
 }
 
-/* Right panel — 50% width, positioned so height matches left pane; scrolls independently */
+/* Right panel — absolutely positioned so it doesn't affect container height;
+   fills the height set by the left pane and scrolls independently */
 .workspace-switcher__right {
   display: flex;
   flex-direction: column;
@@ -38,9 +38,9 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 50%;
   right: 0;
-  padding: 12px 20px 12px 12px;
+  left: 275px;
+  padding: 12px 8px 12px 12px;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -103,19 +103,14 @@
 
   /* Left pane stays in-flow to drive container height */
   .workspace-switcher__left {
-    flex: none;
-    min-width: unset;
     border-radius: 0;
     overflow-y: auto;
   }
 
   /* Right pane fills container height, scrolls independently */
   .workspace-switcher__right {
-    position: absolute;
     inset: 0;
     padding: 12px;
-    flex: none;
-    min-width: unset;
   }
 
   /* Root view: left visible, right off-screen right */

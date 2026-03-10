@@ -29,8 +29,6 @@
 
   ::slotted([slot='button']) {
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   @media (min-width: 42rem) {
@@ -74,12 +72,7 @@
 
   svg {
     display: block;
-    transition: transform 150ms ease-out;
   }
-}
-
-.menu.open .arrow svg {
-  transform: rotate(180deg);
 }
 
 @media (max-width: calc(42rem - 0.001px)) {
@@ -104,22 +97,11 @@
 }
 
 @media (min-width: 42rem) {
-  .label {
+  .arrow {
     display: none;
   }
-}
 
-/* When flyout contains workspace switcher: fixed-width right-aligned panel (matches production) */
-:host(:has(kyn-workspace-switcher)) .menu__content {
-  @media (min-width: 42rem) {
-    width: 560px;
-    min-width: 560px;
-    max-width: min(560px, 90vw);
-    max-height: var(
-      --kyn-global-switcher-max-height,
-      calc(100vh - var(--kd-header-reserved-space) - 16px)
-    );
-    right: 0;
-    left: auto;
+  .label {
+    display: none;
   }
 }

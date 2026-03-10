@@ -7,7 +7,7 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderFlyoutScss from './headerFlyout.scss?inline';
-import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 
 /**
@@ -27,12 +27,16 @@ export class HeaderFlyout extends LitElement {
   @property({ type: Boolean })
   accessor anchorLeft = false;
 
+  /** Hides the arrow. */
+  @property({ type: Boolean })
+  accessor hideArrow = false;
+
   /** Menu & button label. */
   @property({ type: String })
   accessor label = '';
 
   /** Hide the label at the top of the flyout menu. */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean })
   accessor hideMenuLabel = false;
 
   /** Hide the label in the mobile button. */
@@ -57,10 +61,6 @@ export class HeaderFlyout extends LitElement {
   /** Removes padding from the flyout menu. */
   @property({ type: Boolean })
   accessor noPadding = false;
-
-  /** When true, hides the back (left arrow) button. Use for dropdown-style flyouts (e.g. workspace switcher) where the back button is not used. */
-  @property({ type: Boolean, reflect: true, attribute: 'hide-back-button' })
-  accessor hideBackButton = false;
 
   /**
    * Queries any slotted HTML elements.
@@ -103,8 +103,8 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <span slot="button" class="arrow" aria-hidden="true">
-                  ${unsafeSVG(chevronDownIcon)}
+                <span slot="button" class="arrow">
+                  ${unsafeSVG(chevronIcon)}
                 </span>
               </a>
             `
@@ -125,21 +125,18 @@ export class HeaderFlyout extends LitElement {
                     `
                   : null}
 
-                <span slot="button" class="arrow" aria-hidden="true">
-                  ${unsafeSVG(chevronDownIcon)}
+                <span slot="button" class="arrow">
+                  ${unsafeSVG(chevronIcon)}
                 </span>
               </button>
             `}
 
         <div class=${classMap(contentClasses)}>
-          ${!this.hideBackButton
-            ? html`
-                <button class="go-back" @click=${() => this._handleBack()}>
-                  <span>${unsafeSVG(backIcon)}</span>
-                  ${this.backText}
-                </button>
-              `
-            : null}
+          <button class="go-back" @click=${() => this._handleBack()}>
+            <span>${unsafeSVG(backIcon)}</span>
+            ${this.backText}
+          </button>
+
           ${!this.hideMenuLabel
             ? html`
                 <div class="menu-label">
