@@ -32,7 +32,7 @@ These changes are **not** required for Shidoka Studio; main works without them.
 | **src/common/scss/utility/gridstack-shidoka.scss**           | Import changed from `gridstack.scss` to `gridstack.css` + comment.     | **Reverted** to main.                                                    |
 | **src/components/global/footer/footer.ts**                   | Default copyright slot content and JSDoc.                              | **Reverted** to main.                                                    |
 | **src/components/global/header/headerLink.scss**             | `::slotted(span:first-child:not([slot]))` and `.arrow` flex/alignment. | **Reverted** to main.                                                    |
-| **src/components/reusable/progressBar/** (ts, scss, stories) | New `hidePercentageValue`; status container and styling tweaks.        | **Reverted** to main.                                                    |
+| **src/components/reusable/progressBar/** (ts, scss, stories) | New `hidePercentageValue`; status container and styling tweaks.        | **Keep** (being merged in).                                              |
 | **.storybook/preview-head.html**                             | `--kd-page-gutter` and `--kd-negative-page-gutter` values.             | **Reverted** to main.                                                    |
 | **.npmrc**                                                   | New file: registry, strict-ssl, prefer-offline.                        | **Not on main.** Remove from repo if you want to match main exactly.     |
 | **story-ui.config.js**                                       | New symlink to `story-ui/story-ui.config.js`.                          | **Remove** if present (Story UI; not Shidoka Studio).                    |
@@ -58,6 +58,6 @@ These changes are **not** required for Shidoka Studio; main works without them.
 ## Summary
 
 - **Keep:** All Shidoka Studio–specific config (Cursor, ESLint, CI build/test, gitignore, husky, package scripts + MCP SDK, vitest project), workspace switcher boilerplate, and Storybook story globs/sidebar that support generated stories.
-- **Revert:** Footer, headerLink, gridstack, progressBar, Storybook preview-head tokens, .npmrc, story-ui.config.js, tsconfig React/jsx, declarations React, extra package.json deps (react, zod, etc.), VITE_STORY_UI_EDGE_URL in workflows.
+- **Revert:** Footer, headerLink, gridstack, Storybook preview-head tokens, .npmrc, story-ui.config.js, tsconfig React/jsx, declarations React, extra package.json deps (react, zod, etc.), VITE_STORY_UI_EDGE_URL in workflows. **Keep:** progressBar (merge-in).
 
 After reverting the unjustified items, the only non–Shidoka-Studio changes remaining are those that are explicitly required to run and use Shidoka Studio in this repo.
