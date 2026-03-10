@@ -22,6 +22,15 @@ export default defineConfig({
           environment: 'node',
         },
       },
+      // Shidoka Studio context loader tests
+      {
+        extends: true,
+        test: {
+          name: 'shidoka-studio',
+          include: ['shidoka-studio/**/*.test.js'],
+          environment: 'node',
+        },
+      },
       // Storybook interaction tests
       {
         extends: true,

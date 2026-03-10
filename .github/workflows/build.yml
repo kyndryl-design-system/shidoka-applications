@@ -50,6 +50,24 @@ jobs:
           name: build-artifact
           path: dist
 
+  Build_Shidoka_Studio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build Shidoka Studio context and package
+        run: npm run build:shidoka-studio
+
   Build_Storybook:
     runs-on: ubuntu-latest
     steps:
@@ -120,3 +138,6 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:unit
+
+      - name: Run Shidoka Studio tests
+        run: npm run test:shidoka-studio

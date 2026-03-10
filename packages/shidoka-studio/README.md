@@ -28,12 +28,6 @@ npm install -D @kyndryl-design-system/shidoka-studio
 npm install -g @kyndryl-design-system/shidoka-studio
 ```
 
-**Optional — auto-configure Cursor:** From your project root, run once to add Shidoka Studio to `.cursor/mcp.json` (creates the file or merges with existing MCP servers):
-
-```bash
-npx shidoka-studio-setup
-```
-
 **Side-load (no registry):** You can distribute the package without publishing to any registry.
 
 1. **You (releaser)** — From the design-system repo root, build and pack once:

@@ -17,7 +17,14 @@ const CONTEXT_SRC = join(ROOT, 'shidoka-studio', 'context-src');
 const SHIDOKA_STUDIO_CONTEXT = join(ROOT, 'shidoka-studio', 'context');
 const PKG_CONTEXT = join(ROOT, 'packages', 'shidoka-studio', 'context');
 const SERVER_SOURCE = join(ROOT, 'shidoka-studio', 'server', 'index.js');
+const CONTEXT_LOADER_SOURCE = join(
+  ROOT,
+  'shidoka-studio',
+  'server',
+  'context-loader.js'
+);
 const PKG_BIN = join(ROOT, 'packages', 'shidoka-studio', 'bin', 'server.js');
+const PKG_BIN_DIR = dirname(PKG_BIN);
 
 const FILES = [
   'considerations.md',
@@ -49,10 +56,16 @@ copyContext(SHIDOKA_STUDIO_CONTEXT, 'shidoka-studio/context/');
 copyContext(PKG_CONTEXT, 'packages/shidoka-studio/context/');
 
 if (existsSync(SERVER_SOURCE)) {
-  mkdirSync(dirname(PKG_BIN), { recursive: true });
+  mkdirSync(PKG_BIN_DIR, { recursive: true });
   copyFileSync(SERVER_SOURCE, PKG_BIN);
   console.log(
     '  ✓ shidoka-studio/server/index.js → packages/shidoka-studio/bin/server.js'
+  );
+}
+if (existsSync(CONTEXT_LOADER_SOURCE)) {
+  copyFileSync(CONTEXT_LOADER_SOURCE, join(PKG_BIN_DIR, 'context-loader.js'));
+  console.log(
+    '  ✓ shidoka-studio/server/context-loader.js → packages/shidoka-studio/bin/context-loader.js'
   );
 }
 
