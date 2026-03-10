@@ -14,9 +14,8 @@
   },
   "scripts": {
     "dev": "npm run storybook",
-    "shidoka-studio": "npm run build:shidoka-studio && npm run dev",
     "storybook": "storybook dev -p 6006",
-    "clear:generated-stories": "node shidoka-studio/scripts/clear-generated-stories.js",
+    "clear:generated-stories": "node scripts/clear-generated-stories.js",
     "build-storybook": "storybook build",
     "build": "rollup -c && npm run sass-build",
     "sass-utility": "sass --no-source-map --style=compressed src/common/scss/utility:dist/common/css",
@@ -26,13 +25,9 @@
     "lint:lit-analyzer": "lit-analyzer",
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "analyze": "cem analyze --litelement --globs \"src/components/**/*.ts\" --exclude \"src/**/(*.stories|*.sample).ts\"",
-    "generate-component-registry": "node shidoka-studio/scripts/generate-component-registry.js",
     "test": "vitest run --project=storybook",
     "test:unit": "vitest run --project=unit",
-    "test:shidoka-studio": "vitest run --project=shidoka-studio",
-    "prepare": "npx husky install",
-    "build:shidoka-studio": "npm run generate-component-registry && node shidoka-studio/scripts/build.js && npm run clear:generated-stories",
-    "bundle:sideload": "npm run build:shidoka-studio && cd packages/@kyndryl-design-system/shidoka-studio && npm install --omit=dev"
+    "prepare": "npx husky install"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.1",
@@ -58,7 +53,6 @@
     "@commitlint/config-conventional": "^17.4.4",
     "@custom-elements-manifest/analyzer": "^0.9.4",
     "@kyndryl-design-system/shidoka-charts": "^2.8.8",
-    "@modelcontextprotocol/sdk": "^1.27.1",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.0.1",

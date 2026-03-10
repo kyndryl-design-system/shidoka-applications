@@ -6,25 +6,20 @@
  * - Clears src/stories/pages/generated/ (dev-only Storybook stories for testing).
  * - Clears src/stories/generated/ (alternate output location for generated page stories).
  * - Removes any .stories.* files that are direct children of src/stories/pages/ (so that
- *   generated pages placed in pages/ instead of pages/generated/ are cleared; npm run
- *   shidoka-studio then gives a clean PAGES sidebar).
- * - Run before dev and on pre-push in this repo only.
+ *   generated pages placed in pages/ instead of pages/generated/ are cleared; PAGES sidebar stays clean).
  *
- * Production plugin behavior:
- * - This script lives only in the design-system repo; it is not part of the published
- *   Shidoka Studio package.
- * - When developers use Shidoka Studio in their own apps, the plugin never clears or
- *   touches their generated files (.ts, .js, .vue, .tsx, etc.). Those developers are
- *   responsible for managing their own files.
- * - The script explicitly checks package.json name; if not @kyndryl-design-system/
- *   shidoka-applications, it exits without clearing anything.
+ * Run: npm run clear:generated-stories (from repo root).
+ *
+ * Note: Shidoka Studio is now a separate repo. When developers use Shidoka Studio in their
+ * own apps, the plugin never clears or touches their generated files. This script is only
+ * for the design-system repo's Storybook layout.
  */
 import { readdirSync, rmSync, readFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..', '..');
+const ROOT = join(__dirname, '..');
 const PAGES_DIR = join(ROOT, 'src', 'stories', 'pages');
 const PAGES_GENERATED_DIR = join(PAGES_DIR, 'generated');
 const STORIES_GENERATED_DIR = join(ROOT, 'src', 'stories', 'generated');
