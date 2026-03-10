@@ -73,7 +73,8 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
   - Copies **context-src/** → **packages/shidoka-studio/context/** (publishable package).
   - Copies **shidoka-studio/server/index.js** → **packages/shidoka-studio/bin/server.js**.
 
-- **Root command:** `npm run build:shidoka-studio` runs `generate-component-registry` then `build.js`, then clears generated stories.
+- **Root command:** `npm run build:shidoka-studio` runs `generate-component-registry` then `build.js`, then clears generated stories (see below).
+- **Clearing generated stories:** Only in the shidoka-applications repo. The script `clear-generated-stories.js` clears **only** `src/stories/pages/generated/` (dev-only Storybook stories). It is not part of the published Shidoka Studio package. When developers use the plugin in their own apps, Shidoka Studio never clears or touches their generated files (.ts, .js, .vue, .tsx, etc.); they manage those files themselves.
 
 ---
 
