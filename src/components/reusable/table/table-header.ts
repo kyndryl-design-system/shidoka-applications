@@ -540,7 +540,7 @@ export class TableHeader extends LitElement {
    * Called by ResizeObserver when the host cell resizes (on viewport change).
    * Measures ALL group label heights in the same header row and applies
    * the maximum height to all groups, ensuring uniform row height.
-   * rAF calls to ensure layout fully settles before measuring.
+   * Uses immediate measurement with fallback to rAF to ensure accurate sizing.
    * @ignore
    */
   private _updateGroupLabelDimensions() {
@@ -554,8 +554,8 @@ export class TableHeader extends LitElement {
 
     if (allGroups.length === 0) return;
 
-    //Update widths for all groups
-    requestAnimationFrame(() => {
+    // Function to measure and set widths
+    const measureAndSetWidths = () => {
       allGroups.forEach((grp) => {
         const siblings = Array.from(
           grp.querySelectorAll(':scope > kyn-th')
@@ -568,7 +568,23 @@ export class TableHeader extends LitElement {
           grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
         }
       });
-    });
+    };
+
+    // Try immediate measurement first
+    // If widths are 0 (not yet laid out), defer to requestAnimationFrame
+    const testSibling = Array.from(
+      allGroups[0]?.querySelectorAll(':scope > kyn-th') || []
+    )[0] as HTMLElement | undefined;
+
+    if (testSibling && testSibling.getBoundingClientRect().width > 0) {
+      // Layout is ready, measure immediately
+      measureAndSetWidths();
+    } else {
+      // Layout not ready yet, defer measurement
+      requestAnimationFrame(() => {
+        requestAnimationFrame(measureAndSetWidths);
+      });
+    }
   }
 
   /** Handle Resize Start
