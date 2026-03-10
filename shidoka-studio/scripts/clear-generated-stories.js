@@ -5,8 +5,9 @@
  * Scope (shidoka-applications only):
  * - Clears src/stories/pages/generated/ (dev-only Storybook stories for testing).
  * - Clears src/stories/generated/ (alternate output location for generated page stories).
- * - Also removes any story files in src/stories/pages/ that have title: 'Generated/...'
- *   (misplaced generated stories; canonical hand-authored page stories use other titles).
+ * - Removes any .stories.* files that are direct children of src/stories/pages/ (so that
+ *   generated pages placed in pages/ instead of pages/generated/ are cleared; npm run
+ *   shidoka-studio then gives a clean PAGES sidebar).
  * - Run before dev and on pre-push in this repo only.
  *
  * Production plugin behavior:
@@ -99,18 +100,18 @@ try {
     }
   }
 
-  // 4. Remove any story files in pages/ that have title: 'Generated/...' (misplaced generated)
+  // 4. Remove any story files directly in pages/ (not in subdirs). Only pages/generated/ is the
+  //    intended output for generated stories; files placed in pages/*.stories.js are treated as
+  //    generated and cleared so npm run shidoka-studio gives a clean slate.
   if (existsSync(PAGES_DIR)) {
     const entries = readdirSync(PAGES_DIR, { withFileTypes: true });
     for (const e of entries) {
       if (!e.isFile()) continue;
       if (!/\.stories\.(js|ts|jsx|tsx)$/.test(e.name)) continue;
       const filePath = join(PAGES_DIR, e.name);
-      if (isGeneratedStoryFile(filePath)) {
-        rmSync(filePath);
-        console.log('Removed generated story: src/stories/pages/' + e.name);
-        cleared = true;
-      }
+      rmSync(filePath);
+      console.log('Removed story: src/stories/pages/' + e.name);
+      cleared = true;
     }
   }
 

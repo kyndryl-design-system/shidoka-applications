@@ -21,6 +21,19 @@ Do **not** create or rely on hand-authored example stories for each pattern (e.g
 - **Component imports:** use relative paths appropriate to the consuming app (e.g. `import '../../components/reusable/button/index';` in this repo; in other apps use their paths from the registry).
 - **Component count:** 117+ components — from `kyn-accordion` to `kyn-workspace-switcher` (exact count in design-system-context.md)
 
+### Import paths for story files (shidoka-applications) — CRITICAL
+
+**Wrong import depth breaks Vite.** Resolve paths from the story file’s location to `src/`; then append `components/...` or `components/.../some.json`.
+
+| Story file location                               | Levels up to `src/`                               | Use this prefix for components/data              |
+| ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------ |
+| `src/stories/pages/*.stories.js`                  | **2** (`pages` → `stories` → `src`)               | `../../components/`                              |
+| `src/stories/pages/generated/*.stories.js`        | **3** (`generated` → `pages` → `stories` → `src`) | `../../../components/`                           |
+| `src/stories/*.stories.js` (e.g. at stories root) | **2**                                             | `../../components/`                              |
+| `src/components/global/header/Header.stories.js`  | **2** (to `components/`)                          | `../../reusable/...` or sibling `../footer` etc. |
+
+**Rule:** From any file under `src/`, count directory segments from that file up to `src`. That many `../` then `components/` (or the correct folder). Never use three levels up from a file in `src/stories/pages/` — that points above `src/` and fails. Always use exactly **two** `../` for files in `src/stories/pages/`, and exactly **three** `../` for files in `src/stories/pages/generated/`.
+
 ## Intent mapping (user says → use this)
 
 | User says                   | Use                                                                                                                   | Import                                                    |
@@ -91,6 +104,7 @@ For prompts like "build a page with ui-shell, header, local nav, footer, data ta
 5. **Side drawer:** Place **inside** `<main>`. Trigger = `<kyn-button slot="anchor" kind="tertiary">USER_LABEL</kyn-button>` (e.g. "OPEN SESAME"). Put drawer content (e.g. list) after the button. **Do not add `open`** unless the user explicitly asks for the drawer open by default.
 6. **Fullscreen story:** Use `parameters: { layout: 'fullscreen' }` and a decorator with `min-height: 100vh; width: 100%;` only. Do **not** use negative margin on the decorator—that cancels the main content indent; header/footer stay full width and the main body is indented by the main's padding.
 7. **Row count:** If the user asks for N rows (e.g. 9-row data table), generate exactly N **kyn-tr** rows.
+8. **Charts and full-width content:** Line graphs, bar charts, and other **kd-chart** instances in the main content must **span the full width** of the main area unless the user asks for a narrow or fixed-width chart. Always wrap the chart in a div with `style="width: 100%; margin-bottom: 1.5rem;"` and set the chart to fill it: `style="width: 100%; display: block;"` and `.options=${{ maintainAspectRatio: false, responsive: true }}` so the chart uses the full content width consistently. Data tables should also use a full-width wrapper: `style="width: 100%; overflow: auto; ..."` on the table container div. Do not use `max-width` on chart or table wrappers unless the user explicitly requests a narrower block.
 
 Full reference: **shidoka-studio/content/page-template-builder.md** (or the built context in shidoka-studio/context/).
 
@@ -128,7 +142,7 @@ Generated output should be copy-pasteable. For full-page prompts, apply the layo
 
 **Where to put generated page output:**
 
-- **When running locally in the shidoka-applications repo (design-system repo):** Always write generated Storybook page stories to **src/stories/pages/generated/** (e.g. `src/stories/pages/generated/MyPage.stories.js`). This folder is cleared on `npm run shidoka-studio` / `build:shidoka-studio` and on `git push`; generated files are for development/testing only and must not be committed. Use import paths relative to that folder for **components only** (e.g. `../../../components/global/...`, `../../../components/reusable/...`). **Do not** import from a workspace-switcher boilerplate file; inline the workspace switcher data and wiring in the generated story so the pattern is self-contained. Do not write generated pages to `src/stories/pages/` (that directory is for canonical, hand-authored stories only).
+- **When running locally in the shidoka-applications repo (design-system repo):** Always write generated Storybook page stories to **src/stories/pages/generated/** (e.g. `src/stories/pages/generated/MyPage.stories.js`). Use **title: 'Generated/Your Page Name'** so the story appears under "Generated" in the sidebar. The folders **src/stories/pages/generated/** and **src/stories/generated/** are cleared on every `npm run shidoka-studio` / `build:shidoka-studio`; in addition, **any .stories.\* file placed directly in src/stories/pages/** (e.g. `pages/DemoPage.stories.js`) is **removed** by the clear script so the PAGES sidebar starts clean. So generated output must go in **pages/generated/** with import prefix `../../../components/...` (see "Import paths for story files"). **Do not** put generated story files in `src/stories/pages/` (only in `src/stories/pages/generated/`). Do not import from a workspace-switcher boilerplate file; inline the workspace switcher data and wiring in the generated story.
 - **When generating for an external/consuming application:** Infer the output path and file format from the project structure (e.g. `src/views/`, `app/(dashboard)/`, `pages/`, `src/pages/`) and use import paths appropriate to that app. Do not use the shidoka-applications path; the MCP/LLM should detect that the workspace is not the design-system repo and place the file where it fits the consuming app’s layout. **Shidoka Studio (the plugin) never deletes or clears generated files in consuming applications** — any generated output (.ts, .js, .vue, .tsx, etc.) is the responsibility of the developer; the plugin only provides context and does not manage or remove consumer files.
 
 ## Consuming applications (styling)

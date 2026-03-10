@@ -69,7 +69,15 @@ Data tables must live inside a **scrollable wrapper** so they don't overflow the
 </div>
 ```
 
-Use **kyn-thead**, **kyn-header-tr**, **kyn-th**, **kyn-tbody**, **kyn-tr**, **kyn-td** only (no native `<table>`).
+Use **kyn-thead**, **kyn-header-tr**, **kyn-th**, **kyn-tbody**, **kyn-tr**, **kyn-td** only (no native `<table>`). Give the table wrapper **full width:** `style="width: 100%; overflow: auto; max-height: 360px; border: ..."` so the table spans the main content area.
+
+## 4b. Charts (line graph, bar chart, etc.)
+
+When the page includes a **line graph**, **bar chart**, or other **kd-chart**, it must **span the full width** of the main content so output is consistent across runs. Do not use `max-width` or a narrow wrapper unless the user explicitly asks for one.
+
+- **Wrapper:** `<div style="width: 100%; margin-bottom: 1.5rem;">` around the chart.
+- **Chart:** `kd-chart` with `style="width: 100%; display: block;"` and `.options=${{ maintainAspectRatio: false, responsive: true }}` so it fills the wrapper. Set `height="280"` (or similar) for a fixed height; the width follows the container.
+- **Import:** `import '@kyndryl-design-system/shidoka-charts/components/chart';` (or the path appropriate to the story file; see considerations.md "Import paths for story files").
 
 ## 5. Side drawer (inside main, anchor button)
 
