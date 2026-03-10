@@ -1,4 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+npm run clear:generated-stories
+# Stage deletions under the canonical generated output path
+git add -u -- src/stories/generated/ 2>/dev/null || true
 npx lint-staged

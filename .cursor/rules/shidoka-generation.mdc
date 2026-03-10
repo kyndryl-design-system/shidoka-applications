@@ -1,19 +1,19 @@
 ---
-description: When generating Shidoka pages or templates, use design system context from MCP
-globs: src/stories/generated/**/*.ts,src/stories/pages/generated/**/*.stories.js,**/*page*.ts,**/*template*.ts
+description: When generating Shidoka pages or templates, call get_shidoka_design_context and get_canonical_full_page_template so output is standardized across all projects
+globs: src/stories/**/*.ts,src/stories/**/*.js,src/views/**/*,src/pages/**/*,app/**/page.*,pages/**/*,**/*page*.*,**/*template*.*,**/*View*
 alwaysApply: false
 ---
 
 # Shidoka page/template generation
 
-When the user asks to **build a page**, **create a template**, or **generate a Storybook story** that uses Shidoka components (kyn-*):
+When the user asks to **build a page**, **create a template**, or **generate a view** that uses Shidoka components (kyn-*):
 
-1. **Call the MCP tool** `get_shidoka_design_context` to retrieve the authoritative Shidoka design system context (considerations, component registry, page-template-builder layout and spacing rules).
-2. **Generate code** that strictly follows that context:
-   - Only use `kyn-*` tags and attributes listed in the registry.
-   - Use only import paths from the context.
-   - Follow page-template-builder for full-page layouts: shell order (header → main → footer), main padding `style="padding: var(--kd-page-gutter, 1rem);"`, toolbar spacing, side drawer inside main with anchor button, table wrapper, fullscreen decorator with only `min-height: 100vh; width: 100%;` (no negative margin).
-   - Do not add `open` to kyn-side-drawer unless the user asks for the drawer open by default.
-   - **Workspace switcher:** Use a **span** in the flyout’s `slot="button"` with `id="workspace-trigger-label"` and the label inside. Always set **hide-menu-label** and **hide-back-button** on that kyn-header-flyout.
-3. **Write output** to `src/stories/pages/generated/` for Storybook page stories (use a kebab-case filename and a stable id in the meta), or to the path the user specifies.
-4. **Do not** use `<my-button>`, `<button>`, native `<table>`, or any tag/import not in the design system context.
+1. **Call the required MCP tools** before generating:
+   - **get_shidoka_design_context** — considerations, component registry, page-template-builder.
+   - **get_canonical_full_page_template** — the single source-of-truth structure for a full page (UI shell, header with logo + global nav + four flyouts, main with title + toolbar + chart + table, footer). **Required** when the prompt is for a full page so output is **identical in structure** across Storybook, Vue, React, and every other project.
+   - **get_shidoka_full_page_snippets** — the required focused snippets for full-page generation: exact global-switcher flyout pattern, required workspace-switcher CSS, chevron/account-selection wiring, and the main spacing wrapper. **Required** when the prompt is for a full page.
+2. **Treat the MCP payloads as the sole design authority for full-page generation and page-level refinement.** Do not inspect or rely on local Storybook stories, generated pages, component source files, boilerplate helpers, or example JSON to decide page composition unless the user explicitly asks to inspect or modify an existing local file.
+3. **Full-page output must be a direct translation of the canonical template and required snippets.** Preserve every element and the exact order from the template. Do not omit kyn-header-flyouts, kyn-footer, kyn-page-title, or the toolbar. Do not put kyn-workspace-switcher as a direct child of kyn-header. Do not put the drawer after the table. Do not replace the one-parent global switcher with multiple top-level nav links. Do not shorten or skip the required CSS/wiring snippets. Translate only the syntax (Vue: v-for, :prop, #slot; Lit: .prop, html; React: {}). Same structure in ALL projects.
+4. **Generate code** that uses only `kyn-*` tags and follows the design context. Use the package import for the project (e.g. `import '@kyndryl-design-system/shidoka-applications';` in consuming apps).
+5. **Output format and path** depend on the project. Infer from the workspace: Storybook → `*.stories.js`/`.ts`; Vue → `.vue`; etc. Prefer the path or format the user specifies.
+6. **Do not** use native `<table>`, raw `<svg>`/`<canvas>` for charts, or any tag/import not in the design system context.

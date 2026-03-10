@@ -2,17 +2,21 @@
 /**
  * Clears generated Storybook page stories in the shidoka-applications repo only.
  *
- * Scope (shidoka-applications only):
- * - Clears src/stories/pages/generated/ (dev-only Storybook stories for testing).
- * - Clears src/stories/generated/ (alternate output location for generated page stories).
- * - Removes any .stories.* files that are direct children of src/stories/pages/ (so that
- *   generated pages placed in pages/ instead of pages/generated/ are cleared; PAGES sidebar stays clean).
+ * Canonical generated output:
+ * - src/stories/generated/
+ *
+ * Stray cleanup only:
+ * - src/stories/generated-pages/
+ * - src/stories/pages/generated/
+ * - top-level generated stories directly inside src/stories/
+ * - direct child .stories.* files inside src/stories/pages/
+ *
+ * On every run, src/stories/generated/ is cleared and recreated as an empty
+ * folder. This is the only valid generated-story location for this repo.
+ * Generated page stories are ephemeral outputs and should not be treated as
+ * canonical reference material.
  *
  * Run: npm run clear:generated-stories (from repo root).
- *
- * Note: Shidoka Studio is now a separate repo. When developers use Shidoka Studio in their
- * own apps, the plugin never clears or touches their generated files. This script is only
- * for the design-system repo's Storybook layout.
  */
 import { readdirSync, rmSync, readFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
@@ -20,9 +24,11 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const PAGES_DIR = join(ROOT, 'src', 'stories', 'pages');
+const STORIES_DIR = join(ROOT, 'src', 'stories');
+const GENERATED_PAGES_DIR = join(STORIES_DIR, 'generated-pages');
+const PAGES_DIR = join(STORIES_DIR, 'pages');
 const PAGES_GENERATED_DIR = join(PAGES_DIR, 'generated');
-const STORIES_GENERATED_DIR = join(ROOT, 'src', 'stories', 'generated');
+const STORIES_GENERATED_DIR = join(STORIES_DIR, 'generated');
 
 const DS_PACKAGE_NAME = '@kyndryl-design-system/shidoka-applications';
 const STORY_EXT_RE = /\.stories\.(js|ts|jsx|tsx)$/;
@@ -82,15 +88,24 @@ function removeStoryFilesInDir(dir, label) {
   }
 }
 
+function removeEntireDir(dir, label) {
+  if (!existsSync(dir)) return false;
+  rmSync(dir, { recursive: true });
+  console.log('clear-generated-stories: Removed ' + label);
+  return true;
+}
+
 try {
-  // 1. Clear src/stories/pages/generated/ (all contents)
+  // 1. Remove stray legacy src/stories/generated-pages/
+  removeEntireDir(GENERATED_PAGES_DIR, 'src/stories/generated-pages/');
+
+  // 2. Clear stray legacy src/stories/pages/generated/ (all contents)
   clearGeneratedDir(PAGES_GENERATED_DIR, 'src/stories/pages/generated/');
 
-  // 2. Clear src/stories/generated/ (alternate location)
-  clearGeneratedDir(STORIES_GENERATED_DIR, 'src/stories/generated/');
+  // 3. Remove entire src/stories/generated/ (canonical generated output)
+  removeEntireDir(STORIES_GENERATED_DIR, 'src/stories/generated/');
 
-  // 3. Remove story files in src/stories/ (top level) with title 'Generated/...'
-  const STORIES_DIR = join(ROOT, 'src', 'stories');
+  // 4. Remove story files in src/stories/ (top level) with title 'Generated/...'
   if (existsSync(STORIES_DIR)) {
     const entries = readdirSync(STORIES_DIR, { withFileTypes: true });
     for (const e of entries) {
@@ -103,19 +118,15 @@ try {
     }
   }
 
-  // 4. Remove every .stories.* file directly in src/stories/pages/ (ensures PAGES sidebar is clean)
+  // 5. Remove every .stories.* file directly in src/stories/pages/ (ensures PAGES sidebar is clean)
   removeStoryFilesInDir(PAGES_DIR, 'src/stories/pages/');
 
-  // Ensure pages/generated exists for next generation (empty dir is fine)
-  if (!existsSync(PAGES_GENERATED_DIR)) {
-    mkdirSync(PAGES_GENERATED_DIR, { recursive: true });
-    console.log(
-      'clear-generated-stories: Created src/stories/pages/generated/'
-    );
-  }
+  // Recreate canonical generated output dir so npm run dev is ready for new pages
+  mkdirSync(STORIES_GENERATED_DIR, { recursive: true });
+  console.log('clear-generated-stories: Created src/stories/generated/');
 
   console.log(
-    'clear-generated-stories: Done. All generated pages cleared; PAGES sidebar will be empty until you generate again.'
+    'clear-generated-stories: Done. Generated story outputs cleared.'
   );
   process.exit(0);
 } catch (err) {
