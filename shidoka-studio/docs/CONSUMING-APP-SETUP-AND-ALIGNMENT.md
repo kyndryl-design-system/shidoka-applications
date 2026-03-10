@@ -119,7 +119,7 @@ Do not put the drawer anchor or actions directly under the title with no spacing
 
 ### 3.4 Table wrapper
 
-**Fix:** Wrap the table in a **scrollable outer div** with the required styles, then **kyn-table-container** and **kyn-table** inside:
+**Fix:** Wrap the table in a **scrollable outer div** with the required styles, then **kyn-table-container** and **kyn-table** inside. **Include a header row:** `kyn-thead` with one `kyn-header-tr` and one `kyn-th` per column (e.g. Name, Role, Status)—do not leave thead empty.
 
 ```html
 <div
@@ -127,12 +127,22 @@ Do not put the drawer anchor or actions directly under the title with no spacing
 >
   <kyn-table-container>
     <kyn-table>
-      <kyn-thead>…</kyn-thead>
+      <kyn-thead>
+        <kyn-header-tr>
+          <kyn-th>Name</kyn-th>
+          <kyn-th>Role</kyn-th>
+          <kyn-th>Status</kyn-th>
+        </kyn-header-tr>
+      </kyn-thead>
       <kyn-tbody>…</kyn-tbody>
     </kyn-table>
   </kyn-table-container>
 </div>
 ```
+
+### 3.4b Side drawer title
+
+**Fix:** Set **`titleText`** on `kyn-side-drawer` (e.g. `titleText="Drawer"` or `titleText="Sidebar"`) so the drawer panel shows a visible header/title. Optionally set `labelText` for accessibility.
 
 ### 3.5 Line chart
 
@@ -162,7 +172,9 @@ Reference: page-template-builder.md sections 5c and 5d; considerations.md “Wor
 | No kyn-footer                      | Add kyn-footer after main, before closing kyn-ui-shell.                                                                               |
 | Main padding                       | `<main style="padding: var(--kd-page-gutter, 1rem);">`.                                                                               |
 | Table wrapper                      | Outer div with `width: 100%; overflow: auto; max-height: 360px; border: …; border-radius: 4px;` then kyn-table-container > kyn-table. |
+| Missing table headers              | Include kyn-thead with kyn-header-tr and one kyn-th per column (e.g. Name, Role, Status); do not leave thead empty.                   |
 | No kyn-page-title / toolbar rhythm | Add kyn-page-title, then toolbar row (flex, gap, margin 1rem 0), then content.                                                        |
+| Side drawer no title               | Set titleText on kyn-side-drawer (e.g. titleText="Drawer") so the drawer shows a visible header.                                      |
 | Line chart                         | Full-width wrapper; kd-chart with maintainAspectRatio: false, height 280; line: fill: false, scales for axes.                         |
 | Global switcher                    | kyn-header-link in kyn-header-nav, search + kyn-header-category with CATEGORY and links.                                              |
 

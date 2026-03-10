@@ -83,7 +83,7 @@ Generated page import paths are **relative only to the generated file location**
 ## Component-specific behaviors (critical)
 
 - **kyn-modal:** Requires `open` (boolean) to be visible. Use `titleText`, `size` (sm, md, lg, xl), `okText`, `cancelText` as needed.
-- **kyn-side-drawer:** Place **inside** `<main>`. Use `<kyn-button slot="anchor" kind="tertiary">Label</kyn-button>` as the trigger (user's label e.g. "OPEN SESAME"). Use `titleText`, `labelText`, `size` (sm, md, lg). **Do not add the `open` attribute** unless the user explicitly asks for the drawer to be open by default; the drawer is closed by default and opens on anchor click.
+- **kyn-side-drawer:** Place **inside** `<main>`. Use `<kyn-button slot="anchor" kind="tertiary">Label</kyn-button>` as the trigger (user's label e.g. "OPEN SESAME"). **Always set `titleText`** (e.g. `titleText="Drawer"` or `titleText="Sidebar"`) so the drawer panel shows a visible header/title; optionally set `labelText`. Use `size` (sm, md, lg). **Do not add the `open` attribute** unless the user explicitly asks for the drawer to be open by default; the drawer is closed by default and opens on anchor click.
 - **kyn-button:** Use `kind` (not `variant`). Values: primary, secondary, tertiary, ghost, primary-destructive, secondary-destructive, tertiary-destructive, ghost-destructive, primary-ai, ghost-ai.
 - **kyn-workspace-switcher:** Use inside `kyn-header-flyout`. The component fits 100% of its container (see CEM description); size the overlay via the container and the component's CSS custom properties (e.g. `--kyn-workspace-switcher-max-height`) as listed in the design-system context. Use slot `left` for the CURRENT area (see slot descriptions in design-system context). Infer all sizing and API from CEM—do not depend on a boilerplate file for dimensions or attributes.
 - **Tables:** Use only `kyn-*` table elements — see "Table structure" below. Never use native `<table>`, `<tr>`, `<td>`, etc.
@@ -93,6 +93,8 @@ Generated page import paths are **relative only to the generated file location**
 Tables use ONLY kyn-\* custom elements — NEVER native `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`.
 
 Structure: `kyn-table-container > kyn-table > kyn-thead + kyn-tbody`. Headers use `kyn-header-tr > kyn-th`. Body rows use `kyn-tr > kyn-td`.
+
+**Table headers required:** Every table must include a **header row**: `kyn-thead` with one `kyn-header-tr` and one `kyn-th` per column (e.g. Name, Role, Status). Never emit a table with only `kyn-tbody` or an empty thead; the header row is required so column labels are visible.
 
 When the user provides JSON data or column definitions, generate columns and rows dynamically from their data. Use `.map()` in the Lit template to iterate over data arrays — never hardcode rows when data is provided.
 
@@ -127,7 +129,7 @@ When the user provides JSON data or column definitions, generate columns and row
 
 ## Page / template builder (use for full-page prompts)
 
-For prompts like "build a page with ui-shell, header, local nav, footer, data table, side drawer", follow these rules:
+For prompts like "build a page with ui-shell, header, local nav, footer, data table, side drawer", follow these rules. **When the prompt asks for a full UI shell with global switcher, workspace switcher, table, side drawer, and chart,** use the **Canonical full-page structure** section in this context (it is the single reference that matches what the design-system repo builds, so MCP-generated output is not limited compared to the repo).
 
 1. **Shell order (fixed):** Inside **kyn-ui-shell**: **kyn-header** → (optional **kyn-local-nav**) → **main** → **kyn-footer**. Never omit header or footer for a full page. **kyn-footer** defaults to copyright text "Copyright © {year} Kyndryl Inc. All rights reserved." — omit the `slot="copyright"` unless the user asks for custom copyright.
 2. **Main padding (required):** Every `<main>` must have left/right padding so content is visibly indented. Always use `<main style="padding: var(--kd-page-gutter, 1rem);">`. Do not omit this—without it the content will sit flush to the viewport edges.

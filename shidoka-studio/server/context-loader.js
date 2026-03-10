@@ -29,6 +29,10 @@ export function loadFromFolder(folder) {
     readSafe(join(folder, 'design-system-context.md'), '')
   );
   const pageTemplate = readSafe(join(folder, 'page-template-builder.md'), '');
+  const canonicalFullPage = readSafe(
+    join(folder, 'canonical-full-page.md'),
+    ''
+  );
   const docParts = BUNDLED_DOCS.map((f) =>
     readSafe(join(folder, f), '')
   ).filter((s) => s.length > 0);
@@ -46,6 +50,16 @@ export function loadFromFolder(folder) {
     '# Page / template builder (layout and spacing)',
     pageTemplate,
   ];
+  if (canonicalFullPage.length > 0) {
+    sections.push(
+      '',
+      '---',
+      '',
+      '# Canonical full-page structure (single reference — use this exact pattern)',
+      '',
+      canonicalFullPage
+    );
+  }
   if (docParts.length > 0) {
     sections.push(
       '',

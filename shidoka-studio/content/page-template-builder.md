@@ -71,7 +71,7 @@ Data tables must live inside a **scrollable wrapper** so they don't overflow the
 </div>
 ```
 
-Use **kyn-thead**, **kyn-header-tr**, **kyn-th**, **kyn-tbody**, **kyn-tr**, **kyn-td** only (no native `<table>`). Give the table wrapper **full width:** `style="width: 100%; overflow: auto; max-height: 360px; border: ..."` so the table spans the main content area.
+Use **kyn-thead**, **kyn-header-tr**, **kyn-th**, **kyn-tbody**, **kyn-tr**, **kyn-td** only (no native `<table>`). **Table headers required:** Always include `kyn-thead` with one `kyn-header-tr` and one `kyn-th` per data column (e.g. Name, Role, Status). The header row must contain the column labels; do not leave thead empty or omit it. Give the table wrapper **full width:** `style="width: 100%; overflow: auto; max-height: 360px; border: ..."` so the table spans the main content area.
 
 ## 4b. Charts (line graph, bar chart, etc.)
 
@@ -95,7 +95,7 @@ When the user asks for a **line graph** (or "line chart"), generate a **readable
 
 ## 5. Side drawer (inside main, anchor button)
 
-**kyn-side-drawer** goes **inside** `<main>`. The trigger is a **kyn-button** with **slot="anchor"**. Use **kind="tertiary"** for the anchor when it is a secondary action (e.g. "Open message"). Example:
+**kyn-side-drawer** goes **inside** `<main>`. The trigger is a **kyn-button** with **slot="anchor"**. Use **kind="tertiary"** for the anchor when it is a secondary action (e.g. "Open message"). **Drawer title required:** Always set **`titleText`** on `kyn-side-drawer` (e.g. `titleText="Drawer"` or `titleText="Sidebar"`) so the drawer panel shows a visible header/title; optionally set `labelText` for accessibility. Example:
 
 ```html
 <kyn-side-drawer size="md" titleText="Sidebar" labelText="Open sidebar">

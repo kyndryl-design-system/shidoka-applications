@@ -47,6 +47,10 @@ const FILES = [
   'component-api.json',
 ];
 
+/** Canonical full-page structure (single reference so MCP context matches repo knowledge). */
+const CONTENT_SOURCE = join(ROOT, 'shidoka-studio', 'content');
+const CANONICAL_FULL_PAGE = 'canonical-full-page.md';
+
 /** Root shidoka-studio docs to bundle so sideloaded/published package has full context. */
 const DOCS_SOURCE = join(ROOT, 'shidoka-studio', 'docs');
 const DOCS_FILES = [
@@ -90,6 +94,11 @@ function copyDocs(destDir, label) {
 
 copyContext(SHIDOKA_STUDIO_CONTEXT, 'shidoka-studio/context/');
 copyDocs(SHIDOKA_STUDIO_CONTEXT, 'shidoka-studio/context/');
+const canonicalSrc = join(CONTENT_SOURCE, CANONICAL_FULL_PAGE);
+if (existsSync(canonicalSrc)) {
+  copyFileSync(canonicalSrc, join(SHIDOKA_STUDIO_CONTEXT, CANONICAL_FULL_PAGE));
+  console.log(`  ✓ content/${CANONICAL_FULL_PAGE} → shidoka-studio/context/`);
+}
 copyContext(
   PKG_CONTEXT,
   'packages/@kyndryl-design-system/shidoka-studio/context/'
@@ -98,6 +107,10 @@ copyDocs(
   PKG_CONTEXT,
   'packages/@kyndryl-design-system/shidoka-studio/context/'
 );
+if (existsSync(canonicalSrc)) {
+  copyFileSync(canonicalSrc, join(PKG_CONTEXT, CANONICAL_FULL_PAGE));
+  console.log(`  ✓ content/${CANONICAL_FULL_PAGE} → package context/`);
+}
 
 if (existsSync(SERVER_SOURCE)) {
   mkdirSync(PKG_BIN_DIR, { recursive: true });
