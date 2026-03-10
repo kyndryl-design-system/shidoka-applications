@@ -88,26 +88,34 @@ Use **kyn-thead**, **kyn-header-tr**, **kyn-th**, **kyn-tbody**, **kyn-tr**, **k
 
 ## 5b. Workspace switcher in header (when included)
 
-When the page includes a **workspace switcher** in the header, use **kyn-header-flyout** with a **span** in `slot="button"` (with `id="workspace-trigger-label"`) and **kyn-workspace-switcher** as the panel content.
+When the page includes a **workspace switcher** in the header, use **kyn-header-flyout** with a trigger that has the label **and a chevron** (dropdown look) and **kyn-workspace-switcher** as the panel content.
 
-- **Trigger:** Put a span in `slot="button"` with `id="workspace-trigger-label"` and the label text inside. Example:
-  ```html
-  <kyn-header-flyout label="…" hideMenuLabel hideButtonLabel noPadding>
-    <span
-      id="workspace-trigger-label"
-      slot="button"
-      style="display: flex; align-items: center; font-size: 14px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-      title="…"
-      >Selected name only</span
-    >
-    <kyn-workspace-switcher
-      id="workspace-switcher"
-      style="width: 100%; max-height: var(--kyn-workspace-switcher-max-height, 70vh);"
-      >…</kyn-workspace-switcher
-    >
-  </kyn-header-flyout>
-  ```
-- Set **hide-menu-label** and **hide-back-button** on the flyout. Wire the label via `id="workspace-trigger-label"` and boilerplate `setupWorkspaceSwitcher` (see considerations.md).
+- **Trigger (dropdown look):** Put a **wrapper span** in `slot="button"` with `style="display: flex; align-items: center; gap: 8px; font-size: 14px;"` containing: (1) a span with `id="workspace-trigger-label"` and class `account-name` (for truncation), and (2) a span with class `account-chevron` containing the chevron-down SVG. Add `@on-flyout-toggle` on the flyout to rotate the chevron (e.g. `detail.open ? 'rotate(180deg)' : 'rotate(0deg)'`). Give the **kyn-workspace-switcher** `id="workspace-switcher"` and class `ui-impl-switcher` and `style="max-height: var(--kyn-workspace-switcher-max-height, 70vh);"`.
+- Set **hideMenuLabel**, **hideButtonLabel**, **noPadding** on the flyout. Wire the label via `id="workspace-trigger-label"` and boilerplate `setupWorkspaceSwitcher` (see considerations.md).
+- **CSS (include in decorator or page):** `.account-name { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }`; `.account-chevron { display: flex; transition: transform 0.2s; }`; `.ui-impl-switcher { width: 625px; }` with responsive max-width (e.g. 375px below 52rem, 100% below 42rem); hide `.account-chevron` on small viewports if desired.
+
+## 5c. Nav rail (canonical header look)
+
+When the user asks for a **UI shell**, **nav rail**, or **header** and you want the canonical "UI Implementation" look (Bridge branding, workspace dropdown with chevron, Notifications/Help/User icons):
+
+1. **kyn-header** with `appTitle="Bridge"` and **logo** in `slot="logo"`: `<span slot="logo" style="--kyn-header-logo-width: 120px;">` + Bridge logo SVG.
+2. **kyn-header-nav:** Include the **global switcher** link(s) as in 5d (search + CATEGORY flyout).
+3. **kyn-header-flyouts** in this order: (a) Workspace flyout (trigger with label + chevron, switcher as in 5b). (b) Notifications flyout: `hideMenuLabel`, icon in `slot="button"`, then **kyn-header-link** items. (c) Help flyout: icon in `slot="button"`, then **kyn-header-link** items. (d) User Profile flyout: `hideMenuLabel`, user icon in `slot="button"`, **kyn-header-user-profile**, then **kyn-header-link** (e.g. Profile Settings, Sign Out).
+4. Include the CSS from 5b in the story decorator.
+
+**Reference:** Global Components/Workspace Switcher → **UIImplementation** story; considerations.md "Nav rail reference".
+
+## 5d. Global switcher flyout (search + CATEGORY)
+
+When the page includes a **global switcher** (the flyout that opens from the nav with search bar and category list), use **kyn-header-link** in **kyn-header-nav** so the flyout matches the design:
+
+- **Do not** set `hideSearch` on the main global switcher **kyn-header-link** so the flyout shows the **search input** at the top.
+- Ensure **6+ child links** (so search appears by default) or set **searchThreshold="2"** on the link so search shows with fewer items.
+- In `slot="links"` use **kyn-header-category** with **heading="CATEGORY"** and multiple **kyn-header-link** children (e.g. Connections Management, Discovered Data, Visualization & Analytics, Topology, Settings).
+- Optionally set `style="--kyn-global-switcher-max-height: 70vh;"` on **kyn-header-nav** for flyout height.
+- Header must have **logo** in `slot="logo"` and `appTitle="Bridge"` for "kyndryl bridge" branding in the rail.
+
+**Reference:** Global Components/Header/Global Switcher stories; src/stories/globalSwitcher/ (SlottedHTMLSwitcher, example_global_switcher_data.json).
 
 ## 6. Full-page Storybook story (meta + decorator)
 
