@@ -47,6 +47,15 @@ const FILES = [
   'component-api.json',
 ];
 
+/** Root shidoka-studio docs to bundle so sideloaded/published package has full context. */
+const DOCS_SOURCE = join(ROOT, 'shidoka-studio', 'docs');
+const DOCS_FILES = [
+  { from: 'ARCHITECTURE.md', to: 'architecture.md' },
+  { from: 'SIDELOAD-SHIDOKA-STUDIO.md', to: 'sideload-shidoka-studio.md' },
+  { from: 'PACKAGING-FOR-CONSUMERS.md', to: 'packaging-for-consumers.md' },
+  { from: 'STYLING-FOR-CONSUMERS.md', to: 'styling-for-consumers.md' },
+];
+
 if (!existsSync(CONTEXT_SRC)) {
   console.error(
     'shidoka-studio/context-src/ not found. Run: npm run generate-component-registry'
@@ -65,8 +74,23 @@ function copyContext(destDir, label) {
   }
 }
 
+function copyDocs(destDir, label) {
+  for (const { from, to } of DOCS_FILES) {
+    const src = join(DOCS_SOURCE, from);
+    if (existsSync(src)) {
+      copyFileSync(src, join(destDir, to));
+      console.log(`  ✓ docs/${from} → ${label}${to}`);
+    }
+  }
+}
+
 copyContext(SHIDOKA_STUDIO_CONTEXT, 'shidoka-studio/context/');
+copyDocs(SHIDOKA_STUDIO_CONTEXT, 'shidoka-studio/context/');
 copyContext(
+  PKG_CONTEXT,
+  'packages/@kyndryl-design-system/shidoka-studio/context/'
+);
+copyDocs(
   PKG_CONTEXT,
   'packages/@kyndryl-design-system/shidoka-studio/context/'
 );

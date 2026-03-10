@@ -2,6 +2,8 @@
 
 Use this for **any prompt that asks for a full page, UI shell, or template** (e.g. "build a page with ui-shell, header, local nav, footer, data table, side drawer"). Follow the order and spacing below so the output is valid and consistent.
 
+**Same page everywhere.** The **structure and content** of the page (shell order, header with global/workspace switcher, main with title, toolbar, chart, table, side drawer with user-specified anchor text, button labels, row count, dummy data) must be **identical** whether you generate a Storybook story (design-system repo) or a Vue/React/etc. component (consuming app). Only the **output format** differs: in the design-system repo write a `.stories.js` (or `.stories.ts`) file; in a consuming app write the appropriate framework file (e.g. `.vue`, `.tsx`) and use package imports. Same `kyn-*` tags, same layout, same labels (e.g. "OPEN SESAME", "MYSTERY"), same row count and chart data.
+
 ## 1. Shell order (fixed)
 
 Inside **kyn-ui-shell**, children must appear in this order:
@@ -73,11 +75,23 @@ Use **kyn-thead**, **kyn-header-tr**, **kyn-th**, **kyn-tbody**, **kyn-tr**, **k
 
 ## 4b. Charts (line graph, bar chart, etc.)
 
+**Always use the Shidoka charts component `<kd-chart>`.** Never implement a chart with raw `<svg>`, `<canvas>`, `<polyline>`, `<path>`, or any custom-drawn graphic. When the user asks for a line graph, bar chart, pie chart, or any chart, the only correct implementation is **`<kd-chart>`** with the appropriate `type`, `.labels`, `.datasets`, and `.options`. In Vue, React, or Lit, use `<kd-chart>` (and ensure the app has installed and registered `@kyndryl-design-system/shidoka-charts`).
+
 When the page includes a **line graph**, **bar chart**, or other **kd-chart**, it must **span the full width** of the main content so output is consistent across runs. Do not use `max-width` or a narrow wrapper unless the user explicitly asks for one.
 
 - **Wrapper:** `<div style="width: 100%; margin-bottom: 1.5rem;">` around the chart.
 - **Chart:** `kd-chart` with `style="width: 100%; display: block;"` and `.options=${{ maintainAspectRatio: false, responsive: true }}` so it fills the wrapper. Set `height="280"` (or similar) for a fixed height; the width follows the container.
 - **Import:** `import '@kyndryl-design-system/shidoka-charts/components/chart';` (or the path appropriate to the story file; see considerations.md "Import paths for story files").
+
+### Line graph specifically (user asks for "line graph" or "line chart")
+
+When the user asks for a **line graph** (or "line chart"), generate a **readable line chart**, not an area chart and not a chart without axes.
+
+- **Type:** Always `type="line"`.
+- **No area fill:** Each dataset must have **`fill: false`** so the chart shows a line only, not a filled area under the line. Do not use default fill.
+- **Visible axes:** Set **`scales`** in options so the chart has visible X and Y axes and labels. Example: `scales: { x: { display: true, title: { display: true, text: 'Category' } }, y: { display: true, title: { display: true, text: 'Value' }, beginAtZero: true } }`. Without this, the chart can render with no axes and be unreadable.
+- **Basic dummy data:** Use a **labels** array (e.g. `['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']`) and one or two **datasets** with a **data** array of numbers (e.g. `[12, 19, 8, 15, 22, 18]`). Include a **label** per dataset (e.g. `label: 'Series A'`).
+- **Example (conceptual):** `labels: ['Jan','Feb','Mar','Apr','May','Jun']`, `datasets: [{ label: 'Series A', data: [12, 19, 8, 15, 22, 18], fill: false, borderColor: 'rgb(75, 192, 192)', tension: 0.3 }]`, `options: { ... existing ..., scales: { x: { display: true }, y: { display: true, beginAtZero: true } } }`.
 
 ## 5. Side drawer (inside main, anchor button)
 

@@ -66,18 +66,19 @@ Generated page import paths are **relative only to the generated file location**
 
 **Import column:** Use only in the **design-system repo** (relative path from the file you are writing). In a **consuming app**, use the package import from "Import path resolution" instead; the tags (e.g. `<kyn-button>`) and attributes are the same.
 
-| User says                   | Use                                                                                                                   | Import (design-system repo only)                          |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| "button" / "primary button" | `<kyn-button kind="primary">Label</kyn-button>`                                                                       | `../../components/reusable/button/index`                  |
-| "ghost button"              | `<kyn-button kind="ghost">Label</kyn-button>`                                                                         | `../../components/reusable/button/index`                  |
-| "card"                      | `<kyn-card>`                                                                                                          | `../../components/reusable/card/index`                    |
-| "table" / "data table"      | `<kyn-table-container><kyn-table>...</kyn-table></kyn-table-container>` (see table example below)                     | `../../components/reusable/table/index`                   |
-| "modal" / "dialog"          | `<kyn-modal>` (use `open` attribute to show)                                                                          | `../../components/reusable/modal/index`                   |
-| "page" / "app layout"       | `<kyn-ui-shell>` with header, main, footer                                                                            | `../../components/global/uiShell/index` + header + footer |
-| "sidebar" / "drawer"        | `<kyn-side-drawer>` inside `<main>` with `<kyn-button slot="anchor">` as trigger (use `kind="tertiary"` for tertiary) | `../../components/reusable/sideDrawer/index`              |
-| "input" / "text field"      | `<kyn-text-input>`                                                                                                    | `../../components/reusable/textInput/index`               |
-| "dropdown" / "select"       | `<kyn-dropdown>` with `<kyn-dropdown-option>`                                                                         | `../../components/reusable/dropdown/index`                |
-| "tabs"                      | `<kyn-tabs>` with `<kyn-tab>` and `<kyn-tab-panel>`                                                                   | `../../components/reusable/tabs/index`                    |
+| User says                                                         | Use                                                                                                                                 | Import (design-system repo only)                                                                             |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| "button" / "primary button"                                       | `<kyn-button kind="primary">Label</kyn-button>`                                                                                     | `../../components/reusable/button/index`                                                                     |
+| "ghost button"                                                    | `<kyn-button kind="ghost">Label</kyn-button>`                                                                                       | `../../components/reusable/button/index`                                                                     |
+| "card"                                                            | `<kyn-card>`                                                                                                                        | `../../components/reusable/card/index`                                                                       |
+| "table" / "data table"                                            | `<kyn-table-container><kyn-table>...</kyn-table></kyn-table-container>` (see table example below)                                   | `../../components/reusable/table/index`                                                                      |
+| "modal" / "dialog"                                                | `<kyn-modal>` (use `open` attribute to show)                                                                                        | `../../components/reusable/modal/index`                                                                      |
+| "page" / "app layout"                                             | `<kyn-ui-shell>` with header, main, footer                                                                                          | `../../components/global/uiShell/index` + header + footer                                                    |
+| "sidebar" / "drawer"                                              | `<kyn-side-drawer>` inside `<main>` with `<kyn-button slot="anchor">` as trigger (use `kind="tertiary"` for tertiary)               | `../../components/reusable/sideDrawer/index`                                                                 |
+| "input" / "text field"                                            | `<kyn-text-input>`                                                                                                                  | `../../components/reusable/textInput/index`                                                                  |
+| "dropdown" / "select"                                             | `<kyn-dropdown>` with `<kyn-dropdown-option>`                                                                                       | `../../components/reusable/dropdown/index`                                                                   |
+| "tabs"                                                            | `<kyn-tabs>` with `<kyn-tab>` and `<kyn-tab-panel>`                                                                                 | `../../components/reusable/tabs/index`                                                                       |
+| "line graph" / "line chart" / "chart" / "bar chart" / "pie chart" | **Always** `<kd-chart>` with `type`, `.labels`, `.datasets`, `.options`. Never use raw `<svg>`, `<canvas>`, or custom-drawn charts. | In consuming app: `import '@kyndryl-design-system/shidoka-charts/components/chart'` (or design-system path). |
 
 ## Component-specific behaviors (critical)
 
@@ -121,6 +122,7 @@ When the user provides JSON data or column definitions, generate columns and row
 - `<my-button>`, `<my-card>`, `<lit-table>`, `<app-shell>` — these tags do not exist
 - Raw `<button>`, `<input>`, `<select>` for UI — use the `kyn-*` equivalent
 - Native `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>` — use `kyn-table`, `kyn-thead`, `kyn-tbody`, `kyn-tr`, `kyn-th`, `kyn-td`
+- **Charts:** Never implement a chart with raw **`<svg>`**, **`<canvas>`**, **`<polyline>`**, **`<path>`**, or any custom-drawn graphic. When the user asks for a line graph, bar chart, pie chart, or any chart, **always use the Shidoka charts component `<kd-chart>`** (from `@kyndryl-design-system/shidoka-charts`). Pass `type`, `labels`, `datasets`, and `options` as documented in the page-template-builder. Custom SVG/canvas charts are forbidden.
 - Any custom element or attribute not in the design-system context / registry
 
 ## Page / template builder (use for full-page prompts)
@@ -135,6 +137,7 @@ For prompts like "build a page with ui-shell, header, local nav, footer, data ta
 6. **Fullscreen story:** Use `parameters: { layout: 'fullscreen' }` and a decorator with `min-height: 100vh; width: 100%;` only. Do **not** use negative margin on the decorator—that cancels the main content indent; header/footer stay full width and the main body is indented by the main's padding.
 7. **Row count:** If the user asks for N rows (e.g. 9-row data table), generate exactly N **kyn-tr** rows.
 8. **Charts and full-width content:** Line graphs, bar charts, and other **kd-chart** instances in the main content must **span the full width** of the main area unless the user asks for a narrow or fixed-width chart. Always wrap the chart in a div with `style="width: 100%; margin-bottom: 1.5rem;"` and set the chart to fill it: `style="width: 100%; display: block;"` and `.options=${{ maintainAspectRatio: false, responsive: true }}` so the chart uses the full content width consistently. Data tables should also use a full-width wrapper: `style="width: 100%; overflow: auto; ..."` on the table container div. Do not use `max-width` on chart or table wrappers unless the user explicitly requests a narrower block.
+9. **Line graph (user says "line graph" or "line chart"):** **Always use `<kd-chart>`.** Never use raw `<svg>`, `<polyline>`, `<canvas>`, or custom-drawn graphics for charts. Generate a readable line chart: **kd-chart** with **`type="line"`**. Set each dataset **`fill: false`**. Set **`scales`** in options so X and Y axes are visible. Use **labels** and **datasets** with **data** and **label**. See Forbidden (no SVG/canvas charts) and intent mapping (chart → kd-chart).
 
 Full reference: **shidoka-studio/content/page-template-builder.md** (or the built context in shidoka-studio/context/).
 
@@ -166,6 +169,17 @@ Sizing and API come from the design-system context (CSS custom properties, slot 
 - Page/template: follow "Page / template builder" above; see **shidoka-studio/content/page-template-builder.md** for the complete pattern.
 - Constraints: only kyn-\* tags and registry imports (see "Forbidden" above).
 
+## Output parity: design-system repo vs consuming app
+
+For a given page prompt (e.g. "build a page with UI shell, global switcher, workspace switcher, 5-row data table, side drawer with tertiary button anchor 'OPEN SESAME', ghost-outline button 'MYSTERY' above the table, line graph with dummy data"), the **page content and structure must be identical** whether you are in the shidoka-applications repo or an external project (e.g. Vue app). Same components, same order, same labels, same dummy data (e.g. 5 rows, chart labels/datasets, "OPEN SESAME", "MYSTERY").
+
+**The only differences:**
+
+- **Output format:** In the design-system repo → write a **Storybook story** (e.g. `.stories.js` with `html\`...\``, meta, decorators). In a consuming app → write the **framework-native file** (e.g. `.vue`SFC,`.tsx`, `.jsx`) using that framework’s syntax. Do not change the page structure or component set based on format.
+- **Imports:** Design-system repo → relative paths from the story file to `src/components/` (see "Import paths for story files"). Consuming app → package import once (e.g. `import '@kyndryl-design-system/shidoka-applications'`) and use the same `<kyn-*>` tags and attributes.
+
+So: same **kyn-ui-shell**, same **kyn-header** (global switcher + workspace switcher), same **main** (page title, toolbar with OPEN SESAME drawer + MYSTERY ghost button, line graph, 5-row table), same **kyn-footer**. Only the **file wrapper** (story vs Vue/React) and **import style** differ.
+
 ## Template / page generator
 
 Generated output should be copy-pasteable. For full-page prompts, apply the layout order and spacing above and produce complete, working examples that use only registered components with correct attributes and imports.
@@ -173,7 +187,7 @@ Generated output should be copy-pasteable. For full-page prompts, apply the layo
 **Where to put generated page output:**
 
 - **When running locally in the shidoka-applications repo (design-system repo):** Always write generated Storybook page stories to **src/stories/pages/generated/** (e.g. `src/stories/pages/generated/MyPage.stories.js`). Use **title: 'Generated/Your Page Name'** so the story appears under "Generated" in the sidebar. The folders **src/stories/pages/generated/** and **src/stories/generated/** are cleared on every `npm run shidoka-studio` / `build:shidoka-studio`; in addition, **any .stories.\* file placed directly in src/stories/pages/** (e.g. `pages/DemoPage.stories.js`) is **removed** by the clear script so the PAGES sidebar starts clean. So generated output must go in **pages/generated/** with import prefix `../../../components/...` (see "Import paths for story files"). **Do not** put generated story files in `src/stories/pages/` (only in `src/stories/pages/generated/`). Do not import from a workspace-switcher boilerplate file; inline the workspace switcher data and wiring in the generated story.
-- **When generating for an external/consuming application:** Infer the output path and file format from the project structure (e.g. `src/views/`, `app/(dashboard)/`, `pages/`, `src/pages/`) and use import paths appropriate to that app. Do not use the shidoka-applications path; the MCP/LLM should detect that the workspace is not the design-system repo and place the file where it fits the consuming app’s layout. **Shidoka Studio (the plugin) never deletes or clears generated files in consuming applications** — any generated output (.ts, .js, .vue, .tsx, etc.) is the responsibility of the developer; the plugin only provides context and does not manage or remove consumer files.
+- **When generating for an external/consuming application:** Infer the output path and file format from the project structure (e.g. `src/views/`, `app/(dashboard)/`, `pages/`, `src/pages/`) and use import paths appropriate to that app. Do not use the shidoka-applications path; the MCP/LLM should detect that the workspace is not the design-system repo and place the file where it fits the consuming app’s layout. **The page content (components, order, labels, row count, chart data) must match what you would generate in the design-system repo** — only the file format (e.g. `.vue` instead of `.stories.js`) and imports change. **Shidoka Studio (the plugin) never deletes or clears generated files in consuming applications** — any generated output (.ts, .js, .vue, .tsx, etc.) is the responsibility of the developer; the plugin only provides context and does not manage or remove consumer files.
 
 ## Consuming applications (styling)
 

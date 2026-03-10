@@ -16,9 +16,18 @@ This:
 
 - Runs `generate-component-registry` (if needed) and fills `shidoka-studio/context-src/`
 - Copies context into `shidoka-studio/context/` and `packages/@kyndryl-design-system/shidoka-studio/context/`
+- Copies root **shidoka-studio/docs/** (ARCHITECTURE, SIDELOAD-SHIDOKA-STUDIO, PACKAGING-FOR-CONSUMERS, STYLING-FOR-CONSUMERS) into that same `context/` so the bundled context is self-contained
 - Copies `shidoka-studio/server/index.js` and `context-loader.js` into `packages/@kyndryl-design-system/shidoka-studio/bin/`
 
-The **sideloadable artifact** is **`packages/@kyndryl-design-system/shidoka-studio/`**: it contains `bin/server.js`, `bin/context-loader.js`, and `context/` (markdown files). The server resolves `../context` relative to itself, so that folder layout must stay intact.
+The **sideloadable artifact** is **`packages/@kyndryl-design-system/shidoka-studio/`**: it contains `bin/server.js`, `bin/context-loader.js`, and `context/` (markdown files). The server resolves `../context` relative to itself, so that folder layout must stay intact. The MCP tool `get_shidoka_design_context` returns this full bundled context (considerations, component registry, page-template-builder, plus the docs above), so the AI has everything it needs without the root shidoka-studio folder.
+
+**Bundle for copy-into-node_modules (same packaging as other Shidoka libs):** If you will **replace** the `shidoka-studio` directory inside your Vue app’s `node_modules/@kyndryl-design-system/` with this package (so it looks like the other Shidoka packages there), run the **sideload bundle** so the package includes its own dependencies:
+
+```bash
+npm run bundle:sideload
+```
+
+This runs `build:shidoka-studio` and then `npm install --omit=dev` inside the package. The result is a self-contained folder (with `node_modules/` for `@modelcontextprotocol/sdk`) that you can copy into your Vue project’s `node_modules/@kyndryl-design-system/shidoka-studio` in place of the npm-installed version. Layout matches the other `@kyndryl-design-system/*` packages.
 
 ---
 
@@ -138,11 +147,54 @@ Useful for sharing a snapshot (e.g. one-off handoff or CI artifact).
 
 ---
 
-### Option D: Copy the built folder into the other project
+### Option D: Replace `node_modules/@kyndryl-design-system/shidoka-studio` (same layout as other Shidoka libs)
 
-You don’t use npm in the other project; you just copy the built package in.
+Best when you want the sideloaded package to sit in the same place as the other Shidoka packages and use the same MCP config as a normal install.
 
-1. **Build** (as in section 1).
+1. **Bundle** (from shidoka-applications repo root):
+
+   ```bash
+   npm run bundle:sideload
+   ```
+
+   This builds the package and installs its dependencies inside the package folder so the folder is self-contained.
+
+2. **Copy** the entire package folder over the one in your Vue project’s node_modules:
+
+   ```bash
+   cp -R /path/to/shidoka-applications/packages/@kyndryl-design-system/shidoka-studio /path/to/your-vue-project/node_modules/@kyndryl-design-system/shidoka-studio
+   ```
+
+   (On Windows, use `xcopy` or Explorer; ensure the target `shidoka-studio` folder is replaced entirely.)
+
+3. **In the Vue project’s `.cursor/mcp.json`** (same as if you had installed from npm):
+
+   ```json
+   {
+     "mcpServers": {
+       "shidoka-studio": {
+         "command": "node",
+         "args": [
+           "./node_modules/@kyndryl-design-system/shidoka-studio/bin/server.js"
+         ],
+         "cwd": "${workspaceFolder}"
+       }
+     }
+   }
+   ```
+
+   Or: `"command": "npx", "args": ["-y", "@kyndryl-design-system/shidoka-studio"], "cwd": "${workspaceFolder}"` (npx will run the copied package’s bin).
+
+**Pros:** Same path and packaging as other Shidoka libraries; no path reference to shidoka-applications.  
+**Cons:** You must re-run `npm run bundle:sideload` and copy again when you want to update context or the server.
+
+---
+
+### Option E: Copy the built folder to a custom path
+
+You don’t use npm in the other project; you copy the built package to a folder of your choice (e.g. `shidoka-studio-sideload`). For the server to run, that folder must have its dependencies: either run **`npm run bundle:sideload`** first (so the copied folder includes `node_modules`), or after copying run `npm install --omit=dev` inside the copied folder.
+
+1. **Bundle** (so the copy has deps): `npm run bundle:sideload`. Or **build** only: `npm run build:shidoka-studio` and then run `npm install --omit=dev` inside the copied folder after step 2.
 
 2. **Copy** the entire `packages/@kyndryl-design-system/shidoka-studio` folder into the other project, e.g.:
 
@@ -171,12 +223,12 @@ You don’t use npm in the other project; you just copy the built package in.
 
 ## 3. Checklist
 
-| Step | Action                                                                                        |
-| ---- | --------------------------------------------------------------------------------------------- |
-| 1    | In **shidoka-applications**: `npm run build:shidoka-studio`                                   |
-| 2    | Choose A, B, C, or D above and configure the **other project** (path, `npm install`, or copy) |
-| 3    | In the other project: add or edit `.cursor/mcp.json` with the correct `command` and `args`    |
-| 4    | Reload Cursor in the other project so the MCP server is picked up                             |
+| Step | Action                                                                                                                                               |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | In **shidoka-applications**: `npm run build:shidoka-studio` (or `npm run bundle:sideload` for Options D/E so the package has its own `node_modules`) |
+| 2    | Choose A, B, C, D, or E above and configure the **other project** (path, `npm install`, or copy)                                                     |
+| 3    | In the other project: add or edit `.cursor/mcp.json` with the correct `command` and `args`                                                           |
+| 4    | Reload Cursor in the other project so the MCP server is picked up                                                                                    |
 
 ---
 

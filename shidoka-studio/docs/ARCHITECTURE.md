@@ -73,6 +73,7 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
 
   - Copies **context-src/** → **shidoka-studio/context/** (in-repo server).
   - Copies **context-src/** → **packages/@kyndryl-design-system/shidoka-studio/context/** (publishable package).
+  - Copies **shidoka-studio/docs/** (ARCHITECTURE, SIDELOAD-SHIDOKA-STUDIO, PACKAGING-FOR-CONSUMERS, STYLING-FOR-CONSUMERS) into both context folders so the bundled context is self-contained; the root shidoka-studio folder is only needed at build time.
   - Copies **shidoka-studio/server/index.js** → **packages/@kyndryl-design-system/shidoka-studio/bin/server.js**.
 
 - **Root command:** `npm run build:shidoka-studio` runs `generate-component-registry` then `build.js`, then clears generated stories (see below).
@@ -88,6 +89,7 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
   1. Considerations
   2. Component registry / design-system context
   3. Page-template-builder
+  4. Shidoka Studio docs (architecture, sideload, packaging, styling) — so sideloaded or npm-installed packages have full context without the root shidoka-studio folder
 
 **Context resolution order:**
 

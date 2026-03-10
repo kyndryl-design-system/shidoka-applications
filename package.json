@@ -31,7 +31,8 @@
     "test:unit": "vitest run --project=unit",
     "test:shidoka-studio": "vitest run --project=shidoka-studio",
     "prepare": "npx husky install",
-    "build:shidoka-studio": "npm run generate-component-registry && node shidoka-studio/scripts/build.js && npm run clear:generated-stories"
+    "build:shidoka-studio": "npm run generate-component-registry && node shidoka-studio/scripts/build.js && npm run clear:generated-stories",
+    "bundle:sideload": "npm run build:shidoka-studio && cd packages/@kyndryl-design-system/shidoka-studio && npm install --omit=dev"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.1",

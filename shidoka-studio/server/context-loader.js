@@ -14,6 +14,13 @@ function readSafe(path, fallback = '') {
   }
 }
 
+const BUNDLED_DOCS = [
+  'architecture.md',
+  'sideload-shidoka-studio.md',
+  'packaging-for-consumers.md',
+  'styling-for-consumers.md',
+];
+
 export function loadFromFolder(folder) {
   const considerations = readSafe(join(folder, 'considerations.md'), '');
   const registry = readSafe(
@@ -21,7 +28,10 @@ export function loadFromFolder(folder) {
     readSafe(join(folder, 'design-system-context.md'), '')
   );
   const pageTemplate = readSafe(join(folder, 'page-template-builder.md'), '');
-  return [
+  const docParts = BUNDLED_DOCS.map((f) =>
+    readSafe(join(folder, f), '')
+  ).filter((s) => s.length > 0);
+  const sections = [
     '# Shidoka Design System — considerations and rules',
     considerations,
     '',
@@ -34,7 +44,18 @@ export function loadFromFolder(folder) {
     '',
     '# Page / template builder (layout and spacing)',
     pageTemplate,
-  ].join('\n');
+  ];
+  if (docParts.length > 0) {
+    sections.push(
+      '',
+      '---',
+      '',
+      '# Shidoka Studio docs (architecture, sideload, packaging, styling)',
+      '',
+      docParts.join('\n\n---\n\n')
+    );
+  }
+  return sections.join('\n');
 }
 
 let urlCache = null;
