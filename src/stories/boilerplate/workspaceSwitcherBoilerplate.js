@@ -44,13 +44,27 @@ export const defaultWorkspaceSwitcherData = {
 };
 
 /**
+ * Resolves display name by item id from data. Use this so the nav rail trigger
+ * never shows the raw id (e.g. "t-2"); it always shows the account name.
+ * @param {typeof defaultWorkspaceSwitcherData} data
+ * @param {string} id
+ * @returns {string}
+ */
+function getNameById(data, id) {
+  for (const items of Object.values(data.itemsByWorkspace)) {
+    const found = items.find((it) => it.id === id);
+    if (found) return found.name;
+  }
+  return id;
+}
+
+/**
  * Wires workspace switcher behavior: left-list clicks switch workspace and repopulate
  * right-list; right-list clicks update selection and the trigger label.
  * Call from Storybook play() with canvasElement, or from app code with the root element.
  *
- * When reading the selected item's display name for the trigger label, use the menu
- * item's .name property (not getAttribute('name')), since kyn-workspace-switcher-menu-item
- * does not reflect the name property to an attribute.
+ * The trigger label is always set from the data's name (by id) so the nav rail
+ * never displays the raw item id.
  *
  * @param {Element} rootEl - Root containing #workspace-switcher and #workspace-trigger-label
  * @param {typeof defaultWorkspaceSwitcherData} [data] - Workspace data; defaults to defaultWorkspaceSwitcherData
@@ -113,11 +127,8 @@ export function setupWorkspaceSwitcher(
         switcher.appendChild(el);
       });
     } else if (slot === 'right-list') {
-      const itemEl = switcher.querySelector(
-        `kyn-workspace-switcher-menu-item[slot="right-list"][value="${value}"]`
-      );
-      // Use .name property (Lit does not reflect it to attribute by default)
-      const name = (itemEl && itemEl.name) || value;
+      // Always resolve name from data by id so the nav rail never shows raw id (e.g. "t-2")
+      const name = getNameById(data, value);
       if (triggerLabel) {
         triggerLabel.textContent = name;
         triggerLabel.title = name;
