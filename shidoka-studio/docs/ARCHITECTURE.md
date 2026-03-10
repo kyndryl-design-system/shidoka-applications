@@ -16,7 +16,7 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                         CONTEXT GENERATION (build time)                            │
 │  npm run generate-component-registry  →  context-src/                             │
-│  npm run build:shidoka-studio          →  context/ + packages/shidoka-studio/     │
+│  npm run build:shidoka-studio          →  context/ + packages/@kyndryl-design-system/shidoka-studio/     │
 └─────────────────────────────────────────────────────────────────────────────────┘
                                           │
                                           ▼
@@ -72,8 +72,8 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
 - **Script:** `shidoka-studio/scripts/build.js`
 
   - Copies **context-src/** → **shidoka-studio/context/** (in-repo server).
-  - Copies **context-src/** → **packages/shidoka-studio/context/** (publishable package).
-  - Copies **shidoka-studio/server/index.js** → **packages/shidoka-studio/bin/server.js**.
+  - Copies **context-src/** → **packages/@kyndryl-design-system/shidoka-studio/context/** (publishable package).
+  - Copies **shidoka-studio/server/index.js** → **packages/@kyndryl-design-system/shidoka-studio/bin/server.js**.
 
 - **Root command:** `npm run build:shidoka-studio` runs `generate-component-registry` then `build.js`, then clears generated stories (see below).
 - **Clearing generated stories:** Only in the shidoka-applications repo. The script `clear-generated-stories.js` clears **only** `src/stories/pages/generated/` (dev-only Storybook stories). It is not part of the published Shidoka Studio package. When developers use the plugin in their own apps, Shidoka Studio never clears or touches their generated files (.ts, .js, .vue, .tsx, etc.); they manage those files themselves.
@@ -82,7 +82,7 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
 
 ## 3. MCP server
 
-- **Source of truth:** `shidoka-studio/server/index.js` (in-repo). Packaged as `packages/shidoka-studio/bin/server.js`.
+- **Source of truth:** `shidoka-studio/server/index.js` (in-repo). Packaged as `packages/@kyndryl-design-system/shidoka-studio/bin/server.js`.
 - **Protocol:** MCP over stdio (`@modelcontextprotocol/sdk`).
 - **Tool:** `get_shidoka_design_context` (no parameters). Returns one text content block: concatenated markdown from:
   1. Considerations
@@ -93,7 +93,7 @@ This document maps the basic architecture of **Shidoka Studio**: the path from t
 
 1. **SHIDOKA_STUDIO_CONTEXT_PATH** — folder containing `considerations.md`, `component-registry.md`, `page-template-builder.md` (and optionally `design-system-context.md`). Used for local override or reading directly from context-src.
 2. **SHIDOKA_STUDIO_CONTEXT_URL** — URL that returns full context (markdown or JSON with `content`). For org-hosted context without reinstalling the package.
-3. **Bundled context** — `../context` relative to the server (in-repo: `shidoka-studio/context/`; in package: `packages/shidoka-studio/context/`).
+3. **Bundled context** — `../context` relative to the server (in-repo: `shidoka-studio/context/`; in package: `packages/@kyndryl-design-system/shidoka-studio/context/`).
 
 ---
 
@@ -146,7 +146,7 @@ shidoka-studio/
     ├── mcp.json.example
     └── shidoka-generation.mdc.example
 
-packages/shidoka-studio/       # Publishable package (built from above)
+packages/@kyndryl-design-system/shidoka-studio/   # Publishable package (built from above)
 ├── bin/
 │   └── server.js             # Copy of shidoka-studio/server/index.js
 ├── context/                  # Copy of context-src at build

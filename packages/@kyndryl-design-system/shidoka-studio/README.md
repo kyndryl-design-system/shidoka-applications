@@ -34,7 +34,7 @@ npm install -g @kyndryl-design-system/shidoka-studio
 
    ```bash
    npm run build:shidoka-studio
-   cd packages/shidoka-studio && npm pack
+   cd packages/@kyndryl-design-system/shidoka-studio && npm pack
    ```
 
    That creates **`kyndryl-design-system-shidoka-studio-1.0.0.tgz`** (version from package.json). Share that file (internal drive, CI artifact, or internal URL).

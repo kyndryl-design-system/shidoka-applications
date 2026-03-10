@@ -1,6 +1,6 @@
 # Shidoka Studio — packaging for consuming developers
 
-**Status:** In development. The package layout under `packages/shidoka-studio/` is ready for when you set up publishing; no npm publish is configured yet.
+**Status:** In development. The package layout under `packages/@kyndryl-design-system/shidoka-studio/` is ready for when you set up publishing; no npm publish is configured yet.
 
 This doc covers: (1) **consumer perspective** — how external devs would install and use Shidoka Studio in Cursor, and (2) **publisher perspective** — how the design system team would build and publish. For distribution options (npm vs Cursor extension vs internal URL), see **PACKAGING-OPTIONS.md**.
 
@@ -105,12 +105,12 @@ From repo root:
 npm run build:shidoka-studio
 ```
 
-This (1) runs `generate-component-registry` (writes into `shidoka-studio/context-src/`), (2) copies `context-src/` into `shidoka-studio/context/` and `packages/shidoka-studio/context/`, and (3) copies `shidoka-studio/server/index.js` into `packages/shidoka-studio/bin/server.js`, so the publishable package is up to date.
+This (1) runs `generate-component-registry` (writes into `shidoka-studio/context-src/`), (2) copies `context-src/` into `shidoka-studio/context/` and `packages/@kyndryl-design-system/shidoka-studio/context/`, and (3) copies `shidoka-studio/server/index.js` into `packages/@kyndryl-design-system/shidoka-studio/bin/server.js`, so the publishable package is up to date.
 
 ### Publish (when ready)
 
 ```bash
-cd packages/shidoka-studio
+cd packages/@kyndryl-design-system/shidoka-studio
 npm publish --access restricted
 ```
 

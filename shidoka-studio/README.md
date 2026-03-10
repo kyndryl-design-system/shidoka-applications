@@ -10,14 +10,14 @@ This folder owns the **Cursor MCP workflow**: server, docs, packaging options, a
 
 ## What’s here
 
-| Path                 | Purpose                                                                                                                                                   |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **server/**          | MCP server (stdio). Tool: `get_shidoka_design_context`. Source of truth for the server; `packages/shidoka-studio` is the built artifact for distribution. |
-| **content/**         | Human-maintained context: `considerations.md`, `page-template-builder.md`. Copied into `context-src/` by the generator.                                   |
-| **scripts/**         | `generate-component-registry.js` (CEM → context-src), `build.js` (context-src → context + packages).                                                      |
-| **context/**         | Filled at build time from `context-src/`. Server reads this when no env override is set.                                                                  |
-| **docs/**            | Workflow (how to use in Cursor) and **packaging options** (npm package, Cursor extension, etc.).                                                          |
-| **cursor-examples/** | Example `.cursor/mcp.json` and rule file you can copy into your project or `~/.cursor`.                                                                   |
+| Path                 | Purpose                                                                                                                                                                          |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **server/**          | MCP server (stdio). Tool: `get_shidoka_design_context`. Source of truth for the server; `packages/@kyndryl-design-system/shidoka-studio` is the built artifact for distribution. |
+| **content/**         | Human-maintained context: `considerations.md`, `page-template-builder.md`. Copied into `context-src/` by the generator.                                                          |
+| **scripts/**         | `generate-component-registry.js` (CEM → context-src), `build.js` (context-src → context + packages).                                                                             |
+| **context/**         | Filled at build time from `context-src/`. Server reads this when no env override is set.                                                                                         |
+| **docs/**            | Workflow (how to use in Cursor) and **packaging options** (npm package, Cursor extension, etc.).                                                                                 |
+| **cursor-examples/** | Example `.cursor/mcp.json` and rule file you can copy into your project or `~/.cursor`.                                                                                          |
 
 ---
 
@@ -28,7 +28,7 @@ This folder owns the **Cursor MCP workflow**: server, docs, packaging options, a
    npm run generate-component-registry
    ```
    Writes CEM-derived registry + design-system-context into `shidoka-studio/context-src/` and copies `content/` (considerations, page-template-builder) there.
-2. **Build Shidoka Studio** (copies `context-src/` → `shidoka-studio/context/` and prepares `packages/shidoka-studio`):
+2. **Build Shidoka Studio** (copies `context-src/` → `shidoka-studio/context/` and prepares `packages/@kyndryl-design-system/shidoka-studio`):
    ```bash
    npm run build:shidoka-studio
    ```
@@ -50,4 +50,4 @@ Copy from **cursor-examples/** or see **docs/CURSOR-MCP-WORKFLOW.md**. Project-l
 
 ## Packaging and distribution
 
-See **docs/PACKAGING-OPTIONS.md** for ways to package and distribute Shidoka Studio (npm package, Cursor extension, internal registry). No publishing is set up yet; the layout under `packages/shidoka-studio/` is for when you’re ready.
+See **docs/PACKAGING-OPTIONS.md** for ways to package and distribute Shidoka Studio (npm package, Cursor extension, internal registry). No publishing is set up yet; the layout under `packages/@kyndryl-design-system/shidoka-studio/` is for when you’re ready.

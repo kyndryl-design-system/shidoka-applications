@@ -49,7 +49,9 @@ Do **not** create or rely on hand-authored example stories for each pattern (e.g
 
 ### Import paths for story files (shidoka-applications) — CRITICAL
 
-**Wrong import depth breaks Vite.** Resolve paths from the story file’s location to `src/`; then append `components/...` or `components/.../some.json`.
+Generated page import paths are **relative only to the generated file location** (e.g. `src/stories/pages/generated/MyPage.stories.js`). They do **not** depend on where the Shidoka Studio package lives (e.g. `packages/@kyndryl-design-system/shidoka-studio`). Changing the package path does not change these rules.
+
+**Wrong import depth breaks Vite.** Resolve paths from the story file's location to `src/`; then append `components/...` or `components/.../some.json`.
 
 | Story file location                               | Levels up to `src/`                               | Use this prefix for components/data              |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------ |

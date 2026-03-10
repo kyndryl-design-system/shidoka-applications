@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Shidoka Studio — MCP server for Cursor.
- * Source of truth for the server; packages/shidoka-studio/bin/server.js is built from this.
+ * Source of truth for the server; packages/@kyndryl-design-system/shidoka-studio/bin/server.js is built from this.
  *
  * Context resolution order:
  * 1. SHIDOKA_STUDIO_CONTEXT_PATH — folder with considerations.md, component-registry.md, page-template-builder.md

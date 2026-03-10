@@ -13,7 +13,7 @@
 | **Architecture & flow** | ✅ Clear   | ARCHITECTURE.md and scripts match actual behavior.                                                               |
 | **Build & scripts**     | ✅ Working | `npm run build:shidoka-studio` runs successfully.                                                                |
 | **MCP server**          | ✅ Solid   | Single tool, stdio, context resolution order documented and implemented.                                         |
-| **Package layout**      | ✅ Ready   | `packages/shidoka-studio` has correct `files`, bin, context.                                                     |
+| **Package layout**      | ✅ Ready   | `packages/@kyndryl-design-system/shidoka-studio` has correct `files`, bin, context.                              |
 | **Documentation**       | ⚠️ Gaps    | One broken README reference; minor doc/script sync.                                                              |
 | **CI / release**        | ❌ Missing | Shidoka Studio build not in CI; package context can be stale.                                                    |
 | **Dependencies**        | ⚠️ Cleanup | Unused `zod` in package; MCP SDK version slight mismatch.                                                        |
@@ -35,7 +35,7 @@
 
 ### 3.1 Critical: README references non-existent CLI
 
-**File:** `packages/shidoka-studio/README.md`
+**File:** `packages/@kyndryl-design-system/shidoka-studio/README.md`
 
 **Issue:** The README says:
 
@@ -60,21 +60,21 @@ The package only exposes one bin: `shidoka-studio` (the MCP server). There is no
 
 **Issue:** The workflow runs `npm run build`, `npm run build-storybook`, and tests. It does **not** run `npm run build:shidoka-studio`. As a result:
 
-- `shidoka-studio/context/` and `packages/shidoka-studio/context/` (and `bin/server.js`) are not guaranteed to be up to date in CI or on release branches.
+- `shidoka-studio/context/` and `packages/@kyndryl-design-system/shidoka-studio/context/` (and `bin/server.js`) are not guaranteed to be up to date in CI or on release branches.
 - Anyone publishing from CI or a release script could ship stale context or an old server copy.
 
-**Recommendation:** Add a job (or step) that runs `npm run build:shidoka-studio` after `npm run build` (or in the same job). Optionally, add a check that `packages/shidoka-studio/context/` and `shidoka-studio/context-src/` are in sync (e.g. no uncommitted changes after build) if you want to enforce “context is always built before merge.”
+**Recommendation:** Add a job (or step) that runs `npm run build:shidoka-studio` after `npm run build` (or in the same job). Optionally, add a check that `packages/@kyndryl-design-system/shidoka-studio/context/` and `shidoka-studio/context-src/` are in sync (e.g. no uncommitted changes after build) if you want to enforce “context is always built before merge.”
 
 ---
 
 ### 3.3 Minor: Unused dependency and version alignment
 
-**File:** `packages/shidoka-studio/package.json`
+**File:** `packages/@kyndryl-design-system/shidoka-studio/package.json`
 
 **Issues:**
 
 - **`zod`** is listed as a dependency but is not imported or used in `bin/server.js` (or anywhere in the package). Remove it unless you plan to use it soon (e.g. for validating tool input).
-- **MCP SDK:** Root `package.json` has `@modelcontextprotocol/sdk: ^1.27.1`; `packages/shidoka-studio` has `^1.27.0`. Align to the same range (e.g. `^1.27.1`) to avoid subtle version drift.
+- **MCP SDK:** Root `package.json` has `@modelcontextprotocol/sdk: ^1.27.1`; `packages/@kyndryl-design-system/shidoka-studio` has `^1.27.0`. Align to the same range (e.g. `^1.27.1`) to avoid subtle version drift.
 
 ---
 
@@ -99,10 +99,10 @@ Before tagging or publishing Shidoka Studio as a release:
 
 1. [x] Fix README: remove or implement `shidoka-studio-setup` (Section 3.1). — **Done:** reference removed.
 2. [x] Add `npm run build:shidoka-studio` to CI (Section 3.2). — **Done:** `Build_Shidoka_Studio` job added.
-3. [x] Remove unused `zod` from `packages/shidoka-studio`; align MCP SDK version (Section 3.3). — **Done:** zod removed, SDK set to `^1.27.1`.
+3. [x] Remove unused `zod` from `packages/@kyndryl-design-system/shidoka-studio`; align MCP SDK version (Section 3.3). — **Done:** zod removed, SDK set to `^1.27.1`.
 4. [x] Align generated-story path and rule globs (Section 3.4). — **Done:** rule and example use `src/stories/pages/generated/`.
 5. [x] Add tests for context loading (Section 4). — **Done:** `server/context-loader.js` extracted, `shidoka-studio/__tests__/context-load.test.js` added; `test:shidoka-studio` and CI step added.
-6. [ ] Run `npm run build:shidoka-studio` locally and confirm `packages/shidoka-studio/context/` and `bin/server.js` are updated.
+6. [ ] Run `npm run build:shidoka-studio` locally and confirm `packages/@kyndryl-design-system/shidoka-studio/context/` and `bin/server.js` are updated.
 7. [ ] If publishing to a private registry: confirm `prepublishOnly` guard allows it (e.g. registry not npmjs.org) and document registry in README or PACKAGING-FOR-CONSUMERS.
 
 ---

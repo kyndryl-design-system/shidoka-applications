@@ -20,7 +20,7 @@ When you’re ready to distribute **Shidoka Studio** so consuming developers (in
 
 **How (when ready):**
 
-- Build artifact lives in **`packages/shidoka-studio/`**: server (from `shidoka-studio/server/`) + context (from `shidoka-studio/context-src/` at build time). Run `npm run build:shidoka-studio`, then from `packages/shidoka-studio` run `npm publish` (with your registry/auth).
+- Build artifact lives in **`packages/@kyndryl-design-system/shidoka-studio/`**: server (from `shidoka-studio/server/`) + context (from `shidoka-studio/context-src/` at build time). Run `npm run build:shidoka-studio`, then from `packages/@kyndryl-design-system/shidoka-studio` run `npm publish` (with your registry/auth).
 - Consumer: `npm install -D @kyndryl-design-system/shidoka-studio`, then in `.cursor/mcp.json`: `"command": "npx", "args": ["-y", "@kyndryl-design-system/shidoka-studio"]`.
 
 **Details:** See **PACKAGING-FOR-CONSUMERS.md** in this folder for consumer and publisher steps.
@@ -64,7 +64,7 @@ When you’re ready to distribute **Shidoka Studio** so consuming developers (in
 
 ## Option 4: Monorepo / git dependency (no registry)
 
-**What:** Consuming repos add the design system repo (or the `packages/shidoka-studio` folder) as a git dependency or submodule, and point `.cursor/mcp.json` at the local server script.
+**What:** Consuming repos add the design system repo (or the `packages/@kyndryl-design-system/shidoka-studio` folder) as a git dependency or submodule, and point `.cursor/mcp.json` at the local server script.
 
 **Pros:**
 
@@ -85,4 +85,4 @@ When you’re ready to distribute **Shidoka Studio** so consuming developers (in
 | **Internal URL**     | Enterprise, always-fresh context  | Combine with npm package; set `SHIDOKA_STUDIO_CONTEXT_URL`. |
 | **Git dependency**   | Early / internal-only             | When you’re not ready to publish to a registry.             |
 
-The repo is set up so **Option 1 (npm package)** is the primary path: **`shidoka-studio/`** is the source (server + docs); **`packages/shidoka-studio/`** is the built artifact for publish. Options 2–4 can be added on top when needed.
+The repo is set up so **Option 1 (npm package)** is the primary path: **`shidoka-studio/`** is the source (server + docs); **`packages/@kyndryl-design-system/shidoka-studio/`** is the built artifact for publish. Options 2–4 can be added on top when needed.
