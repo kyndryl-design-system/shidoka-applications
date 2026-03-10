@@ -70,6 +70,31 @@ The shipped rule is framework-agnostic (globs cover `src/views/**/*`, `src/pages
 
 Reload the Cursor window so it picks up the MCP server and the new rule. After that, when you ask to build a Shidoka page, the agent should have `get_shidoka_design_context` available and (with the rule) should call it and follow the context.
 
+### 2.4 Why the same prompt can produce different output in the Vue project
+
+The **same page prompt** (e.g. UI shell, global switcher, workspace switcher, 5-row table, side drawer, line graph) should produce the **same structure** in the shidoka-applications repo and in your Vue app—same `kyn-header` (global nav + flyouts), same main (title, toolbar, drawer with **titleText**, table with **kyn-thead** and **kyn-th** headers, chart, footer). If the Vue-generated page looks different (e.g. workspace switcher inside the global nav, no table headers, no drawer title), the model is not fully applying the MCP context.
+
+**Common causes:**
+
+1. **Rule not firing or tool not called** — The Cursor rule must tell the agent to **call get_shidoka_design_context first**; without that, the model infers only from package types and skips layout/table/drawer rules.
+2. **Stale sideload** — If you copied an old build of Shidoka Studio into the Vue project’s `node_modules`, the context (e.g. canonical-full-page, CRITICAL table/drawer/header rules) may be missing or outdated. Rebuild in shidoka-applications (`npm run build:shidoka-studio`) and replace the Vue project’s `node_modules/@kyndryl-design-system/shidoka-studio` with the new build, then reload Cursor.
+3. **Context not prioritized** — The canonical full-page doc now includes **CRITICAL** blocks for: (a) do not put workspace switcher inside global nav, (b) table must have kyn-thead + kyn-th with text, (c) kyn-side-drawer must have titleText. After updating the build, start a **new chat** and run the same prompt so the model gets the full context.
+
+After fixing the rule, sideload, and reload, regenerate the page; the output should align with the repo.
+
+### 2.5 Why is the context different here than in the Vue project?
+
+The MCP server **always** loads context from the **same place**: the `context/` folder **inside the Shidoka Studio package** that is running the server. The difference is **which copy** of that package is used.
+
+- **In the shidoka-applications repo (“here”):** When Cursor runs the MCP, it starts the server from the package that the repo depends on. That package usually resolves to **`packages/@kyndryl-design-system/shidoka-studio`** (the built package in the monorepo). Its `context/` folder is updated **every time you run `npm run build:shidoka-studio`**. So “here” you’re almost always seeing the **latest** context (considerations, canonical-full-page, table/drawer/flyout rules, etc.).
+- **In the Vue project:** The server runs from **the package inside the Vue project**, i.e. `VueProject/node_modules/@kyndryl-design-system/shidoka-studio`. That folder is **not** updated when you change the repo. It only changes when you:
+  - **Sideload:** copy the newly built package from `packages/@kyndryl-design-system/shidoka-studio` (or run `bundle:sideload` and copy) into the Vue project’s `node_modules`, or
+  - Reinstall from npm (which gives you whatever is **published**, often older).
+
+So the context is “different” because the Vue project is using a **different, and usually older, snapshot** of the same `context/` files. The **code path** is the same (server → load from package `context/`), but the **physical files** in the Vue project’s copy of the package are stale until you rebuild in the repo and replace that copy.
+
+To make the Vue project’s context match “here”: run `npm run build:shidoka-studio` in shidoka-applications, then replace the Vue project’s `node_modules/@kyndryl-design-system/shidoka-studio` with the built package (e.g. copy from `packages/@kyndryl-design-system/shidoka-studio`), then reload Cursor.
+
 ---
 
 ## 3. Align an existing page with the context

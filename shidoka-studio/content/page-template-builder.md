@@ -9,7 +9,7 @@ Use this for **any prompt that asks for a full page, UI shell, or template** (e.
 Inside **kyn-ui-shell**, children must appear in this order:
 
 1. **kyn-header** (required)
-2. **kyn-local-nav** (optional; include only if the user asks for local nav)
+2. **kyn-local-nav** (optional; include only if the user asks for local nav). Each **kyn-local-nav-link** (level 1) must have **slot="icon"** with a 16px icon (use a placeholder SVG — e.g. grid, document, chart — so the left rail shows icons).
 3. **main** (required)
 4. **kyn-footer** (required)
 
@@ -122,7 +122,7 @@ When the user asks for a **UI shell**, **nav rail**, or **header** and you want 
 
 1. **kyn-header** with `appTitle="Bridge"` and **logo** in `slot="logo"`: `<span slot="logo" style="--kyn-header-logo-width: 120px;">` + Bridge logo SVG.
 2. **kyn-header-nav:** Include the **global switcher** link(s) as in 5d (search + CATEGORY flyout).
-3. **kyn-header-flyouts** in this order: (a) Workspace flyout (trigger with label + chevron, switcher as in 5b). (b) Notifications flyout: `hideMenuLabel`, icon in `slot="button"`, then **kyn-header-link** items. (c) Help flyout: icon in `slot="button"`, then **kyn-header-link** items. (d) User Profile flyout: `hideMenuLabel`, user icon in `slot="button"`, **kyn-header-user-profile**, then **kyn-header-link** (e.g. Profile Settings, Sign Out).
+3. **kyn-header-flyouts** in this order. **Every flyout must have slot="button" filled** (empty = no visible anchor). (a) Workspace flyout: trigger with label + chevron, switcher as in 5b. (b) Notifications flyout: `hideMenuLabel`, **put an icon SVG (e.g. bell) in slot="button"**, then **kyn-header-link** items. (c) Help flyout: **icon SVG (e.g. question circle) in slot="button"**, then **kyn-header-link** items. (d) User Profile flyout: `hideMenuLabel`, **user avatar icon SVG in slot="button"**, **kyn-header-user-profile**, then **kyn-header-link** (e.g. Profile Settings, Sign Out).
 4. Include the CSS from 5b in the story decorator.
 
 **Reference:** Global Components/Workspace Switcher → **UIImplementation** story; considerations.md "Nav rail reference".
@@ -165,7 +165,21 @@ html`
   <kyn-ui-shell>
     <kyn-header rootUrl="/" appTitle="App Title"></kyn-header>
     <kyn-local-nav>
-      <kyn-local-nav-link href="#">Nav 1</kyn-local-nav-link>
+      <kyn-local-nav-link href="#">
+        <span slot="icon"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"
+            /></svg
+        ></span>
+        Nav 1
+      </kyn-local-nav-link>
     </kyn-local-nav>
     <main style="padding: var(--kd-page-gutter, 1rem);">
       <kyn-page-title
