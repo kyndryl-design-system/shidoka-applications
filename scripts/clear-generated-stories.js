@@ -61,8 +61,6 @@ console.log(
   'clear-generated-stories: Clearing all generated Storybook pages...'
 );
 
-let cleared = false;
-
 function clearGeneratedDir(dir, label) {
   if (!existsSync(dir)) return false;
   const entries = readdirSync(dir, { withFileTypes: true });
@@ -81,20 +79,15 @@ function removeStoryFilesInDir(dir, label) {
     const filePath = join(dir, e.name);
     rmSync(filePath);
     console.log('clear-generated-stories: Removed ' + label + e.name);
-    cleared = true;
   }
 }
 
 try {
   // 1. Clear src/stories/pages/generated/ (all contents)
-  if (clearGeneratedDir(PAGES_GENERATED_DIR, 'src/stories/pages/generated/')) {
-    cleared = true;
-  }
+  clearGeneratedDir(PAGES_GENERATED_DIR, 'src/stories/pages/generated/');
 
   // 2. Clear src/stories/generated/ (alternate location)
-  if (clearGeneratedDir(STORIES_GENERATED_DIR, 'src/stories/generated/')) {
-    cleared = true;
-  }
+  clearGeneratedDir(STORIES_GENERATED_DIR, 'src/stories/generated/');
 
   // 3. Remove story files in src/stories/ (top level) with title 'Generated/...'
   const STORIES_DIR = join(ROOT, 'src', 'stories');
@@ -106,7 +99,6 @@ try {
       if (isGeneratedStoryFile(filePath)) {
         rmSync(filePath);
         console.log('clear-generated-stories: Removed src/stories/' + e.name);
-        cleared = true;
       }
     }
   }
