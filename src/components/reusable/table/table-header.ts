@@ -283,7 +283,6 @@ export class TableHeader extends LitElement {
 
     // Check if group label is truncated after render
     if (this._isGroupFirst && this._groupLabel) {
-      console.log('Checking truncation for', this._groupLabel);
       requestAnimationFrame(() => this._checkGroupLabelTruncation());
     }
   }
@@ -533,6 +532,8 @@ export class TableHeader extends LitElement {
       const labelHeight = labelBar.getBoundingClientRect().height;
       // Set on parent group so all children inherit it
       group.style.setProperty('--kyn-group-label-height', `${labelHeight}px`);
+      // Check if label is truncated after measurement
+      requestAnimationFrame(() => this._checkGroupLabelTruncation());
     }
   }
 
@@ -566,6 +567,12 @@ export class TableHeader extends LitElement {
         });
         if (totalWidth > 0) {
           grp.style.setProperty('--kyn-group-label-width', `${totalWidth}px`);
+          // Check truncation for first child after width is set
+          siblings.forEach((sibling) => {
+            if (sibling.hasAttribute('stacked-child-first')) {
+              (sibling as any)._checkGroupLabelTruncation?.();
+            }
+          });
         }
       });
     };
