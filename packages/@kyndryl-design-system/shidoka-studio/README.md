@@ -98,19 +98,16 @@ Cursor will use the **get_shidoka_design_context** tool and generate code that f
 
 ---
 
-## Optional: Cursor rule
+## Optional: Cursor rule (recommended — so the agent calls the tool first)
 
-To encourage the agent to always use Shidoka context when generating pages, add a rule. Create **`.cursor/rules/shidoka-studio.mdc`**:
+Without a rule, the model may not call `get_shidoka_design_context` when you ask for a page; it might infer from package types only and miss layout rules. **Copy the shipped rule** into your project so the agent is instructed to call the tool first (any framework):
 
-```markdown
----
-description: Use Shidoka Studio when generating pages or templates
-globs: src/**/*.ts,src/**/*.tsx
-alwaysApply: false
----
-
-When the user asks to build a page, template, or layout that uses Shidoka (kyn-_ components), call the MCP tool **get_shidoka_design_context** first, then generate code that strictly follows that context (only kyn-_ tags, registry import paths, and page-template-builder layout rules).
+```bash
+mkdir -p .cursor/rules
+cp node_modules/@kyndryl-design-system/shidoka-studio/cursor-examples/shidoka-generation.mdc.example .cursor/rules/shidoka-generation.mdc
 ```
+
+Then reload Cursor. The rule is framework-agnostic (Vue, React, Next, Svelte, etc.); you can edit the rule’s `globs` to match your app’s page/view paths. See **context/consuming-app-setup-and-alignment.md** in the package (or the docs in the design-system repo) for the full setup and alignment checklist.
 
 ---
 

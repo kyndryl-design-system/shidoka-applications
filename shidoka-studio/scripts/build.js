@@ -54,6 +54,10 @@ const DOCS_FILES = [
   { from: 'SIDELOAD-SHIDOKA-STUDIO.md', to: 'sideload-shidoka-studio.md' },
   { from: 'PACKAGING-FOR-CONSUMERS.md', to: 'packaging-for-consumers.md' },
   { from: 'STYLING-FOR-CONSUMERS.md', to: 'styling-for-consumers.md' },
+  {
+    from: 'CONSUMING-APP-SETUP-AND-ALIGNMENT.md',
+    to: 'consuming-app-setup-and-alignment.md',
+  },
 ];
 
 if (!existsSync(CONTEXT_SRC)) {
@@ -107,6 +111,25 @@ if (existsSync(CONTEXT_LOADER_SOURCE)) {
   console.log(
     '  ✓ shidoka-studio/server/context-loader.js → packages/@kyndryl-design-system/shidoka-studio/bin/context-loader.js'
   );
+}
+
+const CURSOR_EXAMPLES_SOURCE = join(ROOT, 'shidoka-studio', 'cursor-examples');
+const PKG_CURSOR_EXAMPLES = join(
+  ROOT,
+  'packages',
+  '@kyndryl-design-system',
+  'shidoka-studio',
+  'cursor-examples'
+);
+if (existsSync(CURSOR_EXAMPLES_SOURCE)) {
+  mkdirSync(PKG_CURSOR_EXAMPLES, { recursive: true });
+  for (const name of ['shidoka-generation.mdc.example', 'mcp.json.example']) {
+    const src = join(CURSOR_EXAMPLES_SOURCE, name);
+    if (existsSync(src)) {
+      copyFileSync(src, join(PKG_CURSOR_EXAMPLES, name));
+      console.log(`  ✓ cursor-examples/${name} → package`);
+    }
+  }
 }
 
 console.log('Shidoka Studio build done.');

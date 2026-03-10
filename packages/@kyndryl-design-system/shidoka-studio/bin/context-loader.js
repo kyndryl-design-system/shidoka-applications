@@ -19,6 +19,7 @@ const BUNDLED_DOCS = [
   'sideload-shidoka-studio.md',
   'packaging-for-consumers.md',
   'styling-for-consumers.md',
+  'consuming-app-setup-and-alignment.md',
 ];
 
 export function loadFromFolder(folder) {
