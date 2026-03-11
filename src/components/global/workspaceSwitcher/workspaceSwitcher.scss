@@ -3,6 +3,7 @@
 
 :host {
   display: block;
+  --kyn-workspace-switcher-left-panel-width: 275px;
 }
 
 .workspace-switcher {
@@ -21,7 +22,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  width: 275px;
+  width: var(--kyn-workspace-switcher-left-panel-width, 275px);
   flex-shrink: 0;
   padding: 12px;
   background: var(--kd-color-background-opacity-1);
@@ -39,8 +40,8 @@
   top: 0;
   bottom: 0;
   right: 0;
-  left: 275px;
-  padding: 12px 8px 12px 12px;
+  left: var(--kyn-workspace-switcher-left-panel-width, 275px);
+  padding: 12px;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -59,7 +60,7 @@
   font-weight: 500;
   text-transform: uppercase;
   color: var(--kd-color-text-level-primary);
-  padding: 4px 8px;
+  padding: 0 8px 4px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -79,6 +80,14 @@
   margin-bottom: 12px;
   border-bottom: 1px solid var(--kd-color-border-variants-light);
   box-sizing: border-box;
+}
+
+:host([hide-left-divider]) {
+  ::slotted([slot='left']) {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
 }
 
 /* Ensure slotted content fills available space */
