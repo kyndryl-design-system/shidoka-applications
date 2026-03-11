@@ -128,43 +128,6 @@ export const Widget = {
   },
 };
 
-export const SelectableWidget = {
-  args: {
-    ...args,
-    selectable: true,
-    selected: true,
-  },
-  parameters: {
-    a11y: {
-      disable: true,
-    },
-  },
-  render: (args) => {
-    return html`
-      <div style="display: flex; max-width: 500px; min-height: 200px;">
-        <div style="flex-grow: 1;">
-          <kyn-widget
-            widgetTitle=${args.widgetTitle}
-            subTitle=${args.subTitle}
-            ?disabled=${args.disabled}
-            ?dragActive=${args.dragActive}
-            ?selectable=${args.selectable}
-            ?selected=${args.selected}
-            ?compact=${args.compact}
-            ?removeHeader=${args.removeHeader}
-            ?showStatusBadge=${args.showStatusBadge}
-            statusBadgeLabel=${args.statusBadgeLabel}
-            widgetStatus=${args.widgetStatus}
-            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
-          >
-            ${getExampleContent()}
-          </kyn-widget>
-        </div>
-      </div>
-    `;
-  },
-};
-
 export const WithActions = {
   args,
   render: (args) => {
@@ -252,6 +215,57 @@ export const WithBadge = {
             ${getExampleContent()}
           </kyn-widget>
         </div>
+      </div>
+    `;
+  },
+};
+
+export const WithChart = {
+  args,
+  render: (args) => {
+    return html`
+      <div style="max-width: 500px;">
+        <kyn-widget
+          ?disabled=${args.disabled}
+          ?dragActive=${args.dragActive}
+          ?selectable=${args.selectable}
+          ?selected=${args.selected}
+          ?compact=${args.compact}
+          ?removeHeader=${args.removeHeader}
+          widgetStatus=${args.widgetStatus}
+          @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
+        >
+          <kd-chart
+            type="bar"
+            chartTitle=${args.widgetTitle}
+            description=${args.subTitle}
+            .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
+            .datasets=${[
+              {
+                label: 'Dataset 1',
+                data: [12, 19, 3, 5, 2, 3],
+              },
+              {
+                label: 'Dataset 2',
+                data: [8, 15, 7, 9, 6, 13],
+              },
+            ]}
+            .options=${{
+              scales: {
+                x: {
+                  title: {
+                    text: 'Color',
+                  },
+                },
+                y: {
+                  title: {
+                    text: 'Votes',
+                  },
+                },
+              },
+            }}
+          ></kd-chart>
+        </kyn-widget>
       </div>
     `;
   },
@@ -349,52 +363,69 @@ export const WithFooter = {
   },
 };
 
-export const WithChart = {
-  args,
+export const WithStatus = {
+  args: {
+    ...args,
+    widgetStatus: 'warning',
+  },
   render: (args) => {
     return html`
-      <div style="max-width: 500px;">
-        <kyn-widget
-          ?disabled=${args.disabled}
-          ?dragActive=${args.dragActive}
-          ?selectable=${args.selectable}
-          ?selected=${args.selected}
-          ?compact=${args.compact}
-          ?removeHeader=${args.removeHeader}
-          widgetStatus=${args.widgetStatus}
-          @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
-        >
-          <kd-chart
-            type="bar"
-            chartTitle=${args.widgetTitle}
-            description=${args.subTitle}
-            .labels=${['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
-            .datasets=${[
-              {
-                label: 'Dataset 1',
-                data: [12, 19, 3, 5, 2, 3],
-              },
-              {
-                label: 'Dataset 2',
-                data: [8, 15, 7, 9, 6, 13],
-              },
-            ]}
-            .options=${{
-              scales: {
-                x: {
-                  title: {
-                    text: 'Color',
-                  },
-                },
-                y: {
-                  title: {
-                    text: 'Votes',
-                  },
-                },
-              },
-            }}
-          ></kd-chart>
-        </kyn-widget>
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            ${getExampleContent()}
+          </kyn-widget>
+        </div>
+      </div>
+    `;
+  },
+};
+
+export const SelectableWidget = {
+  args: {
+    ...args,
+    selectable: true,
+    selected: true,
+  },
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: (args) => {
+    return html`
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
+            ?showStatusBadge=${args.showStatusBadge}
+            statusBadgeLabel=${args.statusBadgeLabel}
+            widgetStatus=${args.widgetStatus}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            ${getExampleContent()}
+          </kyn-widget>
+        </div>
       </div>
     `;
   },
