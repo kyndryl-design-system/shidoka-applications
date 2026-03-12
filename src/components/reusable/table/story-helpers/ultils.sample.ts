@@ -83,6 +83,7 @@ export const characters = [
     gender: 'Female',
     expanded: true,
     deposits: 5500,
+    selected: true,
   },
   {
     id: 3,
