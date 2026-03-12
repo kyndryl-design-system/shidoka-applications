@@ -22,6 +22,7 @@ const _defaultTextStrings = {
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
  * @cssprop [--kyn-workspace-switcher-max-height=none] - Maximum height of the switcher panel.
+ * @cssprop [--kyn-workspace-switcher-left-panel-width=275px] - Width of the left panel in desktop two-panel layout.
  */
 @customElement('kyn-workspace-switcher')
 export class WorkspaceSwitcher extends LitElement {
@@ -45,10 +46,20 @@ export class WorkspaceSwitcher extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor hideWorkspacesTitle = false;
 
+  /** Hides the divider beneath the `left` slot content. */
+  @property({ type: Boolean, reflect: true, attribute: 'hide-left-divider' })
+  accessor hideLeftDivider = false;
+
   /** Merged text strings.
    * @internal
    */
   private _textStrings = _defaultTextStrings;
+
+  /**
+   * The nearest flyout host, if any.
+   * @internal
+   */
+  private _flyoutHost: HTMLElement | null = null;
 
   /**
    * @internal
@@ -62,7 +73,8 @@ export class WorkspaceSwitcher extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    document.addEventListener(
+    this._flyoutHost = this.closest('kyn-header-flyout');
+    this._flyoutHost?.addEventListener(
       'on-flyout-toggle',
       this._handleFlyoutToggle as EventListener
     );
@@ -70,10 +82,11 @@ export class WorkspaceSwitcher extends LitElement {
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    document.removeEventListener(
+    this._flyoutHost?.removeEventListener(
       'on-flyout-toggle',
       this._handleFlyoutToggle as EventListener
     );
+    this._flyoutHost = null;
   }
 
   override willUpdate(changedProperties: Map<string, unknown>) {

@@ -4,429 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AI Assistant Launch Button.",
-          "name": "AILaunchButton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "method",
-              "name": "_initAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_startHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_stopHoverAnimation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitClick",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits when the button is clicked.",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the button is disabled.",
-              "fieldName": "disabled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-launch-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-launch-btn",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/aiLaunchButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AILaunchButton",
-          "declaration": {
-            "name": "AILaunchButton",
-            "module": "./aiLaunchButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "AISourcesFeedback Component.",
-          "name": "AISourcesFeedback",
-          "slots": [
-            {
-              "description": "copy button",
-              "name": "copy"
-            },
-            {
-              "description": "source cards in source panel.",
-              "name": "sources"
-            },
-            {
-              "description": "Positive feedback form.",
-              "name": "feedback-form"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "attribute": "sourcesOpened"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "attribute": "feedbackOpened"
-            },
-            {
-              "kind": "field",
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "attribute": "sourcesDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "attribute": "feedbackDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "attribute": "revealAllSources"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "attribute": "closeText"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                },
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateFeedbackCounts",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_shouldEmitFeedbackEvent",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitToggleEvent",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "panel",
-                  "type": {
-                    "text": "'sources' | 'feedback'"
-                  }
-                },
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_toggleFeedbackPanel",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "feedbackType",
-                  "optional": true,
-                  "type": {
-                    "text": "'positive' | 'negative'"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "protected"
-            },
-            {
-              "kind": "method",
-              "name": "_toggleLimitRevealed",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "revealed",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-feedback-deselected",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`"
-            },
-            {
-              "name": "on-toggle",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits the `opened` state when the panel item opens/closes. <pre><code> detail: { sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string } </code></pre>"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "sourcesOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Sources used.",
-              "fieldName": "sourcesOpened"
-            },
-            {
-              "name": "feedbackOpened",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor opened state for Feedback buttons.",
-              "fieldName": "feedbackOpened"
-            },
-            {
-              "name": "sourcesDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Sources used..",
-              "fieldName": "sourcesDisabled"
-            },
-            {
-              "name": "feedbackDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "expandable anchor disabled state for Feedback buttons.",
-              "fieldName": "feedbackDisabled"
-            },
-            {
-              "name": "revealAllSources",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Limits visible sources behind a \"Show more\" button.",
-              "fieldName": "revealAllSources"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "closeText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Close'",
-              "description": "Close button text.",
-              "fieldName": "closeText"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ai-sources-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AISourcesFeedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ai-sources-feedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/ai/sourcesFeedback/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "AISourcesFeedback",
-          "declaration": {
-            "name": "AISourcesFeedback",
-            "module": "./aiSourcesFeedback"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/footer/footer.ts",
       "declarations": [
         {
@@ -3414,6 +2991,11 @@
               "description": "Maximum height of the switcher panel.",
               "name": "--kyn-workspace-switcher-max-height",
               "default": "none"
+            },
+            {
+              "description": "Width of the left panel in desktop two-panel layout.",
+              "name": "--kyn-workspace-switcher-left-panel-width",
+              "default": "275px"
             }
           ],
           "slots": [
@@ -3468,6 +3050,17 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "hideLeftDivider",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the divider beneath the `left` slot content.",
+              "attribute": "hide-left-divider",
+              "reflects": true
+            },
+            {
               "kind": "method",
               "name": "_handleBackClick",
               "privacy": "private"
@@ -3497,6 +3090,15 @@
               "default": "false",
               "description": "Hides the heading above the lower left-hand side list. Example: suppress for accounts-only customers.",
               "fieldName": "hideWorkspacesTitle"
+            },
+            {
+              "name": "hide-left-divider",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the divider beneath the `left` slot content.",
+              "fieldName": "hideLeftDivider"
             }
           ],
           "superclass": {
@@ -3738,6 +3340,429 @@
           "declaration": {
             "name": "WorkspaceSwitcherMenuItem",
             "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/aiLaunchButton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AI Assistant Launch Button.",
+          "name": "AILaunchButton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "_initAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_startHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_stopHoverAnimation",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_emitClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits when the button is clicked.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the button is disabled.",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-launch-btn",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-launch-btn",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "src/components/ai/aiLaunchButton/aiLaunchButton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/aiLaunchButton/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AILaunchButton",
+          "declaration": {
+            "name": "AILaunchButton",
+            "module": "./aiLaunchButton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "AISourcesFeedback Component.",
+          "name": "AISourcesFeedback",
+          "slots": [
+            {
+              "description": "copy button",
+              "name": "copy"
+            },
+            {
+              "description": "source cards in source panel.",
+              "name": "sources"
+            },
+            {
+              "description": "Positive feedback form.",
+              "name": "feedback-form"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "attribute": "sourcesOpened"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "attribute": "feedbackOpened"
+            },
+            {
+              "kind": "field",
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "attribute": "sourcesDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "attribute": "feedbackDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "attribute": "revealAllSources"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  sourcesText: 'Sources',\n  foundSources: 'Found sources',\n  showMore: 'Show more',\n  showLess: 'Show less',\n  positiveFeedback: 'Share what you liked',\n  negativeFeedback: 'Help us improve',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "attribute": "closeText"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                },
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateFeedbackCounts",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_shouldEmitFeedbackEvent",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitToggleEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "panel",
+                  "type": {
+                    "text": "'sources' | 'feedback'"
+                  }
+                },
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_toggleFeedbackPanel",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "feedbackType",
+                  "optional": true,
+                  "type": {
+                    "text": "'positive' | 'negative'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
+              "name": "_toggleLimitRevealed",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "revealed",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-feedback-deselected",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when thumbs-up or thumbs-down button is deselected. `detail:{ feedbackType: string }`"
+            },
+            {
+              "name": "on-toggle",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits the `opened` state when the panel item opens/closes. <pre><code> detail: { sourcesOpened: boolean, feedbackOpened: boolean, selectedFeedbackType: string } </code></pre>"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "sourcesOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Sources used.",
+              "fieldName": "sourcesOpened"
+            },
+            {
+              "name": "feedbackOpened",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor opened state for Feedback buttons.",
+              "fieldName": "feedbackOpened"
+            },
+            {
+              "name": "sourcesDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Sources used..",
+              "fieldName": "sourcesDisabled"
+            },
+            {
+              "name": "feedbackDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "expandable anchor disabled state for Feedback buttons.",
+              "fieldName": "feedbackDisabled"
+            },
+            {
+              "name": "revealAllSources",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Limits visible sources behind a \"Show more\" button.",
+              "fieldName": "revealAllSources"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "closeText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Close'",
+              "description": "Close button text.",
+              "fieldName": "closeText"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ai-sources-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AISourcesFeedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ai-sources-feedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "src/components/ai/sourcesFeedback/aiSourcesFeedback.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai/sourcesFeedback/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "AISourcesFeedback",
+          "declaration": {
+            "name": "AISourcesFeedback",
+            "module": "./aiSourcesFeedback"
           }
         }
       ]
@@ -7200,901 +7225,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
-          "name": "DateRangePicker",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale | string"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "attribute": "locale"
-            },
-            {
-              "kind": "field",
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "attribute": "dateFormat"
-            },
-            {
-              "kind": "field",
-              "name": "defaultDate",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s) for the range.",
-              "deprecated": "Soft-deprecated. Prefer setting `value`.\n\nBackward compatibility notes:\n- still supports property assignment (`defaultDate = '2025-01-01'` or string[]).\n- empty attribute values are treated as `null`.",
-              "attribute": "default-date"
-            },
-            {
-              "kind": "field",
-              "name": "rangeEditMode",
-              "type": {
-                "text": "DateRangeEditableMode"
-              },
-              "description": "Controls which parts of the date range are editable.",
-              "attribute": "rangeEditMode"
-            },
-            {
-              "kind": "field",
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "attribute": "defaultErrorMessage"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "default": "[null, null]",
-              "description": "Current date range value for the component.\n\n- Uncontrolled: populated from `defaultDate` and user selections.\n- Controlled: can be set from the host (e.g. Vue `:value`)."
-            },
-            {
-              "kind": "field",
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "attribute": "warnText"
-            },
-            {
-              "kind": "field",
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
-              "attribute": "disable"
-            },
-            {
-              "kind": "field",
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "attribute": "enable"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "attribute": "dateRangePickerDisabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to readonly.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "attribute": "twentyFourHourFormat"
-            },
-            {
-              "kind": "field",
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "attribute": "minDate"
-            },
-            {
-              "kind": "field",
-              "name": "allowManualInput",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Allows manual input of date/time string that matches dateFormat when true.",
-              "attribute": "allowManualInput"
-            },
-            {
-              "kind": "field",
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "attribute": "maxDate"
-            },
-            {
-              "kind": "field",
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "attribute": "errorAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "attribute": "errorTitle"
-            },
-            {
-              "kind": "field",
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "attribute": "warningAriaLabel"
-            },
-            {
-              "kind": "field",
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "attribute": "warningTitle"
-            },
-            {
-              "kind": "field",
-              "name": "staticPosition",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
-              "attribute": "staticPosition"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n  pleaseSelectBothDates: 'Please select a start and end date.',\n  dateRange: 'Date range',\n  noDateSelected: 'No dates selected',\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\n  invalidDateRange:\n    'Invalid date range: End date cannot be earlier than start date',\n  dateRangeSelected: 'Selected date range: {0} to {1}',\n\n  lockedStartDate: 'Start date is locked',\n  lockedEndDate: 'End date is locked',\n  dateLocked: 'Date is locked',\n  dateNotAvailable: 'Date is not available',\n  dateInSelectedRange: 'Date is in selected range',\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "hasValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "updateFormValue",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "renderValidationMessage",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "errorId",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "warningId",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getDateRangePickerClasses",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "parseDateString",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "Date | null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "dateStr",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "syncAllowInput",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setupAnchor",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "normalizeToDate",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "Date | null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string | number | Date | ''"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "processDefaultDates",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "Date[]"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "defaultDate",
-                  "type": {
-                    "text": "string | string[] | Date | Date[] | null"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_clearInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "options",
-                  "default": "{ reinitFlatpickr: true }",
-                  "type": {
-                    "text": "{ reinitFlatpickr?: boolean }"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleClear",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleClose",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "initializeFlatpickr",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "updateFlatpickrOptions",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "getComponentFlatpickrOptions",
-              "privacy": "public",
-              "return": {
-                "type": {
-                  "text": "Promise<Partial<BaseOptions>>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setInitialDates",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "handleOpen",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "syncFlatpickrFromValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "dates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleDateChange",
-              "privacy": "public",
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                },
-                {
-                  "name": "dateStr",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "updateSelectedDateRangeAria",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "selectedDates",
-                  "type": {
-                    "text": "Date[]"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "setShouldFlatpickrOpen",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "closeFlatpickr",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onSuppressLabelInteraction",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleInputClickEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleInputFocusEvent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_onChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFormReset",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getValue",
-              "privacy": "public",
-              "return": {
-                "type": {
-                  "text": "[Date | null, Date | null]"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "setValue",
-              "privacy": "public",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "[Date | null, Date | null]"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Emitted when the selected date range changes. Event.detail has the shape: { dates: string[] | (Date | null)[] | null, dateString?: string, source?: string } - dates: array of ISO strings for selected dates (length 1 or 2), or an array containing Date/null values, or null/empty when cleared. - dateString: the display string from the input (may be empty when cleared) - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.",
-              "name": "on-change"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "[Date | null, Date | null]"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "locale",
-              "type": {
-                "text": "SupportedLocale | string"
-              },
-              "default": "'en'",
-              "description": "Sets and dynamically imports specific l10n calendar localization.",
-              "fieldName": "locale"
-            },
-            {
-              "name": "dateFormat",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Y-m-d'",
-              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
-              "fieldName": "dateFormat"
-            },
-            {
-              "name": "default-date",
-              "type": {
-                "text": "string | string[] | null"
-              },
-              "default": "null",
-              "description": "Sets the initial selected date(s) for the range.",
-              "deprecated": "Soft-deprecated. Prefer setting `value`.\n\nBackward compatibility notes:\n- still supports property assignment (`defaultDate = '2025-01-01'` or string[]).\n- empty attribute values are treated as `null`.",
-              "fieldName": "defaultDate"
-            },
-            {
-              "name": "rangeEditMode",
-              "type": {
-                "text": "DateRangeEditableMode"
-              },
-              "description": "Controls which parts of the date range are editable.",
-              "fieldName": "rangeEditMode"
-            },
-            {
-              "name": "defaultErrorMessage",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets default error message.",
-              "fieldName": "defaultErrorMessage"
-            },
-            {
-              "name": "warnText",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets validation warning messaging.",
-              "fieldName": "warnText"
-            },
-            {
-              "name": "disable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
-              "fieldName": "disable"
-            },
-            {
-              "name": "enable",
-              "type": {
-                "text": "(string | number | Date)[]"
-              },
-              "default": "[]",
-              "description": "Sets flatpickr options setting to enable specific dates.",
-              "fieldName": "enable"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets caption to be displayed under primary date picker elements.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets date range picker form input value to required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "dateRangePickerDisabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to enabled/disabled.",
-              "fieldName": "dateRangePickerDisabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets entire date range picker form element to readonly.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "twentyFourHourFormat",
-              "type": {
-                "text": "boolean | null"
-              },
-              "default": "null",
-              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
-              "fieldName": "twentyFourHourFormat"
-            },
-            {
-              "name": "minDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets lower boundary of date range picker date selection.",
-              "fieldName": "minDate"
-            },
-            {
-              "name": "allowManualInput",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Allows manual input of date/time string that matches dateFormat when true.",
-              "fieldName": "allowManualInput"
-            },
-            {
-              "name": "maxDate",
-              "type": {
-                "text": "string | number | Date"
-              },
-              "default": "''",
-              "description": "Sets upper boundary of date range picker date selection.",
-              "fieldName": "maxDate"
-            },
-            {
-              "name": "errorAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for error message.",
-              "fieldName": "errorAriaLabel"
-            },
-            {
-              "name": "errorTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for error message.",
-              "fieldName": "errorTitle"
-            },
-            {
-              "name": "warningAriaLabel",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets aria label attribute for warning message.",
-              "fieldName": "warningAriaLabel"
-            },
-            {
-              "name": "warningTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Sets title attribute for warning message.",
-              "fieldName": "warningTitle"
-            },
-            {
-              "name": "staticPosition",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
-              "fieldName": "staticPosition"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-date-range-picker",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-date-range-picker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/daterangepicker/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DateRangePicker",
-          "declaration": {
-            "name": "DateRangePicker",
-            "module": "./daterangepicker"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/datePicker/datepicker.ts",
       "declarations": [
         {
@@ -9019,6 +8149,901 @@
           "declaration": {
             "name": "DatePicker",
             "module": "./datepicker"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/daterangepicker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Date Range Picker: uses Flatpickr library, range picker implementation -- `https://flatpickr.js.org/examples/#range-calendar`",
+          "name": "DateRangePicker",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale | string"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "attribute": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "attribute": "dateFormat"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDate",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s) for the range.",
+              "deprecated": "Soft-deprecated. Prefer setting `value`.\n\nBackward compatibility notes:\n- still supports property assignment (`defaultDate = '2025-01-01'` or string[]).\n- empty attribute values are treated as `null`.",
+              "attribute": "default-date"
+            },
+            {
+              "kind": "field",
+              "name": "rangeEditMode",
+              "type": {
+                "text": "DateRangeEditableMode"
+              },
+              "description": "Controls which parts of the date range are editable.",
+              "attribute": "rangeEditMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "attribute": "defaultErrorMessage"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "default": "[null, null]",
+              "description": "Current date range value for the component.\n\n- Uncontrolled: populated from `defaultDate` and user selections.\n- Controlled: can be set from the host (e.g. Vue `:value`)."
+            },
+            {
+              "kind": "field",
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "attribute": "warnText"
+            },
+            {
+              "kind": "field",
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
+              "attribute": "disable"
+            },
+            {
+              "kind": "field",
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "attribute": "enable"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "attribute": "dateRangePickerDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to readonly.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "attribute": "twentyFourHourFormat"
+            },
+            {
+              "kind": "field",
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "attribute": "minDate"
+            },
+            {
+              "kind": "field",
+              "name": "allowManualInput",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows manual input of date/time string that matches dateFormat when true.",
+              "attribute": "allowManualInput"
+            },
+            {
+              "kind": "field",
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "attribute": "maxDate"
+            },
+            {
+              "kind": "field",
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "attribute": "errorAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "attribute": "errorTitle"
+            },
+            {
+              "kind": "field",
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "attribute": "warningAriaLabel"
+            },
+            {
+              "kind": "field",
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "attribute": "warningTitle"
+            },
+            {
+              "kind": "field",
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "attribute": "staticPosition"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  requiredText: 'Required',\n  clearAll: 'Clear',\n  pleaseSelectDate: 'Please select a date',\n  pleaseSelectValidDate: 'Please select a valid date',\n  pleaseSelectBothDates: 'Please select a start and end date.',\n  dateRange: 'Date range',\n  noDateSelected: 'No dates selected',\n  startDateSelected: 'Start date selected: {0}. Please select end date.',\n  invalidDateRange:\n    'Invalid date range: End date cannot be earlier than start date',\n  dateRangeSelected: 'Selected date range: {0} to {1}',\n\n  lockedStartDate: 'Start date is locked',\n  lockedEndDate: 'End date is locked',\n  dateLocked: 'Date is locked',\n  dateNotAvailable: 'Date is not available',\n  dateInSelectedRange: 'Date is in selected range',\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hasValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "updateFormValue",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderValidationMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "errorId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "warningId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getDateRangePickerClasses",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "parseDateString",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date | null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "syncAllowInput",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setupAnchor",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "normalizeToDate",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date | null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string | number | Date | ''"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "processDefaultDates",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "Date[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "defaultDate",
+                  "type": {
+                    "text": "string | string[] | Date | Date[] | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_clearInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "options",
+                  "default": "{ reinitFlatpickr: true }",
+                  "type": {
+                    "text": "{ reinitFlatpickr?: boolean }"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleClear",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClose",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "initializeFlatpickr",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "updateFlatpickrOptions",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "getComponentFlatpickrOptions",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "Promise<Partial<BaseOptions>>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setInitialDates",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "handleOpen",
+              "privacy": "public"
+            },
+            {
+              "kind": "method",
+              "name": "syncFlatpickrFromValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "dates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDateChange",
+              "privacy": "public",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                },
+                {
+                  "name": "dateStr",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "updateSelectedDateRangeAria",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "selectedDates",
+                  "type": {
+                    "text": "Date[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setShouldFlatpickrOpen",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "closeFlatpickr",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onSuppressLabelInteraction",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleInputClickEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleInputFocusEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleFormReset",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getValue",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "[Date | null, Date | null]"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setValue",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "[Date | null, Date | null]"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Emitted when the selected date range changes. Event.detail has the shape: { dates: string[] | (Date | null)[] | null, dateString?: string, source?: string } - dates: array of ISO strings for selected dates (length 1 or 2), or an array containing Date/null values, or null/empty when cleared. - dateString: the display string from the input (may be empty when cleared) - source: 'clear' when the value was cleared; otherwise may be 'date-selection' or undefined.",
+              "name": "on-change"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "[Date | null, Date | null]"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "locale",
+              "type": {
+                "text": "SupportedLocale | string"
+              },
+              "default": "'en'",
+              "description": "Sets and dynamically imports specific l10n calendar localization.",
+              "fieldName": "locale"
+            },
+            {
+              "name": "dateFormat",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Y-m-d'",
+              "description": "Sets flatpickr value to define how the date will be displayed in the input box (ex: `Y-m-d H:i`).",
+              "fieldName": "dateFormat"
+            },
+            {
+              "name": "default-date",
+              "type": {
+                "text": "string | string[] | null"
+              },
+              "default": "null",
+              "description": "Sets the initial selected date(s) for the range.",
+              "deprecated": "Soft-deprecated. Prefer setting `value`.\n\nBackward compatibility notes:\n- still supports property assignment (`defaultDate = '2025-01-01'` or string[]).\n- empty attribute values are treated as `null`.",
+              "fieldName": "defaultDate"
+            },
+            {
+              "name": "rangeEditMode",
+              "type": {
+                "text": "DateRangeEditableMode"
+              },
+              "description": "Controls which parts of the date range are editable.",
+              "fieldName": "rangeEditMode"
+            },
+            {
+              "name": "defaultErrorMessage",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets default error message.",
+              "fieldName": "defaultErrorMessage"
+            },
+            {
+              "name": "warnText",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets validation warning messaging.",
+              "fieldName": "warnText"
+            },
+            {
+              "name": "disable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects.",
+              "fieldName": "disable"
+            },
+            {
+              "name": "enable",
+              "type": {
+                "text": "(string | number | Date)[]"
+              },
+              "default": "[]",
+              "description": "Sets flatpickr options setting to enable specific dates.",
+              "fieldName": "enable"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets caption to be displayed under primary date picker elements.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets date range picker form input value to required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "dateRangePickerDisabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to enabled/disabled.",
+              "fieldName": "dateRangePickerDisabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets entire date range picker form element to readonly.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "twentyFourHourFormat",
+              "type": {
+                "text": "boolean | null"
+              },
+              "default": "null",
+              "description": "Sets 24-hour formatting true/false.\nDefaults to 12H for all `en-` locales and 24H for all other locales.",
+              "fieldName": "twentyFourHourFormat"
+            },
+            {
+              "name": "minDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets lower boundary of date range picker date selection.",
+              "fieldName": "minDate"
+            },
+            {
+              "name": "allowManualInput",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows manual input of date/time string that matches dateFormat when true.",
+              "fieldName": "allowManualInput"
+            },
+            {
+              "name": "maxDate",
+              "type": {
+                "text": "string | number | Date"
+              },
+              "default": "''",
+              "description": "Sets upper boundary of date range picker date selection.",
+              "fieldName": "maxDate"
+            },
+            {
+              "name": "errorAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for error message.",
+              "fieldName": "errorAriaLabel"
+            },
+            {
+              "name": "errorTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for error message.",
+              "fieldName": "errorTitle"
+            },
+            {
+              "name": "warningAriaLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets aria label attribute for warning message.",
+              "fieldName": "warningAriaLabel"
+            },
+            {
+              "name": "warningTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Sets title attribute for warning message.",
+              "fieldName": "warningTitle"
+            },
+            {
+              "name": "staticPosition",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Sets whether the Flatpickr calendar UI should use static positioning.",
+              "fieldName": "staticPosition"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-date-range-picker",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-date-range-picker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "src/components/reusable/daterangepicker/daterangepicker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/daterangepicker/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DateRangePicker",
+          "declaration": {
+            "name": "DateRangePicker",
+            "module": "./daterangepicker"
           }
         }
       ]
