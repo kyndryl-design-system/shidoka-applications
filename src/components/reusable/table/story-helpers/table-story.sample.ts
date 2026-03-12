@@ -206,7 +206,8 @@ class MyStoryTable extends LitElement {
   }
 
   handleSelectedRowsChange(e: CustomEvent) {
-    action(e.type)(e);
+    action(e.type)({ ...e, detail: e.detail });
+
     const { selectedRows } = e.detail;
     this.selectedRows = selectedRows;
     this.requestUpdate();
@@ -319,6 +320,7 @@ class MyStoryTable extends LitElement {
                   key="row-${row.id}"
                   ?unread=${row.unread}
                   ?expandable=${this.expandable}
+                  ?selected=${row.selected}
                   ?expanded=${row.expanded}
                   @table-row-expando-toggled=${(e: CustomEvent) =>
                     this.handleExpand(e, row.id)}

@@ -179,9 +179,13 @@ export class TableRow extends LitElement {
   handleRowSelectionChange(event: CustomEvent) {
     this.selected = event.detail.checked;
     // Emit the custom event with the selected row and its new state
+    // this._emitSelected();
+  }
+
+  _emitSelected() {
     this.dispatchEvent(
       new CustomEvent('on-row-select', {
-        detail: event.detail,
+        detail: { el: this, selected: this.selected },
         bubbles: true,
         composed: true,
       })
@@ -224,6 +228,13 @@ export class TableRow extends LitElement {
       this.unnamedSlotEls.forEach((el) => {
         (el as TableCell).dimmed = this.dimmed && !this.selected;
       });
+    }
+
+    if (
+      changedProperties.has('selected') &&
+      changedProperties.get('selected') !== undefined
+    ) {
+      this._emitSelected();
     }
   }
 
