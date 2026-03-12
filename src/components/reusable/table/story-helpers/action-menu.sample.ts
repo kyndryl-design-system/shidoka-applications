@@ -53,7 +53,6 @@ export class ActionMenu extends LitElement {
         fixed
         assistiveText="Actions"
         @on-toggle=${(e: Event) => this._handleToggle(e)}
-        @click=${(e: Event) => e.stopPropagation()}
       >
         <kyn-overflow-menu-item
           @on-click=${(e: Event) => this.actionHandler(this.itemId, e)}
