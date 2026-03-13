@@ -114,6 +114,9 @@ export class DropdownOption extends LitElement {
           if (this.readonly) e.preventDefault();
         }}
         @click=${(e: MouseEvent) => this.handleClick(e)}
+        @focus=${() => {
+          this.highlighted = true;
+        }}
         @blur=${(e: any) => this.handleBlur(e)}
         @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
       >
@@ -258,6 +261,7 @@ export class DropdownOption extends LitElement {
       ) {
         const opt = node as any;
         if (!opt.disabled && !opt.readonly) {
+          this.highlighted = false;
           opt.focus?.({ preventScroll: true });
           opt.highlighted = true;
           opt.scrollIntoView?.({ block: 'nearest' });
@@ -280,6 +284,7 @@ export class DropdownOption extends LitElement {
 
     const candidate = where === 'start' ? list[0] : list[list.length - 1];
     if (candidate && !candidate.disabled && !candidate.readonly) {
+      this.highlighted = false;
       candidate.focus?.({ preventScroll: true });
       candidate.highlighted = true;
       candidate.scrollIntoView?.({ block: 'nearest' });
@@ -354,6 +359,8 @@ export class DropdownOption extends LitElement {
   }
 
   private handleBlur(e: any) {
+    this.highlighted = false;
+
     // emit blur event, bubble so it can be captured by the parent dropdown
     const event = new CustomEvent('on-blur', {
       bubbles: true,
