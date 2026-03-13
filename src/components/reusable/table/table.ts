@@ -179,17 +179,18 @@ export class Table extends LitElement {
   private _handleRowSelectionChange(event: CustomEvent) {
     event.stopPropagation();
 
-    const { target } = event;
+    const target = event.detail.el;
+    const selected = event.detail.selected;
     const { _selectedRows: selectedRows } = this;
 
     if (!this.contains(target as TableRow)) {
       return;
     }
 
-    if (selectedRows.includes(target as TableRow)) {
+    if (!selected && selectedRows.includes(target as TableRow)) {
       this._selectedRows = selectedRows.filter((e) => e !== target);
       this._selectedRowIds.delete((target as TableRow).rowId);
-    } else {
+    } else if (selected && !selectedRows.includes(target as TableRow)) {
       this._selectedRows.push(target as TableRow);
       this._selectedRowIds.add((target as TableRow).rowId);
     }
