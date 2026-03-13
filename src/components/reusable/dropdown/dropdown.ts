@@ -398,6 +398,7 @@ export class Dropdown extends FormMixin(LitElement) {
    */
   private _onChildBlur = (e: Event) => this._handleBlur(e as any);
 
+  /** @internal */
   private _addOptionInputCleanup?: () => void;
 
   private _handleAddOptionSlotChange() {
