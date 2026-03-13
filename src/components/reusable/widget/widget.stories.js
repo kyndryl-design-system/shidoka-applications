@@ -108,7 +108,6 @@ export const Widget = {
         <div style="flex-grow: 1;">
           <kyn-widget
             widgetTitle=${args.widgetTitle}
-            subTitle=${args.subTitle}
             ?disabled=${args.disabled}
             ?dragActive=${args.dragActive}
             ?selectable=${args.selectable}
@@ -121,6 +120,7 @@ export const Widget = {
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
             ${getExampleContent()}
+            <span slot="subtitle">Subtitle</span>
           </kyn-widget>
         </div>
       </div>

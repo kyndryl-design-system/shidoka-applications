@@ -14,6 +14,7 @@ import { WIDGET_STATUS } from './defs';
  * @slot actions - Slot for action buttons.
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
+ * @slot subtitle - Slot for subtitle content.
  * @slot footer - Slot for footer content.
  */
 @customElement('kyn-widget')
@@ -24,7 +25,7 @@ export class Widget extends LitElement {
   @property({ type: String })
   accessor widgetTitle = '';
 
-  /** Widget sub-title. */
+  /** Widget sub-title(Deprecated). Use subtitle slot instead. */
   @property({ type: String })
   accessor subTitle = '';
 
@@ -102,7 +103,9 @@ export class Widget extends LitElement {
                     <slot name="tooltip"></slot>
                   </div>
 
-                  <div class="description">${this.subTitle}</div>
+                  <div class="description">
+                    <slot name="subtitle">${this.subTitle}</slot>
+                  </div>
                 </div>
 
                 <div class="actions">
