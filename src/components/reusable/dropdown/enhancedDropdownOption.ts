@@ -126,6 +126,9 @@ export class EnhancedDropdownOption extends LitElement {
           if (this.readonly) e.preventDefault();
         }}
         @pointerup=${(e: Event) => this.onClick(e as PointerEvent)}
+        @focus=${() => {
+          this.highlighted = true;
+        }}
         @blur=${(e: Event) => this.onBlur(e as FocusEvent)}
         @keydown=${(e: KeyboardEvent) => this.onKeyDown(e)}
       >
@@ -271,6 +274,8 @@ export class EnhancedDropdownOption extends LitElement {
       ) {
         const opt = node as any;
         if (!opt.disabled && !opt.readonly) {
+          this.highlighted = false;
+          opt.highlighted = true;
           const target = opt.shadowRoot?.querySelector(
             '.menu-item'
           ) as HTMLElement | null;
@@ -291,6 +296,8 @@ export class EnhancedDropdownOption extends LitElement {
     const list = Array.from(all) as any[];
     const candidate = where === 'start' ? list[0] : list[list.length - 1];
     if (candidate && !candidate.disabled && !candidate.readonly) {
+      this.highlighted = false;
+      candidate.highlighted = true;
       const target = candidate.shadowRoot?.querySelector(
         '.menu-item'
       ) as HTMLElement | null;
@@ -344,6 +351,8 @@ export class EnhancedDropdownOption extends LitElement {
   }
 
   private onBlur(e: FocusEvent) {
+    this.highlighted = false;
+
     this.dispatchEvent(
       new CustomEvent('on-blur', {
         bubbles: true,

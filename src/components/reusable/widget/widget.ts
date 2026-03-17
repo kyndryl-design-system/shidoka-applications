@@ -25,7 +25,7 @@ export class Widget extends LitElement {
   @property({ type: String })
   accessor widgetTitle = '';
 
-  /** Widget sub-title(Deprecated). Use subtitle slot instead. */
+  /** Widget sub-title(Deprecated). Use `subtitle` slot instead. */
   @property({ type: String })
   accessor subTitle = '';
 
