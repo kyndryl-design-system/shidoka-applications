@@ -27,6 +27,10 @@ export class PaginationPageSizeDropdown extends LitElement {
   @property({ attribute: false })
   accessor pageSizeOptions: Array<number> = [5, 10, 20, 30, 40, 50];
 
+  /** Controls direction that dropdown opens. */
+  @property({ type: String })
+  accessor openDirection: 'auto' | 'up' | 'down' = 'auto';
+
   /** Customizable text strings. Inherited from parent
    * @internal
    */
@@ -80,6 +84,7 @@ export class PaginationPageSizeDropdown extends LitElement {
         label=${this.pageSizeDropdownLabel}
         inline
         size="sm"
+        openDirection=${this.openDirection}
         .value=${String(this.pageSize)}
         @on-change=${(e: CustomEvent) => this.handleChange(e)}
       >
