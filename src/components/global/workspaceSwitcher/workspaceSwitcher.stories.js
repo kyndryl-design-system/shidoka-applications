@@ -8,7 +8,6 @@ import '../../reusable/search';
 
 import exampleData from './example_workspace_switcher_data.json';
 
-import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
@@ -54,37 +53,6 @@ const createAccountMeta = (name) =>
     ],
   });
 
-const renderLaunchAction = (item) =>
-  item.launchHref
-    ? html`
-        <a
-          slot="action"
-          class="workspace-switcher-item-action"
-          href=${item.launchHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label=${`Open ${item.name} in new tab`}
-        >
-          ${unsafeSVG(launchIcon)}
-        </a>
-      `
-    : null;
-
-const appendLaunchAction = (menuItem, item) => {
-  if (!item.launchHref) return;
-
-  const action = document.createElement('a');
-  action.slot = 'action';
-  action.className = 'workspace-switcher-item-action';
-  action.href = item.launchHref;
-  action.target = '_blank';
-  action.rel = 'noopener noreferrer';
-  action.setAttribute('aria-label', `Open ${item.name} in new tab`);
-  action.innerHTML = launchIcon;
-
-  menuItem.appendChild(action);
-};
-
 const renderAccountItem = (item, clickHandler) => html`
   <kyn-workspace-switcher-menu-item
     slot="right-list"
@@ -93,12 +61,11 @@ const renderAccountItem = (item, clickHandler) => html`
     name=${item.name}
     ?selected=${item.selected}
     ?favorited=${item.favorited}
+    ?showLaunchIndicator=${item.opensInNewTab}
     ?showFavorite=${!item.hideFavorite}
     @on-click=${(e) => clickHandler(e, item)}
     @on-favorite-change=${(e) => action('on-favorite-change')(e.detail)}
-  >
-    ${renderLaunchAction(item)}
-  </kyn-workspace-switcher-menu-item>
+  ></kyn-workspace-switcher-menu-item>
 `;
 
 /** item click handler — updates selected state and account meta info. */
@@ -148,12 +115,12 @@ const createWorkspaceClickHandler = (itemClickHandler) => (e, ws) => {
     el.value = item.id;
     el.name = item.name;
     el.favorited = item.favorited || false;
+    el.showLaunchIndicator = !!item.opensInNewTab;
     el.showFavorite = !item.hideFavorite;
     el.addEventListener('on-click', (ev) => itemClickHandler(ev, item));
     el.addEventListener('on-favorite-change', (ev) =>
       action('on-favorite-change')(ev.detail)
     );
-    appendLaunchAction(el, item);
     switcher.appendChild(el);
   });
 };
@@ -214,21 +181,6 @@ export default {
         .workspace-switcher-search {
           margin-bottom: 0;
           padding: 4px 8px 2px 0;
-        }
-
-        .workspace-switcher-item-action {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 16px;
-          height: 16px;
-          color: inherit;
-          flex-shrink: 0;
-        }
-
-        .workspace-switcher-item-action svg {
-          width: 16px;
-          height: 16px;
         }
 
         @media (max-width: calc(52rem - 0.001px)) {

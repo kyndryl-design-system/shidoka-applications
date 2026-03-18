@@ -7,6 +7,7 @@ import WorkspaceSwitcherMenuItemScss from './workspaceSwitcherMenuItem.scss?inli
 
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 
 import '../../reusable/iconSelector';
 
@@ -15,13 +16,12 @@ import '../../reusable/iconSelector';
  * Used for both workspace items (left panel) and account items (right panel).
  * Item rows support these trailing-action combinations:
  * - favorite only
- * - custom action only
- * - custom action plus favorite
- * When both are present, the custom action renders to the left and the
+ * - launch indicator only
+ * - launch indicator plus favorite
+ * When both are present, the launch indicator renders to the left and the
  * favorite control stays pinned to the far right for consistency.
  * @fires on-click - Emits when the item is clicked. `detail: { value: string }`
  * @fires on-favorite-change - Emits when favorite status changes. `detail: { value: string, favorited: boolean }`
- * @slot action - Optional trailing action rendered before the favorite control.
  */
 @customElement('kyn-workspace-switcher-menu-item')
 export class WorkspaceSwitcherMenuItem extends LitElement {
@@ -50,6 +50,10 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   /** Whether the item is favorited (item variant only). */
   @property({ type: Boolean })
   accessor favorited = false;
+
+  /** Whether to show the launch/new-tab indicator (item variant only). */
+  @property({ type: Boolean })
+  accessor showLaunchIndicator = false;
 
   /** Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned. */
   @property({ type: Boolean })
@@ -97,15 +101,17 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   }
 
   private _renderItemContent() {
-    const hasCustomAction = this.querySelector('[slot="action"]');
-
-    if (!this.showFavorite && !hasCustomAction) return null;
+    if (!this.showFavorite && !this.showLaunchIndicator) return null;
 
     return html`
       <div class="menu-item__actions">
-        <span class="menu-item__action">
-          <slot name="action"></slot>
-        </span>
+        ${this.showLaunchIndicator
+          ? html`
+              <span class="menu-item__launch-indicator" aria-hidden="true">
+                ${unsafeSVG(launchIcon)}
+              </span>
+            `
+          : null}
         ${this.showFavorite
           ? html`
               <kyn-icon-selector
