@@ -58,6 +58,21 @@ export const Vertical = {
   },
 };
 
+export const VerticalDragHandle = {
+  render: () => {
+    return html`
+      <div
+        class="v-align"
+        style="height: 120px; align-items: stretch; background: var(--kd-color-background-container-subtle); padding: 8px; border-radius: 8px;"
+      >
+        <span>Pane A</span>
+        <kyn-divider vertical drag-handle></kyn-divider>
+        <span>Pane B</span>
+      </div>
+    `;
+  },
+};
+
 export const WithCard = {
   render: () => {
     return html`

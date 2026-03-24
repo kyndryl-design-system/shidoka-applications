@@ -1,0 +1,56 @@
+// Shared drag surface + grip for kyn-side-drawer and kyn-divider (vertical drag-handle).
+// Markup: <div class="drag-handle"><span class="drag-lines"></span></div>
+
+@mixin resizable-drag-handle-vertical($width, $border-radius: 4px) {
+  .drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: $width;
+    cursor: ew-resize;
+    background: transparent;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 150ms ease-out;
+    z-index: 2;
+
+    &:hover {
+      background: var(--kd-color-border-variants-light);
+
+      .drag-lines {
+        &::before,
+        &::after {
+          background: var(--kd-color-icon-tertiary);
+        }
+      }
+    }
+
+    &.dragging {
+      background: var(--kd-color-border-variants-drag);
+    }
+  }
+
+  .drag-lines {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 2px;
+    height: 32px;
+    width: 100%;
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 100%;
+      background: var(--kd-color-icon-secondary);
+      transition: background-color 150ms ease-out;
+    }
+  }
+}

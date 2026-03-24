@@ -1,0 +1,107 @@
+@use '../../common/scss/global.scss';
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 0;
+}
+
+.split-view {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  min-height: min(640px, 82vh);
+  max-height: min(900px, 90vh);
+  /* Page surface so transparent gutters don’t pick up container gray (same as primary pane). */
+  background: var(--kd-color-background-page-default);
+  border: 1px solid var(--kd-color-border-level-secondary);
+  border-radius: 8px;
+  box-shadow: var(--kd-elevation-level-1, 0 1px 3px rgb(0 0 0 / 8%));
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.pane {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  position: relative;
+  z-index: 0;
+}
+
+.pane--start {
+  flex: 0 0 auto;
+  background: var(--kd-color-background-page-default);
+}
+
+.pane--primary {
+  flex: 1 1 auto;
+  background: var(--kd-color-background-container-default);
+}
+
+.pane--end {
+  flex: 0 0 auto;
+  background: var(--kd-color-background-page-default);
+}
+
+.pane--placeholder {
+  padding: var(--kd-spacing-16);
+  color: var(--kd-color-text-level-secondary);
+  font: var(--kd-font-body-01);
+}
+
+/* Hit target must be a normal DOM node (not the divider shadow root) for reliable dragging. */
+.split-view__divider {
+  flex: 0 0 8px;
+  width: 8px;
+  min-width: 8px;
+  align-self: stretch;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  touch-action: none;
+  cursor: ew-resize;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Gutter fill: align with the pane on the left so primary gray reaches the hairline. */
+.split-view__divider--after-start {
+  background: var(--kd-color-background-page-default);
+}
+
+.split-view__divider--before-end {
+  background: var(--kd-color-background-container-default);
+}
+
+/*
+ * Hairline in light DOM (reliable paint). Placed on the right edge of the gutter so the
+ * pane to the right starts flush after this pixel — avoids “background past the divider”.
+ */
+.split-view__divider::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--kd-color-border-level-secondary);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.split-view__divider kyn-divider {
+  position: relative;
+  z-index: 2;
+  align-self: stretch;
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+}
