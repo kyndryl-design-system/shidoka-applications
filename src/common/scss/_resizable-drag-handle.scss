@@ -30,25 +30,35 @@
 
     &.dragging {
       background: var(--kd-color-border-variants-drag);
+
+      .drag-lines {
+        &::before,
+        &::after {
+          background: var(--kd-color-icon-tertiary);
+        }
+      }
     }
   }
 
+  /* Two 1×32px lines, 2px gap — centered as a 4px-wide group in the drag surface (Figma spec). */
   .drag-lines {
     display: flex;
     flex-direction: row;
     align-items: stretch;
     justify-content: center;
+    flex: 0 0 auto;
     gap: 2px;
+    width: auto;
     height: 32px;
-    width: 100%;
     pointer-events: none;
 
     &::before,
     &::after {
       content: '';
       display: block;
+      flex: 0 0 1px;
       width: 1px;
-      height: 100%;
+      height: 32px;
       background: var(--kd-color-icon-secondary);
       transition: background-color 150ms ease-out;
     }

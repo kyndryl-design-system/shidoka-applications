@@ -69,29 +69,50 @@
   -webkit-user-select: none;
 }
 
-/* Gutter fill: align with the pane on the left so primary gray reaches the hairline. */
+/*
+ * Gutter is 8px wide with the hairline centered (straddling grip). Paint each half with the
+ * adjacent pane color so the divider line sits on the page|container boundary — otherwise the
+ * whole gutter matched one pane and the primary gray looked “inset” from the centered line.
+ */
 .split-view__divider--after-start {
-  background: var(--kd-color-background-page-default);
+  background: linear-gradient(
+    to right,
+    var(--kd-color-background-page-default) 0 50%,
+    var(--kd-color-background-container-default) 50% 100%
+  );
 }
 
 .split-view__divider--before-end {
-  background: var(--kd-color-background-container-default);
+  background: linear-gradient(
+    to right,
+    var(--kd-color-background-container-default) 0 50%,
+    var(--kd-color-background-page-default) 50% 100%
+  );
 }
 
 /*
- * Hairline in light DOM (reliable paint). Placed on the right edge of the gutter so the
- * pane to the right starts flush after this pixel — avoids “background past the divider”.
+ * Hairline in light DOM (reliable paint). Centered in the 8px gutter so it runs through the
+ * middle of the 2px gap between the two drag lines (same axis as kyn-divider’s centered grip).
  */
 .split-view__divider::before {
   content: '';
   position: absolute;
-  right: 0;
+  left: 50%;
   top: 0;
   bottom: 0;
   width: 1px;
+  transform: translateX(-50%);
   background: var(--kd-color-border-level-secondary);
   pointer-events: none;
   z-index: 1;
+  opacity: 1;
+  transition: opacity 150ms ease-out;
+}
+
+/* Default hairline hides on hover / drag so only the grip surface + lines read (matches drawer). */
+.split-view__divider:hover::before,
+.split-view__divider:has(kyn-divider[dragging])::before {
+  opacity: 0;
 }
 
 .split-view__divider kyn-divider {

@@ -41,17 +41,19 @@
   flex: 1 1 auto;
   align-self: stretch;
   background: transparent;
-  border-radius: 4px;
+  border-radius: 0;
   overflow: visible;
   transition: background-color 150ms ease-out;
 
-  /* Full-height hairline (hidden when parent track paints it) */
+  /* Full-height hairline — centered on the grip axis (middle of 2px gap between drag lines). */
   &::before {
     content: '';
     position: absolute;
-    inset: 0;
+    left: 50%;
+    top: 0;
+    bottom: 0;
     width: 1px;
-    margin: 0 auto;
+    transform: translateX(-50%);
     background: var(--kd-color-border-level-secondary);
     opacity: 1;
     transition: opacity 150ms ease-out;
@@ -61,8 +63,13 @@
     display: none;
   }
 
+  &:not(.hide-hairline):hover::before,
+  &:not(.hide-hairline):has(.drag-handle.dragging)::before {
+    opacity: 0;
+  }
+
   @include resizable-drag-handle.resizable-drag-handle-vertical(
     $width: 100%,
-    $border-radius: 4px
+    $border-radius: 0
   );
 }

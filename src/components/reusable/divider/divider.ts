@@ -18,7 +18,7 @@ export class Divider extends LitElement {
    * When used with `vertical`, shows a centered drag grip and widens the hit area for split views.
    * Resize behavior is provided by the parent layout (for example the Split View pattern).
    */
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean, reflect: true, attribute: 'drag-handle' })
   accessor dragHandle = false;
 
   /** Accessible name when `dragHandle` is true (resize affordance). */
