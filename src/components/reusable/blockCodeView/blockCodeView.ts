@@ -6,6 +6,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { deepmerge } from 'deepmerge-ts';
 
 import Prism from 'prismjs';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-markdown';
+import 'prismjs/components/prism-less';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-python';
 import 'prismjs/plugins/autoloader/prism-autoloader';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';
 

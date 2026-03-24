@@ -1,0 +1,83 @@
+import { Meta, Title, Canvas } from '@storybook/addon-docs/blocks';
+import * as SplitViewStories from './splitView.stories.js';
+
+<Meta of={SplitViewStories} name="Docs" />
+
+<Title />
+
+Interactive **two- or three-column** layout with **vertical `kyn-divider`** (**`drag-handle`**) and draggable column widths. The helpers **`split-view-pattern`** and **`split-view-code-rail`** ship with this Storybook pattern only—they are **not** published `kyn-*` components. To reuse in an application, **vendor the pattern** (or reimplement the layout using the same primitives).
+
+## How to explore this pattern
+
+1. **This page** — overview, live preview, API, and a Lit bootstrap you can adapt.
+2. **Stories in the sidebar** under **Patterns / Split View** — **Two Pane**, **Three Pane**, and **Three Pane Issue Detail** show progressively richer composition.
+3. **Canvas → Code** on each story — runnable Lit source for that example. It may use story-only indirection; pair it with the **Quick start** below when you need a single coherent bootstrap.
+
+## Live preview
+
+<Canvas of={SplitViewStories.TwoPane} />
+
+## Quick start (Lit)
+
+Run **once** before first render (e.g. app bootstrap or the module that owns the view):
+
+```javascript
+import { html, unsafeCSS } from 'lit';
+import { registerSplitViewPattern } from '…';
+import { registerSplitViewCodeRail } from '…';
+import {
+  SPLIT_VIEW_PATTERN_SHADOW_CSS,
+  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
+  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS,
+  SPLIT_VIEW_STORY_LIGHT_DOM_CSS,
+} from '…';
+
+const splitViewStyles = html`<style>
+  ${unsafeCSS(SPLIT_VIEW_STORY_LIGHT_DOM_CSS)}
+</style>`;
+
+registerSplitViewPattern(SPLIT_VIEW_PATTERN_SHADOW_CSS);
+registerSplitViewCodeRail(
+  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
+  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS
+);
+
+// Also import kyn-divider (used inside split-view-pattern) and any kyn-* content you place in panes.
+```
+
+Then render:
+
+```javascript
+html`
+  ${splitViewStyles}
+  <div class="split-view-shell">
+    <split-view-pattern .panes=${2} @on-resize=${(e) => console.log(e.detail)}>
+      <div slot="pane-1">…</div>
+      <div slot="pane-2">…</div>
+      <!-- optional: <div slot="pane-3" class="pane-3">…</div> -->
+    </split-view-pattern>
+  </div>
+`;
+```
+
+For a **code block** in the end pane, wrap **`kyn-block-code-view`** in **`split-view-code-rail`** (see **Three Pane Issue Detail** in the sidebar).
+
+Replace **`…`** with import paths that match **your** project after you vendor the pattern; names and exports should match whatever you copied in.
+
+## API (slots and property)
+
+|                     |                                                                             |
+| ------------------- | --------------------------------------------------------------------------- |
+| **`.panes`**        | `2` or `3` — number of columns.                                             |
+| **`slot="pane-1"`** | Start column (fixed min width).                                             |
+| **`slot="pane-2"`** | Center column (flex; grows/shrinks when you drag).                          |
+| **`slot="pane-3"`** | End column (optional; use with `.panes=${3}`).                              |
+| **`@on-resize`**    | Fired when divider drag updates sizes (detail has widths if you need them). |
+
+## Layout behavior
+
+Panes are sized with flex; **slotted content** is expected to fill the pane height so **inner regions** (lists, detail body, code) can scroll. Put long content in a child with **`overflow: auto`** (or equivalent) rather than growing the pane past the split-view height.
+
+## Related
+
+- Design system: **`kyn-divider`** (`vertical`, `drag-handle`) for the gutter affordance.

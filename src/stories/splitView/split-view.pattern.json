@@ -1,0 +1,55 @@
+{
+  "patternId": "split-view",
+  "description": "Canonical index for this Storybook pattern. Use with Docs.mdx; do not treat the Canvas Code tab alone as the full implementation.",
+  "storybook": {
+    "title": "Patterns/Split View",
+    "storyFile": "splitView.stories.js",
+    "docsPage": "Docs.mdx"
+  },
+  "documentation": {
+    "readme": "README.md",
+    "docsMdx": "Docs.mdx",
+    "manifest": "split-view.pattern.json"
+  },
+  "artifacts": {
+    "styles": {
+      "path": "splitView.scss",
+      "note": "Single SCSS file with /* @split-view-section: … */ markers; split at build time by splitViewCss.ts"
+    },
+    "styleLoader": {
+      "path": "splitViewCss.ts",
+      "exports": [
+        "SPLIT_VIEW_PATTERN_SHADOW_CSS",
+        "SPLIT_VIEW_CODE_RAIL_SHADOW_CSS",
+        "SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS",
+        "SPLIT_VIEW_STORY_LIGHT_DOM_CSS"
+      ]
+    },
+    "helpers": [
+      {
+        "path": "splitViewPattern.ts",
+        "element": "split-view-pattern",
+        "published": false
+      },
+      {
+        "path": "splitViewCodeRail.ts",
+        "element": "split-view-code-rail",
+        "published": false
+      }
+    ]
+  },
+  "designSystemComponents": [
+    "kyn-divider",
+    "kyn-block-code-view",
+    "kyn-button",
+    "kyn-card",
+    "kyn-badge"
+  ],
+  "widgetStatusEnum": "src/components/reusable/widget/defs.ts (WIDGET_STATUS — borders align with kyn-widget)",
+  "integrationOrder": [
+    "Import and call registerSplitViewPattern / registerSplitViewCodeRail with strings from splitViewCss (see splitView.stories.js).",
+    "Import design-system components used by the story.",
+    "Use <split-view-pattern> with named slots pane-1, pane-2, and optionally pane-3.",
+    "Optional end-pane code: wrap kyn-block-code-view in split-view-code-rail for flush rail behavior."
+  ]
+}

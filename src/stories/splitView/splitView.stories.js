@@ -1,165 +1,78 @@
-import { html } from 'lit';
+import { html, unsafeCSS } from 'lit';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 
-import './splitViewPattern';
+import { registerSplitViewPattern } from './splitViewPattern';
+import { registerSplitViewCodeRail } from './splitViewCodeRail';
 
 import '../../components/reusable/button/button';
 import '../../components/reusable/card/card';
-import '../../components/reusable/tag/tag';
+import '../../components/reusable/badge/badge';
 import '../../components/reusable/blockCodeView/blockCodeView';
+import { WIDGET_STATUS } from '../../components/reusable/widget/defs';
 
-const DEMO_CODE = `const patch = {
-  file: 'src/api/client.ts',
-  change: 'Add retry with backoff',
+import statusIconCritical from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import statusIconHigh from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
+import statusIconMedium from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information-filled.svg';
+import statusIconLow from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
+
+import {
+  SPLIT_VIEW_PATTERN_SHADOW_CSS,
+  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
+  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS,
+  SPLIT_VIEW_STORY_LIGHT_DOM_CSS,
+} from './splitViewCss';
+
+/**
+ * Styles live in `splitView.scss` (section markers). `splitViewCss.ts` splits them for the
+ * story-only helpers and the light-DOM `<style>` block below.
+ */
+registerSplitViewPattern(SPLIT_VIEW_PATTERN_SHADOW_CSS);
+registerSplitViewCodeRail(
+  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
+  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS
+);
+
+/** kyn-badge `status` does not mirror every WIDGET_STATUS value (e.g. High → error). */
+const BADGE_STATUS = {
+  [WIDGET_STATUS.CRITICAL]: 'critical',
+  [WIDGET_STATUS.HIGH]: 'error',
+  [WIDGET_STATUS.MEDIUM]: 'warning',
+  [WIDGET_STATUS.LOW]: 'success',
 };
 
-npm run verify && git add -A && git commit -m "fix: client retry"`;
+/** End-pane demo: raw snippets (no markdown fences), three JS sections. */
+const CODE_DEMO_JAVASCRIPT = `function isEven(number) {
+  return Number(number) % 2 === 0;
+}
+const isOdd = (number) => !isEven(number);`;
 
-/** Story-only: kyn-card defaults to 264px wide; full-width rail cards need an explicit override. */
-const splitViewShellStyles = html`
-  <style>
-    .split-view-shell {
-      box-sizing: border-box;
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: var(--kd-spacing-24);
-      min-height: 480px;
-      background: var(--kd-color-background-page-default);
-    }
-    .split-view-shell kyn-card {
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-  </style>
-`;
+const CODE_DEMO_JAVASCRIPT_CLI = `console.log(process.env.STRING);
+const args = process.argv.slice(2);
+console.log(args[0]);
+console.log(args[1], args[2]);`;
 
-const issueDetailStyles = html`
-  <style>
-    .issue-list {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      min-height: 0;
-      box-sizing: border-box;
-      padding: var(--kd-spacing-16);
-      gap: 0;
-    }
-    .issue-list__scroll {
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: var(--kd-spacing-12);
-      padding-right: var(--kd-spacing-4);
-    }
-    .issue-list__footer {
-      flex: 0 0 auto;
-      padding-top: var(--kd-spacing-16);
-      margin-top: var(--kd-spacing-8);
-      border-top: 1px solid var(--kd-color-border-level-secondary);
-    }
-    .issue-card__head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: var(--kd-spacing-8);
-      margin-bottom: var(--kd-spacing-8);
-    }
-    .issue-card__title {
-      font: var(--kd-font-heading-06);
-      color: var(--kd-color-text-level-primary);
-      margin: 0;
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-    .issue-card__meta {
-      font: var(--kd-font-caption-01);
-      color: var(--kd-color-text-level-secondary);
-      margin: 0;
-    }
-    .issue-card__meta + .issue-card__meta {
-      margin-top: var(--kd-spacing-4);
-    }
-    .issue-detail {
-      display: flex;
-      flex-direction: column;
-      padding: var(--kd-spacing-24) var(--kd-spacing-32);
-      height: 100%;
-      min-height: 0;
-      box-sizing: border-box;
-      overflow: auto;
-    }
-    .issue-detail__title-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--kd-spacing-12);
-      margin-bottom: var(--kd-spacing-8);
-    }
-    .issue-detail__title {
-      font: var(--kd-font-heading-04);
-      margin: 0;
-      color: var(--kd-color-text-level-primary);
-    }
-    .issue-detail__section-title {
-      font: var(--kd-font-heading-06);
-      margin: var(--kd-spacing-24) 0 var(--kd-spacing-8);
-      color: var(--kd-color-text-level-primary);
-    }
-    .issue-detail__section-title:first-of-type {
-      margin-top: var(--kd-spacing-20);
-    }
-    .issue-detail__body {
-      font: var(--kd-font-body-01);
-      color: var(--kd-color-text-level-primary);
-      margin: 0;
-      max-width: 72ch;
-    }
-    .issue-detail__list {
-      margin: var(--kd-spacing-8) 0 0;
-      padding-left: var(--kd-spacing-24);
-      font: var(--kd-font-body-01);
-      color: var(--kd-color-text-level-primary);
-      max-width: 72ch;
-    }
-    .issue-detail__actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--kd-spacing-8);
-      margin-top: var(--kd-spacing-16);
-    }
-    .issue-detail__footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--kd-spacing-8);
-      margin-top: auto;
-      padding-top: var(--kd-spacing-24);
-      border-top: 1px solid var(--kd-color-border-level-secondary);
-    }
-    .code-pane {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      min-height: 0;
-      box-sizing: border-box;
-      padding: var(--kd-spacing-16);
-      overflow: hidden;
-    }
-    .code-pane kyn-block-code-view {
-      flex: 1 1 auto;
-      min-height: 0;
-      display: block;
-    }
-  </style>
-`;
+const CODE_DEMO_JAVASCRIPT_MATH = `console.log(3.14159 * 42);
+console.log(1e100 + 0.001);
+const foo = 0xffffffff;
+const masked = foo & 0xdeadbeef;`;
+
+const CODE_DEMO_ALL = [
+  CODE_DEMO_JAVASCRIPT,
+  CODE_DEMO_JAVASCRIPT_CLI,
+  CODE_DEMO_JAVASCRIPT_MATH,
+].join('\n\n');
+
+const splitViewStyles = html`<style>
+  ${unsafeCSS(SPLIT_VIEW_STORY_LIGHT_DOM_CSS)}
+</style>`;
+
+/* Do not re-export SPLIT_VIEW_* from this file — Storybook treats named exports as stories. */
 
 export default {
   title: 'Patterns/Split View',
+  /* Web component tag for docs / a11y; pattern is registered on module load. */
+  component: 'split-view-pattern',
   parameters: {
     docs: {
       description: {
@@ -167,6 +80,8 @@ export default {
 The Split View pattern arranges two or three columns with draggable vertical dividers. The center column grows and shrinks as you drag; outer columns use minimum widths.
 
 Use **\`kyn-divider\`** with **\`vertical\`** and **\`drag-handle\`** for the affordance (aligned with the resizable side drawer). Interactive sizing for Storybook is demonstrated with **\`<split-view-pattern>\`**, a Storybook-only helper in this folder—it is **not** a published \`kyn-*\` component.
+
+**Docs:** Open **Patterns / Split View / Docs** for overview, quick start, and API (\`Docs.mdx\`). **Canvas → Code** shows the runnable story; use the docs page for a vendor-friendly bootstrap.
         `,
       },
     },
@@ -179,14 +94,7 @@ const panePlaceholder = (label) => html`
 
 export const TwoPane = {
   render: () => html`
-    ${splitViewShellStyles}
-    <style>
-      .pane--placeholder {
-        padding: var(--kd-spacing-16);
-        color: var(--kd-color-text-level-secondary);
-        font: var(--kd-font-body-01);
-      }
-    </style>
+    ${splitViewStyles}
     <div class="split-view-shell">
       <split-view-pattern
         .panes=${2}
@@ -201,14 +109,7 @@ export const TwoPane = {
 
 export const ThreePane = {
   render: () => html`
-    ${splitViewShellStyles}
-    <style>
-      .pane--placeholder {
-        padding: var(--kd-spacing-16);
-        color: var(--kd-color-text-level-secondary);
-        font: var(--kd-font-body-01);
-      }
-    </style>
+    ${splitViewStyles}
     <div class="split-view-shell">
       <split-view-pattern
         .panes=${3}
@@ -216,7 +117,7 @@ export const ThreePane = {
       >
         <div slot="pane-1">${panePlaceholder('Start pane')}</div>
         <div slot="pane-2">${panePlaceholder('Primary pane (flex)')}</div>
-        <div slot="pane-3">${panePlaceholder('End pane')}</div>
+        <div slot="pane-3" class="pane-3">${panePlaceholder('End pane')}</div>
       </split-view-pattern>
     </div>
   `,
@@ -224,7 +125,7 @@ export const ThreePane = {
 
 export const ThreePaneIssueDetail = {
   render: () => html`
-    ${splitViewShellStyles} ${issueDetailStyles}
+    ${splitViewStyles}
     <div class="split-view-shell">
       <split-view-pattern
         .panes=${3}
@@ -233,58 +134,137 @@ export const ThreePaneIssueDetail = {
         <div slot="pane-1">
           <div class="issue-list">
             <div class="issue-list__scroll">
-              <kyn-card
-                type="normal"
-                role="article"
-                aria-label="Issue"
-                ?highlight=${true}
-              >
-                <div class="issue-card__head">
-                  <h3 class="issue-card__title">Issue title goes here</h3>
-                  <kyn-tag
-                    label="Critical"
-                    tagSize="sm"
-                    tagColor="red"
-                  ></kyn-tag>
-                </div>
-                <p class="issue-card__meta">Short description of the issue.</p>
-                <p class="issue-card__meta">2 min ago</p>
-              </kyn-card>
-              <kyn-card type="normal" role="article" aria-label="Issue">
-                <div class="issue-card__head">
-                  <h3 class="issue-card__title">Issue title goes here</h3>
-                  <kyn-tag
-                    label="High"
-                    tagSize="sm"
-                    tagColor="spruce"
-                  ></kyn-tag>
-                </div>
-                <p class="issue-card__meta">Short description of the issue.</p>
-                <p class="issue-card__meta">2 min ago</p>
-              </kyn-card>
-              <kyn-card type="normal" role="article" aria-label="Issue">
-                <div class="issue-card__head">
-                  <h3 class="issue-card__title">Issue title goes here</h3>
-                  <kyn-tag label="Medium" tagSize="sm" tagColor="sea"></kyn-tag>
-                </div>
-                <p class="issue-card__meta">Short description of the issue.</p>
-                <p class="issue-card__meta">2 min ago</p>
-              </kyn-card>
-              <kyn-card type="normal" role="article" aria-label="Issue">
-                <div class="issue-card__head">
-                  <h3 class="issue-card__title">Issue title goes here</h3>
-                  <kyn-tag
-                    label="Low"
-                    tagSize="sm"
-                    tagColor="default"
-                  ></kyn-tag>
-                </div>
-                <p class="issue-card__meta">Short description of the issue.</p>
-                <p class="issue-card__meta">2 min ago</p>
-              </kyn-card>
+              <div class="status-widget status-${WIDGET_STATUS.CRITICAL}">
+                <kyn-card
+                  type="normal"
+                  role="article"
+                  aria-label="Issue"
+                  ?hideBorder=${true}
+                >
+                  <div class="status-widget__layout">
+                    <div class="status-widget__icon" aria-hidden="true">
+                      ${unsafeSVG(statusIconCritical)}
+                    </div>
+                    <div class="status-widget__main">
+                      <h3 class="status-widget__title">
+                        Issue title goes here
+                      </h3>
+                      <p class="status-widget__desc">
+                        Short description of the issue here
+                      </p>
+                      <div class="status-widget__meta">
+                        <span class="status-widget__time">2 min ago</span>
+                        <kyn-badge
+                          label="Critical"
+                          size="sm"
+                          type="heavy"
+                          status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
+                          iconTitle="Critical severity"
+                        ></kyn-badge>
+                      </div>
+                    </div>
+                  </div>
+                </kyn-card>
+              </div>
+              <div class="status-widget status-${WIDGET_STATUS.HIGH}">
+                <kyn-card
+                  type="normal"
+                  role="article"
+                  aria-label="Issue"
+                  ?hideBorder=${true}
+                >
+                  <div class="status-widget__layout">
+                    <div class="status-widget__icon" aria-hidden="true">
+                      ${unsafeSVG(statusIconHigh)}
+                    </div>
+                    <div class="status-widget__main">
+                      <h3 class="status-widget__title">
+                        Issue title goes here
+                      </h3>
+                      <p class="status-widget__desc">
+                        Short description of the issue here
+                      </p>
+                      <div class="status-widget__meta">
+                        <span class="status-widget__time">2 min ago</span>
+                        <kyn-badge
+                          label="High"
+                          size="sm"
+                          type="heavy"
+                          status=${BADGE_STATUS[WIDGET_STATUS.HIGH]}
+                          iconTitle="High severity"
+                        ></kyn-badge>
+                      </div>
+                    </div>
+                  </div>
+                </kyn-card>
+              </div>
+              <div class="status-widget status-${WIDGET_STATUS.MEDIUM}">
+                <kyn-card
+                  type="normal"
+                  role="article"
+                  aria-label="Issue"
+                  ?hideBorder=${true}
+                >
+                  <div class="status-widget__layout">
+                    <div class="status-widget__icon" aria-hidden="true">
+                      ${unsafeSVG(statusIconMedium)}
+                    </div>
+                    <div class="status-widget__main">
+                      <h3 class="status-widget__title">
+                        Issue title goes here
+                      </h3>
+                      <p class="status-widget__desc">
+                        Short description of the issue here
+                      </p>
+                      <div class="status-widget__meta">
+                        <span class="status-widget__time">2 min ago</span>
+                        <kyn-badge
+                          label="Medium"
+                          size="sm"
+                          type="heavy"
+                          status=${BADGE_STATUS[WIDGET_STATUS.MEDIUM]}
+                          iconTitle="Medium severity"
+                        ></kyn-badge>
+                      </div>
+                    </div>
+                  </div>
+                </kyn-card>
+              </div>
+              <div class="status-widget status-${WIDGET_STATUS.LOW}">
+                <kyn-card
+                  type="normal"
+                  role="article"
+                  aria-label="Issue"
+                  ?hideBorder=${true}
+                >
+                  <div class="status-widget__layout">
+                    <div class="status-widget__icon" aria-hidden="true">
+                      ${unsafeSVG(statusIconLow)}
+                    </div>
+                    <div class="status-widget__main">
+                      <h3 class="status-widget__title">
+                        Issue title goes here
+                      </h3>
+                      <p class="status-widget__desc">
+                        Short description of the issue here
+                      </p>
+                      <div class="status-widget__meta">
+                        <span class="status-widget__time">2 min ago</span>
+                        <kyn-badge
+                          label="Low"
+                          size="sm"
+                          type="heavy"
+                          status=${BADGE_STATUS[WIDGET_STATUS.LOW]}
+                          iconTitle="Low severity"
+                        ></kyn-badge>
+                      </div>
+                    </div>
+                  </div>
+                </kyn-card>
+              </div>
             </div>
             <div class="issue-list__footer">
-              <kyn-button kind="primary" size="small">Fix all</kyn-button>
+              <kyn-button kind="primary" size="small">Fix All</kyn-button>
             </div>
           </div>
         </div>
@@ -292,7 +272,13 @@ export const ThreePaneIssueDetail = {
           <div class="issue-detail">
             <div class="issue-detail__title-row">
               <h2 class="issue-detail__title">Issue title</h2>
-              <kyn-tag label="Critical" tagSize="md" tagColor="red"></kyn-tag>
+              <kyn-badge
+                label="Critical"
+                size="md"
+                type="heavy"
+                status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
+                iconTitle="Critical severity"
+              ></kyn-badge>
             </div>
             <div class="issue-detail__actions">
               <kyn-button kind="primary" size="small">Fix issue</kyn-button>
@@ -321,19 +307,17 @@ export const ThreePaneIssueDetail = {
             </div>
           </div>
         </div>
-        <div slot="pane-3">
-          <div class="code-pane">
+        <div slot="pane-3" class="pane-3">
+          <split-view-code-rail>
             <kyn-block-code-view
               darkTheme="dark"
               language="javascript"
-              codeViewLabel="Suggested patch"
               copyOptionVisible
               ?codeViewExpandable=${false}
-              .maxHeight=${null}
-              codeSnippet=${DEMO_CODE}
+              codeSnippet=${CODE_DEMO_ALL}
               @on-copy=${(e) => action('on-copy')(e.detail)}
             ></kyn-block-code-view>
-          </div>
+          </split-view-code-rail>
         </div>
       </split-view-pattern>
     </div>

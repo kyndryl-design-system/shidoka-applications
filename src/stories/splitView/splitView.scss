@@ -1,0 +1,550 @@
+/* @split-view-section: pattern */
+/* Shadow root: <split-view-pattern> */
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 0;
+}
+
+.split-view {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  min-height: min(640px, 82vh);
+  max-height: min(900px, 90vh);
+  /* Page surface so transparent gutters don’t pick up container gray (same as primary pane). */
+  background: var(--kd-color-background-page-default);
+  border: 1px solid var(--kd-color-border-level-secondary);
+  border-radius: 8px;
+  box-shadow: var(--kd-elevation-level-1, 0 1px 3px rgb(0 0 0 / 8%));
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.pane {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  position: relative;
+  z-index: 0;
+}
+
+.pane--start {
+  flex: 0 0 auto;
+  background: var(--kd-color-background-page-default);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  /* Clip gutter overlap only; slotted content scrolls inside (see slot + ::slotted below). */
+  overflow: hidden;
+  /* Pull 4px under the transparent divider so pane color shows through the 8px gutter. */
+  margin-right: -4px;
+}
+
+/* Slot must fill pane height so light-DOM flex layouts (e.g. issue list + footer) can scroll. */
+.pane--start > slot[name='pane-1'] {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane--start slot[name='pane-1']::slotted(*) {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.pane--primary {
+  flex: 1 1 auto;
+  background: var(--kd-color-background-container-default);
+  margin-left: -4px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pane--primary > slot[name='pane-2'] {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane--primary slot[name='pane-2']::slotted(*) {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Three-pane only: primary is between two dividers — overlap both gutters. */
+.pane--primary.pane--primary--flanked {
+  margin-right: -4px;
+}
+
+.pane--end {
+  flex: 0 0 auto;
+  /* Column flex so slotted content (e.g. .pane-3 → split-view-code-rail) can fill the rail. */
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  margin-left: -4px;
+  background: var(--kd-color-code-view-background);
+}
+
+.pane--end > slot[name='pane-3'] {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Light-DOM wrapper in the pane-3 slot (e.g. class="pane-3") — must use ::slotted, not .pane-3 here. */
+.pane--end slot[name='pane-3']::slotted(*) {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.pane--placeholder {
+  padding: var(--kd-spacing-16);
+  color: var(--kd-color-text-level-secondary);
+  font: var(--kd-font-body-01);
+}
+
+/* Hit target must be a normal DOM node (not the divider shadow root) for reliable dragging. */
+.split-view__divider {
+  flex: 0 0 8px;
+  width: 8px;
+  min-width: 8px;
+  align-self: stretch;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  touch-action: none;
+  cursor: ew-resize;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Transparent: adjacent panes overlap 4px each (see .pane--* margins) so fills read through. */
+  background: transparent;
+}
+
+/*
+ * Hairline in light DOM (reliable paint). Centered in the 8px gutter so it runs through the
+ * middle of the 2px gap between the two drag lines (same axis as kyn-divider’s centered grip).
+ */
+.split-view__divider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--kd-color-border-level-secondary);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 150ms ease-out;
+}
+
+/* Default hairline hides on hover / drag so only the grip surface + lines read (matches drawer). */
+.split-view__divider:hover::before,
+.split-view__divider:has(kyn-divider[dragging])::before {
+  opacity: 0;
+}
+
+.split-view__divider kyn-divider {
+  position: relative;
+  z-index: 2;
+  align-self: stretch;
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+}
+
+/* @split-view-section: railHost */
+/* Shadow root: <split-view-code-rail> */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  align-self: stretch;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  background: transparent;
+}
+
+::slotted(kyn-block-code-view) {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  align-self: stretch;
+}
+
+/* @split-view-section: blockFlush */
+/* Adopted into kyn-block-code-view shadow (story-only: fill pane, wrap, even padding) */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--kd-color-code-view-background);
+}
+
+.multi-line.code-view__container {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 0;
+  min-width: 0;
+  background: var(--kd-color-code-view-background);
+  padding: var(--kd-spacing-24);
+}
+
+.multi-line.code-view__container .code-snippet-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.multi-line.code-view__container pre.no-line-numbers code {
+  margin-left: 0 !important;
+}
+
+.multi-line.code-view__container pre {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  max-height: none !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+}
+
+.multi-line.code-view__container pre code {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Copy control sits in the padded inset (container is position: relative in source). */
+.multi-line.code-view__container .code-view__copy-button {
+  top: calc(var(--kd-spacing-24) + var(--kd-spacing-8));
+  right: calc(var(--kd-spacing-24) + var(--kd-spacing-8));
+}
+
+/* @split-view-section: storyLight */
+/* Light DOM: Storybook shell + issue detail demo */
+
+.split-view-shell {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--kd-spacing-24);
+  min-height: 480px;
+  background: var(--kd-color-background-page-default);
+  /* Shared inset so primary actions line up across pane-1 / pane-2. */
+  --split-view-actions-inset-block-end: var(--kd-spacing-24);
+}
+
+/* Slotted wrappers must fill pane height so nested footers share the same bottom inset. */
+.split-view-shell [slot='pane-1'],
+.split-view-shell [slot='pane-2'] {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+  height: 100%;
+  align-self: stretch;
+}
+
+.split-view-shell [slot='pane-1'] .issue-list,
+.split-view-shell [slot='pane-2'] .issue-detail {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
+.split-view-shell kyn-card {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.pane--placeholder {
+  padding: var(--kd-spacing-16);
+  color: var(--kd-color-text-level-secondary);
+  font: var(--kd-font-body-01);
+}
+
+.split-view-shell split-view-pattern::part(pane-start) {
+  background: var(--kd-color-background-container-ai-level-2);
+}
+
+.issue-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  box-sizing: border-box;
+  /* Bottom inset lives on .issue-list__footer so top/below the action row match. */
+  padding: var(--kd-spacing-16) var(--kd-spacing-16) 0;
+  gap: 0;
+  background: var(--kd-color-background-container-ai-level-2);
+}
+
+.issue-list__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--kd-spacing-16);
+  padding-right: var(--kd-spacing-4);
+}
+
+.issue-list__footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+  /* Same inset above and below the row as .issue-detail__footer vs detail padding (see --split-view-actions-inset-block-end). */
+  padding-top: var(--split-view-actions-inset-block-end, var(--kd-spacing-24));
+  padding-bottom: var(
+    --split-view-actions-inset-block-end,
+    var(--kd-spacing-24)
+  );
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+/* Issue cards: same status border tokens as kyn-widget (see widget.scss / WIDGET_STATUS). */
+.status-widget {
+  flex: 0 0 auto;
+  border-radius: 8px;
+  border: 1px solid var(--kd-color-border-card-default);
+  border-left: 3px solid var(--kd-color-border-level-secondary);
+  overflow: hidden;
+  background: var(--kd-color-background-container-default);
+  box-sizing: border-box;
+}
+
+.status-widget.status-critical {
+  border-left-color: var(--kd-color-status-critical-dark);
+}
+
+.status-widget.status-high {
+  border-left-color: var(
+    --kd-color-background-status-buttons-information-high-enabled
+  );
+}
+
+.status-widget.status-medium {
+  border-left-color: var(
+    --kd-color-background-status-buttons-information-medium-enabled
+  );
+}
+
+.status-widget.status-low {
+  border-left-color: var(
+    --kd-color-background-status-buttons-information-low-enabled
+  );
+}
+
+.status-widget__layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--kd-spacing-12);
+}
+
+.status-widget__icon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--kd-color-icon-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-widget__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.status-widget__main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.status-widget__title {
+  font: var(--kd-font-heading-06);
+  color: var(--kd-color-text-level-primary);
+  margin: 0 0 var(--kd-spacing-8);
+}
+
+.status-widget__desc {
+  font: var(--kd-font-body-01);
+  color: var(--kd-color-text-level-secondary);
+  margin: 0 0 var(--kd-spacing-8);
+}
+
+.status-widget__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kd-spacing-8);
+}
+
+.status-widget__time {
+  font: var(--kd-font-caption-01);
+  color: var(--kd-color-text-level-secondary);
+}
+
+.issue-detail {
+  display: flex;
+  flex-direction: column;
+  padding: var(--kd-spacing-24) var(--kd-spacing-32)
+    var(--split-view-actions-inset-block-end, var(--kd-spacing-24));
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.issue-detail__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--kd-spacing-12);
+  margin-bottom: var(--kd-spacing-8);
+}
+
+.issue-detail__title {
+  font: var(--kd-font-heading-04);
+  margin: 0;
+  color: var(--kd-color-text-level-primary);
+}
+
+.issue-detail__section-title {
+  font: var(--kd-font-heading-06);
+  margin: var(--kd-spacing-24) 0 var(--kd-spacing-8);
+  color: var(--kd-color-text-level-primary);
+}
+
+.issue-detail__section-title:first-of-type {
+  margin-top: var(--kd-spacing-20);
+}
+
+.issue-detail__body {
+  font: var(--kd-font-body-01);
+  color: var(--kd-color-text-level-primary);
+  margin: 0;
+  max-width: 72ch;
+}
+
+.issue-detail__list {
+  margin: var(--kd-spacing-8) 0 0;
+  padding-left: var(--kd-spacing-24);
+  font: var(--kd-font-body-01);
+  color: var(--kd-color-text-level-primary);
+  max-width: 72ch;
+}
+
+.issue-detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kd-spacing-8);
+  margin-top: var(--kd-spacing-16);
+}
+
+.issue-detail__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kd-spacing-8);
+  margin-top: auto;
+  padding-top: var(--kd-spacing-24);
+  align-items: flex-end;
+}
+
+.split-view-shell split-view-pattern::part(pane-end) {
+  background: var(--kd-color-code-view-background);
+}
+
+.split-view-shell split-view-code-rail {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  align-self: stretch;
+  width: 100%;
+}
+
+.split-view-shell .pane-3 {
+  background: var(--kd-color-code-view-background);
+}

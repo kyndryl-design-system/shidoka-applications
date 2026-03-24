@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import './index';
 
+import '../../../stories/splitView/splitView.stories.js';
+
 import '../card';
 import '../metaData';
 import { LinkWithIcon as Link } from '../link/Link.stories.js';
@@ -58,16 +60,57 @@ export const Vertical = {
   },
 };
 
+/** Uses the Storybook-only `split-view-pattern` helper so the divider is a real resize rail (pointer capture + constraints), full-height in the track. */
 export const VerticalDragHandle = {
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: () => {
     return html`
-      <div
-        class="v-align"
-        style="height: 120px; align-items: stretch; background: var(--kd-color-background-container-subtle); padding: 8px; border-radius: 8px;"
-      >
-        <span>Pane A</span>
-        <kyn-divider vertical drag-handle></kyn-divider>
-        <span>Pane B</span>
+      <style>
+        .divider-drag-demo {
+          box-sizing: border-box;
+          width: 100%;
+          max-width: 1024px;
+          margin: 0 auto;
+          padding: var(--kd-spacing-24);
+        }
+        .divider-drag-demo__intro {
+          font: var(--kd-font-body-01);
+          color: var(--kd-color-text-level-secondary);
+          margin: 0 0 var(--kd-spacing-16);
+          max-width: 72ch;
+        }
+        .divider-drag-demo__intro a {
+          color: var(--kd-color-text-link-level-default);
+          text-decoration: underline;
+        }
+        .divider-drag-demo__intro a:hover {
+          color: var(--kd-color-text-link-level-hover);
+        }
+        .divider-drag-demo split-view-pattern::part(split-view) {
+          min-height: min(560px, calc(100vh - 48px));
+        }
+        .divider-drag-demo__pane {
+          padding: var(--kd-spacing-16);
+          font: var(--kd-font-body-01);
+          color: var(--kd-color-text-level-secondary);
+          box-sizing: border-box;
+          min-height: 0;
+        }
+      </style>
+      <div class="divider-drag-demo">
+        <p class="divider-drag-demo__intro">
+          You can find additional implementation of this divider in multi-pane
+          layouts in the
+          <a href="/?path=/docs/patterns-split-view--docs" target="_parent"
+            >Split View pattern</a
+          >.
+        </p>
+        <split-view-pattern panes="2">
+          <div slot="pane-1" class="divider-drag-demo__pane">Pane A</div>
+          <div slot="pane-2" class="divider-drag-demo__pane">Pane B</div>
+        </split-view-pattern>
       </div>
     `;
   },
