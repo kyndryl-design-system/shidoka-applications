@@ -25,7 +25,8 @@ import {
 } from './splitViewCss';
 
 /**
- * Styles live in `splitView.scss` (section markers). `splitViewCss.ts` splits them for the
+ * Styles live in `splitView.scss` (section markers); Vite compiles chunks — see `.storybook/main.js`.
+ * `splitViewCss.ts` re-exports them for the
  * story-only helpers and the light-DOM `<style>` block below.
  */
 registerSplitViewPattern(SPLIT_VIEW_PATTERN_SHADOW_CSS);

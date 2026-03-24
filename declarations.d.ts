@@ -16,6 +16,14 @@ declare module '*?inline' {
   export default content;
 }
 
+/** Storybook: splitView.scss → four compiled CSS strings (see .storybook/main.js). */
+declare module 'virtual:split-view-css' {
+  export const SPLIT_VIEW_PATTERN_SHADOW_CSS: string;
+  export const SPLIT_VIEW_CODE_RAIL_SHADOW_CSS: string;
+  export const SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS: string;
+  export const SPLIT_VIEW_STORY_LIGHT_DOM_CSS: string;
+}
+
 declare module 'flatpickr/dist/esm/l10n/*.js' {
   import type { CustomLocale } from 'flatpickr/dist/types/locale';
   const locale: CustomLocale;
