@@ -8,6 +8,7 @@ import { registerSplitViewCodeRail } from './splitViewCodeRail';
 import '../../components/reusable/button/button';
 import '../../components/reusable/card/card';
 import '../../components/reusable/badge/badge';
+import '../../components/reusable/divider/divider';
 import '../../components/reusable/blockCodeView/blockCodeView';
 import { WIDGET_STATUS } from '../../components/reusable/widget/defs';
 
@@ -270,37 +271,42 @@ export const ThreePaneIssueDetail = {
         </div>
         <div slot="pane-2">
           <div class="issue-detail">
-            <div class="issue-detail__title-row">
-              <h2 class="issue-detail__title">Issue title</h2>
-              <kyn-badge
-                label="Critical"
-                size="md"
-                type="heavy"
-                status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
-                iconTitle="Critical severity"
-              ></kyn-badge>
+            <div class="issue-detail__block">
+              <div class="issue-detail__title-row">
+                <h2 class="issue-detail__title">Issue title</h2>
+                <kyn-badge
+                  label="Critical"
+                  size="md"
+                  type="heavy"
+                  status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
+                  iconTitle="Critical severity"
+                ></kyn-badge>
+              </div>
             </div>
-            <div class="issue-detail__actions">
-              <kyn-button kind="primary" size="small">Fix issue</kyn-button>
-              <kyn-button kind="secondary" size="small"
-                >Secondary option</kyn-button
-              >
+            <kyn-divider class="issue-detail__divider"></kyn-divider>
+            <div class="issue-detail__block">
+              <h3 class="issue-detail__section-title">Root cause analysis</h3>
+              <p class="issue-detail__body">
+                The service timed out when calling the upstream dependency under
+                load.
+              </p>
             </div>
-            <h3 class="issue-detail__section-title">Root cause analysis</h3>
-            <p class="issue-detail__body">
-              The service timed out when calling the upstream dependency under
-              load.
-            </p>
-            <h3 class="issue-detail__section-title">Key findings</h3>
-            <ul class="issue-detail__list">
-              <li>Retry budget was exhausted after 500 errors.</li>
-              <li>Connection pool size is below peak traffic needs.</li>
-            </ul>
-            <h3 class="issue-detail__section-title">Suggested fix</h3>
-            <p class="issue-detail__body">
-              Increase pool size and add exponential backoff on transient
-              failures.
-            </p>
+            <kyn-divider class="issue-detail__divider"></kyn-divider>
+            <div class="issue-detail__block">
+              <h3 class="issue-detail__section-title">Key findings</h3>
+              <ul class="issue-detail__list">
+                <li>Retry budget was exhausted after 500 errors.</li>
+                <li>Connection pool size is below peak traffic needs.</li>
+              </ul>
+            </div>
+            <kyn-divider class="issue-detail__divider"></kyn-divider>
+            <div class="issue-detail__block">
+              <h3 class="issue-detail__section-title">Suggested fix</h3>
+              <p class="issue-detail__body">
+                Increase pool size and add exponential backoff on transient
+                failures.
+              </p>
+            </div>
             <div class="issue-detail__footer">
               <kyn-button kind="primary">Apply fix</kyn-button>
               <kyn-button kind="secondary">Run diagnostics again</kyn-button>
