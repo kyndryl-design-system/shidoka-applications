@@ -1,7 +1,25 @@
 // Shared drag surface + grip for kyn-side-drawer and kyn-divider (vertical drag-handle).
 // Markup: <div class="drag-handle"><span class="drag-lines"></span></div>
+//
+// Default grip lines use --kyn-color-side-drawer-icon when published; until then fall back to
+// --kd-color-icon-secondary. Hover/drag lines use --kyn-resize-grip-line-active → tertiary.
+// Figma semantic “Side-Drawer-Icon” aligns with --kyn-color-side-drawer-icon.
+//
+// Optional on kyn-divider host or ancestor (e.g. split-view divider sets per-line for light/dark):
+//   --kyn-resize-grip-line / -active     both lines (default)
+//   --kyn-resize-grip-line-start / -end  left vs right line (::before / ::after)
+//   --kyn-resize-grip-line-start-active / -end-active  hover + dragging
 
 @mixin resizable-drag-handle-vertical($width, $border-radius: 4px) {
+  $line: var(
+    --kyn-resize-grip-line,
+    var(--kyn-color-side-drawer-icon, var(--kd-color-icon-secondary))
+  );
+  $line-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
+  );
+
   .drag-handle {
     position: absolute;
     top: 0;
@@ -21,9 +39,18 @@
       background: var(--kd-color-border-variants-light);
 
       .drag-lines {
-        &::before,
+        &::before {
+          background: var(
+            --kyn-resize-grip-line-start-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
+        }
+
         &::after {
-          background: var(--kd-color-icon-tertiary);
+          background: var(
+            --kyn-resize-grip-line-end-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
         }
       }
     }
@@ -32,9 +59,18 @@
       background: var(--kd-color-border-variants-drag);
 
       .drag-lines {
-        &::before,
+        &::before {
+          background: var(
+            --kyn-resize-grip-line-start-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
+        }
+
         &::after {
-          background: var(--kd-color-icon-tertiary);
+          background: var(
+            --kyn-resize-grip-line-end-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
         }
       }
     }
@@ -52,14 +88,23 @@
     height: 32px;
     pointer-events: none;
 
-    &::before,
+    &::before {
+      content: '';
+      display: block;
+      flex: 0 0 1px;
+      width: 1px;
+      height: 32px;
+      background: var(--kyn-resize-grip-line-start, #{$line});
+      transition: background-color 150ms ease-out;
+    }
+
     &::after {
       content: '';
       display: block;
       flex: 0 0 1px;
       width: 1px;
       height: 32px;
-      background: var(--kd-color-icon-secondary);
+      background: var(--kyn-resize-grip-line-end, #{$line});
       transition: background-color 150ms ease-out;
     }
   }

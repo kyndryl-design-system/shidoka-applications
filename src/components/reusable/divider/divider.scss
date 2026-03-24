@@ -20,6 +20,12 @@
   flex-direction: column;
   box-sizing: border-box;
   cursor: ew-resize;
+  /* Defaults; --kyn-color-side-drawer-icon is the published Side-Drawer-Icon token (see foundation). */
+  --kyn-resize-grip-line: var(
+    --kyn-color-side-drawer-icon,
+    var(--kd-color-icon-secondary)
+  );
+  --kyn-resize-grip-line-active: var(--kd-color-icon-tertiary);
 }
 
 .divider {
@@ -71,5 +77,47 @@
   @include resizable-drag-handle.resizable-drag-handle-vertical(
     $width: 100%,
     $border-radius: 0
+  );
+}
+
+/*
+ * Optional host classes: set per-line grip vars (same tokens as Split View pattern in splitView.scss).
+ * Prefer setting those vars on kyn-divider from a parent (e.g. .split-view__divider--before-end).
+ */
+:host([vertical][drag-handle].left-inverted-handle) {
+  --kyn-resize-grip-line-start: var(
+    --kyn-color-side-drawer-icon-on-inverse,
+    var(--kd-color-icon-inverse)
+  );
+  --kyn-resize-grip-line-end: var(
+    --kyn-color-side-drawer-icon,
+    var(--kd-color-icon-secondary)
+  );
+  --kyn-resize-grip-line-start-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
+  );
+  --kyn-resize-grip-line-end-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
+  );
+}
+
+:host([vertical][drag-handle].right-inverted-handle) {
+  --kyn-resize-grip-line-start: var(
+    --kyn-color-side-drawer-icon,
+    var(--kd-color-icon-secondary)
+  );
+  --kyn-resize-grip-line-end: var(
+    --kyn-color-side-drawer-icon-on-inverse,
+    var(--kd-color-icon-inverse)
+  );
+  --kyn-resize-grip-line-start-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
+  );
+  --kyn-resize-grip-line-end-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
   );
 }

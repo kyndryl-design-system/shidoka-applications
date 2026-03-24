@@ -5,6 +5,10 @@ import DividerScss from './divider.scss?inline';
 
 /**
  * Divider Component.
+ *
+ * Vertical `drag-handle`: optional host classes `left-inverted-handle` | `right-inverted-handle`
+ * set per-line CSS vars; or set `--kyn-resize-grip-line-start` / `-end` from a parent (Split View
+ * does this in `splitView.scss` for the divider before the end pane).
  */
 @customElement('kyn-divider')
 export class Divider extends LitElement {

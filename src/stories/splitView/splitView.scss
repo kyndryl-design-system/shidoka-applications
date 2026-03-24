@@ -201,6 +201,27 @@
   height: 100%;
 }
 
+/* Dark end pane (e.g. code): right half of grip sits on dark — inverse line tokens (see kyn-divider). */
+.split-view__divider--before-end kyn-divider {
+  --kyn-resize-grip-line-start: var(
+    --kyn-color-side-drawer-icon,
+    var(--kd-color-icon-secondary)
+  );
+  --kyn-resize-grip-line-end: var(
+    --kyn-color-side-drawer-icon-on-inverse,
+    var(--kd-color-icon-inverse)
+  );
+  /* Hover / drag: both lines use the same global theme active icon token (tertiary). */
+  --kyn-resize-grip-line-start-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
+  );
+  --kyn-resize-grip-line-end-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
+  );
+}
+
 /* @split-view-section: railHost */
 /* Shadow root: <split-view-code-rail> */
 

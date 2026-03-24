@@ -22,13 +22,9 @@ import {
   SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
   SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS,
   SPLIT_VIEW_STORY_LIGHT_DOM_CSS,
-} from './splitViewCss';
+} from 'virtual:split-view-css';
 
-/**
- * Styles live in `splitView.scss` (section markers); Vite compiles chunks — see `.storybook/main.js`.
- * `splitViewCss.ts` re-exports them for the
- * story-only helpers and the light-DOM `<style>` block below.
- */
+/** Styles: single `splitView.scss` (section markers); Vite plugin in `.storybook/main.js` compiles chunks. */
 registerSplitViewPattern(SPLIT_VIEW_PATTERN_SHADOW_CSS);
 registerSplitViewCodeRail(
   SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,

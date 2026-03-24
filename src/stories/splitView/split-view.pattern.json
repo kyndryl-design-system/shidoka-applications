@@ -17,7 +17,7 @@
       "note": "Single file with /* @split-view-section: … */ markers; Storybook Vite plugin compiles each chunk (compiled ?inline CSS drops comments in prod)."
     },
     "styleLoader": {
-      "path": "splitViewCss.ts",
+      "path": "virtual:split-view-css (see .storybook/main.js vite plugin + splitView.scss)",
       "exports": [
         "SPLIT_VIEW_PATTERN_SHADOW_CSS",
         "SPLIT_VIEW_CODE_RAIL_SHADOW_CSS",
@@ -47,7 +47,7 @@
   ],
   "widgetStatusEnum": "src/components/reusable/widget/defs.ts (WIDGET_STATUS — borders align with kyn-widget)",
   "integrationOrder": [
-    "Import and call registerSplitViewPattern / registerSplitViewCodeRail with strings from splitViewCss (see splitView.stories.js).",
+    "Import and call registerSplitViewPattern / registerSplitViewCodeRail with CSS strings from virtual:split-view-css (see splitView.stories.js).",
     "Import design-system components used by the story.",
     "Use <split-view-pattern> with named slots pane-1, pane-2, and optionally pane-3.",
     "Optional end-pane code: wrap kyn-block-code-view in split-view-code-rail for flush rail behavior."
