@@ -39,6 +39,13 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   @property({ type: String })
   accessor name = '';
 
+  /**
+   * Optional full name for the native tooltip when `name` is abbreviated in the DOM.
+   * Defaults to `name`.
+   */
+  @property({ type: String, attribute: 'name-title' })
+  accessor nameTitle = '';
+
   /** The count to display (workspace variant only). */
   @property({ type: Number })
   accessor count: number | null = null;
@@ -71,19 +78,25 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
       'menu-item--selected': this.selected,
     };
 
+    const tooltipName = this.nameTitle || this.name;
+
     return html`
       <div
         class=${classMap(classes)}
         role=${isBack ? 'none' : 'listitem'}
         aria-current=${this.selected ? 'true' : 'false'}
       >
-        <button class="menu-item__select" @click=${this._handleClick}>
+        <button
+          class="menu-item__select"
+          title=${tooltipName}
+          @click=${this._handleClick}
+        >
           ${isBack
             ? html`<span class="menu-item__back-icon"
                 >${unsafeSVG(arrowLeftIcon)}</span
               >`
             : null}
-          <span class="menu-item__name" title=${this.name}>${this.name}</span>
+          <span class="menu-item__name">${this.name}</span>
           ${isWorkspace ? this._renderWorkspaceContent() : null}
         </button>
         ${!isWorkspace && !isBack ? this._renderItemContent() : null}

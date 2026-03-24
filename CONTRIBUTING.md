@@ -59,7 +59,8 @@ this project or the open source license(s) involved.
       1. `BREAKING CHANGE:` in the commit message footer will trigger a major version update.
       1. [Conventional Commits Cheat Sheet](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
    1. Commits MUST include a signoff `-s / -signoff` for the above DCO.
-      1. Commits through VS Code can enable auto signoffs via the `git.alwaysSignOff` setting (included in our workspace settings.json).
+      1. A `prepare-commit-msg` hook appends `Signed-off-by:` when it’s missing (covers terminal `git commit -m`, any GUI, etc.).
+      1. Commits from VS Code / Cursor can also use `git.alwaysSignOff` (included in `.vscode/settings.json`); that setting only applies to commits the editor runs—not to a separate Terminal `git commit`.
       1. Commits via the GitHub web UI can be checked via browser extension:
          1. [Chrome](https://chromewebstore.google.com/detail/dco-github-ui/onhgmjhnaeipfgacbglaphlmllkpoijo?pli=1)
          1. [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scott-rigby/)

@@ -196,9 +196,6 @@ export default {
 
 // --- header flyout ---
 
-const truncateName = (name, maxLen = 20) =>
-  name.length > maxLen ? name.slice(0, maxLen) + '…' : name;
-
 const handleUIItemClick = (e, item) => {
   handleItemClick(e, item);
 
@@ -206,7 +203,7 @@ const handleUIItemClick = (e, item) => {
   if (flyout) {
     const nameEl = flyout.querySelector('.account-name');
     if (nameEl) nameEl.textContent = item.name;
-    flyout.label = truncateName(item.name);
+    flyout.label = item.name;
   }
 };
 
@@ -290,7 +287,7 @@ export const UIImplementation = {
 
       <kyn-header-flyouts>
         <kyn-header-flyout
-          label=${truncateName(selectedItem?.name || '')}
+          label=${selectedItem?.name || ''}
           hideMenuLabel
           hideButtonLabel
           noPadding

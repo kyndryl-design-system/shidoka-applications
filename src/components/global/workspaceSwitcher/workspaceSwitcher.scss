@@ -50,6 +50,11 @@
 .workspace-switcher__back {
   margin-bottom: 8px;
 
+  @media (max-width: calc(52rem - 0.001px)) {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
   @media (min-width: 52rem) {
     display: none;
   }
@@ -203,22 +208,15 @@
     }
   }
 
+  /* Single-line ellipsis; use full row width (not the desktop 200px cap). */
+  .workspace-switcher__account-meta-name {
+    max-width: 100%;
+    min-width: 0;
+  }
+
   @media (max-width: calc(42rem - 0.001px)) {
     .workspace-switcher {
       margin-top: 4px;
     }
-  }
-}
-
-@media (max-width: calc(52rem - 0.001px)) {
-  .workspace-switcher__account-meta-name {
-    max-width: 300px;
-  }
-}
-
-@media (max-width: calc(42rem - 0.001px)) {
-  .workspace-switcher__account-meta-name {
-    max-width: none;
-    white-space: normal;
   }
 }

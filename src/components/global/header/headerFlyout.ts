@@ -31,7 +31,10 @@ export class HeaderFlyout extends LitElement {
   @property({ type: Boolean })
   accessor hideArrow = false;
 
-  /** Menu & button label. */
+  /**
+   * Menu label, trigger `title`, and trigger `aria-label` (e.g. current account name).
+   * Truncate visually in the slot with CSS if needed; keep this value complete for tooltips and SR.
+   */
   @property({ type: String })
   accessor label = '';
 
@@ -44,10 +47,9 @@ export class HeaderFlyout extends LitElement {
   accessor hideButtonLabel = false;
 
   /**
-   * DEPRECATED. Use `label` instead.
-   * Button assistive text, title + aria-label.
+   * @deprecated Use `label` instead.
    */
-  @property({ type: String })
+  @property({ type: String, attribute: 'assistive-text' })
   accessor assistiveText = '';
 
   /** Turns the button into a link. */
@@ -69,6 +71,10 @@ export class HeaderFlyout extends LitElement {
   @queryAssignedElements()
   accessor slottedElements!: Array<HTMLElement>;
 
+  private get _triggerAssistiveText() {
+    return this.label || this.assistiveText;
+  }
+
   override render() {
     const classes = {
       menu: true,
@@ -89,8 +95,8 @@ export class HeaderFlyout extends LitElement {
               <a
                 class="btn interactive"
                 href=${this.href}
-                title=${this.label || this.assistiveText}
-                aria-label=${this.label || this.assistiveText}
+                title=${this._triggerAssistiveText}
+                aria-label=${this._triggerAssistiveText}
                 @click=${this.handleClick}
               >
                 <slot name="button"></slot>
@@ -111,8 +117,8 @@ export class HeaderFlyout extends LitElement {
           : html`
               <button
                 class="btn interactive"
-                title=${this.label || this.assistiveText}
-                aria-label=${this.label || this.assistiveText}
+                title=${this._triggerAssistiveText}
+                aria-label=${this._triggerAssistiveText}
                 @click=${this.handleClick}
               >
                 <slot name="button"></slot>
