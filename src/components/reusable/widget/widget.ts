@@ -12,7 +12,7 @@ import { WIDGET_STATUS } from './defs';
  * @fires on-select - Emits the widget selected state .`detail:{ selected: boolean }`
  * @slot unnamed - Slot for widget content.
  * @slot actions - Slot for action buttons.
- * @slot badge - Slot for status badge.
+ * @slot badge - Slot for badge status.
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
  * @slot subtitle - Slot for subtitle content.
