@@ -142,6 +142,7 @@ const issueDetailPane = () => html`
           type="heavy"
           status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
           iconTitle="Critical severity"
+          ?hideIcon=${true}
         ></kyn-badge>
       </div>
     </div>
@@ -306,6 +307,7 @@ export const ThreePaneIssueDetail = {
                           type="heavy"
                           status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
                           iconTitle="Critical severity"
+                          ?hideIcon=${true}
                         ></kyn-badge>
                       </div>
                     </div>
@@ -338,6 +340,7 @@ export const ThreePaneIssueDetail = {
                           type="heavy"
                           status=${BADGE_STATUS[WIDGET_STATUS.HIGH]}
                           iconTitle="High severity"
+                          ?hideIcon=${true}
                         ></kyn-badge>
                       </div>
                     </div>
@@ -370,6 +373,7 @@ export const ThreePaneIssueDetail = {
                           type="heavy"
                           status=${BADGE_STATUS[WIDGET_STATUS.MEDIUM]}
                           iconTitle="Medium severity"
+                          ?hideIcon=${true}
                         ></kyn-badge>
                       </div>
                     </div>
@@ -402,6 +406,7 @@ export const ThreePaneIssueDetail = {
                           type="heavy"
                           status=${BADGE_STATUS[WIDGET_STATUS.LOW]}
                           iconTitle="Low severity"
+                          ?hideIcon=${true}
                         ></kyn-badge>
                       </div>
                     </div>

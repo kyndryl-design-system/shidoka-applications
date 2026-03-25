@@ -468,13 +468,13 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: var(--kd-spacing-12);
+  gap: var(--kd-spacing-8);
 }
 
 .status-widget__icon {
   flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   color: var(--kd-color-icon-secondary);
   display: flex;
   align-items: center;
@@ -482,8 +482,8 @@
 }
 
 .status-widget__icon svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 .status-widget__main {
@@ -491,29 +491,41 @@
   min-width: 0;
 }
 
+/* Compact list density: title one step above body; description + timestamp share caption (matches Figma hierarchy). */
+.status-widget kyn-card::part(card-wrapper) {
+  padding: var(--kd-spacing-12);
+}
+
 .status-widget__title {
-  font: var(--kd-font-heading-06);
+  font-family: var(--kd-font-family-secondary);
+  font-size: var(--kd-font-size-utility-2-sm);
+  line-height: var(--kd-line-height-utility-2-sm);
+  font-weight: var(--kd-font-weight-bold);
+  letter-spacing: var(--kd-letter-spacing-5);
   color: var(--kd-color-text-level-primary);
-  margin: 0 0 var(--kd-spacing-8);
+  margin: 0 0 var(--kd-spacing-2);
+}
+
+/* Secondary lines: 12px — clearly below the title (utility-2-sm). */
+.status-widget__desc,
+.status-widget__time {
+  font-size: 0.75rem;
+  line-height: 1.25;
+  font-weight: var(--kd-font-weight-regular);
+  letter-spacing: var(--kd-letter-spacing-5);
+  color: var(--kd-color-text-level-secondary);
 }
 
 .status-widget__desc {
-  font: var(--kd-font-body-01);
-  color: var(--kd-color-text-level-secondary);
-  margin: 0 0 var(--kd-spacing-8);
+  margin: 0 0 var(--kd-spacing-2);
 }
 
 .status-widget__meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--kd-spacing-8);
-}
-
-.status-widget__time {
-  font: var(--kd-font-caption-01);
-  color: var(--kd-color-text-level-secondary);
 }
 
 .issue-detail {
