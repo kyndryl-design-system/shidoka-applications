@@ -23,6 +23,20 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 480px) {
+  .split-view {
+    /* Shorter default block on narrow viewports so less vertical scroll. */
+    min-height: min(480px, 72vh);
+    max-height: min(900px, 88vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-view__divider::before {
+    transition: none;
+  }
+}
+
 .pane {
   box-sizing: border-box;
   min-width: 0;
@@ -201,26 +215,8 @@
   height: 100%;
 }
 
-/* Dark end pane (e.g. code): right half of grip sits on dark — inverse line tokens (see kyn-divider). */
-.split-view__divider--before-end kyn-divider {
-  --kyn-resize-grip-line-start: var(
-    --kyn-color-side-drawer-icon,
-    var(--kd-color-icon-secondary)
-  );
-  --kyn-resize-grip-line-end: var(
-    --kyn-color-side-drawer-icon-on-inverse,
-    var(--kd-color-icon-inverse)
-  );
-  /* Hover / drag: both lines use the same global theme active icon token (tertiary). */
-  --kyn-resize-grip-line-start-active: var(
-    --kyn-resize-grip-line-active,
-    var(--kd-color-icon-tertiary)
-  );
-  --kyn-resize-grip-line-end-active: var(
-    --kyn-resize-grip-line-active,
-    var(--kd-color-icon-tertiary)
-  );
-}
+/* Inverted grip lines: `invert-start-divider-grip` / `invert-end-divider-grip` set
+ * `right-inverted-handle` on `kyn-divider` (see divider.scss) — avoids cascade loss vs :host. */
 
 /* @split-view-section: railHost */
 /* Shadow root: <split-view-code-rail> */
@@ -323,11 +319,20 @@
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: var(--kd-spacing-24);
+  padding-top: max(var(--kd-spacing-24), env(safe-area-inset-top, 0px));
+  padding-right: max(var(--kd-spacing-24), env(safe-area-inset-right, 0px));
+  padding-bottom: max(var(--kd-spacing-24), env(safe-area-inset-bottom, 0px));
+  padding-left: max(var(--kd-spacing-24), env(safe-area-inset-left, 0px));
   min-height: 480px;
   background: var(--kd-color-background-page-default);
   /* Shared inset so primary actions line up across pane-1 / pane-2. */
   --split-view-actions-inset-block-end: var(--kd-spacing-24);
+}
+
+@media (max-width: 480px) {
+  .split-view-shell {
+    min-height: 360px;
+  }
 }
 
 /* Slotted wrappers must fill pane height so nested footers share the same bottom inset. */
@@ -343,10 +348,32 @@
 }
 
 .split-view-shell [slot='pane-1'] .issue-list,
+.split-view-shell [slot='pane-1'] .issue-detail,
 .split-view-shell [slot='pane-2'] .issue-detail {
   flex: 1 1 auto;
   min-height: 0;
   height: 100%;
+}
+
+/* Minimal two-pane story: rail fills primary pane; blockFlush (adopted in rail) fills block height. */
+.split-view-shell [slot='pane-2'] .minimal-two-pane__primary {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.split-view-shell
+  [slot='pane-2']
+  .minimal-two-pane__primary
+  split-view-code-rail {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-self: stretch;
 }
 
 .split-view-shell kyn-card {
@@ -403,37 +430,38 @@
   align-items: flex-end;
 }
 
-/* Issue cards: same status border tokens as kyn-widget (see widget.scss / WIDGET_STATUS). */
+/* Issue cards: left accent + heavy badge match Figma (severity bar color ≠ kyn-widget status-* borders). */
 .status-widget {
   flex: 0 0 auto;
   border-radius: 8px;
   border: 1px solid var(--kd-color-border-card-default);
-  border-left: 3px solid var(--kd-color-border-level-secondary);
+  border-left: 4px solid var(--kd-color-border-level-secondary);
   overflow: hidden;
   background: var(--kd-color-background-container-default);
   box-sizing: border-box;
 }
 
+/* Critical: cyan/informational accent bar + Critical badge (heavy critical); High: red; Medium: yellow; Low: green. */
 .status-widget.status-critical {
-  border-left-color: var(--kd-color-status-critical-dark);
+  border-left-color: var(--kd-color-status-informational-dark);
 }
 
 .status-widget.status-high {
-  border-left-color: var(
-    --kd-color-background-status-buttons-information-high-enabled
-  );
+  border-left-color: var(--kd-color-status-error-dark);
 }
 
 .status-widget.status-medium {
-  border-left-color: var(
-    --kd-color-background-status-buttons-information-medium-enabled
-  );
+  border-left-color: var(--kd-color-status-warning-dark);
 }
 
 .status-widget.status-low {
-  border-left-color: var(
-    --kd-color-background-status-buttons-information-low-enabled
-  );
+  border-left-color: var(--kd-color-status-success-dark);
+}
+
+/* Selected row (e.g. first issue): light focus ring per Figma. */
+.status-widget.status-widget--selected {
+  outline: 1px solid var(--kd-color-border-variants-focus);
+  outline-offset: -1px;
 }
 
 .status-widget__layout {

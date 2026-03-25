@@ -1,4 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { property, state } from 'lit/decorators.js';
 
 import '../../components/reusable/divider/divider';
@@ -20,6 +21,51 @@ export function registerSplitViewPattern(css: string) {
     /** Two columns (start + primary) or three (start + primary + end). */
     @property({ type: Number })
     accessor panes: 2 | 3 = 3;
+
+    /**
+     * Per-line grip on the divider **after the start pane** (between start and primary). Use when
+     * the primary pane is a dark surface (e.g. code) next to a light start pane — required for
+     * two-pane layouts; in three-pane stories with light–light start/primary, leave off.
+     */
+    @property({
+      type: Boolean,
+      reflect: true,
+      attribute: 'invert-start-divider-grip',
+    })
+    accessor invertStartDividerGrip = false;
+
+    /**
+     * Per-line grip on the divider **before the end pane** (between primary and end). Use when
+     * `panes` is `3` and the end pane is dark (e.g. code rail).
+     */
+    @property({
+      type: Boolean,
+      reflect: true,
+      attribute: 'invert-end-divider-grip',
+    })
+    accessor invertEndDividerGrip = false;
+
+    /**
+     * Initial width in **px** for **pane-1** (start). Takes precedence over **`defaultStartPaneFraction`**
+     * and built-in ratios. Clamped on first layout.
+     */
+    @property({ type: Number, attribute: 'default-start-pane-width' })
+    accessor defaultStartPaneWidthPx: number | undefined = undefined;
+
+    /**
+     * Initial start width as a **fraction** of the track width (e.g. `0.45` for 45%). Used when
+     * **`defaultStartPaneWidthPx`** is not set. If omitted, built-in ratios apply (~36% two-pane,
+     * ~34% three-pane).
+     */
+    @property({ type: Number, attribute: 'default-start-pane-fraction' })
+    accessor defaultStartPaneFraction: number | undefined = undefined;
+
+    /**
+     * Initial width in **px** for **pane-3** (end) when **`panes` is `3`**. If omitted, ~28% of the
+     * track. Ignored when **`panes` is `2`**.
+     */
+    @property({ type: Number, attribute: 'default-end-pane-width' })
+    accessor defaultEndPaneWidthPx: number | undefined = undefined;
 
     @state()
     private accessor _leftPx = 0;
@@ -63,6 +109,15 @@ export function registerSplitViewPattern(css: string) {
       this._syncFromContainer();
     }
 
+    override updated(changed: Map<PropertyKey, unknown>) {
+      super.updated(changed);
+      if (changed.has('panes')) {
+        this._leftPx = 0;
+        this._rightPx = 0;
+        queueMicrotask(() => this._syncFromContainer());
+      }
+    }
+
     private _detachWindowListeners() {
       window.removeEventListener('pointermove', this._boundMove);
       window.removeEventListener('pointerup', this._boundEnd);
@@ -74,17 +129,30 @@ export function registerSplitViewPattern(css: string) {
       if (!w) return;
       this._trackWidth = w;
       if (this._leftPx === 0 && this._rightPx === 0) {
-        if (this.panes === 2) {
-          this._leftPx = w * 0.28;
+        const startW = this.defaultStartPaneWidthPx;
+        const startFrac = this.defaultStartPaneFraction;
+        if (startW != null && !Number.isNaN(startW)) {
+          this._leftPx = startW;
+        } else if (
+          startFrac != null &&
+          !Number.isNaN(startFrac) &&
+          startFrac > 0 &&
+          startFrac < 1
+        ) {
+          this._leftPx = w * startFrac;
+        } else if (this.panes === 2) {
+          this._leftPx = w * 0.36;
         } else {
-          this._leftPx = w * 0.22;
-          this._rightPx = w * 0.28;
+          this._leftPx = w * 0.34;
         }
-      } else {
-        this._leftPx = this._clampLeft(this._leftPx);
         if (this.panes === 3) {
-          this._rightPx = this._clampRight(this._rightPx);
+          const endW = this.defaultEndPaneWidthPx;
+          this._rightPx = endW != null && !Number.isNaN(endW) ? endW : w * 0.28;
         }
+      }
+      this._leftPx = this._clampLeft(this._leftPx);
+      if (this.panes === 3) {
+        this._rightPx = this._clampRight(this._rightPx);
       }
     }
 
@@ -213,6 +281,9 @@ export function registerSplitViewPattern(css: string) {
             <kyn-divider
               vertical
               drag-handle
+              class=${classMap({
+                'right-inverted-handle': this.invertStartDividerGrip,
+              })}
               ?hideHairline=${true}
               ?dragging=${d1}
             ></kyn-divider>
@@ -234,6 +305,9 @@ export function registerSplitViewPattern(css: string) {
                   <kyn-divider
                     vertical
                     drag-handle
+                    class=${classMap({
+                      'right-inverted-handle': this.invertEndDividerGrip,
+                    })}
                     ?hideHairline=${true}
                     ?dragging=${d2}
                   ></kyn-divider>

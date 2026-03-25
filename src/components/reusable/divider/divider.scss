@@ -80,13 +80,32 @@
   );
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .divider.vertical.has-drag-handle {
+    transition: none;
+
+    &::before {
+      transition: none;
+    }
+
+    .drag-handle,
+    .drag-lines::before,
+    .drag-lines::after {
+      transition: none !important;
+    }
+  }
+}
+
 /*
- * Optional host classes: set per-line grip vars (same tokens as Split View pattern in splitView.scss).
- * Prefer setting those vars on kyn-divider from a parent (e.g. .split-view__divider--before-end).
+ * Optional host classes: per-line grip contrast when the handle straddles light/dark surfaces.
+ * Or set --kyn-resize-grip-line-start / -end on kyn-divider from a parent.
+ * Split View: <split-view-pattern invert-start-divider-grip> / invert-end-divider-grip add
+ * `right-inverted-handle` on the matching `kyn-divider` (light surface left, dark right).
  */
 :host([vertical][drag-handle].left-inverted-handle) {
   --kyn-resize-grip-line-start: var(
     --kyn-color-side-drawer-icon-on-inverse,
+    var(--kd-color-icon-light),
     var(--kd-color-icon-inverse)
   );
   --kyn-resize-grip-line-end: var(
@@ -108,8 +127,10 @@
     --kyn-color-side-drawer-icon,
     var(--kd-color-icon-secondary)
   );
+  /* Line on dark surface: use light icon; --kd-color-icon-inverse can read too dark in light UI. */
   --kyn-resize-grip-line-end: var(
     --kyn-color-side-drawer-icon-on-inverse,
+    var(--kd-color-icon-light),
     var(--kd-color-icon-inverse)
   );
   --kyn-resize-grip-line-start-active: var(
