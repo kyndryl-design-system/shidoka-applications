@@ -8,6 +8,7 @@ import '../loaders';
 import '../tooltip';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 import ProgressBarStyles from './progressBar.scss?inline';
 
@@ -15,10 +16,11 @@ enum ProgressStatus {
   ACTIVE = 'active',
   SUCCESS = 'success',
   ERROR = 'error',
+  WARNING = 'warning',
 }
 
 /**
- * `<kyn-progress-bar>` -- progress bar status indicator component.
+ * Progress bar component.
  * @slot unnamed - Slot for tooltip text content.
  */
 @customElement('kyn-progress-bar')
@@ -39,13 +41,13 @@ export class ProgressBar extends LitElement {
 
   /** Sets progress bar status mode. */
   @property({ type: String })
-  accessor status: 'active' | 'success' | 'error' = 'active';
+  accessor status: 'active' | 'success' | 'warning' | 'error' = 'active';
 
   /** Sets initial progress bar value (optionally hard-coded). */
   @property({ type: Number })
   accessor value: number | null = null;
 
-  /** Sets manual max value (default = 100). */
+  /** Sets manual max value. */
   @property({ type: Number })
   accessor max = 100;
 
@@ -64,6 +66,10 @@ export class ProgressBar extends LitElement {
   /** Visually hide the label. */
   @property({ type: Boolean })
   accessor hideLabel = false;
+
+  /** Sets visibility of percentage value.*/
+  @property({ type: Boolean })
+  accessor hidePercentageValue = false;
 
   /** Incrementing percentage count value.
    * @internal
@@ -126,7 +132,9 @@ export class ProgressBar extends LitElement {
 
     const widthStyle = this._isIndeterminate
       ? 'width: 55px;'
-      : currentStatus === ProgressStatus.ERROR && currentValue != null
+      : (currentStatus === ProgressStatus.ERROR ||
+          currentStatus === ProgressStatus.WARNING) &&
+        currentValue != null
       ? `width: ${currentValue}%`
       : `width: ${this._percentage}%`;
 
@@ -176,12 +184,19 @@ export class ProgressBar extends LitElement {
     currentStatus: ProgressStatus,
     currentValue: number | null
   ) {
+    const showPercentageValue = !this.hidePercentageValue;
+
     if (currentStatus !== ProgressStatus.ACTIVE) {
-      return html`<span class="${currentStatus}-icon"
-        >${currentStatus === ProgressStatus.SUCCESS
-          ? unsafeSVG(checkmarkIcon)
-          : unsafeSVG(errorIcon)}</span
-      >`;
+      return html`<p>
+        ${showPercentageValue ? html`${this._percentage}%` : null}
+        <span class="${currentStatus}-icon"
+          >${currentStatus === ProgressStatus.SUCCESS
+            ? unsafeSVG(checkmarkIcon)
+            : currentStatus === ProgressStatus.WARNING
+            ? unsafeSVG(warningIcon)
+            : unsafeSVG(errorIcon)}</span
+        >
+      </p>`;
     }
 
     const hardcodedProgressReached =
@@ -189,7 +204,7 @@ export class ProgressBar extends LitElement {
 
     if (this.showInlineLoadStatus && !hardcodedProgressReached) {
       return html`<p>
-        <span>${this._percentage}%</span>
+        ${showPercentageValue ? html`<span>${this._percentage}%</span>` : null}
         <kyn-loader-inline status="active"></kyn-loader-inline>
       </p>`;
     }
@@ -240,6 +255,10 @@ export class ProgressBar extends LitElement {
   private getCurrentStatus(currentValue: number | null): ProgressStatus {
     if (this.status === ProgressStatus.ERROR) {
       return ProgressStatus.ERROR;
+    }
+
+    if (this.status === ProgressStatus.WARNING) {
+      return ProgressStatus.WARNING;
     }
 
     if (this.status === ProgressStatus.SUCCESS || currentValue === this.max) {

@@ -1,11 +1,15 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { html } from 'lit';
+import { action } from 'storybook/actions';
 import './index';
 import cloudDownloadIcon from '@kyndryl-design-system/shidoka-icons/svg/duotone/48/cloud-download.svg';
 
 export default {
   title: 'Components/Layout & Structure/Page Title',
   component: 'kyn-page-title',
+  subcomponents: {
+    PageTitleOption: 'kyn-pagetitle-option',
+  },
   argTypes: {
     type: {
       options: ['primary', 'secondary', 'tertiary'],
@@ -26,6 +30,8 @@ const args = {
   pageTitle: 'Page Title',
   subTitle: '',
   aiConnected: false,
+  contextual: false,
+  open: false,
 };
 
 export const PageTitle = {
@@ -84,6 +90,63 @@ export const AIConnected = {
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
       >
+      </kyn-page-title>
+    `;
+  },
+};
+
+const handleChange = (e) => {
+  action(e.type)({ ...e, detail: e.detail });
+};
+
+export const Contextual = {
+  args: {
+    ...args,
+    pageTitle: 'Application Name',
+    contextual: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-page-title
+        type=${args.type}
+        headLine=${args.headLine}
+        pageTitle=${args.pageTitle}
+        subTitle=${args.subTitle}
+        ?aiConnected=${args.aiConnected}
+        ?contextual=${args.contextual}
+        ?open=${args.open}
+        @on-change=${handleChange}
+      >
+        <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
+      </kyn-page-title>
+    `;
+  },
+};
+
+export const ContextualWithSubtitle = {
+  args: {
+    ...args,
+    pageTitle: 'Application Name',
+    subTitle: 'Application subtitle description',
+    contextual: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-page-title
+        type=${args.type}
+        headLine=${args.headLine}
+        pageTitle=${args.pageTitle}
+        subTitle=${args.subTitle}
+        ?aiConnected=${args.aiConnected}
+        ?contextual=${args.contextual}
+        ?open=${args.open}
+        @on-change=${handleChange}
+      >
+        <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
       </kyn-page-title>
     `;
   },

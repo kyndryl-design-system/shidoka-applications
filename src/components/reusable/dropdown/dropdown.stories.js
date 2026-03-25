@@ -27,29 +27,8 @@ export default {
       options: ['auto', 'up', 'down'],
       control: { type: 'select' },
     },
-    searchable: {
-      control: { type: 'boolean' },
-    },
     searchThreshold: {
       control: { type: 'number', min: 0 },
-    },
-    filterSearch: {
-      control: { type: 'boolean' },
-    },
-    enhanced: {
-      control: { type: 'boolean' },
-    },
-    multiple: {
-      control: { type: 'boolean' },
-    },
-    allowAddOption: {
-      control: { type: 'boolean' },
-    },
-    preventDuplicateAddOption: {
-      control: { type: 'boolean' },
-    },
-    allowDuplicateSelections: {
-      control: { type: 'boolean' },
     },
     'kind-changed': {
       table: { disable: true },
@@ -73,24 +52,12 @@ const args = {
   inline: false,
   name: 'example',
   open: false,
-  searchable: false,
-  searchThreshold: 0,
-  filterSearch: false,
-  enhanced: false,
-  multiple: false,
   required: false,
   disabled: false,
   readonly: false,
-  hideTags: false,
   hideLabel: false,
-  selectAll: false,
-  selectAllText: 'Select all',
-  allowAddOption: false,
-  preventDuplicateAddOption: true,
-  allowDuplicateSelections: true,
   invalidText: '',
   caption: '',
-  searchText: '',
   value: '',
   menuMinWidth: 'initial',
   textStrings: {
@@ -130,6 +97,7 @@ export const Single = {
         invalidText=${args.invalidText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
+        ?selectAll=${args.selectAll}
         .textStrings=${args.textStrings}
         value=${args.value}
         openDirection=${args.openDirection}
@@ -217,7 +185,13 @@ export const AI = {
 };
 
 export const SingleSearchable = {
-  args: { ...args, searchable: true, filterSearch: false, searchThreshold: 0 },
+  args: {
+    ...args,
+    searchable: true,
+    searchText: '',
+    searchThreshold: 0,
+    filterSearch: false,
+  },
   render: (args) => {
     return html`
       <kyn-dropdown
@@ -267,7 +241,13 @@ export const SingleSearchable = {
 };
 
 export const MultiSelect = {
-  args: { ...args, value: ['1', '3'] },
+  args: {
+    ...args,
+    selectAll: false,
+    selectAllText: 'Select all',
+    hideTags: false,
+    value: ['1', '3'],
+  },
   parameters: {
     a11y: {
       disable: true,
@@ -336,6 +316,10 @@ export const MultiSelectSearchable = {
     filterSearch: false,
     searchThreshold: 0,
     multiple: true,
+    selectAll: false,
+    selectAllText: 'Select all',
+    searchText: '',
+    hideTags: false,
     value: [],
   },
   render: (args) => {
@@ -622,6 +606,8 @@ export const AddNewOption = {
     allowAddOption: true,
     items: items,
     dropdownItems: items,
+    preventDuplicateAddOption: false,
+    allowDuplicateSelections: true,
   },
   parameters: {
     a11y: {
@@ -812,8 +798,8 @@ export const AddNewOptionValidation = {
     allowAddOption: true,
     items: items,
     dropdownItems: items,
-
     preventDuplicateAddOption: true,
+    allowDuplicateSelections: false,
   },
   parameters: {
     a11y: {

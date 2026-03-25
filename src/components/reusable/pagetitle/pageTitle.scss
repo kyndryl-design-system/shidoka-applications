@@ -66,3 +66,80 @@
   max-height: 56px;
   margin-right: 16px;
 }
+
+// Contextual dropdown variant
+.contextual-wrapper {
+  position: relative;
+}
+
+.contextual-trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  box-sizing: border-box;
+
+  &:focus-visible {
+    outline: 2px solid var(--kd-color-border-variants-focus);
+    outline-offset: 0;
+    border-radius: 2px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: 2px solid var(--kd-color-border-variants-focus);
+    outline-offset: 0;
+    border-radius: 2px;
+  }
+}
+
+.chevron-icon {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 150ms ease-out;
+
+  svg {
+    fill: currentColor;
+  }
+
+  &--open {
+    transform: rotate(-180deg);
+  }
+}
+
+// Panel — matches dropdown .options
+.contextual-dropdown {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  width: 100%;
+  min-width: 120px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--kd-color-background-menu-state-default);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12),
+    0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  outline: 2px solid transparent;
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0;
+  visibility: hidden;
+  z-index: -1;
+  transition: transform 150ms ease-out, opacity 150ms ease-out,
+    outline-color 150ms ease-out, visibility 150ms ease-out;
+
+  &--open {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    z-index: 11;
+  }
+}

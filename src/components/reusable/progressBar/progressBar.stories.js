@@ -20,9 +20,10 @@ export default {
     value: { control: 'number' },
     max: { control: 'number' },
     showActiveHelperText: { control: 'boolean' },
+    hidePercentageValue: { control: 'boolean' },
     status: {
       control: 'select',
-      options: ['active', 'success', 'error'],
+      options: ['active', 'success', 'warning', 'error'],
     },
   },
 };
@@ -40,6 +41,7 @@ const Template = (args) => html`
     .unit=${args.unit}
     unnamed=${args.unnamed}
     .hideLabel=${args.hideLabel}
+    .hidePercentageValue=${args.hidePercentageValue}
   >
     ${args.unnamed
       ? html`<kyn-tooltip slot="unnamed">
@@ -65,6 +67,7 @@ Default.args = {
   unit: '%',
   unnamed: 'Example tooltip content.',
   hideLabel: false,
+  hidePercentageValue: false,
 };
 
 export const Indeterminate = Template.bind({});
@@ -91,6 +94,7 @@ SimulatedSuccess.args = {
   unit: 'MB',
   unnamed: '',
   hideLabel: false,
+  hidePercentageValue: false,
 };
 
 export const Error = Template.bind({});
@@ -101,4 +105,16 @@ Error.args = {
   helperText: 'Error: Operation failed.',
   value: 22,
   hideLabel: false,
+  hidePercentageValue: false,
+};
+
+export const Warning = Template.bind({});
+Warning.args = {
+  ...Default.args,
+  status: 'warning',
+  label: 'Warning Progress Bar',
+  helperText: 'Warning text message.',
+  value: 70,
+  hideLabel: false,
+  hidePercentageValue: false,
 };

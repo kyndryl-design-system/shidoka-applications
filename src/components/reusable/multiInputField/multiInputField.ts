@@ -16,7 +16,7 @@ import '../tag';
 
 import MultiInputScss from './multiInputField.scss?inline';
 
-import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/error-filled.svg';
+import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 /**

@@ -774,164 +774,93 @@ export function setCalendarAttributes(
     container.addEventListener('keydown', keyboardNav);
     (container as any)._keyboardNav = keyboardNav;
 
+    const syncSpinbuttonValueNow = (input: HTMLInputElement) => {
+      const updateNow = () => input.setAttribute('aria-valuenow', input.value);
+      const anyInput = input as any;
+
+      if (anyInput._kynInputSync) {
+        input.removeEventListener('input', anyInput._kynInputSync);
+      }
+      if (anyInput._kynChangeSync) {
+        input.removeEventListener('change', anyInput._kynChangeSync);
+      }
+      if (anyInput._kynIncrementSync) {
+        input.removeEventListener('increment', anyInput._kynIncrementSync);
+      }
+
+      input.addEventListener('input', updateNow);
+      input.addEventListener('change', updateNow);
+      input.addEventListener('increment', updateNow as EventListener);
+      anyInput._kynInputSync = updateNow;
+      anyInput._kynChangeSync = updateNow;
+      anyInput._kynIncrementSync = updateNow;
+      updateNow();
+
+      return updateNow;
+    };
+
+    const normalizeTimeInput = (input: HTMLInputElement) => {
+      // Use text inputs so padded values like "05" stay visible.
+      input.type = 'text';
+      input.inputMode = 'numeric';
+      input.setAttribute('pattern', '\\d*');
+    };
+
+    const removeCustomArrowClickHandlers = (input: HTMLInputElement) => {
+      const inputWrapper = input.closest('.numInputWrapper');
+      if (!inputWrapper) return;
+
+      inputWrapper
+        .querySelectorAll<HTMLElement>('.arrowUp, .arrowDown')
+        .forEach((arrow) => {
+          const anyArrow = arrow as any;
+          if (anyArrow._kynClick) {
+            arrow.removeEventListener('click', anyArrow._kynClick);
+            delete anyArrow._kynClick;
+          }
+        });
+    };
+
     const hourInput = container.querySelector<HTMLInputElement>(
       'input.flatpickr-hour'
     );
     if (hourInput) {
+      normalizeTimeInput(hourInput);
       hourInput.tabIndex = 0;
       hourInput.setAttribute('role', 'spinbutton');
       hourInput.setAttribute('aria-label', 'Hour');
       hourInput.setAttribute('aria-valuemin', hourInput.min);
       hourInput.setAttribute('aria-valuemax', hourInput.max);
-      hourInput.setAttribute('aria-valuenow', hourInput.value);
+      const updateHourNow = syncSpinbuttonValueNow(hourInput);
 
       const anyHour = hourInput as any;
       if (anyHour._kynKeydown) {
         hourInput.removeEventListener('keydown', anyHour._kynKeydown);
+        delete anyHour._kynKeydown;
       }
-
-      const hourKeydown = (e: KeyboardEvent) => {
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          hourInput.stepUp();
-        }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          hourInput.stepDown();
-        }
-        setTimeout(
-          () => hourInput.setAttribute('aria-valuenow', hourInput.value),
-          0
-        );
-      };
-
-      hourInput.addEventListener('keydown', hourKeydown);
-      anyHour._kynKeydown = hourKeydown;
-
-      // add click handlers for hour arrow buttons
-      const hourWrapper = hourInput.closest('.numInputWrapper');
-      if (hourWrapper) {
-        const hourArrowUp = hourWrapper.querySelector<HTMLElement>('.arrowUp');
-        const hourArrowDown =
-          hourWrapper.querySelector<HTMLElement>('.arrowDown');
-
-        if (hourArrowUp) {
-          const anyArrowUp = hourArrowUp as any;
-          if (anyArrowUp._kynClick) {
-            hourArrowUp.removeEventListener('click', anyArrowUp._kynClick);
-          }
-          const arrowUpClick = () => {
-            hourInput.stepUp();
-            hourInput.dispatchEvent(new Event('input', { bubbles: true }));
-            setTimeout(
-              () => hourInput.setAttribute('aria-valuenow', hourInput.value),
-              0
-            );
-          };
-          hourArrowUp.addEventListener('click', arrowUpClick);
-          anyArrowUp._kynClick = arrowUpClick;
-        }
-
-        if (hourArrowDown) {
-          const anyArrowDown = hourArrowDown as any;
-          if (anyArrowDown._kynClick) {
-            hourArrowDown.removeEventListener('click', anyArrowDown._kynClick);
-          }
-          const arrowDownClick = () => {
-            hourInput.stepDown();
-            hourInput.dispatchEvent(new Event('input', { bubbles: true }));
-            setTimeout(
-              () => hourInput.setAttribute('aria-valuenow', hourInput.value),
-              0
-            );
-          };
-          hourArrowDown.addEventListener('click', arrowDownClick);
-          anyArrowDown._kynClick = arrowDownClick;
-        }
-      }
+      removeCustomArrowClickHandlers(hourInput);
+      setTimeout(updateHourNow, 0);
     }
 
     const minuteInput = container.querySelector<HTMLInputElement>(
       'input.flatpickr-minute'
     );
     if (minuteInput) {
+      normalizeTimeInput(minuteInput);
       minuteInput.tabIndex = 0;
       minuteInput.setAttribute('role', 'spinbutton');
       minuteInput.setAttribute('aria-label', 'Minute');
       minuteInput.setAttribute('aria-valuemin', minuteInput.min);
       minuteInput.setAttribute('aria-valuemax', minuteInput.max);
-      minuteInput.setAttribute('aria-valuenow', minuteInput.value);
+      const updateMinuteNow = syncSpinbuttonValueNow(minuteInput);
 
       const anyMinute = minuteInput as any;
       if (anyMinute._kynKeydown) {
         minuteInput.removeEventListener('keydown', anyMinute._kynKeydown);
+        delete anyMinute._kynKeydown;
       }
-
-      const minuteKeydown = (e: KeyboardEvent) => {
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          minuteInput.stepUp();
-        }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          minuteInput.stepDown();
-        }
-        setTimeout(
-          () => minuteInput.setAttribute('aria-valuenow', minuteInput.value),
-          0
-        );
-      };
-
-      minuteInput.addEventListener('keydown', minuteKeydown);
-      anyMinute._kynKeydown = minuteKeydown;
-
-      // add click handlers for minute arrow buttons
-      const minuteWrapper = minuteInput.closest('.numInputWrapper');
-      if (minuteWrapper) {
-        const minuteArrowUp =
-          minuteWrapper.querySelector<HTMLElement>('.arrowUp');
-        const minuteArrowDown =
-          minuteWrapper.querySelector<HTMLElement>('.arrowDown');
-
-        if (minuteArrowUp) {
-          const anyArrowUp = minuteArrowUp as any;
-          if (anyArrowUp._kynClick) {
-            minuteArrowUp.removeEventListener('click', anyArrowUp._kynClick);
-          }
-          const arrowUpClick = () => {
-            minuteInput.stepUp();
-            minuteInput.dispatchEvent(new Event('input', { bubbles: true }));
-            setTimeout(
-              () =>
-                minuteInput.setAttribute('aria-valuenow', minuteInput.value),
-              0
-            );
-          };
-          minuteArrowUp.addEventListener('click', arrowUpClick);
-          anyArrowUp._kynClick = arrowUpClick;
-        }
-
-        if (minuteArrowDown) {
-          const anyArrowDown = minuteArrowDown as any;
-          if (anyArrowDown._kynClick) {
-            minuteArrowDown.removeEventListener(
-              'click',
-              anyArrowDown._kynClick
-            );
-          }
-          const arrowDownClick = () => {
-            minuteInput.stepDown();
-            minuteInput.dispatchEvent(new Event('input', { bubbles: true }));
-            setTimeout(
-              () =>
-                minuteInput.setAttribute('aria-valuenow', minuteInput.value),
-              0
-            );
-          };
-          minuteArrowDown.addEventListener('click', arrowDownClick);
-          anyArrowDown._kynClick = arrowDownClick;
-        }
-      }
+      removeCustomArrowClickHandlers(minuteInput);
+      setTimeout(updateMinuteNow, 0);
     }
 
     // add seconds input handling if present
@@ -939,83 +868,21 @@ export function setCalendarAttributes(
       'input.flatpickr-second'
     );
     if (secondInput) {
+      normalizeTimeInput(secondInput);
       secondInput.tabIndex = 0;
       secondInput.setAttribute('role', 'spinbutton');
       secondInput.setAttribute('aria-label', 'Second');
       secondInput.setAttribute('aria-valuemin', secondInput.min);
       secondInput.setAttribute('aria-valuemax', secondInput.max);
-      secondInput.setAttribute('aria-valuenow', secondInput.value);
+      const updateSecondNow = syncSpinbuttonValueNow(secondInput);
 
       const anySecond = secondInput as any;
       if (anySecond._kynKeydown) {
         secondInput.removeEventListener('keydown', anySecond._kynKeydown);
+        delete anySecond._kynKeydown;
       }
-
-      const secondKeydown = (e: KeyboardEvent) => {
-        if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          secondInput.stepUp();
-        }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          secondInput.stepDown();
-        }
-        setTimeout(
-          () => secondInput.setAttribute('aria-valuenow', secondInput.value),
-          0
-        );
-      };
-
-      secondInput.addEventListener('keydown', secondKeydown);
-      anySecond._kynKeydown = secondKeydown;
-
-      // add click handlers for second arrow buttons
-      const secondWrapper = secondInput.closest('.numInputWrapper');
-      if (secondWrapper) {
-        const secondArrowUp =
-          secondWrapper.querySelector<HTMLElement>('.arrowUp');
-        const secondArrowDown =
-          secondWrapper.querySelector<HTMLElement>('.arrowDown');
-
-        if (secondArrowUp) {
-          const anyArrowUp = secondArrowUp as any;
-          if (anyArrowUp._kynClick) {
-            secondArrowUp.removeEventListener('click', anyArrowUp._kynClick);
-          }
-          const arrowUpClick = () => {
-            secondInput.stepUp();
-            secondInput.dispatchEvent(new Event('input', { bubbles: true }));
-            setTimeout(
-              () =>
-                secondInput.setAttribute('aria-valuenow', secondInput.value),
-              0
-            );
-          };
-          secondArrowUp.addEventListener('click', arrowUpClick);
-          anyArrowUp._kynClick = arrowUpClick;
-        }
-
-        if (secondArrowDown) {
-          const anyArrowDown = secondArrowDown as any;
-          if (anyArrowDown._kynClick) {
-            secondArrowDown.removeEventListener(
-              'click',
-              anyArrowDown._kynClick
-            );
-          }
-          const arrowDownClick = () => {
-            secondInput.stepDown();
-            secondInput.dispatchEvent(new Event('input', { bubbles: true }));
-            setTimeout(
-              () =>
-                secondInput.setAttribute('aria-valuenow', secondInput.value),
-              0
-            );
-          };
-          secondArrowDown.addEventListener('click', arrowDownClick);
-          anyArrowDown._kynClick = arrowDownClick;
-        }
-      }
+      removeCustomArrowClickHandlers(secondInput);
+      setTimeout(updateSecondNow, 0);
     }
 
     const ampmToggle = container.querySelector<HTMLElement>('.flatpickr-am-pm');
