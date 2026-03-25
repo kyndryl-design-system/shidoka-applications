@@ -50,6 +50,11 @@
 .workspace-switcher__back {
   margin-bottom: 8px;
 
+  @media (max-width: calc(52rem - 0.001px)) {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
   @media (min-width: 52rem) {
     display: none;
   }
@@ -72,8 +77,8 @@
   width: 100%;
 }
 
-/* Left-slot separator — universal header/list divider */
-::slotted([slot='left']) {
+/* Left header separator */
+.workspace-switcher__left-header {
   width: 100%;
   padding-left: 8px;
   padding-bottom: 12px;
@@ -82,15 +87,74 @@
   box-sizing: border-box;
 }
 
-:host([hide-left-divider]) {
-  ::slotted([slot='left']) {
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border-bottom: none;
+.workspace-switcher__account-meta {
+  @include typography.type-ui-02;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--kd-color-text-level-primary);
+}
+
+.workspace-switcher__account-meta-status {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+  color: var(--kd-color-badge-heavy-background-success);
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
+.workspace-switcher__account-meta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.workspace-switcher__account-meta-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--kd-color-text-level-primary);
+}
+
+.workspace-switcher__account-meta-item {
+  color: var(--kd-color-text-level-primary);
+}
+
+.workspace-switcher__account-meta-link {
+  width: fit-content;
+}
+
+.workspace-switcher__account-meta-link-icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+:host([hide-left-divider]) .workspace-switcher__left-header {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
 /* Ensure slotted content fills available space */
+::slotted([slot='left']),
 ::slotted([slot='left-list']),
 ::slotted([slot='right']),
 ::slotted([slot='right-list']) {
@@ -142,6 +206,12 @@
     .workspace-switcher__right {
       transform: translateX(0);
     }
+  }
+
+  /* Single-line ellipsis; use full row width (not the desktop 200px cap). */
+  .workspace-switcher__account-meta-name {
+    max-width: 100%;
+    min-width: 0;
   }
 
   @media (max-width: calc(42rem - 0.001px)) {
