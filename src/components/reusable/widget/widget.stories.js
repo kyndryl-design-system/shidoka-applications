@@ -186,6 +186,11 @@ export const WithBadge = {
   },
   render: (args) => {
     return html`
+      <h3>Default</h3>
+      <div>
+        <i><b>Note:</b> Recommended to use the badge slot for badge status.</i>
+      </div>
+      <br />
       <div style="display: flex; max-width: 500px; min-height: 200px;">
         <div style="flex-grow: 1;">
           <kyn-widget
@@ -202,6 +207,43 @@ export const WithBadge = {
             widgetStatus=${args.widgetStatus}
             @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
+            <kyn-overflow-menu
+              slot="actions"
+              anchorRight
+              verticalDots
+              ?disabled=${args.disabled}
+            >
+              <kyn-overflow-menu-item>Option 1</kyn-overflow-menu-item>
+              <kyn-overflow-menu-item>Option 2</kyn-overflow-menu-item>
+            </kyn-overflow-menu>
+
+            ${getExampleContent()}
+          </kyn-widget>
+        </div>
+      </div>
+      <br />
+      <h3>Using Badge Slot</h3>
+      <br />
+      <div style="display: flex; max-width: 500px; min-height: 200px;">
+        <div style="flex-grow: 1;">
+          <kyn-widget
+            widgetTitle=${args.widgetTitle}
+            subTitle=${args.subTitle}
+            ?disabled=${args.disabled}
+            ?dragActive=${args.dragActive}
+            ?selectable=${args.selectable}
+            ?selected=${args.selected}
+            ?compact=${args.compact}
+            ?removeHeader=${args.removeHeader}
+            widgetStatus=${args.widgetStatus}
+            @on-select=${(e) => action(e.type)({ ...e, detail: e.detail })}
+          >
+            <kyn-badge
+              slot="badge"
+              label="Badge"
+              status="success"
+              hideIcon
+            ></kyn-badge>
             <kyn-overflow-menu
               slot="actions"
               anchorRight
