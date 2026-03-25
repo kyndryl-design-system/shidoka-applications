@@ -1,6 +1,5 @@
-import fs from 'fs';
-
 import remarkGfm from 'remark-gfm';
+import fs from 'fs';
 
 export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],

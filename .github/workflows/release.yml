@@ -41,9 +41,7 @@ jobs:
         run: npm install -g npm@latest
 
       - name: Install dependencies
-        run: |
-          rm -rf ~/.npm/_cacache/tmp
-          npm ci --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: Install semantic-release extra plugins
         run: npm i --save-dev @semantic-release/git --legacy-peer-deps
