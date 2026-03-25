@@ -40,7 +40,7 @@ const splitViewArgTypes = {
   },
 };
 
-/** Minimal two-pane story: multi-line sample so `blockFlush` + flex layout read as a full-height pane. */
+/** Two Pane Implemented: multi-line sample so `blockFlush` + flex layout read as a full-height pane. */
 const MINIMAL_TWO_PANE_JS = `/**
  * Example service bootstrap (demo only).
  */
@@ -130,7 +130,7 @@ const panePlaceholder = (label) => html`
   <div class="pane--placeholder">${label}</div>
 `;
 
-/** Issue detail body (shared by Minimal two pane — left — and Three pane issue detail — center). */
+/** Issue detail body (shared by Two Pane Implemented — left — and Three Pane Implemented — center). */
 const issueDetailPane = () => html`
   <div class="issue-detail">
     <div class="issue-detail__block">
