@@ -222,48 +222,12 @@
 }
 
 .split-view__tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--kd-spacing-8);
-  padding: var(--kd-spacing-12) var(--kd-spacing-16);
-  border-bottom: 1px solid var(--kd-color-border-level-secondary);
   background: var(--kd-color-background-container-default);
+  padding: var(--kd-spacing-12) var(--kd-spacing-16) 0;
 }
 
-.split-view__tab {
-  appearance: none;
-  border: 0;
-  border-radius: 999px;
-  padding: var(--kd-spacing-8) var(--kd-spacing-12);
-  background: transparent;
-  color: var(--kd-color-text-level-secondary);
-  font: var(--kd-font-body-01);
-  cursor: pointer;
-  transition: background-color 150ms ease-out, color 150ms ease-out,
-    box-shadow 150ms ease-out;
-}
-
-.split-view__tab:hover {
-  background: var(--kd-color-background-ui-hollow-hover);
-  color: var(--kd-color-text-level-primary);
-}
-
-.split-view__tab--active {
-  background: var(--kd-color-background-accent-subtle);
-  color: var(--kd-color-text-level-primary);
-  box-shadow: inset 0 0 0 1px var(--kd-color-border-level-secondary);
-}
-
-.split-view__tab:focus-visible {
-  outline: 2px solid var(--kd-color-border-variants-focus);
-  outline-offset: 2px;
-}
-
-.split-view__compact-panels {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
+.split-view__tabs kyn-tabs {
+  display: block;
 }
 
 .pane--compact {
@@ -271,10 +235,19 @@
   min-height: 0;
   width: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .pane--compact[hidden] {
   display: none;
+}
+
+.split-view__compact-panels {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .split-view--compact .pane--start,

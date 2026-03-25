@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { property, state } from 'lit/decorators.js';
 
 import '../../components/reusable/divider/divider';
+import '../../components/reusable/tabs';
 
 import {
   COMPACT_BREAKPOINT_PX,
@@ -338,13 +339,10 @@ export function registerSplitViewPattern(css: string) {
 
     private _setCompactActivePane(
       pane: SplitViewPane,
-      options?: { focusTab?: boolean; emit?: boolean }
+      options?: { emit?: boolean }
     ) {
       const nextPane = normalizeCompactActivePane(pane, this._paneCount);
       if (nextPane === this.compactActivePane) {
-        if (options?.focusTab) {
-          queueMicrotask(() => this._focusCompactTab(nextPane));
-        }
         return;
       }
 
@@ -353,51 +351,6 @@ export function registerSplitViewPattern(css: string) {
       if (options?.emit !== false) {
         this._emitCompactPaneChangeEvent();
       }
-
-      if (options?.focusTab) {
-        queueMicrotask(() => this._focusCompactTab(nextPane));
-      }
-    }
-
-    private _focusCompactTab(pane: SplitViewPane) {
-      const tab = this.shadowRoot?.getElementById(this._tabId(pane));
-      if (tab instanceof HTMLButtonElement) {
-        tab.focus();
-      }
-    }
-
-    private _onCompactTabKeyDown(e: KeyboardEvent, pane: SplitViewPane) {
-      const panes = this._paneDefinitions;
-      const currentIndex = panes.findIndex(({ pane: value }) => value === pane);
-      if (currentIndex === -1) return;
-
-      let targetIndex = currentIndex;
-      switch (e.key) {
-        case 'ArrowLeft':
-        case 'ArrowUp':
-          targetIndex =
-            currentIndex === 0 ? panes.length - 1 : currentIndex - 1;
-          break;
-        case 'ArrowRight':
-        case 'ArrowDown':
-          targetIndex =
-            currentIndex === panes.length - 1 ? 0 : currentIndex + 1;
-          break;
-        case 'Home':
-          targetIndex = 0;
-          break;
-        case 'End':
-          targetIndex = panes.length - 1;
-          break;
-        default:
-          return;
-      }
-
-      e.preventDefault();
-      this._setCompactActivePane(panes[targetIndex].pane, {
-        focusTab: true,
-        emit: true,
-      });
     }
 
     private _onDividerKeyDown(which: 1 | 2, e: KeyboardEvent) {
@@ -424,7 +377,17 @@ export function registerSplitViewPattern(css: string) {
     }
 
     private _tabId(pane: SplitViewPane) {
-      return `${this._instanceId}-tab-${pane}`;
+      return `${this._instanceId}-compact-tab-${pane}`;
+    }
+
+    private _onCompactTabsChange(e: CustomEvent<{ selectedTabId: string }>) {
+      const nextPane = this._paneDefinitions.find(
+        ({ pane }) => this._tabId(pane) === e.detail.selectedTabId
+      )?.pane;
+
+      if (nextPane) {
+        this._setCompactActivePane(nextPane, { emit: true });
+      }
     }
 
     private _dividerLabel(which: 1 | 2) {
@@ -470,35 +433,25 @@ export function registerSplitViewPattern(css: string) {
           })}
           part="split-view"
         >
-          <div
-            class="split-view__tabs"
-            part="compact-tabs"
-            role="tablist"
-            aria-label=${this.compactNavLabel}
-          >
-            ${this._paneDefinitions.map(
-              ({ pane, label }) => html`
-                <button
-                  id=${this._tabId(pane)}
-                  class=${classMap({
-                    'split-view__tab': true,
-                    'split-view__tab--active': this.compactActivePane === pane,
-                  })}
-                  part="compact-tab"
-                  type="button"
-                  role="tab"
-                  aria-selected=${this.compactActivePane === pane}
-                  aria-controls=${this._paneId(pane)}
-                  tabindex=${this.compactActivePane === pane ? '0' : '-1'}
-                  @click=${() =>
-                    this._setCompactActivePane(pane, { emit: true })}
-                  @keydown=${(e: KeyboardEvent) =>
-                    this._onCompactTabKeyDown(e, pane)}
-                >
-                  ${label}
-                </button>
-              `
-            )}
+          <div class="split-view__tabs" part="compact-tabs">
+            <kyn-tabs
+              tabSize="md"
+              disableAutoFocusUpdate
+              @on-change=${(e: CustomEvent<{ selectedTabId: string }>) =>
+                this._onCompactTabsChange(e)}
+            >
+              ${this._paneDefinitions.map(
+                ({ pane, label }) => html`
+                  <kyn-tab
+                    slot="tabs"
+                    id=${this._tabId(pane)}
+                    ?selected=${this.compactActivePane === pane}
+                  >
+                    ${label}
+                  </kyn-tab>
+                `
+              )}
+            </kyn-tabs>
           </div>
           <div class="split-view__compact-panels">
             ${this._paneDefinitions.map(
