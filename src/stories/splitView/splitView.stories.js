@@ -14,7 +14,7 @@ import { WIDGET_STATUS } from '../../components/reusable/widget/defs';
 
 import statusIconCritical from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/document-no-access.svg';
 import statusIconHigh from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/cloud-services.svg';
-import statusIconMedium from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/delete.svg';
+import statusIconMedium from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/access-management.svg';
 import statusIconLow from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 
 import {

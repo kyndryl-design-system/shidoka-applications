@@ -130,6 +130,7 @@ Panes use flex; **slotted content** should fill pane height so **inner** regions
 - **`.split-view`** uses **`min-height: min(640px, 82vh)`** by default; under **`max-width: 480px`** the pattern SCSS uses a **shorter** min-height (**`min(480px, 72vh)`**) so the block is less dominant on short phones.
 - **`.split-view-shell`** (Storybook) uses **`max()`** with **`env(safe-area-inset-*)`** so padding clears notches; copy that approach when embedding full-bleed on devices.
 - The draggable gutter is **8px** wide—below common **44px** touch-target guidance. For production, consider a **wider invisible hit area** (without changing **`DIVIDER_PX`** clamp math) or document **pointer-only** resize.
+- **Issue list** (Three Pane story): **`.status-widget`** left accents use the Figma severity mapping (informational / error / warning / success) and heavy badges; they **do not** match **`kyn-widget`** left-border tokens. See **`splitView.scss`**.
 
 **Accessibility**
 
