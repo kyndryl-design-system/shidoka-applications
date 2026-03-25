@@ -1,0 +1,284 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 0;
+}
+
+.split-view {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  min-height: min(640px, 82vh);
+  max-height: min(900px, 90vh);
+  /* Page surface so transparent gutters don’t pick up container gray (same as primary pane). */
+  background: var(--kd-color-background-page-default);
+  border: 1px solid var(--kd-color-border-level-secondary);
+  border-radius: 8px;
+  box-shadow: var(--kd-elevation-level-1, 0 1px 3px rgb(0 0 0 / 8%));
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.split-view--compact {
+  flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .split-view {
+    /* Shorter default block on narrow viewports so less vertical scroll. */
+    min-height: min(480px, 72vh);
+    max-height: min(900px, 88vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-view__divider::before {
+    transition: none;
+  }
+}
+
+.pane {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  position: relative;
+  z-index: 0;
+}
+
+.pane--start {
+  flex: 0 0 auto;
+  background: var(--kd-color-background-page-default);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  /* Clip gutter overlap only; slotted content scrolls inside (see slot + ::slotted below). */
+  overflow: hidden;
+  /* Pull 4px under the transparent divider so pane color shows through the 8px gutter. */
+  margin-right: -4px;
+}
+
+/* Slot must fill pane height so light-DOM flex layouts (e.g. issue list + footer) can scroll. */
+.pane--start > slot[name='pane-1'] {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane--start slot[name='pane-1']::slotted(*) {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.pane--primary {
+  flex: 1 1 auto;
+  background: var(--kd-color-background-container-default);
+  margin-left: -4px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pane--primary > slot[name='pane-2'] {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane--primary slot[name='pane-2']::slotted(*) {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Three-pane only: primary is between two dividers — overlap both gutters. */
+.pane--primary.pane--primary--flanked {
+  margin-right: -4px;
+}
+
+.pane--end {
+  flex: 0 0 auto;
+  /* Column flex so slotted content (e.g. .pane-3 → split-view-code-rail) can fill the rail. */
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  margin-left: -4px;
+  background: var(--kd-color-code-view-background);
+}
+
+.pane--end > slot[name='pane-3'] {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Light-DOM wrapper in the pane-3 slot (e.g. class="pane-3") — must use ::slotted, not .pane-3 here. */
+.pane--end slot[name='pane-3']::slotted(*) {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.pane--placeholder {
+  padding: var(--kd-spacing-16);
+  color: var(--kd-color-text-level-secondary);
+  font: var(--kd-font-body-01);
+}
+
+/* Hit target must be a normal DOM node (not the divider shadow root) for reliable dragging. */
+.split-view__divider {
+  flex: 0 0 8px;
+  width: 8px;
+  min-width: 8px;
+  align-self: stretch;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  touch-action: none;
+  cursor: ew-resize;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Transparent: adjacent panes overlap 4px each (see .pane--* margins) so fills read through. */
+  background: transparent;
+}
+
+.split-view__divider:focus-visible {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: -2px;
+}
+
+/*
+ * Hairline in light DOM (reliable paint). Centered in the 8px gutter so it runs through the
+ * middle of the 2px gap between the two drag lines (same axis as kyn-divider’s centered grip).
+ */
+.split-view__divider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--kd-color-border-level-secondary);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 150ms ease-out;
+}
+
+/* Default hairline hides on hover / drag so only the grip surface + lines read (matches drawer). */
+.split-view__divider:hover::before,
+.split-view__divider:has(kyn-divider[dragging])::before {
+  opacity: 0;
+}
+
+.split-view__divider kyn-divider {
+  position: relative;
+  z-index: 2;
+  align-self: stretch;
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  height: 100%;
+}
+
+.split-view__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kd-spacing-8);
+  padding: var(--kd-spacing-12) var(--kd-spacing-16);
+  border-bottom: 1px solid var(--kd-color-border-level-secondary);
+  background: var(--kd-color-background-container-default);
+}
+
+.split-view__tab {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: var(--kd-spacing-8) var(--kd-spacing-12);
+  background: transparent;
+  color: var(--kd-color-text-level-secondary);
+  font: var(--kd-font-body-01);
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    box-shadow 150ms ease-out;
+}
+
+.split-view__tab:hover {
+  background: var(--kd-color-background-ui-hollow-hover);
+  color: var(--kd-color-text-level-primary);
+}
+
+.split-view__tab--active {
+  background: var(--kd-color-background-accent-subtle);
+  color: var(--kd-color-text-level-primary);
+  box-shadow: inset 0 0 0 1px var(--kd-color-border-level-secondary);
+}
+
+.split-view__tab:focus-visible {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: 2px;
+}
+
+.split-view__compact-panels {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane--compact {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.pane--compact[hidden] {
+  display: none;
+}
+
+.split-view--compact .pane--start,
+.split-view--compact .pane--primary,
+.split-view--compact .pane--end {
+  margin: 0;
+}

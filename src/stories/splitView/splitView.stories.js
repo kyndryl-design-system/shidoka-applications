@@ -5,10 +5,10 @@ import { action } from 'storybook/actions';
 import { splitViewStoryStyles as splitViewStyles } from './registerSplitView';
 
 import '../../components/reusable/button/button';
-import '../../components/reusable/card/card';
 import '../../components/reusable/badge/badge';
 import '../../components/reusable/divider/divider';
 import '../../components/reusable/blockCodeView/blockCodeView';
+import '../../components/reusable/widget/widget';
 import { WIDGET_STATUS } from '../../components/reusable/widget/defs';
 
 import statusIconCritical from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/document-no-access.svg';
@@ -63,6 +63,14 @@ const BADGE_STATUS = {
   [WIDGET_STATUS.LOW]: 'success',
 };
 
+/** Widget accent colors use the merged widgetStatus palette to match the original Figma treatment. */
+const ISSUE_WIDGET_STATUS = {
+  [WIDGET_STATUS.CRITICAL]: WIDGET_STATUS.INFORMATION,
+  [WIDGET_STATUS.HIGH]: WIDGET_STATUS.ERROR,
+  [WIDGET_STATUS.MEDIUM]: WIDGET_STATUS.WARNING,
+  [WIDGET_STATUS.LOW]: WIDGET_STATUS.SUCCESS,
+};
+
 /** End-pane demo: raw snippets (no markdown fences), three JS sections. */
 const CODE_DEMO_JAVASCRIPT = `function isEven(number) {
   return Number(number) % 2 === 0;
@@ -109,6 +117,46 @@ Use **\`kyn-divider\`** with **\`vertical\`** and **\`drag-handle\`** for the af
 
 const panePlaceholder = (label) => html`
   <div class="pane--placeholder">${label}</div>
+`;
+
+const issueListItem = ({
+  status,
+  icon,
+  label,
+  selected = false,
+  description,
+}) => html`
+  <kyn-widget
+    class=${selected ? 'issue-widget issue-widget--selected' : 'issue-widget'}
+    ?removeHeader=${true}
+    widgetStatus=${selected
+      ? WIDGET_STATUS.DEFAULT
+      : ISSUE_WIDGET_STATUS[status]}
+  >
+    <div class="issue-widget__content">
+      <div class="issue-widget__header">
+        <span class="issue-widget__leading-icon" aria-hidden="true">
+          ${unsafeSVG(icon)}
+        </span>
+        <div class="issue-widget__copy">
+          <h3 class="issue-widget__title">Issue title goes here</h3>
+          <p class="issue-widget__desc">${description}</p>
+        </div>
+        <kyn-badge
+          class="issue-widget__badge"
+          label=${label}
+          size="sm"
+          type="heavy"
+          status=${BADGE_STATUS[status]}
+          iconTitle=${`${label} severity`}
+          ?hideIcon=${true}
+        ></kyn-badge>
+      </div>
+      <div class="issue-widget__meta">
+        <span class="issue-widget__time">2 min ago</span>
+      </div>
+    </div>
+  </kyn-widget>
 `;
 
 /** Issue detail body (shared by Two Pane Implemented — left — and Three Pane Implemented — center). */
@@ -278,140 +326,31 @@ export const ThreePaneIssueDetail = {
         <div slot="pane-1">
           <div class="issue-list">
             <div class="issue-list__scroll">
-              <div
-                class="status-widget status-${WIDGET_STATUS.CRITICAL} status-widget--selected"
-              >
-                <kyn-card
-                  type="normal"
-                  role="article"
-                  aria-label="Issue"
-                  ?hideBorder=${true}
-                >
-                  <div class="status-widget__layout">
-                    <div class="status-widget__icon" aria-hidden="true">
-                      ${unsafeSVG(statusIconCritical)}
-                    </div>
-                    <div class="status-widget__main">
-                      <h3 class="status-widget__title">
-                        Issue title goes here
-                      </h3>
-                      <p class="status-widget__desc">
-                        Short description of the issue here
-                      </p>
-                      <div class="status-widget__meta">
-                        <span class="status-widget__time">2 min ago</span>
-                        <kyn-badge
-                          label="Critical"
-                          size="sm"
-                          type="heavy"
-                          status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
-                          iconTitle="Critical severity"
-                          ?hideIcon=${true}
-                        ></kyn-badge>
-                      </div>
-                    </div>
-                  </div>
-                </kyn-card>
-              </div>
-              <div class="status-widget status-${WIDGET_STATUS.HIGH}">
-                <kyn-card
-                  type="normal"
-                  role="article"
-                  aria-label="Issue"
-                  ?hideBorder=${true}
-                >
-                  <div class="status-widget__layout">
-                    <div class="status-widget__icon" aria-hidden="true">
-                      ${unsafeSVG(statusIconHigh)}
-                    </div>
-                    <div class="status-widget__main">
-                      <h3 class="status-widget__title">
-                        Issue title goes here
-                      </h3>
-                      <p class="status-widget__desc">
-                        Short description of the issue here
-                      </p>
-                      <div class="status-widget__meta">
-                        <span class="status-widget__time">2 min ago</span>
-                        <kyn-badge
-                          label="High"
-                          size="sm"
-                          type="heavy"
-                          status=${BADGE_STATUS[WIDGET_STATUS.HIGH]}
-                          iconTitle="High severity"
-                          ?hideIcon=${true}
-                        ></kyn-badge>
-                      </div>
-                    </div>
-                  </div>
-                </kyn-card>
-              </div>
-              <div class="status-widget status-${WIDGET_STATUS.MEDIUM}">
-                <kyn-card
-                  type="normal"
-                  role="article"
-                  aria-label="Issue"
-                  ?hideBorder=${true}
-                >
-                  <div class="status-widget__layout">
-                    <div class="status-widget__icon" aria-hidden="true">
-                      ${unsafeSVG(statusIconMedium)}
-                    </div>
-                    <div class="status-widget__main">
-                      <h3 class="status-widget__title">
-                        Issue title goes here
-                      </h3>
-                      <p class="status-widget__desc">
-                        Short description of the issue here
-                      </p>
-                      <div class="status-widget__meta">
-                        <span class="status-widget__time">2 min ago</span>
-                        <kyn-badge
-                          label="Medium"
-                          size="sm"
-                          type="heavy"
-                          status=${BADGE_STATUS[WIDGET_STATUS.MEDIUM]}
-                          iconTitle="Medium severity"
-                          ?hideIcon=${true}
-                        ></kyn-badge>
-                      </div>
-                    </div>
-                  </div>
-                </kyn-card>
-              </div>
-              <div class="status-widget status-${WIDGET_STATUS.LOW}">
-                <kyn-card
-                  type="normal"
-                  role="article"
-                  aria-label="Issue"
-                  ?hideBorder=${true}
-                >
-                  <div class="status-widget__layout">
-                    <div class="status-widget__icon" aria-hidden="true">
-                      ${unsafeSVG(statusIconLow)}
-                    </div>
-                    <div class="status-widget__main">
-                      <h3 class="status-widget__title">
-                        Issue title goes here
-                      </h3>
-                      <p class="status-widget__desc">
-                        Short description of the issue here
-                      </p>
-                      <div class="status-widget__meta">
-                        <span class="status-widget__time">2 min ago</span>
-                        <kyn-badge
-                          label="Low"
-                          size="sm"
-                          type="heavy"
-                          status=${BADGE_STATUS[WIDGET_STATUS.LOW]}
-                          iconTitle="Low severity"
-                          ?hideIcon=${true}
-                        ></kyn-badge>
-                      </div>
-                    </div>
-                  </div>
-                </kyn-card>
-              </div>
+              ${issueListItem({
+                status: WIDGET_STATUS.CRITICAL,
+                icon: statusIconCritical,
+                label: 'Critical',
+                selected: true,
+                description: 'Short description of the issue here',
+              })}
+              ${issueListItem({
+                status: WIDGET_STATUS.HIGH,
+                icon: statusIconHigh,
+                label: 'High',
+                description: 'Short description of the issue here',
+              })}
+              ${issueListItem({
+                status: WIDGET_STATUS.MEDIUM,
+                icon: statusIconMedium,
+                label: 'Medium',
+                description: 'Short description of the issue here',
+              })}
+              ${issueListItem({
+                status: WIDGET_STATUS.LOW,
+                icon: statusIconLow,
+                label: 'Low',
+                description: 'Short description of the issue here',
+              })}
             </div>
             <div class="issue-list__footer">
               <kyn-button kind="primary" size="small">Fix All</kyn-button>
@@ -459,26 +398,37 @@ export const CompactThreePane = {
         <div slot="pane-1">
           <div class="issue-list">
             <div class="issue-list__scroll">
-              <div class="status-widget status-${WIDGET_STATUS.CRITICAL}">
-                <kyn-card
-                  type="normal"
-                  role="article"
-                  aria-label="Issue"
-                  ?hideBorder=${true}
-                >
-                  <div class="status-widget__layout">
-                    <div class="status-widget__icon" aria-hidden="true">
+              <kyn-widget
+                class="issue-widget"
+                ?removeHeader=${true}
+                widgetStatus=${ISSUE_WIDGET_STATUS[WIDGET_STATUS.CRITICAL]}
+              >
+                <div class="issue-widget__content">
+                  <div class="issue-widget__header">
+                    <span class="issue-widget__leading-icon" aria-hidden="true">
                       ${unsafeSVG(statusIconCritical)}
-                    </div>
-                    <div class="status-widget__main">
-                      <h3 class="status-widget__title">Selected issue</h3>
-                      <p class="status-widget__desc">
+                    </span>
+                    <div class="issue-widget__copy">
+                      <h3 class="issue-widget__title">Selected issue</h3>
+                      <p class="issue-widget__desc">
                         Compact mode uses tabs to switch panes.
                       </p>
                     </div>
+                    <kyn-badge
+                      class="issue-widget__badge"
+                      label="Critical"
+                      size="sm"
+                      type="heavy"
+                      status=${BADGE_STATUS[WIDGET_STATUS.CRITICAL]}
+                      iconTitle="Critical severity"
+                      ?hideIcon=${true}
+                    ></kyn-badge>
                   </div>
-                </kyn-card>
-              </div>
+                  <div class="issue-widget__meta">
+                    <span class="issue-widget__time">2 min ago</span>
+                  </div>
+                </div>
+              </kyn-widget>
             </div>
           </div>
         </div>

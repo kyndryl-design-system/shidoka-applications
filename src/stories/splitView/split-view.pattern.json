@@ -12,17 +12,17 @@
   },
   "artifacts": {
     "styles": {
-      "path": "splitView.scss",
-      "note": "Single file with /* @split-view-section: … */ markers; Storybook Vite plugin compiles each chunk (compiled ?inline CSS drops comments in prod)."
+      "path": [
+        "splitViewPattern.scss",
+        "splitViewCodeRail.scss",
+        "splitViewBlockFlush.scss",
+        "splitViewStory.scss"
+      ],
+      "note": "Four direct SCSS sources imported with ?inline in registerSplitView.ts."
     },
     "styleLoader": {
-      "path": "virtual:split-view-css (see .storybook/main.js vite plugin + splitView.scss)",
-      "exports": [
-        "SPLIT_VIEW_PATTERN_SHADOW_CSS",
-        "SPLIT_VIEW_CODE_RAIL_SHADOW_CSS",
-        "SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS",
-        "SPLIT_VIEW_STORY_LIGHT_DOM_CSS"
-      ]
+      "path": "registerSplitView.ts",
+      "exports": ["splitViewStoryStyles"]
     },
     "helpers": [
       {
@@ -41,12 +41,12 @@
     "kyn-divider",
     "kyn-block-code-view",
     "kyn-button",
-    "kyn-card",
-    "kyn-badge"
+    "kyn-badge",
+    "kyn-widget"
   ],
-  "widgetStatusEnum": "src/components/reusable/widget/defs.ts (WIDGET_STATUS). Issue-list demo (`.status-widget` in splitView.scss) uses Figma accent colors + heavy badges; kyn-widget border tokens differ—see Docs.mdx.",
+  "widgetStatusEnum": "src/components/reusable/widget/defs.ts (WIDGET_STATUS). Issue-list demo uses `kyn-widget` for accent treatment and maps those statuses to preserve the original Figma severity colors.",
   "integrationOrder": [
-    "Import and call registerSplitViewPattern / registerSplitViewCodeRail with CSS strings from virtual:split-view-css (see splitView.stories.js).",
+    "Import registerSplitView.ts so the helper elements are registered and splitViewStoryStyles is available.",
     "Import design-system components used by the story.",
     "Use <split-view-pattern> with named slots pane-1, pane-2, and optionally pane-3; optional default-start-pane-width / default-end-pane-width (px) for initial pane-1 / pane-3 widths; set invert-start-divider-grip when pane-2 is dark on a light start pane (two-pane code); set invert-end-divider-grip when pane-3 is dark (three-pane code rail).",
     "Optional end-pane code: wrap kyn-block-code-view in split-view-code-rail for flush rail behavior."

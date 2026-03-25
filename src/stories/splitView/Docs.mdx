@@ -15,7 +15,7 @@ Interactive **two- or three-column** layout with **vertical `kyn-divider`** (**`
 
 ## Copy-paste: this repo (Storybook Vite)
 
-Use these paths from **`src/stories/splitView/`** (or adjust relative to your file). The **`virtual:split-view-css`** module is provided by **`.storybook/main.js`** only—Storybook resolves it at build time.
+Use these paths from **`src/stories/splitView/`** (or adjust relative to your file). The split view styles now come from four direct `?inline` SCSS imports in **`registerSplitView.ts`**, so there is no Storybook-only virtual CSS module to preserve.
 
 **1. Register once** (module top level or app bootstrap) with the convenience helper:
 
@@ -67,21 +67,22 @@ html`
 
 Copy or mirror these paths from **`src/stories/splitView/`**:
 
-| File                       | Role                                                                                          |
-| -------------------------- | --------------------------------------------------------------------------------------------- |
-| **`registerSplitView.ts`** | Storybook-only convenience wrapper: registers helpers and exports **`splitViewStoryStyles`**. |
-| **`splitViewPattern.ts`**  | Defines `<split-view-pattern>`; calls `registerSplitViewPattern(css)`.                        |
-| **`splitViewCodeRail.ts`** | Defines `<split-view-code-rail>`; calls `registerSplitViewCodeRail(hostCss, flushCss)`.       |
-| **`splitView.scss`**       | Single SCSS source with `/* @split-view-section: … */` markers (see below).                   |
+| File                           | Role                                                                                          |
+| ------------------------------ | --------------------------------------------------------------------------------------------- |
+| **`registerSplitView.ts`**     | Storybook-only convenience wrapper: registers helpers and exports **`splitViewStoryStyles`**. |
+| **`splitViewPattern.ts`**      | Defines `<split-view-pattern>`; calls `registerSplitViewPattern(css)`.                        |
+| **`splitViewCodeRail.ts`**     | Defines `<split-view-code-rail>`; calls `registerSplitViewCodeRail(hostCss, flushCss)`.       |
+| **`splitViewPattern.scss`**    | Shadow styles for `<split-view-pattern>`.                                                     |
+| **`splitViewCodeRail.scss`**   | Shadow styles for `<split-view-code-rail>`.                                                   |
+| **`splitViewBlockFlush.scss`** | Adopted styles for the slotted `kyn-block-code-view` flush rail treatment.                    |
+| **`splitViewStory.scss`**      | Story/light-DOM layout and demo styling used by `splitViewStoryStyles`.                       |
 
-**CSS strings:** The Storybook Vite plugin reads **`splitView.scss`**, splits on **`@split-view-section`**, compiles each chunk with Sass, and exports four constants. Section keys must exist: **`pattern`**, **`railHost`**, **`blockFlush`**, **`storyLight`**. Plugin implementation: **`.storybook/main.js`** (`vitePluginSplitViewUnifiedScss`).
+**CSS strings:** `registerSplitView.ts` imports each SCSS file with **`?inline`** so Vite compiles them to strings directly. The mapping is one-to-one: pattern → `registerSplitViewPattern`, code rail → `registerSplitViewCodeRail`, block flush → `registerSplitViewCodeRail`, story styles → `splitViewStoryStyles`.
 
 **Outside Storybook you must:**
 
-1. Supply the same four strings to **`registerSplitViewPattern`**, **`registerSplitViewCodeRail`**, and your light-DOM `<style>` (same mapping as the virtual module: pattern → first registration; railHost + blockFlush → code rail registration; storyLight → light DOM wrapper styles).
-2. Either **port the plugin** (compile each SCSS section the same way) or **manually** extract the four blocks from **`splitView.scss`** and compile them in your build (preserve **`loadPaths`** so `@use` / imports resolve like Storybook).
-
-**Types:** `declare module 'virtual:split-view-css'` in **`declarations.d.ts`** documents the four exports for editors; your app can re-export the same shape after vendoring.
+1. Supply the same four compiled strings to **`registerSplitViewPattern`**, **`registerSplitViewCodeRail`**, and your light-DOM `<style>` (pattern → splitter shadow root; code rail + block flush → rail registration; story styles → light DOM wrapper styles).
+2. Either keep the four SCSS files and let your build compile `?inline` imports, or compile those files to strings by whatever mechanism your app already uses for Lit CSS.
 
 ## API
 
@@ -127,7 +128,7 @@ Panes use flex; **slotted content** should fill pane height so **inner** regions
 - **`.split-view`** uses **`min-height: min(640px, 82vh)`** by default; under **`max-width: 480px`** the pattern SCSS uses a **shorter** min-height (**`min(480px, 72vh)`**) so the block is less dominant on short phones.
 - **`.split-view-shell`** (Storybook) uses **`max()`** with **`env(safe-area-inset-*)`** so padding clears notches; copy that approach when embedding full-bleed on devices.
 - The draggable gutter is still **8px** wide in desktop/tablet mode. Compact mode reduces the need for dragging on small touch targets, but test your product context if touch resizing remains important on medium viewports.
-- **Issue list** (Three Pane Implemented): **`.status-widget`** left accents use the Figma severity mapping (informational / error / warning / success) and heavy badges; they **do not** match **`kyn-widget`** left-border tokens. See **`splitView.scss`**.
+- **Issue list** (Three Pane Implemented): list rows now use **`kyn-widget`** for the left accent treatment and keep a custom inner row layout so the icon/title/timestamp match the Figma composition.
 
 **Accessibility**
 
