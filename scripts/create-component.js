@@ -460,20 +460,31 @@ export const Default = {
   const rootIndexPath = path.join(__dirname, '../src/index.ts');
 
   try {
-    let indexContent = fs.readFileSync(rootIndexPath, 'utf-8');
-
     if (parentComponent) {
       // For subcomponents, update existing export from parent component
-      const parentExportPath = `./components/${folderType}/${parentComponent}`;
 
-      // First, check if parent export path exists at all
-      const parentExportExists =
-        indexContent.includes(`from '${parentExportPath}'`) ||
-        indexContent.includes(`from "${parentExportPath}"`);
+      let indexContent = fs.readFileSync(rootIndexPath, 'utf-8');
 
-      if (!parentExportExists) {
+      // Check if parent export path exists - search case-insensitively for the path
+      let foundExportPath = null;
+      const pathSearchRegex = new RegExp(
+        `from\\s*['"](\\./components/${folderType}\\/[^'"]+)['"](;?)`,
+        'gi'
+      );
+      let pathMatch;
+      while ((pathMatch = pathSearchRegex.exec(indexContent)) !== null) {
+        // Check if this is the parent component path (case-insensitive comparison)
+        if (
+          pathMatch[1].toLowerCase().includes(parentComponent.toLowerCase())
+        ) {
+          foundExportPath = pathMatch[1];
+          break;
+        }
+      }
+
+      if (!foundExportPath) {
         console.warn(
-          `⚠️  Could not find parent export in src/index.ts for path: ${parentExportPath}`
+          `⚠️  Could not find parent export in src/index.ts for path containing: ${parentComponent}`
         );
         console.warn(
           `   This might happen if the parent component was just created.`
@@ -483,71 +494,92 @@ export const Default = {
         // Try to create the parent export if it doesn't exist
         const parentPascalCase =
           parentComponent.charAt(0).toUpperCase() + parentComponent.slice(1);
+        const parentExportPath = `./components/${folderType}/${parentComponent}`;
         const parentExportStatement = `export { ${parentPascalCase} } from '${parentExportPath}';\n`;
 
-        fs.appendFileSync(rootIndexPath, parentExportStatement);
-        console.log(`✅ Created parent export in src/index.ts`);
+        // Double-check that it doesn't already exist before appending
+        // Re-read the file to ensure we have the latest content
+        let latestContent = fs.readFileSync(rootIndexPath, 'utf-8');
+        if (
+          !latestContent.includes(`from '${parentExportPath}'`) &&
+          !latestContent.includes(`from "${parentExportPath}"`)
+        ) {
+          fs.appendFileSync(rootIndexPath, parentExportStatement);
+          console.log(`✅ Created parent export in src/index.ts`);
 
-        // Re-read the updated content
-        indexContent = fs.readFileSync(rootIndexPath, 'utf-8');
-      }
-
-      // Now try to match and update with more flexible regex
-      const escapedPath = parentExportPath.replace(/\//g, '\\/');
-      const exportRegex = new RegExp(
-        `export\\s*\\{\\s*([^}]+?)\\s*\\}\\s*from\\s*['"](${escapedPath})['"](;?)`,
-        's'
-      );
-
-      console.log(
-        `📍 Looking for parent export with path: ${parentExportPath}`
-      );
-
-      const match = indexContent.match(exportRegex);
-      if (match) {
-        const existingExports = match[1];
-
-        // Check if subcomponent already exists
-        if (existingExports.includes(pascalCase)) {
-          console.log(`⚠️  Subcomponent already exists in parent export`);
+          // Re-read the updated content for further processing
+          indexContent = fs.readFileSync(rootIndexPath, 'utf-8');
+          foundExportPath = parentExportPath;
         } else {
-          // Add subcomponent to existing export
-          const trimmedExports = existingExports.trim();
-
-          // Check if this is a single-line or multi-line export
-          const isSingleLine = !trimmedExports.includes('\n');
-
-          let newExport;
-          if (isSingleLine) {
-            // Convert single-line to multi-line format
-            newExport = `\n  ${trimmedExports},\n  ${pascalCase}\n`;
-          } else {
-            // Already multi-line, just append
-            const hasTrailingComma = trimmedExports.endsWith(',');
-            newExport = hasTrailingComma
-              ? `${trimmedExports}\n  ${pascalCase}`
-              : `${trimmedExports},\n  ${pascalCase}`;
-          }
-
-          // Replace the export statement
-          const updatedContent = indexContent.replace(
-            exportRegex,
-            `export {${newExport}} from '${parentExportPath}';`
-          );
-
-          fs.writeFileSync(rootIndexPath, updatedContent);
-          console.log(`✅ Added subcomponent to parent export in src/index.ts`);
+          console.log(`ℹ️  Parent export already exists, using it...`);
+          // Update indexContent with the latest file content
+          indexContent = latestContent;
         }
       } else {
-        console.warn(
-          `⚠️  Could not match parent export with regex for path: ${parentExportPath}`
+        console.log(`📍 Found parent export with path: ${foundExportPath}`);
+      }
+
+      // Now try to match and update with the found path
+      if (foundExportPath) {
+        const escapedPath = foundExportPath.replace(/\//g, '\\/');
+        const exportRegex = new RegExp(
+          `export\\s*\\{\\s*([^}]+?)\\s*\\}\\s*from\\s*['"](${escapedPath})['"](;?)`,
+          's'
         );
-        console.warn(
-          `   Please check the export format in src/index.ts manually.`
+
+        console.log(
+          `📍 Looking for parent export with path: ${foundExportPath}`
         );
+
+        const match = indexContent.match(exportRegex);
+        if (match) {
+          const existingExports = match[1];
+
+          // Check if subcomponent already exists
+          if (existingExports.includes(pascalCase)) {
+            console.log(`⚠️  Subcomponent already exists in parent export`);
+          } else {
+            // Add subcomponent to existing export
+            const trimmedExports = existingExports.trim();
+
+            // Check if this is a single-line or multi-line export
+            const isSingleLine = !trimmedExports.includes('\n');
+
+            let newExport;
+            if (isSingleLine) {
+              // Convert single-line to multi-line format
+              newExport = `\n  ${trimmedExports},\n  ${pascalCase}\n`;
+            } else {
+              // Already multi-line, just append
+              const hasTrailingComma = trimmedExports.endsWith(',');
+              newExport = hasTrailingComma
+                ? `${trimmedExports}\n  ${pascalCase}`
+                : `${trimmedExports},\n  ${pascalCase}`;
+            }
+
+            // Replace the export statement
+            const updatedContent = indexContent.replace(
+              exportRegex,
+              `export {${newExport}} from '${foundExportPath}';`
+            );
+
+            fs.writeFileSync(rootIndexPath, updatedContent);
+            console.log(
+              `✅ Added subcomponent to parent export in src/index.ts`
+            );
+          }
+        } else {
+          console.warn(
+            `⚠️  Could not match parent export with regex for path: ${foundExportPath}`
+          );
+          console.warn(
+            `   Please check the export format in src/index.ts manually.`
+          );
+        }
       }
     } else {
       // For main components, add new export statement
+      let indexContent = fs.readFileSync(rootIndexPath, 'utf-8');
       const exportPath = `./components/${folderType}/${camelCase}`;
       const exportStatement = `export { ${pascalCase} } from '${exportPath}';\n`;
 
