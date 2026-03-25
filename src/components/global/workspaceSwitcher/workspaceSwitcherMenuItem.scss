@@ -126,6 +126,7 @@
   // Item variant styles (right panel - 40ch max)
   &--item {
     padding-right: 8px;
+
     .menu-item__name {
       max-width: 40ch;
 
@@ -134,12 +135,33 @@
       }
     }
 
+    .menu-item__actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .menu-item__launch-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--kd-color-text-level-secondary);
+      flex-shrink: 0;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
     &:hover:not(.menu-item--selected) {
       --kyn-icon-selector-hover-opacity: 1;
       background: var(--kd-color-background-menu-state-hover);
 
       .menu-item__name,
-      .menu-item__favorite {
+      .menu-item__favorite,
+      .menu-item__launch-indicator {
         color: var(--kd-color-text-level-light);
       }
     }
@@ -148,7 +170,8 @@
       background: var(--kd-color-background-menu-state-pressed);
 
       .menu-item__name,
-      .menu-item__favorite {
+      .menu-item__favorite,
+      .menu-item__launch-indicator {
         color: var(--kd-color-text-level-light);
       }
     }
@@ -164,7 +187,8 @@
       &:hover {
         --kyn-icon-selector-hover-opacity: 1;
 
-        .menu-item__favorite {
+        .menu-item__favorite,
+        .menu-item__launch-indicator {
           color: var(--kd-color-text-level-primary);
         }
       }
