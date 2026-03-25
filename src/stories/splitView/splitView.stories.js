@@ -119,7 +119,7 @@ The Split View pattern arranges two or three columns with draggable vertical div
 
 Use **\`kyn-divider\`** with **\`vertical\`** and **\`drag-handle\`** for the affordance (aligned with the resizable side drawer). Interactive sizing for Storybook is demonstrated with **\`<split-view-pattern>\`**, a Storybook-only helper in this folder—it is **not** a published \`kyn-*\` component.
 
-**Docs:** Open **Patterns / Split View / Docs** for copy-paste imports (this repo + vendored), file checklist, and API. **Minimal (two panes)** uses the same **issue detail** markup as **Three Pane Issue Detail**’s center pane in **\`slot="pane-1"\`**, with **\`split-view-code-rail\`** + **\`kyn-block-code-view\`** in **\`slot="pane-2"\`**. **Three Pane Issue Detail** adds a third pane (code rail) + issue list. **Canvas → Code** matches what you run in Storybook; pair with **Docs** when vendoring outside Storybook.
+**Docs:** Open **Patterns / Split View / Docs** for copy-paste imports (this repo + vendored), file checklist, and API. **Two Pane Implemented** uses the same **issue detail** markup as **Three Pane Implemented**’s center pane in **\`slot="pane-1"\`**, with **\`split-view-code-rail\`** + **\`kyn-block-code-view\`** in **\`slot="pane-2"\`**. **Three Pane Implemented** adds a third pane (code rail) + issue list. **Canvas → Code** matches what you run in Storybook; pair with **Docs** when vendoring outside Storybook.
         `,
       },
     },
@@ -227,7 +227,7 @@ export const ThreePane = {
 
 /** Shortest copy-paste: shell + `.panes=${2}` + `split-view-code-rail` (flush CSS) + `kyn-block-code-view` in primary pane. */
 export const MinimalTwoPane = {
-  name: 'Minimal (two panes)',
+  name: 'Two Pane Implemented',
   parameters: {
     controls: { disable: true },
     docs: {
@@ -265,6 +265,7 @@ export const MinimalTwoPane = {
 };
 
 export const ThreePaneIssueDetail = {
+  name: 'Three Pane Implemented',
   parameters: {
     controls: { disable: true },
   },
