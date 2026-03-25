@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './index';
 
-import '../../../stories/splitView/splitView.stories.js';
+import '../../../stories/splitView/registerSplitView';
 
 import '../card';
 import '../metaData';

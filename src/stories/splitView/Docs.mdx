@@ -5,40 +5,22 @@ import * as SplitViewStories from './splitView.stories.js';
 
 <Title />
 
-Interactive **two- or three-column** layout with **vertical `kyn-divider`** (**`drag-handle`**) and draggable column widths. The helpers **`split-view-pattern`** and **`split-view-code-rail`** ship with this Storybook pattern only—they are **not** published `kyn-*` components. To reuse in an application, **vendor the pattern** (copy the files below) or reimplement the layout with **`kyn-divider`** and flex.
+Interactive **two- or three-column** layout with **vertical `kyn-divider`** (**`drag-handle`**), keyboard-resizable separators, and a compact **single-active-pane + tabs** mode on narrow widths. The helpers **`split-view-pattern`** and **`split-view-code-rail`** ship with this Storybook pattern only—they are **not** published `kyn-*` components. To reuse in an application, **vendor the pattern** (copy the files below) or reimplement the layout with **`kyn-divider`** and flex.
 
 ## How to explore this pattern
 
 1. **This page** — copy-paste imports, vendor checklist, API, resize constants.
-2. **Stories** under **Patterns / Split View** — **Two Pane Implemented** is the shortest copy-paste template (**issue detail** in **`slot="pane-1"`**, same body as **Three Pane Implemented**’s center pane, plus **`split-view-code-rail`** + **`kyn-block-code-view`** in **`slot="pane-2"`**); **Two Pane** / **Three Pane** use controls to switch column count; **Three Pane Implemented** adds the issue list + third-pane code rail (heavy Canvas—copy **Two Pane Implemented** for a compact two-pane sample).
+2. **Stories** under **Patterns / Split View** — **Two Pane** and **Three Pane** are the starter canvases; **Two Pane Implemented** is the shortest copy-paste template (**issue detail** in **`slot="pane-1"`** plus **`split-view-code-rail`** + **`kyn-block-code-view`** in **`slot="pane-2"`**); **Three Pane Implemented** adds the issue list + third-pane code rail; **Compact Three Pane** demonstrates the narrow-screen tabs model.
 3. **Canvas → Code** — runnable Lit source. Imports below match **`splitView.stories.js`** (same folder as this doc).
 
 ## Copy-paste: this repo (Storybook Vite)
 
 Use these paths from **`src/stories/splitView/`** (or adjust relative to your file). The **`virtual:split-view-css`** module is provided by **`.storybook/main.js`** only—Storybook resolves it at build time.
 
-**1. Register once** (module top level or app bootstrap):
+**1. Register once** (module top level or app bootstrap) with the convenience helper:
 
 ```javascript
-import { html, unsafeCSS } from 'lit';
-import { registerSplitViewPattern } from './splitViewPattern';
-import { registerSplitViewCodeRail } from './splitViewCodeRail';
-import {
-  SPLIT_VIEW_PATTERN_SHADOW_CSS,
-  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
-  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS,
-  SPLIT_VIEW_STORY_LIGHT_DOM_CSS,
-} from 'virtual:split-view-css';
-
-const splitViewStyles = html`<style>
-  ${unsafeCSS(SPLIT_VIEW_STORY_LIGHT_DOM_CSS)}
-</style>`;
-
-registerSplitViewPattern(SPLIT_VIEW_PATTERN_SHADOW_CSS);
-registerSplitViewCodeRail(
-  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
-  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS
-);
+import { splitViewStoryStyles } from './registerSplitView';
 ```
 
 **2. Import primitives** used by your panes (pattern already imports **`kyn-divider`** internally; you still need **`kyn-block-code-view`** if you use the code rail):
@@ -52,9 +34,15 @@ import '../../components/reusable/blockCodeView/blockCodeView';
 
 ```javascript
 html`
-  ${splitViewStyles}
+  ${splitViewStoryStyles}
   <div class="split-view-shell">
-    <split-view-pattern .panes=${3} @on-resize=${(e) => console.log(e.detail)}>
+    <split-view-pattern
+      .panes=${3}
+      pane-1-label="Issue list"
+      pane-2-label="Issue detail"
+      pane-3-label="Code rail"
+      @split-view-resize=${(e) => console.log(e.detail)}
+    >
       <div slot="pane-1">…</div>
       <div slot="pane-2">…</div>
       <div slot="pane-3" class="pane-3">
@@ -79,11 +67,12 @@ html`
 
 Copy or mirror these paths from **`src/stories/splitView/`**:
 
-| File                       | Role                                                                                    |
-| -------------------------- | --------------------------------------------------------------------------------------- |
-| **`splitViewPattern.ts`**  | Defines `<split-view-pattern>`; calls `registerSplitViewPattern(css)`.                  |
-| **`splitViewCodeRail.ts`** | Defines `<split-view-code-rail>`; calls `registerSplitViewCodeRail(hostCss, flushCss)`. |
-| **`splitView.scss`**       | Single SCSS source with `/* @split-view-section: … */` markers (see below).             |
+| File                       | Role                                                                                          |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| **`registerSplitView.ts`** | Storybook-only convenience wrapper: registers helpers and exports **`splitViewStoryStyles`**. |
+| **`splitViewPattern.ts`**  | Defines `<split-view-pattern>`; calls `registerSplitViewPattern(css)`.                        |
+| **`splitViewCodeRail.ts`** | Defines `<split-view-code-rail>`; calls `registerSplitViewCodeRail(hostCss, flushCss)`.       |
+| **`splitView.scss`**       | Single SCSS source with `/* @split-view-section: … */` markers (see below).                   |
 
 **CSS strings:** The Storybook Vite plugin reads **`splitView.scss`**, splits on **`@split-view-section`**, compiles each chunk with Sass, and exports four constants. Section keys must exist: **`pattern`**, **`railHost`**, **`blockFlush`**, **`storyLight`**. Plugin implementation: **`.storybook/main.js`** (`vitePluginSplitViewUnifiedScss`).
 
@@ -96,18 +85,24 @@ Copy or mirror these paths from **`src/stories/splitView/`**:
 
 ## API
 
-|                                 |                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`.panes`**                    | `2` or `3`. **Default:** `3` if omitted on `<split-view-pattern>`.                                                                                                                                                                                                                                                                                    |
-| **`.invertStartDividerGrip`**   | When `true`, adds **`right-inverted-handle`** on the divider after the start pane (light + dark **`pane-2`**, e.g. code). Attribute **`invert-start-divider-grip`**. **Default:** `false`.                                                                                                                                                            |
-| **`.invertEndDividerGrip`**     | When `true`, adds **`right-inverted-handle`** on the divider before the end pane (**`panes === 3`**, light primary + dark **`pane-3`**). Attribute **`invert-end-divider-grip`**. **Default:** `false`.                                                                                                                                               |
-| **`.defaultStartPaneWidthPx`**  | Initial **start** pane width in **px** (`pane-1`). Attribute **`default-start-pane-width`**. Takes precedence over **`defaultStartPaneFraction`**. **Clamped** to min pane + center rules.                                                                                                                                                            |
-| **`.defaultStartPaneFraction`** | Initial start width as a **fraction** of the track (e.g. `0.39` for ~40% start). Attribute **`default-start-pane-fraction`**. Used when **`defaultStartPaneWidthPx`** is not set; otherwise defaults to ~36% (two-pane) or ~34% (three-pane).                                                                                                         |
-| **`.defaultEndPaneWidthPx`**    | Initial **end** pane width in **px** (`pane-3`) when **`panes === 3`**. Attribute **`default-end-pane-width`**. If omitted, ~28% of the track; **clamped** like **`defaultStartPaneWidthPx`**. Ignored when **`panes === 2`**. The **primary** pane (`pane-2`) is always flex — its width is whatever space remains between start, dividers, and end. |
-| **`slot="pane-1"`**             | Start column (fixed width; draggable).                                                                                                                                                                                                                                                                                                                |
-| **`slot="pane-2"`**             | Center column (flex; grows/shrinks when dragging).                                                                                                                                                                                                                                                                                                    |
-| **`slot="pane-3"`**             | End column; render only when **`.panes=${3}`**.                                                                                                                                                                                                                                                                                                       |
-| **`@on-resize`**                | Fires **after** a divider drag ends (**pointerup** / **pointercancel**). **`event.detail`:** `{ leftPx: number, rightPx?: number }` — **`rightPx`** is set only when **`.panes === 3`**.                                                                                                                                                              |
+|                                                   |                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`.panes`**                                      | `2` or `3`. **Default:** `2` if omitted on `<split-view-pattern>`.                                                                                                                                                                                                                                                                                    |
+| **`.invertStartDividerGrip`**                     | When `true`, adds **`right-inverted-handle`** on the divider after the start pane (light + dark **`pane-2`**, e.g. code). Attribute **`invert-start-divider-grip`**. **Default:** `false`.                                                                                                                                                            |
+| **`.invertEndDividerGrip`**                       | When `true`, adds **`right-inverted-handle`** on the divider before the end pane (**`panes === 3`**, light primary + dark **`pane-3`**). Attribute **`invert-end-divider-grip`**. **Default:** `false`.                                                                                                                                               |
+| **`.defaultStartPaneWidthPx`**                    | Initial **start** pane width in **px** (`pane-1`). Attribute **`default-start-pane-width`**. Takes precedence over **`defaultStartPaneFraction`**. **Clamped** to min pane + center rules.                                                                                                                                                            |
+| **`.defaultStartPaneFraction`**                   | Initial start width as a **fraction** of the track (e.g. `0.39` for ~40% start). Attribute **`default-start-pane-fraction`**. Used when **`defaultStartPaneWidthPx`** is not set; otherwise defaults to ~36% (two-pane) or ~34% (three-pane).                                                                                                         |
+| **`.defaultEndPaneWidthPx`**                      | Initial **end** pane width in **px** (`pane-3`) when **`panes === 3`**. Attribute **`default-end-pane-width`**. If omitted, ~28% of the track; **clamped** like **`defaultStartPaneWidthPx`**. Ignored when **`panes === 2`**. The **primary** pane (`pane-2`) is always flex — its width is whatever space remains between start, dividers, and end. |
+| **`.pane1Label` / `.pane2Label` / `.pane3Label`** | Labels for the compact-mode tab buttons and supporting accessible text. Attributes **`pane-1-label`**, **`pane-2-label`**, **`pane-3-label`**.                                                                                                                                                                                                        |
+| **`.compactBreakpointPx`**                        | Switches from desktop split columns to compact tabs mode when the host width is at or below this px value. Attribute **`compact-breakpoint`**. **Default:** `768`.                                                                                                                                                                                    |
+| **`.compactActivePane`**                          | Visible pane while the component is in compact mode. Attribute **`compact-active-pane`**. Values normalize automatically to a visible pane for the current **`.panes`** count.                                                                                                                                                                        |
+| **`.startResizeLabel` / `.endResizeLabel`**       | Accessible names for the keyboard-focusable separators. Attributes **`start-resize-label`** and **`end-resize-label`**.                                                                                                                                                                                                                               |
+| **`slot="pane-1"`**                               | Start column (fixed width; draggable).                                                                                                                                                                                                                                                                                                                |
+| **`slot="pane-2"`**                               | Center column (flex; grows/shrinks when dragging).                                                                                                                                                                                                                                                                                                    |
+| **`slot="pane-3"`**                               | End column; render only when **`.panes=${3}`**.                                                                                                                                                                                                                                                                                                       |
+| **`@split-view-resize`**                          | Primary resize event. Fires after pointer drag ends and after keyboard resize steps. **`event.detail`:** `{ leftPx: number, rightPx?: number, source: 'pointer' \| 'keyboard' }` — **`rightPx`** is set only when **`.panes === 3`**.                                                                                                                 |
+| **`@on-resize`**                                  | Legacy alias of **`split-view-resize`** kept for backwards compatibility with existing stories and consumers.                                                                                                                                                                                                                                         |
+| **`@split-view-pane-change`**                     | Fires when compact-mode pane switching changes the active pane. **`event.detail`:** `{ activePane: 1 \| 2 \| 3, compact: boolean }`.                                                                                                                                                                                                                  |
 
 **Shadow **`part`** names** (for `::part(...)` styling if you expose it from the host): **`split-view`**, **`pane-start`**, **`pane-end`**.
 
@@ -115,7 +110,9 @@ Copy or mirror these paths from **`src/stories/splitView/`**:
 
 Defined in **`splitViewPattern.ts`**: outer panes and center column enforce minimum pixel widths — **120px** minimum per outer pane, **160px** minimum center, **8px** divider track. Dragging clamps within those constraints.
 
-**Pointer:** Resize uses **pointer** events on the dividers; there is **no keyboard** resize in this pattern.
+**Pointer:** Resize uses **pointer** events on the separators.
+
+**Keyboard:** Focus a separator and use **Left / Right Arrow** to resize. Hold **Shift** for larger steps. Use **Home / End** to jump to the minimum / maximum allowed width for that divider.
 
 ## Layout behavior
 
@@ -125,22 +122,27 @@ Panes use flex; **slotted content** should fill pane height so **inner** regions
 
 **Mobile / responsive**
 
-- There is **no** breakpoint that stacks columns or swaps to a drawer; the pattern is always a **horizontal** flex row. For small screens, **vendor** a single-column layout, tabs, or a drawer, or hide secondary panes.
+- At or below **`.compactBreakpointPx`** (default **768px**), the layout switches into a **single active pane** model with **tabs** above the content area. This avoids forcing 2-3 horizontal columns into narrow widths.
 - **Minimum widths** in **`splitViewPattern.ts`** (outer panes **120px**, center **160px**, **8px** dividers) imply a **minimum track width** before clamping squeezes the center—test on **narrow** viewports (~320px).
 - **`.split-view`** uses **`min-height: min(640px, 82vh)`** by default; under **`max-width: 480px`** the pattern SCSS uses a **shorter** min-height (**`min(480px, 72vh)`**) so the block is less dominant on short phones.
 - **`.split-view-shell`** (Storybook) uses **`max()`** with **`env(safe-area-inset-*)`** so padding clears notches; copy that approach when embedding full-bleed on devices.
-- The draggable gutter is **8px** wide—below common **44px** touch-target guidance. For production, consider a **wider invisible hit area** (without changing **`DIVIDER_PX`** clamp math) or document **pointer-only** resize.
+- The draggable gutter is still **8px** wide in desktop/tablet mode. Compact mode reduces the need for dragging on small touch targets, but test your product context if touch resizing remains important on medium viewports.
 - **Issue list** (Three Pane Implemented): **`.status-widget`** left accents use the Figma severity mapping (informational / error / warning / success) and heavy badges; they **do not** match **`kyn-widget`** left-border tokens. See **`splitView.scss`**.
 
 **Accessibility**
 
-- Resize is **pointer-only** (see **Resize behavior**). There is **no** keyboard or screen-reader-driven resize in the helper—provide **an equivalent** in the product if you must meet **WCAG** dragging / keyboard expectations (e.g. width inputs, presets).
-- **`kyn-divider`** with **`drag-handle`** exposes **`role="separator"`**, **`aria-orientation`**, and a default **`aria-label`** (“Resize panels”). Override with **`resizeLabel`** on **`kyn-divider`** where copy should be specific.
+- Separators are keyboard-focusable and expose **`role="separator"`**, **`aria-orientation="vertical"`**, and current sizing values from **`split-view-pattern`**. Use **`startResizeLabel`** / **`endResizeLabel`** when product copy should be more specific.
+- Compact mode renders a semantic **tablist** with keyboard navigation (**Left / Right / Home / End**) and associated **tab panels**.
+- **`kyn-divider`** stays the visual drag affordance. In Split View it is rendered decoratively while the parent separator owns the interaction and semantics.
 - **Hairline / grip** motion respects **`prefers-reduced-motion`** in **`divider.scss`** and split-view light-DOM hairline styles.
 
 ## Live preview (two panes)
 
 <Canvas of={SplitViewStories.TwoPane} />
+
+## Live preview (compact three panes)
+
+<Canvas of={SplitViewStories.CompactThreePane} />
 
 ## Related
 

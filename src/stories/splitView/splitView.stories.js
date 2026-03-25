@@ -1,9 +1,8 @@
-import { html, unsafeCSS } from 'lit';
+import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { action } from 'storybook/actions';
 
-import { registerSplitViewPattern } from './splitViewPattern';
-import { registerSplitViewCodeRail } from './splitViewCodeRail';
+import { splitViewStoryStyles as splitViewStyles } from './registerSplitView';
 
 import '../../components/reusable/button/button';
 import '../../components/reusable/card/card';
@@ -17,26 +16,12 @@ import statusIconHigh from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 import statusIconMedium from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/access-management.svg';
 import statusIconLow from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 
-import {
-  SPLIT_VIEW_PATTERN_SHADOW_CSS,
-  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
-  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS,
-  SPLIT_VIEW_STORY_LIGHT_DOM_CSS,
-} from 'virtual:split-view-css';
-
-/** Styles: single `splitView.scss` (section markers); Vite plugin in `.storybook/main.js` compiles chunks. */
-registerSplitViewPattern(SPLIT_VIEW_PATTERN_SHADOW_CSS);
-registerSplitViewCodeRail(
-  SPLIT_VIEW_CODE_RAIL_SHADOW_CSS,
-  SPLIT_VIEW_BLOCK_CODE_FLUSH_CSS
-);
-
 const splitViewArgTypes = {
   panes: {
     control: { type: 'select' },
     options: [2, 3],
     description:
-      'Column count. The component default is `3` when omitted; stories set this explicitly.',
+      'Column count. The component default is `2` when omitted; stories set this explicitly.',
   },
 };
 
@@ -100,10 +85,6 @@ const CODE_DEMO_ALL = [
   CODE_DEMO_JAVASCRIPT_MATH,
 ].join('\n\n');
 
-const splitViewStyles = html`<style>
-  ${unsafeCSS(SPLIT_VIEW_STORY_LIGHT_DOM_CSS)}
-</style>`;
-
 /* Do not re-export SPLIT_VIEW_* from this file — Storybook treats named exports as stories. */
 
 export default {
@@ -119,7 +100,7 @@ The Split View pattern arranges two or three columns with draggable vertical div
 
 Use **\`kyn-divider\`** with **\`vertical\`** and **\`drag-handle\`** for the affordance (aligned with the resizable side drawer). Interactive sizing for Storybook is demonstrated with **\`<split-view-pattern>\`**, a Storybook-only helper in this folder—it is **not** a published \`kyn-*\` component.
 
-**Docs:** Open **Patterns / Split View / Docs** for copy-paste imports (this repo + vendored), file checklist, and API. **Two Pane Implemented** uses the same **issue detail** markup as **Three Pane Implemented**’s center pane in **\`slot="pane-1"\`**, with **\`split-view-code-rail\`** + **\`kyn-block-code-view\`** in **\`slot="pane-2"\`**. **Three Pane Implemented** adds a third pane (code rail) + issue list. **Canvas → Code** matches what you run in Storybook; pair with **Docs** when vendoring outside Storybook.
+**Docs:** Open **Patterns / Split View / Docs** for copy-paste imports (this repo + vendored), file checklist, mobile behavior, and API. **Two Pane Implemented** uses the same **issue detail** markup as **Three Pane Implemented**’s center pane in **\`slot="pane-1"\`**, with **\`split-view-code-rail\`** + **\`kyn-block-code-view\`** in **\`slot="pane-2"\`**. **Three Pane Implemented** adds a third pane (code rail) + issue list. **Compact Three Pane** demonstrates the narrow-screen tab model. **Canvas → Code** matches what you run in Storybook; pair with **Docs** when vendoring outside Storybook.
         `,
       },
     },
@@ -189,7 +170,10 @@ export const TwoPane = {
       <split-view-pattern
         .panes=${panes}
         .defaultStartPaneFraction=${STORY_NARROW_START_FRACTION(panes)}
-        @on-resize=${(e) => action('on-resize')(e.detail)}
+        pane-1-label="Start pane"
+        pane-2-label="Primary pane"
+        pane-3-label="End pane"
+        @split-view-resize=${(e) => action('split-view-resize')(e.detail)}
       >
         <div slot="pane-1">${panePlaceholder('Start pane')}</div>
         <div slot="pane-2">${panePlaceholder('Primary pane (flex)')}</div>
@@ -211,7 +195,10 @@ export const ThreePane = {
       <split-view-pattern
         .panes=${panes}
         .defaultStartPaneFraction=${STORY_NARROW_START_FRACTION(panes)}
-        @on-resize=${(e) => action('on-resize')(e.detail)}
+        pane-1-label="Start pane"
+        pane-2-label="Primary pane"
+        pane-3-label="End pane"
+        @split-view-resize=${(e) => action('split-view-resize')(e.detail)}
       >
         <div slot="pane-1">${panePlaceholder('Start pane')}</div>
         <div slot="pane-2">${panePlaceholder('Primary pane (flex)')}</div>
@@ -243,8 +230,10 @@ export const MinimalTwoPane = {
       <split-view-pattern
         .panes=${2}
         .defaultStartPaneFraction=${0.39}
-        ?invertStartDividerGrip=${true}
-        @on-resize=${(e) => action('on-resize')(e.detail)}
+        .invertStartDividerGrip=${true}
+        pane-1-label="Issue detail"
+        pane-2-label="Code rail"
+        @split-view-resize=${(e) => action('split-view-resize')(e.detail)}
       >
         <div slot="pane-1">${issueDetailPane()}</div>
         <div slot="pane-2" class="minimal-two-pane__primary">
@@ -268,14 +257,23 @@ export const ThreePaneIssueDetail = {
   name: 'Three Pane Implemented',
   parameters: {
     controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Full three-pane reference: issue list in `slot="pane-1"`, detail in `slot="pane-2"`, and a code rail in `slot="pane-3"`.',
+      },
+    },
   },
   render: () => html`
     ${splitViewStyles}
     <div class="split-view-shell">
       <split-view-pattern
         .panes=${3}
-        ?invertEndDividerGrip=${true}
-        @on-resize=${(e) => action('on-resize')(e.detail)}
+        .invertEndDividerGrip=${true}
+        pane-1-label="Issue list"
+        pane-2-label="Issue detail"
+        pane-3-label="Code rail"
+        @split-view-resize=${(e) => action('split-view-resize')(e.detail)}
       >
         <div slot="pane-1">
           <div class="issue-list">
@@ -430,6 +428,69 @@ export const ThreePaneIssueDetail = {
               ?codeViewExpandable=${false}
               codeSnippet=${CODE_DEMO_ALL}
               @on-copy=${(e) => action('on-copy')(e.detail)}
+            ></kyn-block-code-view>
+          </split-view-code-rail>
+        </div>
+      </split-view-pattern>
+    </div>
+  `,
+};
+
+export const CompactThreePane = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Narrow-width reference for the production pattern: the layout switches from draggable columns to a single active pane with keyboard-accessible tabs.',
+      },
+    },
+  },
+  render: () => html`
+    ${splitViewStyles}
+    <div class="split-view-shell" style="max-width: 420px;">
+      <split-view-pattern
+        .panes=${3}
+        .compactBreakpointPx=${999}
+        pane-1-label="Issue list"
+        pane-2-label="Issue detail"
+        pane-3-label="Code rail"
+      >
+        <div slot="pane-1">
+          <div class="issue-list">
+            <div class="issue-list__scroll">
+              <div class="status-widget status-${WIDGET_STATUS.CRITICAL}">
+                <kyn-card
+                  type="normal"
+                  role="article"
+                  aria-label="Issue"
+                  ?hideBorder=${true}
+                >
+                  <div class="status-widget__layout">
+                    <div class="status-widget__icon" aria-hidden="true">
+                      ${unsafeSVG(statusIconCritical)}
+                    </div>
+                    <div class="status-widget__main">
+                      <h3 class="status-widget__title">Selected issue</h3>
+                      <p class="status-widget__desc">
+                        Compact mode uses tabs to switch panes.
+                      </p>
+                    </div>
+                  </div>
+                </kyn-card>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div slot="pane-2">${issueDetailPane()}</div>
+        <div slot="pane-3" class="pane-3">
+          <split-view-code-rail>
+            <kyn-block-code-view
+              darkTheme="dark"
+              language="javascript"
+              copyOptionVisible
+              ?codeViewExpandable=${false}
+              codeSnippet=${CODE_DEMO_ALL}
             ></kyn-block-code-view>
           </split-view-code-rail>
         </div>

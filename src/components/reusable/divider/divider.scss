@@ -20,12 +20,9 @@
   flex-direction: column;
   box-sizing: border-box;
   cursor: ew-resize;
-  /* Defaults; --kyn-color-side-drawer-icon is the published Side-Drawer-Icon token (see foundation). */
-  --kyn-resize-grip-line: var(
-    --kyn-color-side-drawer-icon,
-    var(--kd-color-icon-secondary)
-  );
+  --kyn-resize-grip-line: var(--kd-color-icon-secondary);
   --kyn-resize-grip-line-active: var(--kd-color-icon-tertiary);
+  --kyn-resize-grip-line-inverted: #b6bdc0;
 }
 
 .divider {
@@ -38,7 +35,7 @@
   }
 }
 
-/* Vertical split-view: hairline on separator; drag surface matches kyn-side-drawer (shared partial) */
+/* Vertical split-view: hairline on separator with shared drag-surface behavior. */
 .divider.vertical.has-drag-handle {
   position: relative;
   width: 100%;
@@ -98,47 +95,19 @@
 
 /*
  * Optional host classes: per-line grip contrast when the handle straddles light/dark surfaces.
- * Or set --kyn-resize-grip-line-start / -end on kyn-divider from a parent.
- * Split View: <split-view-pattern invert-start-divider-grip> / invert-end-divider-grip add
- * `right-inverted-handle` on the matching `kyn-divider` (light surface left, dark right).
+ * These are opt-in and safe for existing production consumers because nothing changes unless a
+ * caller applies one of the classes.
  */
-:host([vertical][drag-handle].left-inverted-handle) {
-  --kyn-resize-grip-line-start: var(
-    --kyn-color-side-drawer-icon-on-inverse,
-    var(--kd-color-icon-light),
-    var(--kd-color-icon-inverse)
-  );
-  --kyn-resize-grip-line-end: var(
-    --kyn-color-side-drawer-icon,
-    var(--kd-color-icon-secondary)
-  );
-  --kyn-resize-grip-line-start-active: var(
-    --kyn-resize-grip-line-active,
-    var(--kd-color-icon-tertiary)
-  );
-  --kyn-resize-grip-line-end-active: var(
-    --kyn-resize-grip-line-active,
-    var(--kd-color-icon-tertiary)
-  );
+:host(.left-inverted-handle) {
+  --kyn-resize-grip-line-start: var(--kyn-resize-grip-line-inverted);
+  --kyn-resize-grip-line-end: var(--kd-color-icon-secondary);
+  --kyn-resize-grip-line-start-active: var(--kd-color-icon-tertiary);
+  --kyn-resize-grip-line-end-active: var(--kd-color-icon-tertiary);
 }
 
-:host([vertical][drag-handle].right-inverted-handle) {
-  --kyn-resize-grip-line-start: var(
-    --kyn-color-side-drawer-icon,
-    var(--kd-color-icon-secondary)
-  );
-  /* Line on dark surface: use light icon; --kd-color-icon-inverse can read too dark in light UI. */
-  --kyn-resize-grip-line-end: var(
-    --kyn-color-side-drawer-icon-on-inverse,
-    var(--kd-color-icon-light),
-    var(--kd-color-icon-inverse)
-  );
-  --kyn-resize-grip-line-start-active: var(
-    --kyn-resize-grip-line-active,
-    var(--kd-color-icon-tertiary)
-  );
-  --kyn-resize-grip-line-end-active: var(
-    --kyn-resize-grip-line-active,
-    var(--kd-color-icon-tertiary)
-  );
+:host(.right-inverted-handle) {
+  --kyn-resize-grip-line-start: var(--kd-color-icon-secondary);
+  --kyn-resize-grip-line-end: var(--kyn-resize-grip-line-inverted);
+  --kyn-resize-grip-line-start-active: var(--kd-color-icon-tertiary);
+  --kyn-resize-grip-line-end-active: var(--kd-color-icon-tertiary);
 }

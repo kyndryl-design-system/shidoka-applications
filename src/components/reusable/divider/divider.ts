@@ -5,9 +5,6 @@ import DividerScss from './divider.scss?inline';
 
 /**
  * Divider Component.
- *
- * Vertical `drag-handle`: optional host classes `left-inverted-handle` | `right-inverted-handle`
- * set per-line CSS vars; or set `--kyn-resize-grip-line-start` / `-end` from a parent.
  */
 @customElement('kyn-divider')
 export class Divider extends LitElement {
@@ -18,11 +15,15 @@ export class Divider extends LitElement {
   accessor vertical = false;
 
   /**
-   * When used with `vertical`, shows a centered drag grip and widens the hit area for split views.
+   * When used with `vertical`, shows a centered drag grip.
    * Resize behavior is provided by the parent layout (for example the Split View pattern).
    */
   @property({ type: Boolean, reflect: true, attribute: 'drag-handle' })
   accessor dragHandle = false;
+
+  /** When true, suppresses separator semantics so a parent can own the interaction model. */
+  @property({ type: Boolean, reflect: true })
+  accessor decorative = false;
 
   /** Accessible name when `dragHandle` is true (resize affordance). */
   @property({ type: String })
@@ -43,11 +44,16 @@ export class Divider extends LitElement {
     const vertical = this.vertical;
     const showHandle = vertical && this.dragHandle;
     const hideHairline = showHandle && this.hideHairline;
+    const role = this.decorative ? 'presentation' : 'separator';
     return html`
       <div
-        role="separator"
-        aria-orientation=${vertical ? 'vertical' : 'horizontal'}
-        aria-label=${ifDefined(showHandle ? this.resizeLabel : undefined)}
+        role=${role}
+        aria-orientation=${ifDefined(
+          this.decorative ? undefined : vertical ? 'vertical' : 'horizontal'
+        )}
+        aria-label=${ifDefined(
+          this.decorative || !showHandle ? undefined : this.resizeLabel
+        )}
         class="divider ${vertical ? 'vertical' : 'horizontal'} ${showHandle
           ? 'has-drag-handle'
           : ''} ${hideHairline ? 'hide-hairline' : ''}"

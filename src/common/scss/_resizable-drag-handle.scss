@@ -9,6 +9,7 @@
 //   --kyn-resize-grip-line / -active     both lines (default)
 //   --kyn-resize-grip-line-start / -end  left vs right line (::before / ::after)
 //   --kyn-resize-grip-line-start-active / -end-active  hover + dragging
+//   --kyn-resize-grip-surface-hover / -drag  hover and dragging surface fills
 
 @mixin resizable-drag-handle-vertical($width, $border-radius: 4px) {
   $line: var(
@@ -36,7 +37,10 @@
     z-index: 2;
 
     &:hover {
-      background: var(--kd-color-border-variants-light);
+      background: var(
+        --kyn-resize-grip-surface-hover,
+        var(--kd-color-border-variants-light)
+      );
 
       .drag-lines {
         &::before {
@@ -56,7 +60,10 @@
     }
 
     &.dragging {
-      background: var(--kd-color-border-variants-drag);
+      background: var(
+        --kyn-resize-grip-surface-drag,
+        var(--kd-color-border-variants-drag)
+      );
 
       .drag-lines {
         &::before {

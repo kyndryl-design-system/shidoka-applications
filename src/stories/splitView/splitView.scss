@@ -23,6 +23,10 @@
   box-sizing: border-box;
 }
 
+.split-view--compact {
+  flex-direction: column;
+}
+
 @media (max-width: 480px) {
   .split-view {
     /* Shorter default block on narrow viewports so less vertical scroll. */
@@ -178,6 +182,11 @@
   background: transparent;
 }
 
+.split-view__divider:focus-visible {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: -2px;
+}
+
 /*
  * Hairline in light DOM (reliable paint). Centered in the 8px gutter so it runs through the
  * middle of the 2px gap between the two drag lines (same axis as kyn-divider’s centered grip).
@@ -215,8 +224,67 @@
   height: 100%;
 }
 
-/* Inverted grip lines: `invert-start-divider-grip` / `invert-end-divider-grip` set
- * `right-inverted-handle` on `kyn-divider` (see divider.scss) — avoids cascade loss vs :host. */
+.split-view__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kd-spacing-8);
+  padding: var(--kd-spacing-12) var(--kd-spacing-16);
+  border-bottom: 1px solid var(--kd-color-border-level-secondary);
+  background: var(--kd-color-background-container-default);
+}
+
+.split-view__tab {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: var(--kd-spacing-8) var(--kd-spacing-12);
+  background: transparent;
+  color: var(--kd-color-text-level-secondary);
+  font: var(--kd-font-body-01);
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    box-shadow 150ms ease-out;
+}
+
+.split-view__tab:hover {
+  background: var(--kd-color-background-ui-hollow-hover);
+  color: var(--kd-color-text-level-primary);
+}
+
+.split-view__tab--active {
+  background: var(--kd-color-background-accent-subtle);
+  color: var(--kd-color-text-level-primary);
+  box-shadow: inset 0 0 0 1px var(--kd-color-border-level-secondary);
+}
+
+.split-view__tab:focus-visible {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: 2px;
+}
+
+.split-view__compact-panels {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane--compact {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.pane--compact[hidden] {
+  display: none;
+}
+
+.split-view--compact .pane--start,
+.split-view--compact .pane--primary,
+.split-view--compact .pane--end {
+  margin: 0;
+}
 
 /* @split-view-section: railHost */
 /* Shadow root: <split-view-code-rail> */
