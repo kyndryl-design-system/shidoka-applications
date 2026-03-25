@@ -306,6 +306,7 @@ export const Pagination: Story = {
     pageSize: 5,
     pageNumber: 1,
     pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
+    dense: false,
   },
   render: (args) => {
     const rows = allData;
@@ -316,6 +317,7 @@ export const Pagination: Story = {
         .pageSize=${args.pageSize}
         .pageNumber=${args.pageNumber}
         .pageSizeOptions=${args.pageSizeOptions}
+        ?dense=${args.dense}
         showPagination
       >
       </story-table>
