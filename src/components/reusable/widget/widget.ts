@@ -12,6 +12,7 @@ import { WIDGET_STATUS } from './defs';
  * @fires on-select - Emits the widget selected state .`detail:{ selected: boolean }`
  * @slot unnamed - Slot for widget content.
  * @slot actions - Slot for action buttons.
+ * @slot badge - Slot for badge status.
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
  * @slot subtitle - Slot for subtitle content.
@@ -53,11 +54,11 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   accessor removeHeader = false;
 
-  /** Show Status badge. */
+  /** Show Status badge(Deprecated). Use `badge` slot instead. */
   @property({ type: Boolean })
   accessor showStatusBadge = false;
 
-  /** Status Badge label. */
+  /** Status Badge label(Deprecated). Use `badge` slot instead. */
   @property({ type: String })
   accessor statusBadgeLabel = 'Update';
 
@@ -118,6 +119,7 @@ export class Widget extends LitElement {
                         ></kyn-badge>
                       `
                     : null}
+                  <slot name="badge"></slot>
                   <slot
                     name="actions"
                     tabindex=${this.selectable ? -1 : 0}
