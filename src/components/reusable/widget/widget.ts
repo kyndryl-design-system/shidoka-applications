@@ -5,14 +5,17 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import CheckMarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/32/checkmark-filled.svg';
 import Styles from './widget.scss?inline';
 import '../badge';
+import { WIDGET_STATUS } from './defs';
 
 /**
  * Widget.
  * @fires on-select - Emits the widget selected state .`detail:{ selected: boolean }`
  * @slot unnamed - Slot for widget content.
  * @slot actions - Slot for action buttons.
+ * @slot badge - Slot for badge status.
  * @slot tooltip - Slot for tooltip in header.
  * @slot draghandle - Slot for drag handle.
+ * @slot subtitle - Slot for subtitle content.
  * @slot footer - Slot for footer content.
  */
 @customElement('kyn-widget')
@@ -23,7 +26,7 @@ export class Widget extends LitElement {
   @property({ type: String })
   accessor widgetTitle = '';
 
-  /** Widget sub-title. */
+  /** Widget sub-title(Deprecated). Use `subtitle` slot instead. */
   @property({ type: String })
   accessor subTitle = '';
 
@@ -51,13 +54,17 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   accessor removeHeader = false;
 
-  /** Show Status badge. */
+  /** Show Status badge(Deprecated). Use `badge` slot instead. */
   @property({ type: Boolean })
   accessor showStatusBadge = false;
 
-  /** Status Badge label. */
+  /** Status Badge label(Deprecated). Use `badge` slot instead. */
   @property({ type: String })
   accessor statusBadgeLabel = 'Update';
+
+  /** Widget status. */
+  @property({ type: String })
+  accessor widgetStatus: WIDGET_STATUS = WIDGET_STATUS.DEFAULT;
 
   /** Slotted chart element.
    * @internal
@@ -74,6 +81,7 @@ export class Widget extends LitElement {
       selectable: this.selectable,
       selected: this.selected,
       compact: this.compact,
+      [`status-${this.widgetStatus}`]: true,
     };
 
     return html`
@@ -96,7 +104,9 @@ export class Widget extends LitElement {
                     <slot name="tooltip"></slot>
                   </div>
 
-                  <div class="description">${this.subTitle}</div>
+                  <div class="description">
+                    <slot name="subtitle">${this.subTitle}</slot>
+                  </div>
                 </div>
 
                 <div class="actions">
@@ -109,6 +119,7 @@ export class Widget extends LitElement {
                         ></kyn-badge>
                       `
                     : null}
+                  <slot name="badge"></slot>
                   <slot
                     name="actions"
                     tabindex=${this.selectable ? -1 : 0}
