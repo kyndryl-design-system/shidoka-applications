@@ -16,6 +16,10 @@ export default {
       options: [5, 10, 20, 30, 40, 50, 100],
       control: { type: 'select' },
     },
+    openDirection: {
+      options: ['auto', 'up', 'down'],
+      control: { type: 'select' },
+    },
   },
 };
 
@@ -28,6 +32,7 @@ const args = {
   hideItemsRange: false,
   hidePageSizeDropdown: false,
   hideNavigationButtons: false,
+  openDirection: 'auto',
   textStrings: {
     showing: 'Showing',
     of: 'of',
@@ -52,6 +57,7 @@ export const Pagination = {
         ?hideItemsRange=${args.hideItemsRange}
         ?hidePageSizeDropdown=${args.hidePageSizeDropdown}
         ?hideNavigationButtons=${args.hideNavigationButtons}
+        openDirection=${args.openDirection}
         .textStrings=${args.textStrings}
         @on-page-size-change=${(e) =>
           action(e.type)({ ...e, detail: e.detail })}

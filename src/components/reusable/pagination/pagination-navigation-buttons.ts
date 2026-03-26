@@ -37,6 +37,10 @@ export class PaginationNavigationButtons extends LitElement {
   @property({ type: Object })
   accessor textStrings: any = {};
 
+  /** Controls direction that dropdown opens. */
+  @property({ type: String })
+  accessor openDirection: 'auto' | 'up' | 'down' = 'auto';
+
   /** Available options for the page number. */
   @state()
   accessor pageNumberOptions: Array<number> = [];
@@ -110,6 +114,7 @@ export class PaginationNavigationButtons extends LitElement {
           ?hideLabel=${true}
           inline
           size="sm"
+          openDirection=${this.openDirection}
           value="${this.pageNumber.toString()}"
           @on-change=${(e: CustomEvent) => this.handleChange(e)}
         >
