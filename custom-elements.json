@@ -1464,7 +1464,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Menu & button label.",
+              "description": "Menu label, trigger `title`, and trigger `aria-label` (e.g. current account name).\r\nTruncate visually in the slot with CSS if needed; keep this value complete for tooltips and SR.",
               "attribute": "label"
             },
             {
@@ -1494,8 +1494,8 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
-              "attribute": "assistiveText"
+              "deprecated": "Use `label` instead.",
+              "attribute": "assistive-text"
             },
             {
               "kind": "field",
@@ -1526,6 +1526,12 @@
               "default": "false",
               "description": "Removes padding from the flyout menu.",
               "attribute": "noPadding"
+            },
+            {
+              "kind": "field",
+              "name": "_triggerAssistiveText",
+              "privacy": "private",
+              "readonly": true
             },
             {
               "kind": "method",
@@ -1585,7 +1591,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Menu & button label.",
+              "description": "Menu label, trigger `title`, and trigger `aria-label` (e.g. current account name).\r\nTruncate visually in the slot with CSS if needed; keep this value complete for tooltips and SR.",
               "fieldName": "label"
             },
             {
@@ -1607,12 +1613,12 @@
               "fieldName": "hideButtonLabel"
             },
             {
-              "name": "assistiveText",
+              "name": "assistive-text",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "DEPRECATED. Use `label` instead.\r\nButton assistive text, title + aria-label.",
+              "deprecated": "Use `label` instead.",
               "fieldName": "assistiveText"
             },
             {
@@ -3317,6 +3323,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/uiShell/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "./uiShell"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/uiShell/uiShell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
+          "name": "UiShell",
+          "slots": [
+            {
+              "description": "Slot for global elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-ui-shell",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "UiShell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-ui-shell",
+          "declaration": {
+            "name": "UiShell",
+            "module": "src/components/global/uiShell/uiShell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/workspaceSwitcher/index.ts",
       "declarations": [],
       "exports": [
@@ -3344,7 +3413,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Workspace Switcher shell component providing two-panel layout with mobile drill-down.\r\nComponent fits to 100% of the width and height of its container and surfaces two panels for content composition via slots.\r\nConsumers compose content via named slots using sub-components\r\nlike `kyn-workspace-switcher-menu-item`.",
+          "description": "Workspace Switcher shell component providing two-panel layout with mobile drill-down.\r\nComponent fits to 100% of the width and height of its container and surfaces two panels for content composition via slots.\r\nConsumers compose workspace and account rows via named slots using\r\nsub-components like `kyn-workspace-switcher-menu-item`.\r\nThe account meta block can also be provided via the `accountMeta` property,\r\nwhich renders the preferred rigid built-in pattern.",
           "name": "WorkspaceSwitcher",
           "cssProperties": [
             {
@@ -3360,7 +3429,7 @@
           ],
           "slots": [
             {
-              "description": "Non-list content for the left panel (e.g. workspace info header).",
+              "description": "Legacy non-list content for the left panel when `accountMeta` is not used. Prefer `accountMeta`; this slot is maintained for backward compatibility.",
               "name": "left"
             },
             {
@@ -3386,6 +3455,15 @@
               "type": {
                 "text": "object"
               }
+            },
+            {
+              "kind": "field",
+              "name": "accountMeta",
+              "type": {
+                "text": "WorkspaceSwitcherAccountMeta | null"
+              },
+              "default": "null",
+              "description": "Built-in account meta content for the left panel."
             },
             {
               "kind": "field",
@@ -3421,9 +3499,115 @@
               "reflects": true
             },
             {
+              "kind": "field",
+              "name": "_hasLegacyLeftSlotContent",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false",
+              "description": "Tracks whether legacy left-slot content is present."
+            },
+            {
+              "kind": "field",
+              "name": "_copiedAccountMetaIndex",
+              "type": {
+                "text": "number | null"
+              },
+              "privacy": "private",
+              "default": "null",
+              "description": "Tracks which copy-style account meta item is showing success feedback."
+            },
+            {
               "kind": "method",
               "name": "_handleBackClick",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateLegacyLeftSlotState",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_warnForLegacyLeftSlotUsage",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderAccountMeta",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_renderAccountMetaItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "WorkspaceSwitcherAccountMetaItem"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleAccountMetaItemClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                },
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "WorkspaceSwitcherAccountMetaItem"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_showCopyFeedback",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_clearCopyFeedback",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "on-account-meta-copy",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Emits when a copy-style account meta action is activated."
             }
           ],
           "attributes": [
@@ -3494,7 +3678,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Workspace Switcher Menu Item component.\r\nUsed for both workspace items (left panel) and account items (right panel).",
+          "description": "Workspace Switcher Menu Item component.\r\nUsed for both workspace items (left panel) and account items (right panel).\r\nItem rows support these trailing-action combinations:\r\n- favorite only\r\n- launch indicator only\r\n- launch indicator plus favorite\r\nWhen both are present, the launch indicator renders to the left and the\r\nfavorite control stays pinned to the far right for consistency.",
           "name": "WorkspaceSwitcherMenuItem",
           "members": [
             {
@@ -3529,6 +3713,16 @@
             },
             {
               "kind": "field",
+              "name": "nameTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional full name for the native tooltip when `name` is abbreviated in the DOM.\r\nDefaults to `name`.",
+              "attribute": "name-title"
+            },
+            {
+              "kind": "field",
               "name": "count",
               "type": {
                 "text": "number | null"
@@ -3559,12 +3753,22 @@
             },
             {
               "kind": "field",
+              "name": "showLaunchIndicator",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the launch/new-tab indicator (item variant only).",
+              "attribute": "showLaunchIndicator"
+            },
+            {
+              "kind": "field",
               "name": "showFavorite",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Whether to show the favorite icon selector (item variant only).",
+              "description": "Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned.",
               "attribute": "showFavorite"
             },
             {
@@ -3641,6 +3845,15 @@
               "fieldName": "name"
             },
             {
+              "name": "name-title",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional full name for the native tooltip when `name` is abbreviated in the DOM.\r\nDefaults to `name`.",
+              "fieldName": "nameTitle"
+            },
+            {
               "name": "count",
               "type": {
                 "text": "number | null"
@@ -3668,12 +3881,21 @@
               "fieldName": "favorited"
             },
             {
+              "name": "showLaunchIndicator",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the launch/new-tab indicator (item variant only).",
+              "fieldName": "showLaunchIndicator"
+            },
+            {
               "name": "showFavorite",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Whether to show the favorite icon selector (item variant only).",
+              "description": "Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned.",
               "fieldName": "showFavorite"
             }
           ],
@@ -3700,69 +3922,6 @@
           "declaration": {
             "name": "WorkspaceSwitcherMenuItem",
             "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "./uiShell"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/uiShell/uiShell.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.",
-          "name": "UiShell",
-          "slots": [
-            {
-              "description": "Slot for global elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-ui-shell",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "UiShell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-ui-shell",
-          "declaration": {
-            "name": "UiShell",
-            "module": "src/components/global/uiShell/uiShell.ts"
           }
         }
       ]
@@ -4187,6 +4346,85 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/avatar/avatar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "User avatar.",
+          "name": "Avatar",
+          "slots": [
+            {
+              "description": "Slot for the profile picture img.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "initials",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "attribute": "initials"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "initials",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
+              "fieldName": "initials"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-avatar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "src/components/reusable/avatar/avatar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/avatar/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Avatar",
+          "declaration": {
+            "name": "Avatar",
+            "module": "./avatar"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/badge/badge.ts",
       "declarations": [
         {
@@ -4379,85 +4617,6 @@
           "declaration": {
             "name": "Badge",
             "module": "./badge"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/avatar.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "User avatar.",
-          "name": "Avatar",
-          "slots": [
-            {
-              "description": "Slot for the profile picture img.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "attribute": "initials"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "initials",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "1-2 letters to represent the user with the initials in the avatar circle. It also provides a slot that allows an image/photo to replace the initials",
-              "fieldName": "initials"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-avatar",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "src/components/reusable/avatar/avatar.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/avatar/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Avatar",
-          "declaration": {
-            "name": "Avatar",
-            "module": "./avatar"
           }
         }
       ]
@@ -15075,410 +15234,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/numberInput/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NumberInput",
-          "declaration": {
-            "name": "NumberInput",
-            "module": "./numberInput"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/numberInput/numberInput.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Number input.",
-          "name": "NumberInput",
-          "cssProperties": [
-            {
-              "description": "Maximum width of the number input inner container.",
-              "name": "--kyn-number-input-inner-max-width",
-              "default": "200px"
-            },
-            {
-              "description": "Minimum width of the number input inner container.",
-              "name": "--kyn-number-input-inner-min-width",
-              "default": "0px"
-            }
-          ],
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
-              "attribute": "size"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Input value."
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum value.",
-              "attribute": "max"
-            },
-            {
-              "kind": "field",
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum value.",
-              "attribute": "min"
-            },
-            {
-              "kind": "field",
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Step value.",
-              "attribute": "step"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  requiredText: 'Required',\r\n  subtract: 'Subtract',\r\n  add: 'Add',\r\n  error: 'Error',\r\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_sizeMap",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "'extra-small' | 'small' | 'medium' | 'large'"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "size",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleSubtract",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleAdd",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_emitValue",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "optional": true,
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the value and original event details.`detail:{ value: number }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "size",
-              "type": {
-                "text": "string"
-              },
-              "default": "'md'",
-              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
-              "fieldName": "size"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "max",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum value.",
-              "fieldName": "max"
-            },
-            {
-              "name": "min",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum value.",
-              "fieldName": "min"
-            },
-            {
-              "name": "step",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Step value.",
-              "fieldName": "step"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-number-input",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NumberInput",
-          "declaration": {
-            "name": "NumberInput",
-            "module": "src/components/reusable/numberInput/numberInput.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-number-input",
-          "declaration": {
-            "name": "NumberInput",
-            "module": "src/components/reusable/numberInput/numberInput.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/overflowMenu/index.ts",
       "declarations": [],
       "exports": [
@@ -16009,6 +15764,410 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/numberInput/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NumberInput",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "./numberInput"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/numberInput/numberInput.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Number input.",
+          "name": "NumberInput",
+          "cssProperties": [
+            {
+              "description": "Maximum width of the number input inner container.",
+              "name": "--kyn-number-input-inner-max-width",
+              "default": "200px"
+            },
+            {
+              "description": "Minimum width of the number input inner container.",
+              "name": "--kyn-number-input-inner-min-width",
+              "default": "0px"
+            }
+          ],
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
+              "attribute": "size"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Input value."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum value.",
+              "attribute": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum value.",
+              "attribute": "min"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step value.",
+              "attribute": "step"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  subtract: 'Subtract',\r\n  add: 'Add',\r\n  error: 'Error',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_sizeMap",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "'extra-small' | 'small' | 'medium' | 'large'"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleSubtract",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleAdd",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitValue",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "optional": true,
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the value and original event details.`detail:{ value: number }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "default": "'md'",
+              "description": "Input size. \"xs\", \"sm\", \"md\", or \"lg\".",
+              "fieldName": "size"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum value.",
+              "fieldName": "max"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum value.",
+              "fieldName": "min"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step value.",
+              "fieldName": "step"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-number-input",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NumberInput",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "src/components/reusable/numberInput/numberInput.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-number-input",
+          "declaration": {
+            "name": "NumberInput",
+            "module": "src/components/reusable/numberInput/numberInput.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/pagetitle/index.ts",
       "declarations": [],
       "exports": [
@@ -16422,816 +16581,6 @@
           "declaration": {
             "name": "PageTitleOption",
             "module": "src/components/reusable/pagetitle/pageTitleOption.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Pagination",
-          "declaration": {
-            "name": "Pagination",
-            "module": "./Pagination"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "PaginationItemsRange",
-          "declaration": {
-            "name": "PaginationItemsRange",
-            "module": "./pagination-items-range"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "PaginationPageSizeDropdown",
-          "declaration": {
-            "name": "PaginationPageSizeDropdown",
-            "module": "./pagination-page-size-dropdown"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "PaginationNavigationButtons",
-          "declaration": {
-            "name": "PaginationNavigationButtons",
-            "module": "./pagination-navigation-buttons"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "PaginationSkeleton",
-          "declaration": {
-            "name": "PaginationSkeleton",
-            "module": "./pagination.skeleton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/pagination-items-range.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-pagination-items-range` Web Component.\r\n\r\nThis component is responsible for displaying the range of items being displayed\r\nin the context of pagination. It shows which items (by number) are currently visible\r\nand the total number of items.",
-          "name": "PaginationItemsRange",
-          "members": [
-            {
-              "kind": "field",
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items.",
-              "attribute": "count",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current page number being displayed.",
-              "attribute": "pageNumber",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "attribute": "pageSize",
-              "reflects": true
-            },
-            {
-              "kind": "method",
-              "name": "itemsRangeText",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "isMobile",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items.",
-              "fieldName": "count"
-            },
-            {
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current page number being displayed.",
-              "fieldName": "pageNumber"
-            },
-            {
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "fieldName": "pageSize"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-pagination-items-range",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PaginationItemsRange",
-          "declaration": {
-            "name": "PaginationItemsRange",
-            "module": "src/components/reusable/pagination/pagination-items-range.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-pagination-items-range",
-          "declaration": {
-            "name": "PaginationItemsRange",
-            "module": "src/components/reusable/pagination/pagination-items-range.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/pagination-navigation-buttons.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-pagination-navigation-buttons` Web Component.\r\n\r\nThis component provides navigational controls for pagination.\r\nIt includes back and next buttons, along with displaying the current page and total pages.",
-          "name": "PaginationNavigationButtons",
-          "members": [
-            {
-              "kind": "field",
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "pageNumber",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "numberOfPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "attribute": "numberOfPages",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "openDirection",
-              "type": {
-                "text": "'auto' | 'up' | 'down'"
-              },
-              "default": "'auto'",
-              "description": "Controls direction that dropdown opens.",
-              "attribute": "openDirection"
-            },
-            {
-              "kind": "field",
-              "name": "pageNumberOptions",
-              "type": {
-                "text": "Array<number>"
-              },
-              "default": "[]",
-              "description": "Available options for the page number."
-            },
-            {
-              "kind": "field",
-              "name": "SMALLEST_PAGE_NUMBER",
-              "type": {
-                "text": "number"
-              },
-              "privacy": "private",
-              "readonly": true,
-              "default": "1"
-            },
-            {
-              "kind": "method",
-              "name": "handleButtonClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "next",
-                  "type": {
-                    "text": "boolean"
-                  },
-                  "description": "If true, will move to the next page, otherwise to the previous page"
-                }
-              ],
-              "description": "Handles the button click event, either moving to the next page or previous page"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ],
-              "description": "Handles the dropdown change event."
-            }
-          ],
-          "events": [
-            {
-              "name": "on-page-number-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Dispatched when the page number is changed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "pageNumber"
-            },
-            {
-              "name": "numberOfPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "fieldName": "numberOfPages"
-            },
-            {
-              "name": "openDirection",
-              "type": {
-                "text": "'auto' | 'up' | 'down'"
-              },
-              "default": "'auto'",
-              "description": "Controls direction that dropdown opens.",
-              "fieldName": "openDirection"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-pagination-navigation-buttons",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PaginationNavigationButtons",
-          "declaration": {
-            "name": "PaginationNavigationButtons",
-            "module": "src/components/reusable/pagination/pagination-navigation-buttons.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-pagination-navigation-buttons",
-          "declaration": {
-            "name": "PaginationNavigationButtons",
-            "module": "src/components/reusable/pagination/pagination-navigation-buttons.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/pagination-page-size-dropdown.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-pagination-page-size-dropdown` Web Component.\n\nThis component provides a dropdown to select the page size for pagination.\nIt emits events when the selected page size changes.",
-          "name": "PaginationPageSizeDropdown",
-          "members": [
-            {
-              "kind": "field",
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Current page size.",
-              "attribute": "pageSize",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSizeOptions",
-              "type": {
-                "text": "Array<number>"
-              },
-              "default": "[5, 10, 20, 30, 40, 50]",
-              "description": "Available options for the page size."
-            },
-            {
-              "kind": "field",
-              "name": "openDirection",
-              "type": {
-                "text": "'auto' | 'up' | 'down'"
-              },
-              "default": "'auto'",
-              "description": "Controls direction that dropdown opens.",
-              "attribute": "openDirection"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The dropdown change event."
-                }
-              ],
-              "description": "Handles the dropdown change event."
-            }
-          ],
-          "events": [
-            {
-              "name": "on-page-size-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The event fired when the page size changes."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Current page size.",
-              "fieldName": "pageSize"
-            },
-            {
-              "name": "openDirection",
-              "type": {
-                "text": "'auto' | 'up' | 'down'"
-              },
-              "default": "'auto'",
-              "description": "Controls direction that dropdown opens.",
-              "fieldName": "openDirection"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-pagination-page-size-dropdown",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PaginationPageSizeDropdown",
-          "declaration": {
-            "name": "PaginationPageSizeDropdown",
-            "module": "src/components/reusable/pagination/pagination-page-size-dropdown.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-pagination-page-size-dropdown",
-          "declaration": {
-            "name": "PaginationPageSizeDropdown",
-            "module": "src/components/reusable/pagination/pagination-page-size-dropdown.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/pagination.skeleton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-pagination-skeleton` Web Component.",
-          "name": "PaginationSkeleton",
-          "members": [
-            {
-              "kind": "field",
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "attribute": "hideItemsRange"
-            },
-            {
-              "kind": "field",
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "attribute": "hidePageSizeDropdown"
-            },
-            {
-              "kind": "field",
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "attribute": "hideNavigationButtons"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "fieldName": "hideItemsRange"
-            },
-            {
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "fieldName": "hidePageSizeDropdown"
-            },
-            {
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "fieldName": "hideNavigationButtons"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-pagination-skeleton",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PaginationSkeleton",
-          "declaration": {
-            "name": "PaginationSkeleton",
-            "module": "src/components/reusable/pagination/pagination.skeleton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-pagination-skeleton",
-          "declaration": {
-            "name": "PaginationSkeleton",
-            "module": "src/components/reusable/pagination/pagination.skeleton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/pagination/Pagination.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "`kyn-pagination` Web Component.\r\n\r\nA component that provides pagination functionality, enabling the user to\r\nnavigate through large datasets by splitting them into discrete chunks.\r\nIntegrates with other utility components like items range display, page size dropdown,\r\nand navigation buttons.",
-          "name": "Pagination",
-          "members": [
-            {
-              "kind": "field",
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "attribute": "count",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current active page number.",
-              "attribute": "pageNumber",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "attribute": "pageSize",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "pageSizeOptions",
-              "type": {
-                "text": "number[]"
-              },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "attribute": "pageSizeOptions"
-            },
-            {
-              "kind": "field",
-              "name": "_numberOfPages",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Number of pages."
-            },
-            {
-              "kind": "field",
-              "name": "pageSizeDropdownLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "attribute": "pageSizeDropdownLabel"
-            },
-            {
-              "kind": "field",
-              "name": "pageNumberLabel",
-              "default": "PAGE_NUMBER_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "attribute": "pageNumberLabel"
-            },
-            {
-              "kind": "field",
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "attribute": "hideItemsRange"
-            },
-            {
-              "kind": "field",
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "attribute": "hidePageSizeDropdown"
-            },
-            {
-              "kind": "field",
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "attribute": "hideNavigationButtons"
-            },
-            {
-              "kind": "field",
-              "name": "openDirection",
-              "type": {
-                "text": "'auto' | 'up' | 'down'"
-              },
-              "default": "'auto'",
-              "description": "Controls direction that dropdowns open.",
-              "attribute": "openDirection"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n    showing: 'Showing',\r\n    of: 'of',\r\n    items: 'items',\r\n    pages: 'pages',\r\n    itemsPerPage: 'Items per page:',\r\n    previousPage: 'Previous page',\r\n    nextPage: 'Next page',\r\n  }",
-              "description": "Customizable text strings",
-              "attribute": "textStrings"
-            },
-            {
-              "kind": "method",
-              "name": "handlePageSizeChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page size."
-                }
-              ],
-              "description": "Handler for the event when the page size is changed by the user.\r\nUpdates the `pageSize` and resets the `pageNumber` to 1."
-            },
-            {
-              "kind": "method",
-              "name": "handlePageNumberChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  },
-                  "description": "The emitted custom event with the selected page number."
-                }
-              ],
-              "description": "Handler for the event when the page number is changed by the user.\r\nUpdates the `pageNumber`."
-            }
-          ],
-          "events": [
-            {
-              "description": "Dispatched when the page size changes.`detail:{ value: number }`",
-              "name": "on-page-size-change"
-            },
-            {
-              "description": "Dispatched when the currently active page changes.`detail:{ value: number }`",
-              "name": "on-page-number-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "count",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Total number of items that need pagination.",
-              "fieldName": "count"
-            },
-            {
-              "name": "pageNumber",
-              "type": {
-                "text": "number"
-              },
-              "default": "1",
-              "description": "Current active page number.",
-              "fieldName": "pageNumber"
-            },
-            {
-              "name": "pageSize",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Number of items displayed per page.",
-              "fieldName": "pageSize"
-            },
-            {
-              "name": "pageSizeOptions",
-              "type": {
-                "text": "number[]"
-              },
-              "default": "[5, 10, 20, 30, 40, 50, 100]",
-              "description": "Available options for the page size.",
-              "fieldName": "pageSizeOptions"
-            },
-            {
-              "name": "pageSizeDropdownLabel",
-              "default": "PAGE_SIZE_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "fieldName": "pageSizeDropdownLabel"
-            },
-            {
-              "name": "pageNumberLabel",
-              "default": "PAGE_NUMBER_LABEL",
-              "description": "Label for the page size dropdown. Required for accessibility.",
-              "fieldName": "pageNumberLabel"
-            },
-            {
-              "name": "hideItemsRange",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the items range display.",
-              "fieldName": "hideItemsRange"
-            },
-            {
-              "name": "hidePageSizeDropdown",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the page size dropdown.",
-              "fieldName": "hidePageSizeDropdown"
-            },
-            {
-              "name": "hideNavigationButtons",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Option to hide the navigation buttons.",
-              "fieldName": "hideNavigationButtons"
-            },
-            {
-              "name": "openDirection",
-              "type": {
-                "text": "'auto' | 'up' | 'down'"
-              },
-              "default": "'auto'",
-              "description": "Controls direction that dropdowns open.",
-              "fieldName": "openDirection"
-            },
-            {
-              "name": "textStrings",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n    showing: 'Showing',\r\n    of: 'of',\r\n    items: 'items',\r\n    pages: 'pages',\r\n    itemsPerPage: 'Items per page:',\r\n    previousPage: 'Previous page',\r\n    nextPage: 'Next page',\r\n  }",
-              "description": "Customizable text strings",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-pagination",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Pagination",
-          "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-pagination",
-          "declaration": {
-            "name": "Pagination",
-            "module": "src/components/reusable/pagination/Pagination.ts"
           }
         }
       ]
@@ -20286,6 +19635,816 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "./Pagination"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "PaginationItemsRange",
+          "declaration": {
+            "name": "PaginationItemsRange",
+            "module": "./pagination-items-range"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "PaginationPageSizeDropdown",
+          "declaration": {
+            "name": "PaginationPageSizeDropdown",
+            "module": "./pagination-page-size-dropdown"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "PaginationNavigationButtons",
+          "declaration": {
+            "name": "PaginationNavigationButtons",
+            "module": "./pagination-navigation-buttons"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "PaginationSkeleton",
+          "declaration": {
+            "name": "PaginationSkeleton",
+            "module": "./pagination.skeleton"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/pagination-items-range.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination-items-range` Web Component.\r\n\r\nThis component is responsible for displaying the range of items being displayed\r\nin the context of pagination. It shows which items (by number) are currently visible\r\nand the total number of items.",
+          "name": "PaginationItemsRange",
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items.",
+              "attribute": "count",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current page number being displayed.",
+              "attribute": "pageNumber",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "attribute": "pageSize",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "itemsRangeText",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "isMobile",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items.",
+              "fieldName": "count"
+            },
+            {
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current page number being displayed.",
+              "fieldName": "pageNumber"
+            },
+            {
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "fieldName": "pageSize"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination-items-range",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationItemsRange",
+          "declaration": {
+            "name": "PaginationItemsRange",
+            "module": "src/components/reusable/pagination/pagination-items-range.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination-items-range",
+          "declaration": {
+            "name": "PaginationItemsRange",
+            "module": "src/components/reusable/pagination/pagination-items-range.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/pagination-navigation-buttons.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination-navigation-buttons` Web Component.\n\nThis component provides navigational controls for pagination.\nIt includes back and next buttons, along with displaying the current page and total pages.",
+          "name": "PaginationNavigationButtons",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "pageNumber",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "numberOfPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "numberOfPages",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "openDirection",
+              "type": {
+                "text": "'auto' | 'up' | 'down'"
+              },
+              "default": "'auto'",
+              "description": "Controls direction that dropdown opens.",
+              "attribute": "openDirection"
+            },
+            {
+              "kind": "field",
+              "name": "pageNumberOptions",
+              "type": {
+                "text": "Array<number>"
+              },
+              "default": "[]",
+              "description": "Available options for the page number."
+            },
+            {
+              "kind": "field",
+              "name": "SMALLEST_PAGE_NUMBER",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "readonly": true,
+              "default": "1"
+            },
+            {
+              "kind": "method",
+              "name": "handleButtonClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "next",
+                  "type": {
+                    "text": "boolean"
+                  },
+                  "description": "If true, will move to the next page, otherwise to the previous page"
+                }
+              ],
+              "description": "Handles the button click event, either moving to the next page or previous page"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ],
+              "description": "Handles the dropdown change event."
+            }
+          ],
+          "events": [
+            {
+              "name": "on-page-number-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Dispatched when the page number is changed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "pageNumber"
+            },
+            {
+              "name": "numberOfPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "numberOfPages"
+            },
+            {
+              "name": "openDirection",
+              "type": {
+                "text": "'auto' | 'up' | 'down'"
+              },
+              "default": "'auto'",
+              "description": "Controls direction that dropdown opens.",
+              "fieldName": "openDirection"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination-navigation-buttons",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationNavigationButtons",
+          "declaration": {
+            "name": "PaginationNavigationButtons",
+            "module": "src/components/reusable/pagination/pagination-navigation-buttons.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination-navigation-buttons",
+          "declaration": {
+            "name": "PaginationNavigationButtons",
+            "module": "src/components/reusable/pagination/pagination-navigation-buttons.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/pagination-page-size-dropdown.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination-page-size-dropdown` Web Component.\n\nThis component provides a dropdown to select the page size for pagination.\nIt emits events when the selected page size changes.",
+          "name": "PaginationPageSizeDropdown",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Current page size.",
+              "attribute": "pageSize",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "Array<number>"
+              },
+              "default": "[5, 10, 20, 30, 40, 50]",
+              "description": "Available options for the page size."
+            },
+            {
+              "kind": "field",
+              "name": "openDirection",
+              "type": {
+                "text": "'auto' | 'up' | 'down'"
+              },
+              "default": "'auto'",
+              "description": "Controls direction that dropdown opens.",
+              "attribute": "openDirection"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The dropdown change event."
+                }
+              ],
+              "description": "Handles the dropdown change event."
+            }
+          ],
+          "events": [
+            {
+              "name": "on-page-size-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The event fired when the page size changes."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Current page size.",
+              "fieldName": "pageSize"
+            },
+            {
+              "name": "openDirection",
+              "type": {
+                "text": "'auto' | 'up' | 'down'"
+              },
+              "default": "'auto'",
+              "description": "Controls direction that dropdown opens.",
+              "fieldName": "openDirection"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination-page-size-dropdown",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationPageSizeDropdown",
+          "declaration": {
+            "name": "PaginationPageSizeDropdown",
+            "module": "src/components/reusable/pagination/pagination-page-size-dropdown.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination-page-size-dropdown",
+          "declaration": {
+            "name": "PaginationPageSizeDropdown",
+            "module": "src/components/reusable/pagination/pagination-page-size-dropdown.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/pagination.skeleton.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination-skeleton` Web Component.",
+          "name": "PaginationSkeleton",
+          "members": [
+            {
+              "kind": "field",
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "attribute": "hideItemsRange"
+            },
+            {
+              "kind": "field",
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "attribute": "hidePageSizeDropdown"
+            },
+            {
+              "kind": "field",
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "attribute": "hideNavigationButtons"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "fieldName": "hideItemsRange"
+            },
+            {
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "fieldName": "hidePageSizeDropdown"
+            },
+            {
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "fieldName": "hideNavigationButtons"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination-skeleton",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationSkeleton",
+          "declaration": {
+            "name": "PaginationSkeleton",
+            "module": "src/components/reusable/pagination/pagination.skeleton.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination-skeleton",
+          "declaration": {
+            "name": "PaginationSkeleton",
+            "module": "src/components/reusable/pagination/pagination.skeleton.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/pagination/Pagination.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "`kyn-pagination` Web Component.\n\nA component that provides pagination functionality, enabling the user to\nnavigate through large datasets by splitting them into discrete chunks.\nIntegrates with other utility components like items range display, page size dropdown,\nand navigation buttons.",
+          "name": "Pagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "attribute": "count",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "attribute": "pageNumber",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "attribute": "pageSize",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "attribute": "pageSizeOptions"
+            },
+            {
+              "kind": "field",
+              "name": "_numberOfPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Number of pages."
+            },
+            {
+              "kind": "field",
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "attribute": "pageSizeDropdownLabel"
+            },
+            {
+              "kind": "field",
+              "name": "pageNumberLabel",
+              "default": "PAGE_NUMBER_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "attribute": "pageNumberLabel"
+            },
+            {
+              "kind": "field",
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "attribute": "hideItemsRange"
+            },
+            {
+              "kind": "field",
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "attribute": "hidePageSizeDropdown"
+            },
+            {
+              "kind": "field",
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "attribute": "hideNavigationButtons"
+            },
+            {
+              "kind": "field",
+              "name": "openDirection",
+              "type": {
+                "text": "'auto' | 'up' | 'down'"
+              },
+              "default": "'auto'",
+              "description": "Controls direction that dropdowns open.",
+              "attribute": "openDirection"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
+              "description": "Customizable text strings",
+              "attribute": "textStrings"
+            },
+            {
+              "kind": "method",
+              "name": "handlePageSizeChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page size."
+                }
+              ],
+              "description": "Handler for the event when the page size is changed by the user.\nUpdates the `pageSize` and resets the `pageNumber` to 1."
+            },
+            {
+              "kind": "method",
+              "name": "handlePageNumberChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent"
+                  },
+                  "description": "The emitted custom event with the selected page number."
+                }
+              ],
+              "description": "Handler for the event when the page number is changed by the user.\nUpdates the `pageNumber`."
+            }
+          ],
+          "events": [
+            {
+              "description": "Dispatched when the page size changes.`detail:{ value: number }`",
+              "name": "on-page-size-change"
+            },
+            {
+              "description": "Dispatched when the currently active page changes.`detail:{ value: number }`",
+              "name": "on-page-number-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of items that need pagination.",
+              "fieldName": "count"
+            },
+            {
+              "name": "pageNumber",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current active page number.",
+              "fieldName": "pageNumber"
+            },
+            {
+              "name": "pageSize",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Number of items displayed per page.",
+              "fieldName": "pageSize"
+            },
+            {
+              "name": "pageSizeOptions",
+              "type": {
+                "text": "number[]"
+              },
+              "default": "[5, 10, 20, 30, 40, 50, 100]",
+              "description": "Available options for the page size.",
+              "fieldName": "pageSizeOptions"
+            },
+            {
+              "name": "pageSizeDropdownLabel",
+              "default": "PAGE_SIZE_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "fieldName": "pageSizeDropdownLabel"
+            },
+            {
+              "name": "pageNumberLabel",
+              "default": "PAGE_NUMBER_LABEL",
+              "description": "Label for the page size dropdown. Required for accessibility.",
+              "fieldName": "pageNumberLabel"
+            },
+            {
+              "name": "hideItemsRange",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the items range display.",
+              "fieldName": "hideItemsRange"
+            },
+            {
+              "name": "hidePageSizeDropdown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the page size dropdown.",
+              "fieldName": "hidePageSizeDropdown"
+            },
+            {
+              "name": "hideNavigationButtons",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Option to hide the navigation buttons.",
+              "fieldName": "hideNavigationButtons"
+            },
+            {
+              "name": "openDirection",
+              "type": {
+                "text": "'auto' | 'up' | 'down'"
+              },
+              "default": "'auto'",
+              "description": "Controls direction that dropdowns open.",
+              "fieldName": "openDirection"
+            },
+            {
+              "name": "textStrings",
+              "type": {
+                "text": "object"
+              },
+              "default": "{\n    showing: 'Showing',\n    of: 'of',\n    items: 'items',\n    pages: 'pages',\n    itemsPerPage: 'Items per page:',\n    previousPage: 'Previous page',\n    nextPage: 'Next page',\n  }",
+              "description": "Customizable text strings",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/reusable/pagination/Pagination.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/radioButton/index.ts",
       "declarations": [],
       "exports": [
@@ -22159,184 +22318,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/statusButton/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StatusButton",
-          "declaration": {
-            "name": "StatusButton",
-            "module": "./statusButton"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/statusButton/statusButton.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Status Button.",
-          "name": "StatusButton",
-          "slots": [
-            {
-              "description": "Slot for icon.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Status label (Required).",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify selected state.",
-              "attribute": "selected"
-            },
-            {
-              "kind": "field",
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "attribute": "noTruncation"
-            },
-            {
-              "kind": "field",
-              "name": "kind",
-              "type": {
-                "text": "STATUS_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the status.",
-              "attribute": "kind"
-            },
-            {
-              "kind": "method",
-              "name": "handleBtnClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                },
-                {
-                  "name": "value",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the event and emits the selected value and original event details.`detail:{ origEvent: PointerEvent,value: string }`",
-              "name": "on-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Status label (Required).",
-              "fieldName": "label"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Specify selected state.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "noTruncation",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Removes label text truncation.",
-              "fieldName": "noTruncation"
-            },
-            {
-              "name": "kind",
-              "type": {
-                "text": "STATUS_KINDS"
-              },
-              "description": "Specifies the visual appearance/kind of the status.",
-              "fieldName": "kind"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-status-btn",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StatusButton",
-          "declaration": {
-            "name": "StatusButton",
-            "module": "src/components/reusable/statusButton/statusButton.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-status-btn",
-          "declaration": {
-            "name": "StatusButton",
-            "module": "src/components/reusable/statusButton/statusButton.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/reusable/splitButton/defs.ts",
       "declarations": [],
       "exports": []
@@ -22899,108 +22880,86 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/index.ts",
+      "path": "src/components/reusable/statusButton/index.ts",
       "declarations": [],
       "exports": [
         {
           "kind": "js",
-          "name": "Stepper",
+          "name": "StatusButton",
           "declaration": {
-            "name": "Stepper",
-            "module": "./stepper"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItem",
-          "declaration": {
-            "name": "StepperItem",
-            "module": "./stepperItem"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "./stepperItemChild"
+            "name": "StatusButton",
+            "module": "./statusButton"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepper.ts",
+      "path": "src/components/reusable/statusButton/statusButton.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "Stepper",
-          "name": "Stepper",
+          "description": "Status Button.",
+          "name": "StatusButton",
           "slots": [
             {
-              "description": "Slot for step items.",
+              "description": "Slot for icon.",
               "name": "unnamed"
             }
           ],
           "members": [
             {
               "kind": "field",
-              "name": "stepperType",
+              "name": "label",
               "type": {
                 "text": "string"
               },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
-              "attribute": "stepperType"
+              "default": "''",
+              "description": "Status label (Required).",
+              "attribute": "label"
             },
             {
               "kind": "field",
-              "name": "vertical",
+              "name": "disabled",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "attribute": "vertical"
+              "description": "Specify disabled state.",
+              "attribute": "disabled"
             },
             {
               "kind": "field",
-              "name": "stepperSize",
+              "name": "selected",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepperSize"
+              "default": "false",
+              "description": "Specify selected state.",
+              "attribute": "selected"
             },
             {
               "kind": "field",
-              "name": "currentIndex",
+              "name": "noTruncation",
               "type": {
-                "text": "number"
+                "text": "boolean"
               },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "attribute": "currentIndex"
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "attribute": "noTruncation"
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "type": {
+                "text": "STATUS_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the status.",
+              "attribute": "kind"
             },
             {
               "kind": "method",
-              "name": "_handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_determineFirstLastSteps",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
+              "name": "handleBtnClick",
               "privacy": "private",
               "parameters": [
                 {
@@ -23008,283 +22967,31 @@
                   "type": {
                     "text": "any"
                   }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "string"
+                  }
                 }
               ]
             }
           ],
           "events": [
             {
-              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
+              "description": "Captures the event and emits the selected value and original event details.`detail:{ origEvent: PointerEvent,value: string }`",
               "name": "on-click"
             }
           ],
           "attributes": [
             {
-              "name": "stepperType",
-              "type": {
-                "text": "string"
-              },
-              "default": "'procedure'",
-              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
-              "fieldName": "stepperType"
-            },
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Wheter the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepperSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepperSize"
-            },
-            {
-              "name": "currentIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
-              "fieldName": "currentIndex"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "Stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper",
-          "declaration": {
-            "name": "Stepper",
-            "module": "src/components/reusable/stepper/stepper.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item.",
-          "name": "StepperItem",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            },
-            {
-              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
-              "name": "child"
-            },
-            {
-              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "attribute": "vertical"
-            },
-            {
-              "kind": "field",
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "attribute": "stepSize"
-            },
-            {
-              "kind": "field",
-              "name": "stepName",
+              "name": "label",
               "type": {
                 "text": "string"
               },
               "default": "''",
-              "description": "Step name.",
-              "attribute": "stepName"
-            },
-            {
-              "kind": "field",
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title.",
-              "attribute": "stepTitle"
-            },
-            {
-              "kind": "field",
-              "name": "stepLink",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step link.",
-              "attribute": "stepLink"
-            },
-            {
-              "kind": "field",
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "attribute": "stepState"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disable step.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "showCounter",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "attribute": "showCounter"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits the step details to the parent stepper component when click on step title.`detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`",
-              "name": "on-step-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "vertical",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the stepper is in vertical type.",
-              "fieldName": "vertical"
-            },
-            {
-              "name": "stepSize",
-              "type": {
-                "text": "string"
-              },
-              "default": "'large'",
-              "description": "Stepper size `'large'` & `'small'`.",
-              "fieldName": "stepSize"
-            },
-            {
-              "name": "stepName",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step name.",
-              "fieldName": "stepName"
-            },
-            {
-              "name": "stepTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step title.",
-              "fieldName": "stepTitle"
-            },
-            {
-              "name": "stepLink",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Step link.",
-              "fieldName": "stepLink"
-            },
-            {
-              "name": "stepState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
-              "fieldName": "stepState"
+              "description": "Status label (Required).",
+              "fieldName": "label"
             },
             {
               "name": "disabled",
@@ -23292,192 +22999,59 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Disable step.",
+              "description": "Specify disabled state.",
               "fieldName": "disabled"
             },
             {
-              "name": "showCounter",
+              "name": "selected",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
-              "fieldName": "showCounter"
+              "description": "Specify selected state.",
+              "fieldName": "selected"
+            },
+            {
+              "name": "noTruncation",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Removes label text truncation.",
+              "fieldName": "noTruncation"
+            },
+            {
+              "name": "kind",
+              "type": {
+                "text": "STATUS_KINDS"
+              },
+              "description": "Specifies the visual appearance/kind of the status.",
+              "fieldName": "kind"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "kyn-stepper-item",
+          "tagName": "kyn-status-btn",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "StepperItem",
+          "name": "StatusButton",
           "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
+            "name": "StatusButton",
+            "module": "src/components/reusable/statusButton/statusButton.ts"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "kyn-stepper-item",
+          "name": "kyn-status-btn",
           "declaration": {
-            "name": "StepperItem",
-            "module": "src/components/reusable/stepper/stepperItem.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/stepper/stepperItemChild.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Stepper Item child.",
-          "name": "StepperItemChild",
-          "slots": [
-            {
-              "description": "Slot for other elements.",
-              "name": "unnamed"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "attribute": "childTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childLink",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child link.",
-              "attribute": "childLink"
-            },
-            {
-              "kind": "field",
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "attribute": "childSubTitle"
-            },
-            {
-              "kind": "field",
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "attribute": "childState"
-            },
-            {
-              "kind": "method",
-              "name": "_handleChildStepClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getProgressValue",
-              "privacy": "private",
-              "return": {
-                "type": {
-                  "text": "number"
-                }
-              }
-            }
-          ],
-          "events": [
-            {
-              "description": "Emits event on child click. Only for vertical mode. `detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`",
-              "name": "on-child-click"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "childTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child Title. Required for nested child inside step.",
-              "fieldName": "childTitle"
-            },
-            {
-              "name": "childLink",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Child link.",
-              "fieldName": "childLink"
-            },
-            {
-              "name": "childSubTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional Child Subtitle.",
-              "fieldName": "childSubTitle"
-            },
-            {
-              "name": "childState",
-              "type": {
-                "text": "string"
-              },
-              "default": "'pending'",
-              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
-              "fieldName": "childState"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-stepper-item-child",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "StepperItemChild",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-stepper-item-child",
-          "declaration": {
-            "name": "StepperItemChild",
-            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+            "name": "StatusButton",
+            "module": "src/components/reusable/statusButton/statusButton.ts"
           }
         }
       ]
@@ -26229,6 +25803,591 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "./stepper"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "./stepperItem"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "./stepperItemChild"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepper.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper",
+          "name": "Stepper",
+          "slots": [
+            {
+              "description": "Slot for step items.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
+              "attribute": "stepperType"
+            },
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepperSize"
+            },
+            {
+              "kind": "field",
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "attribute": "currentIndex"
+            },
+            {
+              "kind": "method",
+              "name": "_handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_determineFirstLastSteps",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the event and emits the active step and original event details when click on any step title. This is only for procedure type stepper. Status stepper doesn't emit this event.",
+              "name": "on-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "stepperType",
+              "type": {
+                "text": "string"
+              },
+              "default": "'procedure'",
+              "description": "Stepper type `'procedure'` & `'status'`.\r\n\r\nprocedure: Allows a user to move through a series of steps that need to be completed, such as filling out a series of forms. The user can therefore know where they are in the sequence, and can go back to previous steps if needed. Procedure should use the `'large'` size stepper.\r\n\r\nstatus: Should not allow the user navigate to previous steps for ex: sequential forms, payment gateway etc. Should use the `'small'` size to avoid unnecessary clutter.\r\n\r\nNote: Read the stepper guidelines for more info.",
+              "fieldName": "stepperType"
+            },
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Wheter the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepperSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepperSize"
+            },
+            {
+              "name": "currentIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Curent index of stepper. Usefull for navigation logic like next, prev etc.",
+              "fieldName": "currentIndex"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper",
+          "declaration": {
+            "name": "Stepper",
+            "module": "src/components/reusable/stepper/stepper.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItem.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item.",
+          "name": "StepperItem",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            },
+            {
+              "description": "Children slot. Used for nested children in vertical stepper. Visible only when step state is active. Do not use inside stepperType `'status'`.",
+              "name": "child"
+            },
+            {
+              "description": "Optional slot for content in vertical stepper. Visible only when step state is active.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "attribute": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "attribute": "stepSize"
+            },
+            {
+              "kind": "field",
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "attribute": "stepName"
+            },
+            {
+              "kind": "field",
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title.",
+              "attribute": "stepTitle"
+            },
+            {
+              "kind": "field",
+              "name": "stepLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step link.",
+              "attribute": "stepLink"
+            },
+            {
+              "kind": "field",
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "attribute": "stepState"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "attribute": "showCounter"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits the step details to the parent stepper component when click on step title.`detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`",
+              "name": "on-step-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "vertical",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the stepper is in vertical type.",
+              "fieldName": "vertical"
+            },
+            {
+              "name": "stepSize",
+              "type": {
+                "text": "string"
+              },
+              "default": "'large'",
+              "description": "Stepper size `'large'` & `'small'`.",
+              "fieldName": "stepSize"
+            },
+            {
+              "name": "stepName",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step name.",
+              "fieldName": "stepName"
+            },
+            {
+              "name": "stepTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step title.",
+              "fieldName": "stepTitle"
+            },
+            {
+              "name": "stepLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Step link.",
+              "fieldName": "stepLink"
+            },
+            {
+              "name": "stepState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Step state. `'pending'`, `'active'`, `'completed'`, `'excluded'`, `'warning'` & `'destructive'`.\r\n\r\n`'pending'`, `'active'` and `'completed'` / `'excluded'` states has 0%, 50% & 100% progress set internally.",
+              "fieldName": "stepState"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disable step.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "showCounter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Optional. Show counter for vertical stepper when stepState is `'pending'`.",
+              "fieldName": "showCounter"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItem",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item",
+          "declaration": {
+            "name": "StepperItem",
+            "module": "src/components/reusable/stepper/stepperItem.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/stepper/stepperItemChild.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Stepper Item child.",
+          "name": "StepperItemChild",
+          "slots": [
+            {
+              "description": "Slot for other elements.",
+              "name": "unnamed"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "attribute": "childTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child link.",
+              "attribute": "childLink"
+            },
+            {
+              "kind": "field",
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "attribute": "childSubTitle"
+            },
+            {
+              "kind": "field",
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "attribute": "childState"
+            },
+            {
+              "kind": "method",
+              "name": "_handleChildStepClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getProgressValue",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            }
+          ],
+          "events": [
+            {
+              "description": "Emits event on child click. Only for vertical mode. `detail:{ origEvent: PointerEvent,step: StepperItem, otherattributes }`",
+              "name": "on-child-click"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "childTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child Title. Required for nested child inside step.",
+              "fieldName": "childTitle"
+            },
+            {
+              "name": "childLink",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Child link.",
+              "fieldName": "childLink"
+            },
+            {
+              "name": "childSubTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional Child Subtitle.",
+              "fieldName": "childSubTitle"
+            },
+            {
+              "name": "childState",
+              "type": {
+                "text": "string"
+              },
+              "default": "'pending'",
+              "description": "Child State. `'pending'`, `'active'` & `'completed'`.",
+              "fieldName": "childState"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-stepper-item-child",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "StepperItemChild",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-stepper-item-child",
+          "declaration": {
+            "name": "StepperItemChild",
+            "module": "src/components/reusable/stepper/stepperItemChild.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/tabs/defs.ts",
       "declarations": [],
       "exports": []
@@ -27392,415 +27551,6 @@
           "declaration": {
             "name": "TagGroup",
             "module": "src/components/reusable/tag/tagGroup.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "./textArea"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/reusable/textArea/textArea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Text area.",
-          "name": "TextArea",
-          "slots": [
-            {
-              "description": "Slot for tooltip.",
-              "name": "tooltip"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "attribute": "label"
-            },
-            {
-              "kind": "field",
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "attribute": "caption"
-            },
-            {
-              "kind": "field",
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "attribute": "placeholder"
-            },
-            {
-              "kind": "field",
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "attribute": "required"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "attribute": "readonly"
-            },
-            {
-              "kind": "field",
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "attribute": "maxLength"
-            },
-            {
-              "kind": "field",
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "attribute": "minLength"
-            },
-            {
-              "kind": "field",
-              "name": "notResizeable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set it to `true`, if text area is not resizeable.",
-              "attribute": "notResizeable"
-            },
-            {
-              "kind": "field",
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "attribute": "hideLabel"
-            },
-            {
-              "kind": "field",
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.\r\n**Required** when `aiConnected` is set to `true`.",
-              "attribute": "rows"
-            },
-            {
-              "kind": "field",
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "attribute": "aiConnected"
-            },
-            {
-              "kind": "field",
-              "name": "maxRowsVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\r\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\r\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
-              "attribute": "maxRowsVisible"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\r\n  requiredText: 'Required',\r\n  errorText: 'Error',\r\n}",
-              "description": "Customizable text strings.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "attribute": "autoComplete"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "any"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateVisibleRows",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_validate",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "interacted",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                },
-                {
-                  "name": "report",
-                  "type": {
-                    "text": "Boolean"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`",
-              "name": "on-input"
-            }
-          ],
-          "attributes": [
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The value of the input.",
-              "name": "value",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The name of the input, used for form submission.",
-              "name": "name",
-              "default": "''"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "The custom validation message when the input is invalid.",
-              "name": "invalidText",
-              "default": "''"
-            },
-            {
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Label text.",
-              "fieldName": "label"
-            },
-            {
-              "name": "caption",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional text beneath the input.",
-              "fieldName": "caption"
-            },
-            {
-              "name": "placeholder",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Input placeholder.",
-              "fieldName": "placeholder"
-            },
-            {
-              "name": "required",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Makes the input required.",
-              "fieldName": "required"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "readonly",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Input readonly state.",
-              "fieldName": "readonly"
-            },
-            {
-              "name": "maxLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Maximum number of characters.",
-              "fieldName": "maxLength"
-            },
-            {
-              "name": "minLength",
-              "type": {
-                "text": "number"
-              },
-              "description": "Minimum number of characters.",
-              "fieldName": "minLength"
-            },
-            {
-              "name": "notResizeable",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set it to `true`, if text area is not resizeable.",
-              "fieldName": "notResizeable"
-            },
-            {
-              "name": "hideLabel",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Visually hide the label.",
-              "fieldName": "hideLabel"
-            },
-            {
-              "name": "rows",
-              "type": {
-                "text": "number"
-              },
-              "description": "textarea rows attribute. The number of visible text lines.\r\n**Required** when `aiConnected` is set to `true`.",
-              "fieldName": "rows"
-            },
-            {
-              "name": "aiConnected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Set this to `true` for AI theme.",
-              "fieldName": "aiConnected"
-            },
-            {
-              "name": "maxRowsVisible",
-              "type": {
-                "text": "number"
-              },
-              "default": "5",
-              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\r\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\r\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
-              "fieldName": "maxRowsVisible"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Customizable text strings.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "autoComplete",
-              "type": {
-                "text": "string"
-              },
-              "default": "'off'",
-              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
-              "fieldName": "autoComplete"
-            }
-          ],
-          "mixins": [
-            {
-              "name": "FormMixin",
-              "module": "/src/common/mixins/form-input"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-text-area",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "TextArea",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-text-area",
-          "declaration": {
-            "name": "TextArea",
-            "module": "src/components/reusable/textArea/textArea.ts"
           }
         }
       ]
@@ -29573,6 +29323,421 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "./textArea"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/textArea/textArea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Text area.",
+          "name": "TextArea",
+          "slots": [
+            {
+              "description": "Slot for tooltip.",
+              "name": "tooltip"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "attribute": "caption"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "attribute": "required"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "attribute": "readonly"
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "attribute": "maxLength"
+            },
+            {
+              "kind": "field",
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "attribute": "minLength"
+            },
+            {
+              "kind": "field",
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "attribute": "notResizeable"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "attribute": "hideLabel"
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.\r\n**Required** when `aiConnected` is set to `true`.",
+              "attribute": "rows"
+            },
+            {
+              "kind": "field",
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "attribute": "aiConnected"
+            },
+            {
+              "kind": "field",
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\r\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\r\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "attribute": "maxRowsVisible"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\r\n  requiredText: 'Required',\r\n  errorText: 'Error',\r\n}",
+              "description": "Customizable text strings.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "attribute": "autoComplete"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateVisibleRows",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_validate",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "interacted",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                },
+                {
+                  "name": "report",
+                  "type": {
+                    "text": "Boolean"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the input event and emits the selected value and original event details. `detail:{ origEvent: InputEvent,value: string }`",
+              "name": "on-input"
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The value of the input.",
+              "name": "value",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The name of the input, used for form submission.",
+              "name": "name",
+              "default": "''"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "The custom validation message when the input is invalid.",
+              "name": "invalidText",
+              "default": "''"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Label text.",
+              "fieldName": "label"
+            },
+            {
+              "name": "caption",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional text beneath the input.",
+              "fieldName": "caption"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Input placeholder.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Makes the input required.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Input readonly state.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of characters.",
+              "fieldName": "maxLength"
+            },
+            {
+              "name": "minLength",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum number of characters.",
+              "fieldName": "minLength"
+            },
+            {
+              "name": "notResizeable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set it to `true`, if text area is not resizeable.",
+              "fieldName": "notResizeable"
+            },
+            {
+              "name": "hideLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Visually hide the label.",
+              "fieldName": "hideLabel"
+            },
+            {
+              "name": "rows",
+              "type": {
+                "text": "number"
+              },
+              "description": "textarea rows attribute. The number of visible text lines.\r\n**Required** when `aiConnected` is set to `true`.",
+              "fieldName": "rows"
+            },
+            {
+              "name": "aiConnected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set this to `true` for AI theme.",
+              "fieldName": "aiConnected"
+            },
+            {
+              "name": "maxRowsVisible",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum number of visible text lines allowed. Default `5` rows. <br />\r\n**NOTE**: Applies only when `aiConnected` is set to `true`. <br />\r\n`rows` is always less than or equal to `maxRowsVisible` and `rows` is used as minimum number of visible text lines.",
+              "fieldName": "maxRowsVisible"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Customizable text strings.",
+              "fieldName": "textStrings"
+            },
+            {
+              "name": "autoComplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "'off'",
+              "description": "Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.",
+              "fieldName": "autoComplete"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "FormMixin",
+              "module": "/src/common/mixins/form-input"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-text-area",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TextArea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-text-area",
+          "declaration": {
+            "name": "TextArea",
+            "module": "src/components/reusable/textArea/textArea.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reusable/widget/defs.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/reusable/widget/index.ts",
       "declarations": [],
       "exports": [
@@ -29620,12 +29785,20 @@
               "name": "actions"
             },
             {
+              "description": "Slot for badge status.",
+              "name": "badge"
+            },
+            {
               "description": "Slot for tooltip in header.",
               "name": "tooltip"
             },
             {
               "description": "Slot for drag handle.",
               "name": "draghandle"
+            },
+            {
+              "description": "Slot for subtitle content.",
+              "name": "subtitle"
             },
             {
               "description": "Slot for footer content.",
@@ -29650,7 +29823,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Widget sub-title.",
+              "description": "Widget sub-title(Deprecated). Use `subtitle` slot instead.",
               "attribute": "subTitle"
             },
             {
@@ -29720,7 +29893,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Show Status badge.",
+              "description": "Show Status badge(Deprecated). Use `badge` slot instead.",
               "attribute": "showStatusBadge"
             },
             {
@@ -29730,8 +29903,17 @@
                 "text": "string"
               },
               "default": "'Update'",
-              "description": "Status Badge label.",
+              "description": "Status Badge label(Deprecated). Use `badge` slot instead.",
               "attribute": "statusBadgeLabel"
+            },
+            {
+              "kind": "field",
+              "name": "widgetStatus",
+              "type": {
+                "text": "WIDGET_STATUS"
+              },
+              "description": "Widget status.",
+              "attribute": "widgetStatus"
             },
             {
               "kind": "method",
@@ -29787,7 +29969,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Widget sub-title.",
+              "description": "Widget sub-title(Deprecated). Use `subtitle` slot instead.",
               "fieldName": "subTitle"
             },
             {
@@ -29850,7 +30032,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Show Status badge.",
+              "description": "Show Status badge(Deprecated). Use `badge` slot instead.",
               "fieldName": "showStatusBadge"
             },
             {
@@ -29859,8 +30041,16 @@
                 "text": "string"
               },
               "default": "'Update'",
-              "description": "Status Badge label.",
+              "description": "Status Badge label(Deprecated). Use `badge` slot instead.",
               "fieldName": "statusBadgeLabel"
+            },
+            {
+              "name": "widgetStatus",
+              "type": {
+                "text": "WIDGET_STATUS"
+              },
+              "description": "Widget status.",
+              "fieldName": "widgetStatus"
             }
           ],
           "superclass": {

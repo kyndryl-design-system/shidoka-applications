@@ -1,0 +1,21 @@
+#!/bin/sh
+# Append DCO sign-off when missing so commits work from any client (terminal, GUI, etc.).
+# Editor-only settings like git.alwaysSignOff do not apply to plain `git commit -m`.
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+if [ "$COMMIT_SOURCE" = merge ] || [ "$COMMIT_SOURCE" = squash ]; then
+  exit 0
+fi
+
+if grep -qi '^Signed-off-by:' "$COMMIT_MSG_FILE"; then
+  exit 0
+fi
+
+NAME=$(git config user.name)
+EMAIL=$(git config user.email)
+if [ -z "$NAME" ] || [ -z "$EMAIL" ]; then
+  exit 0
+fi
+
+printf '\nSigned-off-by: %s <%s>\n' "$NAME" "$EMAIL" >>"$COMMIT_MSG_FILE"
