@@ -63,6 +63,10 @@ export class Pagination extends LitElement {
   @property({ type: Boolean })
   accessor hideNavigationButtons = false;
 
+  /** Controls direction that dropdowns open. */
+  @property({ type: String })
+  accessor openDirection: 'auto' | 'up' | 'down' = 'auto';
+
   /** Customizable text strings */
   @property({ type: Object })
   accessor textStrings = {
@@ -114,6 +118,7 @@ export class Pagination extends LitElement {
               .pageSize=${this.pageSize}
               .pageSizeOptions=${this.pageSizeOptions}
               .pageSizeDropdownLabel=${this.pageSizeDropdownLabel}
+              openDirection=${this.openDirection}
               .textStrings=${this.textStrings}
               @on-page-size-change=${this.handlePageSizeChange}
             ></kyn-pagination-page-size-dropdown>
@@ -125,6 +130,7 @@ export class Pagination extends LitElement {
               .pageNumber=${this.pageNumber}
               .numberOfPages=${this._numberOfPages}
               .pageNumberLabel=${this.pageNumberLabel}
+              openDirection=${this.openDirection}
               .textStrings=${this.textStrings}
               @on-page-number-change=${this.handlePageNumberChange}
             ></kyn-pagination-navigation-buttons>
