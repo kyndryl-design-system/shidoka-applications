@@ -7,12 +7,19 @@ import WorkspaceSwitcherMenuItemScss from './workspaceSwitcherMenuItem.scss?inli
 
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 
 import '../../reusable/iconSelector';
 
 /**
  * Workspace Switcher Menu Item component.
  * Used for both workspace items (left panel) and account items (right panel).
+ * Item rows support these trailing-action combinations:
+ * - favorite only
+ * - launch indicator only
+ * - launch indicator plus favorite
+ * When both are present, the launch indicator renders to the left and the
+ * favorite control stays pinned to the far right for consistency.
  * @fires on-click - Emits when the item is clicked. `detail: { value: string }`
  * @fires on-favorite-change - Emits when favorite status changes. `detail: { value: string, favorited: boolean }`
  */
@@ -32,6 +39,13 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   @property({ type: String })
   accessor name = '';
 
+  /**
+   * Optional full name for the native tooltip when `name` is abbreviated in the DOM.
+   * Defaults to `name`.
+   */
+  @property({ type: String, attribute: 'name-title' })
+  accessor nameTitle = '';
+
   /** The count to display (workspace variant only). */
   @property({ type: Number })
   accessor count: number | null = null;
@@ -44,7 +58,11 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   @property({ type: Boolean })
   accessor favorited = false;
 
-  /** Whether to show the favorite icon selector (item variant only). */
+  /** Whether to show the launch/new-tab indicator (item variant only). */
+  @property({ type: Boolean })
+  accessor showLaunchIndicator = false;
+
+  /** Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned. */
   @property({ type: Boolean })
   accessor showFavorite = false;
 
@@ -60,19 +78,25 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
       'menu-item--selected': this.selected,
     };
 
+    const tooltipName = this.nameTitle || this.name;
+
     return html`
       <div
         class=${classMap(classes)}
         role=${isBack ? 'none' : 'listitem'}
         aria-current=${this.selected ? 'true' : 'false'}
       >
-        <button class="menu-item__select" @click=${this._handleClick}>
+        <button
+          class="menu-item__select"
+          title=${tooltipName}
+          @click=${this._handleClick}
+        >
           ${isBack
             ? html`<span class="menu-item__back-icon"
                 >${unsafeSVG(arrowLeftIcon)}</span
               >`
             : null}
-          <span class="menu-item__name" title=${this.name}>${this.name}</span>
+          <span class="menu-item__name">${this.name}</span>
           ${isWorkspace ? this._renderWorkspaceContent() : null}
         </button>
         ${!isWorkspace && !isBack ? this._renderItemContent() : null}
@@ -90,18 +114,31 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   }
 
   private _renderItemContent() {
-    if (!this.showFavorite) return null;
+    if (!this.showFavorite && !this.showLaunchIndicator) return null;
 
     return html`
-      <kyn-icon-selector
-        class="menu-item__favorite"
-        ?checked=${this.favorited}
-        value=${this.value}
-        animateSelection
-        onlyVisibleOnHover
-        persistWhenChecked
-        @on-change=${this._handleFavoriteChange}
-      ></kyn-icon-selector>
+      <div class="menu-item__actions">
+        ${this.showLaunchIndicator
+          ? html`
+              <span class="menu-item__launch-indicator" aria-hidden="true">
+                ${unsafeSVG(launchIcon)}
+              </span>
+            `
+          : null}
+        ${this.showFavorite
+          ? html`
+              <kyn-icon-selector
+                class="menu-item__favorite"
+                ?checked=${this.favorited}
+                value=${this.value}
+                animateSelection
+                onlyVisibleOnHover
+                persistWhenChecked
+                @on-change=${this._handleFavoriteChange}
+              ></kyn-icon-selector>
+            `
+          : null}
+      </div>
     `;
   }
 
