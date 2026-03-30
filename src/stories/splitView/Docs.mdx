@@ -14,26 +14,26 @@ import * as SplitViewStories from './splitView.stories.js';
 <Meta of={SplitViewStories} name="Docs" />
 
 <Title />
-<Subtitle>Resizable two- and three-pane split layout.</Subtitle>
+<Subtitle>
+  Two- to three-pane layout pattern using `kyn-divider` drag rails.
+</Subtitle>
 <Description />
 
 ## Usage
 
-Use named slots for each pane and listen to `split-view-resize` when you need resize telemetry.
+Split View is documented as a pattern composition, not a new shipped wrapper component.
+Use existing components and your own pane content, widths, and backgrounds.
 
 <Source
   language="html"
   code={`
-<split-view-pattern
-  panes="3"
-  pane-1-label="Issue list"
-  pane-2-label="Issue detail"
-  pane-3-label="Code rail"
->
-  <div slot="pane-1">...</div>
-  <div slot="pane-2">...</div>
-  <div slot="pane-3">...</div>
-</split-view-pattern>
+<div class="split-view">
+  <section class="pane pane--start">...</section>
+  <div class="split-view__divider" role="separator" aria-orientation="vertical">
+    <kyn-divider vertical drag-handle></kyn-divider>
+  </div>
+  <section class="pane pane--primary">...</section>
+</div>
 `}
 />
 
@@ -45,10 +45,9 @@ Use named slots for each pane and listen to `split-view-resize` when you need re
 ## Implemented Examples
 
 <Canvas of={SplitViewStories.MinimalTwoPane} />
-
 <Canvas of={SplitViewStories.ThreePaneIssueDetail} />
 
-## Compact Behavior
+## Compact Reference
 
 <Canvas of={SplitViewStories.CompactThreePane} />
 

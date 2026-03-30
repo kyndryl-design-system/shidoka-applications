@@ -1,8 +1,6 @@
 import { html } from 'lit';
 import './index';
 
-import '../../../stories/splitView/registerSplitView';
-
 import '../card';
 import '../metaData';
 import { LinkWithIcon as Link } from '../link/Link.stories.js';
@@ -60,7 +58,7 @@ export const Vertical = {
   },
 };
 
-/** Uses the Storybook-only `split-view-pattern` helper so the divider is a real resize rail (pointer capture + constraints), full-height in the track. */
+/** Visual drag-handle pattern composition. Resize behavior is owned by consuming layouts. */
 export const VerticalDragHandle = {
   parameters: {
     layout: 'fullscreen',
@@ -88,29 +86,51 @@ export const VerticalDragHandle = {
         .divider-drag-demo__intro a:hover {
           color: var(--kd-color-text-link-level-hover);
         }
-        .divider-drag-demo split-view-pattern::part(split-view) {
+        .divider-drag-demo__layout {
           min-height: min(560px, calc(100vh - 48px));
+          display: flex;
+          border: 1px solid var(--kd-color-border-level-secondary);
+          border-radius: 8px;
+          overflow: hidden;
+          background: var(--kd-color-background-page-default);
         }
         .divider-drag-demo__pane {
+          flex: 1 1 0;
           padding: var(--kd-spacing-16);
           font: var(--kd-font-body-01);
           color: var(--kd-color-text-level-secondary);
           box-sizing: border-box;
           min-height: 0;
         }
+        .divider-drag-demo__divider {
+          flex: 0 0 8px;
+          min-width: 8px;
+          cursor: ew-resize;
+          background: transparent;
+          display: flex;
+        }
+        .divider-drag-demo__divider kyn-divider {
+          width: 100%;
+          height: 100%;
+        }
       </style>
       <div class="divider-drag-demo">
         <p class="divider-drag-demo__intro">
-          You can find additional implementation of this divider in multi-pane
-          layouts in the
-          <a href="/?path=/docs/patterns-split-view--docs" target="_parent"
-            >Split View pattern</a
-          >.
+          Example layout composition using a vertical divider with drag-handle
+          affordance.
         </p>
-        <split-view-pattern panes="2">
-          <div slot="pane-1" class="divider-drag-demo__pane">Pane A</div>
-          <div slot="pane-2" class="divider-drag-demo__pane">Pane B</div>
-        </split-view-pattern>
+        <div class="divider-drag-demo__layout">
+          <div class="divider-drag-demo__pane">Pane A</div>
+          <div class="divider-drag-demo__divider" aria-hidden="true">
+            <kyn-divider
+              vertical
+              drag-handle
+              decorative
+              hideHairline
+            ></kyn-divider>
+          </div>
+          <div class="divider-drag-demo__pane">Pane B</div>
+        </div>
       </div>
     `;
   },
