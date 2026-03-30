@@ -631,9 +631,9 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: `Two- to three-pane split pattern built with existing components.
+        component: `Compose pane content with standard markup and tune defaults through args.
 
-Use \`kyn-divider\` (\`vertical\` + \`drag-handle\`) as the interactive rail, apply your own default widths/backgrounds, and slot any pane content.`,
+Use \`kyn-divider\` (\`vertical\` + \`drag-handle\`) as the draggable rail, then set pane widths, backgrounds, and compact behavior for your use case.`,
       },
     },
   },
