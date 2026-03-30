@@ -301,6 +301,7 @@ export const MinimalTwoPane = {
         <div slot="pane-2" class="minimal-two-pane__primary">
           <split-view-code-rail>
             <kyn-block-code-view
+              flush
               darkTheme="dark"
               language="javascript"
               copyOptionVisible
@@ -375,6 +376,7 @@ export const ThreePaneIssueDetail = {
         <div slot="pane-3" class="pane-3">
           <split-view-code-rail>
             <kyn-block-code-view
+              flush
               darkTheme="dark"
               language="javascript"
               copyOptionVisible
@@ -450,6 +452,7 @@ export const CompactThreePane = {
         <div slot="pane-3" class="pane-3">
           <split-view-code-rail>
             <kyn-block-code-view
+              flush
               darkTheme="dark"
               language="javascript"
               copyOptionVisible
