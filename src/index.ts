@@ -122,6 +122,7 @@ export { InlineConfirm } from './components/reusable/inlineConfirm';
 export { ColorInput } from './components/reusable/colorInput';
 export { MetaData } from './components/reusable/metaData';
 export { Divider } from './components/reusable/divider';
+export { SplitView } from './components/reusable/splitView';
 export { StatusButton } from './components/reusable/statusButton';
 export {
   QueryBuilder,

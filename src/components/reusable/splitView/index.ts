@@ -1,0 +1,1 @@
+export { SplitView } from './splitView';

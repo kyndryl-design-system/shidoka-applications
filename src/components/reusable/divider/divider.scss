@@ -94,10 +94,10 @@
 }
 
 /*
- * Optional host classes: per-line grip contrast when the handle straddles light/dark surfaces.
- * These are opt-in and safe for existing production consumers because nothing changes unless a
- * caller applies one of the classes.
+ * Per-line grip contrast when the handle straddles light/dark surfaces.
+ * Supported via the `inverted-handle` attribute/property or legacy host classes.
  */
+:host([inverted-handle='left']),
 :host(.left-inverted-handle) {
   --kyn-resize-grip-line-start: var(--kyn-resize-grip-line-inverted);
   --kyn-resize-grip-line-end: var(--kd-color-icon-secondary);
@@ -105,6 +105,7 @@
   --kyn-resize-grip-line-end-active: var(--kd-color-icon-tertiary);
 }
 
+:host([inverted-handle='right']),
 :host(.right-inverted-handle) {
   --kyn-resize-grip-line-start: var(--kd-color-icon-secondary);
   --kyn-resize-grip-line-end: var(--kyn-resize-grip-line-inverted);

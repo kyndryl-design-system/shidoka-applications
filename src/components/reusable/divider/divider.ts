@@ -40,6 +40,13 @@ export class Divider extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor hideHairline = false;
 
+  /**
+   * Per-line grip contrast when the handle straddles light/dark surfaces.
+   * `'left'` inverts the left grip line, `'right'` inverts the right grip line.
+   */
+  @property({ type: String, reflect: true, attribute: 'inverted-handle' })
+  accessor invertedHandle: 'none' | 'left' | 'right' = 'none';
+
   override render() {
     const vertical = this.vertical;
     const showHandle = vertical && this.dragHandle;
