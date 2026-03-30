@@ -1,15 +1,11 @@
-// Shared drag surface + grip for kyn-side-drawer and kyn-divider (vertical drag-handle).
-// Markup: <div class="drag-handle"><span class="drag-lines"></span></div>
+// Shared vertical drag grip for kyn-side-drawer and kyn-divider[drag-handle].
+// Expects: <div class="drag-handle"><span class="drag-lines"></span></div>
 //
-// Default grip lines use --kyn-color-side-drawer-icon when published; until then fall back to
-// --kd-color-icon-secondary. Hover/drag lines use --kyn-resize-grip-line-active → tertiary.
-// Figma semantic “Side-Drawer-Icon” aligns with --kyn-color-side-drawer-icon.
-//
-// Optional on kyn-divider host or ancestor (e.g. split-view divider sets per-line for light/dark):
-//   --kyn-resize-grip-line / -active     both lines (default)
-//   --kyn-resize-grip-line-start / -end  left vs right line (::before / ::after)
-//   --kyn-resize-grip-line-start-active / -end-active  hover + dragging
-//   --kyn-resize-grip-surface-hover / -drag  hover and dragging surface fills
+// Custom properties (set on host or ancestor to override):
+//   --kyn-resize-grip-line / -active              both grip lines
+//   --kyn-resize-grip-line-start / -end           per-line color (light/dark border)
+//   --kyn-resize-grip-line-start-active / -end-active
+//   --kyn-resize-grip-surface-hover / -drag       surface fills
 
 @mixin resizable-drag-handle-vertical($width, $border-radius: 4px) {
   $line: var(
@@ -83,7 +79,6 @@
     }
   }
 
-  /* Two 1×32px lines, 2px gap — centered as a 4px-wide group in the drag surface (Figma spec). */
   .drag-lines {
     display: flex;
     flex-direction: row;
