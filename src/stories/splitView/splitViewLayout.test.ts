@@ -7,6 +7,7 @@ import {
   MIN_PANE_PX,
   clampSplitViewWidths,
   getDefaultWidths,
+  getDividerAriaValue,
   getKeyboardResizeResult,
   normalizeCompactActivePane,
   normalizePaneCount,
@@ -166,5 +167,53 @@ describe('splitViewLayout', () => {
         key: 'PageDown',
       })
     ).toBeNull();
+  });
+
+  it('computes aria values for divider 1 at minimum', () => {
+    const result = getDividerAriaValue({
+      panes: 2,
+      trackWidth: 1000,
+      leftPx: MIN_PANE_PX,
+      rightPx: 0,
+      divider: 1,
+    });
+    expect(result).toEqual({ valuenow: 0, valuemin: 0, valuemax: 100 });
+  });
+
+  it('computes aria values for divider 1 at maximum', () => {
+    const maxLeft = 1000 - 8 - 160;
+    const result = getDividerAriaValue({
+      panes: 2,
+      trackWidth: 1000,
+      leftPx: maxLeft,
+      rightPx: 0,
+      divider: 1,
+    });
+    expect(result).toEqual({ valuenow: 100, valuemin: 0, valuemax: 100 });
+  });
+
+  it('computes aria values for divider 1 at midpoint', () => {
+    const min = MIN_PANE_PX;
+    const max = 1000 - 8 - 160;
+    const mid = min + (max - min) / 2;
+    const result = getDividerAriaValue({
+      panes: 2,
+      trackWidth: 1000,
+      leftPx: mid,
+      rightPx: 0,
+      divider: 1,
+    });
+    expect(result).toEqual({ valuenow: 50, valuemin: 0, valuemax: 100 });
+  });
+
+  it('computes aria values for divider 2 in three-pane layout', () => {
+    const result = getDividerAriaValue({
+      panes: 3,
+      trackWidth: 1200,
+      leftPx: 320,
+      rightPx: MIN_PANE_PX,
+      divider: 2,
+    });
+    expect(result).toEqual({ valuenow: 0, valuemin: 0, valuemax: 100 });
   });
 });

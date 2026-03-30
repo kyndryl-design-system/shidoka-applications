@@ -1,3 +1,7 @@
+// Focusable separators (tabindex="0") are widget separators per WAI-ARIA 1.2 §5.3.3
+// and require aria-valuenow/min/max. The lit-a11y rule doesn't distinguish focusable
+// from structural separators, so we suppress it here.
+/* eslint-disable lit-a11y/role-supports-aria-attr */
 import { LitElement, html, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { property, state } from 'lit/decorators.js';
@@ -11,6 +15,7 @@ import {
   clampRightWidth,
   clampSplitViewWidths,
   getDefaultWidths,
+  getDividerAriaValue,
   getKeyboardResizeResult,
   normalizeCompactActivePane,
   normalizePaneCount,
@@ -27,6 +32,12 @@ let splitViewInstanceCount = 0;
 export function registerSplitViewPattern(css: string) {
   if (customElements.get('split-view-pattern')) return;
 
+  /**
+   * @fires split-view-resize - Fires after pointer drag ends or keyboard resize steps.
+   *   `event.detail`: `{ leftPx: number, rightPx?: number, source: 'pointer' | 'keyboard' }`.
+   * @fires split-view-pane-change - Fires when compact-mode pane switching changes the active pane.
+   *   `event.detail`: `{ activePane: 1 | 2 | 3, compact: boolean }`.
+   */
   class SplitViewPattern extends LitElement {
     static override styles = unsafeCSS(css);
 
@@ -148,10 +159,6 @@ export function registerSplitViewPattern(css: string) {
       this._activePointerId = null;
       this._captureEl = null;
       this._detachWindowListeners();
-    }
-
-    override firstUpdated() {
-      this._syncFromContainer();
     }
 
     override updated(changed: Map<PropertyKey, unknown>) {
@@ -313,15 +320,13 @@ export function registerSplitViewPattern(css: string) {
         source,
       };
 
-      for (const eventName of ['split-view-resize', 'on-resize']) {
-        this.dispatchEvent(
-          new CustomEvent(eventName, {
-            bubbles: true,
-            composed: true,
-            detail,
-          })
-        );
-      }
+      this.dispatchEvent(
+        new CustomEvent('split-view-resize', {
+          bubbles: true,
+          composed: true,
+          detail,
+        })
+      );
     }
 
     private _emitCompactPaneChangeEvent() {
@@ -390,6 +395,16 @@ export function registerSplitViewPattern(css: string) {
       }
     }
 
+    private _dividerAriaValue(which: 1 | 2) {
+      return getDividerAriaValue({
+        panes: this._paneCount,
+        trackWidth: this._trackWidth || this.offsetWidth,
+        leftPx: this._leftPx,
+        rightPx: this._rightPx,
+        divider: which,
+      });
+    }
+
     private _dividerLabel(which: 1 | 2) {
       const label = which === 1 ? this.startResizeLabel : this.endResizeLabel;
       const paneLabel =
@@ -454,26 +469,28 @@ export function registerSplitViewPattern(css: string) {
             </kyn-tabs>
           </div>
           <div class="split-view__compact-panels">
-            ${this._paneDefinitions.map(
-              ({ pane, part }) => html`
-                <section
-                  id=${this._paneId(pane)}
-                  class=${classMap({
-                    pane: true,
-                    'pane--compact': true,
-                    'pane--start': pane === 1,
-                    'pane--primary': pane === 2,
-                    'pane--end': pane === 3,
-                  })}
-                  part=${part}
-                  role="tabpanel"
-                  aria-labelledby=${this._tabId(pane)}
-                  ?hidden=${this.compactActivePane !== pane}
-                >
-                  <slot name=${`pane-${pane}`}></slot>
-                </section>
-              `
-            )}
+            ${this._paneDefinitions.map(({ pane, part }) => {
+              const active = this.compactActivePane === pane;
+              return active
+                ? html`
+                    <section
+                      id=${this._paneId(pane)}
+                      class=${classMap({
+                        pane: true,
+                        'pane--compact': true,
+                        'pane--start': pane === 1,
+                        'pane--primary': pane === 2,
+                        'pane--end': pane === 3,
+                      })}
+                      part=${part}
+                      role="tabpanel"
+                      aria-labelledby=${this._tabId(pane)}
+                    >
+                      <slot name=${`pane-${pane}`}></slot>
+                    </section>
+                  `
+                : null;
+            })}
           </div>
         </div>
       `;
@@ -486,6 +503,8 @@ export function registerSplitViewPattern(css: string) {
 
       const d1 = this._activeDivider === 1;
       const d2 = this._activeDivider === 2;
+      const aria1 = this._dividerAriaValue(1);
+      const aria2 = this._paneCount === 3 ? this._dividerAriaValue(2) : null;
       return html`
         <div class="split-view" part="split-view">
           <div
@@ -503,6 +522,9 @@ export function registerSplitViewPattern(css: string) {
             aria-orientation="vertical"
             aria-controls=${`${this._paneId(1)} ${this._paneId(2)}`}
             aria-label=${this._dividerLabel(1)}
+            aria-valuenow=${aria1.valuenow}
+            aria-valuemin=${aria1.valuemin}
+            aria-valuemax=${aria1.valuemax}
             @pointerdown=${(e: PointerEvent) =>
               this._onDividerPointerDown(1, e)}
             @keydown=${(e: KeyboardEvent) => this._onDividerKeyDown(1, e)}
@@ -511,10 +533,10 @@ export function registerSplitViewPattern(css: string) {
               vertical
               drag-handle
               decorative
+              hideHairline
               class=${classMap({
                 'right-inverted-handle': this.invertStartDividerGrip,
               })}
-              ?hideHairline=${true}
               ?dragging=${d1}
             ></kyn-divider>
           </div>
@@ -523,6 +545,7 @@ export function registerSplitViewPattern(css: string) {
               ? 'pane--primary--flanked'
               : ''}"
             id=${this._paneId(2)}
+            part="pane-primary"
           >
             <slot name="pane-2"></slot>
           </div>
@@ -535,6 +558,9 @@ export function registerSplitViewPattern(css: string) {
                   aria-orientation="vertical"
                   aria-controls=${`${this._paneId(2)} ${this._paneId(3)}`}
                   aria-label=${this._dividerLabel(2)}
+                  aria-valuenow=${aria2!.valuenow}
+                  aria-valuemin=${aria2!.valuemin}
+                  aria-valuemax=${aria2!.valuemax}
                   @pointerdown=${(e: PointerEvent) =>
                     this._onDividerPointerDown(2, e)}
                   @keydown=${(e: KeyboardEvent) => this._onDividerKeyDown(2, e)}
@@ -543,10 +569,10 @@ export function registerSplitViewPattern(css: string) {
                     vertical
                     drag-handle
                     decorative
+                    hideHairline
                     class=${classMap({
                       'right-inverted-handle': this.invertEndDividerGrip,
                     })}
-                    ?hideHairline=${true}
                     ?dragging=${d2}
                   ></kyn-divider>
                 </div>

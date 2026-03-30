@@ -156,6 +156,43 @@ export function clampSplitViewWidths(
   return { leftPx, rightPx };
 }
 
+/**
+ * Returns 0–100 percentage representing the current position of a divider
+ * within its allowed range (min → max).
+ */
+export function getDividerAriaValue(
+  input: Omit<SplitViewWidthsInput, 'rightPx'> & {
+    leftPx: number;
+    rightPx: number;
+    divider: SplitViewDivider;
+  }
+): { valuenow: number; valuemin: number; valuemax: number } {
+  const { panes, trackWidth, leftPx, rightPx, divider } = input;
+
+  if (divider === 1) {
+    const min = MIN_PANE_PX;
+    const max =
+      panes === 2
+        ? Math.max(MIN_PANE_PX, trackWidth - DIVIDER_PX - MIN_CENTER_PX)
+        : Math.max(
+            MIN_PANE_PX,
+            trackWidth - 2 * DIVIDER_PX - rightPx - MIN_CENTER_PX
+          );
+    const range = max - min;
+    const valuenow = range > 0 ? Math.round(((leftPx - min) / range) * 100) : 0;
+    return { valuenow, valuemin: 0, valuemax: 100 };
+  }
+
+  const min = MIN_PANE_PX;
+  const max = Math.max(
+    MIN_PANE_PX,
+    trackWidth - 2 * DIVIDER_PX - leftPx - MIN_CENTER_PX
+  );
+  const range = max - min;
+  const valuenow = range > 0 ? Math.round(((rightPx - min) / range) * 100) : 0;
+  return { valuenow, valuemin: 0, valuemax: 100 };
+}
+
 export function getKeyboardResizeResult(
   input: SplitViewKeyboardResizeInput
 ): SplitViewClampResult | null {

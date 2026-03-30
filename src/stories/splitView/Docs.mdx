@@ -102,10 +102,9 @@ Copy or mirror these paths from **`src/stories/splitView/`**:
 | **`slot="pane-2"`**                               | Center column (flex; grows/shrinks when dragging).                                                                                                                                                                                                                                                                                                    |
 | **`slot="pane-3"`**                               | End column; render only when **`.panes=${3}`**.                                                                                                                                                                                                                                                                                                       |
 | **`@split-view-resize`**                          | Primary resize event. Fires after pointer drag ends and after keyboard resize steps. **`event.detail`:** `{ leftPx: number, rightPx?: number, source: 'pointer' \| 'keyboard' }` — **`rightPx`** is set only when **`.panes === 3`**.                                                                                                                 |
-| **`@on-resize`**                                  | Legacy alias of **`split-view-resize`** kept for backwards compatibility with existing stories and consumers.                                                                                                                                                                                                                                         |
 | **`@split-view-pane-change`**                     | Fires when compact-mode pane switching changes the active pane. **`event.detail`:** `{ activePane: 1 \| 2 \| 3, compact: boolean }`.                                                                                                                                                                                                                  |
 
-**Shadow **`part`** names** (for `::part(...)` styling if you expose it from the host): **`split-view`**, **`pane-start`**, **`pane-end`**.
+**Shadow **`part`** names** (for `::part(...)` styling if you expose it from the host): **`split-view`**, **`pane-start`**, **`pane-primary`**, **`pane-end`**.
 
 ## Resize behavior (implementation constants)
 
@@ -132,7 +131,7 @@ Panes use flex; **slotted content** should fill pane height so **inner** regions
 
 **Accessibility**
 
-- Separators are keyboard-focusable and expose **`role="separator"`**, **`aria-orientation="vertical"`**, and current sizing values from **`split-view-pattern`**. Use **`startResizeLabel`** / **`endResizeLabel`** when product copy should be more specific.
+- Separators are keyboard-focusable and expose **`role="separator"`**, **`aria-orientation="vertical"`**, **`aria-valuenow`** (0–100), **`aria-valuemin`**, and **`aria-valuemax`** per the [WAI-ARIA Window Splitter pattern](https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/). Use **`startResizeLabel`** / **`endResizeLabel`** when product copy should be more specific.
 - Compact mode renders a semantic **tablist** with keyboard navigation (**Left / Right / Home / End**) and associated **tab panels**.
 - **`kyn-divider`** stays the visual drag affordance. In Split View it is rendered decoratively while the parent separator owns the interaction and semantics.
 - **Hairline / grip** motion respects **`prefers-reduced-motion`** in **`divider.scss`** and split-view light-DOM hairline styles.
