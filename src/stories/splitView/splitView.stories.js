@@ -25,7 +25,7 @@ const splitViewArgTypes = {
   },
 };
 
-/** Two Pane Implemented: multi-line sample so `blockFlush` + flex layout read as a full-height pane. */
+/** Two Pane Implemented: multi-line sample so the code rail flexes full height. */
 const MINIMAL_TWO_PANE_JS = `/**
  * Example service bootstrap (demo only).
  */
@@ -97,7 +97,7 @@ const CODE_DEMO_ALL = [
 
 export default {
   title: 'Patterns/Split View',
-  /* Web component tag for docs / a11y; pattern is registered on module load. */
+  tags: ['autodocs'],
   component: 'split-view-pattern',
   argTypes: splitViewArgTypes,
   parameters: {
@@ -106,9 +106,7 @@ export default {
         component: `
 The Split View pattern arranges two or three columns with draggable vertical dividers. The center column grows and shrinks as you drag; outer columns use minimum widths.
 
-Use **\`kyn-divider\`** with **\`vertical\`** and **\`drag-handle\`** for the affordance (aligned with the resizable side drawer). Interactive sizing for Storybook is demonstrated with **\`<split-view-pattern>\`**, a Storybook-only helper in this folder—it is **not** a published \`kyn-*\` component.
-
-**Docs:** Open **Patterns / Split View / Docs** for copy-paste imports (this repo + vendored), file checklist, mobile behavior, and API. **Two Pane Implemented** uses the same **issue detail** markup as **Three Pane Implemented**’s center pane in **\`slot="pane-1"\`**, with **\`split-view-code-rail\`** + **\`kyn-block-code-view\`** in **\`slot="pane-2"\`**. **Three Pane Implemented** adds a third pane (code rail) + issue list. **Compact Three Pane** demonstrates the narrow-screen tab model. **Canvas → Code** matches what you run in Storybook; pair with **Docs** when vendoring outside Storybook.
+Use **\`slot="pane-1"\`**, **\`slot="pane-2"\`**, and optionally **\`slot="pane-3"\`** to place your content. **Two Pane Implemented** and **Three Pane Implemented** are complete product-style examples using the same component API.
         `,
       },
     },
@@ -235,6 +233,14 @@ export const TwoPane = {
   `,
 };
 
+TwoPane.parameters = {
+  docs: {
+    description: {
+      story: 'Basic two-pane usage with slot content and draggable divider.',
+    },
+  },
+};
+
 export const ThreePane = {
   args: { panes: 3 },
   render: ({ panes }) => html`
@@ -258,6 +264,14 @@ export const ThreePane = {
       </split-view-pattern>
     </div>
   `,
+};
+
+ThreePane.parameters = {
+  docs: {
+    description: {
+      story: 'Basic three-pane usage with two draggable dividers.',
+    },
+  },
 };
 
 /** Shortest copy-paste: shell + `.panes=${2}` + `split-view-code-rail` (flush CSS) + `kyn-block-code-view` in primary pane. */

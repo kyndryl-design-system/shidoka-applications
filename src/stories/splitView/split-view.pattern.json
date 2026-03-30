@@ -1,6 +1,6 @@
 {
   "patternId": "split-view",
-  "description": "Canonical index for this Storybook pattern. Use Docs.mdx for copy-paste imports and vendor checklist; Two Pane Implemented (MinimalTwoPane export) is the shortest Canvas template (two panes, code rail + block in primary pane).",
+  "description": "Canonical index for the split view pattern. Use Docs.mdx for usage, controls, and implemented examples.",
   "storybook": {
     "title": "Patterns/Split View",
     "storyFile": "splitView.stories.js",
@@ -15,10 +15,9 @@
       "path": [
         "splitViewPattern.scss",
         "splitViewCodeRail.scss",
-        "splitViewBlockFlush.scss",
         "splitViewStory.scss"
       ],
-      "note": "Four direct SCSS sources imported with ?inline in registerSplitView.ts."
+      "note": "Pattern, rail, and story styles imported with ?inline."
     },
     "styleLoader": {
       "path": "registerSplitView.ts",
@@ -28,12 +27,12 @@
       {
         "path": "splitViewPattern.ts",
         "element": "split-view-pattern",
-        "published": false
+        "published": true
       },
       {
         "path": "splitViewCodeRail.ts",
         "element": "split-view-code-rail",
-        "published": false
+        "published": true
       }
     ]
   },
@@ -46,9 +45,9 @@
   ],
   "widgetStatusEnum": "src/components/reusable/widget/defs.ts (WIDGET_STATUS). Issue-list demo uses `kyn-widget` for accent treatment and maps those statuses to preserve the original Figma severity colors.",
   "integrationOrder": [
-    "Import registerSplitView.ts so the helper elements are registered and splitViewStoryStyles is available.",
-    "Import design-system components used by the story.",
-    "Use <split-view-pattern> with named slots pane-1, pane-2, and optionally pane-3; optional default-start-pane-width / default-end-pane-width (px) for initial pane-1 / pane-3 widths; set invert-start-divider-grip when pane-2 is dark on a light start pane (two-pane code); set invert-end-divider-grip when pane-3 is dark (three-pane code rail).",
-    "Optional end-pane code: wrap kyn-block-code-view in split-view-code-rail for flush rail behavior."
+    "Import registerSplitView.ts so split-view-pattern and split-view-code-rail are registered and splitViewStoryStyles is available.",
+    "Import design-system components used by your slot content.",
+    "Use <split-view-pattern> with named slots pane-1, pane-2, and optionally pane-3.",
+    "Optional: wrap end-pane content in split-view-code-rail for a code-rail container."
   ]
 }
