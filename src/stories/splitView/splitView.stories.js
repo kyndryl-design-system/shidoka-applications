@@ -38,9 +38,6 @@ const splitViewArgTypes = {
   endPaneBackground: {
     control: { type: 'text' },
   },
-  compactBreakpointPx: {
-    control: { type: 'number', min: 320, step: 8 },
-  },
   compactHeightPx: {
     control: { type: 'number', min: 360, step: 8 },
   },
@@ -314,7 +311,11 @@ const splitViewStyles = html`<style>
     );
   }
 
-  @media (max-width: var(--split-view-compact-breakpoint, 900px)) {
+  .split-view-responsive {
+    container-type: inline-size;
+  }
+
+  @container (max-width: 900px) {
     .split-view-responsive__desktop {
       display: none;
     }
@@ -399,7 +400,6 @@ const splitViewStyleVars = ({
   startPaneBackground = 'var(--kd-color-background-page-default)',
   primaryPaneBackground = 'var(--kd-color-background-container-default)',
   endPaneBackground = 'var(--kd-color-code-view-background)',
-  compactBreakpointPx = 900,
   compactHeightPx = 520,
 }) =>
   [
@@ -408,7 +408,6 @@ const splitViewStyleVars = ({
     `--split-view-start-pane-background:${startPaneBackground}`,
     `--split-view-primary-pane-background:${primaryPaneBackground}`,
     `--split-view-end-pane-background:${endPaneBackground}`,
-    `--split-view-compact-breakpoint:${compactBreakpointPx}px`,
     `--split-view-compact-height-px:${compactHeightPx}px`,
   ].join(';');
 
@@ -624,16 +623,15 @@ export default {
     startPaneBackground: 'var(--kd-color-background-page-default)',
     primaryPaneBackground: 'var(--kd-color-background-container-default)',
     endPaneBackground: 'var(--kd-color-code-view-background)',
-    compactBreakpointPx: 900,
     compactHeightPx: 520,
   },
   argTypes: splitViewArgTypes,
   parameters: {
     docs: {
       description: {
-        component: `Compose pane content with standard markup and tune defaults through args.
+        component: `Split View is a **pattern composition**, not a shipped wrapper component. Compose pane content with standard markup and tune defaults through args.
 
-Use \`kyn-divider\` (\`vertical\` + \`drag-handle\`) as the draggable rail, then set pane widths, backgrounds, and compact behavior for your use case.`,
+Use \`kyn-divider\` (\`vertical\` + \`drag-handle\`) as the draggable rail, then set pane widths, backgrounds, and compact behavior for your use case. At narrow viewports, replace the side-by-side layout with \`kyn-tabs\`.`,
       },
     },
   },
