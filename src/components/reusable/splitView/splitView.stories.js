@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { action } from 'storybook/actions';
 
 import './index';
 import '../button/button';
@@ -395,6 +396,7 @@ export const TwoPane = {
       primaryPaneLabel=${args.primaryPaneLabel}
       startDividerInverted=${args.startDividerInverted}
       ?hideBorder=${args.hideBorder}
+      @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       <div slot="start" class="sv-placeholder">Start pane</div>
       <div class="sv-placeholder">Primary pane (flex)</div>
@@ -429,6 +431,7 @@ export const ThreePane = {
       startDividerInverted=${args.startDividerInverted}
       endDividerInverted=${args.endDividerInverted}
       ?hideBorder=${args.hideBorder}
+      @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
       <div slot="start" class="sv-placeholder">Start pane</div>
       <div class="sv-placeholder">Primary pane (flex)</div>
@@ -443,12 +446,23 @@ export const TwoPaneImplemented = {
   render: () => html`
     <kyn-split-view
       startPaneSize="420px"
+      compactBreakpoint="0"
       startPaneLabel="Issue detail"
       primaryPaneLabel="Code rail"
       startDividerInverted="right"
+      @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
-      <div slot="start">${issueDetailPane()}</div>
-      <div>${codePaneContent(CODE_SAMPLE)}</div>
+      <div
+        slot="start"
+        role="region"
+        tabindex="0"
+        aria-label="Issue detail pane"
+      >
+        ${issueDetailPane()}
+      </div>
+      <div role="region" tabindex="0" aria-label="Code rail pane">
+        ${codePaneContent(CODE_SAMPLE)}
+      </div>
     </kyn-split-view>
   `,
 };
@@ -460,14 +474,22 @@ export const ThreePaneImplemented = {
     <kyn-split-view
       startPaneSize="420px"
       endPaneSize="320px"
+      compactBreakpoint="0"
       startPaneLabel="Issue list"
       primaryPaneLabel="Issue detail"
       endPaneLabel="Code rail"
       endDividerInverted="right"
+      @on-resize=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
-      <div slot="start">${issueList()}</div>
-      <div>${issueDetailPane()}</div>
-      <div slot="end">${codePaneContent(CODE_DEMO_ALL)}</div>
+      <div slot="start" role="region" tabindex="0" aria-label="Issue list pane">
+        ${issueList()}
+      </div>
+      <div role="region" tabindex="0" aria-label="Issue detail pane">
+        ${issueDetailPane()}
+      </div>
+      <div slot="end" role="region" tabindex="0" aria-label="Code rail pane">
+        ${codePaneContent(CODE_DEMO_ALL)}
+      </div>
     </kyn-split-view>
   `,
 };
