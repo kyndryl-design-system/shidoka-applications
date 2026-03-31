@@ -6,7 +6,6 @@ import {
   queryAssignedElements,
   state,
 } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { deepmerge } from 'deepmerge-ts';
 
 import '../divider/divider';
@@ -19,6 +18,8 @@ const KEYBOARD_RESIZE_STEP_PX = 16;
 
 const _defaultTextStrings = {
   resizePanes: 'Resize panes',
+  resizeStartPane: 'Resize start pane',
+  resizeEndPane: 'Resize end pane',
 };
 
 /**
@@ -108,22 +109,6 @@ export class SplitView extends LitElement {
   private accessor _dragWhich: 0 | 1 | 2 = 0;
 
   /** @internal */
-  @state()
-  private accessor _startPaneWidth = 0;
-
-  /** @internal */
-  @state()
-  private accessor _endPaneWidth = 0;
-
-  /** @internal */
-  @state()
-  private accessor _startPaneMaxWidth = 0;
-
-  /** @internal */
-  @state()
-  private accessor _endPaneMaxWidth = 0;
-
-  /** @internal */
   @queryAssignedElements({ slot: 'end' })
   private accessor _endSlotEls!: HTMLElement[];
 
@@ -138,6 +123,14 @@ export class SplitView extends LitElement {
   /** @internal */
   @query('.split-view')
   private accessor _splitViewEl!: HTMLElement;
+
+  /** @internal */
+  @query('.divider-track')
+  private accessor _startDividerEl!: HTMLElement;
+
+  /** @internal */
+  @query('.divider-track--end')
+  private accessor _endDividerEl!: HTMLElement;
 
   /** @internal */
   private _ro: ResizeObserver | null = null;
@@ -177,12 +170,6 @@ export class SplitView extends LitElement {
   private _renderDesktop() {
     const startBasis = this._startWidthOverride ?? this.startPaneSize;
     const endBasis = this._endWidthOverride ?? this.endPaneSize;
-    const startPaneValueNow = this._getDividerValueNow(1);
-    const startPaneValueMax = this._getDividerValueMax(1);
-    const startPaneValueText = this._getDividerValueText(1);
-    const endPaneValueNow = this._getDividerValueNow(2);
-    const endPaneValueMax = this._getDividerValueMax(2);
-    const endPaneValueText = this._getDividerValueText(2);
 
     return html`
       <div
@@ -198,11 +185,10 @@ export class SplitView extends LitElement {
           class="divider-track"
           role="slider"
           aria-orientation="vertical"
-          aria-label=${this._textStrings.resizePanes}
+          aria-label=${this._getDividerAriaLabel(1)}
           aria-valuemin=${String(this.minPaneSize)}
-          aria-valuemax=${ifDefined(startPaneValueMax)}
-          aria-valuenow=${ifDefined(startPaneValueNow)}
-          aria-valuetext=${ifDefined(startPaneValueText)}
+          aria-valuenow=${String(this.minPaneSize)}
+          aria-valuetext=${`${this.minPaneSize} pixels`}
           tabindex="0"
           @pointerdown=${(e: PointerEvent) => this._onDividerDown(1, e)}
           @keydown=${(e: KeyboardEvent) => this._onDividerKeyDown(1, e)}
@@ -224,11 +210,10 @@ export class SplitView extends LitElement {
           class="divider-track divider-track--end"
           role="slider"
           aria-orientation="vertical"
-          aria-label=${this._textStrings.resizePanes}
+          aria-label=${this._getDividerAriaLabel(2)}
           aria-valuemin=${String(this.minPaneSize)}
-          aria-valuemax=${ifDefined(endPaneValueMax)}
-          aria-valuenow=${ifDefined(endPaneValueNow)}
-          aria-valuetext=${ifDefined(endPaneValueText)}
+          aria-valuenow=${String(this.minPaneSize)}
+          aria-valuetext=${`${this.minPaneSize} pixels`}
           tabindex="0"
           @pointerdown=${(e: PointerEvent) => this._onDividerDown(2, e)}
           @keydown=${(e: KeyboardEvent) => this._onDividerKeyDown(2, e)}
@@ -374,47 +359,47 @@ export class SplitView extends LitElement {
     return next;
   }
 
-  private _getDividerValueNow(which: 1 | 2) {
-    const width = which === 1 ? this._startPaneWidth : this._endPaneWidth;
-    return width > 0 ? String(width) : undefined;
+  private _getDividerAriaLabel(which: 1 | 2) {
+    if (!this._hasEndPane) {
+      return this._textStrings.resizePanes;
+    }
+
+    return which === 1
+      ? this._textStrings.resizeStartPane
+      : this._textStrings.resizeEndPane;
   }
 
-  private _getDividerValueMax(which: 1 | 2) {
-    const maxWidth =
-      which === 1 ? this._startPaneMaxWidth : this._endPaneMaxWidth;
-    return maxWidth > 0 ? String(maxWidth) : undefined;
-  }
+  private _syncDividerAria(which: 1 | 2, width: number, maxWidth: number) {
+    const divider = which === 1 ? this._startDividerEl : this._endDividerEl;
+    if (!divider) return;
 
-  private _getDividerValueText(which: 1 | 2) {
-    const width = which === 1 ? this._startPaneWidth : this._endPaneWidth;
-    return width > 0 ? `${width} pixels` : undefined;
+    if (width > 0) {
+      divider.setAttribute('aria-valuenow', String(width));
+      divider.setAttribute('aria-valuetext', `${width} pixels`);
+    } else {
+      divider.removeAttribute('aria-valuenow');
+      divider.removeAttribute('aria-valuetext');
+    }
+
+    if (maxWidth > 0) {
+      divider.setAttribute('aria-valuemax', String(maxWidth));
+    } else {
+      divider.removeAttribute('aria-valuemax');
+    }
   }
 
   private _syncPaneMetrics() {
     if (!this._splitViewEl || this.compact) return;
 
     const startWidth = Math.round(this._getPaneWidth(1));
-    const endWidth = Math.round(this._getPaneWidth(2));
     const startMaxWidth = Math.round(this._getPaneMaxWidth(1));
+    this._syncDividerAria(1, startWidth, startMaxWidth);
+
+    const endWidth = Math.round(this._getPaneWidth(2));
     const endMaxWidth = this._hasEndPane
       ? Math.round(this._getPaneMaxWidth(2))
       : 0;
-
-    if (this._startPaneWidth !== startWidth) {
-      this._startPaneWidth = startWidth;
-    }
-
-    if (this._endPaneWidth !== endWidth) {
-      this._endPaneWidth = endWidth;
-    }
-
-    if (this._startPaneMaxWidth !== startMaxWidth) {
-      this._startPaneMaxWidth = startMaxWidth;
-    }
-
-    if (this._endPaneMaxWidth !== endMaxWidth) {
-      this._endPaneMaxWidth = endMaxWidth;
-    }
+    this._syncDividerAria(2, endWidth, endMaxWidth);
   }
 
   private _emitResize(which: 1 | 2) {
