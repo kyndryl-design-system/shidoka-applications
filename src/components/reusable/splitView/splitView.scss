@@ -1,0 +1,112 @@
+@use '../../../common/scss/global.scss';
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--kd-color-border-level-secondary);
+  border-radius: 8px;
+  box-shadow: var(--kd-elevation-level-1);
+  overflow: hidden;
+}
+
+:host([hideBorder]) {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ===== Desktop: side-by-side panes ===== */
+
+.split-view {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.pane ::slotted(*) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.compact ::slotted(*) {
+  display: block;
+  overflow: visible;
+  height: auto;
+}
+
+.pane--start {
+  flex: 0 0 39%;
+  margin-right: -4px;
+}
+
+.pane--primary {
+  flex: 1 1 auto;
+  margin-left: -4px;
+}
+
+.split-view--two .pane--primary {
+  margin-right: 0;
+}
+
+.split-view--three .pane--primary {
+  margin-right: -4px;
+}
+
+.pane--end {
+  flex: 0 0 28%;
+  margin-left: -4px;
+}
+
+.split-view--two .divider-track--end,
+.split-view--two .pane--end {
+  display: none;
+}
+
+.divider-track {
+  flex: 0 0 8px;
+  min-width: 8px;
+  display: flex;
+  background: transparent;
+  cursor: ew-resize;
+  position: relative;
+  z-index: 1;
+}
+
+.divider-track kyn-divider {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== Compact: tabbed layout ===== */
+
+.compact {
+  height: 100%;
+}
+
+.compact kyn-tabs {
+  height: 100%;
+  display: block;
+}
+
+.compact kyn-tab-panel[visible] {
+  display: block;
+  height: 100%;
+}
