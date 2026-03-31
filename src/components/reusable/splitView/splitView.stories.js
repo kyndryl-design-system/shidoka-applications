@@ -406,7 +406,6 @@ export const ThreePane = {
   },
   render: (args) => html`
     <kyn-split-view
-      ?endPane=${true}
       startPaneSize=${args.startPaneSize}
       endPaneSize=${args.endPaneSize}
       compactBreakpoint=${args.compactBreakpoint}
@@ -447,7 +446,6 @@ export const ThreePaneImplemented = {
   parameters: { controls: { disable: true } },
   render: () => html`
     <kyn-split-view
-      endPane
       startPaneSize="420px"
       endPaneSize="320px"
       startPaneLabel="Issue list"

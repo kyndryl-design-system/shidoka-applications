@@ -77,10 +77,6 @@ export class SplitView extends LitElement {
   @property({ type: String })
   accessor endDividerInverted: 'none' | 'left' | 'right' = 'none';
 
-  /** Opt-in flag that enables three-pane mode on first render, avoiding a re-render from slot detection. Set to `true` when slotting `end` content. */
-  @property({ type: Boolean })
-  accessor endPane = false;
-
   /** Removes the default border, border-radius, and box-shadow from the component. */
   @property({ type: Boolean, reflect: true })
   accessor hideBorder = false;
@@ -197,36 +193,25 @@ export class SplitView extends LitElement {
           <slot></slot>
         </section>
 
-        ${this._hasEndPane
-          ? html`
-              <div
-                class="divider-track"
-                role="separator"
-                aria-orientation="vertical"
-                aria-label=${this._textStrings.resizePanes}
-                @pointerdown=${(e: PointerEvent) => this._onDividerDown(2, e)}
-              >
-                <kyn-divider
-                  vertical
-                  drag-handle
-                  ?dragging=${this._dragWhich === 2}
-                  decorative
-                  inverted-handle=${this.endDividerInverted}
-                ></kyn-divider>
-              </div>
+        <div
+          class="divider-track divider-track--end"
+          role="separator"
+          aria-orientation="vertical"
+          aria-label=${this._textStrings.resizePanes}
+          @pointerdown=${(e: PointerEvent) => this._onDividerDown(2, e)}
+        >
+          <kyn-divider
+            vertical
+            drag-handle
+            ?dragging=${this._dragWhich === 2}
+            decorative
+            inverted-handle=${this.endDividerInverted}
+          ></kyn-divider>
+        </div>
 
-              <section class="pane pane--end" style="flex-basis:${endBasis}">
-                <slot
-                  name="end"
-                  @slotchange=${this._handleEndSlotChange}
-                ></slot>
-              </section>
-            `
-          : html`<slot
-              name="end"
-              @slotchange=${this._handleEndSlotChange}
-              hidden
-            ></slot>`}
+        <section class="pane pane--end" style="flex-basis:${endBasis}">
+          <slot name="end" @slotchange=${this._handleEndSlotChange}></slot>
+        </section>
       </div>
     `;
   }
@@ -253,35 +238,21 @@ export class SplitView extends LitElement {
           <kyn-tab-panel tabId="sv-primary" noPadding>
             <slot></slot>
           </kyn-tab-panel>
-          ${this._hasEndPane
-            ? html`
-                <kyn-tab-panel tabId="sv-end" noPadding>
-                  <slot
-                    name="end"
-                    @slotchange=${this._handleEndSlotChange}
-                  ></slot>
-                </kyn-tab-panel>
-              `
-            : html`<slot
-                name="end"
-                @slotchange=${this._handleEndSlotChange}
-                hidden
-              ></slot>`}
+          <kyn-tab-panel tabId="sv-end" noPadding ?hidden=${!this._hasEndPane}>
+            <slot name="end" @slotchange=${this._handleEndSlotChange}></slot>
+          </kyn-tab-panel>
         </kyn-tabs>
       </div>
     `;
   }
 
   private _handleEndSlotChange() {
-    this._hasEndPane = this.endPane || this._endSlotEls.length > 0;
+    this._hasEndPane = this._endSlotEls.length > 0;
   }
 
   override willUpdate(changedProps: any) {
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
-    if (changedProps.has('endPane') && this.endPane) {
-      this._hasEndPane = true;
     }
   }
 
