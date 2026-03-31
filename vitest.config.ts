@@ -9,6 +9,16 @@ const dirname =
     ? __dirname
     : path.dirname(fileURLToPath(import.meta.url));
 
+const supportedBrowsers = ['chromium', 'firefox', 'webkit'] as const;
+type SupportedBrowser = (typeof supportedBrowsers)[number];
+
+const requestedBrowser = process.env.VITEST_BROWSER as
+  | SupportedBrowser
+  | undefined;
+const storybookBrowsers = requestedBrowser
+  ? [{ browser: requestedBrowser }]
+  : supportedBrowsers.map((browser) => ({ browser }));
+
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   test: {
@@ -36,11 +46,7 @@ export default defineConfig({
             enabled: true,
             headless: true,
             provider: 'playwright',
-            instances: [
-              { browser: 'chromium' },
-              { browser: 'firefox' },
-              { browser: 'webkit' },
-            ],
+            instances: storybookBrowsers,
           },
           setupFiles: ['.storybook/vitest.setup.ts'],
         },
