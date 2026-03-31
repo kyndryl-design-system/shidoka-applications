@@ -6,6 +6,7 @@ import {
   queryAssignedElements,
   state,
 } from 'lit/decorators.js';
+import { deepmerge } from 'deepmerge-ts';
 
 import '../divider/divider';
 import '../tabs';
@@ -13,6 +14,10 @@ import '../tabs';
 import SplitViewScss from './splitView.scss?inline';
 
 const DIVIDER_PX = 8;
+
+const _defaultTextStrings = {
+  resizePanes: 'Resize panes',
+};
 
 /**
  * Split View — resizable multi-pane layout.
@@ -72,7 +77,27 @@ export class SplitView extends LitElement {
   @property({ type: String })
   accessor endDividerInverted: 'none' | 'left' | 'right' = 'none';
 
-  /** Reflects the current compact state. Read-only; driven by `compactBreakpoint`. */
+  /** Opt-in flag that enables three-pane mode on first render, avoiding a re-render from slot detection. Set to `true` when slotting `end` content. */
+  @property({ type: Boolean })
+  accessor endPane = false;
+
+  /** Removes the default border, border-radius, and box-shadow from the component. */
+  @property({ type: Boolean, reflect: true })
+  accessor hideBorder = false;
+
+  /** Text string customization. */
+  @property({ type: Object })
+  accessor textStrings = _defaultTextStrings;
+
+  /** Internal text strings.
+   * @internal
+   */
+  @state()
+  accessor _textStrings = _defaultTextStrings;
+
+  /** Reflects the current compact state. Read-only; driven by `compactBreakpoint`.
+   * @internal
+   */
   @property({ type: Boolean, reflect: true })
   accessor compact = false;
 
@@ -156,7 +181,7 @@ export class SplitView extends LitElement {
           class="divider-track"
           role="separator"
           aria-orientation="vertical"
-          aria-label="Resize panes"
+          aria-label=${this._textStrings.resizePanes}
           @pointerdown=${(e: PointerEvent) => this._onDividerDown(1, e)}
         >
           <kyn-divider
@@ -178,7 +203,7 @@ export class SplitView extends LitElement {
                 class="divider-track"
                 role="separator"
                 aria-orientation="vertical"
-                aria-label="Resize panes"
+                aria-label=${this._textStrings.resizePanes}
                 @pointerdown=${(e: PointerEvent) => this._onDividerDown(2, e)}
               >
                 <kyn-divider
@@ -248,7 +273,16 @@ export class SplitView extends LitElement {
   }
 
   private _handleEndSlotChange() {
-    this._hasEndPane = this._endSlotEls.length > 0;
+    this._hasEndPane = this.endPane || this._endSlotEls.length > 0;
+  }
+
+  override willUpdate(changedProps: any) {
+    if (changedProps.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+    if (changedProps.has('endPane') && this.endPane) {
+      this._hasEndPane = true;
+    }
   }
 
   // -- Resize logic (follows kyn-side-drawer pattern) --
@@ -336,6 +370,7 @@ export class SplitView extends LitElement {
             pane: which === 1 ? 'start' : 'end',
             width: pane.getBoundingClientRect().width,
           },
+          composed: true,
         })
       );
     }

@@ -33,6 +33,7 @@ export default {
       options: ['none', 'left', 'right'],
       control: { type: 'select' },
     },
+    hideBorder: { control: { type: 'boolean' } },
   },
   parameters: {
     layout: 'fullscreen',
@@ -44,7 +45,7 @@ export default {
   decorators: [
     (story) => html`
       <style>
-        .sv-shell {
+        .story-container {
           box-sizing: border-box;
           width: 100%;
           max-width: 1280px;
@@ -54,12 +55,8 @@ export default {
           background: var(--kd-color-background-page-default);
         }
 
-        .sv-shell kyn-split-view {
+        .story-container kyn-split-view {
           height: min(640px, 82vh);
-          border: 1px solid var(--kd-color-border-level-secondary);
-          border-radius: 8px;
-          box-shadow: var(--kd-elevation-level-1, 0 1px 3px rgb(0 0 0 / 8%));
-          overflow: hidden;
         }
 
         .sv-placeholder {
@@ -181,7 +178,7 @@ export default {
           flex: none;
         }
       </style>
-      ${story()}
+      <div class="story-container">${story()}</div>
     `,
   ],
 };
@@ -373,21 +370,23 @@ export const TwoPane = {
     minCenterSize: 160,
     startPaneLabel: 'Start',
     primaryPaneLabel: 'Primary',
+    startDividerInverted: 'none',
+    hideBorder: false,
   },
   render: (args) => html`
-    <div class="sv-shell">
-      <kyn-split-view
-        startPaneSize=${args.startPaneSize}
-        compactBreakpoint=${args.compactBreakpoint}
-        minPaneSize=${args.minPaneSize}
-        minCenterSize=${args.minCenterSize}
-        startPaneLabel=${args.startPaneLabel}
-        primaryPaneLabel=${args.primaryPaneLabel}
-      >
-        <div slot="start" class="sv-placeholder">Start pane</div>
-        <div class="sv-placeholder">Primary pane (flex)</div>
-      </kyn-split-view>
-    </div>
+    <kyn-split-view
+      startPaneSize=${args.startPaneSize}
+      compactBreakpoint=${args.compactBreakpoint}
+      minPaneSize=${args.minPaneSize}
+      minCenterSize=${args.minCenterSize}
+      startPaneLabel=${args.startPaneLabel}
+      primaryPaneLabel=${args.primaryPaneLabel}
+      startDividerInverted=${args.startDividerInverted}
+      ?hideBorder=${args.hideBorder}
+    >
+      <div slot="start" class="sv-placeholder">Start pane</div>
+      <div class="sv-placeholder">Primary pane (flex)</div>
+    </kyn-split-view>
   `,
 };
 
@@ -401,24 +400,29 @@ export const ThreePane = {
     startPaneLabel: 'Start',
     primaryPaneLabel: 'Primary',
     endPaneLabel: 'End',
+    startDividerInverted: 'none',
+    endDividerInverted: 'none',
+    hideBorder: false,
   },
   render: (args) => html`
-    <div class="sv-shell">
-      <kyn-split-view
-        startPaneSize=${args.startPaneSize}
-        endPaneSize=${args.endPaneSize}
-        compactBreakpoint=${args.compactBreakpoint}
-        minPaneSize=${args.minPaneSize}
-        minCenterSize=${args.minCenterSize}
-        startPaneLabel=${args.startPaneLabel}
-        primaryPaneLabel=${args.primaryPaneLabel}
-        endPaneLabel=${args.endPaneLabel}
-      >
-        <div slot="start" class="sv-placeholder">Start pane</div>
-        <div class="sv-placeholder">Primary pane (flex)</div>
-        <div slot="end" class="sv-placeholder">End pane</div>
-      </kyn-split-view>
-    </div>
+    <kyn-split-view
+      ?endPane=${true}
+      startPaneSize=${args.startPaneSize}
+      endPaneSize=${args.endPaneSize}
+      compactBreakpoint=${args.compactBreakpoint}
+      minPaneSize=${args.minPaneSize}
+      minCenterSize=${args.minCenterSize}
+      startPaneLabel=${args.startPaneLabel}
+      primaryPaneLabel=${args.primaryPaneLabel}
+      endPaneLabel=${args.endPaneLabel}
+      startDividerInverted=${args.startDividerInverted}
+      endDividerInverted=${args.endDividerInverted}
+      ?hideBorder=${args.hideBorder}
+    >
+      <div slot="start" class="sv-placeholder">Start pane</div>
+      <div class="sv-placeholder">Primary pane (flex)</div>
+      <div slot="end" class="sv-placeholder">End pane</div>
+    </kyn-split-view>
   `,
 };
 
@@ -426,17 +430,15 @@ export const TwoPaneImplemented = {
   name: 'Two Panes — Example Implementation',
   parameters: { controls: { disable: true } },
   render: () => html`
-    <div class="sv-shell">
-      <kyn-split-view
-        startPaneSize="420px"
-        startPaneLabel="Issue detail"
-        primaryPaneLabel="Code rail"
-        startDividerInverted="right"
-      >
-        <div slot="start">${issueDetailPane()}</div>
-        <div>${codePaneContent(CODE_SAMPLE)}</div>
-      </kyn-split-view>
-    </div>
+    <kyn-split-view
+      startPaneSize="420px"
+      startPaneLabel="Issue detail"
+      primaryPaneLabel="Code rail"
+      startDividerInverted="right"
+    >
+      <div slot="start">${issueDetailPane()}</div>
+      <div>${codePaneContent(CODE_SAMPLE)}</div>
+    </kyn-split-view>
   `,
 };
 
@@ -444,19 +446,18 @@ export const ThreePaneImplemented = {
   name: 'Three Panes — Example Implementation',
   parameters: { controls: { disable: true } },
   render: () => html`
-    <div class="sv-shell">
-      <kyn-split-view
-        startPaneSize="420px"
-        endPaneSize="320px"
-        startPaneLabel="Issue list"
-        primaryPaneLabel="Issue detail"
-        endPaneLabel="Code rail"
-        endDividerInverted="right"
-      >
-        <div slot="start">${issueList()}</div>
-        <div>${issueDetailPane()}</div>
-        <div slot="end">${codePaneContent(CODE_DEMO_ALL)}</div>
-      </kyn-split-view>
-    </div>
+    <kyn-split-view
+      endPane
+      startPaneSize="420px"
+      endPaneSize="320px"
+      startPaneLabel="Issue list"
+      primaryPaneLabel="Issue detail"
+      endPaneLabel="Code rail"
+      endDividerInverted="right"
+    >
+      <div slot="start">${issueList()}</div>
+      <div>${issueDetailPane()}</div>
+      <div slot="end">${codePaneContent(CODE_DEMO_ALL)}</div>
+    </kyn-split-view>
   `,
 };
