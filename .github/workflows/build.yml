@@ -74,7 +74,7 @@ jobs:
       #     name: build-storybook-artifact
       #     path: storybook-static
 
-  Test:
+  Test_Browser:
     # needs: [Build_Storybook]
     name: Test (${{ matrix.browser }})
     timeout-minutes: 30
@@ -144,3 +144,19 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:unit
+
+  Test:
+    name: Test
+    if: ${{ always() }}
+    needs: [Test_Browser, Test_Unit]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report test job results
+        run: |
+          echo "Browser tests result: ${{ needs.Test_Browser.result }}"
+          echo "Unit tests result: ${{ needs.Test_Unit.result }}"
+
+          if [ "${{ needs.Test_Browser.result }}" != "success" ] || [ "${{ needs.Test_Unit.result }}" != "success" ]; then
+            echo "One or more test jobs did not succeed."
+            exit 1
+          fi
