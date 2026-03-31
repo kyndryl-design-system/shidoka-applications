@@ -14,6 +14,7 @@ import '../tabs';
 import SplitViewScss from './splitView.scss?inline';
 
 const DIVIDER_PX = 8;
+const KEYBOARD_RESIZE_STEP_PX = 16;
 
 const _defaultTextStrings = {
   resizePanes: 'Resize panes',
@@ -27,7 +28,7 @@ const _defaultTextStrings = {
  * At narrow container widths the layout collapses to a tabbed compact view
  * using `kyn-tabs`.
  *
- * @fires on-resize - Fires when a pane is resized via drag.
+ * @fires on-resize - Fires when a pane is resized via drag or keyboard.
  *   `detail: { pane: 'start' | 'end', width: number }`
  * @slot start - Content for the start (left) pane.
  * @slot unnamed - Content for the primary (center) pane.
@@ -138,15 +139,9 @@ export class SplitView extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    this._ro = new ResizeObserver(() => {
-      if (this.compactBreakpoint <= 0) {
-        this.compact = false;
-        return;
-      }
-      const w = this.getBoundingClientRect().width;
-      this.compact = w > 0 && w < this.compactBreakpoint;
-    });
+    this._ro = new ResizeObserver(() => this._updateCompactState());
     this._ro.observe(this);
+    this._updateCompactState();
   }
 
   override disconnectedCallback() {
@@ -178,7 +173,9 @@ export class SplitView extends LitElement {
           role="separator"
           aria-orientation="vertical"
           aria-label=${this._textStrings.resizePanes}
+          tabindex="0"
           @pointerdown=${(e: PointerEvent) => this._onDividerDown(1, e)}
+          @keydown=${(e: KeyboardEvent) => this._onDividerKeyDown(1, e)}
         >
           <kyn-divider
             vertical
@@ -198,7 +195,9 @@ export class SplitView extends LitElement {
           role="separator"
           aria-orientation="vertical"
           aria-label=${this._textStrings.resizePanes}
+          tabindex="0"
           @pointerdown=${(e: PointerEvent) => this._onDividerDown(2, e)}
+          @keydown=${(e: KeyboardEvent) => this._onDividerKeyDown(2, e)}
         >
           <kyn-divider
             vertical
@@ -256,12 +255,97 @@ export class SplitView extends LitElement {
     }
   }
 
+  override updated(changedProps: any) {
+    if (changedProps.has('compactBreakpoint')) {
+      this._updateCompactState();
+    }
+  }
+
   // -- Resize logic (follows kyn-side-drawer pattern) --
+
+  private _updateCompactState() {
+    if (this.compactBreakpoint <= 0) {
+      this.compact = false;
+      return;
+    }
+
+    const width = this.getBoundingClientRect().width;
+    this.compact = width > 0 && width < this.compactBreakpoint;
+  }
+
+  private _getPaneEl(which: 1 | 2) {
+    return which === 1 ? this._startPaneEl : this._endPaneEl;
+  }
+
+  private _getPaneWidth(which: 1 | 2) {
+    return this._getPaneEl(which)?.getBoundingClientRect().width ?? 0;
+  }
+
+  private _getPaneMaxWidth(which: 1 | 2) {
+    const trackWidth = this._splitViewEl.getBoundingClientRect().width;
+    const startWidth = this._getPaneWidth(1);
+    const endWidth = this._getPaneWidth(2);
+
+    if (which === 1) {
+      return this._hasEndPane
+        ? Math.max(
+            this.minPaneSize,
+            trackWidth - 2 * DIVIDER_PX - endWidth - this.minCenterSize
+          )
+        : Math.max(
+            this.minPaneSize,
+            trackWidth - DIVIDER_PX - this.minCenterSize
+          );
+    }
+
+    return Math.max(
+      this.minPaneSize,
+      trackWidth - 2 * DIVIDER_PX - startWidth - this.minCenterSize
+    );
+  }
+
+  private _applyPaneWidth(which: 1 | 2, width: number) {
+    const pane = this._getPaneEl(which);
+    if (!pane) return null;
+
+    const currentWidth = pane.getBoundingClientRect().width;
+    const next = Math.min(
+      Math.max(this.minPaneSize, width),
+      this._getPaneMaxWidth(which)
+    );
+
+    if (Math.abs(next - currentWidth) < 0.5) return null;
+
+    pane.style.flexBasis = `${next}px`;
+
+    if (which === 1) {
+      this._startWidthOverride = `${next}px`;
+    } else {
+      this._endWidthOverride = `${next}px`;
+    }
+
+    return next;
+  }
+
+  private _emitResize(which: 1 | 2) {
+    const pane = this._getPaneEl(which);
+    if (!pane) return;
+
+    this.dispatchEvent(
+      new CustomEvent('on-resize', {
+        detail: {
+          pane: which === 1 ? 'start' : 'end',
+          width: pane.getBoundingClientRect().width,
+        },
+        composed: true,
+      })
+    );
+  }
 
   private _onDividerDown(which: 1 | 2, e: PointerEvent) {
     if (e.button !== 0) return;
 
-    const pane = which === 1 ? this._startPaneEl : this._endPaneEl;
+    const pane = this._getPaneEl(which);
     if (!pane) return;
 
     this._dragWhich = which;
@@ -288,37 +372,28 @@ export class SplitView extends LitElement {
   private _onDragMove(e: PointerEvent) {
     e.preventDefault();
     const delta = e.clientX - this._resizeStartX;
-    const trackWidth = this._splitViewEl.getBoundingClientRect().width;
-    const endWidth = this._endPaneEl?.getBoundingClientRect().width ?? 0;
-    const startWidth = this._startPaneEl.getBoundingClientRect().width;
 
     if (this._dragWhich === 1) {
-      const maxLeft = this._hasEndPane
-        ? Math.max(
-            this.minPaneSize,
-            trackWidth - 2 * DIVIDER_PX - endWidth - this.minCenterSize
-          )
-        : Math.max(
-            this.minPaneSize,
-            trackWidth - DIVIDER_PX - this.minCenterSize
-          );
-      const next = Math.min(
-        Math.max(this.minPaneSize, this._resizeStartWidth + delta),
-        maxLeft
-      );
-      this._startPaneEl.style.flexBasis = `${next}px`;
-      this._startWidthOverride = `${next}px`;
-    } else if (this._dragWhich === 2 && this._endPaneEl) {
-      const maxRight = Math.max(
-        this.minPaneSize,
-        trackWidth - 2 * DIVIDER_PX - startWidth - this.minCenterSize
-      );
-      const next = Math.min(
-        Math.max(this.minPaneSize, this._resizeStartWidth - delta),
-        maxRight
-      );
-      this._endPaneEl.style.flexBasis = `${next}px`;
-      this._endWidthOverride = `${next}px`;
+      this._applyPaneWidth(1, this._resizeStartWidth + delta);
+    } else if (this._dragWhich === 2) {
+      this._applyPaneWidth(2, this._resizeStartWidth - delta);
+    }
+  }
+
+  private _onDividerKeyDown(which: 1 | 2, e: KeyboardEvent) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+
+    e.preventDefault();
+
+    const delta =
+      e.key === 'ArrowLeft'
+        ? -KEYBOARD_RESIZE_STEP_PX
+        : KEYBOARD_RESIZE_STEP_PX;
+    const currentWidth = this._getPaneWidth(which);
+    const nextWidth = which === 1 ? currentWidth + delta : currentWidth - delta;
+
+    if (this._applyPaneWidth(which, nextWidth) !== null) {
+      this._emitResize(which);
     }
   }
 
@@ -333,17 +408,8 @@ export class SplitView extends LitElement {
     window.removeEventListener('pointerup', this._boundDragEnd);
     window.removeEventListener('pointercancel', this._boundDragEnd);
 
-    const pane = which === 1 ? this._startPaneEl : this._endPaneEl;
-    if (pane) {
-      this.dispatchEvent(
-        new CustomEvent('on-resize', {
-          detail: {
-            pane: which === 1 ? 'start' : 'end',
-            width: pane.getBoundingClientRect().width,
-          },
-          composed: true,
-        })
-      );
+    if (which !== 0) {
+      this._emitResize(which);
     }
   }
 }
