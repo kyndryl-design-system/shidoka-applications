@@ -97,6 +97,8 @@ export default {
           width: 16px;
           height: 16px;
           display: inline-flex;
+          flex-shrink: 0;
+          margin-top: 3px;
         }
 
         .sv-issue-widget__copy {
