@@ -9,6 +9,13 @@
   display: inline-flex;
 }
 
+:host([drag-handle]) {
+  --kyn-resize-grip-line: var(--kd-color-icon-secondary);
+  --kyn-resize-grip-line-active: var(--kd-color-icon-tertiary);
+  --kyn-resize-grip-line-inverted: #b6bdc0;
+  box-sizing: border-box;
+}
+
 :host([vertical][drag-handle]) {
   align-self: stretch;
   flex: 0 0 8px;
@@ -18,37 +25,59 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   cursor: ew-resize;
-  --kyn-resize-grip-line: var(--kd-color-icon-secondary);
-  --kyn-resize-grip-line-active: var(--kd-color-icon-tertiary);
-  --kyn-resize-grip-line-inverted: #b6bdc0;
+}
+
+:host(:not([vertical])[drag-handle]) {
+  display: flex;
+  flex-direction: row;
+  flex: 0 0 8px;
+  height: 8px;
+  min-height: 8px;
+  width: 100%;
+  cursor: ns-resize;
 }
 
 .divider {
   background-color: var(--kd-color-border-level-secondary);
   height: 1px;
-  /* Drag-handle fills the host with a positioned hairline + grip; height:auto collapses to 0. */
+
   :host([vertical]) &:not(.has-drag-handle) {
     width: 1px;
     height: auto;
   }
+
+  :host(:not([vertical])) &:not(.has-drag-handle) {
+    height: 1px;
+  }
 }
 
-/* Vertical split-view: hairline on separator with shared drag-surface behavior. */
-.divider.vertical.has-drag-handle {
+/* Shared base for drag-handle hairline + grip surface. */
+.divider.has-drag-handle {
   position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
   flex: 1 1 auto;
-  align-self: stretch;
   background: transparent;
   border-radius: 0;
   overflow: visible;
   transition: background-color 150ms ease-out;
 
-  /* Full-height hairline — centered on the grip axis (middle of 2px gap between drag lines). */
+  &.hide-hairline::before {
+    display: none;
+  }
+
+  &:not(.hide-hairline):hover::before,
+  &:not(.hide-hairline):has(.drag-handle.dragging)::before {
+    opacity: 0;
+  }
+}
+
+/* Vertical drag-handle: hairline on separator with shared drag-surface behavior. */
+.divider.vertical.has-drag-handle {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  align-self: stretch;
+
   &::before {
     content: '';
     position: absolute;
@@ -62,23 +91,38 @@
     transition: opacity 150ms ease-out;
   }
 
-  &.hide-hairline::before {
-    display: none;
-  }
-
-  &:not(.hide-hairline):hover::before,
-  &:not(.hide-hairline):has(.drag-handle.dragging)::before {
-    opacity: 0;
-  }
-
   @include resizable-drag-handle.resizable-drag-handle-vertical(
     $width: 100%,
     $border-radius: 0
   );
 }
 
+/* Horizontal drag-handle. */
+.divider.horizontal.has-drag-handle {
+  width: 100%;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: translateY(-50%);
+    background: var(--kd-color-border-level-secondary);
+    opacity: 1;
+    transition: opacity 150ms ease-out;
+  }
+
+  @include resizable-drag-handle.resizable-drag-handle-horizontal(
+    $height: 100%,
+    $border-radius: 0
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .divider.vertical.has-drag-handle {
+  .divider.has-drag-handle {
     transition: none;
 
     &::before {

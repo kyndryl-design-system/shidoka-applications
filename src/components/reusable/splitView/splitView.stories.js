@@ -34,6 +34,16 @@ export default {
       control: { type: 'select' },
     },
     hideBorder: { control: { type: 'boolean' } },
+    // Exclude kyn-divider sub-component props that leak through
+    decorative: { control: false, table: { disable: true } },
+    resizeLabel: { control: false, table: { disable: true } },
+    dragging: { control: false, table: { disable: true } },
+    hideHairline: { control: false, table: { disable: true } },
+    dragHandle: { control: false, table: { disable: true } },
+    invertedHandle: { control: false, table: { disable: true } },
+    vertical: { control: false, table: { disable: true } },
+    'drag-handle': { control: false, table: { disable: true } },
+    'inverted-handle': { control: false, table: { disable: true } },
   },
   parameters: {
     layout: 'fullscreen',

@@ -1,4 +1,4 @@
-// Shared vertical drag grip for kyn-side-drawer and kyn-divider[drag-handle].
+// Shared drag grip for kyn-side-drawer and kyn-divider[drag-handle].
 // Expects: <div class="drag-handle"><span class="drag-lines"></span></div>
 //
 // Custom properties (set on host or ancestor to override):
@@ -106,6 +106,111 @@
       flex: 0 0 1px;
       width: 1px;
       height: 32px;
+      background: var(--kyn-resize-grip-line-end, #{$line});
+      transition: background-color 150ms ease-out;
+    }
+  }
+}
+
+@mixin resizable-drag-handle-horizontal($height, $border-radius: 4px) {
+  $line: var(
+    --kyn-resize-grip-line,
+    var(--kyn-color-side-drawer-icon, var(--kd-color-icon-secondary))
+  );
+  $line-active: var(
+    --kyn-resize-grip-line-active,
+    var(--kd-color-icon-tertiary)
+  );
+
+  .drag-handle {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: $height;
+    cursor: ns-resize;
+    background: transparent;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 150ms ease-out;
+    z-index: 2;
+
+    &:hover {
+      background: var(
+        --kyn-resize-grip-surface-hover,
+        var(--kd-color-border-variants-light)
+      );
+
+      .drag-lines {
+        &::before {
+          background: var(
+            --kyn-resize-grip-line-start-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
+        }
+
+        &::after {
+          background: var(
+            --kyn-resize-grip-line-end-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
+        }
+      }
+    }
+
+    &.dragging {
+      background: var(
+        --kyn-resize-grip-surface-drag,
+        var(--kd-color-border-variants-drag)
+      );
+
+      .drag-lines {
+        &::before {
+          background: var(
+            --kyn-resize-grip-line-start-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
+        }
+
+        &::after {
+          background: var(
+            --kyn-resize-grip-line-end-active,
+            var(--kyn-resize-grip-line-active, var(--kd-color-icon-tertiary))
+          );
+        }
+      }
+    }
+  }
+
+  .drag-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    flex: 0 0 auto;
+    gap: 2px;
+    width: 32px;
+    height: auto;
+    pointer-events: none;
+
+    &::before {
+      content: '';
+      display: block;
+      flex: 0 0 1px;
+      width: 32px;
+      height: 1px;
+      background: var(--kyn-resize-grip-line-start, #{$line});
+      transition: background-color 150ms ease-out;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      flex: 0 0 1px;
+      width: 32px;
+      height: 1px;
       background: var(--kyn-resize-grip-line-end, #{$line});
       transition: background-color 150ms ease-out;
     }

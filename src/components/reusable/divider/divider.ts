@@ -15,7 +15,7 @@ export class Divider extends LitElement {
   accessor vertical = false;
 
   /**
-   * When used with `vertical`, shows a centered drag grip.
+   * Shows a centered drag grip for resizable layouts.
    * Resize behavior is provided by the parent layout (for example the Split View pattern).
    */
   @property({ type: Boolean, reflect: true, attribute: 'drag-handle' })
@@ -49,7 +49,7 @@ export class Divider extends LitElement {
 
   override render() {
     const vertical = this.vertical;
-    const showHandle = vertical && this.dragHandle;
+    const showHandle = this.dragHandle;
     const hideHairline = showHandle && this.hideHairline;
     const role = this.decorative ? 'presentation' : 'separator';
     return html`
