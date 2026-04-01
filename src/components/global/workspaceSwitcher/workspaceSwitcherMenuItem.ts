@@ -99,7 +99,7 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
           <span class="menu-item__name">${this.name}</span>
           ${isWorkspace ? this._renderWorkspaceContent() : null}
         </button>
-        ${!isWorkspace && !isBack ? this._renderItemContent() : null}
+        ${!isWorkspace && !isBack ? this._renderItemContent(tooltipName) : null}
       </div>
     `;
   }
@@ -113,16 +113,24 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
     `;
   }
 
-  private _renderItemContent() {
+  private _renderItemContent(tooltipName: string) {
     if (!this.showFavorite && !this.showLaunchIndicator) return null;
 
     return html`
       <div class="menu-item__actions">
         ${this.showLaunchIndicator
           ? html`
-              <span class="menu-item__launch-indicator" aria-hidden="true">
-                ${unsafeSVG(launchIcon)}
-              </span>
+              <button
+                class="menu-item__launch-button"
+                type="button"
+                title=${tooltipName}
+                aria-label=${`Open ${tooltipName}`}
+                @click=${this._handleClick}
+              >
+                <span class="menu-item__launch-indicator" aria-hidden="true">
+                  ${unsafeSVG(launchIcon)}
+                </span>
+              </button>
             `
           : null}
         ${this.showFavorite
