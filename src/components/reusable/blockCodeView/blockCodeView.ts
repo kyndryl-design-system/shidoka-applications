@@ -84,6 +84,13 @@ export class BlockCodeView extends LitElement {
   @property({ type: Number })
   accessor maxHeight: number | null = null;
 
+  /**
+   * Enables a full-height flush layout intended for pane/rail containers where the code view
+   * should occupy the entire available height.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor flush = false;
+
   /** Optionally displayed label above code snippet container. */
   @property({ type: String })
   accessor codeViewLabel = '';
