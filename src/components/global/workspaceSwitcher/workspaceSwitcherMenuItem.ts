@@ -1,7 +1,8 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { deepmerge } from 'deepmerge-ts';
 
 import WorkspaceSwitcherMenuItemScss from './workspaceSwitcherMenuItem.scss?inline';
 
@@ -10,6 +11,10 @@ import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrom
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 
 import '../../reusable/iconSelector';
+
+const _defaultTextStrings = {
+  launchAssistiveText: 'Opens in a new tab',
+};
 
 /**
  * Workspace Switcher Menu Item component.
@@ -61,6 +66,16 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   /** Whether to show the launch/new-tab indicator (item variant only). */
   @property({ type: Boolean })
   accessor showLaunchIndicator = false;
+
+  /** Text string customization. */
+  @property({ type: Object })
+  accessor textStrings = _defaultTextStrings;
+
+  /** Merged text strings.
+   * @internal
+   */
+  @state()
+  accessor _textStrings = _defaultTextStrings;
 
   /** Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned. */
   @property({ type: Boolean })
@@ -128,7 +143,17 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   }
 
   private _renderLaunchAssistiveText() {
-    return html`<span class="sr-only">opens in a new tab</span>`;
+    if (!this._textStrings.launchAssistiveText) return null;
+
+    return html`<span class="sr-only"
+      >${this._textStrings.launchAssistiveText}</span
+    >`;
+  }
+
+  override willUpdate(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
   }
 
   private _renderItemContent() {
