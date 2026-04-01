@@ -101,6 +101,9 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
           ${!isWorkspace && !isBack && this.showLaunchIndicator
             ? this._renderLaunchIndicator()
             : null}
+          ${!isWorkspace && !isBack && this.showLaunchIndicator
+            ? this._renderLaunchAssistiveText()
+            : null}
         </button>
         ${!isWorkspace && !isBack ? this._renderItemContent() : null}
       </div>
@@ -122,6 +125,10 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
         ${unsafeSVG(launchIcon)}
       </span>
     `;
+  }
+
+  private _renderLaunchAssistiveText() {
+    return html`<span class="sr-only">opens in a new tab</span>`;
   }
 
   private _renderItemContent() {
