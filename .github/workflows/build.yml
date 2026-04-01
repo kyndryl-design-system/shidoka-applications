@@ -74,10 +74,15 @@ jobs:
       #     name: build-storybook-artifact
       #     path: storybook-static
 
-  Test:
+  Test_Browser:
     # needs: [Build_Storybook]
-    timeout-minutes: 60
+    name: Test (${{ matrix.browser }})
+    timeout-minutes: 30
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -86,12 +91,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Install Playwright
-        run: npx playwright@latest install --with-deps
+      - name: Install Playwright (${{ matrix.browser }})
+        run: npx playwright install --with-deps ${{ matrix.browser }}
 
       # - name: Download build-storybook artifact
       #   uses: actions/download-artifact@v4
@@ -105,16 +111,52 @@ jobs:
       #       "npx http-server storybook-static --port 6006 --silent" \
       #       "npx wait-on tcp:6006 && npm run test"
 
-      - name: Run tests
+      - name: Run storybook tests (${{ matrix.browser }})
+        env:
+          VITEST_BROWSER: ${{ matrix.browser }}
         run: |
-          npm run test 2>&1 | tee /tmp/test.log || {
+          echo "Running Storybook tests in $VITEST_BROWSER"
+          npm run test:storybook:ci 2>&1 | tee /tmp/test.log || {
             if grep -q "dynamically imported module" /tmp/test.log; then
-              echo "Transient import error detected, retrying..."
-              npm run test
+              echo "Transient import error detected in $VITEST_BROWSER, retrying..."
+              npm run test:storybook:ci
             else
               exit 1
             fi
           }
 
+  Test_Unit:
+    name: Test (unit)
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
       - name: Run unit tests
         run: npm run test:unit
+
+  Test:
+    name: Test
+    if: ${{ always() }}
+    needs: [Test_Browser, Test_Unit]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report test job results
+        run: |
+          echo "Browser tests result: ${{ needs.Test_Browser.result }}"
+          echo "Unit tests result: ${{ needs.Test_Unit.result }}"
+
+          if [ "${{ needs.Test_Browser.result }}" != "success" ] || [ "${{ needs.Test_Unit.result }}" != "success" ]; then
+            echo "One or more test jobs did not succeed."
+            exit 1
+          fi
