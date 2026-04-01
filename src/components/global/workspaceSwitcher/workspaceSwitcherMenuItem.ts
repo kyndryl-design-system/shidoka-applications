@@ -18,8 +18,8 @@ import '../../reusable/iconSelector';
  * - favorite only
  * - launch indicator only
  * - launch indicator plus favorite
- * When both are present, the launch indicator renders to the left and the
- * favorite control stays pinned to the far right for consistency.
+ * The launch indicator is part of the primary row button while the favorite
+ * control stays pinned to the far right as a separate action.
  * @fires on-click - Emits when the item is clicked. `detail: { value: string }`
  * @fires on-favorite-change - Emits when favorite status changes. `detail: { value: string, favorited: boolean }`
  */
@@ -98,8 +98,11 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
             : null}
           <span class="menu-item__name">${this.name}</span>
           ${isWorkspace ? this._renderWorkspaceContent() : null}
+          ${!isWorkspace && !isBack && this.showLaunchIndicator
+            ? this._renderLaunchIndicator()
+            : null}
         </button>
-        ${!isWorkspace && !isBack ? this._renderItemContent(tooltipName) : null}
+        ${!isWorkspace && !isBack ? this._renderItemContent() : null}
       </div>
     `;
   }
@@ -113,39 +116,28 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
     `;
   }
 
-  private _renderItemContent(tooltipName: string) {
-    if (!this.showFavorite && !this.showLaunchIndicator) return null;
+  private _renderLaunchIndicator() {
+    return html`
+      <span class="menu-item__launch-indicator" aria-hidden="true">
+        ${unsafeSVG(launchIcon)}
+      </span>
+    `;
+  }
+
+  private _renderItemContent() {
+    if (!this.showFavorite) return null;
 
     return html`
       <div class="menu-item__actions">
-        ${this.showLaunchIndicator
-          ? html`
-              <button
-                class="menu-item__launch-button"
-                type="button"
-                title=${tooltipName}
-                aria-label=${`Open ${tooltipName}`}
-                @click=${this._handleClick}
-              >
-                <span class="menu-item__launch-indicator" aria-hidden="true">
-                  ${unsafeSVG(launchIcon)}
-                </span>
-              </button>
-            `
-          : null}
-        ${this.showFavorite
-          ? html`
-              <kyn-icon-selector
-                class="menu-item__favorite"
-                ?checked=${this.favorited}
-                value=${this.value}
-                animateSelection
-                onlyVisibleOnHover
-                persistWhenChecked
-                @on-change=${this._handleFavoriteChange}
-              ></kyn-icon-selector>
-            `
-          : null}
+        <kyn-icon-selector
+          class="menu-item__favorite"
+          ?checked=${this.favorited}
+          value=${this.value}
+          animateSelection
+          onlyVisibleOnHover
+          persistWhenChecked
+          @on-change=${this._handleFavoriteChange}
+        ></kyn-icon-selector>
       </div>
     `;
   }
