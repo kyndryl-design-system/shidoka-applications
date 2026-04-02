@@ -172,6 +172,7 @@ export default {
       currentTitle: 'CURRENT',
       workspacesTitle: 'WORKSPACES',
       backToWorkspaces: 'Workspaces',
+      launchAssistiveText: 'Opens in a new tab',
     },
     '--kyn-workspace-switcher-max-height': 'none',
   },
@@ -305,6 +306,7 @@ export const UIImplementation = {
             style=${getSwitcherStyle(args)}
             class="ui-impl-switcher"
             .accountMeta=${createAccountMeta(selectedItem?.name || '')}
+            .textStrings=${args.textStrings}
             ?hideCurrentTitle=${args.hideCurrentTitle}
             ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
           >
