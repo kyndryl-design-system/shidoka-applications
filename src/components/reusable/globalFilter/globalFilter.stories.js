@@ -7,8 +7,9 @@ import '../loaders/skeleton';
 import './globalFilter.skeleton.sample';
 
 export default {
-  title: 'Components/Search & Filtering/Global Filter - Deprecated',
+  title: 'Components/Search & Filtering/Global Filter',
   component: 'kyn-global-filter',
+  tags: ['deprecated'],
   parameters: {
     design: {
       type: 'figma',
@@ -86,6 +87,7 @@ export const WithChart = {
 };
 
 export const WithTable = {
+  tags: ['updated'], // custom badge added Just for testing , can be removed before merging
   render: () => {
     return html`
       <sample-filter-table-component></sample-filter-table-component>

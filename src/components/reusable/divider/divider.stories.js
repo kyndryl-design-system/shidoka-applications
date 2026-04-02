@@ -103,6 +103,7 @@ export const VerticalDragHandle = {
   parameters: {
     layout: 'fullscreen',
   },
+  tags: ['new'],
   render: (args) => {
     const handlePointerDown = (e) => {
       if (e.button !== 0) return;

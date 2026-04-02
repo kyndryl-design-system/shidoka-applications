@@ -410,6 +410,7 @@ export const WithStatus = {
     ...args,
     widgetStatus: 'warning',
   },
+  tags: ['new'],
   render: (args) => {
     return html`
       <div style="display: flex; max-width: 500px; min-height: 200px;">
