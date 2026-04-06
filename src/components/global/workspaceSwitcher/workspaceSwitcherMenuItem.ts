@@ -1,7 +1,8 @@
 import { LitElement, html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { deepmerge } from 'deepmerge-ts';
 
 import WorkspaceSwitcherMenuItemScss from './workspaceSwitcherMenuItem.scss?inline';
 
@@ -11,6 +12,10 @@ import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/l
 
 import '../../reusable/iconSelector';
 
+const _defaultTextStrings = {
+  launchAssistiveText: 'Opens in a new tab',
+};
+
 /**
  * Workspace Switcher Menu Item component.
  * Used for both workspace items (left panel) and account items (right panel).
@@ -18,8 +23,8 @@ import '../../reusable/iconSelector';
  * - favorite only
  * - launch indicator only
  * - launch indicator plus favorite
- * When both are present, the launch indicator renders to the left and the
- * favorite control stays pinned to the far right for consistency.
+ * The launch indicator is part of the primary row button while the favorite
+ * control stays pinned to the far right as a separate action.
  * @fires on-click - Emits when the item is clicked. `detail: { value: string }`
  * @fires on-favorite-change - Emits when favorite status changes. `detail: { value: string, favorited: boolean }`
  */
@@ -62,6 +67,16 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
   @property({ type: Boolean })
   accessor showLaunchIndicator = false;
 
+  /** Text string customization. */
+  @property({ type: Object })
+  accessor textStrings = _defaultTextStrings;
+
+  /** Merged text strings.
+   * @internal
+   */
+  @state()
+  accessor _textStrings = _defaultTextStrings;
+
   /** Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned. */
   @property({ type: Boolean })
   accessor showFavorite = false;
@@ -98,6 +113,12 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
             : null}
           <span class="menu-item__name">${this.name}</span>
           ${isWorkspace ? this._renderWorkspaceContent() : null}
+          ${!isWorkspace && !isBack && this.showLaunchIndicator
+            ? this._renderLaunchIndicator()
+            : null}
+          ${!isWorkspace && !isBack && this.showLaunchIndicator
+            ? this._renderLaunchAssistiveText()
+            : null}
         </button>
         ${!isWorkspace && !isBack ? this._renderItemContent() : null}
       </div>
@@ -113,31 +134,42 @@ export class WorkspaceSwitcherMenuItem extends LitElement {
     `;
   }
 
+  private _renderLaunchIndicator() {
+    return html`
+      <span class="menu-item__launch-indicator" aria-hidden="true">
+        ${unsafeSVG(launchIcon)}
+      </span>
+    `;
+  }
+
+  private _renderLaunchAssistiveText() {
+    if (!this._textStrings.launchAssistiveText) return null;
+
+    return html`<span class="sr-only"
+      >${this._textStrings.launchAssistiveText}</span
+    >`;
+  }
+
+  override willUpdate(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
+    }
+  }
+
   private _renderItemContent() {
-    if (!this.showFavorite && !this.showLaunchIndicator) return null;
+    if (!this.showFavorite) return null;
 
     return html`
       <div class="menu-item__actions">
-        ${this.showLaunchIndicator
-          ? html`
-              <span class="menu-item__launch-indicator" aria-hidden="true">
-                ${unsafeSVG(launchIcon)}
-              </span>
-            `
-          : null}
-        ${this.showFavorite
-          ? html`
-              <kyn-icon-selector
-                class="menu-item__favorite"
-                ?checked=${this.favorited}
-                value=${this.value}
-                animateSelection
-                onlyVisibleOnHover
-                persistWhenChecked
-                @on-change=${this._handleFavoriteChange}
-              ></kyn-icon-selector>
-            `
-          : null}
+        <kyn-icon-selector
+          class="menu-item__favorite"
+          ?checked=${this.favorited}
+          value=${this.value}
+          animateSelection
+          onlyVisibleOnHover
+          persistWhenChecked
+          @on-change=${this._handleFavoriteChange}
+        ></kyn-icon-selector>
       </div>
     `;
   }
