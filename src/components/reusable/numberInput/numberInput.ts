@@ -29,9 +29,6 @@ const _defaultTextStrings = {
  *
  * @cssprop [--kyn-number-input-inner-max-width=200px] - Maximum width of the number input inner container.
  * @cssprop [--kyn-number-input-inner-min-width=0px] - Minimum width of the number input inner container.
- *
- * When `inline` is set, the step buttons are hidden and the input border is removed,
- * making the component suitable for embedding inside other components (e.g., pagination).
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {
@@ -84,7 +81,7 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor hideLabel = false;
 
-  /** Inline mode: hides the step buttons and input border. */
+  /** Inline mode: hides the step buttons, border, label, and errors. */
   @property({ type: Boolean })
   accessor inline = false;
 
