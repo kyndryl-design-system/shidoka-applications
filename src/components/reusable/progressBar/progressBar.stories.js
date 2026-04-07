@@ -109,6 +109,7 @@ Error.args = {
 };
 
 export const Warning = Template.bind({});
+Warning.tags = ['new', 'version:v2.88.0'];
 Warning.args = {
   ...Default.args,
   status: 'warning',

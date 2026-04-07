@@ -189,7 +189,10 @@ export const WithBadge = {
     return html`
       <h3>Default</h3>
       <div>
-        <i><b>Note:</b> Recommended to use the badge slot for badge status.</i>
+        <i
+          ><b>Note:</b>** Recommended to use the badge slot for badge status and
+          subtitle slot for Subtitle text.</i
+        >
       </div>
       <br />
       <div style="display: flex; max-width: 500px; min-height: 200px;">

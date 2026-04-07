@@ -841,6 +841,7 @@ export const ColumnFiltering: Story = {
 };
 
 export const ColumnResize: Story = {
+  tags: ['new', 'version:v2.81.0'],
   render: () => {
     return html`
       <h4>Important Information about Column Resize</h4>
@@ -960,6 +961,7 @@ export const StackedHeader: Story = {
   args: {
     rows: characters,
   },
+  tags: ['new', 'version:v2.85.0'],
   render: function (args) {
     const [{ rows }, updateArgs] = useArgs();
     let tableData = rows;
