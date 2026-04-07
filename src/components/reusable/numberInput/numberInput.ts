@@ -29,6 +29,9 @@ const _defaultTextStrings = {
  *
  * @cssprop [--kyn-number-input-inner-max-width=200px] - Maximum width of the number input inner container.
  * @cssprop [--kyn-number-input-inner-min-width=0px] - Minimum width of the number input inner container.
+ *
+ * When `inline` is set, the step buttons are hidden and the input border is removed,
+ * making the component suitable for embedding inside other components (e.g., pagination).
  */
 @customElement('kyn-number-input')
 export class NumberInput extends FormMixin(LitElement) {
@@ -81,6 +84,10 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor hideLabel = false;
 
+  /** Inline mode: hides the step buttons and input border. */
+  @property({ type: Boolean })
+  accessor inline = false;
+
   /** Customizable text strings. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -102,17 +109,20 @@ export class NumberInput extends FormMixin(LitElement) {
     return html`
       <div class="number-input" ?disabled=${this.disabled}>
         <label
-          class="label-text ${this.hideLabel ? 'sr-only' : ''}"
+          class="label-text ${this.hideLabel || this.inline ? 'sr-only' : ''}"
           for=${this.name}
         >
           ${this.required
-            ? html`<abbr
-                class="required"
-                title=${this._textStrings.requiredText}
-                role="img"
-                aria-label=${this._textStrings?.requiredText}
-                >*</abbr
-              >`
+            ? html`
+                <abbr
+                  class="required"
+                  title=${this._textStrings.requiredText}
+                  role="img"
+                  aria-label=${this._textStrings?.requiredText}
+                >
+                  *
+                </abbr>
+              `
             : null}
           ${this.label}
           <slot name="tooltip"></slot>
@@ -123,17 +133,19 @@ export class NumberInput extends FormMixin(LitElement) {
             'input-wrapper': true,
           })}"
         >
-          <kyn-button
-            kind="outline"
-            size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled ||
-            this.value <= this.min ||
-            this.readonly}
-            description=${this._textStrings.subtract}
-            @on-click=${this._handleSubtract}
-          >
-            <span slot="icon">${unsafeSVG(chevronLeft)}</span>
-          </kyn-button>
+          ${!this.inline
+            ? html`<kyn-button
+                kind="outline"
+                size=${this._sizeMap(this.size)}
+                ?disabled=${this.disabled ||
+                this.value <= this.min ||
+                this.readonly}
+                description=${this._textStrings.subtract}
+                @on-click=${this._handleSubtract}
+              >
+                <span slot="icon">${unsafeSVG(chevronLeft)}</span>
+              </kyn-button>`
+            : null}
 
           <input
             class="${classMap({
@@ -141,6 +153,7 @@ export class NumberInput extends FormMixin(LitElement) {
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
               'is-readonly': this.readonly,
+              'no-border': this.inline,
             })}"
             type="number"
             id=${this.name}
@@ -159,17 +172,19 @@ export class NumberInput extends FormMixin(LitElement) {
             @input=${(e: any) => this._handleInput(e)}
           />
 
-          <kyn-button
-            kind="outline"
-            size=${this._sizeMap(this.size)}
-            ?disabled=${this.disabled ||
-            this.value >= this.max ||
-            this.readonly}
-            description=${this._textStrings.add}
-            @on-click=${this._handleAdd}
-          >
-            <span slot="icon">${unsafeSVG(chevronRight)}</span>
-          </kyn-button>
+          ${!this.inline
+            ? html`<kyn-button
+                kind="outline"
+                size=${this._sizeMap(this.size)}
+                ?disabled=${this.disabled ||
+                this.value >= this.max ||
+                this.readonly}
+                description=${this._textStrings.add}
+                @on-click=${this._handleAdd}
+              >
+                <span slot="icon">${unsafeSVG(chevronRight)}</span>
+              </kyn-button>`
+            : null}
         </div>
 
         ${this.caption !== ''
@@ -181,7 +196,7 @@ export class NumberInput extends FormMixin(LitElement) {
           : null}
         ${this._isInvalid
           ? html`
-              <div id="error" class="error">
+              <div id="error" class="error ${this.inline ? 'sr-only' : ''}">
                 <span
                   role="img"
                   class="error-icon"
