@@ -5,6 +5,7 @@ import { property, customElement, state } from 'lit/decorators.js';
 // Import required components and icons
 import '../button';
 import '../dropdown';
+import '../numberInput';
 import chevLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
 import chevRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 
@@ -107,25 +108,41 @@ export class PaginationNavigationButtons extends LitElement {
       </kyn-button>
 
       <span class="page-range" role="status" aria-live="polite">
-        <kyn-dropdown
-          name="page-number"
-          class="pagination-dropdown"
-          label="${this.pageNumberLabel}"
-          ?hideLabel=${true}
-          inline
-          size="sm"
-          openDirection=${this.openDirection}
-          value="${this.pageNumber.toString()}"
-          @on-change=${(e: CustomEvent) => this.handleChange(e)}
-        >
-          ${this.pageNumberOptions.map((option) => {
-            return html`
-              <kyn-dropdown-option value="${option.toString()}">
-                ${option.toString()}
-              </kyn-dropdown-option>
-            `;
-          })}
-        </kyn-dropdown>
+        ${this.pageNumberOptions.length > 20
+          ? html`
+              <kyn-number-input
+                name="page-number"
+                label=${this.pageNumberLabel}
+                ?hideLabel=${true}
+                ?inline=${true}
+                size="sm"
+                .value=${this.pageNumber}
+                min=${1}
+                max=${this.numberOfPages}
+                @on-input=${(e: CustomEvent) => this.handleChange(e)}
+              ></kyn-number-input>
+            `
+          : html`
+              <kyn-dropdown
+                name="page-number"
+                class="pagination-dropdown"
+                label="${this.pageNumberLabel}"
+                ?hideLabel=${true}
+                inline
+                size="sm"
+                openDirection=${this.openDirection}
+                value="${this.pageNumber.toString()}"
+                @on-change=${(e: CustomEvent) => this.handleChange(e)}
+              >
+                ${this.pageNumberOptions.map(
+                  (option) => html`
+                    <kyn-dropdown-option value="${option.toString()}">
+                      ${option.toString()}
+                    </kyn-dropdown-option>
+                  `
+                )}
+              </kyn-dropdown>
+            `}
         ${this.textStrings.of} ${this.numberOfPages} ${this.textStrings.pages}
       </span>
 
