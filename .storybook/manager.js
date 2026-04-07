@@ -14,6 +14,7 @@ addons.setConfig({
           backgroundColor: '#0255d0',
           color: '#e9f2ff',
         },
+        // tooltip: 'Add tooltip text', will be shown on click of toolbar badge
       },
     },
     ...defaultConfig,

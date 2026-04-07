@@ -184,6 +184,7 @@ export const WithBadge = {
     showStatusBadge: true,
     statusBadgeLabel: 'Update',
   },
+  tags: ['updated', 'version:v2.92.0'],
   render: (args) => {
     return html`
       <h3>Default</h3>
@@ -410,7 +411,7 @@ export const WithStatus = {
     ...args,
     widgetStatus: 'warning',
   },
-  tags: ['new'],
+  tags: ['new', 'version:v2.92.0'],
   render: (args) => {
     return html`
       <div style="display: flex; max-width: 500px; min-height: 200px;">
