@@ -7,8 +7,9 @@ import '../loaders/skeleton';
 import './globalFilter.skeleton.sample';
 
 export default {
-  title: 'Components/Search & Filtering/Global Filter - Deprecated',
+  title: 'Components/Search & Filtering/Global Filter',
   component: 'kyn-global-filter',
+  tags: ['deprecated', 'version:v2.68.0'],
   parameters: {
     design: {
       type: 'figma',
