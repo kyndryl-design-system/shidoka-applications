@@ -36,6 +36,12 @@ export const BlankCard = {
     target: '_self',
     hideBorder: false,
     variant: 'default',
+    /* The `compact: false` property in the code snippet is a part of the arguments object used in
+    defining the different card components. When `compact` is set to `false`, it means that the card
+    component will not be displayed in a compact or condensed form. This property likely controls
+    the visual styling or layout of the card component to determine whether it should be displayed
+    in a more spacious or compact manner. */
+    compact: false,
     aiConnected: false,
     highlight: false,
   },
@@ -48,6 +54,7 @@ export const BlankCard = {
       role="article"
       ?hideBorder=${args.hideBorder}
       .variant=${args.variant}
+      ?compact=${args.compact}
       ?aiConnected=${args.aiConnected}
       ?highlight=${args.highlight}
       aria-label="Blank card"
@@ -63,6 +70,7 @@ export const Simple = {
     target: '_self',
     hideBorder: false,
     variant: 'default',
+    compact: false,
     aiConnected: false,
     highlight: false,
   },
@@ -75,6 +83,7 @@ export const Simple = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         .variant=${args.variant}
+        ?compact=${args.compact}
         ?aiConnected=${args.aiConnected}
         ?highlight=${args.highlight}
         role="article"
@@ -101,6 +110,7 @@ export const Clickable = {
     target: '_blank',
     hideBorder: false,
     variant: 'default',
+    compact: false,
     aiConnected: false,
     highlight: false,
   },
@@ -113,6 +123,7 @@ export const Clickable = {
         rel=${args.rel}
         ?hideBorder=${args.hideBorder}
         .variant=${args.variant}
+        ?compact=${args.compact}
         ?aiConnected=${args.aiConnected}
         ?highlight=${args.highlight}
         role="link"
