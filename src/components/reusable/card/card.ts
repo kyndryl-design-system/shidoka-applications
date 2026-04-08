@@ -137,6 +137,7 @@ export class Card extends LitElement {
     `;
   }
 
+  /** @internal */
   private get _computedRel(): string {
     if (this.target === '_blank' && (!this.rel || this.rel.trim() === '')) {
       return 'noopener noreferrer';
@@ -144,6 +145,7 @@ export class Card extends LitElement {
     return this.rel;
   }
 
+  /** @internal */
   private _onClick = (e: Event) => {
     if (!this.href) e.preventDefault();
     const ev = new CustomEvent('on-card-click', {
@@ -155,6 +157,7 @@ export class Card extends LitElement {
     if (!this.dispatchEvent(ev) || ev.defaultPrevented) e.preventDefault();
   };
 
+  /** @internal */
   private _onKeydown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -162,6 +165,7 @@ export class Card extends LitElement {
     }
   };
 
+  /** @internal */
   private _forwardConfirm = (e: Event) => {
     if ((e.target as HTMLElement) === this) return;
     const detail = (e as CustomEvent)?.detail;
