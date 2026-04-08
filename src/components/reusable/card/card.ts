@@ -52,11 +52,15 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor highlight = false;
 
+  /** Compact mode, reduces padding. */
+  @property({ type: Boolean })
+  accessor compact = false;
+
   /** Card variant. `'default'`, `'notification'`, `'interaction'`
    * * `'notification'` variant is used primarily for Info Card
    * and contains additional padding, per design specs.
    * * `'interaction'` variant is used for AI response
-  
+
    */
   @property({ type: String, reflect: true })
   accessor variant: CardVariant = 'default';
@@ -72,6 +76,7 @@ export class Card extends LitElement {
       'ai-highlight': this.aiConnected && this.highlight,
       'variant-notification': this.variant === 'notification',
       'variant-interaction': this.variant === 'interaction',
+      compact: this.compact,
     };
 
     const isAnchor = this.type === 'clickable' && this.href !== '';
