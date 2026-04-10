@@ -34,17 +34,11 @@ const args = {
   open: false,
 };
 
-const renderContextualOptions = (args) =>
-  args.contextual
-    ? html`
-        <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
-        <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
-        <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
-      `
-    : null;
-
 export const PageTitle = {
   args,
+  argTypes: {
+    contextual: { control: false, table: { disable: true } },
+  },
   render: (args) => {
     return html`
       <kyn-page-title
@@ -53,18 +47,18 @@ export const PageTitle = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
-        ?contextual=${args.contextual}
         ?open=${args.open}
         @on-change=${handleChange}
-      >
-        ${renderContextualOptions(args)}
-      </kyn-page-title>
+      ></kyn-page-title>
     `;
   },
 };
 
 export const WithIcon = {
   args,
+  argTypes: {
+    contextual: { control: false, table: { disable: true } },
+  },
   render: (args) => {
     return html`
       <style>
@@ -82,7 +76,6 @@ export const WithIcon = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
-        ?contextual=${args.contextual}
         ?open=${args.open}
         @on-change=${handleChange}
       >
@@ -90,7 +83,6 @@ export const WithIcon = {
         <span slot="icon" class="cloud-icon"
           >${unsafeSVG(cloudDownloadIcon)}</span
         >
-        ${renderContextualOptions(args)}
       </kyn-page-title>
     `;
   },
@@ -98,6 +90,9 @@ export const WithIcon = {
 
 export const AIConnected = {
   args: { ...args, aiConnected: true },
+  argTypes: {
+    contextual: { control: false, table: { disable: true } },
+  },
   render: (args) => {
     return html`
       <kyn-page-title
@@ -106,12 +101,9 @@ export const AIConnected = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
-        ?contextual=${args.contextual}
         ?open=${args.open}
         @on-change=${handleChange}
-      >
-        ${renderContextualOptions(args)}
-      </kyn-page-title>
+      ></kyn-page-title>
     `;
   },
 };
@@ -121,6 +113,7 @@ const handleChange = (e) => {
 };
 
 export const Contextual = {
+  tags: ['new'],
   args: {
     ...args,
     pageTitle: 'Application Name',
@@ -147,6 +140,7 @@ export const Contextual = {
 };
 
 export const ContextualWithSubtitle = {
+  tags: ['new'],
   args: {
     ...args,
     pageTitle: 'Application Name',
