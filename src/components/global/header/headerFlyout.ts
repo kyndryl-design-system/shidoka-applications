@@ -8,13 +8,28 @@ import {
 } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import HeaderFlyoutScss from './headerFlyout.scss?inline';
+import '../../reusable/link';
+import { LINK_TARGETS } from '../../reusable/link/defs';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
+import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
+import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
+
+type MobileSummaryDetailItem = {
+  text: string;
+  href?: string;
+  target?: LINK_TARGETS;
+  rel?: string;
+  actionIcon?: 'copy' | 'launch';
+  copyValue?: string;
+};
 
 type MobilePresentationConfig = {
   buttonIconSvg?: string;
   summaryIconSvg?: string;
   summaryLabel?: string;
+  summaryDetails?: MobileSummaryDetailItem[];
   mobileLabel?: string;
   hideButtonContentOnMobile?: boolean;
 };
@@ -40,6 +55,9 @@ export class HeaderFlyout extends LitElement {
   private accessor _mobileSummaryLabel = '';
 
   @state()
+  private accessor _mobileSummaryDetails: MobileSummaryDetailItem[] = [];
+
+  @state()
   private accessor _mobileLabelOverride = '';
 
   @state()
@@ -47,6 +65,9 @@ export class HeaderFlyout extends LitElement {
 
   @state()
   private accessor _isDesktopViewport = true;
+
+  @state()
+  private accessor _copiedMobileSummaryIndex: number | null = null;
 
   /** Flyout open state. */
   @property({ type: Boolean, reflect: true })
@@ -101,6 +122,7 @@ export class HeaderFlyout extends LitElement {
   accessor slottedElements!: Array<HTMLElement>;
 
   private _desktopMediaQuery?: MediaQueryList;
+  private _mobileSummaryCopyFeedbackTimeout: number | null = null;
 
   private get _triggerAssistiveText() {
     if (!this._isDesktopViewport && this._mobileLabelOverride) {
@@ -143,9 +165,14 @@ export class HeaderFlyout extends LitElement {
                       </span>
                     `
                   : null}
-                <span class="mobile-summary__label">
-                  ${this._mobileSummaryLabel}
-                </span>
+                <div class="mobile-summary__content">
+                  <span class="mobile-summary__label">
+                    ${this._mobileSummaryLabel}
+                  </span>
+                  ${this._mobileSummaryDetails.map((detail, index) =>
+                    this._renderMobileSummaryDetail(detail, index)
+                  )}
+                </div>
               </div>
             `
           : null}
@@ -230,6 +257,8 @@ export class HeaderFlyout extends LitElement {
     this._mobileButtonIconSvg = config.buttonIconSvg ?? '';
     this._mobileSummaryIconSvg = config.summaryIconSvg ?? '';
     this._mobileSummaryLabel = config.summaryLabel ?? '';
+    this._clearMobileSummaryCopyFeedback();
+    this._mobileSummaryDetails = config.summaryDetails ?? [];
     this._mobileLabelOverride = config.mobileLabel ?? '';
     this._hideButtonContentOnMobile = config.hideButtonContentOnMobile ?? false;
   }
@@ -238,8 +267,97 @@ export class HeaderFlyout extends LitElement {
     this._mobileButtonIconSvg = '';
     this._mobileSummaryIconSvg = '';
     this._mobileSummaryLabel = '';
+    this._clearMobileSummaryCopyFeedback();
+    this._mobileSummaryDetails = [];
     this._mobileLabelOverride = '';
     this._hideButtonContentOnMobile = false;
+  }
+
+  private _renderMobileSummaryDetail(
+    detail: MobileSummaryDetailItem,
+    index: number
+  ) {
+    const icon =
+      detail.actionIcon === 'copy'
+        ? this._copiedMobileSummaryIndex === index
+          ? checkmarkIcon
+          : copyIcon
+        : detail.actionIcon === 'launch'
+        ? launchIcon
+        : null;
+
+    if (detail.href || detail.actionIcon === 'copy') {
+      const target = detail.target ?? LINK_TARGETS.SELF;
+      const rel =
+        detail.rel ??
+        (target === LINK_TARGETS.BLANK ? 'noopener noreferrer' : '');
+
+      return html`
+        <kyn-link
+          class="mobile-summary__detail-link"
+          standalone
+          animationInactive
+          href=${detail.href || 'javascript:void(0)'}
+          target=${target}
+          rel=${rel}
+          @on-click=${(e: CustomEvent) =>
+            this._handleMobileSummaryDetailClick(e, detail, index)}
+        >
+          ${detail.text}
+          ${icon
+            ? html`
+                <span slot="icon" class="mobile-summary__detail-icon">
+                  ${unsafeSVG(icon)}
+                </span>
+              `
+            : null}
+        </kyn-link>
+      `;
+    }
+
+    return html` <span class="mobile-summary__detail">${detail.text}</span> `;
+  }
+
+  private async _handleMobileSummaryDetailClick(
+    e: CustomEvent,
+    detail: MobileSummaryDetailItem,
+    index: number
+  ) {
+    if (detail.actionIcon !== 'copy') return;
+
+    const copyValue = detail.copyValue ?? detail.text;
+    const origEvent = e.detail?.origEvent as Event | undefined;
+
+    origEvent?.preventDefault();
+
+    try {
+      await globalThis.navigator?.clipboard?.writeText(copyValue);
+      this._showMobileSummaryCopyFeedback(index);
+    } catch {
+      return;
+    }
+  }
+
+  private _showMobileSummaryCopyFeedback(index: number) {
+    this._copiedMobileSummaryIndex = index;
+
+    if (this._mobileSummaryCopyFeedbackTimeout != null) {
+      window.clearTimeout(this._mobileSummaryCopyFeedbackTimeout);
+    }
+
+    this._mobileSummaryCopyFeedbackTimeout = window.setTimeout(() => {
+      this._copiedMobileSummaryIndex = null;
+      this._mobileSummaryCopyFeedbackTimeout = null;
+    }, 3000);
+  }
+
+  private _clearMobileSummaryCopyFeedback() {
+    this._copiedMobileSummaryIndex = null;
+
+    if (this._mobileSummaryCopyFeedbackTimeout != null) {
+      window.clearTimeout(this._mobileSummaryCopyFeedbackTimeout);
+      this._mobileSummaryCopyFeedbackTimeout = null;
+    }
   }
 
   private _handleBack() {
@@ -315,6 +433,7 @@ export class HeaderFlyout extends LitElement {
       this._handleBreakpointChange
     );
     this._desktopMediaQuery = undefined;
+    this._clearMobileSummaryCopyFeedback();
     document.removeEventListener('click', this._boundHandleClickOut);
     this.removeEventListener(
       _mobilePresentationEvent,

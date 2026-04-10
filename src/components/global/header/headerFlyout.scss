@@ -65,6 +65,14 @@
   color: var(--kd-color-badge-heavy-background-success);
 }
 
+.mobile-summary__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  min-width: 0;
+}
+
 .mobile-summary__label {
   min-width: 0;
   overflow: hidden;
@@ -72,6 +80,33 @@
   white-space: nowrap;
   color: var(--kd-color-text-level-primary);
   font-weight: var(--kd-font-weight-medium);
+}
+
+.mobile-summary__detail {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kd-color-text-level-secondary);
+}
+
+.mobile-summary__detail-link {
+  width: fit-content;
+}
+
+.mobile-summary__detail-icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .menu-label {
@@ -126,7 +161,7 @@
   .menu--has-mobile-summary {
     .mobile-summary {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
       width: 100%;
       box-sizing: border-box;

@@ -41,6 +41,7 @@ type MobilePresentationDetail = {
   buttonIconSvg?: string;
   summaryIconSvg?: string;
   summaryLabel?: string;
+  summaryDetails?: WorkspaceSwitcherAccountMetaItem[];
   mobileLabel?: string;
   hideButtonContentOnMobile?: boolean;
 };
@@ -281,6 +282,10 @@ export class WorkspaceSwitcher extends LitElement {
       buttonIconSvg: gridIcon,
       summaryIconSvg: this.accountMeta?.name ? checkmarkFilledIcon : '',
       summaryLabel: this.accountMeta?.name ?? '',
+      summaryDetails:
+        this.accountMeta?.items
+          ?.filter((item) => !!item.text?.trim())
+          .slice(0, 2) ?? [],
       mobileLabel: this._textStrings.backToWorkspaces,
       hideButtonContentOnMobile: true,
     });
