@@ -13,6 +13,7 @@ import { LINK_TARGETS } from '../../reusable/link/defs';
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import gridIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/grid.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 
 const _defaultTextStrings = {
@@ -35,6 +36,19 @@ export interface WorkspaceSwitcherAccountMeta {
   name: string;
   items?: WorkspaceSwitcherAccountMetaItem[];
 }
+
+type MobilePresentationDetail = {
+  buttonIconSvg?: string;
+  summaryIconSvg?: string;
+  summaryLabel?: string;
+  summaryDetails?: WorkspaceSwitcherAccountMetaItem[];
+  mobileLabel?: string;
+  hideButtonContentOnMobile?: boolean;
+};
+
+const _mobilePresentationEvent = 'kyn-internal-flyout-mobile-presentation';
+
+type HeaderFlyoutHost = HTMLElement;
 
 /**
  * Workspace Switcher shell component providing two-panel layout with mobile drill-down.
@@ -99,7 +113,7 @@ export class WorkspaceSwitcher extends LitElement {
    * The nearest flyout host, if any.
    * @internal
    */
-  private _flyoutHost: HTMLElement | null = null;
+  private _flyoutHost: HeaderFlyoutHost | null = null;
 
   /**
    * Clears transient copy feedback after a short delay.
@@ -146,11 +160,14 @@ export class WorkspaceSwitcher extends LitElement {
       attributes: true,
       attributeFilter: ['slot'],
     });
-    this._flyoutHost = this.closest('kyn-header-flyout');
+    this._flyoutHost = this.closest(
+      'kyn-header-flyout'
+    ) as HeaderFlyoutHost | null;
     this._flyoutHost?.addEventListener(
       'on-flyout-toggle',
       this._handleFlyoutToggle as EventListener
     );
+    this._syncFlyoutHostMobilePresentation();
   }
 
   override disconnectedCallback() {
@@ -159,6 +176,7 @@ export class WorkspaceSwitcher extends LitElement {
       'on-flyout-toggle',
       this._handleFlyoutToggle as EventListener
     );
+    this._clearFlyoutHostMobilePresentation();
     this._clearCopyFeedback();
     this._lightDomObserver?.disconnect();
     this._lightDomObserver = null;
@@ -179,6 +197,13 @@ export class WorkspaceSwitcher extends LitElement {
   override updated(changedProperties: Map<string, unknown>) {
     if (changedProperties.has('textStrings')) {
       this._updateChildMenuItemTextStrings();
+    }
+
+    if (
+      changedProperties.has('textStrings') ||
+      changedProperties.has('accountMeta')
+    ) {
+      this._syncFlyoutHostMobilePresentation();
     }
   }
 
@@ -250,6 +275,34 @@ export class WorkspaceSwitcher extends LitElement {
     ).forEach((item) => {
       item.textStrings = menuItemTextStrings;
     });
+  }
+
+  private _syncFlyoutHostMobilePresentation() {
+    this._emitFlyoutHostMobilePresentation({
+      buttonIconSvg: gridIcon,
+      summaryIconSvg: this.accountMeta?.name ? checkmarkFilledIcon : '',
+      summaryLabel: this.accountMeta?.name ?? '',
+      summaryDetails:
+        this.accountMeta?.items
+          ?.filter((item) => !!item.text?.trim())
+          .slice(0, 2) ?? [],
+      mobileLabel: this._textStrings.backToWorkspaces,
+      hideButtonContentOnMobile: true,
+    });
+  }
+
+  private _clearFlyoutHostMobilePresentation() {
+    this._emitFlyoutHostMobilePresentation();
+  }
+
+  private _emitFlyoutHostMobilePresentation(
+    detail: MobilePresentationDetail = {}
+  ) {
+    this._flyoutHost?.dispatchEvent(
+      new CustomEvent(_mobilePresentationEvent, {
+        detail,
+      })
+    );
   }
 
   private _warnForLegacyLeftSlotUsage() {
