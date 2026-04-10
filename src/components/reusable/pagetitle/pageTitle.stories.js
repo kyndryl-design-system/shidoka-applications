@@ -34,6 +34,15 @@ const args = {
   open: false,
 };
 
+const renderContextualOptions = (args) =>
+  args.contextual
+    ? html`
+        <kyn-pagetitle-option value="app-1">Application 1</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-2">Application 2</kyn-pagetitle-option>
+        <kyn-pagetitle-option value="app-3">Application 3</kyn-pagetitle-option>
+      `
+    : null;
+
 export const PageTitle = {
   args,
   render: (args) => {
@@ -44,7 +53,11 @@ export const PageTitle = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
+        ?contextual=${args.contextual}
+        ?open=${args.open}
+        @on-change=${handleChange}
       >
+        ${renderContextualOptions(args)}
       </kyn-page-title>
     `;
   },
@@ -69,11 +82,15 @@ export const WithIcon = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
+        ?contextual=${args.contextual}
+        ?open=${args.open}
+        @on-change=${handleChange}
       >
         <!-- Note: use icon size 56 * 56 for Page title as per UX guidelines -->
         <span slot="icon" class="cloud-icon"
           >${unsafeSVG(cloudDownloadIcon)}</span
         >
+        ${renderContextualOptions(args)}
       </kyn-page-title>
     `;
   },
@@ -89,7 +106,11 @@ export const AIConnected = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
+        ?contextual=${args.contextual}
+        ?open=${args.open}
+        @on-change=${handleChange}
       >
+        ${renderContextualOptions(args)}
       </kyn-page-title>
     `;
   },
