@@ -6,6 +6,7 @@ import { deepmerge } from 'deepmerge-ts';
 import WorkspaceSwitcherScss from './workspaceSwitcher.scss?inline';
 
 import './workspaceSwitcherMenuItem';
+import type { WorkspaceSwitcherMenuItem } from './workspaceSwitcherMenuItem';
 import '../../reusable/link';
 import { LINK_TARGETS } from '../../reusable/link/defs';
 
@@ -18,6 +19,7 @@ const _defaultTextStrings = {
   currentTitle: 'CURRENT',
   workspacesTitle: 'WORKSPACES',
   backToWorkspaces: 'Workspaces',
+  launchAssistiveText: 'Opens in a new tab',
 };
 
 export interface WorkspaceSwitcherAccountMetaItem {
@@ -82,7 +84,8 @@ export class WorkspaceSwitcher extends LitElement {
   /** Merged text strings.
    * @internal
    */
-  private _textStrings = _defaultTextStrings;
+  @state()
+  private accessor _textStrings = _defaultTextStrings;
 
   /** Tracks whether legacy left-slot content is present. */
   @state()
@@ -173,6 +176,12 @@ export class WorkspaceSwitcher extends LitElement {
     }
   }
 
+  override updated(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('textStrings')) {
+      this._updateChildMenuItemTextStrings();
+    }
+  }
+
   override render() {
     const showLeftHeader =
       this.accountMeta != null || this._hasLegacyLeftSlotContent;
@@ -227,7 +236,20 @@ export class WorkspaceSwitcher extends LitElement {
     this._hasLegacyLeftSlotContent = Array.from(this.children).some(
       (child) => child.getAttribute('slot') === 'left'
     );
+    this._updateChildMenuItemTextStrings();
     this._warnForLegacyLeftSlotUsage();
+  }
+
+  private _updateChildMenuItemTextStrings() {
+    const menuItemTextStrings = {
+      launchAssistiveText: this._textStrings.launchAssistiveText,
+    };
+
+    this.querySelectorAll<WorkspaceSwitcherMenuItem>(
+      'kyn-workspace-switcher-menu-item'
+    ).forEach((item) => {
+      item.textStrings = menuItemTextStrings;
+    });
   }
 
   private _warnForLegacyLeftSlotUsage() {

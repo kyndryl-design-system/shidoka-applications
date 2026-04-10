@@ -1,8 +1,13 @@
 @use '../../../common/scss/global.scss';
+@use '../../../common/scss/mixins.scss';
 @use '@kyndryl-design-system/shidoka-foundation/scss/mixins/typography.scss';
 
 :host {
   display: block;
+}
+
+.sr-only {
+  @include mixins.visually-hidden;
 }
 
 .menu-item {
@@ -125,8 +130,6 @@
 
   // Item variant styles (right panel - 40ch max)
   &--item {
-    padding-right: 8px;
-
     .menu-item__name {
       max-width: 40ch;
 
@@ -140,6 +143,7 @@
       align-items: center;
       gap: 8px;
       flex-shrink: 0;
+      padding-right: 8px;
     }
 
     .menu-item__launch-indicator {
