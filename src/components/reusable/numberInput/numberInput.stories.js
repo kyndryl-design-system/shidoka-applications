@@ -46,6 +46,7 @@ const args = {
   readonly: false,
   invalidText: '',
   hideLabel: false,
+  inline: false,
   step: 1,
   min: undefined,
   max: undefined,
@@ -54,6 +55,34 @@ const args = {
     subtract: 'Subtract',
     add: 'Add',
     error: 'Error',
+  },
+};
+
+export const NumberInput = {
+  args,
+  render: (args) => {
+    return html`
+      <kyn-number-input
+        size=${args.size}
+        name=${args.name}
+        value=${args.value}
+        placeholder=${args.placeholder}
+        caption=${args.caption}
+        ?required=${args.required}
+        ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
+        invalidText=${args.invalidText}
+        ?hideLabel=${args.hideLabel}
+        ?inline=${args.inline}
+        step=${ifDefined(args.step)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
+        .textStrings=${args.textStrings}
+        label=${args.label}
+        @on-input=${(e) => action(e.type)({ ...e, detail: e.detail })}
+      >
+      </kyn-number-input>
+    `;
   },
 };
 
@@ -76,6 +105,7 @@ export const FullWidth = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
+        ?inline=${args.inline}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
@@ -104,6 +134,7 @@ export const ConstrainedMaxWidth = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
+        ?inline=${args.inline}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
@@ -136,6 +167,7 @@ export const LongLabelContrainedInput = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
+        ?inline=${args.inline}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}
@@ -168,6 +200,7 @@ export const LongWrappingLabel = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         ?hideLabel=${args.hideLabel}
+        ?inline=${args.inline}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
         max=${ifDefined(args.max)}

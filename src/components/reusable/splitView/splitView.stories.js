@@ -17,6 +17,7 @@ import statusIconLow from '@kyndryl-design-system/shidoka-icons/svg/monochrome/1
 export default {
   title: 'Components/Layout & Structure/Split View',
   component: 'kyn-split-view',
+  tags: ['version:v2.95.0', 'new'],
   argTypes: {
     startPaneSize: { control: { type: 'text' } },
     endPaneSize: { control: { type: 'text' } },
