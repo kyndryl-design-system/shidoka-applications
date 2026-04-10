@@ -37,7 +37,7 @@
 
   &-tertiary {
     font-weight: var(--kd-font-weight-medium);
-    color: var(--kd-color-text-title-primary);
+    color: var(--kd-color-text-title-tertiary);
 
     &.ai-connected {
       color: var(--kd-color-text-title-ai-tertiary);
@@ -70,43 +70,61 @@
 // Contextual dropdown variant
 .contextual-wrapper {
   position: relative;
+  display: inline-block;
 }
 
 .contextual-trigger {
   all: unset;
   display: inline-flex;
+  justify-content: center;
   align-items: center;
+  margin: 0 -8px;
+  padding: 8px;
   gap: 8px;
   cursor: pointer;
   font: inherit;
   color: inherit;
   box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 150ms ease-out;
 
-  &:focus-visible {
-    outline: 2px solid var(--kd-color-border-variants-focus);
-    outline-offset: 0;
-    border-radius: 2px;
+  &:hover {
+    border-color: var(--kd-color-border-ui-hover);
   }
 
+  &[aria-expanded='true'] {
+    border-color: var(--kd-color-border-variants-focus);
+  }
+
+  &:focus-visible,
   &:focus:not(:focus-visible) {
-    outline: 2px solid var(--kd-color-border-variants-focus);
-    outline-offset: 0;
-    border-radius: 2px;
+    border-color: var(--kd-color-border-variants-focus);
   }
 }
 
 .chevron-icon {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   transition: transform 150ms ease-out;
 
   svg {
+    width: 24px;
+    height: 24px;
     fill: currentColor;
   }
 
   &--open {
     transform: rotate(-180deg);
   }
+}
+
+.page-title-tertiary .chevron-icon svg {
+  width: 16px;
+  height: 16px;
 }
 
 // Panel — matches dropdown .options
@@ -118,9 +136,9 @@
   padding: 0;
   position: absolute;
   top: 100%;
-  left: 0;
+  left: -7px;
   margin-top: 4px;
-  width: 100%;
+  width: calc(100% + 14px);
   min-width: 120px;
   max-height: 280px;
   overflow-y: auto;

@@ -36,6 +36,9 @@ const args = {
 
 export const PageTitle = {
   args,
+  argTypes: {
+    contextual: { control: false, table: { disable: true } },
+  },
   render: (args) => {
     return html`
       <kyn-page-title
@@ -44,14 +47,18 @@ export const PageTitle = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
-      >
-      </kyn-page-title>
+        ?open=${args.open}
+        @on-change=${handleChange}
+      ></kyn-page-title>
     `;
   },
 };
 
 export const WithIcon = {
   args,
+  argTypes: {
+    contextual: { control: false, table: { disable: true } },
+  },
   render: (args) => {
     return html`
       <style>
@@ -69,6 +76,8 @@ export const WithIcon = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
+        ?open=${args.open}
+        @on-change=${handleChange}
       >
         <!-- Note: use icon size 56 * 56 for Page title as per UX guidelines -->
         <span slot="icon" class="cloud-icon"
@@ -81,6 +90,9 @@ export const WithIcon = {
 
 export const AIConnected = {
   args: { ...args, aiConnected: true },
+  argTypes: {
+    contextual: { control: false, table: { disable: true } },
+  },
   render: (args) => {
     return html`
       <kyn-page-title
@@ -89,8 +101,9 @@ export const AIConnected = {
         pageTitle=${args.pageTitle}
         subTitle=${args.subTitle}
         ?aiConnected=${args.aiConnected}
-      >
-      </kyn-page-title>
+        ?open=${args.open}
+        @on-change=${handleChange}
+      ></kyn-page-title>
     `;
   },
 };
@@ -100,6 +113,7 @@ const handleChange = (e) => {
 };
 
 export const Contextual = {
+  tags: ['new'],
   args: {
     ...args,
     pageTitle: 'Application Name',
@@ -126,6 +140,7 @@ export const Contextual = {
 };
 
 export const ContextualWithSubtitle = {
+  tags: ['new'],
   args: {
     ...args,
     pageTitle: 'Application Name',

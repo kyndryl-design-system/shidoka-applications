@@ -276,7 +276,7 @@ export class PageTitle extends LitElement {
             @click="${this._toggleDropdown}"
             @keydown="${this._handleTriggerKeydown}"
           >
-            ${displayTitle}
+            <span class="contextual-label">${displayTitle}</span>
             <span class="chevron-icon ${this.open ? 'chevron-icon--open' : ''}">
               ${unsafeSVG(downIcon)}
             </span>
