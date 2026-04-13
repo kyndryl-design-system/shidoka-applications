@@ -111,10 +111,12 @@ export class PaginationNavigationButtons extends LitElement {
         ${this.pageNumberOptions.length > 20
           ? html`
               <kyn-number-input
+                class="page-number-input"
                 name="page-number"
                 label=${this.pageNumberLabel}
                 ?hideLabel=${true}
                 ?inline=${true}
+                .inlineBorder=${true}
                 size="sm"
                 .value=${this.pageNumber}
                 min=${1}
@@ -143,7 +145,10 @@ export class PaginationNavigationButtons extends LitElement {
                 )}
               </kyn-dropdown>
             `}
-        ${this.textStrings.of} ${this.numberOfPages} ${this.textStrings.pages}
+        <span class="page-total"
+          >${this.textStrings.of} ${this.numberOfPages}
+          ${this.textStrings.pages}</span
+        >
       </span>
 
       <kyn-button

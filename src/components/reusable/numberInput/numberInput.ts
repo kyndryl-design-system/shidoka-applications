@@ -81,9 +81,13 @@ export class NumberInput extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor hideLabel = false;
 
-  /** Inline mode: hides the step buttons, border, label, and errors. */
+  /** Inline mode: hides the step buttons, label, and errors. */
   @property({ type: Boolean })
   accessor inline = false;
+
+  /** Shows the border/background when inline mode is enabled. */
+  @property({ type: Boolean })
+  accessor inlineBorder = false;
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -150,7 +154,8 @@ export class NumberInput extends FormMixin(LitElement) {
               'size--sm': this.size === 'sm',
               'size--lg': this.size === 'lg',
               'is-readonly': this.readonly,
-              'no-border': this.inline,
+              'no-border': this.inline && !this.inlineBorder,
+              'inline-border': this.inline && this.inlineBorder,
             })}"
             type="number"
             id=${this.name}
