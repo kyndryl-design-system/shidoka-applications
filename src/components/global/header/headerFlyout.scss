@@ -38,6 +38,77 @@
   }
 }
 
+.button-slot {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-button-icon,
+.mobile-summary {
+  display: none;
+}
+
+.mobile-button-icon,
+.mobile-summary__icon {
+  svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.mobile-button-icon {
+  color: inherit;
+}
+
+.mobile-summary__icon {
+  color: var(--kd-color-badge-heavy-background-success);
+}
+
+.mobile-summary__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  min-width: 0;
+}
+
+.mobile-summary__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kd-color-text-level-primary);
+  font-weight: var(--kd-font-weight-medium);
+}
+
+.mobile-summary__detail {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kd-color-text-level-secondary);
+}
+
+.mobile-summary__detail-link {
+  width: fit-content;
+}
+
+.mobile-summary__detail-icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 .menu-label {
   @include typography.type-ui-03;
   color: var(--kd-color-text-variant-brand);
@@ -87,6 +158,33 @@
     }
   }
 
+  .menu--has-mobile-summary {
+    .mobile-summary {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 16px 24px 20px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--kd-color-border-variants-light);
+    }
+  }
+
+  .menu--hide-button-content-on-mobile {
+    .button-slot {
+      display: none;
+    }
+  }
+
+  .menu--has-mobile-button-icon {
+    .mobile-button-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
   .interactive {
     width: 100%;
   }
@@ -97,6 +195,11 @@
 }
 
 @media (min-width: 42rem) {
+  .mobile-button-icon,
+  .mobile-summary {
+    display: none;
+  }
+
   .arrow {
     display: none;
   }
