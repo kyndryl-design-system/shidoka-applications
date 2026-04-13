@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
+import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import './card.sample';
 
 export default {
@@ -31,32 +32,12 @@ export default {
 export const BlankCard = {
   args: {
     type: 'normal',
-    href: '',
-    rel: '',
-    target: '_self',
-    hideBorder: false,
-    variant: 'default',
-    /* The `compact: false` property in the code snippet is a part of the arguments object used in
-    defining the different card components. When `compact` is set to `false`, it means that the card
-    component will not be displayed in a compact or condensed form. This property likely controls
-    the visual styling or layout of the card component to determine whether it should be displayed
-    in a more spacious or compact manner. */
-    compact: false,
-    aiConnected: false,
-    highlight: false,
   },
+
   render: (args) => {
     return html` <kyn-card
-      type=${args.type}
-      href=${args.href}
-      target=${args.target}
-      rel=${args.rel}
+      type="normal"
       role="article"
-      ?hideBorder=${args.hideBorder}
-      .variant=${args.variant}
-      ?compact=${args.compact}
-      ?aiConnected=${args.aiConnected}
-      ?highlight=${args.highlight}
       aria-label="Blank card"
     ></kyn-card>`;
   },
@@ -65,30 +46,10 @@ export const BlankCard = {
 export const Simple = {
   args: {
     type: 'normal',
-    href: '',
-    rel: '',
-    target: '_self',
-    hideBorder: false,
-    variant: 'default',
-    compact: false,
-    aiConnected: false,
-    highlight: false,
   },
   render: (args) => {
     return html`
-      <kyn-card
-        type=${args.type}
-        href=${args.href}
-        target=${args.target}
-        rel=${args.rel}
-        ?hideBorder=${args.hideBorder}
-        .variant=${args.variant}
-        ?compact=${args.compact}
-        ?aiConnected=${args.aiConnected}
-        ?highlight=${args.highlight}
-        role="article"
-        aria-label="Simple card"
-      >
+      <kyn-card type=${args.type} role="article" aria-label="Simple card">
         <sample-card-component>
           <div slot="title">This is a card title</div>
           <div slot="description">
@@ -108,11 +69,6 @@ export const Clickable = {
     href: 'https://www.kyndryl.com',
     rel: 'noopener',
     target: '_blank',
-    hideBorder: false,
-    variant: 'default',
-    compact: false,
-    aiConnected: false,
-    highlight: false,
   },
   render: (args) => {
     return html`
@@ -121,11 +77,6 @@ export const Clickable = {
         href=${args.href}
         target=${args.target}
         rel=${args.rel}
-        ?hideBorder=${args.hideBorder}
-        .variant=${args.variant}
-        ?compact=${args.compact}
-        ?aiConnected=${args.aiConnected}
-        ?highlight=${args.highlight}
         role="link"
         aria-label="Clickable card"
         @on-card-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
@@ -146,29 +97,12 @@ export const Clickable = {
 export const InsideGrid = {
   args: {
     type: 'normal',
-    href: '',
-    rel: '',
-    target: '_self',
-    hideBorder: false,
-    variant: 'default',
-    aiConnected: false,
-    highlight: false,
   },
   render: (args) => {
     return html`
       <div class="kd-grid">
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card
-            style="width:100%;height:100%;"
-            type=${args.type}
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?hideBorder=${args.hideBorder}
-            .variant=${args.variant}
-            ?aiConnected=${args.aiConnected}
-            ?highlight=${args.highlight}
-          >
+          <kyn-card style="width:100%;height:100%;" type=${args.type}>
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
@@ -180,17 +114,7 @@ export const InsideGrid = {
           </kyn-card>
         </div>
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card
-            style="width:100%;height:100%;"
-            type=${args.type}
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?hideBorder=${args.hideBorder}
-            .variant=${args.variant}
-            ?aiConnected=${args.aiConnected}
-            ?highlight=${args.highlight}
-          >
+          <kyn-card style="width:100%;height:100%;" type=${args.type}>
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
@@ -204,17 +128,7 @@ export const InsideGrid = {
           </kyn-card>
         </div>
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card
-            style="width:100%;height:100%;"
-            type=${args.type}
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?hideBorder=${args.hideBorder}
-            .variant=${args.variant}
-            ?aiConnected=${args.aiConnected}
-            ?highlight=${args.highlight}
-          >
+          <kyn-card style="width:100%;height:100%;" type=${args.type}>
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
@@ -225,17 +139,7 @@ export const InsideGrid = {
           </kyn-card>
         </div>
         <div class="kd-grid__col--sm-2 kd-grid__col--md-4 kd-grid__col--lg-3">
-          <kyn-card
-            style="width:100%;height:100%;"
-            type=${args.type}
-            href=${args.href}
-            target=${args.target}
-            rel=${args.rel}
-            ?hideBorder=${args.hideBorder}
-            .variant=${args.variant}
-            ?aiConnected=${args.aiConnected}
-            ?highlight=${args.highlight}
-          >
+          <kyn-card style="width:100%;height:100%;" type=${args.type}>
             <sample-card-component>
               <div slot="title">This is a card title</div>
               <div slot="description">
@@ -257,36 +161,113 @@ export const InsideGrid = {
 export const AIConnected = {
   args: {
     type: 'normal',
-    href: '',
-    rel: '',
-    target: '_self',
-    hideBorder: false,
-    variant: 'default',
     aiConnected: true,
-    highlight: false,
   },
   render: (args) => {
     return html`
       <kyn-card
         type=${args.type}
-        href=${args.href}
-        target=${args.target}
-        rel=${args.rel}
-        ?hideBorder=${args.hideBorder}
-        .variant=${args.variant}
         ?aiConnected=${args.aiConnected}
-        ?highlight=${args.highlight}
         role="article"
         aria-label="Simple card"
       >
         <sample-card-component>
           <div slot="title">This is a card title</div>
           <div slot="description">
-            Amazon EC2 Auto Scaling ensures that your application always has the
-            right amount of compute capacity by dynamically adjusting the number
-            of Amazon EC2 instances based on demand.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor.
           </div>
         </sample-card-component>
+      </kyn-card>
+    `;
+  },
+};
+
+export const Playground = {
+  args: {
+    type: 'normal',
+    href: '',
+    rel: '',
+    target: '_self',
+    hideBorder: false,
+    variant: 'default',
+    compact: false,
+    aiConnected: false,
+    highlight: false,
+  },
+  render: (args) => {
+    return html`
+      <style>
+        .card-logo-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .card-logo {
+          width: 32px;
+          height: 32px;
+        }
+        .card-logo-img {
+          min-width: 32px;
+          min-height: 32px;
+          border-radius: 50%;
+        }
+        .card-title {
+          margin-top: 16px;
+          margin-bottom: 16px;
+          font-weight: var(--kd-font-weight-medium);
+        }
+        .card-subtitle {
+          margin-bottom: 16px;
+        }
+        .card-actions {
+          display: inline-flex;
+        }
+        .card-action-btn-class {
+          display: flex;
+          align-items: center;
+        }
+        .card-thumbnail-img {
+          margin-top: 16px;
+          border-radius: 8px;
+        }
+        .card-link {
+          text-align: center;
+        }
+        .card-link-elements {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-evenly;
+        }
+      </style>
+      <kyn-card
+        type=${args.type}
+        href=${args.href}
+        rel=${args.rel}
+        target=${args.target}
+        ?hideBorder=${args.hideBorder}
+        variant=${args.variant}
+        ?compact=${args.compact}
+        ?aiConnected=${args.aiConnected}
+        ?highlight=${args.highlight}
+        role="article"
+        aria-label="Simple card"
+      >
+        <div class="card-logo-container">
+          <div class="card-logo">
+            <img
+              class="card-logo-img"
+              src="https://fastly.picsum.photos/id/163/32/32.jpg?hmac=6Ev67xrdofIgcyzhr8G7E_OCYUUziK4DoqoH3XZ4I08"
+              alt="product logo"
+            />
+          </div>
+        </div>
+        <h1 class="card-title kd-type--ui-01">This is a card title</h1>
+        <div class="card-subtitle kd-type--ui-03">This is card subtitle</div>
+        <div class="card-description kd-type--ui-02">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </div>
       </kyn-card>
     `;
   },

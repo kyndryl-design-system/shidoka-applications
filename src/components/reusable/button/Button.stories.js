@@ -72,7 +72,6 @@ const args = {
   name: '',
   value: '',
   isFloating: false,
-  showOnScroll: false,
   selected: false,
 };
 
@@ -85,7 +84,6 @@ export const Button = {
         type=${args.type}
         ?disabled=${args.disabled}
         ?isFloating=${args.isFloating}
-        ?showOnScroll=${args.showOnScroll}
         size=${args.size}
         iconPosition=${args.iconPosition}
         description=${args.description}
@@ -118,7 +116,6 @@ export const ButtonWithIcon = {
         type=${args.type}
         ?disabled=${args.disabled}
         ?isFloating=${args.isFloating}
-        ?showOnScroll=${args.showOnScroll}
         size=${args.size}
         iconPosition=${args.iconPosition}
         description=${args.description}
@@ -150,7 +147,6 @@ export const ButtonWithIconSplitLayout = {
         type=${args.type}
         ?disabled=${args.disabled}
         ?isFloating=${args.isFloating}
-        ?showOnScroll=${args.showOnScroll}
         size=${args.size}
         iconPosition=${args.iconPosition}
         description=${args.description}

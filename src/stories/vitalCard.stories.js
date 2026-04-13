@@ -13,14 +13,6 @@ export default {
   },
 };
 
-const args = {
-  type: 'normal',
-  href: '',
-  rel: '',
-  target: '_self',
-  hideBorder: false,
-};
-
 export const Default = {
   render: () => {
     return html`
@@ -42,15 +34,9 @@ export const VitalCardWithTitleTooltip = {
 };
 
 export const VitalCardSkeleton = {
-  args: { ...args, lines: 1, thumbnailVisible: true },
+  args: { lines: 1 },
   render: (args) => {
-    return html` <kyn-card
-      type=${args.type}
-      href=${args.href}
-      target=${args.target}
-      rel=${args.rel}
-      ?hideBorder=${args.hideBorder}
-    >
+    return html` <kyn-card type="normal">
       <kyn-vital-card-skeleton .lines=${args.lines}></kyn-vital-card-skeleton>
     </kyn-card>`;
   },
