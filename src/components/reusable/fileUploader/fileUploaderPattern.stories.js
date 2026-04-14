@@ -330,7 +330,7 @@ export const FileUploaderMultiple = {
             });
           }}
         >
-          ${storyArgs.showNotification
+          <!-- ${storyArgs.showNotification
             ? html`
                 <kyn-notification-container slot="upload-status">
                   <kyn-notification
@@ -365,7 +365,7 @@ export const FileUploaderMultiple = {
                   </kyn-notification>
                 </kyn-notification-container>
               `
-            : ``}
+            : ``} -->
         </kyn-file-uploader>
         ${storyArgs.validFiles?.length > 0 || storyArgs.invalidFiles?.length > 0
           ? html`
