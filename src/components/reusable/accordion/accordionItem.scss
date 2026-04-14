@@ -51,6 +51,10 @@
     --kyn-accordion-item-body-number-offset: 24px;
   }
 
+  &.compact.show-number {
+    --kyn-accordion-item-body-number-offset: 17px;
+  }
+
   & .kyn-accordion-item-body {
     display: grid;
     grid-template-rows: 0fr;
@@ -127,9 +131,15 @@ slot[name='icon']::slotted(span) {
   }
 
   .number {
+    display: flex;
+    align-items: center;
     font-weight: var(--kd-font-weight-regular);
     color: var(--kd-color-text-variant-placeholder);
     padding-right: 16px;
+
+    .compact & {
+      padding-right: 8px;
+    }
   }
 
   slot[name='icon']::slotted(*) {
