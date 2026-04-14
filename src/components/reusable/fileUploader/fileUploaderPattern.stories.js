@@ -262,51 +262,129 @@ export const FileUploaderSingle = {
 };
 FileUploaderSingle.storyName = 'Simulated upload - single file';
 
-//   render: () => {
-//     return html`
-//       <form
-//         @submit=${(e) => {
-//           e.preventDefault();
-//           const formData = new FormData(e.target);
-//           console.log(...formData);
-//           return false;
-//         }}
-//       >
-//         <kyn-file-uploader
-//           name="file-uploader"
-//           .accept=${['image/jpeg', 'image/png']}
-//           multiple
-//           .textStrings=${args.textStrings}
-//           .maxFileSize=${args.maxFileSize}
-//         ></kyn-file-uploader>
-//         <kyn-button type="submit" size="small">Start upload</kyn-button>
-//       </form>
-//     `;
-//   },
-// };
-// FileUploaderMultiple.storyName = 'Simulated upload - multiple files';
+// TODO: Logic yet to be added to simulate multiple file in notification
+export const FileUploaderMultiple = {
+  args: {
+    ...args,
+    validFiles: [],
+    invalidFiles: [],
+    showNotification: false,
+    showProgressBar: false,
+    overallProgress: 0,
+    currentFileUploading: '',
+    completedFiles: 0,
+    totalFiles: 0,
+    notificationStatus: 'default',
+    notificationTitle: 'Uploading',
+    notificationMessage: '',
+  },
+  render: () => {
+    const [storyArgs, updateArgs] = useArgs();
 
-// export const FileUploaderImmediate = {
-//   render: () => {
-//     return html`
-//       <form
-//         @submit=${(e) => {
-//           e.preventDefault();
-//           return false;
-//         }}
-//       >
-//         <kyn-file-uploader
-//           name="file-uploader"
-//           .accept=${['image/jpeg', 'image/png']}
-//           immediate
-//           .textStrings=${args.textStrings}
-//           .maxFileSize=${args.maxFileSize}
-//         ></kyn-file-uploader>
-//       </form>
-//     `;
-//   },
-// };
-// FileUploaderImmediate.storyName = 'Simulated upload - immediate - single file';
+    const startFileUpload = (filesToUpload) => {
+      const filesCount = filesToUpload.length;
+      updateArgs({
+        showNotification: true,
+        showProgressBar: true,
+        totalFiles: filesCount,
+        completedFiles: 0,
+        overallProgress: 0,
+        notificationStatus: 'default',
+        notificationTitle: 'Uploading',
+      });
+      // TODO
+      // add logic to simulate file upload progress for multiple files
+    };
+
+    return html`
+      <style>
+        .notification-status-body {
+          display: flex;
+          gap: 16px;
+        }
+      </style>
+      <form
+        @submit=${(e) => {
+          e.preventDefault();
+          if (storyArgs.validFiles && storyArgs.validFiles.length > 0) {
+            startFileUpload(storyArgs.validFiles);
+          }
+          const formData = new FormData(e.target);
+          console.log(...formData);
+          return false;
+        }}
+      >
+        <kyn-file-uploader
+          name="file-uploader"
+          .accept=${['image/jpeg', 'image/png']}
+          multiple
+          .validFiles=${storyArgs.validFiles}
+          .invalidFiles=${storyArgs.invalidFiles}
+          .textStrings=${storyArgs.textStrings}
+          .maxFileSize=${storyArgs.maxFileSize}
+          @selected-files=${(e) => {
+            action(e.type)(e);
+            updateArgs({
+              validFiles: e.detail.validFiles,
+              invalidFiles: e.detail.invalidFiles,
+            });
+          }}
+        >
+          ${storyArgs.showNotification
+            ? html`
+                <kyn-notification-container slot="upload-status">
+                  <kyn-notification
+                    type="toast"
+                    hideCloseButton
+                    .tagStatus=${storyArgs.notificationStatus}
+                    .notificationTitle=${storyArgs.notificationTitle}
+                  >
+                    ${storyArgs.showProgressBar
+                      ? html`
+                          <div
+                            style="display: flex; gap: 1rem; align-items: center;"
+                          >
+                            <kyn-progress-bar
+                              .label=${storyArgs.currentFileUploading}
+                              .value=${storyArgs.overallProgress}
+                              .max=${100}
+                              .status=${storyArgs.overallProgress === 100
+                                ? 'success'
+                                : 'active'}
+                              .showInlineLoadStatus=${true}
+                              .showActiveHelperText=${true}
+                              .helperText=${`Uploading file ${storyArgs.completedFiles} of ${storyArgs.totalFiles}`}
+                              .unit=${'%'}
+                            ></kyn-progress-bar>
+                            <kyn-button kind="outline" size="small">
+                              <span slot="icon">${unsafeSVG(closeIcon)}</span>
+                            </kyn-button>
+                          </div>
+                        `
+                      : storyArgs.notificationMessage}
+                  </kyn-notification>
+                </kyn-notification-container>
+              `
+            : ``}
+        </kyn-file-uploader>
+        ${storyArgs.validFiles?.length > 0 || storyArgs.invalidFiles?.length > 0
+          ? html`
+              <kyn-button
+                type="submit"
+                size="small"
+                ?disabled=${storyArgs.validFiles.length === 0 ||
+                storyArgs.validFiles.every((f) => f.status === 'uploaded') ||
+                storyArgs.validFiles.some((f) => f.status === 'uploading')}
+              >
+                Start upload
+              </kyn-button>
+            `
+          : ''}
+      </form>
+    `;
+  },
+};
+FileUploaderMultiple.storyName = 'Simulated upload - multiple files';
 
 export const FileUploaderImmediate = {
   args: {
