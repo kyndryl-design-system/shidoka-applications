@@ -237,6 +237,7 @@ export class HeaderLink extends LitElement {
           @click=${(e: Event) => this.handleClick(e)}
           @pointerenter=${(e: PointerEvent) => this.handlePointerEnter(e)}
         >
+          <slot name="icon"></slot>
           <slot @slotchange=${this._handleDefaultSlotChange}></slot>
 
           ${this.slottedEls.length
@@ -322,9 +323,10 @@ export class HeaderLink extends LitElement {
 
     Links.forEach((link: any) => {
       // get link text
-      const nodes: any = link.shadowRoot?.querySelector('slot')?.assignedNodes({
-        flatten: true,
-      });
+      const textSlot = link.shadowRoot?.querySelector(
+        'slot:not([name])'
+      ) as HTMLSlotElement | null;
+      const nodes: any = textSlot?.assignedNodes({ flatten: true }) ?? [];
       let linkText = '';
       for (let i = 0; i < nodes.length; i++) {
         linkText += nodes[i].textContent.trim();
