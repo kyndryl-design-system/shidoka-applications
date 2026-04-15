@@ -4,6 +4,7 @@ import UiShellScss from './uiShell.scss?inline';
 
 type LocalNavLike = HTMLElement & {
   pinned?: boolean;
+  manualToggleVariant?: boolean;
   updateComplete?: Promise<unknown>;
 };
 
@@ -138,11 +139,20 @@ export class UiShell extends LitElement {
     const localNav = this._getLocalNav();
     const hasLocalNav = !!localNav;
     const pinned = !!localNav?.pinned;
+    const manualToggleVariant = !!localNav?.manualToggleVariant;
 
     main?.classList.toggle('has-local-nav', hasLocalNav);
     main?.classList.toggle('pinned', pinned);
+    main?.classList.toggle(
+      'manual-toggle-variant',
+      hasLocalNav && manualToggleVariant
+    );
     footer?.classList.toggle('has-local-nav', hasLocalNav);
     footer?.classList.toggle('pinned', pinned);
+    footer?.classList.toggle(
+      'manual-toggle-variant',
+      hasLocalNav && manualToggleVariant
+    );
 
     if (!hasLocalNav) {
       this._clearPinnedSpacing();
@@ -192,7 +202,11 @@ export class UiShell extends LitElement {
   /** @ignore */
   private _getPinnedSpacingOverride(): number | null {
     const localNav = this._getLocalNav();
-    if (!localNav?.pinned || window.innerWidth < DESKTOP_BREAKPOINT) {
+    if (
+      !localNav?.pinned ||
+      !localNav?.manualToggleVariant ||
+      window.innerWidth < DESKTOP_BREAKPOINT
+    ) {
       return null;
     }
 
