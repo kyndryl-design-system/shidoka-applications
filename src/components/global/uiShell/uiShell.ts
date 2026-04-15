@@ -4,7 +4,6 @@ import UiShellScss from './uiShell.scss?inline';
 
 type LocalNavLike = HTMLElement & {
   pinned?: boolean;
-  manualToggleVariant?: boolean;
   updateComplete?: Promise<unknown>;
 };
 
@@ -31,7 +30,7 @@ export class UiShell extends LitElement {
 
   /** @ignore */
   private readonly _onLocalNavToggle = () => {
-    this._syncLayout();
+    this._syncLayout({ syncPinnedSpacingImmediately: true });
   };
 
   /** @ignore */
@@ -133,7 +132,7 @@ export class UiShell extends LitElement {
   }
 
   /** @ignore */
-  private _syncLayout() {
+  private _syncLayout(options?: { syncPinnedSpacingImmediately?: boolean }) {
     const main = this._mainEl[0];
     const footer = this._footerEl[0];
     const localNav = this._getLocalNav();
@@ -150,6 +149,11 @@ export class UiShell extends LitElement {
       return;
     }
 
+    if (options?.syncPinnedSpacingImmediately) {
+      this._syncPinnedSpacing();
+      return;
+    }
+
     this._queuePinnedSpacingSync();
   }
 
@@ -161,16 +165,20 @@ export class UiShell extends LitElement {
 
     this._pinnedSpacingSyncFrame = requestAnimationFrame(() => {
       this._pinnedSpacingSyncFrame = null;
+      this._syncPinnedSpacing();
+    });
+  }
 
-      const pinnedSpace = this._getManualTogglePinnedSpacing();
-      if (pinnedSpace === null) {
-        this._clearPinnedSpacing();
-        return;
-      }
+  /** @ignore */
+  private _syncPinnedSpacing() {
+    const pinnedSpace = this._getPinnedSpacingOverride();
+    if (pinnedSpace === null) {
+      this._clearPinnedSpacing();
+      return;
+    }
 
-      this._getLayoutTargets().forEach((element) => {
-        element.style.setProperty(PINNED_SPACE_CSS_VAR, `${pinnedSpace}px`);
-      });
+    this._getLayoutTargets().forEach((element) => {
+      element.style.setProperty(PINNED_SPACE_CSS_VAR, `${pinnedSpace}px`);
     });
   }
 
@@ -182,13 +190,9 @@ export class UiShell extends LitElement {
   }
 
   /** @ignore */
-  private _getManualTogglePinnedSpacing(): number | null {
+  private _getPinnedSpacingOverride(): number | null {
     const localNav = this._getLocalNav();
-    if (
-      !localNav?.pinned ||
-      !localNav.manualToggleVariant ||
-      window.innerWidth < DESKTOP_BREAKPOINT
-    ) {
+    if (!localNav?.pinned || window.innerWidth < DESKTOP_BREAKPOINT) {
       return null;
     }
 
@@ -202,10 +206,7 @@ export class UiShell extends LitElement {
       return null;
     }
 
-    const manualExpandedWidth = this._measureManualToggleExpandedWidth(
-      localNav,
-      navEl
-    );
+    const targetExpandedWidth = this._measurePinnedTargetWidth(localNav, navEl);
     const expandedReservedSpace = this._measureCssLength(
       'var(--kd-local-nav-expanded-reserved-space)'
     );
@@ -214,7 +215,7 @@ export class UiShell extends LitElement {
     );
 
     if (
-      manualExpandedWidth === null ||
+      targetExpandedWidth === null ||
       expandedReservedSpace === null ||
       expandedWidth === null
     ) {
@@ -225,7 +226,11 @@ export class UiShell extends LitElement {
       expandedReservedSpace - navRect.left - expandedWidth,
       0
     );
-    return Math.ceil(navRect.left + manualExpandedWidth + gutter);
+    const pinnedSpace = Math.ceil(navRect.left + targetExpandedWidth + gutter);
+
+    return Math.abs(pinnedSpace - expandedReservedSpace) <= 1
+      ? null
+      : pinnedSpace;
   }
 
   /** @ignore */
@@ -239,7 +244,7 @@ export class UiShell extends LitElement {
   }
 
   /** @ignore */
-  private _measureManualToggleExpandedWidth(
+  private _measurePinnedTargetWidth(
     localNav: LocalNavLike,
     navEl: HTMLElement
   ): number | null {

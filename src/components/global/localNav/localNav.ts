@@ -21,6 +21,7 @@ import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/side
 const DESKTOP_BREAKPOINT = 672;
 const MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR =
   '--_local-nav-manual-expanded-width';
+const MANUAL_TOGGLE_WIDTH_SYNC_DELAY_MS = 320;
 
 const _defaultTextStrings = {
   pin: 'Pin',
@@ -123,6 +124,9 @@ export class LocalNav extends LitElement {
 
   /** @ignore */
   private _manualToggleWidthSyncFrame: number | null = null;
+
+  /** @ignore */
+  private _manualToggleWidthSyncTimeout: number | null = null;
 
   override render() {
     return html`
@@ -270,53 +274,60 @@ export class LocalNav extends LitElement {
     return window.innerWidth >= DESKTOP_BREAKPOINT;
   }
 
-  private _queueManualToggleWidthSync() {
+  private _queueManualToggleWidthSync(delayMs = 0) {
     if (this._manualToggleWidthSyncFrame !== null) {
       cancelAnimationFrame(this._manualToggleWidthSyncFrame);
+    }
+    if (this._manualToggleWidthSyncTimeout !== null) {
+      clearTimeout(this._manualToggleWidthSyncTimeout);
+      this._manualToggleWidthSyncTimeout = null;
     }
 
     this._manualToggleWidthSyncFrame = requestAnimationFrame(() => {
       this._manualToggleWidthSyncFrame = null;
+
+      if (delayMs > 0) {
+        this._manualToggleWidthSyncTimeout = window.setTimeout(() => {
+          this._manualToggleWidthSyncTimeout = null;
+          this._syncManualToggleExpandedWidth();
+        }, delayMs);
+        return;
+      }
+
       this._syncManualToggleExpandedWidth();
     });
   }
 
   private _syncManualToggleExpandedWidth() {
-    if (
-      !this.manualToggleVariant ||
-      !this.pinned ||
-      !this._isDesktopViewport ||
-      !this._navEl
-    ) {
+    if (!this.manualToggleVariant || !this._isDesktopViewport || !this._navEl) {
       if (!this.manualToggleVariant) {
         this.style.removeProperty(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR);
       }
       return;
     }
 
-    const previousWidth = this.style.getPropertyValue(
-      MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR
-    );
+    if (!this.pinned) {
+      return;
+    }
 
-    this.style.removeProperty(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR);
     const measuredWidth = Number.parseFloat(
       getComputedStyle(this._navEl).width
     );
 
     if (Number.isNaN(measuredWidth) || measuredWidth <= 0) {
-      if (previousWidth) {
-        this.style.setProperty(
-          MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR,
-          previousWidth
-        );
-      }
       return;
     }
 
-    this.style.setProperty(
-      MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR,
-      `${Math.ceil(measuredWidth)}px`
-    );
+    const nextWidth = `${Math.ceil(measuredWidth)}px`;
+    if (
+      this.style
+        .getPropertyValue(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR)
+        .trim() === nextWidth
+    ) {
+      return;
+    }
+
+    this.style.setProperty(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR, nextWidth);
   }
 
   override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
@@ -349,7 +360,11 @@ export class LocalNav extends LitElement {
       changedProps.has('manualToggleVariant') ||
       changedProps.has('_expanded')
     ) {
-      this._queueManualToggleWidthSync();
+      this._queueManualToggleWidthSync(
+        changedProps.has('pinned') && this.pinned
+          ? MANUAL_TOGGLE_WIDTH_SYNC_DELAY_MS
+          : 0
+      );
     }
   }
 
@@ -396,6 +411,10 @@ export class LocalNav extends LitElement {
     if (this._manualToggleWidthSyncFrame !== null) {
       cancelAnimationFrame(this._manualToggleWidthSyncFrame);
       this._manualToggleWidthSyncFrame = null;
+    }
+    if (this._manualToggleWidthSyncTimeout !== null) {
+      clearTimeout(this._manualToggleWidthSyncTimeout);
+      this._manualToggleWidthSyncTimeout = null;
     }
     document.removeEventListener('click', this._onDocumentClick);
     this.removeEventListener('on-link-active', this._onLinkActive);
