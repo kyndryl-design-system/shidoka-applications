@@ -18,6 +18,10 @@ import LocalNavScss from './localNav.scss?inline';
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/side-drawer-out.svg';
 
+const DESKTOP_BREAKPOINT = 672;
+const MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR =
+  '--_local-nav-manual-expanded-width';
+
 const _defaultTextStrings = {
   pin: 'Pin',
   unpin: 'Unpin',
@@ -39,6 +43,18 @@ export class LocalNav extends LitElement {
   /** Local nav pinned state. */
   @property({ type: Boolean })
   accessor pinned = false;
+
+  /** Enables the manual-toggle interaction mode.
+   * Starts pinned/expanded by default and disables hover expansion.
+   */
+  @property({ type: Boolean, attribute: 'manual-toggle-variant' })
+  accessor manualToggleVariant = false;
+
+  /** Whether the `manual-toggle` variant should start collapsed.
+   * By default, `manual-toggle` starts pinned/expanded.
+   */
+  @property({ type: Boolean, attribute: 'collapsed-by-default' })
+  accessor collapsedByDefault = false;
 
   /** Text string customization. */
   @property({ type: Object })
@@ -95,9 +111,18 @@ export class LocalNav extends LitElement {
   @query('nav')
   accessor _navEl!: HTMLElement;
 
-  private _onDocumentClick = (e: Event) => this._handleClickOut(e);
-  private _onLinkActive = (e: Event) =>
+  /** @ignore */
+  private readonly _onDocumentClick = (e: Event) => this._handleClickOut(e);
+
+  /** @ignore */
+  private readonly _onLinkActive = (e: Event) =>
     this._handleLinkActive(e as CustomEvent<{ text: string }>);
+
+  /** @ignore */
+  private readonly _onWindowResize = () => this._queueManualToggleWidthSync();
+
+  /** @ignore */
+  private _manualToggleWidthSyncFrame: number | null = null;
 
   override render() {
     return html`
@@ -105,6 +130,7 @@ export class LocalNav extends LitElement {
         class=${classMap({
           'nav--expanded': this._expanded || this.pinned,
           'nav--expanded-mobile': this._mobileExpanded,
+          'nav--manual-toggle': this.manualToggleVariant,
           pinned: this.pinned,
         })}
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
@@ -122,6 +148,25 @@ export class LocalNav extends LitElement {
           ${unsafeSVG(arrowIcon)}
         </button>
 
+        ${this.manualToggleVariant
+          ? html`
+              <div class="manual-toggle-container">
+                <kyn-button
+                  kind="ghost"
+                  size="small"
+                  description=${this.pinned
+                    ? this._textStrings.unpin
+                    : this._textStrings.pin}
+                  @on-click=${(e: Event) => this._handleNavToggle(e)}
+                >
+                  <span class="pin-icon" slot="icon">
+                    ${unsafeSVG(pinIcon)}
+                  </span>
+                </kyn-button>
+              </div>
+            `
+          : null}
+
         <div class="search">
           <slot name="search"></slot>
         </div>
@@ -130,18 +175,24 @@ export class LocalNav extends LitElement {
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
 
-        <div class="toggle-container">
-          <kyn-button
-            kind="ghost"
-            size="small"
-            description=${this.pinned
-              ? this._textStrings.unpin
-              : this._textStrings.pin}
-            @on-click=${(e: Event) => this._handleNavToggle(e)}
-          >
-            <span class="pin-icon" slot="icon"> ${unsafeSVG(pinIcon)} </span>
-          </kyn-button>
-        </div>
+        ${!this.manualToggleVariant
+          ? html`
+              <div class="toggle-container">
+                <kyn-button
+                  kind="ghost"
+                  size="small"
+                  description=${this.pinned
+                    ? this._textStrings.unpin
+                    : this._textStrings.pin}
+                  @on-click=${(e: Event) => this._handleNavToggle(e)}
+                >
+                  <span class="pin-icon" slot="icon">
+                    ${unsafeSVG(pinIcon)}
+                  </span>
+                </kyn-button>
+              </div>
+            `
+          : null}
       </nav>
 
       <div class="overlay ${this.pinned ? 'pinned' : ''}"></div>
@@ -150,6 +201,7 @@ export class LocalNav extends LitElement {
 
   private _handleNavToggle(e: Event) {
     this.pinned = !this.pinned;
+    this._expanded = false;
 
     const event = new CustomEvent('on-toggle', {
       detail: { pinned: this.pinned, origEvent: e },
@@ -162,6 +214,10 @@ export class LocalNav extends LitElement {
   }
 
   private handlePointerEnter(e: PointerEvent) {
+    if (this.manualToggleVariant) {
+      return;
+    }
+
     if (e.pointerType === 'mouse') {
       if (this._leaveTimer !== null) clearTimeout(this._leaveTimer);
 
@@ -172,6 +228,10 @@ export class LocalNav extends LitElement {
   }
 
   private handlePointerLeave(e: PointerEvent) {
+    if (this.manualToggleVariant) {
+      return;
+    }
+
     if (e.pointerType === 'mouse') {
       if (this._enterTimer !== null) clearTimeout(this._enterTimer);
 
@@ -185,6 +245,7 @@ export class LocalNav extends LitElement {
     (this._navLinks ?? []).forEach((link: HTMLElement) => {
       (link as any)._navExpanded = this._expanded || this.pinned;
       (link as any)._navExpandedMobile = this._mobileExpanded;
+      (link as any)._manualToggleVariant = this.manualToggleVariant;
     });
 
     (this._dividers ?? []).forEach((divider: HTMLElement) => {
@@ -195,6 +256,7 @@ export class LocalNav extends LitElement {
 
   private handleSlotChange() {
     this._updateChildren();
+    this._queueManualToggleWidthSync();
     this.requestUpdate();
   }
 
@@ -202,11 +264,76 @@ export class LocalNav extends LitElement {
     this._activeLinkText = e.detail.text;
   }
 
+  /** @ignore */
+  private get _isDesktopViewport(): boolean {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= DESKTOP_BREAKPOINT;
+  }
+
+  private _queueManualToggleWidthSync() {
+    if (this._manualToggleWidthSyncFrame !== null) {
+      cancelAnimationFrame(this._manualToggleWidthSyncFrame);
+    }
+
+    this._manualToggleWidthSyncFrame = requestAnimationFrame(() => {
+      this._manualToggleWidthSyncFrame = null;
+      this._syncManualToggleExpandedWidth();
+    });
+  }
+
+  private _syncManualToggleExpandedWidth() {
+    if (
+      !this.manualToggleVariant ||
+      !this.pinned ||
+      !this._isDesktopViewport ||
+      !this._navEl
+    ) {
+      if (!this.manualToggleVariant) {
+        this.style.removeProperty(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR);
+      }
+      return;
+    }
+
+    const previousWidth = this.style.getPropertyValue(
+      MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR
+    );
+
+    this.style.removeProperty(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR);
+    const measuredWidth = Number.parseFloat(
+      getComputedStyle(this._navEl).width
+    );
+
+    if (Number.isNaN(measuredWidth) || measuredWidth <= 0) {
+      if (previousWidth) {
+        this.style.setProperty(
+          MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR,
+          previousWidth
+        );
+      }
+      return;
+    }
+
+    this.style.setProperty(
+      MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR,
+      `${Math.ceil(measuredWidth)}px`
+    );
+  }
+
   override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
+    if (
+      this.manualToggleVariant &&
+      (changedProps.has('manualToggleVariant') ||
+        changedProps.has('collapsedByDefault'))
+    ) {
+      this.pinned = !this.collapsedByDefault;
+      this._expanded = false;
+    }
+
     if (
       changedProps.has('_expanded') ||
       changedProps.has('pinned') ||
-      changedProps.has('_mobileExpanded')
+      changedProps.has('_mobileExpanded') ||
+      changedProps.has('manualToggleVariant')
     ) {
       this._updateChildren();
     }
@@ -216,7 +343,21 @@ export class LocalNav extends LitElement {
     }
   }
 
+  override updated(changedProps: Map<string | number | symbol, unknown>) {
+    if (
+      changedProps.has('pinned') ||
+      changedProps.has('manualToggleVariant') ||
+      changedProps.has('_expanded')
+    ) {
+      this._queueManualToggleWidthSync();
+    }
+  }
+
   private _handleClickOut(e: Event) {
+    if (this.manualToggleVariant) {
+      return;
+    }
+
     if (!e.composedPath().includes(this)) {
       this._expanded = false;
     }
@@ -239,6 +380,7 @@ export class LocalNav extends LitElement {
 
   override firstUpdated() {
     this._handleScroll();
+    this._queueManualToggleWidthSync();
   }
 
   override connectedCallback() {
@@ -247,12 +389,18 @@ export class LocalNav extends LitElement {
     document.addEventListener('click', this._onDocumentClick);
     this.addEventListener('on-link-active', this._onLinkActive);
     window.addEventListener('scroll', this._debounceScroll);
+    window.addEventListener('resize', this._onWindowResize);
   }
 
   override disconnectedCallback() {
+    if (this._manualToggleWidthSyncFrame !== null) {
+      cancelAnimationFrame(this._manualToggleWidthSyncFrame);
+      this._manualToggleWidthSyncFrame = null;
+    }
     document.removeEventListener('click', this._onDocumentClick);
     this.removeEventListener('on-link-active', this._onLinkActive);
     window.removeEventListener('scroll', this._debounceScroll);
+    window.removeEventListener('resize', this._onWindowResize);
 
     super.disconnectedCallback();
   }
