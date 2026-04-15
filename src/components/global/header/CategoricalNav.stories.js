@@ -365,9 +365,14 @@ export const WithCategorizedNavManualHtml = {
   args: {
     ...args,
     activeMegaTabId: 'tab1',
+    bindingClickCount: 0,
   },
   render: (renderArgs) => {
     const [, updateArgs] = useArgs();
+    const handleConsumerClick = (e) => {
+      e.preventDefault();
+      updateArgs({ bindingClickCount: renderArgs.bindingClickCount + 1 });
+    };
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
@@ -407,12 +412,22 @@ export const WithCategorizedNavManualHtml = {
                   label="Filter items... (Application controlled)"
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
+                <div style="margin-bottom: 16px;">
+                  Consumer binding clicks: ${renderArgs.bindingClickCount}
+                </div>
 
                 <kyn-header-categories layout="masonry" maxColumns="5">
                   <!-- CATEGORY 1 -->
                   <kyn-header-category heading="Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
-                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link
+                      id="manual-masonry-bound-link"
+                      data-track="manual-masonry-bound-link"
+                      href="#"
+                      @click=${handleConsumerClick}
+                    >
+                      Consumer bound link
+                    </kyn-header-link>
                     <kyn-header-link href="#">Sub Link 2</kyn-header-link>
                     <kyn-header-link href="#">Sub Link 3</kyn-header-link>
                     <kyn-header-link href="#">Sub Link 4</kyn-header-link>
@@ -748,9 +763,14 @@ export const WithCategorizedNavGrid = {
   args: {
     ...args,
     activeMegaTabId: 'tab1',
+    bindingClickCount: 0,
   },
   render: (renderArgs) => {
     const [, updateArgs] = useArgs();
+    const handleConsumerClick = (e) => {
+      e.preventDefault();
+      updateArgs({ bindingClickCount: renderArgs.bindingClickCount + 1 });
+    };
 
     return html`
       <kyn-header rootUrl=${renderArgs.rootUrl} appTitle=${renderArgs.appTitle}>
@@ -790,6 +810,9 @@ export const WithCategorizedNavGrid = {
                   label="Filter items... (Application controlled)"
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
+                <div style="margin-bottom: 16px;">
+                  Consumer binding clicks: ${renderArgs.bindingClickCount}
+                </div>
 
                 <kyn-header-categories
                   layout="grid"
@@ -798,7 +821,14 @@ export const WithCategorizedNavGrid = {
                 >
                   <kyn-header-category heading="Category 1">
                     <span slot="icon">${unsafeSVG(circleIcon)}</span>
-                    <kyn-header-link href="#">Sub Link 1</kyn-header-link>
+                    <kyn-header-link
+                      id="manual-grid-bound-link"
+                      data-track="manual-grid-bound-link"
+                      href="#"
+                      @click=${handleConsumerClick}
+                    >
+                      Consumer bound link
+                    </kyn-header-link>
                     <kyn-header-link href="#">Sub Link 2</kyn-header-link>
                     <kyn-header-link href="#">Sub Link 3</kyn-header-link>
                     <kyn-header-link href="#">Sub Link 4</kyn-header-link>
