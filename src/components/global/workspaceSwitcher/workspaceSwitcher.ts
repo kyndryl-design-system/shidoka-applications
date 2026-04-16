@@ -13,7 +13,7 @@ import { LINK_TARGETS } from '../../reusable/link/defs';
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
-import gridIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/grid.svg';
+import accountsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/accounts.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 
 const _defaultTextStrings = {
@@ -59,6 +59,8 @@ type HeaderFlyoutHost = HTMLElement;
  * which renders the preferred rigid built-in pattern.
  * @slot left - Legacy non-list content for the left panel when `accountMeta` is not used. Prefer `accountMeta`; this slot is maintained for backward compatibility.
  * @slot left-list - List items for the left panel (rendered inside role="list").
+ * @slot mobile-button-icon - Optional mobile-only flyout trigger icon override. Provide an inline SVG or wrapper that contains one.
+ * @slot mobile-summary-icon - Optional mobile-only account summary icon override. Provide an inline SVG or wrapper that contains one.
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
  * @fires on-account-meta-copy - Emits when a copy-style account meta action is activated.
@@ -149,6 +151,14 @@ export class WorkspaceSwitcher extends LitElement {
     }
   };
 
+  /**
+   * Re-syncs the parent flyout when mobile-only icon slot assignments change.
+   * @internal
+   */
+  private _handleMobileIconSlotChange = () => {
+    this._syncFlyoutHostMobilePresentation();
+  };
+
   override connectedCallback() {
     super.connectedCallback();
     this._updateLegacyLeftSlotState();
@@ -212,6 +222,16 @@ export class WorkspaceSwitcher extends LitElement {
       this.accountMeta != null || this._hasLegacyLeftSlotContent;
 
     return html`
+      <div hidden aria-hidden="true">
+        <slot
+          name="mobile-button-icon"
+          @slotchange=${this._handleMobileIconSlotChange}
+        ></slot>
+        <slot
+          name="mobile-summary-icon"
+          @slotchange=${this._handleMobileIconSlotChange}
+        ></slot>
+      </div>
       <div class="workspace-switcher">
         <div class="workspace-switcher__left">
           ${!this.hideCurrentTitle
@@ -263,6 +283,7 @@ export class WorkspaceSwitcher extends LitElement {
     );
     this._updateChildMenuItemTextStrings();
     this._warnForLegacyLeftSlotUsage();
+    this._syncFlyoutHostMobilePresentation();
   }
 
   private _updateChildMenuItemTextStrings() {
@@ -279,8 +300,16 @@ export class WorkspaceSwitcher extends LitElement {
 
   private _syncFlyoutHostMobilePresentation() {
     this._emitFlyoutHostMobilePresentation({
-      buttonIconSvg: gridIcon,
-      summaryIconSvg: this.accountMeta?.name ? checkmarkFilledIcon : '',
+      buttonIconSvg: this._getMobilePresentationIconSvg(
+        'mobile-button-icon',
+        accountsIcon
+      ),
+      summaryIconSvg: this.accountMeta?.name
+        ? this._getMobilePresentationIconSvg(
+            'mobile-summary-icon',
+            checkmarkFilledIcon
+          )
+        : '',
       summaryLabel: this.accountMeta?.name ?? '',
       summaryDetails:
         this.accountMeta?.items
@@ -303,6 +332,28 @@ export class WorkspaceSwitcher extends LitElement {
         detail,
       })
     );
+  }
+
+  private _getMobilePresentationIconSvg(
+    slotName: 'mobile-button-icon' | 'mobile-summary-icon',
+    fallbackSvg = ''
+  ) {
+    const assignedIconHost = Array.from(this.children).find(
+      (child) => child.getAttribute('slot') === slotName
+    );
+
+    if (!assignedIconHost) return fallbackSvg;
+
+    const iconNode =
+      assignedIconHost.tagName.toLowerCase() === 'svg'
+        ? assignedIconHost
+        : assignedIconHost.querySelector('svg');
+
+    if (iconNode?.outerHTML.trim().startsWith('<svg')) {
+      return iconNode.outerHTML;
+    }
+
+    return fallbackSvg;
   }
 
   private _warnForLegacyLeftSlotUsage() {
