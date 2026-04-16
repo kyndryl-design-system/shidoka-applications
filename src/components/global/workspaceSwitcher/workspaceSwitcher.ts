@@ -59,8 +59,8 @@ type HeaderFlyoutHost = HTMLElement;
  * which renders the preferred rigid built-in pattern.
  * @slot left - Legacy non-list content for the left panel when `accountMeta` is not used. Prefer `accountMeta`; this slot is maintained for backward compatibility.
  * @slot left-list - List items for the left panel (rendered inside role="list").
- * @slot mobile-button-icon - Optional mobile-only flyout trigger icon override. Provide an inline SVG or wrapper that contains one.
- * @slot mobile-summary-icon - Optional mobile-only account summary icon override. Provide an inline SVG or wrapper that contains one.
+ * @slot button-icon - Optional icon override for the mobile flyout trigger. Provide an inline SVG or wrapper that contains one.
+ * @slot summary-icon - Optional icon override for the mobile account summary block. Provide an inline SVG or wrapper that contains one.
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
  * @fires on-account-meta-copy - Emits when a copy-style account meta action is activated.
@@ -152,7 +152,7 @@ export class WorkspaceSwitcher extends LitElement {
   };
 
   /**
-   * Re-syncs the parent flyout when mobile-only icon slot assignments change.
+   * Re-syncs the parent flyout when icon slot assignments change.
    * @internal
    */
   private _handleMobileIconSlotChange = () => {
@@ -224,11 +224,11 @@ export class WorkspaceSwitcher extends LitElement {
     return html`
       <div hidden aria-hidden="true">
         <slot
-          name="mobile-button-icon"
+          name="button-icon"
           @slotchange=${this._handleMobileIconSlotChange}
         ></slot>
         <slot
-          name="mobile-summary-icon"
+          name="summary-icon"
           @slotchange=${this._handleMobileIconSlotChange}
         ></slot>
       </div>
@@ -301,12 +301,12 @@ export class WorkspaceSwitcher extends LitElement {
   private _syncFlyoutHostMobilePresentation() {
     this._emitFlyoutHostMobilePresentation({
       buttonIconSvg: this._getMobilePresentationIconSvg(
-        'mobile-button-icon',
+        'button-icon',
         accountsIcon
       ),
       summaryIconSvg: this.accountMeta?.name
         ? this._getMobilePresentationIconSvg(
-            'mobile-summary-icon',
+            'summary-icon',
             checkmarkFilledIcon
           )
         : '',
@@ -335,7 +335,7 @@ export class WorkspaceSwitcher extends LitElement {
   }
 
   private _getMobilePresentationIconSvg(
-    slotName: 'mobile-button-icon' | 'mobile-summary-icon',
+    slotName: 'button-icon' | 'summary-icon',
     fallbackSvg = ''
   ) {
     const assignedIconHost = Array.from(this.children).find(

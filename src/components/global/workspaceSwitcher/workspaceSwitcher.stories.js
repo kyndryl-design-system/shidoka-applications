@@ -312,10 +312,8 @@ export const UIImplementation = {
             ?hideCurrentTitle=${args.hideCurrentTitle}
             ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
           >
-            <span slot="mobile-button-icon">${unsafeSVG(accountsIcon)}</span>
-            <span slot="mobile-summary-icon"
-              >${unsafeSVG(checkmarkFilledIcon)}</span
-            >
+            <span slot="button-icon">${unsafeSVG(accountsIcon)}</span>
+            <span slot="summary-icon">${unsafeSVG(checkmarkFilledIcon)}</span>
             ${workspaces.map(
               (ws) => html`
                 <kyn-workspace-switcher-menu-item
