@@ -313,7 +313,7 @@ export const UIImplementation = {
             ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
           >
             <span slot="mobile-trigger-icon">${unsafeSVG(accountsIcon)}</span>
-            <span slot="mobile-summary-icon"
+            <span slot="account-status-icon"
               >${unsafeSVG(checkmarkFilledIcon)}</span
             >
             ${workspaces.map(
