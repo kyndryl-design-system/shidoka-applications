@@ -59,8 +59,9 @@ type HeaderFlyoutHost = HTMLElement;
  * which renders the preferred rigid built-in pattern.
  * @slot left - Legacy non-list content for the left panel when `accountMeta` is not used. Prefer `accountMeta`; this slot is maintained for backward compatibility.
  * @slot left-list - List items for the left panel (rendered inside role="list").
- * @slot button-icon - Optional icon override for the mobile flyout trigger. Provide an inline SVG or wrapper that contains one.
- * @slot summary-icon - Optional icon override for the mobile account summary block. Provide an inline SVG or wrapper that contains one.
+ * @slot mobile-trigger-icon - Optional icon override for the mobile flyout trigger. Provide an inline SVG or wrapper that contains one.
+ * @slot mobile-summary-icon - Optional icon override for the mobile account summary block. Provide an inline SVG or wrapper that contains one.
+ * @slot account-status-icon - Optional icon override for the built-in account meta status indicator. Provide an inline SVG or wrapper that contains one.
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
  * @fires on-account-meta-copy - Emits when a copy-style account meta action is activated.
@@ -224,11 +225,11 @@ export class WorkspaceSwitcher extends LitElement {
     return html`
       <div hidden aria-hidden="true">
         <slot
-          name="button-icon"
+          name="mobile-trigger-icon"
           @slotchange=${this._handleMobileIconSlotChange}
         ></slot>
         <slot
-          name="summary-icon"
+          name="mobile-summary-icon"
           @slotchange=${this._handleMobileIconSlotChange}
         ></slot>
       </div>
@@ -301,12 +302,12 @@ export class WorkspaceSwitcher extends LitElement {
   private _syncFlyoutHostMobilePresentation() {
     this._emitFlyoutHostMobilePresentation({
       buttonIconSvg: this._getMobilePresentationIconSvg(
-        'button-icon',
+        'mobile-trigger-icon',
         accountsIcon
       ),
       summaryIconSvg: this.accountMeta?.name
         ? this._getMobilePresentationIconSvg(
-            'summary-icon',
+            'mobile-summary-icon',
             checkmarkFilledIcon
           )
         : '',
@@ -335,7 +336,7 @@ export class WorkspaceSwitcher extends LitElement {
   }
 
   private _getMobilePresentationIconSvg(
-    slotName: 'button-icon' | 'summary-icon',
+    slotName: 'mobile-trigger-icon' | 'mobile-summary-icon',
     fallbackSvg = ''
   ) {
     const assignedIconHost = Array.from(this.children).find(
@@ -385,7 +386,9 @@ export class WorkspaceSwitcher extends LitElement {
           class="workspace-switcher__account-meta-status"
           aria-hidden="true"
         >
-          ${unsafeSVG(checkmarkFilledIcon)}
+          <slot name="account-status-icon"
+            >${unsafeSVG(checkmarkFilledIcon)}</slot
+          >
         </span>
         <div class="workspace-switcher__account-meta-content">
           <span
