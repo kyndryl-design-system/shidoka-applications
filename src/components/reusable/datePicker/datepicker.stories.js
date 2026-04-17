@@ -2,6 +2,7 @@ import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import { useArgs } from 'storybook/preview-api';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -773,3 +774,37 @@ ValueOverridesDefault.args = {
   label: 'value overrides defaultDate',
 };
 ValueOverridesDefault.storyName = 'Value Overrides defaultDate';
+
+export const ManualInputSync = {
+  args: {
+    ...DatePickerDefault.args,
+    name: 'manual-input-datepicker',
+    label: 'Manual input sync',
+    required: true,
+    allowManualInput: true,
+  },
+  play: async ({ canvasElement }) => {
+    const picker = canvasElement.querySelector('kyn-date-picker');
+    const input = picker?.shadowRoot?.querySelector('input');
+
+    expect(picker).not.toBeNull();
+    expect(input).not.toBeNull();
+
+    await userEvent.click(input);
+    await userEvent.clear(input);
+    await userEvent.type(input, '2026-04-17');
+    input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    input.blur();
+
+    await waitFor(() => {
+      const value = picker.getValue();
+
+      expect(value).toBeInstanceOf(Date);
+      expect(value.getFullYear()).toBe(2026);
+      expect(value.getMonth()).toBe(3);
+      expect(value.getDate()).toBe(17);
+      expect(picker.checkValidity()).toBe(true);
+      expect(picker.shadowRoot.querySelector('.clear-button')).not.toBeNull();
+    });
+  },
+};
