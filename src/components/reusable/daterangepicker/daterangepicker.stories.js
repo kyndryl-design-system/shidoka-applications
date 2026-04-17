@@ -2,6 +2,7 @@ import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import { useEffect, useArgs } from 'storybook/preview-api';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -640,3 +641,41 @@ ControlledValueOverridesDefault.args = {
   value: ['2024-02-10', '2024-02-20'],
 };
 ControlledValueOverridesDefault.storyName = 'Value Overrides defaultDate';
+
+export const ManualInputSync = {
+  args: {
+    ...DateRangeDefault.args,
+    name: 'manual-input-date-range-picker',
+    label: 'Manual input sync',
+    required: true,
+    allowManualInput: true,
+  },
+  play: async ({ canvasElement }) => {
+    const picker = canvasElement.querySelector('kyn-date-range-picker');
+    const input = picker?.shadowRoot?.querySelector('input');
+
+    expect(picker).not.toBeNull();
+    expect(input).not.toBeNull();
+
+    await userEvent.click(input);
+    await userEvent.clear(input);
+    await userEvent.type(input, '2026-04-17 to 2026-04-18');
+    input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    input.blur();
+
+    await waitFor(() => {
+      const [start, end] = picker.getValue();
+
+      expect(start).toBeInstanceOf(Date);
+      expect(end).toBeInstanceOf(Date);
+      expect(start.getFullYear()).toBe(2026);
+      expect(start.getMonth()).toBe(3);
+      expect(start.getDate()).toBe(17);
+      expect(end.getFullYear()).toBe(2026);
+      expect(end.getMonth()).toBe(3);
+      expect(end.getDate()).toBe(18);
+      expect(picker.checkValidity()).toBe(true);
+      expect(picker.shadowRoot.querySelector('.clear-button')).not.toBeNull();
+    });
+  },
+};
