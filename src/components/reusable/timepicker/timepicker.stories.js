@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import { useArgs } from 'storybook/preview-api';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -288,7 +289,7 @@ export const ControlledEcho = {
     twentyFourHourFormat: false,
   },
   render: (args) => {
-    const [_, updateArgs] = useArgs();
+    const [, updateArgs] = useArgs();
 
     const handleChange = (e) => {
       const detail = e.detail || {};
@@ -389,5 +390,37 @@ export const InTabs = {
         </kyn-tab-panel>
       </kyn-tabs>
     `;
+  },
+};
+
+export const ManualInputSync = {
+  args: {
+    ...DefaultTimePicker.args,
+    name: 'manual-input-timepicker',
+    label: 'Manual input sync',
+    required: true,
+  },
+  play: async ({ canvasElement }) => {
+    const picker = canvasElement.querySelector('kyn-time-picker');
+    const input = picker?.shadowRoot?.querySelector('input');
+
+    expect(picker).not.toBeNull();
+    expect(input).not.toBeNull();
+
+    await userEvent.click(input);
+    await userEvent.clear(input);
+    await userEvent.type(input, '12:00 AM');
+    input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    input.blur();
+
+    await waitFor(() => {
+      const value = picker.getValue();
+
+      expect(value).toBeInstanceOf(Date);
+      expect(value.getHours()).toBe(0);
+      expect(value.getMinutes()).toBe(0);
+      expect(picker.checkValidity()).toBe(true);
+      expect(picker.shadowRoot.querySelector('.clear-button')).not.toBeNull();
+    });
   },
 };
