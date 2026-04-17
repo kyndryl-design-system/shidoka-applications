@@ -365,13 +365,11 @@ export const WithCategorizedNavManualHtml = {
   args: {
     ...args,
     activeMegaTabId: 'tab1',
-    bindingClickCount: 0,
   },
   render: (renderArgs) => {
     const [, updateArgs] = useArgs();
     const handleConsumerClick = (e) => {
       e.preventDefault();
-      updateArgs({ bindingClickCount: renderArgs.bindingClickCount + 1 });
     };
 
     return html`
@@ -412,9 +410,6 @@ export const WithCategorizedNavManualHtml = {
                   label="Filter items... (Application controlled)"
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
-                <div style="margin-bottom: 16px;">
-                  Consumer binding clicks: ${renderArgs.bindingClickCount}
-                </div>
 
                 <kyn-header-categories layout="masonry" maxColumns="5">
                   <!-- CATEGORY 1 -->
@@ -426,7 +421,7 @@ export const WithCategorizedNavManualHtml = {
                       href="#"
                       @click=${handleConsumerClick}
                     >
-                      Consumer bound link
+                      Sub Link 1
                     </kyn-header-link>
                     <kyn-header-link href="#">Sub Link 2</kyn-header-link>
                     <kyn-header-link href="#">Sub Link 3</kyn-header-link>
@@ -763,13 +758,11 @@ export const WithCategorizedNavGrid = {
   args: {
     ...args,
     activeMegaTabId: 'tab1',
-    bindingClickCount: 0,
   },
   render: (renderArgs) => {
     const [, updateArgs] = useArgs();
     const handleConsumerClick = (e) => {
       e.preventDefault();
-      updateArgs({ bindingClickCount: renderArgs.bindingClickCount + 1 });
     };
 
     return html`
@@ -810,9 +803,6 @@ export const WithCategorizedNavGrid = {
                   label="Filter items... (Application controlled)"
                   style="display: block; margin-bottom: 16px;"
                 ></kyn-search>
-                <div style="margin-bottom: 16px;">
-                  Consumer binding clicks: ${renderArgs.bindingClickCount}
-                </div>
 
                 <kyn-header-categories
                   layout="grid"
@@ -827,7 +817,7 @@ export const WithCategorizedNavGrid = {
                       href="#"
                       @click=${handleConsumerClick}
                     >
-                      Consumer bound link
+                      Sub Link 1
                     </kyn-header-link>
                     <kyn-header-link href="#">Sub Link 2</kyn-header-link>
                     <kyn-header-link href="#">Sub Link 3</kyn-header-link>
