@@ -15,6 +15,7 @@ export default {
 
 const args = {
   assistiveText: 'Tooltip',
+  compact: false,
   unnamed: 'Tooltip content here.',
 };
 
@@ -23,6 +24,7 @@ export const Tooltip = {
   render: (args) => {
     return html`
       <kyn-tooltip
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -36,6 +38,7 @@ export const CustomAnchor = {
   render: (args) => {
     return html`
       <kyn-tooltip
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -52,6 +55,7 @@ export const Positions = {
     return html`
       <kyn-tooltip
         style="position: absolute; top: 16px; left: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -59,6 +63,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; top: 16px; left: 50%;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -66,6 +71,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; top: 16px; right: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -73,6 +79,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; top: 50%; left: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -80,6 +87,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; top: 50%; left: 50%;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -87,6 +95,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; top: 50%; right: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -94,6 +103,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; bottom: 16px; left: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -101,6 +111,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; bottom: 16px; left: 50%;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -108,6 +119,7 @@ export const Positions = {
 
       <kyn-tooltip
         style="position: absolute; bottom: 16px; right: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         ${args.unnamed}
@@ -122,6 +134,7 @@ export const PositionsCustom = {
     return html`
       <kyn-tooltip
         style="position: absolute; top: 16px; left: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -131,6 +144,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; top: 16px; left: 50%;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -140,6 +154,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; top: 16px; right: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -149,6 +164,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; top: 50%; left: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -158,6 +174,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; top: 50%; left: 50%;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -167,6 +184,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; top: 50%; right: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -176,6 +194,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; bottom: 16px; left: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -185,6 +204,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; bottom: 16px; left: 50%;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
@@ -194,6 +214,7 @@ export const PositionsCustom = {
 
       <kyn-tooltip
         style="position: absolute; bottom: 16px; right: 16px;"
+        ?compact=${args.compact}
         @on-tooltip-toggle=${(e) => action(e.type)({ ...e, detail: e.detail })}
       >
         <span slot="anchor">Custom<br />anchor</span>
