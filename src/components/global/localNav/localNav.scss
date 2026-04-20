@@ -38,7 +38,7 @@ nav {
       top: calc(var(--kd-local-nav-offset-top) - 8px);
     }
 
-    &.pinned {
+    &.pinned:not(.nav--manual-toggle) {
       box-shadow: none;
     }
   }
@@ -88,6 +88,38 @@ nav {
   .nav--expanded-mobile & {
     display: block;
   }
+
+  .nav--manual-toggle & {
+    @media (min-width: 42rem) {
+      display: block;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: max-height 220ms ease-out, opacity 160ms ease-out;
+    }
+  }
+
+  .nav--manual-toggle.nav--expanded & {
+    @media (min-width: 42rem) {
+      max-height: 80px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.manual-toggle-container {
+  display: none;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  padding: 0 4px 8px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--kd-color-border-variants-light);
+
+  @media (min-width: 42rem) {
+    display: flex;
+  }
 }
 
 slot[name='search'] {
@@ -123,17 +155,20 @@ slot[name='search'] {
 
   .nav--expanded & {
     overflow-y: auto;
+  }
 
+  .nav--manual-toggle & {
     @media (min-width: 42rem) {
-      height: 100%;
+      overflow-y: auto;
     }
   }
 
   @media (min-width: 42rem) {
     position: static;
     display: flex;
+    flex: 1 1 auto;
     visibility: visible;
-    height: 100%;
+    min-height: 0;
     padding: 0;
     background: none;
   }
@@ -187,6 +222,7 @@ slot[name='search'] {
 
 .toggle-container {
   display: none;
+  flex-shrink: 0;
   padding: 8px 4px 4px;
   border-top: 1px solid var(--kd-color-border-variants-light);
 

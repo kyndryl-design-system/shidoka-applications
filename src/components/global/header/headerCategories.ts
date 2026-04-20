@@ -13,6 +13,7 @@ import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrom
 import arrowLeftIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { debounce } from '../../../common/helpers/helpers';
+import type { HeaderCategory } from './headerCategory';
 import type { HeaderLinkTarget } from './headerLink';
 
 const _defaultTextStrings = {
@@ -74,20 +75,11 @@ const VOID_HREF = '#';
  */
 const COLUMN_GROUPING_TOLERANCE_PX = 10;
 
-interface SlottedLinkData {
-  href: string;
-  inner: string;
-  textContent: string;
-  target?: string;
-  rel?: string;
-}
-
 interface SlottedCategoryData {
   id: string;
+  slotKey: string;
   heading: string;
-  links: SlottedLinkData[];
-  iconHtml?: string;
-  showDivider: boolean;
+  categoryEl: HeaderCategory;
   noAutoDivider: boolean;
 }
 
@@ -350,6 +342,89 @@ export class HeaderCategories extends LitElement {
       : this.maxRootLinks;
   }
 
+  private _sanitizeSlotKey(value: string): string {
+    return value.replace(/[^a-zA-Z0-9_-]/g, '-');
+  }
+
+  private _getRootSlotName(category: SlottedCategoryData): string {
+    return `manual-root-${category.slotKey}`;
+  }
+
+  private _getDetailSlotName(category: SlottedCategoryData): string {
+    return `manual-detail-${category.slotKey}`;
+  }
+
+  private _getActiveSlottedCategory(): SlottedCategoryData | null {
+    if (!this._slottedCategories.length) return null;
+
+    return (
+      this._slottedCategories.find((c) => c.id === this.activeMegaCategoryId) ??
+      this._slottedCategories[0]
+    );
+  }
+
+  private _syncSlottedCategoryPresentation(): void {
+    if (this._isJsonMode) return;
+
+    const activeCategory = this._getActiveSlottedCategory();
+
+    this._slottedCategories.forEach((category) => {
+      const { categoryEl, heading, noAutoDivider } = category;
+      const isDetailCategory =
+        this.view === DETAIL_VIEW && activeCategory?.id === category.id;
+
+      categoryEl.maxVisibleLinks =
+        this.view === ROOT_VIEW
+          ? this._rootLinksLimit
+          : Number.POSITIVE_INFINITY;
+      categoryEl.moreLabel = this._textStrings.more;
+      categoryEl.detailView = isDetailCategory;
+      categoryEl.detailHeading = isDetailCategory
+        ? `${heading} – ${this._textStrings.more}`
+        : '';
+      categoryEl.detailLinksPerColumn = this.detailLinksPerColumn;
+      categoryEl.slot =
+        this.view === ROOT_VIEW
+          ? this._getRootSlotName(category)
+          : isDetailCategory
+          ? this._getDetailSlotName(category)
+          : 'manual-hidden';
+
+      if (this.view === ROOT_VIEW && !this.hideCategoryDividers) {
+        categoryEl.setAttribute('showdivider', '');
+
+        if (noAutoDivider) {
+          categoryEl.setAttribute('noautodivider', '');
+        } else {
+          categoryEl.removeAttribute('noautodivider');
+        }
+      } else {
+        categoryEl.removeAttribute('showdivider');
+        categoryEl.setAttribute('noautodivider', '');
+      }
+    });
+  }
+
+  private _resetSlottedCategoryPresentation(): void {
+    this._slottedCategories.forEach(({ categoryEl }) => {
+      categoryEl.maxVisibleLinks = Number.POSITIVE_INFINITY;
+      categoryEl.detailView = false;
+      categoryEl.detailHeading = '';
+      categoryEl.removeAttribute('slot');
+    });
+  }
+
+  private _handleSlottedMoreClick(
+    e: CustomEvent<{ categoryId: string }>
+  ): void {
+    const categoryId =
+      e.detail.categoryId || this._getActiveSlottedCategory()?.id || '';
+
+    if (!categoryId) return;
+
+    this.openCategoryDetail(this.activeMegaTabId, categoryId, e);
+  }
+
   private _emitChange(): void {
     const detail: HeaderMegaChangeDetail = {
       activeMegaTabId: this.activeMegaTabId,
@@ -372,7 +447,10 @@ export class HeaderCategories extends LitElement {
     this.view = ROOT_VIEW;
     this._emitChange();
 
-    if (!this._isJsonMode) this._buildSlottedCategories();
+    if (!this._isJsonMode) {
+      this._buildSlottedCategories();
+      this._syncSlottedCategoryPresentation();
+    }
   }
 
   openCategoryDetail(tabId: string, categoryId: string, e?: Event): void {
@@ -384,7 +462,10 @@ export class HeaderCategories extends LitElement {
     this.activeMegaCategoryId = categoryId;
     this.view = DETAIL_VIEW;
     this._emitChange();
-    if (!this._isJsonMode) this._buildSlottedCategories();
+    if (!this._isJsonMode) {
+      this._buildSlottedCategories();
+      this._syncSlottedCategoryPresentation();
+    }
   }
 
   handleBackClick(e?: Event): void {
@@ -438,23 +519,22 @@ export class HeaderCategories extends LitElement {
       };
     }
 
+    if (changed.has('activeMegaCategoryId') || changed.has('activeMegaTabId')) {
+      this.view = this.activeMegaCategoryId == null ? ROOT_VIEW : DETAIL_VIEW;
+    }
+
     // Keep data-columns in sync before render so layout CSS has the
     // correct column count on first paint.
     if (this.layout === 'grid' || this.layout === 'masonry') {
       this.setAttribute('data-columns', String(this._getColumnCount()));
     }
+
+    if (!this._isJsonMode) {
+      this._syncSlottedCategoryPresentation();
+    }
   }
 
-  override updated(changed: PropertyValueMap<this>): void {
-    if (changed.has('activeMegaCategoryId') || changed.has('activeMegaTabId')) {
-      const nextView: HeaderView =
-        this.activeMegaCategoryId == null ? ROOT_VIEW : DETAIL_VIEW;
-
-      if (this.view !== nextView) {
-        this.view = nextView;
-      }
-    }
-
+  override updated(_changed: PropertyValueMap<this>): void {
     if (this.layout === 'grid' || this.layout === 'masonry') {
       // Update dividers after render when in root view (grid and masonry modes).
       // Masonry dividers are layout-free (absolute positioned via CSS custom properties)
@@ -621,8 +701,9 @@ export class HeaderCategories extends LitElement {
   private _buildSlottedCategories(): void {
     if (this._isJsonMode) return;
 
-    const categories = Array.from(
-      this.querySelectorAll<HTMLElement>('kyn-header-category')
+    const categories = Array.from(this.children).filter(
+      (child): child is HeaderCategory =>
+        child.tagName === 'KYN-HEADER-CATEGORY'
     );
 
     if (!categories.length) {
@@ -634,32 +715,11 @@ export class HeaderCategories extends LitElement {
       const id = categoryEl.getAttribute('id') ?? `category-${index + 1}`;
       const heading = categoryEl.getAttribute('heading') ?? '';
 
-      // Extract icon slot content
-      const iconSlot = categoryEl.querySelector('[slot="icon"]');
-      const iconHtml = iconSlot ? iconSlot.innerHTML : undefined;
-
-      const allLinks = Array.from(
-        categoryEl.querySelectorAll<HTMLElement>('kyn-header-link')
-      ).filter((link) => link.parentElement === categoryEl) as HTMLElement[];
-
-      const regularLinks = allLinks.filter(
-        (l) => l.dataset.kynMoreLink !== 'true'
-      );
-
-      const links = regularLinks.map((l) => ({
-        href: l.getAttribute('href') ?? VOID_HREF,
-        target: l.getAttribute('target') ?? undefined,
-        rel: l.getAttribute('rel') ?? undefined,
-        inner: l.innerHTML,
-        textContent: l.textContent?.trim() ?? '',
-      }));
-
       return {
         id,
+        slotKey: `${index + 1}-${this._sanitizeSlotKey(id)}`,
         heading,
-        links,
-        iconHtml,
-        showDivider: categoryEl.hasAttribute('showdivider'),
+        categoryEl,
         noAutoDivider: categoryEl.hasAttribute('noautodivider'),
       } as SlottedCategoryData;
     });
@@ -670,66 +730,13 @@ export class HeaderCategories extends LitElement {
   private renderSlottedRoot() {
     const categories = this._slottedCategories;
     if (!categories.length) return null;
-    const rootLinksLimit = this._rootLinksLimit;
+
     return html`${categories.map(
       (category) => html`
-        <kyn-header-category
-          heading=${category.heading}
-          ?showDivider=${!this.hideCategoryDividers}
-          .noAutoDivider=${this.hideCategoryDividers
-            ? true
-            : category.noAutoDivider}
-          ?data-auto-divider=${!this.hideCategoryDividers}
-        >
-          ${category.iconHtml
-            ? html`<span slot="icon">${unsafeHTML(category.iconHtml)}</span>`
-            : this.showCategoryIcons
-            ? html`<span slot="icon">${unsafeSVG(circleIcon)}</span>`
-            : null}
-          ${category.links.slice(0, rootLinksLimit).map((link) => {
-            const target = this.normalizeHeaderLinkTarget(link.target);
-            return html`
-              <kyn-header-link
-                href=${link.href}
-                target=${target}
-                rel=${ifDefined(link.rel)}
-                .linkTitle=${link.textContent}
-              >
-                ${unsafeHTML(link.inner)}
-              </kyn-header-link>
-            `;
-          })}
-          ${category.links.length > rootLinksLimit
-            ? html`
-                <kyn-header-link
-                  slot="more"
-                  href=${VOID_HREF}
-                  @click=${(e: Event) =>
-                    this.openCategoryDetail(
-                      this.activeMegaTabId,
-                      category.id,
-                      e
-                    )}
-                  @keydown=${(e: KeyboardEvent) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      this.openCategoryDetail(
-                        this.activeMegaTabId,
-                        category.id,
-                        e as unknown as Event
-                      );
-                    }
-                  }}
-                >
-                  <span
-                    style="display: inline-flex; align-items: center; gap: 8px;"
-                  >
-                    ${this._textStrings.more} ${unsafeSVG(chevronRightIcon)}
-                  </span>
-                </kyn-header-link>
-              `
-            : null}
-        </kyn-header-category>
+        <slot
+          class="header-categories__projected"
+          name=${this._getRootSlotName(category)}
+        ></slot>
       `
     )}`;
   }
@@ -749,61 +756,28 @@ export class HeaderCategories extends LitElement {
   }
 
   private renderSlottedDetail() {
-    const categories = this._slottedCategories;
-    if (!categories.length) return null;
-
-    const categoryItem =
-      categories.find((c) => c.id === this.activeMegaCategoryId) ??
-      categories[0];
+    const categoryItem = this._getActiveSlottedCategory();
     if (!categoryItem) return null;
 
-    const columns = this.computeDetailColumns(categoryItem.links);
-    const isSingleColumn = columns.length === 1;
-
     return html`
-      <kyn-header-category
-        heading=${`${categoryItem.heading} – ${this._textStrings.more}`}
+      <div
+        id=${`detail-${categoryItem.id}`}
+        class="header-detail-category"
+        role="region"
+        aria-label=${`${categoryItem.heading} – ${this._textStrings.more}`}
       >
-        ${categoryItem.iconHtml
-          ? html`<span slot="icon">${unsafeHTML(categoryItem.iconHtml)}</span>`
-          : this.showCategoryIcons
-          ? html`<span slot="icon">${unsafeSVG(circleIcon)}</span>`
-          : null}
-        <div
-          id=${`detail-${categoryItem.id}`}
-          class="header-detail-columns ${isSingleColumn
-            ? 'header-detail-columns--single'
-            : ''}"
-          role="region"
-          aria-label=${`${categoryItem.heading} – ${this._textStrings.more}`}
-        >
-          ${columns.map(
-            (col) => html`
-              <div>
-                ${col.map((link) => {
-                  const target = this.normalizeHeaderLinkTarget(link.target);
-                  return html`
-                    <kyn-header-link
-                      href=${link.href}
-                      target=${target}
-                      rel=${ifDefined(link.rel)}
-                      .linkTitle=${link.textContent}
-                    >
-                      ${unsafeHTML(link.inner)}
-                    </kyn-header-link>
-                  `;
-                })}
-              </div>
-            `
-          )}
-        </div>
-      </kyn-header-category>
+        <slot
+          class="header-categories__projected"
+          name=${this._getDetailSlotName(categoryItem)}
+        ></slot>
+      </div>
     `;
   }
 
   private _scheduleBuildSlottedCategories(): void {
     if (typeof window === 'undefined') {
       this._buildSlottedCategories();
+      this._syncSlottedCategoryPresentation();
       return;
     }
 
@@ -812,6 +786,7 @@ export class HeaderCategories extends LitElement {
     }
     this._buildSlottedRaf = window.requestAnimationFrame(() => {
       this._buildSlottedCategories();
+      this._syncSlottedCategoryPresentation();
       this._buildSlottedRaf = undefined;
     });
   }
@@ -832,20 +807,25 @@ export class HeaderCategories extends LitElement {
     const inner = this.shadowRoot?.querySelector('.header-categories__inner');
     if (!inner) return;
 
-    const categories = Array.from(
-      inner.querySelectorAll<HTMLElement>(
-        'kyn-header-category[data-auto-divider]'
-      )
-    );
+    const categories = this._isJsonMode
+      ? Array.from(
+          inner.querySelectorAll<HTMLElement>(
+            'kyn-header-category[data-auto-divider]'
+          )
+        )
+      : this._slottedCategories.map(({ categoryEl, noAutoDivider }) => {
+          categoryEl.setAttribute('showdivider', '');
+
+          if (noAutoDivider) {
+            categoryEl.setAttribute('noautodivider', '');
+          } else {
+            categoryEl.removeAttribute('noautodivider');
+          }
+
+          return categoryEl;
+        });
 
     if (!categories.length) return;
-
-    // Reset managed categories so a later reflow can recompute last-row/last-column
-    // divider visibility from a consistent baseline.
-    categories.forEach((cat) => {
-      cat.setAttribute('showdivider', '');
-      cat.removeAttribute('noautodivider');
-    });
 
     // Get bounding rects
     const categoryData = categories.map((cat) => ({
@@ -961,7 +941,14 @@ export class HeaderCategories extends LitElement {
       : this.renderSlottedDetail();
 
     return html`
-      <div class="header-categories" data-view=${view}>
+      <div
+        class="header-categories"
+        data-view=${view}
+        @on-more-click=${(e: Event) =>
+          this._handleSlottedMoreClick(
+            e as CustomEvent<{ categoryId: string }>
+          )}
+      >
         <div
           class="header-categories__inner"
           data-columns=${ifDefined(columnCount ?? undefined)}
@@ -969,9 +956,14 @@ export class HeaderCategories extends LitElement {
           ${inner ?? html``}
         </div>
 
+        <slot
+          name="manual-hidden"
+          class="header-categories__observer"
+          style="display: none;"
+        ></slot>
         <!-- hidden slot used only to observe light DOM changes (edge case) -->
         <slot
-          class="header-categories__slot"
+          class="header-categories__observer"
           style="display: none;"
           @slotchange=${() => this._scheduleBuildSlottedCategories()}
         ></slot>
@@ -1010,6 +1002,7 @@ export class HeaderCategories extends LitElement {
 
     // initial build for slotted mode
     this._buildSlottedCategories();
+    this._syncSlottedCategoryPresentation();
 
     // Set up ResizeObserver to update dividers when columns reflow (grid mode only, debounced)
     if (typeof ResizeObserver !== 'undefined') {
@@ -1034,6 +1027,8 @@ export class HeaderCategories extends LitElement {
       this._resizeObserver.disconnect();
       this._resizeObserver = undefined;
     }
+
+    this._resetSlottedCategoryPresentation();
 
     super.disconnectedCallback();
   }

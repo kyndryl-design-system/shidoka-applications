@@ -10,7 +10,18 @@
   position: relative;
 }
 
-button {
+.anchor {
+  display: block;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease-out;
+
+  &:focus-visible {
+    outline-color: var(--kd-color-border-variants-focus);
+  }
+}
+
+button.anchor {
   display: block;
   appearance: none;
   background: none;
@@ -19,13 +30,6 @@ button {
   font: inherit;
   padding: 0;
   cursor: pointer;
-  border-radius: 4px;
-  outline: 2px solid transparent;
-  transition: outline-color 150ms ease-out;
-
-  &:focus-visible {
-    outline-color: var(--kd-color-border-variants-focus);
-  }
 }
 
 .info-icon,
@@ -51,6 +55,10 @@ slot[name='anchor']::slotted(svg) {
   visibility: hidden;
   transform-origin: center bottom;
   transform: translate3d(-50%, calc(-100% - 8px), 0) scale(0);
+
+  &.compact {
+    padding: 8px;
+  }
 
   &::before {
     content: '';

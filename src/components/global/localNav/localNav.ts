@@ -40,6 +40,18 @@ export class LocalNav extends LitElement {
   @property({ type: Boolean })
   accessor pinned = false;
 
+  /** Enables the manual-toggle interaction mode.
+   * Starts pinned/expanded by default and disables hover expansion.
+   */
+  @property({ type: Boolean, attribute: 'manual-toggle-variant' })
+  accessor manualToggleVariant = false;
+
+  /** Whether the `manual-toggle` variant should start collapsed.
+   * By default, `manual-toggle` starts pinned/expanded.
+   */
+  @property({ type: Boolean, attribute: 'collapsed-by-default' })
+  accessor collapsedByDefault = false;
+
   /** Text string customization. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -95,8 +107,11 @@ export class LocalNav extends LitElement {
   @query('nav')
   accessor _navEl!: HTMLElement;
 
-  private _onDocumentClick = (e: Event) => this._handleClickOut(e);
-  private _onLinkActive = (e: Event) =>
+  /** @ignore */
+  private readonly _onDocumentClick = (e: Event) => this._handleClickOut(e);
+
+  /** @ignore */
+  private readonly _onLinkActive = (e: Event) =>
     this._handleLinkActive(e as CustomEvent<{ text: string }>);
 
   override render() {
@@ -105,6 +120,7 @@ export class LocalNav extends LitElement {
         class=${classMap({
           'nav--expanded': this._expanded || this.pinned,
           'nav--expanded-mobile': this._mobileExpanded,
+          'nav--manual-toggle': this.manualToggleVariant,
           pinned: this.pinned,
         })}
         @pointerleave=${(e: PointerEvent) => this.handlePointerLeave(e)}
@@ -122,6 +138,25 @@ export class LocalNav extends LitElement {
           ${unsafeSVG(arrowIcon)}
         </button>
 
+        ${this.manualToggleVariant
+          ? html`
+              <div class="manual-toggle-container">
+                <kyn-button
+                  kind="ghost"
+                  size="small"
+                  description=${this.pinned
+                    ? this._textStrings.unpin
+                    : this._textStrings.pin}
+                  @on-click=${(e: Event) => this._handleNavToggle(e)}
+                >
+                  <span class="pin-icon" slot="icon">
+                    ${unsafeSVG(pinIcon)}
+                  </span>
+                </kyn-button>
+              </div>
+            `
+          : null}
+
         <div class="search">
           <slot name="search"></slot>
         </div>
@@ -130,18 +165,24 @@ export class LocalNav extends LitElement {
           <slot @slotchange=${this.handleSlotChange}></slot>
         </div>
 
-        <div class="toggle-container">
-          <kyn-button
-            kind="ghost"
-            size="small"
-            description=${this.pinned
-              ? this._textStrings.unpin
-              : this._textStrings.pin}
-            @on-click=${(e: Event) => this._handleNavToggle(e)}
-          >
-            <span class="pin-icon" slot="icon"> ${unsafeSVG(pinIcon)} </span>
-          </kyn-button>
-        </div>
+        ${!this.manualToggleVariant
+          ? html`
+              <div class="toggle-container">
+                <kyn-button
+                  kind="ghost"
+                  size="small"
+                  description=${this.pinned
+                    ? this._textStrings.unpin
+                    : this._textStrings.pin}
+                  @on-click=${(e: Event) => this._handleNavToggle(e)}
+                >
+                  <span class="pin-icon" slot="icon">
+                    ${unsafeSVG(pinIcon)}
+                  </span>
+                </kyn-button>
+              </div>
+            `
+          : null}
       </nav>
 
       <div class="overlay ${this.pinned ? 'pinned' : ''}"></div>
@@ -150,6 +191,7 @@ export class LocalNav extends LitElement {
 
   private _handleNavToggle(e: Event) {
     this.pinned = !this.pinned;
+    this._expanded = false;
 
     const event = new CustomEvent('on-toggle', {
       detail: { pinned: this.pinned, origEvent: e },
@@ -162,6 +204,10 @@ export class LocalNav extends LitElement {
   }
 
   private handlePointerEnter(e: PointerEvent) {
+    if (this.manualToggleVariant) {
+      return;
+    }
+
     if (e.pointerType === 'mouse') {
       if (this._leaveTimer !== null) clearTimeout(this._leaveTimer);
 
@@ -172,6 +218,10 @@ export class LocalNav extends LitElement {
   }
 
   private handlePointerLeave(e: PointerEvent) {
+    if (this.manualToggleVariant) {
+      return;
+    }
+
     if (e.pointerType === 'mouse') {
       if (this._enterTimer !== null) clearTimeout(this._enterTimer);
 
@@ -185,6 +235,7 @@ export class LocalNav extends LitElement {
     (this._navLinks ?? []).forEach((link: HTMLElement) => {
       (link as any)._navExpanded = this._expanded || this.pinned;
       (link as any)._navExpandedMobile = this._mobileExpanded;
+      (link as any)._manualToggleVariant = this.manualToggleVariant;
     });
 
     (this._dividers ?? []).forEach((divider: HTMLElement) => {
@@ -204,9 +255,19 @@ export class LocalNav extends LitElement {
 
   override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
     if (
+      this.manualToggleVariant &&
+      (changedProps.has('manualToggleVariant') ||
+        changedProps.has('collapsedByDefault'))
+    ) {
+      this.pinned = !this.collapsedByDefault;
+      this._expanded = false;
+    }
+
+    if (
       changedProps.has('_expanded') ||
       changedProps.has('pinned') ||
-      changedProps.has('_mobileExpanded')
+      changedProps.has('_mobileExpanded') ||
+      changedProps.has('manualToggleVariant')
     ) {
       this._updateChildren();
     }
@@ -217,6 +278,10 @@ export class LocalNav extends LitElement {
   }
 
   private _handleClickOut(e: Event) {
+    if (this.manualToggleVariant) {
+      return;
+    }
+
     if (!e.composedPath().includes(this)) {
       this._expanded = false;
     }
