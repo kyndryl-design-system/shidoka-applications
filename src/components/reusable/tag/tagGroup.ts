@@ -53,7 +53,9 @@ export class TagGroup extends LitElement {
   @queryAssignedElements()
   accessor tags!: Array<any>;
 
-  private readonly limitCount = 5;
+  /** Maximum number of tags to display before showing the "Show all" button. */
+  @property({ type: Number })
+  accessor limitCount = 5;
 
   override render() {
     const toggleBtnClasses = {
@@ -91,7 +93,8 @@ export class TagGroup extends LitElement {
     if (
       changedProps.has('filter') ||
       changedProps.has('tagSize') ||
-      changedProps.has('limitTags')
+      changedProps.has('limitTags') ||
+      changedProps.has('limitCount')
     ) {
       this._updateChildren();
     }
