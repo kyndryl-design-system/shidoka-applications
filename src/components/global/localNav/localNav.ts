@@ -18,11 +18,6 @@ import LocalNavScss from './localNav.scss?inline';
 import arrowIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import pinIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/side-drawer-out.svg';
 
-const DESKTOP_BREAKPOINT = 672;
-const MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR =
-  '--_local-nav-manual-expanded-width';
-const MANUAL_TOGGLE_WIDTH_SYNC_DELAY_MS = 320;
-
 const _defaultTextStrings = {
   pin: 'Pin',
   unpin: 'Unpin',
@@ -118,15 +113,6 @@ export class LocalNav extends LitElement {
   /** @ignore */
   private readonly _onLinkActive = (e: Event) =>
     this._handleLinkActive(e as CustomEvent<{ text: string }>);
-
-  /** @ignore */
-  private readonly _onWindowResize = () => this._queueManualToggleWidthSync();
-
-  /** @ignore */
-  private _manualToggleWidthSyncFrame: number | null = null;
-
-  /** @ignore */
-  private _manualToggleWidthSyncTimeout: number | null = null;
 
   override render() {
     return html`
@@ -260,74 +246,11 @@ export class LocalNav extends LitElement {
 
   private handleSlotChange() {
     this._updateChildren();
-    this._queueManualToggleWidthSync();
     this.requestUpdate();
   }
 
   private _handleLinkActive(e: CustomEvent<{ text: string }>) {
     this._activeLinkText = e.detail.text;
-  }
-
-  /** @ignore */
-  private get _isDesktopViewport(): boolean {
-    if (typeof window === 'undefined') return true;
-    return window.innerWidth >= DESKTOP_BREAKPOINT;
-  }
-
-  private _queueManualToggleWidthSync(delayMs = 0) {
-    if (this._manualToggleWidthSyncFrame !== null) {
-      cancelAnimationFrame(this._manualToggleWidthSyncFrame);
-    }
-    if (this._manualToggleWidthSyncTimeout !== null) {
-      clearTimeout(this._manualToggleWidthSyncTimeout);
-      this._manualToggleWidthSyncTimeout = null;
-    }
-
-    this._manualToggleWidthSyncFrame = requestAnimationFrame(() => {
-      this._manualToggleWidthSyncFrame = null;
-
-      if (delayMs > 0) {
-        this._manualToggleWidthSyncTimeout = window.setTimeout(() => {
-          this._manualToggleWidthSyncTimeout = null;
-          this._syncManualToggleExpandedWidth();
-        }, delayMs);
-        return;
-      }
-
-      this._syncManualToggleExpandedWidth();
-    });
-  }
-
-  private _syncManualToggleExpandedWidth() {
-    if (!this.manualToggleVariant || !this._isDesktopViewport || !this._navEl) {
-      if (!this.manualToggleVariant) {
-        this.style.removeProperty(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR);
-      }
-      return;
-    }
-
-    if (!this.pinned) {
-      return;
-    }
-
-    const measuredWidth = Number.parseFloat(
-      getComputedStyle(this._navEl).width
-    );
-
-    if (Number.isNaN(measuredWidth) || measuredWidth <= 0) {
-      return;
-    }
-
-    const nextWidth = `${Math.ceil(measuredWidth)}px`;
-    if (
-      this.style
-        .getPropertyValue(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR)
-        .trim() === nextWidth
-    ) {
-      return;
-    }
-
-    this.style.setProperty(MANUAL_TOGGLE_EXPANDED_WIDTH_CSS_VAR, nextWidth);
   }
 
   override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
@@ -351,20 +274,6 @@ export class LocalNav extends LitElement {
 
     if (changedProps.has('textStrings')) {
       this._textStrings = deepmerge(_defaultTextStrings, this.textStrings);
-    }
-  }
-
-  override updated(changedProps: Map<string | number | symbol, unknown>) {
-    if (
-      changedProps.has('pinned') ||
-      changedProps.has('manualToggleVariant') ||
-      changedProps.has('_expanded')
-    ) {
-      this._queueManualToggleWidthSync(
-        changedProps.has('pinned') && this.pinned
-          ? MANUAL_TOGGLE_WIDTH_SYNC_DELAY_MS
-          : 0
-      );
     }
   }
 
@@ -395,7 +304,6 @@ export class LocalNav extends LitElement {
 
   override firstUpdated() {
     this._handleScroll();
-    this._queueManualToggleWidthSync();
   }
 
   override connectedCallback() {
@@ -404,22 +312,12 @@ export class LocalNav extends LitElement {
     document.addEventListener('click', this._onDocumentClick);
     this.addEventListener('on-link-active', this._onLinkActive);
     window.addEventListener('scroll', this._debounceScroll);
-    window.addEventListener('resize', this._onWindowResize);
   }
 
   override disconnectedCallback() {
-    if (this._manualToggleWidthSyncFrame !== null) {
-      cancelAnimationFrame(this._manualToggleWidthSyncFrame);
-      this._manualToggleWidthSyncFrame = null;
-    }
-    if (this._manualToggleWidthSyncTimeout !== null) {
-      clearTimeout(this._manualToggleWidthSyncTimeout);
-      this._manualToggleWidthSyncTimeout = null;
-    }
     document.removeEventListener('click', this._onDocumentClick);
     this.removeEventListener('on-link-active', this._onLinkActive);
     window.removeEventListener('scroll', this._debounceScroll);
-    window.removeEventListener('resize', this._onWindowResize);
 
     super.disconnectedCallback();
   }

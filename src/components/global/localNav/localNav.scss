@@ -53,14 +53,6 @@ nav {
     }
   }
 
-  &.nav--manual-toggle.nav--expanded {
-    @media (min-width: 42rem) {
-      width: var(--_local-nav-manual-expanded-width, fit-content);
-      max-width: calc(100vw - 16px);
-      padding-right: 12px;
-    }
-  }
-
   @include typography.type-ui-02;
   @include elevation.shadow(1);
 }
@@ -119,6 +111,7 @@ nav {
 
 .manual-toggle-container {
   display: none;
+  flex-shrink: 0;
   justify-content: flex-start;
   padding: 0 4px 8px;
   margin-bottom: 12px;
@@ -162,17 +155,20 @@ slot[name='search'] {
 
   .nav--expanded & {
     overflow-y: auto;
+  }
 
+  .nav--manual-toggle & {
     @media (min-width: 42rem) {
-      height: 100%;
+      overflow-y: auto;
     }
   }
 
   @media (min-width: 42rem) {
     position: static;
     display: flex;
+    flex: 1 1 auto;
     visibility: visible;
-    height: 100%;
+    min-height: 0;
     padding: 0;
     background: none;
   }
@@ -226,6 +222,7 @@ slot[name='search'] {
 
 .toggle-container {
   display: none;
+  flex-shrink: 0;
   padding: 8px 4px 4px;
   border-top: 1px solid var(--kd-color-border-variants-light);
 
