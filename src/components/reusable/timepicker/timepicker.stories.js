@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './index';
 import { action } from 'storybook/actions';
 import { useArgs } from 'storybook/preview-api';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -29,6 +29,7 @@ export default {
     locale: { control: { type: 'text' } },
     minTime: { control: { type: 'text' } },
     maxTime: { control: { type: 'text' } },
+    allowManualInput: { control: { type: 'boolean' } },
     // defaultHour/defaultMinute/defaultSeconds are soft deprecated — prefer controlling the component via `value`
     defaultHour: {
       control: { type: 'number' },
@@ -77,6 +78,26 @@ const ensureInTabsInitialValues = () => {
   }
 };
 
+const manualInputEventOptions = { bubbles: true, composed: true };
+
+const collectChangeDetails = (picker) => {
+  const details = [];
+  picker.addEventListener('on-change', (event) => {
+    details.push(event.detail);
+  });
+  return details;
+};
+
+const commitManualInputValue = (input, value) => {
+  input.value = value;
+  input.dispatchEvent(new Event('input', manualInputEventOptions));
+  input.dispatchEvent(new Event('change', manualInputEventOptions));
+  input.blur();
+};
+
+const countClearEvents = (details) =>
+  details.filter((detail) => detail?.source === 'clear').length;
+
 const Template = (args) => {
   return html`
     <kyn-time-picker
@@ -98,6 +119,7 @@ const Template = (args) => {
       .defaultErrorMessage=${args.defaultErrorMessage}
       .minTime=${args.minTime}
       .maxTime=${args.maxTime}
+      ?allowManualInput=${args.allowManualInput}
       .errorAriaLabel=${args.errorAriaLabel}
       .errorTitle=${args.errorTitle}
       .warningAriaLabel=${args.warningAriaLabel}
@@ -126,6 +148,7 @@ DefaultTimePicker.args = {
   defaultErrorMessage: 'A time value is required',
   minTime: '',
   maxTime: '',
+  allowManualInput: false,
   errorAriaLabel: 'Error message icon',
   errorTitle: '',
   warningAriaLabel: '',
@@ -265,6 +288,7 @@ export const InModal = {
           .defaultErrorMessage=${args.defaultErrorMessage}
           .minTime=${args.minTime}
           .maxTime=${args.maxTime}
+          ?allowManualInput=${args.allowManualInput}
           .errorAriaLabel=${args.errorAriaLabel}
           .errorTitle=${args.errorTitle}
           .warningAriaLabel=${args.warningAriaLabel}
@@ -317,6 +341,7 @@ export const ControlledEcho = {
         .defaultErrorMessage=${args.defaultErrorMessage}
         .minTime=${args.minTime}
         .maxTime=${args.maxTime}
+        ?allowManualInput=${args.allowManualInput}
         .errorAriaLabel=${args.errorAriaLabel}
         .errorTitle=${args.errorTitle}
         .warningAriaLabel=${args.warningAriaLabel}
@@ -399,6 +424,7 @@ export const ManualInputSync = {
     name: 'manual-input-timepicker',
     label: 'Manual input sync',
     required: true,
+    allowManualInput: true,
   },
   play: async ({ canvasElement }) => {
     const picker = canvasElement.querySelector('kyn-time-picker');
@@ -407,11 +433,9 @@ export const ManualInputSync = {
     expect(picker).not.toBeNull();
     expect(input).not.toBeNull();
 
-    await userEvent.click(input);
-    await userEvent.clear(input);
-    await userEvent.type(input, '12:00 AM');
-    input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
-    input.blur();
+    const eventDetails = collectChangeDetails(picker);
+
+    commitManualInputValue(input, '12:00 AM');
 
     await waitFor(() => {
       const value = picker.getValue();
@@ -421,6 +445,14 @@ export const ManualInputSync = {
       expect(value.getMinutes()).toBe(0);
       expect(picker.checkValidity()).toBe(true);
       expect(picker.shadowRoot.querySelector('.clear-button')).not.toBeNull();
+    });
+
+    commitManualInputValue(input, '');
+
+    await waitFor(() => {
+      expect(picker.getValue()).toBeNull();
+      expect(input.value).toBe('');
+      expect(countClearEvents(eventDetails)).toBe(1);
     });
   },
 };

@@ -2,7 +2,7 @@ import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import { useEffect, useArgs } from 'storybook/preview-api';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -70,6 +70,26 @@ export default {
     ...ValidationArgs,
   },
 };
+
+const manualInputEventOptions = { bubbles: true, composed: true };
+
+const collectChangeDetails = (picker) => {
+  const details = [];
+  picker.addEventListener('on-change', (event) => {
+    details.push(event.detail);
+  });
+  return details;
+};
+
+const commitManualInputValue = (input, value) => {
+  input.value = value;
+  input.dispatchEvent(new Event('input', manualInputEventOptions));
+  input.dispatchEvent(new Event('change', manualInputEventOptions));
+  input.blur();
+};
+
+const countClearEvents = (details) =>
+  details.filter((detail) => detail?.source === 'clear').length;
 
 const Template = (args) => {
   useEffect(() => {
@@ -657,11 +677,9 @@ export const ManualInputSync = {
     expect(picker).not.toBeNull();
     expect(input).not.toBeNull();
 
-    await userEvent.click(input);
-    await userEvent.clear(input);
-    await userEvent.type(input, '2026-04-17 to 2026-04-18');
-    input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
-    input.blur();
+    const eventDetails = collectChangeDetails(picker);
+
+    commitManualInputValue(input, '2026-04-17 to 2026-04-18');
 
     await waitFor(() => {
       const [start, end] = picker.getValue();
@@ -676,6 +694,14 @@ export const ManualInputSync = {
       expect(end.getDate()).toBe(18);
       expect(picker.checkValidity()).toBe(true);
       expect(picker.shadowRoot.querySelector('.clear-button')).not.toBeNull();
+    });
+
+    commitManualInputValue(input, '');
+
+    await waitFor(() => {
+      expect(picker.getValue()).toEqual([null, null]);
+      expect(input.value).toBe('');
+      expect(countClearEvents(eventDetails)).toBe(1);
     });
   },
 };
