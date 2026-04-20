@@ -27,6 +27,7 @@ export const TagGroup = {
   args: {
     filter: false,
     limitTags: false,
+    limitCount: 5,
     tagSize: 'md',
     textStrings: {
       showAll: 'Show all',
@@ -38,6 +39,7 @@ export const TagGroup = {
       <kyn-tag-group
         ?filter=${args.filter}
         ?limitTags=${args.limitTags}
+        .limitCount=${args.limitCount}
         tagSize=${args.tagSize}
         .textStrings=${args.textStrings}
       >
