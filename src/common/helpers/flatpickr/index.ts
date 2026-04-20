@@ -54,6 +54,7 @@ export {
   isValidDate,
   filterValidDates,
   isEmptyValue,
+  shouldSkipManualInputSync,
   timesEqual,
   datesEqual,
   cleanupFlatpickrInstance,

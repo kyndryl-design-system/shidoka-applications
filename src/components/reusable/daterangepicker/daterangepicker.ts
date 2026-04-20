@@ -25,6 +25,7 @@ import {
   generateRandomId,
   cleanupFlatpickrInstance,
   filterValidDates,
+  shouldSkipManualInputSync,
   CONFIG_DEBOUNCE_DELAY,
   RESIZE_DEBOUNCE_DELAY,
 } from '../../../common/helpers/flatpickr/index';
@@ -1211,7 +1212,17 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   private commitManualInputValue() {
-    if (!this.allowManualInput || !this._inputEl || this._isClearing) return;
+    if (
+      !this._inputEl ||
+      shouldSkipManualInputSync({
+        allowManualInput: this.allowManualInput,
+        isClearing: this._isClearing,
+        isFromFlatpickr: this._isDatePickerChange,
+        isSyncingFromHost: this._isSyncingFromHost,
+      })
+    ) {
+      return;
+    }
 
     const raw = this._inputEl.value.trim();
 

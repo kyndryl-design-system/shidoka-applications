@@ -22,6 +22,7 @@ import {
   generateRandomId,
   isEmptyValue,
   filterValidDates,
+  shouldSkipManualInputSync,
   cleanupFlatpickrInstance,
   CONFIG_DEBOUNCE_DELAY,
 } from '../../../common/helpers/flatpickr/index';
@@ -243,6 +244,12 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   @state()
   private accessor _isClearing = false;
+
+  /** Tracks if change originated from Flatpickr to prevent native re-entry.
+   * @internal
+   */
+  @state()
+  private accessor _isFromFlatpickr = false;
 
   /** Internal ID used to associate the input with its calendar container.
    * @internal
@@ -1094,6 +1101,7 @@ export class DatePicker extends FormMixin(LitElement) {
     if (this._isClearing) return;
 
     this._hasInteracted = true;
+    this._isFromFlatpickr = true;
 
     try {
       const validDates = filterValidDates(selectedDates);
@@ -1148,6 +1156,8 @@ export class DatePicker extends FormMixin(LitElement) {
       console.error('Error handling date change:', error);
       this.invalidText = this._textStrings.errorProcessing;
       this._validate(true, false);
+    } finally {
+      this._isFromFlatpickr = false;
     }
   }
 
@@ -1161,7 +1171,16 @@ export class DatePicker extends FormMixin(LitElement) {
   }
 
   private commitManualInputValue() {
-    if (!this.allowManualInput || !this._inputEl || this._isClearing) return;
+    if (
+      !this._inputEl ||
+      shouldSkipManualInputSync({
+        allowManualInput: this.allowManualInput,
+        isClearing: this._isClearing,
+        isFromFlatpickr: this._isFromFlatpickr,
+      })
+    ) {
+      return;
+    }
 
     const raw = this._inputEl.value.trim();
 

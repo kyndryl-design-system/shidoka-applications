@@ -34,6 +34,7 @@ import {
   isValidDate,
   filterValidDates,
   isEmptyValue,
+  shouldSkipManualInputSync,
   timesEqual,
   datesEqual,
   cleanupFlatpickrInstance,
@@ -517,6 +518,51 @@ describe('isEmptyValue', () => {
 
   it('should return false for Date objects', () => {
     expect(isEmptyValue(new Date())).toBe(false);
+  });
+});
+
+describe('shouldSkipManualInputSync', () => {
+  it('should skip when manual input is disabled', () => {
+    expect(
+      shouldSkipManualInputSync({
+        allowManualInput: false,
+      })
+    ).toBe(true);
+  });
+
+  it('should skip when clearing is already in progress', () => {
+    expect(
+      shouldSkipManualInputSync({
+        allowManualInput: true,
+        isClearing: true,
+      })
+    ).toBe(true);
+  });
+
+  it('should skip when the change originated from flatpickr', () => {
+    expect(
+      shouldSkipManualInputSync({
+        allowManualInput: true,
+        isFromFlatpickr: true,
+      })
+    ).toBe(true);
+  });
+
+  it('should skip when syncing a host-controlled value', () => {
+    expect(
+      shouldSkipManualInputSync({
+        allowManualInput: true,
+        isSyncingFromHost: true,
+      })
+    ).toBe(true);
+  });
+
+  it('should allow manual sync when no guard is active', () => {
+    expect(
+      shouldSkipManualInputSync({
+        allowManualInput: true,
+      })
+    ).toBe(false);
   });
 });
 
