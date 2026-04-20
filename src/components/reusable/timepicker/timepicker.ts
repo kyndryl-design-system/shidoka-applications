@@ -374,6 +374,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private hasValue(): boolean {
     return (
+      Boolean(this._inputEl?.value.trim()) ||
       Boolean(this.value) ||
       (!this._userHasCleared &&
         (this.defaultHour !== null || this.defaultMinute !== null))
@@ -440,6 +441,8 @@ export class TimePicker extends FormMixin(LitElement) {
             autocomplete="off"
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @input=${this.handleNativeInputEvent}
+            @change=${this.handleManualInputChange}
           />
           ${this.hasValue() && !this.readonly
             ? html`
@@ -1051,6 +1054,15 @@ export class TimePicker extends FormMixin(LitElement) {
     this._hasInteracted = true;
     this._validate(true, false);
     await this.updateComplete;
+  }
+
+  private handleNativeInputEvent() {
+    this.updateFormValue();
+    this.requestUpdate();
+  }
+
+  private handleManualInputChange() {
+    this.commitManualInputValue();
   }
 
   private commitManualInputValue() {

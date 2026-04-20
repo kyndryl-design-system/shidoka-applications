@@ -6,18 +6,21 @@ import { deepmerge } from 'deepmerge-ts';
 import WorkspaceSwitcherScss from './workspaceSwitcher.scss?inline';
 
 import './workspaceSwitcherMenuItem';
+import type { WorkspaceSwitcherMenuItem } from './workspaceSwitcherMenuItem';
 import '../../reusable/link';
 import { LINK_TARGETS } from '../../reusable/link/defs';
 
 import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import checkmarkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark.svg';
 import copyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/copy.svg';
+import accountsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/accounts.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 
 const _defaultTextStrings = {
   currentTitle: 'CURRENT',
   workspacesTitle: 'WORKSPACES',
   backToWorkspaces: 'Workspaces',
+  launchAssistiveText: 'Opens in a new tab',
 };
 
 export interface WorkspaceSwitcherAccountMetaItem {
@@ -34,6 +37,19 @@ export interface WorkspaceSwitcherAccountMeta {
   items?: WorkspaceSwitcherAccountMetaItem[];
 }
 
+type MobilePresentationDetail = {
+  buttonIconSvg?: string;
+  summaryIconSvg?: string;
+  summaryLabel?: string;
+  summaryDetails?: WorkspaceSwitcherAccountMetaItem[];
+  mobileLabel?: string;
+  hideButtonContentOnMobile?: boolean;
+};
+
+const _mobilePresentationEvent = 'kyn-internal-flyout-mobile-presentation';
+
+type HeaderFlyoutHost = HTMLElement;
+
 /**
  * Workspace Switcher shell component providing two-panel layout with mobile drill-down.
  * Component fits to 100% of the width and height of its container and surfaces two panels for content composition via slots.
@@ -43,6 +59,8 @@ export interface WorkspaceSwitcherAccountMeta {
  * which renders the preferred rigid built-in pattern.
  * @slot left - Legacy non-list content for the left panel when `accountMeta` is not used. Prefer `accountMeta`; this slot is maintained for backward compatibility.
  * @slot left-list - List items for the left panel (rendered inside role="list").
+ * @slot mobile-trigger-icon - Optional icon override for the mobile flyout trigger. Provide an inline SVG or wrapper that contains one.
+ * @slot account-status-icon - Optional icon override for the current account status indicator used by the built-in account meta block and mobile summary. Provide an inline SVG or wrapper that contains one.
  * @slot right - Non-list content for the right panel (e.g. search).
  * @slot right-list - List items for the right panel (rendered inside role="list").
  * @fires on-account-meta-copy - Emits when a copy-style account meta action is activated.
@@ -82,7 +100,8 @@ export class WorkspaceSwitcher extends LitElement {
   /** Merged text strings.
    * @internal
    */
-  private _textStrings = _defaultTextStrings;
+  @state()
+  private accessor _textStrings = _defaultTextStrings;
 
   /** Tracks whether legacy left-slot content is present. */
   @state()
@@ -96,7 +115,7 @@ export class WorkspaceSwitcher extends LitElement {
    * The nearest flyout host, if any.
    * @internal
    */
-  private _flyoutHost: HTMLElement | null = null;
+  private _flyoutHost: HeaderFlyoutHost | null = null;
 
   /**
    * Clears transient copy feedback after a short delay.
@@ -132,6 +151,14 @@ export class WorkspaceSwitcher extends LitElement {
     }
   };
 
+  /**
+   * Re-syncs the parent flyout when icon slot assignments change.
+   * @internal
+   */
+  private _handleMobileIconSlotChange = () => {
+    this._syncFlyoutHostMobilePresentation();
+  };
+
   override connectedCallback() {
     super.connectedCallback();
     this._updateLegacyLeftSlotState();
@@ -143,11 +170,14 @@ export class WorkspaceSwitcher extends LitElement {
       attributes: true,
       attributeFilter: ['slot'],
     });
-    this._flyoutHost = this.closest('kyn-header-flyout');
+    this._flyoutHost = this.closest(
+      'kyn-header-flyout'
+    ) as HeaderFlyoutHost | null;
     this._flyoutHost?.addEventListener(
       'on-flyout-toggle',
       this._handleFlyoutToggle as EventListener
     );
+    this._syncFlyoutHostMobilePresentation();
   }
 
   override disconnectedCallback() {
@@ -156,6 +186,7 @@ export class WorkspaceSwitcher extends LitElement {
       'on-flyout-toggle',
       this._handleFlyoutToggle as EventListener
     );
+    this._clearFlyoutHostMobilePresentation();
     this._clearCopyFeedback();
     this._lightDomObserver?.disconnect();
     this._lightDomObserver = null;
@@ -173,11 +204,30 @@ export class WorkspaceSwitcher extends LitElement {
     }
   }
 
+  override updated(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('textStrings')) {
+      this._updateChildMenuItemTextStrings();
+    }
+
+    if (
+      changedProperties.has('textStrings') ||
+      changedProperties.has('accountMeta')
+    ) {
+      this._syncFlyoutHostMobilePresentation();
+    }
+  }
+
   override render() {
     const showLeftHeader =
       this.accountMeta != null || this._hasLegacyLeftSlotContent;
 
     return html`
+      <div hidden aria-hidden="true">
+        <slot
+          name="mobile-trigger-icon"
+          @slotchange=${this._handleMobileIconSlotChange}
+        ></slot>
+      </div>
       <div class="workspace-switcher">
         <div class="workspace-switcher__left">
           ${!this.hideCurrentTitle
@@ -227,7 +277,79 @@ export class WorkspaceSwitcher extends LitElement {
     this._hasLegacyLeftSlotContent = Array.from(this.children).some(
       (child) => child.getAttribute('slot') === 'left'
     );
+    this._updateChildMenuItemTextStrings();
     this._warnForLegacyLeftSlotUsage();
+    this._syncFlyoutHostMobilePresentation();
+  }
+
+  private _updateChildMenuItemTextStrings() {
+    const menuItemTextStrings = {
+      launchAssistiveText: this._textStrings.launchAssistiveText,
+    };
+
+    this.querySelectorAll<WorkspaceSwitcherMenuItem>(
+      'kyn-workspace-switcher-menu-item'
+    ).forEach((item) => {
+      item.textStrings = menuItemTextStrings;
+    });
+  }
+
+  private _syncFlyoutHostMobilePresentation() {
+    this._emitFlyoutHostMobilePresentation({
+      buttonIconSvg: this._getMobilePresentationIconSvg(
+        'mobile-trigger-icon',
+        accountsIcon
+      ),
+      summaryIconSvg: this.accountMeta?.name
+        ? this._getMobilePresentationIconSvg(
+            'account-status-icon',
+            checkmarkFilledIcon
+          )
+        : '',
+      summaryLabel: this.accountMeta?.name ?? '',
+      summaryDetails:
+        this.accountMeta?.items
+          ?.filter((item) => !!item.text?.trim())
+          .slice(0, 2) ?? [],
+      mobileLabel: this._textStrings.backToWorkspaces,
+      hideButtonContentOnMobile: true,
+    });
+  }
+
+  private _clearFlyoutHostMobilePresentation() {
+    this._emitFlyoutHostMobilePresentation();
+  }
+
+  private _emitFlyoutHostMobilePresentation(
+    detail: MobilePresentationDetail = {}
+  ) {
+    this._flyoutHost?.dispatchEvent(
+      new CustomEvent(_mobilePresentationEvent, {
+        detail,
+      })
+    );
+  }
+
+  private _getMobilePresentationIconSvg(
+    slotName: 'mobile-trigger-icon' | 'account-status-icon',
+    fallbackSvg = ''
+  ) {
+    const assignedIconHost = Array.from(this.children).find(
+      (child) => child.getAttribute('slot') === slotName
+    );
+
+    if (!assignedIconHost) return fallbackSvg;
+
+    const iconNode =
+      assignedIconHost.tagName.toLowerCase() === 'svg'
+        ? assignedIconHost
+        : assignedIconHost.querySelector('svg');
+
+    if (iconNode?.outerHTML.trim().startsWith('<svg')) {
+      return iconNode.outerHTML;
+    }
+
+    return fallbackSvg;
   }
 
   private _warnForLegacyLeftSlotUsage() {
@@ -259,7 +381,11 @@ export class WorkspaceSwitcher extends LitElement {
           class="workspace-switcher__account-meta-status"
           aria-hidden="true"
         >
-          ${unsafeSVG(checkmarkFilledIcon)}
+          <slot
+            name="account-status-icon"
+            @slotchange=${this._handleMobileIconSlotChange}
+            >${unsafeSVG(checkmarkFilledIcon)}</slot
+          >
         </span>
         <div class="workspace-switcher__account-meta-content">
           <span

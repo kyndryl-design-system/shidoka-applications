@@ -184,11 +184,15 @@ export const WithBadge = {
     showStatusBadge: true,
     statusBadgeLabel: 'Update',
   },
+  tags: ['updated', 'version:v2.92.0'],
   render: (args) => {
     return html`
       <h3>Default</h3>
       <div>
-        <i><b>Note:</b> Recommended to use the badge slot for badge status.</i>
+        <i
+          ><b>Note:</b>** Recommended to use the badge slot for badge status and
+          subtitle slot for Subtitle text.</i
+        >
       </div>
       <br />
       <div style="display: flex; max-width: 500px; min-height: 200px;">
@@ -410,6 +414,7 @@ export const WithStatus = {
     ...args,
     widgetStatus: 'warning',
   },
+  tags: ['new', 'version:v2.92.0'],
   render: (args) => {
     return html`
       <div style="display: flex; max-width: 500px; min-height: 200px;">

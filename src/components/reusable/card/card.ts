@@ -52,11 +52,15 @@ export class Card extends LitElement {
   @property({ type: Boolean })
   accessor highlight = false;
 
+  /** Compact mode, reduces padding. */
+  @property({ type: Boolean })
+  accessor compact = false;
+
   /** Card variant. `'default'`, `'notification'`, `'interaction'`
    * * `'notification'` variant is used primarily for Info Card
    * and contains additional padding, per design specs.
    * * `'interaction'` variant is used for AI response
-  
+
    */
   @property({ type: String, reflect: true })
   accessor variant: CardVariant = 'default';
@@ -72,6 +76,7 @@ export class Card extends LitElement {
       'ai-highlight': this.aiConnected && this.highlight,
       'variant-notification': this.variant === 'notification',
       'variant-interaction': this.variant === 'interaction',
+      compact: this.compact,
     };
 
     const isAnchor = this.type === 'clickable' && this.href !== '';
@@ -132,6 +137,7 @@ export class Card extends LitElement {
     `;
   }
 
+  /** @internal */
   private get _computedRel(): string {
     if (this.target === '_blank' && (!this.rel || this.rel.trim() === '')) {
       return 'noopener noreferrer';
@@ -139,6 +145,7 @@ export class Card extends LitElement {
     return this.rel;
   }
 
+  /** @internal */
   private _onClick = (e: Event) => {
     if (!this.href) e.preventDefault();
     const ev = new CustomEvent('on-card-click', {
@@ -150,6 +157,7 @@ export class Card extends LitElement {
     if (!this.dispatchEvent(ev) || ev.defaultPrevented) e.preventDefault();
   };
 
+  /** @internal */
   private _onKeydown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -157,6 +165,7 @@ export class Card extends LitElement {
     }
   };
 
+  /** @internal */
   private _forwardConfirm = (e: Event) => {
     if ((e.target as HTMLElement) === this) return;
     const detail = (e as CustomEvent)?.detail;
