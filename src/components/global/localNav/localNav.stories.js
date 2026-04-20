@@ -18,6 +18,10 @@ export default {
     'kyn-local-nav-link': 'kyn-local-nav-link',
     'kyn-local-nav-divider': 'kyn-local-nav-divider',
   },
+  argTypes: {
+    'manual-toggle-variant': { table: { disable: true } },
+    'collapsed-by-default': { table: { disable: true } },
+  },
   decorators: [
     (story) =>
       html`
@@ -39,6 +43,8 @@ export default {
 
 const args = {
   pinned: false,
+  manualToggleVariant: false,
+  collapsedByDefault: false,
   textStrings: {
     pin: 'Pin',
     unpin: 'Unpin',
@@ -52,7 +58,12 @@ export const LocalNav = {
   args,
   render: (args) => {
     return html`
-      <kyn-local-nav ?pinned=${args.pinned} .textStrings=${args.textStrings}>
+      <kyn-local-nav
+        ?pinned=${args.pinned}
+        ?manual-toggle-variant=${args.manualToggleVariant}
+        ?collapsed-by-default=${args.collapsedByDefault}
+        .textStrings=${args.textStrings}
+      >
         <kyn-local-nav-link href="javascript:void(0)" active>
           <span slot="icon">${unsafeSVG(sampleIcon)}</span>
           Link 1
@@ -101,8 +112,8 @@ export const WithDivider = {
     return html`
       <kyn-local-nav
         ?pinned=${args.pinned}
-        pinText=${args.pinText}
-        unpinText=${args.unpinText}
+        ?manual-toggle-variant=${args.manualToggleVariant}
+        ?collapsed-by-default=${args.collapsedByDefault}
         .textStrings=${args.textStrings}
       >
         <kyn-local-nav-link href="javascript:void(0)" active>
@@ -208,8 +219,8 @@ export const WithSearch = {
     return html`
       <kyn-local-nav
         ?pinned=${args.pinned}
-        pinText=${args.pinText}
-        unpinText=${args.unpinText}
+        ?manual-toggle-variant=${args.manualToggleVariant}
+        ?collapsed-by-default=${args.collapsedByDefault}
         .textStrings=${args.textStrings}
       >
         <kyn-text-input
@@ -259,4 +270,54 @@ export const WithSearch = {
       </div>
     `;
   },
+};
+
+export const ManualToggleVariant = {
+  args: {
+    ...args,
+    manualToggleVariant: true,
+  },
+  render: (args) => {
+    return html`
+      <kyn-local-nav
+        ?pinned=${args.pinned}
+        ?manual-toggle-variant=${args.manualToggleVariant}
+        ?collapsed-by-default=${args.collapsedByDefault}
+        .textStrings=${args.textStrings}
+      >
+        <kyn-local-nav-link href="javascript:void(0)" active>
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          Overview
+        </kyn-local-nav-link>
+
+        <kyn-local-nav-divider></kyn-local-nav-divider>
+
+        <kyn-local-nav-link href="javascript:void(0)">
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          Services
+        </kyn-local-nav-link>
+
+        <kyn-local-nav-link href="javascript:void(0)">
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          Reports
+        </kyn-local-nav-link>
+
+        <kyn-local-nav-divider heading="Administration"></kyn-local-nav-divider>
+
+        <kyn-local-nav-link href="javascript:void(0)">
+          <span slot="icon">${unsafeSVG(sampleIcon)}</span>
+          Settings
+        </kyn-local-nav-link>
+      </kyn-local-nav>
+    `;
+  },
+};
+
+export const ManualToggleVariantCollapsedByDefault = {
+  args: {
+    ...args,
+    manualToggleVariant: true,
+    collapsedByDefault: true,
+  },
+  render: ManualToggleVariant.render,
 };

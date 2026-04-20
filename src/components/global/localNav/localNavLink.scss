@@ -39,6 +39,19 @@ a {
     height: 16px;
   }
 
+  kyn-tooltip.collapsed-tooltip {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .collapsed-tooltip__anchor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
   .left-padding & {
     padding-left: 28px;
 
@@ -244,12 +257,35 @@ a {
 .text {
   min-width: 120px;
   margin-left: 4px;
+  transition: max-width 220ms ease-out, margin-left 220ms ease-out,
+    opacity 160ms ease-out;
 
   .nav-expanded & {
     display: block;
   }
 
-  .top-level:not(.nav-expanded) & {
+  .top-level.manual-toggle-variant & {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .top-level.manual-toggle-variant:not(.nav-expanded) & {
+    max-width: 0;
+    margin-left: 0;
+    opacity: 0;
+  }
+
+  .top-level.manual-toggle-variant.nav-expanded & {
+    min-width: 120px;
+    margin-left: 4px;
+    opacity: 1;
+  }
+
+  .top-level:not(.nav-expanded):not(.manual-toggle-variant) & {
     @include mixins.visually-hidden;
   }
 }

@@ -1,5 +1,5 @@
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
-import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import {
   customElement,
   property,
@@ -11,6 +11,7 @@ import LocalNavLinkScss from './localNavLink.scss?inline';
 
 import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arrow-left.svg';
 import chevronIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import '../../reusable/tooltip';
 
 /**
  * Link component for use in the global Side Navigation component.
@@ -71,6 +72,12 @@ export class LocalNavLink extends LitElement {
   @state()
   accessor _text = '';
 
+  /** Whether the parent nav uses the manual-toggle variant.
+   * @internal
+   */
+  @state()
+  accessor _manualToggleVariant = false;
+
   /**
    * Queries slotted links.
    * @ignore
@@ -92,11 +99,29 @@ export class LocalNavLink extends LitElement {
   @queryAssignedElements({ slot: 'icon' })
   accessor _icon!: Array<HTMLElement>;
 
+  private get _isDesktopViewport(): boolean {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 672;
+  }
+
+  private get _showCollapsedTooltip(): boolean {
+    return (
+      this._manualToggleVariant &&
+      this._isDesktopViewport &&
+      this._level === 1 &&
+      !this._navExpanded &&
+      !this._navExpandedMobile &&
+      this._icon.length > 0 &&
+      this._text !== ''
+    );
+  }
+
   override render() {
     const classes = {
       link: true,
       'top-level': this._level === 1,
       'sub-level': this._level > 1,
+      'manual-toggle-variant': this._manualToggleVariant,
       'nav-expanded': this._navExpanded || this._navExpandedMobile,
       'link-expanded': this.expanded,
       'link-active': this.active,
@@ -116,10 +141,25 @@ export class LocalNavLink extends LitElement {
                 </span>
               `
             : null}
-
-          <div class="menu-item-inner-el icon">
-            <slot name="icon"></slot>
-          </div>
+          ${this._showCollapsedTooltip
+            ? html`
+                <kyn-tooltip
+                  class="collapsed-tooltip"
+                  assistiveText=${this._text}
+                  compact
+                  non-interactive-anchor
+                >
+                  <span slot="anchor" class="collapsed-tooltip__anchor">
+                    <slot name="icon"></slot>
+                  </span>
+                  <span class="collapsed-tooltip__text">${this._text}</span>
+                </kyn-tooltip>
+              `
+            : html`
+                <div class="menu-item-inner-el icon">
+                  <slot name="icon"></slot>
+                </div>
+              `}
 
           <span class="menu-item-inner-el text">
             <slot @slotchange=${this._handleTextSlotChange}></slot>
@@ -161,6 +201,10 @@ export class LocalNavLink extends LitElement {
     }
   }
 
+  override firstUpdated() {
+    this._getSlotText();
+  }
+
   private _handleTextSlotChange() {
     this._getSlotText();
     this.requestUpdate();
@@ -196,6 +240,27 @@ export class LocalNavLink extends LitElement {
   }
 
   private handleClick(e: Event) {
+    if (
+      this._manualToggleVariant &&
+      this._isDesktopViewport &&
+      !this._navExpanded
+    ) {
+      const preventDefault = this.disabled || this._navLinks.length > 0;
+      if (preventDefault) {
+        e.preventDefault();
+      }
+      this.dispatchEvent(
+        new CustomEvent('on-click', {
+          detail: {
+            origEvent: e,
+            level: this._level,
+            defaultPrevented: preventDefault,
+          },
+        })
+      );
+      return;
+    }
+
     const preventDefault = this.disabled || this._navLinks.length > 0;
     if (this._navLinks.length) this.expanded = !this.expanded;
     if (preventDefault) e.preventDefault();

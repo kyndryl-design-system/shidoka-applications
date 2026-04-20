@@ -2,6 +2,11 @@ import { LitElement, html, unsafeCSS } from 'lit';
 import { customElement, queryAssignedElements } from 'lit/decorators.js';
 import UiShellScss from './uiShell.scss?inline';
 
+type LocalNavLike = HTMLElement & {
+  pinned?: boolean;
+  manualToggleVariant?: boolean;
+};
+
 /**
  * Container to help with positioning and padding of the global elements such as: adds padding for the fixed Header and Local Nav, adds main content gutters, and makes Footer sticky. This takes the onus off of the consuming app to configure these values.
  * @slot unnamed - Slot for global elements.
@@ -9,6 +14,14 @@ import UiShellScss from './uiShell.scss?inline';
 @customElement('kyn-ui-shell')
 export class UiShell extends LitElement {
   static override styles = unsafeCSS(UiShellScss);
+
+  /** @ignore */
+  private _observedLocalNav: LocalNavLike | null = null;
+
+  /** @ignore */
+  private readonly _onLocalNavToggle = () => {
+    this._syncLayout();
+  };
 
   /** @internal */
   @queryAssignedElements({ selector: 'kyn-header' })
@@ -27,57 +40,85 @@ export class UiShell extends LitElement {
   accessor _mainEl!: any;
 
   override render() {
-    return html` <slot @slotchange=${this.handleSlotChange}></slot> `;
+    return html` <slot @slotchange=${this._handleSlotChange}></slot> `;
   }
 
   override firstUpdated() {
-    if (this._localNavEl.length) {
-      const LocalNav = this._localNavEl[0];
-      const Main = this._mainEl[0];
+    this._bindLocalNavListeners();
+    this._syncLayout();
 
-      LocalNav.addEventListener('on-toggle', (e: any) => {
-        e.detail.pinned
-          ? Main.classList.add('pinned')
-          : Main.classList.remove('pinned');
-
-        if (this._footerEl.length) {
-          e.detail.pinned
-            ? this._footerEl[0].classList.add('pinned')
-            : this._footerEl[0].classList.remove('pinned');
-        }
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this._mainEl[0]?.classList.add('transitions-ready');
+        this._footerEl[0]?.classList.add('transitions-ready');
       });
-    }
+    });
   }
 
-  private handleSlotChange() {
-    const Main = this._mainEl[0];
+  override disconnectedCallback() {
+    this._cleanupLocalNavListeners();
+    super.disconnectedCallback();
+  }
 
-    if (this._localNavEl.length) {
-      const LocalNav = this._localNavEl[0];
+  /** @ignore */
+  private _handleSlotChange() {
+    this._bindLocalNavListeners();
+    this._syncLayout();
+    this.requestUpdate();
+  }
 
-      Main.classList.add('has-local-nav');
-
-      LocalNav.pinned
-        ? Main.classList.add('pinned')
-        : Main.classList.remove('pinned');
-
-      if (this._footerEl.length) {
-        this._footerEl[0].classList.add('has-local-nav');
-
-        LocalNav.pinned
-          ? this._footerEl[0].classList.add('pinned')
-          : this._footerEl[0].classList.remove('pinned');
-      }
-    } else {
-      Main.classList.remove('has-local-nav');
-      Main.classList.remove('pinned');
-
-      if (this._footerEl.length) {
-        this._footerEl[0].classList.remove('pinned');
-      }
+  /** @ignore */
+  private _bindLocalNavListeners() {
+    const localNav = this._getLocalNav();
+    if (this._observedLocalNav === localNav) {
+      return;
     }
 
-    this.requestUpdate();
+    this._cleanupLocalNavListeners();
+
+    if (!localNav) {
+      return;
+    }
+
+    this._observedLocalNav = localNav;
+    localNav.addEventListener('on-toggle', this._onLocalNavToggle);
+  }
+
+  /** @ignore */
+  private _cleanupLocalNavListeners() {
+    this._observedLocalNav?.removeEventListener(
+      'on-toggle',
+      this._onLocalNavToggle
+    );
+    this._observedLocalNav = null;
+  }
+
+  /** @ignore */
+  private _syncLayout() {
+    const main = this._mainEl[0];
+    const footer = this._footerEl[0];
+    const localNav = this._getLocalNav();
+    const hasLocalNav = !!localNav;
+    const pinned = !!localNav?.pinned;
+    const manualToggleVariant = !!localNav?.manualToggleVariant;
+
+    main?.classList.toggle('has-local-nav', hasLocalNav);
+    main?.classList.toggle('pinned', pinned);
+    main?.classList.toggle(
+      'manual-toggle-variant',
+      hasLocalNav && manualToggleVariant
+    );
+    footer?.classList.toggle('has-local-nav', hasLocalNav);
+    footer?.classList.toggle('pinned', pinned);
+    footer?.classList.toggle(
+      'manual-toggle-variant',
+      hasLocalNav && manualToggleVariant
+    );
+  }
+
+  /** @ignore */
+  private _getLocalNav(): LocalNavLike | null {
+    return this._localNavEl?.[0] ?? null;
   }
 }
 
