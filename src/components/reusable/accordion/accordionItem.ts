@@ -54,6 +54,12 @@ export class AccordionItem extends LitElement {
    */
   @state() private accessor _compact = false;
 
+  /**
+   * Whether an icon is assigned to the icon slot.
+   * @ignore
+   */
+  @state() private accessor _hasIcon = false;
+
   setIndex(index: number) {
     this._index = index;
   }
@@ -68,6 +74,21 @@ export class AccordionItem extends LitElement {
 
   setCompact(value: boolean) {
     this._compact = value;
+  }
+
+  private _handleIconSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    this._hasIcon = slot.assignedElements({ flatten: true }).length > 0;
+  }
+
+  override firstUpdated() {
+    const iconSlot = this.renderRoot.querySelector(
+      'slot[name="icon"]'
+    ) as HTMLSlotElement | null;
+
+    if (iconSlot) {
+      this._hasIcon = iconSlot.assignedElements({ flatten: true }).length > 0;
+    }
   }
 
   open() {
@@ -112,6 +133,8 @@ export class AccordionItem extends LitElement {
       disabled: this.disabled,
       'filled-header': this._filledHeader,
       compact: this._compact,
+      'has-icon': this._hasIcon,
+      'show-number': this._showNumber,
     });
 
     return html`
@@ -128,7 +151,10 @@ export class AccordionItem extends LitElement {
           id="kyn-accordion-item-title-${this._index}"
         >
           <div class="icon">
-            <slot name="icon"></slot>
+            <slot
+              name="icon"
+              @slotchange=${(e: Event) => this._handleIconSlotChange(e)}
+            ></slot>
           </div>
 
           ${this._showNumber
@@ -155,6 +181,8 @@ export class AccordionItem extends LitElement {
           id="kyn-accordion-item-body-${this._index}"
           role="region"
           aria-labelledby="kyn-accordion-item-title-${this._index}"
+          aria-hidden=${String(!this.opened)}
+          ?inert=${!this.opened}
         >
           <div class="kyn-accordion-item-detail">
             <slot name="body"></slot>

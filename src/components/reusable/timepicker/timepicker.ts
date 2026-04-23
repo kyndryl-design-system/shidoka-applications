@@ -19,6 +19,7 @@ import {
   generateRandomId,
   cleanupFlatpickrInstance,
   filterValidDates,
+  shouldSkipManualInputSync,
   CONFIG_DEBOUNCE_DELAY,
   VISIBILITY_CHECK_INTERVAL,
 } from '../../../common/helpers/flatpickr/index';
@@ -374,6 +375,7 @@ export class TimePicker extends FormMixin(LitElement) {
 
   private hasValue(): boolean {
     return (
+      Boolean(this._inputEl?.value.trim()) ||
       Boolean(this.value) ||
       (!this._userHasCleared &&
         (this.defaultHour !== null || this.defaultMinute !== null))
@@ -440,6 +442,8 @@ export class TimePicker extends FormMixin(LitElement) {
             autocomplete="off"
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @input=${this.handleNativeInputEvent}
+            @change=${this.handleManualInputChange}
           />
           ${this.hasValue() && !this.readonly
             ? html`
@@ -766,6 +770,18 @@ export class TimePicker extends FormMixin(LitElement) {
     ) {
       this.flatpickrInstance?.close();
     }
+
+    if (changedProperties.has('allowManualInput')) {
+      this.syncAllowInput();
+    }
+  }
+
+  private syncAllowInput(): void {
+    if (!this.flatpickrInstance) return;
+    this.flatpickrInstance.set('allowInput', this.allowManualInput);
+    if (!this.readonly && this._inputEl) {
+      this._inputEl.readOnly = !this.allowManualInput;
+    }
   }
 
   private async _handleClear(event: Event) {
@@ -959,7 +975,7 @@ export class TimePicker extends FormMixin(LitElement) {
       enableTime: true,
       twentyFourHourFormat: this.twentyFourHourFormat ?? undefined,
       inputEl: this._inputEl,
-      allowInput: true,
+      allowInput: this.allowManualInput,
       dateFormat: effectiveDateFormat,
       minTime: this.minTime,
       maxTime: this.maxTime,
@@ -1053,8 +1069,26 @@ export class TimePicker extends FormMixin(LitElement) {
     await this.updateComplete;
   }
 
+  private handleNativeInputEvent() {
+    this.updateFormValue();
+    this.requestUpdate();
+  }
+
+  private handleManualInputChange() {
+    this.commitManualInputValue();
+  }
+
   private commitManualInputValue() {
-    if (!this._inputEl) return;
+    if (
+      !this._inputEl ||
+      shouldSkipManualInputSync({
+        allowManualInput: this.allowManualInput,
+        isClearing: this._isClearing,
+        isFromFlatpickr: this._isFromFlatpickr,
+      })
+    ) {
+      return;
+    }
 
     const raw = this._inputEl.value.trim();
 

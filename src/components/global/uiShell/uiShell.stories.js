@@ -5,7 +5,10 @@ import '../header';
 import '../localNav';
 import '../../reusable/table';
 
-import { LocalNav } from '../localNav/localNav.stories.js';
+import {
+  LocalNav,
+  ManualToggleVariant as LocalNavManualToggleVariant,
+} from '../localNav/localNav.stories.js';
 import {
   Header,
   WithEverything as HeaderWithEverything,
@@ -79,3 +82,30 @@ export const WithEverything = {
     `;
   },
 };
+
+export const WithEverythingManualLocalNav = {
+  parameters: {
+    a11y: {
+      disable: true,
+    },
+  },
+  render: () => {
+    return html`
+      <kyn-ui-shell>
+        ${HeaderWithEverything.render({ ...HeaderWithEverything.args })}
+        ${LocalNavManualToggleVariant.render({
+          ...LocalNavManualToggleVariant.args,
+        })}
+
+        <main>
+          ${PageTitle.render({ ...PageTitle.args })}
+          <br />
+          ${BasicTable.render({ ...BasicTable.args })}
+        </main>
+
+        ${FooterWithLinks.render({ ...FooterWithLinks.args })}
+      </kyn-ui-shell>
+    `;
+  },
+};
+WithEverythingManualLocalNav.storyName = 'With Manual Local Nav Toggle';

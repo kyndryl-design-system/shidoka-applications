@@ -11,6 +11,10 @@ import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/que
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import filledNotificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/notifications-new.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
+import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
+import consoleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/console.svg';
+import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/dashboard.svg';
+import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/home.svg';
 
 import '../../reusable/notification';
 import '../../reusable/overflowMenu';
@@ -179,14 +183,48 @@ export const WithNav = {
   `,
 };
 
+export const WithNamedIconSlot = {
+  args,
+  render: (args) => html`
+    <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
+      <kyn-header-nav>
+        <kyn-header-link href="javascript:void(0)">
+          <span slot="icon">${unsafeSVG(servicesIcon)}</span>
+          Services
+        </kyn-header-link>
+
+        <kyn-header-link href="javascript:void(0)">
+          <span slot="icon">${unsafeSVG(consoleIcon)}</span>
+          Console
+
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span slot="icon">${unsafeSVG(dashboardIcon)}</span>
+            Dashboards
+          </kyn-header-link>
+          <kyn-header-link slot="links" href="javascript:void(0)">
+            <span slot="icon">${unsafeSVG(homeIcon)}</span>
+            Home
+          </kyn-header-link>
+        </kyn-header-link>
+      </kyn-header-nav>
+    </kyn-header>
+  `,
+};
+
 export const WithFlyouts = {
   args,
   render: (args) => html`
     <kyn-header rootUrl=${args.rootUrl} appTitle=${args.appTitle}>
       <kyn-header-flyouts>
         <kyn-header-flyout label="Menu Label" hideButtonLabel>
-          <span slot="button">${unsafeSVG(helpIcon)}</span>
-          <span slot="button" title="Full Button Text">Short ... Text</span>
+          <span
+            slot="button"
+            style="display: inline-flex; align-items: center; gap: 8px;"
+            title="Full Button Text"
+          >
+            <span style="display: inline-flex;">${unsafeSVG(helpIcon)}</span>
+            <span>Short ... Text</span>
+          </span>
 
           <kyn-header-link href="javascript:void(0)">
             <span>${unsafeSVG(circleIcon)}</span>

@@ -8,6 +8,8 @@ import '../../reusable/search';
 
 import exampleData from './example_workspace_switcher_data.json';
 
+import accountsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/accounts.svg';
+import checkmarkFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/checkmark-filled.svg';
 import userAvatarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
@@ -310,6 +312,10 @@ export const UIImplementation = {
             ?hideCurrentTitle=${args.hideCurrentTitle}
             ?hideWorkspacesTitle=${args.hideWorkspacesTitle}
           >
+            <span slot="mobile-trigger-icon">${unsafeSVG(accountsIcon)}</span>
+            <span slot="account-status-icon"
+              >${unsafeSVG(checkmarkFilledIcon)}</span
+            >
             ${workspaces.map(
               (ws) => html`
                 <kyn-workspace-switcher-menu-item

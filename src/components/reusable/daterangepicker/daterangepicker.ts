@@ -25,6 +25,7 @@ import {
   generateRandomId,
   cleanupFlatpickrInstance,
   filterValidDates,
+  shouldSkipManualInputSync,
   CONFIG_DEBOUNCE_DELAY,
   RESIZE_DEBOUNCE_DELAY,
 } from '../../../common/helpers/flatpickr/index';
@@ -398,6 +399,22 @@ export class DateRangePicker extends FormMixin(LitElement) {
     return false;
   }
 
+  private datesMatch(a: Date[], b: Date[]): boolean {
+    return (
+      a.length === b.length &&
+      a.every((date, index) => date.getTime() === b[index]?.getTime())
+    );
+  }
+
+  private getRangeSeparator(): string {
+    const locale = (this.flatpickrInstance?.l10n ??
+      this.flatpickrInstance?.config.locale) as
+      | { rangeSeparator?: string }
+      | undefined;
+
+    return locale?.rangeSeparator ?? ' to ';
+  }
+
   private updateFormValue() {
     if (!this._internals || !this._inputEl) return;
 
@@ -481,6 +498,8 @@ export class DateRangePicker extends FormMixin(LitElement) {
             autocomplete="off"
             @click=${this.handleInputClickEvent}
             @focus=${this.handleInputFocusEvent}
+            @input=${this.handleNativeInputEvent}
+            @change=${this.handleManualInputChange}
           />
           ${showClearButton
             ? html`<kyn-button
@@ -1178,9 +1197,89 @@ export class DateRangePicker extends FormMixin(LitElement) {
   }
 
   public async handleClose() {
+    this.commitManualInputValue();
     this._hasInteracted = true;
     this._validate(true, false);
     await this.updateComplete;
+  }
+
+  private handleNativeInputEvent() {
+    this.requestUpdate();
+  }
+
+  private handleManualInputChange() {
+    this.commitManualInputValue();
+  }
+
+  private commitManualInputValue() {
+    if (
+      !this._inputEl ||
+      shouldSkipManualInputSync({
+        allowManualInput: this.allowManualInput,
+        isClearing: this._isClearing,
+        isFromFlatpickr: this._isDatePickerChange,
+        isSyncingFromHost: this._isSyncingFromHost,
+      })
+    ) {
+      return;
+    }
+
+    const raw = this._inputEl.value.trim();
+
+    if (!raw) {
+      if (this.invalidText) this.invalidText = '';
+
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.clear();
+      } else {
+        this.value = [null, null];
+        this.updateSelectedDateRangeAria([]);
+        this.updateFormValue();
+        this._validate(true, false);
+      }
+
+      this.requestUpdate();
+      return;
+    }
+
+    const segments = raw
+      .split(this.getRangeSeparator())
+      .map((value) => value.trim())
+      .filter(Boolean);
+    const parsedDates = segments.map((value) => this.parseDateString(value));
+    const validDates = filterValidDates(parsedDates);
+
+    if (validDates.length !== segments.length || validDates.length > 2) {
+      this._hasInteracted = true;
+      this.invalidText = this._textStrings.pleaseSelectValidDate;
+      this._validate(true, false);
+      this.requestUpdate();
+      return;
+    }
+
+    const currentDates = this.value.filter(
+      (date): date is Date => date instanceof Date
+    );
+
+    if (this.datesMatch(validDates, currentDates)) {
+      if (this.invalidText) this.invalidText = '';
+      this._validate(true, false);
+      this.requestUpdate();
+      return;
+    }
+
+    if (this.invalidText) this.invalidText = '';
+
+    if (this.flatpickrInstance) {
+      this.flatpickrInstance.setDate(validDates, true);
+    } else {
+      this.value = [validDates[0] ?? null, validDates[1] ?? null];
+      this.updateSelectedDateRangeAria(validDates);
+      this.updateFormValue();
+      this._validate(true, false);
+    }
+
+    this.requestUpdate();
   }
 
   public async initializeFlatpickr() {

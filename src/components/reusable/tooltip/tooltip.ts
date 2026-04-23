@@ -20,6 +20,16 @@ export class Tooltip extends LitElement {
   @property({ type: String })
   accessor assistiveText = 'Tooltip';
 
+  /** Render a passive span anchor instead of a button.
+   * Useful when the tooltip trigger lives inside another interactive element.
+   */
+  @property({ type: Boolean, attribute: 'non-interactive-anchor' })
+  accessor nonInteractiveAnchor = false;
+
+  /** Renders the tooltip with tighter spacing. */
+  @property({ type: Boolean })
+  accessor compact = false;
+
   /** Tooltip open state.
    * @internal
    */
@@ -59,6 +69,7 @@ export class Tooltip extends LitElement {
   override render() {
     const classes = {
       content: true,
+      compact: this.compact,
       open: this._open,
       'anchor--start': this._anchorPosition === 'start',
       'anchor--end': this._anchorPosition === 'end',
@@ -71,20 +82,34 @@ export class Tooltip extends LitElement {
 
     return html`
       <div class="tooltip">
-        <button
-          class="anchor"
-          aria-label=${this.assistiveText}
-          title=${this.assistiveText}
-          aria-describedby="tooltip"
-          @mouseenter=${this._handleOpen}
-          @mouseleave=${this._handleMouseLeave}
-          @focus=${this._handleOpen}
-          @blur=${this._handleClose}
-        >
-          <slot name="anchor"
-            ><span class="info-icon">${unsafeSVG(infoIcon)}</span></slot
-          >
-        </button>
+        ${this.nonInteractiveAnchor
+          ? html`
+              <span
+                class="anchor anchor--passive"
+                @mouseenter=${this._handleOpen}
+                @mouseleave=${this._handleMouseLeave}
+              >
+                <slot name="anchor"
+                  ><span class="info-icon">${unsafeSVG(infoIcon)}</span></slot
+                >
+              </span>
+            `
+          : html`
+              <button
+                class="anchor"
+                aria-label=${this.assistiveText}
+                title=${this.assistiveText}
+                aria-describedby="tooltip"
+                @mouseenter=${this._handleOpen}
+                @mouseleave=${this._handleMouseLeave}
+                @focus=${this._handleOpen}
+                @blur=${this._handleClose}
+              >
+                <slot name="anchor"
+                  ><span class="info-icon">${unsafeSVG(infoIcon)}</span></slot
+                >
+              </button>
+            `}
 
         <div
           id="tooltip"

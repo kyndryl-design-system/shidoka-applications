@@ -2,6 +2,7 @@ import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import { useEffect, useArgs } from 'storybook/preview-api';
+import { expect, waitFor } from 'storybook/test';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -69,6 +70,26 @@ export default {
     ...ValidationArgs,
   },
 };
+
+const manualInputEventOptions = { bubbles: true, composed: true };
+
+const collectChangeDetails = (picker) => {
+  const details = [];
+  picker.addEventListener('on-change', (event) => {
+    details.push(event.detail);
+  });
+  return details;
+};
+
+const commitManualInputValue = (input, value) => {
+  input.value = value;
+  input.dispatchEvent(new Event('input', manualInputEventOptions));
+  input.dispatchEvent(new Event('change', manualInputEventOptions));
+  input.blur();
+};
+
+const countClearEvents = (details) =>
+  details.filter((detail) => detail?.source === 'clear').length;
 
 const Template = (args) => {
   useEffect(() => {
@@ -640,3 +661,47 @@ ControlledValueOverridesDefault.args = {
   value: ['2024-02-10', '2024-02-20'],
 };
 ControlledValueOverridesDefault.storyName = 'Value Overrides defaultDate';
+
+export const ManualInputSync = {
+  args: {
+    ...DateRangeDefault.args,
+    name: 'manual-input-date-range-picker',
+    label: 'Manual input sync',
+    required: true,
+    allowManualInput: true,
+  },
+  play: async ({ canvasElement }) => {
+    const picker = canvasElement.querySelector('kyn-date-range-picker');
+    const input = picker?.shadowRoot?.querySelector('input');
+
+    expect(picker).not.toBeNull();
+    expect(input).not.toBeNull();
+
+    const eventDetails = collectChangeDetails(picker);
+
+    commitManualInputValue(input, '2026-04-17 to 2026-04-18');
+
+    await waitFor(() => {
+      const [start, end] = picker.getValue();
+
+      expect(start).toBeInstanceOf(Date);
+      expect(end).toBeInstanceOf(Date);
+      expect(start.getFullYear()).toBe(2026);
+      expect(start.getMonth()).toBe(3);
+      expect(start.getDate()).toBe(17);
+      expect(end.getFullYear()).toBe(2026);
+      expect(end.getMonth()).toBe(3);
+      expect(end.getDate()).toBe(18);
+      expect(picker.checkValidity()).toBe(true);
+      expect(picker.shadowRoot.querySelector('.clear-button')).not.toBeNull();
+    });
+
+    commitManualInputValue(input, '');
+
+    await waitFor(() => {
+      expect(picker.getValue()).toEqual([null, null]);
+      expect(input.value).toBe('');
+      expect(countClearEvents(eventDetails)).toBe(1);
+    });
+  },
+};

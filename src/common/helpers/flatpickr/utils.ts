@@ -246,6 +246,27 @@ export function isEmptyValue(
 }
 
 /**
+ * Returns true when a manual-input commit should be skipped because it would
+ * either be ignored by configuration or would re-enter a Flatpickr-triggered
+ * change cycle.
+ */
+export function shouldSkipManualInputSync({
+  allowManualInput,
+  isClearing = false,
+  isFromFlatpickr = false,
+  isSyncingFromHost = false,
+}: {
+  allowManualInput: boolean;
+  isClearing?: boolean;
+  isFromFlatpickr?: boolean;
+  isSyncingFromHost?: boolean;
+}): boolean {
+  return (
+    !allowManualInput || isClearing || isFromFlatpickr || isSyncingFromHost
+  );
+}
+
+/**
  * Checks if two Date objects represent the same time (hours, minutes, seconds).
  */
 export function timesEqual(

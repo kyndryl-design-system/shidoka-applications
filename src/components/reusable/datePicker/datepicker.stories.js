@@ -2,6 +2,7 @@ import './index';
 import { html } from 'lit';
 import { action } from 'storybook/actions';
 import { useArgs } from 'storybook/preview-api';
+import { expect, waitFor } from 'storybook/test';
 import { ValidationArgs } from '../../../common/helpers/helpers';
 
 import '../button';
@@ -71,6 +72,26 @@ export default {
     ...ValidationArgs,
   },
 };
+
+const manualInputEventOptions = { bubbles: true, composed: true };
+
+const collectChangeDetails = (picker) => {
+  const details = [];
+  picker.addEventListener('on-change', (event) => {
+    details.push(event.detail);
+  });
+  return details;
+};
+
+const commitManualInputValue = (input, value) => {
+  input.value = value;
+  input.dispatchEvent(new Event('input', manualInputEventOptions));
+  input.dispatchEvent(new Event('change', manualInputEventOptions));
+  input.blur();
+};
+
+const countClearEvents = (details) =>
+  details.filter((detail) => detail?.source === 'clear').length;
 
 const Template = (args) => {
   return html`
@@ -773,3 +794,43 @@ ValueOverridesDefault.args = {
   label: 'value overrides defaultDate',
 };
 ValueOverridesDefault.storyName = 'Value Overrides defaultDate';
+
+export const ManualInputSync = {
+  args: {
+    ...DatePickerDefault.args,
+    name: 'manual-input-datepicker',
+    label: 'Manual input sync',
+    required: true,
+    allowManualInput: true,
+  },
+  play: async ({ canvasElement }) => {
+    const picker = canvasElement.querySelector('kyn-date-picker');
+    const input = picker?.shadowRoot?.querySelector('input');
+
+    expect(picker).not.toBeNull();
+    expect(input).not.toBeNull();
+
+    const eventDetails = collectChangeDetails(picker);
+
+    commitManualInputValue(input, '2026-04-17');
+
+    await waitFor(() => {
+      const value = picker.getValue();
+
+      expect(value).toBeInstanceOf(Date);
+      expect(value.getFullYear()).toBe(2026);
+      expect(value.getMonth()).toBe(3);
+      expect(value.getDate()).toBe(17);
+      expect(picker.checkValidity()).toBe(true);
+      expect(picker.shadowRoot.querySelector('.clear-button')).not.toBeNull();
+    });
+
+    commitManualInputValue(input, '');
+
+    await waitFor(() => {
+      expect(picker.getValue()).toBeNull();
+      expect(input.value).toBe('');
+      expect(countClearEvents(eventDetails)).toBe(1);
+    });
+  },
+};
