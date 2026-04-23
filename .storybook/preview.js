@@ -23,7 +23,14 @@ export default {
     options: {
       storySort: {
         method: 'alphabetical',
-        order: ['Welcome', 'Components', 'Global Components', 'Patterns', 'AI'],
+        order: [
+          'Welcome',
+          'Components',
+          'Global Components',
+          'Patterns',
+          'AI',
+          'Tests',
+        ],
       },
     },
 
