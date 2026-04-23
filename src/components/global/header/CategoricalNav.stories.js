@@ -21,15 +21,15 @@ const args = {
 
 export default {
   title: 'Global Components/Header/Categorical Nav',
-  component: 'kyn-header',
+  component: 'kyn-header-categories',
   subcomponents: {
+    'kyn-header': 'kyn-header',
     'kyn-header-nav': 'kyn-header-nav',
     'kyn-header-link': 'kyn-header-link',
     'kyn-header-category': 'kyn-header-category',
     'kyn-header-categories': 'kyn-header-categories',
   },
   tags: ['!autodocs'],
-  args,
 };
 
 // -----------------------------------------------------------------------------

@@ -60,6 +60,13 @@ export class HeaderCategory extends LitElement {
   @property({ type: String, attribute: false })
   accessor moreLabel = 'More';
 
+  /** Resolved category id provided by the parent wrapper.
+   * Falls back to the host `id` attribute when unset.
+   * @internal
+   */
+  @property({ type: String, attribute: false })
+  accessor categoryId = '';
+
   /** Minimum desired links per detail column.
    * @internal
    */
@@ -141,6 +148,10 @@ export class HeaderCategory extends LitElement {
       this._getCustomMoreNodes().length === 0;
   }
 
+  private _getResolvedCategoryId(): string {
+    return this.categoryId.trim() || this.getAttribute('id')?.trim() || '';
+  }
+
   private _emitMoreClick(e: Event) {
     e.preventDefault();
     e.stopPropagation();
@@ -148,7 +159,7 @@ export class HeaderCategory extends LitElement {
     this.dispatchEvent(
       new CustomEvent('on-more-click', {
         detail: {
-          categoryId: this.getAttribute('id') ?? '',
+          categoryId: this._getResolvedCategoryId(),
         },
         bubbles: true,
         composed: true,

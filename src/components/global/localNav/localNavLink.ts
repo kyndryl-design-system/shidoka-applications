@@ -183,7 +183,10 @@ export class LocalNavLink extends LitElement {
   }
 
   override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
-    if (changedProps.has('_navExpanded')) {
+    if (
+      changedProps.has('_navExpanded') ||
+      changedProps.has('_navExpandedMobile')
+    ) {
       this.updateChildren();
     }
   }

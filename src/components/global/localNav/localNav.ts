@@ -107,12 +107,22 @@ export class LocalNav extends LitElement {
   @query('nav')
   accessor _navEl!: HTMLElement;
 
+  /** Media query used to detect desktop/mobile breakpoint transitions.
+   * @internal
+   */
+  private _desktopMediaQuery?: MediaQueryList;
+
   /** @ignore */
   private readonly _onDocumentClick = (e: Event) => this._handleClickOut(e);
 
   /** @ignore */
   private readonly _onLinkActive = (e: Event) =>
     this._handleLinkActive(e as CustomEvent<{ text: string }>);
+
+  /** @ignore */
+  private readonly _handleBreakpointChange = () => {
+    this._resetTransientNavStateForBreakpointChange();
+  };
 
   override render() {
     return html`
@@ -203,6 +213,18 @@ export class LocalNav extends LitElement {
     this._mobileExpanded = !this._mobileExpanded;
   }
 
+  private _clearPointerTimers() {
+    if (this._enterTimer !== null) {
+      clearTimeout(this._enterTimer);
+      this._enterTimer = null;
+    }
+
+    if (this._leaveTimer !== null) {
+      clearTimeout(this._leaveTimer);
+      this._leaveTimer = null;
+    }
+  }
+
   private handlePointerEnter(e: PointerEvent) {
     if (this.manualToggleVariant) {
       return;
@@ -251,6 +273,27 @@ export class LocalNav extends LitElement {
 
   private _handleLinkActive(e: CustomEvent<{ text: string }>) {
     this._activeLinkText = e.detail.text;
+  }
+
+  private _refreshChildBreakpointState() {
+    this.querySelectorAll<HTMLElement & { requestUpdate?: () => void }>(
+      'kyn-local-nav-link'
+    ).forEach((link) => {
+      link.requestUpdate?.();
+    });
+  }
+
+  /** Clear transient nav state when crossing the desktop breakpoint.
+   * This prevents a mobile-open nav from leaving desktop links visually expanded.
+   * @internal
+   */
+  private _resetTransientNavStateForBreakpointChange() {
+    this._clearPointerTimers();
+    this._expanded = false;
+    this._mobileExpanded = false;
+    this._updateChildren();
+    this._refreshChildBreakpointState();
+    this.requestUpdate();
   }
 
   override willUpdate(changedProps: Map<string | number | symbol, unknown>) {
@@ -311,12 +354,22 @@ export class LocalNav extends LitElement {
 
     document.addEventListener('click', this._onDocumentClick);
     this.addEventListener('on-link-active', this._onLinkActive);
+    this._desktopMediaQuery = window.matchMedia('(min-width: 42rem)');
+    this._desktopMediaQuery.addEventListener(
+      'change',
+      this._handleBreakpointChange
+    );
     window.addEventListener('scroll', this._debounceScroll);
   }
 
   override disconnectedCallback() {
     document.removeEventListener('click', this._onDocumentClick);
     this.removeEventListener('on-link-active', this._onLinkActive);
+    this._desktopMediaQuery?.removeEventListener(
+      'change',
+      this._handleBreakpointChange
+    );
+    this._desktopMediaQuery = undefined;
     window.removeEventListener('scroll', this._debounceScroll);
 
     super.disconnectedCallback();

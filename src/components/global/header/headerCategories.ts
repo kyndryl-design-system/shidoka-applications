@@ -346,6 +346,13 @@ export class HeaderCategories extends LitElement {
     return value.replace(/[^a-zA-Z0-9_-]/g, '-');
   }
 
+  private _resolveCategoryId(
+    categoryEl: HeaderCategory,
+    index: number
+  ): string {
+    return categoryEl.getAttribute('id')?.trim() || `category-${index + 1}`;
+  }
+
   private _getRootSlotName(category: SlottedCategoryData): string {
     return `manual-root-${category.slotKey}`;
   }
@@ -363,6 +370,37 @@ export class HeaderCategories extends LitElement {
     );
   }
 
+  private _findSlottedCategoryFromEvent(e: Event): SlottedCategoryData | null {
+    const categoryEl = e
+      .composedPath()
+      .find(
+        (node): node is HeaderCategory =>
+          node instanceof HTMLElement && node.tagName === 'KYN-HEADER-CATEGORY'
+      );
+
+    if (!categoryEl) return null;
+
+    return (
+      this._slottedCategories.find(
+        (category) => category.categoryEl === categoryEl
+      ) ?? null
+    );
+  }
+
+  private _resolveSlottedMoreCategoryId(
+    e: CustomEvent<{ categoryId: string }>
+  ): string {
+    const emittedCategoryId = e.detail.categoryId?.trim();
+    if (emittedCategoryId) return emittedCategoryId;
+
+    const categoryFromEvent = this._findSlottedCategoryFromEvent(e);
+    if (categoryFromEvent) return categoryFromEvent.id;
+
+    return this.view === DETAIL_VIEW
+      ? this.activeMegaCategoryId?.trim() ?? ''
+      : '';
+  }
+
   private _syncSlottedCategoryPresentation(): void {
     if (this._isJsonMode) return;
 
@@ -377,6 +415,7 @@ export class HeaderCategories extends LitElement {
         this.view === ROOT_VIEW
           ? this._rootLinksLimit
           : Number.POSITIVE_INFINITY;
+      categoryEl.categoryId = category.id;
       categoryEl.moreLabel = this._textStrings.more;
       categoryEl.detailView = isDetailCategory;
       categoryEl.detailHeading = isDetailCategory
@@ -407,6 +446,7 @@ export class HeaderCategories extends LitElement {
 
   private _resetSlottedCategoryPresentation(): void {
     this._slottedCategories.forEach(({ categoryEl }) => {
+      categoryEl.categoryId = '';
       categoryEl.maxVisibleLinks = Number.POSITIVE_INFINITY;
       categoryEl.detailView = false;
       categoryEl.detailHeading = '';
@@ -417,8 +457,7 @@ export class HeaderCategories extends LitElement {
   private _handleSlottedMoreClick(
     e: CustomEvent<{ categoryId: string }>
   ): void {
-    const categoryId =
-      e.detail.categoryId || this._getActiveSlottedCategory()?.id || '';
+    const categoryId = this._resolveSlottedMoreCategoryId(e);
 
     if (!categoryId) return;
 
@@ -712,7 +751,7 @@ export class HeaderCategories extends LitElement {
     }
 
     const data = categories.map((categoryEl, index) => {
-      const id = categoryEl.getAttribute('id') ?? `category-${index + 1}`;
+      const id = this._resolveCategoryId(categoryEl, index);
       const heading = categoryEl.getAttribute('heading') ?? '';
 
       return {
