@@ -29,6 +29,27 @@ export default {
         defaultValue: { summary: WIDGET_STATUS.DEFAULT },
       },
     },
+    subTitle: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `subtitle` slot instead',
+      },
+    },
+    showStatusBadge: {
+      control: { type: 'boolean' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `badge` slot instead',
+      },
+    },
+    statusBadgeLabel: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `badge` slot instead',
+      },
+    },
   },
   parameters: {
     design: {

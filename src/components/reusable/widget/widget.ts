@@ -26,7 +26,10 @@ export class Widget extends LitElement {
   @property({ type: String })
   accessor widgetTitle = '';
 
-  /** Widget sub-title(Deprecated). Use `subtitle` slot instead. */
+  /** Use `subtitle` slot instead.
+   * @deprecated
+   **/
+
   @property({ type: String })
   accessor subTitle = '';
 
@@ -54,11 +57,15 @@ export class Widget extends LitElement {
   @property({ type: Boolean })
   accessor removeHeader = false;
 
-  /** Show Status badge(Deprecated). Use `badge` slot instead. */
+  /**Use `badge` slot instead.
+   * @deprecated
+   **/
   @property({ type: Boolean })
   accessor showStatusBadge = false;
 
-  /** Status Badge label(Deprecated). Use `badge` slot instead. */
+  /** Use `badge` slot instead.
+   * @deprecated
+   **/
   @property({ type: String })
   accessor statusBadgeLabel = 'Update';
 

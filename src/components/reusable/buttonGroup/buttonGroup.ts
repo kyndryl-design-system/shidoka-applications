@@ -279,6 +279,9 @@ export class ButtonGroup extends LitElement {
     );
   }
 
+  /**
+   * @internal
+   */
   private _boundHandlers = new Map<Button, () => void>();
 
   private _attachClickListeners() {
