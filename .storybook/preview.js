@@ -30,6 +30,7 @@ export default {
           'Patterns',
           'AI',
           'Tests',
+          'Examples',
         ],
       },
     },

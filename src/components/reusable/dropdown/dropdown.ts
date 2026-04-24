@@ -35,7 +35,7 @@ const _defaultTextStrings = {
 };
 
 /**
- * Dropdown, single select.
+ * Dropdown.
  * @fires on-change - Captures the dropdown change event and emits the selected value and original event details. `detail:{ value: string/array }`
  * @fires on-search - Capture the search input event and emits the search text.`detail:{ searchText: string }`
  * @fires on-clear-all - Captures the the multi-select clear all button click event and emits the value. `detail:{ value: array }`

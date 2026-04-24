@@ -21,6 +21,18 @@ const args = {
   hideBorder: false,
 };
 
+const parameters = {
+  docs: {
+    source: {
+      code: `
+      // For guidance on how to construct this code, please refer to the 'vitalCard.sample.ts' file.
+      // You can find it at the following path:
+      // https://github.com/kyndryl-design-system/shidoka-applications/blob/main/src/stories/sampleCardComponents/vitalCard.sample.ts
+      `,
+    },
+  },
+};
+
 export const Default = {
   render: () => {
     return html`
@@ -29,9 +41,10 @@ export const Default = {
       </kyn-card>
     `;
   },
+  parameters,
 };
 
-export const VitalCardWithTitleTooltip = {
+export const WithTitleTooltip = {
   render: () => {
     return html` <kyn-card type="normal">
       <vital-card-sample-component
@@ -39,9 +52,10 @@ export const VitalCardWithTitleTooltip = {
       ></vital-card-sample-component>
     </kyn-card>`;
   },
+  parameters,
 };
 
-export const VitalCardSkeleton = {
+export const WithSkeleton = {
   args: { ...args, lines: 1, thumbnailVisible: true },
   render: (args) => {
     return html` <kyn-card

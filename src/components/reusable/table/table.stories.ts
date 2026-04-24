@@ -65,7 +65,7 @@ const parameters = {
   docs: {
     source: {
       code: `
-      // For guidance on how to construct this code, please refer to the 'table-story.ts' file.
+      // For guidance on how to construct this code, please refer to the 'table-story.sample.ts' file.
       // You can find it at the following path:
       // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/story-helpers/table-story.sample.ts
       `,
