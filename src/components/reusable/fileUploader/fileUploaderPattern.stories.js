@@ -5,7 +5,7 @@ import './index';
 import './fileUploader.sample';
 
 export default {
-  title: 'Components/Form Inputs/File Uploader/Patterns',
+  title: 'Examples/File Uploader',
 };
 
 const args = {
@@ -33,6 +33,18 @@ const args = {
   },
   maxFileSize: 10485760, // 10MB
   disabled: false,
+};
+
+const parameters = {
+  docs: {
+    source: {
+      code: `
+      // For guidance on how to construct this code, please refer to the 'fileUploader.sample.ts' file.
+      // You can find it at the following path:
+      // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/fileUploader/fileUploader.sample.ts
+      `,
+    },
+  },
 };
 
 let validFiles = [];
@@ -94,6 +106,7 @@ export const FileUploaderWithForm = {
       </form>
     `;
   },
+  parameters,
 };
 FileUploaderWithForm.storyName = 'With form';
 
@@ -101,6 +114,7 @@ export const FileUploaderSingle = {
   render: () => {
     return html` <sample-file-uploader></sample-file-uploader> `;
   },
+  parameters,
 };
 FileUploaderSingle.storyName = 'Simulated upload - single file';
 
@@ -110,6 +124,7 @@ export const FileUploaderMultiple = {
       <sample-file-uploader ?multiple=${true}></sample-file-uploader>
     `;
   },
+  parameters,
 };
 FileUploaderMultiple.storyName = 'Simulated upload - multiple files';
 
@@ -117,5 +132,6 @@ export const FileUploaderImmediate = {
   render: () => {
     return html` <sample-file-uploader immediate></sample-file-uploader> `;
   },
+  parameters,
 };
 FileUploaderImmediate.storyName = 'Simulated upload - immediate - single file';

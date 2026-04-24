@@ -37,7 +37,7 @@ const _defaultTextStrings = {
 };
 
 /**
- * File Uploader
+ * File Uploader.
  * @fires selected-files - Emits the uploaded files.`detail:{ validFiles: Array, invalidFiles: Array }`
  * @slot upload-status - Slot for upload status/notification.
  * @attr {string} [name=''] - The name of the input, used for form submission.

@@ -14,7 +14,7 @@ import closeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/cl
 /**
  * Container for header navigation links.
  * @slot unnamed - This element has a slot.
- * @fires on-nav-toggle - Fires when the nav menu opens or closes. Detail: `{ open }`.
+ * @fires on-nav-toggle - Fires when the nav menu opens or closes. `detail: { open }`.
  * @cssprop [--kyn-global-switcher-max-height=calc(100vh - var(--kd-header-reserved-space) - 16px)] - Max height for global-switcher flyout panels, including categorical nav wrappers.
  */
 @customElement('kyn-header-nav')
@@ -34,9 +34,9 @@ export class HeaderNav extends LitElement {
   override accessor slot = 'left';
 
   /** Controls which flyout (if any) auto-opens when the nav renders.
-   * - '' (empty, default): original behavior — flyouts auto-collapse on mouse leave, nothing auto-opens.
-   * - 'default': auto-open the first categorical flyout; flyouts stay open on mouse leave.
-   * - '<id>': auto-open the flyout whose kyn-header-link id matches; flyouts stay open on mouse leave.
+   * - `` (empty, default): original behavior — flyouts auto-collapse on mouse leave, nothing auto-opens.
+   * - `default`: auto-open the first categorical flyout; flyouts stay open on mouse leave.
+   * - `<id>`: auto-open the flyout whose kyn-header-link id matches; flyouts stay open on mouse leave.
    */
   @property({ type: String, attribute: 'auto-open-flyout' })
   accessor autoOpenFlyout = '';
