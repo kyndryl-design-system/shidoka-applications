@@ -6,6 +6,12 @@ import './fileUploader.sample';
 
 export default {
   title: 'Examples/File Uploader',
+  tags: ['!autodocs'],
+  parameters: {
+    controls: {
+      disable: true,
+    },
+  },
 };
 
 const args = {
@@ -104,6 +110,15 @@ export const FileUploaderWithForm = {
           Start upload
         </kyn-button>
       </form>
+
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/fileUploader/fileUploader.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
   parameters,
@@ -112,7 +127,17 @@ FileUploaderWithForm.storyName = 'With form';
 
 export const FileUploaderSingle = {
   render: () => {
-    return html` <sample-file-uploader></sample-file-uploader> `;
+    return html`
+      <sample-file-uploader></sample-file-uploader>
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/fileUploader/fileUploader.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
+    `;
   },
   parameters,
 };
@@ -122,6 +147,14 @@ export const FileUploaderMultiple = {
   render: () => {
     return html`
       <sample-file-uploader ?multiple=${true}></sample-file-uploader>
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/fileUploader/fileUploader.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
   parameters,
@@ -130,7 +163,17 @@ FileUploaderMultiple.storyName = 'Simulated upload - multiple files';
 
 export const FileUploaderImmediate = {
   render: () => {
-    return html` <sample-file-uploader immediate></sample-file-uploader> `;
+    return html`
+      <sample-file-uploader immediate></sample-file-uploader>
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/fileUploader/fileUploader.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
+    `;
   },
   parameters,
 };
