@@ -3,11 +3,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import '../components/reusable/card';
 import '../components/reusable/overflowMenu';
 import '../components/reusable/tag';
-
 import '../components/reusable/button';
-
-import './sampleCardComponents/card.sample.js';
-import './sampleCardComponents/card.content.sample.js';
 
 import '@kyndryl-design-system/shidoka-foundation/css/typography.css';
 import actionIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/bookmark.svg';

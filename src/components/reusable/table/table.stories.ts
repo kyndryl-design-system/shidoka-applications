@@ -12,8 +12,6 @@ import { action } from 'storybook/actions';
 
 // Kyndryl Design System Components and Icons
 import './index';
-import './story-helpers/action-menu.sample';
-import './story-helpers/table-story.sample';
 import './story-helpers/table.settings.sample';
 import {
   characters,
@@ -1745,7 +1743,7 @@ export const StackedHeader: Story = {
     rows: characters,
   },
   tags: ['new', 'version:v2.85.0'],
-  render: function (args) {
+  render: (args) => {
     const [{ rows }, updateArgs] = useArgs();
     let tableData = rows;
 

@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import '../components/reusable/card';
-
 import '../components/reusable/link';
 import '../components/reusable/tooltip';
 
