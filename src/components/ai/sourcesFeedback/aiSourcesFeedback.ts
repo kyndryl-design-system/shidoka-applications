@@ -38,7 +38,7 @@ const _defaultTextStrings = {
  * @slot sources - source cards in source panel.
  * @slot feedback-form - Positive feedback form.
  * @fires on-toggle - Emits the `opened` state when the panel item opens/closes.
- * detail:    {
+ * detail:{
  *       sourcesOpened: boolean,
  *       feedbackOpened: boolean,
  *       selectedFeedbackType: string
