@@ -262,7 +262,11 @@ export const Selection: Story = {
       </kyn-table-toolbar>
 
       <kyn-table-container>
-        <kyn-table ?checkboxSelection=${true}>
+        <kyn-table
+          ?checkboxSelection=${true}
+          @on-row-selection-change=${(e: Event) => action(e.type)(e)}
+          @on-all-rows-selection-change=${(e: Event) => action(e.type)(e)}
+        >
           <kyn-thead>
             <kyn-header-tr .multiSelectColumnWidth=${'64px'}>
               <kyn-th .align=${'center'}> ID </kyn-th>
