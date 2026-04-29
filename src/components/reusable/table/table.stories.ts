@@ -240,6 +240,24 @@ export const Sorting: Story = {
 
 export const Selection: Story = {
   render: () => {
+    let selectedCount = 0;
+
+    const handleSelectionChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const selectedRows = customEvent.detail.selectedRows;
+      selectedCount = selectedRows.length;
+
+      const toolbar = document.querySelector('kyn-table-toolbar');
+      if (toolbar) {
+        toolbar.setAttribute(
+          'tableTitle',
+          selectedCount > 0 ? `${selectedCount} items selected` : 'Selection'
+        );
+      }
+
+      action(e.type)({ ...e, detail: customEvent.detail });
+    };
+
     return html`
       <h4>Important Information about Row Selection</h4>
       <ul>
@@ -264,8 +282,8 @@ export const Selection: Story = {
       <kyn-table-container>
         <kyn-table
           ?checkboxSelection=${true}
-          @on-row-selection-change=${(e: Event) => action(e.type)(e)}
-          @on-all-rows-selection-change=${(e: Event) => action(e.type)(e)}
+          @on-row-selection-change=${handleSelectionChange}
+          @on-all-rows-selection-change=${handleSelectionChange}
         >
           <kyn-thead>
             <kyn-header-tr .multiSelectColumnWidth=${'64px'}>
@@ -325,8 +343,10 @@ export const NestedTable: Story = {
       >
       </kyn-table-toolbar>
       <kyn-table
-        @on-row-selection-change=${(e: Event) => action(e.type)(e)}
-        @on-all-rows-selection-change=${(e: Event) => action(e.type)(e)}
+        @on-row-selection-change=${(e: Event) =>
+          action(e.type)({ ...e, detail: (e as CustomEvent).detail })}
+        @on-all-rows-selection-change=${(e: Event) =>
+          action(e.type)({ ...e, detail: (e as CustomEvent).detail })}
       >
         <kyn-thead>
           <kyn-header-tr expandable checkboxSelection>
@@ -371,7 +391,19 @@ export const NestedTable: Story = {
                   >
                   </kyn-table-toolbar>
                   <kyn-table-container>
-                    <kyn-table ?checkboxSelection=${true}>
+                    <kyn-table
+                      checkboxSelection
+                      @on-row-selection-change=${(e: Event) =>
+                        action(e.type)({
+                          ...e,
+                          detail: (e as CustomEvent).detail,
+                        })}
+                      @on-all-rows-selection-change=${(e: Event) =>
+                        action(e.type)({
+                          ...e,
+                          detail: (e as CustomEvent).detail,
+                        })}
+                    >
                       <kyn-thead>
                         <kyn-header-tr .multiSelectColumnWidth=${'64px'}>
                           <kyn-th .align=${'center'}> ID </kyn-th>
@@ -422,7 +454,11 @@ export const ExpandableRows: Story = {
       collapsed: 'Collapsed',
     },
   },
+
   render: (args) => {
+    const handleExpand = (e: CustomEvent, id: number) => {
+      action(e.type)({ ...e, detail: { ...e.detail, rowId: id } });
+    };
     return html` <style>
         .example {
           display: flex;
@@ -438,6 +474,7 @@ export const ExpandableRows: Story = {
           }
         }
       </style>
+
       <kyn-table-toolbar
         tableTitle=${'Expanded Rows'}
         tableSubtitle=${'Table Subtitle'}
@@ -465,6 +502,8 @@ export const ExpandableRows: Story = {
                 key="row-${row.id}"
                 expandable
                 .textStrings=${args.textStrings}
+                @table-row-expando-toggled=${(e: CustomEvent) =>
+                  handleExpand(e, row.id)}
               >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
@@ -491,7 +530,7 @@ export const ExpandableRows: Story = {
                     ${unsafeSVG(lgCube)}
                   </div>
                   <div class="kd-type--ui-01 kd-type--weight-medium">
-                    Expansion Slot
+                    Expansion Slot ${row.id}
                   </div>
                   <p class="kd-type--ui-04 kd-type--weight-light">
                     Swap this with your own component.
@@ -553,6 +592,10 @@ export const SortAndExpand: Story = {
 
       characters = sorted;
       updateArgs({ rows: sorted });
+    };
+
+    const handleExpand = (e: CustomEvent, id: number) => {
+      action(e.type)({ ...e, detail: { ...e.detail, rowId: id } });
     };
     return html`
       <style>
@@ -624,6 +667,8 @@ export const SortAndExpand: Story = {
                 key="row-${row.id}"
                 expandable
                 .textStrings=${args.textStrings}
+                @table-row-expando-toggled=${(e: CustomEvent) =>
+                  handleExpand(e, row.id)}
               >
                 <kyn-td .align=${'center'}>${row.id}</kyn-td>
                 <kyn-td>${row.firstName}</kyn-td>
@@ -650,7 +695,7 @@ export const SortAndExpand: Story = {
                     ${unsafeSVG(lgCube)}
                   </div>
                   <div class="kd-type--ui-01 kd-type--weight-medium">
-                    Expansion Slot
+                    Expansion Slot ${row.id}
                   </div>
                   <p class="kd-type--ui-04 kd-type--weight-light">
                     Swap this with your own component.
