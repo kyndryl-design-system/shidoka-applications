@@ -32,187 +32,6 @@ const DEFAULT_TEXT_STRINGS = {
   launchAssistiveText: 'Opens in a new tab',
 };
 
-const FULL_WORKSPACE_INFO_MARKUP = String.raw`<div class="workspace-switcher-host" data-view="root">
-  <div class="workspace-switcher">
-    <div class="workspace-switcher__left workspace-switcher__panel--active">
-      <span class="workspace-switcher__title">CURRENT</span>
-
-      <div class="workspace-switcher__left-header">
-        <div class="workspace-switcher__account-meta">
-          <span class="workspace-switcher__account-meta-status" aria-hidden="true">
-            <!-- success icon -->
-          </span>
-
-          <div class="workspace-switcher__account-meta-content">
-            <span class="workspace-switcher__account-meta-name">
-              Very Long Name That Exceeds The Limit That Exceeds Width Limit
-            </span>
-
-            <button type="button" class="workspace-switcher__account-meta-action">
-              <span>023497uw02399023509</span>
-              <span class="workspace-switcher__account-meta-link-icon">
-                <!-- copy icon -->
-              </span>
-            </button>
-
-            <span class="workspace-switcher__account-meta-item">United States</span>
-          </div>
-        </div>
-      </div>
-
-      <span class="workspace-switcher__title">WORKSPACES</span>
-
-      <div class="workspace-switcher__list" role="list">
-        <div
-          class="workspace-switcher__menu-item workspace-switcher__menu-item--workspace"
-          role="listitem"
-          aria-current="false"
-          data-value="global"
-        >
-          <button type="button" class="workspace-switcher__menu-button" title="Global Zone (All)">
-            <span class="workspace-switcher__menu-name">Global Zone (All)</span>
-          </button>
-        </div>
-
-        <div
-          class="workspace-switcher__menu-item workspace-switcher__menu-item--workspace workspace-switcher__menu-item--selected"
-          role="listitem"
-          aria-current="true"
-          data-value="tenants"
-        >
-          <button type="button" class="workspace-switcher__menu-button" title="Account Tenants">
-            <span class="workspace-switcher__menu-name">Account Tenants</span>
-            <span class="workspace-switcher__menu-count">24</span>
-            <span class="workspace-switcher__menu-icon" aria-hidden="true">
-              <!-- chevron icon -->
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="workspace-switcher__right workspace-switcher__panel--inactive">
-      <div class="workspace-switcher__menu-item workspace-switcher__menu-item--back workspace-switcher__back">
-        <button type="button" class="workspace-switcher__menu-button" title="Workspaces">
-          <span class="workspace-switcher__menu-icon" aria-hidden="true">
-            <!-- back icon -->
-          </span>
-          <span class="workspace-switcher__menu-name">Workspaces</span>
-        </button>
-      </div>
-
-      <div class="workspace-switcher__list" role="list">
-        <div
-          class="workspace-switcher__menu-item workspace-switcher__menu-item--item workspace-switcher__menu-item--selected"
-          role="listitem"
-          aria-current="true"
-          data-value="t-0"
-        >
-          <button type="button" class="workspace-switcher__menu-button" title="Very Long Name That Exceeds The Limit That Exceeds Width Limit">
-            <span class="workspace-switcher__menu-name">
-              Very Long Name That Exceeds The Limit That Exceeds Width Limit
-            </span>
-          </button>
-        </div>
-
-        <div
-          class="workspace-switcher__menu-item workspace-switcher__menu-item--item"
-          role="listitem"
-          aria-current="false"
-          data-value="t-1"
-        >
-          <button type="button" class="workspace-switcher__menu-button" title="AIOps Account">
-            <span class="workspace-switcher__menu-name">AIOps Account</span>
-            <span class="workspace-switcher__sr-only">Opens in a new tab</span>
-          </button>
-
-          <div class="workspace-switcher__menu-actions">
-            <button
-              type="button"
-              class="workspace-switcher__menu-launch-indicator"
-              aria-label="AIOps Account. Opens in a new tab"
-              title="AIOps Account. Opens in a new tab"
-            >
-              <!-- launch icon -->
-            </button>
-
-            <kyn-icon-selector
-              class="workspace-switcher__menu-favorite"
-              checked
-              value="t-1"
-              animateSelection
-              onlyVisibleOnHover
-              persistWhenChecked
-            ></kyn-icon-selector>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>`;
-
-const WITH_SEARCH_MARKUP = String.raw`<div class="workspace-switcher-host" data-view="root">
-  <div class="workspace-switcher">
-    <div class="workspace-switcher__left">
-      <!-- current account meta -->
-      <!-- workspace rows -->
-    </div>
-
-    <div class="workspace-switcher__right">
-      <div class="workspace-switcher__menu-item workspace-switcher__menu-item--back workspace-switcher__back">
-        <button type="button" class="workspace-switcher__menu-button" title="Workspaces">
-          <span class="workspace-switcher__menu-icon" aria-hidden="true">
-            <!-- back icon -->
-          </span>
-          <span class="workspace-switcher__menu-name">Workspaces</span>
-        </button>
-      </div>
-
-      <kyn-search
-        class="workspace-switcher__search"
-        size="sm"
-        label="Search"
-      ></kyn-search>
-
-      <div class="workspace-switcher__list" role="list">
-        <!-- filter the right-pane item rows from app state based on the search value -->
-        <!-- repeat item rows here -->
-      </div>
-    </div>
-  </div>
-</div>`;
-
-const UI_IMPLEMENTATION_MARKUP = String.raw`<kyn-header rootUrl="/" appTitle="Bridge">
-  <span slot="logo" style="--kyn-header-logo-width: 120px;">
-    <!-- bridge logo -->
-  </span>
-
-  <kyn-header-nav>
-    <!-- top-level nav links -->
-  </kyn-header-nav>
-
-  <kyn-header-flyouts>
-    <kyn-header-flyout
-      label="Current account"
-      hideMenuLabel
-      hideButtonLabel
-      noPadding
-    >
-      <span
-        slot="button"
-        style="display: flex; align-items: center; gap: 8px; font-size: 14px;"
-      >
-        <span class="account-name">Current account</span>
-        <span class="account-chevron"><!-- chevron icon --></span>
-      </span>
-
-      <div class="ui-impl-switcher">
-        <!-- insert the workspace-switcher markup from the FullWorkspaceInfo example here -->
-      </div>
-    </kyn-header-flyout>
-  </kyn-header-flyouts>
-</kyn-header>`;
-
 const MOBILE_PRESENTATION_EVENT = 'kyn-internal-flyout-mobile-presentation';
 const LEFT_PANEL_WIDTH = '275px';
 const boundFlyouts = new WeakSet();
@@ -763,6 +582,416 @@ const createInitialState = (args, options = {}) => {
   };
 };
 
+const escapeHtml = (value = '') =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+
+const indentMarkup = (markup, spaces = 2) => {
+  const prefix = ' '.repeat(spaces);
+  return markup
+    .split('\n')
+    .map((line) => (line ? `${prefix}${line}` : line))
+    .join('\n');
+};
+
+const createSourceAccountMetaItem = (item) => {
+  if (item.actionIcon === 'copy' && !item.href) {
+    return [
+      '<button type="button" class="workspace-switcher__account-meta-action">',
+      `  <span>${escapeHtml(item.text)}</span>`,
+      '  <span class="workspace-switcher__account-meta-link-icon">',
+      '    <!-- copy icon -->',
+      '  </span>',
+      '</button>',
+    ].join('\n');
+  }
+
+  if (item.href) {
+    const targetAttr = item.target
+      ? ` target="${escapeHtml(item.target)}"`
+      : '';
+    const relAttr = item.rel ? ` rel="${escapeHtml(item.rel)}"` : '';
+    return [
+      `<kyn-link class="workspace-switcher__account-meta-link" standalone animationInactive href="${escapeHtml(
+        item.href
+      )}"${targetAttr}${relAttr}>`,
+      `  ${escapeHtml(item.text)}`,
+      item.actionIcon
+        ? [
+            '  <span slot="icon" class="workspace-switcher__account-meta-link-icon">',
+            `    <!-- ${escapeHtml(item.actionIcon)} icon -->`,
+            '  </span>',
+          ].join('\n')
+        : '',
+      '</kyn-link>',
+    ]
+      .filter(Boolean)
+      .join('\n');
+  }
+
+  return `<span class="workspace-switcher__account-meta-item">${escapeHtml(
+    item.text
+  )}</span>`;
+};
+
+const createSourceAccountMeta = (state) => {
+  const accountMeta = createAccountMeta(state);
+  if (!accountMeta) return '';
+
+  const itemsMarkup = (accountMeta.items || [])
+    .map((item) => indentMarkup(createSourceAccountMetaItem(item), 6))
+    .join('\n');
+
+  return [
+    `<div class="workspace-switcher__left-header${
+      state.args.hideLeftDivider
+        ? ' workspace-switcher__left-header--without-divider'
+        : ''
+    }">`,
+    '  <div class="workspace-switcher__account-meta">',
+    '    <span class="workspace-switcher__account-meta-status" aria-hidden="true">',
+    '      <!-- success icon -->',
+    '    </span>',
+    '    <div class="workspace-switcher__account-meta-content">',
+    `      <span class="workspace-switcher__account-meta-name" title="${escapeHtml(
+      accountMeta.name
+    )}">`,
+    `        ${escapeHtml(accountMeta.name)}`,
+    '      </span>',
+    itemsMarkup,
+    '    </div>',
+    '  </div>',
+    '</div>',
+  ]
+    .filter(Boolean)
+    .join('\n');
+};
+
+const createSourceWorkspaceItem = (workspace) => {
+  const classes = [
+    'workspace-switcher__menu-item',
+    'workspace-switcher__menu-item--workspace',
+  ];
+
+  if (workspace.selected) {
+    classes.push('workspace-switcher__menu-item--selected');
+  }
+
+  return [
+    '<div',
+    `  class="${classes.join(' ')}"`,
+    '  role="listitem"',
+    `  aria-current="${workspace.selected ? 'true' : 'false'}"`,
+    `  data-value="${escapeHtml(workspace.id)}"`,
+    '>',
+    `  <button type="button" class="workspace-switcher__menu-button" title="${escapeHtml(
+      workspace.name
+    )}">`,
+    `    <span class="workspace-switcher__menu-name">${escapeHtml(
+      workspace.name
+    )}</span>`,
+    workspace.count != null
+      ? [
+          `    <span class="workspace-switcher__menu-count">${workspace.count}</span>`,
+          '    <span class="workspace-switcher__menu-icon" aria-hidden="true">',
+          '      <!-- chevron icon -->',
+          '    </span>',
+        ].join('\n')
+      : '',
+    '  </button>',
+    '</div>',
+  ]
+    .filter(Boolean)
+    .join('\n');
+};
+
+const createSourceBackItem = (label) =>
+  [
+    '<div class="workspace-switcher__menu-item workspace-switcher__menu-item--back workspace-switcher__back">',
+    `  <button type="button" class="workspace-switcher__menu-button" title="${escapeHtml(
+      label
+    )}">`,
+    '    <span class="workspace-switcher__menu-icon" aria-hidden="true">',
+    '      <!-- back icon -->',
+    '    </span>',
+    `    <span class="workspace-switcher__menu-name">${escapeHtml(
+      label
+    )}</span>`,
+    '  </button>',
+    '</div>',
+  ].join('\n');
+
+const createSourceDetailItem = (item, state) => {
+  const classes = [
+    'workspace-switcher__menu-item',
+    'workspace-switcher__menu-item--item',
+  ];
+
+  if (state.selectedItemId === item.id) {
+    classes.push('workspace-switcher__menu-item--selected');
+  }
+
+  const launchAssistiveText = getTextStrings(state.args).launchAssistiveText;
+  const launchActionLabel = launchAssistiveText
+    ? `${item.name}. ${launchAssistiveText}`
+    : item.name;
+  const showFavorite = !item.hideFavorite;
+
+  return [
+    '<div',
+    `  class="${classes.join(' ')}"`,
+    '  role="listitem"',
+    `  aria-current="${state.selectedItemId === item.id ? 'true' : 'false'}"`,
+    `  data-value="${escapeHtml(item.id)}"`,
+    '>',
+    `  <button type="button" class="workspace-switcher__menu-button" title="${escapeHtml(
+      item.name
+    )}">`,
+    `    <span class="workspace-switcher__menu-name">${escapeHtml(
+      item.name
+    )}</span>`,
+    item.opensInNewTab
+      ? `    <span class="workspace-switcher__sr-only">${escapeHtml(
+          launchAssistiveText
+        )}</span>`
+      : '',
+    '  </button>',
+    item.opensInNewTab || showFavorite
+      ? [
+          '  <div class="workspace-switcher__menu-actions">',
+          item.opensInNewTab
+            ? [
+                '    <button',
+                '      type="button"',
+                '      class="workspace-switcher__menu-launch-indicator"',
+                `      title="${escapeHtml(launchActionLabel)}"`,
+                `      aria-label="${escapeHtml(launchActionLabel)}"`,
+                '    >',
+                '      <!-- launch icon -->',
+                '    </button>',
+              ].join('\n')
+            : '',
+          showFavorite
+            ? [
+                `    <kyn-icon-selector class="workspace-switcher__menu-favorite"${
+                  item.favorited ? ' checked' : ''
+                } value="${escapeHtml(
+                  item.id
+                )}" animateSelection onlyVisibleOnHover persistWhenChecked></kyn-icon-selector>`,
+              ].join('\n')
+            : '',
+          '  </div>',
+        ]
+          .filter(Boolean)
+          .join('\n')
+      : '',
+    '</div>',
+  ]
+    .filter(Boolean)
+    .join('\n');
+};
+
+const createWorkspaceSwitcherSourceMarkup = (args = {}, options = {}) => {
+  const state = createInitialState(args, options);
+  const textStrings = getTextStrings(state.args);
+  const currentItems = getItemsForWorkspace(
+    state.data,
+    state.selectedWorkspaceId
+  );
+  const visibleItems =
+    options.showSearch && options.filterSearchResults
+      ? filterItemsByQuery(currentItems, state.searchQuery)
+      : currentItems;
+  const workspaces = state.data.workspaces.map((workspace) => ({
+    ...workspace,
+    count: getWorkspaceCount(state.data, workspace.id),
+    selected: workspace.id === state.selectedWorkspaceId,
+  }));
+
+  const leftPanelClasses = [
+    'workspace-switcher__left',
+    'workspace-switcher__panel--active',
+  ];
+  const rightPanelClasses = [
+    'workspace-switcher__right',
+    'workspace-switcher__panel--inactive',
+  ];
+
+  const leftContent = [
+    !state.args.hideCurrentTitle
+      ? `<span class="workspace-switcher__title">${escapeHtml(
+          textStrings.currentTitle
+        )}</span>`
+      : '',
+    createSourceAccountMeta(state),
+    !state.args.hideWorkspacesTitle
+      ? `<span class="workspace-switcher__title">${escapeHtml(
+          textStrings.workspacesTitle
+        )}</span>`
+      : '',
+    [
+      '<div class="workspace-switcher__list" role="list">',
+      workspaces.map((workspace) =>
+        indentMarkup(createSourceWorkspaceItem(workspace), 2)
+      ),
+      '</div>',
+    ]
+      .flat()
+      .join('\n'),
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const rightContent = [
+    createSourceBackItem(textStrings.backToWorkspaces),
+    options.showSearch
+      ? [
+          '<kyn-search',
+          '  class="workspace-switcher__search"',
+          '  size="sm"',
+          '  label="Search"',
+          '></kyn-search>',
+        ].join('\n')
+      : '',
+    [
+      '<div class="workspace-switcher__list" role="list">',
+      visibleItems.map((item) =>
+        indentMarkup(createSourceDetailItem(item, state), 2)
+      ),
+      '</div>',
+    ]
+      .flat()
+      .join('\n'),
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  return [
+    `<div class="workspace-switcher-host" data-view="${escapeHtml(
+      state.view
+    )}" style="--workspace-switcher-max-height: ${escapeHtml(
+      state.args.maxHeight || 'none'
+    )};">`,
+    '  <div class="workspace-switcher">',
+    `    <div class="${leftPanelClasses.join(' ')}">`,
+    indentMarkup(leftContent, 6),
+    '    </div>',
+    `    <div class="${rightPanelClasses.join(' ')}">`,
+    indentMarkup(rightContent, 6),
+    '    </div>',
+    '  </div>',
+    '</div>',
+  ].join('\n');
+};
+
+const createHeaderLinkSource = (label) =>
+  [
+    '<kyn-header-link href="javascript:void(0)">',
+    '  <span><!-- nav icon --></span>',
+    `  ${escapeHtml(label)}`,
+    '</kyn-header-link>',
+  ].join('\n');
+
+const createUIImplementationMarkupSource = (args = {}) => {
+  const state = createInitialState(args);
+  const accountName = escapeHtml(state.accountMetaName || 'Current account');
+  const embeddedMarkup = indentMarkup(
+    createWorkspaceSwitcherSourceMarkup(args),
+    8
+  );
+
+  return [
+    '<kyn-header rootUrl="/" appTitle="Bridge">',
+    '  <span slot="logo" style="--kyn-header-logo-width: 120px;">',
+    '    <!-- bridge logo -->',
+    '  </span>',
+    '  <kyn-header-nav>',
+    indentMarkup(createHeaderLinkSource('Dashboard'), 4),
+    indentMarkup(createHeaderLinkSource('Services'), 4),
+    indentMarkup(createHeaderLinkSource('Reports'), 4),
+    indentMarkup(createHeaderLinkSource('Administration'), 4),
+    '  </kyn-header-nav>',
+    '  <kyn-header-flyouts>',
+    '    <kyn-header-flyout',
+    `      label="${accountName}"`,
+    '      hideMenuLabel',
+    '      hideButtonLabel',
+    '      noPadding',
+    '    >',
+    '      <span',
+    '        slot="button"',
+    '        style="display: flex; align-items: center; gap: 8px; font-size: 14px;"',
+    '      >',
+    `        <span class="account-name">${accountName}</span>`,
+    '        <span class="account-chevron"><!-- chevron icon --></span>',
+    '      </span>',
+    '      <div class="ui-impl-switcher">',
+    embeddedMarkup,
+    '      </div>',
+    '    </kyn-header-flyout>',
+    '    <kyn-header-flyout label="Notifications" hideMenuLabel>',
+    '      <span slot="button"><!-- notifications icon --></span>',
+    indentMarkup(createHeaderLinkSource('System update scheduled'), 6),
+    indentMarkup(createHeaderLinkSource('New report available'), 6),
+    '    </kyn-header-flyout>',
+    '    <kyn-header-flyout label="Help">',
+    '      <span slot="button"><!-- help icon --></span>',
+    indentMarkup(createHeaderLinkSource('Documentation'), 6),
+    indentMarkup(createHeaderLinkSource('Support'), 6),
+    '    </kyn-header-flyout>',
+    '    <kyn-header-flyout label="User Profile" hideMenuLabel>',
+    '      <span slot="button"><!-- user avatar icon --></span>',
+    '      <kyn-header-user-profile',
+    '        name="User Name"',
+    '        subtitle="Job Title"',
+    '        email="user@kyndryl.com"',
+    '        profileLink="#"',
+    '      >',
+    '      </kyn-header-user-profile>',
+    '      <kyn-header-link href="javascript:void(0)">',
+    '        Profile Settings',
+    '      </kyn-header-link>',
+    '      <kyn-header-link href="javascript:void(0)">',
+    '        Sign Out',
+    '      </kyn-header-link>',
+    '    </kyn-header-flyout>',
+    '  </kyn-header-flyouts>',
+    '</kyn-header>',
+  ].join('\n');
+};
+
+const DEFAULT_STORY_ARGS = {
+  hideCurrentTitle: false,
+  hideWorkspacesTitle: false,
+  hideLeftDivider: false,
+  textStrings: DEFAULT_TEXT_STRINGS,
+  maxHeight: 'none',
+};
+
+const createWorkspaceSwitcherSourceParameters = (args = {}, options = {}) =>
+  createSourceParameters(
+    createWorkspaceSwitcherSourceMarkup(
+      {
+        ...DEFAULT_STORY_ARGS,
+        ...args,
+      },
+      options
+    )
+  );
+
+const createUIImplementationSourceParameters = (args = {}) =>
+  createSourceParameters(
+    createUIImplementationMarkupSource({
+      ...DEFAULT_STORY_ARGS,
+      ...args,
+    }),
+    UI_IMPLEMENTATION_DEMO_STYLES
+  );
+
 const clearCopyFeedback = (state) => {
   state.copiedAccountMetaIndex = null;
   if (state.copyFeedbackTimeout != null) {
@@ -1285,20 +1514,11 @@ export default {
       },
     },
   },
-  args: {
-    hideCurrentTitle: false,
-    hideWorkspacesTitle: false,
-    hideLeftDivider: false,
-    textStrings: DEFAULT_TEXT_STRINGS,
-    maxHeight: 'none',
-  },
+  args: DEFAULT_STORY_ARGS,
 };
 
 export const UIImplementation = {
-  parameters: createSourceParameters(
-    UI_IMPLEMENTATION_MARKUP,
-    UI_IMPLEMENTATION_DEMO_STYLES
-  ),
+  parameters: createUIImplementationSourceParameters(),
   decorators: [
     (story) => html`
       <style>
@@ -1408,12 +1628,14 @@ export const UIImplementation = {
 };
 
 export const FullWorkspaceInfo = {
-  parameters: createSourceParameters(FULL_WORKSPACE_INFO_MARKUP),
+  parameters: createWorkspaceSwitcherSourceParameters(),
   render: (args) => createStandalonePattern(args),
 };
 
 export const SimpleWorkspaceInfo = {
-  parameters: createSourceParameters(FULL_WORKSPACE_INFO_MARKUP),
+  parameters: createWorkspaceSwitcherSourceParameters({
+    hideWorkspacesTitle: true,
+  }),
   args: {
     hideWorkspacesTitle: true,
   },
@@ -1421,7 +1643,13 @@ export const SimpleWorkspaceInfo = {
 };
 
 export const WithSearch = {
-  parameters: createSourceParameters(WITH_SEARCH_MARKUP),
+  parameters: createWorkspaceSwitcherSourceParameters(
+    {},
+    {
+      showSearch: true,
+      filterSearchResults: true,
+    }
+  ),
   render: (args) =>
     createStandalonePattern(args, {
       showSearch: true,
