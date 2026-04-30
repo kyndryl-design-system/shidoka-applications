@@ -38,42 +38,42 @@ const boundFlyouts = new WeakSet();
 const patternHostByFlyout = new WeakMap();
 
 const PATTERN_STYLES = /* css */ `
-  .workspace-switcher-pattern-host {
+  .workspace-switcher-host {
     display: block;
-    --workspace-switcher-pattern-left-panel-width: ${LEFT_PANEL_WIDTH};
-    --workspace-switcher-pattern-max-height: none;
+    --workspace-switcher-left-panel-width: ${LEFT_PANEL_WIDTH};
+    --workspace-switcher-max-height: none;
   }
 
-  .workspace-switcher-pattern-host,
-  .workspace-switcher-pattern-host * {
+  .workspace-switcher-host,
+  .workspace-switcher-host * {
     box-sizing: border-box;
   }
 
-  .workspace-switcher-pattern {
+  .workspace-switcher {
     position: relative;
     display: flex;
     width: 100%;
-    max-height: var(--workspace-switcher-pattern-max-height, none);
+    max-height: var(--workspace-switcher-max-height, none);
     background: var(--kd-color-background-container-default);
     border-radius: 8px;
     overflow: hidden;
   }
 
-  .workspace-switcher-pattern__left {
+  .workspace-switcher__left {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
-    width: var(--workspace-switcher-pattern-left-panel-width, 275px);
+    width: var(--workspace-switcher-left-panel-width, 275px);
     flex-shrink: 0;
     padding: 12px;
     background: var(--kd-color-background-opacity-1);
     border-radius: 8px 0 0 8px;
   }
 
-  .workspace-switcher-pattern__right {
+  .workspace-switcher__right {
     position: absolute;
-    inset: 0 0 0 var(--workspace-switcher-pattern-left-panel-width, 275px);
+    inset: 0 0 0 var(--workspace-switcher-left-panel-width, 275px);
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -81,11 +81,11 @@ const PATTERN_STYLES = /* css */ `
     overflow-y: auto;
   }
 
-  .workspace-switcher-pattern__back {
+  .workspace-switcher__back {
     margin-bottom: 8px;
   }
 
-  .workspace-switcher-pattern__title {
+  .workspace-switcher__title {
     width: 100%;
     padding: 0 8px 2px;
     color: var(--kd-color-text-level-primary);
@@ -96,14 +96,14 @@ const PATTERN_STYLES = /* css */ `
     text-transform: uppercase;
   }
 
-  .workspace-switcher-pattern__list {
+  .workspace-switcher__list {
     display: flex;
     flex-direction: column;
     gap: 2px;
     width: 100%;
   }
 
-  .workspace-switcher-pattern__left-header {
+  .workspace-switcher__left-header {
     width: 100%;
     padding-left: 8px;
     padding-bottom: 10px;
@@ -111,13 +111,13 @@ const PATTERN_STYLES = /* css */ `
     border-bottom: 1px solid var(--kd-color-border-variants-light);
   }
 
-  .workspace-switcher-pattern__left-header--without-divider {
+  .workspace-switcher__left-header--without-divider {
     padding-bottom: 0;
     margin-bottom: 0;
     border-bottom: none;
   }
 
-  .workspace-switcher-pattern__account-meta {
+  .workspace-switcher__account-meta {
     display: flex;
     align-items: flex-start;
     gap: 8px;
@@ -126,7 +126,7 @@ const PATTERN_STYLES = /* css */ `
     line-height: 20px;
   }
 
-  .workspace-switcher-pattern__account-meta-status {
+  .workspace-switcher__account-meta-status {
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -134,21 +134,21 @@ const PATTERN_STYLES = /* css */ `
     color: var(--kd-color-badge-heavy-background-success);
   }
 
-  .workspace-switcher-pattern__account-meta-status svg,
-  .workspace-switcher-pattern__account-meta-link-icon svg,
-  .workspace-switcher-pattern__menu-icon svg {
+  .workspace-switcher__account-meta-status svg,
+  .workspace-switcher__account-meta-link-icon svg,
+  .workspace-switcher__menu-icon svg {
     width: 16px;
     height: 16px;
   }
 
-  .workspace-switcher-pattern__account-meta-content {
+  .workspace-switcher__account-meta-content {
     display: flex;
     flex-direction: column;
     gap: 0;
     min-width: 0;
   }
 
-  .workspace-switcher-pattern__account-meta-name {
+  .workspace-switcher__account-meta-name {
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -159,19 +159,19 @@ const PATTERN_STYLES = /* css */ `
     line-height: 20px;
   }
 
-  .workspace-switcher-pattern__account-meta-item {
+  .workspace-switcher__account-meta-item {
     color: var(--kd-color-text-level-primary);
     font-size: 14px;
     line-height: 20px;
   }
 
-  .workspace-switcher-pattern__account-meta-link,
-  .workspace-switcher-pattern__account-meta-action {
+  .workspace-switcher__account-meta-link,
+  .workspace-switcher__account-meta-action {
     width: fit-content;
     color: var(--kd-color-text-link-level-default);
   }
 
-  .workspace-switcher-pattern__account-meta-action {
+  .workspace-switcher__account-meta-action {
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -183,21 +183,21 @@ const PATTERN_STYLES = /* css */ `
     cursor: pointer;
   }
 
-  .workspace-switcher-pattern__account-meta-action:hover {
+  .workspace-switcher__account-meta-action:hover {
     color: var(--kd-color-text-link-level-hover);
   }
 
-  .workspace-switcher-pattern__account-meta-action:active {
+  .workspace-switcher__account-meta-action:active {
     color: var(--kd-color-text-link-level-pressed);
   }
 
-  .workspace-switcher-pattern__account-meta-action:focus-visible {
+  .workspace-switcher__account-meta-action:focus-visible {
     outline: 2px solid var(--kd-color-border-variants-focus);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  .workspace-switcher-pattern__account-meta-link-icon {
+  .workspace-switcher__account-meta-link-icon {
     display: flex;
     width: 16px;
     height: 16px;
@@ -206,7 +206,7 @@ const PATTERN_STYLES = /* css */ `
     flex-shrink: 0;
   }
 
-  .workspace-switcher-pattern__menu-item {
+  .workspace-switcher__menu-item {
     display: flex;
     align-items: center;
     padding: 0;
@@ -220,7 +220,7 @@ const PATTERN_STYLES = /* css */ `
     line-height: 20px;
   }
 
-  .workspace-switcher-pattern__menu-button {
+  .workspace-switcher__menu-button {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -236,13 +236,13 @@ const PATTERN_STYLES = /* css */ `
     outline: none;
   }
 
-  .workspace-switcher-pattern__menu-button:focus-visible {
+  .workspace-switcher__menu-button:focus-visible {
     outline: 2px solid var(--kd-color-border-variants-focus);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  .workspace-switcher-pattern__menu-name {
+  .workspace-switcher__menu-name {
     flex: 1;
     min-width: 0;
     overflow: hidden;
@@ -251,20 +251,20 @@ const PATTERN_STYLES = /* css */ `
     color: var(--kd-color-text-level-primary);
   }
 
-  .workspace-switcher-pattern__menu-item--workspace .workspace-switcher-pattern__menu-name {
+  .workspace-switcher__menu-item--workspace .workspace-switcher__menu-name {
     max-width: 25ch;
   }
 
-  .workspace-switcher-pattern__menu-item--item .workspace-switcher-pattern__menu-name {
+  .workspace-switcher__menu-item--item .workspace-switcher__menu-name {
     max-width: 40ch;
   }
 
-  .workspace-switcher-pattern__menu-count,
-  .workspace-switcher-pattern__menu-icon {
+  .workspace-switcher__menu-count,
+  .workspace-switcher__menu-icon {
     color: var(--kd-color-text-level-secondary);
   }
 
-  .workspace-switcher-pattern__menu-actions {
+  .workspace-switcher__menu-actions {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -272,91 +272,103 @@ const PATTERN_STYLES = /* css */ `
     padding-right: 8px;
   }
 
-  .workspace-switcher-pattern__menu-favorite {
+  .workspace-switcher__menu-favorite {
     color: var(--kd-color-text-level-secondary);
   }
 
-  .workspace-switcher-pattern__menu-launch-indicator {
+  .workspace-switcher__menu-launch-indicator {
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--kd-color-text-level-secondary);
     flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
   }
 
-  .workspace-switcher-pattern__menu-item--workspace:hover:not(.workspace-switcher-pattern__menu-item--selected),
-  .workspace-switcher-pattern__menu-item--back:hover:not(.workspace-switcher-pattern__menu-item--selected) {
+  .workspace-switcher__menu-launch-indicator:focus-visible {
+    outline: 2px solid var(--kd-color-border-variants-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .workspace-switcher__menu-item--workspace:hover:not(.workspace-switcher__menu-item--selected),
+  .workspace-switcher__menu-item--back:hover:not(.workspace-switcher__menu-item--selected) {
     background: var(--kd-color-background-menu-state-hover);
   }
 
-  .workspace-switcher-pattern__menu-item--workspace:active:not(.workspace-switcher-pattern__menu-item--selected),
-  .workspace-switcher-pattern__menu-item--back:active:not(.workspace-switcher-pattern__menu-item--selected) {
+  .workspace-switcher__menu-item--workspace:active:not(.workspace-switcher__menu-item--selected),
+  .workspace-switcher__menu-item--back:active:not(.workspace-switcher__menu-item--selected) {
     background: var(--kd-color-background-menu-state-pressed);
   }
 
-  .workspace-switcher-pattern__menu-item--workspace.workspace-switcher-pattern__menu-item--selected,
-  .workspace-switcher-pattern__menu-item--back.workspace-switcher-pattern__menu-item--selected {
+  .workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected,
+  .workspace-switcher__menu-item--back.workspace-switcher__menu-item--selected {
     background: var(--kd-color-background-menu-state-hover);
   }
 
-  .workspace-switcher-pattern__menu-item--workspace:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--workspace:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-count,
-  .workspace-switcher-pattern__menu-item--workspace:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-icon,
-  .workspace-switcher-pattern__menu-item--back:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--back:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-icon,
-  .workspace-switcher-pattern__menu-item--workspace:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--workspace:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-count,
-  .workspace-switcher-pattern__menu-item--workspace:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-icon,
-  .workspace-switcher-pattern__menu-item--back:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--back:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-icon,
-  .workspace-switcher-pattern__menu-item--workspace.workspace-switcher-pattern__menu-item--selected .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--workspace.workspace-switcher-pattern__menu-item--selected .workspace-switcher-pattern__menu-count,
-  .workspace-switcher-pattern__menu-item--workspace.workspace-switcher-pattern__menu-item--selected .workspace-switcher-pattern__menu-icon,
-  .workspace-switcher-pattern__menu-item--back.workspace-switcher-pattern__menu-item--selected .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--back.workspace-switcher-pattern__menu-item--selected .workspace-switcher-pattern__menu-icon {
+  .workspace-switcher__menu-item--workspace:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--workspace:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-count,
+  .workspace-switcher__menu-item--workspace:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-icon,
+  .workspace-switcher__menu-item--back:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--back:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-icon,
+  .workspace-switcher__menu-item--workspace:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--workspace:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-count,
+  .workspace-switcher__menu-item--workspace:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-icon,
+  .workspace-switcher__menu-item--back:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--back:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-icon,
+  .workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected .workspace-switcher__menu-count,
+  .workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected .workspace-switcher__menu-icon,
+  .workspace-switcher__menu-item--back.workspace-switcher__menu-item--selected .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--back.workspace-switcher__menu-item--selected .workspace-switcher__menu-icon {
     color: var(--kd-color-text-level-light);
   }
 
-  .workspace-switcher-pattern__menu-item--item:hover:not(.workspace-switcher-pattern__menu-item--selected) {
+  .workspace-switcher__menu-item--item:hover:not(.workspace-switcher__menu-item--selected) {
     --kyn-icon-selector-hover-opacity: 1;
     background: var(--kd-color-background-menu-state-hover);
   }
 
-  .workspace-switcher-pattern__menu-item--item:active:not(.workspace-switcher-pattern__menu-item--selected) {
+  .workspace-switcher__menu-item--item:active:not(.workspace-switcher__menu-item--selected) {
     background: var(--kd-color-background-menu-state-pressed);
   }
 
-  .workspace-switcher-pattern__menu-item--item:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--item:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-favorite,
-  .workspace-switcher-pattern__menu-item--item:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-launch-indicator,
-  .workspace-switcher-pattern__menu-item--item:hover:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-icon,
-  .workspace-switcher-pattern__menu-item--item:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-name,
-  .workspace-switcher-pattern__menu-item--item:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-favorite,
-  .workspace-switcher-pattern__menu-item--item:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-launch-indicator,
-  .workspace-switcher-pattern__menu-item--item:active:not(.workspace-switcher-pattern__menu-item--selected) .workspace-switcher-pattern__menu-icon {
+  .workspace-switcher__menu-item--item:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--item:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-favorite,
+  .workspace-switcher__menu-item--item:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-launch-indicator,
+  .workspace-switcher__menu-item--item:hover:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-icon,
+  .workspace-switcher__menu-item--item:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--item:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-favorite,
+  .workspace-switcher__menu-item--item:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-launch-indicator,
+  .workspace-switcher__menu-item--item:active:not(.workspace-switcher__menu-item--selected) .workspace-switcher__menu-icon {
     color: var(--kd-color-text-level-light);
   }
 
-  .workspace-switcher-pattern__menu-item--item.workspace-switcher-pattern__menu-item--selected {
+  .workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected {
     background: var(--kd-color-background-menu-state-open);
   }
 
-  .workspace-switcher-pattern__menu-item--item.workspace-switcher-pattern__menu-item--selected .workspace-switcher-pattern__menu-name {
+  .workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected .workspace-switcher__menu-name {
     color: var(--kd-color-text-level-primary);
     font-weight: 500;
   }
 
-  .workspace-switcher-pattern__menu-item--item.workspace-switcher-pattern__menu-item--selected:hover {
+  .workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover {
     --kyn-icon-selector-hover-opacity: 1;
   }
 
-  .workspace-switcher-pattern__menu-item--item.workspace-switcher-pattern__menu-item--selected:hover .workspace-switcher-pattern__menu-favorite,
-  .workspace-switcher-pattern__menu-item--item.workspace-switcher-pattern__menu-item--selected:hover .workspace-switcher-pattern__menu-launch-indicator,
-  .workspace-switcher-pattern__menu-item--item.workspace-switcher-pattern__menu-item--selected:hover .workspace-switcher-pattern__menu-icon {
+  .workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover .workspace-switcher__menu-favorite,
+  .workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover .workspace-switcher__menu-launch-indicator,
+  .workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover .workspace-switcher__menu-icon {
     color: var(--kd-color-text-level-primary);
   }
 
-  .workspace-switcher-pattern__sr-only {
+  .workspace-switcher__sr-only {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -368,84 +380,84 @@ const PATTERN_STYLES = /* css */ `
     border: 0;
   }
 
-  .workspace-switcher-pattern__search {
+  .workspace-switcher__search {
     margin-bottom: 0;
     padding: 4px 8px 2px 0;
   }
 
   @media (max-width: calc(52rem - 0.001px)) {
-    .workspace-switcher-pattern {
+    .workspace-switcher {
       display: block;
     }
 
-    .workspace-switcher-pattern__left,
-    .workspace-switcher-pattern__right {
+    .workspace-switcher__left,
+    .workspace-switcher__right {
       width: 100%;
       transition: transform 200ms ease-out;
     }
 
-    .workspace-switcher-pattern__left.workspace-switcher-pattern__panel--inactive,
-    .workspace-switcher-pattern__right.workspace-switcher-pattern__panel--inactive {
+    .workspace-switcher__left.workspace-switcher__panel--inactive,
+    .workspace-switcher__right.workspace-switcher__panel--inactive {
       visibility: hidden;
       pointer-events: none;
     }
 
-    .workspace-switcher-pattern__left.workspace-switcher-pattern__panel--active,
-    .workspace-switcher-pattern__right.workspace-switcher-pattern__panel--active {
+    .workspace-switcher__left.workspace-switcher__panel--active,
+    .workspace-switcher__right.workspace-switcher__panel--active {
       visibility: visible;
       pointer-events: auto;
     }
 
-    .workspace-switcher-pattern__left {
+    .workspace-switcher__left {
       border-radius: 0;
       overflow-y: auto;
     }
 
-    .workspace-switcher-pattern__right {
+    .workspace-switcher__right {
       inset: 0;
       padding: 12px;
     }
 
-    .workspace-switcher-pattern-host:not([data-view='detail']) .workspace-switcher-pattern__left {
+    .workspace-switcher-host:not([data-view='detail']) .workspace-switcher__left {
       transform: translateX(0);
     }
 
-    .workspace-switcher-pattern-host:not([data-view='detail']) .workspace-switcher-pattern__right {
+    .workspace-switcher-host:not([data-view='detail']) .workspace-switcher__right {
       transform: translateX(100%);
     }
 
-    .workspace-switcher-pattern-host[data-view='detail'] .workspace-switcher-pattern__left {
+    .workspace-switcher-host[data-view='detail'] .workspace-switcher__left {
       transform: translateX(-100%);
     }
 
-    .workspace-switcher-pattern-host[data-view='detail'] .workspace-switcher-pattern__right {
+    .workspace-switcher-host[data-view='detail'] .workspace-switcher__right {
       transform: translateX(0);
     }
 
-    .workspace-switcher-pattern__back {
+    .workspace-switcher__back {
       margin-left: 8px;
       margin-right: 8px;
     }
 
-    .workspace-switcher-pattern__account-meta-name,
-    .workspace-switcher-pattern__menu-item--workspace .workspace-switcher-pattern__menu-name,
-    .workspace-switcher-pattern__menu-item--item .workspace-switcher-pattern__menu-name {
+    .workspace-switcher__account-meta-name,
+    .workspace-switcher__menu-item--workspace .workspace-switcher__menu-name,
+    .workspace-switcher__menu-item--item .workspace-switcher__menu-name {
       max-width: none;
     }
 
-    .workspace-switcher-pattern__search {
+    .workspace-switcher__search {
       padding: 4px 0 2px 0;
     }
   }
 
   @media (min-width: 52rem) {
-    .workspace-switcher-pattern__back {
+    .workspace-switcher__back {
       display: none;
     }
   }
 
   @media (max-width: calc(42rem - 0.001px)) {
-    .workspace-switcher-pattern {
+    .workspace-switcher {
       margin-top: 4px;
     }
   }
@@ -647,7 +659,7 @@ const renderAccountMetaItem = (host, state, item, index) => {
     return html`
       <button
         type="button"
-        class="workspace-switcher-pattern__account-meta-action"
+        class="workspace-switcher__account-meta-action"
         @click=${async () => {
           const copyValue = item.copyValue || item.text;
 
@@ -669,7 +681,7 @@ const renderAccountMetaItem = (host, state, item, index) => {
         <span>${item.text}</span>
         ${icon
           ? html`
-              <span class="workspace-switcher-pattern__account-meta-link-icon">
+              <span class="workspace-switcher__account-meta-link-icon">
                 ${unsafeSVG(icon)}
               </span>
             `
@@ -681,7 +693,7 @@ const renderAccountMetaItem = (host, state, item, index) => {
   if (item.href) {
     return html`
       <kyn-link
-        class="workspace-switcher-pattern__account-meta-link"
+        class="workspace-switcher__account-meta-link"
         standalone
         animationInactive
         href=${item.href}
@@ -693,7 +705,7 @@ const renderAccountMetaItem = (host, state, item, index) => {
           ? html`
               <span
                 slot="icon"
-                class="workspace-switcher-pattern__account-meta-link-icon"
+                class="workspace-switcher__account-meta-link-icon"
               >
                 ${unsafeSVG(icon)}
               </span>
@@ -704,9 +716,7 @@ const renderAccountMetaItem = (host, state, item, index) => {
   }
 
   return html`
-    <span class="workspace-switcher-pattern__account-meta-item"
-      >${item.text}</span
-    >
+    <span class="workspace-switcher__account-meta-item">${item.text}</span>
   `;
 };
 
@@ -727,14 +737,19 @@ const renderMenuItem = (host, state, options) => {
 
   const isWorkspace = variant === 'workspace';
   const isBack = variant === 'back';
+  const tooltipName = nameTitle || name;
+  const launchAssistiveText = getTextStrings(state.args).launchAssistiveText;
+  const launchActionLabel = launchAssistiveText
+    ? `${tooltipName}. ${launchAssistiveText}`
+    : tooltipName;
 
   const classes = {
-    'workspace-switcher-pattern__menu-item': true,
-    'workspace-switcher-pattern__menu-item--workspace': isWorkspace,
-    'workspace-switcher-pattern__menu-item--item': !isWorkspace && !isBack,
-    'workspace-switcher-pattern__menu-item--back': isBack,
-    'workspace-switcher-pattern__menu-item--selected': selected,
-    'workspace-switcher-pattern__back': isBack,
+    'workspace-switcher__menu-item': true,
+    'workspace-switcher__menu-item--workspace': isWorkspace,
+    'workspace-switcher__menu-item--item': !isWorkspace && !isBack,
+    'workspace-switcher__menu-item--back': isBack,
+    'workspace-switcher__menu-item--selected': selected,
+    'workspace-switcher__back': isBack,
   };
 
   return html`
@@ -746,37 +761,29 @@ const renderMenuItem = (host, state, options) => {
     >
       <button
         type="button"
-        class="workspace-switcher-pattern__menu-button"
-        title=${nameTitle || name}
+        class="workspace-switcher__menu-button"
+        title=${tooltipName}
         @click=${onClick}
       >
         ${isBack
           ? html`
-              <span
-                class="workspace-switcher-pattern__menu-icon"
-                aria-hidden="true"
-              >
+              <span class="workspace-switcher__menu-icon" aria-hidden="true">
                 ${unsafeSVG(arrowLeftIcon)}
               </span>
             `
           : null}
-        <span class="workspace-switcher-pattern__menu-name">${name}</span>
+        <span class="workspace-switcher__menu-name">${name}</span>
         ${isWorkspace && count != null
           ? html`
-              <span class="workspace-switcher-pattern__menu-count"
-                >${count}</span
-              >
-              <span
-                class="workspace-switcher-pattern__menu-icon"
-                aria-hidden="true"
-              >
+              <span class="workspace-switcher__menu-count">${count}</span>
+              <span class="workspace-switcher__menu-icon" aria-hidden="true">
                 ${unsafeSVG(chevronRightIcon)}
               </span>
             `
           : null}
         ${!isWorkspace && !isBack && showLaunchIndicator
           ? html`
-              <span class="workspace-switcher-pattern__sr-only">
+              <span class="workspace-switcher__sr-only">
                 ${getTextStrings(state.args).launchAssistiveText}
               </span>
             `
@@ -784,21 +791,24 @@ const renderMenuItem = (host, state, options) => {
       </button>
       ${!isWorkspace && !isBack && (showLaunchIndicator || showFavorite)
         ? html`
-            <div class="workspace-switcher-pattern__menu-actions">
+            <div class="workspace-switcher__menu-actions">
               ${showLaunchIndicator
                 ? html`
-                    <span
-                      class="workspace-switcher-pattern__menu-launch-indicator"
-                      aria-hidden="true"
+                    <button
+                      type="button"
+                      class="workspace-switcher__menu-launch-indicator"
+                      title=${launchActionLabel}
+                      aria-label=${launchActionLabel}
+                      @click=${onClick}
                     >
                       ${unsafeSVG(launchIcon)}
-                    </span>
+                    </button>
                   `
                 : null}
               ${showFavorite
                 ? html`
                     <kyn-icon-selector
-                      class="workspace-switcher-pattern__menu-favorite"
+                      class="workspace-switcher__menu-favorite"
                       ?checked=${favorited}
                       value=${value}
                       animateSelection
@@ -837,25 +847,23 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
       ${PATTERN_STYLES}
     </style>
     <div
-      class="workspace-switcher-pattern-host"
+      class="workspace-switcher-host"
       data-view=${state.view}
-      style=${`--workspace-switcher-pattern-max-height: ${
+      style=${`--workspace-switcher-max-height: ${
         state.args.maxHeight || 'none'
       };`}
     >
-      <div class="workspace-switcher-pattern">
+      <div class="workspace-switcher">
         <div
           class=${classMap({
-            'workspace-switcher-pattern__left': true,
-            'workspace-switcher-pattern__panel--active':
-              state.view !== 'detail',
-            'workspace-switcher-pattern__panel--inactive':
-              state.view === 'detail',
+            'workspace-switcher__left': true,
+            'workspace-switcher__panel--active': state.view !== 'detail',
+            'workspace-switcher__panel--inactive': state.view === 'detail',
           })}
         >
           ${!state.args.hideCurrentTitle
             ? html`
-                <span class="workspace-switcher-pattern__title">
+                <span class="workspace-switcher__title">
                   ${textStrings.currentTitle}
                 </span>
               `
@@ -864,23 +872,21 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
             ? html`
                 <div
                   class=${classMap({
-                    'workspace-switcher-pattern__left-header': true,
-                    'workspace-switcher-pattern__left-header--without-divider':
+                    'workspace-switcher__left-header': true,
+                    'workspace-switcher__left-header--without-divider':
                       !!state.args.hideLeftDivider,
                   })}
                 >
-                  <div class="workspace-switcher-pattern__account-meta">
+                  <div class="workspace-switcher__account-meta">
                     <span
-                      class="workspace-switcher-pattern__account-meta-status"
+                      class="workspace-switcher__account-meta-status"
                       aria-hidden="true"
                     >
                       ${unsafeSVG(checkmarkFilledIcon)}
                     </span>
-                    <div
-                      class="workspace-switcher-pattern__account-meta-content"
-                    >
+                    <div class="workspace-switcher__account-meta-content">
                       <span
-                        class="workspace-switcher-pattern__account-meta-name"
+                        class="workspace-switcher__account-meta-name"
                         title=${accountMeta.name}
                       >
                         ${accountMeta.name}
@@ -895,12 +901,12 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
             : null}
           ${!state.args.hideWorkspacesTitle
             ? html`
-                <span class="workspace-switcher-pattern__title">
+                <span class="workspace-switcher__title">
                   ${textStrings.workspacesTitle}
                 </span>
               `
             : null}
-          <div class="workspace-switcher-pattern__list" role="list">
+          <div class="workspace-switcher__list" role="list">
             ${workspaces.map((workspace) =>
               renderMenuItem(host, state, {
                 variant: 'workspace',
@@ -910,6 +916,7 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
                 selected: workspace.selected,
                 onClick: () => {
                   action('on-workspace-select')({ workspace });
+                  clearCopyFeedback(state);
                   state.selectedWorkspaceId = workspace.id;
                   state.selectedItemId = null;
                   state.searchQuery = '';
@@ -923,11 +930,9 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
         </div>
         <div
           class=${classMap({
-            'workspace-switcher-pattern__right': true,
-            'workspace-switcher-pattern__panel--active':
-              state.view === 'detail',
-            'workspace-switcher-pattern__panel--inactive':
-              state.view !== 'detail',
+            'workspace-switcher__right': true,
+            'workspace-switcher__panel--active': state.view === 'detail',
+            'workspace-switcher__panel--inactive': state.view !== 'detail',
           })}
         >
           ${renderMenuItem(host, state, {
@@ -946,7 +951,7 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
                   label="Search"
                   .value=${state.searchQuery}
                   .suggestions=${[]}
-                  class="workspace-switcher-pattern__search"
+                  class="workspace-switcher__search"
                   @on-input=${(event) => {
                     state.searchQuery = event.detail.value;
                     action('on-search')(event.detail);
@@ -955,7 +960,7 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
                 ></kyn-search>
               `
             : null}
-          <div class="workspace-switcher-pattern__list" role="list">
+          <div class="workspace-switcher__list" role="list">
             ${visibleItems.map((item) =>
               renderMenuItem(host, state, {
                 variant: 'item',
@@ -967,6 +972,7 @@ const renderWorkspaceSwitcherMarkup = (host, state) => {
                 showFavorite: !item.hideFavorite,
                 onClick: () => {
                   action('on-item-select')({ item });
+                  clearCopyFeedback(state);
                   state.selectedItemId = item.id;
                   state.accountMetaName = item.name;
                   renderWorkspaceSwitcherPattern(host);
