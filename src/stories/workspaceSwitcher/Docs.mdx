@@ -1,0 +1,662 @@
+import { Meta, Title, Description, Canvas } from '@storybook/addon-docs/blocks';
+import * as WorkspaceSwitcherStories from './WorkspaceSwitcher.stories.js';
+
+<Meta of={WorkspaceSwitcherStories} name="Docs" />
+
+<Title>Workspace Switcher</Title>
+
+<Description>
+  A <strong>pattern</strong>, not a standalone component. This Storybook entry
+  keeps the current workspace-switcher experience visible, but frames it as a
+  suggested composition that product teams can adapt instead of a closed custom
+  element API.
+</Description>
+
+## Pattern Structure
+
+```text
+kyn-header-flyout
+└── div.workspace-switcher
+    ├── div.workspace-switcher__left
+    │   ├── account meta block
+    │   └── workspace rows
+    └── div.workspace-switcher__right
+        ├── back row
+        ├── optional kyn-search
+        └── account/item rows
+```
+
+## Recommended Building Blocks
+
+Use plain layout markup for the switcher shell and compose it with existing
+primitives where they still add value:
+
+- `kyn-header` and `kyn-header-flyout` when the switcher lives in the global header
+- `kyn-search` for optional right-panel search placement
+- `button` for non-navigation actions such as copy, and `kyn-link` for true navigation
+- `kyn-icon-selector` for favorite toggles
+
+The important guidance is the interaction model and layout, not a specific tag
+name.
+
+## Quick Start
+
+```html
+<kyn-header-flyout
+  label="Current account"
+  hideMenuLabel
+  hideButtonLabel
+  noPadding
+>
+  <span slot="button">
+    <!-- Your trigger content -->
+  </span>
+
+  <div class="workspace-switcher-host" data-view="root">
+    <div class="workspace-switcher">
+      <div class="workspace-switcher__left">
+        <!-- Current account meta -->
+        <!-- Workspace rows -->
+      </div>
+
+      <div class="workspace-switcher__right">
+        <!-- Back row -->
+        <!-- Optional kyn-search -->
+        <!-- Item rows -->
+      </div>
+    </div>
+  </div>
+</kyn-header-flyout>
+```
+
+## Flyout Integration Note
+
+The `UIImplementation` story mirrors the current header-flyout mobile experience
+so the pattern remains visually comparable to the previous component example.
+That wiring is Storybook demo glue for this repository's current header
+implementation, not a stable workspace-switcher contract.
+
+If your application integrates with a different header or mobile summary model,
+adapt that glue to your own environment and keep the switcher pattern focused on
+layout, state, and interaction behavior.
+
+## Interaction Rules
+
+- Workspace clicks should swap the right-panel content and move mobile view to detail.
+- Item clicks should update the selected row and account meta block.
+- Copy actions should behave like actions, not fake navigation, and provide transient success feedback.
+- Favorite toggles should remain independent from primary row selection.
+- Closing the flyout should reset the pattern to the root workspace list.
+
+## Stories
+
+<Canvas of={WorkspaceSwitcherStories.UIImplementation} />
+<Canvas of={WorkspaceSwitcherStories.FullWorkspaceInfo} />
+<Canvas of={WorkspaceSwitcherStories.WithSearch} />
+
+## Copyable Styles
+
+These blocks are intended to be copied more directly than the Storybook `Code`
+tab output. The first three blocks are the reusable pattern styles. The last
+block is only for the header flyout demo treatment used by `UIImplementation`.
+
+### Base Layout And Account Meta
+
+```css
+.workspace-switcher-host {
+  display: block;
+  --workspace-switcher-left-panel-width: 275px;
+  --workspace-switcher-max-height: none;
+}
+
+.workspace-switcher-host,
+.workspace-switcher-host * {
+  box-sizing: border-box;
+}
+
+.workspace-switcher {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-height: var(--workspace-switcher-max-height, none);
+  background: var(--kd-color-background-container-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.workspace-switcher__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: var(--workspace-switcher-left-panel-width, 275px);
+  flex-shrink: 0;
+  padding: 12px;
+  background: var(--kd-color-background-opacity-1);
+  border-radius: 8px 0 0 8px;
+}
+
+.workspace-switcher__right {
+  position: absolute;
+  inset: 0 0 0 var(--workspace-switcher-left-panel-width, 275px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.workspace-switcher__title {
+  width: 100%;
+  padding: 0 8px 2px;
+  color: var(--kd-color-text-level-primary);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.16px;
+  text-transform: uppercase;
+}
+
+.workspace-switcher__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.workspace-switcher__left-header {
+  width: 100%;
+  padding-left: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--kd-color-border-variants-light);
+}
+
+.workspace-switcher__left-header--without-divider {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.workspace-switcher__account-meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--kd-color-text-level-primary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.workspace-switcher__account-meta-status {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+  color: var(--kd-color-badge-heavy-background-success);
+}
+
+.workspace-switcher__account-meta-status svg,
+.workspace-switcher__account-meta-link-icon svg,
+.workspace-switcher__menu-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.workspace-switcher__account-meta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.workspace-switcher__account-meta-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kd-color-text-level-primary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.workspace-switcher__account-meta-item {
+  color: var(--kd-color-text-level-primary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.workspace-switcher__account-meta-link,
+.workspace-switcher__account-meta-action {
+  width: fit-content;
+  color: var(--kd-color-text-link-level-default);
+}
+
+.workspace-switcher__account-meta-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.workspace-switcher__account-meta-action:hover {
+  color: var(--kd-color-text-link-level-hover);
+}
+
+.workspace-switcher__account-meta-action:active {
+  color: var(--kd-color-text-link-level-pressed);
+}
+
+.workspace-switcher__account-meta-action:focus-visible {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.workspace-switcher__account-meta-link-icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+```
+
+### Row Styles
+
+```css
+.workspace-switcher__menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    outline-color 150ms ease-out;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.workspace-switcher__menu-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  outline: none;
+}
+
+.workspace-switcher__menu-button:focus-visible {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.workspace-switcher__menu-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--kd-color-text-level-primary);
+}
+
+.workspace-switcher__menu-item--workspace .workspace-switcher__menu-name {
+  max-width: 25ch;
+}
+
+.workspace-switcher__menu-item--item .workspace-switcher__menu-name {
+  max-width: 40ch;
+}
+
+.workspace-switcher__menu-count,
+.workspace-switcher__menu-icon {
+  color: var(--kd-color-text-level-secondary);
+}
+
+.workspace-switcher__menu-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding-right: 8px;
+}
+
+.workspace-switcher__menu-favorite {
+  color: var(--kd-color-text-level-secondary);
+}
+
+.workspace-switcher__menu-launch-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kd-color-text-level-secondary);
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.workspace-switcher__menu-launch-indicator:focus-visible {
+  outline: 2px solid var(--kd-color-border-variants-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.workspace-switcher__menu-item--workspace:hover:not(
+    .workspace-switcher__menu-item--selected
+  ),
+.workspace-switcher__menu-item--back:hover:not(
+    .workspace-switcher__menu-item--selected
+  ) {
+  background: var(--kd-color-background-menu-state-hover);
+}
+
+.workspace-switcher__menu-item--workspace:active:not(
+    .workspace-switcher__menu-item--selected
+  ),
+.workspace-switcher__menu-item--back:active:not(
+    .workspace-switcher__menu-item--selected
+  ) {
+  background: var(--kd-color-background-menu-state-pressed);
+}
+
+.workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected,
+.workspace-switcher__menu-item--back.workspace-switcher__menu-item--selected {
+  background: var(--kd-color-background-menu-state-hover);
+}
+
+.workspace-switcher__menu-item--workspace:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--workspace:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-count,
+.workspace-switcher__menu-item--workspace:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-icon,
+.workspace-switcher__menu-item--back:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--back:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-icon,
+.workspace-switcher__menu-item--workspace:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--workspace:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-count,
+.workspace-switcher__menu-item--workspace:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-icon,
+.workspace-switcher__menu-item--back:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--back:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-icon,
+.workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected
+  .workspace-switcher__menu-count,
+.workspace-switcher__menu-item--workspace.workspace-switcher__menu-item--selected
+  .workspace-switcher__menu-icon,
+.workspace-switcher__menu-item--back.workspace-switcher__menu-item--selected
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--back.workspace-switcher__menu-item--selected
+  .workspace-switcher__menu-icon {
+  color: var(--kd-color-text-level-light);
+}
+
+.workspace-switcher__menu-item--item:hover:not(
+    .workspace-switcher__menu-item--selected
+  ) {
+  --kyn-icon-selector-hover-opacity: 1;
+  background: var(--kd-color-background-menu-state-hover);
+}
+
+.workspace-switcher__menu-item--item:active:not(
+    .workspace-switcher__menu-item--selected
+  ) {
+  background: var(--kd-color-background-menu-state-pressed);
+}
+
+.workspace-switcher__menu-item--item:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--item:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-favorite,
+.workspace-switcher__menu-item--item:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-launch-indicator,
+.workspace-switcher__menu-item--item:hover:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-icon,
+.workspace-switcher__menu-item--item:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-name,
+.workspace-switcher__menu-item--item:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-favorite,
+.workspace-switcher__menu-item--item:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-launch-indicator,
+.workspace-switcher__menu-item--item:active:not(
+    .workspace-switcher__menu-item--selected
+  )
+  .workspace-switcher__menu-icon {
+  color: var(--kd-color-text-level-light);
+}
+
+.workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected {
+  background: var(--kd-color-background-menu-state-open);
+}
+
+.workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected
+  .workspace-switcher__menu-name {
+  color: var(--kd-color-text-level-primary);
+  font-weight: 500;
+}
+
+.workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover {
+  --kyn-icon-selector-hover-opacity: 1;
+}
+
+.workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover
+  .workspace-switcher__menu-favorite,
+.workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover
+  .workspace-switcher__menu-launch-indicator,
+.workspace-switcher__menu-item--item.workspace-switcher__menu-item--selected:hover
+  .workspace-switcher__menu-icon {
+  color: var(--kd-color-text-level-primary);
+}
+
+.workspace-switcher__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.workspace-switcher__search {
+  margin-bottom: 0;
+  padding: 4px 8px 2px 0;
+}
+```
+
+### Mobile Drilldown
+
+```css
+@media (max-width: calc(52rem - 0.001px)) {
+  .workspace-switcher {
+    display: block;
+  }
+
+  .workspace-switcher__left,
+  .workspace-switcher__right {
+    width: 100%;
+    transition: transform 200ms ease-out;
+  }
+
+  .workspace-switcher__left.workspace-switcher__panel--inactive,
+  .workspace-switcher__right.workspace-switcher__panel--inactive {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .workspace-switcher__left.workspace-switcher__panel--active,
+  .workspace-switcher__right.workspace-switcher__panel--active {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .workspace-switcher__left {
+    border-radius: 0;
+    overflow-y: auto;
+  }
+
+  .workspace-switcher__right {
+    inset: 0;
+    padding: 12px;
+  }
+
+  .workspace-switcher-host:not([data-view='detail']) .workspace-switcher__left {
+    transform: translateX(0);
+  }
+
+  .workspace-switcher-host:not([data-view='detail'])
+    .workspace-switcher__right {
+    transform: translateX(100%);
+  }
+
+  .workspace-switcher-host[data-view='detail'] .workspace-switcher__left {
+    transform: translateX(-100%);
+  }
+
+  .workspace-switcher-host[data-view='detail'] .workspace-switcher__right {
+    transform: translateX(0);
+  }
+
+  .workspace-switcher__back {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .workspace-switcher__account-meta-name,
+  .workspace-switcher__menu-item--workspace .workspace-switcher__menu-name,
+  .workspace-switcher__menu-item--item .workspace-switcher__menu-name {
+    max-width: none;
+  }
+
+  .workspace-switcher__search {
+    padding: 4px 0 2px 0;
+  }
+}
+
+@media (min-width: 52rem) {
+  .workspace-switcher__back {
+    display: none;
+  }
+}
+
+@media (max-width: calc(42rem - 0.001px)) {
+  .workspace-switcher {
+    margin-top: 4px;
+  }
+}
+```
+
+### Header Demo Overrides
+
+Only copy this block if you are reproducing the header flyout example.
+
+```css
+.account-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-chevron {
+  display: flex;
+  transition: transform 0.2s;
+}
+
+.ui-impl-switcher {
+  width: 625px;
+}
+
+@media (max-width: calc(52rem - 0.001px)) {
+  .ui-impl-switcher {
+    max-width: 375px;
+  }
+
+  .account-chevron {
+    display: none;
+  }
+}
+
+@media (max-width: calc(42rem - 0.001px)) {
+  .ui-impl-switcher {
+    width: 100%;
+    max-width: none;
+  }
+}
+```
+
+## Data-Driven Setup
+
+The stories are driven by `example_workspace_switcher_data.json` so teams can
+adapt this pattern to service-driven or config-driven data without inheriting a
+component contract. `WithSearch` also demonstrates one way to filter the
+right-pane item list in app code while keeping the search field optional.
+
+If you want the same example behavior, the fixture currently relies on:
+
+- `workspaces[]` entries with `id` and `name`
+- `itemsByWorkspace[workspaceId][]` entries with `id`, `name`, and optional `favorited`, `opensInNewTab`, and `hideFavorite`
+- `accountDetails.accountId` and `accountDetails.country` for the account meta block
+- `defaultSelectedWorkspace` for the initial selected left-rail collection
