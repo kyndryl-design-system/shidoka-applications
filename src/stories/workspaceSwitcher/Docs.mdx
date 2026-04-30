@@ -1,0 +1,104 @@
+import { Meta, Title, Description, Canvas } from '@storybook/addon-docs/blocks';
+import * as WorkspaceSwitcherStories from './WorkspaceSwitcher.stories.js';
+
+<Meta of={WorkspaceSwitcherStories} name="Docs" />
+
+<Title>Workspace Switcher</Title>
+
+<Description>
+  A <strong>pattern</strong>, not a standalone component. This Storybook entry
+  keeps the current workspace-switcher experience visible, but frames it as a
+  suggested composition that product teams can adapt instead of a closed custom
+  element API.
+</Description>
+
+## Pattern Structure
+
+```html
+kyn-header-flyout (optional) └── div.workspace-switcher-pattern ├──
+div.workspace-switcher-pattern__left │ ├── account meta block │ └── workspace
+rows └── div.workspace-switcher-pattern__right ├── back row ├── optional
+kyn-search └── account/item rows
+```
+
+## Recommended Building Blocks
+
+Use plain layout markup for the switcher shell and compose it with existing
+primitives where they still add value:
+
+- `kyn-header` and `kyn-header-flyout` when the switcher lives in the global header
+- `kyn-search` for optional right-panel search placement
+- `button` for non-navigation actions such as copy, and `kyn-link` for true navigation
+- `kyn-icon-selector` for favorite toggles
+
+The important guidance is the interaction model and layout, not a specific tag
+name.
+
+## Quick Start
+
+```html
+<kyn-header-flyout
+  label="Current account"
+  hideMenuLabel
+  hideButtonLabel
+  noPadding
+>
+  <span slot="button">
+    <!-- Your trigger content -->
+  </span>
+
+  <div class="workspace-switcher-pattern-host" data-view="root">
+    <div class="workspace-switcher-pattern">
+      <div class="workspace-switcher-pattern__left">
+        <!-- Current account meta -->
+        <!-- Workspace rows -->
+      </div>
+
+      <div class="workspace-switcher-pattern__right">
+        <!-- Back row -->
+        <!-- Optional kyn-search -->
+        <!-- Item rows -->
+      </div>
+    </div>
+  </div>
+</kyn-header-flyout>
+```
+
+## Flyout Integration Note
+
+The `UIImplementation` story mirrors the current header-flyout mobile experience
+so the pattern remains visually comparable to the previous component example.
+That wiring is Storybook demo glue for this repository's current header
+implementation, not a stable workspace-switcher contract.
+
+If your application integrates with a different header or mobile summary model,
+adapt that glue to your own environment and keep the switcher pattern focused on
+layout, state, and interaction behavior.
+
+## Interaction Rules
+
+- Workspace clicks should swap the right-panel content and move mobile view to detail.
+- Item clicks should update the selected row and account meta block.
+- Copy actions should behave like actions, not fake navigation, and provide transient success feedback.
+- Favorite toggles should remain independent from primary row selection.
+- Closing the flyout should reset the pattern to the root workspace list.
+
+## Stories
+
+<Canvas of={WorkspaceSwitcherStories.UIImplementation} />
+<Canvas of={WorkspaceSwitcherStories.FullWorkspaceInfo} />
+<Canvas of={WorkspaceSwitcherStories.WithSearch} />
+
+## Data-Driven Setup
+
+The stories are driven by `example_workspace_switcher_data.json` so teams can
+adapt this pattern to service-driven or config-driven data without inheriting a
+component contract. `WithSearch` also demonstrates one way to filter the
+right-pane item list in app code while keeping the search field optional.
+
+If you want the same example behavior, the fixture currently relies on:
+
+- `workspaces[]` entries with `id` and `name`
+- `itemsByWorkspace[workspaceId][]` entries with `id`, `name`, and optional `favorited`, `opensInNewTab`, and `hideFavorite`
+- `accountDetails.accountId` and `accountDetails.country` for the account meta block
+- `defaultSelectedWorkspace` for the initial selected left-rail collection
