@@ -32,10 +32,226 @@ const DEFAULT_TEXT_STRINGS = {
   launchAssistiveText: 'Opens in a new tab',
 };
 
+const FULL_WORKSPACE_INFO_MARKUP = String.raw`<div class="workspace-switcher-host" data-view="root">
+  <div class="workspace-switcher">
+    <div class="workspace-switcher__left workspace-switcher__panel--active">
+      <span class="workspace-switcher__title">CURRENT</span>
+
+      <div class="workspace-switcher__left-header">
+        <div class="workspace-switcher__account-meta">
+          <span class="workspace-switcher__account-meta-status" aria-hidden="true">
+            <!-- success icon -->
+          </span>
+
+          <div class="workspace-switcher__account-meta-content">
+            <span class="workspace-switcher__account-meta-name">
+              Very Long Name That Exceeds The Limit That Exceeds Width Limit
+            </span>
+
+            <button type="button" class="workspace-switcher__account-meta-action">
+              <span>023497uw02399023509</span>
+              <span class="workspace-switcher__account-meta-link-icon">
+                <!-- copy icon -->
+              </span>
+            </button>
+
+            <span class="workspace-switcher__account-meta-item">United States</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="workspace-switcher__title">WORKSPACES</span>
+
+      <div class="workspace-switcher__list" role="list">
+        <div
+          class="workspace-switcher__menu-item workspace-switcher__menu-item--workspace"
+          role="listitem"
+          aria-current="false"
+          data-value="global"
+        >
+          <button type="button" class="workspace-switcher__menu-button" title="Global Zone (All)">
+            <span class="workspace-switcher__menu-name">Global Zone (All)</span>
+          </button>
+        </div>
+
+        <div
+          class="workspace-switcher__menu-item workspace-switcher__menu-item--workspace workspace-switcher__menu-item--selected"
+          role="listitem"
+          aria-current="true"
+          data-value="tenants"
+        >
+          <button type="button" class="workspace-switcher__menu-button" title="Account Tenants">
+            <span class="workspace-switcher__menu-name">Account Tenants</span>
+            <span class="workspace-switcher__menu-count">24</span>
+            <span class="workspace-switcher__menu-icon" aria-hidden="true">
+              <!-- chevron icon -->
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="workspace-switcher__right workspace-switcher__panel--inactive">
+      <div class="workspace-switcher__menu-item workspace-switcher__menu-item--back workspace-switcher__back">
+        <button type="button" class="workspace-switcher__menu-button" title="Workspaces">
+          <span class="workspace-switcher__menu-icon" aria-hidden="true">
+            <!-- back icon -->
+          </span>
+          <span class="workspace-switcher__menu-name">Workspaces</span>
+        </button>
+      </div>
+
+      <div class="workspace-switcher__list" role="list">
+        <div
+          class="workspace-switcher__menu-item workspace-switcher__menu-item--item workspace-switcher__menu-item--selected"
+          role="listitem"
+          aria-current="true"
+          data-value="t-0"
+        >
+          <button type="button" class="workspace-switcher__menu-button" title="Very Long Name That Exceeds The Limit That Exceeds Width Limit">
+            <span class="workspace-switcher__menu-name">
+              Very Long Name That Exceeds The Limit That Exceeds Width Limit
+            </span>
+          </button>
+        </div>
+
+        <div
+          class="workspace-switcher__menu-item workspace-switcher__menu-item--item"
+          role="listitem"
+          aria-current="false"
+          data-value="t-1"
+        >
+          <button type="button" class="workspace-switcher__menu-button" title="AIOps Account">
+            <span class="workspace-switcher__menu-name">AIOps Account</span>
+            <span class="workspace-switcher__sr-only">Opens in a new tab</span>
+          </button>
+
+          <div class="workspace-switcher__menu-actions">
+            <button
+              type="button"
+              class="workspace-switcher__menu-launch-indicator"
+              aria-label="AIOps Account. Opens in a new tab"
+              title="AIOps Account. Opens in a new tab"
+            >
+              <!-- launch icon -->
+            </button>
+
+            <kyn-icon-selector
+              class="workspace-switcher__menu-favorite"
+              checked
+              value="t-1"
+              animateSelection
+              onlyVisibleOnHover
+              persistWhenChecked
+            ></kyn-icon-selector>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+const WITH_SEARCH_MARKUP = String.raw`<div class="workspace-switcher-host" data-view="root">
+  <div class="workspace-switcher">
+    <div class="workspace-switcher__left">
+      <!-- current account meta -->
+      <!-- workspace rows -->
+    </div>
+
+    <div class="workspace-switcher__right">
+      <div class="workspace-switcher__menu-item workspace-switcher__menu-item--back workspace-switcher__back">
+        <button type="button" class="workspace-switcher__menu-button" title="Workspaces">
+          <span class="workspace-switcher__menu-icon" aria-hidden="true">
+            <!-- back icon -->
+          </span>
+          <span class="workspace-switcher__menu-name">Workspaces</span>
+        </button>
+      </div>
+
+      <kyn-search
+        class="workspace-switcher__search"
+        size="sm"
+        label="Search"
+      ></kyn-search>
+
+      <div class="workspace-switcher__list" role="list">
+        <!-- filter the right-pane item rows from app state based on the search value -->
+        <!-- repeat item rows here -->
+      </div>
+    </div>
+  </div>
+</div>`;
+
+const UI_IMPLEMENTATION_MARKUP = String.raw`<kyn-header rootUrl="/" appTitle="Bridge">
+  <span slot="logo" style="--kyn-header-logo-width: 120px;">
+    <!-- bridge logo -->
+  </span>
+
+  <kyn-header-nav>
+    <!-- top-level nav links -->
+  </kyn-header-nav>
+
+  <kyn-header-flyouts>
+    <kyn-header-flyout
+      label="Current account"
+      hideMenuLabel
+      hideButtonLabel
+      noPadding
+    >
+      <span
+        slot="button"
+        style="display: flex; align-items: center; gap: 8px; font-size: 14px;"
+      >
+        <span class="account-name">Current account</span>
+        <span class="account-chevron"><!-- chevron icon --></span>
+      </span>
+
+      <div class="ui-impl-switcher">
+        <!-- insert the workspace-switcher markup from the FullWorkspaceInfo example here -->
+      </div>
+    </kyn-header-flyout>
+  </kyn-header-flyouts>
+</kyn-header>`;
+
 const MOBILE_PRESENTATION_EVENT = 'kyn-internal-flyout-mobile-presentation';
 const LEFT_PANEL_WIDTH = '275px';
 const boundFlyouts = new WeakSet();
 const patternHostByFlyout = new WeakMap();
+
+const UI_IMPLEMENTATION_DEMO_STYLES = /* css */ `
+  .account-name {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .account-chevron {
+    display: flex;
+    transition: transform 0.2s;
+  }
+
+  .ui-impl-switcher {
+    width: 625px;
+  }
+
+  @media (max-width: calc(52rem - 0.001px)) {
+    .ui-impl-switcher {
+      max-width: 375px;
+    }
+
+    .account-chevron {
+      display: none;
+    }
+  }
+
+  @media (max-width: calc(42rem - 0.001px)) {
+    .ui-impl-switcher {
+      width: 100%;
+      max-width: none;
+    }
+  }
+`;
 
 const PATTERN_STYLES = /* css */ `
   .workspace-switcher-host {
@@ -462,6 +678,20 @@ const PATTERN_STYLES = /* css */ `
     }
   }
 `;
+
+const createStorySource = (markup, extraStyles = '') =>
+  `<style>\n${PATTERN_STYLES.trim()}\n</style>\n${
+    extraStyles ? `<style>\n${extraStyles.trim()}\n</style>\n` : ''
+  }${markup}`;
+
+const createSourceParameters = (markup, extraStyles = '') => ({
+  docs: {
+    source: {
+      language: 'html',
+      code: createStorySource(markup, extraStyles),
+    },
+  },
+});
 
 const stateByHost = new WeakMap();
 
@@ -1065,41 +1295,14 @@ export default {
 };
 
 export const UIImplementation = {
+  parameters: createSourceParameters(
+    UI_IMPLEMENTATION_MARKUP,
+    UI_IMPLEMENTATION_DEMO_STYLES
+  ),
   decorators: [
     (story) => html`
       <style>
-        .account-name {
-          max-width: 200px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .account-chevron {
-          display: flex;
-          transition: transform 0.2s;
-        }
-
-        .ui-impl-switcher {
-          width: 625px;
-        }
-
-        @media (max-width: calc(52rem - 0.001px)) {
-          .ui-impl-switcher {
-            max-width: 375px;
-          }
-
-          .account-chevron {
-            display: none;
-          }
-        }
-
-        @media (max-width: calc(42rem - 0.001px)) {
-          .ui-impl-switcher {
-            width: 100%;
-            max-width: none;
-          }
-        }
+        ${UI_IMPLEMENTATION_DEMO_STYLES}
       </style>
       <div
         style="height: 100vh; min-height: 500px; transform: translate3d(0,0,0); margin: var(--kd-negative-page-gutter);"
@@ -1205,10 +1408,12 @@ export const UIImplementation = {
 };
 
 export const FullWorkspaceInfo = {
+  parameters: createSourceParameters(FULL_WORKSPACE_INFO_MARKUP),
   render: (args) => createStandalonePattern(args),
 };
 
 export const SimpleWorkspaceInfo = {
+  parameters: createSourceParameters(FULL_WORKSPACE_INFO_MARKUP),
   args: {
     hideWorkspacesTitle: true,
   },
@@ -1216,6 +1421,7 @@ export const SimpleWorkspaceInfo = {
 };
 
 export const WithSearch = {
+  parameters: createSourceParameters(WITH_SEARCH_MARKUP),
   render: (args) =>
     createStandalonePattern(args, {
       showSearch: true,
