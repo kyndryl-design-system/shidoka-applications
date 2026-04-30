@@ -29,6 +29,9 @@ export default {
     textStrings: { control: 'object' },
     customSuggestions: { control: 'array' },
     invalidText: { control: 'text' },
+    warnText: { control: 'text' },
+    warningAriaLabel: { control: 'text' },
+    warningTitle: { control: 'text' },
     value: {
       control: 'text',
       table: { category: 'attributes' },
@@ -59,6 +62,9 @@ const Template = (args) => html`
     pattern=${ifDefined(args.pattern)}
     maxItems=${ifDefined(args.maxItems)}
     invalidText=${ifDefined(args.invalidText)}
+    warnText=${ifDefined(args.warnText)}
+    warningAriaLabel=${ifDefined(args.warningAriaLabel)}
+    warningTitle=${ifDefined(args.warningTitle)}
     .itemStatusMap=${args.itemStatusMap}
     @on-change=${(e) => action('on-change')(e.detail)}
   >
@@ -83,6 +89,10 @@ DefaultMultiInput.args = {
   name: 'invite',
   pattern: undefined,
   maxItems: undefined,
+  invalidText: '',
+  warnText: '',
+  warningAriaLabel: '',
+  warningTitle: '',
   textStrings: {
     ...defaultTextStrings,
   },

@@ -22,6 +22,9 @@ const args = {
   hideLabel: false,
   invalidText: '',
   autoComplete: 'off',
+  warnText: '',
+  warningAriaLabel: '',
+  warningTitle: '',
   textStrings: {
     requiredText: 'Required',
     errorText: 'Error',
@@ -43,6 +46,9 @@ export const Default = {
         ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        warningAriaLabel=${args.warningAriaLabel}
+        warningTitle=${args.warningTitle}
         .textStrings=${args.textStrings}
         autoComplete=${args.autoComplete}
         label=${args.label}

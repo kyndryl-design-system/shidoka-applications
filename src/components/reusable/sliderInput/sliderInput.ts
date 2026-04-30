@@ -10,6 +10,7 @@ import '../button';
 import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 import squiggleThin from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle.svg';
 import squiggleThick from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle-thick.svg';
@@ -100,6 +101,18 @@ export class SliderInput extends FormMixin(LitElement) {
   /** Makes the slider expand to fill the full width of its container. */
   @property({ type: Boolean, reflect: true })
   accessor fullWidth = false;
+
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
 
   /** Internal text strings.
    * @internal
@@ -227,6 +240,28 @@ ${
               ? html`
                   <div class="caption" aria-disabled=${this.disabled}>
                     ${this.caption}
+                  </div>
+                `
+              : null
+          }
+          ${
+            this.warnText
+              ? html`
+                  <div
+                    class="warn warn-text"
+                    role="alert"
+                    title=${this.warningTitle || 'Warning'}
+                    tabindex="0"
+                  >
+                    <span
+                      class="warning-icon"
+                      role="img"
+                      aria-label=${this.warningAriaLabel ||
+                      'Warning message icon'}
+                    >
+                      ${unsafeSVG(warningIcon)}
+                    </span>
+                    ${this.warnText}
                   </div>
                 `
               : null

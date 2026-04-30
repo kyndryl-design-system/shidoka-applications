@@ -17,6 +17,7 @@ import '../tag';
 import MultiInputScss from './multiInputField.scss?inline';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 /**
@@ -92,6 +93,18 @@ export class MultiInputField extends FormMixin(LitElement) {
   /** Pattern attribute for the input element. */
   @property({ type: String })
   accessor pattern: string | undefined = undefined;
+
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
 
   /**
    * Consumer-driven status map, e.g.
@@ -359,6 +372,23 @@ export class MultiInputField extends FormMixin(LitElement) {
           ${this.caption
             ? html`<div class="caption" aria-disabled=${this.disabled}>
                 ${this.caption}
+              </div>`
+            : null}
+          ${this.warnText
+            ? html`<div
+                class="warn warn-text"
+                role="alert"
+                title=${this.warningTitle || 'Warning'}
+                tabindex="0"
+              >
+                <span
+                  class="warning-icon"
+                  role="img"
+                  aria-label=${this.warningAriaLabel || 'Warning message icon'}
+                >
+                  ${unsafeSVG(warningIcon)}
+                </span>
+                ${this.warnText}
               </div>`
             : null}
           ${showError

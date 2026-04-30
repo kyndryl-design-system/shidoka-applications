@@ -34,6 +34,9 @@ const args = {
   disabled: false,
   readonly: false,
   invalidText: '',
+  warnText: '',
+  warningAriaLabel: '',
+  warningTitle: '',
   hideLabel: false,
   minLength: undefined,
   maxLength: undefined,
@@ -56,6 +59,9 @@ const Template = (args) => {
       ?disabled=${args.disabled}
       ?readonly=${args.readonly}
       invalidText=${args.invalidText}
+      warnText=${args.warnText}
+      warningAriaLabel=${args.warningAriaLabel}
+      warningTitle=${args.warningTitle}
       .textStrings=${args.textStrings}
       minLength=${ifDefined(args.minLength)}
       maxLength=${ifDefined(args.maxLength)}

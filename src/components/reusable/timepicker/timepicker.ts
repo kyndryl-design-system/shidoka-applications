@@ -37,6 +37,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clockIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/time.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -121,6 +122,14 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor warnText = '';
 
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
+
   /** Sets caption to be displayed under primary time picker elements. */
   @property({ type: String })
   accessor caption = '';
@@ -164,14 +173,6 @@ export class TimePicker extends FormMixin(LitElement) {
   /** Sets title attribute for error message. */
   @property({ type: String })
   accessor errorTitle = '';
-
-  /** Sets aria label attribute for warning message. */
-  @property({ type: String })
-  accessor warningAriaLabel = '';
-
-  /** Sets title attribute for warning message. */
-  @property({ type: String })
-  accessor warningTitle = '';
 
   /** Sets whether the Flatpickr calendar UI should use static positioning. */
   @property({ type: Boolean })
@@ -521,6 +522,13 @@ export class TimePicker extends FormMixin(LitElement) {
         @mousedown=${this.onSuppressLabelInteraction}
         @click=${this.onSuppressLabelInteraction}
       >
+        <span
+          class="warning-icon"
+          role="img"
+          aria-label=${this.warningAriaLabel || 'Warning message icon'}
+        >
+          ${unsafeSVG(warningIcon)}
+        </span>
         ${this.warnText}
       </div>`;
     }

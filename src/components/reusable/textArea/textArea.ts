@@ -6,6 +6,7 @@ import { FormMixin } from '../../../common/mixins/form-input';
 import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 import TextAreaScss from './textArea.scss?inline';
 import { classMap } from 'lit/directives/class-map.js';
@@ -94,6 +95,18 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: String })
   accessor autoComplete: string = 'off';
 
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
+
   /** Internal text strings.
    * @internal
    */
@@ -165,6 +178,26 @@ ${this.value}</textarea
               ? html`
                   <div class="caption" aria-disabled=${this.disabled}>
                     ${this.caption}
+                  </div>
+                `
+              : null}
+            ${this.warnText
+              ? html`
+                  <div
+                    class="warn warn-text"
+                    role="alert"
+                    title=${this.warningTitle || 'Warning'}
+                    tabindex="0"
+                  >
+                    <span
+                      class="warning-icon"
+                      role="img"
+                      aria-label=${this.warningAriaLabel ||
+                      'Warning message icon'}
+                    >
+                      ${unsafeSVG(warningIcon)}
+                    </span>
+                    ${this.warnText}
                   </div>
                 `
               : null}

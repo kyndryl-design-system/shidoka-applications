@@ -8,6 +8,7 @@ import CheckboxGroupScss from './checkboxGroup.scss?inline';
 import '../textInput';
 import './checkbox';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   selectAll: 'Select all',
@@ -98,6 +99,18 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   /** Number of checkboxes visible when limited. */
   @property({ type: Number })
   accessor limitCount = 4;
+
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
 
   /** Checkbox limit visibility.
    * @internal
@@ -230,6 +243,26 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                 `
               : null}
           </div>
+          ${this.warnText
+            ? html`
+                <div
+                  class="warn warn-text"
+                  role="alert"
+                  title=${this.warningTitle || 'Warning'}
+                  tabindex="0"
+                >
+                  <span
+                    class="warning-icon"
+                    role="img"
+                    aria-label=${this.warningAriaLabel ||
+                    'Warning message icon'}
+                  >
+                    ${unsafeSVG(warningIcon)}
+                  </span>
+                  ${this.warnText}
+                </div>
+              `
+            : null}
         </fieldset>
       </div>
     `;

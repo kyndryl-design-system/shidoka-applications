@@ -4,6 +4,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit/directives/class-map.js';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import Styles from './colorInput.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 
@@ -58,6 +59,18 @@ export class ColorInput extends FormMixin(LitElement) {
   /** Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.*/
   @property({ type: String })
   accessor autoComplete: string = 'off';
+
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
 
   /** Internal text strings.
    * @internal
@@ -147,6 +160,28 @@ export class ColorInput extends FormMixin(LitElement) {
                   ? html`
                       <div class="caption" aria-disabled=${this.disabled}>
                         ${this.caption}
+                      </div>
+                    `
+                  : null
+              }
+              ${
+                this.warnText
+                  ? html`
+                      <div
+                        class="warn warn-text"
+                        role="alert"
+                        title=${this.warningTitle || 'Warning'}
+                        tabindex="0"
+                      >
+                        <span
+                          class="warning-icon"
+                          role="img"
+                          aria-label=${this.warningAriaLabel ||
+                          'Warning message icon'}
+                        >
+                          ${unsafeSVG(warningIcon)}
+                        </span>
+                        ${this.warnText}
                       </div>
                     `
                   : null

@@ -11,6 +11,7 @@ import { deepmerge } from 'deepmerge-ts';
 import chevronLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
 import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
@@ -88,6 +89,18 @@ export class NumberInput extends FormMixin(LitElement) {
   /** Shows the border/background when inline mode is enabled. */
   @property({ type: Boolean })
   accessor inlineBorder = false;
+
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
 
   /** Customizable text strings. */
   @property({ type: Object })
@@ -193,6 +206,25 @@ export class NumberInput extends FormMixin(LitElement) {
           ? html`
               <div class="caption" aria-disabled=${this.disabled}>
                 ${this.caption}
+              </div>
+            `
+          : null}
+        ${this.warnText
+          ? html`
+              <div
+                class="warn warn-text ${this.inline ? 'sr-only' : ''}"
+                role="alert"
+                title=${this.warningTitle || 'Warning'}
+                tabindex="0"
+              >
+                <span
+                  class="warning-icon"
+                  role="img"
+                  aria-label=${this.warningAriaLabel || 'Warning message icon'}
+                >
+                  ${unsafeSVG(warningIcon)}
+                </span>
+                ${this.warnText}
               </div>
             `
           : null}

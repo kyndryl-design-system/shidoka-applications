@@ -10,6 +10,7 @@ import { deepmerge } from 'deepmerge-ts';
 import RadioButtonGroupScss from './radioButtonGroup.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   required: 'Required',
@@ -54,6 +55,18 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor hideLabel = false;
 
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
+
   /** Text string customization. */
   @property({ type: Object })
   accessor textStrings = _defaultTextStrings;
@@ -94,6 +107,25 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
         <div class="description-text"><slot name="description"></slot></div>
 
+        ${this.warnText
+          ? html`
+              <div
+                class="warn warn-text"
+                role="alert"
+                title=${this.warningTitle || 'Warning'}
+                tabindex="0"
+              >
+                <span
+                  class="warning-icon"
+                  role="img"
+                  aria-label=${this.warningAriaLabel || 'Warning message icon'}
+                >
+                  ${unsafeSVG(warningIcon)}
+                </span>
+                ${this.warnText}
+              </div>
+            `
+          : null}
         ${this._isInvalid
           ? html`
               <div class="error">

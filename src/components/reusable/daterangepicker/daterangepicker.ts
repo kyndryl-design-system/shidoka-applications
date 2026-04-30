@@ -40,6 +40,7 @@ import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 type SupportedLocale = (typeof langsArray)[number];
 
@@ -586,7 +587,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
           id=${warningId}
           class="warn warn-text"
           role="alert"
-          aria-label=${this.warningAriaLabel || 'Warning message'}
           title=${this.warningTitle || 'Warning'}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
@@ -598,6 +598,13 @@ export class DateRangePicker extends FormMixin(LitElement) {
             }
           }}
         >
+          <span
+            class="warning-icon"
+            role="img"
+            aria-label=${this.warningAriaLabel || 'Warning message icon'}
+          >
+            ${unsafeSVG(warningIcon)}
+          </span>
           ${this.warnText}
         </div>
       `;

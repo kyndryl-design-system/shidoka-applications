@@ -20,6 +20,7 @@ import { EnhancedDropdownOption } from './enhancedDropdownOption';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   title: 'Dropdown',
@@ -163,6 +164,18 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Enables the "Add New Option" feature. */
   @property({ type: Boolean })
   accessor allowAddOption = false;
+
+  /** Sets validation warning messaging. */
+  @property({ type: String })
+  accessor warnText = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
 
   /** @internal */
   @state()
@@ -935,6 +948,25 @@ export class Dropdown extends FormMixin(LitElement) {
         ? html`<div class="caption" aria-disabled=${this.disabled}>
             ${this.caption}
           </div>`
+        : null}
+      ${this.warnText
+        ? html`
+            <div
+              class="warn warn-text"
+              role="alert"
+              title=${this.warningTitle || 'Warning'}
+              tabindex="0"
+            >
+              <span
+                class="warning-icon"
+                role="img"
+                aria-label=${this.warningAriaLabel || 'Warning message icon'}
+              >
+                ${unsafeSVG(warningIcon)}
+              </span>
+              ${this.warnText}
+            </div>
+          `
         : null}
       ${this._isInvalid
         ? html`
