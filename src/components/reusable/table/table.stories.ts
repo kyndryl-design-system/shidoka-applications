@@ -731,12 +731,7 @@ export const BatchActions: Story = {
         .tableTitle=${'Batch Actions'}
         tableSubtitle=${'Table Subtitle'}
       >
-        <kyn-overflow-menu
-          anchorRight
-          fixed
-          assistiveText="Actions"
-          @on-toggle=${(e: Event) => action(e.type)(e)}
-        >
+        <kyn-overflow-menu anchorRight fixed assistiveText="Actions">
           <kyn-overflow-menu-item @on-click=${(e: Event) => action(e.type)(e)}>
             Action 1
           </kyn-overflow-menu-item>
@@ -797,7 +792,6 @@ export const BatchActions: Story = {
                       anchorRight
                       fixed
                       assistiveText="Actions"
-                      @on-toggle=${(e: Event) => action(e.type)(e)}
                     >
                       <kyn-overflow-menu-item
                         @on-click=${(e: Event) => action(e.type)(e)}
