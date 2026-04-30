@@ -31,6 +31,7 @@ const args = {
   cancelText: 'Cancel',
   closeText: 'Close',
   destructive: false,
+  secondaryDestructive: false,
   okDisabled: false,
   hideFooter: false,
   gradientBackground: false,
@@ -58,6 +59,7 @@ export const Modal = {
         cancelText=${args.cancelText}
         closeText=${args.closeText}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?okDisabled=${args.okDisabled}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
@@ -96,6 +98,7 @@ export const ActionButtons = {
         cancelText=${args.cancelText}
         closeText=${args.closeText}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
@@ -134,6 +137,7 @@ export const BeforeClose = {
         closeText=${args.closeText}
         cancelText=${args.cancelText}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?okDisabled=${args.okDisabled}
         ?hideCancelButton=${args.hideCancelButton}
         ?hideFooter=${args.hideFooter}
@@ -181,6 +185,7 @@ export const WithForm = {
         cancelText=${args.cancelText}
         closeText=${args.closeText}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
@@ -236,6 +241,7 @@ export const AIConnected = {
         cancelText=${args.cancelText}
         closeText=${args.closeText}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?okDisabled=${args.okDisabled}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
@@ -293,6 +299,7 @@ export const HeaderInline = {
         cancelText=${args.cancelText}
         closeText=${args.closeText}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?okDisabled=${args.okDisabled}
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
