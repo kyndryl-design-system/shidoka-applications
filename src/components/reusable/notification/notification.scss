@@ -247,6 +247,34 @@ kyn-link::part(link) {
   }
 }
 
+kyn-card.notification-clickable {
+  display: block;
+  position: relative;
+}
+
+kyn-card.notification-clickable::part(card-wrapper) {
+  transition: background-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+:host([unread]) kyn-card.notification-clickable::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  border-radius: 8px 0 0 8px;
+  background-color: var(--kd-color-border-level-tertiary);
+  pointer-events: none;
+}
+
+:host(:not([unread])) .notification-clickable {
+  .notification-title,
+  .timestamp-text {
+    font-weight: var(--kd-font-weight-regular);
+  }
+}
+
 .timestamp {
   &-wrapper {
     display: inline-flex;
