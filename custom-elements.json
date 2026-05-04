@@ -552,552 +552,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/global/localNav/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "./localNav"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "./localNavLink"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "./localNavDivider"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNav.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The global Side Navigation component.",
-          "name": "LocalNav",
-          "slots": [
-            {
-              "description": "The default slot, for local nav links.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for a search input",
-              "name": "search"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "attribute": "pinned"
-            },
-            {
-              "kind": "field",
-              "name": "manualToggleVariant",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables the manual-toggle interaction mode.\nStarts pinned/expanded by default and disables hover expansion.",
-              "attribute": "manual-toggle-variant"
-            },
-            {
-              "kind": "field",
-              "name": "collapsedByDefault",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the `manual-toggle` variant should start collapsed.\nBy default, `manual-toggle` starts pinned/expanded.",
-              "attribute": "collapsed-by-default"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "_handleNavToggle",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleMobileNavToggle",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_clearPointerTimers",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerLeave",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinkActive",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ text: string }>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_refreshChildBreakpointState",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClickOut",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
-              "name": "on-toggle"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pinned",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Local nav pinned state.",
-              "fieldName": "pinned"
-            },
-            {
-              "name": "manual-toggle-variant",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Enables the manual-toggle interaction mode.\nStarts pinned/expanded by default and disables hover expansion.",
-              "fieldName": "manualToggleVariant"
-            },
-            {
-              "name": "collapsed-by-default",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the `manual-toggle` variant should start collapsed.\nBy default, `manual-toggle` starts pinned/expanded.",
-              "fieldName": "collapsedByDefault"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav",
-          "declaration": {
-            "name": "LocalNav",
-            "module": "src/components/global/localNav/localNav.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavDivider.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Local Nav divider",
-          "name": "LocalNavDivider",
-          "members": [
-            {
-              "kind": "field",
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "attribute": "heading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "heading",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional heading text.",
-              "fieldName": "heading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-divider",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavDivider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-divider",
-          "declaration": {
-            "name": "LocalNavDivider",
-            "module": "src/components/global/localNav/localNavDivider.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/localNav/localNavLink.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Link component for use in the global Side Navigation component.",
-          "name": "LocalNavLink",
-          "slots": [
-            {
-              "description": "The default slot, for the link text.",
-              "name": "unnamed"
-            },
-            {
-              "description": "Slot for an icon. Use 16px size. Required for level 1.",
-              "name": "icon"
-            },
-            {
-              "description": "Slot for the next level of links, supports three levels.",
-              "name": "links"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "attribute": "href"
-            },
-            {
-              "kind": "field",
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "attribute": "expanded"
-            },
-            {
-              "kind": "field",
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "attribute": "active",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "attribute": "backText"
-            },
-            {
-              "kind": "field",
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "attribute": "leftPadding"
-            },
-            {
-              "kind": "field",
-              "name": "_isDesktopViewport",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "field",
-              "name": "_showCollapsedTooltip",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "method",
-              "name": "_handleTextSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_getSlotText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleLinksSlotChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "updateChildren",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleBack",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-link-active",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "on-click",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "href",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Link url.",
-              "fieldName": "href"
-            },
-            {
-              "name": "expanded",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Expanded state.",
-              "fieldName": "expanded"
-            },
-            {
-              "name": "active",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Active state.",
-              "fieldName": "active"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Disabled state.",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "backText",
-              "type": {
-                "text": "string"
-              },
-              "default": "'Back'",
-              "description": "Text for mobile \"Back\" button.",
-              "fieldName": "backText"
-            },
-            {
-              "name": "leftPadding",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
-              "fieldName": "leftPadding"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-local-nav-link",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "LocalNavLink",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-local-nav-link",
-          "declaration": {
-            "name": "LocalNavLink",
-            "module": "src/components/global/localNav/localNavLink.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/global/header/header.ts",
       "declarations": [
         {
@@ -3795,6 +3249,552 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/global/localNav/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "./localNav"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "./localNavLink"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "./localNavDivider"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNav.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The global Side Navigation component.",
+          "name": "LocalNav",
+          "slots": [
+            {
+              "description": "The default slot, for local nav links.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for a search input",
+              "name": "search"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "attribute": "pinned"
+            },
+            {
+              "kind": "field",
+              "name": "manualToggleVariant",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables the manual-toggle interaction mode.\nStarts pinned/expanded by default and disables hover expansion.",
+              "attribute": "manual-toggle-variant"
+            },
+            {
+              "kind": "field",
+              "name": "collapsedByDefault",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the `manual-toggle` variant should start collapsed.\nBy default, `manual-toggle` starts pinned/expanded.",
+              "attribute": "collapsed-by-default"
+            },
+            {
+              "kind": "field",
+              "name": "textStrings",
+              "default": "{\n  pin: 'Pin',\n  unpin: 'Unpin',\n  toggleMenu: 'Toggle Menu',\n  collapse: 'Collapse',\n  menu: 'Menu',\n}",
+              "description": "Text string customization.",
+              "attribute": "textStrings",
+              "type": {
+                "text": "object"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_handleNavToggle",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleMobileNavToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_clearPointerTimers",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerLeave",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinkActive",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ text: string }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_refreshChildBreakpointState",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleClickOut",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Captures the click event and emits the pinned state and original event details. `detail:{ pinned: boolean, origEvent: Event }`",
+              "name": "on-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pinned",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Local nav pinned state.",
+              "fieldName": "pinned"
+            },
+            {
+              "name": "manual-toggle-variant",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables the manual-toggle interaction mode.\nStarts pinned/expanded by default and disables hover expansion.",
+              "fieldName": "manualToggleVariant"
+            },
+            {
+              "name": "collapsed-by-default",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the `manual-toggle` variant should start collapsed.\nBy default, `manual-toggle` starts pinned/expanded.",
+              "fieldName": "collapsedByDefault"
+            },
+            {
+              "name": "textStrings",
+              "default": "_defaultTextStrings",
+              "description": "Text string customization.",
+              "fieldName": "textStrings"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav",
+          "declaration": {
+            "name": "LocalNav",
+            "module": "src/components/global/localNav/localNav.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavDivider.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Local Nav divider",
+          "name": "LocalNavDivider",
+          "members": [
+            {
+              "kind": "field",
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "attribute": "heading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Optional heading text.",
+              "fieldName": "heading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-divider",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavDivider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-divider",
+          "declaration": {
+            "name": "LocalNavDivider",
+            "module": "src/components/global/localNav/localNavDivider.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/global/localNav/localNavLink.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Link component for use in the global Side Navigation component.",
+          "name": "LocalNavLink",
+          "slots": [
+            {
+              "description": "The default slot, for the link text.",
+              "name": "unnamed"
+            },
+            {
+              "description": "Slot for an icon. Use 16px size. Required for level 1.",
+              "name": "icon"
+            },
+            {
+              "description": "Slot for the next level of links, supports three levels.",
+              "name": "links"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "attribute": "href"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "attribute": "expanded"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "attribute": "backText"
+            },
+            {
+              "kind": "field",
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "attribute": "leftPadding"
+            },
+            {
+              "kind": "field",
+              "name": "_isDesktopViewport",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "_showCollapsedTooltip",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "_handleTextSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_getSlotText",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleLinksSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateChildren",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBack",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "on-link-active",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "on-click",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Captures the click event and emits the original event, level, and if default was prevented. `detail:{ origEvent: ClickEvent, level: number, defaultPrevented: boolean }`"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "Link url.",
+              "fieldName": "href"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Expanded state.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Active state.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disabled state.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "backText",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Back'",
+              "description": "Text for mobile \"Back\" button.",
+              "fieldName": "backText"
+            },
+            {
+              "name": "leftPadding",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Add left padding when icon is not provided to align text with links that do have icons. Does not apply to level 1.",
+              "fieldName": "leftPadding"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "kyn-local-nav-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LocalNavLink",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "kyn-local-nav-link",
+          "declaration": {
+            "name": "LocalNavLink",
+            "module": "src/components/global/localNav/localNavLink.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/global/uiShell/index.ts",
       "declarations": [],
       "exports": [
@@ -3846,628 +3846,6 @@
           "declaration": {
             "name": "UiShell",
             "module": "src/components/global/uiShell/uiShell.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/workspaceSwitcher/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WorkspaceSwitcher",
-          "declaration": {
-            "name": "WorkspaceSwitcher",
-            "module": "./workspaceSwitcher"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "WorkspaceSwitcherMenuItem",
-          "declaration": {
-            "name": "WorkspaceSwitcherMenuItem",
-            "module": "./workspaceSwitcherMenuItem"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/workspaceSwitcher/workspaceSwitcher.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Workspace Switcher shell component providing two-panel layout with mobile drill-down.\nComponent fits to 100% of the width and height of its container and surfaces two panels for content composition via slots.\nConsumers compose workspace and account rows via named slots using\nsub-components like `kyn-workspace-switcher-menu-item`.\nThe account meta block can also be provided via the `accountMeta` property,\nwhich renders the preferred rigid built-in pattern.",
-          "name": "WorkspaceSwitcher",
-          "cssProperties": [
-            {
-              "description": "Maximum height of the switcher panel.",
-              "name": "--kyn-workspace-switcher-max-height",
-              "default": "none"
-            },
-            {
-              "description": "Width of the left panel in desktop two-panel layout.",
-              "name": "--kyn-workspace-switcher-left-panel-width",
-              "default": "275px"
-            }
-          ],
-          "slots": [
-            {
-              "description": "Legacy non-list content for the left panel when `accountMeta` is not used. Prefer `accountMeta`; this slot is maintained for backward compatibility.",
-              "name": "left"
-            },
-            {
-              "description": "List items for the left panel (rendered inside role=\"list\").",
-              "name": "left-list"
-            },
-            {
-              "description": "Optional icon override for the mobile flyout trigger. Provide an inline SVG or wrapper that contains one.",
-              "name": "mobile-trigger-icon"
-            },
-            {
-              "description": "Optional icon override for the current account status indicator used by the built-in account meta block and mobile summary. Provide an inline SVG or wrapper that contains one.",
-              "name": "account-status-icon"
-            },
-            {
-              "description": "Non-list content for the right panel (e.g. search).",
-              "name": "right"
-            },
-            {
-              "description": "List items for the right panel (rendered inside role=\"list\").",
-              "name": "right-list"
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  currentTitle: 'CURRENT',\n  workspacesTitle: 'WORKSPACES',\n  backToWorkspaces: 'Workspaces',\n  launchAssistiveText: 'Opens in a new tab',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "accountMeta",
-              "type": {
-                "text": "WorkspaceSwitcherAccountMeta | null"
-              },
-              "default": "null",
-              "description": "Built-in account meta content for the left panel."
-            },
-            {
-              "kind": "field",
-              "name": "hideCurrentTitle",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the heading above the account meta info.",
-              "attribute": "hideCurrentTitle",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "hideWorkspacesTitle",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the heading above the lower left-hand side list. Example: suppress for accounts-only customers.",
-              "attribute": "hideWorkspacesTitle",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "hideLeftDivider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the divider beneath the `left` slot content.",
-              "attribute": "hide-left-divider",
-              "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "_hasLegacyLeftSlotContent",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false",
-              "description": "Tracks whether legacy left-slot content is present."
-            },
-            {
-              "kind": "field",
-              "name": "_copiedAccountMetaIndex",
-              "type": {
-                "text": "number | null"
-              },
-              "privacy": "private",
-              "default": "null",
-              "description": "Tracks which copy-style account meta item is showing success feedback."
-            },
-            {
-              "kind": "method",
-              "name": "_handleBackClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateLegacyLeftSlotState",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_updateChildMenuItemTextStrings",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_syncFlyoutHostMobilePresentation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_clearFlyoutHostMobilePresentation",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_emitFlyoutHostMobilePresentation",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "detail",
-                  "default": "{}",
-                  "type": {
-                    "text": "MobilePresentationDetail"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getMobilePresentationIconSvg",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "slotName",
-                  "type": {
-                    "text": "'mobile-trigger-icon' | 'account-status-icon'"
-                  }
-                },
-                {
-                  "name": "fallbackSvg",
-                  "default": "''"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_warnForLegacyLeftSlotUsage",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderAccountMeta",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderAccountMetaItem",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "item",
-                  "type": {
-                    "text": "WorkspaceSwitcherAccountMetaItem"
-                  }
-                },
-                {
-                  "name": "index",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_handleAccountMetaItemClick",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                },
-                {
-                  "name": "item",
-                  "type": {
-                    "text": "WorkspaceSwitcherAccountMetaItem"
-                  }
-                },
-                {
-                  "name": "index",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_showCopyFeedback",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "index",
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_clearCopyFeedback",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "name": "on-account-meta-copy",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when a copy-style account meta action is activated."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "hideCurrentTitle",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the heading above the account meta info.",
-              "fieldName": "hideCurrentTitle"
-            },
-            {
-              "name": "hideWorkspacesTitle",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the heading above the lower left-hand side list. Example: suppress for accounts-only customers.",
-              "fieldName": "hideWorkspacesTitle"
-            },
-            {
-              "name": "hide-left-divider",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Hides the divider beneath the `left` slot content.",
-              "fieldName": "hideLeftDivider"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-workspace-switcher",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WorkspaceSwitcher",
-          "declaration": {
-            "name": "WorkspaceSwitcher",
-            "module": "src/components/global/workspaceSwitcher/workspaceSwitcher.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-workspace-switcher",
-          "declaration": {
-            "name": "WorkspaceSwitcher",
-            "module": "src/components/global/workspaceSwitcher/workspaceSwitcher.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Workspace Switcher Menu Item component.\nUsed for both workspace items (left panel) and account items (right panel).\nItem rows support these trailing-action combinations:\n- favorite only\n- launch indicator only\n- launch indicator plus favorite\nThe launch indicator is part of the primary row button while the favorite\ncontrol stays pinned to the far right as a separate action.",
-          "name": "WorkspaceSwitcherMenuItem",
-          "members": [
-            {
-              "kind": "field",
-              "name": "variant",
-              "type": {
-                "text": "'workspace' | 'item' | 'back'"
-              },
-              "default": "'item'",
-              "description": "The variant of the menu item.",
-              "attribute": "variant"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The unique value/id of the item.",
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The display name of the item.",
-              "attribute": "name"
-            },
-            {
-              "kind": "field",
-              "name": "nameTitle",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional full name for the native tooltip when `name` is abbreviated in the DOM.\nDefaults to `name`.",
-              "attribute": "name-title"
-            },
-            {
-              "kind": "field",
-              "name": "count",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "The count to display (workspace variant only).",
-              "attribute": "count"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is selected.",
-              "attribute": "selected"
-            },
-            {
-              "kind": "field",
-              "name": "favorited",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is favorited (item variant only).",
-              "attribute": "favorited"
-            },
-            {
-              "kind": "field",
-              "name": "showLaunchIndicator",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether to show the launch/new-tab indicator (item variant only).",
-              "attribute": "showLaunchIndicator"
-            },
-            {
-              "kind": "field",
-              "name": "textStrings",
-              "default": "{\n  launchAssistiveText: 'Opens in a new tab',\n}",
-              "description": "Text string customization.",
-              "attribute": "textStrings",
-              "type": {
-                "text": "object"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "showFavorite",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned.",
-              "attribute": "showFavorite"
-            },
-            {
-              "kind": "method",
-              "name": "_renderWorkspaceContent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderLaunchIndicator",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderLaunchAssistiveText",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_renderItemContent",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleClick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_handleFavoriteChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "name": "on-click",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when the item is clicked. `detail: { value: string }`"
-            },
-            {
-              "name": "on-favorite-change",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Emits when favorite status changes. `detail: { value: string, favorited: boolean }`"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "variant",
-              "type": {
-                "text": "'workspace' | 'item' | 'back'"
-              },
-              "default": "'item'",
-              "description": "The variant of the menu item.",
-              "fieldName": "variant"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The unique value/id of the item.",
-              "fieldName": "value"
-            },
-            {
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "The display name of the item.",
-              "fieldName": "name"
-            },
-            {
-              "name": "name-title",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "description": "Optional full name for the native tooltip when `name` is abbreviated in the DOM.\nDefaults to `name`.",
-              "fieldName": "nameTitle"
-            },
-            {
-              "name": "count",
-              "type": {
-                "text": "number | null"
-              },
-              "default": "null",
-              "description": "The count to display (workspace variant only).",
-              "fieldName": "count"
-            },
-            {
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is selected.",
-              "fieldName": "selected"
-            },
-            {
-              "name": "favorited",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether the item is favorited (item variant only).",
-              "fieldName": "favorited"
-            },
-            {
-              "name": "showLaunchIndicator",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether to show the launch/new-tab indicator (item variant only).",
-              "fieldName": "showLaunchIndicator"
-            },
-            {
-              "name": "textStrings",
-              "default": "_defaultTextStrings",
-              "description": "Text string customization.",
-              "fieldName": "textStrings"
-            },
-            {
-              "name": "showFavorite",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "description": "Whether to show the favorite icon selector (item variant only). When present, it stays right-aligned.",
-              "fieldName": "showFavorite"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "kyn-workspace-switcher-menu-item",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "WorkspaceSwitcherMenuItem",
-          "declaration": {
-            "name": "WorkspaceSwitcherMenuItem",
-            "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "kyn-workspace-switcher-menu-item",
-          "declaration": {
-            "name": "WorkspaceSwitcherMenuItem",
-            "module": "src/components/global/workspaceSwitcher/workspaceSwitcherMenuItem.ts"
           }
         }
       ]
@@ -14494,6 +13872,16 @@
             },
             {
               "kind": "field",
+              "name": "secondaryDestructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the secondary button styles to indicate the action is destructive.",
+              "attribute": "secondaryDestructive"
+            },
+            {
+              "kind": "field",
               "name": "hideCancelButton",
               "type": {
                 "text": "boolean"
@@ -14713,6 +14101,15 @@
               "default": "false",
               "description": "Hides the secondary button.",
               "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "secondaryDestructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the secondary button styles to indicate the action is destructive.",
+              "fieldName": "secondaryDestructive"
             },
             {
               "name": "hideCancelButton",
@@ -22266,6 +21663,16 @@
             },
             {
               "kind": "field",
+              "name": "secondaryDestructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the secondary button styles to indicate the action is destructive.",
+              "attribute": "secondaryDestructive"
+            },
+            {
+              "kind": "field",
               "name": "hideCancelButton",
               "type": {
                 "text": "boolean"
@@ -22528,6 +21935,15 @@
               "default": "false",
               "description": "Hides the secondary button.",
               "fieldName": "showSecondaryButton"
+            },
+            {
+              "name": "secondaryDestructive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Changes the secondary button styles to indicate the action is destructive.",
+              "fieldName": "secondaryDestructive"
             },
             {
               "name": "hideCancelButton",
