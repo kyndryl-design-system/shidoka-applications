@@ -87,6 +87,10 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   accessor showSecondaryButton = false;
 
+  /** Changes the secondary button styles to indicate the action is destructive. */
+  @property({ type: Boolean })
+  accessor secondaryDestructive = false;
+
   /** Hides the cancel button. */
   @property({ type: Boolean })
   accessor hideCancelButton = false;
@@ -191,7 +195,9 @@ export class Modal extends LitElement {
                           <kyn-button
                             class="action-button"
                             value="Secondary"
-                            kind=${'secondary'}
+                            kind=${this.secondaryDestructive
+                              ? 'secondary-destructive'
+                              : 'secondary'}
                             ?disabled=${this.secondaryDisabled}
                             @click=${(e: Event) =>
                               this._closeModal(e, 'secondary')}

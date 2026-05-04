@@ -30,6 +30,7 @@ const args = {
   submitBtnDisabled: false,
   hideFooter: false,
   destructive: false,
+  secondaryDestructive: false,
   showSecondaryButton: true,
   secondaryButtonText: 'Secondary',
   hideCancelButton: false,
@@ -52,6 +53,7 @@ export const SideDrawer = {
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -105,6 +107,7 @@ export const BeforeClose = {
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -165,6 +168,7 @@ export const NoBackdrop = {
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -217,6 +221,7 @@ export const AIConnected = {
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
@@ -269,6 +274,7 @@ export const Resizable = {
         ?hideFooter=${args.hideFooter}
         ?gradientBackground=${args.gradientBackground}
         ?destructive=${args.destructive}
+        ?secondaryDestructive=${args.secondaryDestructive}
         ?showSecondaryButton=${args.showSecondaryButton}
         secondaryButtonText=${args.secondaryButtonText}
         ?hideCancelButton=${args.hideCancelButton}
