@@ -29,6 +29,7 @@ export default {
           'Global Components',
           'Patterns',
           'AI',
+          'Examples',
           'Tests',
         ],
       },

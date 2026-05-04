@@ -18,7 +18,7 @@ import '../inlineConfirm/inlineConfirm';
  * @slot unnamed - Slot for card contents.
  * @slot leftIcon - Slot for left icon when `variant` is `'notification'`.
  * @slot inlineConfirm - Slot for right icon when `variant` is `'notification'`.
- * @part card-wrapper - The wrapper element of the card. Use this part to customize its styles such as padding . Ex: kyn-card::part(card-wrapper)
+ * @part card-wrapper - The wrapper element of the card. Use this part to customize its styles such as padding . Ex: `kyn-card::part(card-wrapper)`
  */
 @customElement('kyn-card')
 export class Card extends LitElement {

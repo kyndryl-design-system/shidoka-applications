@@ -309,6 +309,15 @@ export const AddWidget = {
           @on-click=${(e) => action(e.type)({ ...e, detail: e.detail })}
         ></new-widget-sample>
       </div>
+
+      <br /><br />
+      <a
+        href="https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/widget/sample/gridstack.newWidget.sample.ts"
+        target="_blank"
+        rel="noopener"
+      >
+        See the full example component code here.
+      </a>
     `;
   },
 };
