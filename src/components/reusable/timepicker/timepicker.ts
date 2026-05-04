@@ -536,6 +536,7 @@ export class TimePicker extends FormMixin(LitElement) {
     return {
       'time-picker': true,
       'time-picker__disabled': this.timepickerDisabled,
+      'is-readonly': !this.timepickerDisabled && this.readonly,
     };
   }
 

@@ -525,6 +525,7 @@ export class DatePicker extends FormMixin(LitElement) {
       'date-picker__enable-time': this._enableTime,
       'date-picker__multiple-select': this.mode === 'multiple',
       'date-picker__disabled': this.datePickerDisabled,
+      'is-readonly': !this.datePickerDisabled && this.readonly,
     };
   }
 

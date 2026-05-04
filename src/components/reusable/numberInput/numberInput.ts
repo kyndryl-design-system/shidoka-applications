@@ -108,7 +108,11 @@ export class NumberInput extends FormMixin(LitElement) {
 
   override render() {
     return html`
-      <div class="number-input" ?disabled=${this.disabled}>
+      <div
+        class="number-input"
+        ?disabled=${this.disabled}
+        ?readonly=${!this.disabled && this.readonly}
+      >
         <label
           class="label-text ${this.hideLabel || this.inline ? 'sr-only' : ''}"
           for=${this.name}
