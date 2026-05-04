@@ -7,22 +7,18 @@ import {
   Description,
   Title,
 } from '@storybook/addon-docs/blocks';
-import * as CheckboxStories from './checkbox.stories.js';
 import * as CheckboxGroupStories from './checkboxGroup.stories.js';
 
-<Meta of={CheckboxGroupStories} />
+import * as CheckboxStories from './checkbox.stories.js';
+import { UsageExample } from '../../../../.storybook/usageBlock.jsx';
+
+<Meta of={CheckboxStories} />
 
 <Title />
 
-## Checkbox Group
+Checkbox.
 
-<Canvas>
-  <Story of={CheckboxGroupStories.CheckboxGroup} />
-</Canvas>
-
-### Properties & Controls
-
-<Controls of={CheckboxGroupStories.CheckboxGroup} />
+<UsageExample />
 
 ## Checkbox
 
@@ -33,3 +29,13 @@ import * as CheckboxGroupStories from './checkboxGroup.stories.js';
 ### Properties & Controls
 
 <Controls of={CheckboxStories.Checkbox} />
+
+## Checkbox Group
+
+<Canvas of={CheckboxGroupStories.CheckboxGroup}>
+  <Story of={CheckboxGroupStories.CheckboxGroup} />
+</Canvas>
+
+### Properties & Controls
+
+<Controls of={CheckboxGroupStories.CheckboxGroup} />

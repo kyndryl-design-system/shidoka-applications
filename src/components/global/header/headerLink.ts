@@ -163,6 +163,10 @@ export class HeaderLink extends LitElement {
    * @internal
    */
   private _viewChangeInProgress = false;
+
+  /**
+   * @internal
+   */
   private _viewChangeTimer: any;
 
   /** Cached truncation state from parent nav
@@ -175,6 +179,10 @@ export class HeaderLink extends LitElement {
    * @internal
    */
   private _truncateObserver?: MutationObserver;
+
+  /**
+   * @internal
+   */
   private _observedNav: HTMLElement | null = null;
 
   /** Menu positioning
@@ -442,6 +450,9 @@ export class HeaderLink extends LitElement {
     }
   };
 
+  /**
+   * @internal
+   */
   private get _isDesktopViewport(): boolean {
     if (typeof window === 'undefined') return true;
     return window.innerWidth >= 672;
@@ -722,6 +733,9 @@ export class HeaderLink extends LitElement {
     }
   }
 
+  /**
+   * @internal
+   */
   private _handleDocumentClick = (e: Event) => this.handleClickOut(e);
 
   /** Suppress pointer-leave close when categories switch views (root ↔ detail).

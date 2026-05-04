@@ -7,7 +7,7 @@ import { ValidationArgs } from '../../../common/helpers/helpers';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 export default {
-  title: 'Components/Form Inputs/Checkbox Group',
+  title: 'Components/Form Inputs/Checkbox',
   component: 'kyn-checkbox-group',
   subcomponents: {
     'kyn-checkbox': 'kyn-checkbox',
