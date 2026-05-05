@@ -23,13 +23,12 @@ const args = {
   invalidText: '',
   autoComplete: 'off',
   warnText: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   textStrings: {
     requiredText: 'Required',
     errorText: 'Error',
     pleaseSelectColor: 'Please select a color',
     invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',
+    warning: 'Warning',
   },
 };
 
@@ -47,8 +46,6 @@ export const Default = {
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         .textStrings=${args.textStrings}
         autoComplete=${args.autoComplete}
         label=${args.label}

@@ -76,8 +76,6 @@ const args = {
   selectAllText: 'Select all',
   invalidText: '',
   warnText: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   caption: '',
   searchText: '',
   value: '',
@@ -95,6 +93,7 @@ const args = {
     selectedOptions: 'List of selected options',
     addItem: 'Add item...',
     add: 'Add',
+    warning: 'Warning',
   },
 };
 
@@ -130,8 +129,6 @@ export const Default = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -205,8 +202,6 @@ export const WithIcons = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -288,8 +283,6 @@ export const ButtonAnchor = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -393,8 +386,6 @@ export const Searchable = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -477,8 +468,6 @@ export const MultiSelect = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -559,8 +548,6 @@ export const MultiSelectIcons = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -645,8 +632,6 @@ export const SearchableMultiSelect = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}

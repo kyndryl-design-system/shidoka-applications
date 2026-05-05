@@ -58,14 +58,13 @@ const args = {
   hideLabel: false,
   invalidText: '',
   warnText: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   caption: '',
   value: '',
   menuMinWidth: 'initial',
   textStrings: {
     required: 'Required',
     error: 'Error',
+    warning: 'Warning',
   },
 };
 
@@ -99,8 +98,6 @@ export const Single = {
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         ?selectAll=${args.selectAll}
@@ -162,8 +159,6 @@ export const AI = {
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -220,8 +215,6 @@ export const SingleSearchable = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
@@ -291,8 +284,6 @@ export const MultiSelect = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -360,8 +351,6 @@ export const MultiSelectSearchable = {
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
@@ -425,8 +414,6 @@ export const Grouped = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -511,8 +498,6 @@ export const DataDrivenOptions = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -704,8 +689,6 @@ export const AddNewOption = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -789,8 +772,6 @@ export const Readonly = {
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -920,8 +901,6 @@ export const AddNewOptionValidation = {
             ?readonly=${args.readonly}
             invalidText=${args.invalidText}
             warnText=${args.warnText}
-            warningAriaLabel=${args.warningAriaLabel}
-            warningTitle=${args.warningTitle}
             caption=${args.caption}
             menuMinWidth=${args.menuMinWidth}
             .textStrings=${args.textStrings}

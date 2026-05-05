@@ -33,6 +33,7 @@ const _defaultTextStrings = {
   add: 'Add',
   duplicateOption: 'Duplicate option. Please select a unique option.',
   addOptionInvalid: 'Please check this value and try again.',
+  warning: 'Warning',
 };
 
 /**
@@ -168,14 +169,6 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Sets validation warning messaging. */
   @property({ type: String })
   accessor warnText = '';
-
-  /** Sets aria label attribute for warning message. */
-  @property({ type: String })
-  accessor warningAriaLabel = '';
-
-  /** Sets title attribute for warning message. */
-  @property({ type: String })
-  accessor warningTitle = '';
 
   /** @internal */
   @state()
@@ -954,13 +947,14 @@ export class Dropdown extends FormMixin(LitElement) {
             <div
               class="warn warn-text"
               role="alert"
-              title=${this.warningTitle || 'Warning'}
+              title=${this._textStrings.warning || 'Warning'}
               tabindex="0"
             >
               <span
                 class="warning-icon"
                 role="img"
-                aria-label=${this.warningAriaLabel || 'Warning message icon'}
+                aria-label=${this._textStrings.warning ||
+                'Warning message icon'}
               >
                 ${unsafeSVG(warningIcon)}
               </span>

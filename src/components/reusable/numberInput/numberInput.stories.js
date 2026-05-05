@@ -46,8 +46,6 @@ const args = {
   readonly: false,
   invalidText: '',
   warnText: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   hideLabel: false,
   inline: false,
   step: 1,
@@ -58,6 +56,7 @@ const args = {
     subtract: 'Subtract',
     add: 'Add',
     error: 'Error',
+    warning: 'Warning',
   },
 };
 
@@ -76,8 +75,6 @@ export const NumberInput = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -111,8 +108,6 @@ export const FullWidth = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -143,8 +138,6 @@ export const ConstrainedMaxWidth = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -179,8 +172,6 @@ export const LongLabelContrainedInput = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -215,8 +206,6 @@ export const LongWrappingLabel = {
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}

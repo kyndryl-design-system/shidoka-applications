@@ -14,6 +14,7 @@ import { classMap } from 'lit/directives/class-map.js';
 const _defaultTextStrings = {
   requiredText: 'Required',
   errorText: 'Error',
+  warning: 'Warning',
 };
 
 /**
@@ -99,14 +100,6 @@ export class TextArea extends FormMixin(LitElement) {
   @property({ type: String })
   accessor warnText = '';
 
-  /** Sets aria label attribute for warning message. */
-  @property({ type: String })
-  accessor warningAriaLabel = '';
-
-  /** Sets title attribute for warning message. */
-  @property({ type: String })
-  accessor warningTitle = '';
-
   /** Internal text strings.
    * @internal
    */
@@ -186,13 +179,13 @@ ${this.value}</textarea
                   <div
                     class="warn warn-text"
                     role="alert"
-                    title=${this.warningTitle || 'Warning'}
+                    title=${this._textStrings.warning}
                     tabindex="0"
                   >
                     <span
                       class="warning-icon"
                       role="img"
-                      aria-label=${this.warningAriaLabel ||
+                      aria-label=${this._textStrings.warning ||
                       'Warning message icon'}
                     >
                       ${unsafeSVG(warningIcon)}

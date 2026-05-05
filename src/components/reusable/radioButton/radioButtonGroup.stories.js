@@ -31,8 +31,6 @@ export const RadioButtonGroup = {
     horizontal: false,
     invalidText: '',
     warnText: '',
-    warningAriaLabel: '',
-    warningTitle: '',
     description: 'Description',
     textStrings: {
       required: 'Required',
@@ -50,8 +48,6 @@ export const RadioButtonGroup = {
         ?horizontal=${args.horizontal}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         .textStrings=${args.textStrings}
         label=${args.label}
         @on-radio-group-change=${(e) =>

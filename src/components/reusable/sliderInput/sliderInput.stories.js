@@ -38,8 +38,6 @@ const args = {
   disabled: false,
   invalidText: '',
   warnText: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   hideLabel: false,
   step: 1,
   min: undefined,
@@ -63,8 +61,6 @@ export const Continuous = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -92,8 +88,6 @@ export const Discrete = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -114,8 +108,6 @@ export const Discrete = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -136,8 +128,6 @@ export const Discrete = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -165,8 +155,6 @@ export const WithButtonControls = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -194,8 +182,6 @@ export const WithNumberInput = {
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
         warnText=${args.warnText}
-        warningAriaLabel=${args.warningAriaLabel}
-        warningTitle=${args.warningTitle}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -263,8 +249,6 @@ export const FullWidth = {
           ?disabled=${args.disabled}
           invalidText=${args.invalidText}
           warnText=${args.warnText}
-          warningAriaLabel=${args.warningAriaLabel}
-          warningTitle=${args.warningTitle}
           ?hideLabel=${args.hideLabel}
           step=${ifDefined(args.step)}
           min=${ifDefined(args.min)}

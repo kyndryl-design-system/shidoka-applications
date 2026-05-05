@@ -98,14 +98,6 @@ export class MultiInputField extends FormMixin(LitElement) {
   @property({ type: String })
   accessor warnText = '';
 
-  /** Sets aria label attribute for warning message. */
-  @property({ type: String })
-  accessor warningAriaLabel = '';
-
-  /** Sets title attribute for warning message. */
-  @property({ type: String })
-  accessor warningTitle = '';
-
   /**
    * Consumer-driven status map, e.g.
    * { "foo@boo.com": "error", "bar@ex.com": "success", "example@test.com": "default" }
@@ -378,13 +370,14 @@ export class MultiInputField extends FormMixin(LitElement) {
             ? html`<div
                 class="warn warn-text"
                 role="alert"
-                title=${this.warningTitle || 'Warning'}
+                title=${this._textStrings.warning || 'Warning'}
                 tabindex="0"
               >
                 <span
                   class="warning-icon"
                   role="img"
-                  aria-label=${this.warningAriaLabel || 'Warning message icon'}
+                  aria-label=${this._textStrings.warning ||
+                  'Warning message icon'}
                 >
                   ${unsafeSVG(warningIcon)}
                 </span>

@@ -122,14 +122,6 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor warnText = '';
 
-  /** Sets aria label attribute for warning message. */
-  @property({ type: String })
-  accessor warningAriaLabel = '';
-
-  /** Sets title attribute for warning message. */
-  @property({ type: String })
-  accessor warningTitle = '';
-
   /** Sets caption to be displayed under primary time picker elements. */
   @property({ type: String })
   accessor caption = '';
@@ -173,6 +165,14 @@ export class TimePicker extends FormMixin(LitElement) {
   /** Sets title attribute for error message. */
   @property({ type: String })
   accessor errorTitle = '';
+
+  /** Sets aria label attribute for warning message. */
+  @property({ type: String })
+  accessor warningAriaLabel = '';
+
+  /** Sets title attribute for warning message. */
+  @property({ type: String })
+  accessor warningTitle = '';
 
   /** Sets whether the Flatpickr calendar UI should use static positioning. */
   @property({ type: Boolean })

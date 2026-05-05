@@ -19,6 +19,7 @@ const _defaultTextStrings = {
   error: 'Error',
   decrease: 'Decrease',
   increase: 'Increase',
+  warning: 'Warning',
 };
 
 /**
@@ -105,14 +106,6 @@ export class SliderInput extends FormMixin(LitElement) {
   /** Sets validation warning messaging. */
   @property({ type: String })
   accessor warnText = '';
-
-  /** Sets aria label attribute for warning message. */
-  @property({ type: String })
-  accessor warningAriaLabel = '';
-
-  /** Sets title attribute for warning message. */
-  @property({ type: String })
-  accessor warningTitle = '';
 
   /** Internal text strings.
    * @internal
@@ -250,13 +243,13 @@ ${
                   <div
                     class="warn warn-text"
                     role="alert"
-                    title=${this.warningTitle || 'Warning'}
+                    title=${this._textStrings.warning || 'Warning'}
                     tabindex="0"
                   >
                     <span
                       class="warning-icon"
                       role="img"
-                      aria-label=${this.warningAriaLabel ||
+                      aria-label=${this._textStrings.warning ||
                       'Warning message icon'}
                     >
                       ${unsafeSVG(warningIcon)}
