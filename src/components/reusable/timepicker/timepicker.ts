@@ -406,7 +406,6 @@ export class TimePicker extends FormMixin(LitElement) {
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
           ?disabled=${this.timepickerDisabled}
-          ?readonly=${this.readonly}
           id=${`label-${anchorId}`}
         >
           ${this.required
@@ -536,7 +535,6 @@ export class TimePicker extends FormMixin(LitElement) {
     return {
       'time-picker': true,
       'time-picker__disabled': this.timepickerDisabled,
-      'is-readonly': !this.timepickerDisabled && this.readonly,
     };
   }
 

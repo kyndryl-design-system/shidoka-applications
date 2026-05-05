@@ -458,7 +458,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       <div class=${classMap(this.getDateRangePickerClasses())}>
         <div
           class="label-text ${this.hideLabel || !this.label ? 'sr-only' : ''}"
-          ?readonly=${this.readonly}
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
           aria-disabled=${this.dateRangePickerDisabled ? 'true' : 'false'}
@@ -611,7 +610,6 @@ export class DateRangePicker extends FormMixin(LitElement) {
       'date-range-picker': true,
       'date-range-picker__enable-time': this._enableTime,
       'date-range-picker__disabled': this.dateRangePickerDisabled,
-      'is-readonly': !this.dateRangePickerDisabled && this.readonly,
     };
   }
 
