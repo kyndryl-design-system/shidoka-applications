@@ -56,6 +56,35 @@ export default {
     defaultErrorMessage: { control: { type: 'text' } },
     enableSeconds: { control: { type: 'boolean' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    errorAriaLabel: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set errorText.',
+      },
+    },
+    errorTitle: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set errorText.',
+      },
+    },
+
+    warningAriaLabel: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set warning.',
+      },
+    },
+    warningTitle: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set warning.',
+      },
+    },
     ...ValidationArgs,
   },
 };
@@ -120,15 +149,12 @@ const Template = (args) => {
       .minTime=${args.minTime}
       .maxTime=${args.maxTime}
       ?allowManualInput=${args.allowManualInput}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
       .enableSeconds=${args.enableSeconds}
       ?timepickerDisabled=${args.timepickerDisabled}
       ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .value=${args.value ?? ''}
+      .textStrings=${args.textStrings}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
     </kyn-time-picker>
@@ -149,10 +175,6 @@ DefaultTimePicker.args = {
   minTime: '',
   maxTime: '',
   allowManualInput: false,
-  errorAriaLabel: 'Error message icon',
-  errorTitle: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   timepickerDisabled: false,
   readonly: false,
   enableSeconds: false,
@@ -168,6 +190,8 @@ DefaultTimePicker.args = {
     pleaseSelectDate: 'Please select a time',
     noTimeSelected: 'No time selected',
     pleaseSelectValidDate: 'Please select a valid time',
+    errorText: 'Error message icon',
+    warning: 'Warning message icon',
   },
 };
 DefaultTimePicker.storyName = 'Default (12H)';
@@ -289,10 +313,6 @@ export const InModal = {
           .minTime=${args.minTime}
           .maxTime=${args.maxTime}
           ?allowManualInput=${args.allowManualInput}
-          .errorAriaLabel=${args.errorAriaLabel}
-          .errorTitle=${args.errorTitle}
-          .warningAriaLabel=${args.warningAriaLabel}
-          .warningTitle=${args.warningTitle}
           .enableSeconds=${args.enableSeconds}
           ?timepickerDisabled=${args.timepickerDisabled}
           ?readonly=${args.readonly}
@@ -342,10 +362,6 @@ export const ControlledEcho = {
         .minTime=${args.minTime}
         .maxTime=${args.maxTime}
         ?allowManualInput=${args.allowManualInput}
-        .errorAriaLabel=${args.errorAriaLabel}
-        .errorTitle=${args.errorTitle}
-        .warningAriaLabel=${args.warningAriaLabel}
-        .warningTitle=${args.warningTitle}
         .enableSeconds=${args.enableSeconds}
         ?timepickerDisabled=${args.timepickerDisabled}
         ?readonly=${args.readonly}

@@ -42,6 +42,7 @@ const _defaultTextStrings = {
  * @attr {string} [value=''] - The value of the input.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  *
  */
 @customElement('kyn-text-input')
@@ -108,10 +109,6 @@ export class TextInput extends FormMixin(LitElement) {
   /** Control for native browser autocomplete. Use `on`, `off`, or a space-separated `token-list` describing autocomplete behavior.*/
   @property({ type: String })
   accessor autoComplete: string = 'off';
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
 
   /** Internal text strings.
    * @internal

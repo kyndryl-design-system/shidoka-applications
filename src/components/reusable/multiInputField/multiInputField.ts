@@ -28,6 +28,7 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
  * @prop {string[]} customSuggestions - Optional array of custom suggestions to use instead of the default mock data.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 
 @customElement('kyn-multi-input-field')
@@ -93,10 +94,6 @@ export class MultiInputField extends FormMixin(LitElement) {
   /** Pattern attribute for the input element. */
   @property({ type: String })
   accessor pattern: string | undefined = undefined;
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
 
   /**
    * Consumer-driven status map, e.g.

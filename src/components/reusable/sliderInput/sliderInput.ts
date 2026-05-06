@@ -34,6 +34,7 @@ const _defaultTextStrings = {
  * @attr {number} [value=0] - The value of the input.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  *
  */
 @customElement('kyn-slider-input')
@@ -102,10 +103,6 @@ export class SliderInput extends FormMixin(LitElement) {
   /** Makes the slider expand to fill the full width of its container. */
   @property({ type: Boolean, reflect: true })
   accessor fullWidth = false;
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
 
   /** Internal text strings.
    * @internal

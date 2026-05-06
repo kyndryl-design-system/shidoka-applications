@@ -27,6 +27,7 @@ const _defaultTextStrings = {
  * @attr {string} [value=''] - The selected value of the radio group.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends FormMixin(LitElement) {
@@ -55,10 +56,6 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
   /** Visually hides the label while keeping it accessible to screen readers. */
   @property({ type: Boolean })
   accessor hideLabel = false;
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
 
   /** Text string customization. */
   @property({ type: Object })
@@ -100,6 +97,25 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
 
         <div class="description-text"><slot name="description"></slot></div>
 
+        ${this._isInvalid
+          ? html`
+              <div class="error">
+                <span
+                  class="error-icon"
+                  title=${this._textStrings.error}
+                  aria-label=${this._textStrings.error}
+                >
+                  ${unsafeSVG(errorIcon)}
+                </span>
+                ${this.invalidText || this._internalValidationMsg}
+              </div>
+            `
+          : null}
+
+        <div class="${this.horizontal ? 'horizontal' : ''}">
+          <slot @slotchange=${this._handleSlotChange}></slot>
+        </div>
+
         ${this.warnText
           ? html`
               <div
@@ -120,24 +136,6 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
               </div>
             `
           : null}
-        ${this._isInvalid
-          ? html`
-              <div class="error">
-                <span
-                  class="error-icon"
-                  title=${this._textStrings.error}
-                  aria-label=${this._textStrings.error}
-                >
-                  ${unsafeSVG(errorIcon)}
-                </span>
-                ${this.invalidText || this._internalValidationMsg}
-              </div>
-            `
-          : null}
-
-        <div class="${this.horizontal ? 'horizontal' : ''}">
-          <slot @slotchange=${this._handleSlotChange}></slot>
-        </div>
       </fieldset>
     `;
   }

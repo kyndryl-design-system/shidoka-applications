@@ -31,6 +31,7 @@ const _defaultTextStrings = {
  * @attr {array} [value=[]] - The selected values of the checkbox group.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends FormMixin(LitElement) {
@@ -100,10 +101,6 @@ export class CheckboxGroup extends FormMixin(LitElement) {
   /** Number of checkboxes visible when limited. */
   @property({ type: Number })
   accessor limitCount = 4;
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
 
   /** Checkbox limit visibility.
    * @internal

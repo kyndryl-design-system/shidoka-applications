@@ -28,7 +28,7 @@ const _defaultTextStrings = {
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
- *
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  * @cssprop [--kyn-number-input-inner-max-width=200px] - Maximum width of the number input inner container.
  * @cssprop [--kyn-number-input-inner-min-width=0px] - Minimum width of the number input inner container.
  */
@@ -90,10 +90,6 @@ export class NumberInput extends FormMixin(LitElement) {
   /** Shows the border/background when inline mode is enabled. */
   @property({ type: Boolean })
   accessor inlineBorder = false;
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
 
   /** Customizable text strings. */
   @property({ type: Object })

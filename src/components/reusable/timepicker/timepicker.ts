@@ -49,6 +49,8 @@ const _defaultTextStrings = {
   pleaseSelectDate: 'Please select a time',
   noTimeSelected: 'No time selected',
   pleaseSelectValidDate: 'Please select a valid time',
+  warning: 'Warning',
+  errorText: 'Error',
 };
 
 /**
@@ -61,6 +63,7 @@ const _defaultTextStrings = {
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [value=''] - The value of the input.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-time-picker')
 export class TimePicker extends FormMixin(LitElement) {
@@ -118,10 +121,6 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor defaultErrorMessage = '';
 
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
-
   /** Sets caption to be displayed under primary time picker elements. */
   @property({ type: String })
   accessor caption = '';
@@ -158,19 +157,19 @@ export class TimePicker extends FormMixin(LitElement) {
   @property({ type: String })
   accessor maxTime: string | number | Date = '';
 
-  /** Sets aria label attribute for error message. */
+  /** DEPRECATED.Sets aria label attribute for error message. Use `textStrings` instead to set errorText. */
   @property({ type: String })
   accessor errorAriaLabel = '';
 
-  /** Sets title attribute for error message. */
+  /** DEPRECATED.Sets title attribute for error message. Use `textStrings` instead to set errorText. */
   @property({ type: String })
   accessor errorTitle = '';
 
-  /** Sets aria label attribute for warning message. */
+  /** DEPRECATED.Sets aria label attribute for warning message. Use `textStrings` instead to set warning label/title. */
   @property({ type: String })
   accessor warningAriaLabel = '';
 
-  /** Sets title attribute for warning message. */
+  /** DEPRECATED.Sets title attribute for warning message. Use `textStrings` instead to set warning label/title. */
   @property({ type: String })
   accessor warningTitle = '';
 
@@ -495,14 +494,16 @@ export class TimePicker extends FormMixin(LitElement) {
         id=${errorId}
         class="error error-text"
         role="alert"
-        title=${this.errorTitle || 'Error'}
+        title=${this.errorTitle || this._textStrings.errorText || 'Error'}
         @mousedown=${this.onSuppressLabelInteraction}
         @click=${this.onSuppressLabelInteraction}
       >
         <span
           class="error-icon"
           role="img"
-          aria-label=${this.errorAriaLabel || 'Error message icon'}
+          aria-label=${this.errorAriaLabel ||
+          this._textStrings.errorText ||
+          'Error message icon'}
         >
           ${unsafeSVG(errorIcon)}
         </span>
@@ -517,15 +518,19 @@ export class TimePicker extends FormMixin(LitElement) {
         id=${warningId}
         class="warn warn-text"
         role="alert"
-        aria-label=${this.warningAriaLabel || 'Warning message'}
-        title=${this.warningTitle || 'Warning'}
+        aria-label=${this.warningAriaLabel ||
+        this._textStrings.warning ||
+        'Warning message'}
+        title=${this.warningTitle || this._textStrings.warning || 'Warning'}
         @mousedown=${this.onSuppressLabelInteraction}
         @click=${this.onSuppressLabelInteraction}
       >
         <span
           class="warning-icon"
           role="img"
-          aria-label=${this.warningAriaLabel || 'Warning message icon'}
+          aria-label=${this.warningAriaLabel ||
+          this._textStrings.warning ||
+          'Warning message icon'}
         >
           ${unsafeSVG(warningIcon)}
         </span>

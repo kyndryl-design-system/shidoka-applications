@@ -67,6 +67,34 @@ export default {
     invalidText: { control: { type: 'text' } },
     defaultErrorMessage: { control: { type: 'text' } },
     twentyFourHourFormat: { control: { type: 'boolean' } },
+    errorAriaLabel: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set errorText.',
+      },
+    },
+    errorTitle: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set errorText.',
+      },
+    },
+    warningAriaLabel: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set warning.',
+      },
+    },
+    warningTitle: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set warning.',
+      },
+    },
     ...ValidationArgs,
   },
 };
@@ -160,12 +188,9 @@ const Template = (args) => {
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
       ?allowManualInput=${args.allowManualInput}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
       .startDateLabel=${args.startDateLabel}
       .endDateLabel=${args.endDateLabel}
+      .textStrings=${args.textStrings}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
     </kyn-date-range-picker>
@@ -186,10 +211,6 @@ DateRangeDefault.args = {
   invalidText: '',
   disable: [],
   enable: [],
-  errorAriaLabel: 'Error message icon',
-  errorTitle: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   caption: 'Click the input above to select a date range.',
   dateRangePickerDisabled: false,
   readonly: false,
@@ -215,6 +236,8 @@ DateRangeDefault.args = {
     dateLocked: 'Date is locked',
     dateNotAvailable: 'Date is not available',
     dateInSelectedRange: 'Date is in selected range',
+    errorText: 'Error message icon',
+    warning: 'Warning message icon',
   },
 };
 
@@ -391,12 +414,9 @@ export const InModal = {
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
           ?allowManualInput=${args.allowManualInput}
-          .errorAriaLabel=${args.errorAriaLabel}
-          .errorTitle=${args.errorTitle}
-          .warningAriaLabel=${args.warningAriaLabel}
-          .warningTitle=${args.warningTitle}
           .startDateLabel=${args.startDateLabel}
           .endDateLabel=${args.endDateLabel}
+          .textStrings=${args.textStrings}
           style="width: 300px;"
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
@@ -477,6 +497,7 @@ export const DateRangePickerInAccordionInModal = {
                 .value=${args.value}
                 .defaultErrorMessage=${args.defaultErrorMessage}
                 ?staticPosition=${args.staticPosition}
+                .textStrings=${args.textStrings}
                 .warnText=${args.warnText}
                 .invalidText=${args.invalidText}
                 .disable=${args.disable}
@@ -490,10 +511,6 @@ export const DateRangePickerInAccordionInModal = {
                 .minDate=${args.minDate}
                 .maxDate=${args.maxDate}
                 ?allowManualInput=${args.allowManualInput}
-                .errorAriaLabel=${args.errorAriaLabel}
-                .errorTitle=${args.errorTitle}
-                .warningAriaLabel=${args.warningAriaLabel}
-                .warningTitle=${args.warningTitle}
                 .startDateLabel=${args.startDateLabel}
                 .endDateLabel=${args.endDateLabel}
                 style="width: 300px;"
@@ -637,11 +654,8 @@ const ControlledTemplate = (args) => {
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
+      .textStrings=${args.textStrings}
       ?allowManualInput=${args.allowManualInput}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
       .startDateLabel=${args.startDateLabel}
       .endDateLabel=${args.endDateLabel}
       @on-change=${handleChange}

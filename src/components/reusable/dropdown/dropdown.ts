@@ -50,6 +50,7 @@ const _defaultTextStrings = {
  * @attr {string/array} [value=''/[]] - The selected value(s) of the input. For single select, it is a string. For multi-select, it is an array of strings.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
@@ -165,10 +166,6 @@ export class Dropdown extends FormMixin(LitElement) {
   /** Enables the "Add New Option" feature. */
   @property({ type: Boolean })
   accessor allowAddOption = false;
-
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
 
   /** @internal */
   @state()
