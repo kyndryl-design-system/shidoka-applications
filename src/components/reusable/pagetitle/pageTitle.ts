@@ -148,6 +148,9 @@ export class PageTitle extends LitElement {
     );
   }
 
+  /**
+   * @internal
+   */
   private _toggleDropdown() {
     this.open = !this.open;
   }
