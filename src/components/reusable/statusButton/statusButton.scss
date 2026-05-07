@@ -77,6 +77,43 @@
         );
       }
     }
+
+    /* critical state */ // New color token yet to be added
+    &-critical {
+      color: var(--kd-color-text-status-buttons-critical-enabled);
+      background-color: var(
+        --kd-color-background-status-buttons-critical-enabled
+      );
+      border-color: var(--kd-color-border-status-buttons-critical-enabled);
+      &:hover {
+        color: var(--kd-color-text-status-buttons-critical-hover);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-hover
+        );
+        border-color: var(--kd-color-border-status-buttons-critical-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-buttons-critical-selected);
+        color: var(--kd-color-text-status-buttons-critical-selected);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-selected
+        );
+      }
+      &:focus-visible {
+        outline: 1px solid
+          var(--kd-color-border-status-buttons-critical-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-buttons-critical-pressed);
+        border-color: var(--kd-color-border-status-buttons-critical-pressed);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-pressed
+        );
+      }
+    }
     /* warning state */
     &-warning {
       color: var(--kd-color-text-status-buttons-warning-enabled);
@@ -301,6 +338,55 @@
         color: var(--kd-color-text-status-buttons-ai-pressed);
         border-color: var(--kd-color-border-status-buttons-ai-pressed);
         background-color: var(--kd-color-background-status-buttons-ai-pressed);
+      }
+    }
+
+    // &-outline-styles {
+    //   border: 1px solid transparent;
+
+    //   &[disabled] {
+    //     border-color: var(--kd-color-border-ui-disabled);
+    //     color: var(--kd-color-text-link-level-disabled);
+    //     cursor: not-allowed;
+
+    //     &:hover {
+    //       border-color: var(--kd-color-border-ui-disabled);
+    //       background-color: transparent;
+    //     }
+
+    //     &:active {
+    //       color: var(--kd-color-text-link-level-disabled);
+    //     }
+    //   }
+    // }
+
+    &-outline {
+      color: var(--kd-color-text-button-light-primary);
+      border-color: var(--kd-color-border-button-primary-state-default);
+
+      &:hover {
+        background-color: var(
+          --kd-color-background-button-secondary-state-default
+        );
+        border-color: var(--kd-color-border-button-primary-state-hover);
+      }
+
+      &:focus-visible {
+        border-color: var(--kd-color-border-button-primary-state-focused);
+        outline-color: var(--kd-color-border-button-primary-state-focused);
+      }
+
+      &:active {
+        background-color: var(
+          --kd-color-background-button-secondary-state-pressed
+        );
+        border-color: var(--kd-color-border-button-primary-state-pressed);
+        color: var(--kd-color-text-button-dark-primary);
+      }
+
+      &.selected {
+        background-color: var(--kd-color-background-secondary-state-selected);
+        color: var(--kd-color-text-level-light);
       }
     }
     &:focus-visible {

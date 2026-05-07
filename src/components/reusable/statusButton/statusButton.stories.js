@@ -9,7 +9,17 @@ export default {
   component: 'kyn-status-btn',
   argTypes: {
     kind: {
-      options: ['success', 'warning', 'error', 'low', 'medium', 'high', 'ai'],
+      options: [
+        'success',
+        'warning',
+        'error',
+        'critical',
+        'outline',
+        'low',
+        'medium',
+        'high',
+        'ai',
+      ],
       control: { type: 'select' },
     },
     disabled: {
@@ -88,6 +98,7 @@ export const Gallery = {
         <kyn-status-btn label="Success" kind="success"></kyn-status-btn>
         <kyn-status-btn label="Warning" kind="warning"></kyn-status-btn>
         <kyn-status-btn label="Error" kind="error"></kyn-status-btn>
+        <kyn-status-btn label="Critical" kind="critical"></kyn-status-btn>
       </div>
       <br />
       <div class="heading kd-type--headline-06 heading-text">
@@ -105,6 +116,9 @@ export const Gallery = {
       <br />
       <div class="heading kd-type--headline-06 heading-text">Disabled</div>
       <kyn-status-btn label="Label" kind="success" disabled></kyn-status-btn>
+      <br />
+      <div class="heading kd-type--headline-06 heading-text">Outline</div>
+      <kyn-status-btn label="Label" kind="outline"></kyn-status-btn>
       <style>
         .heading-text {
           margin-bottom: var(--kd-spacing-12);

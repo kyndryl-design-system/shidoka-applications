@@ -7,6 +7,8 @@ enum STATUS_KINDS {
   SUCCESS = 'success',
   WARNING = 'warning',
   ERROR = 'error',
+  CRITICAL = 'critical',
+  OUTLINE = 'outline',
   LOW = 'low',
   MEDIUM = 'medium',
   HIGH = 'high',
