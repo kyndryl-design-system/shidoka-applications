@@ -424,10 +424,7 @@ export class MultiInputField extends FormMixin(LitElement) {
         <slot></slot>
       </div>
 
-      <div
-        ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
-      >
+      <div ?disabled=${this.disabled}>
         ${this.renderLabel()}
         ${this.renderTagsAndInput(stateMgmtClasses, placeholderText)}
         ${this.renderCaptionAndError(error, validCount)}

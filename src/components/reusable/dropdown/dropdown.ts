@@ -484,7 +484,6 @@ export class Dropdown extends FormMixin(LitElement) {
       <div
         class=${classMap(mainDropdownClasses)}
         ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this._isSearchVisible}

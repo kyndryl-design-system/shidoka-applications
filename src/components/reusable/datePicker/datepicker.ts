@@ -387,7 +387,6 @@ export class DatePicker extends FormMixin(LitElement) {
           class="label-text ${this.hideLabel || !this.label ? 'sr-only' : ''}"
           @mousedown=${this.onSuppressLabelInteraction}
           @click=${this.onSuppressLabelInteraction}
-          ?readonly=${this.readonly}
           ?disabled=${this.datePickerDisabled}
           id=${`label-${anchorId}`}
         >

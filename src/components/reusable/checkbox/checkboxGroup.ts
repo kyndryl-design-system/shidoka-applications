@@ -158,10 +158,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
             `
           : null}
 
-        <fieldset
-          ?disabled=${this.disabled}
-          ?readonly=${!this.disabled && this.readonly}
-        >
+        <fieldset ?disabled=${this.disabled}>
           <legend class="label-text ${this.hideLegend ? 'sr-only' : ''}">
             ${this.required
               ? html`

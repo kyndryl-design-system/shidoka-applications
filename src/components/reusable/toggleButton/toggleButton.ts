@@ -63,11 +63,7 @@ export class ToggleButton extends FormMixin(LitElement) {
     const statusId = `${id}-status`;
 
     return html`
-      <div
-        class="toggle-button"
-        ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
-      >
+      <div class="toggle-button" ?disabled=${this.disabled}>
         <label class="label-text ${this.hideLabel ? 'sr-only' : ''}" for=${id}>
           ${this.label}
           <slot name="tooltip"></slot>

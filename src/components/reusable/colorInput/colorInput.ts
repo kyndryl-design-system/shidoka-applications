@@ -93,7 +93,6 @@ export class ColorInput extends FormMixin(LitElement) {
       <div
         class="text-input"
         ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
       >
         <label
           class="label-text ${this.hideLabel ? 'sr-only' : ''}"
