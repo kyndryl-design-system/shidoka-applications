@@ -1,0 +1,38 @@
+export enum STATUS_KINDS {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+  CRITICAL = 'critical',
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  OUTLINE_SUCCESS = 'outline-success',
+  OUTLINE_WARNING = 'outline-warning',
+  OUTLINE_ERROR = 'outline-error',
+  OUTLINE_CRITICAL = 'outline-critical',
+  OUTLINE_LOW = 'outline-low',
+  OUTLINE_MEDIUM = 'outline-medium',
+  OUTLINE_HIGH = 'outline-high',
+  AI = 'ai',
+}
+
+export const STATUS_KINDS_SOLID = [
+  STATUS_KINDS.SUCCESS,
+  STATUS_KINDS.WARNING,
+  STATUS_KINDS.ERROR,
+  STATUS_KINDS.CRITICAL,
+  STATUS_KINDS.LOW,
+  STATUS_KINDS.MEDIUM,
+  STATUS_KINDS.HIGH,
+  STATUS_KINDS.AI,
+];
+
+export const STATUS_KINDS_OUTLINE = [
+  STATUS_KINDS.OUTLINE_SUCCESS,
+  STATUS_KINDS.OUTLINE_WARNING,
+  STATUS_KINDS.OUTLINE_ERROR,
+  STATUS_KINDS.OUTLINE_CRITICAL,
+  STATUS_KINDS.OUTLINE_LOW,
+  STATUS_KINDS.OUTLINE_MEDIUM,
+  STATUS_KINDS.OUTLINE_HIGH,
+];

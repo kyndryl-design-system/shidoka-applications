@@ -2,18 +2,7 @@ import { LitElement, PropertyValues, html, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import StatusBtnScss from './statusButton.scss?inline';
-
-enum STATUS_KINDS {
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-  CRITICAL = 'critical',
-  OUTLINE = 'outline',
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  AI = 'ai',
-}
+import { STATUS_KINDS, STATUS_KINDS_SOLID, STATUS_KINDS_OUTLINE } from './defs';
 
 /**
  * Status Button.
@@ -84,7 +73,10 @@ export class StatusButton extends LitElement {
       'no-truncation': this.noTruncation,
       'status-btn__state-interactive': true,
       [`status-btn__state-interactive-${this.kind}`]: true,
-      'status-btn__state-disable': this.disabled,
+      'status-btn__state-disable':
+        STATUS_KINDS_SOLID.includes(this.kind) && this.disabled,
+      'status-btn__state-outline-disable':
+        STATUS_KINDS_OUTLINE.includes(this.kind) && this.disabled,
       [`${newBaseColorClass}`]: true,
       selected: this.selected,
     };
