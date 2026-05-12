@@ -4,6 +4,7 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { deepmerge } from 'deepmerge-ts';
 import { classMap } from 'lit/directives/class-map.js';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import Styles from './colorInput.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 
@@ -13,6 +14,7 @@ const _defaultTextStrings = {
   pleaseSelectColor: 'Please select a color',
   invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',
   colorTextInput: 'Color text input',
+  warning: 'Warning',
 };
 
 /**
@@ -22,6 +24,7 @@ const _defaultTextStrings = {
  * @attr {string} [value=''] - The value of the input.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-color-input')
 export class ColorInput extends FormMixin(LitElement) {
@@ -136,7 +139,7 @@ export class ColorInput extends FormMixin(LitElement) {
             aria-label=${this._textStrings.colorTextInput}
             aria-invalid=${this._isInvalid}
             aria-describedby=${this._isInvalid ? 'error' : ''}
-            autocomplete=${this.autoComplete}
+            .autocomplete=${this.autoComplete}
             @input=${(e: any) => this.handleTextInput(e)}
           />
           <div class="caption-error-count">
@@ -146,6 +149,28 @@ export class ColorInput extends FormMixin(LitElement) {
                   ? html`
                       <div class="caption" aria-disabled=${this.disabled}>
                         ${this.caption}
+                      </div>
+                    `
+                  : null
+              }
+              ${
+                this.warnText
+                  ? html`
+                      <div
+                        class="warn warn-text"
+                        role="alert"
+                        title=${this._textStrings.warning || 'Warning'}
+                        tabindex="0"
+                      >
+                        <span
+                          class="warning-icon"
+                          role="img"
+                          aria-label=${this._textStrings.warning ||
+                          'Warning message icon'}
+                        >
+                          ${unsafeSVG(warningIcon)}
+                        </span>
+                        ${this.warnText}
                       </div>
                     `
                   : null

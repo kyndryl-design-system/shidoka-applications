@@ -35,6 +35,7 @@ import DatePickerStyles from './datepicker.scss?inline';
 import ShidokaFlatpickrTheme from '../../../common/scss/shidoka-flatpickr-theme.scss?inline';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import calendarIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/24/calendar.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
 
@@ -54,6 +55,8 @@ const _defaultTextStrings = {
   dateLocked: 'Date is locked',
   dateNotAvailable: 'Date is not available',
   dateInSelectedRange: 'Date is in selected range',
+  warning: 'Warning Text',
+  errorText: 'Error',
 };
 
 /**
@@ -73,6 +76,7 @@ type DatePickerValueInput = string | string[] | Date | Date[] | null;
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
  * @attr {Date | Date[] | string | string[] } [value=''] - The value of the input.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-date-picker')
 export class DatePicker extends FormMixin(LitElement) {
@@ -141,10 +145,6 @@ export class DatePicker extends FormMixin(LitElement) {
    */
   override value: Date | Date[] | string | string[] | null = null;
 
-  /** Sets validation warning messaging. */
-  @property({ type: String })
-  accessor warnText = '';
-
   /** Sets flatpickr options setting to disable specific dates. Accepts array of dates in Y-m-d format, timestamps, or Date objects. */
   @property({ type: Array })
   accessor disable: (string | number | Date)[] = [];
@@ -193,19 +193,19 @@ export class DatePicker extends FormMixin(LitElement) {
   @property({ type: Boolean })
   accessor allowManualInput = false;
 
-  /** Sets aria label attribute for error message. */
+  /** DEPRECATED.Sets aria label attribute for error message. Use `textStrings` instead to set errorText. */
   @property({ type: String })
   accessor errorAriaLabel = '';
 
-  /** Sets title attribute for error message. */
+  /** DEPRECATED.Sets title attribute for error message. Use `textStrings` instead to set errorText. */
   @property({ type: String })
   accessor errorTitle = '';
 
-  /** Sets aria label attribute for warning message. */
+  /** DEPRECATED.Sets aria label attribute for warning message. Use `textStrings` instead to set warning label/title. */
   @property({ type: String })
   accessor warningAriaLabel = '';
 
-  /** Sets title attribute for warning message. */
+  /** DEPRECATED.Sets title attribute for warning message. Use `textStrings` instead to set warning label/title. */
   @property({ type: String })
   accessor warningTitle = '';
 
@@ -477,14 +477,16 @@ export class DatePicker extends FormMixin(LitElement) {
         id=${errorId}
         class="error error-text"
         role="alert"
-        title=${this.errorTitle || 'Error'}
+        title=${this.errorTitle || this._textStrings.errorText || 'Error'}
         @mousedown=${this.onSuppressLabelInteraction}
         @click=${this.onSuppressLabelInteraction}
       >
         <span
           class="error-icon"
           role="img"
-          aria-label=${this.errorAriaLabel || 'Error message icon'}
+          aria-label=${this.errorAriaLabel ||
+          this._textStrings.errorText ||
+          'Error message icon'}
         >
           ${unsafeSVG(errorIcon)}
         </span>
@@ -499,8 +501,7 @@ export class DatePicker extends FormMixin(LitElement) {
         id=${warningId}
         class="warn warn-text"
         role="alert"
-        aria-label=${this.warningAriaLabel || 'Warning message'}
-        title=${this.warningTitle || 'Warning'}
+        title=${this.warningTitle || this._textStrings.warning || 'Warning'}
         @mousedown=${this.onSuppressLabelInteraction}
         @click=${this.onSuppressLabelInteraction}
         tabindex="0"
@@ -511,6 +512,15 @@ export class DatePicker extends FormMixin(LitElement) {
           }
         }}
       >
+        <span
+          class="warning-icon"
+          role="img"
+          aria-label=${this.warningAriaLabel ||
+          this._textStrings.warning ||
+          'Warning message icon'}
+        >
+          ${unsafeSVG(warningIcon)}
+        </span>
         ${this.warnText}
       </div>`;
     }
@@ -606,6 +616,10 @@ export class DatePicker extends FormMixin(LitElement) {
     }
 
     super.updated(changedProperties);
+
+    if (changedProperties.has('textStrings')) {
+      this._textStrings = { ..._defaultTextStrings, ...this.textStrings };
+    }
 
     if (changedProperties.has('value') && !this._isClearing) {
       const raw = this.value as unknown as DatePickerValueInput;

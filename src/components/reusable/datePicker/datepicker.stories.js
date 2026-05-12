@@ -69,6 +69,35 @@ export default {
         summary: 'Soft Deprecated – use `value` instead',
       },
     },
+    errorAriaLabel: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set errorText.',
+      },
+    },
+    errorTitle: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set errorText.',
+      },
+    },
+
+    warningAriaLabel: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set warning.',
+      },
+    },
+    warningTitle: {
+      control: { type: 'string' },
+      table: {
+        category: 'Deprecated',
+        summary: 'Use `textStrings` instead to set warning.',
+      },
+    },
     ...ValidationArgs,
   },
 };
@@ -111,15 +140,12 @@ const Template = (args) => {
       .enable=${args.enable}
       .mode=${args.mode}
       .caption=${args.caption}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
       ?datePickerDisabled=${args.datePickerDisabled}
       ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
+      .textStrings=${args.textStrings}
       ?allowManualInput=${args.allowManualInput}
       @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
     >
@@ -140,10 +166,6 @@ DatePickerDefault.args = {
   invalidText: '',
   disable: [],
   enable: [],
-  errorAriaLabel: 'Error message icon',
-  errorTitle: '',
-  warningAriaLabel: '',
-  warningTitle: '',
   mode: 'single',
   caption: 'Example datepicker caption.',
   datePickerDisabled: false,
@@ -162,12 +184,13 @@ DatePickerDefault.args = {
     pleaseSelectValidDate: 'Please select a valid date',
     invalidDateFormat: 'Invalid date format provided',
     errorProcessing: 'Error processing date',
-
     lockedStartDate: 'Start date is locked',
     lockedEndDate: 'End date is locked',
     dateLocked: 'Date is locked',
     dateNotAvailable: 'Date is not available',
     dateInSelectedRange: 'Date is in selected range',
+    errorText: 'Error message icon',
+    warning: 'Warning message icon',
   },
 };
 DatePickerDefault.storyName = 'Single Date (Default)';
@@ -318,16 +341,13 @@ export const InModal = {
           .enable=${args.enable}
           .mode=${args.mode}
           .caption=${args.caption}
-          .errorAriaLabel=${args.errorAriaLabel}
-          .errorTitle=${args.errorTitle}
-          .warningAriaLabel=${args.warningAriaLabel}
-          .warningTitle=${args.warningTitle}
           ?datePickerDisabled=${args.datePickerDisabled}
           ?readonly=${args.readonly}
           ?twentyFourHourFormat=${args.twentyFourHourFormat}
           .minDate=${args.minDate}
           .maxDate=${args.maxDate}
           ?allowManualInput=${args.allowManualInput}
+          .textStrings=${args.textStrings}
           style="width: 225px;"
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
         >
@@ -367,10 +387,6 @@ export const InSideDrawer = {
     disable: false,
     enable: true,
     mode: 'single',
-    errorAriaLabel: '',
-    errorTitle: '',
-    warningAriaLabel: '',
-    warningTitle: '',
     datePickerDisabled: false,
     allowManualInput: false,
     readonly: false,
@@ -406,10 +422,6 @@ export const InSideDrawer = {
       enable,
       mode,
       caption,
-      errorAriaLabel,
-      errorTitle,
-      warningAriaLabel,
-      warningTitle,
       datePickerDisabled,
       readonly,
       allowManualInput,
@@ -448,11 +460,7 @@ export const InSideDrawer = {
       enable,
       mode,
       caption,
-      errorAriaLabel,
-      errorTitle,
       allowManualInput,
-      warningAriaLabel,
-      warningTitle,
       datePickerDisabled,
       readonly,
       twentyFourHourFormat,
@@ -499,16 +507,13 @@ export const InSideDrawer = {
           .enable=${datePickerProps.enable}
           .mode=${datePickerProps.mode}
           .caption=${datePickerProps.caption}
-          .errorAriaLabel=${datePickerProps.errorAriaLabel}
-          .errorTitle=${datePickerProps.errorTitle}
-          .warningAriaLabel=${datePickerProps.warningAriaLabel}
-          .warningTitle=${datePickerProps.warningTitle}
           ?datePickerDisabled=${datePickerProps.datePickerDisabled}
           ?readonly=${datePickerProps.readonly}
           ?twentyFourHourFormat=${datePickerProps.twentyFourHourFormat}
           .minDate=${datePickerProps.minDate}
           .maxDate=${datePickerProps.maxDate}
           ?allowManualInput=${datePickerProps.allowManualInput}
+          .textStrings=${args.textStrings}
           @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           style="margin-left: 4px; width: 225px;"
         >
@@ -594,16 +599,13 @@ export const InModalScrollablePage = {
             .enable=${args.enable}
             .mode=${args.mode}
             .caption=${args.caption}
-            .errorAriaLabel=${args.errorAriaLabel}
-            .errorTitle=${args.errorTitle}
-            .warningAriaLabel=${args.warningAriaLabel}
-            .warningTitle=${args.warningTitle}
             ?datePickerDisabled=${args.datePickerDisabled}
             ?readonly=${args.readonly}
             ?twentyFourHourFormat=${args.twentyFourHourFormat}
             .minDate=${args.minDate}
             .maxDate=${args.maxDate}
             ?allowManualInput=${args.allowManualInput}
+            .textStrings=${args.textStrings}
             style="width: 225px;"
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
@@ -682,15 +684,12 @@ export const InModalScrollableContent = {
             .enable=${args.enable}
             .mode=${args.mode}
             .caption=${args.caption}
-            .errorAriaLabel=${args.errorAriaLabel}
-            .errorTitle=${args.errorTitle}
-            .warningAriaLabel=${args.warningAriaLabel}
-            .warningTitle=${args.warningTitle}
             ?datePickerDisabled=${args.datePickerDisabled}
             ?readonly=${args.readonly}
             ?twentyFourHourFormat=${args.twentyFourHourFormat}
             .minDate=${args.minDate}
             .maxDate=${args.maxDate}
+            .textStrings=${args.textStrings}
             style="width: 225px;"
             @on-change=${(e) => action(e.type)({ ...e, detail: e.detail })}
           >
@@ -768,16 +767,13 @@ const ValueOverridesDefaultTemplate = (args) => {
       .enable=${args.enable}
       .mode=${args.mode}
       .caption=${args.caption}
-      .errorAriaLabel=${args.errorAriaLabel}
-      .errorTitle=${args.errorTitle}
-      .warningAriaLabel=${args.warningAriaLabel}
-      .warningTitle=${args.warningTitle}
       ?datePickerDisabled=${args.datePickerDisabled}
       ?readonly=${args.readonly}
       ?twentyFourHourFormat=${args.twentyFourHourFormat}
       .minDate=${args.minDate}
       .maxDate=${args.maxDate}
       ?allowManualInput=${args.allowManualInput}
+      .textStrings=${args.textStrings}
       @on-change=${handleChange}
     >
     </kyn-date-picker>

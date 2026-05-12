@@ -100,6 +100,9 @@ export class ToggleButton extends FormMixin(LitElement) {
     `;
   }
 
+  /**
+   * @internal
+   */
   private handleClick = (e: MouseEvent) => {
     if (this.readonly) {
       e.preventDefault();
@@ -108,6 +111,9 @@ export class ToggleButton extends FormMixin(LitElement) {
     }
   };
 
+  /**
+   * @internal
+   */
   private handleChange = (e: Event) => {
     if (this.readonly) {
       e.preventDefault();
@@ -126,6 +132,9 @@ export class ToggleButton extends FormMixin(LitElement) {
     );
   };
 
+  /**
+   * @internal
+   */
   private handleKeyDown = (e: KeyboardEvent) => {
     if (this.readonly && (e.key === ' ' || e.code === 'Space')) {
       e.preventDefault();

@@ -8,6 +8,7 @@ export declare class FormMixinInterface {
   name: string;
   value: any;
   invalidText: string;
+  warnText: string;
   _internalValidationMsg: string;
   _isInvalid: boolean;
   _handleInvalid: Function;
@@ -51,6 +52,10 @@ export const FormMixin = <T extends Constructor<LitElement>>(superClass: T) => {
     /** Input invalid text. */
     @property({ type: String })
     accessor invalidText = '';
+
+    /** Input warning text. */
+    @property({ type: String })
+    accessor warnText = '';
 
     /**
      * Internal validation message.

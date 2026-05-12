@@ -45,6 +45,7 @@ const args = {
   disabled: false,
   readonly: false,
   invalidText: '',
+  warnText: '',
   hideLabel: false,
   inline: false,
   step: 1,
@@ -55,6 +56,7 @@ const args = {
     subtract: 'Subtract',
     add: 'Add',
     error: 'Error',
+    warning: 'Warning',
   },
 };
 
@@ -72,6 +74,7 @@ export const NumberInput = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -104,6 +107,7 @@ export const FullWidth = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -133,6 +137,7 @@ export const ConstrainedMaxWidth = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -166,6 +171,7 @@ export const LongLabelContrainedInput = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
@@ -199,6 +205,7 @@ export const LongWrappingLabel = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         ?inline=${args.inline}
         step=${ifDefined(args.step)}
