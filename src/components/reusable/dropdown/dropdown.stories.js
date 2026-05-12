@@ -57,12 +57,14 @@ const args = {
   readonly: false,
   hideLabel: false,
   invalidText: '',
+  warnText: '',
   caption: '',
   value: '',
   menuMinWidth: 'initial',
   textStrings: {
     required: 'Required',
     error: 'Error',
+    warning: 'Warning',
   },
 };
 
@@ -95,6 +97,7 @@ export const Single = {
         ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         ?selectAll=${args.selectAll}
@@ -155,6 +158,7 @@ export const AI = {
         ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -210,6 +214,7 @@ export const SingleSearchable = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
@@ -278,6 +283,7 @@ export const MultiSelect = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -344,6 +350,7 @@ export const MultiSelectSearchable = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         searchText=${args.searchText}
@@ -406,6 +413,7 @@ export const Grouped = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -489,6 +497,7 @@ export const DataDrivenOptions = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -679,6 +688,7 @@ export const AddNewOption = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -761,6 +771,7 @@ export const Readonly = {
         ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -889,6 +900,7 @@ export const AddNewOptionValidation = {
             ?disabled=${args.disabled}
             ?readonly=${args.readonly}
             invalidText=${args.invalidText}
+            warnText=${args.warnText}
             caption=${args.caption}
             menuMinWidth=${args.menuMinWidth}
             .textStrings=${args.textStrings}

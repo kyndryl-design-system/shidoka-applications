@@ -43,6 +43,7 @@ const args = {
   disabled: false,
   readonly: false,
   invalidText: '',
+  warnText: '',
   iconRight: false,
   hideLabel: false,
   pattern: undefined,
@@ -53,6 +54,7 @@ const args = {
     requiredText: 'Required',
     clearAll: 'Clear all',
     errorText: 'Error',
+    warning: 'Warning',
   },
 };
 
@@ -71,6 +73,8 @@ export const TextInput = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        warning=${args.warning}
         ?hideLabel=${args.hideLabel}
         autoComplete=${args.autoComplete}
         pattern=${ifDefined(args.pattern)}
@@ -112,6 +116,8 @@ export const WithIcon = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        warning=${args.warning}
         ?hideLabel=${args.hideLabel}
         ?iconRight=${args.iconRight}
         autoComplete=${args.autoComplete}
@@ -151,6 +157,8 @@ export const PasswordInput = {
         ?disabled=${args.disabled}
         ?readonly=${args.readonly}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
+        warning=${args.warning}
         ?hideLabel=${args.hideLabel}
         ?iconRight=${args.iconRight}
         pattern=${ifDefined(args.pattern)}
@@ -191,6 +199,8 @@ export const PasswordInputWithValidation = {
           ?disabled=${args.disabled}
           ?readonly=${args.readonly}
           invalidText=${args.invalidText}
+          warnText=${args.warnText}
+          warning=${args.warning}
           ?hideLabel=${args.hideLabel}
           ?iconRight=${args.iconRight}
           pattern=${ifDefined(args.pattern)}

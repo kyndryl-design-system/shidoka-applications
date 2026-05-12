@@ -11,12 +11,14 @@ import { deepmerge } from 'deepmerge-ts';
 import chevronLeft from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-left.svg';
 import chevronRight from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   requiredText: 'Required',
   subtract: 'Subtract',
   add: 'Add',
   error: 'Error',
+  warning: 'Warning',
 };
 
 /**
@@ -26,7 +28,7 @@ const _defaultTextStrings = {
  * @slot tooltip - Slot for tooltip.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
- *
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  * @cssprop [--kyn-number-input-inner-max-width=200px] - Maximum width of the number input inner container.
  * @cssprop [--kyn-number-input-inner-min-width=0px] - Minimum width of the number input inner container.
  */
@@ -193,6 +195,26 @@ export class NumberInput extends FormMixin(LitElement) {
           ? html`
               <div class="caption" aria-disabled=${this.disabled}>
                 ${this.caption}
+              </div>
+            `
+          : null}
+        ${this.warnText
+          ? html`
+              <div
+                class="warn warn-text ${this.inline ? 'sr-only' : ''}"
+                role="alert"
+                title=${this._textStrings.warning || 'Warning'}
+                tabindex="0"
+              >
+                <span
+                  class="warning-icon"
+                  role="img"
+                  aria-label=${this._textStrings.warning ||
+                  'Warning message icon'}
+                >
+                  ${unsafeSVG(warningIcon)}
+                </span>
+                ${this.warnText}
               </div>
             `
           : null}

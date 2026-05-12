@@ -10,6 +10,7 @@ import '../button';
 import { deepmerge } from 'deepmerge-ts';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 import squiggleThin from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle.svg';
 import squiggleThick from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/squiggle-thick.svg';
@@ -18,6 +19,7 @@ const _defaultTextStrings = {
   error: 'Error',
   decrease: 'Decrease',
   increase: 'Increase',
+  warning: 'Warning',
 };
 
 /**
@@ -32,6 +34,7 @@ const _defaultTextStrings = {
  * @attr {number} [value=0] - The value of the input.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  *
  */
 @customElement('kyn-slider-input')
@@ -227,6 +230,28 @@ ${
               ? html`
                   <div class="caption" aria-disabled=${this.disabled}>
                     ${this.caption}
+                  </div>
+                `
+              : null
+          }
+          ${
+            this.warnText
+              ? html`
+                  <div
+                    class="warn warn-text"
+                    role="alert"
+                    title=${this._textStrings.warning || 'Warning'}
+                    tabindex="0"
+                  >
+                    <span
+                      class="warning-icon"
+                      role="img"
+                      aria-label=${this._textStrings.warning ||
+                      'Warning message icon'}
+                    >
+                      ${unsafeSVG(warningIcon)}
+                    </span>
+                    ${this.warnText}
                   </div>
                 `
               : null

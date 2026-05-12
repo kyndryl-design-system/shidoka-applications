@@ -75,6 +75,7 @@ const args = {
   selectAll: false,
   selectAllText: 'Select all',
   invalidText: '',
+  warnText: '',
   caption: '',
   searchText: '',
   value: '',
@@ -92,6 +93,7 @@ const args = {
     selectedOptions: 'List of selected options',
     addItem: 'Add item...',
     add: 'Add',
+    warning: 'Warning',
   },
 };
 
@@ -126,6 +128,7 @@ export const Default = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -198,6 +201,7 @@ export const WithIcons = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -278,6 +282,7 @@ export const ButtonAnchor = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -380,6 +385,7 @@ export const Searchable = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -461,6 +467,7 @@ export const MultiSelect = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -540,6 +547,7 @@ export const MultiSelectIcons = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}
@@ -623,6 +631,7 @@ export const SearchableMultiSelect = {
         ?selectAll=${args.selectAll}
         selectAllText=${args.selectAllText}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         caption=${args.caption}
         menuMinWidth=${args.menuMinWidth}
         .textStrings=${args.textStrings}

@@ -6,6 +6,7 @@ export const defaultTextStrings = {
   invalidFormatError: 'Invalid format.',
   maxExceededError: 'Maximum number of items exceeded.',
   duplicateError: 'Item already added',
+  warning: 'Warning',
 };
 
 export const isValidEmail = (email: string): boolean => {

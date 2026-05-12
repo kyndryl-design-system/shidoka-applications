@@ -38,6 +38,7 @@ const args = {
   limitCheckboxes: false,
   limitCount: 4,
   invalidText: '',
+  warnText: '',
   description: 'Description',
   searchTerm: '',
   textStrings: {
@@ -47,6 +48,7 @@ const args = {
     search: 'Search',
     required: 'Required',
     error: 'Error',
+    warning: 'Warning',
   },
 };
 
@@ -68,6 +70,7 @@ export const CheckboxGroup = {
         ?limitCheckboxes=${args.limitCheckboxes}
         .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
+        .warnText=${args.warnText}
         .textStrings=${args.textStrings}
         searchTerm=${args.searchTerm}
         @on-checkbox-group-change=${(e) =>
@@ -109,6 +112,7 @@ export const CheckboxSubgroups = {
         ?limitCheckboxes=${args.limitCheckboxes}
         .limitCount=${args.limitCount}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         .textStrings=${args.textStrings}
         searchTerm=${args.searchTerm}
         @on-checkbox-group-change=${(e) =>
