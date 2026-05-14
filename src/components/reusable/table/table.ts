@@ -12,8 +12,8 @@ import styles from './table.scss?inline';
  * `kyn-table` Web Component.
  * This component provides a table with sorting, pagination, and selection capabilities.
  * It is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.
- * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled. `detail: { selectedRow: TableRow, selectedRows: Array<TableRow> }`
- * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled. `detail:{ selectedRows: Array<TableRow> }`
+ * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled. `detail: { selectedRow: TableRow, selectedRows: Array<TableRow> }`. When `persistSelection` is enabled, `detail.selectedRowIds: Array<string>` is also included with all selected row ids across pages.
+ * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled. `detail: { selectedRows: Array<TableRow> }`. When `persistSelection` is enabled, `detail.selectedRowIds: Array<string>` is also included.
  */
 
 @customElement('kyn-table')
@@ -33,6 +33,30 @@ export class Table extends LitElement {
    */
   @property({ type: Boolean })
   accessor checkboxSelection: boolean | undefined;
+
+  /**
+   * persistSelection: When true, row selection is persisted across pages
+   * (or any external row changes such as filtering / sorting that swap the
+   * rendered rows). Selecting / deselecting all only affects the rows
+   * currently rendered, while the cumulative selection is exposed via
+   * `selectedRowIds` on selection events and `getSelectedRowIds()`.
+   * @type {boolean}
+   * @default false
+   */
+  @property({ type: Boolean })
+  accessor persistSelection = false;
+
+  /**
+   * allRowIds: The complete list of row ids in the dataset across all
+   * pages. When provided together with `persistSelection`, the header
+   * "Select All" checkbox toggles selection for every row in the dataset
+   * (not just the rows currently rendered). Leave empty to fall back to
+   * per-page select-all behavior.
+   * @type {Array<string>}
+   * @default []
+   */
+  @property({ type: Array })
+  accessor allRowIds: string[] = [];
 
   /**
    * striped: Boolean indicating whether rows should have alternate
@@ -156,10 +180,40 @@ export class Table extends LitElement {
    * @private
    */
   private _updateHeaderCheckbox() {
-    if (this._selectedRows.length === 0 || this._allRows.length === 0) {
+    // When persistSelection + allRowIds is provided, evaluate against
+    // the entire dataset so the header reflects whole-dataset state.
+    if (this.persistSelection && this.allRowIds.length > 0) {
+      const totalCount = this.allRowIds.length;
+      const selectedCount = this._selectedRowIds.size;
+
+      if (selectedCount === 0) {
+        this._headerCheckboxIndeterminate = false;
+        this._headerCheckboxChecked = false;
+      } else if (selectedCount >= totalCount) {
+        this._headerCheckboxIndeterminate = false;
+        this._headerCheckboxChecked = true;
+      } else {
+        this._headerCheckboxIndeterminate = true;
+        this._headerCheckboxChecked = false;
+      }
+
+      this._tableHeaderRow?.updateHeaderCheckboxState(
+        this._headerCheckboxIndeterminate,
+        this._headerCheckboxChecked
+      );
+      return;
+    }
+
+    // Default: evaluate against rows currently rendered (current page).
+    const selectableRows = this._allRows.filter((row) => !row.disabled);
+    const selectedVisibleCount = selectableRows.filter(
+      (row) => row.selected
+    ).length;
+
+    if (selectableRows.length === 0 || selectedVisibleCount === 0) {
       this._headerCheckboxIndeterminate = false;
       this._headerCheckboxChecked = false;
-    } else if (this._selectedRows.length === this._allRows.length) {
+    } else if (selectedVisibleCount === selectableRows.length) {
       this._headerCheckboxIndeterminate = false;
       this._headerCheckboxChecked = true;
     } else {
@@ -181,6 +235,12 @@ export class Table extends LitElement {
 
     const target = event.detail.el;
     const selected = event.detail.selected;
+    console.log(
+      'Handling row selection change for target:',
+      target,
+      'selected:',
+      selected
+    );
     const { _selectedRows: selectedRows } = this;
 
     if (!this.contains(target as TableRow)) {
@@ -197,15 +257,21 @@ export class Table extends LitElement {
 
     this._updateHeaderCheckbox();
 
+    const detail: Record<string, unknown> = {
+      selectedRow: target,
+      selectedRows: this._selectedRows,
+    };
+    if (this.persistSelection) {
+      detail.selectedRowIds = Array.from(this._selectedRowIds);
+    }
+
     const init = {
       bubbles: false,
       cancelable: true,
       composed: true,
-      detail: {
-        selectedRow: target,
-        selectedRows: this._selectedRows,
-      },
+      detail,
     };
+    console.log('Dispatching on-row-selection-change with detail:', detail);
     this.dispatchEvent(new CustomEvent('on-row-selection-change', init));
   }
 
@@ -231,18 +297,49 @@ export class Table extends LitElement {
       (row as TableRow).selected = checked;
     });
 
-    this._selectedRows = [...allRows.filter((row) => row.selected)];
-    this._selectedRowIds = new Set(this._selectedRows.map((row) => row.rowId));
+    if (this.persistSelection) {
+      if (this.allRowIds.length > 0) {
+        // Select / deselect across the entire dataset (all pages).
+        if (checked) {
+          this.allRowIds.forEach((id) => this._selectedRowIds.add(id));
+        } else {
+          this.allRowIds.forEach((id) => this._selectedRowIds.delete(id));
+        }
+      } else {
+        // Merge with existing selection across pages: add or remove
+        // only the rowIds belonging to the rows currently rendered.
+        allRows.forEach((row) => {
+          if ((row as TableRow).disabled) return;
+
+          if (checked) {
+            this._selectedRowIds.add(row.rowId);
+          } else {
+            this._selectedRowIds.delete(row.rowId);
+          }
+        });
+      }
+      this._selectedRows = allRows.filter((row) => row.selected);
+    } else {
+      this._selectedRows = [...allRows.filter((row) => row.selected)];
+      this._selectedRowIds = new Set(
+        this._selectedRows.map((row) => row.rowId)
+      );
+    }
 
     this._updateHeaderCheckbox();
+
+    const detail: Record<string, unknown> = {
+      selectedRows: this._selectedRows,
+    };
+    if (this.persistSelection) {
+      detail.selectedRowIds = Array.from(this._selectedRowIds);
+    }
 
     const init = {
       bubbles: false,
       cancelable: true,
       composed: true,
-      detail: {
-        selectedRows: this._selectedRows,
-      },
+      detail,
     };
     this.dispatchEvent(new CustomEvent('on-all-rows-selection-change', init));
   }
@@ -271,6 +368,45 @@ export class Table extends LitElement {
    */
   public getSelectedRows() {
     return this._selectedRows;
+  }
+
+  /**
+   * Returns the row ids of all selected rows across pages.
+   * Useful when `persistSelection` is enabled and rows from other
+   * pages are not currently rendered in the DOM.
+   * @returns Array of selected row ids.
+   * @public
+   */
+  public getSelectedRowIds(): string[] {
+    return Array.from(this._selectedRowIds);
+  }
+
+  /**
+   * Replaces the current set of selected row ids and applies the
+   * selection state to any rows currently rendered.
+   * @param ids - Array of row ids to mark as selected.
+   * @public
+   */
+  public setSelectedRowIds(ids: string[]) {
+    this._selectedRowIds = new Set(ids);
+    this._updateSelectionStates();
+    this._updateHeaderCheckbox();
+    this.requestUpdate();
+  }
+
+  /**
+   * Clears the selection of all rows (across pages when
+   * `persistSelection` is enabled) and updates rendered rows.
+   * @public
+   */
+  public clearSelection() {
+    this._selectedRowIds.clear();
+    this._allRows.forEach((row) => {
+      row.selected = false;
+    });
+    this._selectedRows = [];
+    this._updateHeaderCheckbox();
+    this.requestUpdate();
   }
 
   /**

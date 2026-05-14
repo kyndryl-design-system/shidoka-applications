@@ -924,6 +924,117 @@ export const Pagination: Story = {
   },
 };
 
+export const PaginationWithPersistedSelection: Story = {
+  args: {
+    pageSize: 5,
+    pageNumber: 1,
+    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
+    dense: false,
+    hideItemsRange: false,
+    hidePageSizeDropdown: false,
+    hideNavigationButtons: false,
+  },
+  render: (args) => {
+    const [
+      {
+        pageSize = args.pageSize,
+        pageNumber = args.pageNumber,
+        selectedRowIds = [] as string[],
+      },
+      updateArgs,
+    ] = useArgs();
+
+    const handlePageSizeChange = (e: Event) => {
+      action(e.type)({ ...e, detail: (e as CustomEvent).detail });
+      const newPageSize = (e as CustomEvent).detail.value;
+      updateArgs({ pageSize: newPageSize, pageNumber: 1 });
+    };
+
+    const handlePageNumberChange = (e: Event) => {
+      action(e.type)({ ...e, detail: (e as CustomEvent).detail });
+      const newPageNumber = (e as CustomEvent).detail.value;
+      updateArgs({ pageNumber: newPageNumber });
+    };
+
+    const handleSelectionChange = (e: Event) => {
+      action(e.type)({ ...e, detail: (e as CustomEvent).detail });
+      const ids = (e as CustomEvent).detail.selectedRowIds as string[];
+      updateArgs({ selectedRowIds: ids });
+    };
+
+    const paginatedData = extractData(allData, pageNumber, pageSize);
+
+    return html`
+      <kyn-table-toolbar
+        .tableTitle=${'Pagination With Persisted Selection'}
+        tableSubtitle=${`${selectedRowIds.length} row(s) selected across all pages`}
+      >
+      </kyn-table-toolbar>
+
+      <kyn-table-container>
+        <kyn-table
+          ?dense=${args.dense}
+          checkboxSelection
+          persistSelection
+          .allRowIds=${allData.map((row: any) => String(row.id))}
+          @on-row-selection-change=${handleSelectionChange}
+          @on-all-rows-selection-change=${handleSelectionChange}
+        >
+          <kyn-thead>
+            <kyn-header-tr>
+              <kyn-th .align=${'center'}> ID </kyn-th>
+              <kyn-th> First Name </kyn-th>
+              <kyn-th>Last Name</kyn-th>
+              <kyn-th>Birthday</kyn-th>
+              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th>Full Name</kyn-th>
+              <kyn-th .align=${'center'}>Gender</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              paginatedData,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr
+                  .rowId=${String(row.id)}
+                  key="row-${row.id}"
+                  ?selected=${selectedRowIds.includes(String(row.id))}
+                >
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td title=${row.firstName}> ${row.firstName} </kyn-td>
+                  <kyn-td class="min-max-width-100">${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                  <kyn-td .align=${'center'}>
+                    ${row.gender === 'Male'
+                      ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                      : html`<span>${unsafeSVG(femaleIcon)}</span>`}
+                  </kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+      <kyn-table-footer>
+        <kyn-pagination
+          .count=${allData.length}
+          .pageSize=${pageSize}
+          .pageNumber=${pageNumber}
+          .pageSizeOptions=${args.pageSizeOptions}
+          .hideItemsRange=${args.hideItemsRange}
+          .hidePageSizeDropdown=${args.hidePageSizeDropdown}
+          .hideNavigationButtons=${args.hideNavigationButtons}
+          @on-page-size-change=${handlePageSizeChange}
+          @on-page-number-change=${handlePageNumberChange}
+        ></kyn-pagination>
+      </kyn-table-footer>
+    `;
+  },
+};
+
 export const Legend: Story = {
   render: () => {
     return html`
@@ -1529,7 +1640,6 @@ export const ColumnFiltering: Story = {
         tableSubtitle="SubTitle Text"
       >
       </kyn-table-toolbar>
-
       <kyn-table-container>
         <kyn-table>
           <kyn-thead>
