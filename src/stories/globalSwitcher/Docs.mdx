@@ -110,21 +110,21 @@ an empty state with no categories.
       id="tab-a"
       fill-width
       selected
-      style="width: var(--global-switcher-tab-width);"
+      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
       >Kyndryl Services</kyn-tab
     >
     <kyn-tab
       slot="tabs"
       id="tab-b"
       fill-width
-      style="width: var(--global-switcher-tab-width);"
+      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
       >Platform Services</kyn-tab
     >
     <kyn-tab
       slot="tabs"
       id="tab-c"
       fill-width
-      style="width: var(--global-switcher-tab-width);"
+      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
       >Additional Services</kyn-tab
     >
     <kyn-tab-panel tabId="tab-a" noPadding visible>
@@ -135,15 +135,30 @@ an empty state with no categories.
         </kyn-header-category>
       </kyn-header-categories>
     </kyn-tab-panel>
+    <kyn-tab-panel tabId="tab-b" noPadding>
+      <kyn-header-categories layout="masonry" .limitRootLinks="${false}">
+        <kyn-header-category heading="Category 2">
+          <span slot="icon">{icon}</span>
+          <kyn-header-link href="#"><span>Link 2</span></kyn-header-link>
+        </kyn-header-category>
+      </kyn-header-categories>
+    </kyn-tab-panel>
+    <kyn-tab-panel tabId="tab-c" noPadding>
+      <div class="global-switcher-empty-state">
+        Subscribe to your first service
+      </div>
+    </kyn-tab-panel>
   </kyn-tabs>
 </kyn-header-link>
 ```
 
-For dynamic tab labels, the Global Switcher pattern can measure the rendered
-service tabs and apply the widest tab width to the slotted `kyn-tab` hosts. Keep
-that behavior scoped to the Global Switcher pattern; default `kyn-tabs` continue
-to size naturally to their label text. Use `fill-width` on only the tabs that
-the pattern sizes so the internal tab button fills the measured host width.
+`kyn-tabs` does not measure or equalize tab widths by itself. Set
+`--global-switcher-tab-width` from your Global Switcher pattern code, either as
+a fixed design value or by measuring the rendered labels and writing the widest
+value back to the `kyn-tabs` host. Keep that behavior scoped to this pattern;
+default `kyn-tabs` continue to size naturally to their label text. Use
+`fill-width` only on the tabs that the pattern sizes so the internal tab button
+fills the measured host width.
 
 ### Multi-Column Categorical Nav
 

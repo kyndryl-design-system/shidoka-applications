@@ -52,7 +52,7 @@ export const FullWidthEmptyStateServiceTabs = {
       <span slot="logo" style="--kyn-header-logo-width: 120px;"
         >${unsafeSVG(bridgeLogo)}</span
       >
-      <kyn-header-nav auto-open-flyout="services">
+      <kyn-header-nav auto-open-flyout="default">
         <kyn-header-link
           id="services"
           href="javascript:void(0)"
