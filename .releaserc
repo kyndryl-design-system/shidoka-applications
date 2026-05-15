@@ -1,7 +1,11 @@
 {
   'branches': [
     'main',
-    'v+([0-9])',
+    {
+      name: 'v+([0-9])',
+      range: "${name.replace(/^v/, '')}.x",
+      channel: "${name.replace(/^v/, '')}.x",
+    },
     {
       name: 'beta',
       prerelease: true,
