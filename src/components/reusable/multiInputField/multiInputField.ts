@@ -17,6 +17,7 @@ import '../tag';
 import MultiInputScss from './multiInputField.scss?inline';
 
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 /**
@@ -27,6 +28,7 @@ import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/use
  * @prop {string[]} customSuggestions - Optional array of custom suggestions to use instead of the default mock data.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 
 @customElement('kyn-multi-input-field')
@@ -361,6 +363,24 @@ export class MultiInputField extends FormMixin(LitElement) {
                 ${this.caption}
               </div>`
             : null}
+          ${this.warnText
+            ? html`<div
+                class="warn warn-text"
+                role="alert"
+                title=${this._textStrings.warning || 'Warning'}
+                tabindex="0"
+              >
+                <span
+                  class="warning-icon"
+                  role="img"
+                  aria-label=${this._textStrings.warning ||
+                  'Warning message icon'}
+                >
+                  ${unsafeSVG(warningIcon)}
+                </span>
+                ${this.warnText}
+              </div>`
+            : null}
           ${showError
             ? html`<div id="error" class="error">
                 <span role="img" class="error-icon" aria-label="error">
@@ -404,10 +424,7 @@ export class MultiInputField extends FormMixin(LitElement) {
         <slot></slot>
       </div>
 
-      <div
-        ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
-      >
+      <div ?disabled=${this.disabled}>
         ${this.renderLabel()}
         ${this.renderTagsAndInput(stateMgmtClasses, placeholderText)}
         ${this.renderCaptionAndError(error, validCount)}

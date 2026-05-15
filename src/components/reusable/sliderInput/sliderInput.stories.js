@@ -37,6 +37,7 @@ const args = {
   caption: '',
   disabled: false,
   invalidText: '',
+  warnText: '',
   hideLabel: false,
   step: 1,
   min: undefined,
@@ -59,6 +60,7 @@ export const Continuous = {
         caption=${args.caption}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -85,6 +87,7 @@ export const Discrete = {
         caption=${args.caption}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -104,6 +107,7 @@ export const Discrete = {
         caption=${args.caption}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -123,6 +127,7 @@ export const Discrete = {
         caption=${args.caption}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -149,6 +154,7 @@ export const WithButtonControls = {
         caption=${args.caption}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -175,6 +181,7 @@ export const WithNumberInput = {
         caption=${args.caption}
         ?disabled=${args.disabled}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         ?hideLabel=${args.hideLabel}
         step=${ifDefined(args.step)}
         min=${ifDefined(args.min)}
@@ -241,6 +248,7 @@ export const FullWidth = {
           caption=${args.caption}
           ?disabled=${args.disabled}
           invalidText=${args.invalidText}
+          warnText=${args.warnText}
           ?hideLabel=${args.hideLabel}
           step=${ifDefined(args.step)}
           min=${ifDefined(args.min)}

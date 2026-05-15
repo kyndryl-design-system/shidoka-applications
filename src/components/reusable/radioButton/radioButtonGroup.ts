@@ -10,10 +10,12 @@ import { deepmerge } from 'deepmerge-ts';
 import RadioButtonGroupScss from './radioButtonGroup.scss?inline';
 import { FormMixin } from '../../../common/mixins/form-input';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   required: 'Required',
   error: 'Error',
+  warning: 'Warning',
 };
 
 /**
@@ -25,6 +27,7 @@ const _defaultTextStrings = {
  * @attr {string} [value=''] - The selected value of the radio group.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-radio-button-group')
 export class RadioButtonGroup extends FormMixin(LitElement) {
@@ -75,7 +78,6 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
     return html`
       <fieldset
         ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
         role="radiogroup"
         aria-disabled=${this.disabled ? 'true' : 'false'}
       >
@@ -112,6 +114,27 @@ export class RadioButtonGroup extends FormMixin(LitElement) {
         <div class="${this.horizontal ? 'horizontal' : ''}">
           <slot @slotchange=${this._handleSlotChange}></slot>
         </div>
+
+        ${this.warnText
+          ? html`
+              <div
+                class="warn warn-text"
+                role="alert"
+                title=${this._textStrings.warning || 'Warning'}
+                tabindex="0"
+              >
+                <span
+                  class="warning-icon"
+                  role="img"
+                  aria-label=${this._textStrings.warning ||
+                  'Warning message icon'}
+                >
+                  ${unsafeSVG(warningIcon)}
+                </span>
+                ${this.warnText}
+              </div>
+            `
+          : null}
       </fieldset>
     `;
   }

@@ -45,6 +45,15 @@
     outline: none !important;
   }
 
+  &-outline-disable {
+    border-color: var(
+      --kd-color-border-status-buttons-success-disabled
+    ) !important;
+    color: var(--kd-color-text-status-buttons-success-disabled) !important;
+    background-color: transparent !important;
+    cursor: not-allowed !important;
+  }
+
   &-interactive {
     /* error state */
     &-error {
@@ -64,6 +73,7 @@
         );
       }
       &:focus-visible {
+        color: var(--kd-color-text-status-buttons-error-focused);
         outline: 1px solid var(--kd-color-border-status-buttons-error-focused);
         background-color: var(
           --kd-color-background-status-buttons-error-focused
@@ -97,12 +107,14 @@
         );
       }
       &:focus-visible {
+        color: var(--kd-color-text-status-buttons-warning-focused);
         outline: 1px solid var(--kd-color-border-status-buttons-warning-focused);
         background-color: var(
           --kd-color-background-status-buttons-warning-focused
         );
       }
       &:active {
+        color: var(--kd-color-text-status-buttons-warning-pressed);
         border-color: var(--kd-color-border-status-buttons-warning-pressed);
         background-color: var(
           --kd-color-background-status-buttons-warning-pressed
@@ -130,12 +142,14 @@
         );
       }
       &:focus-visible {
+        color: var(--kd-color-text-status-buttons-success-focused);
         outline: 1px solid var(--kd-color-border-status-buttons-success-focused);
         background-color: var(
           --kd-color-background-status-buttons-success-focused
         );
       }
       &:active {
+        color: var(--kd-color-text-status-buttons-success-pressed);
         border-color: var(--kd-color-border-status-buttons-success-pressed);
         background-color: var(
           --kd-color-background-status-buttons-success-pressed
@@ -279,6 +293,342 @@
       }
     }
 
+    /* critical state */
+    &-critical {
+      color: var(--kd-color-text-status-buttons-critical-enabled);
+      background-color: var(
+        --kd-color-background-status-buttons-critical-enabled
+      );
+      border-color: var(--kd-color-border-status-buttons-critical-enabled);
+      &:hover {
+        color: var(--kd-color-text-status-buttons-critical-hover);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-hover
+        );
+        border-color: var(--kd-color-border-status-buttons-critical-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-buttons-critical-selected);
+        color: var(--kd-color-text-status-buttons-critical-selected);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-buttons-critical-focused);
+        outline: 1px solid
+          var(--kd-color-border-status-buttons-critical-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-buttons-critical-pressed);
+        border-color: var(--kd-color-border-status-buttons-critical-pressed);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-pressed
+        );
+      }
+    }
+
+    /* outline error state */
+    &-outline-error {
+      color: var(--kd-color-text-status-buttons-error-enabled);
+      background-color: transparent;
+      border-color: var(--kd-color-border-status-buttons-error-enabled);
+      &:hover {
+        color: var(--kd-color-text-status-buttons-error-hover);
+        background-color: var(--kd-color-background-status-buttons-error-hover);
+        border-color: var(--kd-color-border-status-buttons-error-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-buttons-error-selected);
+        color: var(--kd-color-text-status-buttons-error-selected);
+        background-color: var(
+          --kd-color-background-status-buttons-error-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-buttons-error-focused);
+        outline: 1px solid var(--kd-color-border-status-buttons-error-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-error-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-buttons-error-pressed);
+        border-color: var(--kd-color-border-status-buttons-error-pressed);
+        background-color: var(
+          --kd-color-background-status-buttons-error-pressed
+        );
+      }
+    }
+
+    /* outline critical state */
+    &-outline-critical {
+      color: var(--kd-color-text-status-buttons-critical-enabled);
+      background-color: transparent;
+      border-color: var(--kd-color-border-status-buttons-critical-enabled);
+      &:hover {
+        color: var(--kd-color-text-status-buttons-critical-hover);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-hover
+        );
+        border-color: var(--kd-color-border-status-buttons-critical-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-buttons-critical-selected);
+        color: var(--kd-color-text-status-buttons-critical-selected);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-buttons-critical-focused);
+        outline: 1px solid
+          var(--kd-color-border-status-buttons-critical-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-buttons-critical-pressed);
+        border-color: var(--kd-color-border-status-buttons-critical-pressed);
+        background-color: var(
+          --kd-color-background-status-buttons-critical-pressed
+        );
+      }
+    }
+    /* outline warning state */
+    &-outline-warning {
+      color: var(--kd-color-text-status-buttons-warning-enabled);
+      background-color: transparent;
+      border-color: var(--kd-color-border-status-buttons-warning-enabled);
+      &:hover {
+        background-color: var(
+          --kd-color-background-status-buttons-warning-hover
+        );
+        border-color: var(--kd-color-border-status-buttons-warning-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-buttons-warning-selected);
+        background-color: var(
+          --kd-color-background-status-buttons-warning-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-buttons-warning-focused);
+        outline: 1px solid var(--kd-color-border-status-buttons-warning-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-warning-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-buttons-warning-pressed);
+        border-color: var(--kd-color-border-status-buttons-warning-pressed);
+        background-color: var(
+          --kd-color-background-status-buttons-warning-pressed
+        );
+      }
+    }
+
+    /* outline success state */
+    &-outline-success {
+      color: var(--kd-color-text-status-buttons-success-enabled);
+      background-color: transparent;
+      border-color: var(--kd-color-border-status-buttons-success-enabled);
+      &:hover {
+        background-color: var(
+          --kd-color-background-status-buttons-success-hover
+        );
+        border-color: var(--kd-color-border-status-buttons-success-hover);
+      }
+      &.selected {
+        border-color: var(--kd-color-border-status-buttons-success-selected);
+        background-color: var(
+          --kd-color-background-status-buttons-success-selected
+        );
+      }
+      &:focus-visible {
+        color: var(--kd-color-text-status-buttons-success-focused);
+        outline: 1px solid var(--kd-color-border-status-buttons-success-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-success-focused
+        );
+      }
+      &:active {
+        color: var(--kd-color-text-status-buttons-success-pressed);
+        border-color: var(--kd-color-border-status-buttons-success-pressed);
+        background-color: var(
+          --kd-color-background-status-buttons-success-pressed
+        );
+      }
+    }
+
+    /* outline low state */
+    &-outline-low {
+      color: var(
+        --kd-color-text-status-buttons-information-low-outline-enabled
+      );
+      background-color: transparent;
+      border-color: var(
+        --kd-color-border-status-buttons-information-low-outline-enabled
+      );
+      &:hover {
+        color: var(
+          --kd-color-text-status-buttons-information-low-outline-hover
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-low-outline-hover
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-low-hover
+        );
+      }
+      &.selected {
+        color: var(
+          --kd-color-text-status-buttons-information-low-outline-selected
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-low-outline-selected
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-low-selected
+        );
+      }
+      &:focus-visible {
+        color: var(
+          --kd-color-text-status-buttons-information-low-outline-focused
+        );
+        outline: 1px solid
+          var(--kd-color-border-status-buttons-information-low-outline-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-information-low-focused
+        );
+      }
+      &:active {
+        color: var(
+          --kd-color-text-status-buttons-information-low-outline-pressed
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-low-outline-pressed
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-low-pressed
+        );
+      }
+    }
+
+    /* outline medium state */
+    &-outline-medium {
+      color: var(
+        --kd-color-text-status-buttons-information-medium-outline-enabled
+      );
+      background-color: transparent;
+      border-color: var(
+        --kd-color-border-status-buttons-information-medium-outline-enabled
+      );
+      &:hover {
+        color: var(
+          --kd-color-text-status-buttons-information-medium-outline-hover
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-medium-hover
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-medium-outline-hover
+        );
+      }
+      &.selected {
+        color: var(
+          --kd-color-text-status-buttons-information-medium-outline-selected
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-medium-outline-selected
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-medium-selected
+        );
+      }
+      &:focus-visible {
+        color: var(
+          --kd-color-text-status-buttons-information-medium-outline-focused
+        );
+        outline: 1px solid
+          var(
+            --kd-color-border-status-buttons-information-medium-outline-focused
+          );
+        background-color: var(
+          --kd-color-background-status-buttons-information-medium-focused
+        );
+      }
+      &:active {
+        color: var(
+          --kd-color-text-status-buttons-information-medium-outline-pressed
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-medium-outline-pressed
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-medium-pressed
+        );
+      }
+    }
+
+    /* outline high state */
+    &-outline-high {
+      color: var(
+        --kd-color-text-status-buttons-information-high-outline-enabled
+      );
+      background-color: transparent;
+      border-color: var(
+        --kd-color-border-status-buttons-information-high-outline-enabled
+      );
+      &:hover {
+        color: var(
+          --kd-color-text-status-buttons-information-high-outline-hover
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-high-hover
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-high-outline-hover
+        );
+      }
+      &.selected {
+        color: var(
+          --kd-color-text-status-buttons-information-high-outline-selected
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-high-outline-selected
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-high-selected
+        );
+      }
+      &:focus-visible {
+        color: var(
+          --kd-color-text-status-buttons-information-high-outline-focused
+        );
+        outline: 1px solid
+          var(--kd-color-border-status-buttons-information-high-outline-focused);
+        background-color: var(
+          --kd-color-background-status-buttons-information-high-focused
+        );
+      }
+      &:active {
+        color: var(
+          --kd-color-text-status-buttons-information-high-outline-pressed
+        );
+        border-color: var(
+          --kd-color-border-status-buttons-information-high-outline-pressed
+        );
+        background-color: var(
+          --kd-color-background-status-buttons-information-high-pressed
+        );
+      }
+    }
+
     /* ai state */
     &-ai {
       color: var(--kd-color-text-status-buttons-ai-enabled);
@@ -287,6 +637,7 @@
       &:hover {
         color: var(--kd-color-text-status-buttons-ai-hover);
         background-color: var(--kd-color-background-status-buttons-ai-hover);
+        border-color: var(--kd-color-border-status-buttons-ai-hover);
       }
       &.selected {
         border-color: var(--kd-color-border-status-buttons-ai-selected);
@@ -296,6 +647,7 @@
       &:focus-visible {
         color: var(--kd-color-text-status-buttons-ai-focused);
         outline: 1px solid var(--kd-color-border-status-buttons-ai-focused);
+        background-color: var(--kd-color-background-status-buttons-ai-focused);
       }
       &:active {
         color: var(--kd-color-text-status-buttons-ai-pressed);

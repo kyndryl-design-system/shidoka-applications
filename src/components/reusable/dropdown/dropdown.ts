@@ -20,6 +20,7 @@ import { EnhancedDropdownOption } from './enhancedDropdownOption';
 import downIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
 import clearIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/close-simple.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   title: 'Dropdown',
@@ -32,6 +33,7 @@ const _defaultTextStrings = {
   add: 'Add',
   duplicateOption: 'Duplicate option. Please select a unique option.',
   addOptionInvalid: 'Please check this value and try again.',
+  warning: 'Warning',
 };
 
 /**
@@ -48,6 +50,7 @@ const _defaultTextStrings = {
  * @attr {string/array} [value=''/[]] - The selected value(s) of the input. For single select, it is a string. For multi-select, it is an array of strings.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-dropdown')
 export class Dropdown extends FormMixin(LitElement) {
@@ -481,7 +484,6 @@ export class Dropdown extends FormMixin(LitElement) {
       <div
         class=${classMap(mainDropdownClasses)}
         ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
         ?open=${this.open}
         ?inline=${this.inline}
         ?searchable=${this._isSearchVisible}
@@ -935,6 +937,26 @@ export class Dropdown extends FormMixin(LitElement) {
         ? html`<div class="caption" aria-disabled=${this.disabled}>
             ${this.caption}
           </div>`
+        : null}
+      ${this.warnText
+        ? html`
+            <div
+              class="warn warn-text"
+              role="alert"
+              title=${this._textStrings.warning || 'Warning'}
+              tabindex="0"
+            >
+              <span
+                class="warning-icon"
+                role="img"
+                aria-label=${this._textStrings.warning ||
+                'Warning message icon'}
+              >
+                ${unsafeSVG(warningIcon)}
+              </span>
+              ${this.warnText}
+            </div>
+          `
         : null}
       ${this._isInvalid
         ? html`

@@ -63,11 +63,7 @@ export class ToggleButton extends FormMixin(LitElement) {
     const statusId = `${id}-status`;
 
     return html`
-      <div
-        class="toggle-button"
-        ?disabled=${this.disabled}
-        ?readonly=${!this.disabled && this.readonly}
-      >
+      <div class="toggle-button" ?disabled=${this.disabled}>
         <label class="label-text ${this.hideLabel ? 'sr-only' : ''}" for=${id}>
           ${this.label}
           <slot name="tooltip"></slot>
@@ -104,6 +100,9 @@ export class ToggleButton extends FormMixin(LitElement) {
     `;
   }
 
+  /**
+   * @internal
+   */
   private handleClick = (e: MouseEvent) => {
     if (this.readonly) {
       e.preventDefault();
@@ -112,6 +111,9 @@ export class ToggleButton extends FormMixin(LitElement) {
     }
   };
 
+  /**
+   * @internal
+   */
   private handleChange = (e: Event) => {
     if (this.readonly) {
       e.preventDefault();
@@ -130,6 +132,9 @@ export class ToggleButton extends FormMixin(LitElement) {
     );
   };
 
+  /**
+   * @internal
+   */
   private handleKeyDown = (e: KeyboardEvent) => {
     if (this.readonly && (e.key === ' ' || e.code === 'Space')) {
       e.preventDefault();

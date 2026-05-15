@@ -34,7 +34,6 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-          scope: '@kyndryl-design-system'
 
       # Ensure npm 11.5.1 or later is installed
       - name: Update npm
@@ -55,6 +54,4 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN_PACKAGES }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: HUSKY=0 npx semantic-release

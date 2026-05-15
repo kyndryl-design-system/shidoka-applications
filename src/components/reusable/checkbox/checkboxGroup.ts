@@ -8,6 +8,7 @@ import CheckboxGroupScss from './checkboxGroup.scss?inline';
 import '../textInput';
 import './checkbox';
 import errorIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/error-filled.svg';
+import warningIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/warning-filled.svg';
 
 const _defaultTextStrings = {
   selectAll: 'Select all',
@@ -16,6 +17,7 @@ const _defaultTextStrings = {
   search: 'Search',
   required: 'Required',
   error: 'Error',
+  warning: 'Warning',
 };
 
 /**
@@ -29,6 +31,7 @@ const _defaultTextStrings = {
  * @attr {array} [value=[]] - The selected values of the checkbox group.
  * @attr {string} [name=''] - The name of the input, used for form submission.
  * @attr {string} [invalidText=''] - The custom validation message when the input is invalid.
+ * @attr {string} [warnText=''] - The custom warning message when the input is in a warning state.
  */
 @customElement('kyn-checkbox-group')
 export class CheckboxGroup extends FormMixin(LitElement) {
@@ -155,10 +158,7 @@ export class CheckboxGroup extends FormMixin(LitElement) {
             `
           : null}
 
-        <fieldset
-          ?disabled=${this.disabled}
-          ?readonly=${!this.disabled && this.readonly}
-        >
+        <fieldset ?disabled=${this.disabled}>
           <legend class="label-text ${this.hideLegend ? 'sr-only' : ''}">
             ${this.required
               ? html`
@@ -230,6 +230,26 @@ export class CheckboxGroup extends FormMixin(LitElement) {
                 `
               : null}
           </div>
+          ${this.warnText
+            ? html`
+                <div
+                  class="warn warn-text"
+                  role="alert"
+                  title=${this._textStrings.warning || 'Warning'}
+                  tabindex="0"
+                >
+                  <span
+                    class="warning-icon"
+                    role="img"
+                    aria-label=${this._textStrings.warning ||
+                    'Warning message icon'}
+                  >
+                    ${unsafeSVG(warningIcon)}
+                  </span>
+                  ${this.warnText}
+                </div>
+              `
+            : null}
         </fieldset>
       </div>
     `;

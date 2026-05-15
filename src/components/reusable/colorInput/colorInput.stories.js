@@ -22,11 +22,13 @@ const args = {
   hideLabel: false,
   invalidText: '',
   autoComplete: 'off',
+  warnText: '',
   textStrings: {
     requiredText: 'Required',
     errorText: 'Error',
     pleaseSelectColor: 'Please select a color',
     invalidFormat: 'Enter a valid hex color (e.g. #FF0000)',
+    warning: 'Warning',
   },
 };
 
@@ -43,6 +45,7 @@ export const Default = {
         ?readonly=${args.readonly}
         ?hideLabel=${args.hideLabel}
         invalidText=${args.invalidText}
+        warnText=${args.warnText}
         .textStrings=${args.textStrings}
         autoComplete=${args.autoComplete}
         label=${args.label}
