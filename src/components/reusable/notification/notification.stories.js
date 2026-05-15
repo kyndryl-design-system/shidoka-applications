@@ -23,9 +23,6 @@ export default {
       options: ['normal', 'clickable', 'inline', 'toast'],
       control: { type: 'select' },
     },
-    unRead: {
-      control: { type: 'boolean' },
-    },
     target: {
       options: ['_self', '_blank'],
       control: { type: 'select' },
@@ -46,15 +43,15 @@ export default {
 export const Notification = {
   args: {
     notificationTitle: 'Notification Title',
-    notificationSubtitle: 'Application or Service',
+    notificationSubtitle: '',
     timeStamp: 'Updated 2 mins ago',
     notificationRole: 'status',
     href: '#',
     target: '_self',
-    type: 'clickable',
-    tagStatus: 'info',
+    type: 'normal',
+    tagStatus: 'default',
     assistiveNotificationTypeText: 'Clickable notification',
-    unRead: true,
+    unRead: false,
   },
   render: (args) => {
     return html`<kyn-notification
@@ -302,47 +299,6 @@ export const Toast = {
           <div>I will disappear after <code>14</code> seconds.</div>
         </kyn-notification>
       </kyn-notification-container>
-    `;
-  },
-};
-
-export const ClickableReadUnreadStates = {
-  render: () => {
-    return html`
-      <div style="display: grid; gap: 12px; max-width: 480px;">
-        <kyn-notification
-          notificationTitle="Unread notification"
-          notificationSubtitle="Application or Service"
-          timeStamp="Updated 2 mins ago"
-          notificationRole="status"
-          assistiveNotificationTypeText="Unread clickable notification"
-          href="#"
-          target="_self"
-          type="clickable"
-          tagStatus="info"
-          unRead
-          @on-notification-click=${(e) =>
-            action(e.type)({ ...e, detail: e.detail })}
-        >
-          <div>${notificationBodyMsg}</div>
-        </kyn-notification>
-
-        <kyn-notification
-          notificationTitle="Read notification"
-          notificationSubtitle="Application or Service"
-          timeStamp="Updated 10 mins ago"
-          notificationRole="status"
-          assistiveNotificationTypeText="Read clickable notification"
-          href="#"
-          target="_self"
-          type="clickable"
-          tagStatus="info"
-          @on-notification-click=${(e) =>
-            action(e.type)({ ...e, detail: e.detail })}
-        >
-          <div>${notificationBodyMsg}</div>
-        </kyn-notification>
-      </div>
     `;
   },
 };
