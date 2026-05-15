@@ -5,11 +5,27 @@ import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import userIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user.svg';
 
 export default {
-  title: 'Components/Indicators & Labels/Status Button',
+  title: 'Components/Buttons & Actions/Status Button',
   component: 'kyn-status-btn',
   argTypes: {
     kind: {
-      options: ['success', 'warning', 'error', 'low', 'medium', 'high', 'ai'],
+      options: [
+        'success',
+        'warning',
+        'error',
+        'critical',
+        'low',
+        'medium',
+        'high',
+        'ai',
+        'outline-success',
+        'outline-warning',
+        'outline-error',
+        'outline-critical',
+        'outline-low',
+        'outline-medium',
+        'outline-high',
+      ],
       control: { type: 'select' },
     },
     disabled: {
@@ -88,6 +104,14 @@ export const Gallery = {
         <kyn-status-btn label="Success" kind="success"></kyn-status-btn>
         <kyn-status-btn label="Warning" kind="warning"></kyn-status-btn>
         <kyn-status-btn label="Error" kind="error"></kyn-status-btn>
+        <kyn-status-btn label="Critical" kind="critical"></kyn-status-btn>
+        <kyn-status-btn label="Success" kind="outline-success"></kyn-status-btn>
+        <kyn-status-btn label="Warning" kind="outline-warning"></kyn-status-btn>
+        <kyn-status-btn label="Error" kind="outline-error"></kyn-status-btn>
+        <kyn-status-btn
+          label="Critical"
+          kind="outline-critical"
+        ></kyn-status-btn>
       </div>
       <br />
       <div class="heading kd-type--headline-06 heading-text">
@@ -97,6 +121,9 @@ export const Gallery = {
         <kyn-status-btn label="Low" kind="low"></kyn-status-btn>
         <kyn-status-btn label="Medium" kind="medium"></kyn-status-btn>
         <kyn-status-btn label="High" kind="high"></kyn-status-btn>
+        <kyn-status-btn label="Low" kind="outline-low"></kyn-status-btn>
+        <kyn-status-btn label="Medium" kind="outline-medium"></kyn-status-btn>
+        <kyn-status-btn label="High" kind="outline-high"></kyn-status-btn>
       </div>
       <br />
       <div class="heading kd-type--headline-06 heading-text">AI</div>
@@ -105,6 +132,11 @@ export const Gallery = {
       <br />
       <div class="heading kd-type--headline-06 heading-text">Disabled</div>
       <kyn-status-btn label="Label" kind="success" disabled></kyn-status-btn>
+      <kyn-status-btn
+        label="Label"
+        kind="outline-success"
+        disabled
+      ></kyn-status-btn>
       <style>
         .heading-text {
           margin-bottom: var(--kd-spacing-12);
