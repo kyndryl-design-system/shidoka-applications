@@ -109,6 +109,7 @@ export class OverflowMenuItem extends LitElement {
       'menu-item': true,
       'ai-connected': this.kind === 'ai',
       destructive: this.destructive,
+      'has-submenu': this.hasSubmenu,
     };
 
     const itemText = this.isTruncated ? this.tooltipText : '';
@@ -184,7 +185,6 @@ export class OverflowMenuItem extends LitElement {
         });
       });
     }
-
     this.checkOverflow();
   }
 
@@ -270,7 +270,28 @@ export class OverflowMenuItem extends LitElement {
       this.isTruncated =
         contentElement.scrollWidth > contentElement.offsetWidth;
       if (this.isTruncated) {
-        this.tooltipText = (this.textContent ?? '').trim();
+        const slot = this.shadowRoot?.querySelector(
+          '.text slot'
+        ) as HTMLSlotElement;
+        const nodes = slot.assignedNodes({ flatten: false });
+
+        const text = nodes //get all text content from the slot,but ignore any nested submenu content
+          .filter((node) => {
+            return (
+              node.nodeType === Node.TEXT_NODE ||
+              (node.nodeType === Node.ELEMENT_NODE &&
+                !(node as HTMLElement).hasAttribute('slot'))
+            );
+          })
+          .map((node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              return node.textContent || '';
+            }
+            return (node as HTMLElement).innerText || '';
+          })
+          .join('')
+          .trim();
+        this.tooltipText = text;
       }
     }
   }
