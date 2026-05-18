@@ -20,6 +20,9 @@ import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/1
 
 import navData from './example_global_switcher_data.json';
 
+const equalServiceTabStyle =
+  'width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);';
+
 const starSelector = (checked = false) => html`
   <kyn-icon-selector ?checked=${checked}>
     <span slot="icon-unchecked">${unsafeSVG(starOutlineIcon)}</span>
@@ -210,20 +213,37 @@ export const SlottedHTMLSwitcher = {
           </kyn-header-link>
 
           <!-- SERVICES -->
-          <kyn-header-link id="services" href="javascript:void(0)">
+          <kyn-header-link
+            id="services"
+            href="javascript:void(0)"
+            full-width-flyout
+          >
             <span>${unsafeSVG(servicesIcon)}</span>
             Services
 
             <kyn-tabs
               tabSize="md"
               slot="links"
-              style="width: 100%; max-width: none;"
+              style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
             >
-              <kyn-tab slot="tabs" id="kyndryl" selected>
+              <kyn-tab
+                slot="tabs"
+                id="kyndryl"
+                fill-width
+                style=${equalServiceTabStyle}
+                selected
+              >
                 Kyndryl Services
               </kyn-tab>
 
-              <kyn-tab slot="tabs" id="platform"> Platform Services </kyn-tab>
+              <kyn-tab
+                slot="tabs"
+                id="platform"
+                fill-width
+                style=${equalServiceTabStyle}
+              >
+                Platform Services
+              </kyn-tab>
 
               <!-- KYNDRYL SERVICES TAB -->
               <kyn-tab-panel tabId="kyndryl" noPadding visible>
@@ -783,14 +803,24 @@ const renderMixedSection = (section) => html`
 `;
 
 const renderTabbedSection = (section) => html`
-  <kyn-header-link id=${section.id} href="javascript:void(0)">
+  <kyn-header-link id=${section.id} href="javascript:void(0)" full-width-flyout>
     <span>${unsafeSVG(iconMap[section.icon])}</span>
     ${section.label}
 
-    <kyn-tabs tabSize="md" slot="links" style="width: 100%; max-width: none;">
+    <kyn-tabs
+      tabSize="md"
+      slot="links"
+      style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
+    >
       ${section.tabs.map(
         (tab, i) => html`
-          <kyn-tab slot="tabs" id=${tab.id} ?selected=${i === 0}>
+          <kyn-tab
+            slot="tabs"
+            id=${tab.id}
+            fill-width
+            style=${equalServiceTabStyle}
+            ?selected=${i === 0}
+          >
             ${tab.label}
           </kyn-tab>
         `

@@ -129,6 +129,10 @@ export class HeaderLink extends LitElement {
   @property({ type: Boolean, reflect: true, attribute: 'fixed-column-widths' })
   accessor fixedColumnWidths = false;
 
+  /** Forces the desktop flyout to use the full-width categorical Global Switcher layout. */
+  @property({ type: Boolean, reflect: true, attribute: 'full-width-flyout' })
+  accessor fullWidthFlyout = false;
+
   /** Current search term for filtering links in the flyout.
    * @internal
    */
@@ -196,6 +200,7 @@ export class HeaderLink extends LitElement {
       menu: this.slottedEls.length,
       [`level--${this.level}`]: true,
       divider: this.divider,
+      'full-width-flyout': this.fullWidthFlyout,
       open: this.open || (this.level === 1 && this.isActive),
     };
 
@@ -583,7 +588,7 @@ export class HeaderLink extends LitElement {
    */
   private _shouldAutoCollapse(): boolean {
     // Non-categorical links always auto-collapse (preserve original behavior)
-    if (!this.hasCategorical) {
+    if (!this.hasCategorical && !this.fullWidthFlyout) {
       return true;
     }
 

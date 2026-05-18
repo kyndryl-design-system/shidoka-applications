@@ -412,6 +412,43 @@ kyn-text-input {
   }
 }
 
+// Explicit Global Switcher opt-in for tabbed categorical flyouts that can render
+// empty-state panels without slotted categories/columns.
+@media (min-width: 42rem) {
+  .menu.full-width-flyout .menu__content.slotted {
+    display: none;
+  }
+
+  .menu.full-width-flyout.open .menu__content.slotted {
+    display: inline-flex;
+    padding: 8px 8px 8px 230px;
+    left: auto;
+    right: auto;
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    align-items: stretch;
+    overflow-x: auto;
+  }
+
+  .menu.full-width-flyout.level--1 .wrapper > ::slotted(*) {
+    max-width: none;
+  }
+
+  .menu.full-width-flyout.level--1 .wrapper {
+    flex: 1 1 0%;
+    max-width: none;
+    min-width: 150px;
+    min-height: 250px;
+    max-height: var(
+      --kyn-global-switcher-max-height,
+      calc(100vh - var(--kd-header-height) - 32px)
+    );
+    overflow-x: auto;
+    overflow-y: auto;
+    align-self: stretch;
+  }
+}
+
 .go-back {
   margin-bottom: 8px;
 }

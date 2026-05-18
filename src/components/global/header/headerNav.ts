@@ -179,7 +179,7 @@ export class HeaderNav extends LitElement {
     }
   }
 
-  /** Auto-open the first header link that contains categorical nav
+  /** Auto-open the first header link that contains categorical/full-width nav
    * @internal
    */
   private _autoOpenFirstCategoricalLink(): void {
@@ -219,7 +219,7 @@ export class HeaderNav extends LitElement {
       }
 
       if (!target) {
-        // Fall back to first expandable link (current behavior)
+        // Fall back to first expandable/full-width link.
         for (const link of links) {
           const hasCategoricalNav =
             link.querySelector('kyn-header-categories') !== null ||
@@ -227,8 +227,9 @@ export class HeaderNav extends LitElement {
           const hasSlottedCategory =
             link.querySelector('kyn-header-category') !== null ||
             querySelectorDeep('kyn-header-category', link) !== null;
+          const hasFullWidthFlyout = link.hasAttribute('full-width-flyout');
 
-          if (hasCategoricalNav || hasSlottedCategory) {
+          if (hasCategoricalNav || hasSlottedCategory || hasFullWidthFlyout) {
             target = link;
             break;
           }

@@ -91,14 +91,42 @@ A `div` wrapper combining loose links with a categorized group beneath them.
 ### Tabbed Categorical Nav
 
 `kyn-tabs` with `kyn-header-categories` inside each panel, for large service catalogs.
+Use `full-width-flyout` for tabbed categorical Global Switcher flyouts so the
+flyout keeps the categorical full-width layout even when the active tab renders
+an empty state with no categories.
 
 ```html
-<kyn-header-link href="javascript:void(0)">
+<kyn-header-link href="javascript:void(0)" full-width-flyout>
   <span>{icon}</span>
   Services
-  <kyn-tabs tabSize="md" slot="links" style="width: 100%; max-width: none;">
-    <kyn-tab slot="tabs" id="tab-a" selected>Tab A</kyn-tab>
-    <kyn-tab slot="tabs" id="tab-b">Tab B</kyn-tab>
+  <kyn-tabs
+    class="global-switcher-service-tabs"
+    tabSize="md"
+    slot="links"
+    style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
+  >
+    <kyn-tab
+      slot="tabs"
+      id="tab-a"
+      fill-width
+      selected
+      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+      >Kyndryl Services</kyn-tab
+    >
+    <kyn-tab
+      slot="tabs"
+      id="tab-b"
+      fill-width
+      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+      >Platform Services</kyn-tab
+    >
+    <kyn-tab
+      slot="tabs"
+      id="tab-c"
+      fill-width
+      style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+      >Additional Services</kyn-tab
+    >
     <kyn-tab-panel tabId="tab-a" noPadding visible>
       <kyn-header-categories layout="masonry" .limitRootLinks="${false}">
         <kyn-header-category heading="Category 1">
@@ -107,9 +135,30 @@ A `div` wrapper combining loose links with a categorized group beneath them.
         </kyn-header-category>
       </kyn-header-categories>
     </kyn-tab-panel>
+    <kyn-tab-panel tabId="tab-b" noPadding>
+      <kyn-header-categories layout="masonry" .limitRootLinks="${false}">
+        <kyn-header-category heading="Category 2">
+          <span slot="icon">{icon}</span>
+          <kyn-header-link href="#"><span>Link 2</span></kyn-header-link>
+        </kyn-header-category>
+      </kyn-header-categories>
+    </kyn-tab-panel>
+    <kyn-tab-panel tabId="tab-c" noPadding>
+      <div class="global-switcher-empty-state">
+        Subscribe to your first service
+      </div>
+    </kyn-tab-panel>
   </kyn-tabs>
 </kyn-header-link>
 ```
+
+`kyn-tabs` does not measure or equalize tab widths by itself. Set
+`--global-switcher-tab-width` from your Global Switcher pattern code, either as
+a fixed design value or by measuring the rendered labels and writing the widest
+value back to the `kyn-tabs` host. Keep that behavior scoped to this pattern;
+default `kyn-tabs` continue to size naturally to their label text. Use
+`fill-width` only on the tabs that the pattern sizes so the internal tab button
+fills the measured host width.
 
 ### Multi-Column Categorical Nav
 
@@ -181,6 +230,8 @@ Set `target="_blank"` and include a launch icon:
 | `kyn-header-link`       | `hideSearch`        | `false` | Suppress search in flyout                                                                              |
 | `kyn-header-link`       | `searchThreshold`   | `6`     | Child count before search appears                                                                      |
 | `kyn-header-link`       | `truncate`          | `false` | Truncate text with ellipsis                                                                            |
+| `kyn-header-link`       | `fullWidthFlyout`   | `false` | Opt a Global Switcher tabbed categorical flyout into full-width desktop layout                         |
+| `kyn-tab`               | `fillWidth`         | `false` | Allow a parent pattern to size a tab host while the internal tab button fills that width               |
 | `kyn-header-categories` | `layout`            | `''`    | `'masonry'` or `'grid'` (empty = legacy responsive columns)                                            |
 | `kyn-header-categories` | `maxColumns`        | `3`     | Column cap for masonry/grid layout                                                                     |
 | `kyn-header-categories` | `fixedColumnWidths` | `false` | For 3+ columns, keep fixed column widths instead of stretching to full flyout width                    |
