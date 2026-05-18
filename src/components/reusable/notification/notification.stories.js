@@ -34,7 +34,7 @@ export default {
     unRead: {
       control: { type: 'boolean' },
       description:
-        'Applies unread background state to clickable notifications.',
+        'Applies unread background state to normal and clickable notifications.',
     },
   },
   parameters: {
