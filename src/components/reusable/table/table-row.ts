@@ -18,6 +18,8 @@ import { TableExpandedRow } from './table-expanded-row';
 import { TableCell } from './table-cell';
 import { deepmerge } from 'deepmerge-ts';
 
+import '../../reusable/overflowMenu';
+
 const _defaultTextStrings = {
   expanded: 'Expanded',
   collapsed: 'Collapsed',
@@ -301,14 +303,25 @@ export class TableRow extends LitElement {
       ${this.checkboxSelection && this.closest('kyn-tfoot') === null
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
-              <kyn-checkbox
-                ?disabled=${this.disabled || this.locked}
-                .checked=${this.selected}
-                visiblyHidden
-                @on-checkbox-change=${this.handleRowSelectionChange}
-              >
-                ${this.selected ? 'Deselect' : 'Select'} Row ${this.rowId}
-              </kyn-checkbox>
+              <div style="display: flex; align-items: center; gap: 4px;">
+                <kyn-checkbox
+                  ?disabled=${this.disabled || this.locked}
+                  .checked=${this.selected}
+                  visiblyHidden
+                  @on-checkbox-change=${this.handleRowSelectionChange}
+                >
+                  ${this.selected ? 'Deselect' : 'Select'} Row ${this.rowId}
+                </kyn-checkbox>
+                <kyn-overflow-menu
+                  style="visibility: hidden;"
+                  anchorLeft
+                  fixed
+                  size="sm"
+                  verticalDots
+                  assistiveText="Select options"
+                >
+                </kyn-overflow-menu>
+              </div>
             </kyn-td>
           `
         : null}

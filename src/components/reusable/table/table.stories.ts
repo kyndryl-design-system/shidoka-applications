@@ -843,6 +843,7 @@ export const Pagination: Story = {
     hideItemsRange: false,
     hidePageSizeDropdown: false,
     hideNavigationButtons: false,
+    checkboxSelection: true,
   },
   render: (args) => {
     const [
@@ -863,6 +864,8 @@ export const Pagination: Story = {
     };
 
     const paginatedData = extractData(allData, pageNumber, pageSize);
+    // Extract all row IDs for "Select All" across pages functionality
+    const allRowIds = allData.map((row: any) => row.id);
 
     return html`
       <kyn-table-toolbar
@@ -872,9 +875,13 @@ export const Pagination: Story = {
       </kyn-table-toolbar>
 
       <kyn-table-container>
-        <kyn-table ?dense=${args.dense}>
+        <kyn-table
+          ?dense=${args.dense}
+          ?checkboxSelection=${args.checkboxSelection}
+          .allRowIds=${allRowIds}
+        >
           <kyn-thead>
-            <kyn-header-tr>
+            <kyn-header-tr .totalItems=${allData.length}>
               <kyn-th .align=${'center'}> ID </kyn-th>
               <kyn-th> First Name </kyn-th>
               <kyn-th>Last Name</kyn-th>

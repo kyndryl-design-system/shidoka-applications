@@ -70,6 +70,14 @@ export class Table extends LitElement {
   accessor fixedLayout = false;
 
   /**
+   * allRowIds: Array of all row IDs across all pages/data
+   * Used for "Select All" functionality across entire dataset
+   * @type {string[]}
+   */
+  @property({ type: Array })
+  accessor allRowIds: string[] = [];
+
+  /**
    * _provider: Context provider for the table.
    * @ignore
    * @private
@@ -248,6 +256,90 @@ export class Table extends LitElement {
   }
 
   /**
+   * Handles select all menu actions: visible rows, all items, or clear selection
+   */
+  private _handleSelectAllMenu(event: CustomEvent) {
+    event.stopPropagation();
+
+    const { action } = event.detail;
+    const { _allRows: allRows } = this;
+
+    switch (action) {
+      case 'visible':
+        // Clear previous selections and select only visible rows
+        allRows.forEach((row) => {
+          (row as TableRow).selected = false;
+        });
+        this._selectedRowIds.clear();
+
+        // Select all visible rows on current page
+        allRows.forEach((row) => {
+          if (!(row as TableRow).disabled) {
+            (row as TableRow).selected = true;
+            this._selectedRowIds.add((row as TableRow).rowId);
+          }
+        });
+        this._selectedRows = [...allRows.filter((row) => row.selected)];
+        break;
+
+      case 'all':
+        // Select all items across pages
+        if (this.allRowIds && this.allRowIds.length > 0) {
+          console.log('Selecting all rows with IDs:', this.allRowIds);
+          // Store all row IDs as selected (persistent across pagination)
+          this._selectedRowIds = new Set(this.allRowIds);
+        }
+        // Select visible rows on current page
+        allRows.forEach((row) => {
+          if (!(row as TableRow).disabled) {
+            (row as TableRow).selected = true;
+            // Ensure this row's ID is in the selection set
+            this._selectedRowIds.add((row as TableRow).rowId);
+          }
+        });
+        this._selectedRows = [...allRows.filter((row) => row.selected)];
+        console.log(
+          'All rows selected. Current selectedRowIds:',
+          Array.from(this._selectedRows)
+        );
+        // Dispatch event for consumer (API) handling
+        this.dispatchEvent(
+          new CustomEvent('on-select-all-items-requested', {
+            detail: { action: 'select-all-items' },
+            bubbles: true,
+            composed: true,
+          })
+        );
+        break;
+
+      case 'clear':
+        // Clear all selections
+        allRows.forEach((row) => {
+          (row as TableRow).selected = false;
+        });
+        this._selectedRows = [];
+        this._selectedRowIds.clear();
+        break;
+    }
+
+    this._updateHeaderCheckbox();
+
+    const init = {
+      bubbles: false,
+      cancelable: true,
+      composed: true,
+      detail: {
+        selectedRows: this._selectedRows,
+      },
+    };
+    console.log(
+      'Dispatching on-all-rows-selection-change with selectedRows:',
+      this._selectedRows
+    );
+    this.dispatchEvent(new CustomEvent('on-all-rows-selection-change', init));
+  }
+
+  /**
    * Resets the selection state of all rows in the table.
    * This method is called when the table is reset or cleared.
    * @public
@@ -262,6 +354,27 @@ export class Table extends LitElement {
 
     this._updateHeaderCheckbox();
     this.requestUpdate();
+  }
+
+  /**
+   * Sets the selected row IDs for cross-page selection
+   * @param {string[]} rowIds - Array of row IDs to select
+   * @public
+   */
+  public setSelectedRowIds(rowIds: string[]) {
+    this._selectedRowIds = new Set(rowIds);
+    this._updateSelectionStates();
+    this._updateHeaderCheckbox();
+    this.requestUpdate();
+  }
+
+  /**
+   * Gets the selected row IDs
+   * @returns {string[]} Array of selected row IDs
+   * @public
+   */
+  public getSelectedRowIds(): string[] {
+    return Array.from(this._selectedRowIds);
   }
 
   /**
@@ -287,6 +400,7 @@ export class Table extends LitElement {
     this._allRows = rows;
     this._updateSelectionStates();
     this._updateHeaderCheckbox();
+    this.requestUpdate();
   }
 
   private _updateSelectionStates() {
@@ -295,12 +409,29 @@ export class Table extends LitElement {
 
     // Loop through all rows to update their selected state and rebuild the selectedRows array
     this._allRows.forEach((row) => {
-      if (this._selectedRowIds.has(row.rowId)) {
-        row.selected = true; // Update the selected property if the rowId matches
-        updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
-      } else if (row.selected) {
-        this._selectedRowIds.add(row.rowId); // Add the rowId to the selectedRowIds set
-        updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
+      const shouldBeSelected = this._selectedRowIds.has(row.rowId);
+      const isCurrentlySelected = row.selected;
+
+      if (shouldBeSelected && !isCurrentlySelected) {
+        // Row should be selected but isn't - update it
+        (row as TableRow).selected = true;
+        (row as TableRow).requestUpdate?.();
+        updatedSelectedRows.push(row);
+      } else if (shouldBeSelected && isCurrentlySelected) {
+        // Row should be selected and is - keep it
+        updatedSelectedRows.push(row);
+      } else if (!shouldBeSelected && isCurrentlySelected) {
+        // Row should not be selected but is - update it
+        (row as TableRow).selected = false;
+        (row as TableRow).requestUpdate?.();
+      } else if (!shouldBeSelected && !isCurrentlySelected) {
+        // Row should not be selected and isn't - do nothing
+      }
+
+      // Also add any row that's marked as selected even if not in our set
+      if (row.selected && !this._selectedRowIds.has(row.rowId)) {
+        this._selectedRowIds.add(row.rowId);
+        updatedSelectedRows.push(row);
       }
     });
 
@@ -323,6 +454,10 @@ export class Table extends LitElement {
       'on-rows-change',
       this._handleRowsChange as EventListener
     );
+    this.addEventListener(
+      'on-select-all-menu',
+      this._handleSelectAllMenu as EventListener
+    );
   }
 
   override disconnectedCallback() {
@@ -339,6 +474,10 @@ export class Table extends LitElement {
     this.removeEventListener(
       'on-rows-change',
       this._handleRowsChange as EventListener
+    );
+    this.removeEventListener(
+      'on-select-all-menu',
+      this._handleSelectAllMenu as EventListener
     );
   }
 

@@ -11,6 +11,7 @@ import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrom
  * @fires on-click - Captures the click event and emits the original event details.`detail:{ origEvent: PointerEvent }`
  * @slot unnamed - Slot for menu item text.
  * @slot submenu - Provide a nested submenu's markup here (light DOM). Presence auto-detects nesting.
+ * @slot tooltip - Slot for tooltip content.
  * @prop {'ai'|'default'|string} kind - Visual variant inherited from parent menu.
  */
 @customElement('kyn-overflow-menu-item')
@@ -85,6 +86,16 @@ export class OverflowMenuItem extends LitElement {
     return this.submenuEls.length > 0;
   }
 
+  /** True when a light-DOM Tooltip exists. */
+  private get tooltipEls(): HTMLElement[] {
+    return Array.from(
+      this.querySelectorAll<HTMLElement>(':scope > [slot="tooltip"]')
+    );
+  }
+  private get hasTooltip(): boolean {
+    return this.tooltipEls.length > 0;
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     // Observe for submenu add/remove or slot attr changes and re-render.
@@ -148,6 +159,12 @@ export class OverflowMenuItem extends LitElement {
         title=${itemText}
       >
         <span class="menu-item-inner-el text"><slot></slot></span>
+        <span
+          class="menu-item-inner-el"
+          style="right: 10px; position: absolute; "
+        >
+          <slot name="tooltip"></slot
+        ></span>
         ${this.destructive
           ? html`<span class="sr-only">${this.description}</span>`
           : null}
@@ -184,7 +201,6 @@ export class OverflowMenuItem extends LitElement {
         });
       });
     }
-
     this.checkOverflow();
   }
 

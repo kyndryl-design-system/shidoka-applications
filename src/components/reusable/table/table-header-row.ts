@@ -1,8 +1,11 @@
 import { customElement, state, property } from 'lit/decorators.js';
 import { TableRow } from './table-row';
 import { html, unsafeCSS } from 'lit';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import '../../reusable/overflowMenu';
 
 import styles from './table-header-row.scss?inline';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
 
 /**
  * `kyn-header-tr` Web Component.
@@ -53,6 +56,26 @@ export class TableHeaderRow extends TableRow {
   accessor multiSelectColumnWidth = '64px';
 
   /**
+   * Total number of items available (used for "Select all items" display)
+   * @type {number}
+   */
+  @property({ type: Number })
+  accessor totalItems: number | undefined;
+
+  /**
+   * Handles select menu item click
+   */
+  private handleSelectMenuClick(action: 'visible' | 'all' | 'clear') {
+    this.dispatchEvent(
+      new CustomEvent('on-select-all-menu', {
+        detail: { action },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  /**
    * Toggles the selection state of all rows in the table.
    */
   handleToggleSelectionAll(event: CustomEvent) {
@@ -76,7 +99,8 @@ export class TableHeaderRow extends TableRow {
   }
 
   override render() {
-    const { headerCheckboxIndeterminate, headerCheckboxChecked } = this;
+    const { headerCheckboxIndeterminate, headerCheckboxChecked, totalItems } =
+      this;
 
     super.render();
     return html`
@@ -95,14 +119,52 @@ export class TableHeaderRow extends TableRow {
             ?dense=${this.dense}
             .width=${this.multiSelectColumnWidth}
             class="checkbox-header-column"
-            ><kyn-checkbox
-              ?disabled=${this.disabled}
-              .indeterminate=${headerCheckboxIndeterminate}
-              .checked=${headerCheckboxChecked}
-              visiblyHidden
-              @on-checkbox-change=${this.handleToggleSelectionAll}
-              >Select All Items</kyn-checkbox
-            >
+          >
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <kyn-checkbox
+                ?disabled=${this.disabled}
+                .indeterminate=${headerCheckboxIndeterminate}
+                .checked=${headerCheckboxChecked}
+                visiblyHidden
+                @on-checkbox-change=${this.handleToggleSelectionAll}
+              ></kyn-checkbox>
+              <kyn-overflow-menu
+                anchorLeft
+                fixed
+                verticalDots
+                assistiveText="Select rows options"
+              >
+                <kyn-overflow-menu-item
+                  @on-click=${() => this.handleSelectMenuClick('visible')}
+                >
+                  Select visible rows
+                  <kyn-tooltip slot="tooltip">
+                    <span slot="anchor" style="display:flex"
+                      >${unsafeSVG(infoIcon)}</span
+                    >
+                    Add your tooltip text
+                  </kyn-tooltip>
+                </kyn-overflow-menu-item>
+                <kyn-overflow-menu-item
+                  @on-click=${() => this.handleSelectMenuClick('all')}
+                >
+                  Select all
+                  items${totalItems ? html`&nbsp;(${totalItems})` : ''}
+                  <kyn-tooltip slot="tooltip">
+                    <span slot="anchor" style="display:flex"
+                      >${unsafeSVG(infoIcon)}</span
+                    >
+                    Add your tooltip text
+                  </kyn-tooltip>
+                </kyn-overflow-menu-item>
+                <kyn-overflow-menu-item
+                  destructive
+                  @on-click=${() => this.handleSelectMenuClick('clear')}
+                >
+                  Clear selection
+                </kyn-overflow-menu-item>
+              </kyn-overflow-menu>
+            </div>
           </kyn-th>`
         : null}
       <slot></slot>
