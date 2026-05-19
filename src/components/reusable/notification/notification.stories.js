@@ -31,9 +31,6 @@ export default {
       options: ['default', 'info', 'warning', 'success', 'error', 'ai'],
       control: { type: 'select' },
     },
-    unRead: {
-      control: { type: 'boolean' },
-    },
   },
   parameters: {
     design: {
