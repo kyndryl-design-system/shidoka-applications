@@ -229,7 +229,8 @@ export class OverflowMenuItem extends LitElement {
 
     if (this.hasSubmenu) {
       e.stopPropagation();
-      const html = directItems.map((el) => el.outerHTML).join('');
+      const html =
+        wrapper?.innerHTML ?? directItems.map((el) => el.outerHTML).join('');
       this.dispatchEvent(
         new CustomEvent('open-submenu', {
           detail: { html },
