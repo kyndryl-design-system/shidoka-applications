@@ -87,7 +87,6 @@ export const Default = {
           >Option 1</kyn-overflow-menu-item
         >
         <kyn-overflow-menu-item
-          selected
           href="javascript:void(0);"
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
