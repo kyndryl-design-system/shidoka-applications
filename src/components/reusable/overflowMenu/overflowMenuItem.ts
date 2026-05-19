@@ -5,6 +5,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import SCSS from './overflowMenuItem.scss?inline';
 import '../tooltip';
 import chevronRightIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-right.svg';
+import checkIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/check.svg';
 
 /**
  * Overflow Menu Item.
@@ -20,6 +21,10 @@ export class OverflowMenuItem extends LitElement {
   /** Makes the item a link. */
   @property({ type: String })
   accessor href = '';
+
+  /** Sets selected state. */
+  @property({ type: Boolean })
+  accessor selected = false;
 
   /** Adds destructive styles. */
   @property({ type: Boolean })
@@ -73,14 +78,24 @@ export class OverflowMenuItem extends LitElement {
   @state()
   accessor _submenuOpenTimer: number | undefined;
 
+  /**
+   * @internal
+   */
   private _mo: MutationObserver | null = null;
 
   /** True when a light-DOM submenu exists. */
+  /**
+   * @internal
+   */
   private get submenuEls(): HTMLElement[] {
     return Array.from(
       this.querySelectorAll<HTMLElement>(':scope > [slot="submenu"]')
     );
   }
+
+  /**
+   * @internal
+   */
   private get hasSubmenu(): boolean {
     return this.submenuEls.length > 0;
   }
@@ -104,12 +119,16 @@ export class OverflowMenuItem extends LitElement {
   }
 
   override render() {
+    const showSelected =
+      this.selected && !this.destructive && !this.disabled && !this.hasSubmenu;
+
     const classes = {
       'overflow-menu-item': true,
       'menu-item': true,
       'ai-connected': this.kind === 'ai',
       destructive: this.destructive,
       'has-submenu': this.hasSubmenu,
+      selected: showSelected,
     };
 
     const itemText = this.isTruncated ? this.tooltipText : '';
@@ -124,6 +143,11 @@ export class OverflowMenuItem extends LitElement {
           @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
           title=${itemText}
         >
+          ${this.selected && !this.destructive && !this.hasSubmenu
+            ? html`<span class="menu-item-inner-el check-icon">
+                ${unsafeSVG(checkIcon)}</span
+              >`
+            : null}
           <span class="menu-item-inner-el text"><slot></slot></span>
           ${this.destructive
             ? html`<span class="sr-only">${this.description}</span>`
@@ -148,6 +172,11 @@ export class OverflowMenuItem extends LitElement {
         @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e)}
         title=${itemText}
       >
+        ${this.selected && !this.destructive && !this.hasSubmenu
+          ? html`<span class="menu-item-inner-el check-icon">
+              ${unsafeSVG(checkIcon)}</span
+            >`
+          : null}
         <span class="menu-item-inner-el text"><slot></slot></span>
         ${this.destructive
           ? html`<span class="sr-only">${this.description}</span>`
@@ -200,8 +229,7 @@ export class OverflowMenuItem extends LitElement {
 
     if (this.hasSubmenu) {
       e.stopPropagation();
-      const html =
-        wrapper?.innerHTML ?? directItems.map((el) => el.outerHTML).join('');
+      const html = directItems.map((el) => el.outerHTML).join('');
       this.dispatchEvent(
         new CustomEvent('open-submenu', {
           detail: { html },

@@ -80,12 +80,14 @@ export const Default = {
         assistiveText=${args.assistiveText}
       >
         <kyn-overflow-menu-item
+          selected
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });
           }}
           >Option 1</kyn-overflow-menu-item
         >
         <kyn-overflow-menu-item
+          selected
           href="javascript:void(0);"
           @on-click=${(e) => {
             action(e.type)({ ...e, detail: e.detail });

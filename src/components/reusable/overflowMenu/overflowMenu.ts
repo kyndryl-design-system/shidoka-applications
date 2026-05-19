@@ -134,6 +134,7 @@ export class OverflowMenu extends LitElement {
             ? html`
                 <kyn-overflow-menu-item
                   .kind=${this.kind}
+                  .selected=${false}
                   class="menu-item-inner-el submenu-back-item"
                   @on-click=${(e: Event) => {
                     e.stopPropagation();
@@ -435,13 +436,6 @@ export class OverflowMenu extends LitElement {
     }
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'kyn-overflow-menu': OverflowMenu;
-  }
-}
-
 declare global {
   interface HTMLElementTagNameMap {
     'kyn-overflow-menu': OverflowMenu;
