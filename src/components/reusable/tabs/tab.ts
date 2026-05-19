@@ -19,6 +19,10 @@ export class Tab extends LitElement {
   @property({ type: Boolean })
   accessor disabled = false;
 
+  /** Allows the tab button to fill the host width when the host is sized by a parent pattern. */
+  @property({ type: Boolean, reflect: true, attribute: 'fill-width' })
+  accessor fillWidth = false;
+
   /**
    * Tab size.
    * @ignore
@@ -78,6 +82,7 @@ export class Tab extends LitElement {
       vertical: this._vertical,
       selected: this.selected,
       disabled: this.disabled,
+      'fill-width': this.fillWidth,
       'ai-connected': this.aiConnected,
     };
 
