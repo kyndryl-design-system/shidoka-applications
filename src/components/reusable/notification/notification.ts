@@ -115,7 +115,7 @@ export class Notification extends LitElement {
     error: 'error',
   };
 
-  /** Set notification mark read prop. Required ony for `type: 'clickable'`.*/
+  /** Set notification unread state. Applies to `type: 'normal'` and `type: 'clickable'`. */
   @property({ type: Boolean, reflect: true })
   accessor unRead = false;
 
@@ -157,6 +157,10 @@ export class Notification extends LitElement {
         (this.type === 'inline' || this.type === 'toast') &&
         this.tagStatus === 'default',
       'notification-no-description': !this._hasDescriptionSlotContent,
+      'notification-read':
+        (this.type === 'normal' || this.type === 'clickable') && !this.unRead,
+      'notification-unread':
+        (this.type === 'normal' || this.type === 'clickable') && this.unRead,
     };
 
     const cardType: CardType =
@@ -165,8 +169,10 @@ export class Notification extends LitElement {
     return html`
       ${this.type === 'clickable'
         ? html`<kyn-card
-            class="notification-clickable"
-            ?highlight=${this.unRead}
+            class=${classMap({
+              ...cardBgClasses,
+              'notification-clickable': true,
+            })}
             .type=${cardType}
             href=${ifDefined(this.href || undefined)}
             target=${ifDefined(this.target || undefined)}
@@ -185,7 +191,7 @@ export class Notification extends LitElement {
         : html` <kyn-card
             .type=${cardType}
             role=${ifDefined(this.notificationRole)}
-            class="${classMap(cardBgClasses)}"
+            class=${classMap(cardBgClasses)}
           >
             ${this.type === 'inline' || this.type === 'toast'
               ? html`<span id="notificationType"
