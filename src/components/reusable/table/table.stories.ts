@@ -1972,9 +1972,9 @@ export const BulkSelection: Story = {
       const { mode, selectedRows = [] } = customEvent.detail;
 
       const count =
-        mode === 'clear_all'
+        mode === 'clear-all'
           ? 0
-          : mode === 'select_all'
+          : mode === 'bulkselect-all'
           ? allData.length
           : selectedRows.length;
 
@@ -1996,7 +1996,7 @@ export const BulkSelection: Story = {
       } = customEvent.detail;
 
       const count =
-        mode === 'select_all'
+        mode === 'bulkselect-all'
           ? allData.length - excludedRowIds.length
           : selectedRows.length;
 

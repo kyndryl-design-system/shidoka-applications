@@ -82,11 +82,11 @@ export class TableHeaderRow extends TableRow {
   override accessor enableBulkSelection = false;
 
   /**
-   * Handles select menu item click
+   * Handles bulk menu selection
    */
-  private handleSelectMenuClick(action: 'select_all' | 'clear_all') {
+  private handleToggleBulkSelection(action: 'bulkselect-all' | 'clear-all') {
     this.dispatchEvent(
-      new CustomEvent('on-select-all', {
+      new CustomEvent('on-bulkselect-all', {
         detail: { action },
         bubbles: true,
         composed: true,
@@ -158,7 +158,7 @@ export class TableHeaderRow extends TableRow {
                     >
                       <kyn-overflow-menu-item
                         @on-click=${() =>
-                          this.handleSelectMenuClick('select_all')}
+                          this.handleToggleBulkSelection('bulkselect-all')}
                       >
                         ${this.selectAllItemsText}
                         ${this.selectAllTooltipText
@@ -176,7 +176,7 @@ export class TableHeaderRow extends TableRow {
                         destructive
                         ?disabled=${this.disableClearSelection}
                         @on-click=${() =>
-                          this.handleSelectMenuClick('clear_all')}
+                          this.handleToggleBulkSelection('clear-all')}
                       >
                         ${this.clearSelectionText}
                       </kyn-overflow-menu-item>

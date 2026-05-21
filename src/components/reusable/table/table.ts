@@ -254,16 +254,12 @@ export class Table extends LitElement {
       cancelable: true,
       composed: true,
       detail: {
-        mode: this._allSelected ? 'select_all' : '',
+        mode: this._allSelected ? 'bulkselect-all' : '',
         selectedRow: target,
         selectedRows: this._selectedRows, // visible selected rows
         excludedRowIds: Array.from(this._excludedRowIds), // Used in select-all mode to track which rows are unselected
       },
     };
-    console.log(
-      'Dispatching on-row-selection-change with detail:',
-      init.detail
-    );
     this.dispatchEvent(new CustomEvent('on-row-selection-change', init));
   }
 
@@ -308,12 +304,10 @@ export class Table extends LitElement {
       cancelable: true,
       composed: true,
       detail: {
-        mode: 'select_visible_all',
+        mode: 'selectvisible-all',
         selectedRows: this._selectedRows,
       },
     };
-
-    console.log('on-all-rows-selection-change from select_visible_all:', init);
 
     this.dispatchEvent(new CustomEvent('on-all-rows-selection-change', init));
   }
@@ -405,17 +399,16 @@ export class Table extends LitElement {
 
   /**
    * Handles bulk selection menu actions.
-   * select_all  -> select entire dataset (scalable)
-   * clear_all      -> clear everything
+   * bulkselect-all  -> for selecting all rows across pages (when pagination is implemented)
+   * clear-all      -> clears everything
    */
-  private _handleSelectAllMenu(event: CustomEvent) {
+  private _handleBulkSelectAll(event: CustomEvent) {
     event.stopPropagation();
 
     const { action } = event.detail;
 
     switch (action) {
-      // Select all rows across pages
-      case 'select_all': {
+      case 'bulkselect-all': {
         this._allSelected = true;
         this._selectedRowIds.clear();
         this._excludedRowIds.clear();
@@ -431,7 +424,7 @@ export class Table extends LitElement {
       /**
        * reset selection
        */
-      case 'clear_all': {
+      case 'clear-all': {
         this._allSelected = false;
 
         this._selectedRowIds.clear();
@@ -452,15 +445,7 @@ export class Table extends LitElement {
     /**
      * Common event dispatch
      */
-    const copydetail = {
-      mode: action,
-      selectedRows: this._selectedRows,
-      excludedRowIds: Array.from(this._excludedRowIds),
-    };
-    console.log(
-      'on-all-rows-selection-change from _bulk_selection_menu with selectedRows:',
-      copydetail
-    );
+
     this.dispatchEvent(
       new CustomEvent('on-all-rows-selection-change', {
         bubbles: false,
@@ -498,8 +483,8 @@ export class Table extends LitElement {
       this._handleRowsChange as EventListener
     );
     this.addEventListener(
-      'on-select-all',
-      this._handleSelectAllMenu as EventListener
+      'on-bulkselect-all',
+      this._handleBulkSelectAll as EventListener
     );
   }
 
@@ -520,8 +505,8 @@ export class Table extends LitElement {
     );
 
     this.removeEventListener(
-      'on-select-all',
-      this._handleSelectAllMenu as EventListener
+      'on-bulkselect-all',
+      this._handleBulkSelectAll as EventListener
     );
   }
 
