@@ -1954,6 +1954,14 @@ export const BulkSelection: Story = {
     disableClearSelection: true,
     selectedCount: 0,
   },
+  argTypes: {
+    selectedCount: {
+      table: {
+        disable: true,
+      },
+      control: false,
+    },
+  },
   tags: ['new'],
   render: (args) => {
     const [

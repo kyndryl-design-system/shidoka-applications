@@ -150,7 +150,7 @@ export class TableHeaderRow extends TableRow {
               ${this.enableBulkSelection
                 ? html`
                     <kyn-overflow-menu
-                      style="margin-left: 2px;"
+                      class="ml-2"
                       anchorLeft
                       fixed
                       verticalDots

@@ -315,7 +315,7 @@ export class TableRow extends LitElement {
       ${this.checkboxSelection && this.closest('kyn-tfoot') === null
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
-              <div style="display: flex; align-items: center; gap: 4px;">
+              <div class="checkbox-container">
                 <kyn-checkbox
                   ?disabled=${this.disabled || this.locked}
                   .checked=${this.selected}
@@ -327,7 +327,7 @@ export class TableRow extends LitElement {
                 ${this.enableBulkSelection
                   ? html`
                       <kyn-overflow-menu
-                        style="visibility: hidden;"
+                        class="overflow-menu"
                         anchorLeft
                         fixed
                         size="sm"
