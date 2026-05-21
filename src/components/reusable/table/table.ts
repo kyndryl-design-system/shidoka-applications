@@ -257,7 +257,7 @@ export class Table extends LitElement {
         mode: this._allSelected ? 'bulkselect-all' : '',
         selectedRow: target,
         selectedRows: this._selectedRows, // visible selected rows
-        excludedRowIds: Array.from(this._excludedRowIds), // Used in select-all mode to track which rows are unselected
+        excludedRowIds: Array.from(this._excludedRowIds), // Used in bulkselect-all mode to track which rows are unselected
       },
     };
     this.dispatchEvent(new CustomEvent('on-row-selection-change', init));
@@ -452,7 +452,7 @@ export class Table extends LitElement {
         cancelable: true,
         composed: true,
         detail: {
-          mode: action,
+          mode: action, // bulkselect-all or clear-all
           selectedRows: this._selectedRows, // stores visible selected rows
         },
       })
