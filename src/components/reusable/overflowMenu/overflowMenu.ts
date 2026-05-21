@@ -441,9 +441,3 @@ declare global {
     'kyn-overflow-menu': OverflowMenu;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'kyn-overflow-menu': OverflowMenu;
-  }
-}

@@ -55,17 +55,36 @@ export class TableHeaderRow extends TableRow {
   @property({ type: String })
   accessor multiSelectColumnWidth = '64px';
 
+  /** Text for "Select all items" option in the bulk selection menu. */
+  @property({ type: String })
+  accessor selectAllItemsText = 'Select all items';
+
+  /** Tooltip text for "Select all items" option in the bulk selection menu. */
+  @property({ type: String })
+  accessor selectAllTooltipText = '';
+
+  /** Assistive text for the bulk selection menu trigger. */
+  @property({ type: String })
+  accessor selectAllAssistiveText = 'Select all options menu';
+
+  /** Text for "Clear selection" option in the bulk selection menu. */
+  @property({ type: String })
+  accessor clearSelectionText = 'Clear selection';
+
+  /** "Clear selection" option state in the bulk selection menu.*/
+  @property({ type: Boolean })
+  accessor disableClearSelection = false;
+
   /**
-   * Total number of items available (used for "Select all items" display)
-   * @type {number}
+   * @internal
    */
-  @property({ type: Number })
-  accessor totalItems: number | undefined;
+  @property({ type: Boolean })
+  override accessor enableBulkSelectionMenu = false;
 
   /**
    * Handles select menu item click
    */
-  private handleSelectMenuClick(action: 'visible' | 'all' | 'clear') {
+  private handleSelectMenuClick(action: 'select_all' | 'clear_all') {
     this.dispatchEvent(
       new CustomEvent('on-select-all-menu', {
         detail: { action },
@@ -99,8 +118,7 @@ export class TableHeaderRow extends TableRow {
   }
 
   override render() {
-    const { headerCheckboxIndeterminate, headerCheckboxChecked, totalItems } =
-      this;
+    const { headerCheckboxIndeterminate, headerCheckboxChecked } = this;
 
     super.render();
     return html`
@@ -120,50 +138,51 @@ export class TableHeaderRow extends TableRow {
             .width=${this.multiSelectColumnWidth}
             class="checkbox-header-column"
           >
-            <div style="display: flex; align-items: center; gap: 4px;">
+            <div class="checkbox-container">
               <kyn-checkbox
                 ?disabled=${this.disabled}
                 .indeterminate=${headerCheckboxIndeterminate}
                 .checked=${headerCheckboxChecked}
                 visiblyHidden
                 @on-checkbox-change=${this.handleToggleSelectionAll}
-              ></kyn-checkbox>
-              <kyn-overflow-menu
-                anchorLeft
-                fixed
-                verticalDots
-                assistiveText="Select rows options"
+                >Select all rows</kyn-checkbox
               >
-                <kyn-overflow-menu-item
-                  @on-click=${() => this.handleSelectMenuClick('visible')}
-                >
-                  Select visible rows
-                  <kyn-tooltip slot="tooltip">
-                    <span slot="anchor" style="display:flex"
-                      >${unsafeSVG(infoIcon)}</span
+              ${this.enableBulkSelectionMenu
+                ? html`
+                    <kyn-overflow-menu
+                      style="margin-left: 2px;"
+                      anchorLeft
+                      fixed
+                      verticalDots
+                      assistiveText=${this.selectAllAssistiveText}
                     >
-                    Add your tooltip text
-                  </kyn-tooltip>
-                </kyn-overflow-menu-item>
-                <kyn-overflow-menu-item
-                  @on-click=${() => this.handleSelectMenuClick('all')}
-                >
-                  Select all
-                  items${totalItems ? html`&nbsp;(${totalItems})` : ''}
-                  <kyn-tooltip slot="tooltip">
-                    <span slot="anchor" style="display:flex"
-                      >${unsafeSVG(infoIcon)}</span
-                    >
-                    Add your tooltip text
-                  </kyn-tooltip>
-                </kyn-overflow-menu-item>
-                <kyn-overflow-menu-item
-                  destructive
-                  @on-click=${() => this.handleSelectMenuClick('clear')}
-                >
-                  Clear selection
-                </kyn-overflow-menu-item>
-              </kyn-overflow-menu>
+                      <kyn-overflow-menu-item
+                        @on-click=${() =>
+                          this.handleSelectMenuClick('select_all')}
+                      >
+                        ${this.selectAllItemsText}
+                        ${this.selectAllTooltipText
+                          ? html`
+                              <kyn-tooltip slot="tooltip">
+                                <span slot="anchor" style="display:flex"
+                                  >${unsafeSVG(infoIcon)}</span
+                                >
+                                ${this.selectAllTooltipText}
+                              </kyn-tooltip>
+                            `
+                          : null}
+                      </kyn-overflow-menu-item>
+                      <kyn-overflow-menu-item
+                        destructive
+                        ?disabled=${this.disableClearSelection}
+                        @on-click=${() =>
+                          this.handleSelectMenuClick('clear_all')}
+                      >
+                        ${this.clearSelectionText}
+                      </kyn-overflow-menu-item>
+                    </kyn-overflow-menu>
+                  `
+                : null}
             </div>
           </kyn-th>`
         : null}

@@ -282,6 +282,7 @@ export const Selection: Story = {
       <kyn-table-container>
         <kyn-table
           ?checkboxSelection=${true}
+          enableBulkSelectionMenu
           @on-row-selection-change=${handleSelectionChange}
           @on-all-rows-selection-change=${handleSelectionChange}
         >
@@ -864,8 +865,6 @@ export const Pagination: Story = {
     };
 
     const paginatedData = extractData(allData, pageNumber, pageSize);
-    // Extract all row IDs for "Select All" across pages functionality
-    const allRowIds = allData.map((row: any) => row.id);
 
     return html`
       <kyn-table-toolbar
@@ -878,10 +877,10 @@ export const Pagination: Story = {
         <kyn-table
           ?dense=${args.dense}
           ?checkboxSelection=${args.checkboxSelection}
-          .allRowIds=${allRowIds}
+          enableBulkSelectionMenu
         >
           <kyn-thead>
-            <kyn-header-tr .totalItems=${allData.length}>
+            <kyn-header-tr>
               <kyn-th .align=${'center'}> ID </kyn-th>
               <kyn-th> First Name </kyn-th>
               <kyn-th>Last Name</kyn-th>

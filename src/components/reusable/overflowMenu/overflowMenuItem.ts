@@ -74,24 +74,39 @@ export class OverflowMenuItem extends LitElement {
   @state()
   accessor _submenuOpenTimer: number | undefined;
 
+  /**
+   * @internal
+   */
   private _mo: MutationObserver | null = null;
 
-  /** True when a light-DOM submenu exists. */
+  /** True when a light-DOM submenu exists.
+   * @internal
+   */
   private get submenuEls(): HTMLElement[] {
     return Array.from(
       this.querySelectorAll<HTMLElement>(':scope > [slot="submenu"]')
     );
   }
+
+  /**
+   * @internal
+   */
   private get hasSubmenu(): boolean {
     return this.submenuEls.length > 0;
   }
 
-  /** True when a light-DOM Tooltip exists. */
+  /** True when a light-DOM Tooltip exists.
+   * @internal
+   */
   private get tooltipEls(): HTMLElement[] {
     return Array.from(
       this.querySelectorAll<HTMLElement>(':scope > [slot="tooltip"]')
     );
   }
+
+  /**
+   * @internal
+   */
   private get hasTooltip(): boolean {
     return this.tooltipEls.length > 0;
   }
@@ -120,7 +135,7 @@ export class OverflowMenuItem extends LitElement {
       'menu-item': true,
       'ai-connected': this.kind === 'ai',
       destructive: this.destructive,
-      'has-submenu': this.hasSubmenu,
+      'has-submenu': this.hasSubmenu || this.hasTooltip,
     };
 
     const itemText = this.isTruncated ? this.tooltipText : '';
@@ -160,10 +175,7 @@ export class OverflowMenuItem extends LitElement {
         title=${itemText}
       >
         <span class="menu-item-inner-el text"><slot></slot></span>
-        <span
-          class="menu-item-inner-el"
-          style="right: 10px; position: absolute; "
-        >
+        <span class="menu-item-inner-el tooltip-anchor">
           <slot name="tooltip"></slot
         ></span>
         ${this.destructive
