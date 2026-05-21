@@ -65,7 +65,7 @@ export class TableHeaderRow extends TableRow {
 
   /** Assistive text for the bulk selection menu trigger. */
   @property({ type: String })
-  accessor selectAllAssistiveText = 'Select all options menu';
+  accessor selectAllAssistiveText = 'Select all options';
 
   /** Text for "Clear selection" option in the bulk selection menu. */
   @property({ type: String })
@@ -79,14 +79,14 @@ export class TableHeaderRow extends TableRow {
    * @internal
    */
   @property({ type: Boolean })
-  override accessor enableBulkSelectionMenu = false;
+  override accessor enableBulkSelection = false;
 
   /**
    * Handles select menu item click
    */
   private handleSelectMenuClick(action: 'select_all' | 'clear_all') {
     this.dispatchEvent(
-      new CustomEvent('on-select-all-menu', {
+      new CustomEvent('on-select-all', {
         detail: { action },
         bubbles: true,
         composed: true,
@@ -147,7 +147,7 @@ export class TableHeaderRow extends TableRow {
                 @on-checkbox-change=${this.handleToggleSelectionAll}
                 >Select all rows</kyn-checkbox
               >
-              ${this.enableBulkSelectionMenu
+              ${this.enableBulkSelection
                 ? html`
                     <kyn-overflow-menu
                       style="margin-left: 2px;"

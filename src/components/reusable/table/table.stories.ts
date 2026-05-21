@@ -282,7 +282,6 @@ export const Selection: Story = {
       <kyn-table-container>
         <kyn-table
           ?checkboxSelection=${true}
-          enableBulkSelectionMenu
           @on-row-selection-change=${handleSelectionChange}
           @on-all-rows-selection-change=${handleSelectionChange}
         >
@@ -874,11 +873,7 @@ export const Pagination: Story = {
       </kyn-table-toolbar>
 
       <kyn-table-container>
-        <kyn-table
-          ?dense=${args.dense}
-          ?checkboxSelection=${args.checkboxSelection}
-          enableBulkSelectionMenu
-        >
+        <kyn-table ?dense=${args.dense}>
           <kyn-thead>
             <kyn-header-tr>
               <kyn-th .align=${'center'}> ID </kyn-th>
@@ -1942,6 +1937,160 @@ export const StackedHeader: Story = {
           </kyn-tbody>
         </kyn-table>
       </kyn-table-container>
+    `;
+  },
+};
+
+export const BulkSelection: Story = {
+  args: {
+    pageSize: 5,
+    pageNumber: 1,
+    pageSizeOptions: [5, 10, 20, 30, 40, 50, 100],
+    dense: false,
+    hideItemsRange: false,
+    hidePageSizeDropdown: false,
+    hideNavigationButtons: false,
+    checkboxSelection: true,
+    disableClearSelection: true,
+    selectedCount: 0,
+  },
+  tags: ['new'],
+  render: (args) => {
+    const [
+      {
+        pageSize = args.pageSize,
+        pageNumber = args.pageNumber,
+        disableClearSelection = args.disableClearSelection,
+        selectedCount = args.selectedCount,
+      },
+      updateArgs,
+    ] = useArgs();
+
+    const handleAllSelectionChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+
+      const { mode, selectedRows = [] } = customEvent.detail;
+
+      const count =
+        mode === 'clear_all'
+          ? 0
+          : mode === 'select_all'
+          ? allData.length
+          : selectedRows.length;
+
+      updateArgs({
+        selectedCount: count,
+        disableClearSelection: count === 0,
+      });
+
+      action(e.type)(customEvent.detail);
+    };
+
+    const handleRowSelectionChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+
+      const {
+        mode,
+        selectedRows = [],
+        excludedRowIds = [],
+      } = customEvent.detail;
+
+      const count =
+        mode === 'select_all'
+          ? allData.length - excludedRowIds.length
+          : selectedRows.length;
+
+      updateArgs({
+        selectedCount: count,
+        disableClearSelection: count === 0,
+      });
+
+      action(e.type)(customEvent.detail);
+    };
+
+    const handlePageSizeChange = (e: Event) => {
+      action(e.type)({ ...e, detail: (e as CustomEvent).detail });
+      const newPageSize = (e as CustomEvent).detail.value;
+      updateArgs({ pageSize: newPageSize, pageNumber: 1 });
+    };
+
+    const handlePageNumberChange = (e: Event) => {
+      action(e.type)({ ...e, detail: (e as CustomEvent).detail });
+      const newPageNumber = (e as CustomEvent).detail.value;
+      updateArgs({ pageNumber: newPageNumber });
+    };
+
+    const paginatedData = extractData(allData, pageNumber, pageSize);
+
+    return html`
+      <kyn-table-toolbar
+        .tableTitle=${selectedCount > 0
+          ? `${selectedCount} items selected`
+          : 'Selection'}
+        tableSubtitle=${'Table Subtitle'}
+      >
+      </kyn-table-toolbar>
+
+      <kyn-table-container>
+        <kyn-table
+          ?dense=${args.dense}
+          ?checkboxSelection=${args.checkboxSelection}
+          enableBulkSelection
+          @on-row-selection-change=${handleRowSelectionChange}
+          @on-all-rows-selection-change=${handleAllSelectionChange}
+        >
+          <kyn-thead>
+            <kyn-header-tr
+              .selectAllItemsText=${`Select all items (${allData.length})`}
+              selectAllTooltipText="Tooltip text here."
+              clearSelectionText="Clear selection"
+              ?disableClearSelection=${disableClearSelection}
+            >
+              <kyn-th .align=${'center'}> ID </kyn-th>
+              <kyn-th> First Name </kyn-th>
+              <kyn-th>Last Name</kyn-th>
+              <kyn-th>Birthday</kyn-th>
+              <kyn-th .align=${'right'}>Age</kyn-th>
+              <kyn-th>Full Name</kyn-th>
+              <kyn-th .align=${'center'}>Gender</kyn-th>
+            </kyn-header-tr>
+          </kyn-thead>
+          <kyn-tbody>
+            ${repeat(
+              paginatedData,
+              (row: any) => row.id,
+              (row: any) => html`
+                <kyn-tr .rowId=${row.id} key="row-${row.id}">
+                  <kyn-td .align=${'center'}>${row.id}</kyn-td>
+                  <kyn-td title=${row.firstName}> ${row.firstName} </kyn-td>
+                  <kyn-td class="min-max-width-100">${row.lastName}</kyn-td>
+                  <kyn-td>${row.birthday}</kyn-td>
+                  <kyn-td .align=${'right'}>${row.age}</kyn-td>
+                  <kyn-td>${row.firstName} ${row.lastName}</kyn-td>
+                  <kyn-td .align=${'center'}>
+                    ${row.gender === 'Male'
+                      ? html`<span>${unsafeSVG(maleIcon)}</span>`
+                      : html`<span>${unsafeSVG(femaleIcon)}</span>`}
+                  </kyn-td>
+                </kyn-tr>
+              `
+            )}
+          </kyn-tbody>
+        </kyn-table>
+      </kyn-table-container>
+      <kyn-table-footer>
+        <kyn-pagination
+          .count=${allData.length}
+          .pageSize=${pageSize}
+          .pageNumber=${pageNumber}
+          .pageSizeOptions=${args.pageSizeOptions}
+          .hideItemsRange=${args.hideItemsRange}
+          .hidePageSizeDropdown=${args.hidePageSizeDropdown}
+          .hideNavigationButtons=${args.hideNavigationButtons}
+          @on-page-size-change=${handlePageSizeChange}
+          @on-page-number-change=${handlePageNumberChange}
+        ></kyn-pagination>
+      </kyn-table-footer>
     `;
   },
 };

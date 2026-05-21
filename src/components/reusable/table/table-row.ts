@@ -169,7 +169,7 @@ export class TableRow extends LitElement {
    *
    * @internal
    */
-  @state() accessor enableBulkSelectionMenu = false;
+  @state() accessor enableBulkSelection = false;
 
   /**
    * Updates the cell's dense and ellipsis properties when the context changes.
@@ -177,13 +177,13 @@ export class TableRow extends LitElement {
    */
   handleContextChange = ({
     checkboxSelection,
-    enableBulkSelectionMenu,
+    enableBulkSelection,
   }: TableContextType) => {
     if (typeof checkboxSelection == 'boolean') {
       this.checkboxSelection = checkboxSelection;
     }
-    if (typeof enableBulkSelectionMenu == 'boolean') {
-      this.enableBulkSelectionMenu = enableBulkSelectionMenu;
+    if (typeof enableBulkSelection == 'boolean') {
+      this.enableBulkSelection = enableBulkSelection;
     }
   };
 
@@ -324,7 +324,7 @@ export class TableRow extends LitElement {
                 >
                   ${this.selected ? 'Deselect' : 'Select'} Row ${this.rowId}
                 </kyn-checkbox>
-                ${this.enableBulkSelectionMenu
+                ${this.enableBulkSelection
                   ? html`
                       <kyn-overflow-menu
                         style="visibility: hidden;"

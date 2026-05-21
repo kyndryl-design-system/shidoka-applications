@@ -12,8 +12,8 @@ import styles from './table.scss?inline';
  * `kyn-table` Web Component.
  * This component provides a table with sorting, pagination, and selection capabilities.
  * It is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.
- * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled. `detail: { mode: string,selectedRow: TableRow, selectedRows: Array<TableRow>,excludedRowIds: Array<string> }`
- * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled. `detail:{ mode: string, selectedRows: Array<TableRow>, excludedRowIds: Array<string> }`
+ * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled.`detail:{mode:string,selectedRow:TableRow,selectedRows:TableRow[]}`. Also, `excludedRowIds:[]` will get included in detail to track unselected rows when "Select all" is active.
+ * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled.`detail:{mode:string,selectedRows:TableRow[]}`. Here `mode: select_all | select_visible_all | clear_all`
  */
 
 @customElement('kyn-table')
@@ -69,12 +69,12 @@ export class Table extends LitElement {
   @property({ type: Boolean })
   accessor fixedLayout = false;
 
-  /** enableBulkSelectionMenu: Boolean indicating whether to show the bulk selection menu in the header when checkboxSelection is enabled.
+  /** enableBulkSelection: Boolean indicating whether to show the bulk selection menu in the header when checkboxSelection is enabled.
    * @type {boolean}
    * @default false
    */
   @property({ type: Boolean })
-  accessor enableBulkSelectionMenu: boolean | undefined;
+  accessor enableBulkSelection: boolean | undefined;
 
   /**
    * _provider: Context provider for the table.
@@ -95,14 +95,14 @@ export class Table extends LitElement {
       changedProperties.has('striped') ||
       changedProperties.has('checkboxSelection') ||
       changedProperties.has('stickyHeader') ||
-      changedProperties.has('enableBulkSelectionMenu')
+      changedProperties.has('enableBulkSelection')
     ) {
       const newValues: Partial<any> = {
         dense: this.dense,
         striped: this.striped,
         checkboxSelection: this.checkboxSelection,
         stickyHeader: this.stickyHeader,
-        enableBulkSelectionMenu: this.enableBulkSelectionMenu,
+        enableBulkSelection: this.enableBulkSelection,
       };
 
       this._provider.setValue(newValues);
@@ -468,8 +468,7 @@ export class Table extends LitElement {
         composed: true,
         detail: {
           mode: action,
-          selectedRows: this._selectedRows,
-          excludedRowIds: Array.from(this._excludedRowIds),
+          selectedRows: this._selectedRows, // stores visible selected rows
         },
       })
     );
@@ -499,7 +498,7 @@ export class Table extends LitElement {
       this._handleRowsChange as EventListener
     );
     this.addEventListener(
-      'on-select-all-menu',
+      'on-select-all',
       this._handleSelectAllMenu as EventListener
     );
   }
@@ -521,7 +520,7 @@ export class Table extends LitElement {
     );
 
     this.removeEventListener(
-      'on-select-all-menu',
+      'on-select-all',
       this._handleSelectAllMenu as EventListener
     );
   }
