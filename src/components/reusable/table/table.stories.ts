@@ -2023,6 +2023,19 @@ export const BulkSelection: Story = {
     const paginatedData = extractData(allData, pageNumber, pageSize);
 
     return html`
+      <h4>Important Information about BulkSelection</h4>
+      <ul>
+        <li>
+          <b>**Note:</b> The 'rowId' attribute is required when enabling
+          bulk-selection functionality.
+        </li>
+
+        <li>
+          Header 'checkboxSelection' must be enabled to work with bulk
+          selection.
+        </li>
+      </ul>
+
       <kyn-table-toolbar
         .tableTitle=${selectedCount > 0
           ? `${selectedCount} items selected`
