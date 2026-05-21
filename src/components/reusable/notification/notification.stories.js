@@ -64,7 +64,7 @@ export const Notification = {
       target=${args.target}
       type=${args.type}
       tagStatus=${args.tagStatus}
-      ?unRead=${args.unRead}
+      .unRead=${args.unRead}
       @on-notification-click=${(e) =>
         action(e.type)({ ...e, detail: e.detail })}
     >
