@@ -6,6 +6,7 @@ import '../../reusable/overflowMenu';
 
 import styles from './table-header-row.scss?inline';
 import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
+import caretDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/caret-down.svg';
 
 /**
  * `kyn-header-tr` Web Component.
@@ -156,6 +157,7 @@ export class TableHeaderRow extends TableRow {
                       verticalDots
                       assistiveText=${this.selectAllAssistiveText}
                     >
+                      <span slot="icon">${unsafeSVG(caretDown)}</span>
                       <kyn-overflow-menu-item
                         @on-click=${() =>
                           this.handleToggleBulkSelection('bulkselect-all')}

@@ -13,6 +13,7 @@ import backIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/arr
 
 /**
  * Overflow Menu.
+ * @slot icon - Slot for overflow icon.
  * @slot unnamed - Slot for overflow menu items.
  * @fires on-toggle - Capture the open/close event and emits the new state.`detail:{ open: boolean }`
  * @prop {'ai'|'default'|string} kind
@@ -126,7 +127,9 @@ export class OverflowMenu extends LitElement {
           aria-label=${this.assistiveText}
           @keydown=${(e: any) => this.handleKeyDown(e)}
         >
-          <span>${unsafeSVG(overflowIcon)}</span>
+          <span>
+            <slot name="icon">${unsafeSVG(overflowIcon)}</slot>
+          </span>
         </button>
 
         <div id="menu" class=${classMap(menuClasses)}>
