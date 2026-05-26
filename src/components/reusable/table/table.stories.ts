@@ -1787,7 +1787,7 @@ export const StackedHeader: Story = {
     rows: characters,
   },
   tags: ['new', 'version:v2.85.0'],
-  render: (args) => {
+  render: (_args) => {
     const [{ rows }, updateArgs] = useArgs();
     let tableData = rows;
 
