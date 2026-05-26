@@ -112,7 +112,8 @@ interface SlottedCategoryData {
  *     returns to the root view.
  *
  * @fires on-nav-change - Fires when the active category/tab view changes. Detail: `{ activeMegaTabId, activeMegaCategoryId, view }`.
- * @cssprop [--kyn-header-category-column-width=300px] - Width of each column. Applies to 1 and 2 column layouts. Also used for 3+ when `fixed-column-widths` is enabled.
+ * @cssprop [--kyn-header-category-single-column-width=350px] - Max width for one-column masonry layouts.
+ * @cssprop [--kyn-header-category-column-width=300px] - Width of each column. Applies to 2 column layouts. Also used for 3+ when `fixed-column-widths` is enabled.
  * @cssprop [--kyn-header-category-column-gap=32px] - Horizontal gap between columns.
  */
 

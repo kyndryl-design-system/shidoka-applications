@@ -237,7 +237,7 @@ export const FullWidthSingleCategoryServiceTab = {
 
       expect(flyoutWidth).toBeGreaterThan(500);
       expect(linkWidth).toBeGreaterThan(0);
-      expect(linkWidth).toBeLessThanOrEqual(320);
+      expect(linkWidth).toBeLessThanOrEqual(370);
       expect(linkWidth).toBeLessThan(flyoutWidth / 2);
     });
   },
