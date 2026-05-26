@@ -1,8 +1,12 @@
 import { customElement, state, property } from 'lit/decorators.js';
 import { TableRow } from './table-row';
 import { html, unsafeCSS } from 'lit';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
+import '../../reusable/overflowMenu';
 
 import styles from './table-header-row.scss?inline';
+import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/information.svg';
+import caretDown from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/caret-down.svg';
 
 /**
  * `kyn-header-tr` Web Component.
@@ -52,6 +56,45 @@ export class TableHeaderRow extends TableRow {
   @property({ type: String })
   accessor multiSelectColumnWidth = '64px';
 
+  /** Text for "Select all items" option in the bulk selection menu. */
+  @property({ type: String })
+  accessor selectAllItemsText = 'Select all items';
+
+  /** Tooltip text for "Select all items" option in the bulk selection menu. */
+  @property({ type: String })
+  accessor selectAllTooltipText = '';
+
+  /** Assistive text for the bulk selection menu trigger. */
+  @property({ type: String })
+  accessor selectAllAssistiveText = 'Select all options';
+
+  /** Text for "Clear selection" option in the bulk selection menu. */
+  @property({ type: String })
+  accessor clearSelectionText = 'Clear selection';
+
+  /** "Clear selection" option state in the bulk selection menu.*/
+  @property({ type: Boolean })
+  accessor disableClearSelection = false;
+
+  /**
+   * @internal
+   */
+  @property({ type: Boolean })
+  override accessor enableBulkSelection = false;
+
+  /**
+   * Handles bulk menu selection
+   */
+  private handleToggleBulkSelection(action: 'bulkselect-all' | 'clear-all') {
+    this.dispatchEvent(
+      new CustomEvent('on-bulkselect-all', {
+        detail: { action },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   /**
    * Toggles the selection state of all rows in the table.
    */
@@ -95,14 +138,54 @@ export class TableHeaderRow extends TableRow {
             ?dense=${this.dense}
             .width=${this.multiSelectColumnWidth}
             class="checkbox-header-column"
-            ><kyn-checkbox
-              ?disabled=${this.disabled}
-              .indeterminate=${headerCheckboxIndeterminate}
-              .checked=${headerCheckboxChecked}
-              visiblyHidden
-              @on-checkbox-change=${this.handleToggleSelectionAll}
-              >Select All Items</kyn-checkbox
-            >
+          >
+            <div class="checkbox-container">
+              <kyn-checkbox
+                ?disabled=${this.disabled}
+                .indeterminate=${headerCheckboxIndeterminate}
+                .checked=${headerCheckboxChecked}
+                visiblyHidden
+                @on-checkbox-change=${this.handleToggleSelectionAll}
+                >Select all rows</kyn-checkbox
+              >
+              ${this.enableBulkSelection
+                ? html`
+                    <kyn-overflow-menu
+                      class="ml-2"
+                      anchorLeft
+                      fixed
+                      verticalDots
+                      assistiveText=${this.selectAllAssistiveText}
+                    >
+                      <span slot="icon">${unsafeSVG(caretDown)}</span>
+                      <kyn-overflow-menu-item
+                        @on-click=${() =>
+                          this.handleToggleBulkSelection('bulkselect-all')}
+                      >
+                        ${this.selectAllItemsText}
+                        ${this.selectAllTooltipText
+                          ? html`
+                              <kyn-tooltip slot="tooltip">
+                                <span slot="anchor" style="display:flex"
+                                  >${unsafeSVG(infoIcon)}</span
+                                >
+                                ${this.selectAllTooltipText}
+                              </kyn-tooltip>
+                            `
+                          : null}
+                      </kyn-overflow-menu-item>
+                      <kyn-overflow-menu-item
+                        destructive
+                        ?disabled=${this.disableClearSelection}
+                        @on-click=${() =>
+                          this.handleToggleBulkSelection('clear-all')}
+                      >
+                        ${this.clearSelectionText}
+                      </kyn-overflow-menu-item>
+                    </kyn-overflow-menu>
+                  `
+                : null}
+            </div>
           </kyn-th>`
         : null}
       <slot></slot>

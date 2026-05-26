@@ -12,8 +12,8 @@ import styles from './table.scss?inline';
  * `kyn-table` Web Component.
  * This component provides a table with sorting, pagination, and selection capabilities.
  * It is designed to be used with the `kyn-table-toolbar` and `kyn-table-container` components.
- * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled. `detail: { selectedRow: TableRow, selectedRows: Array<TableRow> }`
- * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled. `detail:{ selectedRows: Array<TableRow> }`
+ * @fires on-row-selection-change - Dispatched when the selection state of a row is toggled.`detail:{mode:string,selectedRow:TableRow,selectedRows:TableRow[]}`. Also, `excludedRowIds:[]` will get included in detail to track unselected rows when "Select all" is active.
+ * @fires on-all-rows-selection-change - Dispatched when the selection state of all rows is toggled.`detail:{mode:string,selectedRows:TableRow[]}`. Here `mode: select_all | select_visible_all | clear_all`
  */
 
 @customElement('kyn-table')
@@ -69,6 +69,13 @@ export class Table extends LitElement {
   @property({ type: Boolean })
   accessor fixedLayout = false;
 
+  /** enableBulkSelection: Boolean indicating whether to show the bulk selection menu in the header when checkboxSelection is enabled.
+   * @type {boolean}
+   * @default false
+   */
+  @property({ type: Boolean })
+  accessor enableBulkSelection: boolean | undefined;
+
   /**
    * _provider: Context provider for the table.
    * @ignore
@@ -87,13 +94,15 @@ export class Table extends LitElement {
       changedProperties.has('dense') ||
       changedProperties.has('striped') ||
       changedProperties.has('checkboxSelection') ||
-      changedProperties.has('stickyHeader')
+      changedProperties.has('stickyHeader') ||
+      changedProperties.has('enableBulkSelection')
     ) {
       const newValues: Partial<any> = {
         dense: this.dense,
         striped: this.striped,
         checkboxSelection: this.checkboxSelection,
         stickyHeader: this.stickyHeader,
+        enableBulkSelection: this.enableBulkSelection,
       };
 
       this._provider.setValue(newValues);
@@ -132,6 +141,21 @@ export class Table extends LitElement {
   @state()
   private accessor _selectedRowIds: Set<string> = new Set();
 
+  /** allSelected: Boolean indicating whether all rows are currently selected.
+   * @ignore
+   * @private
+   */
+  @state()
+  private accessor _allSelected = false;
+
+  /**
+   * excludedRowIds: To keep track of unselected rows when "Select all" is active.
+   * @ignore
+   * @private
+   */
+  @state()
+  private accessor _excludedRowIds: Set<string> = new Set();
+
   /**
    * headerCheckboxIndeterminate: Boolean indicating whether the header
    * checkbox is in an indeterminate state.
@@ -156,15 +180,35 @@ export class Table extends LitElement {
    * @private
    */
   private _updateHeaderCheckbox() {
-    if (this._selectedRows.length === 0 || this._allRows.length === 0) {
-      this._headerCheckboxIndeterminate = false;
-      this._headerCheckboxChecked = false;
-    } else if (this._selectedRows.length === this._allRows.length) {
-      this._headerCheckboxIndeterminate = false;
-      this._headerCheckboxChecked = true;
+    if (this._allSelected) {
+      const selectableVisibleRows = this._allRows.filter(
+        (row) => !row.disabled
+      );
+
+      const selectedVisibleRows = selectableVisibleRows.filter(
+        (row) => !this._excludedRowIds.has(row.rowId)
+      );
+      if (selectedVisibleRows.length === 0) {
+        this._headerCheckboxChecked = false;
+        this._headerCheckboxIndeterminate = false;
+      } else if (selectedVisibleRows.length === selectableVisibleRows.length) {
+        this._headerCheckboxChecked = true;
+        this._headerCheckboxIndeterminate = false;
+      } else {
+        this._headerCheckboxChecked = false;
+        this._headerCheckboxIndeterminate = true;
+      }
     } else {
-      this._headerCheckboxIndeterminate = true;
-      this._headerCheckboxChecked = false;
+      if (this._selectedRows.length === 0 || this._allRows.length === 0) {
+        this._headerCheckboxIndeterminate = false;
+        this._headerCheckboxChecked = false;
+      } else if (this._selectedRows.length === this._allRows.length) {
+        this._headerCheckboxIndeterminate = false;
+        this._headerCheckboxChecked = true;
+      } else {
+        this._headerCheckboxIndeterminate = true;
+        this._headerCheckboxChecked = false;
+      }
     }
 
     this._tableHeaderRow?.updateHeaderCheckboxState(
@@ -187,12 +231,20 @@ export class Table extends LitElement {
       return;
     }
 
-    if (!selected && selectedRows.includes(target as TableRow)) {
-      this._selectedRows = selectedRows.filter((e) => e !== target);
-      this._selectedRowIds.delete((target as TableRow).rowId);
-    } else if (selected && !selectedRows.includes(target as TableRow)) {
-      this._selectedRows.push(target as TableRow);
-      this._selectedRowIds.add((target as TableRow).rowId);
+    if (this._allSelected) {
+      if (selected) {
+        this._excludedRowIds.delete(target.rowId);
+      } else {
+        this._excludedRowIds.add(target.rowId);
+      }
+    } else {
+      if (!selected && selectedRows.includes(target as TableRow)) {
+        this._selectedRows = selectedRows.filter((e) => e !== target);
+        this._selectedRowIds.delete((target as TableRow).rowId);
+      } else if (selected && !selectedRows.includes(target as TableRow)) {
+        this._selectedRows.push(target as TableRow);
+        this._selectedRowIds.add((target as TableRow).rowId);
+      }
     }
 
     this._updateHeaderCheckbox();
@@ -202,8 +254,10 @@ export class Table extends LitElement {
       cancelable: true,
       composed: true,
       detail: {
+        mode: this._allSelected ? 'bulkselect-all' : '',
         selectedRow: target,
-        selectedRows: this._selectedRows,
+        selectedRows: this._selectedRows, // visible selected rows
+        excludedRowIds: Array.from(this._excludedRowIds), // Used in bulkselect-all mode to track which rows are unselected
       },
     };
     this.dispatchEvent(new CustomEvent('on-row-selection-change', init));
@@ -225,10 +279,19 @@ export class Table extends LitElement {
       return;
     }
 
+    this._allSelected = false;
+    this._excludedRowIds.clear();
+
     allRows.forEach((row) => {
       if ((row as TableRow).disabled) return;
 
       (row as TableRow).selected = checked;
+
+      if (checked) {
+        this._selectedRowIds.add(row.rowId);
+      } else {
+        this._selectedRowIds.delete(row.rowId);
+      }
     });
 
     this._selectedRows = [...allRows.filter((row) => row.selected)];
@@ -241,9 +304,11 @@ export class Table extends LitElement {
       cancelable: true,
       composed: true,
       detail: {
+        mode: 'selectvisible-all',
         selectedRows: this._selectedRows,
       },
     };
+
     this.dispatchEvent(new CustomEvent('on-all-rows-selection-change', init));
   }
 
@@ -289,23 +354,117 @@ export class Table extends LitElement {
     this._updateHeaderCheckbox();
   }
 
+  // private _updateSelectionStates() {
+  //   // Temporary array to hold updated selected rows
+  //   const updatedSelectedRows: TableRow[] = [];
+
+  //   // Loop through all rows to update their selected state and rebuild the selectedRows array
+  //   this._allRows.forEach((row) => {
+  //     if (this._selectedRowIds.has(row.rowId)) {
+  //       row.selected = true; // Update the selected property if the rowId matches
+  //       updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
+  //     } else if (row.selected) {
+  //       this._selectedRowIds.add(row.rowId); // Add the rowId to the selectedRowIds set
+  //       updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
+  //     }
+  //   });
+
+  //   // Replace the old selectedRows with the updated selected rows
+  //   this._selectedRows = updatedSelectedRows;
+  // }
+
   private _updateSelectionStates() {
-    // Temporary array to hold updated selected rows
     const updatedSelectedRows: TableRow[] = [];
 
-    // Loop through all rows to update their selected state and rebuild the selectedRows array
     this._allRows.forEach((row) => {
-      if (this._selectedRowIds.has(row.rowId)) {
-        row.selected = true; // Update the selected property if the rowId matches
-        updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
-      } else if (row.selected) {
-        this._selectedRowIds.add(row.rowId); // Add the rowId to the selectedRowIds set
-        updatedSelectedRows.push(row); // Add the actual row element to the updated selected rows array
+      let shouldSelect = false;
+
+      // If "Select all" is active, select all rows except those in the excludedRowIds set
+      if (this._allSelected) {
+        shouldSelect = !this._excludedRowIds.has(row.rowId);
+      } else {
+        // normal mode - select if rowId is in selectedRowIds set
+        shouldSelect = this._selectedRowIds.has(row.rowId);
+      }
+
+      row.selected = shouldSelect;
+
+      if (shouldSelect) {
+        updatedSelectedRows.push(row);
       }
     });
 
-    // Replace the old selectedRows with the updated selected rows
     this._selectedRows = updatedSelectedRows;
+  }
+
+  /**
+   * Handles bulk selection menu actions.
+   * bulkselect-all  -> for selecting all rows across pages (when pagination is implemented)
+   * clear-all      -> clears everything
+   */
+  private _handleBulkSelectAll(event: CustomEvent) {
+    event.stopPropagation();
+
+    const { action } = event.detail;
+
+    switch (action) {
+      case 'bulkselect-all': {
+        this._allSelected = true;
+        this._selectedRowIds.clear();
+        this._excludedRowIds.clear();
+        this._allRows.forEach((row) => {
+          if (!row.disabled) {
+            row.selected = true;
+          }
+        });
+
+        break;
+      }
+
+      /**
+       * reset selection
+       */
+      case 'clear-all': {
+        this._allSelected = false;
+
+        this._selectedRowIds.clear();
+        this._excludedRowIds.clear();
+
+        this._allRows.forEach((row) => {
+          row.selected = false;
+        });
+
+        break;
+      }
+    }
+
+    this._updateVisibleSelectedRows();
+
+    this._updateHeaderCheckbox();
+
+    /**
+     * Common event dispatch
+     */
+
+    this.dispatchEvent(
+      new CustomEvent('on-all-rows-selection-change', {
+        bubbles: false,
+        cancelable: true,
+        composed: true,
+        detail: {
+          mode: action, // bulkselect-all or clear-all
+          selectedRows: this._selectedRows, // stores visible selected rows
+        },
+      })
+    );
+  }
+
+  /**
+   * Updates currently visible selected rows.
+   * Only rows on current page.
+   */
+  private _updateVisibleSelectedRows() {
+    this._selectedRows = this._allRows.filter((row) => row.selected);
   }
 
   override connectedCallback() {
@@ -323,6 +482,10 @@ export class Table extends LitElement {
       'on-rows-change',
       this._handleRowsChange as EventListener
     );
+    this.addEventListener(
+      'on-bulkselect-all',
+      this._handleBulkSelectAll as EventListener
+    );
   }
 
   override disconnectedCallback() {
@@ -339,6 +502,11 @@ export class Table extends LitElement {
     this.removeEventListener(
       'on-rows-change',
       this._handleRowsChange as EventListener
+    );
+
+    this.removeEventListener(
+      'on-bulkselect-all',
+      this._handleBulkSelectAll as EventListener
     );
   }
 
