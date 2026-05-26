@@ -1960,7 +1960,7 @@ export const BulkSelection: Story = {
       control: false,
     },
   },
-  tags: ['new'],
+  tags: ['new', 'version:v2.105.0'],
   render: (args) => {
     const [
       {
