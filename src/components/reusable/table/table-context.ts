@@ -5,6 +5,7 @@ export type TableContextType = {
   striped?: boolean;
   checkboxSelection?: boolean;
   stickyHeader?: boolean;
+  enableBulkSelection?: boolean;
 };
 
 export const tableContext = createContext<TableContextType>({
@@ -12,4 +13,5 @@ export const tableContext = createContext<TableContextType>({
   striped: false,
   checkboxSelection: false,
   stickyHeader: false,
+  enableBulkSelection: false,
 });

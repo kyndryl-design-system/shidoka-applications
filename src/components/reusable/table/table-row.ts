@@ -18,6 +18,8 @@ import { TableExpandedRow } from './table-expanded-row';
 import { TableCell } from './table-cell';
 import { deepmerge } from 'deepmerge-ts';
 
+import '../../reusable/overflowMenu';
+
 const _defaultTextStrings = {
   expanded: 'Expanded',
   collapsed: 'Collapsed',
@@ -164,12 +166,24 @@ export class TableRow extends LitElement {
   accessor assistiveText = '';
 
   /**
+   *
+   * @internal
+   */
+  @state() accessor enableBulkSelection = false;
+
+  /**
    * Updates the cell's dense and ellipsis properties when the context changes.
    * @param {TableContextType} context - The updated context.
    */
-  handleContextChange = ({ checkboxSelection }: TableContextType) => {
+  handleContextChange = ({
+    checkboxSelection,
+    enableBulkSelection,
+  }: TableContextType) => {
     if (typeof checkboxSelection == 'boolean') {
       this.checkboxSelection = checkboxSelection;
+    }
+    if (typeof enableBulkSelection == 'boolean') {
+      this.enableBulkSelection = enableBulkSelection;
     }
   };
 
@@ -301,14 +315,29 @@ export class TableRow extends LitElement {
       ${this.checkboxSelection && this.closest('kyn-tfoot') === null
         ? html`
             <kyn-td .align=${'center'} ?dense=${this.dense}>
-              <kyn-checkbox
-                ?disabled=${this.disabled || this.locked}
-                .checked=${this.selected}
-                visiblyHidden
-                @on-checkbox-change=${this.handleRowSelectionChange}
-              >
-                ${this.selected ? 'Deselect' : 'Select'} Row ${this.rowId}
-              </kyn-checkbox>
+              <div class="checkbox-container">
+                <kyn-checkbox
+                  ?disabled=${this.disabled || this.locked}
+                  .checked=${this.selected}
+                  visiblyHidden
+                  @on-checkbox-change=${this.handleRowSelectionChange}
+                >
+                  ${this.selected ? 'Deselect' : 'Select'} Row ${this.rowId}
+                </kyn-checkbox>
+                ${this.enableBulkSelection
+                  ? html`
+                      <kyn-overflow-menu
+                        class="overflow-menu"
+                        anchorLeft
+                        fixed
+                        size="sm"
+                        verticalDots
+                        assistiveText="Select options"
+                      >
+                      </kyn-overflow-menu>
+                    `
+                  : null}
+              </div>
             </kyn-td>
           `
         : null}
