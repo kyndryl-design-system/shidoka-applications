@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { expect, userEvent, waitFor } from 'storybook/test';
 
 import './';
+import '../../reusable/tabs';
 
 export default {
   title: 'Tests/Global Components/Header/Categorical Nav',
@@ -110,6 +111,112 @@ export const SlottedTruncatedRootToFullDetailRegression = {
           )
         ).find((link) => link.textContent?.includes('More'))
       ).toBeUndefined();
+    });
+  },
+};
+
+export const FullWidthFlyoutSingleCategoryRegression = {
+  render: () => html`
+    <kyn-header rootUrl="/" appTitle="Application">
+      <kyn-header-nav auto-open-flyout="services" truncate-links>
+        <kyn-header-link
+          id="services"
+          href="javascript:void(0)"
+          full-width-flyout
+        >
+          Services
+
+          <kyn-tabs
+            tabSize="md"
+            slot="links"
+            style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;"
+          >
+            <kyn-tab
+              slot="tabs"
+              id="kyndryl"
+              fill-width
+              selected
+              style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+            >
+              Kyndryl Services
+            </kyn-tab>
+            <kyn-tab
+              slot="tabs"
+              id="platform"
+              fill-width
+              style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+            >
+              Platform Services
+            </kyn-tab>
+            <kyn-tab
+              slot="tabs"
+              id="additional"
+              fill-width
+              style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"
+            >
+              Additional Services
+            </kyn-tab>
+
+            <kyn-tab-panel tabId="kyndryl" noPadding visible>
+              <kyn-header-categories
+                layout="masonry"
+                .limitRootLinks=${false}
+                style="--kyn-header-category-single-column-width: 350px;"
+              >
+                <kyn-header-category heading="Security & Resiliency">
+                  <kyn-header-link href="#escm">
+                    <span>ESCM</span>
+                  </kyn-header-link>
+                </kyn-header-category>
+              </kyn-header-categories>
+            </kyn-tab-panel>
+            <kyn-tab-panel tabId="platform" noPadding>
+              <div style="min-height: 220px;"></div>
+            </kyn-tab-panel>
+            <kyn-tab-panel tabId="additional" noPadding>
+              <div style="min-height: 220px;"></div>
+            </kyn-tab-panel>
+          </kyn-tabs>
+        </kyn-header-link>
+      </kyn-header-nav>
+    </kyn-header>
+  `,
+  play: async ({ canvasElement }) => {
+    const servicesLink = canvasElement.querySelector(
+      'kyn-header-link#services'
+    );
+    expect(servicesLink).not.toBeNull();
+
+    await waitFor(() => {
+      expect(servicesLink.open).toBe(true);
+    });
+
+    const flyout = servicesLink.shadowRoot?.querySelector('.menu__content');
+    const categories = canvasElement.querySelector(
+      'kyn-tab-panel[visible] kyn-header-categories'
+    );
+    const serviceLink = canvasElement.querySelector(
+      'kyn-tab-panel[visible] kyn-header-link[href="#escm"]'
+    );
+
+    expect(flyout).not.toBeNull();
+    expect(categories).not.toBeNull();
+    expect(serviceLink).not.toBeNull();
+
+    await waitFor(() => {
+      expect(categories.getAttribute('data-columns')).toBe('1');
+
+      const flyoutWidth = Math.round(flyout.getBoundingClientRect().width);
+      const categoryWidth = Math.round(
+        categories.getBoundingClientRect().width
+      );
+      const linkWidth = Math.round(serviceLink.getBoundingClientRect().width);
+
+      expect(flyoutWidth).toBeGreaterThan(500);
+      expect(categoryWidth).toBeLessThanOrEqual(370);
+      expect(linkWidth).toBeGreaterThan(0);
+      expect(linkWidth).toBeLessThanOrEqual(370);
+      expect(linkWidth).toBeLessThan(flyoutWidth / 2);
     });
   },
 };

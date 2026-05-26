@@ -15,6 +15,7 @@ $column-width-2: 300px;
   box-sizing: border-box;
   width: 100%;
 
+  --kyn-header-category-single-column-width: #{$column-width-1};
   --kyn-header-category-column-width: #{$column-width-2};
   --kyn-header-category-column-gap: #{$column-gap};
 }
@@ -125,6 +126,12 @@ slot.header-categories__projected::slotted(*) {
 }
 
 // Column count driven by data-columns attribute
+:host([layout='masonry'][data-columns='1']) {
+  max-width: var(
+    --kyn-header-category-single-column-width,
+    var(--kyn-header-category-column-width)
+  );
+}
 :host([layout='masonry'][data-columns='1']) .header-categories__inner {
   column-count: 1;
 }
