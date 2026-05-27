@@ -5,12 +5,6 @@ import { Default as Answers } from './aiAnswers.stories.js';
 
 export default {
   title: 'AI/Patterns/Chat',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300050&p=f&m=dev',
-    },
-  },
 };
 
 export const ChatMessages = {
