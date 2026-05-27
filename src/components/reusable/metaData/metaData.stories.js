@@ -12,12 +12,6 @@ import { characters } from '../table/story-helpers/ultils.sample';
 export default {
   title: 'Components/Data Display/Meta Data',
   component: 'kyn-meta-data',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library?node-id=39511-307374&m=dev',
-    },
-  },
   decorators: [
     (story) => html`
       <style>

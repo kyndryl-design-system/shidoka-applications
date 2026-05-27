@@ -14,12 +14,6 @@ export default {
       control: { type: 'select' },
     },
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546829&p=f&t=A5tcETiCf23sAgKK-0',
-    },
-  },
 };
 
 const args = {

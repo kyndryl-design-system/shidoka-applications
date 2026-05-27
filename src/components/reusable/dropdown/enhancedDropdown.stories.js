@@ -50,12 +50,6 @@ export default {
       if: { arg: 'searchable', truthy: true },
     },
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library-2.0?node-id=13361-476952&m=dev',
-    },
-  },
   ...ValidationArgs,
 };
 

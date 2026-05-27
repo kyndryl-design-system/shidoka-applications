@@ -49,10 +49,6 @@ export default {
   },
   parameters: {
     layout: 'fullscreen',
-    design: {
-      type: 'figma',
-      url: '',
-    },
   },
   decorators: [
     (story) => html`

@@ -46,10 +46,6 @@ export default {
     },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/wrDALK5VGuhJ0q4Sfii2rl/Template-Library?node-id=2830-17768&m=dev',
-    },
     a11y: {
       config: {
         rules: [

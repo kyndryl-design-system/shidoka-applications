@@ -13,10 +13,6 @@ export default {
   title: 'Components/Layout & Structure/Widget/Gridstack',
   component: 'kyn-widget-gridstack',
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-423936&p=f&t=A5tcETiCf23sAgKK-0',
-    },
     a11y: {
       disable: true,
     },

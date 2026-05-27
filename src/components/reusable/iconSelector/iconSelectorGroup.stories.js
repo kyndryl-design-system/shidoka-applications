@@ -19,12 +19,6 @@ export default {
     },
     value: { control: { type: 'object' } },
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '',
-    },
-  },
 };
 
 export const Group = {

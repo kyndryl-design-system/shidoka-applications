@@ -5,12 +5,6 @@ import { action } from 'storybook/actions';
 export default {
   title: 'Components/Feedback & Status/Loaders/Loader',
   component: 'kyn-loader',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546569&p=f&m=dev',
-    },
-  },
 };
 
 export const Block = {

@@ -52,10 +52,6 @@ export default {
     },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-423936&p=f&m=dev',
-    },
     // disable violations flagged in chartjs-plugin-a11y-legend
     a11y: {
       config: {

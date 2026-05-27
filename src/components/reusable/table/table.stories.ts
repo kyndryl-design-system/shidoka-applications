@@ -50,12 +50,6 @@ const meta: Meta = {
     'kyn-table-legend': 'kyn-table-legend',
     'kyn-table-legend-item': 'kyn-table-legend-item',
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-382289&p=f&m=dev',
-    },
-  },
 };
 
 export default meta;
@@ -1328,10 +1322,6 @@ export const ColumnSettings: Story = {
         `,
       },
     },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=3-414323&p=f&m=dev',
-    },
   },
 };
 
@@ -1365,10 +1355,6 @@ export const Skeleton = {
         // https://github.com/kyndryl-design-system/shidoka-applications/tree/main/src/components/reusable/table/table-skeleton.ts
         `,
       },
-    },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-546635&m=dev',
     },
     argTypes: {
       rows: {

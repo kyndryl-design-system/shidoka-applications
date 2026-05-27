@@ -6,12 +6,6 @@ import '../components/reusable/link';
 
 export default {
   title: 'Patterns/Account Meta Info',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '', // When available
-    },
-  },
   decorators: [
     (story) =>
       html`

@@ -12,12 +12,6 @@ import { SwiperConfig } from '../../common/helpers/swiper';
 
 export default {
   title: 'Patterns/Carousel',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-7558&p=f&m=dev',
-    },
-  },
   decorators: [
     (story) =>
       html`

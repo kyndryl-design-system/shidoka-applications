@@ -3,7 +3,6 @@ import '../../components/reusable/loaders/aiLoader';
 
 export default {
   title: 'AI/Components/AI Loaders',
-  parameters: { design: { type: 'figma', url: '' } },
 };
 
 export const Default = {

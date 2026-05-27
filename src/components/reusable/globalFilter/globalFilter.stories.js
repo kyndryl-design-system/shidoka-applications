@@ -10,12 +10,6 @@ export default {
   title: 'Components/Search & Filtering/Global Filter',
   component: 'kyn-global-filter',
   tags: ['deprecated', 'version:v2.68.0'],
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-104226&p=f&t=A5tcETiCf23sAgKK-0',
-    },
-  },
 };
 
 export const GlobalFilter = {

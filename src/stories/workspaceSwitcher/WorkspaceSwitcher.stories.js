@@ -1497,12 +1497,6 @@ const handleFlyoutToggle = (event) => {
 
 export default {
   title: 'Patterns/Workspace Switcher',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '',
-    },
-  },
   argTypes: {
     maxHeight: {
       name: 'maxHeight',

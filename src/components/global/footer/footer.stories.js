@@ -5,12 +5,6 @@ import '../../reusable/link';
 export default {
   title: 'Global Components/Footer',
   component: 'kyn-footer',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-15300&p=f&m=dev',
-    },
-  },
   decorators: [
     (story) =>
       html`

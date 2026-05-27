@@ -13,12 +13,6 @@ import '../../reusable/link/link';
 export default {
   title: 'AI / Components / AI Sources Feedback',
   component: 'kyn-ai-sources-feedback',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/STWRRCgjIeXAZlIrIOJeTF/Ai-Component-Library?node-id=26610-251300&p=f&m=dev',
-    },
-  },
 };
 
 const sourcesData = [
