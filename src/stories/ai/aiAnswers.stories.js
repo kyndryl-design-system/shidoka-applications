@@ -5,12 +5,6 @@ import '../../components/reusable/button';
 
 export default {
   title: 'AI/Patterns/AI Answers',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300056&p=f&m=dev',
-    },
-  },
 };
 
 export const Default = {

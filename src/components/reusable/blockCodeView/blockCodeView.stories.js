@@ -101,12 +101,6 @@ print(john.introduce())`,
 export default {
   title: 'Components/Data Display/Code View/Block',
   component: 'kyn-block-code-view',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/AIX4LLzoDHnFCXzQCiPHJk/Vienna?node-id=4001-43433&node-type=canvas&t=s5gOlFYjWDtlW9CH-0',
-    },
-  },
   argTypes: {
     copyOptionVisible: {
       control: { type: 'boolean' },

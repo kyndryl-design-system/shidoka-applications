@@ -25,10 +25,6 @@ It helps orient users and suggest next steps.
         `,
       },
     },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/your-url-here',
-    },
   },
 };
 

@@ -5,12 +5,6 @@ import { action } from 'storybook/actions'; // used to log an action in storyboo
 export default {
   title: 'Components/Component', // component name
   component: 'kyn-component', // custom element tag name
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '', // figma reference link
-    },
-  },
 };
 
 export const Component = {

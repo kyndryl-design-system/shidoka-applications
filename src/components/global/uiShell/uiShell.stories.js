@@ -20,12 +20,6 @@ import { PageTitle } from '../../reusable/pagetitle/pageTitle.stories.js';
 export default {
   title: 'Global Components/UI Shell',
   component: 'kyn-ui-shell',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '',
-    },
-  },
   decorators: [
     (story) =>
       html`

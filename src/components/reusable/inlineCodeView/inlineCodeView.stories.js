@@ -4,12 +4,6 @@ import './index';
 export default {
   title: 'Components/Data Display/Code View/Inline',
   component: 'kyn-inline-code-view',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/AIX4LLzoDHnFCXzQCiPHJk/Vienna?node-id=4001-43433&node-type=canvas&t=s5gOlFYjWDtlW9CH-0',
-    },
-  },
   argTypes: {
     darkTheme: {
       options: ['light', 'dark', 'default'],

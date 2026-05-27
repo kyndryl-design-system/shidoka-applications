@@ -15,12 +15,6 @@ export default {
     animateSelection: { table: { disable: true } },
     value: { table: { disable: true } },
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '',
-    },
-  },
 };
 
 export const IconSelector = {

@@ -37,12 +37,6 @@ const args = {
 
 export default {
   title: 'Global Components/Header/Global Switcher',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library?node-id=43098-12090&p=f&m=dev',
-    },
-  },
   args,
 };
 

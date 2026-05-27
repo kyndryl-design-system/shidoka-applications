@@ -32,12 +32,6 @@ export default {
       control: { type: 'select' },
     },
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-549977&p=f&m=dev',
-    },
-  },
 };
 
 export const Notification = {
@@ -179,10 +173,6 @@ export const Toast = {
   parameters: {
     a11y: {
       disable: true,
-    },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-213406&p=f&m=dev',
     },
   },
   decorators: [

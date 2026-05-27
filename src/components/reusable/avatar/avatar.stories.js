@@ -15,10 +15,3 @@ export const Avatar = {
     return html` <kyn-avatar initials=${args.initials}></kyn-avatar> `;
   },
 };
-
-Avatar.parameters = {
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-302033&m=dev',
-  },
-};

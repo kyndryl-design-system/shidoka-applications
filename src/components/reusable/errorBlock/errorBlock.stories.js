@@ -8,12 +8,6 @@ import warningImg from '@kyndryl-design-system/shidoka-foundation/assets/svg/mas
 export default {
   title: 'Components/Feedback & Status/Error Block',
   component: 'kyn-error',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-7561&p=f&m=dev',
-    },
-  },
 };
 
 const args = {

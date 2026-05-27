@@ -17,12 +17,6 @@ import circleDashIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/
 
 export default {
   title: 'Patterns/Search & Action Bar',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '',
-    },
-  },
 };
 
 export const SideDrawer = {

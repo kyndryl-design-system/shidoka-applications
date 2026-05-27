@@ -5,12 +5,6 @@ import { action } from 'storybook/actions';
 export default {
   title: 'Components/Navigation/Pagination',
   component: 'kyn-pagination',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-443883&t=A5tcETiCf23sAgKK-0',
-    },
-  },
   argTypes: {
     pageSize: {
       options: [5, 10, 20, 30, 40, 50, 100],

@@ -27,12 +27,6 @@ export default {
     'kyn-tab': 'kyn-tab',
     'kyn-tab-panel': 'kyn-tab-panel',
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-418328&p=f&m=dev',
-    },
-  },
 };
 
 const args = {

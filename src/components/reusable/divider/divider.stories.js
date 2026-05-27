@@ -22,12 +22,6 @@ export default {
     'drag-handle': { table: { disable: true } },
     'inverted-handle': { table: { disable: true } },
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4550-7394&p=f&m=dev',
-    },
-  },
   decorators: [
     (story) => html`
       <style>

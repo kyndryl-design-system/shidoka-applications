@@ -5,12 +5,6 @@ import { action } from 'storybook/actions';
 export default {
   title: 'Components/Form Inputs/Search',
   component: 'kyn-search',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-554036&p=f&m=dev',
-    },
-  },
   argTypes: {
     size: {
       options: ['sm', 'md', 'lg'],

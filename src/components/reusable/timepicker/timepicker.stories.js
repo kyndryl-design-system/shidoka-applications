@@ -12,12 +12,6 @@ import '../tabs';
 export default {
   title: 'Components/Form Inputs/Timepicker',
   component: 'kyn-time-picker',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/qyPEUQckxj8LUgesi1OEES/Component-Library?node-id=19723-26652&p=f&m=dev',
-    },
-  },
   argTypes: {
     size: {
       options: ['xs', 'sm', 'md', 'lg'],

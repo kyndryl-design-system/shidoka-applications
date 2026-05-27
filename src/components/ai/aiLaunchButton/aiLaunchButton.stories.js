@@ -6,12 +6,6 @@ import './aiLaunchButton';
 export default {
   title: 'AI/Components/AI Launch Button',
   component: 'kyn-ai-launch-btn',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300055&p=f&m=dev',
-    },
-  },
   argTypes: {
     disabled: {
       control: 'boolean',

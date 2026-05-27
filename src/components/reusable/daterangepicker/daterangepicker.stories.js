@@ -12,12 +12,6 @@ import '../accordion';
 export default {
   title: 'Components/Form Inputs/Date Range Picker',
   component: 'kyn-date-range-picker',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-376248&m=dev',
-    },
-  },
   argTypes: {
     locale: { control: { type: 'text' } },
     dateRangePickerDisabled: { control: { type: 'boolean' } },

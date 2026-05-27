@@ -19,10 +19,6 @@ export default {
           'Uses **unnamed slot** for title + description. `slot="leftIcon"` and `slot="inlineConfirm"` for side elements.',
       },
     },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-300054&p=f&m=dev',
-    },
   },
 };
 

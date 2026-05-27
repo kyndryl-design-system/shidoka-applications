@@ -9,12 +9,6 @@ import infoIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/inf
 export default {
   title: 'Components/Form Inputs/Toggle Button',
   component: 'kyn-toggle-button',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-421519&p=f&m=dev',
-    },
-  },
   argTypes: {
     ...ValidationArgs,
   },

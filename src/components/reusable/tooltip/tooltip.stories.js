@@ -5,12 +5,6 @@ import './index';
 export default {
   title: 'Components/Overlays & Floating UI/Tooltip',
   component: 'kyn-tooltip',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=4-423746&p=f&m=dev',
-    },
-  },
 };
 
 const args = {

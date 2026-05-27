@@ -9,12 +9,6 @@ import '../button';
 export default {
   title: 'Components/Buttons & Actions/Button/With Floating Container',
   component: 'kyn-button-float-container',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=7-13940&p=f&m=dev',
-    },
-  },
 };
 
 export const Default = {

@@ -5,12 +5,6 @@ import { action } from 'storybook/actions';
 export default {
   title: 'Components/Form Inputs/Checkbox',
   component: 'kyn-checkbox',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/9Q2XfTSxfzTXfNe2Bi8KDS/Component-Viewer?node-id=1-370429&p=f&m=dev',
-    },
-  },
 };
 
 export const Checkbox = {

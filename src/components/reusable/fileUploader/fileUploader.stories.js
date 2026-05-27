@@ -10,12 +10,6 @@ export default {
   subcomponents: {
     FileUploaderListContainer: 'kyn-file-uploader-list-container',
   },
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/rC5XdRnXVbDmu3vPN8tJ4q/2.1-Edinburgh?node-id=4253-31509&t=IEdMJk3IbVS8A5JL-0',
-    },
-  },
   argTypes: {
     ...ValidationArgs,
   },

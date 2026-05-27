@@ -326,12 +326,6 @@ import { action } from 'storybook/actions';
 export default {
   title: '${pascalCase}', // modify as needed to fit into Storybook hierarchy e.g. 'Components/${pascalCase}'
   component: 'kyn-${kebabCase}',
-  parameters: {
-    design: {
-      type: 'figma',
-      url: '', // figma reference link
-    },
-  },
 };
 
 const args = {
