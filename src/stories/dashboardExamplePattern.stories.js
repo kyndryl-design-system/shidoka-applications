@@ -142,14 +142,42 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     width: 100%;
   }
 
-  .dashboard-chart-item--radar kyn-widget {
+  .dashboard-chart-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dashboard-chart-heading {
+    min-width: 0;
+  }
+
+  .dashboard-chart-title {
+    color: var(--kd-color-text-level-primary);
+    font-weight: var(--kd-font-weight-medium);
+  }
+
+  .dashboard-chart-description {
+    color: var(--kd-color-text-level-primary);
+  }
+
+  .dashboard-chart-item--radar .dashboard-chart-drag-handle {
+    position: static;
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+  }
+
+  .dashboard-chart-item--radar .dashboard-chart-plot {
+    display: flex;
+    width: 100%;
     justify-content: center;
   }
 
   .dashboard-chart-item--radar kd-chart {
     width: min(100%, 560px);
+    margin-inline: auto;
   }
 
   @media (max-width: calc(82rem - 0.001px)) {
@@ -1107,6 +1135,20 @@ const dashboardChartLayout = {
 
 const stringifySourceProp = (value) => JSON.stringify(value, null, 2);
 
+const createChartHeaderSource = (chart) => `<div class="dashboard-chart-header">
+  <div class="dashboard-chart-heading">
+    <div class="dashboard-chart-title kd-type--ui-02">${escapeSource(
+      chart.title
+    )}</div>
+    <div class="dashboard-chart-description kd-type--ui-03">${escapeSource(
+      chart.subtitle
+    )}</div>
+  </div>
+  <span class="dashboard-chart-drag-handle">
+    <!-- draggable icon -->
+  </span>
+</div>`;
+
 const createChartSource = (chart) => `
               <div
                 gs-id="${chart.id}"
@@ -1115,14 +1157,25 @@ const createChartSource = (chart) => `
                 }"
               >
                 <div class="grid-stack-item-content">
-                  <span class="dashboard-chart-drag-handle">
-                    <!-- draggable icon -->
-                  </span>
                   <kyn-widget widgetTitle="${chart.title}">
+                    ${
+                      chart.type === 'radar'
+                        ? `${indentSource(createChartHeaderSource(chart), 20)}
+                    <div class="dashboard-chart-plot">`
+                        : `<span class="dashboard-chart-drag-handle">
+                      <!-- draggable icon -->
+                    </span>`
+                    }
                     <kd-chart
                       type="${chart.type}"
-                      chartTitle="${chart.title}"
-                      description="${chart.subtitle}"
+                      ${
+                        chart.type === 'radar'
+                          ? `aria-label="${escapeSource(
+                              `${chart.title}. ${chart.subtitle}`
+                            )}"`
+                          : `chartTitle="${chart.title}"
+                      description="${chart.subtitle}"`
+                      }
                       hideControls
                       hideCaptions
                       height="320"
@@ -1130,6 +1183,7 @@ const createChartSource = (chart) => `
                       .datasets=${stringifySourceProp(chart.datasets)}
                       .options=${stringifySourceProp(chart.options)}
                     ></kd-chart>
+                    ${chart.type === 'radar' ? '</div>' : ''}
                     <kyn-button
                       slot="footer"
                       kind="secondary"
@@ -1313,6 +1367,18 @@ const renderKpis = () => html`
   </div>
 `;
 
+const renderChartHeader = (chart) => html`
+  <div class="dashboard-chart-header">
+    <div class="dashboard-chart-heading">
+      <div class="dashboard-chart-title kd-type--ui-02">${chart.title}</div>
+      <div class="dashboard-chart-description kd-type--ui-03">
+        ${chart.subtitle}
+      </div>
+    </div>
+    <span class="dashboard-chart-drag-handle">${unsafeSVG(dragIcon)}</span>
+  </div>
+`;
+
 const renderChartWidget = (chart) => html`
   <div
     gs-id=${chart.id}
@@ -1321,19 +1387,39 @@ const renderChartWidget = (chart) => html`
       : ''}"
   >
     <div class="grid-stack-item-content">
-      <span class="dashboard-chart-drag-handle"> ${unsafeSVG(dragIcon)} </span>
       <kyn-widget widgetTitle=${chart.title}>
-        <kd-chart
-          type=${chart.type}
-          chartTitle=${chart.title}
-          description=${chart.subtitle}
-          hideControls
-          hideCaptions
-          height="320"
-          .labels=${chart.labels}
-          .datasets=${chart.datasets}
-          .options=${chart.options}
-        ></kd-chart>
+        ${chart.type === 'radar'
+          ? html`
+              ${renderChartHeader(chart)}
+              <div class="dashboard-chart-plot">
+                <kd-chart
+                  type=${chart.type}
+                  aria-label=${`${chart.title}. ${chart.subtitle}`}
+                  hideControls
+                  hideCaptions
+                  height="320"
+                  .labels=${chart.labels}
+                  .datasets=${chart.datasets}
+                  .options=${chart.options}
+                ></kd-chart>
+              </div>
+            `
+          : html`
+              <span class="dashboard-chart-drag-handle">
+                ${unsafeSVG(dragIcon)}
+              </span>
+              <kd-chart
+                type=${chart.type}
+                chartTitle=${chart.title}
+                description=${chart.subtitle}
+                hideControls
+                hideCaptions
+                height="320"
+                .labels=${chart.labels}
+                .datasets=${chart.datasets}
+                .options=${chart.options}
+              ></kd-chart>
+            `}
         <kyn-button
           slot="footer"
           kind="secondary"
