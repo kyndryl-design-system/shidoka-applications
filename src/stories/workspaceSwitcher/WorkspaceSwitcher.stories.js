@@ -1495,8 +1495,17 @@ const handleFlyoutToggle = (event) => {
   }
 };
 
+export const WorkspaceSwitcherPattern = {
+  args: DEFAULT_STORY_ARGS,
+  createStandalonePattern,
+  createSourceMarkup: createWorkspaceSwitcherSourceMarkup,
+  handleFlyoutToggle,
+  uiImplementationStyles: UI_IMPLEMENTATION_DEMO_STYLES,
+};
+
 export default {
   title: 'Patterns/Workspace Switcher',
+  excludeStories: ['WorkspaceSwitcherPattern'],
   argTypes: {
     maxHeight: {
       name: 'maxHeight',
