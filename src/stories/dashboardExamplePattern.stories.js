@@ -31,7 +31,6 @@ import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/hom
 import informationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/information.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 import notificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notification.svg';
-import dragIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/draggable.svg';
 import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
@@ -88,15 +87,18 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
   }
 
   .dashboard-kpi {
-    display: flex;
     min-height: 116px;
+  }
+
+  .dashboard-kpi kyn-widget {
+    height: 100%;
+  }
+
+  .dashboard-kpi__content {
+    display: flex;
+    height: 100%;
     flex-direction: column;
     gap: 0.75rem;
-    padding: 1rem;
-    background: var(--kd-color-background-container-default);
-    border: 1px solid var(--kd-color-border-variants-light);
-    border-radius: 8px;
-    box-shadow: var(--kd-elevation-level-1);
   }
 
   .dashboard-kpi__label {
@@ -131,13 +133,12 @@ const DASHBOARD_PATTERN_STYLES = /* css */ `
     cursor: move;
   }
 
-  .dashboard-chart-drag-handle svg {
+  .dashboard-chart-item kd-chart {
     display: block;
-    width: 16px;
-    height: 16px;
+    width: 100%;
   }
 
-  .dashboard-chart-item kd-chart {
+  .dashboard-chart-plot {
     display: block;
     width: 100%;
   }
@@ -617,16 +618,20 @@ const createFlyoutActionLinkSource = (label) =>
   ].join('\n');
 
 const createKpiSource = (kpi) => `<div class="dashboard-kpi">
-  <span class="dashboard-kpi__label kd-type--ui-02">${escapeSource(
-    kpi.label
-  )}</span>
-  <span class="dashboard-kpi__value">${escapeSource(kpi.value)}</span>
-  <div class="dashboard-kpi__meta">
-    <kyn-badge label="${escapeSource(kpi.statusLabel)}" status="${escapeSource(
-  kpi.status
-)}" hideIcon></kyn-badge>
-    <span class="kd-type--ui-04">${escapeSource(kpi.meta)}</span>
-  </div>
+  <kyn-widget removeHeader>
+    <div class="dashboard-kpi__content">
+      <span class="dashboard-kpi__label kd-type--ui-02">${escapeSource(
+        kpi.label
+      )}</span>
+      <span class="dashboard-kpi__value">${escapeSource(kpi.value)}</span>
+      <div class="dashboard-kpi__meta">
+        <kyn-badge label="${escapeSource(
+          kpi.statusLabel
+        )}" status="${escapeSource(kpi.status)}" hideIcon></kyn-badge>
+        <span class="kd-type--ui-04">${escapeSource(kpi.meta)}</span>
+      </div>
+    </div>
+  </kyn-widget>
 </div>`;
 
 const starSelector = (checked = false) => html`
@@ -1089,7 +1094,6 @@ const chartData = [
 
 const dashboardGridstackConfig = {
   ...gridstackConfig,
-  handle: '.dashboard-chart-drag-handle',
   staticGrid: false,
   disableDrag: false,
   disableResize: true,
@@ -1144,9 +1148,7 @@ const createChartHeaderSource = (chart) => `<div class="dashboard-chart-header">
       chart.subtitle
     )}</div>
   </div>
-  <span class="dashboard-chart-drag-handle">
-    <!-- draggable icon -->
-  </span>
+  <kyn-widget-drag-handle slot="" class="dashboard-chart-drag-handle"></kyn-widget-drag-handle>
 </div>`;
 
 const createChartSource = (chart) => `
@@ -1157,33 +1159,22 @@ const createChartSource = (chart) => `
                 }"
               >
                 <div class="grid-stack-item-content">
-                  <kyn-widget widgetTitle="${chart.title}">
-                    ${
-                      chart.type === 'radar'
-                        ? `${indentSource(createChartHeaderSource(chart), 20)}
-                    <div class="dashboard-chart-plot">`
-                        : `<span class="dashboard-chart-drag-handle">
-                      <!-- draggable icon -->
-                    </span>`
-                    }
-                    <kd-chart
-                      type="${chart.type}"
-                      ${
-                        chart.type === 'radar'
-                          ? `aria-label="${escapeSource(
-                              `${chart.title}. ${chart.subtitle}`
-                            )}"`
-                          : `chartTitle="${chart.title}"
-                      description="${chart.subtitle}"`
-                      }
-                      hideControls
-                      hideCaptions
-                      height="320"
-                      .labels=${stringifySourceProp(chart.labels)}
-                      .datasets=${stringifySourceProp(chart.datasets)}
-                      .options=${stringifySourceProp(chart.options)}
-                    ></kd-chart>
-                    ${chart.type === 'radar' ? '</div>' : ''}
+                  <kyn-widget removeHeader>
+${indentSource(createChartHeaderSource(chart), 20)}
+                    <div class="dashboard-chart-plot">
+                      <kd-chart
+                        type="${chart.type}"
+                        aria-label="${escapeSource(
+                          `${chart.title}. ${chart.subtitle}`
+                        )}"
+                        hideControls
+                        hideCaptions
+                        height="320"
+                        .labels=${stringifySourceProp(chart.labels)}
+                        .datasets=${stringifySourceProp(chart.datasets)}
+                        .options=${stringifySourceProp(chart.options)}
+                      ></kd-chart>
+                    </div>
                     <kyn-button
                       slot="footer"
                       kind="secondary"
@@ -1351,16 +1342,22 @@ const renderKpis = () => html`
     ${kpis.map(
       (kpi) => html`
         <div class="dashboard-kpi">
-          <span class="dashboard-kpi__label kd-type--ui-02">${kpi.label}</span>
-          <span class="dashboard-kpi__value">${kpi.value}</span>
-          <div class="dashboard-kpi__meta">
-            <kyn-badge
-              label=${kpi.statusLabel}
-              status=${kpi.status}
-              hideIcon
-            ></kyn-badge>
-            <span class="kd-type--ui-04">${kpi.meta}</span>
-          </div>
+          <kyn-widget removeHeader>
+            <div class="dashboard-kpi__content">
+              <span class="dashboard-kpi__label kd-type--ui-02"
+                >${kpi.label}</span
+              >
+              <span class="dashboard-kpi__value">${kpi.value}</span>
+              <div class="dashboard-kpi__meta">
+                <kyn-badge
+                  label=${kpi.statusLabel}
+                  status=${kpi.status}
+                  hideIcon
+                ></kyn-badge>
+                <span class="kd-type--ui-04">${kpi.meta}</span>
+              </div>
+            </div>
+          </kyn-widget>
         </div>
       `
     )}
@@ -1375,7 +1372,10 @@ const renderChartHeader = (chart) => html`
         ${chart.subtitle}
       </div>
     </div>
-    <span class="dashboard-chart-drag-handle">${unsafeSVG(dragIcon)}</span>
+    <kyn-widget-drag-handle
+      slot=""
+      class="dashboard-chart-drag-handle"
+    ></kyn-widget-drag-handle>
   </div>
 `;
 
@@ -1387,39 +1387,20 @@ const renderChartWidget = (chart) => html`
       : ''}"
   >
     <div class="grid-stack-item-content">
-      <kyn-widget widgetTitle=${chart.title}>
-        ${chart.type === 'radar'
-          ? html`
-              ${renderChartHeader(chart)}
-              <div class="dashboard-chart-plot">
-                <kd-chart
-                  type=${chart.type}
-                  aria-label=${`${chart.title}. ${chart.subtitle}`}
-                  hideControls
-                  hideCaptions
-                  height="320"
-                  .labels=${chart.labels}
-                  .datasets=${chart.datasets}
-                  .options=${chart.options}
-                ></kd-chart>
-              </div>
-            `
-          : html`
-              <span class="dashboard-chart-drag-handle">
-                ${unsafeSVG(dragIcon)}
-              </span>
-              <kd-chart
-                type=${chart.type}
-                chartTitle=${chart.title}
-                description=${chart.subtitle}
-                hideControls
-                hideCaptions
-                height="320"
-                .labels=${chart.labels}
-                .datasets=${chart.datasets}
-                .options=${chart.options}
-              ></kd-chart>
-            `}
+      <kyn-widget removeHeader>
+        ${renderChartHeader(chart)}
+        <div class="dashboard-chart-plot">
+          <kd-chart
+            type=${chart.type}
+            aria-label=${`${chart.title}. ${chart.subtitle}`}
+            hideControls
+            hideCaptions
+            height="320"
+            .labels=${chart.labels}
+            .datasets=${chart.datasets}
+            .options=${chart.options}
+          ></kd-chart>
+        </div>
         <kyn-button
           slot="footer"
           kind="secondary"

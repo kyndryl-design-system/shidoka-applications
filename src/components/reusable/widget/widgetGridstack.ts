@@ -68,7 +68,6 @@ export class WidgetGridstack extends LitElement {
     changed. If either of these properties has changed, it updates the `_gridstackConfig` property
     based on the current values of `compact` and `wholeWidgetDraggable`. */
     if (
-      changedProps.has('gridstackConfig') ||
       changedProps.has('compact') ||
       changedProps.has('wholeWidgetDraggable')
     ) {
