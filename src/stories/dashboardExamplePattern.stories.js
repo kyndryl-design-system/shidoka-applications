@@ -65,6 +65,7 @@ const DASHBOARD_STYLES = /* css */ `
     height: min(38vh, 360px);
     content: '';
     background: var(--kd-color-background-container-soft);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
     pointer-events: none;
   }
@@ -125,6 +126,7 @@ const DASHBOARD_STYLES = /* css */ `
     height: min(38vh, 360px);
     color: var(--kd-color-opacity-ai-warm-red-50);
     overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
     pointer-events: none;
   }
@@ -324,6 +326,237 @@ const DASHBOARD_STYLES = /* css */ `
 
 const createStorySource = (markup, styles) =>
   `<style>\n${styles.trim()}\n</style>\n\n${markup.trim()}`;
+
+const escapeSource = (value = '') =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+
+const indentSource = (markup, spaces = 2) => {
+  const prefix = ' '.repeat(spaces);
+  return markup
+    .split('\n')
+    .map((line) => (line ? `${prefix}${line}` : line))
+    .join('\n');
+};
+
+const createSourceIcon = (icon, slot = '', className = '') => {
+  const slotAttr = slot ? ` slot="${slot}"` : '';
+  const classAttr = className ? ` class="${className}"` : '';
+  return `<span${slotAttr}${classAttr}><!-- ${escapeSource(
+    icon
+  )} icon --></span>`;
+};
+
+const createSourceStarSelector = (checked = false) =>
+  [
+    `<kyn-icon-selector${checked ? ' checked' : ''}>`,
+    '  <span slot="icon-unchecked"><!-- recommend icon --></span>',
+    '  <span slot="icon-checked"><!-- recommend-filled icon --></span>',
+    '</kyn-icon-selector>',
+  ].join('\n');
+
+const createGlobalSwitcherLinkSource = (link) => {
+  const attrs = [
+    `href="${escapeSource(link.href || 'javascript:void(0)')}"`,
+    link.target ? `target="${escapeSource(link.target)}"` : '',
+    link.target === '_blank' ? 'truncate' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const content = [
+    link.icon
+      ? [
+          '<span style="display: inline-flex; align-items: center; gap: 8px;">',
+          `  ${createSourceIcon(link.icon, '', 'global-switcher-icon')}`,
+          `  ${escapeSource(link.label)}`,
+          '</span>',
+        ].join('\n')
+      : `<span>${escapeSource(link.label)}</span>`,
+    createSourceStarSelector(link.starred || false),
+    link.target === '_blank'
+      ? createSourceIcon('launch', '', 'global-switcher-launch-icon')
+      : '',
+  ]
+    .filter(Boolean)
+    .map((line) => indentSource(line, 2))
+    .join('\n');
+
+  return [`<kyn-header-link ${attrs}>`, content, '</kyn-header-link>'].join(
+    '\n'
+  );
+};
+
+const createGlobalSwitcherCategorySource = (category) =>
+  [
+    `<kyn-header-category heading="${escapeSource(category.heading)}">`,
+    indentSource(createSourceIcon(category.icon || 'circle-stroke', 'icon'), 2),
+    indentSource(
+      category.links
+        .map((link) => createGlobalSwitcherLinkSource(link))
+        .join('\n'),
+      2
+    ),
+    '</kyn-header-category>',
+  ].join('\n');
+
+const createSimpleGlobalSwitcherSectionSource = (section) =>
+  [
+    `<kyn-header-link id="${escapeSource(
+      section.id
+    )}" href="javascript:void(0)"${section.hideSearch ? ' hideSearch' : ''}>`,
+    indentSource(createSourceIcon(section.icon), 2),
+    indentSource(escapeSource(section.label), 2),
+    indentSource('<kyn-header-category slot="links">', 2),
+    indentSource(
+      section.links
+        .map((link) => createGlobalSwitcherLinkSource(link))
+        .join('\n'),
+      4
+    ),
+    indentSource('</kyn-header-category>', 2),
+    '</kyn-header-link>',
+    section.dividerAfter ? '<kyn-header-divider></kyn-header-divider>' : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+const createMixedGlobalSwitcherSectionSource = (section) =>
+  [
+    `<kyn-header-link id="${escapeSource(
+      section.id
+    )}" href="javascript:void(0)"${section.hideSearch ? ' hideSearch' : ''}>`,
+    indentSource(createSourceIcon(section.icon), 2),
+    indentSource(escapeSource(section.label), 2),
+    indentSource(
+      [
+        '<div slot="links" style="display: flex; flex-direction: column; gap: 2px;">',
+        indentSource(
+          [
+            ...section.topLinks.map((link) =>
+              createGlobalSwitcherLinkSource(link)
+            ),
+            ...section.categories.map((category) =>
+              createGlobalSwitcherCategorySource(category)
+            ),
+          ].join('\n'),
+          2
+        ),
+        '</div>',
+      ].join('\n'),
+      2
+    ),
+    '</kyn-header-link>',
+  ].join('\n');
+
+const createTabbedGlobalSwitcherSectionSource = (section) =>
+  [
+    `<kyn-header-link id="${escapeSource(
+      section.id
+    )}" href="javascript:void(0)" full-width-flyout>`,
+    indentSource(createSourceIcon(section.icon), 2),
+    indentSource(escapeSource(section.label), 2),
+    indentSource(
+      [
+        '<kyn-tabs tabSize="md" slot="links" style="width: 100%; max-width: none; --global-switcher-tab-width: 170px;">',
+        indentSource(
+          section.tabs
+            .map(
+              (tab, index) => `<kyn-tab
+  slot="tabs"
+  id="${escapeSource(tab.id)}"
+  fill-width
+  style="width: var(--global-switcher-tab-width); flex: 0 0 var(--global-switcher-tab-width);"${
+    index === 0 ? '\n  selected' : ''
+  }
+>
+  ${escapeSource(tab.label)}
+</kyn-tab>`
+            )
+            .join('\n'),
+          2
+        ),
+        indentSource(
+          section.tabs
+            .map(
+              (tab, index) => `<kyn-tab-panel tabId="${escapeSource(
+                tab.id
+              )}" noPadding${index === 0 ? ' visible' : ''}>
+  <kyn-header-categories layout="masonry">
+${indentSource(
+  tab.categories
+    .map((category) => createGlobalSwitcherCategorySource(category))
+    .join('\n'),
+  4
+)}
+  </kyn-header-categories>
+</kyn-tab-panel>`
+            )
+            .join('\n'),
+          2
+        ),
+        '</kyn-tabs>',
+      ].join('\n'),
+      2
+    ),
+    '</kyn-header-link>',
+  ].join('\n');
+
+const createCategoricalGlobalSwitcherSectionSource = (section) =>
+  [
+    `<kyn-header-link id="${escapeSource(
+      section.id
+    )}" href="javascript:void(0)"${section.hideSearch ? ' hideSearch' : ''}>`,
+    indentSource(createSourceIcon(section.icon), 2),
+    indentSource(escapeSource(section.label), 2),
+    indentSource(
+      [
+        `<kyn-header-categories slot="links" layout="masonry" maxColumns="${
+          section.maxColumns || 3
+        }">`,
+        indentSource(
+          section.categories
+            .map((category) => createGlobalSwitcherCategorySource(category))
+            .join('\n'),
+          2
+        ),
+        '</kyn-header-categories>',
+      ].join('\n'),
+      2
+    ),
+    '</kyn-header-link>',
+  ].join('\n');
+
+const createGlobalSwitcherSectionSource = (section) => {
+  switch (section.type) {
+    case 'simple':
+      return createSimpleGlobalSwitcherSectionSource(section);
+    case 'mixed':
+      return createMixedGlobalSwitcherSectionSource(section);
+    case 'tabbed':
+      return createTabbedGlobalSwitcherSectionSource(section);
+    case 'categorical':
+      return createCategoricalGlobalSwitcherSectionSource(section);
+    default:
+      return '';
+  }
+};
+
+const createKpiSource = (kpi) => `<div class="dashboard-kpi">
+  <span class="dashboard-kpi__label kd-type--ui-02">${escapeSource(
+    kpi.label
+  )}</span>
+  <span class="dashboard-kpi__value">${escapeSource(kpi.value)}</span>
+  <div class="dashboard-kpi__meta">
+    <kyn-badge label="${escapeSource(kpi.statusLabel)}" status="${escapeSource(
+  kpi.status
+)}" hideIcon></kyn-badge>
+    <span class="kd-type--ui-04">${escapeSource(kpi.meta)}</span>
+  </div>
+</div>`;
 
 const starSelector = (checked = false) => html`
   <kyn-icon-selector ?checked=${checked}>
@@ -785,8 +1018,8 @@ const stringifySourceProp = (value) => JSON.stringify(value, null, 2);
 
 const createChartSource = (chart) => `
       <div class="${chart.className} dashboard-chart-cell${
-        chart.type === 'radar' ? ' dashboard-chart-cell--radar' : ''
-      }">
+  chart.type === 'radar' ? ' dashboard-chart-cell--radar' : ''
+}">
         <kyn-widget widgetTitle="${chart.title}">
           <span slot="subtitle">${chart.subtitle}</span>
           <div class="dashboard-chart-body">
@@ -813,41 +1046,94 @@ const createChartSource = (chart) => `
 const DASHBOARD_SOURCE = createStorySource(
   `
 <kyn-ui-shell>
-  <kyn-header rootUrl="/" appTitle="Dashboard">
-    <span slot="logo" style="--kyn-header-logo-width: 120px;">
-      <!-- Bridge logo from @kyndryl-design-system/shidoka-foundation -->
-    </span>
+  <kyn-header rootUrl="/" appTitle="Application">
     <kyn-header-nav truncate-links>
-      <!-- Global Switcher JSON pattern sections:
-           Favorites, Recently Viewed, Console, Services, Catalogs, Administration. -->
+${indentSource(
+  navData.sections
+    .map((section) => createGlobalSwitcherSectionSource(section))
+    .join('\n'),
+  6
+)}
     </kyn-header-nav>
     <kyn-header-flyouts>
-      <!-- Workspace, Notifications, Help, and User Profile flyouts. -->
+      <kyn-header-flyout
+        label="Workspaces"
+        hideMenuLabel
+        hideButtonLabel
+        noPadding
+      >
+        <span
+          slot="button"
+          style="display: flex; align-items: center; gap: 8px; font-size: 14px;"
+        >
+          <span class="account-name">Workspaces</span>
+          <span class="account-chevron"><!-- chevron-down icon --></span>
+        </span>
+
+        <div class="ui-impl-switcher">
+${indentSource(
+  WorkspaceSwitcherPattern.createSourceMarkup(WorkspaceSwitcherPattern.args),
+  10
+)}
+        </div>
+      </kyn-header-flyout>
+
+      <kyn-header-flyout label="Menu Label">
+        ${createSourceIcon('question', 'button', 'header-icon')}
+        <kyn-header-link href="javascript:void(0)">
+          ${createSourceIcon('circle-stroke')}
+          Example 1
+        </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)">
+          ${createSourceIcon('circle-stroke')}
+          Example 2
+        </kyn-header-link>
+      </kyn-header-flyout>
+
+      <kyn-header-flyout label="Menu Label" hideMenuLabel>
+        ${createSourceIcon('user', 'button', 'header-icon')}
+        <kyn-header-user-profile
+          name="User Name"
+          subtitle="Job Title"
+          email="user@kyndryl.com"
+          profileLink="#"
+        >
+          <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
+        </kyn-header-user-profile>
+        <kyn-header-link href="javascript:void(0)">
+          ${createSourceIcon('circle-stroke')}
+          Example Link 1
+        </kyn-header-link>
+        <kyn-header-link href="javascript:void(0)">
+          ${createSourceIcon('circle-stroke')}
+          Example Link 2
+        </kyn-header-link>
+      </kyn-header-flyout>
     </kyn-header-flyouts>
   </kyn-header>
 
   <kyn-local-nav>
     <kyn-local-nav-link href="javascript:void(0)" active>
-      <span slot="icon" class="local-nav-icon"><!-- dashboard icon --></span>
+      ${createSourceIcon('dashboard', 'icon', 'local-nav-icon')}
       Dashboard
     </kyn-local-nav-link>
     <kyn-local-nav-link href="javascript:void(0)">
-      <span slot="icon" class="local-nav-icon"><!-- console icon --></span>
+      ${createSourceIcon('actionable-insights', 'icon', 'local-nav-icon')}
       Insights
     </kyn-local-nav-link>
     <kyn-local-nav-link href="javascript:void(0)">
-      <span slot="icon" class="local-nav-icon"><!-- services icon --></span>
+      ${createSourceIcon('services', 'icon', 'local-nav-icon')}
       Services
     </kyn-local-nav-link>
     <kyn-local-nav-link href="javascript:void(0)">
-      <span slot="icon" class="local-nav-icon"><!-- settings icon --></span>
+      ${createSourceIcon('settings', 'icon', 'local-nav-icon')}
       Settings
     </kyn-local-nav-link>
   </kyn-local-nav>
 
   <main class="dashboard-main">
     <div class="dashboard-trellis" aria-hidden="true">
-      <!-- Extracted from Kyndryl consulting page trellis-sprite.svg#even-pattern. -->
+      <!-- Inline dashboardExamplePatternTrellis.svg, extracted from trellis-sprite.svg#even-pattern. -->
     </div>
     <div class="dashboard-content kd-grid">
       <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
@@ -866,15 +1152,7 @@ const DASHBOARD_SOURCE = createStorySource(
 
       <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
         <div class="dashboard-kpis">
-          <div class="dashboard-kpi">
-            <span class="dashboard-kpi__label kd-type--ui-02">Recommendations</span>
-            <span class="dashboard-kpi__value">84</span>
-            <div class="dashboard-kpi__meta">
-              <kyn-badge label="Healthy" status="success" hideIcon></kyn-badge>
-              <span class="kd-type--ui-04">Increased by 12%</span>
-            </div>
-          </div>
-          <!-- Repeat KPI cards for data quality, interference time, and uptime. -->
+${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
         </div>
       </div>
 
