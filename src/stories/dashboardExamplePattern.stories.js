@@ -1283,7 +1283,7 @@ const renderChartWidget = (chart) => html`
 `;
 
 export default {
-  title: 'Patterns/Dashboard Example Pattern',
+  title: 'Patterns/Dashboard Example',
   component: 'kyn-ui-shell',
   decorators: [
     (story) => html`
