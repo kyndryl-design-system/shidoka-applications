@@ -79,6 +79,10 @@ jobs:
     name: Test (${{ matrix.browser }})
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.0-noble
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     strategy:
       fail-fast: false
       matrix:
@@ -95,9 +99,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
-
-      - name: Install Playwright (${{ matrix.browser }})
-        run: npx playwright install --with-deps ${{ matrix.browser }}
 
       # - name: Download build-storybook artifact
       #   uses: actions/download-artifact@v4
