@@ -12,6 +12,7 @@ import '../components/reusable/pagetitle';
 import '../components/reusable/tabs';
 import '../components/reusable/widget';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
+import { Config as gridstackConfig } from '../common/helpers/gridstack';
 
 import navData from './globalSwitcher/example_global_switcher_data.json';
 import trellisPattern from './dashboardExamplePatternTrellis.svg';
@@ -30,6 +31,7 @@ import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/hom
 import informationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/information.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
 import notificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notification.svg';
+import dragIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/draggable.svg';
 import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
@@ -50,112 +52,16 @@ const iconMap = {
   'user-settings': adminIcon,
 };
 
-const DASHBOARD_STYLES = /* css */ `
-  .ui-shell-dashboard-demo {
-    position: relative;
-    isolation: isolate;
-    min-height: 100vh;
-    margin: var(--kd-negative-page-gutter);
-    background: var(--kd-color-background-page-default);
-  }
-
-  .ui-shell-dashboard-demo::before {
-    position: absolute;
-    z-index: 0;
-    inset-block-start: var(--kd-header-height, 56px);
-    inset-inline: 0;
-    height: min(38vh, 360px);
-    content: '';
-    background: var(--kd-color-background-container-soft);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
-    pointer-events: none;
-  }
-
-  .ui-shell-dashboard-demo kyn-header {
-    position: relative;
-    z-index: 30;
-  }
-
-  .ui-shell-dashboard-demo kyn-header-nav,
-  .ui-shell-dashboard-demo kyn-header-flyouts,
-  .ui-shell-dashboard-demo kyn-header-flyout {
-    position: relative;
-    z-index: 31;
-  }
-
-  .ui-shell-dashboard-demo kyn-local-nav {
-    position: relative;
-    z-index: 10;
-  }
-
-  .ui-shell-dashboard-demo kyn-side-drawer,
-  .ui-shell-dashboard-demo kyn-modal {
-    position: relative;
-    z-index: 0;
-  }
-
-  .ui-shell-dashboard-demo kyn-side-drawer[open],
-  .ui-shell-dashboard-demo kyn-modal[open] {
-    position: relative;
-    z-index: 32;
-  }
-
+const DASHBOARD_PATTERN_STYLES = /* css */ `
+  /* Copyable pattern CSS. Import gridstack-shidoka.css globally for kyn-widget-gridstack. */
   .dashboard-main {
-    position: relative;
     min-height: 100vh;
-    overflow: hidden;
     padding: max(var(--kd-shell-header-clearance, 0px), 2rem)
       var(--kd-page-gutter, 2rem) calc(var(--kd-page-gutter, 2rem) + 2rem);
   }
 
-  .dashboard-main::before {
-    position: absolute;
-    inset: 0 0 auto;
-    height: min(38vh, 360px);
-    content: '';
-    pointer-events: none;
-  }
-
-  .dashboard-main::after {
-    position: absolute;
-    inset: calc(min(38vh, 360px) - 120px) 0 auto;
-    height: 160px;
-    content: '';
-    background: linear-gradient(
-      to bottom,
-      rgb(255 255 255 / 0%),
-      var(--kd-color-background-page-default)
-    );
-    pointer-events: none;
-  }
-
   .dashboard-content {
-    position: relative;
-    z-index: 1;
     align-items: start;
-  }
-
-  .dashboard-trellis {
-    position: absolute;
-    z-index: 1;
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    width: min(62vw, 980px);
-    height: min(38vh, 360px);
-    color: var(--kd-color-opacity-ai-warm-red-50);
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
-    pointer-events: none;
-  }
-
-  .dashboard-trellis svg {
-    display: block;
-    width: auto;
-    height: 100%;
-    max-width: none;
-    margin-inline-start: auto;
   }
 
   .dashboard-hero {
@@ -211,49 +117,167 @@ const DASHBOARD_STYLES = /* css */ `
     gap: 0.5rem;
   }
 
-  .dashboard-chart-cell {
-    min-height: 420px;
+  .dashboard-chart-drag-handle {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 1rem;
+    inset-inline-end: 1rem;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    color: var(--kd-color-icon-secondary);
+    cursor: move;
   }
 
-  .dashboard-chart-cell kyn-widget {
-    height: 100%;
-  }
-
-  .dashboard-chart-body {
-    display: flex;
-    min-height: 100%;
-    height: 100%;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .dashboard-chart-host {
+  .dashboard-chart-drag-handle svg {
     display: block;
-    flex: 1;
-    min-height: 320px;
-    width: 100%;
+    width: 16px;
+    height: 16px;
   }
 
-  .dashboard-chart-host kd-chart {
+  .dashboard-chart-item kd-chart {
     display: block;
     width: 100%;
   }
 
-  .dashboard-chart-cell--radar .dashboard-chart-host {
+  .dashboard-chart-item--radar kyn-widget {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .dashboard-chart-cell--radar .dashboard-chart-host kd-chart {
+  .dashboard-chart-item--radar kd-chart {
     width: min(100%, 560px);
   }
 
-  .dashboard-widget-footer {
-    display: flex;
-    flex-shrink: 0;
-    justify-content: center;
-    padding-block: 0.5rem;
+  @media (max-width: calc(82rem - 0.001px)) {
+    .dashboard-kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: calc(52rem - 0.001px)) {
+    .dashboard-hero {
+      flex-direction: column;
+    }
+
+    .dashboard-hero-actions {
+      justify-content: flex-start;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: calc(42rem - 0.001px)) {
+    .dashboard-main {
+      padding-inline: 1rem;
+    }
+
+    .dashboard-kpis {
+      grid-template-columns: 1fr;
+    }
+  }
+`;
+
+const DASHBOARD_VISUAL_TREATMENT_STYLES = /* css */ `
+  /* Optional Storybook visual treatment: backdrop gradient and trellis art. */
+  .ui-shell-dashboard-demo {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+    margin: var(--kd-negative-page-gutter);
+    background: var(--kd-color-background-page-default);
+  }
+
+  .ui-shell-dashboard-demo::before {
+    position: absolute;
+    z-index: 0;
+    inset-block-start: var(--kd-header-height, 56px);
+    inset-inline: 0;
+    height: min(38vh, 360px);
+    content: '';
+    background: var(--kd-color-background-container-soft);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .dashboard-main {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dashboard-main::after {
+    position: absolute;
+    inset: calc(min(38vh, 360px) - 120px) 0 auto;
+    height: 160px;
+    content: '';
+    background: linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0%),
+      var(--kd-color-background-page-default)
+    );
+    pointer-events: none;
+  }
+
+  .dashboard-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .dashboard-trellis {
+    position: absolute;
+    z-index: 1;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    width: min(62vw, 980px);
+    height: min(38vh, 360px);
+    color: var(--kd-color-opacity-ai-warm-red-50);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0 34%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .dashboard-trellis svg {
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: none;
+    margin-inline-start: auto;
+  }
+`;
+
+const DASHBOARD_SHELL_DEMO_STYLES = /* css */ `
+  /* Storybook shell glue for the demo header/flyouts; not dashboard pattern CSS. */
+  .ui-shell-dashboard-demo kyn-header {
+    position: relative;
+    z-index: 30;
+  }
+
+  .ui-shell-dashboard-demo kyn-header-nav,
+  .ui-shell-dashboard-demo kyn-header-flyouts,
+  .ui-shell-dashboard-demo kyn-header-flyout {
+    position: relative;
+    z-index: 31;
+  }
+
+  .ui-shell-dashboard-demo kyn-local-nav {
+    position: relative;
+    z-index: 10;
+  }
+
+  .ui-shell-dashboard-demo kyn-side-drawer,
+  .ui-shell-dashboard-demo kyn-modal {
+    position: relative;
+    z-index: 0;
+  }
+
+  .ui-shell-dashboard-demo kyn-side-drawer[open],
+  .ui-shell-dashboard-demo kyn-modal[open] {
+    position: relative;
+    z-index: 32;
   }
 
   .account-name {
@@ -318,22 +342,7 @@ const DASHBOARD_STYLES = /* css */ `
     padding: 0;
   }
 
-  @media (max-width: calc(82rem - 0.001px)) {
-    .dashboard-kpis {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
   @media (max-width: calc(52rem - 0.001px)) {
-    .dashboard-hero {
-      flex-direction: column;
-    }
-
-    .dashboard-hero-actions {
-      justify-content: flex-start;
-      width: 100%;
-    }
-
     .ui-impl-switcher {
       width: min(375px, calc(100vw - 2rem));
       min-width: 0;
@@ -343,21 +352,13 @@ const DASHBOARD_STYLES = /* css */ `
       display: none;
     }
   }
-
-  @media (max-width: calc(42rem - 0.001px)) {
-    .dashboard-main {
-      padding-inline: 1rem;
-    }
-
-    .dashboard-kpis {
-      grid-template-columns: 1fr;
-    }
-
-    .dashboard-chart-cell {
-      min-height: 380px;
-    }
-  }
 `;
+
+const DASHBOARD_STYLES = [
+  DASHBOARD_PATTERN_STYLES,
+  DASHBOARD_VISUAL_TREATMENT_STYLES,
+  DASHBOARD_SHELL_DEMO_STYLES,
+].join('\n\n');
 
 const createStorySource = (markup, styles) =>
   `<style>\n${styles.trim()}\n</style>\n\n${markup.trim()}`;
@@ -958,12 +959,23 @@ const radarOptions = {
   },
 };
 
+const doughnutOptions = {
+  animation: false,
+  maintainAspectRatio: false,
+  cutout: '62%',
+  plugins: {
+    legend: {
+      position: 'bottom',
+    },
+  },
+};
+
 const chartData = [
   {
+    id: 'recommendation-health',
     title: 'Recommendation health',
     subtitle: 'AI recommendation confidence over time',
     type: 'line',
-    className: 'kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4',
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     datasets: [
       {
@@ -978,10 +990,10 @@ const chartData = [
     options: cartesianOptions('Day', 'Score'),
   },
   {
+    id: 'container-growth',
     title: 'Container growth',
     subtitle: 'Container count by environment',
     type: 'bar',
-    className: 'kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4',
     labels: ['Dev', 'Test', 'Stage', 'Prod', 'DR'],
     datasets: [
       {
@@ -996,10 +1008,10 @@ const chartData = [
     options: cartesianOptions('Environment', 'Containers'),
   },
   {
+    id: 'service-readiness',
     title: 'Service readiness',
     subtitle: 'Readiness dimensions by domain',
     type: 'radar',
-    className: 'kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-4',
     labels: ['Security', 'Cost', 'Resiliency', 'Capacity', 'Compliance'],
     datasets: [
       {
@@ -1014,10 +1026,10 @@ const chartData = [
     options: radarOptions,
   },
   {
+    id: 'inference-latency',
     title: 'Inference latency',
     subtitle: 'Median and p95 latency by day',
     type: 'line',
-    className: 'kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-8',
     labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     datasets: [
       {
@@ -1031,34 +1043,104 @@ const chartData = [
     ],
     options: cartesianOptions('Day', 'Milliseconds'),
   },
+  {
+    id: 'optimization-mix',
+    title: 'Optimization mix',
+    subtitle: 'Open recommendations by category',
+    type: 'doughnut',
+    labels: ['Performance', 'Cost', 'Security', 'Reliability'],
+    datasets: [
+      {
+        label: 'Recommendations',
+        data: [34, 28, 22, 16],
+      },
+    ],
+    options: doughnutOptions,
+  },
 ];
+
+const dashboardGridstackConfig = {
+  ...gridstackConfig,
+  handle: '.dashboard-chart-drag-handle',
+  staticGrid: false,
+  disableDrag: false,
+  disableResize: true,
+};
+
+const dashboardChartLayout = {
+  max: [
+    { id: 'recommendation-health', x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'container-growth', x: 4, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'service-readiness', x: 8, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'inference-latency', x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 4 },
+    { id: 'optimization-mix', x: 6, y: 4, w: 6, h: 4, minW: 4, minH: 4 },
+  ],
+  xl: [
+    { id: 'recommendation-health', x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'container-growth', x: 4, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'service-readiness', x: 8, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'inference-latency', x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 4 },
+    { id: 'optimization-mix', x: 6, y: 4, w: 6, h: 4, minW: 4, minH: 4 },
+  ],
+  lg: [
+    { id: 'recommendation-health', x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'container-growth', x: 4, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'service-readiness', x: 8, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'inference-latency', x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 4 },
+    { id: 'optimization-mix', x: 6, y: 4, w: 6, h: 4, minW: 4, minH: 4 },
+  ],
+  md: [
+    { id: 'recommendation-health', x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'container-growth', x: 4, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'service-readiness', x: 0, y: 4, w: 8, h: 4, minW: 4, minH: 4 },
+    { id: 'inference-latency', x: 0, y: 8, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'optimization-mix', x: 4, y: 8, w: 4, h: 4, minW: 4, minH: 4 },
+  ],
+  sm: [
+    { id: 'recommendation-health', x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'container-growth', x: 0, y: 4, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'service-readiness', x: 0, y: 8, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'inference-latency', x: 0, y: 12, w: 4, h: 4, minW: 4, minH: 4 },
+    { id: 'optimization-mix', x: 0, y: 16, w: 4, h: 4, minW: 4, minH: 4 },
+  ],
+};
 
 const stringifySourceProp = (value) => JSON.stringify(value, null, 2);
 
 const createChartSource = (chart) => `
-      <div class="${chart.className} dashboard-chart-cell${
-  chart.type === 'radar' ? ' dashboard-chart-cell--radar' : ''
-}">
-        <kyn-widget widgetTitle="${chart.title}">
-          <span slot="subtitle">${chart.subtitle}</span>
-          <div class="dashboard-chart-body">
-            <div class="dashboard-chart-host">
-              <kd-chart
-                type="${chart.type}"
-                hideControls
-                hideCaptions
-                height="320"
-                .labels=${stringifySourceProp(chart.labels)}
-                .datasets=${stringifySourceProp(chart.datasets)}
-                .options=${stringifySourceProp(chart.options)}
-              ></kd-chart>
-            </div>
-            <div class="dashboard-widget-footer">
-              <kyn-button kind="secondary" size="small">Visit</kyn-button>
-            </div>
-          </div>
-        </kyn-widget>
-      </div>`;
+              <div
+                gs-id="${chart.id}"
+                class="grid-stack-item${
+                  chart.type === 'radar' ? ' dashboard-chart-item--radar' : ''
+                }"
+              >
+                <div class="grid-stack-item-content">
+                  <span class="dashboard-chart-drag-handle">
+                    <!-- draggable icon -->
+                  </span>
+                  <kyn-widget widgetTitle="${chart.title}">
+                    <kd-chart
+                      type="${chart.type}"
+                      chartTitle="${chart.title}"
+                      description="${chart.subtitle}"
+                      hideControls
+                      hideCaptions
+                      height="320"
+                      .labels=${stringifySourceProp(chart.labels)}
+                      .datasets=${stringifySourceProp(chart.datasets)}
+                      .options=${stringifySourceProp(chart.options)}
+                    ></kd-chart>
+                    <kyn-button
+                      slot="footer"
+                      kind="secondary"
+                      size="small"
+                      style="margin-left: auto;"
+                    >
+                      Visit
+                    </kyn-button>
+                  </kyn-widget>
+                </div>
+              </div>`;
 
 const DASHBOARD_SOURCE = createStorySource(
   `
@@ -1166,9 +1248,6 @@ ${indentSource(
   </kyn-local-nav>
 
   <main class="dashboard-main">
-    <div class="dashboard-trellis" aria-hidden="true">
-      <!-- Inline dashboardExamplePatternTrellis.svg, extracted from trellis-sprite.svg#even-pattern. -->
-    </div>
     <div class="dashboard-content kd-grid">
       <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
         <div class="dashboard-hero">
@@ -1190,7 +1269,16 @@ ${indentSource(kpis.map((kpi) => createKpiSource(kpi)).join('\n'), 10)}
         </div>
       </div>
 
+      <div class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12">
+        <kyn-widget-gridstack
+          .layout=${stringifySourceProp(dashboardChartLayout)}
+          .gridstackConfig=${stringifySourceProp(dashboardGridstackConfig)}
+        >
+          <div class="grid-stack">
 ${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
+          </div>
+        </kyn-widget-gridstack>
+      </div>
     </div>
   </main>
 
@@ -1201,7 +1289,7 @@ ${chartData.map((chart) => createChartSource(chart)).join('\n\n')}
   </kyn-footer>
 </kyn-ui-shell>
 `,
-  DASHBOARD_STYLES
+  DASHBOARD_PATTERN_STYLES
 );
 
 const renderKpis = () => html`
@@ -1227,29 +1315,35 @@ const renderKpis = () => html`
 
 const renderChartWidget = (chart) => html`
   <div
-    class="${chart.className} dashboard-chart-cell${chart.type === 'radar'
-      ? ' dashboard-chart-cell--radar'
+    gs-id=${chart.id}
+    class="grid-stack-item${chart.type === 'radar'
+      ? ' dashboard-chart-item--radar'
       : ''}"
   >
-    <kyn-widget widgetTitle=${chart.title}>
-      <span slot="subtitle">${chart.subtitle}</span>
-      <div class="dashboard-chart-body">
-        <div class="dashboard-chart-host">
-          <kd-chart
-            type=${chart.type}
-            hideControls
-            hideCaptions
-            height="320"
-            .labels=${chart.labels}
-            .datasets=${chart.datasets}
-            .options=${chart.options}
-          ></kd-chart>
-        </div>
-        <div class="dashboard-widget-footer">
-          <kyn-button kind="secondary" size="small">Visit</kyn-button>
-        </div>
-      </div>
-    </kyn-widget>
+    <div class="grid-stack-item-content">
+      <span class="dashboard-chart-drag-handle"> ${unsafeSVG(dragIcon)} </span>
+      <kyn-widget widgetTitle=${chart.title}>
+        <kd-chart
+          type=${chart.type}
+          chartTitle=${chart.title}
+          description=${chart.subtitle}
+          hideControls
+          hideCaptions
+          height="320"
+          .labels=${chart.labels}
+          .datasets=${chart.datasets}
+          .options=${chart.options}
+        ></kd-chart>
+        <kyn-button
+          slot="footer"
+          kind="secondary"
+          size="small"
+          style="margin-left: auto;"
+        >
+          Visit
+        </kyn-button>
+      </kyn-widget>
+    </div>
   </div>
 `;
 
@@ -1279,6 +1373,10 @@ export default {
       },
     },
     docs: {
+      description: {
+        component:
+          'The source panel exposes the copyable dashboard pattern styles only. The trellis art, backdrop gradient, and Storybook shell glue are kept in separate demo-only style constants.',
+      },
       source: {
         language: 'html',
         code: DASHBOARD_SOURCE,
@@ -1334,7 +1432,18 @@ export const FullDashboardImplementation = {
             ${renderKpis()}
           </div>
 
-          ${chartData.map((chart) => renderChartWidget(chart))}
+          <div
+            class="kd-grid__col--sm-4 kd-grid__col--md-8 kd-grid__col--lg-12"
+          >
+            <kyn-widget-gridstack
+              .layout=${dashboardChartLayout}
+              .gridstackConfig=${dashboardGridstackConfig}
+            >
+              <div class="grid-stack">
+                ${chartData.map((chart) => renderChartWidget(chart))}
+              </div>
+            </kyn-widget-gridstack>
+          </div>
         </div>
       </main>
 
