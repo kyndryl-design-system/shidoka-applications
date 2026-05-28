@@ -1,0 +1,23 @@
+---
+description: In @kyndryl-design-system/shidoka-* Storybook repos, generated pages are ephemeral outputs in src/stories/generated with PageN naming
+alwaysApply: true
+---
+
+# Generated Story Output
+
+Apply this rule only when the current project is a design-system Storybook repo whose package name matches `@kyndryl-design-system/shidoka-*`. Ignore this rule in consuming apps.
+
+For those design-system repos, generated Storybook page files must be written to:
+
+- `src/stories/generated/Page1.stories.js`
+- `src/stories/generated/Page2.stories.js`
+- `src/stories/generated/PageN.stories.js`
+
+Rules:
+
+- Do not create generated page stories in `generated/pages/`, `src/stories/generated-pages/`, or top-level `src/stories/`.
+- Use `Page1`, `Page2`, etc. for both the filename stem and the named story export.
+- Keep generated page stories as `.stories.js` files unless the user explicitly asks for a different extension.
+- Treat files in `src/stories/generated/` as ephemeral outputs, not canonical design references.
+- Do not use existing generated pages as the design authority when generating a new page; use the Shidoka Studio MCP payload and page-generation rule instead.
+- When correcting an existing generated page the user points to, update it in place inside `src/stories/generated/` instead of creating a second copy somewhere else.
