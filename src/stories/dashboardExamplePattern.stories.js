@@ -12,22 +12,25 @@ import '../components/reusable/pagetitle';
 import '../components/reusable/tabs';
 import '../components/reusable/widget';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
+import '@kyndryl-cto/shidoka-studio/styles/shell-overlays.css';
 
 import navData from './globalSwitcher/example_global_switcher_data.json';
 import trellisPattern from './dashboardExamplePatternTrellis.svg';
 import { WorkspaceSwitcherPattern } from './workspaceSwitcher/WorkspaceSwitcher.stories.js';
 
+import bridgeLogo from '@kyndryl-design-system/shidoka-foundation/assets/svg/bridge-logo-large.svg';
 import insightsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/actionable-insights.svg';
 import adminIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/user-settings.svg';
 import catalogIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/catalog-management.svg';
-import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/chevron-down.svg';
+import chevronDownIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/chevron-down.svg';
 import circleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/circle-stroke.svg';
 import consoleIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/console.svg';
 import dashboardIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/dashboard.svg';
-import helpIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/question.svg';
 import historyIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/history.svg';
 import homeIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/home.svg';
+import informationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/information.svg';
 import launchIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/launch.svg';
+import notificationIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/20/notification.svg';
 import servicesIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/services.svg';
 import settingsIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/settings.svg';
 import starFilledIcon from '@kyndryl-design-system/shidoka-icons/svg/monochrome/16/recommend-filled.svg';
@@ -68,18 +71,6 @@ const DASHBOARD_STYLES = /* css */ `
     -webkit-mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
     pointer-events: none;
-  }
-
-  .ui-shell-dashboard-demo kyn-header,
-  .ui-shell-dashboard-demo kyn-header-flyout,
-  .ui-shell-dashboard-demo kyn-modal,
-  .ui-shell-dashboard-demo kyn-side-drawer {
-    position: relative;
-    z-index: 22;
-  }
-
-  .ui-shell-dashboard-demo kyn-local-nav {
-    z-index: 21;
   }
 
   .dashboard-main {
@@ -233,8 +224,8 @@ const DASHBOARD_STYLES = /* css */ `
   .dashboard-widget-footer {
     display: flex;
     flex-shrink: 0;
-    justify-content: flex-end;
-    padding-block-start: 0.25rem;
+    justify-content: center;
+    padding-block: 0.5rem;
   }
 
   .account-name {
@@ -252,7 +243,14 @@ const DASHBOARD_STYLES = /* css */ `
     justify-content: center;
   }
 
-  .header-icon svg,
+  .account-chevron svg,
+  .header-icon svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
   .local-nav-icon svg {
     display: block;
     width: 16px;
@@ -274,13 +272,22 @@ const DASHBOARD_STYLES = /* css */ `
   .user-flyout-card {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
     min-width: 240px;
     padding: 0.75rem;
   }
 
+  .flyout-action-list {
+    gap: 0.25rem;
+  }
+
   .user-flyout-card {
     align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .user-flyout-card .flyout-action-list {
+    min-width: 0;
+    padding: 0;
   }
 
   @media (max-width: calc(82rem - 0.001px)) {
@@ -545,6 +552,13 @@ const createGlobalSwitcherSectionSource = (section) => {
   }
 };
 
+const createFlyoutActionLinkSource = (label) =>
+  [
+    '<kyn-header-link href="javascript:void(0)">',
+    `  ${escapeSource(label)}`,
+    '</kyn-header-link>',
+  ].join('\n');
+
 const createKpiSource = (kpi) => `<div class="dashboard-kpi">
   <span class="dashboard-kpi__label kd-type--ui-02">${escapeSource(
     kpi.label
@@ -718,7 +732,10 @@ const renderGlobalSwitcherSection = (section) => {
 };
 
 const renderShellHeader = () => html`
-  <kyn-header rootUrl="/" appTitle="Application">
+  <kyn-header rootUrl="/" appTitle="Dashboard">
+    <span slot="logo" style="--kyn-header-logo-width: 120px;">
+      ${unsafeSVG(bridgeLogo)}
+    </span>
     <kyn-header-nav
       truncate-links
       style="--kyn-icon-selector-animate-selection: 1; --kyn-icon-selector-only-visible-on-hover: 1; --kyn-icon-selector-persist-when-checked: 1;"
@@ -752,41 +769,67 @@ const renderShellHeader = () => html`
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label">
-        <span slot="button" class="header-icon">${unsafeSVG(helpIcon)}</span>
+      <kyn-header-flyout label="Notifications" hideMenuLabel>
+        <span slot="button" class="header-icon">
+          ${unsafeSVG(notificationIcon)}
+        </span>
 
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example 2
-        </kyn-header-link>
+        <div class="flyout-action-list">
+          <kyn-header-link href="javascript:void(0)">
+            Notification center
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            Alert preferences
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            Mark all as read
+          </kyn-header-link>
+        </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label" hideMenuLabel>
+      <kyn-header-flyout label="Help">
+        <span slot="button" class="header-icon">
+          ${unsafeSVG(informationIcon)}
+        </span>
+
+        <div class="flyout-action-list">
+          <kyn-header-link href="javascript:void(0)">
+            Documentation
+          </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)"> Support </kyn-header-link>
+          <kyn-header-link href="javascript:void(0)">
+            Release notes
+          </kyn-header-link>
+        </div>
+      </kyn-header-flyout>
+
+      <kyn-header-flyout label="User Profile" hideMenuLabel>
         <span slot="button" class="header-icon">
           ${unsafeSVG(userAvatarIcon)}
         </span>
 
-        <kyn-header-user-profile
-          name="User Name"
-          subtitle="Job Title"
-          email="user@kyndryl.com"
-          profileLink="#"
-        >
-          <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
-        </kyn-header-user-profile>
+        <div class="user-flyout-card">
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
+          >
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
+          </kyn-header-user-profile>
 
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example Link 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          <span>${unsafeSVG(circleIcon)}</span>
-          Example Link 2
-        </kyn-header-link>
+          <div class="flyout-action-list">
+            <kyn-header-link href="javascript:void(0)">
+              Profile settings
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              Account settings
+            </kyn-header-link>
+            <kyn-header-link href="javascript:void(0)">
+              Sign out
+            </kyn-header-link>
+          </div>
+        </div>
       </kyn-header-flyout>
     </kyn-header-flyouts>
   </kyn-header>
@@ -1037,7 +1080,7 @@ const createChartSource = (chart) => `
               ></kd-chart>
             </div>
             <div class="dashboard-widget-footer">
-              <kyn-button kind="secondary" size="small">Visit</kyn-button>
+              <kyn-button kind="outline" size="small">Visit</kyn-button>
             </div>
           </div>
         </kyn-widget>
@@ -1046,7 +1089,10 @@ const createChartSource = (chart) => `
 const DASHBOARD_SOURCE = createStorySource(
   `
 <kyn-ui-shell>
-  <kyn-header rootUrl="/" appTitle="Application">
+  <kyn-header rootUrl="/" appTitle="Dashboard">
+    <span slot="logo" style="--kyn-header-logo-width: 120px;">
+      <!-- bridge logo -->
+    </span>
     <kyn-header-nav truncate-links>
 ${indentSource(
   navData.sections
@@ -1078,36 +1124,50 @@ ${indentSource(
         </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label">
-        ${createSourceIcon('question', 'button', 'header-icon')}
-        <kyn-header-link href="javascript:void(0)">
-          ${createSourceIcon('circle-stroke')}
-          Example 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          ${createSourceIcon('circle-stroke')}
-          Example 2
-        </kyn-header-link>
+      <kyn-header-flyout label="Notifications" hideMenuLabel>
+        ${createSourceIcon('notification', 'button', 'header-icon')}
+        <div class="flyout-action-list">
+${indentSource(
+  ['Notification center', 'Alert preferences', 'Mark all as read']
+    .map((label) => createFlyoutActionLinkSource(label))
+    .join('\n'),
+  10
+)}
+        </div>
       </kyn-header-flyout>
 
-      <kyn-header-flyout label="Menu Label" hideMenuLabel>
+      <kyn-header-flyout label="Help">
+        ${createSourceIcon('information', 'button', 'header-icon')}
+        <div class="flyout-action-list">
+${indentSource(
+  ['Documentation', 'Support', 'Release notes']
+    .map((label) => createFlyoutActionLinkSource(label))
+    .join('\n'),
+  10
+)}
+        </div>
+      </kyn-header-flyout>
+
+      <kyn-header-flyout label="User Profile" hideMenuLabel>
         ${createSourceIcon('user', 'button', 'header-icon')}
-        <kyn-header-user-profile
-          name="User Name"
-          subtitle="Job Title"
-          email="user@kyndryl.com"
-          profileLink="#"
-        >
-          <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
-        </kyn-header-user-profile>
-        <kyn-header-link href="javascript:void(0)">
-          ${createSourceIcon('circle-stroke')}
-          Example Link 1
-        </kyn-header-link>
-        <kyn-header-link href="javascript:void(0)">
-          ${createSourceIcon('circle-stroke')}
-          Example Link 2
-        </kyn-header-link>
+        <div class="user-flyout-card">
+          <kyn-header-user-profile
+            name="User Name"
+            subtitle="Job Title"
+            email="user@kyndryl.com"
+            profileLink="#"
+          >
+            <img src="https://picsum.photos/id/237/112/112" alt="User Name" />
+          </kyn-header-user-profile>
+          <div class="flyout-action-list">
+${indentSource(
+  ['Profile settings', 'Account settings', 'Sign out']
+    .map((label) => createFlyoutActionLinkSource(label))
+    .join('\n'),
+  12
+)}
+          </div>
+        </div>
       </kyn-header-flyout>
     </kyn-header-flyouts>
   </kyn-header>
@@ -1214,7 +1274,7 @@ const renderChartWidget = (chart) => html`
           ></kd-chart>
         </div>
         <div class="dashboard-widget-footer">
-          <kyn-button kind="secondary" size="small">Visit</kyn-button>
+          <kyn-button kind="outline" size="small">Visit</kyn-button>
         </div>
       </div>
     </kyn-widget>
