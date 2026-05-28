@@ -224,8 +224,9 @@ const DASHBOARD_STYLES = /* css */ `
   .dashboard-widget-footer {
     display: flex;
     flex-shrink: 0;
-    justify-content: center;
-    padding-block: 0.5rem;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-block-start: 0.5rem;
   }
 
   .account-name {
@@ -1080,7 +1081,7 @@ const createChartSource = (chart) => `
               ></kd-chart>
             </div>
             <div class="dashboard-widget-footer">
-              <kyn-button kind="outline" size="small">Visit</kyn-button>
+              <kyn-button kind="secondary" size="small">Visit</kyn-button>
             </div>
           </div>
         </kyn-widget>
@@ -1274,7 +1275,7 @@ const renderChartWidget = (chart) => html`
           ></kd-chart>
         </div>
         <div class="dashboard-widget-footer">
-          <kyn-button kind="outline" size="small">Visit</kyn-button>
+          <kyn-button kind="secondary" size="small">Visit</kyn-button>
         </div>
       </div>
     </kyn-widget>
