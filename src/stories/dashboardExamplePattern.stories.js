@@ -12,7 +12,6 @@ import '../components/reusable/pagetitle';
 import '../components/reusable/tabs';
 import '../components/reusable/widget';
 import '@kyndryl-design-system/shidoka-charts/components/chart';
-import '@kyndryl-cto/shidoka-studio/styles/shell-overlays.css';
 
 import navData from './globalSwitcher/example_global_switcher_data.json';
 import trellisPattern from './dashboardExamplePatternTrellis.svg';
@@ -71,6 +70,35 @@ const DASHBOARD_STYLES = /* css */ `
     -webkit-mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0 38%, transparent 100%);
     pointer-events: none;
+  }
+
+  .ui-shell-dashboard-demo kyn-header {
+    position: relative;
+    z-index: 30;
+  }
+
+  .ui-shell-dashboard-demo kyn-header-nav,
+  .ui-shell-dashboard-demo kyn-header-flyouts,
+  .ui-shell-dashboard-demo kyn-header-flyout {
+    position: relative;
+    z-index: 31;
+  }
+
+  .ui-shell-dashboard-demo kyn-local-nav {
+    position: relative;
+    z-index: 10;
+  }
+
+  .ui-shell-dashboard-demo kyn-side-drawer,
+  .ui-shell-dashboard-demo kyn-modal {
+    position: relative;
+    z-index: 0;
+  }
+
+  .ui-shell-dashboard-demo kyn-side-drawer[open],
+  .ui-shell-dashboard-demo kyn-modal[open] {
+    position: relative;
+    z-index: 32;
   }
 
   .dashboard-main {
@@ -224,9 +252,8 @@ const DASHBOARD_STYLES = /* css */ `
   .dashboard-widget-footer {
     display: flex;
     flex-shrink: 0;
-    justify-content: flex-end;
-    margin-top: auto;
-    padding-block-start: 0.5rem;
+    justify-content: center;
+    padding-block: 0.5rem;
   }
 
   .account-name {
@@ -891,6 +918,7 @@ const kpis = [
 ];
 
 const cartesianOptions = (xTitle, yTitle) => ({
+  animation: false,
   maintainAspectRatio: false,
   plugins: {
     legend: {
@@ -915,6 +943,7 @@ const cartesianOptions = (xTitle, yTitle) => ({
 });
 
 const radarOptions = {
+  animation: false,
   maintainAspectRatio: false,
   plugins: {
     legend: {
@@ -1002,60 +1031,6 @@ const chartData = [
     ],
     options: cartesianOptions('Day', 'Milliseconds'),
   },
-  {
-    title: 'Feature drift',
-    subtitle: 'Signals outside expected tolerance',
-    type: 'bar',
-    className: 'kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-4',
-    labels: ['Model A', 'Model B', 'Model C', 'Model D'],
-    datasets: [
-      {
-        label: 'Observed',
-        data: [12, 8, 17, 10],
-      },
-      {
-        label: 'Threshold',
-        data: [10, 10, 10, 10],
-      },
-    ],
-    options: cartesianOptions('Model', 'Signals'),
-  },
-  {
-    title: 'Coverage profile',
-    subtitle: 'Operational coverage by capability',
-    type: 'radar',
-    className: 'kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6',
-    labels: ['Observe', 'Recover', 'Optimize', 'Secure', 'Govern', 'Automate'],
-    datasets: [
-      {
-        label: 'Coverage',
-        data: [86, 74, 68, 91, 79, 72],
-      },
-      {
-        label: 'Goal',
-        data: [90, 85, 82, 94, 88, 86],
-      },
-    ],
-    options: radarOptions,
-  },
-  {
-    title: 'Cost optimization',
-    subtitle: 'Estimated savings trend',
-    type: 'line',
-    className: 'kd-grid__col--sm-4 kd-grid__col--md-4 kd-grid__col--lg-6',
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Realized',
-        data: [18, 24, 31, 37, 45, 52],
-      },
-      {
-        label: 'Forecast',
-        data: [20, 28, 35, 43, 51, 61],
-      },
-    ],
-    options: cartesianOptions('Month', 'Savings (k)'),
-  },
 ];
 
 const stringifySourceProp = (value) => JSON.stringify(value, null, 2);
@@ -1070,8 +1045,6 @@ const createChartSource = (chart) => `
             <div class="dashboard-chart-host">
               <kd-chart
                 type="${chart.type}"
-                chartTitle="${chart.title}"
-                description="${chart.subtitle}"
                 hideControls
                 hideCaptions
                 height="320"
@@ -1264,8 +1237,6 @@ const renderChartWidget = (chart) => html`
         <div class="dashboard-chart-host">
           <kd-chart
             type=${chart.type}
-            chartTitle=${chart.title}
-            description=${chart.subtitle}
             hideControls
             hideCaptions
             height="320"
